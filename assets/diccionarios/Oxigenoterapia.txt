@@ -1,0 +1,19 @@
+DISPOSITIVOS DE ALTO FLUJO
+Ventilador Mecánico Controlado por Presión Modalidad para Bi-Presión Continua de la Via Aérea  (BiPAP: iPAP, ePAP)
+Ventilador Mecánico Controlado por Presión Modalidad para Presión Continua de la Via Aérea (C.P.A.P.)
+Ventilador Mecánico Volumétrico Controlado Neumáticamente y Controlado Electrónicamente
+Dispositivo Bolsa-Válvula-Mascarilla
+Nebulizador con Sistema Venturi
+Casco Cefálco, con Dispositivo Borboteador
+Incubadora con Dispositivo Oxigenoterapia Integrado
+Pieza en T, con Dispositivo Borboteador
+Collarín de Traqueostomía, con Dispositivo Borboteador
+Tienda Facial, con Dispositivo Borboteador
+DISPOSITIVOS DE BAJO FLUJO
+Cánula Nasal, con Dispositivo Borboteador
+Cánula Nasal con Reservorio "de Bigote", con Dispositivo Borboteador
+Cánula Nasal con Reservorio Colgante, con Dispositivo Borboteador
+Mascarilla Simple con Dispositivo Borboteador
+Máscara de Oxígeno con Reservorio, con Dispositivo Borboteador
+Máscara de Reinhalación Parcial, con Dispositivo Borboteador
+Máscara de No Reinhalación con Reservorio, con Dispositivo Borboteador

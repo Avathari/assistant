@@ -1,0 +1,72 @@
+Sangre Fresca Total (Tipo A Rh+)
+Sangre Fresca Total (Tipo A Rh-)
+Sangre Fresca Total (Tipo B Rh+)
+Sangre Fresca Total (Tipo B Rh-)
+Sangre Fresca Total (Tipo O Rh+)
+Sangre Fresca Total (Tipo O Rh-)
+Sangre Fresca Total (Tipo AB Rh+)
+Sangre Fresca Total (Tipo AB Rh-)
+Sangre Fresca Total Reconstituido (Tipo A Rh+)
+Sangre Fresca Total Reconstituido (Tipo A Rh-)
+Sangre Fresca Total Reconstituido (Tipo B Rh+)
+Sangre Fresca Total Reconstituido (Tipo B Rh-)
+Sangre Fresca Total Reconstituido (Tipo O Rh+)
+Sangre Fresca Total Reconstituido (Tipo O Rh-)
+Sangre Fresca Total Reconstituido (Tipo AB Rh+)
+Sangre Fresca Total Reconstituido (Tipo AB Rh-)
+Concentrado Eritrocitario (Anti-Coagulante ACD-CPD)
+Concentrado Eritrocitario (Anti-Coagulante CPD-A)
+Concentrado Eritrocitario con Remoción de la Capa Leucoplaquetaria (Anti-Coagulante CPD)
+Concentrado Eritrocitario con Remoción de la Capa Leucoplaquetaria (Anti-Coagulante CPD-A)
+Concentrado Eritrocitario con Soluciones Aditivas (Anti-Coagulante CPD-M)
+Concentrado Eritrocitario con Remoción de la Capa Leucoplaquetaria con Soluciones Aditivas (Anti-Coagulante CPD-M)
+Concentrado Eritrocitario Lavado (Anti-Coagulante ACD-CPD, CPD-A, CPD-M)
+Concentrado Eritrocitario Leucorreducido (Anti-Coagulante ACD-CPD, CPD-A, CPD-M)
+Concentrado Eritrocitario Radiado (Anti-Coagulante ACD-CPD, CPD-A, CPD-M)
+Concentrado Eritrocitario por Aféresis (Anti-Coagulante ACD-CPD, CPD-A, CPD-M)
+Concentrado Plaquetario Obtenido de Sangre Fresca Total
+Concentrado Plaquetario Obtenido por Aféresis
+Concentrado Plaquetario Leucorreducido
+Concentrado Plaquetario Radiado
+Plasma Fresco Congelado
+Crioprecipitado
+Citoaféresis Eritrocitario Único
+Citoaféresis Eritrocitario Doble No Leucorreducidos
+Citoaféresis Eritrocitario Doble Leucorreducidos
+Citoaféresis Plaquetaria No Leucorreducidas
+Citoaféresis Plaquetaria Leucorreducidas
+Citoaféresis Granulocíticas
+Citoaféresis Linfocíticas
+Citoaféresis de Células Progenitoras Hematoyéticas de Sangre Periférica
+Plasmaféresis de Columna de Inmunoabsorción
+Fotoféresis
+Anticuerpos Tipo Inmunoglobulinas IgA
+Anticuerpos Tipo Inmunoglobulinas IgM
+Anticuerpos Tipo Inmunoglobulinas IgG
+Anticuerpos Tipo Inmunoglobulinas IgE
+Fracción Plasmática de Albúmina
+Inmunoglubulinas Hiperinmunes contra Rubeóla
+Inmunoglubulinas Hiperinmunes contra el Virus de la Hepatitis A
+Inmunoglubulinas Hiperinmunes contra el Virus de la Hepatitis B
+Inmunoglubulinas Hiperinmunes contra el Virus de la Varicela
+Inmunoglubulinas Hiperinmunes contra el Virus de la Rabia
+Inmunoglubulinas Hiperinmunes contra el Virus Sncitial Respiratorio
+Inmunoglubulinas Hiperinmunes contra Clostridium Tetani
+Inmunoglobulina Humana Anti-D
+Concentrados Plasmáticos de Factores de la Coagulación (Factor I: Fibrinógeno)
+Concentrados Plasmáticos de Factores de la Coagulación (Factor VIIr: Factor VII Recombinante Activado)
+Concentrados Plasmáticos de Factores de la Coagulación (Factor VIII con Factor de Von Willebrand)
+Concentrados Plasmáticos de Factores de la Coagulación (Factor VIII sin Factor de Von Willebrand)
+Concentrados Plasmáticos de Factores de la Coagulación (Complejo Protrombínico Actvado, CTA)
+Concentrados Plasmáticos de Factores de la Coagulación (Factor X)
+Concentrados Plasmáticos de Factores de la Coagulación (Factor XI)
+Concentrados Plasmáticos de Factores de la Coagulación (Factor de Von Willebrand)
+Concentrados Plasmáticos de Factores de la Coagulación (Factor IIb: Trombina)
+Concentrados Plasmáticos de Factores de la Coagulación (Proteína C)
+Concentrados Plasmáticos de Factores de la Coagulación (Anti-Trombina III)
+Concentrados Plasmáticos de Factores de la Coagulación (Selladores de Fibrina)
+Trasplante Autólogo de Células Progenitoras Hematopoyéticas (TCPH)
+Trasplante Singénico/Isogénico de Células Progenitoras Hematopoyéticas (TCPH)
+Trasplante Alogénico de Células Progenitoras Hematopoyéticas (TCPH)
+Trasplante Autólogo de Células Progenitoras Hematopoyéticas (TCPH)
+Trasplante Células Progenitoras Hematopoyéticas de Sangre de Cordón Umbilical (TCPH-SCU)

@@ -1,0 +1,18 @@
+Vacuna BCG (Tuberculosis por Mycoplasma Bovis (Bácilo de Calmette-Guerin))
+Vacuna Pentavalente Acelular (Virus de la Poliomielitis, Haemophilus Influenzae Tipo B, Coryne­bacterium Diphtheriae, Clostridium Tetani, Bordetella Pertussi).
+Vacuna DTaP (Difteria, Tétanos, Tosferina).
+Vacuna RV (Rotavirus).
+Vacuna Antineumocócica Polsacárida PCV13 (Polisacáridos Neummócocicos:  1, 2, 3, 4, 5, 6B, 7F, 8, 9N, 9V, 10A, 11A, 12F, 14, 15B, 17F, 18C, 19F, 19A, 20, 22F, 23F, 33F).
+Vacuna Hib (Haemophilus Influenzae AH1N1 Tipo B).
+Vacuna Anti-Influenza Trivalente (Virus de la Influenza AH1N1 Tipo A, B; Virus de la Influenza AH3N2; Virus de la Influenza Cepa B).
+Vacuna Triple Viral MMR (Virus del Sarampión, Virus Mixovirus parotiditis, Virus de la Rubeóla)
+Vacuna Doble Viral MMR (Virus del Sarampión, Virus de la Rubeóla)
+Vacuna Sabin (Poliomielitis).
+Vacuna VPH (Virus del Papiloma Humano, Serotipos 16, 18).
+Vacuna VPH (Virus del Papiloma Humano, Serotipos 6, 11, 16, 18).
+Vacuna VPH (Virus del Papiloma Humano, Serotipos 6, 11, 16, 18, 31, 33, 45, 52, 58).
+Vacuna VV (Virus de la Varicela).
+Vacuna HepA (Virus del Hepatitis A).
+Vacuna HepB (Virus del Hepatitis B).
+
+

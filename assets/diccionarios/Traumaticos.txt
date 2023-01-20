@@ -1,0 +1,136 @@
+M484 - Fractura de vertebra por fatiga
+M800 - Osteoporosis postmenopáusica, con fractura patológica
+M801 - osteoporosis postooforectomia, con fractura patológica
+M802 - osteoporosis por desuso, con fractura patológica
+M803 - osteoporosis por malabsorción postquirúrgica, con fractura patológica
+M804 - osteoporosis inducida por drogas, con fractura patológica
+M805 - osteoporosis idiopática, con fractura patológica
+M808 - otras osteoporosis, con fractura patológica
+M809 - osteoporosis no especificada, con fractura patológica
+M810 - osteoporosis postmenopáusica, sin fractura patológica
+M811 - osteoporosis postooforectomia, sin fractura patológica
+M812 - osteoporosis por desuso, sin fractura patológica
+M813 - osteoporosis por malabsorción postquirúrgica, sin fractura patológica
+M814 - osteoporosis inducida por drogas, sin fractura patológica
+M815 - osteoporosis idiopática, sin fractura patológica
+M816 - osteoporosis localizada (lequesne), sin fractura patológica
+M818 - otras osteoporosis, sin fractura patológica
+M819 - osteoporosis no especificada, sin fractura patológica
+M840 - consolidación defectuosa de fractura
+M841 - falta de consolidación de fractura (pseudoartrosis)
+M842 - consolidación retardada de fractura
+M843 - fractura por tensión, no clasificada en otra parte
+M844 - fractura patológica, no clasificada en otra parte
+M966 - fractura de hueso posterior a inserción o implante ortopédico, prótesis articular o placa ósea
+P130 - fractura del cráneo debida a traumatismo del nacimiento
+P134 - fractura de la clavícula debida a traumatismo del nacimiento
+S020 - fractura de la Bóveda del cráneo
+S021 - fractura de la base del cráneo
+S022 - fractura de los huesos de la nariz
+S023 - fractura del suelo de la orbita
+S024 - fractura del malar y del hueso maxilar superior
+S025 - fractura de los dientes
+S026 - fractura del maxilar inferior
+S027 - fracturas múltiples que comprometen el cráneo y los huesos de la cara
+S028 - fractura de otros huesos del cráneo y de la cara
+S029 - fractura del cráneo y de los huesos de la cara, parte no especificada
+S120 - fractura de la primera vértebra cervical
+S121 - fractura de la segunda vértebra cervical
+S122 - fractura de otras vértebras cervicales especificadas
+S127 - fracturas múltiples de columna cervical
+S128 - fractura de otras partes del cuello
+S129 - fractura del cuello, parte no especificada
+S220 - fractura de vertebra torácica
+S221 - fracturas múltiples de columna torácica
+S222 - fractura del esternón
+S223 - fractura de costilla
+S224 - fracturas múltiples de costillas
+S228 - fractura de otras partes del tórax óseo
+S229 - fractura del tórax óseo, parte no especificada
+S320 - fractura de vértebra lumbar
+S321 - fractura del sacro
+S322 - fractura del cóccix
+S323 - fractura del hueso iliaco
+S324 - fractura del acetábulo
+S325 - fractura del pubis
+S327 - fracturas múltiples de la columna lumbar y de la pelvis
+S328 - fractura de otras partes y de las no especificadas de la columna lumbar y de la pelvis
+S420 - fractura de la clavícula
+S421 - fractura del omoplato
+S422 - fractura de la epífisis superior del humero
+S423 - fractura de la diáfisis del humero
+S424 - fractura de la epífisis inferior del humero
+S427 - fracturas múltiples de la clavícula, del omoplato y del humero
+S428 - fractura de otras partes del hombro y del brazo
+S429 - fractura del hombro y del brazo, parte no especificada
+S520 - fractura de la epífisis superior del cubito
+S521 - fractura de la epífisis superior del radio
+S522 - fractura de la diáfisis del cubito
+S523 - fractura de la diáfisis del radio
+S524 - fractura de la diáfisis del cubito y del radio
+S525 - fractura de la epífisis inferior del radio
+S526 - fractura de la epífisis inferior del cubito y del radio
+S527 - fracturas múltiples del antebrazo
+S528 - fractura de otras partes del antebrazo
+S529 - fractura del antebrazo, parte no especificada
+S620 - fractura del hueso escafoides (navicular) de la mano
+S621 - fractura de otro(s) hueso(s) del carpo
+S622 - fractura del primer metacarpiano
+S623 - fractura de otros huesos metacarpianos
+S624 - fracturas múltiples de huesos metacarpianos
+S625 - fractura del pulgar
+S626 - fractura de otro dedo de la mano
+S627 - fracturas múltiples de los dedos de la mano
+S628 - fractura de otras partes y de las no especificadas de la Muñeca y de la mano
+S720 - fractura del cuello del fémur
+S721 - fractura pertrocanteriana
+S722 - fractura subtrocanteriana
+S723 - fractura de la diáfisis del fémur
+S724 - fractura de la epífisis inferior del fémur
+S727 - fracturas múltiples del fémur
+S728 - fracturas de otras partes del fémur
+S729 - fractura del fémur, parte no especificada
+S820 - fractura de la rotula
+S821 - fractura de la epífisis superior de la tibia
+S822 - fractura de la diáfisis de la tibia
+S823 - fractura de la epífisis inferior de la tibia
+S824 - fractura de Peroné solamente
+S825 - fractura del maléolo interno
+S826 - fractura del maléolo externo
+S827 - fracturas múltiples de la pierna
+S828 - fractura de otras partes de la pierna
+S829 - fractura de la pierna, parte no especificada
+S920 - fractura del calcáneo
+S921 - fractura del astrágalo
+S922 - fractura de otro(s) hueso(s) del tarso
+S923 - fractura de hueso del metatarso
+S924 - fractura de los huesos del dedo gordo del pie
+S925 - fractura de los huesos de otro(s) dedo(s) del pie
+S927 - fracturas múltiples del pie
+S929 - fractura del pie, no especificada
+T020 - fracturas que afectan la cabeza con el cuello
+T021 - fracturas que afectan el tórax con la región lumbosacra y la pelvis
+T022 - fracturas que afectan múltiples regiones de un miembro superior
+T023 - fracturas que afectan múltiples regiones de un miembro inferior
+T024 - fracturas que afectan múltiples regiones de ambos miembros superiores
+T025 - fracturas que afectan múltiples regiones de ambos miembros inferiores
+T026 - fracturas que afectan múltiples regiones de miembro(s) superior(es) c/miembro(s) inferior(es)
+T027 - fracturas que afectan el tórax con la región lumbosacra y la pelvis con miembro(s)
+T028 - fracturas que afectan otras combinaciones de las regiones del cuerpo
+T029 - fracturas múltiples, no especificadas
+T08X - fractura de la columna vertebral, nivel no especificado
+T10X - fractura de miembro superior, nivel no especificado
+T12X - fractura de miembro inferior, nivel no especificado
+T142 - fractura de región no especificada del cuerpo
+T902 - secuelas de fractura del cráneo y de huesos faciales
+T911 - secuelas de fractura de la columna vertebral
+T912 - secuelas de otra fractura del tórax y de la pelvis
+T921 - secuelas de fractura del brazo
+T922 - secuelas de fractura de la Muñeca y de la mano
+T931 - secuelas de fractura del fémur
+T932 - secuelas de otras fracturas de miembro inferior
+M907 - fractura ósea en enfermedad neoplásica
+X590 - exposición a factores no especificados que causan fracturas
+Z094 - examen de seguimiento consecutivo a tratamiento de fractura
+Z470 - cuidados posteriores a la extracción de placa u otro dispositivo de fijación interna en fractura
+Z544 - convalecencia consecutiva a tratamiento de fractura

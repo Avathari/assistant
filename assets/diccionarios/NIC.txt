@@ -1,0 +1,542 @@
+4420 - Acuerdo con el paciente
+1320 - Acupresión
+2210 - Administración de analgésicos
+2214 - Administración de analgésicos: intraespinal
+2840 - Administración de anestesia
+2300 - Administración de medicación
+2301 - Administración de medicación: enteral
+2311 - Administración de medicación: inhalatoria
+2302 - Administración de medicación: interpleural
+2312 - Administración de medicación: intradérmica
+2319 - Administración de medicación: intraespinal
+2313 - Administración de medicación: intramuscular i.m.)
+2303 - Administración de medicación: intraósea
+2314 - Administración de medicación: intravenosa i.v.)
+2320 - Administración de medicación: nasal
+2310 - Administración de medicación: oftálmica
+2304 - Administración de medicación: oral
+2308 - Administración de medicación: ótica
+2315 - Administración de medicación: rectal
+2307 - Administración de medicación: reservorio ventricular
+2317 - Administración de medicación: subcutánea
+2316 - Administración de medicación: tópica
+2318 - Administración de medicación: vaginal
+1200 - Administración de nutrición parenteral total NPT)
+4030 - Administración de productos sanguíneos
+6630 - Aislamiento
+1050 - Alimentación
+1056 - Alimentación enteral por sonda
+1052 - Alimentación por biberón
+6700 - Amnioinfusión
+6520 - Análisis de la situación sanitaria
+7610 - Análisis de laboratorio a pie de cama
+1380 - Aplicación de calor o frío
+7140 - Apoyo a la familia
+7040 - Apoyo al cuidador principal
+7280 - Apoyo de hermanos
+5270 - Apoyo emocional
+6400 - Apoyo en la protección contra abusos
+6404 - Apoyo en la protección contra abusos: ancianos
+6403 - Apoyo en la protección contra abusos: cónyuge
+6402 - Apoyo en la protección contra abusos: niños
+6408 - Apoyo en la protección contra abusos: religioso
+5250 - Apoyo en la toma de decisiones
+5420 - Apoyo espiritual
+7500 - Apoyo para la consecución del sustento
+1330 - Aromaterapia
+5240 - Asesoramiento
+5247 - Asesoramiento antes de la concepción
+5244 - Asesoramiento en la lactancia
+5242 - Asesoramiento genético
+5246 - Asesoramiento nutricional
+5248 - Asesoramiento sexual
+7180 - Asistencia en el mantenimiento del hogar
+2400 - Asistencia en la analgesia controlada por el paciente ACP)
+7380 - Asistencia para los recursos financieros
+2900 - Asistencia quirúrgica
+3160 - Aspiración de las vías aéreas
+5230 - Aumentar el afrontamiento
+5440 - Aumentar los sistemas de apoyo
+7410 - Autorización de seguros
+2860 - Autotransfusión
+3390 - Ayuda a la ventilación
+1800 - Ayuda al autocuidado
+1805 - Ayuda con los autocuidados: AIVD
+1803 - Ayuda con los autocuidados: alimentación
+1804 - Ayuda con los autocuidados: aseo
+1801 - Ayuda con los autocuidados: baño/higiene
+1806 - Ayuda con los autocuidados: transferencia
+1802 - Ayuda con los autocuidados: vestir/arreglo personal
+7680 - Ayuda en la exploración
+1054 - Ayuda en la lactancia materna
+4470 - Ayuda en la modificación de sí mismo
+4490 - Ayuda para dejar de fumar
+1280 - Ayuda para disminuir el peso
+4640 - Ayuda para el control del enfado
+1240 - Ayuda para ganar peso
+1610 - Baño
+4680 - Biblioterapia
+5860 - Biorretroalimentación
+0840 - Cambio de posición
+0842 - Cambio de posición: intraoperatorio
+0844 - Cambio de posición: neurológico
+0846 - Cambio de posición: silla de ruedas
+5480 - Clarificación de valores
+7710 - Colaboración con el médico
+7620 - Comprobación de sustancias controladas
+7910 - Consulta
+8180 - Consulta por teléfono
+5460 - Contacto
+5465 - Contacto terapéutico
+7630 - Contención de los costes
+6430 - Control de agentes químicos
+8820 - Control de enfermedades transmisibles
+4160 - Control de hemorragias
+6540 - Control de infecciones
+6545 - Control de infecciones: intraoperatorio
+2395 - Control de la medicación
+5330 - Control del humor
+2880 - Coordinación preoperatoria
+4040 - Cuidados cardíacos
+4044 - Cuidados cardíacos: agudos
+4046 - Cuidados cardíacos: rehabilitación
+4064 - Cuidados circulatorios: dispositivo de ayuda mecánico
+4062 - Cuidados circulatorios: insuficiencia arterial
+4066 - Cuidados circulatorios: insuficiencia venosa
+6840 - Cuidados de canguro del niño prematuro)
+7310 - Cuidados de enfermería al ingreso
+3000 - Cuidados de la circuncisión
+0410 - Cuidados de la incontinencia intestinal
+0610 - Cuidados de la incontinencia urinaria
+0612 - Cuidados de la incontinencia urinaria: enuresis
+0480 - Cuidados de la ostomía
+3584 - Cuidados de la piel: tratamiento tópico
+3583 - Cuidados de la piel: zona del injerto
+3582 - Cuidados de la piel: zona donante
+0620 - Cuidados de la retención urinaria
+1874 - Cuidados de la sonda gastrointestinal
+6750 - Cuidados de la zona de cesárea
+3660 - Cuidados de las heridas
+3662 - Cuidados de las heridas: drenaje cerrado
+3661 - Cuidados de las heridas: quemaduras
+1620 - Cuidados de las lentillas de contacto
+3520 - Cuidados de las úlceras por presión
+1680 - Cuidados de las uñas
+1640 - Cuidados de los oídos
+1650 - Cuidados de los ojos
+1660 - Cuidados de los pies
+0940 - Cuidados de tracción/inmovilización
+1780 - Cuidados de una prótesis
+1670 - Cuidados del cabello
+4220 - Cuidados del catéter central insertado periféricamente
+1878 - Cuidados del catéter de drenaje de ventriculostomía/lumbar
+1875 - Cuidados del catéter umbilical
+1876 - Cuidados del catéter urinario
+8250 - Cuidados del desarrollo
+1870 - Cuidados del drenaje
+1872 - Cuidados del drenaje torácico
+6800 - Cuidados del embarazo de alto riesgo
+4104 - Cuidados del embolismo: periférico
+4106 - Cuidados del embolismo: pulmonar
+6820 - Cuidados del lactante
+3420 - Cuidados del paciente amputado
+0740 - Cuidados del paciente encamado
+0762 - Cuidados del paciente escayolado: mantenimiento
+0764 - Cuidados del paciente escayolado: yeso húmedo
+6880 - Cuidados del recién nacido
+3440 - Cuidados del sitio de incisión
+5260 - Cuidados en la agonía
+6200 - Cuidados en la emergencia
+0412 - Cuidados en la incontinencia intestinal: encopresis
+7260 - Cuidados intermitentes
+6830 - Cuidados intraparto
+6834 - Cuidados intraparto: parto de alto riesgo
+1750 - Cuidados perineales
+6950 - Cuidados por cese del embarazo
+6930 - Cuidados posparto
+1770 - Cuidados post mórtem
+2870 - Cuidados postanestesia
+6960 - Cuidados prenatales
+5310 - Dar esperanza
+7930 - Declaración/testimonio
+5470 - Declarar la verdad al paciente
+7650 - Delegación
+8100 - Derivación
+7640 - Desarrollo de situación crítica
+8700 - Desarrollo de un programa
+7850 - Desarrollo del personal
+3270 - Desintubación endotraqueal
+3310 - Destete de la ventilación mecánica
+5820 - Disminución de la ansiedad
+0470 - Disminución de la flatulencia
+4020 - Disminución de la hemorragia
+4022 - Disminución de la hemorragia: gastrointestinal
+4028 - Disminución de la hemorragia: heridas
+4024 - Disminución de la hemorragia: nasal
+4021 - Disminución de la hemorragia: útero anteparto
+4026 - Disminución de la hemorragia: útero posparto
+5350 - Disminución del estrés por traslado
+5900 - Distracción
+7920 - Documentación
+5562 - Educación paterna: adolescentes
+5566 - Educación paterna: crianza familiar de los niños
+5568 - Educación paterna: niño
+5510 - Educación sanitaria
+0560 - Ejercicio del suelo pélvico
+5612 - Enseñanza: actividad/ejercicio prescrito
+5603 - Enseñanza: cuidados de los pies
+5614 - Enseñanza: dieta prescrita
+5634 - Enseñanza: entrenamiento para el aseo
+5655 - Enseñanza: estimulación del bebé 0-4 meses)
+5656 - Enseñanza: estimulación del bebé 5-8 meses)
+5657 - Enseñanza: estimulación del bebé 9-12 meses)
+5604 - Enseñanza: grupo
+5620 - Enseñanza: habilidad psicomotora
+5606 - Enseñanza: individual
+5616 - Enseñanza: medicamentos prescritos
+5640 - Enseñanza: nutrición del bebé 0-3 meses)
+5643 - Enseñanza: nutrición del bebé 10-12 meses)
+5641 - Enseñanza: nutrición del bebé 4-6 meses)
+5642 - Enseñanza: nutrición del bebé 7-9 meses)
+5660 - Enseñanza: nutrición del niño 13-18 meses)
+5661 - Enseñanza: nutrición del niño 19-24 meses)
+5662 - Enseñanza: nutrición del niño 25-36 meses)
+5610 - Enseñanza: prequirúrgica
+5618 - Enseñanza: procedimiento/tratamiento
+5602 - Enseñanza: proceso de enfermedad
+5645 - Enseñanza: seguridad del bebé 0-3 meses)
+5648 - Enseñanza: seguridad del bebé 10-12 meses)
+5646 - Enseñanza: seguridad del bebé 4-6 meses)
+5647 - Enseñanza: seguridad del bebé 7-9 meses)
+5665 - Enseñanza: seguridad del niño 13-18 meses)
+5666 - Enseñanza: seguridad del niño 19-24 meses)
+5667 - Enseñanza: seguridad del niño 25-36 meses)
+5622 - Enseñanza: sexo seguro
+5624 - Enseñanza: sexualidad
+5840 - Entrenamiento autogénico
+4340 - Entrenamiento de la asertividad
+4760 - Entrenamiento de la memoria
+0570 - Entrenamiento de la vejiga urinaria
+0600 - Entrenamiento del hábito urinario
+0440 - Entrenamiento intestinal
+4370 - Entrenamiento para controlar los impulsos
+4920 - Escucha activa
+4380 - Establecer límites
+4410 - Establecimiento de objetivos comunes
+4720 - Estimulación cognoscitiva
+1340 - Estimulación cutánea
+7100 - Estimulación de la integridad familiar
+7104 - Estimulación de la integridad familiar: familia con niño recién nacido)
+1540 - Estimulación nerviosa eléctrica transcutánea TENS)
+1020 - Etapas en la dieta
+0640 - Evacuación inmediata
+7700 - Evaluación de compañeros
+7760 - Evaluación de productos
+6522 - Exploración de la mama
+5520 - Facilitar el aprendizaje
+5426 - Facilitar el crecimiento espiritual
+5290 - Facilitar el duelo
+5294 - Facilitar el duelo: muerte perinatal
+5280 - Facilitar el perdón
+5922 - Facilitar la autohipnosis
+4480 - Facilitar la autorresponsabilidad
+5300 - Facilitar la expresión del sentimiento de culpa
+5960 - Facilitar la meditación
+5424 - Facilitar la práctica religiosa
+7170 - Facilitar la presencia de la familia
+7560 - Facilitar las visitas
+7440 - Facilitar permisos
+3230 - Fisioterapia respiratoria
+4232 - Flebotomía: muestra de sangre arterial
+4238 - Flebotomía: muestra de sangre venosa
+4234 - Flebotomía: obtención de una unidad de sangre
+4235 - Flebotomía: vía canalizada
+6710 - Fomentar el acercamiento
+8272 - Fomentar el desarrollo: adolescentes
+8274 - Fomentar el desarrollo: niño
+7110 - Fomentar la implicación familiar
+7200 - Fomentar la normalización familiar
+8300 - Fomentar la paternidad
+8340 - Fomentar la resistencia
+1720 - Fomentar la salud bucal
+8500 - Fomentar la salud de la comunidad
+9050 - Fomentar la seguridad en el vehículo
+0140 - Fomentar los mecanismos corporales
+0202 - Fomento de ejercicios: extensión
+0200 - Fomento del ejercicio
+0201 - Fomento del ejercicio: entrenamiento de extensión
+6924 - Fototerapia: neonato
+6926 - Fototerapia: regulación del biorritmo
+7320 - Gestión de casos
+5430 - Grupo de apoyo
+5210 - Guía de anticipación
+7400 - Guías del sistema sanitario
+5920 - Hipnosis
+5320 - Humor
+6610 - Identificación de riesgos
+6612 - Identificación de riesgos: familia con recién nacido
+6614 - Identificación de riesgos: genéticos
+6000 - Imaginación simple dirigida
+6850 - Inducción al parto
+3790 - Inducción de la hipotermia
+5580 - Información preparatoria: sensorial
+7980 - Informe de incidencias
+8140 - Informe de turnos
+0910 - Inmovilización
+7960 - Intercambio de información de cuidados de salud
+7330 - Intermediación cultural
+7690 - Interpretación de datos de laboratorio
+6160 - Intervención en caso de crisis
+3120 - Intubación y estabilización de vías aéreas
+3680 - Irrigación de heridas
+0550 - Irrigación de la vejiga
+0420 - Irrigación intestinal
+4740 - Llevar un diario
+1910 - Manejo ácido-base
+1911 - Manejo ácido-base: acidosis metabólica
+1913 - Manejo ácido-base: acidosis respiratoria
+1912 - Manejo ácido-base: alcalosis metabólica
+1914 - Manejo ácido-base: alcalosis respiratoria
+6480 - Manejo ambiental
+6484 - Manejo ambiental: comunidad
+6482 - Manejo ambiental: confort
+6485 - Manejo ambiental: preparación del hogar
+6487 - Manejo ambiental: prevención de la violencia
+6481 - Manejo ambiental: proceso de acercamiento
+6486 - Manejo ambiental: seguridad
+6489 - Manejo ambiental: seguridad del trabajador
+2760 - Manejo ante la anulación de un lado del cuerpo
+2000 - Manejo de electrólitos
+2001 - Manejo de electrólitos: hipercalcemia
+2002 - Manejo de electrólitos: hipercaliemia
+2005 - Manejo de electrólitos: hiperfosfatemia
+2003 - Manejo de electrólitos: hipermagnesemia
+2004 - Manejo de electrólitos: hipernatremia
+2006 - Manejo de electrólitos: hipocalcemia
+2007 - Manejo de electrólitos: hipocaliemia
+2010 - Manejo de electrólitos: hipofosfatemia
+2008 - Manejo de electrólitos: hipomagnesemia
+2009 - Manejo de electrólitos: hiponatremia
+6450 - Manejo de ideas ilusorias
+6410 - Manejo de la alergia
+6412 - Manejo de la anafilaxia
+4350 - Manejo de la conducta
+4354 - Manejo de la conducta: autolesión
+4352 - Manejo de la conducta: hiperactividad/falta de atención
+4356 - Manejo de la conducta: sexual
+6460 - Manejo de la demencia
+6462 - Manejo de la demencia: baño
+0460 - Manejo de la diarrea
+2560 - Manejo de la disreflexia
+4090 - Manejo de la disritmia
+0590 - Manejo de la eliminación urinaria
+0180 - Manejo de la energía
+2120 - Manejo de la hiperglucemia
+4170 - Manejo de la hipervolemia
+2130 - Manejo de la hipoglucemia
+4180 - Manejo de la hipovolemia
+6530 - Manejo de la inmunización/vacunación
+2380 - Manejo de la medicación
+1100 - Manejo de la nutrición
+2240 - Manejo de la quimioterapia
+6600 - Manejo de la radioterapia
+2260 - Manejo de la sedación
+2660 - Manejo de la sensibilidad periférica alterada
+7880 - Manejo de la tecnología
+7886 - Manejo de la tecnología reproductora
+2570 - Manejo de la terapia electroconvulsiva
+4270 - Manejo de la terapia trombolítica
+3300 - Manejo de la ventilación mecánica: invasiva
+3302 - Manejo de la ventilación mecánica: no invasiva
+6510 - Manejo de las alucinaciones
+2680 - Manejo de las convulsiones
+1450 - Manejo de las náuseas
+3140 - Manejo de las vías aéreas
+3180 - Manejo de las vías aéreas artificiales
+4120 - Manejo de líquidos
+2080 - Manejo de líquidos/electrólitos
+8550 - Manejo de los recursos económicos
+7840 - Manejo de los suministros
+1030 - Manejo de los trastornos de la alimentación
+7820 - Manejo de muestras
+3500 - Manejo de presiones
+3210 - Manejo del asma
+6140 - Manejo del código de urgencias
+6440 - Manejo del delirio
+4095 - Manejo del desfibrilador: externo
+4096 - Manejo del desfibrilador: interno
+1400 - Manejo del dolor
+2540 - Manejo del edema cerebral
+0450 - Manejo del estreñimiento/impactación
+4091 - Manejo del marcapasos: permanente
+4092 - Manejo del marcapasos: temporal
+0630 - Manejo del pesario
+1260 - Manejo del peso
+0490 - Manejo del prolapso rectal
+3550 - Manejo del prurito
+4250 - Manejo del shock
+4254 - Manejo del shock: cardíaco
+4256 - Manejo del shock: vasogénico
+4258 - Manejo del shock: volumen
+1440 - Manejo del síndrome premenstrual
+1570 - Manejo del vómito
+0430 - Manejo intestinal
+2440 - Mantenimiento de dispositivos de acceso venoso DAV)
+1710 - Mantenimiento de la salud bucal
+4240 - Mantenimiento del acceso para diálisis
+7130 - Mantenimiento en procesos familiares
+8750 - Marketing social
+1480 - Masaje
+5020 - Mediación de conflictos
+5395 - Mejora de la autoconfianza
+2550 - Mejora de la perfusión cerebral
+5515 - Mejorar el acceso a la información sanitaria
+1850 - Mejorar el sueño
+4974 - Mejorar la comunicación: déficit auditivo
+4976 - Mejorar la comunicación: déficit del habla
+4978 - Mejorar la comunicación: déficit visual
+3250 - Mejorar la tos
+4360 - Modificación de la conducta
+4362 - Modificación de la conducta: habilidades sociales
+1920 - Monitorización ácido-base
+2020 - Monitorización de electrólitos
+7800 - Monitorización de la calidad
+2590 - Monitorización de la presión intracraneal PIC)
+3480 - Monitorización de las extremidades inferiores
+4130 - Monitorización de líquidos
+6680 - Monitorización de los signos vitales
+6890 - Monitorización del recién nacido
+6771 - Monitorización fetal electrónica: antes del parto
+6772 - Monitorización fetal electrónica: durante el parto
+4210 - Monitorización hemodinámica invasiva
+2620 - Monitorización neurológica
+1160 - Monitorización nutricional
+3350 - Monitorización respiratoria
+7120 - Movilización familiar
+4035 - Muestra de sangre capilar
+4400 - Musicoterapia
+6260 - Obtención de órganos
+4820 - Orientación de la realidad
+3320 - Oxigenoterapia
+6720 - Parto
+7370 - Planificación del alta
+6784 - Planificación familiar: anticoncepción
+6788 - Planificación familiar: embarazo no deseado
+6786 - Planificación familiar: infertilidad
+5400 - Potenciación de la autoestima
+5390 - Potenciación de la conciencia de sí mismo
+5540 - Potenciación de la disposición de aprendizaje
+5220 - Potenciación de la imagen corporal
+5380 - Potenciación de la seguridad
+5100 - Potenciación de la socialización
+5370 - Potenciación de roles
+4050 - Precauciones cardíacas
+4070 - Precauciones circulatorias
+6560 - Precauciones con el láser
+2720 - Precauciones con la hemorragia subaracnoidea
+6590 - Precauciones con los torniquetes neumáticos
+6470 - Precauciones contra fugas
+6500 - Precauciones contra incendios provocados
+2690 - Precauciones contra las convulsiones
+4110 - Precauciones en el embolismo
+6570 - Precauciones en la alergia al látex
+3840 - Precauciones en la hipertermia maligna
+3200 - Precauciones para evitar la aspiración
+2920 - Precauciones quirúrgicas
+7722 - Preceptor: empleado
+7726 - Preceptor: estudiante
+6760 - Preparación al parto
+8810 - Preparación ante el bioterrorismo
+8840 - Preparación para un desastre en la comunidad
+2930 - Preparación quirúrgica
+2390 - Prescribir medicación
+5340 - Presencia
+7160 - Preservación de la fertilidad
+6490 - Prevención de caídas
+4010 - Prevención de hemorragia
+5422 - Prevención de la adicción religiosa
+6648 - Prevención de lesiones deportivas: jóvenes
+3540 - Prevención de úlceras por presión
+4500 - Prevención del consumo de sustancias nocivas
+4260 - Prevención del shock
+6340 - Prevención del suicidio
+6240 - Primeros auxilios
+6550 - Protección contra las infecciones
+7460 - Protección de los derechos del paciente
+8880 - Protección de riesgos ambientales
+4190 - Punción intravenosa i.v.)
+7940 - Recogida de datos forenses
+8120 - Recogida de datos para la investigación
+4700 - Reestructuración cognitiva
+3900 - Regulación de la temperatura
+3902 - Regulación de la temperatura: intraoperatoria
+4150 - Regulación hemodinámica
+5000 - Relaciones complejas en el hospital
+1460 - Relajación muscular progresiva
+4140 - Reposición de líquidos
+1730 - Restablecimiento de la salud bucal
+6420 - Restricción de zonas de movimiento
+6320 - Resucitación
+6972 - Resucitación: fetal
+6974 - Resucitación: neonato
+8020 - Reunión multidisciplinar sobre cuidados
+7660 - Revisión del carro de emergencias
+7970 - Seguimiento de la política sanitaria
+8190 - Seguimiento telefónico
+1080 - Sondaje gastrointestinal
+0580 - Sondaje vesical
+0582 - Sondaje vesical: intermitente
+6900 - Succión no nutritiva
+6580 - Sujeción física
+7830 - Supervisión del personal
+6870 - Supresión de la lactancia
+6860 - Supresión de las contracciones de parto
+3620 - Sutura
+5880 - Técnica de relajación
+4330 - Terapia artística
+4320 - Terapia asistida con animales
+4390 - Terapia con el entorno
+4430 - Terapia con juegos
+3460 - Terapia con sanguijuelas
+4310 - Terapia de actividad
+1860 - Terapia de deglución
+2150 - Terapia de diálisis peritoneal
+0221 - Terapia de ejercicios: ambulación
+0226 - Terapia de ejercicios: control muscular
+0222 - Terapia de ejercicios: equilibrio
+0224 - Terapia de ejercicios: movilidad articular
+5360 - Terapia de entretenimiento
+5450 - Terapia de grupo
+2100 - Terapia de hemodiálisis
+2110 - Terapia de hemofiltración
+6040 - Terapia de relajación simple
+4860 - Terapia de reminiscencia
+2280 - Terapia de sustitución hormonal
+6670 - Terapia de validación
+5410 - Terapia del trauma: niño
+7150 - Terapia familiar
+4200 - Terapia intravenosa i.v.)
+1120 - Terapia nutricional
+8060 - Transcripción de órdenes
+0970 - Transferencia
+7892 - Transporte: dentro de la instalación
+7890 - Transporte: entre instalaciones
+3780 - Tratamiento de la exposición al calor
+3740 - Tratamiento de la fiebre
+3800 - Tratamiento de la hipotermia
+6300 - Tratamiento del trauma de la violación
+4510 - Tratamiento por el consumo de sustancias nocivas
+4514 - Tratamiento por el consumo de sustancias nocivas: retirada de las drogas
+4512 - Tratamiento por el consumo de sustancias nocivas: retirada del alcohol
+4516 - Tratamiento por el consumo de sustancias nocivas: sobredosis
+6362 - Triage: catástrofe
+6364 - Triage: centro de urgencias
+6366 - Triage: teléfono
+6982 - Ultrasonografía: obstétrica
+1630 - Vestir
+6650 - Vigilancia
+6656 - Vigilancia: al final del embarazo
+6652 - Vigilancia: comunidad
+3590 - Vigilancia de la piel
+6658 - Vigilancia: electrónica por control remoto
+6654 - Vigilancia: seguridad
