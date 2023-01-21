@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:assistant/conexiones/usuarios/Pacientes.dart';
-import 'package:assistant/screens/pacientes/valores/Valores.dart';
+import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/vitales/vitales.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';

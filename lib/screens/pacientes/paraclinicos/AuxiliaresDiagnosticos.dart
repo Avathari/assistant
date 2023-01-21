@@ -1,4 +1,4 @@
-import 'package:assistant/conexiones/usuarios/Pacientes.dart';
+import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/Electrocardiogramas.dart';
 import 'package:assistant/widgets/GrandButton.dart';

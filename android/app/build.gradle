@@ -51,6 +51,8 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        // Multidex
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -68,4 +70,10 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.android.support:multidex:1.0.3'
+
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.12.1'
+    implementation 'com.google.android.exoplayer:exoplayer-hls:2.12.1'
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.12.1'
+    implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:2.12.1'
 }

@@ -1,4 +1,4 @@
-import 'package:assistant/conexiones/usuarios/Pacientes.dart';
+import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/widgets/DialogSelector.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';

@@ -1,5 +1,5 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
-import 'package:assistant/conexiones/usuarios/Pacientes.dart';
+import 'package:assistant/conexiones/controladores/Pacientes.dart';
 
 import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/values/SizingInfo.dart';

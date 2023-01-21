@@ -2,7 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:assistant/conexiones/conexiones.dart';
-import 'package:assistant/conexiones/usuarios/Pacientes.dart';
+import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/AuxiliaresDiagnosticos.dart';
 import 'package:assistant/values/SizingInfo.dart';

@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:assistant/conexiones/conexiones.dart';
-import 'package:assistant/conexiones/usuarios/Usuarios.dart';
+import 'package:assistant/conexiones/controladores/Usuarios.dart';
 import 'package:assistant/screens/home.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';

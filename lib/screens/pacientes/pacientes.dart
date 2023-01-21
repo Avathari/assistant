@@ -1,5 +1,9 @@
 import 'dart:async';
 import 'dart:typed_data';
+
+import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+
 import 'package:assistant/screens/pacientes/analisis.dart';
 import 'package:assistant/screens/pacientes/auxiliares/pacientes_auxiliares.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/AuxiliaresDiagnosticos.dart';
@@ -9,10 +13,12 @@ import 'package:assistant/screens/pacientes/patologicos/quirurgicos.dart';
 import 'package:assistant/screens/pacientes/patologicos/transfusionales.dart';
 import 'package:assistant/screens/pacientes/patologicos/vacunales.dart';
 import 'package:assistant/screens/pacientes/reportes/reportes.dart';
-import 'package:assistant/screens/pacientes/valores/Valores.dart';
+import 'package:assistant/screens/pacientes/intensiva/balances.dart';
+
 import 'package:assistant/screens/pacientes/vitales/vitales.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/LoadingScreen.dart';
+import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -30,9 +36,6 @@ import 'package:fl_chart/fl_chart.dart';
 
 import 'dart:convert';
 
-import '../../conexiones/usuarios/Pacientes.dart';
-import '../../widgets/RoundedPanel.dart';
-import '../../widgets/WidgetsModels.dart';
 
 class GestionPacientes extends StatefulWidget {
   const GestionPacientes({Key? key}) : super(key: key);
@@ -1662,6 +1665,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
       const AuxiliaresDiagnosticos(),
       Analisis(),
       ReportesMedicos(),
+      // GestionBalances(),
       const Center(
         child: Text('Body 7'),
       ),
