@@ -2676,14 +2676,9 @@ class Reportes {
 class Balances {
   static int ID_Balances = 0;
   //
-  static String selectedDiagnosis = "";
-  //
-
   static Map<String, dynamic> Balance = {};
 
-  static List<String> actualDiagno = Dicotomicos.dicotomicos();
-  static List<String> actualTratamiento = Dicotomicos.dicotomicos();
-  static List<String> actualSuspendido = Dicotomicos.dicotomicos();
+  static List<String> actualDiagno = Opciones.horarios();
 
   static void ultimoRegistro() {
     Actividades.consultarId(Databases.siteground_database_regpace,

@@ -14,7 +14,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-
 class OperacionesVitales extends StatefulWidget {
   final String operationActivity;
 
@@ -210,22 +209,34 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                         child: CarouselSlider(
                             items: [
                               SingleChildScrollView(
-                                  controller: vitalesScroller,
+                                  controller: ScrollController(),
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: gridView(
-                                      context,
-                                      isMobile(context) ? 3.0 : 5.0,
+                                    child: GridLayout(
+                                      childAspectRatio: isMobile(context)
+                                          ? 5.0
+                                          : isTablet(context)
+                                              ? 5.0
+                                              : 5.0,
+                                      columnCount: isMobile(context) ? 1 : isTablet(context) ? 1:2,
                                       children: component(context),
                                     ),
                                   )),
                               SingleChildScrollView(
-                                  controller: antropoScroller,
+                                  controller: ScrollController(),
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: GridLayout(
-                                      columnCount: 2,
-                                      // isMobile(context) ? 3.0 : 5.0,
+                                      childAspectRatio: isMobile(context)
+                                          ? 5
+                                          : isTablet(context)
+                                          ? 5.0
+                                          : 5.0,
+                                      columnCount: isMobile(context)
+                                          ? 1
+                                          : isTablet(context)
+                                              ? 1
+                                              : 2,
                                       children: secondComponent(context),
                                     ),
                                   ))

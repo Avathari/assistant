@@ -137,3 +137,9 @@ class Directorios {
     }
   }
 }
+
+class Opciones {
+  static List<String> horarios() {
+    return ['2', '4', '8', '10', '12', '16', '24'];
+  }
+}

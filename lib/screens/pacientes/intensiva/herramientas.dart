@@ -1,6 +1,7 @@
 import 'package:assistant/screens/pacientes/intensiva/balances.dart';
+import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/CrossLine.dart';
-import 'package:assistant/widgets/GrandIcon.dart';
+import 'package:assistant/widgets/GrandLabel.dart';
 import 'package:assistant/widgets/RoundedPanel.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';
@@ -23,62 +24,67 @@ class _IntensivaState extends State<Intensiva> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Tittle(tittle: 'Herramientas de Análisis'),
-          Expanded(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Expanded(flex: 2, child: firstContent()),
-                Expanded(
-                    flex: 2,
-                    child: listOfActivities(numActivity: widget.numActivity!)),
-                Expanded(flex: 9, child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: RoundedPanel(),
-                )),
-              ],
-            ),
-          ),
+          isMobile(context)
+              ? Container()
+              : isTablet(context)
+                  ? Container()
+                  : desktopView(),
         ],
       ),
     );
   }
 
+  Expanded desktopView() {
+    return Expanded(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Expanded(flex: 2, child: firstContent()),
+          Expanded(
+              flex: 2,
+              child: listOfActivities(numActivity: widget.numActivity!)),
+          Expanded(
+              flex: 9,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: RoundedPanel(),
+              )),
+        ],
+      ),
+    );
+  }
+
+  //
   Padding firstContent() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
           Tittle(tittle: 'Operaciones'),
-          GrandIcon(
+          GrandLabel(
             labelButton: 'Balances Hidricos',
             onPress: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => GestionBalances()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => GestionBalances()));
             },
           ),
-          GrandIcon(
+          GrandLabel(
             labelButton: 'Ventilación Mecánica',
             onPress: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => GestionBalances()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => GestionBalances()));
             },
           ),
-          GrandIcon(
+          GrandLabel(
             labelButton: 'Concentraciones y Diluciones',
             onPress: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => GestionBalances()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => GestionBalances()));
             },
           ),
           const CrossLine(),
-          GrandIcon(
+          GrandLabel(
             labelButton: 'Análisis basado en Información',
             onPress: () {
               setState(() {
@@ -86,7 +92,7 @@ class _IntensivaState extends State<Intensiva> {
               });
             },
           ),
-          GrandIcon(
+          GrandLabel(
             labelButton: 'Valoraciones Prequirúrgicas',
             onPress: () {
               setState(() {
@@ -94,7 +100,7 @@ class _IntensivaState extends State<Intensiva> {
               });
             },
           ),
-          GrandIcon(
+          GrandLabel(
             labelButton: 'Procedimientos Médicos',
             onPress: () {
               setState(() {
@@ -103,14 +109,12 @@ class _IntensivaState extends State<Intensiva> {
             },
           ),
           const CrossLine(),
-          GrandIcon(
+          GrandLabel(
             labelButton: 'Destete de la Intubación Endotraqueal',
             weigth: 8,
             onPress: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => GestionBalances()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => GestionBalances()));
             },
           ),
         ],
@@ -135,81 +139,103 @@ class _IntensivaState extends State<Intensiva> {
               controller: ScrollController(),
               child: Column(
                 children: [
-                  GrandIcon(
+                  GrandLabel(
                     labelButton: 'Análisis Hidrico',
                     onPress: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => GestionBalances()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GestionBalances()));
                     },
                   ),
-                  GrandIcon(
+                  GrandLabel(
                     labelButton: 'Análisis Metabólico',
                     onPress: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => GestionBalances()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GestionBalances()));
                     },
                   ),
-                  GrandIcon(
+                  GrandLabel(
                     labelButton: 'Análisis Antropométrico',
                     onPress: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => GestionBalances()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GestionBalances()));
                     },
                   ),
-                  GrandIcon(
+                  GrandLabel(
                     labelButton: 'Análisis Cardiovascular',
                     onPress: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => GestionBalances()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GestionBalances()));
                     },
                   ),
-                  GrandIcon(
+                  GrandLabel(
                     labelButton: 'Análisis Ventilatorio',
                     onPress: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => GestionBalances()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GestionBalances()));
                     },
                   ),
-                  GrandIcon(
+                  GrandLabel(
                     labelButton: 'Análisis Gasométrico',
                     onPress: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => GestionBalances()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GestionBalances()));
                     },
                   ),
-                  GrandIcon(
+                  GrandLabel(
                     labelButton: 'Análisis Cerebrovascular',
                     onPress: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => GestionBalances()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GestionBalances()));
                     },
                   ),
-                  GrandIcon(
+                  GrandLabel(
                     labelButton: 'Análisis Renal',
                     onPress: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => GestionBalances()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GestionBalances()));
                     },
                   ),
-                  GrandIcon(
+                  GrandLabel(
                     labelButton: 'Análisis Sanguíneo Circulante',
                     onPress: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => GestionBalances()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GestionBalances()));
                     },
                   ),
-                  GrandIcon(
+                  GrandLabel(
                     labelButton: 'Análisis Pulmonar',
                     onPress: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => GestionBalances()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GestionBalances()));
                     },
                   ),
-                  GrandIcon(
+                  GrandLabel(
                     labelButton: 'Edad Corregida',
                     onPress: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => GestionBalances()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GestionBalances()));
                     },
                   ),
                 ],
@@ -229,14 +255,14 @@ class _IntensivaState extends State<Intensiva> {
         child: Column(
           children: [
             Tittle(tittle: 'Valoraciones Prequirúrgicas'),
-            GrandIcon(
+            GrandLabel(
               labelButton: 'Valoración Prequirúrgica',
               onPress: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => GestionBalances()));
               },
             ),
-            GrandIcon(
+            GrandLabel(
               labelButton: 'Valoración de Vía Aerea',
               onPress: () {
                 Navigator.push(context,
@@ -257,28 +283,28 @@ class _IntensivaState extends State<Intensiva> {
         child: Column(
           children: [
             Tittle(tittle: 'Procedimientos Médicos'),
-            GrandIcon(
+            GrandLabel(
               labelButton: 'Catéter Venoso Central',
               onPress: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => GestionBalances()));
               },
             ),
-            GrandIcon(
+            GrandLabel(
               labelButton: 'Intubación Endotraqueal',
               onPress: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => GestionBalances()));
               },
             ),
-            GrandIcon(
+            GrandLabel(
               labelButton: 'Sonda Endopleural',
               onPress: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => GestionBalances()));
               },
             ),
-            GrandIcon(
+            GrandLabel(
               labelButton: 'Catéter Tenckhoff',
               onPress: () {
                 Navigator.push(context,
@@ -292,7 +318,7 @@ class _IntensivaState extends State<Intensiva> {
   }
 }
 
-Tittle({required String tittle}) {
+Widget Tittle({required String tittle}) {
   return RoundedPanel(
     child: TittlePanel(textPanel: tittle),
   );

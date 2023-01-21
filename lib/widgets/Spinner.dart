@@ -44,7 +44,8 @@ class _SpinnerState extends State<Spinner> {
         child: Padding(
             padding:
                 const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
-            child: isMobile(context) ? columnView() : rowView()),
+            child: rowView()),
+            // child: isMobile(context) ? rowView() : rowView()),
         // child: widget.isRow! ? rowView() : columnView()),
       ),
     );

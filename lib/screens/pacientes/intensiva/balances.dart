@@ -10,8 +10,10 @@ import 'package:assistant/widgets/DialogSelector.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
+import 'package:assistant/widgets/GridLayout.dart';
 import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
@@ -48,16 +50,27 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
 
   List<dynamic>? listOfValues;
 
-  var isActualDiagoValue = Balances.actualDiagno[0];
-  var cieDiagnoTextController = TextEditingController();
-  var comenDiagnoTextController = TextEditingController();
-  var ayoDiagoTextController = TextEditingController();
-  //
-  var isTratamientoDiagoValue = Balances.actualTratamiento[0];
-  var tratamientoTextController = TextEditingController();
+  var fechaRealizacionTextController = TextEditingController();
+  var isHorarioValue = Balances.actualDiagno[0];
 
+  var viaOralTextController = TextEditingController();
+  var viaOrogasTextController = TextEditingController();
+  var viaHemosTextController = TextEditingController();
+  var viaNutrianTextController = TextEditingController();
+  var viaParesTextController = TextEditingController();
+  var viaDilucionesTextController = TextEditingController();
+  var viaOtrosIngresosTextController = TextEditingController();
   //
-  var alergiasScroller = ScrollController();
+  var viaUresisTextController = TextEditingController();
+  var viaEvacTextController = TextEditingController();
+  var viaSangTextController = TextEditingController();
+  var viaSucciTextController = TextEditingController();
+  var viaDreneTextController = TextEditingController();
+  var viaPerdidaTextController = TextEditingController();
+  var viaOtrosEgresosTextController = TextEditingController();
+  //
+  var carouselController = CarouselController();
+  //
 
   @override
   void initState() {
@@ -74,24 +87,41 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
       case Constantes.Update:
         setState(() {
           widget._operationButton = 'Actualizar';
-          idOperation = Balances.Balance['ID_PACE_APP_ALE'];
-
-          isActualDiagoValue =
-              Dicotomicos.fromInt(Balances.Balance['Pace_APP_ALE_SINO']);
-          if (Balances.selectedDiagnosis == "") {
-            cieDiagnoTextController.text = Balances.Balance['Pace_APP_ALE'];
-          } else {
-            cieDiagnoTextController.text = Balances.selectedDiagnosis;
-          }
-          comenDiagnoTextController.text =
-              Balances.Balance['Pace_APP_ALE_com'];
-          ayoDiagoTextController.text =
-              Balances.Balance['Pace_APP_ALE_dia'].toString();
           //
-          isTratamientoDiagoValue =
-              Dicotomicos.fromInt(Balances.Balance['Pace_APP_ALE_tra_SINO']);
-          tratamientoTextController.text =
-              Balances.Balance['Pace_APP_ALE_tra'];
+          idOperation = Balances.Balance['ID_Bala'];
+          fechaRealizacionTextController.text =
+              Balances.Balance['Pace_bala_Fecha'];
+          isHorarioValue = Balances.Balance['Pace_bala_HOR'].toString();
+
+          viaOralTextController.text =
+              Balances.Balance['Pace_bala_Oral'].toString();
+          viaOrogasTextController.text =
+              Balances.Balance['Pace_bala_Sonda'].toString();
+          viaHemosTextController.text =
+              Balances.Balance['Pace_bala_Hemo'].toString();
+          viaNutrianTextController.text =
+              Balances.Balance['Pace_bala_NPT'].toString();
+          viaParesTextController.text =
+              Balances.Balance['Pace_bala_Sol'].toString();
+          viaDilucionesTextController.text =
+              Balances.Balance['Pace_bala_Dil'].toString();
+          viaOtrosIngresosTextController.text =
+              Balances.Balance['Pace_bala_ING'].toString();
+          //
+          viaUresisTextController.text =
+              Balances.Balance['Pace_bala_Uresis'].toString();
+          viaEvacTextController.text =
+              Balances.Balance['Pace_bala_Evac'].toString();
+          viaSangTextController.text =
+              Balances.Balance['Pace_bala_Sangrado'].toString();
+          viaSucciTextController.text =
+              Balances.Balance['Pace_bala_Succion'].toString();
+          viaDreneTextController.text =
+              Balances.Balance['Pace_bala_Drenes'].toString();
+          viaPerdidaTextController.text =
+              Balances.Balance['Pace_bala_PER'].toString();
+          viaOtrosEgresosTextController.text =
+              Balances.Balance['Pace_bala_ENG'].toString();
         });
         super.initState();
         break;
@@ -119,25 +149,101 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
           : null,
       body: Card(
         color: const Color.fromARGB(255, 61, 57, 57),
-        child: Column(
-          children: [
-            Expanded(
-              flex: 3,
-              child: SingleChildScrollView(
-                  controller: alergiasScroller,
-                  child: Column(
-                    children: component(context),
-                  )),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            GrandButton(
-                labelButton: widget._operationButton,
-                onPress: () {
-                  operationMethod(context);
-                })
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              editFormattedText(
+                  TextInputType.number,
+                  MaskTextInputFormatter(
+                      mask: '####/##/##',
+                      filter: {"#": RegExp(r'[0-9]')},
+                      type: MaskAutoCompletionType.lazy),
+                  false,
+                  'Fecha de realización',
+                  fechaRealizacionTextController,
+                  false),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  GrandButton(
+                      weigth: 200,
+                      labelButton: "Ingresos",
+                      onPress: () {
+                        setState(() {
+                          carouselController.jumpToPage(0);
+                        });
+                      }),
+                  GrandButton(
+                      weigth: 200,
+                      labelButton: "Egresos",
+                      onPress: () {
+                        setState(() {
+                          carouselController.jumpToPage(1);
+                        });
+                      })
+                ],
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: CarouselSlider(
+                            items: [
+                              SingleChildScrollView(
+                                  controller: ScrollController(),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: GridLayout(
+                                      childAspectRatio: isMobile(context)
+                                          ? 5.0
+                                          : isTablet(context)
+                                              ? 5.0
+                                              : 5.0,
+                                      columnCount: isMobile(context)
+                                          ? 1
+                                          : isTablet(context)
+                                              ? 1
+                                              : 2,
+                                      children: component(context),
+                                    ),
+                                  )),
+                              SingleChildScrollView(
+                                  controller: ScrollController(),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: GridLayout(
+                                      childAspectRatio: isMobile(context)
+                                          ? 5
+                                          : isTablet(context)
+                                              ? 5.0
+                                              : 5.0,
+                                      columnCount: isMobile(context)
+                                          ? 1
+                                          : isTablet(context)
+                                              ? 1
+                                              : 2,
+                                      children: secondComponent(context),
+                                    ),
+                                  ))
+                            ],
+                            carouselController: carouselController,
+                            options: CarouselOptions(
+                                height: 500,
+                                enableInfiniteScroll: false,
+                                viewportFraction: 1.0)),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              grandButton(context, widget._operationButton, () {
+                operationMethod(context);
+              })
+            ],
+          ),
         ),
       ),
     );
@@ -146,73 +252,152 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
   List<Widget> component(BuildContext context) {
     return [
       Spinner(
-          tittle: "¿Diagnóstico actual?",
+          tittle: "Intervalo de Horario",
           onChangeValue: (String value) {
             setState(() {
-              isActualDiagoValue = value;
+              isHorarioValue = value;
             });
           },
-          items: Dicotomicos.dicotomicos(),
-          initialValue: isActualDiagoValue),
-      Row(
-        children: [
-          Expanded(
-            flex: 2,
-            child: EditTextArea(
-              keyBoardType: TextInputType.text,
-              inputFormat: MaskTextInputFormatter(),
-              numOfLines: 1,
-              labelEditText: 'Antecedente alérgico',
-              textController: cieDiagnoTextController,
-            ),
-          ),
-          GrandIcon(
-            labelButton: "Antecedente alérgico",
-            weigth: 5,
-            onPress: () {
-              cieDialog();
-            },
-          ),
-        ],
-      ),
+          items: Opciones.horarios(),
+          width:100,
+          initialValue: isHorarioValue),
       EditTextArea(
-        keyBoardType: TextInputType.text,
-        inputFormat: MaskTextInputFormatter(),
-        labelEditText: 'Comentario de antecedente alérgico',
-        textController: comenDiagnoTextController,
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '####',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Via Oral (mL)',
+        textController: viaOralTextController,
         numOfLines: 1,
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
         inputFormat: MaskTextInputFormatter(
-            mask: '##',
+            mask: '####',
             filter: {"#": RegExp(r'[0-9]')},
             type: MaskAutoCompletionType.lazy),
-        labelEditText: 'Años de antecedente alérgico',
-        textController: ayoDiagoTextController,
+        labelEditText: 'Vía Sonda Orogástrica (mL)',
+        textController: viaOrogasTextController,
         numOfLines: 1,
       ),
       const CrossLine(),
-      Spinner(
-          tittle: "¿Tratamiento actual?",
-          onChangeValue: (String value) {
-            setState(() {
-              isTratamientoDiagoValue = value;
-              if (value == Dicotomicos.dicotomicos()[0]) {
-                tratamientoTextController.text = "";
-              } else {
-                tratamientoTextController.text = "Sin tratamiento actual";
-              }
-            });
-          },
-          items: Dicotomicos.dicotomicos(),
-          initialValue: isTratamientoDiagoValue),
+      //
       EditTextArea(
-        keyBoardType: TextInputType.text,
-        inputFormat: MaskTextInputFormatter(),
-        labelEditText: 'Comentario del tratamiento',
-        textController: tratamientoTextController,
-        numOfLines: 3,
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '####',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Vía Hemoderivados (mL)',
+        textController: viaHemosTextController,
+        numOfLines: 1,
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '####',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Vía N.P.T. (mL)',
+        textController: viaNutrianTextController,
+        numOfLines: 1,
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '####',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Vía Sol. Parenterales (mL)',
+        textController: viaParesTextController,
+        numOfLines: 1,
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '####',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Vía Diluciones (mL)',
+        textController: viaDilucionesTextController,
+        numOfLines: 1,
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '####',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Otros Ingresos (mL)',
+        textController: viaOtrosIngresosTextController,
+        numOfLines: 1,
+      ),
+      const CrossLine(),
+    ];
+  }
+
+  List<Widget> secondComponent(BuildContext context) {
+    return [
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '####',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Vía Uresis (mL)',
+        textController: viaUresisTextController,
+        numOfLines: 1,
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '####',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Vía Evacuacionees. (mL)',
+        textController: viaEvacTextController,
+        numOfLines: 1,
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '####',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Vía Sangrados (mL)',
+        textController: viaSangTextController,
+        numOfLines: 1,
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '####',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Vía Succión (mL)',
+        textController: viaSucciTextController,
+        numOfLines: 1,
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '####',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Perdidas Insensibles (mL)',
+        textController: viaPerdidaTextController,
+        numOfLines: 1,
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '####',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Otros Egresos (mL)',
+        textController: viaOtrosEgresosTextController,
+        numOfLines: 1,
       ),
       const CrossLine(),
     ];
@@ -223,12 +408,27 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
       listOfValues = [
         idOperation,
         Pacientes.ID_Paciente,
-        Dicotomicos.toInt(isActualDiagoValue),
-        cieDiagnoTextController.text,
-        comenDiagnoTextController.text,
-        ayoDiagoTextController.text,
-        Dicotomicos.toInt(isTratamientoDiagoValue),
-        tratamientoTextController.text,
+        fechaRealizacionTextController.text,
+        DateTime.now().toString(),
+        // hora
+        viaOralTextController.text,
+        viaOrogasTextController.text,
+        viaHemosTextController.text,
+        viaNutrianTextController.text,
+        viaParesTextController.text,
+        viaDilucionesTextController.text,
+        viaOtrosIngresosTextController.text,
+        //
+        viaUresisTextController.text,
+        viaEvacTextController.text,
+        viaSangTextController.text,
+        viaSucciTextController.text,
+        viaDreneTextController.text,
+        viaPerdidaTextController.text,
+        viaOtrosEgresosTextController.text,
+        //
+        isHorarioValue,
+        //
         idOperation
       ];
 
@@ -241,7 +441,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
           listOfValues!.removeAt(0);
           listOfValues!.removeLast();
           // ******************************************** *** *
-          Actividades.registrar(Databases.siteground_database_regpace,
+          Actividades.registrar(Databases.siteground_database_reghosp,
               registerQuery!, listOfValues!.removeLast());
           break;
         case Constantes.Consult:
@@ -251,10 +451,10 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
           listOfValues!.removeAt(0);
           listOfValues!.removeLast();
           // ******************************************** *** *
-          Actividades.registrar(Databases.siteground_database_regpace,
+          Actividades.registrar(Databases.siteground_database_reghosp,
                   registerQuery!, listOfValues!)
               .then((value) => Actividades.consultarAllById(
-                          Databases.siteground_database_regpace,
+                          Databases.siteground_database_reghosp,
                           consultIdQuery!,
                           Pacientes.ID_Paciente) // idOperation)
                       .then((value) {
@@ -265,10 +465,10 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
                   }).then((value) => onClose(context)));
           break;
         case Constantes.Update:
-          Actividades.actualizar(Databases.siteground_database_regpace,
+          Actividades.actualizar(Databases.siteground_database_reghosp,
                   updateQuery!, listOfValues!, idOperation)
               .then((value) => Actividades.consultarAllById(
-                          Databases.siteground_database_regpace,
+                          Databases.siteground_database_reghosp,
                           consultIdQuery!,
                           Pacientes.ID_Paciente) // idOperation)
                       .then((value) {
@@ -310,27 +510,6 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
       default:
     }
   }
-
-  cieDialog() {
-    showDialog(
-        useSafeArea: true,
-        context: context,
-        builder: (context) {
-          return Dialog(
-              child: DialogSelector(
-            tittle: 'Elemento de Balances',
-            searchCriteria: 'Buscar por',
-            typeOfDocument: 'txt',
-            pathForFileSource: 'assets/diccionarios/Alergias.txt',
-            onSelected: ((value) {
-              setState(() {
-                Balances.selectedDiagnosis = value;
-                cieDiagnoTextController.text = Balances.selectedDiagnosis;
-              });
-            }),
-          ));
-        });
-  }
 }
 
 class GestionBalances extends StatefulWidget {
@@ -359,11 +538,11 @@ class _GestionBalancesState extends State<GestionBalances> {
     print(" . . . Iniciando array ");
     if (Constantes.dummyArray!.isNotEmpty) {
       if (Constantes.dummyArray![0] == "Vacio") {
-        Actividades.consultarAllById(Databases.siteground_database_regpace,
+        Actividades.consultarAllById(Databases.siteground_database_reghosp,
                 consultQuery!, Pacientes.ID_Paciente)
             .then((value) {
           setState(() {
-            print(" . . . Buscando items \n");
+            print(" . . . Buscando items \n $value");
             foundedItems = value;
           });
         });
@@ -389,7 +568,7 @@ class _GestionBalancesState extends State<GestionBalances> {
             onPressed: () {
               Constantes.reinit();
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => VisualPacientes(actualPage: 2)));
+                  builder: (context) => VisualPacientes(actualPage: 6)));
             },
           ),
           title: Text(appTittle),
@@ -539,21 +718,21 @@ class _GestionBalancesState extends State<GestionBalances> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "ID : ${snapshot.data[posicion]['ID_PACE_APP_ALE'].toString()}",
+                            "ID : ${snapshot.data[posicion]['ID_Bala'].toString()}",
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.grey,
                                 fontSize: 12),
                           ),
                           Text(
-                            "${snapshot.data[posicion]['Pace_APP_ALE']}",
+                            "${snapshot.data[posicion]['Pace_bala_Fecha']}",
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.grey,
                                 fontSize: 14),
                           ),
                           Text(
-                            "${snapshot.data[posicion]['Pace_APP_ALE_com']}",
+                            "${snapshot.data[posicion]['Pace_bala_time']}",
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.grey,
@@ -614,8 +793,8 @@ class _GestionBalancesState extends State<GestionBalances> {
   void onSelected(AsyncSnapshot<dynamic> snapshot, int posicion,
       BuildContext context, String operaciones) {
     Balances.Balance = snapshot.data[posicion];
-    Balances.selectedDiagnosis = Balances.balance['Pace_APP_ALE'];
-    Pacientes.Alergicos = snapshot.data;
+    // Balances.selectedDiagnosis = Balances.balance['Pace_APP_ALE'];
+    Pacientes.Balances = snapshot.data;
     //
     toOperaciones(context, operaciones);
   }
@@ -627,10 +806,8 @@ class _GestionBalancesState extends State<GestionBalances> {
   void deleteRegister(
       AsyncSnapshot<dynamic> snapshot, int posicion, BuildContext context) {
     try {
-      Actividades.eliminar(
-          Databases.siteground_database_regpace,
-          Balances.balance['deleteQuery'],
-          snapshot.data[posicion]['ID_PACE_APP_ALE']);
+      Actividades.eliminar(Databases.siteground_database_reghosp,
+          Balances.balance['deleteQuery'], snapshot.data[posicion]['ID_Bala']);
       setState(() {
         snapshot.data.removeAt(posicion);
       });
@@ -659,7 +836,7 @@ class _GestionBalancesState extends State<GestionBalances> {
       _pullListRefresh();
     } else {
       Actividades.consultar(
-              Databases.siteground_database_regpace, consultQuery!)
+              Databases.siteground_database_reghosp, consultQuery!)
           .then((value) {
         results = value
             .where((user) => user[widget.keySearch].contains(enteredKeyword))
