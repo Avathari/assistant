@@ -23,17 +23,21 @@ class _GridLayoutState extends State<GridLayout> {
         controller: ScrollController(),
         childAspectRatio: widget.childAspectRatio! != 0
             ? widget.childAspectRatio!
+            : isTablet(context)
+                ? (widget.columnCount! / widget.columnCount!) + 0.9
+                : isMobile(context)
+                    ? (widget.columnCount! / widget.columnCount!) + 0.9
+                    : widget.columnCount! != 0
+                        ? (widget.columnCount! / widget.columnCount!) + 0.9
+                        : 2.0,
+        crossAxisCount: widget.columnCount! != 0
+            ? widget.columnCount!
             : isMobile(context)
-                ? (widget.columnCount! / widget.columnCount!) + 0.8
-                : widget.columnCount! != 0
-                    ? (widget.columnCount! / widget.columnCount!) + 0.5
-                    : 2.0, // La mitad del columCount -0.5
-        crossAxisCount: isMobile(context)
-            ? 2
-            //? widget.columnCount! >= 2
-            //  ? widget.columnCount! ~/ 2
-            //  : 2
-            : widget.columnCount!,
+                ? 1
+                //? widget.columnCount! >= 2
+                //  ? widget.columnCount! ~/ 2
+                //  : 2
+                : widget.columnCount!,
         crossAxisSpacing: 10.0,
         mainAxisSpacing: 10.0,
         shrinkWrap: true,

@@ -1,6 +1,7 @@
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/pacientes_auxiliares.dart';
+import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/GridLayout.dart';
@@ -100,7 +101,8 @@ class _AnalisisState extends State<Analisis> {
     return Expanded(
       flex: 3,
       child: GridLayout(
-        columnCount: 6,
+        // childAspectRatio: isMobile(context) ? 4.5 : 1.9,
+        columnCount: isMobile(context) ? 2 : isTablet(context) ? 3: 6,
         children: [
           ShowText(
             title: 'Peso Corporal Ideal',
@@ -120,7 +122,7 @@ class _AnalisisState extends State<Analisis> {
             medida: 'Kg',
             minVal: 34,
             maxVal: 42,
-            typeShow: TypeValueShow.fromInner,
+            // typeShow: TypeValueShow.fromInner,
           ),
           ShowText(
             title: 'Porcentaje C. Magro',

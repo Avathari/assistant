@@ -6,6 +6,7 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 
 import 'package:assistant/screens/pacientes/analisis.dart';
 import 'package:assistant/screens/pacientes/auxiliares/pacientes_auxiliares.dart';
+import 'package:assistant/screens/pacientes/intensiva/herramientas.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/AuxiliaresDiagnosticos.dart';
 import 'package:assistant/screens/pacientes/patologicos/alergicos.dart';
 import 'package:assistant/screens/pacientes/patologicos/patologicos.dart';
@@ -35,7 +36,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 import 'dart:convert';
-
 
 class GestionPacientes extends StatefulWidget {
   const GestionPacientes({Key? key}) : super(key: key);
@@ -1663,7 +1663,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
         child: Text('Body 3'),
       ),
       const AuxiliaresDiagnosticos(),
-      Analisis(),
+      Intensiva(), // Analisis(),
       ReportesMedicos(),
       // GestionBalances(),
       const Center(

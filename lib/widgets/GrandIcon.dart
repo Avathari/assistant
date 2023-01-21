@@ -33,8 +33,8 @@ class _GrandIconState extends State<GrandIcon> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               minimumSize: Size(
-                  isMobileAndTablet(context) ? widget.weigth! : 60,
-                  isMobileAndTablet(context) ? widget.weigth! : 60)),
+                  isMobileAndTablet(context) ? widget.weigth! : widget.weigth! * 10,
+                  isMobileAndTablet(context) ? widget.weigth! : widget.weigth! * 10)),
           onPressed: () {
             widget.onPress();
           },

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart' show BuildContext, MediaQuery;
 
 bool isMobile(BuildContext context) {
-  return MediaQuery.of(context).size.width < tabletLarge; // tabletSmall;
+  return MediaQuery.of(context).size.width < tabletSmall; // tabletSmall;
 }
 
 bool isTablet(BuildContext context) {
-  return MediaQuery.of(context).size.width >= tabletLarge &&
-      MediaQuery.of(context).size.width <= desktopMedium; //tabletExtraLarge;
+  return MediaQuery.of(context).size.width >= tabletSmall &&
+      MediaQuery.of(context).size.width <= tabletExtraLarge; //tabletExtraLarge;
 }
 
 bool isDesktop(BuildContext context) {

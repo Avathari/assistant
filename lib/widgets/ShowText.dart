@@ -50,10 +50,10 @@ class _ShowTextState extends State<ShowText> {
           textAlign: TextAlign.center,
           style: Styles.textSyleBold,
         ),
-        const CrossLine(),
-        SizedBox(
-          height: height,
-        ),
+        // const CrossLine(),
+        // SizedBox(
+        //   height: height,
+        // ),
       ]),
     );
   }

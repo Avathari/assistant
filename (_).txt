@@ -1,0 +1,96 @@
+class Vacunales {
+  static int ID_Vacunales = 0;
+  //
+  static String selectedDiagnosis = "";
+  //
+
+  static Map<String, dynamic> Vacuna = {};
+
+  static List<String> actualDiagno = Dicotomicos.dicotomicos();
+  static List<String> actualTratamiento = Dicotomicos.dicotomicos();
+  static List<String> actualSuspendido = Dicotomicos.dicotomicos();
+
+  static void ultimoRegistro() {
+    Actividades.consultarId(Databases.siteground_database_regpace,
+            Vacunales.vacuna['consultLastQuery'], Pacientes.ID_Paciente)
+        .then((value) {
+// Enfermedades de base del paciente, asi como las Hospitalarias.
+      Vacunales.Vacuna =
+          value; 
+    });
+  }
+
+  static void consultarRegistro() {
+    Actividades.consultarAllById(Databases.siteground_database_regpace,
+            Vacunales.vacuna['consultIdQuery'], Pacientes.ID_Paciente)
+        .then((value) {
+      // Enfermedades de base del paciente, asi como las Hospitalarias.
+      Pacientes.Vacunales = value;
+    });
+  }
+
+  static final Map<String, dynamic> vacuna = {
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_regpace` "
+        "DEFAULT CHARACTER SET utf8 "
+        "COLLATE utf8_unicode_ci;",
+    "showTables": "SHOW tables;",
+    "dropDatabase": "DROP DATABASE `bd_regpace`",
+    "describeTable": "DESCRIBE licen_med;",
+    "showColumns": "SHOW columns FROM licen_med",
+    "showInformation":
+        "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'licen_med'",
+    "createQuery": """CREATE TABLE `licen_med` (
+                        `ID_PACE_APP_DEG` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                        `ID_Pace` int(11) NOT NULL,
+                        `Pace_APP_DEG_SINO` tinyint(1) NOT NULL,
+                        `Pace_APP_DEG` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                        `Pace_APP_DEG_com` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+                        `Pace_APP_DEG_dia` int(200) NOT NULL,
+                        `Pace_APP_DEG_tra_SINO` tinyint(1) NOT NULL,
+                        `Pace_APP_DEG_tra` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                        `Pace_APP_DEG_sus_SINO` tinyint(1) NOT NULL,
+                        `Pace_APP_DEG_sus` varchar(200) COLLATE utf8_unicode_ci NOT NULL
+                        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci 
+                        COMMENT='Tabla para Antecedentes Cronico vacuna';
+            """,
+    "truncateQuery": "TRUNCATE licen_med",
+    "dropQuery": "DROP TABLE licen_med",
+    "consultQuery": "SELECT * FROM licen_med",
+    "consultIdQuery": "SELECT * FROM licen_med WHERE ID_Pace = ?",
+    "consultByIdPrimaryQuery": "SELECT * FROM licen_med WHERE ID_Pace = ?",
+    "consultAllIdsQuery": "SELECT ID_Pace FROM licen_med",
+    "consultLastQuery": "SELECT * FROM licen_med WHERE ID_Pace = ?",
+    "consultByName": "SELECT * FROM licen_med WHERE Pace_APP_DEG LIKE '%",
+    "registerQuery": "INSERT INTO `licen_med` (ID_Pace, Pace_APP_DEG_SINO, "
+        "Pace_APP_DEG, Pace_APP_DEG_com, "
+        "Pace_APP_DEG_dia, Pace_APP_DEG_tra_SINO, "
+        "Pace_APP_DEG_tra, Pace_APP_DEG_sus_SINO, "
+        "Pace_APP_DEG_sus) "
+        "VALUES (?,?,?,?,?,?,?,?,?)",
+    "updateQuery": "UPDATE licen_med "
+        "SET ID_PACE_APP_DEG = ?, ID_Pace = ?, "
+        "Pace_APP_DEG_SINO = ?, Pace_APP_DEG = ?, "
+        "Pace_APP_DEG_com = ?, Pace_APP_DEG_dia = ?, "
+        "Pace_APP_DEG_tra_SINO = ?,  "
+        "Pace_APP_DEG_tra = ?, Pace_APP_DEG_sus_SINO = ?, "
+        "Pace_APP_DEG_sus = ? "
+        "WHERE ID_PACE_APP_DEG = ?",
+    "deleteQuery": "DELETE FROM licen_med WHERE ID_PACE_APP_DEG = ?",
+    "vacunaColumns": [
+      "ID_Pace",
+    ],
+    "vacunaItems": [
+      "ID_Pace",
+    ],
+    "vacunaColums": [
+      "ID Paciente",
+    ],
+    "vacunaStats": [
+      "Total_Administradores",
+    ],
+    "vacunaStadistics": "SELECT "
+        "(SELECT IFNULL(AVG('Pace_SV_tas'), 0) FROM licen_med WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAS,"
+        "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM licen_med WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
+        "(SELECT IFNULL(count(*), 0) FROM licen_med WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
+  };
+}
