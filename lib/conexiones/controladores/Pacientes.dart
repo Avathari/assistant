@@ -2,7 +2,6 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 
-
 class Pacientes {
   static int ID_Paciente = 0;
 
@@ -2783,9 +2782,15 @@ class Ventilaciones {
 
   static Map<String, dynamic> Ventilacion = {};
 
-  static List<String> actualDiagno = Dicotomicos.dicotomicos();
-  static List<String> actualTratamiento = Dicotomicos.dicotomicos();
-  static List<String> actualSuspendido = Dicotomicos.dicotomicos();
+  static List<String> actualDiagno = [
+    'Ningún modo ventilatorio',
+    'Ventilación Limitada por Presión Ciclada por Tiempo (P-VMC)',
+    'Ventilación Limitada por Flujo Ciclada por Volumen (V-VMC)',
+    'Ventilación Mandatoria Intermitente Sincronizada (SIMV / VMC)',
+    'Ventilación Mandatoria Intermitente Sincronizada (SIMV / PMC)',
+    'Ventilación Positiva en Vía Aerea con Presión Soporte (CPAP/PS)',
+    'Espontáneo (ESPON)',
+  ];
 
   static void ultimoRegistro() {
     Actividades.consultarId(

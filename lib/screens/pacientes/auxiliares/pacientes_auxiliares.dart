@@ -28,7 +28,7 @@ class _PresentacionPacientesState extends State<PresentacionPacientes> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(6.0),
         child:
             Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
           GestureDetector(
@@ -65,15 +65,27 @@ class _PresentacionPacientesState extends State<PresentacionPacientes> {
               Text(
                 "${Pacientes.Paciente['Pace_Ape_Pat']} ${Pacientes.Paciente['Pace_Ape_Mat']} \n"
                 "${Pacientes.Paciente['Pace_Nome_PI']} ${Pacientes.Paciente['Pace_Nome_SE']}",
-                style: const TextStyle(fontSize: 14, color: Colors.white),
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.white,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
               Text(
                 "${Pacientes.Paciente['Pace_NSS']} ${Pacientes.Paciente['Pace_AGRE']}",
-                style: const TextStyle(fontSize: 12, color: Colors.white),
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.white,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
               Text(
                 "Edad: ${Pacientes.Paciente['Pace_Eda'].toString()} Años",
-                style: const TextStyle(fontSize: 10, color: Colors.white),
+                style: const TextStyle(
+                  fontSize: 10,
+                  color: Colors.white,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
               const SizedBox(
                 height: 20,
@@ -81,11 +93,19 @@ class _PresentacionPacientesState extends State<PresentacionPacientes> {
               ),
               Text(
                 "Estado actual: ${Pacientes.Paciente['Pace_Stat']}",
-                style: const TextStyle(fontSize: 10, color: Colors.white),
+                style: const TextStyle(
+                  fontSize: 10,
+                  color: Colors.white,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
               Text(
                 "Turno de Atención: ${Pacientes.Paciente['Pace_Turo']}",
-                style: const TextStyle(fontSize: 10, color: Colors.white),
+                style: const TextStyle(
+                  fontSize: 10,
+                  color: Colors.white,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),

@@ -17,7 +17,7 @@ class _GrandButtonState extends State<GrandButton> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: isMobile(context) ? const EdgeInsets.all(4.0) : const EdgeInsets.all(8.0),
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
               primary: Colors.black54,

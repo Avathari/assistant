@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class gadgets {
   static const sizedBox = SizedBox(
@@ -82,4 +83,16 @@ class Styles {
 
   static TextStyle textSyleNeutro = const TextStyle(
       color: Colors.purple, fontWeight: FontWeight.bold, fontSize: 24);
+}
+
+class TextFormat {
+  static MaskTextInputFormatter dateFormat = MaskTextInputFormatter(
+  mask: '####/##/##',
+  filter: {"#": RegExp(r'[0-9]')},
+  type: MaskAutoCompletionType.lazy);
+
+  static MaskTextInputFormatter numberFourFormat = MaskTextInputFormatter(
+  mask: '####',
+  filter: {"#": RegExp(r'[0-9]')},
+  type: MaskAutoCompletionType.lazy);
 }

@@ -2,72 +2,75 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
+
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
-import 'package:assistant/widgets/DialogSelector.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
-import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/GridLayout.dart';
 import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 // # Clase .dart para la creación predeterminada de interfaces de registro, consulta y actualización.
-// Contiene un botón que enn _OperacionesBalancesState.build que desplega una ventana emergente,
+// Contiene un botón que enn _OperacionesVentilacionesState.build que desplega una ventana emergente,
 // de la cual es posible elegir desde un catálogo de opciones.
 // # # INSTRUCCIONES DE USO
-// # # # Reemplazar .Balances por el valor
-// # # # Reemplazar Balances. por la clase que contiene el mapa .balance con las claves
+// # # # Reemplazar .Ventilaciones por el valor
+// # # # Reemplazar Ventilaciones. por la clase que contiene el mapa .ventilacion con las claves
 // # # # # consultIdQuery
 // # # # # registerQuery
 // # # # # updateQuery
-// # # # Reemplazar .balance por el nombre del Map() correspondiente.
+// # # # Reemplazar .ventilacion por el nombre del Map() correspondiente.
 //
-class OperacionesBalances extends StatefulWidget {
+class OperacionesVentilaciones extends StatefulWidget {
   String? operationActivity;
 
   String _operationButton = 'Nulo';
+  int actualView = 0;
 
-  OperacionesBalances({Key? key, this.operationActivity = Constantes.Nulo})
+  OperacionesVentilaciones({Key? key, this.operationActivity = Constantes.Nulo})
       : super(key: key);
 
   @override
-  State<OperacionesBalances> createState() => _OperacionesBalancesState();
+  State<OperacionesVentilaciones> createState() =>
+      _OperacionesVentilacionesState();
 }
 
-class _OperacionesBalancesState extends State<OperacionesBalances> {
-  String appBarTitile = "Gestión de Balances";
-  String? consultIdQuery = Balances.balance['consultIdQuery'];
-  String? registerQuery = Balances.balance['registerQuery'];
-  String? updateQuery = Balances.balance['updateQuery'];
+class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
+  String appBarTitile = "Gestión de Ventilaciones";
+  String? consultIdQuery = Ventilaciones.ventilacion['consultIdQuery'];
+  String? registerQuery = Ventilaciones.ventilacion['registerQuery'];
+  String? updateQuery = Ventilaciones.ventilacion['updateQuery'];
 
   int idOperation = 0;
 
   List<dynamic>? listOfValues;
 
   var fechaRealizacionTextController = TextEditingController();
-  var isHorarioValue = Balances.actualDiagno[0];
+  var modoVentilatorioValue = Ventilaciones.actualDiagno[0];
 
-  var viaOralTextController = TextEditingController();
-  var viaOrogasTextController = TextEditingController();
-  var viaHemosTextController = TextEditingController();
-  var viaNutrianTextController = TextEditingController();
-  var viaParesTextController = TextEditingController();
-  var viaDilucionesTextController = TextEditingController();
+  var volTidalTextController = TextEditingController();
+  var peepTextController = TextEditingController();
+  var respTextController = TextEditingController();
+  var fioTextController = TextEditingController();
+  var sensInspTextController = TextEditingController();
+  var sensEspTextController = TextEditingController();
   var viaOtrosIngresosTextController = TextEditingController();
   //
-  var viaUresisTextController = TextEditingController();
-  var viaEvacTextController = TextEditingController();
-  var viaSangTextController = TextEditingController();
-  var viaSucciTextController = TextEditingController();
+  var pControlTextController = TextEditingController();
+  var pMaximaTextController = TextEditingController();
+  var pPlatTextController = TextEditingController();
+  var volTidalEspTextController = TextEditingController();
   var viaDreneTextController = TextEditingController();
-  var viaPerdidaTextController = TextEditingController();
-  var viaOtrosEgresosTextController = TextEditingController();
+  var flujoTextController = TextEditingController();
+  var pInspirattoriaTextController = TextEditingController();
+  var pSoporteTextController = TextEditingController();
   //
   var carouselController = CarouselController();
   //
@@ -88,40 +91,41 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         setState(() {
           widget._operationButton = 'Actualizar';
           //
-          idOperation = Balances.Balance['ID_Bala'];
+          idOperation = Ventilaciones.Ventilacion['ID_Ventilacion'];
           fechaRealizacionTextController.text =
-              Balances.Balance['Pace_bala_Fecha'];
-          isHorarioValue = Balances.Balance['Pace_bala_HOR'].toString();
+              Ventilaciones.Ventilacion['Feca_VEN'];
+          modoVentilatorioValue =
+              Ventilaciones.Ventilacion['VM_Mod'].toString();
 
-          viaOralTextController.text =
-              Balances.Balance['Pace_bala_Oral'].toString();
-          viaOrogasTextController.text =
-              Balances.Balance['Pace_bala_Sonda'].toString();
-          viaHemosTextController.text =
-              Balances.Balance['Pace_bala_Hemo'].toString();
-          viaNutrianTextController.text =
-              Balances.Balance['Pace_bala_NPT'].toString();
-          viaParesTextController.text =
-              Balances.Balance['Pace_bala_Sol'].toString();
-          viaDilucionesTextController.text =
-              Balances.Balance['Pace_bala_Dil'].toString();
+          volTidalTextController.text =
+              Ventilaciones.Ventilacion['Pace_bala_Oral'].toString();
+          peepTextController.text =
+              Ventilaciones.Ventilacion['Pace_bala_Sonda'].toString();
+          respTextController.text =
+              Ventilaciones.Ventilacion['Pace_bala_Hemo'].toString();
+          fioTextController.text =
+              Ventilaciones.Ventilacion['Pace_bala_NPT'].toString();
+          sensInspTextController.text =
+              Ventilaciones.Ventilacion['Pace_bala_Sol'].toString();
+          sensEspTextController.text =
+              Ventilaciones.Ventilacion['Pace_bala_Dil'].toString();
           viaOtrosIngresosTextController.text =
-              Balances.Balance['Pace_bala_ING'].toString();
+              Ventilaciones.Ventilacion['Pace_bala_ING'].toString();
           //
-          viaUresisTextController.text =
-              Balances.Balance['Pace_bala_Uresis'].toString();
-          viaEvacTextController.text =
-              Balances.Balance['Pace_bala_Evac'].toString();
-          viaSangTextController.text =
-              Balances.Balance['Pace_bala_Sangrado'].toString();
-          viaSucciTextController.text =
-              Balances.Balance['Pace_bala_Succion'].toString();
+          pControlTextController.text =
+              Ventilaciones.Ventilacion['Pace_bala_Uresis'].toString();
+          pMaximaTextController.text =
+              Ventilaciones.Ventilacion['Pace_bala_Evac'].toString();
+          pPlatTextController.text =
+              Ventilaciones.Ventilacion['Pace_bala_Sangrado'].toString();
+          volTidalEspTextController.text =
+              Ventilaciones.Ventilacion['Pace_bala_Succion'].toString();
           viaDreneTextController.text =
-              Balances.Balance['Pace_bala_Drenes'].toString();
-          viaPerdidaTextController.text =
-              Balances.Balance['Pace_bala_PER'].toString();
-          viaOtrosEgresosTextController.text =
-              Balances.Balance['Pace_bala_ENG'].toString();
+              Ventilaciones.Ventilacion['Pace_bala_Drenes'].toString();
+          flujoTextController.text =
+              Ventilaciones.Ventilacion['Pace_bala_PER'].toString();
+          pInspirattoriaTextController.text =
+              Ventilaciones.Ventilacion['Pace_bala_ENG'].toString();
         });
         super.initState();
         break;
@@ -133,8 +137,9 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: isMobile(context)
-          ? AppBar(
+      appBar: isDesktop(context)
+          ? null
+          : AppBar(
               backgroundColor: Theming.primaryColor,
               title: Text(appBarTitile),
               leading: IconButton(
@@ -145,38 +150,58 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
                 onPressed: () {
                   onClose(context);
                 },
-              ))
-          : null,
+              )),
       body: Card(
         color: const Color.fromARGB(255, 61, 57, 57),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              editFormattedText(
-                  TextInputType.number,
-                  MaskTextInputFormatter(
-                      mask: '####/##/##',
-                      filter: {"#": RegExp(r'[0-9]')},
-                      type: MaskAutoCompletionType.lazy),
-                  false,
-                  'Fecha de realización',
-                  fechaRealizacionTextController,
-                  false),
+              EditTextArea(
+                keyBoardType: TextInputType.datetime,
+                inputFormat: TextFormat.dateFormat,
+                numOfLines: 1,
+                labelEditText: 'Fecha de realización',
+                textController: fechaRealizacionTextController,
+              ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Spinner(
+                    width: 200,
+                    tittle: 'M. Ventilatorio',
+                    onChangeValue: (value) {
+                      setState(() {
+                        modoVentilatorioValue = value;
+
+                        int index = Ventilaciones.actualDiagno.indexOf(modoVentilatorioValue);
+                        // print(index);
+                        if (index == 1 || index == 2) {
+                          widget.actualView = 1;
+                        } else if (index == 3 || index == 4) {
+                          widget.actualView = 2;
+                        } else if (index == 5 || index == 6) {
+                          widget.actualView = 3;
+                        } else {
+                          widget.actualView = 0;
+                        }
+                        //
+                      });
+                    },
+                    items:  Ventilaciones.actualDiagno,
+                    initialValue: modoVentilatorioValue!,
+                  ),
                   GrandButton(
-                      weigth: 200,
-                      labelButton: "Ingresos",
+                      weigth: isMobile(context) ? 50 : 150,
+                      labelButton: "Parámetros Ventilatorios",
                       onPress: () {
                         setState(() {
                           carouselController.jumpToPage(0);
                         });
                       }),
                   GrandButton(
-                      weigth: 200,
-                      labelButton: "Egresos",
+                      weigth: isMobile(context) ? 50 : 120,
+                      labelButton: "Otros Parámetros",
                       onPress: () {
                         setState(() {
                           carouselController.jumpToPage(1);
@@ -190,56 +215,14 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
                   child: Row(
                     children: [
                       Expanded(
-                        child: CarouselSlider(
-                            items: [
-                              SingleChildScrollView(
-                                  controller: ScrollController(),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: GridLayout(
-                                      childAspectRatio: isMobile(context)
-                                          ? 5.0
-                                          : isTablet(context)
-                                              ? 5.0
-                                              : 5.0,
-                                      columnCount: isMobile(context)
-                                          ? 1
-                                          : isTablet(context)
-                                              ? 1
-                                              : 2,
-                                      children: component(context),
-                                    ),
-                                  )),
-                              SingleChildScrollView(
-                                  controller: ScrollController(),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: GridLayout(
-                                      childAspectRatio: isMobile(context)
-                                          ? 5
-                                          : isTablet(context)
-                                              ? 5.0
-                                              : 5.0,
-                                      columnCount: isMobile(context)
-                                          ? 1
-                                          : isTablet(context)
-                                              ? 1
-                                              : 2,
-                                      children: secondComponent(context),
-                                    ),
-                                  ))
-                            ],
-                            carouselController: carouselController,
-                            options: CarouselOptions(
-                                height: 500,
-                                enableInfiniteScroll: false,
-                                viewportFraction: 1.0)),
-                      ),
+                        child: SingleChildScrollView(controller:ScrollController(),child: Column(children: component(context),))),
+                      Expanded(
+                          child: SingleChildScrollView(controller:ScrollController(),child: Column(children: getView(widget.actualView),))),
                     ],
                   ),
                 ),
               ),
-              grandButton(context, widget._operationButton, () {
+              GrandButton(labelButton:widget._operationButton, onPress:() {
                 operationMethod(context);
               })
             ],
@@ -249,154 +232,227 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
     );
   }
 
+  DeskTopView() {
+    return Container();
+}
+  MobileView() {
+    return Container(child: CarouselSlider(
+        items: [
+          SingleChildScrollView(
+              controller: ScrollController(),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GridLayout(
+                  childAspectRatio: isMobile(context)
+                      ? 5.0
+                      : isTablet(context)
+                      ? 6.0
+                      : 4.0,
+                  columnCount: isMobile(context)
+                      ? 1
+                      : isTablet(context)
+                      ? 2
+                      : 2,
+                  children: component(context),
+                ),
+              )),
+          SingleChildScrollView(
+              controller: ScrollController(),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GridLayout(
+                  childAspectRatio: isMobile(context)
+                      ? 5
+                      : isTablet(context)
+                      ? 6.0
+                      : 5.0,
+                  columnCount: isMobile(context)
+                      ? 1
+                      : isTablet(context)
+                      ? 2
+                      : 2,
+                  children: component(context),
+                ),
+              ))
+        ],
+        carouselController: carouselController,
+        options: CarouselOptions(
+            height: 500,
+            enableInfiniteScroll: false,
+            viewportFraction: 1.0)),
+    );
+  }
+
+  List<Widget> getView (int actualView) {
+    List<List<Widget>> list = [
+      [const Text('Ninguna modalidad ventilatoria')],
+      presionComponent(context),
+      volumenComponent(context),
+      intermitenteComponent(context),
+      espontaneoComponent(context),
+    ];
+    return list[actualView];
+  }
   List<Widget> component(BuildContext context) {
     return [
-      Spinner(
-          tittle: "Intervalo de Horario",
-          onChangeValue: (String value) {
-            setState(() {
-              isHorarioValue = value;
-            });
-          },
-          items: Opciones.horarios(),
-          width:100,
-          initialValue: isHorarioValue),
       EditTextArea(
         keyBoardType: TextInputType.number,
-        inputFormat: MaskTextInputFormatter(
-            mask: '####',
-            filter: {"#": RegExp(r'[0-9]')},
-            type: MaskAutoCompletionType.lazy),
-        labelEditText: 'Via Oral (mL)',
-        textController: viaOralTextController,
+        inputFormat: TextFormat.dateFormat,
+        labelEditText: 'Vol. Tidal (mL)',
+        textController: volTidalTextController,
         numOfLines: 1,
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
-        inputFormat: MaskTextInputFormatter(
-            mask: '####',
-            filter: {"#": RegExp(r'[0-9]')},
-            type: MaskAutoCompletionType.lazy),
-        labelEditText: 'Vía Sonda Orogástrica (mL)',
-        textController: viaOrogasTextController,
+        inputFormat: TextFormat.dateFormat,
+        labelEditText: 'P.E.E.P. (cmH2O)',
+        textController: peepTextController,
         numOfLines: 1,
       ),
       const CrossLine(),
       //
       EditTextArea(
         keyBoardType: TextInputType.number,
-        inputFormat: MaskTextInputFormatter(
-            mask: '####',
-            filter: {"#": RegExp(r'[0-9]')},
-            type: MaskAutoCompletionType.lazy),
-        labelEditText: 'Vía Hemoderivados (mL)',
-        textController: viaHemosTextController,
+        inputFormat: TextFormat.numberFourFormat,
+        labelEditText: 'F. Resp (Vent/min)',
+        textController: respTextController,
         numOfLines: 1,
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
-        inputFormat: MaskTextInputFormatter(
-            mask: '####',
-            filter: {"#": RegExp(r'[0-9]')},
-            type: MaskAutoCompletionType.lazy),
-        labelEditText: 'Vía N.P.T. (mL)',
-        textController: viaNutrianTextController,
+        inputFormat: TextFormat.numberFourFormat,
+        labelEditText: 'FiO2 (%)',
+        textController: fioTextController,
         numOfLines: 1,
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
-        inputFormat: MaskTextInputFormatter(
-            mask: '####',
-            filter: {"#": RegExp(r'[0-9]')},
-            type: MaskAutoCompletionType.lazy),
-        labelEditText: 'Vía Sol. Parenterales (mL)',
-        textController: viaParesTextController,
+        inputFormat: TextFormat.numberFourFormat,
+        labelEditText: 'Sens. Insp. (Seg)',
+        textController: sensInspTextController,
         numOfLines: 1,
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
-        inputFormat: MaskTextInputFormatter(
-            mask: '####',
-            filter: {"#": RegExp(r'[0-9]')},
-            type: MaskAutoCompletionType.lazy),
-        labelEditText: 'Vía Diluciones (mL)',
-        textController: viaDilucionesTextController,
+        inputFormat: TextFormat.numberFourFormat,
+        labelEditText: 'Sens. Esp. (Seg)',
+        textController: sensEspTextController,
+        numOfLines: 1,
+      ),
+      
+      const CrossLine(),
+    ];
+  }
+
+  List<Widget> presionComponent(BuildContext context) {
+    return [
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: TextFormat.numberFourFormat,
+        labelEditText: 'Presión Control (mmHg)',
+        textController: pControlTextController,
         numOfLines: 1,
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
-        inputFormat: MaskTextInputFormatter(
-            mask: '####',
-            filter: {"#": RegExp(r'[0-9]')},
-            type: MaskAutoCompletionType.lazy),
-        labelEditText: 'Otros Ingresos (mL)',
-        textController: viaOtrosIngresosTextController,
+        inputFormat: TextFormat.numberFourFormat,
+        labelEditText: 'Presión Máxima (mmHg)',
+        textController: pMaximaTextController,
+        numOfLines: 1,
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: TextFormat.numberFourFormat,
+        labelEditText: 'Presión Platteu (mmHg)',
+        textController: pPlatTextController,
         numOfLines: 1,
       ),
       const CrossLine(),
     ];
   }
 
-  List<Widget> secondComponent(BuildContext context) {
+  List<Widget> volumenComponent(BuildContext context) {
     return [
       EditTextArea(
         keyBoardType: TextInputType.number,
-        inputFormat: MaskTextInputFormatter(
-            mask: '####',
-            filter: {"#": RegExp(r'[0-9]')},
-            type: MaskAutoCompletionType.lazy),
-        labelEditText: 'Vía Uresis (mL)',
-        textController: viaUresisTextController,
+        inputFormat: TextFormat.numberFourFormat,
+        labelEditText: 'Volumen Tidal Espiratorio (mL)',
+        textController: volTidalEspTextController,
         numOfLines: 1,
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
-        inputFormat: MaskTextInputFormatter(
-            mask: '####',
-            filter: {"#": RegExp(r'[0-9]')},
-            type: MaskAutoCompletionType.lazy),
-        labelEditText: 'Vía Evacuacionees. (mL)',
-        textController: viaEvacTextController,
+        inputFormat: TextFormat.numberFourFormat,
+        labelEditText: 'Flujo (L/min)',
+        textController: flujoTextController,
+        numOfLines: 1,
+      ),
+      const CrossLine(),
+    ];
+  }
+
+  List<Widget> intermitenteComponent(BuildContext context) {
+    return [
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: TextFormat.numberFourFormat,
+        labelEditText: 'Presión Inspiratoria (mmHg)',
+        textController: pInspirattoriaTextController,
         numOfLines: 1,
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
-        inputFormat: MaskTextInputFormatter(
-            mask: '####',
-            filter: {"#": RegExp(r'[0-9]')},
-            type: MaskAutoCompletionType.lazy),
-        labelEditText: 'Vía Sangrados (mL)',
-        textController: viaSangTextController,
+        inputFormat: TextFormat.numberFourFormat,
+        labelEditText: 'Volumen Tidal Espiratorio (mL)',
+        textController: volTidalEspTextController,
         numOfLines: 1,
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
-        inputFormat: MaskTextInputFormatter(
-            mask: '####',
-            filter: {"#": RegExp(r'[0-9]')},
-            type: MaskAutoCompletionType.lazy),
-        labelEditText: 'Vía Succión (mL)',
-        textController: viaSucciTextController,
+        inputFormat: TextFormat.numberFourFormat,
+        labelEditText: 'Presión Máxima (mmHg)',
+        textController: pMaximaTextController,
         numOfLines: 1,
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
-        inputFormat: MaskTextInputFormatter(
-            mask: '####',
-            filter: {"#": RegExp(r'[0-9]')},
-            type: MaskAutoCompletionType.lazy),
-        labelEditText: 'Perdidas Insensibles (mL)',
-        textController: viaPerdidaTextController,
+        inputFormat: TextFormat.numberFourFormat,
+        labelEditText: 'Flujo (L/min)',
+        textController: flujoTextController,
         numOfLines: 1,
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
-        inputFormat: MaskTextInputFormatter(
-            mask: '####',
-            filter: {"#": RegExp(r'[0-9]')},
-            type: MaskAutoCompletionType.lazy),
-        labelEditText: 'Otros Egresos (mL)',
-        textController: viaOtrosEgresosTextController,
+        inputFormat: TextFormat.numberFourFormat,
+        labelEditText: 'Presión Platteu (mmHg)',
+        textController: pPlatTextController,
+        numOfLines: 1,
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: TextFormat.numberFourFormat,
+        labelEditText: 'Presión Soporte (mmHg)',
+        textController: pSoporteTextController,
+        numOfLines: 1,
+      ),
+      const CrossLine(),
+    ];
+  }
+  
+  List<Widget> espontaneoComponent(BuildContext context) {
+    return [
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: TextFormat.numberFourFormat,
+        labelEditText: 'Presión Soporte (mmHg)',
+        textController: pSoporteTextController,
+        numOfLines: 1,
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: TextFormat.numberFourFormat,
+        labelEditText: 'Presión Inspiratoria Pico (mmHg)',
+        textController: pInspirattoriaTextController,
         numOfLines: 1,
       ),
       const CrossLine(),
@@ -409,25 +465,22 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         idOperation,
         Pacientes.ID_Paciente,
         fechaRealizacionTextController.text,
-        DateTime.now().toString(),
-        // hora
-        viaOralTextController.text,
-        viaOrogasTextController.text,
-        viaHemosTextController.text,
-        viaNutrianTextController.text,
-        viaParesTextController.text,
-        viaDilucionesTextController.text,
-        viaOtrosIngresosTextController.text,
+        volTidalTextController.text,
+        respTextController.text,
+        fioTextController.text,
+        peepTextController.text,
+        sensInspTextController.text,
+        sensEspTextController.text,
         //
-        viaUresisTextController.text,
-        viaEvacTextController.text,
-        viaSangTextController.text,
-        viaSucciTextController.text,
-        viaDreneTextController.text,
-        viaPerdidaTextController.text,
-        viaOtrosEgresosTextController.text,
+        pControlTextController.text,
+        pMaximaTextController.text,
+        volTidalEspTextController.text,
+        flujoTextController.text,
+        pSoporteTextController.text,
+        pInspirattoriaTextController.text,
+        pPlatTextController.text,
         //
-        isHorarioValue,
+        modoVentilatorioValue,
         //
         idOperation
       ];
@@ -498,36 +551,37 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
             context,
             MaterialPageRoute(
                 // maintainState: false,
-                builder: (context) => GestionBalances()));
+                builder: (context) => GestionVentilaciones()));
         break;
       case false:
         Navigator.push(
             context,
             MaterialPageRoute(
                 // maintainState: false,
-                builder: (context) => GestionBalances()));
+                builder: (context) => GestionVentilaciones()));
         break;
       default:
     }
   }
 }
 
-class GestionBalances extends StatefulWidget {
+class GestionVentilaciones extends StatefulWidget {
   Widget? actualSidePage = Container();
   // ****************** *** ****** **************
   var keySearch = "Pace_APP_ALE";
   // ****************** *** ****** **************
 
-  GestionBalances({Key? key, this.actualSidePage}) : super(key: key);
+  GestionVentilaciones({Key? key, this.actualSidePage}) : super(key: key);
 
   @override
-  State<GestionBalances> createState() => _GestionBalancesState();
+  State<GestionVentilaciones> createState() => _GestionVentilacionesState();
 }
 
-class _GestionBalancesState extends State<GestionBalances> {
-  String appTittle = "Gestion de balances hídricos del paciente";
+class _GestionVentilacionesState extends State<GestionVentilaciones> {
+  String appTittle =
+      "Gestion de registros de parámetros ventilatorios del paciente";
   String searchCriteria = "Buscar por Fecha";
-  String? consultQuery = Balances.balance['consultIdQuery'];
+  String? consultQuery = Ventilaciones.ventilacion['consultIdQuery'];
 
   late List? foundedItems = [];
   var gestionScrollController = ScrollController();
@@ -547,7 +601,7 @@ class _GestionBalancesState extends State<GestionBalances> {
           });
         });
       } else {
-        print(" . . . Balances array iniciado");
+        print(" . . . Ventilaciones array iniciado");
         foundedItems = Constantes.dummyArray;
       }
     }
@@ -642,7 +696,7 @@ class _GestionBalancesState extends State<GestionBalances> {
                 ),
               ),
               Expanded(
-                flex: 9,
+                flex: 8,
                 child: RefreshIndicator(
                   color: Colors.white,
                   backgroundColor: Colors.black,
@@ -687,9 +741,9 @@ class _GestionBalancesState extends State<GestionBalances> {
             ],
           ),
         ),
-        isTabletAndDesktop(context)
+        isDesktop(context)
             ? widget.actualSidePage != null
-                ? Expanded(flex: 1, child: widget.actualSidePage!)
+                ? Expanded(flex: 2, child: widget.actualSidePage!)
                 : Expanded(flex: 1, child: Container())
             : Container()
       ]),
@@ -792,9 +846,9 @@ class _GestionBalancesState extends State<GestionBalances> {
 
   void onSelected(AsyncSnapshot<dynamic> snapshot, int posicion,
       BuildContext context, String operaciones) {
-    Balances.Balance = snapshot.data[posicion];
-    // Balances.selectedDiagnosis = Balances.balance['Pace_APP_ALE'];
-    Pacientes.Balances = snapshot.data;
+    Ventilaciones.Ventilacion = snapshot.data[posicion];
+    // Ventilaciones.selectedDiagnosis = Ventilaciones.ventilacion['Pace_APP_ALE'];
+    Pacientes.Ventilaciones = snapshot.data;
     //
     toOperaciones(context, operaciones);
   }
@@ -806,8 +860,10 @@ class _GestionBalancesState extends State<GestionBalances> {
   void deleteRegister(
       AsyncSnapshot<dynamic> snapshot, int posicion, BuildContext context) {
     try {
-      Actividades.eliminar(Databases.siteground_database_reghosp,
-          Balances.balance['deleteQuery'], snapshot.data[posicion]['ID_Bala']);
+      Actividades.eliminar(
+          Databases.siteground_database_reghosp,
+          Ventilaciones.ventilacion['deleteQuery'],
+          snapshot.data[posicion]['ID_Bala']);
       setState(() {
         snapshot.data.removeAt(posicion);
       });
@@ -817,15 +873,15 @@ class _GestionBalancesState extends State<GestionBalances> {
   }
 
   void toOperaciones(BuildContext context, String operationActivity) {
-    if (isMobile(context)) {
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (BuildContext context) => OperacionesBalances(
-                operationActivity: operationActivity,
-              )));
-    } else {
+    if (isDesktop(context)) {
       Constantes.operationsActividad = operationActivity;
       Constantes.reinit(value: foundedItems!);
       _pullListRefresh();
+    } else {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (BuildContext context) => OperacionesVentilaciones(
+                operationActivity: operationActivity,
+              )));
     }
   }
 
@@ -853,10 +909,10 @@ class _GestionBalancesState extends State<GestionBalances> {
     Navigator.pushReplacement(
         context,
         PageRouteBuilder(
-            pageBuilder: (a, b, c) => GestionBalances(
+            pageBuilder: (a, b, c) => GestionVentilaciones(
                   actualSidePage: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: OperacionesBalances(
+                    child: OperacionesVentilaciones(
                       operationActivity: Constantes.operationsActividad,
                     ),
                   ),

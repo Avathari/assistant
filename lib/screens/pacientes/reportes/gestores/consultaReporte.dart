@@ -23,7 +23,7 @@ class _ReporteConsultaState extends State<ReporteConsulta> {
   // Variables auxiliares de widget.
   // ######################### ### # ### ############################
   num index = 6;
-  int wieghtRow = 400;
+  int wieghtRow = 50;
   // ######################### ### # ### ############################
   // Controladores de widgets tipo valores.
   // ######################### ### # ### ############################
@@ -67,116 +67,121 @@ class _ReporteConsultaState extends State<ReporteConsulta> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SingleChildScrollView(
-            controller: ScrollController(),
-            scrollDirection: Axis.horizontal,
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
             child: SingleChildScrollView(
               controller: ScrollController(),
               scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GrandIcon(
-                    iconData: Icons.person,
-                    labelButton: "Información General",
-                    weigth: wieghtRow / index,
-                    onPress: () {
-                      carouselController.jumpToPage(0);
-                    },
-                  ),
-                  GrandIcon(
-                      iconData: Icons.explicit,
-                      labelButton: "Exploración Física",
+              child: SingleChildScrollView(
+                controller: ScrollController(),
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GrandIcon(
+                      iconData: Icons.person,
+                      labelButton: "Información General",
                       weigth: wieghtRow / index,
                       onPress: () {
-                        carouselController.jumpToPage(1);
-                      }),
-                  GrandIcon(
-                      iconData: Icons.medical_information,
-                      labelButton: "Auxiliares Diagnósticos",
-                      weigth: wieghtRow / index,
-                      onPress: () {
-                        carouselController.jumpToPage(2);
-                      }),
-                  GrandIcon(
-                      iconData: Icons.explore,
-                      labelButton: "Análisis y propuestas",
-                      weigth: wieghtRow / index,
-                      onPress: () {
-                        carouselController.jumpToPage(3);
-                      }),
-                  GrandIcon(
-                      iconData: Icons.next_plan,
-                      labelButton: "Diagnósticos y Pronóstico",
-                      weigth: wieghtRow / index,
-                      onPress: () {
-                        carouselController.jumpToPage(4);
-                      }),
-                ],
+                        carouselController.jumpToPage(0);
+                      },
+                    ),
+                    GrandIcon(
+                        iconData: Icons.explicit,
+                        labelButton: "Exploración Física",
+                        weigth: wieghtRow / index,
+                        onPress: () {
+                          carouselController.jumpToPage(1);
+                        }),
+                    GrandIcon(
+                        iconData: Icons.medical_information,
+                        labelButton: "Auxiliares Diagnósticos",
+                        weigth: wieghtRow / index,
+                        onPress: () {
+                          carouselController.jumpToPage(2);
+                        }),
+                    GrandIcon(
+                        iconData: Icons.explore,
+                        labelButton: "Análisis y propuestas",
+                        weigth: wieghtRow / index,
+                        onPress: () {
+                          carouselController.jumpToPage(3);
+                        }),
+                    GrandIcon(
+                        iconData: Icons.next_plan,
+                        labelButton: "Diagnósticos y Pronóstico",
+                        weigth: wieghtRow / index,
+                        onPress: () {
+                          carouselController.jumpToPage(4);
+                        }),
+                  ],
+                ),
               ),
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: CarouselSlider(
-            carouselController: carouselController,
-            options: CarouselOptions(
-                height: 450,
-                enableInfiniteScroll: false,
-                viewportFraction: 1.0),
-            items: [
-              SingleChildScrollView(
-                controller: ScrollController(),
-                child: Column(
-                  children: [
-                    EditTextArea(
-                        textController: initialTextController,
-                        labelEditText: "Datos generales",
-                        keyBoardType: TextInputType.multiline,
-                        numOfLines: 5,
-                        withShowOption: true,
-                        inputFormat: MaskTextInputFormatter()),
-                    EditTextArea(
-                        textController: consultaTextController,
-                        labelEditText: "Motivo de Consulta",
-                        keyBoardType: TextInputType.multiline,
-                        numOfLines: 5,
-                        onChange: (value) {
-                          setState(() {
-                            Reportes.motivoConsulta = "$value.";
-                            Reportes.reportes['Motivo_Consulta'] = "$value.";
-                          });
-                        },
-                        inputFormat: MaskTextInputFormatter()),
-                    EditTextArea(
-                        textController: heredoTextController,
-                        labelEditText: "Antecedentes heredofamiliares",
-                        keyBoardType: TextInputType.multiline,
-                        numOfLines: 5,
-                        inputFormat: MaskTextInputFormatter()),
-                    EditTextArea(
-                        textController: hospiTextController,
-                        labelEditText: "Antecedentes hospitalarios",
-                        keyBoardType: TextInputType.multiline,
-                        numOfLines: 5,
-                        inputFormat: MaskTextInputFormatter()),
-                    EditTextArea(
-                        textController: patoloTextController,
-                        labelEditText: "Antecedentes personales patológicos",
-                        keyBoardType: TextInputType.multiline,
-                        numOfLines: 5,
-                        inputFormat: MaskTextInputFormatter()),
-                  ],
+        Expanded(
+          flex:5,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CarouselSlider(
+              carouselController: carouselController,
+              options: CarouselOptions(
+                  height: 450,
+                  enableInfiniteScroll: false,
+                  viewportFraction: 1.0),
+              items: [
+                SingleChildScrollView(
+                  controller: ScrollController(),
+                  child: Column(
+                    children: [
+                      EditTextArea(
+                          textController: initialTextController,
+                          labelEditText: "Datos generales",
+                          keyBoardType: TextInputType.multiline,
+                          numOfLines: 5,
+                          withShowOption: true,
+                          inputFormat: MaskTextInputFormatter()),
+                      EditTextArea(
+                          textController: consultaTextController,
+                          labelEditText: "Motivo de Consulta",
+                          keyBoardType: TextInputType.multiline,
+                          numOfLines: 5,
+                          onChange: (value) {
+                            setState(() {
+                              Reportes.motivoConsulta = "$value.";
+                              Reportes.reportes['Motivo_Consulta'] = "$value.";
+                            });
+                          },
+                          inputFormat: MaskTextInputFormatter()),
+                      EditTextArea(
+                          textController: heredoTextController,
+                          labelEditText: "Antecedentes heredofamiliares",
+                          keyBoardType: TextInputType.multiline,
+                          numOfLines: 5,
+                          inputFormat: MaskTextInputFormatter()),
+                      EditTextArea(
+                          textController: hospiTextController,
+                          labelEditText: "Antecedentes hospitalarios",
+                          keyBoardType: TextInputType.multiline,
+                          numOfLines: 5,
+                          inputFormat: MaskTextInputFormatter()),
+                      EditTextArea(
+                          textController: patoloTextController,
+                          labelEditText: "Antecedentes personales patológicos",
+                          keyBoardType: TextInputType.multiline,
+                          numOfLines: 5,
+                          inputFormat: MaskTextInputFormatter()),
+                    ],
+                  ),
                 ),
-              ),
-              const ExploracionFisica(),
-              const AuxiliaresExploracion(),
-              const AnalisisMedico(),
-              const DiagnosticosAndPronostico(),
-            ],
+                const ExploracionFisica(),
+                const AuxiliaresExploracion(),
+                const AnalisisMedico(),
+                const DiagnosticosAndPronostico(),
+              ],
+            ),
           ),
         ),
       ]),
@@ -200,7 +205,7 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
   // Variables auxiliares de widget.
   // ######################### ### # ### ############################
   num index = 6;
-  int wieghtRow = 400;
+  int wieghtRow = 50;
   // ######################### ### # ### ############################
   // Controladores de widgets tipo valores.
   // ######################### ### # ### ############################
@@ -236,104 +241,101 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SingleChildScrollView(
-            controller: ScrollController(),
-            scrollDirection: Axis.horizontal,
-            child: SingleChildScrollView(
-              controller: ScrollController(),
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GrandIcon(
-                    iconData: Icons.person,
-                    labelButton: "Información General",
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GrandIcon(
+                  iconData: Icons.person,
+                  labelButton: "Información General",
+                  weigth: wieghtRow / index,
+                  onPress: () {
+                    carouselController.jumpToPage(0);
+                  },
+                ),
+                GrandIcon(
+                    iconData: Icons.explicit,
+                    labelButton: "Exploración Física",
                     weigth: wieghtRow / index,
                     onPress: () {
-                      carouselController.jumpToPage(0);
-                    },
-                  ),
-                  GrandIcon(
-                      iconData: Icons.explicit,
-                      labelButton: "Exploración Física",
-                      weigth: wieghtRow / index,
-                      onPress: () {
-                        carouselController.jumpToPage(1);
-                      }),
-                  GrandIcon(
-                      iconData: Icons.medical_information,
-                      labelButton: "Auxiliares Diagnósticos",
-                      weigth: wieghtRow / index,
-                      onPress: () {
-                        carouselController.jumpToPage(2);
-                      }),
-                  GrandIcon(
-                      iconData: Icons.explore,
-                      labelButton: "Análisis y propuestas",
-                      weigth: wieghtRow / index,
-                      onPress: () {
-                        carouselController.jumpToPage(3);
-                      }),
-                  GrandIcon(
-                      iconData: Icons.next_plan,
-                      labelButton: "Diagnósticos y Pronóstico",
-                      weigth: wieghtRow / index,
-                      onPress: () {
-                        carouselController.jumpToPage(4);
-                      }),
-                ],
-              ),
+                      carouselController.jumpToPage(1);
+                    }),
+                GrandIcon(
+                    iconData: Icons.medical_information,
+                    labelButton: "Auxiliares Diagnósticos",
+                    weigth: wieghtRow / index,
+                    onPress: () {
+                      carouselController.jumpToPage(2);
+                    }),
+                GrandIcon(
+                    iconData: Icons.explore,
+                    labelButton: "Análisis y propuestas",
+                    weigth: wieghtRow / index,
+                    onPress: () {
+                      carouselController.jumpToPage(3);
+                    }),
+                GrandIcon(
+                    iconData: Icons.next_plan,
+                    labelButton: "Diagnósticos y Pronóstico",
+                    weigth: wieghtRow / index,
+                    onPress: () {
+                      carouselController.jumpToPage(4);
+                    }),
+              ],
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: CarouselSlider(
-            carouselController: carouselController,
-            options: CarouselOptions(
-                height: 450,
-                enableInfiniteScroll: false,
-                viewportFraction: 1.0),
-            items: [
-              SingleChildScrollView(
-                controller: ScrollController(),
-                child: Column(
-                  children: [
-                    EditTextArea(
-                        textController: initialTextController,
-                        labelEditText: "Datos generales",
-                        keyBoardType: TextInputType.multiline,
-                        numOfLines: 5,
-                        withShowOption: true,
-                        inputFormat: MaskTextInputFormatter()),
-                    EditTextArea(
-                        textController: heredoTextController,
-                        labelEditText: "Antecedentes heredofamiliares",
-                        keyBoardType: TextInputType.multiline,
-                        numOfLines: 5,
-                        inputFormat: MaskTextInputFormatter()),
-                    EditTextArea(
-                        textController: hospiTextController,
-                        labelEditText: "Antecedentes hospitalarios",
-                        keyBoardType: TextInputType.multiline,
-                        numOfLines: 5,
-                        inputFormat: MaskTextInputFormatter()),
-                    EditTextArea(
-                        textController: patoloTextController,
-                        labelEditText: "Antecedentes personales patológicos",
-                        keyBoardType: TextInputType.multiline,
-                        numOfLines: 5,
-                        inputFormat: MaskTextInputFormatter()),
-                  ],
+        Expanded(
+          flex: 5,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CarouselSlider(
+              carouselController: carouselController,
+              options: CarouselOptions(
+                  height: 450,
+                  enableInfiniteScroll: false,
+                  viewportFraction: 1.0),
+              items: [
+                SingleChildScrollView(
+                  controller: ScrollController(),
+                  child: Column(
+                    children: [
+                      EditTextArea(
+                          textController: initialTextController,
+                          labelEditText: "Datos generales",
+                          keyBoardType: TextInputType.multiline,
+                          numOfLines: 5,
+                          withShowOption: true,
+                          inputFormat: MaskTextInputFormatter()),
+                      EditTextArea(
+                          textController: heredoTextController,
+                          labelEditText: "Antecedentes heredofamiliares",
+                          keyBoardType: TextInputType.multiline,
+                          numOfLines: 5,
+                          inputFormat: MaskTextInputFormatter()),
+                      EditTextArea(
+                          textController: hospiTextController,
+                          labelEditText: "Antecedentes hospitalarios",
+                          keyBoardType: TextInputType.multiline,
+                          numOfLines: 5,
+                          inputFormat: MaskTextInputFormatter()),
+                      EditTextArea(
+                          textController: patoloTextController,
+                          labelEditText: "Antecedentes personales patológicos",
+                          keyBoardType: TextInputType.multiline,
+                          numOfLines: 5,
+                          inputFormat: MaskTextInputFormatter()),
+                    ],
+                  ),
                 ),
-              ),
-              const ExploracionFisica(),
-              const AuxiliaresExploracion(),
-              const AnalisisMedico(),
-              const DiagnosticosAndPronostico(),
-            ],
+                const ExploracionFisica(),
+                const AuxiliaresExploracion(),
+                const AnalisisMedico(),
+                const DiagnosticosAndPronostico(),
+              ],
+            ),
           ),
         ),
       ]),

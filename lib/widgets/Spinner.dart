@@ -18,7 +18,7 @@ class Spinner extends StatefulWidget {
       required this.initialValue,
       this.tittle,
       this.isRow = true,
-      this.width = 150})
+      this.width = 100})
       : super(key: key);
 
   @override
@@ -81,7 +81,7 @@ class _SpinnerState extends State<Spinner> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text("${widget.tittle}:", style: const TextStyle(color: Colors.white)),
+        Text("${widget.tittle}:", style: const TextStyle(color: Colors.white, fontSize: 10)),
         DropdownButton(
           value: widget.initialValue,
           icon: const Icon(Icons.arrow_drop_down),

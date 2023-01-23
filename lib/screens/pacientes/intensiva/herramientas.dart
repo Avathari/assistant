@@ -1,4 +1,5 @@
-import 'package:assistant/screens/pacientes/intensiva/balances.dart';
+import 'package:assistant/screens/pacientes/intensiva/contenidos/balances.dart';
+import 'package:assistant/screens/pacientes/intensiva/contenidos/ventilaciones.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandLabel.dart';
@@ -54,7 +55,6 @@ class _IntensivaState extends State<Intensiva> {
       ),
     );
   }
-
   //
   Padding firstContent() {
     return Padding(
@@ -62,60 +62,77 @@ class _IntensivaState extends State<Intensiva> {
       child: Column(
         children: [
           Tittle(tittle: 'Operaciones'),
-          GrandLabel(
-            labelButton: 'Balances Hidricos',
-            onPress: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => GestionBalances()));
-            },
-          ),
-          GrandLabel(
-            labelButton: 'Ventilación Mecánica',
-            onPress: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => GestionBalances()));
-            },
-          ),
-          GrandLabel(
-            labelButton: 'Concentraciones y Diluciones',
-            onPress: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => GestionBalances()));
-            },
-          ),
-          const CrossLine(),
-          GrandLabel(
-            labelButton: 'Análisis basado en Información',
-            onPress: () {
-              setState(() {
-                widget.numActivity = 1;
-              });
-            },
-          ),
-          GrandLabel(
-            labelButton: 'Valoraciones Prequirúrgicas',
-            onPress: () {
-              setState(() {
-                widget.numActivity = 2;
-              });
-            },
-          ),
-          GrandLabel(
-            labelButton: 'Procedimientos Médicos',
-            onPress: () {
-              setState(() {
-                widget.numActivity = 3;
-              });
-            },
-          ),
-          const CrossLine(),
-          GrandLabel(
-            labelButton: 'Destete de la Intubación Endotraqueal',
-            weigth: 8,
-            onPress: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => GestionBalances()));
-            },
+          Expanded(
+            child: SingleChildScrollView(
+              controller: ScrollController(),
+              child: Column(
+                children: [
+                  GrandLabel(
+                    labelButton: 'Balances Hidricos',
+                    onPress: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GestionBalances()));
+                    },
+                  ),
+                  GrandLabel(
+                    labelButton: 'Ventilación Mecánica',
+                    onPress: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GestionVentilaciones()));
+                    },
+                  ),
+                  GrandLabel(
+                    labelButton: 'Concentraciones y Diluciones',
+                    onPress: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GestionBalances()));
+                    },
+                  ),
+                  const CrossLine(),
+                  GrandLabel(
+                    labelButton: 'Análisis basado en Información',
+                    onPress: () {
+                      setState(() {
+                        widget.numActivity = 1;
+                      });
+                    },
+                  ),
+                  GrandLabel(
+                    labelButton: 'Valoraciones Prequirúrgicas',
+                    onPress: () {
+                      setState(() {
+                        widget.numActivity = 2;
+                      });
+                    },
+                  ),
+                  GrandLabel(
+                    labelButton: 'Procedimientos Médicos',
+                    onPress: () {
+                      setState(() {
+                        widget.numActivity = 3;
+                      });
+                    },
+                  ),
+                  const CrossLine(),
+                  GrandLabel(
+                    labelButton: 'Destete de la Intubación Endotraqueal',
+                    weigth: 8,
+                    onPress: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GestionBalances()));
+                    },
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),

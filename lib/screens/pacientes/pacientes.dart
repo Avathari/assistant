@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 
-import 'package:assistant/screens/pacientes/analisis.dart';
 import 'package:assistant/screens/pacientes/auxiliares/pacientes_auxiliares.dart';
 import 'package:assistant/screens/pacientes/intensiva/herramientas.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/AuxiliaresDiagnosticos.dart';
@@ -14,10 +13,10 @@ import 'package:assistant/screens/pacientes/patologicos/quirurgicos.dart';
 import 'package:assistant/screens/pacientes/patologicos/transfusionales.dart';
 import 'package:assistant/screens/pacientes/patologicos/vacunales.dart';
 import 'package:assistant/screens/pacientes/reportes/reportes.dart';
-import 'package:assistant/screens/pacientes/intensiva/balances.dart';
 
 import 'package:assistant/screens/pacientes/vitales/vitales.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
+import 'package:assistant/widgets/GridLayout.dart';
 import 'package:assistant/widgets/LoadingScreen.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -1397,7 +1396,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
     return Row(children: [
       Expanded(
         flex: 2,
-        child: sideBar(),
+        child: isTablet(context) ? sideBarTablet() : sideBarDesktop(),
       ),
       Expanded(flex: 7, child: pantallasAuxiliares(widget.actualPage)),
     ]);
@@ -1419,113 +1418,113 @@ class _VisualPacientesState extends State<VisualPacientes> {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => const GestionPacientes()));
   }
-
-  Widget presentationUser() {
-    if (isTablet(context)) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          CircleAvatar(
-              backgroundColor: Colors.grey,
-              radius: 60,
-              child: imgPaciente != ""
-                  ? ClipOval(
-                      child: Image.memory(
-                      base64Decode(imgPaciente),
-                      width: 250,
-                      height: 250,
-                      fit: BoxFit.cover,
-                    ))
-                  : const ClipOval(child: Icon(Icons.person))),
-          const SizedBox(
-            height: 10,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                "$apellidoPaternoPaciente $apellidoMaternoPaciente \n$primerNombrePaciente $segundoNombrePaciente",
-                style: const TextStyle(fontSize: 14, color: Colors.white),
-              ),
-              Text(
-                "$numeroPaciente",
-                style: const TextStyle(fontSize: 12, color: Colors.white),
-              ),
-              Text(
-                "Edad: ${edadPaciente.toString()} Años",
-                style: const TextStyle(fontSize: 10, color: Colors.white),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Text(
-                "Estado actual: $statusPaciente",
-                style: const TextStyle(fontSize: 10, color: Colors.white),
-              ),
-              Text(
-                "Turno de Atención: $turnoPaciente",
-                style: const TextStyle(fontSize: 10, color: Colors.white),
-              ),
-            ],
-          ),
-        ],
-      );
-    } else {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          const SizedBox(
-            width: 10,
-          ),
-          CircleAvatar(
-              backgroundColor: Colors.grey,
-              radius: 60,
-              child: imgPaciente != ""
-                  ? ClipOval(
-                      child: Image.memory(
-                      base64Decode(imgPaciente),
-                      width: 250,
-                      height: 250,
-                      fit: BoxFit.cover,
-                    ))
-                  : const ClipOval(child: Icon(Icons.person))),
-          const SizedBox(
-            width: 10,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                "$apellidoPaternoPaciente $apellidoMaternoPaciente \n$primerNombrePaciente $segundoNombrePaciente",
-                style: const TextStyle(fontSize: 14, color: Colors.white),
-              ),
-              Text(
-                "$numeroPaciente",
-                style: const TextStyle(fontSize: 12, color: Colors.white),
-              ),
-              Text(
-                "Edad: ${edadPaciente.toString()} Años",
-                style: const TextStyle(fontSize: 10, color: Colors.white),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Text(
-                "Estado actual: $statusPaciente",
-                style: const TextStyle(fontSize: 10, color: Colors.white),
-              ),
-              Text(
-                "Turno de Atención: $turnoPaciente",
-                style: const TextStyle(fontSize: 10, color: Colors.white),
-              ),
-            ],
-          ),
-        ],
-      );
-    }
-  }
+  //
+  // Widget presentationUser() {
+  //   if (isTablet(context)) {
+  //     return Column(
+  //       mainAxisAlignment: MainAxisAlignment.start,
+  //       children: <Widget>[
+  //         CircleAvatar(
+  //             backgroundColor: Colors.grey,
+  //             radius: 60,
+  //             child: imgPaciente != ""
+  //                 ? ClipOval(
+  //                     child: Image.memory(
+  //                     base64Decode(imgPaciente),
+  //                     width: 250,
+  //                     height: 250,
+  //                     fit: BoxFit.cover,
+  //                   ))
+  //                 : const ClipOval(child: Icon(Icons.person))),
+  //         const SizedBox(
+  //           height: 10,
+  //         ),
+  //         Column(
+  //           mainAxisAlignment: MainAxisAlignment.start,
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: <Widget>[
+  //             Text(
+  //               "$apellidoPaternoPaciente $apellidoMaternoPaciente \n$primerNombrePaciente $segundoNombrePaciente",
+  //               style: const TextStyle(fontSize: 14, color: Colors.white),
+  //             ),
+  //             Text(
+  //               "$numeroPaciente",
+  //               style: const TextStyle(fontSize: 12, color: Colors.white),
+  //             ),
+  //             Text(
+  //               "Edad: ${edadPaciente.toString()} Años",
+  //               style: const TextStyle(fontSize: 10, color: Colors.white),
+  //             ),
+  //             const SizedBox(
+  //               height: 20,
+  //             ),
+  //             Text(
+  //               "Estado actual: $statusPaciente",
+  //               style: const TextStyle(fontSize: 10, color: Colors.white),
+  //             ),
+  //             Text(
+  //               "Turno de Atención: $turnoPaciente",
+  //               style: const TextStyle(fontSize: 10, color: Colors.white),
+  //             ),
+  //           ],
+  //         ),
+  //       ],
+  //     );
+  //   } else {
+  //     return Row(
+  //       mainAxisAlignment: MainAxisAlignment.start,
+  //       children: <Widget>[
+  //         const SizedBox(
+  //           width: 10,
+  //         ),
+  //         CircleAvatar(
+  //             backgroundColor: Colors.grey,
+  //             radius: 60,
+  //             child: imgPaciente != ""
+  //                 ? ClipOval(
+  //                     child: Image.memory(
+  //                     base64Decode(imgPaciente),
+  //                     width: 250,
+  //                     height: 250,
+  //                     fit: BoxFit.cover,
+  //                   ))
+  //                 : const ClipOval(child: Icon(Icons.person))),
+  //         const SizedBox(
+  //           width: 10,
+  //         ),
+  //         Column(
+  //           mainAxisAlignment: MainAxisAlignment.start,
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: <Widget>[
+  //             Text(
+  //               "$apellidoPaternoPaciente $apellidoMaternoPaciente \n$primerNombrePaciente $segundoNombrePaciente",
+  //               style: const TextStyle(fontSize: 14, color: Colors.white),
+  //             ),
+  //             Text(
+  //               "$numeroPaciente",
+  //               style: const TextStyle(fontSize: 12, color: Colors.white),
+  //             ),
+  //             Text(
+  //               "Edad: ${edadPaciente.toString()} Años",
+  //               style: const TextStyle(fontSize: 10, color: Colors.white),
+  //             ),
+  //             const SizedBox(
+  //               height: 20,
+  //             ),
+  //             Text(
+  //               "Estado actual: $statusPaciente",
+  //               style: const TextStyle(fontSize: 10, color: Colors.white),
+  //             ),
+  //             Text(
+  //               "Turno de Atención: $turnoPaciente",
+  //               style: const TextStyle(fontSize: 10, color: Colors.white),
+  //             ),
+  //           ],
+  //         ),
+  //       ],
+  //     );
+  //   }
+  // }
 
   Drawer drawerHome(BuildContext context) {
     return Drawer(
@@ -1614,7 +1613,28 @@ class _VisualPacientesState extends State<VisualPacientes> {
     );
   }
 
-  Container sideBar() {
+  Column sideBarDesktop() {
+    return Column(
+      children: [
+        Container(color: Colors.black, child: const PresentacionPacientes()),
+        Expanded(
+          child: Container(
+            decoration: const BoxDecoration(color: Theming.terciaryColor),
+            child: SingleChildScrollView(
+              controller: scrollController,
+              padding: const EdgeInsets.all(5.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: userActivities(context),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Container sideBarTablet() {
     return Container(
       decoration: const BoxDecoration(
         color: Colors.black,
@@ -1630,7 +1650,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
                 // ignore: prefer_const_literals_to_create_immutables
                 children: [
                   isTabletAndDesktop(context)
-                      ? presentationUser()
+                      ? const PresentacionPacientes()
                       : Container(),
                 ]),
           ),
@@ -1940,7 +1960,7 @@ class _EstadisticasPacientesState extends State<EstadisticasPacientes> {
                     fontWeight: FontWeight.bold),
               ),
             ),
-            Flexible(
+            Expanded(
               flex: 1,
               child: Row(
                 children: [
@@ -1953,15 +1973,19 @@ class _EstadisticasPacientesState extends State<EstadisticasPacientes> {
                           : Container()),
                   Flexible(
                       flex: 3,
-                      child: Column(
-                        children: [
-                          tileStat(Icons.person, "Total de Pacientes",
-                              data['Total_Pacientes']),
-                          tileStat(Icons.person_add_outlined,
-                              "Total de Activos", data['Total_Vivos']),
-                          tileStat(Icons.person_off_outlined,
-                              "Total de Fallecidos", data['Total_Fallecidos'])
-                        ],
+                      child: SingleChildScrollView(
+                        controller: ScrollController(),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            tileStat(Icons.person, "Total de Pacientes",
+                                data['Total_Pacientes']),
+                            tileStat(Icons.person_add_outlined,
+                                "Total de Activos", data['Total_Vivos']),
+                            tileStat(Icons.person_off_outlined,
+                                "Total de Fallecidos", data['Total_Fallecidos'])
+                          ],
+                        ),
                       ))
                 ],
               ),
@@ -2019,17 +2043,17 @@ class _EstadisticasPacientesState extends State<EstadisticasPacientes> {
 
   Padding tileStat(IconData? icon, String tittle, int stat) {
     return Padding(
-      padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+      padding: const EdgeInsets.only(right: 8.0, left: 8.0, bottom: 0, top: 0),
       child: ListTile(
         leading: Icon(icon!, color: Colors.white),
         title: Text(
           tittle,
-          style:
-              const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+              fontSize: 12, color: Colors.white, fontWeight: FontWeight.bold),
         ),
         trailing: Text(
           "$stat Pacientes",
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(fontSize: 10, color: Colors.white),
         ),
       ),
     );
@@ -2045,45 +2069,51 @@ class MenuPersonales extends StatelessWidget {
       decoration: const BoxDecoration(),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: SingleChildScrollView(
-          controller: ScrollController(),
-          child: Column(
-            children: [
-              tittleCard(
-                color: Colors.black,
-                text: "Antecedentes Personales del Paciente",
+        child: Column(
+          children: [
+            tittleCard(
+              color: Colors.black,
+              text: "Antecedentes Personales del Paciente",
+            ),
+            SingleChildScrollView(
+              controller: ScrollController(),
+              child: Column(
+                children: [
+                  GridLayout(
+                      childAspectRatio: isMobile(context) ? 1.0 : 4.0,
+                      columnCount: 2,
+                      children: [
+                        menuButton(context, Icons.family_restroom,
+                            "Antecedentes Heredofamiliares", () {}),
+                        menuButton(context, Icons.medication,
+                            "Antecedentes Personales Patológicos", () {
+                          toNextPage(context, GestionPatologicos());
+                        }),
+                        menuButton(context, Icons.person_pin,
+                            "Antecedentes Personales No Patológicos", () {}),
+                        menuButton(context, Icons.bloodtype,
+                            "Antecedentes Transfusionales", () {
+                          toNextPage(context, GestionTransfusionales());
+                        }),
+                        menuButton(context, Icons.medical_information_rounded,
+                            "Antecedentes Quirúrgicos", () {
+                          toNextPage(context, GestionQuirurgicos());
+                        }),
+                        menuButton(
+                            context, Icons.vaccines, "Antecedentes Vacunales",
+                            () {
+                          toNextPage(context, GestionVacunales());
+                        }),
+                        menuButton(context, Icons.medication_liquid,
+                            "Antecedentes Alérgicos", () {
+                          toNextPage(context, GestionAlergicos());
+                        }),
+                        menuButton(context, Icons.quiz, "Cuestionarios", () {})
+                      ]),
+                ],
               ),
-              gridView(context, isMobile(context) ? 1.0 : 5.0,
-                  columnCount: 2,
-                  children: [
-                    menuButton(context, Icons.family_restroom,
-                        "Antecedentes Heredofamiliares", () {}),
-                    menuButton(context, Icons.medication,
-                        "Antecedentes Personales Patológicos", () {
-                      toNextPage(context, GestionPatologicos());
-                    }),
-                    menuButton(context, Icons.person_pin,
-                        "Antecedentes Personales No Patológicos", () {}),
-                    menuButton(context, Icons.bloodtype,
-                        "Antecedentes Transfusionales", () {
-                      toNextPage(context, GestionTransfusionales());
-                    }),
-                    menuButton(context, Icons.medical_information_rounded,
-                        "Antecedentes Quirúrgicos", () {
-                      toNextPage(context, GestionQuirurgicos());
-                    }),
-                    menuButton(
-                        context, Icons.vaccines, "Antecedentes Vacunales", () {
-                      toNextPage(context, GestionVacunales());
-                    }),
-                    menuButton(context, Icons.medication_liquid,
-                        "Antecedentes Alérgicos", () {
-                      toNextPage(context, GestionAlergicos());
-                    }),
-                    menuButton(context, Icons.quiz, "Cuestionarios", () {})
-                  ]),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
