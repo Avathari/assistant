@@ -1,4 +1,3 @@
-import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
@@ -15,7 +14,6 @@ import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 import 'package:flutter/material.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 // # Clase .dart para la creación predeterminada de interfaces de registro, consulta y actualización.
 // Contiene un botón que enn _OperacionesVentilacionesState.build que desplega una ventana emergente,
@@ -85,7 +83,6 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         break;
       case Constantes.Register:
         widget._operationButton = 'Registrar';
-
         break;
       case Constantes.Update:
         setState(() {
@@ -96,36 +93,35 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
               Ventilaciones.Ventilacion['Feca_VEN'];
           modoVentilatorioValue =
               Ventilaciones.Ventilacion['VM_Mod'].toString();
-
+          //
           volTidalTextController.text =
-              Ventilaciones.Ventilacion['Pace_bala_Oral'].toString();
+              Ventilaciones.Ventilacion['Pace_Vt'].toString();
           peepTextController.text =
-              Ventilaciones.Ventilacion['Pace_bala_Sonda'].toString();
+              Ventilaciones.Ventilacion['Pace_Peep'].toString();
           respTextController.text =
-              Ventilaciones.Ventilacion['Pace_bala_Hemo'].toString();
+              Ventilaciones.Ventilacion['Pace_Fr'].toString();
           fioTextController.text =
-              Ventilaciones.Ventilacion['Pace_bala_NPT'].toString();
+              Ventilaciones.Ventilacion['Pace_Fio'].toString();
           sensInspTextController.text =
-              Ventilaciones.Ventilacion['Pace_bala_Sol'].toString();
+              Ventilaciones.Ventilacion['Pace_Insp'].toString();
           sensEspTextController.text =
-              Ventilaciones.Ventilacion['Pace_bala_Dil'].toString();
+              Ventilaciones.Ventilacion['Pace_Espi'].toString();
           viaOtrosIngresosTextController.text =
               Ventilaciones.Ventilacion['Pace_bala_ING'].toString();
           //
           pControlTextController.text =
-              Ventilaciones.Ventilacion['Pace_bala_Uresis'].toString();
+              Ventilaciones.Ventilacion['Pace_Pc'].toString();
           pMaximaTextController.text =
-              Ventilaciones.Ventilacion['Pace_bala_Evac'].toString();
-          pPlatTextController.text =
-              Ventilaciones.Ventilacion['Pace_bala_Sangrado'].toString();
-          volTidalEspTextController.text =
-              Ventilaciones.Ventilacion['Pace_bala_Succion'].toString();
-          viaDreneTextController.text =
-              Ventilaciones.Ventilacion['Pace_bala_Drenes'].toString();
+              Ventilaciones.Ventilacion['Pace_Pm'].toString();
+          volTidalEspTextController.text = Ventilaciones.Ventilacion['Pace_V'].toString();
           flujoTextController.text =
-              Ventilaciones.Ventilacion['Pace_bala_PER'].toString();
+              Ventilaciones.Ventilacion['Pace_F'].toString();
+          pSoporteTextController.text =
+              Ventilaciones.Ventilacion['Pace_Ps'].toString();
+          pPlatTextController.text =
+              Ventilaciones.Ventilacion['Pace_Pmet'].toString();
           pInspirattoriaTextController.text =
-              Ventilaciones.Ventilacion['Pace_bala_ENG'].toString();
+              Ventilaciones.Ventilacion['Pace_Pip'].toString();
         });
         super.initState();
         break;
@@ -158,7 +154,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
           child: Column(
             children: [
               EditTextArea(
-                keyBoardType: TextInputType.datetime,
+                keyBoardType: TextInputType.number,
                 inputFormat: TextFormat.dateFormat,
                 numOfLines: 1,
                 labelEditText: 'Fecha de realización',
@@ -189,24 +185,24 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                       });
                     },
                     items:  Ventilaciones.actualDiagno,
-                    initialValue: modoVentilatorioValue!,
+                    initialValue: modoVentilatorioValue,
                   ),
-                  GrandButton(
-                      weigth: isMobile(context) ? 50 : 150,
-                      labelButton: "Parámetros Ventilatorios",
-                      onPress: () {
-                        setState(() {
-                          carouselController.jumpToPage(0);
-                        });
-                      }),
-                  GrandButton(
-                      weigth: isMobile(context) ? 50 : 120,
-                      labelButton: "Otros Parámetros",
-                      onPress: () {
-                        setState(() {
-                          carouselController.jumpToPage(1);
-                        });
-                      })
+                  // GrandButton(
+                  //     weigth: isMobile(context) ? 50 : 150,
+                  //     labelButton: "Parámetros Ventilatorios",
+                  //     onPress: () {
+                  //       setState(() {
+                  //         carouselController.jumpToPage(0);
+                  //       });
+                  //     }),
+                  // GrandButton(
+                  //     weigth: isMobile(context) ? 50 : 120,
+                  //     labelButton: "Otros Parámetros",
+                  //     onPress: () {
+                  //       setState(() {
+                  //         carouselController.jumpToPage(1);
+                  //       });
+                  //     })
                 ],
               ),
               Expanded(
@@ -772,21 +768,21 @@ class _GestionVentilacionesState extends State<GestionVentilaciones> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "ID : ${snapshot.data[posicion]['ID_Bala'].toString()}",
+                            "ID : ${snapshot.data[posicion]['ID_Ventilacion'].toString()}",
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.grey,
                                 fontSize: 12),
                           ),
                           Text(
-                            "${snapshot.data[posicion]['Pace_bala_Fecha']}",
+                            "${snapshot.data[posicion]['Feca_VEN']}",
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.grey,
                                 fontSize: 14),
                           ),
                           Text(
-                            "${snapshot.data[posicion]['Pace_bala_time']}",
+                            "${snapshot.data[posicion]['VM_Mod']}",
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.grey,
@@ -863,7 +859,7 @@ class _GestionVentilacionesState extends State<GestionVentilaciones> {
       Actividades.eliminar(
           Databases.siteground_database_reghosp,
           Ventilaciones.ventilacion['deleteQuery'],
-          snapshot.data[posicion]['ID_Bala']);
+          snapshot.data[posicion]['ID_Ventilacion']);
       setState(() {
         snapshot.data.removeAt(posicion);
       });
