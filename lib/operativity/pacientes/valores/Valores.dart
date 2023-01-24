@@ -178,6 +178,8 @@ class Valores {
     urea = double.parse(json['Urea'] ?? '0');
     creatinina = double.parse(json['Creatinina'] ?? '0');
     acidoUrico = double.parse(json['Acido_Urico'] ?? '0');
+    //
+    sodio = double.parse(json['Sodio'] ?? '0');
   }
   static String get numeroExpediente =>
       '${Valores.numeroPaciente} ${Valores.agregadoPaciente}';
@@ -190,30 +192,34 @@ class Valores {
   static double get requerimientoHidrico =>
       (pesoCorporalTotal! * constanteRequerimientos);
   static double get aguaCorporalTotal {
-    if (sexo == "Masculino") {
-      return 0.60 * pesoCorporalTotal!;
-    } else if (sexo == "Femenino") {
-      return 0.55 * pesoCorporalTotal!;
+    if (Valores.pesoCorporalTotal != 0 && Valores.pesoCorporalTotal != null) {
+      if (sexo == "Masculino") {
+        return 0.60 * pesoCorporalTotal!;
+      } else if (sexo == "Femenino") {
+        return 0.55 * pesoCorporalTotal!;
+      } else {
+        return 0.60 * pesoCorporalTotal!;
+      }
     } else {
-      return 0.60 * pesoCorporalTotal!;
+      return double.nan;
     }
   }
 
   static double get excesoAguaLibre {
-    if (Valores.sodio != 0 || Valores.sodio == null) {
+    if (Valores.sodio != 0 && Valores.sodio != null) {
       return (Valores.aguaCorporalTotal) *
           ((1) - (140 / Valores.sodio!)); // Delta H2O Resultado en Litros.
     } else {
-      return 0.0;
+      return double.nan;
     }
   }
 
   static double get deficitAguaCorporal {
-    if (Valores.sodio != 0 || Valores.sodio == null) {
+    if (Valores.sodio != 0 && Valores.sodio != null) {
       return ((Valores.aguaCorporalTotal) *
           ((Valores.sodio! - 140.00) / 140.00)); // Deficit de Agua Corporal
     } else {
-      return 0.0;
+      return double.nan;
     }
   }
 
@@ -228,10 +234,22 @@ class Valores {
     }
   }
 
-  static double get osmolaridadSerica =>
-      ((2 * (Valores.sodio! + Valores.potasio!)) +
+  static double get osmolaridadSerica {
+    if (Valores.sodio != 0 &&
+        Valores.sodio != null &&
+        Valores.potasio != 0 &&
+        Valores.potasio != null &&
+        Valores.glucosa != 0 &&
+        Valores.glucosa != null &&
+        Valores.urea != 0 &&
+        Valores.urea != null) {
+      return ((2 * (Valores.sodio! + Valores.potasio!)) +
           (Valores.glucosa! / 18) +
           (Valores.urea! / 2.8));
+    } else {
+      return double.nan;
+    }
+  }
 
   static double get brechaOsmolar => (290.00 - (Valores.osmolaridadSerica));
 
@@ -246,12 +264,16 @@ class Valores {
   static double get VS => aguaCorporalTotal * 0.037;
 
   static double get DSO {
-    if (Valores.sodio! < 120) {
-      return 120 - Valores.sodio!;
-    } else if (Valores.sodio! > 120 && Valores.sodio! < 120) {
-      return (130 - Valores.sodio!) * aguaCorporalTotal;
-    } else if (Valores.sodio! > 130) {
-      return 120 - Valores.sodio!;
+    if (Valores.sodio != 0 && Valores.sodio != null) {
+      if (Valores.sodio! < 120) {
+        return 120 - Valores.sodio!;
+      } else if (Valores.sodio! > 120 && Valores.sodio! < 120) {
+        return (130 - Valores.sodio!) * aguaCorporalTotal;
+      } else if (Valores.sodio! > 130) {
+        return 120 - Valores.sodio!;
+      } else {
+        return 0.0;
+      }
     } else {
       return 0.0;
     }
@@ -269,8 +291,17 @@ class Valores {
   static double get VIF =>
       RES + ((140 - Valores.sodio!) / (aguaCorporalTotal + 1.0));
 
-  static double get sodioCorregidoGlucosa =>
-      (Valores.sodio! + ((1.65 * Valores.glucosa! - 100) / 100));
+  static double get sodioCorregidoGlucosa {
+    if (Valores.sodio != 0 &&
+        Valores.sodio != null &&
+        Valores.glucosa != 0 &&
+        Valores.glucosa != null) {
+      return (Valores.sodio! + ((1.65 * Valores.glucosa! - 100) / 100));
+    } else {
+      return double.nan;
+    }
+  }
+
   static double get globulinasSericas =>
       (Valores.proteinasTotales! - Valores.albuminaSerica!);
   static double get CAC {

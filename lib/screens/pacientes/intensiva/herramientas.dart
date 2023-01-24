@@ -1,7 +1,10 @@
 import 'package:assistant/screens/pacientes/intensiva/contenidos/balances.dart';
+import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
+import 'package:assistant/screens/pacientes/intensiva/contenidos/hidricos.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/ventilaciones.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/CrossLine.dart';
+import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandLabel.dart';
 import 'package:assistant/widgets/RoundedPanel.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
@@ -9,6 +12,7 @@ import 'package:flutter/material.dart';
 
 class Intensiva extends StatefulWidget {
   int? numActivity = 0;
+  int? actualView = 0;
 
   Intensiva({Key? key}) : super(key: key);
 
@@ -47,14 +51,15 @@ class _IntensivaState extends State<Intensiva> {
               child: listOfActivities(numActivity: widget.numActivity!)),
           Expanded(
               flex: 9,
-              child: Padding(
+              child: Container(
                 padding: const EdgeInsets.all(8.0),
-                child: RoundedPanel(),
+                child: RoundedPanel(child: getView(widget.actualView!)),
               )),
         ],
       ),
     );
   }
+
   //
   Padding firstContent() {
     return Padding(
@@ -88,10 +93,39 @@ class _IntensivaState extends State<Intensiva> {
                   GrandLabel(
                     labelButton: 'Concentraciones y Diluciones',
                     onPress: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => GestionBalances()));
+                      showDialog(
+                          useSafeArea: true,
+                          context: context,
+                          builder: (context) {
+                            return Dialog(
+                                backgroundColor: Colors.black,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Expanded(
+                                          flex: 5, child: Concentraciones()),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(20)),
+                                            border: Border.all(
+                                              color: Colors.grey,
+                                            )),
+                                        child: GrandButton(
+                                          labelButton: 'Cerrar',
+                                          onPress: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ));
+                          });
                     },
                   ),
                   const CrossLine(),
@@ -159,100 +193,89 @@ class _IntensivaState extends State<Intensiva> {
                   GrandLabel(
                     labelButton: 'Análisis Hidrico',
                     onPress: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => GestionBalances()));
+                      setState(() {
+                        widget.actualView = 1;
+                      });
                     },
                   ),
                   GrandLabel(
                     labelButton: 'Análisis Metabólico',
                     onPress: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => GestionBalances()));
+                      setState(() {
+                        widget.actualView = 2;
+                      });
                     },
                   ),
                   GrandLabel(
                     labelButton: 'Análisis Antropométrico',
                     onPress: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => GestionBalances()));
+                      setState(() {
+                        widget.actualView = 3;
+                      });
                     },
                   ),
                   GrandLabel(
                     labelButton: 'Análisis Cardiovascular',
                     onPress: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => GestionBalances()));
+                      setState(() {
+                        widget.actualView = 4;
+                      });
                     },
                   ),
                   GrandLabel(
                     labelButton: 'Análisis Ventilatorio',
                     onPress: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => GestionBalances()));
+                      setState(() {
+                        widget.actualView = 5;
+                      });
                     },
                   ),
                   GrandLabel(
                     labelButton: 'Análisis Gasométrico',
                     onPress: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => GestionBalances()));
+                      setState(() {
+                        widget.actualView = 5;
+                      });
                     },
                   ),
                   GrandLabel(
                     labelButton: 'Análisis Cerebrovascular',
                     onPress: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => GestionBalances()));
+                      setState(() {
+                        widget.actualView = 6;
+                      });
                     },
                   ),
                   GrandLabel(
                     labelButton: 'Análisis Renal',
                     onPress: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => GestionBalances()));
+                      setState(() {
+                        widget.actualView = 7;
+                      });
                     },
                   ),
                   GrandLabel(
                     labelButton: 'Análisis Sanguíneo Circulante',
                     onPress: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => GestionBalances()));
+                      setState(() {
+                        widget.actualView = 8;
+                      });
                     },
                   ),
                   GrandLabel(
                     labelButton: 'Análisis Pulmonar',
                     onPress: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => GestionBalances()));
+                      setState(() {
+                        widget.actualView = 9;
+                      });
                     },
                   ),
                   GrandLabel(
                     labelButton: 'Edad Corregida',
                     onPress: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => GestionBalances()));
+                      setState(() {
+                        widget.actualView = 10;
+                      });
                     },
                   ),
                 ],
@@ -332,6 +355,22 @@ class _IntensivaState extends State<Intensiva> {
         ),
       ),
     );
+  }
+
+  Widget getView(int actualView) {
+    List list = [
+      Container(),
+      Hidricos(),
+      Container(),
+      Container(),
+      Container(),
+      Container(),
+      Container(),
+      Container(),
+      Container(),
+      Container(),
+    ];
+    return list[actualView];
   }
 }
 

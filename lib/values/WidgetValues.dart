@@ -73,7 +73,7 @@ class Styles {
   static const TextStyle textSyleBold =
       TextStyle(color: Colors.white, fontWeight: FontWeight.bold);
   static const TextStyle textSyle = TextStyle(
-      color: Colors.white, fontWeight: FontWeight.normal, fontSize: 20);
+      color: Colors.white, fontWeight: FontWeight.normal, fontSize: 14); //
 
   static TextStyle textSyleFailed = const TextStyle(
       color: Colors.red, fontWeight: FontWeight.bold, fontSize: 24);

@@ -23,7 +23,7 @@ class DialogSelector extends StatefulWidget {
     this.keyMapSearch = 'Diagnostico_CIE',
     this.secondaryKeyMap = 'Codigo_CIE',
     this.typeOfDocument = 'json',
-    this.splitChar = "\n",
+    this.splitChar = '\n',
     this.pathForFileSource = 'assets/diccionarios/Cie.json',
     required this.onSelected,
   }) : super(key: key);

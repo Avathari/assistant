@@ -7,13 +7,19 @@ import 'package:flutter/material.dart';
 class ShowText extends StatefulWidget {
   String? title, medida;
   double? data, minVal, maxVal;
+  int? fontSize;
+  bool inRow = false;
   TypeValueShow? typeShow;
+
+  int fractionDigits;
 
   ShowText(
       {super.key,
       this.title,
       this.data,
       this.medida,
+      this.fontSize = 0,
+      this.fractionDigits = 2,
       this.typeShow = TypeValueShow.isNormal,
       this.minVal = 0,
       this.maxVal = 0});
@@ -25,37 +31,20 @@ class ShowText extends StatefulWidget {
 class _ShowTextState extends State<ShowText> {
   @override
   Widget build(BuildContext context) {
-    var height = isMobile(context) ? 4.0 : 7.0;
+    var height = isMobile(context) ? 4.0 : 5.0;
     //
     return RoundedPanel(
-      child: Column(children: [
+        child: Column(
+      children: [
         SizedBox(
           height: height,
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              '${widget.data!} ',
-              style: type,
-            ),
-            Text(
-              widget.medida!,
-              style: Styles.textSyle,
-            ),
-          ],
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: component(),
         ),
-        Text(
-          widget.title!,
-          textAlign: TextAlign.center,
-          style: Styles.textSyleBold,
-        ),
-        // const CrossLine(),
-        // SizedBox(
-        //   height: height,
-        // ),
-      ]),
-    );
+      ],
+    ));
   }
 
   TextStyle get type {
@@ -85,6 +74,26 @@ class _ShowTextState extends State<ShowText> {
       default:
     }
     return style;
+  }
+
+  component() {
+    return [
+      Text(
+        widget.title!,
+        textAlign: TextAlign.center,
+        style: Styles.textSyleBold,
+      ),
+      Text(
+        '${widget.data!.toStringAsFixed(widget.fractionDigits)} ',
+        textAlign: TextAlign.end,
+        style: type,
+      ),
+      Text(
+        widget.medida!,
+        style: Styles.textSyle,
+      ),
+
+    ];
   }
 }
 

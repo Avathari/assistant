@@ -509,7 +509,6 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
   String updateQuery = Pacientes.pacientes['updateQuery'];
 
   int idOperation = 0;
-  bool _isObscure = true;
 
   final numeroPacienteTextController = TextEditingController();
   final agregadoPacienteTextController = TextEditingController();
@@ -529,9 +528,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
 
   final escolaridadEspecificacionTextController = TextEditingController();
   final religionTextController = TextEditingController();
-
   final ocupacionTextController = TextEditingController();
-
   final edadTextController = TextEditingController();
 
   final rfcTextController = TextEditingController();
@@ -1289,6 +1286,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       drawer: isMobile(context) ? drawerHome(context) : null,
       appBar: AppBar(
           leading: isTabletAndDesktop(context)
@@ -1398,7 +1396,9 @@ class _VisualPacientesState extends State<VisualPacientes> {
         flex: 2,
         child: isTablet(context) ? sideBarTablet() : sideBarDesktop(),
       ),
-      Expanded(flex: 7, child: pantallasAuxiliares(widget.actualPage)),
+      Expanded(
+          flex: 7,
+          child: pantallasAuxiliares(widget.actualPage)),
     ]);
   }
 

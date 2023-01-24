@@ -148,7 +148,13 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
   Column sideLeft() {
     return Column(
       children: [
-        const PresentacionPacientes(),
+        isMobile(context)
+            ? const PresentacionPacientesSimple()
+            : isTabletAndDesktop(context)
+                ? const PresentacionPacientesSimple()
+                : isDesktop(context)
+                    ? const PresentacionPacientes()
+                    :  Container(),
         const CrossLine(),
         TittlePanel(textPanel: "Tipo de Nota Médica"),
         Expanded(

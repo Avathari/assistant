@@ -88,18 +88,31 @@ class Archivos {
 
   static Future<List<dynamic>> listFromText(
       {required String path, required String splitChar}) async {
-    var file = File(path), contents;
-    List<dynamic> _list = [];
-
+    // var file = File(path), contents;
+    var file, contents;
     //
-    if (await file.exists()) {
-      contents = await file.readAsString();
+    List<dynamic> _list = [];
+    //
+    if (Platform.isAndroid) {
+      contents = await rootBundle.loadString(path);
+      print("${file.runtimeType} :: $file");
       for (var elem in contents.split(splitChar)) {
         _list.add(elem);
       }
     } else {
-      throw "No existe el archivo $path";
+      file = File(path);
+      //
+      if (await file.exists()) {
+        contents = await file.readAsString();
+        for (var elem in contents.split(splitChar)) {
+          _list.add(elem);
+        }
+      } else {
+        throw "No existe el archivo $path";
+      }
     }
+    print(_list);
+    //
     return _list;
   }
 }

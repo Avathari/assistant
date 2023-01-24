@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart' show BuildContext, MediaQuery;
 
 bool isMobile(BuildContext context) {
-  return MediaQuery.of(context).size.width < tabletSmall; // tabletSmall;
+  return MediaQuery.of(context).size.width < mobileNormal; // tabletSmall;
+}
+
+bool isMobileAndTablet(context) {
+  return MediaQuery.of(context).size.width <= tabletSmall;
 }
 
 bool isTablet(BuildContext context) {
   return MediaQuery.of(context).size.width >= tabletSmall &&
-      MediaQuery.of(context).size.width <= tabletExtraLarge; //tabletExtraLarge;
-}
-
-bool isDesktop(BuildContext context) {
-  return MediaQuery.of(context).size.width > desktopMedium;
+      MediaQuery.of(context).size.width <= tabletLarge; //tabletExtraLarge;
 }
 
 bool isTabletAndDesktop(BuildContext context) {
-  return MediaQuery.of(context).size.width > tabletLarge &&
-      MediaQuery.of(context).size.width <= desktopExtraLarge;
+  return MediaQuery.of(context).size.width > tabletSmall &&
+      MediaQuery.of(context).size.width <= desktopNormal;
 }
 
-bool isMobileAndTablet(context) {
-  return MediaQuery.of(context).size.width <= tabletLarge;
+bool isDesktop(BuildContext context) {
+  print(
+      "MediaQuery.of(context).size.width  ${MediaQuery.of(context).size.width}");
+  return MediaQuery.of(context).size.width > desktopNormal;
 }
 
 //Mobile size
@@ -36,7 +38,8 @@ double get tabletExtraLarge => 900;
 
 //desktop size
 double get desktopSmall => 950;
-double get desktopMedium => 1100;
-double get desktopNormal => 1920;
+double get desktopMedium => 1200;
+double get desktopNormal => 1500;
+double get desktopIntermedium => 1990;
 double get desktopLarge => 3840;
 double get desktopExtraLarge => 4096;

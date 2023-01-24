@@ -4,17 +4,13 @@ import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/vitales/vitales.dart';
 import 'package:assistant/values/SizingInfo.dart';
-import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/ChartLine.dart';
 
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/ImageDialog.dart';
 import 'package:assistant/widgets/RoundedPanel.dart';
-import 'package:assistant/widgets/ShowValues.dart';
 import 'package:assistant/widgets/ThreeLabelText.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
-import 'package:assistant/widgets/WidgetsModels.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class PresentacionPacientes extends StatefulWidget {
@@ -110,6 +106,89 @@ class _PresentacionPacientesState extends State<PresentacionPacientes> {
             ],
           ),
         ]));
+  }
+}
+
+class PresentacionPacientesSimple extends StatefulWidget {
+  const PresentacionPacientesSimple({super.key});
+
+  @override
+  State<PresentacionPacientesSimple> createState() =>
+      _PresentacionPacientesSimpleState();
+}
+
+class _PresentacionPacientesSimpleState
+    extends State<PresentacionPacientesSimple> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.all(6.0),
+        child: GestureDetector(
+          onTap: () {
+            showDialog(
+                context: context,
+                builder: (context) => ImageDialog(
+                    tittle: Pacientes.nombreCompleto,
+                    stringImage: Pacientes.Paciente['Pace_FIAT'],
+                    onClose: () {
+                      Navigator.of(context).pop();
+                    }));
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10.0, top: 10.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "${Pacientes.Paciente['Pace_Ape_Pat']} ${Pacientes.Paciente['Pace_Ape_Mat']} \n"
+                  "${Pacientes.Paciente['Pace_Nome_PI']} ${Pacientes.Paciente['Pace_Nome_SE']}",
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.white,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Text(
+                  "${Pacientes.Paciente['Pace_NSS']} ${Pacientes.Paciente['Pace_AGRE']}",
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.white,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Text(
+                  "Edad: ${Pacientes.Paciente['Pace_Eda'].toString()} Años",
+                  style: const TextStyle(
+                    fontSize: 10,
+                    color: Colors.white,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                  child: CrossLine(),
+                ),
+                Text(
+                  "Estado actual: ${Pacientes.Paciente['Pace_Stat']}",
+                  style: const TextStyle(
+                    fontSize: 10,
+                    color: Colors.white,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Text(
+                  "Turno de Atención: ${Pacientes.Paciente['Pace_Turo']}",
+                  style: const TextStyle(
+                    fontSize: 10,
+                    color: Colors.white,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ));
   }
 }
 
