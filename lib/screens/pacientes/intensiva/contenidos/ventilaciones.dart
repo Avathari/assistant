@@ -51,7 +51,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
   List<dynamic>? listOfValues;
 
   var fechaRealizacionTextController = TextEditingController();
-  var modoVentilatorioValue = Ventilaciones.actualDiagno[0];
+  String? modoVentilatorioValue = Ventilaciones.actualDiagno[0];
 
   var volTidalTextController = TextEditingController();
   var peepTextController = TextEditingController();
@@ -113,7 +113,8 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
               Ventilaciones.Ventilacion['Pace_Pc'].toString();
           pMaximaTextController.text =
               Ventilaciones.Ventilacion['Pace_Pm'].toString();
-          volTidalEspTextController.text = Ventilaciones.Ventilacion['Pace_V'].toString();
+          volTidalEspTextController.text =
+              Ventilaciones.Ventilacion['Pace_V'].toString();
           flujoTextController.text =
               Ventilaciones.Ventilacion['Pace_F'].toString();
           pSoporteTextController.text =
@@ -122,6 +123,8 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
               Ventilaciones.Ventilacion['Pace_Pmet'].toString();
           pInspirattoriaTextController.text =
               Ventilaciones.Ventilacion['Pace_Pip'].toString();
+
+          selectModal();
         });
         super.initState();
         break;
@@ -164,27 +167,15 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Spinner(
-                    width: 200,
+                    width: isTabletAndDesktop(context) ? 200 : 400,
                     tittle: 'M. Ventilatorio',
                     onChangeValue: (value) {
                       setState(() {
                         modoVentilatorioValue = value;
-
-                        int index = Ventilaciones.actualDiagno.indexOf(modoVentilatorioValue);
-                        // print(index);
-                        if (index == 1 || index == 2) {
-                          widget.actualView = 1;
-                        } else if (index == 3 || index == 4) {
-                          widget.actualView = 2;
-                        } else if (index == 5 || index == 6) {
-                          widget.actualView = 3;
-                        } else {
-                          widget.actualView = 0;
-                        }
-                        //
+                        selectModal();
                       });
                     },
-                    items:  Ventilaciones.actualDiagno,
+                    items: Ventilaciones.actualDiagno,
                     initialValue: modoVentilatorioValue,
                   ),
                   // GrandButton(
@@ -209,18 +200,32 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        child: SingleChildScrollView(controller:ScrollController(),child: Column(children: component(context),))),
+                          child: SingleChildScrollView(
+                              controller: ScrollController(),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: component(context),
+                              ))),
                       Expanded(
-                          child: SingleChildScrollView(controller:ScrollController(),child: Column(children: getView(widget.actualView),))),
+                          child: SingleChildScrollView(
+                              controller: ScrollController(),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: getView(widget.actualView),
+                              ))),
                     ],
                   ),
                 ),
               ),
-              GrandButton(labelButton:widget._operationButton, onPress:() {
-                operationMethod(context);
-              })
+              GrandButton(
+                  labelButton: widget._operationButton,
+                  onPress: () {
+                    operationMethod(context);
+                  })
             ],
           ),
         ),
@@ -230,56 +235,56 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
 
   DeskTopView() {
     return Container();
-}
+  }
+
   MobileView() {
-    return Container(child: CarouselSlider(
-        items: [
-          SingleChildScrollView(
-              controller: ScrollController(),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GridLayout(
-                  childAspectRatio: isMobile(context)
-                      ? 5.0
-                      : isTablet(context)
-                      ? 6.0
-                      : 4.0,
-                  columnCount: isMobile(context)
-                      ? 1
-                      : isTablet(context)
-                      ? 2
-                      : 2,
-                  children: component(context),
-                ),
-              )),
-          SingleChildScrollView(
-              controller: ScrollController(),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GridLayout(
-                  childAspectRatio: isMobile(context)
-                      ? 5
-                      : isTablet(context)
-                      ? 6.0
-                      : 5.0,
-                  columnCount: isMobile(context)
-                      ? 1
-                      : isTablet(context)
-                      ? 2
-                      : 2,
-                  children: component(context),
-                ),
-              ))
-        ],
-        carouselController: carouselController,
-        options: CarouselOptions(
-            height: 500,
-            enableInfiniteScroll: false,
-            viewportFraction: 1.0)),
+    return Container(
+      child: CarouselSlider(
+          items: [
+            SingleChildScrollView(
+                controller: ScrollController(),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GridLayout(
+                    childAspectRatio: isMobile(context)
+                        ? 5.0
+                        : isTablet(context)
+                            ? 6.0
+                            : 4.0,
+                    columnCount: isMobile(context)
+                        ? 1
+                        : isTablet(context)
+                            ? 2
+                            : 2,
+                    children: component(context),
+                  ),
+                )),
+            SingleChildScrollView(
+                controller: ScrollController(),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GridLayout(
+                    childAspectRatio: isMobile(context)
+                        ? 5
+                        : isTablet(context)
+                            ? 6.0
+                            : 5.0,
+                    columnCount: isMobile(context)
+                        ? 1
+                        : isTablet(context)
+                            ? 2
+                            : 2,
+                    children: component(context),
+                  ),
+                ))
+          ],
+          carouselController: carouselController,
+          options: CarouselOptions(
+              height: 500, enableInfiniteScroll: false, viewportFraction: 1.0)),
     );
   }
 
-  List<Widget> getView (int actualView) {
+  List<Widget> getView(int actualView) {
     List<List<Widget>> list = [
       [const Text('Ninguna modalidad ventilatoria')],
       presionComponent(context),
@@ -289,6 +294,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
     ];
     return list[actualView];
   }
+
   List<Widget> component(BuildContext context) {
     return [
       EditTextArea(
@@ -335,7 +341,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         textController: sensEspTextController,
         numOfLines: 1,
       ),
-      
+
       const CrossLine(),
     ];
   }
@@ -434,7 +440,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
       const CrossLine(),
     ];
   }
-  
+
   List<Widget> espontaneoComponent(BuildContext context) {
     return [
       EditTextArea(
@@ -538,6 +544,34 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
             }, () {});
           });
     }
+  }
+
+  void selectModal() {
+    int index = Ventilaciones.actualDiagno.indexOf(modoVentilatorioValue!);
+    // print(index);
+    switch (index) {
+      case 1:
+        widget.actualView = 1;
+        break;
+      case 2:
+        widget.actualView = 2;
+        break;
+      case 3:
+        widget.actualView = 3;
+        break;
+      case 4:
+        widget.actualView = 3;
+        break;
+      case 5:
+        widget.actualView = 4;
+        break;
+      case 6:
+        widget.actualView = 4;
+        break;
+      default:
+      widget.actualView = 0;
+    }
+    //
   }
 
   void onClose(BuildContext context) {
@@ -737,11 +771,15 @@ class _GestionVentilacionesState extends State<GestionVentilaciones> {
             ],
           ),
         ),
-        isDesktop(context)
+        isTabletAndDesktop(context)
             ? widget.actualSidePage != null
                 ? Expanded(flex: 2, child: widget.actualSidePage!)
                 : Expanded(flex: 1, child: Container())
-            : Container()
+            : isDesktop(context)
+                ? widget.actualSidePage != null
+                    ? Expanded(flex: 2, child: widget.actualSidePage!)
+                    : Expanded(flex: 1, child: Container())
+                : Container()
       ]),
     );
   }
@@ -869,7 +907,7 @@ class _GestionVentilacionesState extends State<GestionVentilaciones> {
   }
 
   void toOperaciones(BuildContext context, String operationActivity) {
-    if (isDesktop(context)) {
+    if (isTabletAndDesktop(context) || isDesktop(context)) {
       Constantes.operationsActividad = operationActivity;
       Constantes.reinit(value: foundedItems!);
       _pullListRefresh();
