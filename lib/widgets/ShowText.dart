@@ -8,7 +8,7 @@ class ShowText extends StatefulWidget {
   String? title, medida;
   double? data, minVal, maxVal;
   int? fontSize;
-  bool inRow = false;
+  bool inRow;
   TypeValueShow? typeShow;
 
   int fractionDigits;
@@ -18,6 +18,7 @@ class ShowText extends StatefulWidget {
       this.title,
       this.data,
       this.medida,
+      this.inRow = true,
       this.fontSize = 0,
       this.fractionDigits = 2,
       this.typeShow = TypeValueShow.isNormal,
@@ -39,10 +40,15 @@ class _ShowTextState extends State<ShowText> {
         SizedBox(
           height: height,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: component(),
-        ),
+        widget.inRow
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: component(),
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: component(),
+              )
       ],
     ));
   }
@@ -80,6 +86,7 @@ class _ShowTextState extends State<ShowText> {
     return [
       Text(
         widget.title!,
+        overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.center,
         style: Styles.textSyleBold,
       ),
@@ -92,7 +99,6 @@ class _ShowTextState extends State<ShowText> {
         widget.medida!,
         style: Styles.textSyle,
       ),
-
     ];
   }
 }

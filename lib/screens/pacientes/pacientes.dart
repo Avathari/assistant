@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 
@@ -16,6 +17,7 @@ import 'package:assistant/screens/pacientes/reportes/reportes.dart';
 
 import 'package:assistant/screens/pacientes/vitales/vitales.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
+import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/GridLayout.dart';
 import 'package:assistant/widgets/LoadingScreen.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
@@ -102,6 +104,9 @@ class _GestionPacientesState extends State<GestionPacientes> {
           ),
           title: const Text(Sentences.app_pacientes_tittle),
           actions: <Widget>[
+            isMobile(context) ? GrandIcon(iconData: Icons.bar_chart,onPress: () {
+              Operadores.openActivity(context: context, chyldrim: const EstadisticasPacientes());
+            }) : Container(),
             IconButton(
               icon: const Icon(
                 Icons.replay_outlined,
@@ -1291,7 +1296,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      drawer: isMobile(context) ? drawerHome(context) : null,
+      drawer: isMobile(context) || isTablet(context) ? drawerHome(context) : null,
       appBar: AppBar(
           leading: isTabletAndDesktop(context)
               ? IconButton(
@@ -1357,7 +1362,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
                       });
                 }),
           ]),
-      body: isMobile(context) ? mobileView() : desktopView(),
+      body: isMobile(context) || isTablet(context) ? mobileView() : desktopView(),
       // Row(children: [
       //   Expanded(
       //     flex: isTabletAndDesktop(context)
@@ -1385,7 +1390,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
   }
 
   Row mobileView() {
-    return Row(children: [
+    return Row(crossAxisAlignment: CrossAxisAlignment.start,children: [
       Expanded(
         flex: 0,
         child: Container(),
@@ -1407,7 +1412,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
   }
 
   void toNextScreen({context, int? index, screen}) {
-    if (isMobileAndTablet(context)) {
+    if (isMobile(context) || isTablet(context)) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => screen));
     } else {
       setState(() {
@@ -1732,6 +1737,9 @@ class _VisualPacientesState extends State<VisualPacientes> {
           style: TextStyle(fontSize: Font.fontTileSize, color: Colors.grey),
         ),
         onTap: () {
+          if (isMobile(context) || isTablet(context)) {
+            Navigator.of(context).pop();
+          }
           // Update the state of the app
           toNextScreen(
               context: context,
@@ -1750,7 +1758,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
             style: TextStyle(fontSize: Font.fontTileSize, color: Colors.grey)),
         onTap: () {
           // Update the state of the app
-          if (isMobileAndTablet(context)) {
+          if (isMobile(context) || isTablet(context)) {
             Navigator.of(context).pop();
           }
           setState(() {
@@ -1766,6 +1774,9 @@ class _VisualPacientesState extends State<VisualPacientes> {
         title: const Text('Registro de Signos Vitales',
             style: TextStyle(fontSize: Font.fontTileSize, color: Colors.grey)),
         onTap: () {
+          if (isMobile(context) || isTablet(context)) {
+            Navigator.of(context).pop();
+          }
           // Update the state of the app
           toNextScreen(
               context: context, index: 3, screen: const GestionVitales());
@@ -1779,6 +1790,9 @@ class _VisualPacientesState extends State<VisualPacientes> {
         title: const Text('Registro de Consultas',
             style: TextStyle(fontSize: Font.fontTileSize, color: Colors.grey)),
         onTap: () {
+          if (isMobile(context) || isTablet(context)) {
+            Navigator.of(context).pop();
+          }
           // Update the state of the app
           setState(() {
             widget.actualPage = 4;
@@ -1793,7 +1807,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
         title: const Text('Auxiliares Diagnósticos',
             style: TextStyle(fontSize: Font.fontTileSize, color: Colors.grey)),
         onTap: () {
-          if (isMobileAndTablet(context)) {
+          if (isMobile(context) || isTablet(context)) {
             Navigator.of(context).pop();
           }
           // Update the state of the app
@@ -1811,7 +1825,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
         title: const Text('Herramientas de Terapia Intensiva',
             style: TextStyle(fontSize: Font.fontTileSize, color: Colors.grey)),
         onTap: () {
-          if (isMobileAndTablet(context)) {
+          if (isMobile(context) || isTablet(context)) {
             Navigator.of(context).pop();
           }
           // Update the state of the app
@@ -1840,7 +1854,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
         title: const Text('Archivos y Documentos',
             style: TextStyle(fontSize: Font.fontTileSize, color: Colors.grey)),
         onTap: () {
-          if (isMobileAndTablet(context)) {
+          if (isMobile(context) || isTablet(context)) {
             Navigator.of(context).pop();
           }
           // Update the state of the app
@@ -1857,7 +1871,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
         title: const Text('Registro de Hospitalización',
             style: TextStyle(fontSize: Font.fontTileSize, color: Colors.grey)),
         onTap: () {
-          if (isMobileAndTablet(context)) {
+          if (isMobile(context) || isTablet(context)) {
             Navigator.of(context).pop();
           }
           // Update the state of the app
@@ -1874,7 +1888,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
         title: const Text('Licencias Médicas',
             style: TextStyle(fontSize: Font.fontTileSize, color: Colors.grey)),
         onTap: () {
-          if (isMobileAndTablet(context)) {
+          if (isMobile(context) || isTablet(context)) {
             Navigator.of(context).pop();
           }
           // Update the state of the app
@@ -1891,7 +1905,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
         title: const Text('Registro de Embarazos',
             style: TextStyle(fontSize: Font.fontTileSize, color: Colors.grey)),
         onTap: () {
-          if (isMobileAndTablet(context)) {
+          if (isMobile(context) || isTablet(context)) {
             Navigator.of(context).pop();
           }
           // Update the state of the app
@@ -1965,15 +1979,41 @@ class _EstadisticasPacientesState extends State<EstadisticasPacientes> {
               ),
             ),
             Expanded(
-              flex: 1,
-              child: Row(
+              flex: isMobile(context) ? 2:1,
+              child: isTablet(context) || isMobile(context) ? Column(
                 children: [
                   Flexible(
                       flex: 2,
                       child: data['Total_Pacientes'] != 0
                           ? PieChart(PieChartData(
-                              sections:
-                                  listChartSections(data['Total_Pacientes'])))
+                          sections:
+                          listChartSections(data['Total_Pacientes'])))
+                          : Container()),
+                  Flexible(
+                      flex: 3,
+                      child: SingleChildScrollView(
+                        controller: ScrollController(),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            tileStat(Icons.person, "Total de Pacientes",
+                                data['Total_Pacientes']),
+                            tileStat(Icons.person_add_outlined,
+                                "Total de Activos", data['Total_Vivos']),
+                            tileStat(Icons.person_off_outlined,
+                                "Total de Fallecidos", data['Total_Fallecidos'])
+                          ],
+                        ),
+                      ))
+                ],
+              ) : Row(
+                children: [
+                  Flexible(
+                      flex: 2,
+                      child: data['Total_Pacientes'] != 0
+                          ? PieChart(PieChartData(
+                          sections:
+                          listChartSections(data['Total_Pacientes'])))
                           : Container()),
                   Flexible(
                       flex: 3,

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:assistant/conexiones/conexiones.dart';
+import 'package:assistant/widgets/GrandButton.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 
@@ -154,5 +155,41 @@ class Directorios {
 class Opciones {
   static List<String> horarios() {
     return ['2', '4', '8', '10', '12', '16', '24'];
+  }
+}
+
+class Operadores {
+  static void openActivity(
+      {required BuildContext context, required Widget chyldrim}) {
+    showDialog(
+        useSafeArea: true,
+        context: context,
+        builder: (context) {
+          return Dialog(
+              backgroundColor: Colors.black,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(flex: 5, child: chyldrim),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20)),
+                          border: Border.all(
+                            color: Colors.grey,
+                          )),
+                      child: GrandButton(
+                        labelButton: 'Cerrar',
+                        onPress: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ));
+        });
   }
 }

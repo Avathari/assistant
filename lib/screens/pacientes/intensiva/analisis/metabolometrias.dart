@@ -123,23 +123,28 @@ class _MetabolicosState extends State<Metabolicos> {
                   SingleChildScrollView(
                     controller: ScrollController(),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ShowText(
+                          inRow: false,
                           title: 'Gasto Energético Basal',
                           data: Valores.gastoEnergeticoBasal,
                           medida: 'kCal/Día',
                         ),
                         ShowText(
+                          inRow: false,
                           title: 'Metabolismo Basal',
                           data: Valores.metabolismoBasal,
                           medida: 'kCal/Día',
                         ),
                         ShowText(
+                          inRow: false,
                           title: 'Efecto Térmico de los Alimentos',
                           data: Valores.efectoTermicoAlimentos,
                           medida: 'kCal/Día',
                         ),
                         ShowText(
+                          inRow: false,
                           title: 'Gasto Energético Total',
                           data: Valores.gastoEnergeticoTotal,
                           medida: 'kCal/Día',
@@ -150,7 +155,7 @@ class _MetabolicosState extends State<Metabolicos> {
                   ),
                   SingleChildScrollView(
                     controller: ScrollController(),
-                    child: isMobile(context)? Row(children: [
+                    child: isMobile(context) || isTablet(context) ? Column(children: [
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [

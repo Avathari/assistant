@@ -154,7 +154,7 @@ class _HidricosState extends State<Hidricos> {
                     controller: ScrollController(),
                     child: Column(
                       children: [
-                        isMobile(context) ?
+                        isMobile(context) || isTablet(context)?
                         Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

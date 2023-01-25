@@ -12,6 +12,7 @@ import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
+import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/GridLayout.dart';
 import 'package:assistant/widgets/ScrollableWidget.dart';
 import 'package:assistant/widgets/Spinner.dart';
@@ -544,44 +545,63 @@ class _ElectrocardiogramasGestionState
         backgroundColor: Theming.primaryColor,
         actions: isMobile(context)
             ? <Widget>[
-                IconButton(
-                  icon: const Icon(
-                    Icons.candlestick_chart,
-                  ),
-                  tooltip: 'Análisis de Parámetros',
-                  onPressed: () {
+                GrandIcon(
+                  iconData: Icons.dataset_linked_outlined,
+                  labelButton: "Registro de electrocardiogramas",
+                  onPress: () {
+                    carouselController.jumpToPage(0);
+                  },
+                ),
+                GrandIcon(
+                  iconData: Icons.browser_updated,
+                  labelButton: "Gestion del Registro",
+                  onPress: () {
+                    carouselController.jumpToPage(1);
+                  },
+                ),
+                GrandIcon(
+                  iconData: Icons.candlestick_chart,
+                  labelButton: 'Análisis de Parámetros',
+                  onPress: () {
                     openActivity(AnalisisElectrocardiograma(
                         operationActivity: operationActivity));
                   },
-                )
+                ),
               ]
-            : null,
+            : isTablet(context)
+                ? <Widget>[
+                    GrandIcon(
+                      iconData: Icons.dataset_linked_outlined,
+                      labelButton: "Registro de electrocardiogramas",
+                      onPress: () {
+                        carouselController.jumpToPage(0);
+                      },
+                    ),
+                    GrandIcon(
+                      iconData: Icons.browser_updated,
+                      labelButton: "Gestion del Registro",
+                      onPress: () {
+                        carouselController.jumpToPage(1);
+                      },
+                    ),
+                    GrandIcon(
+                      iconData: Icons.candlestick_chart,
+                      labelButton: 'Análisis de Parámetros',
+                      onPress: () {
+                        openActivity(AnalisisElectrocardiograma(
+                            operationActivity: operationActivity));
+                      },
+                    ),
+                  ]
+                : null,
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: isMobile(context)
-                ? Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      GrandButton(
-                          labelButton: "Registro de electrocardiogramas",
-                          onPress: () {
-                            carouselController.jumpToPage(0);
-                          }),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      GrandButton(
-                          labelButton: "Gestion del Registro",
-                          onPress: () {
-                            carouselController.jumpToPage(1);
-                          }),
-                    ],
-                  )
-                : Row(
+          isMobile(context)
+              ? Container()
+              : Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       GrandButton(
@@ -596,15 +616,15 @@ class _ElectrocardiogramasGestionState
                           onPress: () {
                             carouselController.jumpToPage(1);
                           }),
-                      GrandButton(
-                          weigth: 100,
-                          labelButton: "Gestion del Registro",
-                          onPress: () {
-                            carouselController.jumpToPage(2);
-                          }),
+                      // GrandButton(
+                      //     weigth: 100,
+                      //     labelButton: "Gestion del Registro",
+                      //     onPress: () {
+                      //       carouselController.jumpToPage(2);
+                      //     }),
                     ],
                   ),
-          ),
+                ),
           Expanded(
             child: Row(
               children: [
@@ -613,7 +633,13 @@ class _ElectrocardiogramasGestionState
                   child: CarouselSlider(
                     carouselController: carouselController,
                     options: CarouselOptions(
-                        height: 500,
+                        height: isMobile(context)
+                            ? 700
+                            : isTablet(context)
+                                ? 1000
+                                : isDesktop(context)
+                                    ? 900
+                                    : 500,
                         enableInfiniteScroll: false,
                         viewportFraction: 1.0),
                     items: [
@@ -681,11 +707,15 @@ class _ElectrocardiogramasGestionState
                                     ),
                                     GridLayout(
                                         childAspectRatio: isTablet(context)
-                                            ? 0.9
-                                            : isTabletAndDesktop(context)
-                                                ? 3.0
-                                                : 0.9,
-                                        columnCount: 2,
+                                            ? 5.0
+                                            : isTablet(context)
+                                                ? 5.0
+                                                : isDesktop(context)
+                                                    ? 5.0
+                                                    : isMobile(context)
+                                                        ? 4.0
+                                                        : 5.0,
+                                        columnCount: isMobile(context) ? 1 : 2,
                                         children: listOfComponents()),
                                     Column(
                                       children: [
@@ -703,10 +733,12 @@ class _ElectrocardiogramasGestionState
                                               MainAxisAlignment.spaceEvenly,
                                           children: [
                                             GrandButton(
+                                                weigth: isMobile(context)
+                                                    ? 30
+                                                    : 100,
                                                 labelButton: operationActivity
                                                     ? "Nuevo"
                                                     : "Eliminar",
-                                                weigth: 100,
                                                 onPress: () {
                                                   if (operationActivity) {
                                                     initAllElement();
@@ -737,12 +769,16 @@ class _ElectrocardiogramasGestionState
                                                 ? Container()
                                                 : GrandButton(
                                                     labelButton: "Nuevo",
-                                                    weigth: 50,
+                                                    weigth: isMobile(context)
+                                                        ? 20
+                                                        : 100,
                                                     onPress: () {
                                                       initAllElement();
                                                     }),
                                             GrandButton(
-                                                weigth: 100,
+                                                weigth: isMobile(context)
+                                                    ? 30
+                                                    : 100,
                                                 labelButton: operationActivity
                                                     ? "Agregar"
                                                     : "Actualizar",
@@ -817,13 +853,22 @@ class _ElectrocardiogramasGestionState
                               ),
                             ),
                           ),
-                          isTabletAndDesktop(context)
-                              ? Expanded(
-                                  flex: 2,
-                                  child: AnalisisElectrocardiograma(
-                                      operationActivity: operationActivity),
-                                )
-                              : Container(),
+                          isTablet(context)
+                              ? Container()
+                              : isDesktop(context)
+                                  ? Expanded(
+                                      flex: 2,
+                                      child: AnalisisElectrocardiograma(
+                                          operationActivity: operationActivity),
+                                    )
+                                  : isMobile(context)
+                                      ? Container()
+                                      : Expanded(
+                                          flex: 2,
+                                          child: AnalisisElectrocardiograma(
+                                              operationActivity:
+                                                  operationActivity),
+                                        ),
                         ],
                       )
                     ],
@@ -1047,91 +1092,84 @@ class _AnalisisElectrocardiogramaState
               borderRadius: BorderRadius.circular(20),
               color: const Color.fromARGB(255, 58, 55, 55)),
           child: SingleChildScrollView(
+            padding: isMobile(context)
+                ? const EdgeInsets.all(4.0)
+                : const EdgeInsets.all(12.0),
             controller: ScrollController(),
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TittlePanel(
-                  textPanel: 'Analisis de Electrocardiograma',
-                ),
+              TittlePanel(
+                textPanel: 'Analisis de Electrocardiograma',
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
+              Column(
+                children: [
+                  ThreeLabelTextAline(
+                    firstText: "Fecha de realización",
+                    secondText: (Valores.fechaElectrocardiograma ?? ''),
+                    padding: 1,
+                  ),
+                  ThreeLabelTextAline(
+                    firstText: "Ritmo Cardiaco",
+                    secondText: (Valores.ritmoCardiaco ?? ''),
+                    padding: 1,
+                  ),
+                  ThreeLabelTextAline(
+                    firstText: "Segmento ST",
+                    secondText: (Valores.segmentoST ?? ''),
+                    padding: 1,
+                  ),
+                ],
+              ),
+              GridLayout(
+                  childAspectRatio: 5.0,
+                  columnCount: isMobile(context) ? 1 : 2,
                   children: [
                     ThreeLabelTextAline(
-                      firstText: "Fecha de realización",
-                      secondText: (Valores.fechaElectrocardiograma ?? ''),
                       padding: 1,
+                      firstText: "Frecuencia Cardica",
+                      secondText:
+                          (1500 / Valores.intervaloRR!).toStringAsFixed(0),
+                      thirdText: "L/min",
                     ),
                     ThreeLabelTextAline(
-                      firstText: "Ritmo Cardiaco",
-                      secondText: (Valores.ritmoCardiaco ?? ''),
                       padding: 1,
+                      firstText: "Eje Cardiaco",
+                      secondText: (Valores.ejeCardiaco!).toStringAsFixed(2),
+                      thirdText: "°",
                     ),
                     ThreeLabelTextAline(
-                      firstText: "Segmento ST",
-                      secondText: (Valores.segmentoST ?? ''),
                       padding: 1,
+                      firstText: "Indice Sokolow-Lyon",
+                      secondText: Valores.indiceSokolowLyon.toStringAsFixed(2),
+                      thirdText: "mV",
                     ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: GridLayout(
-                    childAspectRatio: 5.0,
-                    columnCount: 2,
-                    children: [
-                      ThreeLabelTextAline(
-                        padding: 1,
-                        firstText: "Frecuencia Cardica",
-                        secondText:
-                            (1500 / Valores.intervaloRR!).toStringAsFixed(0),
-                        thirdText: "L/min",
-                      ),
-                      ThreeLabelTextAline(
-                        padding: 1,
-                        firstText: "Eje Cardiaco",
-                        secondText: (Valores.ejeCardiaco!).toStringAsFixed(2),
-                        thirdText: "°",
-                      ),
-                      ThreeLabelTextAline(
-                        padding: 1,
-                        firstText: "Indice Sokolow-Lyon",
-                        secondText:
-                            Valores.indiceSokolowLyon.toStringAsFixed(2),
-                        thirdText: "mV",
-                      ),
-                      ThreeLabelTextAline(
-                        padding: 1,
-                        firstText: "Indice de Gubner", //-Underleider",
-                        secondText:
-                            Valores.indiceGubnerUnderleiger.toStringAsFixed(2),
-                        thirdText: "mV",
-                      ),
-                      ThreeLabelTextAline(
-                        padding: 1,
-                        firstText: "Indice de Lewis",
-                        secondText: Valores.indiceLewis.toStringAsFixed(2),
-                        thirdText: "mV",
-                      ),
-                      ThreeLabelTextAline(
-                        padding: 1,
-                        firstText: "Voltaje de Cornell",
-                        secondText: Valores.voltajeCornell.toStringAsFixed(2),
-                        thirdText: "mV",
-                      ),
-                      ThreeLabelTextAline(
-                        padding: 1,
-                        firstText: "Indice Enrique Cabrera",
-                        secondText:
-                            Valores.indiceEnriqueCabrera.toStringAsFixed(2),
-                        thirdText: "mV",
-                      ),
-                    ]),
-              ),
+                    ThreeLabelTextAline(
+                      padding: 1,
+                      firstText: "Indice de Gubner", //-Underleider",
+                      secondText:
+                          Valores.indiceGubnerUnderleiger.toStringAsFixed(2),
+                      thirdText: "mV",
+                    ),
+                    ThreeLabelTextAline(
+                      padding: 1,
+                      firstText: "Indice de Lewis",
+                      secondText: Valores.indiceLewis.toStringAsFixed(2),
+                      thirdText: "mV",
+                    ),
+                    ThreeLabelTextAline(
+                      padding: 1,
+                      firstText: "Voltaje de Cornell",
+                      secondText: Valores.voltajeCornell.toStringAsFixed(2),
+                      thirdText: "mV",
+                    ),
+                    ThreeLabelTextAline(
+                      padding: 1,
+                      firstText: "Indice Enrique Cabrera",
+                      secondText:
+                          Valores.indiceEnriqueCabrera.toStringAsFixed(2),
+                      thirdText: "mV",
+                    ),
+                  ]),
             ]),
           )),
     );

@@ -1,3 +1,4 @@
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
@@ -5,6 +6,8 @@ import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
+import 'package:assistant/widgets/GrandButton.dart';
+import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/GridLayout.dart';
 import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/ThreeLabelText.dart';
@@ -155,20 +158,33 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Theming.primaryColor,
-          title: Text(appBarTitile),
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-            ),
-            tooltip: Sentences.regresar,
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => isMobile(context)
-                      ? const GestionVitales()
-                      : VisualPacientes(actualPage: 3)));
-            },
-          )),
+        backgroundColor: Theming.primaryColor,
+        title: Text(appBarTitile),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+          ),
+          tooltip: Sentences.regresar,
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => isMobile(context)
+                    ? const GestionVitales()
+                    : VisualPacientes(actualPage: 3)));
+          },
+        ),
+        actions: isMobile(context)
+            ? <Widget>[
+                GrandIcon(
+                  iconData: Icons.candlestick_chart,
+                  labelButton: 'Análisis de Parámetros',
+                  onPress: () {
+                    Operadores.openActivity(
+                        context: context, chyldrim: analisisVitales());
+                  },
+                ),
+              ]
+            : null,
+      ),
       body: Card(
         color: const Color.fromARGB(255, 61, 57, 57),
         child: Padding(
@@ -185,20 +201,28 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                   'Fecha de realización',
                   fechaRealizacionTextController,
                   false),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  grandButton(context, "Signos Vitales", () {
-                    setState(() {
-                      carouselController.jumpToPage(0);
-                    });
-                  }),
-                  grandButton(context, "Medidas Antropométricas", () {
-                    setState(() {
-                      carouselController.jumpToPage(1);
-                    });
-                  })
-                ],
+              SingleChildScrollView(
+                controller: ScrollController(),
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GrandButton(
+                        labelButton: "Signos Vitales",
+                        onPress: () {
+                          setState(() {
+                            carouselController.jumpToPage(0);
+                          });
+                        }),
+                    GrandButton(
+                        labelButton: "Medidas Antropométricas",
+                        onPress: () {
+                          setState(() {
+                            carouselController.jumpToPage(1);
+                          });
+                        })
+                  ],
+                ),
               ),
               Expanded(
                 child: Padding(
@@ -218,7 +242,11 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                                           : isTablet(context)
                                               ? 5.0
                                               : 5.0,
-                                      columnCount: isMobile(context) ? 1 : isTablet(context) ? 1:2,
+                                      columnCount: isMobile(context)
+                                          ? 1
+                                          : isTablet(context)
+                                              ? 1
+                                              : 2,
                                       children: component(context),
                                     ),
                                   )),
@@ -230,8 +258,8 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                                       childAspectRatio: isMobile(context)
                                           ? 5
                                           : isTablet(context)
-                                          ? 5.0
-                                          : 5.0,
+                                              ? 5.0
+                                              : 5.0,
                                       columnCount: isMobile(context)
                                           ? 1
                                           : isTablet(context)
@@ -247,34 +275,37 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                                 enableInfiniteScroll: false,
                                 viewportFraction: 1.0)),
                       ),
-                      isMobile(context)
-                          ? Container()
-                          : Expanded(
-                              child: SizedBox(
-                                  height: 500,
-                                  child: ListView(
-                                    controller: ScrollController(),
-                                    children: [
-                                      labelText(
-                                          "Ecuaciones con Signos Vitales"),
-                                      const ListTile(
-                                        leading: Icon(Icons.abc),
-                                        title: Text("Hola"),
-                                      )
-                                    ],
-                                  )),
-                            )
+                      isMobile(context) ? Container() : analisisVitales()
                     ],
                   ),
                 ),
               ),
-              grandButton(context, widget._operationButton, () {
-                operationMethod(context);
-              })
+              GrandButton(
+                  labelButton: widget._operationButton,
+                  onPress: () {
+                    operationMethod(context);
+                  })
             ],
           ),
         ),
       ),
+    );
+  }
+
+  analisisVitales() {
+    return Expanded(
+      child: SizedBox(
+          height: 500,
+          child: ListView(
+            controller: ScrollController(),
+            children: [
+              labelText("Ecuaciones con Signos Vitales"),
+              const ListTile(
+                leading: Icon(Icons.abc),
+                title: Text("Hola"),
+              )
+            ],
+          )),
     );
   }
 
@@ -844,7 +875,7 @@ class _GestionVitalesState extends State<GestionVitales> {
             ],
           ),
         ),
-        isTabletAndDesktop(context)
+        isTabletAndDesktop(context) || isDesktop(context)
             ? const Expanded(flex: 1, child: EstadisticasVitales())
             : Container()
       ]),

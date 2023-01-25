@@ -1,3 +1,4 @@
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
@@ -8,8 +9,10 @@ import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
+import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/GridLayout.dart';
 import 'package:assistant/widgets/Spinner.dart';
+import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -151,7 +154,29 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                     onPressed: () {
                       onClose(context);
                     },
-                  )),
+                  ),
+                  actions: isMobile(context)
+                      ? <Widget>[
+                          GrandIcon(
+                            iconData: Icons.candlestick_chart,
+                            labelButton: 'Análisis de Parámetros',
+                            onPress: () {
+                              Operadores.openActivity(context: context, chyldrim: const AnalisisVentilatorio());
+                            },
+                          ),
+                        ]
+                      : isTablet(context)
+                          ? <Widget>[
+                              GrandIcon(
+                                iconData: Icons.candlestick_chart,
+                                labelButton: 'Análisis de Parámetros',
+                                onPress: () {
+                                   Operadores.openActivity(context: context, chyldrim: const AnalisisVentilatorio());
+                                },
+                              ),
+                            ]
+                          : null,
+                ),
       body: Container(
         color: const Color.fromARGB(255, 61, 57, 57),
         padding: const EdgeInsets.all(8.0),
@@ -638,6 +663,8 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
       default:
     }
   }
+
+
 }
 
 class GestionVentilaciones extends StatefulWidget {
@@ -702,6 +729,19 @@ class _GestionVentilacionesState extends State<GestionVentilaciones> {
           ),
           title: Text(appTittle),
           actions: <Widget>[
+            isTabletAndDesktop(context) ? GrandIcon(
+              iconData: Icons.candlestick_chart,
+              labelButton: 'Análisis de Parámetros',
+              onPress: () {
+                openActivity(AnalisisVentilatorio());
+              },
+            ) : isDesktop(context) ? GrandIcon(
+              iconData: Icons.candlestick_chart,
+              labelButton: 'Análisis de Parámetros',
+              onPress: () {
+                openActivity(AnalisisVentilatorio());
+              },
+            ) : Container(),
             IconButton(
               icon: const Icon(
                 Icons.replay_outlined,
@@ -720,6 +760,7 @@ class _GestionVentilacionesState extends State<GestionVentilaciones> {
                 toOperaciones(context, Constantes.Register);
               },
             ),
+
           ]),
       body: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         Expanded(
@@ -997,5 +1038,54 @@ class _GestionVentilacionesState extends State<GestionVentilaciones> {
                   ),
                 ),
             transitionDuration: const Duration(seconds: 0)));
+  }
+
+  void openActivity(chyldrim) {
+    showDialog(
+        useSafeArea: true,
+        context: context,
+        builder: (context) {
+          return Dialog(
+              backgroundColor: Colors.black,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(flex: 5, child: chyldrim),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius:
+                          const BorderRadius.all(Radius.circular(20)),
+                          border: Border.all(
+                            color: Colors.grey,
+                          )),
+                      child: GrandButton(
+                        labelButton: 'Cerrar',
+                        onPress: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ));
+        });
+  }
+}
+
+class AnalisisVentilatorio extends StatefulWidget {
+  const AnalisisVentilatorio({Key? key}) : super(key: key);
+
+  @override
+  State<AnalisisVentilatorio> createState() => _AnalisisVentilatorioState();
+}
+
+class _AnalisisVentilatorioState extends State<AnalisisVentilatorio> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [
+      TittlePanel(textPanel: 'Análisis Ventilatorio')
+    ],);
   }
 }

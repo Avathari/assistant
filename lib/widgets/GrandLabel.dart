@@ -37,7 +37,7 @@ class _GrandLabelState extends State<GrandLabel> {
                       ? widget.weigth!
                       : widget.weigth! * 10,
                   isTablet(context)
-                      ? widget.weigth!
+                      ? widget.weigth! * 10
                       : isDesktop(context)
                       ? widget.weigth! * 10
                       : widget.weigth! * 10)),
