@@ -413,7 +413,11 @@ class _GestionPacientesState extends State<GestionPacientes> {
             ],
           ),
         ),
-        isTabletAndDesktop(context)
+        isTablet(context)
+            ? const Expanded(flex: 1, child: EstadisticasPacientes())
+            :         isDesktop(context)
+            ? const Expanded(flex: 1, child: EstadisticasPacientes())
+            : isTabletAndDesktop(context)
             ? const Expanded(flex: 1, child: EstadisticasPacientes())
             : Container()
       ]),

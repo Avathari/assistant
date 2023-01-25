@@ -103,6 +103,9 @@ class Valores {
 
   // Variables Estaticas
   static int? constanteRequerimientos = 30;
+  static int porcentajeCarbohidratos = 50;
+  static int porcentajeLipidos = 20;
+  static int porcentajeProteinas = 30;
   static double pi = 3.14159265;
 
   Valores();
@@ -904,12 +907,22 @@ class Valores {
     }
   }
 
+  static double get glucosaPorcentaje =>
+      ((gastoEnergeticoTotal / 100) * (porcentajeCarbohidratos));
+  static double get lipidosPorcentaje =>
+      ((gastoEnergeticoTotal / 100) * (porcentajeLipidos));
+  static double get proteinasPorcentaje =>
+      ((gastoEnergeticoTotal / 100) * (porcentajeProteinas));
+
   static double get glucosaGramos =>
-      ((gastoEnergeticoTotal / 100) * (Metabolometrias._Carbohidratos));
+      (glucosaPorcentaje / 4.0 );
   static double get lipidosGramos =>
-      ((gastoEnergeticoTotal / 100) * (Metabolometrias._Lipidos));
+      (lipidosPorcentaje / 9.0 );
   static double get proteinasGramos =>
-      ((gastoEnergeticoTotal / 100) * (Metabolometrias._Proteinas));
+      (proteinasPorcentaje / 4.0 );
+
+  static int get sumaPorcentualMetabolicos  =>
+    porcentajeCarbohidratos + porcentajeProteinas + porcentajeLipidos;
 
   static double get edadMetabolica {
     if (Valores.sexo == 'Masculino') {
@@ -1067,15 +1080,16 @@ return (Valores.rDI! + Valores.sDIII!) -
   }
   }
 
+  static double get indiceEnriqueCabrera {
+    if (Valores.sV1 != 0 && Valores.sV1 != null
+        && Valores.rV1 != 0 && Valores.rV1 != null) {
+      return (Valores.rV1! / (Valores.rV1! + Valores.sV1!));
+    } else {
+      return double.nan;
+    }
+  }
 }
 
-class Metabolometrias {
-  static double _Carbohidratos = 50.0;
-
-  static double _Lipidos = 20.0;
-
-  static double _Proteinas = 30.0;
-}
 
 isNull(value) {
   if (value == null || value == 'null') {

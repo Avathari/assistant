@@ -9,6 +9,7 @@ import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/AuxiliaresDiagnosticos.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GridLayout.dart';
@@ -202,54 +203,83 @@ class _ElectrocardiogramasGestionState
           onChangeValue: (String? newValue) {
             setState(() {
               ritmoCardiacoValue = newValue!;
+              Valores.ritmoCardiaco = newValue;
             });
           }),
       EditTextArea(
-          keyBoardType: TextInputType.number,
-          inputFormat: MaskTextInputFormatter(),
-          obscureText: false,
-          labelEditText: "Intervalo RR",
-          textController: intervaloRRTextController,
-          prefixIcon: false),
-      EditTextArea(
-          keyBoardType: TextInputType.number,
-          inputFormat: MaskTextInputFormatter(),
-          obscureText: false,
-          labelEditText: "Duración de la Onda P",
-          textController: dopTextController,
-          prefixIcon: false),
-      EditTextArea(
-          keyBoardType: TextInputType.number,
-          inputFormat: MaskTextInputFormatter(),
-          obscureText: false,
-          labelEditText: "Altura de la Onda P",
-          textController: aopTextController,
-          prefixIcon: false),
-      EditTextArea(
-          keyBoardType: TextInputType.number,
-          inputFormat: MaskTextInputFormatter(),
-          obscureText: false,
-          labelEditText: "Duración del Intervalo PR",
-          textController: dprTextController,
-          prefixIcon: false),
-      EditTextArea(
-          keyBoardType: TextInputType.number,
-          inputFormat: MaskTextInputFormatter(),
-          obscureText: false,
-          labelEditText: "Duración del QRS",
-          textController: dqrsTextController,
-          prefixIcon: false),
-      EditTextArea(
-          keyBoardType: TextInputType.number,
-          inputFormat: MaskTextInputFormatter(),
-          obscureText: false,
-          labelEditText: "Altura del QRS",
-          textController: aqrsTextController,
-          prefixIcon: false),
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(),
+        labelEditText: "Intervalo RR",
+        textController: intervaloRRTextController,
+        numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.intervaloRR = double.parse(value);
+          });
+        },
+      ),
       EditTextArea(
         keyBoardType: TextInputType.number,
         inputFormat: MaskTextInputFormatter(),
-        obscureText: false,
+        labelEditText: "Duración de la Onda P",
+        textController: dopTextController,
+        onChange: (value) {
+          setState(() {
+            Valores.duracionOndaP = double.parse(value);
+          });
+        },
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(),
+        labelEditText: "Altura de la Onda P",
+        textController: aopTextController,
+        onChange: (value) {
+          setState(() {
+            Valores.alturaOndaP = double.parse(value);
+          });
+        },
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(),
+        labelEditText: "Duración del Intervalo PR",
+        textController: dprTextController,
+        numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.duracionPR = double.parse(value);
+          });
+        },
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(),
+        labelEditText: "Duración del QRS",
+        textController: dqrsTextController,
+        numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.duracionQRS = double.parse(value);
+          });
+        },
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(),
+        labelEditText: "Altura del QRS",
+        textController: aqrsTextController,
+        numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.alturaQRS = double.parse(value);
+          });
+        },
+      ),
+      const CrossLine(),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(),
         labelEditText: "QRS en DI",
         textController: qrsiTextController,
         prefixIcon: false,
@@ -257,12 +287,14 @@ class _ElectrocardiogramasGestionState
           paceQrsTextController.text = tan(int.parse(qrsaTextController.text) /
                   int.parse(qrsiTextController.text))
               .toStringAsFixed(1);
+          setState(() {
+            Valores.ejeCardiaco = double.parse(paceQrsTextController.text);
+          });
         }),
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
         inputFormat: MaskTextInputFormatter(),
-        obscureText: false,
         labelEditText: "QRS en aVF",
         textController: qrsaTextController,
         prefixIcon: false,
@@ -270,15 +302,18 @@ class _ElectrocardiogramasGestionState
           paceQrsTextController.text = atan(int.parse(qrsaTextController.text) /
                   int.parse(qrsiTextController.text))
               .toStringAsFixed(1);
+          setState(() {
+            Valores.ejeCardiaco = double.parse(paceQrsTextController.text);
+          });
         },
       ),
       EditTextArea(
-          keyBoardType: TextInputType.number,
-          inputFormat: MaskTextInputFormatter(),
-          obscureText: false,
-          labelEditText: "Eje Cardiaco",
-          textController: paceQrsTextController,
-          prefixIcon: false),
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(),
+        labelEditText: "Eje Cardiaco",
+        textController: paceQrsTextController,
+      ),
+      const CrossLine(),
       //
       Spinner(
           width: 110,
@@ -289,86 +324,131 @@ class _ElectrocardiogramasGestionState
           onChangeValue: (String? newValue) {
             setState(() {
               segmentoSTValue = newValue!;
+              Valores.segmentoST = newValue;
             });
           }),
       EditTextArea(
-          keyBoardType: TextInputType.number,
-          inputFormat: MaskTextInputFormatter(),
-          obscureText: false,
-          labelEditText: "Altura del ST",
-          textController: stTextController,
-          prefixIcon: false),
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(),
+        labelEditText: "Altura del ST",
+        textController: stTextController,
+        numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.segmentoST = value;
+          });
+        },
+      ),
       EditTextArea(
-          keyBoardType: TextInputType.number,
-          inputFormat: MaskTextInputFormatter(),
-          obscureText: false,
-          labelEditText: "Duración de QT",
-          textController: dqtTextController,
-          prefixIcon: false),
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(),
+        labelEditText: "Duración de QT",
+        textController: dqtTextController,
+        numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.duracionQT = double.parse(value);
+          });
+        },
+      ),
       EditTextArea(
-          keyBoardType: TextInputType.number,
-          inputFormat: MaskTextInputFormatter(),
-          obscureText: false,
-          labelEditText: "Duración Onda T",
-          textController: dotTextController,
-          prefixIcon: false),
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(),
+        labelEditText: "Duración Onda T",
+        textController: dotTextController,
+        numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.duracionOndaT = double.parse(value);
+          });
+        },
+      ),
       EditTextArea(
-          keyBoardType: TextInputType.number,
-          inputFormat: MaskTextInputFormatter(),
-          obscureText: false,
-          labelEditText: "Altura Onda T",
-          textController: aotTextController,
-          prefixIcon: false),
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(),
+        labelEditText: "Altura Onda T",
+        textController: aotTextController,
+        numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.alturaOndaT = double.parse(value);
+          });
+        },
+      ),
+      const CrossLine(),
       //
       EditTextArea(
-          keyBoardType: TextInputType.number,
-          inputFormat: MaskTextInputFormatter(),
-          obscureText: false,
-          labelEditText: "Onda R en V1",
-          textController: rv1TextController,
-          prefixIcon: false),
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(),
+        labelEditText: "Onda R en V1",
+        textController: rv1TextController,
+        numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.rV1 = double.parse(value);
+          });
+        },
+      ),
       EditTextArea(
-          keyBoardType: TextInputType.number,
-          inputFormat: MaskTextInputFormatter(),
-          obscureText: false,
-          labelEditText: "Onda R en V6",
-          textController: rv6TextController,
-          prefixIcon: false),
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(),
+        labelEditText: "Onda S en V1",
+        textController: sv1TextController,
+        numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.sV1 = double.parse(value);
+          });
+        },
+      ),
       EditTextArea(
-          keyBoardType: TextInputType.number,
-          inputFormat: MaskTextInputFormatter(),
-          obscureText: false,
-          labelEditText: "Onda S en V1",
-          textController: sv1TextController,
-          prefixIcon: false),
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(),
+        labelEditText: "Onda R en V6",
+        textController: rv6TextController,
+        numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.rV6 = double.parse(value);
+          });
+        },
+      ),
       EditTextArea(
-          keyBoardType: TextInputType.number,
-          inputFormat: MaskTextInputFormatter(),
-          obscureText: false,
-          labelEditText: "Onda S en V6",
-          textController: sv6TextController,
-          prefixIcon: false),
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(),
+        labelEditText: "Onda S en V6",
+        textController: sv6TextController,
+        numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.sV6 = double.parse(value);
+          });
+        },
+      ),
       EditTextArea(
-          keyBoardType: TextInputType.number,
-          inputFormat: MaskTextInputFormatter(),
-          obscureText: false,
-          labelEditText: "Onda R en V6",
-          textController: rv6TextController,
-          prefixIcon: false),
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(),
+        labelEditText: "Onda R en aVL",
+        textController: ravlTextController,
+        numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.rAvL = double.parse(value);
+          });
+        },
+      ),
       EditTextArea(
-          keyBoardType: TextInputType.number,
-          inputFormat: MaskTextInputFormatter(),
-          obscureText: false,
-          labelEditText: "Onda R en aVL",
-          textController: ravlTextController,
-          prefixIcon: false),
-      EditTextArea(
-          keyBoardType: TextInputType.number,
-          inputFormat: MaskTextInputFormatter(),
-          obscureText: false,
-          labelEditText: "Onda S en V3",
-          textController: sv3TextController,
-          prefixIcon: false),
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(),
+        labelEditText: "Onda S en V3",
+        textController: sv3TextController,
+        numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.sV3 = double.parse(value);
+          });
+        },
+      ),
       //
       Spinner(
           width: 100,
@@ -382,27 +462,66 @@ class _ElectrocardiogramasGestionState
             });
           }),
       EditTextArea(
-          keyBoardType: TextInputType.number,
-          inputFormat: MaskTextInputFormatter(),
-          obscureText: false,
-          labelEditText: "Deflexión Intrinsecoide",
-          textController: deflexTextController,
-          prefixIcon: false),
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(),
+        labelEditText: "Deflexión Intrinsecoide",
+        textController: deflexTextController,
+        numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.deflexionIntrinsecoide = double.parse(value);
+          });
+        },
+      ),
       //
       EditTextArea(
-          keyBoardType: TextInputType.number,
-          inputFormat: MaskTextInputFormatter(),
-          obscureText: false,
-          labelEditText: "Onda S en DI",
-          textController: sdiTextController,
-          prefixIcon: false),
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(),
+        labelEditText: "Onda R en DI",
+        textController: rdiTextController,
+        numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.rDI = double.parse(value);
+          });
+        },
+      ),
       EditTextArea(
-          keyBoardType: TextInputType.number,
-          inputFormat: MaskTextInputFormatter(),
-          obscureText: false,
-          labelEditText: "Onda S en DIII",
-          textController: sdiiiTextController,
-          prefixIcon: false),
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(),
+        labelEditText: "Onda S en DI",
+        textController: sdiTextController,
+        numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.sDI = double.parse(value);
+          });
+        },
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(),
+        labelEditText: "Onda R en DIII",
+        textController: rdiiiTextController,
+        numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.rDIII = double.parse(value);
+          });
+        },
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(),
+        labelEditText: "Onda S en DIII",
+        textController: sdiiiTextController,
+        numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.sDIII = double.parse(value);
+          });
+        },
+      ),
     ];
   }
 
@@ -423,6 +542,20 @@ class _ElectrocardiogramasGestionState
           },
         ),
         backgroundColor: Theming.primaryColor,
+        actions: isMobile(context)
+            ? <Widget>[
+                IconButton(
+                  icon: const Icon(
+                    Icons.candlestick_chart,
+                  ),
+                  tooltip: 'Análisis de Parámetros',
+                  onPressed: () {
+                    openActivity(AnalisisElectrocardiograma(
+                        operationActivity: operationActivity));
+                  },
+                )
+              ]
+            : null,
       ),
       body: Column(
         children: [
@@ -496,17 +629,25 @@ class _ElectrocardiogramasGestionState
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    labelText(tittle),
-                                    editFormattedText(
-                                        TextInputType.datetime,
-                                        MaskTextInputFormatter(
-                                            mask: '####/##/##',
-                                            filter: {"#": RegExp(r'[0-9]')},
-                                            type: MaskAutoCompletionType.lazy),
-                                        false,
-                                        "Fecha de realización",
-                                        textDateController,
-                                        true),
+                                    TittlePanel(textPanel: tittle),
+                                    EditTextArea(
+                                      keyBoardType: TextInputType.number,
+                                      inputFormat: MaskTextInputFormatter(
+                                          mask: '####/##/##',
+                                          filter: {"#": RegExp(r'[0-9]')},
+                                          type: MaskAutoCompletionType.lazy),
+                                      labelEditText: "Fecha de realización",
+                                      textController: textDateController,
+                                      numOfLines: 1,
+                                      onChange: (value) {
+                                        setState(
+                                          () {
+                                            Valores.fechaElectrocardiograma =
+                                                value;
+                                          },
+                                        );
+                                      },
+                                    ),
                                     ScrollableWidget(child: dataTable()),
                                   ],
                                 ),
@@ -542,7 +683,7 @@ class _ElectrocardiogramasGestionState
                                         childAspectRatio: isTablet(context)
                                             ? 0.9
                                             : isTabletAndDesktop(context)
-                                                ? 4.0
+                                                ? 3.0
                                                 : 0.9,
                                         columnCount: 2,
                                         children: listOfComponents()),
@@ -552,7 +693,6 @@ class _ElectrocardiogramasGestionState
                                             keyBoardType: TextInputType.number,
                                             inputFormat:
                                                 MaskTextInputFormatter(),
-                                            obscureText: false,
                                             numOfLines: 5,
                                             labelEditText: "Conclusiones",
                                             textController:
@@ -730,7 +870,8 @@ class _ElectrocardiogramasGestionState
     listOfCells.add(dataCell(element['Pace_GAB_EC_Feca'].toString()));
     listOfCells.add(dataCell(element['Pace_EC_rit'].toString()));
     listOfCells.add(dataCell(element['Pace_EC_rr'].toString()));
-    listOfCells.add(dataCell((300 / element['Pace_EC_rr']).toStringAsFixed(0)));
+    listOfCells
+        .add(dataCell((1500 / element['Pace_EC_rr']).toStringAsFixed(0)));
     listOfCells.add(dataCell(element['Pace_EC_CON'].toString()));
     listOfCells.add(DataCell(
       Row(
@@ -849,6 +990,39 @@ class _ElectrocardiogramasGestionState
       idOperacion!.toString(),
     ];
   }
+
+  void openActivity(chyldrim) {
+    showDialog(
+        useSafeArea: true,
+        context: context,
+        builder: (context) {
+          return Dialog(
+              backgroundColor: Colors.black,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(flex: 5, child: chyldrim),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20)),
+                          border: Border.all(
+                            color: Colors.grey,
+                          )),
+                      child: GrandButton(
+                        labelButton: 'Cerrar',
+                        onPress: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ));
+        });
+  }
 }
 
 // ignore: must_be_immutable
@@ -914,13 +1088,13 @@ class _AnalisisElectrocardiogramaState
                         padding: 1,
                         firstText: "Frecuencia Cardica",
                         secondText:
-                            (300 / Valores.intervaloRR!).toStringAsFixed(0),
+                            (1500 / Valores.intervaloRR!).toStringAsFixed(0),
                         thirdText: "L/min",
                       ),
                       ThreeLabelTextAline(
                         padding: 1,
                         firstText: "Eje Cardiaco",
-                        secondText: (Valores.ejeCardiaco!).toStringAsFixed(0),
+                        secondText: (Valores.ejeCardiaco!).toStringAsFixed(2),
                         thirdText: "°",
                       ),
                       ThreeLabelTextAline(
@@ -947,6 +1121,13 @@ class _AnalisisElectrocardiogramaState
                         padding: 1,
                         firstText: "Voltaje de Cornell",
                         secondText: Valores.voltajeCornell.toStringAsFixed(2),
+                        thirdText: "mV",
+                      ),
+                      ThreeLabelTextAline(
+                        padding: 1,
+                        firstText: "Indice Enrique Cabrera",
+                        secondText:
+                            Valores.indiceEnriqueCabrera.toStringAsFixed(2),
                         thirdText: "mV",
                       ),
                     ]),

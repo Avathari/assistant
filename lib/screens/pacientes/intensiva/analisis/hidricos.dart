@@ -1,4 +1,5 @@
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/ShowText.dart';
@@ -26,64 +27,68 @@ class _HidricosState extends State<Hidricos> {
       children: [
         TittlePanel(textPanel: 'Análisis Hídrico'),
         Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GrandIcon(
-                iconData: Icons.dataset,
-                labelButton: 'Datos Iniciales',
-                onPress: () {
-                  setState(() {
-                    carouselController.jumpToPage(0);
-                  });
-                },
-              ),
-              GrandIcon(
-                iconData: Icons.add_chart,
-                labelButton: 'Análisis Hídrico',
-                onPress: () {
-                  setState(() {
-                    carouselController.jumpToPage(1);
-                  });
-                },
-              ),
-              GrandIcon(
-                iconData: Icons.settings_backup_restore,
-                labelButton: 'Correciones',
-                onPress: () {
-                  setState(() {
-                    carouselController.jumpToPage(2);
-                  });
-                },
-              ),
-              GrandIcon(
-                iconData: Icons.compress_outlined,
-                labelButton: 'Osmolaridad',
-                onPress: () {
-                  setState(() {
-                    carouselController.jumpToPage(3);
-                  });
-                },
-              ),
-              GrandIcon(
-                iconData: Icons.change_circle_outlined,
-                labelButton: 'Reposiciones',
-                onPress: () {
-                  setState(() {
-                    carouselController.jumpToPage(4);
-                  });
-                },
-              ),
-              GrandIcon(
-                iconData: Icons.water_drop_outlined,
-                labelButton: 'Líquidos Corporales',
-                onPress: () {
-                  setState(() {
-                    carouselController.jumpToPage(5);
-                  });
-                },
-              ),
-            ],
+          child: SingleChildScrollView(
+            controller: ScrollController(),
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GrandIcon(
+                  iconData: Icons.dataset,
+                  labelButton: 'Datos Iniciales',
+                  onPress: () {
+                    setState(() {
+                      carouselController.jumpToPage(0);
+                    });
+                  },
+                ),
+                GrandIcon(
+                  iconData: Icons.add_chart,
+                  labelButton: 'Análisis Hídrico',
+                  onPress: () {
+                    setState(() {
+                      carouselController.jumpToPage(1);
+                    });
+                  },
+                ),
+                GrandIcon(
+                  iconData: Icons.settings_backup_restore,
+                  labelButton: 'Correciones',
+                  onPress: () {
+                    setState(() {
+                      carouselController.jumpToPage(2);
+                    });
+                  },
+                ),
+                GrandIcon(
+                  iconData: Icons.compress_outlined,
+                  labelButton: 'Osmolaridad',
+                  onPress: () {
+                    setState(() {
+                      carouselController.jumpToPage(3);
+                    });
+                  },
+                ),
+                GrandIcon(
+                  iconData: Icons.change_circle_outlined,
+                  labelButton: 'Reposiciones',
+                  onPress: () {
+                    setState(() {
+                      carouselController.jumpToPage(4);
+                    });
+                  },
+                ),
+                GrandIcon(
+                  iconData: Icons.water_drop_outlined,
+                  labelButton: 'Líquidos Corporales',
+                  onPress: () {
+                    setState(() {
+                      carouselController.jumpToPage(5);
+                    });
+                  },
+                ),
+              ],
+            ),
           ),
         ),
         Expanded(
@@ -149,6 +154,30 @@ class _HidricosState extends State<Hidricos> {
                     controller: ScrollController(),
                     child: Column(
                       children: [
+                        isMobile(context) ?
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ShowText(
+                              title: 'Requerimiento Hídrico',
+                              data: Valores.requerimientoHidrico,
+                              medida: 'mL',
+                            ),
+                            Spinner(
+                              tittle: 'Constante',
+                              onChangeValue: (value) {
+                                setState(() {
+                                  Valores.constanteRequerimientos =
+                                      int.parse(value);
+                                });
+                              },
+                              items: List<String>.generate(
+                                  65, (i) => (i + 1).toString()),
+                              initialValue:
+                              Valores.constanteRequerimientos.toString(),
+                            ),
+                          ],
+                        ) :
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -168,7 +197,7 @@ class _HidricosState extends State<Hidricos> {
                               items: List<String>.generate(
                                   65, (i) => (i + 1).toString()),
                               initialValue:
-                                  Valores.constanteRequerimientos.toString(),
+                              Valores.constanteRequerimientos.toString(),
                             ),
                           ],
                         ),

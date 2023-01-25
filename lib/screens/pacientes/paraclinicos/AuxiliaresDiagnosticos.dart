@@ -324,9 +324,9 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                grandButton(context,
+                                GrandButton(labelButton:
                                     operationActivity ? "Nuevo" : "Eliminar",
-                                    weigth: 100, () {
+                                    weigth: 100, onPress: () {
                                   if (operationActivity) {
                                     initAllElement();
                                     carouselController.jumpToPage(1);
@@ -348,16 +348,15 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
                                   }
                                 }),
                                 operationActivity
-                                    ? Container()
-                                    : grandButton(context, "Nuevo", weigth: 50,
-                                        () {
+                                    ? Container() :
+                                GrandButton(labelButton:"Nuevo", weigth: 50,
+                                        onPress: () {
                                         initAllElement();
                                       }),
-                                grandButton(
-                                    context,
+                                GrandButton(labelButton:
                                     operationActivity
                                         ? "Agregar"
-                                        : "Actualizar", () {
+                                        : "Actualizar", onPress: () {
                                   if (operationActivity) {
                                     var aux = listOfValues();
                                     aux.removeLast();

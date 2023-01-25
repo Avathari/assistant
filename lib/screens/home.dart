@@ -67,14 +67,26 @@ class _HomeState extends State<Home> {
           ]),
       body: Row(children: [
         Expanded(
-            flex: isTabletAndDesktop(context)
+            flex: isTablet(context)
                 ? 2
                 : isDesktop(context)
-                    ? 1
-                    : 0,
-            child: isTabletAndDesktop(context) ? sideBar() : Container()),
+                    ? 2
+                    : isMobile(context)
+                ? 0
+                : 2,
+            child: isTablet(context)
+                ? sideBar()
+                : isDesktop(context)
+                    ? sideBar()
+                    : isMobile(context)
+                ? Container()
+                : sideBar()),
         Expanded(
-            flex: isTabletAndDesktop(context) ? 7 : 4,
+            flex: isTablet(context)
+                ? 7
+                : isDesktop(context)
+                    ? 7
+                    : 7,
             child: screens[_actual_page])
       ]),
       floatingActionButton: FloatingActionButton(
@@ -100,7 +112,7 @@ class _HomeState extends State<Home> {
             child: Column(mainAxisAlignment: MainAxisAlignment.center,
                 // ignore: prefer_const_literals_to_create_immutables
                 children: [
-                  isTabletAndDesktop(context)
+                  isTablet(context)
                       ? Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
@@ -149,7 +161,105 @@ class _HomeState extends State<Home> {
                             ),
                           ],
                         )
-                      : Container(),
+                      : isDesktop(context)
+                          ? Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                const CircleAvatar(
+                                  backgroundImage:
+                                      AssetImage('assets/images/Luis.jpg'),
+                                  backgroundColor: Colors.grey,
+                                  radius: 60,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: const <Widget>[
+                                    Text(
+                                      "Luis Romero Pantoja",
+                                      style: TextStyle(
+                                          fontSize: 14, color: Colors.white),
+                                    ),
+                                    Text(
+                                      "Medicina General",
+                                      style: TextStyle(
+                                          fontSize: 12, color: Colors.white),
+                                    ),
+                                    Text(
+                                      "Ced. Prof. 12210866",
+                                      style: TextStyle(
+                                          fontSize: 10, color: Colors.white),
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    Text(
+                                      "CAF Bacalar",
+                                      style: TextStyle(
+                                          fontSize: 10, color: Colors.white),
+                                    ),
+                                    Text(
+                                      "ISSSTE Quintana Roo",
+                                      style: TextStyle(
+                                          fontSize: 10, color: Colors.white),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            )
+                          :  isMobile(context)
+                      ?  Container() : Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      const CircleAvatar(
+                        backgroundImage:
+                        AssetImage('assets/images/Luis.jpg'),
+                        backgroundColor: Colors.grey,
+                        radius: 60,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const <Widget>[
+                          Text(
+                            "Luis Romero Pantoja",
+                            style: TextStyle(
+                                fontSize: 14, color: Colors.white),
+                          ),
+                          Text(
+                            "Medicina General",
+                            style: TextStyle(
+                                fontSize: 12, color: Colors.white),
+                          ),
+                          Text(
+                            "Ced. Prof. 12210866",
+                            style: TextStyle(
+                                fontSize: 10, color: Colors.white),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "CAF Bacalar",
+                            style: TextStyle(
+                                fontSize: 10, color: Colors.white),
+                          ),
+                          Text(
+                            "ISSSTE Quintana Roo",
+                            style: TextStyle(
+                                fontSize: 10, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+
                 ]),
           ),
           const SizedBox(

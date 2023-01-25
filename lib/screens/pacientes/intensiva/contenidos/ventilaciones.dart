@@ -152,33 +152,67 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                       onClose(context);
                     },
                   )),
-      body: Card(
+      body: Container(
         color: const Color.fromARGB(255, 61, 57, 57),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              EditTextArea(
-                keyBoardType: TextInputType.number,
-                inputFormat: TextFormat.dateFormat,
-                numOfLines: 1,
-                labelEditText: 'Fecha de realización',
-                textController: fechaRealizacionTextController,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Expanded(
+              flex: isTablet(context)
+                  ? 2
+                  : isDesktop(context)
+                      ? 2
+                      : isMobile(context)
+                          ? 3
+                          : 2,
+              child: GridLayout(
+                childAspectRatio: isDesktop(context)
+                    ? 5.0
+                    : isTablet(context)
+                        ? 8.0
+                        : isMobile(context)
+                            ? 4.0
+                            : 6.0,
+                columnCount: isDesktop(context)
+                    ? 2
+                    : isTablet(context)
+                        ? 1
+                        : isMobile(context)
+                            ? 1
+                            : 2,
+                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Spinner(
-                    width: isTabletAndDesktop(context) ? 200 : 400,
-                    tittle: 'M. Ventilatorio',
-                    onChangeValue: (value) {
-                      setState(() {
-                        modoVentilatorioValue = value;
-                        selectModal();
-                      });
-                    },
-                    items: Ventilaciones.actualDiagno,
-                    initialValue: modoVentilatorioValue,
+                  Expanded(
+                    child: EditTextArea(
+                      keyBoardType: TextInputType.number,
+                      inputFormat: TextFormat.dateFormat,
+                      numOfLines: 1,
+                      labelEditText: 'Fecha de realización',
+                      textController: fechaRealizacionTextController,
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Spinner(
+                      width: isTablet(context)
+                          ? 300
+                          : isTabletAndDesktop(context)
+                              ? 200
+                              : isDesktop(context)
+                                  ? 300
+                                  : isMobile(context)
+                                      ? 200
+                                      : 200,
+                      tittle: 'M. Ventilatorio',
+                      onChangeValue: (value) {
+                        setState(() {
+                          modoVentilatorioValue = value;
+                          selectModal();
+                        });
+                      },
+                      items: Ventilaciones.actualDiagno,
+                      initialValue: modoVentilatorioValue,
+                    ),
                   ),
                   // GrandButton(
                   //     weigth: isMobile(context) ? 50 : 150,
@@ -198,38 +232,47 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                   //     })
                 ],
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                          child: SingleChildScrollView(
-                              controller: ScrollController(),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: component(context),
-                              ))),
-                      Expanded(
-                          child: SingleChildScrollView(
-                              controller: ScrollController(),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: getView(widget.actualView),
-                              ))),
-                    ],
-                  ),
+            ),
+            Expanded(
+              flex: isTabletAndDesktop(context)
+                  ? 9
+                  : isDesktop(context)
+                      ? 7
+                      : isTablet(context)
+                          ? 6
+                          : 6,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        child: SingleChildScrollView(
+                            controller: ScrollController(),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: component(context),
+                            ))),
+                    Expanded(
+                        child: SingleChildScrollView(
+                            controller: ScrollController(),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: getView(widget.actualView),
+                            ))),
+                  ],
                 ),
               ),
-              GrandButton(
+            ),
+            Expanded(
+              child: GrandButton(
                   labelButton: widget._operationButton,
                   onPress: () {
                     operationMethod(context);
-                  })
-            ],
-          ),
+                  }),
+            ),
+          ],
         ),
       ),
     );

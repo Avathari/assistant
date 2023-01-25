@@ -29,7 +29,7 @@ class _SpinnerState extends State<Spinner> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(top: 8, bottom: 0, left: 8, right: 8),
       child: DecoratedBox(
         decoration: BoxDecoration(
             border: Border.all(
@@ -43,10 +43,8 @@ class _SpinnerState extends State<Spinner> {
             ]),
         child: Padding(
             padding:
-                const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
-            child: rowView()),
-            // child: isMobile(context) ? rowView() : rowView()),
-        // child: widget.isRow! ? rowView() : columnView()),
+                const EdgeInsets.only(top: 10, bottom: 4, left: 20, right: 20),
+            child: isMobile(context) ? columnView() : rowView()),
       ),
     );
   }
@@ -62,14 +60,14 @@ class _SpinnerState extends State<Spinner> {
           iconSize: 30,
           elevation: 8,
           dropdownColor: Colores.backgroundWidget,
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white, overflow: TextOverflow.ellipsis),
           onChanged: (String? newValue) {
             widget.onChangeValue!(newValue);
           },
           items: widget.items?.map<DropdownMenuItem<String>>((String val) {
             return DropdownMenuItem<String>(
               value: val,
-              child: SizedBox(width: widget.width, child: Text(val)),
+              child: SizedBox(width: widget.width,child: Text(val)),
             );
           }).toList(),
         ),
@@ -88,7 +86,7 @@ class _SpinnerState extends State<Spinner> {
           iconSize: 30,
           elevation: 8,
           dropdownColor: Colores.backgroundWidget,
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white, overflow: TextOverflow.ellipsis),
           onChanged: (String? newValue) {
             widget.onChangeValue!(newValue);
           },

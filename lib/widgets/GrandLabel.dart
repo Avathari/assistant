@@ -33,11 +33,13 @@ class _GrandLabelState extends State<GrandLabel> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               minimumSize: Size(
-                  isMobileAndTablet(context)
+                  isMobile(context)
                       ? widget.weigth!
                       : widget.weigth! * 10,
-                  isMobileAndTablet(context)
+                  isTablet(context)
                       ? widget.weigth!
+                      : isDesktop(context)
+                      ? widget.weigth! * 10
                       : widget.weigth! * 10)),
           onPressed: () {
             widget.onPress();

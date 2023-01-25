@@ -1,7 +1,12 @@
+import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+
 import 'package:assistant/screens/pacientes/intensiva/contenidos/balances.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
-import 'package:assistant/screens/pacientes/intensiva/contenidos/hidricos.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/ventilaciones.dart';
+
+import 'package:assistant/screens/pacientes/intensiva/analisis/hidricos.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/metabolometrias.dart';
+
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandButton.dart';
@@ -30,9 +35,9 @@ class _IntensivaState extends State<Intensiva> {
         children: [
           Tittle(tittle: 'Herramientas de Análisis'),
           isMobile(context)
-              ? Container()
+              ? desktopView()
               : isTablet(context)
-                  ? Container()
+                  ? desktopView()
                   : desktopView(),
         ],
       ),
@@ -49,12 +54,14 @@ class _IntensivaState extends State<Intensiva> {
           Expanded(
               flex: 2,
               child: listOfActivities(numActivity: widget.numActivity!)),
-          Expanded(
-              flex: 9,
-              child: Container(
-                padding: const EdgeInsets.all(8.0),
-                child: RoundedPanel(child: getView(widget.actualView!)),
-              )),
+          isMobile(context)
+              ? Container()
+              : Expanded(
+                  flex: 9,
+                  child: Container(
+                    padding: const EdgeInsets.all(8.0),
+                    child: RoundedPanel(child: getView(widget.actualView!)),
+                  )),
         ],
       ),
     );
@@ -193,17 +200,25 @@ class _IntensivaState extends State<Intensiva> {
                   GrandLabel(
                     labelButton: 'Análisis Hidrico',
                     onPress: () {
-                      setState(() {
-                        widget.actualView = 1;
-                      });
+                      if (isMobile(context)) {
+                        openActivity(const Hidricos());
+                      } else {
+                        setState(() {
+                          widget.actualView = 1;
+                        });
+                      }
                     },
                   ),
                   GrandLabel(
                     labelButton: 'Análisis Metabólico',
                     onPress: () {
-                      setState(() {
-                        widget.actualView = 2;
-                      });
+                      if (isMobile(context)) {
+                        openActivity(const Metabolicos());
+                      } else {
+                        setState(() {
+                          widget.actualView = 2;
+                        });
+                      }
                     },
                   ),
                   GrandLabel(
@@ -360,8 +375,8 @@ class _IntensivaState extends State<Intensiva> {
   Widget getView(int actualView) {
     List list = [
       Container(),
-      Hidricos(),
-      Container(),
+      const Hidricos(),
+      Metabolicos(),
       Container(),
       Container(),
       Container(),
@@ -371,6 +386,42 @@ class _IntensivaState extends State<Intensiva> {
       Container(),
     ];
     return list[actualView];
+  }
+
+  void openActivity(chyldrim) {
+    showDialog(
+        useSafeArea: true,
+        context: context,
+        builder: (context) {
+          return Dialog(
+              backgroundColor: Colors.black,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment:
+                  CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        flex: 5, child: chyldrim),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius:
+                          const BorderRadius.all(
+                              Radius.circular(20)),
+                          border: Border.all(
+                            color: Colors.grey,
+                          )),
+                      child: GrandButton(
+                        labelButton: 'Cerrar',
+                        onPress: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ));
+        });
   }
 }
 
