@@ -3,15 +3,19 @@ import 'dart:ui';
 
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/screens/pacientes/intensiva/herramientas.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/AuxiliaresDiagnosticos.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
+import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GridLayout.dart';
 import 'package:assistant/widgets/ScrollableWidget.dart';
 import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/ThreeLabelText.dart';
+import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
@@ -429,245 +433,264 @@ class _ElectrocardiogramasGestionState
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      grandButton(context, "Registro de electrocardiogramas",
-                          () {
-                        carouselController.jumpToPage(0);
-                      }),
+                      GrandButton(
+                          labelButton: "Registro de electrocardiogramas",
+                          onPress: () {
+                            carouselController.jumpToPage(0);
+                          }),
                       const SizedBox(
                         height: 10,
                       ),
-                      grandButton(context, "Gestion del Registro", () {
-                        carouselController.jumpToPage(1);
-                      }),
+                      GrandButton(
+                          labelButton: "Gestion del Registro",
+                          onPress: () {
+                            carouselController.jumpToPage(1);
+                          }),
                     ],
                   )
                 : Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      grandButton(context, "Registro de electrocardiogramas",
-                          () {
-                        carouselController.jumpToPage(0);
-                      }),
-                      grandButton(context, "Gestion del Registro", () {
-                        carouselController.jumpToPage(1);
-                      }),
+                      GrandButton(
+                          weigth: 100,
+                          labelButton: "Registro de electrocardiogramas",
+                          onPress: () {
+                            carouselController.jumpToPage(0);
+                          }),
+                      GrandButton(
+                          weigth: 100,
+                          labelButton: "Gestion del Registro",
+                          onPress: () {
+                            carouselController.jumpToPage(1);
+                          }),
+                      GrandButton(
+                          weigth: 100,
+                          labelButton: "Gestion del Registro",
+                          onPress: () {
+                            carouselController.jumpToPage(2);
+                          }),
                     ],
                   ),
           ),
-          Row(
-            children: [
-              Expanded(
-                flex: 2,
-                child: CarouselSlider(
-                  carouselController: carouselController,
-                  options: CarouselOptions(
-                      height: 500,
-                      enableInfiniteScroll: false,
-                      viewportFraction: 1.0),
-                  items: [
-                    SingleChildScrollView(
-                      //flex: 2,
-                      child: Card(
-                        color: Colores.backgroundPanel,
-                        child: SingleChildScrollView(
-                          controller: scrollController,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Flexible(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  labelText(tittle),
-                                  editFormattedText(
-                                      TextInputType.datetime,
-                                      MaskTextInputFormatter(
-                                          mask: '####/##/##',
-                                          filter: {"#": RegExp(r'[0-9]')},
-                                          type: MaskAutoCompletionType.lazy),
-                                      false,
-                                      "Fecha de realización",
-                                      textDateController,
-                                      true),
-                                  ScrollableWidget(child: dataTable()),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 3,
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: CarouselSlider(
+                    carouselController: carouselController,
+                    options: CarouselOptions(
+                        height: 500,
+                        enableInfiniteScroll: false,
+                        viewportFraction: 1.0),
+                    items: [
+                      SingleChildScrollView(
+                        //flex: 2,
+                        child: Card(
+                          color: Colores.backgroundPanel,
                           child: SingleChildScrollView(
-                            controller: ScrollController(),
-                            child: Card(
-                              color: Colores.backgroundPanel,
-                              child: SingleChildScrollView(
-                                controller: scrollController,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      labelText(tittle),
-                                      editFormattedText(
-                                          TextInputType.datetime,
-                                          MaskTextInputFormatter(
-                                              mask: '####/##/##',
-                                              filter: {"#": RegExp(r'[0-9]')},
-                                              type:
-                                                  MaskAutoCompletionType.lazy),
-                                          false,
-                                          "Fecha de realización",
-                                          textDateEstudyController,
-                                          false),
-                                      GridLayout(
-                                          columnCount: 2,
-                                          children: listOfComponents()),
-                                      Column(
-                                        children: [
-                                          EditTextArea(
-                                              keyBoardType:
-                                                  TextInputType.number,
-                                              inputFormat:
-                                                  MaskTextInputFormatter(),
-                                              obscureText: false,
-                                              numOfLines: 5,
-                                              labelEditText: "Conclusiones",
-                                              textController:
-                                                  conclusionTextController,
-                                              prefixIcon: false),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              grandButton(
-                                                  context,
-                                                  operationActivity
-                                                      ? "Nuevo"
-                                                      : "Eliminar",
-                                                  weigth: 100, () {
-                                                if (operationActivity) {
-                                                  initAllElement();
-                                                  carouselController
-                                                      .jumpToPage(1);
-                                                } else {
-                                                  try {
-                                                    deleteDialog(
-                                                        elementSelected!);
-                                                  } finally {
-                                                    carouselController
-                                                        .jumpToPage(0);
-                                                    showDialog(
-                                                        context: context,
-                                                        builder: (context) {
-                                                          return AlertDialog(
-                                                            title: const Text(
-                                                                "Eliminados"),
-                                                            content: Text(
-                                                                listOfValues()
-                                                                    .toString()),
-                                                          );
-                                                        });
-                                                  }
-                                                }
-                                              }),
-                                              operationActivity
-                                                  ? Container()
-                                                  : grandButton(
-                                                      context, "Nuevo",
-                                                      weigth: 50, () {
-                                                      initAllElement();
-                                                    }),
-                                              grandButton(
-                                                  context,
-                                                  operationActivity
-                                                      ? "Agregar"
-                                                      : "Actualizar", () {
-                                                if (operationActivity) {
-                                                  var aux = listOfValues();
-                                                  aux.removeAt(0);
-                                                  aux.removeLast();
-
-                                                  Actividades.registrar(
-                                                    Databases
-                                                        .siteground_database_reggabo,
-                                                    Electrocardiogramas
-                                                            .electrocardiogramas[
-                                                        'registerQuery'],
-                                                    aux,
-                                                  ).then((value) => showDialog(
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return AlertDialog(
-                                                          title: const Text(
-                                                              "Registrados"),
-                                                          content: Text(
-                                                              "Los registros \n${listOfValues().toString()} \n fueron registrados"),
-                                                        );
-                                                      }).then((value) => Navigator
-                                                          .of(context)
-                                                      .push(MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              const ElectrocardiogramasGestion()))));
-                                                } else {
-                                                  Actividades.actualizar(
-                                                          Databases
-                                                              .siteground_database_reggabo,
-                                                          Electrocardiogramas
-                                                                  .electrocardiogramas[
-                                                              'updateQuery'],
-                                                          listOfValues(),
-                                                          idOperacion!)
-                                                      .then((value) =>
-                                                          showDialog(
-                                                              context: context,
-                                                              builder:
-                                                                  (context) {
-                                                                print(
-                                                                    "Electrocardiogramas.electrocardiogramas['updateQuery'] ${Electrocardiogramas.electrocardiogramas['updateQuery']}");
-                                                                print(
-                                                                    "LIST OF VLUES ${listOfValues()}");
-                                                                return AlertDialog(
-                                                                  title: const Text(
-                                                                      "Actualizados"),
-                                                                  content: Text(
-                                                                      "Los registros \n${listOfValues().toString()} \n fueron actualizados"),
-                                                                );
-                                                              }).then((value) => Navigator
-                                                                  .of(context)
-                                                              .push(MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          const ElectrocardiogramasGestion()))));
-                                                }
-                                              }),
-                                            ],
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
+                            controller: scrollController,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Flexible(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    labelText(tittle),
+                                    editFormattedText(
+                                        TextInputType.datetime,
+                                        MaskTextInputFormatter(
+                                            mask: '####/##/##',
+                                            filter: {"#": RegExp(r'[0-9]')},
+                                            type: MaskAutoCompletionType.lazy),
+                                        false,
+                                        "Fecha de realización",
+                                        textDateController,
+                                        true),
+                                    ScrollableWidget(child: dataTable()),
+                                  ],
                                 ),
                               ),
                             ),
                           ),
                         ),
-                        isDesktop(context)
-                            ? Expanded(
-                                flex: 2,
-                                child: AnalisisElectrocardiograma(
-                                    operationActivity: operationActivity),
-                              )
-                            : Container()
-                      ],
-                    ),
-                  ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: SingleChildScrollView(
+                              controller: scrollController,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    TittlePanel(textPanel: tittle),
+                                    EditTextArea(
+                                      keyBoardType: TextInputType.datetime,
+                                      inputFormat: MaskTextInputFormatter(
+                                          mask: '####/##/##',
+                                          filter: {"#": RegExp(r'[0-9]')},
+                                          type: MaskAutoCompletionType.lazy),
+                                      numOfLines: 1,
+                                      labelEditText: "Fecha de realización",
+                                      textController: textDateEstudyController,
+                                    ),
+                                    GridLayout(
+                                        childAspectRatio: isTablet(context)
+                                            ? 0.9
+                                            : isTabletAndDesktop(context)
+                                                ? 4.0
+                                                : 0.9,
+                                        columnCount: 2,
+                                        children: listOfComponents()),
+                                    Column(
+                                      children: [
+                                        EditTextArea(
+                                            keyBoardType: TextInputType.number,
+                                            inputFormat:
+                                                MaskTextInputFormatter(),
+                                            obscureText: false,
+                                            numOfLines: 5,
+                                            labelEditText: "Conclusiones",
+                                            textController:
+                                                conclusionTextController,
+                                            prefixIcon: false),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            GrandButton(
+                                                labelButton: operationActivity
+                                                    ? "Nuevo"
+                                                    : "Eliminar",
+                                                weigth: 100,
+                                                onPress: () {
+                                                  if (operationActivity) {
+                                                    initAllElement();
+                                                    carouselController
+                                                        .jumpToPage(1);
+                                                  } else {
+                                                    try {
+                                                      deleteDialog(
+                                                          elementSelected!);
+                                                    } finally {
+                                                      carouselController
+                                                          .jumpToPage(0);
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return AlertDialog(
+                                                              title: const Text(
+                                                                  "Eliminados"),
+                                                              content: Text(
+                                                                  listOfValues()
+                                                                      .toString()),
+                                                            );
+                                                          });
+                                                    }
+                                                  }
+                                                }),
+                                            operationActivity
+                                                ? Container()
+                                                : GrandButton(
+                                                    labelButton: "Nuevo",
+                                                    weigth: 50,
+                                                    onPress: () {
+                                                      initAllElement();
+                                                    }),
+                                            GrandButton(
+                                                weigth: 100,
+                                                labelButton: operationActivity
+                                                    ? "Agregar"
+                                                    : "Actualizar",
+                                                onPress: () {
+                                                  if (operationActivity) {
+                                                    var aux = listOfValues();
+                                                    aux.removeAt(0);
+                                                    aux.removeLast();
+
+                                                    Actividades.registrar(
+                                                      Databases
+                                                          .siteground_database_reggabo,
+                                                      Electrocardiogramas
+                                                              .electrocardiogramas[
+                                                          'registerQuery'],
+                                                      aux,
+                                                    ).then((value) =>
+                                                        showDialog(
+                                                            context: context,
+                                                            builder: (context) {
+                                                              return AlertDialog(
+                                                                title: const Text(
+                                                                    "Registrados"),
+                                                                content: Text(
+                                                                    "Los registros \n${listOfValues().toString()} \n fueron registrados"),
+                                                              );
+                                                            }).then((value) => Navigator
+                                                                .of(context)
+                                                            .push(MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        const ElectrocardiogramasGestion()))));
+                                                  } else {
+                                                    Actividades.actualizar(
+                                                            Databases
+                                                                .siteground_database_reggabo,
+                                                            Electrocardiogramas
+                                                                    .electrocardiogramas[
+                                                                'updateQuery'],
+                                                            listOfValues(),
+                                                            idOperacion!)
+                                                        .then((value) =>
+                                                            showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) {
+                                                                  print(
+                                                                      "Electrocardiogramas.electrocardiogramas['updateQuery'] ${Electrocardiogramas.electrocardiogramas['updateQuery']}");
+                                                                  print(
+                                                                      "LIST OF VLUES ${listOfValues()}");
+                                                                  return AlertDialog(
+                                                                    title: const Text(
+                                                                        "Actualizados"),
+                                                                    content: Text(
+                                                                        "Los registros \n${listOfValues().toString()} \n fueron actualizados"),
+                                                                  );
+                                                                }).then((value) => Navigator
+                                                                    .of(context)
+                                                                .push(MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            const ElectrocardiogramasGestion()))));
+                                                  }
+                                                }),
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          isTabletAndDesktop(context)
+                              ? Expanded(
+                                  flex: 2,
+                                  child: AnalisisElectrocardiograma(
+                                      operationActivity: operationActivity),
+                                )
+                              : Container(),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
@@ -852,16 +875,11 @@ class _AnalisisElectrocardiogramaState
           child: SingleChildScrollView(
             controller: ScrollController(),
             child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Container(
-                padding: const EdgeInsets.all(20.0),
-                decoration: const BoxDecoration(),
-                child: const Text(
-                  'Analisis de Electrocardiograma',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold),
+                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TittlePanel(
+                  textPanel: 'Analisis de Electrocardiograma',
                 ),
               ),
               Padding(
@@ -870,20 +888,17 @@ class _AnalisisElectrocardiogramaState
                   children: [
                     ThreeLabelTextAline(
                       firstText: "Fecha de realización",
-                      secondText:
-                          (Pacientes.Electrocardiogramas['Pace_GAB_EC_Feca']),
+                      secondText: (Valores.fechaElectrocardiograma ?? ''),
                       padding: 1,
                     ),
                     ThreeLabelTextAline(
                       firstText: "Ritmo Cardiaco",
-                      secondText:
-                          (Pacientes.Electrocardiogramas['Pace_EC_rit']),
+                      secondText: (Valores.ritmoCardiaco ?? ''),
                       padding: 1,
                     ),
                     ThreeLabelTextAline(
                       firstText: "Segmento ST",
-                      secondText:
-                          (Pacientes.Electrocardiogramas['Pace_EC_ast_']),
+                      secondText: (Valores.segmentoST ?? ''),
                       padding: 1,
                     ),
                   ],
@@ -891,47 +906,50 @@ class _AnalisisElectrocardiogramaState
               ),
               Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: gridView(context, 5.0, children: [
-                  ThreeLabelTextAline(
-                    padding: 1,
-                    firstText: "Frecuencia Cardica",
-                    secondText:
-                        (300 / Pacientes.Electrocardiogramas['Pace_EC_rr'])
-                            .toStringAsFixed(0),
-                    thirdText: "L/min",
-                  ),
-                  ThreeLabelTextAline(
-                    padding: 1,
-                    firstText: "Eje Cardiaco",
-                    secondText: (Pacientes.Electrocardiogramas['Pace_QRS'])
-                        .toStringAsFixed(0),
-                    thirdText: "°",
-                  ),
-                  ThreeLabelTextAline(
-                    padding: 1,
-                    firstText: "Indice Sokolow-Lyon",
-                    secondText: "${Pacientes.Electrocardiogramas['isl']}",
-                    thirdText: "mV",
-                  ),
-                  ThreeLabelTextAline(
-                    padding: 1,
-                    firstText: "Indice de Gubner", //-Underleider",
-                    secondText: "${Pacientes.Electrocardiogramas['igu']}",
-                    thirdText: "mV",
-                  ),
-                  ThreeLabelTextAline(
-                    padding: 1,
-                    firstText: "Indice de Lewis",
-                    secondText: "${Pacientes.Electrocardiogramas['il']}",
-                    thirdText: "mV",
-                  ),
-                  ThreeLabelTextAline(
-                    padding: 1,
-                    firstText: "Voltaje de Cornell",
-                    secondText: "${Pacientes.Electrocardiogramas['vc']}",
-                    thirdText: "mV",
-                  ),
-                ]),
+                child: GridLayout(
+                    childAspectRatio: 5.0,
+                    columnCount: 2,
+                    children: [
+                      ThreeLabelTextAline(
+                        padding: 1,
+                        firstText: "Frecuencia Cardica",
+                        secondText:
+                            (300 / Valores.intervaloRR!).toStringAsFixed(0),
+                        thirdText: "L/min",
+                      ),
+                      ThreeLabelTextAline(
+                        padding: 1,
+                        firstText: "Eje Cardiaco",
+                        secondText: (Valores.ejeCardiaco!).toStringAsFixed(0),
+                        thirdText: "°",
+                      ),
+                      ThreeLabelTextAline(
+                        padding: 1,
+                        firstText: "Indice Sokolow-Lyon",
+                        secondText:
+                            Valores.indiceSokolowLyon.toStringAsFixed(2),
+                        thirdText: "mV",
+                      ),
+                      ThreeLabelTextAline(
+                        padding: 1,
+                        firstText: "Indice de Gubner", //-Underleider",
+                        secondText:
+                            Valores.indiceGubnerUnderleiger.toStringAsFixed(2),
+                        thirdText: "mV",
+                      ),
+                      ThreeLabelTextAline(
+                        padding: 1,
+                        firstText: "Indice de Lewis",
+                        secondText: Valores.indiceLewis.toStringAsFixed(2),
+                        thirdText: "mV",
+                      ),
+                      ThreeLabelTextAline(
+                        padding: 1,
+                        firstText: "Voltaje de Cornell",
+                        secondText: Valores.voltajeCornell.toStringAsFixed(2),
+                        thirdText: "mV",
+                      ),
+                    ]),
               ),
             ]),
           )),

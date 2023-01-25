@@ -1,6 +1,7 @@
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/Electrocardiogramas.dart';
+import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/GridLayout.dart';
@@ -270,46 +271,56 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
                                 "Fecha de realización",
                                 textDateEstudyController,
                                 false),
-                            GridLayout(columnCount: 2, children: [
-                              Spinner(
-                                  width: 90,
-                                  tittle: "Tipo de Estudio",
-                                  initialValue: tipoEstudioValue!,
-                                  items: Auxiliares.Categorias,
-                                  onChangeValue: (String? newValue) {
-                                    setState(() {
-                                      tipoEstudioValue = newValue!;
-                                    });
-                                  }),
-                              Spinner(
-                                  width: 100,
-                                  tittle: "Estudio",
-                                  initialValue: estudioValue!,
-                                  items:
-                                      Auxiliares.Laboratorios[tipoEstudioValue],
-                                  onChangeValue: (String? newValue) {
-                                    setState(() {
-                                      estudioValue = newValue!;
-                                    });
-                                  }),
-                              editFormattedText(
-                                  TextInputType.number,
-                                  MaskTextInputFormatter(),
-                                  false,
-                                  "Resultado",
-                                  textResultController,
-                                  false),
-                              Spinner(
-                                  width: 100,
-                                  tittle: "Unidad de Medida",
-                                  initialValue: unidadMedidaValue!,
-                                  items: Auxiliares.Medidas[tipoEstudioValue],
-                                  onChangeValue: (String? newValue) {
-                                    setState(() {
-                                      unidadMedidaValue = newValue!;
-                                    });
-                                  }),
-                            ]),
+                            GridLayout(
+                                childAspectRatio: 5.0,
+                                columnCount: 2,
+                                children: [
+                                  Spinner(
+                                      width: isTabletAndDesktop(context)
+                                          ? 190
+                                          : 90,
+                                      tittle: "Tipo de Estudio",
+                                      initialValue: tipoEstudioValue!,
+                                      items: Auxiliares.Categorias,
+                                      onChangeValue: (String? newValue) {
+                                        setState(() {
+                                          tipoEstudioValue = newValue!;
+                                        });
+                                      }),
+                                  Spinner(
+                                      width: isTabletAndDesktop(context)
+                                          ? 120
+                                          : 90,
+                                      tittle: "Estudio",
+                                      initialValue: estudioValue!,
+                                      items: Auxiliares
+                                          .Laboratorios[tipoEstudioValue],
+                                      onChangeValue: (String? newValue) {
+                                        setState(() {
+                                          estudioValue = newValue!;
+                                        });
+                                      }),
+                                  EditTextArea(
+                                    textController: textResultController,
+                                    keyBoardType: TextInputType.number,
+                                    inputFormat: MaskTextInputFormatter(),
+                                    labelEditText: "Resultado",
+                                    numOfLines: 1,
+                                  ),
+                                  Spinner(
+                                      width: isTabletAndDesktop(context)
+                                          ? 120
+                                          : 90,
+                                      tittle: "Unidad de Medida",
+                                      initialValue: unidadMedidaValue!,
+                                      items:
+                                          Auxiliares.Medidas[tipoEstudioValue],
+                                      onChangeValue: (String? newValue) {
+                                        setState(() {
+                                          unidadMedidaValue = newValue!;
+                                        });
+                                      }),
+                                ]),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [

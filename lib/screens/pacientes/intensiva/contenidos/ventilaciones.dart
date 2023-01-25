@@ -138,18 +138,20 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
       backgroundColor: Colors.black,
       appBar: isDesktop(context)
           ? null
-          : AppBar(
-              backgroundColor: Theming.primaryColor,
-              title: Text(appBarTitile),
-              leading: IconButton(
-                icon: const Icon(
-                  Icons.arrow_back,
-                ),
-                tooltip: Sentences.regresar,
-                onPressed: () {
-                  onClose(context);
-                },
-              )),
+          : isTabletAndDesktop(context)
+              ? null
+              : AppBar(
+                  backgroundColor: Theming.primaryColor,
+                  title: Text(appBarTitile),
+                  leading: IconButton(
+                    icon: const Icon(
+                      Icons.arrow_back,
+                    ),
+                    tooltip: Sentences.regresar,
+                    onPressed: () {
+                      onClose(context);
+                    },
+                  )),
       body: Card(
         color: const Color.fromARGB(255, 61, 57, 57),
         child: Padding(
@@ -569,7 +571,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         widget.actualView = 4;
         break;
       default:
-      widget.actualView = 0;
+        widget.actualView = 0;
     }
     //
   }

@@ -66,10 +66,43 @@ class Valores {
   //
   static double? sodio, potasio, cloro, fosforo, calcio, magnesio;
   //
+  static String? ritmoCardiaco = '',
+      segmentoST = '',
+      conclusionElectrocardiograma = '',
+      fechaElectrocardiograma = '';
+  static double? intervaloRR,
+      duracionOndaP,
+      alturaOndaP,
+      duracionPR,
+      duracionQRS,
+      alturaQRS,
+      QRSi,
+      QRSa,
+      ejeCardiaco,
+      //
+      segmentoSTValue,
+      duracionQT,
+      duracionOndaT,
+      alturaOndaT,
+      //
+      rV1,
+      sV6,
+      sV1,
+      rV6,
+      rAvL,
+      sV3,
+      //
+      patronQRS,
+      deflexionIntrinsecoide,
+      rDI,
+      sDI,
+      rDIII,
+      sDIII;
+  //
   static double? pH, bicarbonatoArteriales;
 
   // Variables Estaticas
-  static int constanteRequerimientos = 30;
+  static int? constanteRequerimientos = 30;
   static double pi = 3.14159265;
 
   Valores();
@@ -107,6 +140,13 @@ class Valores {
         Pacientes.ID_Paciente,
         emulated: true);
     valores.addAll(aux);
+    final elect = await Actividades.consultarId(
+        Databases.siteground_database_reggabo,
+        Electrocardiogramas.electrocardiogramas['consultLastQuery'],
+        Pacientes.ID_Paciente,
+        emulated: true);
+    valores.addAll(elect);
+
     //valores.map((key, value) => value = null);
     Valores.fromJson(valores);
     return true;
@@ -180,7 +220,48 @@ class Valores {
     acidoUrico = double.parse(json['Acido_Urico'] ?? '0');
     //
     sodio = double.parse(json['Sodio'] ?? '0');
+    potasio = double.parse(json['Potasio'] ?? '0');
+    cloro = double.parse(json['Cloro'] ?? '0');
+    magnesio = double.parse(json['Magnesio'] ?? '0');
+    fosforo = double.parse(json['Fosforo'] ?? '0');
+    calcio = double.parse(json['Calcio'] ?? '0');
+    //
+    fechaElectrocardiograma = json['Pace_GAB_EC_Feca'] ?? '';
+    ritmoCardiaco = json['Pace_EC_rit'] ?? '';
+    intervaloRR = double.parse(json['Pace_EC_rr'] ?? '0');
+    duracionOndaP = double.parse(json['Pace_EC_dop'] ?? '0');
+    alturaOndaP = double.parse(json['Pace_EC_aop'] ?? '0');
+    duracionPR = double.parse(json['Pace_EC_dpr'] ?? '0');
+    duracionQRS = double.parse(json['Pace_EC_dqrs'] ?? '0');
+    alturaQRS = double.parse(json['Pace_EC_aqrs'] ?? '0');
+    QRSi = double.parse(json['Pace_EC_qrsi'] ?? '0');
+    QRSa = double.parse(json['Pace_EC_qrsa'] ?? '0');
+    ejeCardiaco = double.parse(json['Pace_QRS'] ?? '0');
+    //
+    segmentoSTValue = double.parse(json['Pace_EC_ast_'] ?? '0');
+    segmentoST = json['Pace_EC_st'] ?? '';
+    duracionQT = double.parse(json['Pace_EC_dqt'] ?? '0');
+    duracionOndaT = double.parse(json['Pace_EC_dot'] ?? '0');
+    alturaOndaT = double.parse(json['Pace_EC_aot'] ?? '0');
+    //
+    rV1 = double.parse(json['EC_rV1'] ?? '0');
+    sV6 = double.parse(json['EC_sV6'] ?? '0');
+    sV1 = double.parse(json['EC_sV1'] ?? '0');
+    rV6 = double.parse(json['EC_rV6'] ?? '0');
+    rAvL = double.parse(json['EC_rAVL'] ?? '0');
+    sV3 = double.parse(json['EC_sV3'] ?? '0');
+    //
+    patronQRS = double.parse(json['PatronQRS'] ?? '0');
+    deflexionIntrinsecoide =
+        double.parse(json['DeflexionIntrinsecoide'] ?? '0');
+    rDI = double.parse(json['EC_rDI'] ?? '0');
+    sDI = double.parse(json['EC_sDI'] ?? '0');
+    rDIII = double.parse(json['EC_rDIII'] ?? '0');
+    sDIII = double.parse(json['EC_sDIII'] ?? '0');
+    conclusionElectrocardiograma = json['Pace_EC_CON'] ?? '';
+    //
   }
+
   static String get numeroExpediente =>
       '${Valores.numeroPaciente} ${Valores.agregadoPaciente}';
 
@@ -189,8 +270,14 @@ class Valores {
   static double get imc =>
       pesoCorporalTotal! / (alturaPaciente! * alturaPaciente!);
 
-  static double get requerimientoHidrico =>
-      (pesoCorporalTotal! * constanteRequerimientos);
+  static double get requerimientoHidrico {
+    if (Valores.pesoCorporalTotal != 0 && Valores.pesoCorporalTotal != null) {
+      return (pesoCorporalTotal! * constanteRequerimientos!);
+    } else {
+      return double.nan;
+    }
+  }
+
   static double get aguaCorporalTotal {
     if (Valores.pesoCorporalTotal != 0 && Valores.pesoCorporalTotal != null) {
       if (sexo == "Masculino") {
@@ -263,7 +350,7 @@ class Valores {
   static double get VP => aguaCorporalTotal * 0.074;
   static double get VS => aguaCorporalTotal * 0.037;
 
-  static double get DSO {
+  static double get deficitSodio {
     if (Valores.sodio != 0 && Valores.sodio != null) {
       if (Valores.sodio! < 120) {
         return 120 - Valores.sodio!;
@@ -287,9 +374,10 @@ class Valores {
     }
   }
 
-  static double get RES => ((140 - Valores.sodio!) / (aguaCorporalTotal + 1.0));
+  static double get reposicionSodio =>
+      ((140 - Valores.sodio!) / (aguaCorporalTotal + 1.0));
   static double get VIF =>
-      RES + ((140 - Valores.sodio!) / (aguaCorporalTotal + 1.0));
+      reposicionSodio + ((140 - Valores.sodio!) / (aguaCorporalTotal + 1.0));
 
   static double get sodioCorregidoGlucosa {
     if (Valores.sodio != 0 &&
@@ -302,24 +390,43 @@ class Valores {
     }
   }
 
-  static double get globulinasSericas =>
-      (Valores.proteinasTotales! - Valores.albuminaSerica!);
-  static double get CAC {
-    if (Valores.albuminaSerica != 0) {
-      if (globulinasSericas != 0) {
-        return (Valores.calcio! +
-            (0.16 *
-                ((Valores.proteinasTotales! - Valores.albuminaSerica!) - 7.4)));
-      } else {
-        return (Valores.calcio! + (0.8 * (4.0 - Valores.albuminaSerica!)));
-      }
-    } else if (Valores.proteinasTotales != 0) {
-      return (Valores.calcio! - Valores.proteinasTotales! * 0.676) + (4.87);
+  static double get globulinasSericas {
+    if (Valores.proteinasTotales != 0 &&
+        Valores.proteinasTotales != null &&
+        Valores.albuminaSerica != 0 &&
+        Valores.albuminaSerica != null) {
+      return (Valores.proteinasTotales! - Valores.albuminaSerica!);
     } else {
-      return 00.00;
-      //return (Valores.albuminaSerica! * 8) +
-      //  ((Valores.proteinasTotales! - Valores.albuminaSerica!) * 2) +
-      //3;
+      return double.nan;
+    }
+  }
+
+  static double get calcioCorregidoAlbumina {
+    if (Valores.proteinasTotales != 0 &&
+        Valores.proteinasTotales != null &&
+        Valores.albuminaSerica != 0 &&
+        Valores.albuminaSerica != null &&
+        Valores.calcio != 0 &&
+        Valores.calcio != null) {
+      if (Valores.albuminaSerica != 0) {
+        if (globulinasSericas != 0) {
+          return (Valores.calcio! +
+              (0.16 *
+                  ((Valores.proteinasTotales! - Valores.albuminaSerica!) -
+                      7.4)));
+        } else {
+          return (Valores.calcio! + (0.8 * (4.0 - Valores.albuminaSerica!)));
+        }
+      } else if (Valores.proteinasTotales != 0) {
+        return (Valores.calcio! - Valores.proteinasTotales! * 0.676) + (4.87);
+      } else {
+        return 00.00;
+        //return (Valores.albuminaSerica! * 8) +
+        //  ((Valores.proteinasTotales! - Valores.albuminaSerica!) * 2) +
+        //3;
+      }
+    } else {
+      return double.nan;
     }
   }
 
@@ -416,7 +523,17 @@ class Valores {
   // # ######################################################
   // # Ajustes de Potasio [K+]
   // # ######################################################
-  static double get DK => (Valores.pesoCorporalTotal! * (Valores.potasio! - 4));
+  static double get deltaPotasio {
+    if (Valores.pesoCorporalTotal != 0 &&
+        Valores.pesoCorporalTotal != null &&
+        Valores.potasio != 0 &&
+        Valores.potasio != null) {
+      return (Valores.pesoCorporalTotal! * (Valores.potasio! - 4));
+    } else {
+      return double.nan;
+    }
+  }
+
   static double get requerimientoPotasio {
     if (Valores.potasio! <= 3.4 && Valores.potasio! >= 3.1) {
       return 1.0 * Valores.pesoCorporalTotal!;
@@ -457,8 +574,16 @@ class Valores {
     }
   }
 
-  static double get pHKalemia =>
-      (Valores.pH! * ((Valores.potasio! * 0.1) / 0.6));
+  static double get pHKalemia {
+    if (Valores.pH != 0 &&
+        Valores.pH != null &&
+        Valores.potasio != 0 &&
+        Valores.potasio != null) {
+      return (Valores.pH! * ((Valores.potasio! * 0.1) / 0.6));
+    } else {
+      return double.nan;
+    }
+  }
 
   // # ######################################################
   // # Antropométricos
@@ -905,6 +1030,43 @@ class Valores {
   static double get TLVD => 00.00; //  # Trabajo Latido Ventricular Derecho
   // # FE = VL / VDF # FE(%)= ((VDF-VSF)*100)/VDF. (porque VL= VDF-VSF). (%)
   static double get FE => 0.0;
+
+  static double get indiceSokolowLyon {
+    if (Valores.sV1 != 0 && Valores.sV1 != null 
+    && Valores.rV6 != 0 && Valores.rV6 != null) {
+      return (Valores.sV1! + Valores.rV6!);
+    } else {
+      return double.nan;
+    }
+  }
+  static double get indiceGubnerUnderleiger {
+    if (Valores.rDI != 0 && Valores.rDI != null
+        && Valores.sDIII != 0 && Valores.sDIII != null) {
+return (Valores.rDI! + Valores.sDIII!);
+  } else {
+    return double.nan;
+  }
+  }
+  static double get indiceLewis {
+    if (Valores.rDI != 0 && Valores.rDI != null
+        && Valores.sDIII != 0 && Valores.sDIII != null
+    && Valores.sDI != 0 && Valores.sDI != null
+        && Valores.rDIII != 0 && Valores.rDIII != null) {
+return (Valores.rDI! + Valores.sDIII!) -
+    (Valores.rDIII! + Valores.sDI!);
+  } else {
+    return double.nan;
+  }
+  }
+  static double get voltajeCornell {
+    if (Valores.rAvL != 0 && Valores.rAvL != null 
+    && Valores.sV3 != 0 && Valores.sV3 != null) {
+    return (Valores.rAvL! + Valores.sV3!);
+  } else {
+    return double.nan;
+  }
+  }
+
 }
 
 class Metabolometrias {
@@ -999,5 +1161,5 @@ class Valorados {
       "Osmolaridad: ${Valores.osmolaridadSerica} mOsm/L, "
       "Brecha osmolar: ${Valores.brechaOsmolar} mOsm/L. "
       "${Valores.sodioCorregido} ${Valores.requerimientoPotasio} "
-      "Delta potasio: ${Valores.DSO} mEq/L: ${Valores.DK}";
+      "Delta potasio: ${Valores.deficitSodio} mEq/L: ${Valores.deltaPotasio}";
 }
