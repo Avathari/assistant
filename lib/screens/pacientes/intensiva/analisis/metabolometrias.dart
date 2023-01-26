@@ -26,7 +26,7 @@ class _MetabolicosState extends State<Metabolicos> {
     return Expanded(
         child: Column(
       children: [
-        TittlePanel(textPanel: 'Análisis Metabólico'),
+        TittlePanel(color:Colors.black, textPanel: 'Análisis Metabólico'),
         Expanded(
           child: SingleChildScrollView(
             controller: ScrollController(),

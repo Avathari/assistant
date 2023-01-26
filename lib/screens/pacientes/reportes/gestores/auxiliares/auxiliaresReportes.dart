@@ -1,4 +1,5 @@
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/DialogSelector.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
@@ -568,6 +569,7 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                     controller: scrollController,
                     child: Column(children: [
                       Spinner(
+                        width: isMobile(context) ? 60: 100,
                         tittle: "Estado médico",
                         initialValue: estadoValue,
                         onChangeValue: (String? newValue) {
@@ -578,6 +580,7 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                         items: Pacientes.PronosticoEstado,
                       ),
                       Spinner(
+                        width: isMobile(context) ? 60: 100,
                         tittle: "Para la función",
                         initialValue: funcionValue,
                         onChangeValue: (String? newValue) {
@@ -588,6 +591,7 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                         items: Pacientes.PronosticoFuncion,
                       ),
                       Spinner(
+                          width: isMobile(context) ? 60: 100,
                           tittle: "Para la vida",
                           initialValue: vidaValue,
                           onChangeValue: (String? newValue) {
@@ -597,6 +601,7 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                           },
                           items: Pacientes.PronosticoVida),
                       Spinner(
+                        width: isMobile(context) ? 60: 100,
                         tittle: "Para el tiempo",
                         initialValue: tiempoValue,
                         onChangeValue: (String? newValue) {

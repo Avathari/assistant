@@ -66,7 +66,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               },
             ),
           ]), //: null,
-      body: isMobile(context) ? mobileView() : desktopView(),
+      body:
+          isMobile(context) || isTablet(context) ? mobileView() : desktopView(),
     );
   }
 
@@ -81,7 +82,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
   Column mobileView() {
     return Column(
       children: [
-        Padding(
+        Expanded(
+            child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
             decoration: BoxDecoration(
@@ -89,20 +91,28 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                 borderRadius: BorderRadius.circular(20)),
             child: sideLeft(),
           ),
-        ),
+        )),
         Expanded(
-          flex: 2,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Colores.backgroundPanel,
-                  borderRadius: BorderRadius.circular(20)),
-              child: SingleChildScrollView(
-                  child: pantallasReportesMedicos(widget.actualPage)),
-            ),
+            flex: 4,
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colores.backgroundPanel,
+                    borderRadius: BorderRadius.circular(20)),
+                child: pantallasReportesMedicos(widget.actualPage),
+              ),
+            )),
+        Expanded(
+            child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            decoration: BoxDecoration(
+                color: Colores.backgroundPanel,
+                borderRadius: BorderRadius.circular(20)),
+            child: sideRight(),
           ),
-        ),
+        )),
       ],
     );
   }
@@ -145,165 +155,133 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
     );
   }
 
-  Column sideLeft() {
-    return Column(
-      children: [
-        isMobile(context)
-            ? const PresentacionPacientesSimple()
-            : isTabletAndDesktop(context)
-                ? const PresentacionPacientesSimple()
-                : isDesktop(context)
-                    ? const PresentacionPacientes()
-                    :  Container(),
-        const CrossLine(),
-        TittlePanel(textPanel: "Tipo de Nota Médica"),
-        Expanded(
-            flex: 3,
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: ListView(
-                controller: ScrollController(),
+  Widget sideLeft() {
+    if (isMobile(context) || isTablet(context)) {
+      return Expanded(
+        child: Row(
+          children: [
+            isTablet(context) ? const Expanded(flex: 3, child: PresentacionPacientesSimple()) : Container(),
+            Expanded(
+              flex: isTablet(context) ? 7 : 2,
+              child: Column(
                 children: [
-                  ListValue(
-                    title: "Nota de Ingreso Hospitalario",
-                    onPress: () {
-                      setState(() {
-                        widget.actualPage = 0;
-                      });
-                    },
-                  ),
-                  ListValue(
-                    title: "Nota de Evolución",
-                    onPress: () {
-                      setState(() {
-                        widget.actualPage = 1;
-                      });
-                    },
-                  ),
-                  ListValue(
-                    title: "Nota de Consulta",
-                    onPress: () {
-                      setState(() {
-                        // showDialog(
-                        //     context: context,
-                        //     builder: ((context) => AlertDialog(
-                        //         title: const Text("Nota de Consulta"),
-                        //         content: Text("${widget.actualPage}"))));
-                        widget.actualPage = 2;
-                      });
-                    },
-                  ),
-                  ListValue(
-                    title: "Nota de Terapia Intensiva",
-                    onPress: () {
-                      setState(() {
-                        widget.actualPage = 3;
-                      });
-                    },
-                  ),
-                  ListValue(
-                    title: "Nota de Valoración Prequirúrgica",
-                    onPress: () {
-                      setState(() {
-                        widget.actualPage = 4;
-                      });
-                    },
-                  ),
-                  ListValue(
-                    title: "Nota de Valoración Preanestésica",
-                    onPress: () {
-                      setState(() {
-                        widget.actualPage = 5;
-                      });
-                    },
-                  ),
-                  ListValue(
-                    title: "Nota de Egreso",
-                    onPress: () {
-                      setState(() {
-                        widget.actualPage = 6;
-                      });
-                    },
-                  ),
+                  Expanded(
+                      child: TittlePanel(padding:  isTablet(context) ? 4 : 2,textPanel: "Tipo de Nota Médica")),
+                  Expanded(
+                    flex: isTablet(context) ? 2 : 1,
+                      child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    controller: ScrollController(),
+                    child: Column(
+                      children: tiposReportes(),
+                    ),
+                  )),
                 ],
               ),
-            )),
-        const SizedBox(height: 20, child: CrossLine()),
-        ListValue(
-          title: "",
-          onPress: () {},
+            ),
+          ],
         ),
-      ],
-    );
+      );
+    } else {
+      return Column(
+        children: [
+          isMobile(context)
+              ? const PresentacionPacientesSimple()
+              : isTabletAndDesktop(context)
+                  ? const PresentacionPacientesSimple()
+                  : isDesktop(context)
+                      ? const PresentacionPacientes()
+                      : Container(),
+          const CrossLine(),
+          TittlePanel(textPanel: "Tipo de Nota Médica"),
+          Expanded(
+              flex: 3,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: ListView(
+                  controller: ScrollController(),
+                  children: tiposReportes(),
+                ),
+              )),
+          const SizedBox(height: 20, child: CrossLine()),
+          ListValue(
+            title: "",
+            onPress: () {},
+          ),
+        ],
+      );
+    }
   }
 
-  Column sideRight() {
-    return Column(
-      children: [
-        SizedBox(
-          height: 60,
-          child: GrandButton(labelButton: "", onPress: () {}),
-        ),
-        const SizedBox(
-          height: 20,
-          child: CrossLine(),
-        ),
-        Expanded(
-          flex: 3,
+  Widget sideRight() {
+    if (isMobile(context) || isTablet(context)) {
+      return Expanded(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
+            child: Row(
+        children: [
+            Expanded(
+              flex: 3,
+              child: SingleChildScrollView(
+                  controller: ScrollController(),
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    children: actionsReportes(),
+                  )),
+            ),
+            Expanded(
+              child: GrandButton(
+                weigth: 100,
+                  labelButton: "Vista previa",
+                  onPress: () async {
+                    await imprimirDocumento();
+                  }),
+            ),
+        ],
+      ),
+          ));
+    } else {
+      return Column(
+        children: [
+          SizedBox(
+            height: 60,
+            child: GrandButton(labelButton: "", onPress: () {}),
+          ),
+          const SizedBox(
+            height: 20,
+            child: CrossLine(),
+          ),
+          Expanded(
+            flex: 3,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: SingleChildScrollView(
-                controller: ScrollController(),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      GrandButton(
-                          labelButton: "Indicaciones Médicas",
-                          onPress: () {
-                            showDialog(
-                                useSafeArea: true,
-                                context: context,
-                                builder: (context) {
-                                  return const Dialog(
-                                    child: IndicacionesHospital(),
-                                  ); // IndicacionesConsulta(),);
-                                });
-                          }),
-                      GrandButton(
-                          labelButton: "Licencia médica", onPress: () {}),
-                      GrandButton(
-                          labelButton: "Licencia médica", onPress: () {}),
-                      GrandButton(
-                          labelButton: "Licencia médica", onPress: () {}),
-                      GrandButton(
-                          labelButton: "Licencia médica", onPress: () {}),
-                      GrandButton(
-                          labelButton: "Licencia médica", onPress: () {}),
-                      GrandButton(
-                          labelButton: "Licencia médica", onPress: () {}),
-                      GrandButton(
-                          labelButton: "Licencia médica", onPress: () {}),
-                    ],
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SingleChildScrollView(
+
+                  controller: ScrollController(),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: actionsReportes(),
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
-        const SizedBox(
-          height: 20,
-          child: CrossLine(),
-        ),
-        GrandButton(
-            labelButton: "Vista previa",
-            onPress: () async {
-              await imprimirDocumento();
-            }),
-      ],
-    );
+          const SizedBox(
+            height: 20,
+            child: CrossLine(),
+          ),
+          GrandButton(
+              labelButton: "Vista previa",
+              onPress: () async {
+                await imprimirDocumento();
+              }),
+        ],
+      );
+    }
   }
 
   Future<void> imprimirDocumento() async {
@@ -354,5 +332,95 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
     ];
 
     return list[actualPage];
+  }
+
+  List<Widget> tiposReportes() {
+    return [
+      ListValue(
+        title: "Nota de Ingreso Hospitalario",
+        onPress: () {
+          setState(() {
+            widget.actualPage = 0;
+          });
+        },
+      ),
+      ListValue(
+        title: "Nota de Evolución",
+        onPress: () {
+          setState(() {
+            widget.actualPage = 1;
+          });
+        },
+      ),
+      ListValue(
+        title: "Nota de Consulta",
+        onPress: () {
+          setState(() {
+            // showDialog(
+            //     context: context,
+            //     builder: ((context) => AlertDialog(
+            //         title: const Text("Nota de Consulta"),
+            //         content: Text("${widget.actualPage}"))));
+            widget.actualPage = 2;
+          });
+        },
+      ),
+      ListValue(
+        title: "Nota de Terapia Intensiva",
+        onPress: () {
+          setState(() {
+            widget.actualPage = 3;
+          });
+        },
+      ),
+      ListValue(
+        title: "Nota de Valoración Prequirúrgica",
+        onPress: () {
+          setState(() {
+            widget.actualPage = 4;
+          });
+        },
+      ),
+      ListValue(
+        title: "Nota de Valoración Preanestésica",
+        onPress: () {
+          setState(() {
+            widget.actualPage = 5;
+          });
+        },
+      ),
+      ListValue(
+        title: "Nota de Egreso",
+        onPress: () {
+          setState(() {
+            widget.actualPage = 6;
+          });
+        },
+      ),
+    ];
+  }
+
+  List<Widget> actionsReportes() {
+    return [
+      GrandButton(
+          labelButton: "Indicaciones Médicas",
+          onPress: () {
+            showDialog(
+                useSafeArea: true,
+                context: context,
+                builder: (context) {
+                  return const Dialog(
+                    child: IndicacionesHospital(),
+                  ); // IndicacionesConsulta(),);
+                });
+          }),
+      GrandButton(labelButton: "Licencia médica", onPress: () {}),
+      GrandButton(labelButton: "Licencia médica", onPress: () {}),
+      GrandButton(labelButton: "Licencia médica", onPress: () {}),
+      GrandButton(labelButton: "Licencia médica", onPress: () {}),
+      GrandButton(labelButton: "Licencia médica", onPress: () {}),
+      GrandButton(labelButton: "Licencia médica", onPress: () {}),
+      GrandButton(labelButton: "Licencia médica", onPress: () {}),
+    ];
   }
 }

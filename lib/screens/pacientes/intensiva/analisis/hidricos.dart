@@ -25,7 +25,7 @@ class _HidricosState extends State<Hidricos> {
     return Expanded(
         child: Column(
       children: [
-        TittlePanel(textPanel: 'Análisis Hídrico'),
+        TittlePanel(color:Colors.black, textPanel: 'Análisis Hídrico'),
         Expanded(
           child: SingleChildScrollView(
             controller: ScrollController(),

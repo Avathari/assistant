@@ -20,6 +20,9 @@ import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/GridLayout.dart';
 import 'package:assistant/widgets/LoadingScreen.dart';
+import 'package:assistant/widgets/MenuButton.dart';
+import 'package:assistant/widgets/Tittle.dart';
+import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
@@ -104,9 +107,15 @@ class _GestionPacientesState extends State<GestionPacientes> {
           ),
           title: const Text(Sentences.app_pacientes_tittle),
           actions: <Widget>[
-            isMobile(context) ? GrandIcon(iconData: Icons.bar_chart,onPress: () {
-              Operadores.openActivity(context: context, chyldrim: const EstadisticasPacientes());
-            }) : Container(),
+            isMobile(context)
+                ? GrandIcon(
+                    iconData: Icons.bar_chart,
+                    onPress: () {
+                      Operadores.openActivity(
+                          context: context,
+                          chyldrim: const EstadisticasPacientes());
+                    })
+                : Container(),
             IconButton(
               icon: const Icon(
                 Icons.replay_outlined,
@@ -420,11 +429,11 @@ class _GestionPacientesState extends State<GestionPacientes> {
         ),
         isTablet(context)
             ? const Expanded(flex: 1, child: EstadisticasPacientes())
-            :         isDesktop(context)
-            ? const Expanded(flex: 1, child: EstadisticasPacientes())
-            : isTabletAndDesktop(context)
-            ? const Expanded(flex: 1, child: EstadisticasPacientes())
-            : Container()
+            : isDesktop(context)
+                ? const Expanded(flex: 1, child: EstadisticasPacientes())
+                : isTabletAndDesktop(context)
+                    ? const Expanded(flex: 1, child: EstadisticasPacientes())
+                    : Container()
       ]),
     );
   }
@@ -1296,7 +1305,8 @@ class _VisualPacientesState extends State<VisualPacientes> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      drawer: isMobile(context) || isTablet(context) ? drawerHome(context) : null,
+      drawer:
+          isMobile(context) || isTablet(context) ? drawerHome(context) : null,
       appBar: AppBar(
           leading: isTabletAndDesktop(context)
               ? IconButton(
@@ -1362,7 +1372,8 @@ class _VisualPacientesState extends State<VisualPacientes> {
                       });
                 }),
           ]),
-      body: isMobile(context) || isTablet(context) ? mobileView() : desktopView(),
+      body:
+          isMobile(context) || isTablet(context) ? mobileView() : desktopView(),
       // Row(children: [
       //   Expanded(
       //     flex: isTabletAndDesktop(context)
@@ -1390,7 +1401,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
   }
 
   Row mobileView() {
-    return Row(crossAxisAlignment: CrossAxisAlignment.start,children: [
+    return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Expanded(
         flex: 0,
         child: Container(),
@@ -1405,9 +1416,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
         flex: 2,
         child: isTablet(context) ? sideBarTablet() : sideBarDesktop(),
       ),
-      Expanded(
-          flex: 7,
-          child: pantallasAuxiliares(widget.actualPage)),
+      Expanded(flex: 7, child: pantallasAuxiliares(widget.actualPage)),
     ]);
   }
 
@@ -1979,60 +1988,66 @@ class _EstadisticasPacientesState extends State<EstadisticasPacientes> {
               ),
             ),
             Expanded(
-              flex: isMobile(context) ? 2:1,
-              child: isTablet(context) || isMobile(context) ? Column(
-                children: [
-                  Flexible(
-                      flex: 2,
-                      child: data['Total_Pacientes'] != 0
-                          ? PieChart(PieChartData(
-                          sections:
-                          listChartSections(data['Total_Pacientes'])))
-                          : Container()),
-                  Flexible(
-                      flex: 3,
-                      child: SingleChildScrollView(
-                        controller: ScrollController(),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            tileStat(Icons.person, "Total de Pacientes",
-                                data['Total_Pacientes']),
-                            tileStat(Icons.person_add_outlined,
-                                "Total de Activos", data['Total_Vivos']),
-                            tileStat(Icons.person_off_outlined,
-                                "Total de Fallecidos", data['Total_Fallecidos'])
-                          ],
-                        ),
-                      ))
-                ],
-              ) : Row(
-                children: [
-                  Flexible(
-                      flex: 2,
-                      child: data['Total_Pacientes'] != 0
-                          ? PieChart(PieChartData(
-                          sections:
-                          listChartSections(data['Total_Pacientes'])))
-                          : Container()),
-                  Flexible(
-                      flex: 3,
-                      child: SingleChildScrollView(
-                        controller: ScrollController(),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            tileStat(Icons.person, "Total de Pacientes",
-                                data['Total_Pacientes']),
-                            tileStat(Icons.person_add_outlined,
-                                "Total de Activos", data['Total_Vivos']),
-                            tileStat(Icons.person_off_outlined,
-                                "Total de Fallecidos", data['Total_Fallecidos'])
-                          ],
-                        ),
-                      ))
-                ],
-              ),
+              flex: isMobile(context) ? 2 : 1,
+              child: isTablet(context) || isMobile(context)
+                  ? Column(
+                      children: [
+                        Flexible(
+                            flex: 2,
+                            child: data['Total_Pacientes'] != 0
+                                ? PieChart(PieChartData(
+                                    sections: listChartSections(
+                                        data['Total_Pacientes'])))
+                                : Container()),
+                        Flexible(
+                            flex: 3,
+                            child: SingleChildScrollView(
+                              controller: ScrollController(),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  tileStat(Icons.person, "Total de Pacientes",
+                                      data['Total_Pacientes']),
+                                  tileStat(Icons.person_add_outlined,
+                                      "Total de Activos", data['Total_Vivos']),
+                                  tileStat(
+                                      Icons.person_off_outlined,
+                                      "Total de Fallecidos",
+                                      data['Total_Fallecidos'])
+                                ],
+                              ),
+                            ))
+                      ],
+                    )
+                  : Row(
+                      children: [
+                        Flexible(
+                            flex: 2,
+                            child: data['Total_Pacientes'] != 0
+                                ? PieChart(PieChartData(
+                                    sections: listChartSections(
+                                        data['Total_Pacientes'])))
+                                : Container()),
+                        Flexible(
+                            flex: 3,
+                            child: SingleChildScrollView(
+                              controller: ScrollController(),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  tileStat(Icons.person, "Total de Pacientes",
+                                      data['Total_Pacientes']),
+                                  tileStat(Icons.person_add_outlined,
+                                      "Total de Activos", data['Total_Vivos']),
+                                  tileStat(
+                                      Icons.person_off_outlined,
+                                      "Total de Fallecidos",
+                                      data['Total_Fallecidos'])
+                                ],
+                              ),
+                            ))
+                      ],
+                    ),
             ),
             const SizedBox(
               height: 20,
@@ -2115,47 +2130,62 @@ class MenuPersonales extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            tittleCard(
-              color: Colors.black,
-              text: "Antecedentes Personales del Paciente",
+            Tittle(
+              tittle: "Antecedentes Personales del Paciente",
             ),
-            SingleChildScrollView(
-              controller: ScrollController(),
-              child: Column(
-                children: [
-                  GridLayout(
-                      childAspectRatio: isMobile(context) ? 1.0 : 4.0,
-                      columnCount: 2,
-                      children: [
-                        menuButton(context, Icons.family_restroom,
-                            "Antecedentes Heredofamiliares", () {}),
-                        menuButton(context, Icons.medication,
-                            "Antecedentes Personales Patológicos", () {
+            const SizedBox(height: 10,),
+            Expanded(
+              child: GridLayout(
+                  childAspectRatio: isMobile(context)
+                      ? 1.0
+                      : isTablet(context)
+                          ? 2.0
+                          : 4.0,
+                  columnCount: 2,
+                  children: [
+                    MenuButton(
+                        iconData: Icons.family_restroom,
+                        labelButton: "Antecedentes Heredofamiliares",
+                        onPress: () {}),
+                    MenuButton(
+                        iconData: Icons.medication,
+                        labelButton: "Antecedentes Personales Patológicos",
+                        onPress: () {
                           toNextPage(context, GestionPatologicos());
                         }),
-                        menuButton(context, Icons.person_pin,
-                            "Antecedentes Personales No Patológicos", () {}),
-                        menuButton(context, Icons.bloodtype,
-                            "Antecedentes Transfusionales", () {
+                    MenuButton(
+                        iconData: Icons.person_pin,
+                        labelButton: "Antecedentes Personales No Patológicos",
+                        onPress: () {}),
+                    MenuButton(
+                        iconData: Icons.bloodtype,
+                        labelButton: "Antecedentes Transfusionales",
+                        onPress: () {
                           toNextPage(context, GestionTransfusionales());
                         }),
-                        menuButton(context, Icons.medical_information_rounded,
-                            "Antecedentes Quirúrgicos", () {
+                    MenuButton(
+                        iconData: Icons.medical_information_rounded,
+                        labelButton: "Antecedentes Quirúrgicos",
+                        onPress: () {
                           toNextPage(context, GestionQuirurgicos());
                         }),
-                        menuButton(
-                            context, Icons.vaccines, "Antecedentes Vacunales",
-                            () {
+                    MenuButton(
+                        iconData: Icons.vaccines,
+                        labelButton: "Antecedentes Vacunales",
+                        onPress: () {
                           toNextPage(context, GestionVacunales());
                         }),
-                        menuButton(context, Icons.medication_liquid,
-                            "Antecedentes Alérgicos", () {
+                    MenuButton(
+                        iconData: Icons.medication_liquid,
+                        labelButton: "Antecedentes Alérgicos",
+                        onPress: () {
                           toNextPage(context, GestionAlergicos());
                         }),
-                        menuButton(context, Icons.quiz, "Cuestionarios", () {})
-                      ]),
-                ],
-              ),
+                    MenuButton(
+                        iconData: Icons.quiz,
+                        labelButton: "Cuestionarios",
+                        onPress: () {})
+                  ]),
             ),
           ],
         ),

@@ -77,14 +77,24 @@ class Archivos {
 
   static Future<Map<String, dynamic>> mapFromJson(
       {String path = 'assets/diccionarios/Cie.json'}) async {
-    var file = File(path), contents;
+    // var file = File(path), contents;
+    var file, contents;
     //
-    if (await file.exists()) {
-      contents = await file.readAsString();
+    if (Platform.isAndroid) {
+      contents = await rootBundle.loadString(path);
+      return jsonDecode(contents);
     } else {
-      throw "No existe el archivo $path";
+      file = File(path);
+      if (await file.exists()) {
+        contents = await file.readAsString();
+        return json.decode(await contents);
+      } else {
+        throw "No existe el archivo $path";
+      }
+
     }
-    return json.decode(await contents);
+
+
   }
 
   static Future<List<dynamic>> listFromText(

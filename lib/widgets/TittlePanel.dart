@@ -1,16 +1,18 @@
+import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:flutter/material.dart';
 
 class TittlePanel extends StatefulWidget {
   String? textPanel;
   double? padding;
-
+  Color? color;
   Color colorText;
 
   TittlePanel(
       {Key? key,
       this.padding = 8.0,
       this.colorText = Colors.white,
+      this.color = Colores.backgroundPanel,
       required this.textPanel})
       : super(key: key);
 
@@ -25,10 +27,10 @@ class _TittlePanelState extends State<TittlePanel> {
       padding: EdgeInsets.only(
           left: 8.0, right: 8.0, top: 12.0, bottom: widget.padding!),
       child: Container(
-        decoration: const BoxDecoration(
-            //color: Colors.black,
+        decoration: BoxDecoration(
+            color: widget.color!,
             shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
                 topRight: Radius.circular(20), topLeft: Radius.circular(20))),
         child: Column(
           children: [

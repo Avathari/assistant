@@ -1,4 +1,5 @@
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/antropometricos.dart';
 
 import 'package:assistant/screens/pacientes/intensiva/contenidos/balances.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
@@ -6,12 +7,14 @@ import 'package:assistant/screens/pacientes/intensiva/contenidos/ventilaciones.d
 
 import 'package:assistant/screens/pacientes/intensiva/analisis/hidricos.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/metabolometrias.dart';
+import 'package:assistant/screens/pacientes/intensiva/herramientas.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandLabel.dart';
 import 'package:assistant/widgets/RoundedPanel.dart';
+import 'package:assistant/widgets/Tittle.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';
 
@@ -80,6 +83,7 @@ class _IntensivaState extends State<Intensiva> {
               child: Column(
                 children: [
                   GrandLabel(
+                    iconData: Icons.waterfall_chart,
                     labelButton: 'Balances Hidricos',
                     onPress: () {
                       Navigator.push(
@@ -89,6 +93,7 @@ class _IntensivaState extends State<Intensiva> {
                     },
                   ),
                   GrandLabel(
+                    iconData: Icons.airline_stops,
                     labelButton: 'Ventilación Mecánica',
                     onPress: () {
                       Navigator.push(
@@ -98,6 +103,7 @@ class _IntensivaState extends State<Intensiva> {
                     },
                   ),
                   GrandLabel(
+                    iconData: Icons.balance,
                     labelButton: 'Concentraciones y Diluciones',
                     onPress: () {
                       showDialog(
@@ -137,6 +143,7 @@ class _IntensivaState extends State<Intensiva> {
                   ),
                   const CrossLine(),
                   GrandLabel(
+                    iconData: Icons.analytics_outlined,
                     labelButton: 'Análisis basado en Información',
                     onPress: () {
                       setState(() {
@@ -145,6 +152,7 @@ class _IntensivaState extends State<Intensiva> {
                     },
                   ),
                   GrandLabel(
+                    iconData: Icons.airline_seat_flat_outlined,
                     labelButton: 'Valoraciones Prequirúrgicas',
                     onPress: () {
                       setState(() {
@@ -153,6 +161,7 @@ class _IntensivaState extends State<Intensiva> {
                     },
                   ),
                   GrandLabel(
+                    iconData: Icons.airline_seat_flat_angled_outlined,
                     labelButton: 'Procedimientos Médicos',
                     onPress: () {
                       setState(() {
@@ -162,6 +171,7 @@ class _IntensivaState extends State<Intensiva> {
                   ),
                   const CrossLine(),
                   GrandLabel(
+                    iconData: Icons.multiline_chart,
                     labelButton: 'Destete de la Intubación Endotraqueal',
                     weigth: 8,
                     onPress: () {
@@ -198,6 +208,7 @@ class _IntensivaState extends State<Intensiva> {
               child: Column(
                 children: [
                   GrandLabel(
+                    iconData: Icons.water_drop,
                     labelButton: 'Análisis Hidrico',
                     onPress: () {
                       if (isMobile(context)) {
@@ -210,6 +221,7 @@ class _IntensivaState extends State<Intensiva> {
                     },
                   ),
                   GrandLabel(
+                    iconData: Icons.bubble_chart,
                     labelButton: 'Análisis Metabólico',
                     onPress: () {
                       if (isMobile(context)) {
@@ -222,11 +234,16 @@ class _IntensivaState extends State<Intensiva> {
                     },
                   ),
                   GrandLabel(
+                    iconData: Icons.horizontal_rule_sharp,
                     labelButton: 'Análisis Antropométrico',
                     onPress: () {
-                      setState(() {
-                        widget.actualView = 3;
-                      });
+                      if (isMobile(context)) {
+                        openActivity(const Antropometricos());
+                      } else {
+                        setState(() {
+                          widget.actualView = 3;
+                        });
+                      }
                     },
                   ),
                   GrandLabel(
@@ -337,7 +354,7 @@ class _IntensivaState extends State<Intensiva> {
         controller: ScrollController(),
         child: Column(
           children: [
-            Tittle(tittle: 'Procedimientos Médicos'),
+            TittlePanel(textPanel: 'Procedimientos Médicos'),
             GrandLabel(
               labelButton: 'Catéter Venoso Central',
               onPress: () {
@@ -376,8 +393,8 @@ class _IntensivaState extends State<Intensiva> {
     List list = [
       Container(),
       const Hidricos(),
-      Metabolicos(),
-      Container(),
+      const Metabolicos(),
+      const Antropometricos(),
       Container(),
       Container(),
       Container(),
@@ -423,10 +440,4 @@ class _IntensivaState extends State<Intensiva> {
               ));
         });
   }
-}
-
-Widget Tittle({required String tittle}) {
-  return RoundedPanel(
-    child: TittlePanel(textPanel: tittle),
-  );
 }

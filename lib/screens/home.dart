@@ -68,7 +68,7 @@ class _HomeState extends State<Home> {
       body: Row(children: [
         Expanded(
             flex: isTablet(context)
-                ? 2
+                ? 3
                 : isDesktop(context)
                     ? 2
                     : isMobile(context)

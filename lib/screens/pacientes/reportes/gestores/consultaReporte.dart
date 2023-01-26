@@ -1,4 +1,5 @@
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -128,7 +129,7 @@ class _ReporteConsultaState extends State<ReporteConsulta> {
             child: CarouselSlider(
               carouselController: carouselController,
               options: CarouselOptions(
-                  height: 450,
+                  height: isMobile(context) || isTablet(context) ? 900: 450,
                   enableInfiniteScroll: false,
                   viewportFraction: 1.0),
               items: [
@@ -244,46 +245,50 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GrandIcon(
-                  iconData: Icons.person,
-                  labelButton: "Información General",
-                  weigth: wieghtRow / index,
-                  onPress: () {
-                    carouselController.jumpToPage(0);
-                  },
-                ),
-                GrandIcon(
-                    iconData: Icons.explicit,
-                    labelButton: "Exploración Física",
+            child: SingleChildScrollView(
+              controller: ScrollController(),
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GrandIcon(
+                    iconData: Icons.person,
+                    labelButton: "Información General",
                     weigth: wieghtRow / index,
                     onPress: () {
-                      carouselController.jumpToPage(1);
-                    }),
-                GrandIcon(
-                    iconData: Icons.medical_information,
-                    labelButton: "Auxiliares Diagnósticos",
-                    weigth: wieghtRow / index,
-                    onPress: () {
-                      carouselController.jumpToPage(2);
-                    }),
-                GrandIcon(
-                    iconData: Icons.explore,
-                    labelButton: "Análisis y propuestas",
-                    weigth: wieghtRow / index,
-                    onPress: () {
-                      carouselController.jumpToPage(3);
-                    }),
-                GrandIcon(
-                    iconData: Icons.next_plan,
-                    labelButton: "Diagnósticos y Pronóstico",
-                    weigth: wieghtRow / index,
-                    onPress: () {
-                      carouselController.jumpToPage(4);
-                    }),
-              ],
+                      carouselController.jumpToPage(0);
+                    },
+                  ),
+                  GrandIcon(
+                      iconData: Icons.explicit,
+                      labelButton: "Exploración Física",
+                      weigth: wieghtRow / index,
+                      onPress: () {
+                        carouselController.jumpToPage(1);
+                      }),
+                  GrandIcon(
+                      iconData: Icons.medical_information,
+                      labelButton: "Auxiliares Diagnósticos",
+                      weigth: wieghtRow / index,
+                      onPress: () {
+                        carouselController.jumpToPage(2);
+                      }),
+                  GrandIcon(
+                      iconData: Icons.explore,
+                      labelButton: "Análisis y propuestas",
+                      weigth: wieghtRow / index,
+                      onPress: () {
+                        carouselController.jumpToPage(3);
+                      }),
+                  GrandIcon(
+                      iconData: Icons.next_plan,
+                      labelButton: "Diagnósticos y Pronóstico",
+                      weigth: wieghtRow / index,
+                      onPress: () {
+                        carouselController.jumpToPage(4);
+                      }),
+                ],
+              ),
             ),
           ),
         ),
@@ -294,7 +299,7 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
             child: CarouselSlider(
               carouselController: carouselController,
               options: CarouselOptions(
-                  height: 450,
+                  height: isMobile(context) || isTablet(context) ? 900: 450,
                   enableInfiniteScroll: false,
                   viewportFraction: 1.0),
               items: [

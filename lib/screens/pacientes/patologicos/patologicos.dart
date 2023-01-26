@@ -100,7 +100,7 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: isMobile(context)
+      appBar: isMobile(context) || isTablet(context)
           ? AppBar(
               backgroundColor: Theming.primaryColor,
               title: Text(appBarTitile),
@@ -527,7 +527,7 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
             ],
           ),
         ),
-        isTabletAndDesktop(context)
+        isDesktop(context)
             ? widget.actualSidePage != null
                 ? Expanded(flex: 1, child: widget.actualSidePage!)
                 : Expanded(flex: 1, child: Container())
@@ -659,7 +659,7 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
   }
 
   void toOperaciones(BuildContext context, String operationActivity) {
-    if (isMobile(context)) {
+    if (isMobile(context) || isTablet(context)) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (BuildContext context) => OperacionesPatologicos(
                 operationActivity: operationActivity,
