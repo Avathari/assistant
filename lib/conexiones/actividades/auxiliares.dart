@@ -2,12 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:assistant/conexiones/conexiones.dart';
+import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -91,10 +93,7 @@ class Archivos {
       } else {
         throw "No existe el archivo $path";
       }
-
     }
-
-
   }
 
   static Future<List<dynamic>> listFromText(
@@ -160,6 +159,25 @@ class Directorios {
       Alertas.showAlert(error: "Error al actualizar archivo al Servidor");
     }
   }
+
+  static choiseFromCamara() async {
+    final picker = ImagePicker();
+    XFile? xFileImage = await picker.pickImage(source: ImageSource.camera);
+    if (xFileImage != null) {
+      Uint8List bytes = await xFileImage.readAsBytes();
+      return bytes;
+    }
+  }
+
+  static choiseFromDirectory() async {
+    final picker = ImagePicker();
+    XFile? xFileImage = await picker.pickImage(source: ImageSource.gallery);
+    if (xFileImage != null) {
+      Uint8List bytes = await xFileImage.readAsBytes();
+      return bytes;
+    }
+  }
+
 }
 
 class Opciones {
@@ -201,5 +219,115 @@ class Operadores {
                 ),
               ));
         });
+  }
+
+  static void optionsActivity({
+    required BuildContext context,
+    String? tittle = "Manejo de Opciones",
+    String? message = "Seleccione una opción . . . ",
+    Function? onClose,
+    Function? optionA,
+    Function? optionB,
+    String? textOptionA = 'Opción A',
+    String? textOptionB = 'Option B',
+  }) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialogos.optionsDialog(
+            tittle: tittle,
+            msg: message,
+            onCloss: onClose,
+            optionA: optionA,
+            optionB: optionB,
+            textOptionA: textOptionA,
+            textOptionB: textOptionB,
+          );
+        });
+  }
+
+  static void alertActivity(
+      {required BuildContext context,
+      String? tittle = "Manejo de registro",
+      String? message = "El registro ha sido actualizado / creado"}) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialogos.alertDialog(tittle, message, () {
+            Navigator.of(context).pop();
+          }, () {});
+        });
+  }
+}
+
+class Dialogos {
+  static AlertDialog alertDialog(
+      String? tittle, String? msg, onCloss, onAcept) {
+    return AlertDialog(
+      backgroundColor: Theming.secondaryColor,
+      title: Text(
+        tittle!,
+        style: const TextStyle(color: Colors.grey),
+      ),
+      content: Text(
+        msg!,
+        style: const TextStyle(color: Colors.grey),
+      ),
+      actions: [
+        OutlinedButton(
+            onPressed: () {
+              onCloss();
+            },
+            child:
+                const Text("Cancelar", style: TextStyle(color: Colors.white))),
+        ElevatedButton(
+            onPressed: () {
+              onAcept();
+            },
+            child: const Text("Aceptar", style: TextStyle(color: Colors.white)))
+      ],
+    );
+  }
+
+  static AlertDialog optionsDialog({
+    String? tittle,
+    String? msg,
+    Function? onCloss,
+    Function? optionA,
+    Function? optionB,
+    String? textOptionA = 'Opción A',
+    String? textOptionB = 'Option B',
+  }) {
+    return AlertDialog(
+      backgroundColor: Theming.secondaryColor,
+      title: Text(
+        tittle!,
+        style: const TextStyle(color: Colors.grey),
+      ),
+      content: Text(
+        msg!,
+        style: const TextStyle(color: Colors.grey),
+      ),
+      actions: [
+        OutlinedButton(
+            onPressed: () {
+              onCloss!();
+            },
+            child:
+                const Text("Cancelar", style: TextStyle(color: Colors.white))),
+        ElevatedButton(
+            onPressed: () {
+              optionA!();
+            },
+            child: Text(textOptionA!,
+                style: const TextStyle(color: Colors.white))),
+        ElevatedButton(
+            onPressed: () {
+              optionB!();
+            },
+            child:
+                Text(textOptionB!, style: const TextStyle(color: Colors.white)))
+      ],
+    );
   }
 }

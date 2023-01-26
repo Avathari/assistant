@@ -159,7 +159,7 @@ class _AntropometricosState extends State<Antropometricos> {
                           data: Valores.imc,
                           medida: 'Kg/m2',
                         ),
-                        TittlePanel(textPanel: "Clase I.M.C. ${(Valores.claseIMC ?? '')}"),
+                        TittlePanel(textPanel: "Clase I.M.C. ${(Valores.claseIMC)}"),
                       ],
                     ),
                   ),

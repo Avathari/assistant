@@ -1,6 +1,9 @@
+import 'dart:convert';
 import 'dart:math';
+import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
@@ -22,6 +25,7 @@ import 'package:assistant/widgets/WidgetsModels.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
@@ -35,6 +39,7 @@ class ElectrocardiogramasGestion extends StatefulWidget {
 
 class _ElectrocardiogramasGestionState
     extends State<ElectrocardiogramasGestion> {
+  String? stringImage = '';
   // ############################ ####### ####### #############################
   // Variables de Ejecución
   // ############################ ####### ####### #############################
@@ -67,9 +72,10 @@ class _ElectrocardiogramasGestionState
   var qrsiTextController = TextEditingController();
   var qrsaTextController = TextEditingController();
   var paceQrsTextController = TextEditingController();
-
+ //
   String? segmentoSTValue = Electrocardiogramas.ast[0];
   var stTextController = TextEditingController();
+  //
   var dqtTextController = TextEditingController();
   var dotTextController = TextEditingController();
   var aotTextController = TextEditingController();
@@ -109,6 +115,8 @@ class _ElectrocardiogramasGestionState
       });
     });
     super.initState();
+
+    toBaseImage();
   }
 
   void initAllElement() {
@@ -130,7 +138,7 @@ class _ElectrocardiogramasGestionState
       qrsaTextController.text = "";
       paceQrsTextController.text = "";
       //
-      segmentoSTValue = Electrocardiogramas.ast[0];
+      segmentoSTValue = Electrocardiogramas.ast[1];
       stTextController.text = "";
       dqtTextController.text = "";
       dotTextController.text = "";
@@ -150,6 +158,8 @@ class _ElectrocardiogramasGestionState
       rdiiiTextController.text = "";
       sdiiiTextController.text = "";
       conclusionTextController.text = "";
+
+      toBaseImage();
     });
   }
 
@@ -170,8 +180,9 @@ class _ElectrocardiogramasGestionState
       qrsaTextController.text = element['Pace_EC_qrsa'].toString();
       paceQrsTextController.text = element['Pace_QRS']!.toString();
       //
-      segmentoSTValue = element['Pace_EC_ast_'];
-      stTextController.text = element['Pace_EC_st'].toString();
+      segmentoSTValue = element['Pace_EC_st'];
+      stTextController.text = element['Pace_EC_ast_'].toString();
+      //
       dqtTextController.text = element['Pace_EC_dqt'].toString();
       dotTextController.text = element['Pace_EC_dot'].toString();
       aotTextController.text = element['Pace_EC_aot'].toString();
@@ -189,6 +200,8 @@ class _ElectrocardiogramasGestionState
       sdiTextController.text = element['EC_sDI'].toString();
       rdiiiTextController.text = element['EC_rDIII'].toString();
       sdiiiTextController.text = element['EC_sDIII'].toString();
+      //
+      stringImage = element['Pace_GAB_IMG'];
       conclusionTextController.text = element['Pace_EC_CON'];
     });
   }
@@ -317,7 +330,7 @@ class _ElectrocardiogramasGestionState
       const CrossLine(),
       //
       Spinner(
-          width: 110,
+          width: isTablet(context) ? 170: 110,
           isRow: false,
           tittle: "Segmento ST",
           initialValue: segmentoSTValue!,
@@ -336,7 +349,7 @@ class _ElectrocardiogramasGestionState
         numOfLines: 1,
         onChange: (value) {
           setState(() {
-            Valores.segmentoST = value;
+            Valores.alturaSegmentoST = double.parse(value);
           });
         },
       ),
@@ -543,7 +556,7 @@ class _ElectrocardiogramasGestionState
           },
         ),
         backgroundColor: Theming.primaryColor,
-        actions: isMobile(context)
+        actions: isMobile(context) || isTablet(context)
             ? <Widget>[
                 GrandIcon(
                   iconData: Icons.dataset_linked_outlined,
@@ -567,33 +580,67 @@ class _ElectrocardiogramasGestionState
                         operationActivity: operationActivity));
                   },
                 ),
+                GrandIcon(
+                  iconData: Icons.photo_camera_back_outlined,
+                  labelButton: 'Imagen del Electrocardiograma',
+                  onPress: () {
+                    Operadores.optionsActivity(
+                      context: context,
+                      tittle: 'Cargar imagen del Electrocardiograma',
+                      onClose: () {
+                        Navigator.of(context).pop();
+                      },
+                      textOptionA: 'Cargar desde Dispositivo',
+                      optionA: () async {
+                        var bytes = await Directorios.choiseFromDirectory();
+                        setState(() {
+                          stringImage = base64Encode(bytes);
+                          Navigator.of(context).pop();
+                        });
+                      },
+                      textOptionB: 'Cargar desde Cámara',
+                      optionB: () async {
+                        var bytes = await Directorios.choiseFromCamara();
+                        setState(() {
+                          stringImage = base64Encode(bytes);
+                          Navigator.of(context).pop();
+                        });
+                      },
+                    );
+                  },
+                ),
               ]
-            : isTablet(context)
-                ? <Widget>[
-                    GrandIcon(
-                      iconData: Icons.dataset_linked_outlined,
-                      labelButton: "Registro de electrocardiogramas",
-                      onPress: () {
-                        carouselController.jumpToPage(0);
+            : <Widget>[
+                GrandIcon(
+                  iconData: Icons.photo_camera_back_outlined,
+                  labelButton: 'Imagen del Electrocardiograma',
+                  onPress: () {
+                    Operadores.optionsActivity(
+                      context: context,
+                      tittle: 'Cargar imagen del Electrocardiograma',
+                      onClose: () {
+                        Navigator.of(context).pop();
                       },
-                    ),
-                    GrandIcon(
-                      iconData: Icons.browser_updated,
-                      labelButton: "Gestion del Registro",
-                      onPress: () {
-                        carouselController.jumpToPage(1);
+                      textOptionA: 'Cargar desde Dispositivo',
+                      optionA: () async {
+                        var bytes = await Directorios.choiseFromDirectory();
+                        setState(() {
+                          stringImage = base64Encode(bytes);
+                          Navigator.of(context).pop();
+                        });
                       },
-                    ),
-                    GrandIcon(
-                      iconData: Icons.candlestick_chart,
-                      labelButton: 'Análisis de Parámetros',
-                      onPress: () {
-                        openActivity(AnalisisElectrocardiograma(
-                            operationActivity: operationActivity));
+                      textOptionB: 'Cargar desde Cámara',
+                      optionB: () async {
+                        var bytes = await Directorios.choiseFromCamara();
+                        setState(() {
+                          stringImage = base64Encode(bytes);
+                          Navigator.of(context).pop();
+                        });
                       },
-                    ),
-                  ]
-                : null,
+                    );
+                  },
+                ),
+              ],
       ),
       body: Column(
         children: [
@@ -615,6 +662,12 @@ class _ElectrocardiogramasGestionState
                           labelButton: "Gestion del Registro",
                           onPress: () {
                             carouselController.jumpToPage(1);
+                          }),
+                      GrandButton(
+                          weigth: 100,
+                          labelButton: "Imagen del Registro",
+                          onPress: () {
+                            carouselController.jumpToPage(2);
                           }),
                       // GrandButton(
                       //     weigth: 100,
@@ -694,7 +747,9 @@ class _ElectrocardiogramasGestionState
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    TittlePanel(textPanel: tittle),
+                                    TittlePanel(
+                                        color: Colores.backgroundWidget,
+                                        textPanel: tittle),
                                     EditTextArea(
                                       keyBoardType: TextInputType.datetime,
                                       inputFormat: MaskTextInputFormatter(
@@ -776,7 +831,7 @@ class _ElectrocardiogramasGestionState
                                                       initAllElement();
                                                     }),
                                             GrandButton(
-                                                weigth: isMobile(context)
+                                                weigth: isMobile(context) || isTablet(context)
                                                     ? 30
                                                     : 100,
                                                 labelButton: operationActivity
@@ -870,6 +925,39 @@ class _ElectrocardiogramasGestionState
                                                   operationActivity),
                                         ),
                         ],
+                      ),
+                      SingleChildScrollView(
+                        padding: const EdgeInsets.all(12.0),
+                        controller: ScrollController(),
+                        child: Column(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: stringImage != "" && stringImage != null
+                                  ? Expanded(
+                                      child: Image.memory(
+                                        base64Decode(stringImage!),
+                                        scale: 1.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    )
+                                  : Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: const [
+                                          ClipOval(
+                                            child: Icon(
+                                              Icons.file_present,
+                                              size: 200,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                            ),
+                          ],
+                        ),
                       )
                     ],
                   ),
@@ -996,9 +1084,7 @@ class _ElectrocardiogramasGestionState
       textDateEstudyController.text,
       //
       ritmoCardiacoValue!,
-      // textDateEstudyController.text,
       intervaloRRTextController.text,
-      //fc.toStringAsFixed(0),
       //
       dopTextController.text,
       aopTextController.text,
@@ -1010,8 +1096,9 @@ class _ElectrocardiogramasGestionState
       //
       paceQrsTextController.text,
       //
-      segmentoSTValue!,
       stTextController.text,
+      segmentoSTValue!,
+      //
       dqtTextController.text,
       dotTextController.text,
       aotTextController.text,
@@ -1029,7 +1116,9 @@ class _ElectrocardiogramasGestionState
       sdiTextController.text,
       rdiiiTextController.text,
       sdiiiTextController.text,
+      //
       conclusionTextController.text,
+      stringImage!,
       tipoEstudio,
       //
       idOperacion!.toString(),
@@ -1068,6 +1157,15 @@ class _ElectrocardiogramasGestionState
               ));
         });
   }
+
+  Future<void> toBaseImage() async {
+    ByteData bytes = await rootBundle.load('assets/images/person.png');
+    var buffer = bytes.buffer;
+
+    setState(() {
+      stringImage = base64.encode(Uint8List.view(buffer));
+    });
+  }
 }
 
 // ignore: must_be_immutable
@@ -1099,6 +1197,7 @@ class _AnalisisElectrocardiogramaState
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.start, children: [
               TittlePanel(
+                color: const Color.fromARGB(255, 58, 55, 55),
                 textPanel: 'Analisis de Electrocardiograma',
               ),
               Column(

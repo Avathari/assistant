@@ -1,6 +1,7 @@
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/Electrocardiogramas.dart';
+
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
@@ -11,6 +12,7 @@ import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
@@ -131,7 +133,7 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: isMobile(context)
+      appBar: isMobile(context) || isTablet(context)
           ? AppBar(
               backgroundColor: Theming.primaryColor,
               leading: isMobile(context)
@@ -157,7 +159,7 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
                   onPress: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) =>
-                            const ElectrocardiogramasGestion()));
+                             const ElectrocardiogramasGestion()));
                   },
                 ),
                 GrandIcon(
@@ -194,7 +196,7 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
                           onPress: () {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
-                                    const ElectrocardiogramasGestion()));
+                                     const ElectrocardiogramasGestion()));
                           }),
                       GrandButton(
                           labelButton: "Registro de laboratorios",
@@ -215,7 +217,7 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
             child: CarouselSlider(
               carouselController: carouselController,
               options: CarouselOptions(
-                  height: 500,
+                  height: isTablet(context) ? 900 : 500,
                   enableInfiniteScroll: false,
                   viewportFraction: 1.0),
               items: [
@@ -231,17 +233,17 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              labelText(tittle),
-                              editFormattedText(
-                                  TextInputType.datetime,
-                                  MaskTextInputFormatter(
-                                      mask: '####/##/##',
-                                      filter: {"#": RegExp(r'[0-9]')},
-                                      type: MaskAutoCompletionType.lazy),
-                                  false,
-                                  "Fecha de realización",
-                                  textDateController,
-                                  true),
+                              TittlePanel(textPanel: tittle),
+                              EditTextArea(
+                                labelEditText: "Fecha de realización",
+                                numOfLines: 1,
+                                keyBoardType: TextInputType.datetime,
+                                textController: textDateController,
+                                inputFormat: MaskTextInputFormatter(
+                                    mask: '####/##/##',
+                                    filter: {"#": RegExp(r'[0-9]')},
+                                    type: MaskAutoCompletionType.lazy),
+                              ),
                               ScrollableWidget(child: dataTable()),
                             ],
                           ),
@@ -260,17 +262,17 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            labelText(tittle),
-                            editFormattedText(
-                                TextInputType.datetime,
-                                MaskTextInputFormatter(
-                                    mask: '####/##/##',
-                                    filter: {"#": RegExp(r'[0-9]')},
-                                    type: MaskAutoCompletionType.lazy),
-                                false,
-                                "Fecha de realización",
-                                textDateEstudyController,
-                                false),
+                            TittlePanel(textPanel: tittle),
+                            EditTextArea(
+                              labelEditText: "Fecha de realización",
+                              numOfLines: 1,
+                              textController: textDateEstudyController,
+                              keyBoardType: TextInputType.datetime,
+                              inputFormat: MaskTextInputFormatter(
+                                  mask: '####/##/##',
+                                  filter: {"#": RegExp(r'[0-9]')},
+                                  type: MaskAutoCompletionType.lazy),
+                            ),
                             GridLayout(
                                 childAspectRatio: 5.0,
                                 columnCount: 2,
@@ -324,76 +326,62 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                GrandButton(labelButton:
-                                    operationActivity ? "Nuevo" : "Eliminar",
-                                    weigth: 100, onPress: () {
-                                  if (operationActivity) {
-                                    initAllElement();
-                                    carouselController.jumpToPage(1);
-                                  } else {
-                                    try {
-                                      deleteDialog(elementSelected!);
-                                    } finally {
-                                      carouselController.jumpToPage(0);
-                                      showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                              title: const Text("Eliminados"),
-                                              content: Text(
-                                                  listOfValues().toString()),
-                                            );
-                                          });
-                                    }
-                                  }
-                                }),
-                                operationActivity
-                                    ? Container() :
-                                GrandButton(labelButton:"Nuevo", weigth: 50,
-                                        onPress: () {
+                                GrandButton(
+                                    labelButton: operationActivity
+                                        ? "Nuevo"
+                                        : "Eliminar",
+                                    weigth: 100,
+                                    onPress: () {
+                                      if (operationActivity) {
                                         initAllElement();
-                                      }),
-                                GrandButton(labelButton:
-                                    operationActivity
+                                        carouselController.jumpToPage(1);
+                                      } else {
+                                        try {
+                                          deleteDialog(elementSelected!);
+                                        } finally {
+                                          carouselController.jumpToPage(0);
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return AlertDialog(
+                                                  title:
+                                                      const Text("Eliminados"),
+                                                  content: Text(listOfValues()
+                                                      .toString()),
+                                                );
+                                              });
+                                        }
+                                      }
+                                    }),
+                                operationActivity
+                                    ? Container()
+                                    : GrandButton(
+                                        labelButton: "Nuevo",
+                                        weigth: 50,
+                                        onPress: () {
+                                          initAllElement();
+                                        }),
+                                GrandButton(
+                                  weigth: isTablet(context) ? 200 : 500,
+                                    labelButton: operationActivity
                                         ? "Agregar"
-                                        : "Actualizar", onPress: () {
-                                  if (operationActivity) {
-                                    var aux = listOfValues();
-                                    aux.removeLast();
+                                        : "Actualizar",
+                                    onPress: () {
+                                      if (operationActivity) {
+                                        var aux = listOfValues();
+                                        aux.removeLast();
 
-                                    Actividades.registrar(
-                                      Databases.siteground_database_reggabo,
-                                      Auxiliares.auxiliares['registerQuery'],
-                                      aux,
-                                    ).then((value) => showDialog(
+                                        Actividades.registrar(
+                                          Databases.siteground_database_reggabo,
+                                          Auxiliares
+                                              .auxiliares['registerQuery'],
+                                          aux,
+                                        ).then((value) => showDialog(
                                             context: context,
                                             builder: (context) {
                                               return AlertDialog(
                                                 title:
                                                     const Text("Registrados"),
-                                                content: Text(
-                                                    "Los registros \n${listOfValues().toString()} \n fueron actualizados"),
-                                              );
-                                            })
-                                        .then((value) => Navigator.of(context)
-                                            .push(MaterialPageRoute(
-                                                builder: (context) =>
-                                                    VisualPacientes(
-                                                        actualPage: 5)))));
-                                  } else {
-                                    Actividades.actualizar(
-                                            Databases
-                                                .siteground_database_reggabo,
-                                            Auxiliares
-                                                .auxiliares['updateQuery'],
-                                            listOfValues(),
-                                            idOperacion!)
-                                        .then((value) => showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                title:
-                                                    const Text("Actualizados"),
                                                 content: Text(
                                                     "Los registros \n${listOfValues().toString()} \n fueron actualizados"),
                                               );
@@ -403,8 +391,31 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
                                                 builder: (context) =>
                                                     VisualPacientes(
                                                         actualPage: 5)))));
-                                  }
-                                }),
+                                      } else {
+                                        Actividades.actualizar(
+                                                Databases
+                                                    .siteground_database_reggabo,
+                                                Auxiliares
+                                                    .auxiliares['updateQuery'],
+                                                listOfValues(),
+                                                idOperacion!)
+                                            .then((value) => showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return AlertDialog(
+                                                    title: const Text(
+                                                        "Actualizados"),
+                                                    content: Text(
+                                                        "Los registros \n${listOfValues().toString()} \n fueron actualizados"),
+                                                  );
+                                                }).then((value) => Navigator.of(
+                                                    context)
+                                                .push(MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        VisualPacientes(
+                                                            actualPage: 5)))));
+                                      }
+                                    }),
                               ],
                             )
                           ],

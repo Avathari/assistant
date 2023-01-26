@@ -30,7 +30,7 @@ class _GrandButtonState extends State<GrandButton> {
               minimumSize: Size(
                   widget.weigth != 0.0
                       ? widget.weigth!
-                      : isMobileAndTablet(context)
+                      : isMobile(context) || isTablet(context)
                           ? 170
                           : 500,
                   60)),

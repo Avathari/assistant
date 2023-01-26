@@ -17,10 +17,12 @@ import 'package:assistant/screens/pacientes/reportes/reportes.dart';
 
 import 'package:assistant/screens/pacientes/vitales/vitales.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
+import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/GridLayout.dart';
 import 'package:assistant/widgets/LoadingScreen.dart';
 import 'package:assistant/widgets/MenuButton.dart';
+import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/Tittle.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
@@ -667,27 +669,27 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
 
   List<Widget> secondComponent(BuildContext context) {
     return [
-      spinner(
-          context, "Unidad de Atención", unidadMedicaValue, Pacientes.Unidades,
-          (String? newValue) {
+      Spinner(
+          tittle: "Unidad de Atención",initialValue: unidadMedicaValue, items: Pacientes.Unidades,
+          onChangeValue: (String? newValue) {
         setState(() {
           unidadMedicaValue = newValue!;
         });
       }),
-      spinner(context, "Hospital de Atención", unidadMedicaValue,
-          Pacientes.Unidades, (String? newValue) {
+      Spinner(tittle: "Hospital de Atención", initialValue: unidadMedicaValue, items:
+      Pacientes.Unidades, onChangeValue: (String? newValue) {
         setState(() {
           unidadMedicaValue = newValue!;
         });
       }),
-      spinner(context, "Turno de atención", turnoValue, Pacientes.Turno,
-          (String? newValue) {
+      Spinner(tittle: "Turno de atención", initialValue: turnoValue, items: Pacientes.Turno,
+          onChangeValue: (String? newValue) {
         setState(() {
           turnoValue = newValue!;
         });
       }),
-      spinner(context, "Modo de atención", atencionValue, Pacientes.Atencion,
-          (String? newValue) {
+      Spinner(tittle: "Modo de atención", initialValue: atencionValue, items: Pacientes.Atencion,
+          onChangeValue: (String? newValue) {
         setState(() {
           atencionValue = newValue!;
         });
@@ -722,7 +724,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           });
         },
       ),
-      spinner(context, "Sexo", sessoValue, Pacientes.Sexo, (String? newValue) {
+      Spinner(tittle: "Sexo", initialValue: sessoValue, items: Pacientes.Sexo, onChangeValue: (String? newValue) {
         setState(() {
           sessoValue = newValue!;
         });
@@ -741,28 +743,28 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
       editText(false, 'RFC', rfcTextController, false),
       //
 
-      spinner(context, "¿Vive?", vivoValue, Pacientes.Vivo, (String? newValue) {
+      Spinner(tittle: "¿Vive?", initialValue: vivoValue, items: Pacientes.Vivo, onChangeValue: (String? newValue) {
         setState(() {
           vivoValue = newValue!;
         });
       }),
       editText(false, 'Ocupación', ocupacionTextController, false),
-      spinner(context, "Estado civil", estadoCivilValue, Pacientes.EstadoCivil,
-          (String? newValue) {
+      Spinner(tittle: "Estado civil", initialValue: estadoCivilValue, items: Pacientes.EstadoCivil,
+          onChangeValue: (String? newValue) {
         setState(() {
           estadoCivilValue = newValue!;
         });
       }),
       editText(false, 'Religión', religionTextController, false),
       //
-      spinner(context, "Escolaridad", escolaridadValue, Pacientes.Escolaridad,
-          (String? newValue) {
+      Spinner(tittle: "Escolaridad", initialValue: escolaridadValue, items: Pacientes.Escolaridad,
+          onChangeValue: (String? newValue) {
         setState(() {
           escolaridadValue = newValue!;
         });
       }),
-      spinner(context, "Escolaridad completud", escolaridadCompletudValue,
-          Pacientes.EscolaridadCompletud, (String? newValue) {
+      Spinner(tittle: "Escolaridad completud", initialValue: escolaridadCompletudValue,
+          items: Pacientes.EscolaridadCompletud, onChangeValue: (String? newValue) {
         setState(() {
           escolaridadCompletudValue = newValue!;
 
@@ -776,7 +778,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
       }),
       editText(false, 'Especificar escolaridad',
           escolaridadEspecificacionTextController, false),
-      // spinner(context, "Estado actual", statusValue, Pacientes.Status,
+      // spinner(tittle: "Estado actual", statusValue, Pacientes.Status,
       //     (String? newValue) {
       //   setState(() {
       //     statusValue = newValue!;
@@ -785,14 +787,14 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
       //
 
       editText(false, 'Municipio residencial', municipioTextController, false),
-      // spinner(context, "Municipio residencial", municipioValue,
+      // spinner(tittle: "Municipio residencial", municipioValue,
       //     Pacientes.Municipios, (String? newValue) {
       //   setState(() {
       //     municipioValue = newValue!;
       //   });
       // }),
-      spinner(context, "Entidad federativa", entidadFederativaValue,
-          Pacientes.EntidadesFederativas, (String? newValue) {
+      Spinner(tittle: "Entidad federativa", initialValue: entidadFederativaValue,
+          items: Pacientes.EntidadesFederativas, onChangeValue: (String? newValue) {
         setState(() {
           entidadFederativaValue = newValue!;
         });
@@ -802,14 +804,14 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
       editText(false, 'Duración', duracionResidenciaTextController, false),
       editText(false, 'Domicilio', domicilioTextController, false),
       //
-      spinner(context, "Indigena (Si/No)", indigenaValue, Pacientes.Indigena,
-          (String? newValue) {
+      Spinner(tittle: "Indigena (Si/No)", initialValue: indigenaValue, items: Pacientes.Indigena,
+          onChangeValue: (String? newValue) {
         setState(() {
           indigenaValue = newValue!;
         });
       }),
-      spinner(context, "Hablante Indígena", indigenaHablanteValue,
-          Pacientes.lenguaIndigena, (String? newValue) {
+      Spinner(tittle: "Hablante Indígena", initialValue: indigenaHablanteValue,
+          items: Pacientes.lenguaIndigena, onChangeValue: (String? newValue) {
         setState(() {
           indigenaHablanteValue = newValue!;
 
@@ -836,14 +838,16 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              isMobile(context)
+              isMobile(context) || isTablet(context)
                   ? returnOperationUserButton(context)
                   : Container(),
               userPresentation(context),
               userForm(context),
-              grandButton(context, widget._operation_button, () {
-                operationMethod(context);
-              })
+              GrandButton(
+                  labelButton: widget._operation_button,
+                  onPress: () {
+                    operationMethod(context);
+                  })
             ],
           ),
         ),
@@ -919,8 +923,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                 returnGestion(context);
               },
               child: const Icon(Icons.arrow_back)),
-          const SizedBox(
-            width: 150,
+          SizedBox(
+            width: isMobile(context) ? 120:150,
           ),
           Tooltip(
             message: "Datos Personales",
@@ -1038,13 +1042,13 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                     ),
                     SingleChildScrollView(
                         child: Column(children: secondComponent(context))),
-                    grandButton(context, widget._operation_button, () {
+                    GrandButton(labelButton: widget._operation_button, onPress:() {
                       operationMethod(context);
                     })
                   ],
                 carouselController: carouselController,
                 options: CarouselOptions(
-                    height: 500,
+                    height: isMobile(context) ? 600 : 500,
                     enableInfiniteScroll: false,
                     viewportFraction: 1.0))
             : Row(
@@ -1133,12 +1137,15 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
             ? Container()
             : Column(
                 children: [
-                  GridView.count(
-                      childAspectRatio: 7.0,
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10.0,
-                      mainAxisSpacing: 10.0,
-                      shrinkWrap: true,
+                  GridLayout(
+                      childAspectRatio: isMobile(context)
+                          ? 4.0
+                          : isTablet(context)
+                              ? 4.0
+                              : isDesktop(context)
+                                  ? 8.0
+                                  : 7.0,
+                      columnCount: 2,
                       children: secondComponent(context)),
                   const SizedBox(height: 10),
                   // grandButton(context, widget._operation_button, () {
@@ -2133,7 +2140,9 @@ class MenuPersonales extends StatelessWidget {
             Tittle(
               tittle: "Antecedentes Personales del Paciente",
             ),
-            const SizedBox(height: 10,),
+            const SizedBox(
+              height: 10,
+            ),
             Expanded(
               child: GridLayout(
                   childAspectRatio: isMobile(context)

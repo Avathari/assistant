@@ -2105,7 +2105,7 @@ class Electrocardiogramas {
               `Pace_EC_aqrs` double NOT NULL,
               `Pace_EC_qrsi` double NOT NULL,
               `Pace_EC_qrsa` double NOT NULL,
-              `Pace_QRS` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+              `Pace_QRS` double NOT NULL,
               `Pace_EC_ast_` double NOT NULL,
               `Pace_EC_st` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
               `Pace_EC_dqt` double NOT NULL,
@@ -2141,18 +2141,19 @@ class Electrocardiogramas {
             "Pace_EC_aop, Pace_EC_dpr, Pace_EC_dqrs, Pace_EC_aqrs, Pace_EC_qrsi, Pace_EC_qrsa, "
             "Pace_QRS, Pace_EC_ast_, Pace_EC_st, Pace_EC_dqt, Pace_EC_dot, Pace_EC_aot, EC_rV1, "
             "EC_sV6, EC_sV1, EC_rV6, EC_rAVL, EC_sV3, PatronQRS, DeflexionIntrinsecoide, EC_rDI, "
-            "EC_sDI, EC_rDIII, EC_sDIII, Pace_EC_CON, Pace_GAB_Tee) "
+            "EC_sDI, EC_rDIII, EC_sDIII, Pace_EC_CON, Pace_GAB_IMG, Pace_GAB_Tee) "
             "VALUES (?,?,?,?,?,?,?,?,?,?,"
             "?,?,?,?,?,?,?,?,?,?,"
             "?,?,?,?,?,?,?,?,?,?,"
-            "?)",
+            "from_base64(?), ?)",
     "updateQuery": "UPDATE gabo_ecg SET ID_Pace_GAB_EC = ?, ID_Pace = ?, Pace_GAB_EC_Feca = ?, "
         "Pace_EC_rit = ?, Pace_EC_rr = ?, Pace_EC_dop = ?, Pace_EC_aop = ?, Pace_EC_dpr = "
         "?, Pace_EC_dqrs = ?, Pace_EC_aqrs = ?, Pace_EC_qrsi = ?, Pace_EC_qrsa = ?, "
         "Pace_QRS = ?, Pace_EC_ast_ = ?, Pace_EC_st = ?, Pace_EC_dqt = ?, Pace_EC_dot = ?, "
         "Pace_EC_aot = ?, EC_rV1 = ?, EC_sV6 = ?, EC_sV1 = ?, EC_rV6 = ?, EC_rAVL = ?, "
         "EC_sV3 = ?, PatronQRS = ?, DeflexionIntrinsecoide = ?, EC_rDI = ?, EC_sDI = ?, "
-        "EC_rDIII = ?, EC_sDIII = ?, Pace_EC_CON = ?, Pace_GAB_Tee = ? "
+        "EC_rDIII = ?, EC_sDIII = ?, Pace_EC_CON = ?, Pace_GAB_IMG = from_base64(?), "
+        "Pace_GAB_Tee = ? "
         "WHERE ID_Pace_GAB_EC = ?",
     "deleteQuery": "DELETE FROM gabo_ecg WHERE ID_Pace_GAB_EC = ?",
     "antropoColumns": [
