@@ -1,5 +1,4 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
-import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/antropometricos.dart';
 
 import 'package:assistant/screens/pacientes/intensiva/contenidos/balances.dart';
@@ -8,7 +7,6 @@ import 'package:assistant/screens/pacientes/intensiva/contenidos/ventilaciones.d
 
 import 'package:assistant/screens/pacientes/intensiva/analisis/hidricos.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/metabolometrias.dart';
-import 'package:assistant/screens/pacientes/intensiva/herramientas.dart';
 import 'package:assistant/screens/pacientes/intensiva/procedimientos/cateterTenckhoff.dart';
 import 'package:assistant/screens/pacientes/intensiva/procedimientos/cateterVenosoCentral.dart';
 import 'package:assistant/screens/pacientes/intensiva/procedimientos/intubacionEndotraqueal.dart';
@@ -22,7 +20,6 @@ import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandLabel.dart';
 import 'package:assistant/widgets/RoundedPanel.dart';
 import 'package:assistant/widgets/Tittle.dart';
-import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';
 
 class Intensiva extends StatefulWidget {

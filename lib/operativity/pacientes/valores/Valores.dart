@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math' as math;
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
-import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:dart_numerics/dart_numerics.dart' as numerics;
 
 import 'package:assistant/conexiones/conexiones.dart';

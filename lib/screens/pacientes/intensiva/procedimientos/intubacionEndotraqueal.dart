@@ -1,13 +1,8 @@
-import 'dart:typed_data';
-
-import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
-import 'package:assistant/widgets/GrandIcon.dart';
-import 'package:assistant/widgets/ShowText.dart';
 import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:carousel_slider/carousel_controller.dart';
