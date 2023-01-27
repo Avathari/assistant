@@ -24,7 +24,6 @@ import 'package:assistant/widgets/LoadingScreen.dart';
 import 'package:assistant/widgets/MenuButton.dart';
 import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/Tittle.dart';
-import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
@@ -1956,7 +1955,18 @@ class _EstadisticasPacientesState extends State<EstadisticasPacientes> {
   Map<String, dynamic> data = {
     "Total_Pacientes": 0,
     "Total_Vivos": 0,
-    "Total_Fallecidos": 0
+    //
+    "Total_Hospitalizacion": 0,
+    "Total_Consulta": 0,
+    "Total_Matutino": 0,
+    "Total_Vespertino": 0,
+    "Total_Vivos": 0,
+    "Total_Fallecidos": 0,
+    "Total_Indigenas": 0,
+    "Total_No_Indigenas": 0,
+    "Total_Hablantes": 0,
+    "Total_No_Hablantes": 0,
+    "Total_Pacientes": 0,
   };
   var statScrollController = ScrollController();
 
