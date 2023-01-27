@@ -109,6 +109,11 @@ class Valores {
   static int porcentajeLipidos = 20;
   static int porcentajeProteinas = 30;
   static double pi = 3.14159265;
+  // Variables de Procedimientos
+  static String? motivoProcedimiento;
+  static String? sitiosCateterCentral, sitiosSondaPleural, sitiosCateterTenckhoff;
+  static String? complicacionesProcedimiento;
+  static String? pendientesProcedimiento;
   // Variables de Valoraciones
   static String? valoracionAsa;
   static String? valoracionBromage;
@@ -999,10 +1004,8 @@ class Valores {
       return 0;
     } //# Frecuencia_Cardiaca_Maxima
   }
-
   static double get frecuenciaCardiacaBlanco =>
       ((220 - Valores.edad!) * 0.7); // # Frecuencia_Cardiaca_Blanco
-
   static double get frecuenciaCardiacaIntrinseca =>
       (118.1 - (0.57 * Valores.edad!)); // # Frecuencia Cardiaca Intrinseca
 
@@ -1010,7 +1013,6 @@ class Valores {
       ((80) * Valores.pesoCorporalTotal!) / 1000; // # Volemia Aproximada
 
   // # Volumen Plasmático
-
   static double get volumenPlasmatico {
     if (Valores.sexo! == ("Masculino")) {
       return (((0.3669) * (Valores.alturaPaciente!) * 3) +
@@ -1078,7 +1080,6 @@ class Valores {
       return double.nan;
     }
   }
-
   static double get indiceGubnerUnderleiger {
     if (Valores.rDI != 0 &&
         Valores.rDI != null &&
@@ -1089,7 +1090,6 @@ class Valores {
       return double.nan;
     }
   }
-
   static double get indiceLewis {
     if (Valores.rDI != 0 &&
         Valores.rDI != null &&
@@ -1104,7 +1104,6 @@ class Valores {
       return double.nan;
     }
   }
-
   static double get voltajeCornell {
     if (Valores.rAvL != 0 &&
         Valores.rAvL != null &&
@@ -1115,7 +1114,6 @@ class Valores {
       return double.nan;
     }
   }
-
   static double get indiceEnriqueCabrera {
     if (Valores.sV1 != 0 &&
         Valores.sV1 != null &&
@@ -1415,6 +1413,23 @@ class Escalas {
     'Clase II (Leve, Limitación leve en la actividad física)',
     'Clase III (Moderado, Limitación leve en la actividad diaria)',
     'Clase IV (Severo, Limitación para cualquier actividad diaria)',
+  ];
+
+  static List<String> sitiosCateterCentral = [
+    'Vena Yugular Anterior Derecha',
+    'Vena Yugular Anterior Izquierda',
+  'Vena Subclavia Derecha',
+    'Vena Subclavia Izquierda',
+  ];
+  static List<String> sitiosSondaPleural = [
+    'Cuarto Espacio Intercostal Derecho',
+    'Cuarto Espacio Intercostal Izquierdo',
+    'Quinto Espacio Intercostal Derecho',
+    'Quinto Espacio Intercostal Izquierdo',
+  ];
+  static List<String> sitiosCateterTenckhoff = [
+    'Linea Media Infraumbilical',
+    'Linea Paramedia Derecha',
   ];
 
   static List<String> saturacionPerifericaOrigeno = [

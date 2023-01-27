@@ -1,3 +1,4 @@
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/antropometricos.dart';
 
@@ -8,6 +9,10 @@ import 'package:assistant/screens/pacientes/intensiva/contenidos/ventilaciones.d
 import 'package:assistant/screens/pacientes/intensiva/analisis/hidricos.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/metabolometrias.dart';
 import 'package:assistant/screens/pacientes/intensiva/herramientas.dart';
+import 'package:assistant/screens/pacientes/intensiva/procedimientos/cateterTenckhoff.dart';
+import 'package:assistant/screens/pacientes/intensiva/procedimientos/cateterVenosoCentral.dart';
+import 'package:assistant/screens/pacientes/intensiva/procedimientos/intubacionEndotraqueal.dart';
+import 'package:assistant/screens/pacientes/intensiva/procedimientos/sondaEndopleural.dart';
 import 'package:assistant/screens/pacientes/intensiva/valoraciones/aereos.dart';
 import 'package:assistant/screens/pacientes/intensiva/valoraciones/prequirurgicos.dart';
 
@@ -108,39 +113,8 @@ class _IntensivaState extends State<Intensiva> {
                     iconData: Icons.balance,
                     labelButton: 'Concentraciones y Diluciones',
                     onPress: () {
-                      showDialog(
-                          useSafeArea: true,
-                          context: context,
-                          builder: (context) {
-                            return Dialog(
-                                backgroundColor: Colors.black,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Expanded(
-                                          flex: 5, child: Concentraciones()),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(20)),
-                                            border: Border.all(
-                                              color: Colors.grey,
-                                            )),
-                                        child: GrandButton(
-                                          labelButton: 'Cerrar',
-                                          onPress: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ));
-                          });
+                      Operadores.openActivity(context: context, chyldrim: const Concentraciones());
+
                     },
                   ),
                   const CrossLine(),
@@ -333,7 +307,7 @@ class _IntensivaState extends State<Intensiva> {
               labelButton: 'Valoración Prequirúrgica',
               onPress: () {
                 if (isMobile(context)) {
-                  openActivity(const Hidricos());
+                  openActivity(const Prequirurgicos());
                 } else {
                   setState(() {
                     widget.actualView = 11;
@@ -345,7 +319,7 @@ class _IntensivaState extends State<Intensiva> {
               labelButton: 'Valoración de Vía Aerea',
               onPress: () {
                 if (isMobile(context)) {
-                  openActivity(const Hidricos());
+                  openActivity(const Aereas());
                 } else {
                   setState(() {
                     widget.actualView = 12;
@@ -366,33 +340,29 @@ class _IntensivaState extends State<Intensiva> {
         controller: ScrollController(),
         child: Column(
           children: [
-            TittlePanel(textPanel: 'Procedimientos Médicos'),
+            Tittle(tittle: 'Procedimientos Médicos'),
             GrandLabel(
               labelButton: 'Catéter Venoso Central',
               onPress: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => GestionBalances()));
+                Operadores.openActivity(context: context, chyldrim: const CateterVenosoCentral());
               },
             ),
             GrandLabel(
               labelButton: 'Intubación Endotraqueal',
               onPress: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => GestionBalances()));
+                Operadores.openActivity(context: context, chyldrim: const IntubacionEndotraqueal());
               },
             ),
             GrandLabel(
               labelButton: 'Sonda Endopleural',
               onPress: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => GestionBalances()));
+                Operadores.openActivity(context: context, chyldrim: const SondaEndopleural());
               },
             ),
             GrandLabel(
               labelButton: 'Catéter Tenckhoff',
               onPress: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => GestionBalances()));
+                Operadores.openActivity(context: context, chyldrim: const CateterTenckhoff());
               },
             ),
           ],
@@ -416,6 +386,10 @@ class _IntensivaState extends State<Intensiva> {
       Container(),
       const Prequirurgicos(),
       const Aereas(),
+      const CateterVenosoCentral(),
+      const IntubacionEndotraqueal(),
+      const SondaEndopleural(),
+      const CateterTenckhoff(),
     ];
     return list[actualView];
   }
@@ -430,16 +404,13 @@ class _IntensivaState extends State<Intensiva> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
-                  crossAxisAlignment:
-                  CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                        flex: 5, child: chyldrim),
+                    Expanded(flex: 5, child: chyldrim),
                     Container(
                       decoration: BoxDecoration(
                           borderRadius:
-                          const BorderRadius.all(
-                              Radius.circular(20)),
+                              const BorderRadius.all(Radius.circular(20)),
                           border: Border.all(
                             color: Colors.grey,
                           )),
