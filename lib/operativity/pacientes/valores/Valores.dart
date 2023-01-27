@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:math' as math;
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:dart_numerics/dart_numerics.dart' as numerics;
 
 import 'package:assistant/conexiones/conexiones.dart';
@@ -107,6 +109,31 @@ class Valores {
   static int porcentajeLipidos = 20;
   static int porcentajeProteinas = 30;
   static double pi = 3.14159265;
+  // Variables de Valoraciones
+  static String? valoracionAsa;
+  static String? valoracionBromage;
+  static String? valoracionNyha;
+  //
+
+  //
+  static String? antecedenteInfarto = Dicotomicos.dicotomicos()[1];
+  static String? ritmoSinusal = Dicotomicos.dicotomicos()[0];
+  static String? extrasistolesVentriculares = Dicotomicos.dicotomicos()[1];
+  static String? ingurgitacionYugular = Dicotomicos.dicotomicos()[1];
+  static String? estenosisAortica = Dicotomicos.dicotomicos()[1];
+  static String? cirugiaUrgencia = Dicotomicos.dicotomicos()[1];
+  static String? cirugiaAbdomen = Dicotomicos.dicotomicos()[0];
+  static String? malEstadoOrganico = Dicotomicos.dicotomicos()[1];
+  static String? anginaEnMeses = Dicotomicos.dicotomicos()[1];
+  static String? edemaPulmonar = Dicotomicos.dicotomicos()[1];
+  static String? edemaPulmonarPasado = Dicotomicos.dicotomicos()[1];
+  static String? saturacionPerifericaOrigeno =
+      Escalas.saturacionPerifericaOrigeno[0];
+  static String? infeccionRespiratoria = Dicotomicos.dicotomicos()[1];
+  static String? hemoglobinaInferior = Dicotomicos.dicotomicos()[1];
+  static String? incisionTipo = Escalas.incisionTipo[0];
+  static String? duracionCirugiaHoras = Escalas.duracionCirugiaHoras[0];
+  //
 
   Valores();
 
@@ -914,15 +941,12 @@ class Valores {
   static double get proteinasPorcentaje =>
       ((gastoEnergeticoTotal / 100) * (porcentajeProteinas));
 
-  static double get glucosaGramos =>
-      (glucosaPorcentaje / 4.0 );
-  static double get lipidosGramos =>
-      (lipidosPorcentaje / 9.0 );
-  static double get proteinasGramos =>
-      (proteinasPorcentaje / 4.0 );
+  static double get glucosaGramos => (glucosaPorcentaje / 4.0);
+  static double get lipidosGramos => (lipidosPorcentaje / 9.0);
+  static double get proteinasGramos => (proteinasPorcentaje / 4.0);
 
-  static int get sumaPorcentualMetabolicos  =>
-    porcentajeCarbohidratos + porcentajeProteinas + porcentajeLipidos;
+  static int get sumaPorcentualMetabolicos =>
+      porcentajeCarbohidratos + porcentajeProteinas + porcentajeLipidos;
 
   static double get edadMetabolica {
     if (Valores.sexo == 'Masculino') {
@@ -1045,62 +1069,255 @@ class Valores {
   static double get FE => 0.0;
 
   static double get indiceSokolowLyon {
-    if (Valores.sV1 != 0 && Valores.sV1 != null 
-    && Valores.rV6 != 0 && Valores.rV6 != null) {
+    if (Valores.sV1 != 0 &&
+        Valores.sV1 != null &&
+        Valores.rV6 != 0 &&
+        Valores.rV6 != null) {
       return (Valores.sV1! + Valores.rV6!);
     } else {
       return double.nan;
     }
   }
+
   static double get indiceGubnerUnderleiger {
-    if (Valores.rDI != 0 && Valores.rDI != null
-        && Valores.sDIII != 0 && Valores.sDIII != null) {
-return (Valores.rDI! + Valores.sDIII!);
-  } else {
-    return double.nan;
+    if (Valores.rDI != 0 &&
+        Valores.rDI != null &&
+        Valores.sDIII != 0 &&
+        Valores.sDIII != null) {
+      return (Valores.rDI! + Valores.sDIII!);
+    } else {
+      return double.nan;
+    }
   }
-  }
+
   static double get indiceLewis {
-    if (Valores.rDI != 0 && Valores.rDI != null
-        && Valores.sDIII != 0 && Valores.sDIII != null
-    && Valores.sDI != 0 && Valores.sDI != null
-        && Valores.rDIII != 0 && Valores.rDIII != null) {
-return (Valores.rDI! + Valores.sDIII!) -
-    (Valores.rDIII! + Valores.sDI!);
-  } else {
-    return double.nan;
+    if (Valores.rDI != 0 &&
+        Valores.rDI != null &&
+        Valores.sDIII != 0 &&
+        Valores.sDIII != null &&
+        Valores.sDI != 0 &&
+        Valores.sDI != null &&
+        Valores.rDIII != 0 &&
+        Valores.rDIII != null) {
+      return (Valores.rDI! + Valores.sDIII!) - (Valores.rDIII! + Valores.sDI!);
+    } else {
+      return double.nan;
+    }
   }
-  }
+
   static double get voltajeCornell {
-    if (Valores.rAvL != 0 && Valores.rAvL != null 
-    && Valores.sV3 != 0 && Valores.sV3 != null) {
-    return (Valores.rAvL! + Valores.sV3!);
-  } else {
-    return double.nan;
-  }
+    if (Valores.rAvL != 0 &&
+        Valores.rAvL != null &&
+        Valores.sV3 != 0 &&
+        Valores.sV3 != null) {
+      return (Valores.rAvL! + Valores.sV3!);
+    } else {
+      return double.nan;
+    }
   }
 
   static double get indiceEnriqueCabrera {
-    if (Valores.sV1 != 0 && Valores.sV1 != null
-        && Valores.rV1 != 0 && Valores.rV1 != null) {
+    if (Valores.sV1 != 0 &&
+        Valores.sV1 != null &&
+        Valores.rV1 != 0 &&
+        Valores.rV1 != null) {
       return (Valores.rV1! / (Valores.rV1! + Valores.sV1!));
     } else {
       return double.nan;
     }
   }
-}
 
-
-isNull(value) {
-  if (value == null || value == 'null') {
-    if (value.runtimeType == 'String') {
-      return '0.0';
+  // # ######################################################
+  // # Valoraciones del Riesgo Anestésico
+  // # ######################################################
+  static String get valoracionDetsky {
+    int puntaje = 0;
+    //
+    if (Valores.edad != 0 && Valores.edad != null) {
+      if (Valores.edad! >= 70) {
+        puntaje = puntaje + 5;
+      }
+      if (Valores.antecedenteInfarto == Dicotomicos.dicotomicos()[0]) {
+        puntaje = puntaje + 10;
+      }
+      //
+      if (Valores.valoracionNyha == Escalas.nyha[2]) {
+        puntaje = puntaje + 10;
+      } else if (Valores.valoracionNyha == Escalas.nyha[3]) {
+        puntaje = puntaje + 20;
+      }
+      //
+      if (Valores.anginaEnMeses == Dicotomicos.dicotomicos()[0]) {
+        puntaje = puntaje + 10;
+      }
+      //
+      if (Valores.edemaPulmonarPasado == Dicotomicos.dicotomicos()[0]) {
+        puntaje = puntaje + 10;
+      }
+      //
+      if (Valores.estenosisAortica == Dicotomicos.dicotomicos()[0]) {
+        puntaje = puntaje + 20;
+      }
+      //
+      if (Valores.ritmoSinusal == Dicotomicos.dicotomicos()[1]) {
+        puntaje = puntaje + 5;
+      }
+      //
+      if (Valores.extrasistolesVentriculares == Dicotomicos.dicotomicos()[1]) {
+        puntaje = puntaje + 5;
+      }
+      //
+      if (Valores.cirugiaUrgencia == Dicotomicos.dicotomicos()[0]) {
+        puntaje = puntaje + 10;
+      }
+      //
+      if (Valores.valoracionGoldmann ==
+          'Clase IV (Complicaciones Graves 22%, Muerte Cárdiaca 56%)') {
+        puntaje = puntaje + 10;
+      }
+      // ##############################################
+      // Comprobación de los Puntajes para el dictamen de escala.
+      // ##############################################
+      print("Puntaje (Detsky) $puntaje");
+      //
+      if (puntaje >= 30) {
+        return 'Clase III (Riesgo cardiaco alto)';
+      } else if (puntaje > 15 && puntaje < 30) {
+        return 'Clase II (Riesgo cardiaco medio)';
+      } else if (puntaje <= 15) {
+        return 'Clase I (Riesgo cardiaco bajo)';
+      } else {
+        return 'Sin resolución';
+      }
     } else {
-      return 0.0;
+      return 'No valorable';
     }
-  } else {
-    return value;
   }
+  static String get valoracionGoldmann {
+    int puntaje = 0;
+    //
+    if (Valores.edad != 0 && Valores.edad != null) {
+      if (Valores.edad! >= 70) {
+        puntaje = puntaje + 5;
+      }
+      if (Valores.antecedenteInfarto == Dicotomicos.dicotomicos()[0]) {
+        puntaje = puntaje + 10;
+      }
+      if (Valores.ritmoSinusal == Dicotomicos.dicotomicos()[1]) {
+        puntaje = puntaje + 7;
+      }
+      if (Valores.extrasistolesVentriculares == Dicotomicos.dicotomicos()[0]) {
+        puntaje = puntaje + 7;
+      }
+      if (Valores.ingurgitacionYugular == Dicotomicos.dicotomicos()[0]) {
+        puntaje = puntaje + 11;
+      }
+      if (Valores.estenosisAortica == Dicotomicos.dicotomicos()[0]) {
+        puntaje = puntaje + 3;
+      }
+      if (Valores.cirugiaUrgencia == Dicotomicos.dicotomicos()[0]) {
+        puntaje = puntaje + 4;
+      }
+      if (Valores.cirugiaAbdomen == Dicotomicos.dicotomicos()[0]) {
+        puntaje = puntaje + 3;
+      }
+      if (Valores.malEstadoOrganico == Dicotomicos.dicotomicos()[0]) {
+        puntaje = puntaje + 3;
+      }
+
+      // ##############################################
+      // Comprobación de los Puntajes para el dictamen de escala.
+      // ##############################################
+      print("Puntaje (Goldmann) $puntaje");
+      //
+      if (puntaje >= 25) {
+        return 'Clase IV (Complicaciones Graves 22%, Muerte Cárdiaca 56%)';
+      } else if (puntaje > 13 && puntaje < 25) {
+        return 'Clase III (Complicaciones Graves 11%, Muerte Cárdiaca 2%)';
+      } else if (puntaje > 6 && puntaje < 12) {
+        return 'Clase II (Complicaciones Graves 5%, Muerte Cárdiaca 2%)';
+      } else if (puntaje <= 5) {
+        return 'Clase I (Complicaciones Graves 0.7%, Muerte Cárdiaca 0.2%)';
+      } else {
+        return 'Sin resolución';
+      }
+    } else {
+      return 'No valorable';
+    }
+  }
+  static String get valoracionAriscat {
+    int puntaje = 0;
+//
+    if (Valores.edad != 0 && Valores.edad != null) {
+      if (Valores.edad! >= 80) {
+        puntaje = puntaje + 16;
+      } else if (Valores.edad! > 51 && Valores.edad! < 80) {
+        puntaje = puntaje + 3;
+      } else if (Valores.edad! < 50) {
+        puntaje = puntaje + 0;
+      }
+      //
+      if (Valores.saturacionPerifericaOrigeno! ==
+          Escalas.saturacionPerifericaOrigeno[0]) {
+        puntaje = puntaje + 0;
+      } else if (Valores.saturacionPerifericaOrigeno! ==
+          Escalas.saturacionPerifericaOrigeno[1]) {
+        puntaje = puntaje + 8;
+      } else if (Valores.saturacionPerifericaOrigeno! ==
+          Escalas.saturacionPerifericaOrigeno[2]) {
+        puntaje = puntaje + 24;
+      }
+      //
+      if (Valores.infeccionRespiratoria == Dicotomicos.dicotomicos()[0]) {
+        puntaje = puntaje + 17;
+      }
+      //
+      if (Valores.hemoglobinaInferior == Dicotomicos.dicotomicos()[0]) {
+        puntaje = puntaje + 11;
+      }
+      //
+      if (Valores.incisionTipo == Escalas.incisionTipo[0]) {
+        puntaje = puntaje + 0;
+      } else       if (Valores.incisionTipo == Escalas.incisionTipo[1]) {
+        puntaje = puntaje + 15;
+      } else       if (Valores.incisionTipo == Escalas.incisionTipo[2]) {
+        puntaje = puntaje + 24;
+      }
+      //
+      if (Valores.duracionCirugiaHoras == Escalas.duracionCirugiaHoras[0]) {
+        puntaje = puntaje + 0;
+      } else       if (Valores.duracionCirugiaHoras == Escalas.duracionCirugiaHoras[1]) {
+        puntaje = puntaje + 16;
+      } else       if (Valores.duracionCirugiaHoras == Escalas.duracionCirugiaHoras[2]) {
+        puntaje = puntaje + 23;
+      }
+      //
+// ##############################################
+// Comprobación de los Puntajes para el dictamen de escala.
+// ##############################################
+      print("Puntaje (ARISCAT) $puntaje");
+      //
+      if (puntaje >= 45) {
+        return 'Clase III (Riesgo pulmonar alto)';
+      } else if (puntaje > 26 && puntaje < 45) {
+        return 'Clase II (Riesgo pulmonar medio)';
+      } else if (puntaje <= 26) {
+        return 'Clase I (Riesgo pulmonar bajo)';
+      } else {
+        return 'Sin resolución';
+      }
+    } else {
+      return 'No valorable';
+    }
+  }
+
+  static String movilidadCervical = Escalas.movilidadCervical[0];
+  static String distanciaTiromentoniana = Escalas.distanciaTiromentoniana[0];
+  static String distanciaEsternomentoniana = Escalas.distanciaEsternomentoniana[0];
+  static String movilidadTemporoMandibular = Escalas.movilidadTemporoMandibular[0];
+  static String aperturaMandibular = Escalas.aperturaMandibular[0];
+  static String escalaMallampati = Escalas.escalaMallampati[0];
+  static String escalaCormackLahane = Escalas.escalaCormackLahane[0];
 }
 
 class Valorados {
@@ -1176,4 +1393,97 @@ class Valorados {
       "Brecha osmolar: ${Valores.brechaOsmolar} mOsm/L. "
       "${Valores.sodioCorregido} ${Valores.requerimientoPotasio} "
       "Delta potasio: ${Valores.deficitSodio} mEq/L: ${Valores.deltaPotasio}";
+}
+
+class Escalas {
+  static List<String> asa = [
+    'A.S.A. I (Paciente Sano)',
+    'A.S.A. II (Enfermedad Sistémica Compensada)',
+    'A.S.A. III (Enfermedad Sistémica Descompensada)',
+    'A.S.A. IV (Enfermedad Sistémica Amenaza Constante para la Vida)',
+    'A.S.A. V (Paciente Moribundo con Probabilidad de Vida Menor)',
+    'A.S.A. VI (Muerte Cerebral)',
+  ];
+  static List<String> bromage = [
+    'Grado I: Libre Circulación de las Piernas y los Pies (Bloqueo 0%)',
+    'Grado II: Capaz de flexionar rodillas con Libre Circulación Podálica (Bloqueo 33%)',
+    'Grado III: Incapaz de flexionar rodillas perocon Libre Circulación Podálica (Bloqueo 66%)',
+    'Grado IV: Incapaz de flexionnar rodillas y pies (Bloqueo 100%)',
+  ];
+  static List<String> nyha = [
+    'Clase I (Asintomático, Sin limitación en la actividad física)',
+    'Clase II (Leve, Limitación leve en la actividad física)',
+    'Clase III (Moderado, Limitación leve en la actividad diaria)',
+    'Clase IV (Severo, Limitación para cualquier actividad diaria)',
+  ];
+
+  static List<String> saturacionPerifericaOrigeno = [
+    '> 96%',
+    '91 - 95%',
+    '<90%',
+  ];
+  static List<String> incisionTipo = [
+    'Periférica',
+    'Torácica',
+    'Abdominal Alta',
+  ];
+  static List<String> duracionCirugiaHoras = [
+    '<2',
+    '2 - 3',
+    '> 3',
+  ];
+
+  static List<String> movilidadCervical = [
+    'Grado I: Sin ninguna limitante (35°)',
+    'Grado II: Un tercio limitante (23°)',
+    'Grado III: Dos tercios limitados (11°)',
+    'Grado IV: Limitación completa',
+  ];
+  static List<String> distanciaTiromentoniana = [
+    'Grado I: Mayor a 6.5 cm',
+    'Grado II: Entre 6 a 6.5 cm',
+    'Grado III: Menor a 6 cm',
+  ];
+  static List<String> distanciaEsternomentoniana = [
+    'Grado I: Mayor a 13 cm',
+    'Grado II: Entre 12 - 13 cm',
+    'Grado III: Entre 11 - 12 cm',
+    'Grado IV: Menor de 11 cm',
+  ];
+  static List<String> movilidadTemporoMandibular = [
+    'Clase A: Los incisivos inferiores se superponen a los superiores',
+    'Clase B: Los incisivos inferiores se alinean a los superiores',
+    'Clase C: Los incisivos inferiores se retroponen a los superiores',
+  ];
+  static List<String> aperturaMandibular = [
+    'Grado I: Mayor a 4 cm',
+    'Grado II: Entre 3 - 4 cm',
+    'Grado III: Menor a 3 cm',
+  ];
+  static List<String> escalaMallampati = [
+    'Grado I: Total visibilidad de las amígdalas, úvula y paladar blando',
+    'Grado II: Visibilidad del paladar duro y blando, porción superior de las amígdalas',
+    'Grado III: Visibilidad de la base de la úvula',
+    'Grado IV: Visibilidad única del paladar duro',
+  ];
+  static List<String> escalaCormackLahane = [
+    'Tipo I: Visualización completa de la glotis',
+    'Tipo II-a: Vista parcial de la glotis',
+    'Tipo II-b: Vista parcial de la aritenoides, o posterior glótica',
+    'Tipo III: Visualización única de la epiglotis',
+    'Tipo IV: Sin visualización de la epiglotis',
+  ];
+
+}
+
+isNull(value) {
+  if (value == null || value == 'null') {
+    if (value.runtimeType == 'String') {
+      return '0.0';
+    } else {
+      return 0.0;
+    }
+  } else {
+    return value;
+  }
 }

@@ -8,6 +8,8 @@ import 'package:assistant/screens/pacientes/intensiva/contenidos/ventilaciones.d
 import 'package:assistant/screens/pacientes/intensiva/analisis/hidricos.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/metabolometrias.dart';
 import 'package:assistant/screens/pacientes/intensiva/herramientas.dart';
+import 'package:assistant/screens/pacientes/intensiva/valoraciones/aereos.dart';
+import 'package:assistant/screens/pacientes/intensiva/valoraciones/prequirurgicos.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/CrossLine.dart';
@@ -330,15 +332,25 @@ class _IntensivaState extends State<Intensiva> {
             GrandLabel(
               labelButton: 'Valoración Prequirúrgica',
               onPress: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => GestionBalances()));
+                if (isMobile(context)) {
+                  openActivity(const Hidricos());
+                } else {
+                  setState(() {
+                    widget.actualView = 11;
+                  });
+                }
               },
             ),
             GrandLabel(
               labelButton: 'Valoración de Vía Aerea',
               onPress: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => GestionBalances()));
+                if (isMobile(context)) {
+                  openActivity(const Hidricos());
+                } else {
+                  setState(() {
+                    widget.actualView = 12;
+                  });
+                }
               },
             ),
           ],
@@ -401,6 +413,9 @@ class _IntensivaState extends State<Intensiva> {
       Container(),
       Container(),
       Container(),
+      Container(),
+      const Prequirurgicos(),
+      const Aereas(),
     ];
     return list[actualView];
   }
