@@ -2,11 +2,14 @@ import 'dart:convert';
 
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/pendientes.dart';
 import 'package:assistant/screens/pacientes/vitales/vitales.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/ChartLine.dart';
 
 import 'package:assistant/widgets/CrossLine.dart';
+import 'package:assistant/widgets/GrandButton.dart';
+import 'package:assistant/widgets/GrandLabel.dart';
 import 'package:assistant/widgets/ImageDialog.dart';
 import 'package:assistant/widgets/RoundedPanel.dart';
 import 'package:assistant/widgets/ThreeLabelText.dart';
@@ -322,7 +325,21 @@ class _DashboardState extends State<Dashboard> {
                   const SizedBox(width: 6),
                   Expanded(
                       child: RoundedPanel(
-                    child: Container(),
+                    child: Column(
+                      children: [
+                        GrandLabel(
+                          iconData: Icons.padding,
+                          fontSized: 14,
+                          labelButton: 'Pendientes de la Atención',
+                          onPress: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  GestionPendiente(),
+                            ));
+                          },
+                        ),
+                      ],
+                    ),
                   )),
                 ],
               ))

@@ -5,6 +5,8 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 class Pacientes {
   static int ID_Paciente = 0;
 
+  static int ID_Hospitalizacion = 0;
+
   static String? nombreCompleto;
   static String? imagenPaciente;
 
@@ -102,6 +104,8 @@ class Pacientes {
   static List? Embarazos = [];
   //
   static List? Paraclinicos = [];
+  static List? Pendiente = [];
+
   // static List? Imagenologias = [];
 
   Pacientes(numeroPaciente, agregadoPaciente, primerNombre, segundoNombre,
@@ -2239,8 +2243,12 @@ class Imagenologias {
   };
 
   static List<String> regiones = ['Ritmo Sinusal', 'Ritmo no Sinusal'];
-  static List<String> typesEstudios = ['Radiografías', 'Ultrasonidos', 'Tomografías', 'Resonancias'];
-
+  static List<String> typesEstudios = [
+    'Radiografías',
+    'Ultrasonidos',
+    'Tomografías',
+    'Resonancias'
+  ];
 }
 
 class Auxiliares {
@@ -2568,6 +2576,68 @@ class Auxiliares {
         "Voltaje de Cornell ${(Pacientes.Electrocardiogramas['vc'] * 0.1).toStringAsFixed(0)} mV, "
         "RaVL ${Pacientes.Electrocardiogramas['EC_rAVL']} mV. ";
   }
+}
+
+class Pendientes {
+  static final Map<String, dynamic> pendientes = {
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_reggabo` "
+        "DEFAULT CHARACTER SET utf8 "
+        "COLLATE utf8_unicode_ci;",
+    "showTables": "SHOW tables;",
+    "dropDatabase": "DROP DATABASE `bd_reggabo`",
+    "describeTable": "DESCRIBE pace_pen;",
+    "showColumns": "SHOW columns FROM pace_pen",
+    "showInformation":
+        "SELECT column_name, data_type, is_nullable, column_default "
+            "FROM information_schema.columns "
+            "WHERE table_name = 'pace_pen'",
+    "createQuery": """CREATE TABLE `pace_pen` (
+              `ID_Pace_Pen` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+              `ID_Pace` int(11) NOT NULL,
+              `ID_Hosp` int(11) NOT NULL,
+              `Feca_PEN` date NOT NULL,
+              `Pace_PEN` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
+              `Pace_Desc_PEN` varchar(300) COLLATE utf8_unicode_ci NOT NULL
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci 
+            COMMENT='Tabla para Registro de Pendientes durante Hospitalización.';
+            """,
+    "truncateQuery": "TRUNCATE pace_pen",
+    "dropQuery": "DROP TABLE pace_pen",
+    "consultQuery": "SELECT * FROM pace_pen",
+    "consultIdQuery": "SELECT * FROM pace_pen WHERE ID_Pace_Pen = ?",
+    "consultByIdPrimaryQuery": "SELECT * FROM pace_pen WHERE ID_Pace = ?",
+    "consultAllIdsQuery": "SELECT ID_Pace FROM pace_pen",
+    "consultLastQuery":
+        "SELECT * FROM pace_pen WHERE ID_Pace = ? ORDER BY Feca_PEN DESC",
+    "consultByName": "SELECT * FROM pace_pen WHERE Pace_PEN LIKE '%",
+    "registerQuery": "INSERT INTO `pace_pen` (ID_Pace, ID_Hosp, "
+        "Feca_PEN, Pace_PEN, Pace_Desc_PEN) "
+        "VALUES (?,?,?,?,?)",
+    "updateQuery": "UPDATE pace_pen "
+        "SET ID_Pace_Pen = ?,  ID_Pace = ?,  ID_Hosp = ?,  "
+        "Feca_PEN = ?,  Pace_PEN = ?,  Pace_Desc_PEN = ? "
+        "WHERE ID_Pace_Pen = ?",
+    "deleteQuery": "DELETE FROM pace_pen WHERE ID_Pace_Pen = ",
+    "antropoColumns": [
+      "ID_Pace",
+    ],
+    "antropoItems": [],
+    "antropoColums": [],
+    "antropoStats": [],
+    "electroStadistics": "SELECT "
+        "(SELECT IFNULL(count(*), 0) FROM pace_pen WHERE `Pace_Ses` = '${Pacientes.Sexo[0]}') as Total_Mujeres,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_pen) as Total_Pacientes;"
+  };
+
+  static Map<String, dynamic> Pendiente = {};
+
+  static List<String> regiones = ['Ritmo Sinusal', 'Ritmo no Sinusal'];
+  static List<String> typesPendientes = [
+    'Radiografías',
+    'Ultrasonidos',
+    'Tomografías',
+    'Resonancias'
+  ];
 }
 
 class Reportes {
