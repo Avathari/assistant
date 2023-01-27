@@ -1127,6 +1127,11 @@ class Valores {
     }
   }
 
+  // Parámetros de Imagenológicos
+  static String? fechaEstudioImagenologico;
+  static String? regionCorporalImagenologico;
+  static String? hallazgosEstudioImagenologico;
+  static String? conclusionesImagenologico;
   // # ######################################################
   // # Valoraciones del Riesgo Anestésico
   // # ######################################################
@@ -1489,6 +1494,10 @@ class Escalas {
     'Tipo II-b: Vista parcial de la aritenoides, o posterior glótica',
     'Tipo III: Visualización única de la epiglotis',
     'Tipo IV: Sin visualización de la epiglotis',
+  ];
+
+  static List<String> regionCorporalImagenologico = [
+    'Región craneal',
   ];
 
 }

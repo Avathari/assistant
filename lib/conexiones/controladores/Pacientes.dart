@@ -72,6 +72,8 @@ class Pacientes {
     "EC_rAVL": 0,
     "EC_sV3": 0,
   };
+  static Map<String, dynamic> Imagenologias = {};
+
   //
   static List? Heredofamiliares = [];
   //
@@ -100,6 +102,7 @@ class Pacientes {
   static List? Embarazos = [];
   //
   static List? Paraclinicos = [];
+  // static List? Imagenologias = [];
 
   Pacientes(numeroPaciente, agregadoPaciente, primerNombre, segundoNombre,
       apellidoPaterno, apellidoMaterno, imagenUsuario) {
@@ -2136,16 +2139,15 @@ class Electrocardiogramas {
     "consultLastQuery":
         "SELECT * FROM gabo_ecg WHERE ID_Pace = ? ORDER BY ID_Pace_GAB_EC DESC",
     "consultByName": "SELECT * FROM gabo_ecg WHERE Pace_GAB_EC_Feca LIKE '%",
-    "registerQuery":
-        "INSERT INTO gabo_ecg (ID_Pace, Pace_GAB_EC_Feca, Pace_EC_rit, Pace_EC_rr, Pace_EC_dop, "
-            "Pace_EC_aop, Pace_EC_dpr, Pace_EC_dqrs, Pace_EC_aqrs, Pace_EC_qrsi, Pace_EC_qrsa, "
-            "Pace_QRS, Pace_EC_ast_, Pace_EC_st, Pace_EC_dqt, Pace_EC_dot, Pace_EC_aot, EC_rV1, "
-            "EC_sV6, EC_sV1, EC_rV6, EC_rAVL, EC_sV3, PatronQRS, DeflexionIntrinsecoide, EC_rDI, "
-            "EC_sDI, EC_rDIII, EC_sDIII, Pace_EC_CON, Pace_GAB_IMG, Pace_GAB_Tee) "
-            "VALUES (?,?,?,?,?,?,?,?,?,?,"
-            "?,?,?,?,?,?,?,?,?,?,"
-            "?,?,?,?,?,?,?,?,?,?,"
-            "from_base64(?), ?)",
+    "registerQuery": "INSERT INTO gabo_ecg (ID_Pace, Pace_GAB_EC_Feca, Pace_EC_rit, Pace_EC_rr, Pace_EC_dop, "
+        "Pace_EC_aop, Pace_EC_dpr, Pace_EC_dqrs, Pace_EC_aqrs, Pace_EC_qrsi, Pace_EC_qrsa, "
+        "Pace_QRS, Pace_EC_ast_, Pace_EC_st, Pace_EC_dqt, Pace_EC_dot, Pace_EC_aot, EC_rV1, "
+        "EC_sV6, EC_sV1, EC_rV6, EC_rAVL, EC_sV3, PatronQRS, DeflexionIntrinsecoide, EC_rDI, "
+        "EC_sDI, EC_rDIII, EC_sDIII, Pace_EC_CON, Pace_GAB_IMG, Pace_GAB_Tee) "
+        "VALUES (?,?,?,?,?,?,?,?,?,?,"
+        "?,?,?,?,?,?,?,?,?,?,"
+        "?,?,?,?,?,?,?,?,?,?,"
+        "from_base64(?), ?)",
     "updateQuery": "UPDATE gabo_ecg SET ID_Pace_GAB_EC = ?, ID_Pace = ?, Pace_GAB_EC_Feca = ?, "
         "Pace_EC_rit = ?, Pace_EC_rr = ?, Pace_EC_dop = ?, Pace_EC_aop = ?, Pace_EC_dpr = "
         "?, Pace_EC_dqrs = ?, Pace_EC_aqrs = ?, Pace_EC_qrsi = ?, Pace_EC_qrsa = ?, "
@@ -2179,6 +2181,66 @@ class Electrocardiogramas {
     'Patrón sR',
     'Patrón Q'
   ];
+}
+
+class Imagenologias {
+  static final Map<String, dynamic> imagenologias = {
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_reggabo` "
+        "DEFAULT CHARACTER SET utf8 "
+        "COLLATE utf8_unicode_ci;",
+    "showTables": "SHOW tables;",
+    "dropDatabase": "DROP DATABASE `bd_reggabo`",
+    "describeTable": "DESCRIBE gabo_rae;",
+    "showColumns": "SHOW columns FROM gabo_rae",
+    "showInformation":
+        "SELECT column_name, data_type, is_nullable, column_default "
+            "FROM information_schema.columns "
+            "WHERE table_name = 'gabo_rae'",
+    "createQuery": """CREATE TABLE gabo_rae (
+                  `ID_Pace_GAB_RA` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                  `ID_Pace` int(11) NOT NULL,
+                  `Pace_GAB_RA_Feca` date NOT NULL,
+                  `Pace_GAB_RA_typ` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                  `Pace_GAB_RA_reg` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                  `Pace_GAB_RA_hal` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+                  `Pace_GAB_RA_con` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+                   `Pace_GAB_RA_IMG` longblob NOT NULL, 
+                  `Pace_GAB_Tee` varchar(100) COLLATE utf8_unicode_ci NOT NULL
+                ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci 
+                COMMENT='Registro de los Estudios de imagen realizados a los pacientes.';""",
+    "truncateQuery": "TRUNCATE gabo_rae",
+    "dropQuery": "DROP TABLE gabo_rae",
+    "consultQuery": "SELECT * FROM gabo_rae",
+    "consultIdQuery": "SELECT * FROM gabo_rae WHERE ID_Pace_GAB_RA = ?",
+    "consultByIdPrimaryQuery": "SELECT * FROM gabo_rae WHERE ID_Pace = ?",
+    "consultAllIdsQuery": "SELECT ID_Pace FROM gabo_rae",
+    "consultLastQuery":
+        "SELECT * FROM gabo_rae WHERE ID_Pace = ? ORDER BY ID_Pace_GAB_EC DESC",
+    "consultByName": "SELECT * FROM gabo_rae WHERE Pace_GAB_EC_Feca LIKE '%",
+    "registerQuery": "INSERT INTO gabo_rae (ID_Pace, Pace_GAB_RA_Feca, "
+        "Pace_GAB_RA_typ, Pace_GAB_RA_reg, Pace_GAB_RA_hal, "
+        "Pace_GAB_RA_con, Pace_GAB_RA_IMG, Pace_GAB_Tee) "
+        "VALUES (?,?,?,?,?,?,from_base64(?),?)",
+    "updateQuery": "UPDATE gabo_rae SET ID_Pace_GAB_RA = ?, ID_Pace = ?, "
+        "Pace_GAB_RA_Feca = ?, Pace_GAB_RA_typ = ?, "
+        "Pace_GAB_RA_reg = ?, Pace_GAB_RA_hal = ?, "
+        "Pace_GAB_RA_con = ?, Pace_GAB_RA_IMG = from_base64(?), Pace_GAB_Tee = ? "
+        "WHERE ID_Pace_GAB_RA = ?",
+    "deleteQuery": "DELETE FROM gabo_rae WHERE ID_Pace_GAB_RA = ",
+    "antropoColumns": [
+      "ID_Pace",
+    ],
+    "antropoItems": [],
+    "antropoColums": [],
+    "antropoStats": [],
+    "electroStadistics": "SELECT "
+        "(SELECT IFNULL(count(*), 0) FROM gabo_rae WHERE `Pace_Ses` = '${Pacientes.Sexo[0]}') as Total_Mujeres,"
+        "(SELECT IFNULL(count(*), 0) FROM gabo_rae) as Total_Pacientes;"
+  };
+
+  static List<String> regiones = ['Ritmo Sinusal', 'Ritmo no Sinusal'];
+  static List<String> typesEstudios = ['Radiografías', 'Ultrasonidos', 'Tomografías', 'Resonancias'];
+
 }
 
 class Auxiliares {

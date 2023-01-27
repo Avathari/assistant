@@ -1,6 +1,7 @@
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/Electrocardiogramas.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/imagenologias.dart';
 
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
@@ -187,31 +188,43 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
                 ? RoundedPanel(
                     child: TittlePanel(
                         textPanel: 'Registro de Estudios de Laboratorio'))
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GrandButton(
-                          labelButton: "Registro de estudios de gabinete",
-                          weigth: 500 / 3,
-                          onPress: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                     const ElectrocardiogramasGestion()));
-                          }),
-                      GrandButton(
-                          labelButton: "Registro de laboratorios",
-                          weigth: 500 / 3,
-                          onPress: () {
-                            carouselController.jumpToPage(0);
-                          }),
-                      GrandButton(
-                          labelButton: "Gestion del Registro",
-                          weigth: 500 / 3,
-                          onPress: () {
-                            carouselController.jumpToPage(1);
-                          }),
-                    ],
-                  ),
+                : SingleChildScrollView(
+              controller: ScrollController(),
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GrandButton(
+                            labelButton: "Registro de electrocardiogramas",
+                            weigth: 500 / 4,
+                            onPress: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                       const ElectrocardiogramasGestion()));
+                            }),
+                        GrandButton(
+                            labelButton: "Registro de estudios imagenológicos",
+                            weigth: 500 / 4,
+                            onPress: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                  const ImagenologiasGestion()));
+                            }),
+                        GrandButton(
+                            labelButton: "Registro de laboratorios",
+                            weigth: 500 / 4,
+                            onPress: () {
+                              carouselController.jumpToPage(0);
+                            }),
+                        GrandButton(
+                            labelButton: "Gestion del Registro",
+                            weigth: 500 / 4,
+                            onPress: () {
+                              carouselController.jumpToPage(1);
+                            }),
+                      ],
+                    ),
+                ),
           ),
           Expanded(
             child: CarouselSlider(
