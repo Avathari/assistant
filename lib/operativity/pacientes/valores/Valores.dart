@@ -262,36 +262,39 @@ class Valores {
     //
     fechaElectrocardiograma = json['Pace_GAB_EC_Feca'] ?? '';
     ritmoCardiaco = json['Pace_EC_rit'] ?? '';
-    intervaloRR = double.parse(json['Pace_EC_rr'].toString() ?? '0');
-    duracionOndaP = double.parse(json['Pace_EC_dop'].toString() ?? '0');
-    alturaOndaP = double.parse(json['Pace_EC_aop'].toString() ?? '0');
-    duracionPR = double.parse(json['Pace_EC_dpr'].toString() ?? '0');
-    duracionQRS = double.parse(json['Pace_EC_dqrs'].toString() ?? '0');
-    alturaQRS = double.parse(json['Pace_EC_aqrs'].toString() ?? '0');
-    QRSi = double.parse(json['Pace_EC_qrsi'].toString() ?? '0');
-    QRSa = double.parse(json['Pace_EC_qrsa'].toString() ?? '0');
-    ejeCardiaco = double.parse(json['Pace_QRS'] != '' ? json['Pace_QRS'] : '0');
+    intervaloRR = json['Pace_EC_rr'] == null ? json['Pace_EC_rr'] : 0;
+    duracionOndaP = json['Pace_EC_dop']== null ? json['Pace_EC_dop'] : 0;
+    alturaOndaP = json['Pace_EC_aop']== null ? json['Pace_EC_aop'] : 0;
+    duracionPR = json['Pace_EC_dpr']== null ? json['Pace_EC_dpr'] : 0;
+    duracionQRS = json['Pace_EC_dqrs']== null ? json['Pace_EC_dqrs'] : 0;
+    alturaQRS = json['Pace_EC_aqrs']== null ? json['Pace_EC_aqrs'] : 0;
+    QRSi = json['Pace_EC_qrsi']== null ? json['Pace_EC_qrsi'] : 0;
+    QRSa = json['Pace_EC_qrsa']== null ? json['Pace_EC_qrsa'] : 0;
+    //
+    ejeCardiaco = double.parse(json['Pace_QRS'] != '' && json['Pace_QRS'] != null ? json['Pace_QRS'] : '0');
     //
     segmentoST = json['Pace_EC_st'] ?? '';
-    alturaSegmentoST = double.parse(json['Pace_EC_ast_'].toString() ?? '0');
-    duracionQT = double.parse(json['Pace_EC_dqt'].toString() ?? '0');
-    duracionOndaT = double.parse(json['Pace_EC_dot'].toString() ?? '0');
-    alturaOndaT = double.parse(json['Pace_EC_aot'].toString() ?? '0');
+    alturaSegmentoST =  json['Pace_EC_ast_']== null ? json['Pace_EC_ast_'] : 0;
+    duracionQT = json['Pace_EC_dqt']== null ? json['Pace_EC_dqt'] : 0;
+    duracionOndaT = json['Pace_EC_dot']== null ? json['Pace_EC_dot'] : 0;
+    alturaOndaT = json['Pace_EC_aot']== null ? json['Pace_EC_aot'] : 0;
+
     //
-    rV1 = double.parse(json['EC_rV1'].toString() ?? '0');
-    sV6 = double.parse(json['EC_sV6'].toString() ?? '0');
-    sV1 = double.parse(json['EC_sV1'].toString() ?? '0');
-    rV6 = double.parse(json['EC_rV6'].toString() ?? '0');
-    rAvL = double.parse(json['EC_rAVL'].toString() ?? '0');
-    sV3 = double.parse(json['EC_sV3'].toString() ?? '0');
+    rV1 =  json['EC_rV1']== null ? json['EC_rV1'] : 0;
+    sV6 =  json['EC_sV6']== null ? json['EC_sV6'] : 0;
+    sV1 =  json['EC_sV1']== null ? json['EC_sV1'] : 0;
+    rV6 =  json['EC_rV6']== null ? json['EC_rV6'] : 0;
+    rAvL =  json['EC_rAVL']== null ? json['EC_rAVL'] : 0;
+    sV3 =  json['EC_sV3']== null ? json['EC_sV3'] : 0;
     //
     patronQRS = json['PatronQRS'] ?? '';
-    deflexionIntrinsecoide =
-        double.parse(json['DeflexionIntrinsecoide'].toString() ?? '0');
-    rDI = double.parse(json['EC_rDI'].toString() ?? '0');
-    sDI = double.parse(json['EC_sDI'].toString() ?? '0');
-    rDIII = double.parse(json['EC_rDIII'].toString() ?? '0');
-    sDIII = double.parse(json['EC_sDIII'].toString() ?? '0');
+    deflexionIntrinsecoide = json['DeflexionIntrinsecoide']== null ? json['DeflexionIntrinsecoide'] : 0;
+
+    rDI = json['EC_rDI']== null ? json['EC_rDI'] : 0;
+    sDI = json['EC_sDI']== null ? json['EC_sDI'] : 0;
+    rDIII = json['EC_rDIII']== null ? json['EC_rDIII'] : 0;
+    sDIII = json['EC_sDIII']== null ? json['EC_sDIII'] : 0;
+
     conclusionElectrocardiograma = json['Pace_EC_CON'] ?? '';
     //
   }
