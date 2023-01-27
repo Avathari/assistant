@@ -7,10 +7,13 @@ class GrandLabel extends StatefulWidget {
   var onPress;
   IconData? iconData;
 
+  double? fontSized;
+
   GrandLabel(
       {Key? key,
       this.labelButton = "message",
       this.weigth = 6,
+      this.fontSized = 8,
       this.iconData = Icons.wallet,
       required this.onPress})
       : super(key: key);
@@ -33,26 +36,27 @@ class _GrandLabelState extends State<GrandLabel> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               minimumSize: Size(
-                  isMobile(context)
-                      ? widget.weigth!
-                      : widget.weigth! * 10,
+                  isMobile(context) ? widget.weigth! : widget.weigth! * 10,
                   isTablet(context)
                       ? widget.weigth! * 10
                       : isDesktop(context)
-                      ? widget.weigth! * 10
-                      : widget.weigth! * 10)),
+                          ? widget.weigth! * 10
+                          : widget.weigth! * 10)),
           onPressed: () {
             widget.onPress();
           },
           child: Row(
             children: [
               Icon(widget.iconData),
-              const SizedBox(width: 4 ,),
+              const SizedBox(
+                width: 4,
+              ),
               Expanded(
                   child: Text(
                 widget.labelButton!,
-                style: const TextStyle(
-                    fontSize: 8, overflow: TextOverflow.ellipsis),
+                style: TextStyle(
+                    fontSize: widget.fontSized!,
+                    overflow: TextOverflow.ellipsis),
               )),
             ],
           ),
