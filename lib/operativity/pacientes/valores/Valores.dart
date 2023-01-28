@@ -101,6 +101,21 @@ class Valores {
       sDIII;
   //
   static double? pH, bicarbonatoArteriales;
+  // Parámetros Ventilatorios
+  static String? fechaVentilaciones = '', modalidadVentilatoria = '';
+  static int? frecuenciaVentilatoria = 0,
+      fraccionInspiratoriaVentilatoria = 0,
+      presionFinalEsiracion = 0,
+      sensibilidadInspiratoria = 0,
+      sensibilidadEspiratoria = 0,
+      presionControl = 0,
+      presionMaxima = 0,
+      volumenVentilatorio = 0,
+      flujoVentilatorio = 0,
+      presionSoporte = 0,
+      presionInspiratoriaPico = 0,
+      presionPlateau = 0;
+  static double? volumenTidal = 0;
 
   // Variables Estaticas
   static int? constanteRequerimientos = 30;
@@ -110,7 +125,9 @@ class Valores {
   static double pi = 3.14159265;
   // Variables de Procedimientos
   static String? motivoProcedimiento;
-  static String? sitiosCateterCentral, sitiosSondaPleural, sitiosCateterTenckhoff;
+  static String? sitiosCateterCentral,
+      sitiosSondaPleural,
+      sitiosCateterTenckhoff;
   static String? complicacionesProcedimiento;
   static String? pendientesProcedimiento;
   // Variables de Valoraciones
@@ -181,6 +198,13 @@ class Valores {
         emulated: true);
     valores.addAll(elect);
 
+    final vento = await Actividades.consultarId(
+        Databases.siteground_database_reghosp,
+        Ventilaciones.ventilacion['consultLastQuery'],
+        Pacientes.ID_Paciente,
+        emulated: true);
+    valores.addAll(vento);
+
     //valores.map((key, value) => value = null);
     Valores.fromJson(valores);
     return true;
@@ -188,6 +212,7 @@ class Valores {
 
   Valores.fromJson(Map<String, dynamic> json) {
     print("Valors $json");
+
     numeroPaciente = json['Pace_NSS'];
     agregadoPaciente = json['Pace_AGRE'];
     primerNombre = json['Pace_Nome_PI'];
@@ -263,39 +288,63 @@ class Valores {
     fechaElectrocardiograma = json['Pace_GAB_EC_Feca'] ?? '';
     ritmoCardiaco = json['Pace_EC_rit'] ?? '';
     intervaloRR = json['Pace_EC_rr'] == null ? json['Pace_EC_rr'] : 0;
-    duracionOndaP = json['Pace_EC_dop']== null ? json['Pace_EC_dop'] : 0;
-    alturaOndaP = json['Pace_EC_aop']== null ? json['Pace_EC_aop'] : 0;
-    duracionPR = json['Pace_EC_dpr']== null ? json['Pace_EC_dpr'] : 0;
-    duracionQRS = json['Pace_EC_dqrs']== null ? json['Pace_EC_dqrs'] : 0;
-    alturaQRS = json['Pace_EC_aqrs']== null ? json['Pace_EC_aqrs'] : 0;
-    QRSi = json['Pace_EC_qrsi']== null ? json['Pace_EC_qrsi'] : 0;
-    QRSa = json['Pace_EC_qrsa']== null ? json['Pace_EC_qrsa'] : 0;
+    duracionOndaP = json['Pace_EC_dop'] == null ? json['Pace_EC_dop'] : 0;
+    alturaOndaP = json['Pace_EC_aop'] == null ? json['Pace_EC_aop'] : 0;
+    duracionPR = json['Pace_EC_dpr'] == null ? json['Pace_EC_dpr'] : 0;
+    duracionQRS = json['Pace_EC_dqrs'] == null ? json['Pace_EC_dqrs'] : 0;
+    alturaQRS = json['Pace_EC_aqrs'] == null ? json['Pace_EC_aqrs'] : 0;
+    QRSi = json['Pace_EC_qrsi'] == null ? json['Pace_EC_qrsi'] : 0;
+    QRSa = json['Pace_EC_qrsa'] == null ? json['Pace_EC_qrsa'] : 0;
     //
-    ejeCardiaco = double.parse(json['Pace_QRS'] != '' && json['Pace_QRS'] != null ? json['Pace_QRS'] : '0');
+    ejeCardiaco = double.parse(
+        json['Pace_QRS'] != '' && json['Pace_QRS'] != null
+            ? json['Pace_QRS']
+            : '0');
     //
     segmentoST = json['Pace_EC_st'] ?? '';
-    alturaSegmentoST =  json['Pace_EC_ast_']== null ? json['Pace_EC_ast_'] : 0;
-    duracionQT = json['Pace_EC_dqt']== null ? json['Pace_EC_dqt'] : 0;
-    duracionOndaT = json['Pace_EC_dot']== null ? json['Pace_EC_dot'] : 0;
-    alturaOndaT = json['Pace_EC_aot']== null ? json['Pace_EC_aot'] : 0;
+    alturaSegmentoST = json['Pace_EC_ast_'] == null ? json['Pace_EC_ast_'] : 0;
+    duracionQT = json['Pace_EC_dqt'] == null ? json['Pace_EC_dqt'] : 0;
+    duracionOndaT = json['Pace_EC_dot'] == null ? json['Pace_EC_dot'] : 0;
+    alturaOndaT = json['Pace_EC_aot'] == null ? json['Pace_EC_aot'] : 0;
 
     //
-    rV1 =  json['EC_rV1']== null ? json['EC_rV1'] : 0;
-    sV6 =  json['EC_sV6']== null ? json['EC_sV6'] : 0;
-    sV1 =  json['EC_sV1']== null ? json['EC_sV1'] : 0;
-    rV6 =  json['EC_rV6']== null ? json['EC_rV6'] : 0;
-    rAvL =  json['EC_rAVL']== null ? json['EC_rAVL'] : 0;
-    sV3 =  json['EC_sV3']== null ? json['EC_sV3'] : 0;
+    rV1 = json['EC_rV1'] == null ? json['EC_rV1'] : 0;
+    sV6 = json['EC_sV6'] == null ? json['EC_sV6'] : 0;
+    sV1 = json['EC_sV1'] == null ? json['EC_sV1'] : 0;
+    rV6 = json['EC_rV6'] == null ? json['EC_rV6'] : 0;
+    rAvL = json['EC_rAVL'] == null ? json['EC_rAVL'] : 0;
+    sV3 = json['EC_sV3'] == null ? json['EC_sV3'] : 0;
     //
     patronQRS = json['PatronQRS'] ?? '';
-    deflexionIntrinsecoide = json['DeflexionIntrinsecoide']== null ? json['DeflexionIntrinsecoide'] : 0;
+    deflexionIntrinsecoide = json['DeflexionIntrinsecoide'] == null
+        ? json['DeflexionIntrinsecoide']
+        : 0;
 
-    rDI = json['EC_rDI']== null ? json['EC_rDI'] : 0;
-    sDI = json['EC_sDI']== null ? json['EC_sDI'] : 0;
-    rDIII = json['EC_rDIII']== null ? json['EC_rDIII'] : 0;
-    sDIII = json['EC_sDIII']== null ? json['EC_sDIII'] : 0;
+    rDI = json['EC_rDI'] == null ? json['EC_rDI'] : 0;
+    sDI = json['EC_sDI'] == null ? json['EC_sDI'] : 0;
+    rDIII = json['EC_rDIII'] == null ? json['EC_rDIII'] : 0;
+    sDIII = json['EC_sDIII'] == null ? json['EC_sDIII'] : 0;
 
     conclusionElectrocardiograma = json['Pace_EC_CON'] ?? '';
+    //
+    fechaVentilaciones =  json['Feca_VEN'] ?? '';
+    modalidadVentilatoria = json['VM_Mod'] ?? '';
+    frecuenciaVentilatoria = json['Pace_Fr'] == null ? json['Pace_Fr'] : 0;
+    fraccionInspiratoriaVentilatoria =
+        json['Pace_Fio'] == null ? json['Pace_Fio'] : 0;
+    presionFinalEsiracion = json['Pace_Peep'] == null ? json['Pace_Peep'] : 0;
+    sensibilidadInspiratoria = json['Pace_Insp'] == null ? json['Pace_Insp'] : 0;
+    sensibilidadEspiratoria = json['Pace_Espi'] == null ? json['Pace_Espi'] : 0;
+    presionControl = json['Pace_Pc'] == null ? json['Pace_Pc'] : 0;
+    presionMaxima = json['Pace_Pm'] == null ? json['Pace_Pm'] : 0;
+
+    volumenVentilatorio = json['Pace_V'] == null ? json['Pace_V'] : 0;
+    flujoVentilatorio = json['Pace_F'] == null ? json['Pace_F'] : 0;
+    presionSoporte = json['Pace_Ps'] == null ? json['Pace_Ps'] : 0;
+    presionInspiratoriaPico = json['Pace_Pip'] == null ? json['Pace_Pip'] : 0;
+    presionPlateau = json['Pace_Pmet'] == null ? json['Pace_Pmet'] : 0;
+    volumenTidal = json['Pace_Vt'] == null ? json['Pace_Vt'] : 0;
+
     //
   }
 
@@ -1006,6 +1055,7 @@ class Valores {
       return 0;
     } //# Frecuencia_Cardiaca_Maxima
   }
+
   static double get frecuenciaCardiacaBlanco =>
       ((220 - Valores.edad!) * 0.7); // # Frecuencia_Cardiaca_Blanco
   static double get frecuenciaCardiacaIntrinseca =>
@@ -1072,6 +1122,7 @@ class Valores {
   // # FE = VL / VDF # FE(%)= ((VDF-VSF)*100)/VDF. (porque VL= VDF-VSF). (%)
   static double get FE => 0.0;
 
+  // Parámetros de Electrocardiogramas
   static double get indiceSokolowLyon {
     if (Valores.sV1 != 0 &&
         Valores.sV1 != null &&
@@ -1127,6 +1178,171 @@ class Valores {
     }
   }
 
+  // Parámetros de Ventilatorios
+  static int get constanteTidal  {
+    if (Valores.volumenTidal != 0&& Valores.volumenTidal != null &&
+        Valores.pesoCorporalPredicho != 0&& Valores.pesoCorporalPredicho != null) {
+      return Valores.volumenTidal! ~/ Valores.pesoCorporalPredicho;
+    } else {
+      return 0;
+    }
+  }
+  // # ######################################################
+  // # Volumenes Tidales Vt6, Vt7, Vt8
+  // # ######################################################
+  static double get volumentTidal6  => (Valores.pesoCorporalPredicho * 6);
+  static double get volumentTidal7  => (Valores.pesoCorporalPredicho * 7);
+  static double get volumentTidal8  => (Valores.pesoCorporalPredicho * 8);
+  // # ######################################################
+  static double get presionAlveolarOxigeno  {
+    if (Valores.volumenTidal != 0&& Valores.volumenTidal != null &&
+        Valores.pesoCorporalPredicho != 0&& Valores.pesoCorporalPredicho != null) {
+      // return (valores.get('FraccionInspiratoriaOxigeno') / 100) * (720 - 47) - (valores.get('PresionDioxidoCarbono') / 0.8);
+      return 0;
+    } else {
+      return double.nan;
+    }
+  }
+
+  static double get presionMediaViaAerea  {
+    if (Valores.presionPlateau != 0&& Valores.presionPlateau != null &&
+        Valores.sensibilidadInspiratoria != 0&& Valores.sensibilidadInspiratoria != null) {
+      return (Valores.presionFinalEsiracion! + (
+          (Valores.presionPlateau! - Valores.presionFinalEsiracion!) * (
+              Valores.sensibilidadInspiratoria!))).toDouble();
+    } else {
+      return double.nan;
+    }
+  }
+
+  static double get volumenMinuto  {
+    if (Valores.volumenTidal != 0&& Valores.volumenTidal != null &&
+        Valores.pesoCorporalPredicho != 0&& Valores.pesoCorporalPredicho != null) {
+      return (Valores.volumenTidal! * Valores.frecuenciaVentilatoria!) / 1000 ;
+    } else {
+      return double.nan;
+    }
+  }
+
+  static double get flujoVentilatorioMedido  {
+    if (Valores.volumenMinuto != 0&& Valores.volumenMinuto != null) {
+      return (Valores.volumenMinuto * 4) ;
+    } else {
+      return double.nan;
+    }
+  }
+
+  static double get volumenMinutoIdeal  {
+    if (Valores.pesoCorporalPredicho != 0&& Valores.pesoCorporalPredicho != null) {
+      return (Valores.pesoCorporalPredicho / 10) ;
+      // VMI = (PCI / 10)
+    } else {
+      return double.nan;
+    }
+  }
+
+  static double get poderMecanico  {
+    if (Valores.pesoCorporalPredicho != 0&& Valores.pesoCorporalPredicho != null) {
+      return (0.098 * Valores.frecuenciaVentilatoria! * (
+          Valores.presionPlateau! - Valores.presionFinalEsiracion! / 2));
+      // PM = (0.098 * Valores.frecuenciaVentilatoria * (
+         // Valores.presionPlateau! - Valores.presionFinalEsiracion! / 2))
+    } else {
+      return double.nan;
+    }
+  }
+
+  static double get distensibilidadPulmonarEstatica  {
+    if (Valores.presionPlateau != 0&& Valores.presionPlateau != null &&
+        Valores.presionFinalEsiracion != 0&& Valores.presionFinalEsiracion != null) {
+      return (Valores.volumenTidal! / (
+          Valores.presionPlateau! - Valores.presionFinalEsiracion!));
+      //  DPE = (Valores.volumenTidal! / (
+      //   Valores.presionPlateau! - Valores.presionFinalEsiracion!));
+    } else {
+      return double.nan;
+    }
+  }
+
+  static double get distensibilidadPulmonarDinamica  {
+    if (Valores.presionPlateau != 0&& Valores.presionPlateau != null &&
+        Valores.presionFinalEsiracion != 0&& Valores.presionFinalEsiracion != null) {
+      return (Valores.volumenTidal! / (
+          Valores.presionMaxima! - Valores.presionFinalEsiracion! ));  //# Presion_Inspiratorio_Pico
+      // DP = DPE + DPD / 2  // # Promedio entre las Distensibilidades Pulmonares estaticas y dinamicas
+    } else {
+      return double.nan;
+    }
+  }
+
+  static double get distensibilidadPulmonar  {
+    if (Valores.distensibilidadPulmonarEstatica != 0&& Valores.distensibilidadPulmonarEstatica != null &&
+        Valores.distensibilidadPulmonarDinamica != 0&& Valores.distensibilidadPulmonarDinamica != null) {
+      return distensibilidadPulmonarEstatica + distensibilidadPulmonarDinamica / 2;  // # Promedio entre las Distensibilidades Pulmonares estaticas y dinamicas
+    } else {
+      return double.nan;
+    }
+  }
+
+  static double get resistenciaPulmonar  {
+    if (Valores.presionMaxima != 0&& Valores.presionMaxima != null &&
+        Valores.presionPlateau != 0&& Valores.presionPlateau != null) {
+      return  (Valores.presionMaxima! - Valores.presionPlateau!) / (Valores.flujoVentilatorio! / 60);
+      // RP = (Valores.presionMaxima- Valores.presionPlateau!) / (F / 60)
+    } else {
+      return double.nan;
+    }
+  }
+
+  static double get elastanciaPulmonar  {
+    if (Valores.presionMaxima != 0&& Valores.presionMaxima != null &&
+        Valores.presionFinalEsiracion != 0&& Valores.presionFinalEsiracion != null) {
+      return  ((Valores.presionMaxima! - Valores.presionFinalEsiracion!) / (
+          Valores.volumenTidal!)) * 1000;
+      // EP = ((Valores.presionMaxima- Valores.presionFinalEsiracion) / (Valores.volumenTidal!)) * 1000
+    } else {
+      return double.nan;
+    }
+  }
+
+  // if valores.get('PresionOxigenoArterial') != 0:
+  // IO = (PMVA * (valores.get('FraccionInspiratoriaOxigeno') / 100)) * (100.00) / valores.get(
+  // 'PresionOxigenoArterial')
+  // else if valores.get('SaturacionOxigeno') != 0:  # //  Indice de Saturación
+  // IO = ((PMVA * (valores.get('FraccionInspiratoriaOxigeno') / 100)) * (100.00) / valores.get(
+  // 'PresionOxigenoArterial'))
+  // else:
+  // IO = 0
+  //
+  // IV = (PMVA * Valores.frecuenciaVentilatoria) * (valores.get('PresionDioxidoCarbono') / 10)
+  //
+  // if valores.get('PresionDioxidoCarbono') != 0:
+  // EV = (VM * valores.get('PresionDioxidoCarbono')) / ((VMI * 37.5))
+  // else if valores.get('PresionDioxidoCarbono') == 0:
+  // EV = (VM) / ((3.2 * valores.get('Peso_Corporal_Total'))) * (100)
+  // else:
+  // EV = 0
+  //
+  // PPI = Valores.presionFinalEsiracion+ valores.get('Presion_Soporte')
+  // PPE = Valores.presionFinalEsiracionCI = (valores.get('PresionDioxidoCarbono') * Valores.frecuenciaVentilatoria) / 40.00
+  //
+  // # ######################################################
+  // # Análisis de pCO2 / pO2
+  // # ######################################################
+  // FIOV = ((valores.get('GradienteAlveoloArterial_Arteriales') + 100) / 760) * 100
+  //
+  // if (FIOV < 21):
+  // FIOI = (21.00)
+  // else:
+  // FIOI = FIOV
+  // VENT = (valores.get('PresionDioxidoCarbono_Arteriales') * Valores.frecuenciaVentilatoria) / 40.00
+  //
+  // if valores.get('PresionDioxidoCarbono_Arteriales') != 0:
+  // VA = (0.863 * (3.2 * valores.get('Peso_Corporal_Total'))) / (
+  // valores.get('PresionDioxidoCarbono_Arteriales'))
+  // else:
+  // VA = 00.00
+  static double dummy = 0;
   // Parámetros de Imagenológicos
   static String? fechaEstudioImagenologico;
   static String? regionCorporalImagenologico;
@@ -1198,6 +1414,7 @@ class Valores {
       return 'No valorable';
     }
   }
+
   static String get valoracionGoldmann {
     int puntaje = 0;
     //
@@ -1250,6 +1467,7 @@ class Valores {
       return 'No valorable';
     }
   }
+
   static String get valoracionAriscat {
     int puntaje = 0;
 //
@@ -1283,17 +1501,19 @@ class Valores {
       //
       if (Valores.incisionTipo == Escalas.incisionTipo[0]) {
         puntaje = puntaje + 0;
-      } else       if (Valores.incisionTipo == Escalas.incisionTipo[1]) {
+      } else if (Valores.incisionTipo == Escalas.incisionTipo[1]) {
         puntaje = puntaje + 15;
-      } else       if (Valores.incisionTipo == Escalas.incisionTipo[2]) {
+      } else if (Valores.incisionTipo == Escalas.incisionTipo[2]) {
         puntaje = puntaje + 24;
       }
       //
       if (Valores.duracionCirugiaHoras == Escalas.duracionCirugiaHoras[0]) {
         puntaje = puntaje + 0;
-      } else       if (Valores.duracionCirugiaHoras == Escalas.duracionCirugiaHoras[1]) {
+      } else if (Valores.duracionCirugiaHoras ==
+          Escalas.duracionCirugiaHoras[1]) {
         puntaje = puntaje + 16;
-      } else       if (Valores.duracionCirugiaHoras == Escalas.duracionCirugiaHoras[2]) {
+      } else if (Valores.duracionCirugiaHoras ==
+          Escalas.duracionCirugiaHoras[2]) {
         puntaje = puntaje + 23;
       }
       //
@@ -1318,8 +1538,10 @@ class Valores {
 
   static String movilidadCervical = Escalas.movilidadCervical[0];
   static String distanciaTiromentoniana = Escalas.distanciaTiromentoniana[0];
-  static String distanciaEsternomentoniana = Escalas.distanciaEsternomentoniana[0];
-  static String movilidadTemporoMandibular = Escalas.movilidadTemporoMandibular[0];
+  static String distanciaEsternomentoniana =
+      Escalas.distanciaEsternomentoniana[0];
+  static String movilidadTemporoMandibular =
+      Escalas.movilidadTemporoMandibular[0];
   static String aperturaMandibular = Escalas.aperturaMandibular[0];
   static String escalaMallampati = Escalas.escalaMallampati[0];
   static String escalaCormackLahane = Escalas.escalaCormackLahane[0];
@@ -1425,7 +1647,7 @@ class Escalas {
   static List<String> sitiosCateterCentral = [
     'Vena Yugular Anterior Derecha',
     'Vena Yugular Anterior Izquierda',
-  'Vena Subclavia Derecha',
+    'Vena Subclavia Derecha',
     'Vena Subclavia Izquierda',
   ];
   static List<String> sitiosSondaPleural = [
@@ -1499,7 +1721,6 @@ class Escalas {
   static List<String> regionCorporalImagenologico = [
     'Región craneal',
   ];
-
 }
 
 isNull(value) {

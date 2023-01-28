@@ -1,5 +1,7 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/antropometricos.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/ventilatorios.dart';
 
 import 'package:assistant/screens/pacientes/intensiva/contenidos/balances.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
@@ -228,11 +230,16 @@ class _IntensivaState extends State<Intensiva> {
                     },
                   ),
                   GrandLabel(
+                    iconData: Icons.all_inclusive_rounded,
                     labelButton: 'Análisis Ventilatorio',
                     onPress: () {
-                      setState(() {
-                        widget.actualView = 5;
-                      });
+                      if (isMobile(context)) {
+                        openActivity(const Ventilatorios());
+                      } else {
+                        setState(() {
+                          widget.actualView = 5;
+                        });
+                      }
                     },
                   ),
                   GrandLabel(
@@ -375,7 +382,7 @@ class _IntensivaState extends State<Intensiva> {
       const Metabolicos(),
       const Antropometricos(),
       Container(),
-      Container(),
+      const Ventilatorios(),
       Container(),
       Container(),
       Container(),
