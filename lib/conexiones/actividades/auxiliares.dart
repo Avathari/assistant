@@ -20,8 +20,8 @@ Future<String> imageToBase(String pathFile) async {
 }
 
 class Calendarios {
-  static String today() {
-    return DateFormat("yyyy.MM.dd").format(DateTime.now());
+  static String today({String format = "yyyy.MM.dd"}) {
+    return DateFormat(format).format(DateTime.now());
   }
 
   static String completeToday() {

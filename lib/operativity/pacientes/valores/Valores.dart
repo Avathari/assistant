@@ -24,8 +24,10 @@ class Valores {
       fechaNacimiento,
       telefono,
       curp,
-      rfc;
+      rfc,
+      modoAtencion;
   static int? edad;
+  static bool? isHospitalizado;
   //
   static int? tensionArterialSystolica,
       tensionArterialDyastolica,
@@ -159,6 +161,9 @@ class Valores {
   Valores();
 
   Future<bool> load() async {
+    // Otras configuraciones
+    Escalas.serviciosHospitalarios = await Archivos.listFromText(path: 'assets/diccionarios/Servicios.txt', splitChar: ',');
+    //
     valores.addAll(Pacientes.Paciente);
     //
     Vitales.registros();
@@ -227,6 +232,17 @@ class Valores {
     rfc = json['Pace_RFC'];
     fechaNacimiento = json['Pace_Nace'];
     telefono = json['Pace_Tele'];
+    //
+    modoAtencion = json['Pace_Hosp'];
+
+    // Comprobar estado de Atención del Paciente.
+    if (modoAtencion == 'Hospitalización') {
+      isHospitalizado = true;
+    } else if (modoAtencion == 'Consulta Externa') {
+      isHospitalizado = false;
+    } else {
+      isHospitalizado = false;
+    }
     //
     pesoCorporalTotal = double.parse(
         json['Pace_SV_pct'] != null ? json['Pace_SV_pct'].toString() : '0');
@@ -327,13 +343,14 @@ class Valores {
 
     conclusionElectrocardiograma = json['Pace_EC_CON'] ?? '';
     //
-    fechaVentilaciones =  json['Feca_VEN'] ?? '';
+    fechaVentilaciones = json['Feca_VEN'] ?? '';
     modalidadVentilatoria = json['VM_Mod'] ?? '';
     frecuenciaVentilatoria = json['Pace_Fr'] == null ? json['Pace_Fr'] : 0;
     fraccionInspiratoriaVentilatoria =
         json['Pace_Fio'] == null ? json['Pace_Fio'] : 0;
     presionFinalEsiracion = json['Pace_Peep'] == null ? json['Pace_Peep'] : 0;
-    sensibilidadInspiratoria = json['Pace_Insp'] == null ? json['Pace_Insp'] : 0;
+    sensibilidadInspiratoria =
+        json['Pace_Insp'] == null ? json['Pace_Insp'] : 0;
     sensibilidadEspiratoria = json['Pace_Espi'] == null ? json['Pace_Espi'] : 0;
     presionControl = json['Pace_Pc'] == null ? json['Pace_Pc'] : 0;
     presionMaxima = json['Pace_Pm'] == null ? json['Pace_Pm'] : 0;
@@ -1133,6 +1150,7 @@ class Valores {
       return double.nan;
     }
   }
+
   static double get indiceGubnerUnderleiger {
     if (Valores.rDI != 0 &&
         Valores.rDI != null &&
@@ -1143,6 +1161,7 @@ class Valores {
       return double.nan;
     }
   }
+
   static double get indiceLewis {
     if (Valores.rDI != 0 &&
         Valores.rDI != null &&
@@ -1157,6 +1176,7 @@ class Valores {
       return double.nan;
     }
   }
+
   static double get voltajeCornell {
     if (Valores.rAvL != 0 &&
         Valores.rAvL != null &&
@@ -1167,6 +1187,7 @@ class Valores {
       return double.nan;
     }
   }
+
   static double get indiceEnriqueCabrera {
     if (Valores.sV1 != 0 &&
         Valores.sV1 != null &&
@@ -1179,24 +1200,29 @@ class Valores {
   }
 
   // Parámetros de Ventilatorios
-  static int get constanteTidal  {
-    if (Valores.volumenTidal != 0&& Valores.volumenTidal != null &&
-        Valores.pesoCorporalPredicho != 0&& Valores.pesoCorporalPredicho != null) {
+  static int get constanteTidal {
+    if (Valores.volumenTidal != 0 &&
+        Valores.volumenTidal != null &&
+        Valores.pesoCorporalPredicho != 0 &&
+        Valores.pesoCorporalPredicho != null) {
       return Valores.volumenTidal! ~/ Valores.pesoCorporalPredicho;
     } else {
       return 0;
     }
   }
+
   // # ######################################################
   // # Volumenes Tidales Vt6, Vt7, Vt8
   // # ######################################################
-  static double get volumentTidal6  => (Valores.pesoCorporalPredicho * 6);
-  static double get volumentTidal7  => (Valores.pesoCorporalPredicho * 7);
-  static double get volumentTidal8  => (Valores.pesoCorporalPredicho * 8);
+  static double get volumentTidal6 => (Valores.pesoCorporalPredicho * 6);
+  static double get volumentTidal7 => (Valores.pesoCorporalPredicho * 7);
+  static double get volumentTidal8 => (Valores.pesoCorporalPredicho * 8);
   // # ######################################################
-  static double get presionAlveolarOxigeno  {
-    if (Valores.volumenTidal != 0&& Valores.volumenTidal != null &&
-        Valores.pesoCorporalPredicho != 0&& Valores.pesoCorporalPredicho != null) {
+  static double get presionAlveolarOxigeno {
+    if (Valores.volumenTidal != 0 &&
+        Valores.volumenTidal != null &&
+        Valores.pesoCorporalPredicho != 0 &&
+        Valores.pesoCorporalPredicho != null) {
       // return (valores.get('FraccionInspiratoriaOxigeno') / 100) * (720 - 47) - (valores.get('PresionDioxidoCarbono') / 0.8);
       return 0;
     } else {
@@ -1204,59 +1230,69 @@ class Valores {
     }
   }
 
-  static double get presionMediaViaAerea  {
-    if (Valores.presionPlateau != 0&& Valores.presionPlateau != null &&
-        Valores.sensibilidadInspiratoria != 0&& Valores.sensibilidadInspiratoria != null) {
-      return (Valores.presionFinalEsiracion! + (
-          (Valores.presionPlateau! - Valores.presionFinalEsiracion!) * (
-              Valores.sensibilidadInspiratoria!))).toDouble();
+  static double get presionMediaViaAerea {
+    if (Valores.presionPlateau != 0 &&
+        Valores.presionPlateau != null &&
+        Valores.sensibilidadInspiratoria != 0 &&
+        Valores.sensibilidadInspiratoria != null) {
+      return (Valores.presionFinalEsiracion! +
+              ((Valores.presionPlateau! - Valores.presionFinalEsiracion!) *
+                  (Valores.sensibilidadInspiratoria!)))
+          .toDouble();
     } else {
       return double.nan;
     }
   }
 
-  static double get volumenMinuto  {
-    if (Valores.volumenTidal != 0&& Valores.volumenTidal != null &&
-        Valores.pesoCorporalPredicho != 0&& Valores.pesoCorporalPredicho != null) {
-      return (Valores.volumenTidal! * Valores.frecuenciaVentilatoria!) / 1000 ;
+  static double get volumenMinuto {
+    if (Valores.volumenTidal != 0 &&
+        Valores.volumenTidal != null &&
+        Valores.pesoCorporalPredicho != 0 &&
+        Valores.pesoCorporalPredicho != null) {
+      return (Valores.volumenTidal! * Valores.frecuenciaVentilatoria!) / 1000;
     } else {
       return double.nan;
     }
   }
 
-  static double get flujoVentilatorioMedido  {
-    if (Valores.volumenMinuto != 0&& Valores.volumenMinuto != null) {
-      return (Valores.volumenMinuto * 4) ;
+  static double get flujoVentilatorioMedido {
+    if (Valores.volumenMinuto != 0 && Valores.volumenMinuto != null) {
+      return (Valores.volumenMinuto * 4);
     } else {
       return double.nan;
     }
   }
 
-  static double get volumenMinutoIdeal  {
-    if (Valores.pesoCorporalPredicho != 0&& Valores.pesoCorporalPredicho != null) {
-      return (Valores.pesoCorporalPredicho / 10) ;
+  static double get volumenMinutoIdeal {
+    if (Valores.pesoCorporalPredicho != 0 &&
+        Valores.pesoCorporalPredicho != null) {
+      return (Valores.pesoCorporalPredicho / 10);
       // VMI = (PCI / 10)
     } else {
       return double.nan;
     }
   }
 
-  static double get poderMecanico  {
-    if (Valores.pesoCorporalPredicho != 0&& Valores.pesoCorporalPredicho != null) {
-      return (0.098 * Valores.frecuenciaVentilatoria! * (
-          Valores.presionPlateau! - Valores.presionFinalEsiracion! / 2));
+  static double get poderMecanico {
+    if (Valores.pesoCorporalPredicho != 0 &&
+        Valores.pesoCorporalPredicho != null) {
+      return (0.098 *
+          Valores.frecuenciaVentilatoria! *
+          (Valores.presionPlateau! - Valores.presionFinalEsiracion! / 2));
       // PM = (0.098 * Valores.frecuenciaVentilatoria * (
-         // Valores.presionPlateau! - Valores.presionFinalEsiracion! / 2))
+      // Valores.presionPlateau! - Valores.presionFinalEsiracion! / 2))
     } else {
       return double.nan;
     }
   }
 
-  static double get distensibilidadPulmonarEstatica  {
-    if (Valores.presionPlateau != 0&& Valores.presionPlateau != null &&
-        Valores.presionFinalEsiracion != 0&& Valores.presionFinalEsiracion != null) {
-      return (Valores.volumenTidal! / (
-          Valores.presionPlateau! - Valores.presionFinalEsiracion!));
+  static double get distensibilidadPulmonarEstatica {
+    if (Valores.presionPlateau != 0 &&
+        Valores.presionPlateau != null &&
+        Valores.presionFinalEsiracion != 0 &&
+        Valores.presionFinalEsiracion != null) {
+      return (Valores.volumenTidal! /
+          (Valores.presionPlateau! - Valores.presionFinalEsiracion!));
       //  DPE = (Valores.volumenTidal! / (
       //   Valores.presionPlateau! - Valores.presionFinalEsiracion!));
     } else {
@@ -1264,41 +1300,54 @@ class Valores {
     }
   }
 
-  static double get distensibilidadPulmonarDinamica  {
-    if (Valores.presionPlateau != 0&& Valores.presionPlateau != null &&
-        Valores.presionFinalEsiracion != 0&& Valores.presionFinalEsiracion != null) {
-      return (Valores.volumenTidal! / (
-          Valores.presionMaxima! - Valores.presionFinalEsiracion! ));  //# Presion_Inspiratorio_Pico
+  static double get distensibilidadPulmonarDinamica {
+    if (Valores.presionPlateau != 0 &&
+        Valores.presionPlateau != null &&
+        Valores.presionFinalEsiracion != 0 &&
+        Valores.presionFinalEsiracion != null) {
+      return (Valores.volumenTidal! /
+          (Valores.presionMaxima! -
+              Valores.presionFinalEsiracion!)); //# Presion_Inspiratorio_Pico
       // DP = DPE + DPD / 2  // # Promedio entre las Distensibilidades Pulmonares estaticas y dinamicas
     } else {
       return double.nan;
     }
   }
 
-  static double get distensibilidadPulmonar  {
-    if (Valores.distensibilidadPulmonarEstatica != 0&& Valores.distensibilidadPulmonarEstatica != null &&
-        Valores.distensibilidadPulmonarDinamica != 0&& Valores.distensibilidadPulmonarDinamica != null) {
-      return distensibilidadPulmonarEstatica + distensibilidadPulmonarDinamica / 2;  // # Promedio entre las Distensibilidades Pulmonares estaticas y dinamicas
+  static double get distensibilidadPulmonar {
+    if (Valores.distensibilidadPulmonarEstatica != 0 &&
+        Valores.distensibilidadPulmonarEstatica != null &&
+        Valores.distensibilidadPulmonarDinamica != 0 &&
+        Valores.distensibilidadPulmonarDinamica != null) {
+      return distensibilidadPulmonarEstatica +
+          distensibilidadPulmonarDinamica /
+              2; // # Promedio entre las Distensibilidades Pulmonares estaticas y dinamicas
     } else {
       return double.nan;
     }
   }
 
-  static double get resistenciaPulmonar  {
-    if (Valores.presionMaxima != 0&& Valores.presionMaxima != null &&
-        Valores.presionPlateau != 0&& Valores.presionPlateau != null) {
-      return  (Valores.presionMaxima! - Valores.presionPlateau!) / (Valores.flujoVentilatorio! / 60);
+  static double get resistenciaPulmonar {
+    if (Valores.presionMaxima != 0 &&
+        Valores.presionMaxima != null &&
+        Valores.presionPlateau != 0 &&
+        Valores.presionPlateau != null) {
+      return (Valores.presionMaxima! - Valores.presionPlateau!) /
+          (Valores.flujoVentilatorio! / 60);
       // RP = (Valores.presionMaxima- Valores.presionPlateau!) / (F / 60)
     } else {
       return double.nan;
     }
   }
 
-  static double get elastanciaPulmonar  {
-    if (Valores.presionMaxima != 0&& Valores.presionMaxima != null &&
-        Valores.presionFinalEsiracion != 0&& Valores.presionFinalEsiracion != null) {
-      return  ((Valores.presionMaxima! - Valores.presionFinalEsiracion!) / (
-          Valores.volumenTidal!)) * 1000;
+  static double get elastanciaPulmonar {
+    if (Valores.presionMaxima != 0 &&
+        Valores.presionMaxima != null &&
+        Valores.presionFinalEsiracion != 0 &&
+        Valores.presionFinalEsiracion != null) {
+      return ((Valores.presionMaxima! - Valores.presionFinalEsiracion!) /
+              (Valores.volumenTidal!)) *
+          1000;
       // EP = ((Valores.presionMaxima- Valores.presionFinalEsiracion) / (Valores.volumenTidal!)) * 1000
     } else {
       return double.nan;
@@ -1642,6 +1691,16 @@ class Escalas {
     'Clase II (Leve, Limitación leve en la actividad física)',
     'Clase III (Moderado, Limitación leve en la actividad diaria)',
     'Clase IV (Severo, Limitación para cualquier actividad diaria)',
+  ];
+
+  static List<dynamic> serviciosHospitalarios = [];
+  static List<String> motivosEgresos = [
+    'Máximo beneficio',
+    'Mejorado',
+    'Traslado',
+    'Alta voluntaria',
+    'Defunción',
+
   ];
 
   static List<String> sitiosCateterCentral = [

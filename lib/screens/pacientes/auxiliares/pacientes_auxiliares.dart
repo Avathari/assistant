@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/pendientes.dart';
 import 'package:assistant/screens/pacientes/vitales/vitales.dart';
 import 'package:assistant/values/SizingInfo.dart';
@@ -263,6 +264,76 @@ class _DashboardState extends State<Dashboard> {
           child: const EstadisticasVitales(),
         ),
         const SizedBox(height: 6),
+        Expanded(
+            child: RoundedPanel(
+              child: SingleChildScrollView(
+                controller: ScrollController(),
+                child: Column(
+                  children: [
+                    GrandLabel(
+                      iconData: Icons.padding,
+                      fontSized: 14,
+                      labelButton: 'Pendientes de la Atención',
+                      onPress: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              GestionPendiente(),
+                        ));
+                      },
+                    ),
+                    TittlePanel(
+                      textPanel: Pacientes.modoAtencion,
+                    ),
+                    GrandLabel(
+                      iconData: Icons.local_hospital,
+                      fontSized: 14,
+                      labelButton: Pacientes.esHospitalizado == true
+                          ? 'Egresar paciente'
+                          : 'Hospitalizar paciente',
+                      onPress: () async {
+                        // Navigator.of(context).push(MaterialPageRoute(
+                        //   builder: (BuildContext context) =>
+                        //       GestionPendiente(),
+                        // ));
+                        final respo = await Pacientes.hospitalizar();
+                        // Actualizar vista.
+                        setState(()  {
+                          if (respo) {
+                            Valores.modoAtencion = 'Hospitalización';
+                            Pacientes.modoAtencion = 'Hospitalización';
+                            // Actualizar valores de Hospitalización.
+                            Valores.isHospitalizado = respo;
+                            Pacientes.esHospitalizado = respo;
+                          } else {
+                            Valores.modoAtencion = 'Consulta Externa';
+                            Pacientes.modoAtencion = 'Consulta Externa';
+                            // Actualizar valores de Hospitalización.
+                            Valores.isHospitalizado = respo;
+                            Pacientes.esHospitalizado = respo;
+                          }
+                          print("Pacientes.esHospitalizado "
+                              "${Pacientes.esHospitalizado} ${Valores.isHospitalizado} : : \n"
+                              "${Pacientes.modoAtencion} ${Valores.modoAtencion}");
+                        });
+                        //
+                      },
+                    ),
+                    const CrossLine(),
+                    GrandLabel(
+                      iconData: Icons.padding,
+                      fontSized: 14,
+                      labelButton: 'Registro de Hospitalizaciones',
+                      onPress: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              GestionHospitalizaciones(),
+                        ));
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            )),
       ],
     );
 
@@ -309,6 +380,7 @@ class _DashboardState extends State<Dashboard> {
           Expanded(
               flex: 1,
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
@@ -324,20 +396,72 @@ class _DashboardState extends State<Dashboard> {
                   const SizedBox(width: 6),
                   Expanded(
                       child: RoundedPanel(
-                    child: Column(
-                      children: [
-                        GrandLabel(
-                          iconData: Icons.padding,
-                          fontSized: 14,
-                          labelButton: 'Pendientes de la Atención',
-                          onPress: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  GestionPendiente(),
-                            ));
-                          },
-                        ),
-                      ],
+                    child: SingleChildScrollView(
+                      controller: ScrollController(),
+                      child: Column(
+                        children: [
+                          GrandLabel(
+                            iconData: Icons.padding,
+                            fontSized: 14,
+                            labelButton: 'Pendientes de la Atención',
+                            onPress: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    GestionPendiente(),
+                              ));
+                            },
+                          ),
+                          TittlePanel(
+                            textPanel: Pacientes.modoAtencion,
+                          ),
+                          GrandLabel(
+                            iconData: Icons.local_hospital,
+                            fontSized: 14,
+                            labelButton: Pacientes.esHospitalizado == true
+                                ? 'Egresar paciente'
+                                : 'Hospitalizar paciente',
+                            onPress: () async {
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //   builder: (BuildContext context) =>
+                              //       GestionPendiente(),
+                              // ));
+                              final respo = await Pacientes.hospitalizar();
+                              // Actualizar vista.
+                              setState(()  {
+                                if (respo) {
+                                  Valores.modoAtencion = 'Hospitalización';
+                                  Pacientes.modoAtencion = 'Hospitalización';
+                                  // Actualizar valores de Hospitalización.
+                                  Valores.isHospitalizado = respo;
+                                  Pacientes.esHospitalizado = respo;
+                                } else {
+                                  Valores.modoAtencion = 'Consulta Externa';
+                                  Pacientes.modoAtencion = 'Consulta Externa';
+                                  // Actualizar valores de Hospitalización.
+                                  Valores.isHospitalizado = respo;
+                                  Pacientes.esHospitalizado = respo;
+                                }
+                                print("Pacientes.esHospitalizado "
+                                    "${Pacientes.esHospitalizado} ${Valores.isHospitalizado} : : \n"
+                                "${Pacientes.modoAtencion} ${Valores.modoAtencion}");
+                              });
+                              //
+                            },
+                          ),
+                          const CrossLine(),
+                          GrandLabel(
+                            iconData: Icons.padding,
+                            fontSized: 14,
+                            labelButton: 'Registro de Hospitalizaciones',
+                            onPress: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    GestionHospitalizaciones(),
+                              ));
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   )),
                 ],
@@ -411,64 +535,90 @@ class Detalles extends StatefulWidget {
 class _DetallesState extends State<Detalles> {
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
+    return Column(mainAxisAlignment: MainAxisAlignment.start,children: [
       TittlePanel(padding: 5, textPanel: 'Datos generales del paciente'),
-      SingleChildScrollView(
-        controller: ScrollController(),
-        child: Column(
-          children: [
-            ThreeLabelTextAline(
-              padding: 2.0,
-              firstText: 'Fecha Nacimiento',
-              secondText: Pacientes.Paciente['Pace_Nace'],
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: isTablet(context) ? 3 : 1,
+            child: SingleChildScrollView(
+              controller: ScrollController(),
+              child: Column(
+                children: [
+                  ThreeLabelTextAline(
+                    padding: 2.0,
+                    firstText: 'Fecha Nacimiento',
+                    secondText: Pacientes.Paciente['Pace_Nace'],
+                  ),
+                  ThreeLabelTextAline(
+                    padding: 2.0,
+                    firstText: 'Edad',
+                    secondText: '${Pacientes.Paciente['Pace_Eda']} Años',
+                  ),
+                  ThreeLabelTextAline(
+                    padding: 2.0,
+                    firstText: 'Sexo',
+                    secondText: Pacientes.Paciente['Pace_Ses'],
+                  ),
+                  ThreeLabelTextAline(
+                    padding: 2.0,
+                    firstText: 'Teléfono',
+                    secondText: Pacientes.Paciente['Pace_Tele'],
+                  ),
+                  ThreeLabelTextAline(
+                    padding: 2.0,
+                    firstText: 'Modo Atención',
+                    secondText: Pacientes.Paciente['Pace_Hosp'],
+                  ),
+                  ThreeLabelTextAline(
+                    padding: 2.0,
+                    firstText: 'Estado Civil',
+                    secondText: Pacientes.Paciente['Pace_Edo_Civ'],
+                  ),
+                  ThreeLabelTextAline(
+                    padding: 2.0,
+                    firstText: 'Ocupación',
+                    secondText: Pacientes.Paciente['Pace_Ocupa'],
+                  ),
+                  ThreeLabelTextAline(
+                    padding: 2.0,
+                    firstText: 'Religión',
+                    secondText: Pacientes.Paciente['Pace_Reli'],
+                  ),
+                  ThreeLabelTextAline(
+                    padding: 2.0,
+                    firstText: 'C.U.R.P.',
+                    secondText: Pacientes.Paciente['Pace_Curp'],
+                  ),
+                  ThreeLabelTextAline(
+                    padding: 2.0,
+                    firstText: 'R.F.C.',
+                    secondText: Pacientes.Paciente['Pace_RFC'],
+                  ),
+                ],
+              ),
             ),
-            ThreeLabelTextAline(
-              padding: 2.0,
-              firstText: 'Edad',
-              secondText: '${Pacientes.Paciente['Pace_Eda']} Años',
+          ),
+          isTablet(context) ? Expanded(
+            flex: isTablet(context) ? 1 : 0,
+            child: Column(
+              children: [
+                CircleAvatar(
+                    backgroundColor:
+                    Colors.black,
+                    minRadius: 100,
+                    maxRadius: 200,
+                    child: ClipOval(
+                        child: Image.memory(
+                          base64Decode(Pacientes.imagenPaciente!),
+                          fit: BoxFit.cover,
+                        ))),
+              ],
             ),
-            ThreeLabelTextAline(
-              padding: 2.0,
-              firstText: 'Sexo',
-              secondText: Pacientes.Paciente['Pace_Ses'],
-            ),
-            ThreeLabelTextAline(
-              padding: 2.0,
-              firstText: 'Teléfono',
-              secondText: Pacientes.Paciente['Pace_Tele'],
-            ),
-            ThreeLabelTextAline(
-              padding: 2.0,
-              firstText: 'Modo Atención',
-              secondText: Pacientes.Paciente['Pace_Hosp'],
-            ),
-            ThreeLabelTextAline(
-              padding: 2.0,
-              firstText: 'Estado Civil',
-              secondText: Pacientes.Paciente['Pace_Edo_Civ'],
-            ),
-            ThreeLabelTextAline(
-              padding: 2.0,
-              firstText: 'Ocupación',
-              secondText: Pacientes.Paciente['Pace_Ocupa'],
-            ),
-            ThreeLabelTextAline(
-              padding: 2.0,
-              firstText: 'Religión',
-              secondText: Pacientes.Paciente['Pace_Reli'],
-            ),
-            ThreeLabelTextAline(
-              padding: 2.0,
-              firstText: 'C.U.R.P.',
-              secondText: Pacientes.Paciente['Pace_Curp'],
-            ),
-            ThreeLabelTextAline(
-              padding: 2.0,
-              firstText: 'R.F.C.',
-              secondText: Pacientes.Paciente['Pace_RFC'],
-            ),
-          ],
-        ),
+          ) : Container()
+        ],
       )
     ]);
   }

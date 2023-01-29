@@ -5,6 +5,8 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 class Pacientes {
   static int ID_Paciente = 0;
 
+  static String? modoAtencion = Valores.modoAtencion;
+  static bool? esHospitalizado = Valores.isHospitalizado;
   static int ID_Hospitalizacion = 0;
 
   static String? nombreCompleto;
@@ -20,7 +22,7 @@ class Pacientes {
   // ####### ### ### ## ### ### ####### ####### ####### #######
   // Diccionarios por Actividades y gestores.
   // ####### ### ### ## ### ### ####### ####### ####### #######
-  static Map<String, dynamic> Valores = {};
+  // static Map<String, dynamic> Valores = {};
   // ####### ### ### ## ### ### ####### ####### ####### #######
   // Diccionarios por Actividades y gestores.
   // ####### ### ### ## ### ### ####### ####### ####### #######
@@ -98,6 +100,9 @@ class Pacientes {
   static List? Licencias = [];
   static List? Balances = [];
   static List? Ventilaciones = [];
+  //
+  static List? Hospitalizaciones = [];
+
   //
   static List? Sexuales = [];
   static List? Antirretrovirales = [];
@@ -493,6 +498,9 @@ class Pacientes {
         "IndiIdio_Pace_SiNo = ?, IndiIdio_Pace_Espe = ? "
         "WHERE ID_Pace = ?",
     "deleteQuery": "DELETE FROM pace_iden_iden WHERE ID_Pace = ?",
+    "updateHospitalizacionQuery": "UPDATE pace_iden_iden "
+        "SET Pace_Hosp = ? "
+        "WHERE ID_Pace = ?",
     "pacientesColumns": [
       "ID_Pace",
       "Us_Nome",
@@ -585,10 +593,38 @@ class Pacientes {
     "Total de Pacientes registrados"
   ];
 
+  static Future<bool> hospitalizar() async {
+    String modus = '';
+    // Actualizar la variable en la base de datos.
+    if (modoAtencion == 'Hospitalización') {
+      modus = 'Consulta Externa';
+      //
+      var resp = await Actividades.actualizar(
+          Databases.siteground_database_regpace,
+          pacientes['updateHospitalizacionQuery'],
+          [modus, Pacientes.ID_Paciente],
+          Pacientes.ID_Paciente);
+      return false;
+    } else if (modoAtencion == 'Consulta Externa') {
+      modus = 'Hospitalización';
+      //
+      var resp = await Actividades.actualizar(
+          Databases.siteground_database_regpace,
+          pacientes['updateHospitalizacionQuery'],
+          [modus, Pacientes.ID_Paciente],
+          Pacientes.ID_Paciente);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   static void close() {
     Pacientes.ID_Paciente = 0;
     Pacientes.nombreCompleto = "";
     Pacientes.imagenPaciente = "";
+    // ******* *** *******
+    Pacientes.esHospitalizado = false;
     // ******* *** *******
     Pacientes.Paciente = {};
     Pacientes.Vital = {};
@@ -611,6 +647,8 @@ class Pacientes {
     Licencias = [];
     Balances = [];
     Ventilaciones = [];
+    //
+    Hospitalizaciones = [];
     //
     Sexuales = [];
     Antirretrovirales = [];
@@ -3013,6 +3051,89 @@ class Ventilaciones {
         "(SELECT IFNULL(AVG('Pace_SV_tas'), 0) FROM pace_vm WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAS,"
         "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM pace_vm WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
         "(SELECT IFNULL(count(*), 0) FROM pace_vm WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
+  };
+}
+
+class Hospitalizaciones {
+  static Map<String, dynamic> Hospitalizacion = {};
+
+  static List<String> actualDiagno = Opciones.horarios();
+
+  static void ultimoRegistro() {
+    Actividades.consultarId(Databases.siteground_database_reghosp,
+            hospitalizacion['consultLastQuery'], Pacientes.ID_Paciente)
+        .then((value) {
+// Enfermedades de base del paciente, asi como las Hospitalarias.
+      Hospitalizacion = value;
+    });
+  }
+
+  static void consultarRegistro() {
+    Actividades.consultarAllById(Databases.siteground_database_reghosp,
+            hospitalizacion['consultIdQuery'], Pacientes.ID_Paciente)
+        .then((value) {
+      // Enfermedades de base del paciente, asi como las Hospitalarias.
+      Pacientes.Hospitalizaciones = value;
+    });
+  }
+
+  static final Map<String, dynamic> hospitalizacion = {
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_reghosp` "
+        "DEFAULT CHARACTER SET utf8 "
+        "COLLATE utf8_unicode_ci;",
+    "showTables": "SHOW tables;",
+    "dropDatabase": "DROP DATABASE `bd_reghosp`",
+    "describeTable": "DESCRIBE pace_hosp;",
+    "showColumns": "SHOW columns FROM pace_hosp",
+    "showInformation":
+        "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_hosp'",
+    "createQuery": """CREATE TABLE `pace_hosp` (
+              `ID_Hosp` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+              `ID_Pace` int(11) NOT NULL,
+              `Feca_INI_Hosp` date NOT NULL,
+              `Id_Cama` int(11) NOT NULL,
+              `Dia_Estan` int(11) NOT NULL,
+              `Medi_Trat` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+              `Serve_Trat` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+              `Serve_Trat_INI` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+              `Feca_EGE_Hosp` date NOT NULL,
+              `EGE_Motivo` varchar(100) COLLATE utf8_unicode_ci NOT NULL
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla Inicial para la Hospitalizacion de Pacientes.';
+            """,
+    "truncateQuery": "TRUNCATE pace_hosp",
+    "dropQuery": "DROP TABLE pace_hosp",
+    "consultQuery": "SELECT * FROM pace_hosp WHERE",
+    "consultIdQuery": "SELECT * FROM pace_hosp WHERE ID_Pace = ?",
+    "consultByIdPrimaryQuery": "SELECT * FROM pace_hosp WHERE ID_Hosp = ?",
+    "consultAllIdsQuery": "SELECT ID_Pace FROM pace_hosp",
+    "consultLastQuery": "SELECT * FROM pace_hosp WHERE ID_Pace = ?",
+    "consultByName": "SELECT * FROM pace_hosp WHERE Pace_APP_DEG LIKE '%",
+    "registerQuery": "INSERT INTO pace_hosp (ID_Pace, "
+        "Feca_INI_Hosp, Id_Cama, Dia_Estan, Medi_Trat, Serve_Trat, Serve_Trat_INI, "
+        "Feca_EGE_Hosp, EGE_Motivo) "
+        "VALUES (?,?,?,?,?,?,?,?,?)",
+    "updateQuery": "UPDATE pace_hosp "
+        "SET ID_Hosp = ?,  ID_Pace = ?,  Feca_INI_Hosp = ?,  "
+        "Id_Cama = ?,  Dia_Estan = ?,  Medi_Trat = ?,  Serve_Trat = ?,  Serve_Trat_INI = ?, "
+        "Feca_EGE_Hosp = ?,  EGE_Motivo = ? "
+        "WHERE ID_Hosp =  ?",
+    "deleteQuery": "DELETE FROM pace_hosp WHERE ID_Hosp = ?",
+    "HospitalizacionColumns": [
+      "ID_Pace",
+    ],
+    "HospitalizacionItems": [
+      "ID_Pace",
+    ],
+    "HospitalizacionColums": [
+      "ID Paciente",
+    ],
+    "Hospitalizaciontats": [
+      "Total_Administradores",
+    ],
+    "Hospitalizaciontadistics": "SELECT "
+        "(SELECT IFNULL(AVG('Pace_SV_tas'), 0) FROM pace_hosp WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAS,"
+        "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM pace_hosp WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_hosp WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
   };
 }
 

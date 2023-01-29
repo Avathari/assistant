@@ -6,6 +6,7 @@ import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 
 import 'package:assistant/screens/pacientes/auxiliares/pacientes_auxiliares.dart';
+import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';
 import 'package:assistant/screens/pacientes/intensiva/herramientas.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/AuxiliaresDiagnosticos.dart';
 import 'package:assistant/screens/pacientes/patologicos/alergicos.dart';
@@ -1713,9 +1714,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
       const Center(
         child: Text('Body 7'),
       ),
-      const Center(
-        child: Text('Body 8'),
-      ),
+      GestionHospitalizaciones(),
       const Center(
         child: Text('Body 9'),
       ),
@@ -1880,7 +1879,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
       ),
       ListTile(
         leading: const Icon(
-          Icons.settings,
+          Icons.medical_services_outlined,
           color: Colors.grey,
         ),
         title: const Text('Registro de Hospitalización',
@@ -1890,9 +1889,8 @@ class _VisualPacientesState extends State<VisualPacientes> {
             Navigator.of(context).pop();
           }
           // Update the state of the app
-          setState(() {
-            widget.actualPage = 9;
-          });
+          toNextScreen(
+              context: context, index: 9, screen: GestionHospitalizaciones());
         },
       ),
       ListTile(

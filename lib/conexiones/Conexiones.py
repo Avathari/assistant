@@ -1856,6 +1856,7 @@ class Controladores:
               `Dia_Estan` int(11) NOT NULL,
               `Medi_Trat` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
               `Serve_Trat` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+              `Serve_Trat_INI` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
               `Feca_EGE_Hosp` date NOT NULL,
               `EGE_Motivo` varchar(100) COLLATE utf8_unicode_ci NOT NULL
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla Inicial para la Hospitalizacion de Pacientes.';
@@ -1867,12 +1868,12 @@ class Controladores:
             consult_id_patient_Query = "SELECT * FROM pace_hosp WHERE ID_Pace = "
             consult_id_Query = "SELECT * FROM pace_hosp WHERE ID_Hosp = "
             register_Query = "INSERT INTO `pace_hosp` (ID_Pace, " \
-                             "Feca_INI_Hosp, Id_Cama, Dia_Estan, Medi_Trat, Serve_Trat, " \
+                             "Feca_INI_Hosp, Id_Cama, Dia_Estan, Medi_Trat, Serve_Trat, Serve_Trat_INI, " \
                              "Feca_EGE_Hosp, EGE_Motivo) " \
                              "VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
             update_id_Query = "UPDATE pace_hosp " \
                               "SET ID_Hosp = %s,  ID_Pace = %s,  Feca_INI_Hosp = %s,  " \
-                              "Id_Cama = %s,  Dia_Estan = %s,  Medi_Trat = %s,  Serve_Trat = %s,  " \
+                              "Id_Cama = %s,  Dia_Estan = %s,  Medi_Trat = %s,  Serve_Trat = %s,  Serve_Trat_INI" \
                               "Feca_EGE_Hosp = %s,  EGE_Motivo = %s " \
                               "WHERE ID_Hosp = "
             delete_Query = "DELETE FROM pace_hosp WHERE ID_Hosp = "
