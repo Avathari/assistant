@@ -184,9 +184,6 @@ class Pacientes {
   // }
 
   static String signosVitales({int? indice = 0}) {
-    double imc = Pacientes.Vital['Pace_SV_pct'] /
-        (Pacientes.Vital['Pace_SV_est'] * Pacientes.Vital['Pace_SV_est']);
-
     switch (indice) {
       case 1:
         return Valorados.signosVitales;
@@ -604,6 +601,42 @@ class Pacientes {
           pacientes['updateHospitalizacionQuery'],
           [modus, Pacientes.ID_Paciente],
           Pacientes.ID_Paciente);
+
+      var listValues = [
+        Pacientes.ID_Paciente,
+        Calendarios.today(format: 'yyyy/MM/dd'),             0,             0,
+        '',
+        Valores.servicioTratante,
+        Valores.servicioTratanteInicial,
+        '0000/00/00',
+            '',
+      ];
+      Actividades.registrar(
+          Databases.siteground_database_reghosp,
+          "INSERT INTO pace_hosp (ID_Pace, "
+          "Feca_INI_Hosp, Id_Cama, Dia_Estan, Medi_Trat, Serve_Trat, Serve_Trat_INI, "
+          "Feca_EGE_Hosp, EGE_Motivo) "
+          "VALUES (?,?,?,?,?,?,?,?,?)",
+          listValues).then((value) {
+        Actividades.consultarId(Databases.siteground_database_reghosp,
+                "SELECT * FROM pace_hosp WHERE ID_Pace = ? ORDER BY ID_Hosp ASC",Pacientes.ID_Paciente)
+            .then((value) {
+          print("IDDDD HOSP ${value}");
+          Pacientes.ID_Hospitalizacion = value['ID_Hosp'];
+          Pacientes.esHospitalizado = true;
+          Valores.isHospitalizado = true;
+          print("IDDDD HOSP ${Pacientes.ID_Hospitalizacion}");
+          // ******************************************** *** *
+          Valores.fechaIngresoHospitalario =
+              Calendarios.today(format: 'yyyy/MM/dd');
+          Valores.fechaIngresoHospitalario = '';
+          Valores.numeroCama = 0;
+          Valores.medicoTratante = '';
+          Valores.motivoEgreso = '';
+        });
+      });
+
+      // ******************************************** *** *
       return false;
     } else if (modoAtencion == 'Consulta Externa') {
       modus = 'Hospitalización';
@@ -3106,7 +3139,7 @@ class Hospitalizaciones {
     "consultIdQuery": "SELECT * FROM pace_hosp WHERE ID_Pace = ?",
     "consultByIdPrimaryQuery": "SELECT * FROM pace_hosp WHERE ID_Hosp = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_hosp",
-    "consultLastQuery": "SELECT * FROM pace_hosp WHERE ID_Pace = ?",
+    "consultLastQuery": "SELECT * FROM pace_hosp WHERE ID_Pace = ? ORDER BY ID_Hosp DESC",
     "consultByName": "SELECT * FROM pace_hosp WHERE Pace_APP_DEG LIKE '%",
     "registerQuery": "INSERT INTO pace_hosp (ID_Pace, "
         "Feca_INI_Hosp, Id_Cama, Dia_Estan, Medi_Trat, Serve_Trat, Serve_Trat_INI, "

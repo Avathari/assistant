@@ -177,7 +177,6 @@ class Directorios {
       return bytes;
     }
   }
-
 }
 
 class Opciones {
@@ -187,37 +186,37 @@ class Opciones {
 }
 
 class Operadores {
-  static void openActivity(
-      {required BuildContext context, required Widget chyldrim}) {
+  static Future<void> openActivity(
+      {required BuildContext context, required Widget chyldrim, onAction = null}) async {
     showDialog(
         useSafeArea: true,
         context: context,
         builder: (context) {
-          return Dialog(
-              backgroundColor: Colors.black,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(flex: 5, child: chyldrim),
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(20)),
-                          border: Border.all(
-                            color: Colors.grey,
-                          )),
-                      child: GrandButton(
-                        labelButton: 'Cerrar',
-                        onPress: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ),
-                  ],
+          return SimpleDialog(
+            backgroundColor: Colors.black,
+            children: [
+              Expanded(flex: 5, child: chyldrim),
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+                    border: Border.all(
+                      color: Colors.grey,
+                    )),
+                child: GrandButton(
+                  labelButton: 'Cerrar',
+                  onPress: () {
+                    if (onAction == null) {
+                      Navigator.of(context).pop();
+                    } else {
+                      onAction();
+                      Navigator.of(context).pop();
+                    }
+                    //
+                  },
                 ),
-              ));
+              ),
+            ],
+          );
         });
   }
 

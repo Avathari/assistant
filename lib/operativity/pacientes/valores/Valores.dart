@@ -26,8 +26,12 @@ class Valores {
       curp,
       rfc,
       modoAtencion;
-  static int? edad;
+  static int? edad, numeroCama;
   static bool? isHospitalizado;
+  //
+  static String ? fechaIngresoHospitalario, fechaEgresoHospitalario,
+      medicoTratante,
+  servicioTratante, servicioTratanteInicial, motivoEgreso;
   //
   static int? tensionArterialSystolica,
       tensionArterialDyastolica,
@@ -210,6 +214,13 @@ class Valores {
         emulated: true);
     valores.addAll(vento);
 
+    final hosp = await Actividades.consultarId(
+        Databases.siteground_database_reghosp,
+        Hospitalizaciones.hospitalizacion['consultLastQuery'],
+        Pacientes.ID_Paciente,
+        emulated: true);
+    valores.addAll(hosp);
+
     //valores.map((key, value) => value = null);
     Valores.fromJson(valores);
     return true;
@@ -362,7 +373,16 @@ class Valores {
     presionPlateau = json['Pace_Pmet'] == null ? json['Pace_Pmet'] : 0;
     volumenTidal = json['Pace_Vt'] == null ? json['Pace_Vt'] : 0;
 
-    //
+    // Datos generales de la última Hospitalización.
+    Pacientes.ID_Hospitalizacion = json['ID_Hosp'];
+    // ******************************************** *** *
+    Valores.fechaIngresoHospitalario = json['Feca_INI_Hosp'] ?? '';
+    Valores.numeroCama = json['Id_Cama'] == null ? json['Id_Cama'] : 0;
+    Valores.medicoTratante = json['Medi_Trat'] ?? '';
+    Valores.servicioTratante = json['Serve_Trat'] ?? '';
+    Valores.servicioTratanteInicial = json['Serve_Trat_INI'] ?? '';
+    Valores.fechaEgresoHospitalario = json['Feca_EGE_Hosp'] ?? '';
+    Valores.motivoEgreso = json['EGE_Motivo'] ?? '';
   }
 
   static String get numeroExpediente =>

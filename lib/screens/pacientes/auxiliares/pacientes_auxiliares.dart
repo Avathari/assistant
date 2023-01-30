@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';
@@ -9,9 +10,12 @@ import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/ChartLine.dart';
 
 import 'package:assistant/widgets/CrossLine.dart';
+import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/GrandLabel.dart';
+import 'package:assistant/widgets/GridLayout.dart';
 import 'package:assistant/widgets/ImageDialog.dart';
 import 'package:assistant/widgets/RoundedPanel.dart';
+import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/ThreeLabelText.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';
@@ -261,79 +265,86 @@ class _DashboardState extends State<Dashboard> {
         ),
         const SizedBox(height: 6),
         RoundedPanel(
-          child: const EstadisticasVitales(),
+          child: Pacientes.esHospitalizado == true
+              ? const Hospitalizado()
+              : const EstadisticasVitales(),
         ),
         const SizedBox(height: 6),
         Expanded(
             child: RoundedPanel(
-              child: SingleChildScrollView(
-                controller: ScrollController(),
-                child: Column(
-                  children: [
-                    GrandLabel(
-                      iconData: Icons.padding,
-                      fontSized: 14,
-                      labelButton: 'Pendientes de la Atención',
-                      onPress: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              GestionPendiente(),
-                        ));
-                      },
-                    ),
-                    TittlePanel(
-                      textPanel: Pacientes.modoAtencion,
-                    ),
-                    GrandLabel(
-                      iconData: Icons.local_hospital,
-                      fontSized: 14,
-                      labelButton: Pacientes.esHospitalizado == true
-                          ? 'Egresar paciente'
-                          : 'Hospitalizar paciente',
-                      onPress: () async {
-                        // Navigator.of(context).push(MaterialPageRoute(
-                        //   builder: (BuildContext context) =>
-                        //       GestionPendiente(),
-                        // ));
-                        final respo = await Pacientes.hospitalizar();
-                        // Actualizar vista.
-                        setState(()  {
-                          if (respo) {
-                            Valores.modoAtencion = 'Hospitalización';
-                            Pacientes.modoAtencion = 'Hospitalización';
-                            // Actualizar valores de Hospitalización.
-                            Valores.isHospitalizado = respo;
-                            Pacientes.esHospitalizado = respo;
-                          } else {
-                            Valores.modoAtencion = 'Consulta Externa';
-                            Pacientes.modoAtencion = 'Consulta Externa';
-                            // Actualizar valores de Hospitalización.
-                            Valores.isHospitalizado = respo;
-                            Pacientes.esHospitalizado = respo;
-                          }
-                          print("Pacientes.esHospitalizado "
-                              "${Pacientes.esHospitalizado} ${Valores.isHospitalizado} : : \n"
-                              "${Pacientes.modoAtencion} ${Valores.modoAtencion}");
-                        });
-                        //
-                      },
-                    ),
-                    const CrossLine(),
-                    GrandLabel(
-                      iconData: Icons.padding,
-                      fontSized: 14,
-                      labelButton: 'Registro de Hospitalizaciones',
-                      onPress: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              GestionHospitalizaciones(),
-                        ));
-                      },
-                    ),
-                  ],
-                ),
-              ),
+              // child: const Degenerativos()
             )),
+        const SizedBox(height: 6),
+        Expanded(
+            child: RoundedPanel(
+          child: SingleChildScrollView(
+            controller: ScrollController(),
+            child: Column(
+              children: [
+                GrandLabel(
+                  iconData: Icons.padding,
+                  fontSized: 14,
+                  labelButton: 'Pendientes de la Atención',
+                  onPress: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) => GestionPendiente(),
+                    ));
+                  },
+                ),
+                TittlePanel(
+                  textPanel: Pacientes.modoAtencion,
+                ),
+                GrandLabel(
+                  iconData: Icons.local_hospital,
+                  fontSized: 14,
+                  labelButton: Pacientes.esHospitalizado == true
+                      ? 'Egresar paciente'
+                      : 'Hospitalizar paciente',
+                  onPress: () async {
+                    // Navigator.of(context).push(MaterialPageRoute(
+                    //   builder: (BuildContext context) =>
+                    //       GestionPendiente(),
+                    // ));
+                    final respo = await Pacientes.hospitalizar();
+                    // Actualizar vista.
+                    setState(() {
+                      if (respo) {
+                        Valores.modoAtencion = 'Hospitalización';
+                        Pacientes.modoAtencion = 'Hospitalización';
+                        // Actualizar valores de Hospitalización.
+                        Valores.isHospitalizado = respo;
+                        Pacientes.esHospitalizado = respo;
+                      } else {
+                        Valores.modoAtencion = 'Consulta Externa';
+                        Pacientes.modoAtencion = 'Consulta Externa';
+                        // Actualizar valores de Hospitalización.
+                        Valores.isHospitalizado = respo;
+                        Pacientes.esHospitalizado = respo;
+                      }
+                      print("Pacientes.esHospitalizado "
+                          "${Pacientes.esHospitalizado} ${Valores.isHospitalizado} : : \n"
+                          "${Pacientes.modoAtencion} ${Valores.modoAtencion}");
+                    });
+                    //
+                  },
+                ),
+                const CrossLine(),
+                GrandLabel(
+                  iconData: Icons.padding,
+                  fontSized: 14,
+                  labelButton: 'Registro de Hospitalizaciones',
+                  onPress: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          GestionHospitalizaciones(),
+                    ));
+                  },
+                ),
+              ],
+            ),
+          ),
+        )),
+        const SizedBox(height: 6),
       ],
     );
 
@@ -358,6 +369,8 @@ class _DashboardState extends State<Dashboard> {
           Expanded(
               flex: 1,
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Expanded(
                       child: RoundedPanel(
@@ -386,7 +399,9 @@ class _DashboardState extends State<Dashboard> {
                   Expanded(
                       child: RoundedPanel(
                     padding: 2,
-                    child: const EstadisticasVitales(),
+                    child: Pacientes.esHospitalizado == true
+                        ? const Hospitalizado()
+                        : const EstadisticasVitales(),
                   )),
                   const SizedBox(width: 6),
                   Expanded(
@@ -427,13 +442,24 @@ class _DashboardState extends State<Dashboard> {
                               // ));
                               final respo = await Pacientes.hospitalizar();
                               // Actualizar vista.
-                              setState(()  {
+                              setState(() {
                                 if (respo) {
                                   Valores.modoAtencion = 'Hospitalización';
                                   Pacientes.modoAtencion = 'Hospitalización';
                                   // Actualizar valores de Hospitalización.
                                   Valores.isHospitalizado = respo;
                                   Pacientes.esHospitalizado = respo;
+
+                                  // asyncHospitalizar(context);
+                                  Operadores.openActivity(
+                                    context: context,
+                                    chyldrim: const OpcionesHospitalizacion(),
+                                    onAction: () {
+                                      print('ON ACTION!!!');
+                                      print(
+                                          'ON ACTION!!! ${Valores.servicioTratante}');
+                                    },
+                                  );
                                 } else {
                                   Valores.modoAtencion = 'Consulta Externa';
                                   Pacientes.modoAtencion = 'Consulta Externa';
@@ -443,7 +469,7 @@ class _DashboardState extends State<Dashboard> {
                                 }
                                 print("Pacientes.esHospitalizado "
                                     "${Pacientes.esHospitalizado} ${Valores.isHospitalizado} : : \n"
-                                "${Pacientes.modoAtencion} ${Valores.modoAtencion}");
+                                    "${Pacientes.modoAtencion} ${Valores.modoAtencion}");
                               });
                               //
                             },
@@ -535,92 +561,192 @@ class Detalles extends StatefulWidget {
 class _DetallesState extends State<Detalles> {
   @override
   Widget build(BuildContext context) {
-    return Column(mainAxisAlignment: MainAxisAlignment.start,children: [
-      TittlePanel(padding: 5, textPanel: 'Datos generales del paciente'),
-      Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            flex: isTablet(context) ? 3 : 1,
-            child: SingleChildScrollView(
-              controller: ScrollController(),
-              child: Column(
-                children: [
-                  ThreeLabelTextAline(
-                    padding: 2.0,
-                    firstText: 'Fecha Nacimiento',
-                    secondText: Pacientes.Paciente['Pace_Nace'],
+          TittlePanel(padding: 5, textPanel: 'Datos generales del paciente'),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: isTablet(context) ? 3 : 1,
+                child: SingleChildScrollView(
+                  controller: ScrollController(),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      ThreeLabelTextAline(
+                        padding: 2.0,
+                        firstText: 'Fecha Nacimiento',
+                        secondText: Pacientes.Paciente['Pace_Nace'],
+                      ),
+                      ThreeLabelTextAline(
+                        padding: 2.0,
+                        firstText: 'Edad',
+                        secondText: '${Pacientes.Paciente['Pace_Eda']} Años',
+                      ),
+                      ThreeLabelTextAline(
+                        padding: 2.0,
+                        firstText: 'Sexo',
+                        secondText: Pacientes.Paciente['Pace_Ses'],
+                      ),
+                      ThreeLabelTextAline(
+                        padding: 2.0,
+                        firstText: 'Teléfono',
+                        secondText: Pacientes.Paciente['Pace_Tele'],
+                      ),
+                      ThreeLabelTextAline(
+                        padding: 2.0,
+                        firstText: 'Modo Atención',
+                        secondText: Pacientes.Paciente['Pace_Hosp'],
+                      ),
+                      ThreeLabelTextAline(
+                        padding: 2.0,
+                        firstText: 'Estado Civil',
+                        secondText: Pacientes.Paciente['Pace_Edo_Civ'],
+                      ),
+                      ThreeLabelTextAline(
+                        padding: 2.0,
+                        firstText: 'Ocupación',
+                        secondText: Pacientes.Paciente['Pace_Ocupa'],
+                      ),
+                      ThreeLabelTextAline(
+                        padding: 2.0,
+                        firstText: 'Religión',
+                        secondText: Pacientes.Paciente['Pace_Reli'],
+                      ),
+                      ThreeLabelTextAline(
+                        padding: 2.0,
+                        firstText: 'C.U.R.P.',
+                        secondText: Pacientes.Paciente['Pace_Curp'],
+                      ),
+                      ThreeLabelTextAline(
+                        padding: 2.0,
+                        firstText: 'R.F.C.',
+                        secondText: Pacientes.Paciente['Pace_RFC'],
+                      ),
+                    ],
                   ),
-                  ThreeLabelTextAline(
-                    padding: 2.0,
-                    firstText: 'Edad',
-                    secondText: '${Pacientes.Paciente['Pace_Eda']} Años',
-                  ),
-                  ThreeLabelTextAline(
-                    padding: 2.0,
-                    firstText: 'Sexo',
-                    secondText: Pacientes.Paciente['Pace_Ses'],
-                  ),
-                  ThreeLabelTextAline(
-                    padding: 2.0,
-                    firstText: 'Teléfono',
-                    secondText: Pacientes.Paciente['Pace_Tele'],
-                  ),
-                  ThreeLabelTextAline(
-                    padding: 2.0,
-                    firstText: 'Modo Atención',
-                    secondText: Pacientes.Paciente['Pace_Hosp'],
-                  ),
-                  ThreeLabelTextAline(
-                    padding: 2.0,
-                    firstText: 'Estado Civil',
-                    secondText: Pacientes.Paciente['Pace_Edo_Civ'],
-                  ),
-                  ThreeLabelTextAline(
-                    padding: 2.0,
-                    firstText: 'Ocupación',
-                    secondText: Pacientes.Paciente['Pace_Ocupa'],
-                  ),
-                  ThreeLabelTextAline(
-                    padding: 2.0,
-                    firstText: 'Religión',
-                    secondText: Pacientes.Paciente['Pace_Reli'],
-                  ),
-                  ThreeLabelTextAline(
-                    padding: 2.0,
-                    firstText: 'C.U.R.P.',
-                    secondText: Pacientes.Paciente['Pace_Curp'],
-                  ),
-                  ThreeLabelTextAline(
-                    padding: 2.0,
-                    firstText: 'R.F.C.',
-                    secondText: Pacientes.Paciente['Pace_RFC'],
-                  ),
-                ],
+                ),
               ),
-            ),
-          ),
-          isTablet(context) ? Expanded(
-            flex: isTablet(context) ? 1 : 0,
-            child: Column(
+              isTablet(context)
+                  ? Expanded(
+                      flex: isTablet(context) ? 1 : 0,
+                      child: CircleAvatar(
+                          backgroundColor: Colors.black,
+                          radius: 100,
+                          child: ClipOval(
+                              child: Image.memory(
+                            base64Decode(Pacientes.imagenPaciente!),
+                            fit: BoxFit.cover,
+                          ))),
+                    )
+                  : Container()
+            ],
+          )
+        ]);
+  }
+}
+
+class Hospitalizado extends StatefulWidget {
+  const Hospitalizado({super.key});
+
+  @override
+  State<Hospitalizado> createState() => _HospitalizadoState();
+}
+
+class _HospitalizadoState extends State<Hospitalizado> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TittlePanel(
+              padding: 5, textPanel: 'Datos de hospitalización del paciente'),
+          Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                CircleAvatar(
-                    backgroundColor:
-                    Colors.black,
-                    minRadius: 100,
-                    maxRadius: 200,
-                    child: ClipOval(
-                        child: Image.memory(
-                          base64Decode(Pacientes.imagenPaciente!),
-                          fit: BoxFit.cover,
-                        ))),
-              ],
-            ),
-          ) : Container()
-        ],
-      )
-    ]);
+                Expanded(
+                  flex: isTablet(context) ? 3 : 1,
+                  child: SingleChildScrollView(
+                    controller: ScrollController(),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        ThreeLabelTextAline(
+                          padding: 2.0,
+                          firstText: 'Fecha de Ingreso Hospitalario',
+                          secondText: Valores.fechaIngresoHospitalario,
+                        ),
+                        ThreeLabelTextAline(
+                          padding: 2.0,
+                          firstText: 'Cama Asignada',
+                          secondText: Valores.numeroCama.toString(),
+                        ),
+                        ThreeLabelTextAline(
+                          padding: 2.0,
+                          firstText: 'Médico Tratante',
+                          secondText: Valores.medicoTratante,
+                        ),
+                        ThreeLabelTextAline(
+                          padding: 2.0,
+                          firstText: 'Servicio Tratante',
+                          secondText: Valores.servicioTratante,
+                        ),
+                        ThreeLabelTextAline(
+                          padding: 2.0,
+                          firstText: 'Servicio de Ingreso',
+                          secondText: Valores.servicioTratanteInicial,
+                        ),
+                        const CrossLine(),
+                        ThreeLabelTextAline(
+                          padding: 2.0,
+                          firstText: 'Cirugia programada',
+                          secondText: '', // Valores.servicioTratanteInicial,
+                        ),
+
+                      ThreeLabelTextAline(
+                        padding: 2.0,
+                        firstText: 'Estancia Prolongada',
+                        secondText: '', // Valores.servicioTratanteInicial,
+                      ),
+                      ThreeLabelTextAline(
+                        padding: 2.0,
+                        firstText: 'Interconsulta Pendiennte',
+                        secondText: '', // Valores.servicioTratanteInicial,
+                      ),
+
+
+                      ],
+                    ),
+                  ),
+                ),
+                isTablet(context)
+                    ? Expanded(
+                        flex: isTablet(context) ? 1 : 0,
+                        child: GridLayout(
+                          // childAspectRatio: ,
+                          columnCount: 2,
+                          // mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            // Acciones en la Hospitalización.
+                            GrandIcon(iconData: Icons.upload_file, labelButton: 'Configurar registro de la atención',onPress: () {}),
+                            GrandIcon(iconData: Icons.medical_information_outlined, labelButton: 'Padecimiento Actual', onPress: () {}),
+                            GrandIcon(iconData: Icons.medication_sharp, labelButton: 'Situación de la Hospitalización', onPress: () {}),
+                            GrandIcon(iconData: Icons.restore_page_outlined, labelButton: 'Diagnósticos de la Hospitalización', onPress: () {}),
+                            GrandIcon(iconData: Icons.airline_seat_flat, labelButton: 'Protocolo Quirúrgico', onPress: () {}),
+                            GrandIcon(iconData: Icons.report_problem_outlined, labelButton: 'Conflictos relacionados a la Hospitalización', onPress: () {}),
+                            GrandIcon(iconData: Icons.data_array, labelButton: 'Situación del Expediente Clínico', onPress: () {}),
+                          ],
+                        ),
+                      )
+                    : Container()
+              ])
+        ]);
   }
 }
 
@@ -829,6 +955,79 @@ class _DetallesVitalesState extends State<DetallesVitales> {
           secondText: "${Valores.horasAyuno} Hrs",
         ),
       ],
+    );
+  }
+}
+
+class OpcionesHospitalizacion extends StatefulWidget {
+  const OpcionesHospitalizacion({Key? key}) : super(key: key);
+
+  @override
+  State<OpcionesHospitalizacion> createState() =>
+      _OpcionesHospitalizacionState();
+}
+
+class _OpcionesHospitalizacionState extends State<OpcionesHospitalizacion> {
+  List<String> auxiliarServicios = [];
+
+  var servicioTratanteValue;
+  var servicioTratanteInicialValue;
+
+  @override
+  void initState() {
+    for (var element in Escalas.serviciosHospitalarios) {
+      auxiliarServicios.add(element.toString());
+    }
+    //
+    servicioTratanteValue = auxiliarServicios
+        .firstWhere((element) => element.contains('Medicina interna'));
+    servicioTratanteInicialValue = auxiliarServicios
+        .firstWhere((element) => element.contains('Urgencias'));
+    //
+    Valores.servicioTratante = servicioTratanteValue;
+    Valores.servicioTratanteInicial = servicioTratanteInicialValue;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(8.0),
+      controller: ScrollController(),
+      child: Column(
+        children: [
+          TittlePanel(textPanel: 'Seleccione Servicio de Ingreso'),
+          Spinner(
+              tittle: "Servicio Tratante",
+              onChangeValue: (String value) {
+                setState(() {
+                  servicioTratanteValue = value;
+                  Valores.servicioTratante = value;
+                });
+              },
+              items: auxiliarServicios,
+              width: isTablet(context)
+                  ? 200
+                  : isMobile(context)
+                      ? 120
+                      : 200,
+              initialValue: servicioTratanteValue),
+          Spinner(
+              tittle: "Servicio Que Inicia Tratamiento",
+              onChangeValue: (String value) {
+                setState(() {
+                  servicioTratanteInicialValue = value;
+                  Valores.servicioTratanteInicial = value;
+                });
+              },
+              items: auxiliarServicios,
+              width: isTablet(context)
+                  ? 200
+                  : isMobile(context)
+                      ? 120
+                      : 200,
+              initialValue: servicioTratanteInicialValue),
+        ],
+      ),
     );
   }
 }

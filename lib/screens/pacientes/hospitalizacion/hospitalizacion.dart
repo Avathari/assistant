@@ -7,14 +7,10 @@ import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
-import 'package:assistant/widgets/DialogSelector.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
-import 'package:assistant/widgets/GrandIcon.dart';
-import 'package:assistant/widgets/GridLayout.dart';
 import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/ThreeLabelText.dart';
-import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -179,30 +175,48 @@ class _OperacionesHospitalizacionesState
             });
           },
           items: List<String>.generate(22, (i) => (i + 1).toString()),
-          width: isTablet(context) || isMobile(context) ? 40 : 200,
+          width: isTablet(context) || isMobile(context) ? 120 : 200,
           initialValue: isNumCama),
       const CrossLine(),
-      EditTextArea(
-        keyBoardType: TextInputType.number,
-        inputFormat: MaskTextInputFormatter(
-            mask: '####/##/##',
-            filter: {"#": RegExp(r'[0-9]')},
-            type: MaskAutoCompletionType.lazy),
-        labelEditText: 'Fecha de Ingreso',
-        textController: fechaIngresoTextController,
-        numOfLines: 1,
+      Row(
+        children: [
+          Expanded(
+            child: EditTextArea(
+              keyBoardType: TextInputType.number,
+              inputFormat: MaskTextInputFormatter(
+                  mask: '####/##/##',
+                  filter: {"#": RegExp(r'[0-9]')},
+                  type: MaskAutoCompletionType.lazy),
+              labelEditText: 'Fecha de Ingreso',
+              textController: fechaIngresoTextController,
+              withShowOption: true,
+              selection: true,
+              onSelected: () {
+                fechaEgresoTextController.text = Calendarios.today(format: 'yyyy/MM/dd');
+              },
+              numOfLines: 1,
+            ),
+          ),
+          Expanded(
+            child: EditTextArea(
+              keyBoardType: TextInputType.number,
+              inputFormat: MaskTextInputFormatter(
+                  mask: '####/##/##',
+                  filter: {"#": RegExp(r'[0-9]')},
+                  type: MaskAutoCompletionType.lazy),
+              labelEditText: 'Fecha de Egreso',
+              textController: fechaEgresoTextController,
+              numOfLines: 1,
+              withShowOption: true,
+              selection: true,
+              onSelected: () {
+                fechaEgresoTextController.text = Calendarios.today(format: 'yyyy/MM/dd');
+              },
+            ),
+          ),
+        ],
       ),
-      EditTextArea(
-        keyBoardType: TextInputType.number,
-        inputFormat: MaskTextInputFormatter(
-            mask: '####/##/##',
-            filter: {"#": RegExp(r'[0-9]')},
-            type: MaskAutoCompletionType.lazy),
-        labelEditText: 'Fecha de Egreso',
-        textController: fechaEgresoTextController,
-        numOfLines: 1,
-      ),
-      const CrossLine(),
+      // const CrossLine(),
       //
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -230,7 +244,7 @@ class _OperacionesHospitalizacionesState
             });
           },
           items: auxiliarServicios,
-          width: isTablet(context) || isMobile(context) ? 40 : 200,
+          width: isTablet(context) ? 200 :  isMobile(context) ? 120 : 200,
           initialValue: servicioTratanteValue),
       Spinner(
           tittle: "Servicio Que Inicia Tratamiento",
@@ -240,7 +254,7 @@ class _OperacionesHospitalizacionesState
             });
           },
           items: auxiliarServicios,
-          width: isTablet(context) || isMobile(context) ? 40 : 200,
+          width: isTablet(context) ? 200 :  isMobile(context) ? 120 : 200,
           initialValue: servicioTratanteInicialValue),
       Spinner(
           tittle: "Motivo del Egreso",
@@ -250,7 +264,7 @@ class _OperacionesHospitalizacionesState
             });
           },
           items: Escalas.motivosEgresos,
-          width: isTablet(context) || isMobile(context) ? 40 : 200,
+          width: isTablet(context) ? 200 :  isMobile(context) ? 120 : 200,
           initialValue: motivoEgresoValue),
       const CrossLine(),
     ];
@@ -300,7 +314,7 @@ class _OperacionesHospitalizacionesState
                           Pacientes.ID_Paciente) // idOperation)
                       .then((value) {
                     // ******************************************** *** *
-                    Pacientes.Alergicos = value;
+                    Pacientes.Hospitalizaciones = value;
                     Constantes.reinit(value: value);
                     // ******************************************** *** *
                   }).then((value) => onClose(context)));
@@ -314,7 +328,7 @@ class _OperacionesHospitalizacionesState
                           Pacientes.ID_Paciente) // idOperation)
                       .then((value) {
                     // ******************************************** *** *
-                    Pacientes.Alergicos = value;
+                    Pacientes.Hospitalizaciones = value;
                     Constantes.reinit(value: value);
                     // ******************************************** *** *
                   }).then((value) => onClose(context)));
@@ -708,3 +722,5 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
             transitionDuration: const Duration(seconds: 0)));
   }
 }
+
+
