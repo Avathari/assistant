@@ -341,7 +341,7 @@ class _OperacionesHospitalizacionesState
                     //
                     Valores.fechaIngresoHospitalario = fechaIngresoTextController.text;
                     Valores.numeroCama = int.parse(isNumCama);
-                    Valores.diasEstancia = int.parse(diasEstanciaTextController.text);
+                    // Valores.diasEstancia = int.parse(diasEstanciaTextController.text);
                     Valores.medicoTratante = medicoTratanteTextController.text;
                     Valores.servicioTratante = servicioTratanteValue;
                     Valores.servicioTratanteInicial = servicioTratanteInicialValue;

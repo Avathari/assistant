@@ -43,6 +43,10 @@ class _ExpedientesClinicosState
 
   @override
   Widget build(BuildContext context) {
+    return isMobile(context) ? mobileView() : otherView();
+  }
+
+  otherView() {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(8.0),
       controller: ScrollController(),
@@ -124,6 +128,81 @@ class _ExpedientesClinicosState
                   isSwitched: Valores.isOrdenado),
             ],
           ),
+        ],
+      ),
+    );
+  }
+
+  mobileView() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(8.0),
+      controller: ScrollController(),
+      child: Column(
+        children: [
+          TittlePanel(textPanel: 'Cumplimiento del Expediente Clínico'),
+          const CrossLine(),
+          Switched(
+              tittle: 'Hoja Frontal',
+              onChangeValue: (value) {
+                setState(() {
+                  Valores.isPortada = value;
+                });
+              },
+              isSwitched: Valores.isPortada),
+          Switched(
+            tittle: 'Historia Clínica',
+            onChangeValue: (value) {
+              setState(() {
+                Valores.isHistoriaClinica = value;
+              });
+            },
+            isSwitched: Valores.isHistoriaClinica,
+          ),
+          Switched(
+              tittle: 'Nota de Ingreso',
+              onChangeValue: (value) {
+                setState(() {
+                  Valores.isNotaIngreso = value;
+                });
+              },
+              isSwitched: Valores.isNotaIngreso),
+          const CrossLine(),
+          Switched(
+              tittle: 'Consentimientos',
+              onChangeValue: (value) {
+                setState(() {
+                  Valores.isConsentimientos = value;
+
+                });
+              },
+              isSwitched: Valores.isConsentimientos),
+          Switched(
+            tittle: 'Valoración Vademecum',
+            onChangeValue: (value) {
+              setState(() {
+                Valores.isValoracionVademecum = value;
+              });
+            },
+            isSwitched: Valores.isValoracionVademecum,
+          ),
+          Switched(
+              tittle: 'Evaluación Inicial',
+              onChangeValue: (value) {
+                setState(() {
+                  Valores.isEvaluacionInicial = value;
+
+                });
+              },
+              isSwitched: Valores.isEvaluacionInicial),
+          const CrossLine(),
+          Switched(
+              tittle: 'Expediente Ordenado',
+              onChangeValue: (value) {
+                setState(() {
+                  Valores.isOrdenado = value;
+                });
+              },
+              isSwitched: Valores.isOrdenado),
         ],
       ),
     );

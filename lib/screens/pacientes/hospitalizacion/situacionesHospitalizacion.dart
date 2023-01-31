@@ -42,17 +42,32 @@ class _SituacionesHospitalizacionState
       setState(() {
         dispositivoOxigenoValue = response['Disp_Oxigen'];
         // *********** ********* *********
-        Valores.isCateterPeriferico = Dicotomicos.fromInt(response['CVP'], toBoolean: true) as bool?;
-        Valores.isCateterLargoPeriferico = Dicotomicos.fromInt(response['CVLP'], toBoolean: true) as bool?;
-        Valores.isCateterVenosoCentral = Dicotomicos.fromInt(response['CVC'], toBoolean: true) as bool?;
-        Valores.isSondaFoley = Dicotomicos.fromInt(response['S_Foley'], toBoolean: true) as bool?;
-        Valores.isSondaNasogastrica = Dicotomicos.fromInt(response['SNG'], toBoolean: true) as bool?;
-        Valores.isSondaOrogastrica = Dicotomicos.fromInt(response['SOG'], toBoolean: true) as bool?;
-        Valores.isDrenajePenrose = Dicotomicos.fromInt(response['Drenaje'], toBoolean: true) as bool?;
-        Valores.isPleuroVac = Dicotomicos.fromInt(response['Pleuro_Vac'], toBoolean: true) as bool?;
-        Valores.isColostomia = Dicotomicos.fromInt(response['Colostomia'], toBoolean: true) as bool?;
-        Valores.isGastrostomia = Dicotomicos.fromInt(response['Gastrostomia'], toBoolean: true) as bool?;
-        Valores.isDialisisPeritoneal = Dicotomicos.fromInt(response['Dialisis_Peritoneal'], toBoolean: true) as bool?;
+        Valores.isCateterPeriferico =
+            Dicotomicos.fromInt(response['CVP'], toBoolean: true) as bool?;
+        Valores.isCateterLargoPeriferico =
+            Dicotomicos.fromInt(response['CVLP'], toBoolean: true) as bool?;
+        Valores.isCateterVenosoCentral =
+            Dicotomicos.fromInt(response['CVC'], toBoolean: true) as bool?;
+        Valores.isSondaFoley =
+            Dicotomicos.fromInt(response['S_Foley'], toBoolean: true) as bool?;
+        Valores.isSondaNasogastrica =
+            Dicotomicos.fromInt(response['SNG'], toBoolean: true) as bool?;
+        Valores.isSondaOrogastrica =
+            Dicotomicos.fromInt(response['SOG'], toBoolean: true) as bool?;
+        Valores.isDrenajePenrose =
+            Dicotomicos.fromInt(response['Drenaje'], toBoolean: true) as bool?;
+        Valores.isPleuroVac =
+            Dicotomicos.fromInt(response['Pleuro_Vac'], toBoolean: true)
+                as bool?;
+        Valores.isColostomia =
+            Dicotomicos.fromInt(response['Colostomia'], toBoolean: true)
+                as bool?;
+        Valores.isGastrostomia =
+            Dicotomicos.fromInt(response['Gastrostomia'], toBoolean: true)
+                as bool?;
+        Valores.isDialisisPeritoneal = Dicotomicos.fromInt(
+            response['Dialisis_Peritoneal'],
+            toBoolean: true) as bool?;
       });
     });
     super.initState();
@@ -60,6 +75,10 @@ class _SituacionesHospitalizacionState
 
   @override
   Widget build(BuildContext context) {
+    return isMobile(context) ? mobileView() : otherView();
+  }
+
+  otherView() {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(8.0),
       controller: ScrollController(),
@@ -187,6 +206,132 @@ class _SituacionesHospitalizacionState
                 isSwitched: Valores.isGastrostomia,
               ),
             ],
+          ),
+          Switched(
+              tittle: 'Diálisis Peritoneal',
+              onChangeValue: (value) {
+                setState(() {
+                  Valores.isDialisisPeritoneal = value;
+                });
+              },
+              isSwitched: Valores.isDialisisPeritoneal),
+        ],
+      ),
+    );
+  }
+
+  mobileView() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(8.0),
+      controller: ScrollController(),
+      child: Column(
+        children: [
+          TittlePanel(textPanel: 'Situación General en la Hospitalización'),
+          Spinner(
+              tittle: 'Dispositivo de Oxígeno',
+              width: isTablet(context) ? 200 : 100,
+              onChangeValue: (value) {
+                setState(() {
+                  dispositivoOxigenoValue = value;
+                  Valores.dispositivoOxigeno = value;
+                });
+              },
+              items: Items.dispositivosOxigeno,
+              initialValue: dispositivoOxigenoValue),
+          const CrossLine(),
+          Switched(
+              tittle: 'Cáteter Venoso Periférico',
+              onChangeValue: (value) {
+                setState(() {
+                  Valores.isCateterPeriferico = value;
+                });
+              },
+              isSwitched: Valores.isCateterPeriferico),
+          Switched(
+            tittle: 'Cáteter Largo Periférico',
+            onChangeValue: (value) {
+              setState(() {
+                Valores.isCateterLargoPeriferico = value;
+                Valores.isCateterLargoPeriferico = value;
+              });
+            },
+            isSwitched: Valores.isCateterLargoPeriferico,
+          ),
+          Switched(
+              tittle: 'Cáteter Venoso Central',
+              onChangeValue: (value) {
+                setState(() {
+                  Valores.isCateterVenosoCentral = value;
+                  Valores.isCateterVenosoCentral = value;
+                });
+              },
+              isSwitched: Valores.isCateterVenosoCentral),
+          const CrossLine(),
+          Switched(
+              tittle: 'Sonda Orogástrica',
+              onChangeValue: (value) {
+                setState(() {
+                  Valores.isSondaOrogastrica = value;
+                  Valores.isSondaOrogastrica = value;
+                });
+              },
+              isSwitched: Valores.isSondaOrogastrica),
+          Switched(
+            tittle: 'Sonda Nasogástrica',
+            onChangeValue: (value) {
+              setState(() {
+                Valores.isSondaNasogastrica = value;
+                Valores.isSondaNasogastrica = value;
+              });
+            },
+            isSwitched: Valores.isSondaNasogastrica,
+          ),
+          Switched(
+              tittle: 'Sonda Foley',
+              onChangeValue: (value) {
+                setState(() {
+                  Valores.isSondaFoley = value;
+                  Valores.isSondaFoley = value;
+                });
+              },
+              isSwitched: Valores.isSondaFoley),
+          const CrossLine(),
+          Switched(
+              tittle: 'Drenaje Penrose',
+              onChangeValue: (value) {
+                setState(() {
+                  Valores.isDrenajePenrose = value;
+                  Valores.isDrenajePenros = value;
+                });
+              },
+              isSwitched: Valores.isDrenajePenrose),
+          Switched(
+            tittle: 'Sello Pleural',
+            onChangeValue: (value) {
+              setState(() {
+                Valores.isPleuroVac = value;
+                Valores.isPleuroVac = value;
+              });
+            },
+            isSwitched: Valores.isPleuroVac,
+          ),
+          Switched(
+              tittle: 'Colostomía',
+              onChangeValue: (value) {
+                setState(() {
+                  Valores.isColostomia = value;
+                  Valores.isColostomia = value;
+                });
+              },
+              isSwitched: Valores.isColostomia),
+          Switched(
+            tittle: 'Gaastrostomia',
+            onChangeValue: (value) {
+              setState(() {
+                Valores.isGastrostomia = value;
+              });
+            },
+            isSwitched: Valores.isGastrostomia,
           ),
           Switched(
               tittle: 'Diálisis Peritoneal',

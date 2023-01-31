@@ -26,8 +26,11 @@ class Valores {
       curp,
       rfc,
       modoAtencion;
-  static int? edad, numeroCama, diasEstancia;
+  static int? edad, numeroCama;
   static bool? isHospitalizado;
+  static int get diasEstancia {
+    return DateTime.now().difference(DateTime.parse(fechaIngresoHospitalario!)).inDays;
+  }
   //
   static String? fechaIngresoHospitalario,
       fechaEgresoHospitalario,
@@ -401,7 +404,7 @@ class Valores {
     Pacientes.ID_Hospitalizacion = json['ID_Hosp'] ?? 0;
     // ******************************************** *** *
     Valores.fechaIngresoHospitalario = json['Feca_INI_Hosp'] ?? '';
-    Valores.diasEstancia = json['Dia_Estan'] == null ? json['Dia_Estan'] : 0;
+    // Valores.diasEstancia = json['Dia_Estan'] == null ? json['Dia_Estan'] : 0;
     Valores.numeroCama = json['Id_Cama'] == null ? json['Id_Cama'] : 0;
     Valores.medicoTratante = json['Medi_Trat'] ?? '';
     Valores.servicioTratante = json['Serve_Trat'] ?? '';
