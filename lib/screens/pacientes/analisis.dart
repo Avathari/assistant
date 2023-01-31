@@ -23,11 +23,11 @@ class _AnalisisState extends State<Analisis> {
   void initState() {
     super.initState();
 
-    Pacientes.Valores.addAll(Pacientes.Vital);
-    Pacientes.Valores.addAll(Pacientes.Auxiliar);
-    Pacientes.Valores.addAll(Pacientes.Electrocardiogramas);
-
-    print("Pacientes.Valores ${Pacientes.Valores}");
+    // Pacientes.Valores.addAll(Pacientes.Vital);
+    // Pacientes.Valores.addAll(Pacientes.Auxiliar);
+    // Pacientes.Valores.addAll(Pacientes.Electrocardiogramas);
+    //
+    // print("Pacientes.Valores ${Pacientes.Valores}");
   }
 
   @override

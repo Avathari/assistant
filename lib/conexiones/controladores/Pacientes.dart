@@ -601,27 +601,40 @@ class Pacientes {
           pacientes['updateHospitalizacionQuery'],
           [modus, Pacientes.ID_Paciente],
           Pacientes.ID_Paciente);
-
-      var listValues = [
-        Pacientes.ID_Paciente,
-        Calendarios.today(format: 'yyyy/MM/dd'),             0,             0,
-        '',
-        Valores.servicioTratante,
-        Valores.servicioTratanteInicial,
-        '0000/00/00',
-            '',
-      ];
+      return false;
+    } else if (modoAtencion == 'Consulta Externa') {
+      modus = 'Hospitalización';
+      //
+      var resp = await Actividades.actualizar(
+          Databases.siteground_database_regpace,
+          pacientes['updateHospitalizacionQuery'],
+          [modus, Pacientes.ID_Paciente],
+          Pacientes.ID_Paciente);
       Actividades.registrar(
           Databases.siteground_database_reghosp,
           "INSERT INTO pace_hosp (ID_Pace, "
-          "Feca_INI_Hosp, Id_Cama, Dia_Estan, Medi_Trat, Serve_Trat, Serve_Trat_INI, "
-          "Feca_EGE_Hosp, EGE_Motivo) "
-          "VALUES (?,?,?,?,?,?,?,?,?)",
-          listValues).then((value) {
-        Actividades.consultarId(Databases.siteground_database_reghosp,
-                "SELECT * FROM pace_hosp WHERE ID_Pace = ? ORDER BY ID_Hosp ASC",Pacientes.ID_Paciente)
+              "Feca_INI_Hosp, Id_Cama, Dia_Estan, Medi_Trat, Serve_Trat, Serve_Trat_INI, "
+              "Feca_EGE_Hosp, EGE_Motivo) "
+              "VALUES (?,?,?,?,?,?,?,?,?)",
+          [
+            Pacientes.ID_Paciente,
+            Calendarios.today(format: 'yyyy/MM/dd'),
+            0,
+            0,
+            '',
+            Valores.servicioTratante,
+            Valores.servicioTratanteInicial,
+            '0000/00/00',
+            Escalas.motivosEgresos[0],
+          ])
+          .then((value) {
+        Actividades.consultarId(
+            Databases.siteground_database_reghosp,
+            "SELECT * FROM pace_hosp WHERE ID_Pace = ? ORDER BY ID_Hosp ASC",
+            Pacientes.ID_Paciente)
             .then((value) {
-          print("IDDDD HOSP ${value}");
+          // ******************************************** *** *
+              print("IDDDD HOSP ${value}");
           Pacientes.ID_Hospitalizacion = value['ID_Hosp'];
           Pacientes.esHospitalizado = true;
           Valores.isHospitalizado = true;
@@ -632,20 +645,28 @@ class Pacientes {
           Valores.fechaIngresoHospitalario = '';
           Valores.numeroCama = 0;
           Valores.medicoTratante = '';
-          Valores.motivoEgreso = '';
+          Valores.motivoEgreso = Escalas.motivosEgresos[0];
+
+          // ******************************************** *** *
+          // Registro de Actividades Iniciales de la Hospitalización
+          // ******************************************** *** *
+          Actividades.registrar(
+            Databases.siteground_database_reghosp,
+            Repositorios.repositorio['registerQuery'],
+            [
+              Pacientes.ID_Paciente,
+              Pacientes.ID_Hospitalizacion,
+              Calendarios.today(format: 'yyyy/MM/dd'),
+              Calendarios.today(format: 'yyyy/MM/dd'),
+              Valores.servicioTratante,
+              '', // Valores.padecimientoActual,
+              Items.tiposAnalisis[0],
+            ],
+          ).then((value) => print(value));
         });
       });
 
       // ******************************************** *** *
-      return false;
-    } else if (modoAtencion == 'Consulta Externa') {
-      modus = 'Hospitalización';
-      //
-      var resp = await Actividades.actualizar(
-          Databases.siteground_database_regpace,
-          pacientes['updateHospitalizacionQuery'],
-          [modus, Pacientes.ID_Paciente],
-          Pacientes.ID_Paciente);
       return true;
     } else {
       return false;
@@ -3139,7 +3160,8 @@ class Hospitalizaciones {
     "consultIdQuery": "SELECT * FROM pace_hosp WHERE ID_Pace = ?",
     "consultByIdPrimaryQuery": "SELECT * FROM pace_hosp WHERE ID_Hosp = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_hosp",
-    "consultLastQuery": "SELECT * FROM pace_hosp WHERE ID_Pace = ? ORDER BY ID_Hosp DESC",
+    "consultLastQuery":
+        "SELECT * FROM pace_hosp WHERE ID_Pace = ? ORDER BY ID_Hosp ASC",
     "consultByName": "SELECT * FROM pace_hosp WHERE Pace_APP_DEG LIKE '%",
     "registerQuery": "INSERT INTO pace_hosp (ID_Pace, "
         "Feca_INI_Hosp, Id_Cama, Dia_Estan, Medi_Trat, Serve_Trat, Serve_Trat_INI, "
@@ -3167,6 +3189,86 @@ class Hospitalizaciones {
         "(SELECT IFNULL(AVG('Pace_SV_tas'), 0) FROM pace_hosp WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAS,"
         "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM pace_hosp WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
         "(SELECT IFNULL(count(*), 0) FROM pace_hosp WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
+  };
+}
+
+class Repositorios {
+  static Map<String, dynamic> Repositorio = {};
+
+  static List<String> actualDiagno = Opciones.horarios();
+
+  static void ultimoRegistro() {
+    Actividades.consultarId(Databases.siteground_database_reghosp,
+            Repositorio['consultLastQuery'], Pacientes.ID_Paciente)
+        .then((value) {
+// Enfermedades de base del paciente, asi como las Hospitalarias.
+      Repositorio = value;
+    });
+  }
+
+  static void consultarRegistro() {
+    Actividades.consultarAllById(Databases.siteground_database_reghosp,
+            Repositorio['consultIdQuery'], Pacientes.ID_Paciente)
+        .then((value) {
+      // Enfermedades de base del paciente, asi como las Hospitalarias.
+      // Pacientes.Repositorios = value;
+    });
+  }
+
+  static final Map<String, dynamic> repositorio = {
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_reghosp` "
+        "DEFAULT CHARACTER SET utf8 "
+        "COLLATE utf8_unicode_ci;",
+    "showTables": "SHOW tables;",
+    "dropDatabase": "DROP DATABASE `bd_reghosp`",
+    "describeTable": "DESCRIBE pace_hosp_repo;",
+    "showColumns": "SHOW columns FROM pace_hosp_repo",
+    "showInformation":
+        "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_hosp_repo'",
+    "createQuery": """CREATE TABLE pace_hosp_repo (
+              `ID_Compendio` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+              `ID_Pace` int(11) NOT NULL,
+              `ID_Hosp` int(11) NOT NULL,
+              `FechaPadecimiento` date NOT NULL,
+              `FechaRealizacion` date NOT NULL,
+              `ServicioMedico` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
+              `Contexto` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+              `TipoAnalisis` varchar(150) COLLATE utf8_unicode_ci NOT NULL
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla para Almacenar Análisis por Reporte del Paciente.';
+            """,
+    "truncateQuery": "TRUNCATE pace_hosp_repo",
+    "dropQuery": "DROP TABLE pace_hosp_repo",
+    "consultQuery": "SELECT * FROM pace_hosp_repo WHERE",
+    "consultPadecimientoQuery": "SELECT * FROM pace_hosp_repo WHERE ID_Hosp = ? "
+        "AND TipoAnalisis = 'Padecimiento Actual'",
+    "consultIdQuery": "SELECT * FROM pace_hosp_repo WHERE ID_Pace = ?",
+    "consultByIdPrimaryQuery": "SELECT * FROM pace_hosp_repo WHERE ID_Hosp = ?",
+    "consultAllIdsQuery": "SELECT ID_Pace FROM pace_hosp_repo",
+    "consultLastQuery":
+        "SELECT * FROM pace_hosp_repo WHERE ID_Pace = ? ORDER BY ID_Hosp DESC",
+    "consultByName": "SELECT * FROM pace_hosp_repo WHERE Pace_APP_DEG LIKE '%",
+    "registerQuery":
+        "INSERT INTO pace_hosp_repo (ID_Pace, ID_Hosp, FechaPadecimiento, FechaRealizacion, "
+            "ServicioMedico, Contexto, TipoAnalisis) "
+            "VALUES (?,?,?,?,?,?,?)",
+    "updateQuery": "UPDATE pace_hosp_repo SET Contexto = ? WHERE ID_Hosp = ? AND TipoAnalisis = ?",
+    "deleteQuery": "DELETE FROM pace_hosp_repo WHERE ID_Compendio = ?",
+    "RepositorioColumns": [
+      "ID_Pace",
+    ],
+    "RepositorioItems": [
+      "ID_Pace",
+    ],
+    "RepositorioColums": [
+      "ID Paciente",
+    ],
+    "Repositoriotats": [
+      "Total_Administradores",
+    ],
+    "Repositoriotadistics": "SELECT "
+        "(SELECT IFNULL(AVG('Pace_SV_tas'), 0) FROM pace_hosp_repo WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAS,"
+        "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM pace_hosp_repo WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_hosp_repo WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
   };
 }
 

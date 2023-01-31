@@ -26,12 +26,13 @@ class Valores {
       curp,
       rfc,
       modoAtencion;
-  static int? edad, numeroCama;
+  static int? edad, numeroCama, diasEstancia;
   static bool? isHospitalizado;
   //
   static String ? fechaIngresoHospitalario, fechaEgresoHospitalario,
       medicoTratante,
-  servicioTratante, servicioTratanteInicial, motivoEgreso;
+  servicioTratante, servicioTratanteInicial, motivoEgreso,
+  fechaPadecimientoActual, padecimientoActual;
   //
   static int? tensionArterialSystolica,
       tensionArterialDyastolica,
@@ -374,9 +375,10 @@ class Valores {
     volumenTidal = json['Pace_Vt'] == null ? json['Pace_Vt'] : 0;
 
     // Datos generales de la última Hospitalización.
-    Pacientes.ID_Hospitalizacion = json['ID_Hosp'];
+    Pacientes.ID_Hospitalizacion = json['ID_Hosp'] ?? 0;
     // ******************************************** *** *
     Valores.fechaIngresoHospitalario = json['Feca_INI_Hosp'] ?? '';
+    Valores.diasEstancia = json['Dia_Estan'] == null ? json['Dia_Estan'] : 0;
     Valores.numeroCama = json['Id_Cama'] == null ? json['Id_Cama'] : 0;
     Valores.medicoTratante = json['Medi_Trat'] ?? '';
     Valores.servicioTratante = json['Serve_Trat'] ?? '';
@@ -1223,8 +1225,7 @@ class Valores {
   static int get constanteTidal {
     if (Valores.volumenTidal != 0 &&
         Valores.volumenTidal != null &&
-        Valores.pesoCorporalPredicho != 0 &&
-        Valores.pesoCorporalPredicho != null) {
+        Valores.pesoCorporalPredicho != 0) {
       return Valores.volumenTidal! ~/ Valores.pesoCorporalPredicho;
     } else {
       return 0;
@@ -1241,8 +1242,7 @@ class Valores {
   static double get presionAlveolarOxigeno {
     if (Valores.volumenTidal != 0 &&
         Valores.volumenTidal != null &&
-        Valores.pesoCorporalPredicho != 0 &&
-        Valores.pesoCorporalPredicho != null) {
+        Valores.pesoCorporalPredicho != 0) {
       // return (valores.get('FraccionInspiratoriaOxigeno') / 100) * (720 - 47) - (valores.get('PresionDioxidoCarbono') / 0.8);
       return 0;
     } else {
@@ -1267,8 +1267,7 @@ class Valores {
   static double get volumenMinuto {
     if (Valores.volumenTidal != 0 &&
         Valores.volumenTidal != null &&
-        Valores.pesoCorporalPredicho != 0 &&
-        Valores.pesoCorporalPredicho != null) {
+        Valores.pesoCorporalPredicho != 0) {
       return (Valores.volumenTidal! * Valores.frecuenciaVentilatoria!) / 1000;
     } else {
       return double.nan;
@@ -1276,7 +1275,7 @@ class Valores {
   }
 
   static double get flujoVentilatorioMedido {
-    if (Valores.volumenMinuto != 0 && Valores.volumenMinuto != null) {
+    if (Valores.volumenMinuto != 0) {
       return (Valores.volumenMinuto * 4);
     } else {
       return double.nan;
@@ -1284,8 +1283,7 @@ class Valores {
   }
 
   static double get volumenMinutoIdeal {
-    if (Valores.pesoCorporalPredicho != 0 &&
-        Valores.pesoCorporalPredicho != null) {
+    if (Valores.pesoCorporalPredicho != 0) {
       return (Valores.pesoCorporalPredicho / 10);
       // VMI = (PCI / 10)
     } else {
@@ -1294,8 +1292,7 @@ class Valores {
   }
 
   static double get poderMecanico {
-    if (Valores.pesoCorporalPredicho != 0 &&
-        Valores.pesoCorporalPredicho != null) {
+    if (Valores.pesoCorporalPredicho != 0) {
       return (0.098 *
           Valores.frecuenciaVentilatoria! *
           (Valores.presionPlateau! - Valores.presionFinalEsiracion! / 2));
@@ -1336,9 +1333,7 @@ class Valores {
 
   static double get distensibilidadPulmonar {
     if (Valores.distensibilidadPulmonarEstatica != 0 &&
-        Valores.distensibilidadPulmonarEstatica != null &&
-        Valores.distensibilidadPulmonarDinamica != 0 &&
-        Valores.distensibilidadPulmonarDinamica != null) {
+        Valores.distensibilidadPulmonarDinamica != 0) {
       return distensibilidadPulmonarEstatica +
           distensibilidadPulmonarDinamica /
               2; // # Promedio entre las Distensibilidades Pulmonares estaticas y dinamicas
@@ -1715,6 +1710,7 @@ class Escalas {
 
   static List<dynamic> serviciosHospitalarios = [];
   static List<String> motivosEgresos = [
+    '',
     'Máximo beneficio',
     'Mejorado',
     'Traslado',
@@ -1799,6 +1795,13 @@ class Escalas {
 
   static List<String> regionCorporalImagenologico = [
     'Región craneal',
+  ];
+}
+
+class Items {
+  static List tiposAnalisis = [
+    'Padecimiento Actual'
+
   ];
 }
 
