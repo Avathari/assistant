@@ -35,11 +35,19 @@ class Dicotomicos {
     return ["Si", "No"];
   }
 
-  static String fromInt(int boolItem) {
+  static Object fromInt(int boolItem, {toBoolean = false}) {
     if (boolItem == 1) {
-      return "Si";
+      if (toBoolean) {
+        return true;
+      } else {
+        return "Si";
+      }
     } else if (boolItem == 0) {
-      return "No";
+      if (toBoolean) {
+        return false;
+      } else {
+        return "No";
+      }
     } else {
       return "No";
     }
@@ -55,11 +63,19 @@ class Dicotomicos {
     }
   }
 
-  static String fromBoolean(bool boolItem) {
+  static Object fromBoolean(bool boolItem, {toInt = false}) {
     if (boolItem) {
-      return "Si";
+      if (toInt) {
+        return 1;
+      } else {
+        return "Si";
+      }
     } else {
-      return "No";
+      if (toInt) {
+        return 0;
+      } else {
+        return "No";
+      }
     }
   }
 }
@@ -187,7 +203,9 @@ class Opciones {
 
 class Operadores {
   static Future<void> openActivity(
-      {required BuildContext context, required Widget chyldrim, onAction = null}) async {
+      {required BuildContext context,
+      required Widget chyldrim,
+      onAction = null}) async {
     showDialog(
         useSafeArea: true,
         context: context,

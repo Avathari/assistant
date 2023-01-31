@@ -67,7 +67,7 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
           idOperation = Quirurgicos.Cirugias['ID_PACE_APP_QUI'];
 
           isActualDiagoValue =
-              Dicotomicos.fromInt(Quirurgicos.Cirugias['Pace_APP_QUI_SINO']);
+              Dicotomicos.fromInt(Quirurgicos.Cirugias['Pace_APP_QUI_SINO']).toString();
           if (Quirurgicos.selectedDiagnosis == "") {
             cieDiagnoTextController.text = Quirurgicos.Cirugias['Pace_APP_QUI'];
           } else {
@@ -77,7 +77,7 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
               Quirurgicos.Cirugias['Pace_APP_QUI_dia'].toString();
           //
           isTratamientoDiagoValue = Dicotomicos.fromInt(
-              Quirurgicos.Cirugias['Pace_APP_QUI_com_SINO']);
+              Quirurgicos.Cirugias['Pace_APP_QUI_com_SINO']).toString();
           tratamientoTextController.text =
               Quirurgicos.Cirugias['Pace_APP_QUI_com'];
         });

@@ -69,7 +69,7 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
           idOperation = Patologicos.Degenerativos['ID_PACE_APP_DEG'];
 
           isActualDiagoValue = Dicotomicos.fromInt(
-              Patologicos.Degenerativos['Pace_APP_DEG_SINO']);
+              Patologicos.Degenerativos['Pace_APP_DEG_SINO']).toString();
           if (Patologicos.selectedDiagnosis == "") {
             cieDiagnoTextController.text =
                 Patologicos.Degenerativos['Pace_APP_DEG'];
@@ -82,11 +82,11 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
               Patologicos.Degenerativos['Pace_APP_DEG_dia'].toString();
           //
           isTratamientoDiagoValue = Dicotomicos.fromInt(
-              Patologicos.Degenerativos['Pace_APP_DEG_tra_SINO']);
+              Patologicos.Degenerativos['Pace_APP_DEG_tra_SINO']).toString();
           tratamientoTextController.text =
               Patologicos.Degenerativos['Pace_APP_DEG_tra'];
           isSuspendTratoValue = Dicotomicos.fromInt(
-              Patologicos.Degenerativos['Pace_APP_DEG_sus_SINO']);
+              Patologicos.Degenerativos['Pace_APP_DEG_sus_SINO']).toString();
           suspensionesTextController.text =
               Patologicos.Degenerativos['Pace_APP_DEG_sus'];
         });

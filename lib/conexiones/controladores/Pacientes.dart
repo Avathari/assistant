@@ -613,9 +613,9 @@ class Pacientes {
       Actividades.registrar(
           Databases.siteground_database_reghosp,
           "INSERT INTO pace_hosp (ID_Pace, "
-              "Feca_INI_Hosp, Id_Cama, Dia_Estan, Medi_Trat, Serve_Trat, Serve_Trat_INI, "
-              "Feca_EGE_Hosp, EGE_Motivo) "
-              "VALUES (?,?,?,?,?,?,?,?,?)",
+          "Feca_INI_Hosp, Id_Cama, Dia_Estan, Medi_Trat, Serve_Trat, Serve_Trat_INI, "
+          "Feca_EGE_Hosp, EGE_Motivo) "
+          "VALUES (?,?,?,?,?,?,?,?,?)",
           [
             Pacientes.ID_Paciente,
             Calendarios.today(format: 'yyyy/MM/dd'),
@@ -626,15 +626,14 @@ class Pacientes {
             Valores.servicioTratanteInicial,
             '0000/00/00',
             Escalas.motivosEgresos[0],
-          ])
-          .then((value) {
+          ]).then((value) {
         Actividades.consultarId(
-            Databases.siteground_database_reghosp,
-            "SELECT * FROM pace_hosp WHERE ID_Pace = ? ORDER BY ID_Hosp ASC",
-            Pacientes.ID_Paciente)
+                Databases.siteground_database_reghosp,
+                "SELECT * FROM pace_hosp WHERE ID_Pace = ? ORDER BY ID_Hosp ASC",
+                Pacientes.ID_Paciente)
             .then((value) {
           // ******************************************** *** *
-              print("IDDDD HOSP ${value}");
+          print("IDDDD HOSP ${value}");
           Pacientes.ID_Hospitalizacion = value['ID_Hosp'];
           Pacientes.esHospitalizado = true;
           Valores.isHospitalizado = true;
@@ -650,19 +649,9 @@ class Pacientes {
           // ******************************************** *** *
           // Registro de Actividades Iniciales de la Hospitalización
           // ******************************************** *** *
-          Actividades.registrar(
-            Databases.siteground_database_reghosp,
-            Repositorios.repositorio['registerQuery'],
-            [
-              Pacientes.ID_Paciente,
-              Pacientes.ID_Hospitalizacion,
-              Calendarios.today(format: 'yyyy/MM/dd'),
-              Calendarios.today(format: 'yyyy/MM/dd'),
-              Valores.servicioTratante,
-              '', // Valores.padecimientoActual,
-              Items.tiposAnalisis[0],
-            ],
-          ).then((value) => print(value));
+          Repositorios.registrarRegistro();
+          Situaciones.registrarRegistro();
+          Expedientes.registrarRegistro();
         });
       });
 
@@ -3206,6 +3195,35 @@ class Repositorios {
     });
   }
 
+  static void actualizarRegistro() {
+    Actividades.actualizar(
+      Databases.siteground_database_reghosp,
+      Repositorios.repositorio['updateQuery'],
+      [
+        Valores.padecimientoActual,
+        Pacientes.ID_Hospitalizacion,
+        Items.tiposAnalisis[0],
+      ],
+      Pacientes.ID_Paciente,
+    );
+  }
+
+  static void registrarRegistro() {
+    Actividades.registrar(
+      Databases.siteground_database_reghosp,
+      Repositorios.repositorio['registerQuery'],
+      [
+        Pacientes.ID_Paciente,
+        Pacientes.ID_Hospitalizacion,
+        Calendarios.today(format: 'yyyy/MM/dd'),
+        Calendarios.today(format: 'yyyy/MM/dd'),
+        Valores.servicioTratante,
+        '', // Valores.padecimientoActual,
+        Items.tiposAnalisis[0],
+      ],
+    );
+  }
+
   static void consultarRegistro() {
     Actividades.consultarAllById(Databases.siteground_database_reghosp,
             Repositorio['consultIdQuery'], Pacientes.ID_Paciente)
@@ -3239,8 +3257,9 @@ class Repositorios {
     "truncateQuery": "TRUNCATE pace_hosp_repo",
     "dropQuery": "DROP TABLE pace_hosp_repo",
     "consultQuery": "SELECT * FROM pace_hosp_repo WHERE",
-    "consultPadecimientoQuery": "SELECT * FROM pace_hosp_repo WHERE ID_Hosp = ? "
-        "AND TipoAnalisis = 'Padecimiento Actual'",
+    "consultPadecimientoQuery":
+        "SELECT * FROM pace_hosp_repo WHERE ID_Hosp = ? "
+            "AND TipoAnalisis = 'Padecimiento Actual'",
     "consultIdQuery": "SELECT * FROM pace_hosp_repo WHERE ID_Pace = ?",
     "consultByIdPrimaryQuery": "SELECT * FROM pace_hosp_repo WHERE ID_Hosp = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_hosp_repo",
@@ -3251,7 +3270,8 @@ class Repositorios {
         "INSERT INTO pace_hosp_repo (ID_Pace, ID_Hosp, FechaPadecimiento, FechaRealizacion, "
             "ServicioMedico, Contexto, TipoAnalisis) "
             "VALUES (?,?,?,?,?,?,?)",
-    "updateQuery": "UPDATE pace_hosp_repo SET Contexto = ? WHERE ID_Hosp = ? AND TipoAnalisis = ?",
+    "updateQuery":
+        "UPDATE pace_hosp_repo SET Contexto = ? WHERE ID_Hosp = ? AND TipoAnalisis = ?",
     "deleteQuery": "DELETE FROM pace_hosp_repo WHERE ID_Compendio = ?",
     "RepositorioColumns": [
       "ID_Pace",
@@ -3269,6 +3289,274 @@ class Repositorios {
         "(SELECT IFNULL(AVG('Pace_SV_tas'), 0) FROM pace_hosp_repo WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAS,"
         "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM pace_hosp_repo WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
         "(SELECT IFNULL(count(*), 0) FROM pace_hosp_repo WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
+  };
+}
+
+class Situaciones {
+  static Map<String, dynamic> Situacion = {};
+
+  static List<String> actualDiagno = Opciones.horarios();
+
+  static void ultimoRegistro() {
+    Actividades.consultarId(Databases.siteground_database_reghosp,
+            situacion['consultLastQuery'], Pacientes.ID_Paciente)
+        .then((value) {
+// Enfermedades de base del paciente, asi como las Hospitalarias.
+      Situacion = value;
+    });
+  }
+
+  static void actualizarRegistro() {
+    Actividades.actualizar(
+      Databases.siteground_database_reghosp,
+      Situaciones.situacion['updateQuery'],
+      [
+        Pacientes.ID_Paciente,
+        Pacientes.ID_Hospitalizacion,
+        'Hosp_Siti',
+        Valores.dispositivoOxigeno,
+        Dicotomicos.fromBoolean(Valores.isCateterPeriferico!, toInt: true),
+        Dicotomicos.fromBoolean(Valores.isCateterLargoPeriferico!, toInt: true),
+        Dicotomicos.fromBoolean(Valores.isCateterVenosoCentral!, toInt: true),
+        Dicotomicos.fromBoolean(Valores.isSondaFoley!, toInt: true),
+        Dicotomicos.fromBoolean(Valores.isSondaNasogastrica!, toInt: true),
+        Dicotomicos.fromBoolean(Valores.isSondaOrogastrica!, toInt: true),
+        Dicotomicos.fromBoolean(Valores.isDrenajePenrose!, toInt: true),
+        Dicotomicos.fromBoolean(Valores.isPleuroVac!, toInt: true),
+        Dicotomicos.fromBoolean(Valores.isColostomia!, toInt: true),
+        Dicotomicos.fromBoolean(Valores.isGastrostomia!, toInt: true),
+        Dicotomicos.fromBoolean(Valores.isDialisisPeritoneal!, toInt: true),
+        Pacientes.ID_Hospitalizacion,
+      ],
+      Pacientes.ID_Paciente,
+    ).then((value) => print(value));
+  }
+
+  static void registrarRegistro() {
+    Actividades.registrar(
+      Databases.siteground_database_reghosp,
+      Situaciones.situacion['registerQuery'],
+      [
+        Pacientes.ID_Paciente,
+        Pacientes.ID_Hospitalizacion,
+        'Hosp_Siti',
+        Valores.dispositivoOxigeno,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    );
+  }
+
+  static void consultarRegistro() {
+    Actividades.consultarAllById(Databases.siteground_database_reghosp,
+            situacion['consultIdQuery'], Pacientes.ID_Paciente)
+        .then((value) {
+      // Enfermedades de base del paciente, asi como las Hospitalarias.
+      // Pacientes.Situaciones = value;
+    });
+  }
+
+  static final Map<String, dynamic> situacion = {
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_reghosp` "
+        "DEFAULT CHARACTER SET utf8 "
+        "COLLATE utf8_unicode_ci;",
+    "showTables": "SHOW tables;",
+    "dropDatabase": "DROP DATABASE `bd_reghosp`",
+    "describeTable": "DESCRIBE siti_pace;",
+    "showColumns": "SHOW columns FROM siti_pace",
+    "showInformation":
+        "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'siti_pace'",
+    "createQuery": """ CREATE TABLE `siti_pace` (
+                    `ID_Siti` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                    `ID_Pace` int(11) NOT NULL,
+                    `ID_Hosp` int(11) NOT NULL,
+                    `Hosp_Siti` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+                    `Disp_Oxigen` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+                    `CVP` tinyint(1) NOT NULL,
+                    `CVLP` tinyint(1) NOT NULL,
+                    `CVC` tinyint(1) NOT NULL,
+                    `S_Foley` tinyint(1) NOT NULL,
+                    `SNG` tinyint(1) NOT NULL,
+                    `SOG` tinyint(1) NOT NULL,
+                    `Drenaje` tinyint(1) NOT NULL,
+                    `Pleuro_Vac` tinyint(1) NOT NULL,
+                    `Colostomia` tinyint(1) NOT NULL,
+                    `Gastrostomia` tinyint(4) NOT NULL,
+                    `Dialisis_Peritoneal` tinyint(4) NOT NULL
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 
+                COLLATE=utf8_unicode_ci 
+                COMMENT='Tabla de Registro de Situacion Hospitalaria.';
+            """,
+    "truncateQuery": "TRUNCATE siti_pace",
+    "dropQuery": "DROP TABLE siti_pace",
+    "consultQuery": "SELECT * FROM siti_pace WHERE ID_Hosp = ?",
+    "consultPadecimientoQuery": "SELECT * FROM siti_pace WHERE ID_Hosp = ? "
+        "AND TipoAnalisis = 'Padecimiento Actual'",
+    "consultIdQuery": "SELECT * FROM siti_pace WHERE ID_Pace = ?",
+    "consultByIdPrimaryQuery": "SELECT * FROM siti_pace WHERE ID_Hosp = ?",
+    "consultAllIdsQuery": "SELECT ID_Pace FROM siti_pace",
+    "consultLastQuery":
+        "SELECT * FROM siti_pace WHERE ID_Pace = ? ORDER BY ID_Hosp DESC",
+    "consultByName": "SELECT * FROM siti_pace WHERE Pace_APP_DEG LIKE '%",
+    "registerQuery": "INSERT INTO `siti_pace` (ID_Pace, ID_Hosp, "
+        "Hosp_Siti, Disp_Oxigen, CVP, CVLP, CVC, "
+        "S_Foley, SNG, SOG, Drenaje, Pleuro_Vac, "
+        "Colostomia, Gastrostomia, Dialisis_Peritoneal) "
+        "VALUES (?,?,?,?,?,?,?,?,?,?,"
+        "?,?,?,?,?)",
+    "updateQuery": "UPDATE siti_pace "
+        "SET ID_Pace = ?, ID_Hosp = ?, Hosp_Siti = ?, "
+        "Disp_Oxigen = ?, CVP = ?, CVLP = ?, CVC = ?, S_Foley = ?, "
+        "SNG = ?, SOG = ?, Drenaje = ?, Pleuro_Vac = ?, Colostomia = ?, "
+        "Gastrostomia = ?, Dialisis_Peritoneal = ? "
+        "WHERE ID_Hosp = ?",
+    "deleteQuery": "DELETE FROM siti_pace WHERE ID_Hosp = ?",
+    "situacionColumns": [
+      "ID_Pace",
+    ],
+    "situacionItems": [
+      "ID_Pace",
+    ],
+    "situacionColums": [
+      "ID Paciente",
+    ],
+    "situaciontats": [
+      "Total_Administradores",
+    ],
+    "situaciontadistics": "SELECT "
+        "(SELECT IFNULL(AVG('Pace_SV_tas'), 0) FROM siti_pace WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAS,"
+        "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM siti_pace WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
+        "(SELECT IFNULL(count(*), 0) FROM siti_pace WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
+  };
+}
+
+class Expedientes {
+  static Map<String, dynamic> Expediente = {};
+
+  static List<String> actualDiagno = Opciones.horarios();
+
+  static void ultimoRegistro() {
+    Actividades.consultarId(Databases.siteground_database_reghosp,
+            Expediente['consultLastQuery'], Pacientes.ID_Paciente)
+        .then((value) {
+// Enfermedades de base del paciente, asi como las Hospitalarias.
+      Expediente = value;
+    });
+  }
+
+  static void actualizarRegistro() {
+    Actividades.actualizar(
+      Databases.siteground_database_reghosp,
+      Expedientes.expedientes['updateQuery'],
+      [
+        Pacientes.ID_Paciente,
+        Pacientes.ID_Hospitalizacion,
+        Dicotomicos.fromBoolean(Valores.isPortada!, toInt: true),
+        Dicotomicos.fromBoolean(Valores.isHistoriaClinica!, toInt: true),
+        Dicotomicos.fromBoolean(Valores.isNotaIngreso!, toInt: true),
+        Dicotomicos.fromBoolean(Valores.isEvaluacionInicial!, toInt: true),
+        Dicotomicos.fromBoolean(Valores.isValoracionVademecum!, toInt: true),
+        Dicotomicos.fromBoolean(Valores.isConsentimientos!, toInt: true),
+        Dicotomicos.fromBoolean(Valores.isOrdenado!, toInt: true),
+        Pacientes.ID_Hospitalizacion,
+      ],
+      Pacientes.ID_Paciente,
+    ).then((value) => print(value));
+  }
+
+  static void registrarRegistro() {
+    Actividades.registrar(
+      Databases.siteground_database_reghosp,
+      Expedientes.expedientes['registerQuery'],
+      [
+        Pacientes.ID_Paciente,
+        Pacientes.ID_Hospitalizacion,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    );
+  }
+
+  static void consultarRegistro() {
+    Actividades.consultarAllById(Databases.siteground_database_reghosp,
+            expedientes['consultIdQuery'], Pacientes.ID_Paciente)
+        .then((value) {
+      // Enfermedades de base del paciente, asi como las Hospitalarias.
+      // Pacientes.Expedientes = value;
+    });
+  }
+
+  static final Map<String, dynamic> expedientes = {
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_reghosp` "
+        "DEFAULT CHARACTER SET utf8 "
+        "COLLATE utf8_unicode_ci;",
+    "showTables": "SHOW tables;",
+    "dropDatabase": "DROP DATABASE `bd_reghosp`",
+    "describeTable": "DESCRIBE expe_pace;",
+    "showColumns": "SHOW columns FROM expe_pace",
+    "showInformation":
+        "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'expe_pace'",
+    "createQuery": """CREATE TABLE `expe_pace` (
+                  `ID_Expe` int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                  `ID_Pace` int(10) NOT NULL,
+                  `ID_Hosp` int(11) NOT NULL,
+                  `POR` tinyint(1) NOT NULL,
+                  `HIS` tinyint(1) NOT NULL,
+                  `ING` tinyint(1) NOT NULL,
+                  `EVA` tinyint(1) NOT NULL,
+                  `VAL` tinyint(1) NOT NULL,
+                  `CON` tinyint(1) NOT NULL,
+                  `ORD` tinyint(1) NOT NULL
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci 
+                COMMENT='Tabla para Registro de Estado de Expediente Clinico.';
+            """,
+    "truncateQuery": "TRUNCATE expe_pace",
+    "dropQuery": "DROP TABLE expe_pace",
+    "consultQuery": "SELECT * FROM expe_pace WHERE ID_Hosp = ?",
+    "consultIdQuery": "SELECT * FROM expe_pace WHERE ID_Pace = ?",
+    "consultByIdPrimaryQuery": "SELECT * FROM expe_pace WHERE ID_Hosp = ?",
+    "consultAllIdsQuery": "SELECT ID_Pace FROM expe_pace",
+    "consultLastQuery":
+        "SELECT * FROM expe_pace WHERE ID_Pace = ? ORDER BY ID_Hosp DESC",
+    "consultByName": "SELECT * FROM expe_pace WHERE Pace_APP_DEG LIKE '%",
+    "registerQuery": "INSERT INTO expe_pace (ID_Pace, ID_Hosp, "
+        "POR, HIS, ING, EVA, VAL, CON, ORD) "
+        "VALUES (?,?,?,?,?,?,?,?,?)",
+    "updateQuery": "UPDATE expe_pace "
+        "SET ID_Pace = ?, ID_Hosp = ?, POR = ?, HIS = ?, ING = ?, "
+        "EVA = ?, VAL = ?, CON = ?, ORD = ? "
+        "WHERE ID_Hosp = ?",
+    "deleteQuery": "DELETE FROM expe_pace WHERE ID_Hosp = ?",
+    "ExpedienteColumns": [
+      "ID_Pace",
+    ],
+    "ExpedienteItems": [
+      "ID_Pace",
+    ],
+    "ExpedienteColums": [
+      "ID Paciente",
+    ],
+    "Expedientetats": [
+      "Total_Administradores",
+    ],
+    "Expedientetadistics": "SELECT "
+        "(SELECT IFNULL(AVG('Pace_SV_tas'), 0) FROM expe_pace WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAS,"
+        "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM expe_pace WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
+        "(SELECT IFNULL(count(*), 0) FROM expe_pace WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
   };
 }
 

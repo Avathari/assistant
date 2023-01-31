@@ -68,7 +68,7 @@ class _OperacionesVacunalesState extends State<OperacionesVacunales> {
           idOperation = Vacunales.Vacunas['ID_PACE_APP_VAC'];
 
           isActualDiagoValue =
-              Dicotomicos.fromInt(Vacunales.Vacunas['Pace_APP_VAC_SINO']);
+              Dicotomicos.fromInt(Vacunales.Vacunas['Pace_APP_VAC_SINO']).toString();
           if (Vacunales.selectedDiagnosis == "") {
             cieDiagnoTextController.text = Vacunales.Vacunas['Pace_APP_VAC'];
           } else {
@@ -78,7 +78,7 @@ class _OperacionesVacunalesState extends State<OperacionesVacunales> {
               Vacunales.Vacunas['Pace_APP_VAC_dia'].toString();
           //
           isTratamientoDiagoValue =
-              Dicotomicos.fromInt(Vacunales.Vacunas['Pace_APP_VAC_tra_SINO']);
+              Dicotomicos.fromInt(Vacunales.Vacunas['Pace_APP_VAC_tra_SINO']).toString();
           tratamientoTextController.text =
               Vacunales.Vacunas['Pace_APP_VAC_tra'];
         });

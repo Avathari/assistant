@@ -68,7 +68,7 @@ class _OperacionesAlergicosState extends State<OperacionesAlergicos> {
           idOperation = Alergicos.Alergias['ID_PACE_APP_ALE'];
 
           isActualDiagoValue =
-              Dicotomicos.fromInt(Alergicos.Alergias['Pace_APP_ALE_SINO']);
+              Dicotomicos.fromInt(Alergicos.Alergias['Pace_APP_ALE_SINO']).toString();
           if (Alergicos.selectedDiagnosis == "") {
             cieDiagnoTextController.text = Alergicos.Alergias['Pace_APP_ALE'];
           } else {
@@ -80,7 +80,7 @@ class _OperacionesAlergicosState extends State<OperacionesAlergicos> {
               Alergicos.Alergias['Pace_APP_ALE_dia'].toString();
           //
           isTratamientoDiagoValue =
-              Dicotomicos.fromInt(Alergicos.Alergias['Pace_APP_ALE_tra_SINO']);
+              Dicotomicos.fromInt(Alergicos.Alergias['Pace_APP_ALE_tra_SINO']).toString();
           tratamientoTextController.text =
               Alergicos.Alergias['Pace_APP_ALE_tra'];
         });

@@ -29,10 +29,14 @@ class Valores {
   static int? edad, numeroCama, diasEstancia;
   static bool? isHospitalizado;
   //
-  static String ? fechaIngresoHospitalario, fechaEgresoHospitalario,
+  static String? fechaIngresoHospitalario,
+      fechaEgresoHospitalario,
       medicoTratante,
-  servicioTratante, servicioTratanteInicial, motivoEgreso,
-  fechaPadecimientoActual, padecimientoActual;
+      servicioTratante,
+      servicioTratanteInicial,
+      motivoEgreso,
+      fechaPadecimientoActual,
+      padecimientoActual;
   //
   static int? tensionArterialSystolica,
       tensionArterialDyastolica,
@@ -138,11 +142,29 @@ class Valores {
   static String? complicacionesProcedimiento;
   static String? pendientesProcedimiento;
   // Variables de Valoraciones
-  static String? valoracionAsa;
-  static String? valoracionBromage;
-  static String? valoracionNyha;
-  //
-
+  static String? valoracionAsa, valoracionBromage, valoracionNyha;
+  // Variables de la situación hospitalaria
+  static String? dispositivoOxigeno = Items.dispositivosOxigeno[0];
+  static bool? isCateterPeriferico = false,
+      isCateterLargoPeriferico = false,
+      isCateterVenosoCentral = false,
+      isSondaFoley = false,
+      isDrenajePenrose = false,
+      isSondaNasogastrica = false,
+      isSondaOrogastrica = false,
+      isDrenajePenros = false,
+      isPleuroVac = false,
+      isColostomia = false,
+      isGastrostomia = false,
+      isDialisisPeritoneal = false;
+  // Variables del Ordenamiento del Expediente Clínico
+  static bool? isPortada = false,
+      isHistoriaClinica = false,
+      isNotaIngreso = false,
+      isEvaluacionInicial = false,
+      isValoracionVademecum = false,
+      isConsentimientos = false,
+      isOrdenado = false;
   //
   static String? antecedenteInfarto = Dicotomicos.dicotomicos()[1];
   static String? ritmoSinusal = Dicotomicos.dicotomicos()[0];
@@ -167,7 +189,8 @@ class Valores {
 
   Future<bool> load() async {
     // Otras configuraciones
-    Escalas.serviciosHospitalarios = await Archivos.listFromText(path: 'assets/diccionarios/Servicios.txt', splitChar: ',');
+    Escalas.serviciosHospitalarios = await Archivos.listFromText(
+        path: 'assets/diccionarios/Servicios.txt', splitChar: ',');
     //
     valores.addAll(Pacientes.Paciente);
     //
@@ -1716,7 +1739,6 @@ class Escalas {
     'Traslado',
     'Alta voluntaria',
     'Defunción',
-
   ];
 
   static List<String> sitiosCateterCentral = [
@@ -1799,10 +1821,11 @@ class Escalas {
 }
 
 class Items {
-  static List tiposAnalisis = [
-    'Padecimiento Actual'
+  static List<String> tiposAnalisis = ['Padecimiento Actual'];
 
-  ];
+  static List<String> dispositivosOxigeno = ['', 'Puntas nasales'];
+
+  static List<String> dicotomicos = Dicotomicos.dicotomicos();
 }
 
 isNull(value) {

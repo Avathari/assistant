@@ -4,8 +4,10 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/screens/pacientes/hospitalizacion/expedientes.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/padecimientoActual.dart';
+import 'package:assistant/screens/pacientes/hospitalizacion/situacionesHospitalizacion.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/pendientes.dart';
 import 'package:assistant/screens/pacientes/vitales/vitales.dart';
 import 'package:assistant/values/SizingInfo.dart';
@@ -322,7 +324,6 @@ class _DashboardState extends State<Dashboard> {
                           context: context,
                           chyldrim: const OpcionesHospitalizacion(),
                           onAction: () {
-                            print('ON ACTION!!!');
                             print('ON ACTION!!! ${Valores.servicioTratante}');
                           },
                         );
@@ -764,23 +765,23 @@ class _HospitalizadoState extends State<Hospitalizado> {
                                       context: context,
                                       chyldrim: const PadecimientoActual(),
                                       onAction: () {
-                                        Actividades.actualizar(
-                                          Databases.siteground_database_reghosp,
-                                          Repositorios
-                                              .repositorio['updateQuery'],
-                                          [
-                                            Valores.padecimientoActual,
-                                            Pacientes.ID_Hospitalizacion,
-                                            Items.tiposAnalisis[0],
-                                          ],
-                                          Pacientes.ID_Paciente,
-                                        );
+                                        Repositorios.actualizarRegistro();
                                       });
                                 }),
                             GrandIcon(
                                 iconData: Icons.medication_sharp,
                                 labelButton: 'Situación de la Hospitalización',
-                                onPress: () {}),
+                                onPress: () {
+                                  Operadores.openActivity(
+                                      context: context,
+                                      chyldrim:
+                                          const SituacionesHospitalizacion(),
+                                      onAction: () {
+                                        setState(() {
+                                          Situaciones.actualizarRegistro();
+                                        });
+                                      });
+                                }),
                             GrandIcon(
                                 iconData: Icons.restore_page_outlined,
                                 labelButton:
@@ -798,7 +799,16 @@ class _HospitalizadoState extends State<Hospitalizado> {
                             GrandIcon(
                                 iconData: Icons.data_array,
                                 labelButton: 'Situación del Expediente Clínico',
-                                onPress: () {}),
+                                onPress: () {
+                                  Operadores.openActivity(
+                                      context: context,
+                                      chyldrim: const ExpedientesClinicos(),
+                                      onAction: () {
+                                        setState(() {
+                                          Expedientes.actualizarRegistro();
+                                        });
+                                      });
+                                }),
                           ],
                         ),
                       )
@@ -1033,6 +1043,7 @@ class _OpcionesHospitalizacionState extends State<OpcionesHospitalizacion> {
 
   @override
   void initState() {
+    super.initState();
     for (var element in Escalas.serviciosHospitalarios) {
       auxiliarServicios.add(element.toString());
     }
@@ -1042,8 +1053,10 @@ class _OpcionesHospitalizacionState extends State<OpcionesHospitalizacion> {
     servicioTratanteInicialValue = auxiliarServicios
         .firstWhere((element) => element.contains('Urgencias'));
     //
-    Valores.servicioTratante = servicioTratanteValue;
-    Valores.servicioTratanteInicial = servicioTratanteInicialValue;
+    setState(() {
+      Valores.servicioTratante = servicioTratanteValue;
+      Valores.servicioTratanteInicial = servicioTratanteInicialValue;
+    });
   }
 
   @override

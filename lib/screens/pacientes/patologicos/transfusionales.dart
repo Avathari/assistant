@@ -70,7 +70,7 @@ class _OperacionesTransfusionalesState
           idOperation = Transfusionales.Transfusiones['ID_PACE_APP_TRA'];
 
           isActualDiagoValue = Dicotomicos.fromInt(
-              Transfusionales.Transfusiones['Pace_APP_TRA_SINO']);
+              Transfusionales.Transfusiones['Pace_APP_TRA_SINO']).toString();
           if (Transfusionales.selectedDiagnosis == "") {
             cieDiagnoTextController.text =
                 Transfusionales.Transfusiones['Pace_APP_TRA'];
@@ -81,7 +81,7 @@ class _OperacionesTransfusionalesState
               Transfusionales.Transfusiones['Pace_APP_TRA_dia'].toString();
           //
           isTratamientoDiagoValue = Dicotomicos.fromInt(
-              Transfusionales.Transfusiones['Pace_APP_TRA_com_SINO']);
+              Transfusionales.Transfusiones['Pace_APP_TRA_com_SINO']).toString();
           tratamientoTextController.text =
               Transfusionales.Transfusiones['Pace_APP_TRA_com'];
         });
