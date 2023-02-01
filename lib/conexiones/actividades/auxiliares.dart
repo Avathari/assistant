@@ -202,18 +202,54 @@ class Opciones {
 }
 
 class Operadores {
-  static Future<void> openActivity(
-      {required BuildContext context,
-      required Widget chyldrim,
-      onAction = null}) async {
+
+  static void openDialog({required BuildContext context,
+  required Widget chyldrim}) {
     showDialog(
         useSafeArea: true,
         context: context,
         builder: (context) {
+          return Dialog(
+              backgroundColor: Colors.black,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(flex: 5, child: chyldrim),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius:
+                          const BorderRadius.all(Radius.circular(20)),
+                          border: Border.all(
+                            color: Colors.grey,
+                          )),
+                      child: GrandButton(
+                        labelButton: 'Cerrar',
+                        onPress: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ));
+        });
+  }
+
+  static Future<void> openActivity(
+      {required BuildContext context,
+      required Widget chyldrim,
+      Function? onAction}) async {
+    showDialog(
+        useSafeArea: true,
+        context: context,
+        builder: (context) {
+          print("ON ACTION $onAction ${onAction.runtimeType}");
           return SimpleDialog(
             backgroundColor: Colors.black,
             children: [
-              Expanded(flex: 5, child: chyldrim),
+              Flexible( child: chyldrim),
               Container(
                 decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(20)),
@@ -223,7 +259,7 @@ class Operadores {
                 child: GrandButton(
                   labelButton: 'Cerrar',
                   onPress: () {
-                    if (onAction == null) {
+                    if (onAction == null || onAction == Null) {
                       Navigator.of(context).pop();
                     } else {
                       onAction();

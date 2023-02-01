@@ -1,5 +1,4 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
-import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/antropometricos.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/ventilatorios.dart';
 
@@ -112,8 +111,9 @@ class _IntensivaState extends State<Intensiva> {
                     iconData: Icons.balance,
                     labelButton: 'Concentraciones y Diluciones',
                     onPress: () {
-                      Operadores.openActivity(context: context, chyldrim: const Concentraciones());
-
+                      openDialog(
+                          const Concentraciones(),
+                          );
                     },
                   ),
                   const CrossLine(),
@@ -187,7 +187,7 @@ class _IntensivaState extends State<Intensiva> {
                     labelButton: 'Análisis Hidrico',
                     onPress: () {
                       if (isMobile(context)) {
-                        openActivity(const Hidricos());
+                        openDialog(const Hidricos());
                       } else {
                         setState(() {
                           widget.actualView = 1;
@@ -200,7 +200,7 @@ class _IntensivaState extends State<Intensiva> {
                     labelButton: 'Análisis Metabólico',
                     onPress: () {
                       if (isMobile(context)) {
-                        openActivity(const Metabolicos());
+                        openDialog(const Metabolicos());
                       } else {
                         setState(() {
                           widget.actualView = 2;
@@ -213,7 +213,7 @@ class _IntensivaState extends State<Intensiva> {
                     labelButton: 'Análisis Antropométrico',
                     onPress: () {
                       if (isMobile(context)) {
-                        openActivity(const Antropometricos());
+                        openDialog(const Antropometricos());
                       } else {
                         setState(() {
                           widget.actualView = 3;
@@ -234,7 +234,7 @@ class _IntensivaState extends State<Intensiva> {
                     labelButton: 'Análisis Ventilatorio',
                     onPress: () {
                       if (isMobile(context)) {
-                        openActivity(const Ventilatorios());
+                        openDialog(const Ventilatorios());
                       } else {
                         setState(() {
                           widget.actualView = 5;
@@ -311,7 +311,7 @@ class _IntensivaState extends State<Intensiva> {
               labelButton: 'Valoración Prequirúrgica',
               onPress: () {
                 if (isMobile(context)) {
-                  openActivity(const Prequirurgicos());
+                  openDialog(const Prequirurgicos());
                 } else {
                   setState(() {
                     widget.actualView = 11;
@@ -323,7 +323,7 @@ class _IntensivaState extends State<Intensiva> {
               labelButton: 'Valoración de Vía Aerea',
               onPress: () {
                 if (isMobile(context)) {
-                  openActivity(const Aereas());
+                  openDialog(const Aereas());
                 } else {
                   setState(() {
                     widget.actualView = 12;
@@ -348,25 +348,29 @@ class _IntensivaState extends State<Intensiva> {
             GrandLabel(
               labelButton: 'Catéter Venoso Central',
               onPress: () {
-                Operadores.openActivity(context: context, chyldrim: const CateterVenosoCentral());
+                Operadores.openDialog(
+                    context: context, chyldrim: const CateterVenosoCentral());
               },
             ),
             GrandLabel(
               labelButton: 'Intubación Endotraqueal',
               onPress: () {
-                Operadores.openActivity(context: context, chyldrim: const IntubacionEndotraqueal());
+                Operadores.openDialog(
+                    context: context, chyldrim: const IntubacionEndotraqueal());
               },
             ),
             GrandLabel(
               labelButton: 'Sonda Endopleural',
               onPress: () {
-                Operadores.openActivity(context: context, chyldrim: const SondaEndopleural());
+                Operadores.openDialog(
+                    context: context, chyldrim: const SondaEndopleural());
               },
             ),
             GrandLabel(
               labelButton: 'Catéter Tenckhoff',
               onPress: () {
-                Operadores.openActivity(context: context, chyldrim: const CateterTenckhoff());
+                Operadores.openDialog(
+                    context: context, chyldrim: const CateterTenckhoff());
               },
             ),
           ],
@@ -398,7 +402,7 @@ class _IntensivaState extends State<Intensiva> {
     return list[actualView];
   }
 
-  void openActivity(chyldrim) {
+  void openDialog(chyldrim) {
     showDialog(
         useSafeArea: true,
         context: context,
