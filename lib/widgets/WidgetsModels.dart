@@ -525,9 +525,14 @@ Padding tittleCard({Color? color, String? text}) {
   );
 }
 
-DataCell dataCell(String? text) {
-  return DataCell(Text(
-    text!,
-    style: const TextStyle(color: Colors.white),
-  ));
+DataCell dataCell(String? text, {Function? onTapped}) {
+  return DataCell(
+    Text(
+      text!,
+      style: const TextStyle(color: Colors.white),
+    ),
+    onTap: () {
+      onTapped!();
+    },
+  );
 }

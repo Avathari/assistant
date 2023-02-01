@@ -137,7 +137,7 @@ class Archivos {
         throw "No existe el archivo $path";
       }
     }
-    print(_list);
+    // print(_list);
     //
     return _list;
   }

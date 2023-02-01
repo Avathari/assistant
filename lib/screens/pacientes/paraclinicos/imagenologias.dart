@@ -143,7 +143,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
               : isTablet(context)
                   ? 200
                   : isMobile(context)
-                      ? 100
+                      ? 250
                       : 300,
           tittle: "Tipo de Estudios",
           initialValue: tipoEstudioValue!,
@@ -159,7 +159,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
               : isTablet(context)
                   ? 200
                   : isMobile(context)
-                      ? 100
+                      ? 250
                       : 300,
           tittle: "Región Corporal",
           initialValue: regionCorporalValue!,
@@ -324,7 +324,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                     carouselController: carouselController,
                     options: CarouselOptions(
                         height: isMobile(context)
-                            ? 700
+                            ? 900
                             : isTablet(context)
                                 ? 1000
                                 : isDesktop(context)
@@ -377,10 +377,11 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                         controller: scrollController,
                         child: Expanded(
                           child: GridLayout(
-                            childAspectRatio: isMobile(context) || isTablet(context) ? 1.5 : 1.0,
+                            childAspectRatio: isMobile(context) ? 0.63 : isTablet(context) ? 1.5 : 1.0,
                             columnCount: isMobile(context) || isTablet(context) ? 1 :2,
                             children: [
                               Expanded(
+                                flex: 3,
                                 child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: listOfComponents()),
@@ -578,10 +579,42 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
     List<DataCell> listOfCells = [];
 
     // Desglose del Map() para colocación del value en DataCell()
-    listOfCells.add(dataCell(element['ID_Pace_GAB_RA'].toString()));
-    listOfCells.add(dataCell(element['Pace_GAB_RA_Feca'].toString()));
-    listOfCells.add(dataCell(element['Pace_GAB_RA_typ'].toString()));
-    listOfCells.add(dataCell(element['Pace_GAB_RA_reg'].toString()));
+    listOfCells.add(dataCell(element['ID_Pace_GAB_RA'].toString(), onTapped: () {
+      operationActivity = false;
+      // ***************** ************* *****
+      elementSelected = element;
+      Pacientes.Imagenologias = element;
+      carouselController.jumpToPage(1);
+      // ***************** ************* *****
+      updateElement(element);
+    },));
+    listOfCells.add(dataCell(element['Pace_GAB_RA_Feca'].toString(), onTapped: () {
+      operationActivity = false;
+      // ***************** ************* *****
+      elementSelected = element;
+      Pacientes.Imagenologias = element;
+      carouselController.jumpToPage(1);
+      // ***************** ************* *****
+      updateElement(element);
+    },));
+    listOfCells.add(dataCell(element['Pace_GAB_RA_typ'].toString(), onTapped: () {
+      operationActivity = false;
+      // ***************** ************* *****
+      elementSelected = element;
+      Pacientes.Imagenologias = element;
+      carouselController.jumpToPage(1);
+      // ***************** ************* *****
+      updateElement(element);
+    },));
+    listOfCells.add(dataCell(element['Pace_GAB_RA_reg'].toString(), onTapped: () {
+      operationActivity = false;
+      // ***************** ************* *****
+      elementSelected = element;
+      Pacientes.Imagenologias = element;
+      carouselController.jumpToPage(1);
+      // ***************** ************* *****
+      updateElement(element);
+    },));
     // listOfCells.add(dataCell(element['Pace_GAB_RA_hal'].toString()));
     // listOfCells.add(dataCell(element['Pace_EC_CON'].toString()));
     listOfCells.add(DataCell(

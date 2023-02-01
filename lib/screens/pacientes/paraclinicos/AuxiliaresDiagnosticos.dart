@@ -2,6 +2,7 @@ import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/Electrocardiogramas.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/imagenologias.dart';
+import 'package:assistant/widgets/CrossLine.dart';
 
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
@@ -84,6 +85,8 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
 
   var carouselController = CarouselController();
 
+  int index = 0, secondIndex = 0;
+
   // ############################ ####### ####### #############################
 
   @override
@@ -160,7 +163,15 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
                   onPress: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) =>
-                             const ElectrocardiogramasGestion()));
+                            const ElectrocardiogramasGestion()));
+                  },
+                ),
+                GrandIcon(
+                  labelButton: 'Registro de estudios de imagen',
+                  iconData: Icons.image_aspect_ratio_sharp,
+                  onPress: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const ImagenologiasGestion()));
                   },
                 ),
                 GrandIcon(
@@ -189,9 +200,9 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
                     child: TittlePanel(
                         textPanel: 'Registro de Estudios de Laboratorio'))
                 : SingleChildScrollView(
-              controller: ScrollController(),
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
+                    controller: ScrollController(),
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GrandButton(
@@ -200,7 +211,7 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
                             onPress: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) =>
-                                       const ElectrocardiogramasGestion()));
+                                      const ElectrocardiogramasGestion()));
                             }),
                         GrandButton(
                             labelButton: "Registro de estudios imagenológicos",
@@ -208,7 +219,7 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
                             onPress: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) =>
-                                  const ImagenologiasGestion()));
+                                      const ImagenologiasGestion()));
                             }),
                         GrandButton(
                             labelButton: "Registro de laboratorios",
@@ -224,18 +235,22 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
                             }),
                       ],
                     ),
-                ),
+                  ),
           ),
           Expanded(
             child: CarouselSlider(
               carouselController: carouselController,
               options: CarouselOptions(
-                  height: isTablet(context) ? 900 : 500,
+                  height: isTablet(context)
+                      ? 900
+                      : isMobile(context)
+                          ? 1200
+                          : 500,
                   enableInfiniteScroll: false,
                   viewportFraction: 1.0),
               items: [
                 SingleChildScrollView(
-                  //flex: 2,
+                  controller: ScrollController(),
                   child: Card(
                     color: Colores.backgroundPanel,
                     child: SingleChildScrollView(
@@ -287,25 +302,33 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
                                   type: MaskAutoCompletionType.lazy),
                             ),
                             GridLayout(
-                                childAspectRatio: 5.0,
-                                columnCount: 2,
+                                childAspectRatio: isMobile(context) ? 3.3 : 5.0,
+                                columnCount: isMobile(context) ? 1 : 2,
                                 children: [
                                   Spinner(
                                       width: isTabletAndDesktop(context)
                                           ? 190
-                                          : 90,
+                                          : 170, // 90
                                       tittle: "Tipo de Estudio",
                                       initialValue: tipoEstudioValue!,
                                       items: Auxiliares.Categorias,
                                       onChangeValue: (String? newValue) {
                                         setState(() {
                                           tipoEstudioValue = newValue!;
+                                          // *************** *********** **************
+                                          // Actualización del Indice
+                                          // *************** *********** **************
+                                          index = Auxiliares.Categorias.indexOf(newValue);
+                                          // *************** *********** **************
+                                          estudioValue = Auxiliares.Laboratorios[Auxiliares.Categorias[index]][0];
+                                          unidadMedidaValue = Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
+                                          // *************** *********** **************
                                         });
                                       }),
                                   Spinner(
                                       width: isTabletAndDesktop(context)
                                           ? 120
-                                          : 90,
+                                          : 170, // 90
                                       tittle: "Estudio",
                                       initialValue: estudioValue!,
                                       items: Auxiliares
@@ -313,6 +336,7 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
                                       onChangeValue: (String? newValue) {
                                         setState(() {
                                           estudioValue = newValue!;
+                                          //
                                         });
                                       }),
                                   EditTextArea(
@@ -325,7 +349,7 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
                                   Spinner(
                                       width: isTabletAndDesktop(context)
                                           ? 120
-                                          : 90,
+                                          : 170, // 90
                                       tittle: "Unidad de Medida",
                                       initialValue: unidadMedidaValue!,
                                       items:
@@ -336,8 +360,11 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
                                         });
                                       }),
                                 ]),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            const CrossLine(),
+                            GridLayout(
+                              childAspectRatio: isMobile(context) ? 3.0 : 5.0,
+                              columnCount: isMobile(context) ? 2 : 3,
+                              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 GrandButton(
                                     labelButton: operationActivity
@@ -375,7 +402,7 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
                                           initAllElement();
                                         }),
                                 GrandButton(
-                                  weigth: isTablet(context) ? 200 : 500,
+                                    weigth: isTablet(context) ? 200 : 500,
                                     labelButton: operationActivity
                                         ? "Agregar"
                                         : "Actualizar",
@@ -477,7 +504,17 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
 
     // Desglose del Map() para colocación del value en DataCell()
     element.forEach((key, value) {
-      listOfCells.add(dataCell(value.toString()));
+      listOfCells.add(dataCell(
+        value.toString(),
+        onTapped: () {
+          operationActivity = false;
+          // print("Element ${element[idWidget]}");
+          elementSelected = element;
+          carouselController.jumpToPage(1);
+
+          updateElement(element);
+        },
+      ));
     });
     listOfCells.add(DataCell(
       Row(

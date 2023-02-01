@@ -1951,8 +1951,9 @@ class EstadisticasPacientes extends StatefulWidget {
 
 class _EstadisticasPacientesState extends State<EstadisticasPacientes> {
   Map<String, dynamic> data = {
-    "Total_Pacientes": 0,
-    "Total_Vivos": 0,
+    // "Total_Pacientes": 0,
+    "Total_Mujeres": 0,
+    "Total_Hombres": 0,
     //
     "Total_Hospitalizacion": 0,
     "Total_Consulta": 0,

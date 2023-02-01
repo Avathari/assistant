@@ -209,7 +209,7 @@ class _ElectrocardiogramasGestionState
   List<Widget> listOfComponents() {
     return [
       Spinner(
-          width: 100,
+          width: isMobile(context) ? 150 :100,
           isRow: false,
           tittle: "Ritmo cardiaco",
           initialValue: ritmoCardiacoValue!,
@@ -330,7 +330,7 @@ class _ElectrocardiogramasGestionState
       const CrossLine(),
       //
       Spinner(
-          width: isTablet(context) ? 170: 110,
+          width: isMobile(context) || isTablet(context) ? 170: 110,
           isRow: false,
           tittle: "Segmento ST",
           initialValue: segmentoSTValue!,
@@ -768,7 +768,7 @@ class _ElectrocardiogramasGestionState
                                                 : isDesktop(context)
                                                     ? 5.0
                                                     : isMobile(context)
-                                                        ? 4.0
+                                                        ? 3.8
                                                         : 5.0,
                                         columnCount: isMobile(context) ? 1 : 2,
                                         children: listOfComponents()),
@@ -999,13 +999,103 @@ class _ElectrocardiogramasGestionState
     List<DataCell> listOfCells = [];
 
     // Desglose del Map() para colocación del value en DataCell()
-    listOfCells.add(dataCell(element['ID_Pace_GAB_EC'].toString()));
-    listOfCells.add(dataCell(element['Pace_GAB_EC_Feca'].toString()));
-    listOfCells.add(dataCell(element['Pace_EC_rit'].toString()));
-    listOfCells.add(dataCell(element['Pace_EC_rr'].toString()));
+    listOfCells.add(dataCell(element['ID_Pace_GAB_EC'].toString(), onTapped: () {
+      operationActivity = false;
+      // print("Element ${element[idWidget]}");
+      elementSelected = element;
+      Pacientes.Electrocardiogramas = element;
+      element.addAll({
+        "isl": (element['EC_sV1'] + element['EC_rV6']),
+        "igu": (element['EC_rDI'] + element['EC_sDIII']),
+        "il": (element['EC_rDI'] + element['EC_sDIII']) -
+            (element['EC_rDIII'] + element['EC_sDI']),
+        "vc": (element['EC_rAVL'] + element['EC_sV3'])
+      });
+      carouselController.jumpToPage(1);
+
+      updateElement(element);
+    },));
+    listOfCells.add(dataCell(element['Pace_GAB_EC_Feca'].toString(), onTapped: () {
+      operationActivity = false;
+      // print("Element ${element[idWidget]}");
+      elementSelected = element;
+      Pacientes.Electrocardiogramas = element;
+      element.addAll({
+        "isl": (element['EC_sV1'] + element['EC_rV6']),
+        "igu": (element['EC_rDI'] + element['EC_sDIII']),
+        "il": (element['EC_rDI'] + element['EC_sDIII']) -
+            (element['EC_rDIII'] + element['EC_sDI']),
+        "vc": (element['EC_rAVL'] + element['EC_sV3'])
+      });
+      carouselController.jumpToPage(1);
+
+      updateElement(element);
+    },));
+    listOfCells.add(dataCell(element['Pace_EC_rit'].toString(), onTapped: () {
+      operationActivity = false;
+      // print("Element ${element[idWidget]}");
+      elementSelected = element;
+      Pacientes.Electrocardiogramas = element;
+      element.addAll({
+        "isl": (element['EC_sV1'] + element['EC_rV6']),
+        "igu": (element['EC_rDI'] + element['EC_sDIII']),
+        "il": (element['EC_rDI'] + element['EC_sDIII']) -
+            (element['EC_rDIII'] + element['EC_sDI']),
+        "vc": (element['EC_rAVL'] + element['EC_sV3'])
+      });
+      carouselController.jumpToPage(1);
+
+      updateElement(element);
+    },));
+    listOfCells.add(dataCell(element['Pace_EC_rr'].toString(), onTapped: () {
+      operationActivity = false;
+      // print("Element ${element[idWidget]}");
+      elementSelected = element;
+      Pacientes.Electrocardiogramas = element;
+      element.addAll({
+        "isl": (element['EC_sV1'] + element['EC_rV6']),
+        "igu": (element['EC_rDI'] + element['EC_sDIII']),
+        "il": (element['EC_rDI'] + element['EC_sDIII']) -
+            (element['EC_rDIII'] + element['EC_sDI']),
+        "vc": (element['EC_rAVL'] + element['EC_sV3'])
+      });
+      carouselController.jumpToPage(1);
+
+      updateElement(element);
+    },));
     listOfCells
-        .add(dataCell((1500 / element['Pace_EC_rr']).toStringAsFixed(0)));
-    listOfCells.add(dataCell(element['Pace_EC_CON'].toString()));
+        .add(dataCell((1500 / element['Pace_EC_rr']).toStringAsFixed(0), onTapped: () {
+      operationActivity = false;
+      // print("Element ${element[idWidget]}");
+      elementSelected = element;
+      Pacientes.Electrocardiogramas = element;
+      element.addAll({
+        "isl": (element['EC_sV1'] + element['EC_rV6']),
+        "igu": (element['EC_rDI'] + element['EC_sDIII']),
+        "il": (element['EC_rDI'] + element['EC_sDIII']) -
+            (element['EC_rDIII'] + element['EC_sDI']),
+        "vc": (element['EC_rAVL'] + element['EC_sV3'])
+      });
+      carouselController.jumpToPage(1);
+
+      updateElement(element);
+    },));
+    listOfCells.add(dataCell(element['Pace_EC_CON'].toString(), onTapped: () {
+      operationActivity = false;
+      // print("Element ${element[idWidget]}");
+      elementSelected = element;
+      Pacientes.Electrocardiogramas = element;
+      element.addAll({
+        "isl": (element['EC_sV1'] + element['EC_rV6']),
+        "igu": (element['EC_rDI'] + element['EC_sDIII']),
+        "il": (element['EC_rDI'] + element['EC_sDIII']) -
+            (element['EC_rDIII'] + element['EC_sDI']),
+        "vc": (element['EC_rAVL'] + element['EC_sV3'])
+      });
+      carouselController.jumpToPage(1);
+
+      updateElement(element);
+    },));
     listOfCells.add(DataCell(
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

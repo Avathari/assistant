@@ -1015,7 +1015,7 @@ class _HospitalizadoState extends State<Hospitalizado> {
       ThreeLabelTextAline(
         padding: 2.0,
         firstText: 'Estancia Prolongada',
-        secondText: '', // Valores.servicioTratanteInicial,
+        secondText: Valores.isEstanciaProlongada, // Valores.servicioTratanteInicial,
       ),
       ThreeLabelTextAline(
         padding: 2.0,

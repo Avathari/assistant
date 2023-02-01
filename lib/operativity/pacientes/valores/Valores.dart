@@ -31,6 +31,16 @@ class Valores {
   static int get diasEstancia {
     return DateTime.now().difference(DateTime.parse(fechaIngresoHospitalario!)).inDays;
   }
+  static String? get isEstanciaProlongada {
+    if (diasEstancia == 0) {
+      return 'Ingreso Hospitalario';
+    }      else if (diasEstancia  > 0 && diasEstancia < 14) {
+      return 'Estancia Hospitalaria';
+
+    } else {
+      return 'Estancia Prolongada';
+    }
+}
   //
   static String? fechaIngresoHospitalario,
       fechaEgresoHospitalario,

@@ -238,7 +238,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                                     padding: const EdgeInsets.all(8.0),
                                     child: GridLayout(
                                       childAspectRatio: isMobile(context)
-                                          ? 5.0
+                                          ? 4.0
                                           : isTablet(context)
                                               ? 5.0
                                               : 5.0,
@@ -256,7 +256,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                                     padding: const EdgeInsets.all(8.0),
                                     child: GridLayout(
                                       childAspectRatio: isMobile(context)
-                                          ? 5
+                                          ? 3.2
                                           : isTablet(context)
                                               ? 5.0
                                               : 5.0,
@@ -473,7 +473,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
           cmbTextController,
           false),
       Spinner(
-          width: 40,
+          width: isMobile(context)? 60: 40,
           tittle: "Factor de actividad",
           initialValue: factorActividadValue,
           items: Vitales.factorActividad,
