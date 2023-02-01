@@ -1,9 +1,7 @@
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
-import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/ShowText.dart';
-import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -86,6 +84,7 @@ class _VentilatoriosState extends State<Ventilatorios> {
                         ShowText(
                           title: 'Volumen tidal',
                           data: Valores.volumenTidal,
+                          fractionDigits: 0,
                           medida: 'mL',
                         ),
                         ShowText(
@@ -106,11 +105,13 @@ class _VentilatoriosState extends State<Ventilatorios> {
                         ShowText(
                           title: 'Frecuencia Ventilatoria',
                           data: Valores.frecuenciaVentilatoria!.toDouble(),
+                          fractionDigits: 0,
                           medida: 'Vent/min',
                         ),
                         ShowText(
                           title: 'P.E.E.P.',
                           data: Valores.presionFinalEsiracion!.toDouble(),
+                          fractionDigits: 0,
                           medida: 'cmH2O',
                         ),
                         ShowText(
@@ -121,11 +122,13 @@ class _VentilatoriosState extends State<Ventilatorios> {
                         ShowText(
                           title: 'FiO2',
                           data: Valores.fraccionInspiratoriaVentilatoria!.toDouble(),
+                          fractionDigits: 0,
                           medida: '%',
                         ),
                         ShowText(
                           title: 'P. Control / P. Soporte',
                           data: Valores.presionControl!.toDouble(),
+                          fractionDigits: 0,
                           medida: 'cmH2O',
                         ),
                       ],

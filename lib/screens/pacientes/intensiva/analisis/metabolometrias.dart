@@ -241,6 +241,11 @@ class _MetabolicosState extends State<Metabolicos> {
                         ],
                       ),
                       const CrossLine(),
+                      ShowText(
+                        title: '% Porcentual',
+                        data: double.parse(Valores.sumaPorcentualMetabolicos.toString()),
+                        medida: '%',
+                      ),
                     ],) : Column(children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

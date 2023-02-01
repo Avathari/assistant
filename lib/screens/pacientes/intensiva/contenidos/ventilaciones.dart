@@ -1,6 +1,8 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/ventilatorios.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
@@ -12,7 +14,6 @@ import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/GridLayout.dart';
 import 'package:assistant/widgets/Spinner.dart';
-import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -94,38 +95,66 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
           idOperation = Ventilaciones.Ventilacion['ID_Ventilacion'];
           fechaRealizacionTextController.text =
               Ventilaciones.Ventilacion['Feca_VEN'];
+          Valores.fechaVentilaciones = fechaRealizacionTextController.text;
+          //
           modoVentilatorioValue =
               Ventilaciones.Ventilacion['VM_Mod'].toString();
+          Valores.modalidadVentilatoria = fechaRealizacionTextController.text;
+          //
           //
           volTidalTextController.text =
               Ventilaciones.Ventilacion['Pace_Vt'].toString();
+          Valores.volumenTidal =  double.parse(volTidalTextController.text);
+          //
           peepTextController.text =
               Ventilaciones.Ventilacion['Pace_Peep'].toString();
+          Valores.presionFinalEsiracion =  int.parse(peepTextController.text);
+          //
           respTextController.text =
               Ventilaciones.Ventilacion['Pace_Fr'].toString();
+          Valores.frecuenciaVentilatoria =  int.parse(respTextController.text);
+          //
           fioTextController.text =
               Ventilaciones.Ventilacion['Pace_Fio'].toString();
+          Valores.fraccionInspiratoriaVentilatoria =  int.parse(fioTextController.text);
+          //
           sensInspTextController.text =
               Ventilaciones.Ventilacion['Pace_Insp'].toString();
+          Valores.sensibilidadInspiratoria =  int.parse(sensInspTextController.text);
+          //
           sensEspTextController.text =
               Ventilaciones.Ventilacion['Pace_Espi'].toString();
-          viaOtrosIngresosTextController.text =
-              Ventilaciones.Ventilacion['Pace_bala_ING'].toString();
+          Valores.sensibilidadEspiratoria =  int.parse(sensEspTextController.text);
+          //
           //
           pControlTextController.text =
               Ventilaciones.Ventilacion['Pace_Pc'].toString();
+          Valores.presionControl =  int.parse(pControlTextController.text);
+          //
           pMaximaTextController.text =
               Ventilaciones.Ventilacion['Pace_Pm'].toString();
+          Valores.presionMaxima = int.parse(pMaximaTextController.text);
+          //
           volTidalEspTextController.text =
               Ventilaciones.Ventilacion['Pace_V'].toString();
+          Valores.volumenVentilatorio =  int.parse(volTidalEspTextController.text);
+          //
           flujoTextController.text =
               Ventilaciones.Ventilacion['Pace_F'].toString();
+          Valores.flujoVentilatorio = int.parse(flujoTextController.text);
+          //
           pSoporteTextController.text =
               Ventilaciones.Ventilacion['Pace_Ps'].toString();
+          Valores.presionSoporte =  int.parse(pSoporteTextController.text);
+          //
           pPlatTextController.text =
               Ventilaciones.Ventilacion['Pace_Pmet'].toString();
+          Valores.presionPlateau = int.parse(pPlatTextController.text);
+          //
           pInspirattoriaTextController.text =
               Ventilaciones.Ventilacion['Pace_Pip'].toString();
+          Valores.presionInspiratoriaPico = int.parse(pInspirattoriaTextController.text);
+          //
 
           selectModal();
         });
@@ -350,7 +379,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
           ],
           carouselController: carouselController,
           options: CarouselOptions(
-              height: 500, enableInfiniteScroll: false, viewportFraction: 1.0)),
+              height: isTablet(context) ? 900 : 500, enableInfiniteScroll: false, viewportFraction: 1.0)),
     );
   }
 
@@ -373,6 +402,11 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         labelEditText: 'Vol. Tidal (mL)',
         textController: volTidalTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.volumenTidal = double.parse(value);
+          });
+        },
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -380,6 +414,11 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         labelEditText: 'P.E.E.P. (cmH2O)',
         textController: peepTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.presionFinalEsiracion = int.parse(value);
+          });
+        },
       ),
       const CrossLine(),
       //
@@ -389,6 +428,11 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         labelEditText: 'F. Resp (Vent/min)',
         textController: respTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.frecuenciaVentilatoria = int.parse(value);
+          });
+        },
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -396,6 +440,11 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         labelEditText: 'FiO2 (%)',
         textController: fioTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.fraccionInspiratoriaVentilatoria = int.parse(value);
+          });
+        },
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -403,6 +452,11 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         labelEditText: 'Sens. Insp. (Seg)',
         textController: sensInspTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.sensibilidadInspiratoria = int.parse(value);
+          });
+        },
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -410,6 +464,11 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         labelEditText: 'Sens. Esp. (Seg)',
         textController: sensEspTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.sensibilidadEspiratoria = int.parse(value);
+          });
+        },
       ),
 
       const CrossLine(),
@@ -424,6 +483,11 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         labelEditText: 'Presión Control (mmHg)',
         textController: pControlTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.presionControl = int.parse(value);
+          });
+        },
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -431,6 +495,11 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         labelEditText: 'Presión Máxima (mmHg)',
         textController: pMaximaTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.presionMaxima = int.parse(value);
+          });
+        },
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -438,6 +507,11 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         labelEditText: 'Presión Platteu (mmHg)',
         textController: pPlatTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.presionPlateau = int.parse(value);
+          });
+        },
       ),
       const CrossLine(),
     ];
@@ -451,6 +525,11 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         labelEditText: 'Volumen Tidal Espiratorio (mL)',
         textController: volTidalEspTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.volumenVentilatorio = int.parse(value);
+          });
+        },
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -458,6 +537,11 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         labelEditText: 'Flujo (L/min)',
         textController: flujoTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.flujoVentilatorio = int.parse(value);
+          });
+        },
       ),
       const CrossLine(),
     ];
@@ -471,6 +555,11 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         labelEditText: 'Presión Inspiratoria (mmHg)',
         textController: pInspirattoriaTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.presionInspiratoriaPico = int.parse(value);
+          });
+        },
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -478,6 +567,11 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         labelEditText: 'Volumen Tidal Espiratorio (mL)',
         textController: volTidalEspTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.volumenVentilatorio = int.parse(value);
+          });
+        },
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -485,6 +579,11 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         labelEditText: 'Presión Máxima (mmHg)',
         textController: pMaximaTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.presionMaxima = int.parse(value);
+          });
+        },
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -492,6 +591,11 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         labelEditText: 'Flujo (L/min)',
         textController: flujoTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.flujoVentilatorio = int.parse(value);
+          });
+        },
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -499,6 +603,11 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         labelEditText: 'Presión Platteu (mmHg)',
         textController: pPlatTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.presionPlateau = int.parse(value);
+          });
+        },
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -506,6 +615,11 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         labelEditText: 'Presión Soporte (mmHg)',
         textController: pSoporteTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.presionSoporte = int.parse(value);
+          });
+        },
       ),
       const CrossLine(),
     ];
@@ -519,6 +633,11 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         labelEditText: 'Presión Soporte (mmHg)',
         textController: pSoporteTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.presionSoporte = int.parse(value);
+          });
+        },
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -526,6 +645,11 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         labelEditText: 'Presión Inspiratoria Pico (mmHg)',
         textController: pInspirattoriaTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.presionInspiratoriaPico = int.parse(value);
+          });
+        },
       ),
       const CrossLine(),
     ];
@@ -733,13 +857,13 @@ class _GestionVentilacionesState extends State<GestionVentilaciones> {
               iconData: Icons.candlestick_chart,
               labelButton: 'Análisis de Parámetros',
               onPress: () {
-                openActivity(AnalisisVentilatorio());
+                openActivity(const AnalisisVentilatorio());
               },
             ) : isDesktop(context) ? GrandIcon(
               iconData: Icons.candlestick_chart,
               labelButton: 'Análisis de Parámetros',
               onPress: () {
-                openActivity(AnalisisVentilatorio());
+                openActivity(const AnalisisVentilatorio());
               },
             ) : Container(),
             IconButton(
@@ -1082,10 +1206,10 @@ class AnalisisVentilatorio extends StatefulWidget {
 }
 
 class _AnalisisVentilatorioState extends State<AnalisisVentilatorio> {
+  var carouselController = CarouselController();
+
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      TittlePanel(textPanel: 'Análisis Ventilatorio')
-    ],);
+    return const Ventilatorios();
   }
 }
