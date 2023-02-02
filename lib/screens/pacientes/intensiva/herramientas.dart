@@ -1,5 +1,6 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/antropometricos.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/gasometricos.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/ventilatorios.dart';
 
 import 'package:assistant/screens/pacientes/intensiva/contenidos/balances.dart';
@@ -245,9 +246,13 @@ class _IntensivaState extends State<Intensiva> {
                   GrandLabel(
                     labelButton: 'Análisis Gasométrico',
                     onPress: () {
-                      setState(() {
-                        widget.actualView = 5;
-                      });
+                      if (isMobile(context)) {
+                        openDialog(const Gasometricos());
+                      } else {
+                        setState(() {
+                          widget.actualView = 6;
+                        });
+                      }
                     },
                   ),
                   GrandLabel(
@@ -387,7 +392,7 @@ class _IntensivaState extends State<Intensiva> {
       const Antropometricos(),
       Container(),
       const Ventilatorios(),
-      Container(),
+      const Gasometricos(),
       Container(),
       Container(),
       Container(),
