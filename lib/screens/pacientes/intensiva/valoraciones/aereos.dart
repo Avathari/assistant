@@ -62,7 +62,7 @@ class _AereasState extends State<Aereas> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                                  ? 200
+                                  ? 150
                                   : isMobile(context)
                                       ? 100
                                       : 300,
@@ -80,7 +80,7 @@ class _AereasState extends State<Aereas> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                                  ? 200
+                              ? 150
                                   : isMobile(context)
                                       ? 100
                                       : 300,
@@ -98,7 +98,7 @@ class _AereasState extends State<Aereas> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                                  ? 200
+                              ? 150
                                   : isMobile(context)
                                       ? 100
                                       : 300,
@@ -116,7 +116,7 @@ class _AereasState extends State<Aereas> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                                  ? 200
+                              ? 150
                                   : isMobile(context)
                                       ? 100
                                       : 300,
@@ -134,7 +134,7 @@ class _AereasState extends State<Aereas> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                                  ? 200
+                              ? 150
                                   : isMobile(context)
                                       ? 100
                                       : 300,
@@ -152,7 +152,7 @@ class _AereasState extends State<Aereas> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                                  ? 200
+                              ? 150
                                   : isMobile(context)
                                       ? 100
                                       : 300,
@@ -170,11 +170,11 @@ class _AereasState extends State<Aereas> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                                  ? 200
+                              ? 150
                                   : isMobile(context)
                                       ? 100
                                       : 300,
-                          tittle: 'Valoración por Cormack-Lahane',
+                          tittle: 'Cormack-Lahane',
                           onChangeValue: (value) {
                             setState(() {
                               Valores.escalaCormackLahane = value;

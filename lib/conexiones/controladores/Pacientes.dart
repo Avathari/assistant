@@ -2407,7 +2407,8 @@ class Auxiliares {
     "Perfil Lipídico",
     "Tiempos de Coagulación",
     "Reactantes de Fase Aguda",
-    "Gasometrías",
+    "Gasometría Arterial",
+    "Gasometría Venosa",
     "Examen General de Orina",
     "Depuración de Orina de 24 Horas",
     "Citoquimico",
@@ -2484,12 +2485,15 @@ class Auxiliares {
       "Factor Reumatoide",
       "Anticuerpo Antipéptido Citrulinado"
     ],
-    Categorias[9]: [""],
-    Categorias[10]: [""],
+    //
+    Categorias[9]: ["pH", "Presión de Dióxido de Carbono", "Presión de Oxígeno", "Bicarbonato Sérico", "Fracción Inspiratoria de Oxígeno", "Saturación de Oxígeno"],
+    Categorias[10]: ["pH", "Presión de Dióxido de Carbono", "Presión de Oxígeno", "Bicarbonato Sérico", "Fracción Inspiratoria de Oxígeno", "Saturación de Oxígeno"],
+    //
     Categorias[11]: [""],
     Categorias[12]: [""],
     Categorias[13]: [""],
-    Categorias[14]: [
+    Categorias[14]: [""],
+    Categorias[15]: [
       "Sodio Urinario",
       "Potasio Urinario",
       "Cloro Urinario",
@@ -2498,16 +2502,17 @@ class Auxiliares {
       "Magnesio Urinario",
       "Creatinina Urinaria"
     ],
-    Categorias[15]: [
+    Categorias[16]: [
       "Conteo de Viriones de VIH",
       "Conteo de Viriones de Hepatitis A",
       "Conteo de Viriones de Hepatitis B",
       "Conteo de Viriones de Hepatitis C"
     ],
-    Categorias[16]: [
+    Categorias[17]: [
       "Conteo de Linfocitos CD4+",
       "Porcentaje de Linfocitos CD4+"
     ]
+
   };
   static Map<String, dynamic> Medidas = {
     Categorias[0]: ["g/dL", "%", "fL", "pg", "10^3/UL", "10^6/UL"],
@@ -2519,14 +2524,15 @@ class Auxiliares {
     Categorias[6]: [""],
     Categorias[7]: [""],
     Categorias[8]: [""],
-    Categorias[9]: [""],
-    Categorias[10]: [""],
+    Categorias[9]: ["", "mmHg", "cmH20", "mmol/L"],
+    Categorias[10]: ["", "mmHg", "cmH20", "mmol/L"],
     Categorias[11]: [""],
     Categorias[12]: [""],
     Categorias[13]: [""],
     Categorias[14]: [""],
     Categorias[15]: [""],
-    Categorias[16]: [""]
+    Categorias[16]: [""],
+    Categorias[17]: [""]
   };
 
   static final Map<String, dynamic> auxiliares = {
@@ -2626,10 +2632,38 @@ class Auxiliares {
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Leucocitos' ORDER BY Fecha_Registro DESC limit 1) as Leucocitos_Totales,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Neutrofilos' ORDER BY Fecha_Registro DESC limit 1) as Neutrofilos_Totales,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Linfocitos' ORDER BY Fecha_Registro DESC limit 1) as Linfocitos_Totales,"
+    //
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Glucosa' ORDER BY Fecha_Registro DESC limit 1) as Glucosa,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Urea' ORDER BY Fecha_Registro DESC limit 1) as Urea,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Creatinina' ORDER BY Fecha_Registro DESC limit 1) as Creatinina,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Acido Úrico' ORDER BY Fecha_Registro DESC limit 1) as Acido_Urico,"
+    //
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Alaninoaminotrasferasa' ORDER BY Fecha_Registro DESC limit 1) as Alaninoaminotrasferasa,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Aspartatoaminotransferasa' ORDER BY Fecha_Registro DESC limit 1) as Aspartatoaminotransferasa,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Bilirrubinas Totales' ORDER BY Fecha_Registro DESC limit 1) as Bilirrubinas_Totales,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Bilirrubina Directa' ORDER BY Fecha_Registro DESC limit 1) as Bilirrubina_Directa,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Bilirrubina Indirecta' ORDER BY Fecha_Registro DESC limit 1) as Bilirrubina_Indirecta,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Deshidrogenasa Láctica' ORDER BY Fecha_Registro DESC limit 1) as Deshidrogenasa_Lactica,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Glutrailtranspeptidasa' ORDER BY Fecha_Registro DESC limit 1) as Glutrailtranspeptidasa,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Fosfatasa Alcalina' ORDER BY Fecha_Registro DESC limit 1) as Fosfatasa_Alcalina,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Albúmina' ORDER BY Fecha_Registro DESC limit 1) as Albumina_Serica,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Proteínas Totales' ORDER BY Fecha_Registro DESC limit 1) as Proteinas_Totales,"
+    // Gasometría Venosa
+         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Arterial' AND Estudio = 'pH' ORDER BY Fecha_Registro DESC limit 1) as Ph_Arterial,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Arterial' AND Estudio = 'Presión de Dióxido de Carbono' ORDER BY Fecha_Registro DESC limit 1) as Pco_Arterial,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Arterial' AND Estudio = 'Presión de Oxígeno' ORDER BY Fecha_Registro DESC limit 1) as Po_Arterial,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Arterial' AND Estudio = 'Bicarbonato Sérico' ORDER BY Fecha_Registro DESC limit 1) as Hco_Arterial,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Arterial' AND Estudio = 'Fracción Inspiratoria de Oxígeno' ORDER BY Fecha_Registro DESC limit 1) as Fio_Arterial,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Arterial' AND Estudio = 'Saturación de Oxígeno' ORDER BY Fecha_Registro DESC limit 1) as So_Arterial, "
+//
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Venosa' AND Estudio = 'pH' ORDER BY Fecha_Registro DESC limit 1) as Ph_Venosa,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Venosa' AND Estudio = 'Presión de Dióxido de Carbono' ORDER BY Fecha_Registro DESC limit 1) as Pco_Venosa,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Venosa' AND Estudio = 'Presión de Oxígeno' ORDER BY Fecha_Registro DESC limit 1) as Po_Venosa,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Venosa' AND Estudio = 'Bicarbonato Sérico' ORDER BY Fecha_Registro DESC limit 1) as Hco_Venosa,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Venosa' AND Estudio = 'Fracción Inspiratoria de Oxígeno' ORDER BY Fecha_Registro DESC limit 1) as Fio_Venosa,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Venosa' AND Estudio = 'Saturación de Oxígeno' ORDER BY Fecha_Registro DESC limit 1) as So_Venosa,"
+
+    //
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Linfocitos' ORDER BY Fecha_Registro DESC limit 1) as Linfocitos_Totales;"
   };
 

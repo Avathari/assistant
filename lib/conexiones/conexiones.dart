@@ -170,7 +170,7 @@ class Actividades {
         "id": id.toString()
       },
     );
-    //print("RESPONSE STATUS (Detalles) : : ${response.statusCode} :: :: Body ${response.body.toString()}");
+    print("RESPONSE STATUS (Detalles) : : ${response.statusCode} :: :: Body ${response.body.toString()}");
     return json.decode(response.body) as Map<String, dynamic>;
   }
 

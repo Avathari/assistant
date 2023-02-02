@@ -29,18 +29,21 @@ class Valores {
   static int? edad, numeroCama;
   static bool? isHospitalizado;
   static int get diasEstancia {
-    return DateTime.now().difference(DateTime.parse(fechaIngresoHospitalario!)).inDays;
+    return DateTime.now()
+        .difference(DateTime.parse(fechaIngresoHospitalario!))
+        .inDays;
   }
+
   static String? get isEstanciaProlongada {
     if (diasEstancia == 0) {
       return 'Ingreso Hospitalario';
-    }      else if (diasEstancia  > 0 && diasEstancia < 14) {
+    } else if (diasEstancia > 0 && diasEstancia < 14) {
       return 'Estancia Hospitalaria';
-
     } else {
       return 'Estancia Prolongada';
     }
-}
+  }
+
   //
   static String? fechaIngresoHospitalario,
       fechaEgresoHospitalario,
@@ -87,7 +90,31 @@ class Valores {
   //
   static double? glucosa, urea, creatinina, acidoUrico;
   //
-  static double? albuminaSerica, proteinasTotales;
+  static double? alaninoaminotrasferasa,
+      aspartatoaminotransferasa,
+      bilirrubinasTotales,
+      bilirrubinaDirecta,
+      bilirrubinaIndirecta,
+      deshidrogenasaLactica,
+      glutrailtranspeptidasa,
+      fosfatasaAlcalina,
+      albuminaSerica,
+      proteinasTotales;
+  //
+  static double? pHArteriales,
+      pcoArteriales,
+      poArteriales,
+      bicarbonatoArteriales,
+      excesoBaseArteriales,
+      fioArteriales,
+      soArteriales;
+  static double? pHVenosos,
+      pcoVenosos,
+      poVenosos,
+      bicarbonatoVenosos,
+      excesoBaseVenosos,
+      fioVenosos,
+      soVenosos;
   //
   static double? sodio, potasio, cloro, fosforo, calcio, magnesio;
   //
@@ -124,7 +151,6 @@ class Valores {
       rDIII,
       sDIII;
   //
-  static double? pH, bicarbonatoArteriales;
   // Parámetros Ventilatorios
   static String? fechaVentilaciones = '', modalidadVentilatoria = '';
   static int? frecuenciaVentilatoria = 0,
@@ -264,7 +290,7 @@ class Valores {
   }
 
   Valores.fromJson(Map<String, dynamic> json) {
-    print("Valors $json");
+    // print("Valors $json");
 
     numeroPaciente = json['Pace_NSS'];
     agregadoPaciente = json['Pace_AGRE'];
@@ -349,6 +375,34 @@ class Valores {
     fosforo = double.parse(json['Fosforo'] ?? '0');
     calcio = double.parse(json['Calcio'] ?? '0');
     //
+    alaninoaminotrasferasa =
+        double.parse(json['Alaninoaminotrasferasa'] ?? '0');
+    aspartatoaminotransferasa =
+        double.parse(json['Aspartatoaminotransferasa'] ?? '0');
+    bilirrubinasTotales = double.parse(json['Bilirrubinas_Totales'] ?? '0');
+    bilirrubinaDirecta = double.parse(json['Bilirrubina_Directa'] ?? '0');
+    bilirrubinaIndirecta = double.parse(json['Bilirrubina_Indirecta'] ?? '0');
+    deshidrogenasaLactica = double.parse(json['Glutrailtranspeptidasa'] ?? '0');
+    glutrailtranspeptidasa =
+        double.parse(json['Glutrailtranspeptidasa'] ?? '0');
+    fosfatasaAlcalina = double.parse(json['Fosfatasa_Alcalina'] ?? '0');
+    albuminaSerica = double.parse(json['Albumina_Serica'] ?? '0');
+    proteinasTotales = double.parse(json['Proteinas_Totales'] ?? '0');
+    //
+    pHArteriales = double.parse(json['Ph_Arterial'] ?? '0');
+    pcoArteriales = double.parse(json['Pco_Arterial'] ?? '0');
+    poArteriales = double.parse(json['Po_Arterial'] ?? '0');
+    bicarbonatoArteriales = double.parse(json['Hco_Arterial'] ?? '0');
+    fioArteriales = double.parse(json['Fio_Arterial'] ?? '0');
+    soArteriales = double.parse(json['So_Arterial'] ?? '0');
+    // pHArteriales  = double.parse(json['Ph_Arterial'] ?? '0');
+    pHVenosos = double.parse(json['Ph_Venosa'] ?? '0');
+    pcoVenosos = double.parse(json['Pco_Venosa'] ?? '0');
+    poVenosos = double.parse(json['Po_Venosa'] ?? '0');
+    bicarbonatoVenosos = double.parse(json['Hco_Venosa'] ?? '0');
+    fioVenosos = double.parse(json['Fio_Venosa'] ?? '0');
+    soVenosos = double.parse(json['So_Venosa'] ?? '0');
+    //
     fechaElectrocardiograma = json['Pace_GAB_EC_Feca'] ?? '';
     ritmoCardiaco = json['Pace_EC_rit'] ?? '';
     intervaloRR = json['Pace_EC_rr'] == null ? json['Pace_EC_rr'] : 0;
@@ -421,6 +475,8 @@ class Valores {
     Valores.servicioTratanteInicial = json['Serve_Trat_INI'] ?? '';
     Valores.fechaEgresoHospitalario = json['Feca_EGE_Hosp'] ?? '';
     Valores.motivoEgreso = json['EGE_Motivo'] ?? '';
+
+    print("Valores.gastoCardiaco ${Valores.gastoCardiaco}");
   }
 
   static String get numeroExpediente =>
@@ -592,8 +648,8 @@ class Valores {
   }
 
   static double get CACPH {
-    if (Valores.pH! != 0) {
-      return (Valores.calcio! + (0.12 * ((Valores.pH! - 7.4) / 0.1)));
+    if (Valores.pHArteriales! != 0) {
+      return (Valores.calcio! + (0.12 * ((Valores.pHArteriales! - 7.4) / 0.1)));
     } else {
       return 0.0;
     }
@@ -736,11 +792,11 @@ class Valores {
   }
 
   static double get pHKalemia {
-    if (Valores.pH != 0 &&
-        Valores.pH != null &&
+    if (Valores.pHArteriales != 0 &&
+        Valores.pHArteriales != null &&
         Valores.potasio != 0 &&
         Valores.potasio != null) {
-      return (Valores.pH! * ((Valores.potasio! * 0.1) / 0.6));
+      return (Valores.pHArteriales! * ((Valores.potasio! * 0.1) / 0.6));
     } else {
       return double.nan;
     }
@@ -1156,19 +1212,31 @@ class Valores {
 
   // # Parametros Hemodinamicos
   // # Concentración Arterial de Oxígeno
-  // static double get CAO => (((Valores.hemoglobina * 1.34) * valores.get('SaturacionOxigeno_Arteriales')) + (valores.get('PresionOxigenoArterial_Arteriales') * 0.031)) / (100); //  # Concentración Arterial de Oxígeno
+  static double get CAO =>
+      (((Valores.hemoglobina! * 1.34) * Valores.soArteriales!) +
+          (Valores.poArteriales! * 0.031)) /
+      (100); //  # Concentración Arterial de Oxígeno
   // # Concentración Venosa de Oxígeno
-  // static double get CVO = (((Valores.hemoglobina * 1.34) * valores.get('SaturacionOxigeno_Venosos')) + (valores.get('PresionOxigenoArterial_Venosos') * 0.031)) / (100)  # Concentración Venosa de Oxígeno
+  static double get CVO =>
+      (((Valores.hemoglobina! * 1.34) * Valores.soVenosos!) +
+          (Valores.poVenosos! * 0.031)) /
+      (100); // # Concentración Venosa de Oxígeno
   // # Concentración Capilar de Oxígeno
-  // static double get CCO => (((Valores.hemoglobina * 1.34) * (valores.get('SaturacionOxigeno_Venosos') - valores.get('SaturacionOxigeno_Arteriales')) + ((valores.get('PresionOxigenoArterial_Venosos') - valores.get('PresionOxigenoArterial_Arteriales')) * 0.031)) / (100)) // # Concentración Capilar de Oxígeno
-  // static double get DAV => (CAO - CVO); // # Diferencia Arteriovenosa
+  static double get CCO => (((Valores.hemoglobina! * 1.34) *
+              (Valores.soVenosos! - Valores.soArteriales!) +
+          ((Valores.poVenosos! - Valores.poArteriales!) * 0.031)) /
+      (100)); // # Concentración Capilar de Oxígeno
+  static double get DAV => (CAO - CVO); // # Diferencia Arteriovenosa
   static double get capacidadOxigeno =>
       (Valores.hemoglobina! * (1.36)); //  # Capacidad de Oxígeno
   // # Gasto Cardiaco
-  // if DAV != 0.0:
-  // GC = (((DAV * 100) / CAO) / (DAV))  # Gasto Cardiaco
-  // else:
-  //  GC = 1
+  static double get gastoCardiaco {
+    if (DAV != null && DAV != 0) {
+      return (((DAV * 100) / CAO) / (DAV)); // # Gasto Cardiaco
+    } else {
+      return double.nan;
+    }
+  }
 
   // # Indice de Volumen Sanguineo
   static double get indiceVolumenSanguineo =>
@@ -1178,21 +1246,40 @@ class Valores {
           (128 *
               (math.pow(Valores.pesoCorporalTotal!, 2) /
                   math.pow(Valores.alturaPaciente!, 2))));
-  // static double get indiceCardiaco => (Valores.gastoCardiaco! / Valores.superficieCorporal!); // # Indice Cardiaco
-  // static double get IRVS => (TAM / Valores.indiceCardiaco!);
-  // static double get RVS => (((TAM - 12.0) * 80.00) / Valores.indiceCardiaco!); //  # Resistencias Venosas Sistémicas
-  // # (((TAM - 12.0) / IC) * 79.9)
-  // static double get IEO => (((DAV / CAO) * 100)); // # Indice de Extracción de Oxígeno
-  // static double get VL => (GC / Valores.frecuenciaCardiaca!) * 1000; //  # Volumen Latido De Litros a mL
-  // static double get IVL => ((IC * 1000) / FC)  ; //mL/Lat/m2 *IC se multiplica por 1000 para ajustar unidades a mL/min/m2
-  // static double get DO => ((GC * CAO) * (10)); // # Disponibilidad de Oxígeno
-  // static double get TO => ((CAP_O * CAO) / (10)); // # Transporte de Oxígeno
-  // static double get SF => ((CCO - CAO) / (CCO - CAO)) * (100); //  # Shunt Fisiológico
-  // static double get CO => ((GC * DAV) * (10)); // # Consumo de Oxígeno
-  // static double get GAA => (PAO - valores.get('PresionOxigenoArterial_Arteriales')); //  # Gradiente Alveolo - Arterial
-  // static double get PC => ((valores.get('ProteinasTotales') - valores.get('AlbuminaSerica')) * 1.4) + (valores.get('AlbuminaSerica') * 5.5); //  # Presión Coloidóncotica
-  // static double get TC => (GC * TAM * 0.0144); // # Trabajo Cardiaco
-  // static double get TLVI => GC * TAM * 0.0144; //  # Trabajo Latido Ventricular Izquierdo
+  static double get indiceCardiaco =>
+      (Valores.gastoCardiaco / Valores.SC); // # Indice Cardiaco
+  static double get IRVS =>
+      (Valores.presionArterialMedia / Valores.indiceCardiaco);
+  static double get RVS => (((Valores.presionArterialMedia - 12.0) * 80.00) /
+      Valores.indiceCardiaco); //  # Resistencias Venosas Sistémicas
+  // # (((Valores.presionArterialMedia! - 12.0) / IC) * 79.9)
+  static double get IEO =>
+      (((DAV / CAO) * 100)); // # Indice de Extracción de Oxígeno
+  static double get VL =>
+      (indiceCardiaco / Valores.frecuenciaCardiaca!) *
+      1000; //  # Volumen Latido De Litros a mL
+  static double get IVL => ((indiceCardiaco * 1000) /
+      Valores
+          .frecuenciaCardiaca!); //mL/Lat/m2 *IC se multiplica por 1000 para ajustar unidades a mL/min/m2
+  static double get DO =>
+      ((gastoCardiaco * CAO) * (10)); // # Disponibilidad de Oxígeno
+  static double get TO =>
+      ((capacidadOxigeno * CAO) / (10)); // # Transporte de Oxígeno // CAP_O
+  static double get SF =>
+      ((CCO - CAO) / (CCO - CAO)) * (100); //  # Shunt Fisiológico
+  static double get CO =>
+      ((gastoCardiaco * DAV) * (10)); // # Consumo de Oxígeno
+  // static double get GAA => (PAO - Valores.poArteriales); //  # Gradiente Alveolo - Arterial
+  static double get PC =>
+      ((Valores.proteinasTotales! - Valores.albuminaSerica!) * 1.4) +
+      (Valores.albuminaSerica! * 5.5); //  # Presión Coloidóncotica
+  static double get TC => (gastoCardiaco *
+      Valores.presionArterialMedia *
+      0.0144); // # Trabajo Cardiaco
+  static double get TLVI =>
+      gastoCardiaco *
+      Valores.presionArterialMedia *
+      0.0144; //  # Trabajo Latido Ventricular Izquierdo
   static double get TLVD => 00.00; //  # Trabajo Latido Ventricular Derecho
   // # FE = VL / VDF # FE(%)= ((VDF-VSF)*100)/VDF. (porque VL= VDF-VSF). (%)
   static double get FE => 0.0;
