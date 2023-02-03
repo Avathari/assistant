@@ -29,9 +29,15 @@ class Valores {
   static int? edad, numeroCama;
   static bool? isHospitalizado;
   static int get diasEstancia {
-    return DateTime.now()
-        .difference(DateTime.parse(fechaIngresoHospitalario!))
-        .inDays;
+    if (fechaIngresoHospitalario != '' && fechaIngresoHospitalario != null) {
+      print(fechaIngresoHospitalario!);
+      return DateTime.now()
+          .difference(DateTime.parse(fechaIngresoHospitalario!))
+          .inDays;
+    } else {
+      return 0;
+    }
+
   }
 
   static String? get isEstanciaProlongada {
@@ -307,6 +313,7 @@ class Valores {
     apellidoPaterno = json['Pace_Ape_Pat'];
     apellidoMaterno = json['Pace_Ape_Mat'];
     imagenUsuario = json['Pace_FIAT'];
+    Pacientes.imagenPaciente = json['Pace_FIAT'];
     //
     edad = json['Pace_Eda']; // int.parse();
     sexo = json['Pace_Ses'];
@@ -2270,13 +2277,19 @@ class Items {
 }
 
 isNull(value) {
-  if (value == null || value == 'null') {
-    if (value.runtimeType == 'String') {
-      return '0.0';
+  print("Is Value method : : ${value.runtimeType} \n"
+      " : : : $value");
+
+  if (value.runtimeType.toString() == "String") {
+    if (value == null || value == 'null' || value == '') {
+      return '';
     } else {
-      return 0.0;
+      return value;
     }
+  } else if (value.runtimeType == 'int') {
+    return 0.0;
   } else {
     return value;
   }
 }
+

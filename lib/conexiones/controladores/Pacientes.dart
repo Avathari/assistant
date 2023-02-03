@@ -457,7 +457,7 @@ class Pacientes {
         "FROM pace_iden_iden",
     "consultIdQuery": "SELECT ID_Pace, Pace_NSS, Pace_AGRE, "
         "Pace_Nome_PI, Pace_Nome_SE, Pace_Ape_Pat, "
-        "Pace_Ape_Mat, to_base64(Pace_FIAT) as Pace_FIAT, "
+        "Pace_Ape_Mat, Pace_FIAT, "
         "Pace_UMF, Pace_Hosp_Real, Pace_Turo, Pace_Feca_Hace, Pace_Hora_Hace, "
         "Pace_Tele, Pace_Nace, Pace_Ses, Pace_Hosp, Pace_Curp, "
         "Pace_RFC, Pace_Eda, Pace_Stat, "

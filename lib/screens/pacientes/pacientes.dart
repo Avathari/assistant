@@ -217,6 +217,12 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                           snapshot.data[posicion]['ID_Pace'];
                                       Pacientes.Paciente =
                                           snapshot.data[posicion];
+                                      // Cambio de la Variable de imagen al actualizar.
+                                      Pacientes.imagenPaciente =
+                                          snapshot.data[posicion]['Pace_FIAT'];
+                                      Pacientes.Paciente['Pace_FIAT'] =
+                                          snapshot.data[posicion]['Pace_FIAT'];
+
                                       toVisual(context, Constantes.Update);
                                     },
                                     child: Card(
@@ -522,63 +528,6 @@ class OperacionesPacientes extends StatefulWidget {
 }
 
 class _OperacionesPacientesState extends State<OperacionesPacientes> {
-  final picker = ImagePicker();
-
-  String consultIdQuery = Pacientes.pacientes['consultIdQuery'];
-  String registerQuery = Pacientes.pacientes['registerQuery'];
-  String updateQuery = Pacientes.pacientes['updateQuery'];
-
-  int idOperation = 0;
-
-  final numeroPacienteTextController = TextEditingController();
-  final agregadoPacienteTextController = TextEditingController();
-
-  final firstNamePaciente = TextEditingController();
-  final secondNameTextController = TextEditingController();
-
-  final apellidoPaternoTextController = TextEditingController();
-  final apellidoMaternoTextController = TextEditingController();
-
-  final unidadMedicaTextController = TextEditingController();
-  final hospitalAtencionTextController = TextEditingController();
-
-  final domicilioTextController = TextEditingController();
-  final duracionResidenciaTextController = TextEditingController();
-  final localidadResidenciaTextController = TextEditingController();
-
-  final escolaridadEspecificacionTextController = TextEditingController();
-  final religionTextController = TextEditingController();
-  final ocupacionTextController = TextEditingController();
-  final edadTextController = TextEditingController();
-
-  final rfcTextController = TextEditingController();
-  final curpTextController = TextEditingController();
-  final nacimientoTextController = TextEditingController();
-
-  final telefonoTextController = TextEditingController();
-  final municipioTextController = TextEditingController();
-
-  final indigenaHablanteEspecificacioTextController = TextEditingController();
-
-  String turnoValue = Pacientes.Turno[0];
-  String sessoValue = Pacientes.Sexo[0];
-  String unidadMedicaValue = Pacientes.Unidades[0];
-  String atencionValue = Pacientes.Atencion[1];
-  String statusValue = Pacientes.Status[0];
-  String estadoCivilValue = Pacientes.EstadoCivil[0];
-  String vivoValue = Pacientes.Vivo[0];
-  String escolaridadValue = Pacientes.Escolaridad[0];
-  String escolaridadCompletudValue = Pacientes.EscolaridadCompletud[0];
-  String indigenaValue = Pacientes.Indigena[0];
-  String indigenaHablanteValue = Pacientes.lenguaIndigena[0];
-  //String municipioValue = Pacientes.Municipios[0];
-  String entidadFederativaValue = Pacientes.EntidadesFederativas[0];
-
-  late String img = "";
-
-  List<dynamic>? listOfValues;
-
-  var carouselController = CarouselController();
 
   @override
   void initState() {
@@ -670,30 +619,41 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
   List<Widget> secondComponent(BuildContext context) {
     return [
       Spinner(
-          tittle: "Unidad de Atención",initialValue: unidadMedicaValue, items: Pacientes.Unidades,
+          tittle: "Unidad de Atención",
+          initialValue: unidadMedicaValue,
+          items: Pacientes.Unidades,
           onChangeValue: (String? newValue) {
-        setState(() {
-          unidadMedicaValue = newValue!;
-        });
-      }),
-      Spinner(tittle: "Hospital de Atención", initialValue: unidadMedicaValue, items:
-      Pacientes.Unidades, onChangeValue: (String? newValue) {
-        setState(() {
-          unidadMedicaValue = newValue!;
-        });
-      }),
-      Spinner(tittle: "Turno de atención", initialValue: turnoValue, items: Pacientes.Turno,
+            setState(() {
+              unidadMedicaValue = newValue!;
+            });
+          }),
+      Spinner(
+          tittle: "Hospital de Atención",
+          initialValue: unidadMedicaValue,
+          items: Pacientes.Unidades,
           onChangeValue: (String? newValue) {
-        setState(() {
-          turnoValue = newValue!;
-        });
-      }),
-      Spinner(tittle: "Modo de atención", initialValue: atencionValue, items: Pacientes.Atencion,
+            setState(() {
+              unidadMedicaValue = newValue!;
+            });
+          }),
+      Spinner(
+          tittle: "Turno de atención",
+          initialValue: turnoValue,
+          items: Pacientes.Turno,
           onChangeValue: (String? newValue) {
-        setState(() {
-          atencionValue = newValue!;
-        });
-      }),
+            setState(() {
+              turnoValue = newValue!;
+            });
+          }),
+      Spinner(
+          tittle: "Modo de atención",
+          initialValue: atencionValue,
+          items: Pacientes.Atencion,
+          onChangeValue: (String? newValue) {
+            setState(() {
+              atencionValue = newValue!;
+            });
+          }),
       editFormattedText(
           TextInputType.phone,
           MaskTextInputFormatter(
@@ -724,11 +684,15 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           });
         },
       ),
-      Spinner(tittle: "Sexo", initialValue: sessoValue, items: Pacientes.Sexo, onChangeValue: (String? newValue) {
-        setState(() {
-          sessoValue = newValue!;
-        });
-      }),
+      Spinner(
+          tittle: "Sexo",
+          initialValue: sessoValue,
+          items: Pacientes.Sexo,
+          onChangeValue: (String? newValue) {
+            setState(() {
+              sessoValue = newValue!;
+            });
+          }),
       editFormattedText(
           TextInputType.number,
           MaskTextInputFormatter(
@@ -743,39 +707,52 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
       editText(false, 'RFC', rfcTextController, false),
       //
 
-      Spinner(tittle: "¿Vive?", initialValue: vivoValue, items: Pacientes.Vivo, onChangeValue: (String? newValue) {
-        setState(() {
-          vivoValue = newValue!;
-        });
-      }),
-      editText(false, 'Ocupación', ocupacionTextController, false),
-      Spinner(tittle: "Estado civil", initialValue: estadoCivilValue, items: Pacientes.EstadoCivil,
+      Spinner(
+          tittle: "¿Vive?",
+          initialValue: vivoValue,
+          items: Pacientes.Vivo,
           onChangeValue: (String? newValue) {
-        setState(() {
-          estadoCivilValue = newValue!;
-        });
-      }),
+            setState(() {
+              vivoValue = newValue!;
+            });
+          }),
+      editText(false, 'Ocupación', ocupacionTextController, false),
+      Spinner(
+          tittle: "Estado civil",
+          initialValue: estadoCivilValue,
+          items: Pacientes.EstadoCivil,
+          onChangeValue: (String? newValue) {
+            setState(() {
+              estadoCivilValue = newValue!;
+            });
+          }),
       editText(false, 'Religión', religionTextController, false),
       //
-      Spinner(tittle: "Escolaridad", initialValue: escolaridadValue, items: Pacientes.Escolaridad,
+      Spinner(
+          tittle: "Escolaridad",
+          initialValue: escolaridadValue,
+          items: Pacientes.Escolaridad,
           onChangeValue: (String? newValue) {
-        setState(() {
-          escolaridadValue = newValue!;
-        });
-      }),
-      Spinner(tittle: "Escolaridad completud", initialValue: escolaridadCompletudValue,
-          items: Pacientes.EscolaridadCompletud, onChangeValue: (String? newValue) {
-        setState(() {
-          escolaridadCompletudValue = newValue!;
+            setState(() {
+              escolaridadValue = newValue!;
+            });
+          }),
+      Spinner(
+          tittle: "Escolaridad completud",
+          initialValue: escolaridadCompletudValue,
+          items: Pacientes.EscolaridadCompletud,
+          onChangeValue: (String? newValue) {
+            setState(() {
+              escolaridadCompletudValue = newValue!;
 
-          if (newValue == Pacientes.EscolaridadCompletud[1]) {
-            escolaridadEspecificacionTextController.text =
-                Pacientes.EscolaridadCompletud[1];
-          } else {
-            escolaridadEspecificacionTextController.text = "";
-          }
-        });
-      }),
+              if (newValue == Pacientes.EscolaridadCompletud[1]) {
+                escolaridadEspecificacionTextController.text =
+                    Pacientes.EscolaridadCompletud[1];
+              } else {
+                escolaridadEspecificacionTextController.text = "";
+              }
+            });
+          }),
       editText(false, 'Especificar escolaridad',
           escolaridadEspecificacionTextController, false),
       // spinner(tittle: "Estado actual", statusValue, Pacientes.Status,
@@ -793,36 +770,45 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
       //     municipioValue = newValue!;
       //   });
       // }),
-      Spinner(tittle: "Entidad federativa", initialValue: entidadFederativaValue,
-          items: Pacientes.EntidadesFederativas, onChangeValue: (String? newValue) {
-        setState(() {
-          entidadFederativaValue = newValue!;
-        });
-      }),
+      Spinner(
+          tittle: "Entidad federativa",
+          initialValue: entidadFederativaValue,
+          items: Pacientes.EntidadesFederativas,
+          onChangeValue: (String? newValue) {
+            setState(() {
+              entidadFederativaValue = newValue!;
+            });
+          }),
 
       editText(false, 'Localidad', localidadResidenciaTextController, false),
       editText(false, 'Duración', duracionResidenciaTextController, false),
       editText(false, 'Domicilio', domicilioTextController, false),
       //
-      Spinner(tittle: "Indigena (Si/No)", initialValue: indigenaValue, items: Pacientes.Indigena,
+      Spinner(
+          tittle: "Indigena (Si/No)",
+          initialValue: indigenaValue,
+          items: Pacientes.Indigena,
           onChangeValue: (String? newValue) {
-        setState(() {
-          indigenaValue = newValue!;
-        });
-      }),
-      Spinner(tittle: "Hablante Indígena", initialValue: indigenaHablanteValue,
-          items: Pacientes.lenguaIndigena, onChangeValue: (String? newValue) {
-        setState(() {
-          indigenaHablanteValue = newValue!;
+            setState(() {
+              indigenaValue = newValue!;
+            });
+          }),
+      Spinner(
+          tittle: "Hablante Indígena",
+          initialValue: indigenaHablanteValue,
+          items: Pacientes.lenguaIndigena,
+          onChangeValue: (String? newValue) {
+            setState(() {
+              indigenaHablanteValue = newValue!;
 
-          if (newValue == Pacientes.lenguaIndigena[0]) {
-            indigenaHablanteEspecificacioTextController.text =
-                "Niega hablar alguna Lengua Indigena";
-          } else {
-            indigenaHablanteEspecificacioTextController.text = "";
-          }
-        });
-      }),
+              if (newValue == Pacientes.lenguaIndigena[0]) {
+                indigenaHablanteEspecificacioTextController.text =
+                    "Niega hablar alguna Lengua Indigena";
+              } else {
+                indigenaHablanteEspecificacioTextController.text = "";
+              }
+            });
+          }),
       editText(false, 'Especificar lenguaje',
           indigenaHablanteEspecificacioTextController, false),
     ];
@@ -883,6 +869,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
       Uint8List bytes = await xFileImage.readAsBytes();
       setState(() {
         img = base64.encode(bytes);
+        Pacientes.imagenPaciente = img;
       });
     }
   }
@@ -893,6 +880,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
       Uint8List bytes = await xFileImage.readAsBytes();
       setState(() {
         img = base64.encode(bytes);
+        // Pacientes.imagenPaciente = img;
       });
     }
   }
@@ -924,7 +912,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
               },
               child: const Icon(Icons.arrow_back)),
           SizedBox(
-            width: isMobile(context) ? 120:150,
+            width: isMobile(context) ? 120 : 150,
           ),
           Tooltip(
             message: "Datos Personales",
@@ -1042,9 +1030,11 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                     ),
                     SingleChildScrollView(
                         child: Column(children: secondComponent(context))),
-                    GrandButton(labelButton: widget._operation_button, onPress:() {
-                      operationMethod(context);
-                    })
+                    GrandButton(
+                        labelButton: widget._operation_button,
+                        onPress: () {
+                          operationMethod(context);
+                        })
                   ],
                 carouselController: carouselController,
                 options: CarouselOptions(
@@ -1156,96 +1146,158 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
   }
 
   void operationMethod(BuildContext context) {
-    try {
-      listOfValues = [
-        idOperation,
-        numeroPacienteTextController.text,
-        agregadoPacienteTextController.text,
-        firstNamePaciente.text,
-        secondNameTextController.text,
-        apellidoPaternoTextController.text,
-        apellidoMaternoTextController.text,
-        img,
-        //
-        unidadMedicaTextController.text,
-        hospitalAtencionTextController.text,
-        turnoValue,
-        //
-        DateTime.now().toString(),
-        DateTime.now().toString(),
-        //
-        telefonoTextController.text,
-        nacimientoTextController.text,
-        sessoValue,
-        atencionValue,
-        //
-        curpTextController.text,
-        rfcTextController.text,
-        //
-        edadTextController.text,
-        vivoValue,
-        ocupacionTextController.text,
-        estadoCivilValue,
-        religionTextController.text,
-        escolaridadValue,
-        escolaridadCompletudValue,
-        escolaridadEspecificacionTextController.text,
-        municipioTextController.text,
-        entidadFederativaValue,
-        localidadResidenciaTextController.text,
-        duracionResidenciaTextController.text,
-        domicilioTextController.text,
-        indigenaValue,
-        indigenaHablanteValue,
-        indigenaHablanteEspecificacioTextController.text,
-        idOperation
-      ];
+  try {
+  listOfValues = [
+  idOperation,
+  numeroPacienteTextController.text,
+  agregadoPacienteTextController.text,
+  firstNamePaciente.text,
+  secondNameTextController.text,
+  apellidoPaternoTextController.text,
+  apellidoMaternoTextController.text,
+  img,
+  //
+  unidadMedicaTextController.text,
+  hospitalAtencionTextController.text,
+  turnoValue,
+  //
+  DateTime.now().toString(),
+  DateTime.now().toString(),
+  //
+  telefonoTextController.text,
+  nacimientoTextController.text,
+  sessoValue,
+  atencionValue,
+  //
+  curpTextController.text,
+  rfcTextController.text,
+  //
+  edadTextController.text,
+  vivoValue,
+  ocupacionTextController.text,
+  estadoCivilValue,
+  religionTextController.text,
+  escolaridadValue,
+  escolaridadCompletudValue,
+  escolaridadEspecificacionTextController.text,
+  municipioTextController.text,
+  entidadFederativaValue,
+  localidadResidenciaTextController.text,
+  duracionResidenciaTextController.text,
+  domicilioTextController.text,
+  indigenaValue,
+  indigenaHablanteValue,
+  indigenaHablanteEspecificacioTextController.text,
+  idOperation
+  ];
 
-      //print("${widget.operationActivity} listOfValues $listOfValues ${listOfValues!.length}");
+  //print("${widget.operationActivity} listOfValues $listOfValues ${listOfValues!.length}");
 
-      switch (widget.operationActivity) {
-        case Constantes.Nulo:
-          listOfValues!.removeAt(0);
-          listOfValues!.removeLast();
+  switch (widget.operationActivity) {
+  case Constantes.Nulo:
+  listOfValues!.removeAt(0);
+  listOfValues!.removeLast();
 
-          Actividades.registrar(Databases.siteground_database_regpace,
-              registerQuery, listOfValues!.removeLast());
-          break;
-        case Constantes.Consult:
-          break;
-        case Constantes.Register:
-          listOfValues!.removeAt(0);
-          listOfValues!.removeLast();
+  Actividades.registrar(Databases.siteground_database_regpace,
+  registerQuery, listOfValues!.removeLast());
+  break;
+  case Constantes.Consult:
+  break;
+  case Constantes.Register:
+  listOfValues!.removeAt(0);
+  listOfValues!.removeLast();
 
-          Actividades.registrar(Databases.siteground_database_regpace,
-                  registerQuery, listOfValues!)
-              .then((value) => returnGestion(context));
-          break;
-        case Constantes.Update:
-          Actividades.actualizar(Databases.siteground_database_regpace,
-                  updateQuery, listOfValues!, idOperation)
-              .then((value) => Actividades.consultarId(
-                          Databases.siteground_database_regpace,
-                          consultIdQuery,
-                          idOperation)
-                      .then((value) {
-                    Pacientes.Paciente = value;
-                  }).then((value) => returnGestion(context)));
-          break;
-        default:
-      }
-    } catch (ex) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return alertDialog("Error al operar con los valores", "$ex", () {
-              Navigator.of(context).pop();
-            }, () {});
-          });
-    } finally {
-      returnGestion(context);
-    }
+  Actividades.registrar(Databases.siteground_database_regpace,
+  registerQuery, listOfValues!)
+      .then((value) => returnGestion(context));
+  break;
+  case Constantes.Update:
+  Actividades.actualizar(Databases.siteground_database_regpace,
+  updateQuery, listOfValues!, idOperation)
+      .then((value) => Actividades.consultarId(
+  Databases.siteground_database_regpace,
+  consultIdQuery,
+  idOperation)
+      .then((value) {
+  // print("Imagen paciente ${value['Pace_FIAT']}");
+  img = value['Pace_FIAT'];
+  Pacientes.Paciente = value;
+  }).then((value) => returnGestion(context)));
+  break;
+  default:
   }
+  } catch (ex) {
+  showDialog(
+  context: context,
+  builder: (context) {
+  return alertDialog("Error al operar con los valores", "$ex", () {
+  Navigator.of(context).pop();
+  }, () {});
+  });
+  } finally {
+  // returnGestion(context);
+  }
+  }
+
+  // VARIABLES
+  final picker = ImagePicker();
+
+  String consultIdQuery = Pacientes.pacientes['consultIdQuery'];
+  String registerQuery = Pacientes.pacientes['registerQuery'];
+  String updateQuery = Pacientes.pacientes['updateQuery'];
+
+  int idOperation = 0;
+
+  final numeroPacienteTextController = TextEditingController();
+  final agregadoPacienteTextController = TextEditingController();
+
+  final firstNamePaciente = TextEditingController();
+  final secondNameTextController = TextEditingController();
+
+  final apellidoPaternoTextController = TextEditingController();
+  final apellidoMaternoTextController = TextEditingController();
+
+  final unidadMedicaTextController = TextEditingController();
+  final hospitalAtencionTextController = TextEditingController();
+
+  final domicilioTextController = TextEditingController();
+  final duracionResidenciaTextController = TextEditingController();
+  final localidadResidenciaTextController = TextEditingController();
+
+  final escolaridadEspecificacionTextController = TextEditingController();
+  final religionTextController = TextEditingController();
+  final ocupacionTextController = TextEditingController();
+  final edadTextController = TextEditingController();
+
+  final rfcTextController = TextEditingController();
+  final curpTextController = TextEditingController();
+  final nacimientoTextController = TextEditingController();
+
+  final telefonoTextController = TextEditingController();
+  final municipioTextController = TextEditingController();
+
+  final indigenaHablanteEspecificacioTextController = TextEditingController();
+
+  String turnoValue = Pacientes.Turno[0];
+  String sessoValue = Pacientes.Sexo[0];
+  String unidadMedicaValue = Pacientes.Unidades[0];
+  String atencionValue = Pacientes.Atencion[1];
+  String statusValue = Pacientes.Status[0];
+  String estadoCivilValue = Pacientes.EstadoCivil[0];
+  String vivoValue = Pacientes.Vivo[0];
+  String escolaridadValue = Pacientes.Escolaridad[0];
+  String escolaridadCompletudValue = Pacientes.EscolaridadCompletud[0];
+  String indigenaValue = Pacientes.Indigena[0];
+  String indigenaHablanteValue = Pacientes.lenguaIndigena[0];
+  //String municipioValue = Pacientes.Municipios[0];
+  String entidadFederativaValue = Pacientes.EntidadesFederativas[0];
+
+  late String img = "";
+
+  List<dynamic>? listOfValues;
+
+  var carouselController = CarouselController();
+
 }
 
 class VisualPacientes extends StatefulWidget {
@@ -1258,25 +1310,10 @@ class VisualPacientes extends StatefulWidget {
 }
 
 class _VisualPacientesState extends State<VisualPacientes> {
-  var scrollController = ScrollController();
-  var scrollListController = ScrollController();
-
-  String? turnoPaciente,
-      statusPaciente,
-      numeroPaciente,
-      agregadoPaciente,
-      primerNombrePaciente,
-      segundoNombrePaciente,
-      apellidoPaternoPaciente,
-      apellidoMaternoPaciente,
-      edadPaciente;
-  late String imgPaciente = "";
-
   @override
   void initState() {
     //
-    Valores();
-
+    // Valores();
     //
     setState(() {
       numeroPaciente = Pacientes.Paciente['Pace_NSS'];
@@ -1290,6 +1327,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
       edadPaciente = Pacientes.Paciente['Pace_Eda'].toString();
       numeroPaciente =
           "${Pacientes.Paciente['Pace_NSS']} ${Pacientes.Paciente['Pace_AGRE']}";
+      // print("Pacientes.Paciente['Pace_FIAT'] ${Pacientes.Paciente['Pace_FIAT'].runtimeType}");
       imgPaciente = Pacientes.Paciente['Pace_FIAT'];
 
       statusPaciente = Pacientes.Paciente['Pace_Stat'];
@@ -1562,68 +1600,9 @@ class _VisualPacientesState extends State<VisualPacientes> {
         controller: scrollListController,
         padding: EdgeInsets.zero,
         children: <Widget>[
-          DrawerHeader(
-            decoration: const BoxDecoration(color: Colors.black),
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Row(
-                // mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  CircleAvatar(
-                      backgroundColor: Colors.grey,
-                      radius: 55,
-                      child: imgPaciente != ""
-                          ? ClipOval(
-                              child: Image.memory(
-                              base64Decode(imgPaciente),
-                              width: 220,
-                              height: 220,
-                              fit: BoxFit.cover,
-                            ))
-                          : const ClipOval(child: Icon(Icons.person))),
-                  const SizedBox(
-                    height: 20,
-                    width: 13,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        "$apellidoPaternoPaciente $apellidoMaternoPaciente \n$primerNombrePaciente $segundoNombrePaciente",
-                        style:
-                            const TextStyle(fontSize: 14, color: Colors.white),
-                      ),
-                      Text(
-                        "$numeroPaciente",
-                        style:
-                            const TextStyle(fontSize: 12, color: Colors.white),
-                      ),
-                      Text(
-                        "Edad: ${edadPaciente.toString()} Años",
-                        style:
-                            const TextStyle(fontSize: 10, color: Colors.white),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        "Estado actual: $statusPaciente",
-                        style:
-                            const TextStyle(fontSize: 10, color: Colors.white),
-                      ),
-                      Text(
-                        "Turno de Atención: $turnoPaciente",
-                        style:
-                            const TextStyle(fontSize: 10, color: Colors.white),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ]),
-          ),
+          const DrawerHeader(
+              decoration: BoxDecoration(color: Colors.black),
+              child: PresentacionPacientes()),
           Container(
             decoration: const BoxDecoration(color: Theming.terciaryColor),
             child: SingleChildScrollView(
@@ -1940,6 +1919,21 @@ class _VisualPacientesState extends State<VisualPacientes> {
       ),
     ];
   }
+
+  // Variables
+  var scrollController = ScrollController();
+  var scrollListController = ScrollController();
+
+  String? turnoPaciente,
+      statusPaciente,
+      numeroPaciente,
+      agregadoPaciente,
+      primerNombrePaciente,
+      segundoNombrePaciente,
+      apellidoPaternoPaciente,
+      apellidoMaternoPaciente,
+      edadPaciente;
+  late String imgPaciente = "";
 }
 
 class EstadisticasPacientes extends StatefulWidget {
