@@ -207,37 +207,37 @@ class _VentilatoriosState extends State<Ventilatorios> {
                     child: Column(children: [
                       ShowText(
                         title: 'R.S.B.I.',
-                        data: Valores.osmolaridadSerica,
+                        data: Valores.indiceTobinYang,
                         medida: 'Resp/L.seg',
                       ),
                       ShowText(
                         title: 'iO2',
-                        data: Valores.brechaOsmolar,
+                        data: Valores.IEO,
                         medida: '',
                       ),
                       ShowText(
                         title: 'Indice Ventilatorio',
-                        data: Valores.brechaOsmolar,
+                        data: Valores.IV,
                         medida: '',
                       ),
                       ShowText(
                         title: 'Eficiencia Ventilatoria',
-                        data: Valores.brechaOsmolar,
+                        data: Valores.EV,
                         medida: '',
                       ),
                       ShowText(
                         title: 'FiO2 por Ventilación',
-                        data: Valores.brechaOsmolar,
+                        data: Valores.VENT,
                         medida: '%',
                       ),
                       ShowText(
                         title: 'FiO2 Ideal',
-                        data: Valores.brechaOsmolar,
+                        data: Valores.FIOI,
                         medida: '%',
                       ),
                       ShowText(
-                        title: 'Frecuencia Venntilatoria Ideal',
-                        data: Valores.brechaOsmolar,
+                        title: 'Frecuencia Ventilatoria Ideal',
+                        data: Valores.FIOV,
                         medida: 'Vent/min',
                       ),
                     ]),

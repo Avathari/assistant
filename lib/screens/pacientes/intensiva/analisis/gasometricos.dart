@@ -2,8 +2,8 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
+import 'package:assistant/widgets/GridLayout.dart';
 import 'package:assistant/widgets/ShowText.dart';
-import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -166,18 +166,19 @@ class _GasometricosState extends State<Gasometricos> {
                     controller: ScrollController(),
                     child: Column(
                       children: [
-                        ShowText(
-                          title: 'Trastorno Primario',
-                          data: double.nan,
-                          medida: '',
-                        ),
+                        TittlePanel(textPanel: "Trastorno Primario \n${Valores.trastornoPrimario} (pH ${Valores.pHArteriales})"),
+                        TittlePanel(textPanel: "Trastorno Secundario \n${Valores.trastornoSecundario} (PCO2 ${Valores.pcoArteriales!.toStringAsFixed(0)})"),
                       ],
                     ),
                   ),
                   SingleChildScrollView(
                     controller: ScrollController(),
-                    child: Column(children: [
-
+                    child: GridLayout(columnCount: isMobile(context) ? 1 : 2,
+                        children: [
+                      TittlePanel(textPanel: "Alteración del Oxígeno \n${Valores.trastornoTerciario} (pO2 ${Valores.poArteriales!.toStringAsFixed(0)})"),
+                      TittlePanel(textPanel: "Alteración del CO2 \n${Valores.alteracionRespiratoria} (HCO3- ${Valores.pcoArteriales})"),
+                      TittlePanel(textPanel: "Alteración por Bases \n${Valores.trastornoBases} (EB ${Valores.EB.toStringAsFixed(2)})"),
+                      TittlePanel(textPanel: "Alteración del Anion Gap \n${Valores.trastornoGap} (GAP ${Valores.GAP.toStringAsFixed(0)})"),
                     ]),
                   ),
                   SingleChildScrollView(

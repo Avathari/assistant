@@ -1254,7 +1254,77 @@ class Valores {
     }
   }
 
-  // Parámetros Gasométricos
+  // # ############## ######### #######
+  // # ############## ######### #######
+  // # Parámetros Gasométricos
+  // # ############## ######### #######
+  static String get trastornoPrimario {
+    if (Valores.pHArteriales! < 7.34) {
+      return 'Acidemia';
+    } else if (Valores.pHArteriales! > 7.45) {
+      return 'Alcalemia';
+    } else {
+      return 'Normal';
+    }
+  }
+
+  // # ############## ######### #######
+  // Comparación entre el PCO2 y el HCO3-
+  // # ############## ######### #######
+  static String get trastornoSecundario {
+    if (Valores.pcoArteriales! < 35 || Valores.pcoArteriales! > 45) {
+      return 'Alteración Respiratoria';
+    } else if (Valores.bicarbonatoArteriales! > 18 ||
+        Valores.bicarbonatoArteriales! > 28) {
+      return 'Alteración Metabólica';
+    } else {
+      return 'Normal';
+    }
+  }
+
+  //
+  // # ############## ######### #######
+  static String get alteracionRespiratoria {
+    if (Valores.pcoArteriales! < 35) {
+      return 'Hipocapnia';
+    } else if (Valores.pcoArteriales! > 45) {
+      return 'Hipercapnia';
+    } else {
+      return 'Normal';
+    }
+  }
+
+  static String get trastornoTerciario {
+    if (Valores.poArteriales! < 80) {
+      return 'Hipoxemia';
+    } else if (Valores.poArteriales! > 45) {
+      return 'Hiperoxemia';
+    } else {
+      return 'Normal';
+    }
+  }
+
+  static String get trastornoBases {
+    if (Valores.excesoBaseArteriales! < -3) {
+      return 'Consumo de Bases'; // Acidosis
+    } else if (Valores.poArteriales! > 3) {
+      return 'Retención de Bases'; // Alcalosis
+    } else {
+      return 'Normal';
+    }
+  }
+
+  static String get trastornoGap {
+    if (Valores.GAP < 8) {
+      return 'Pérdida de Bicarbonato';
+    } else if (Valores.GAP > 12) {
+      return 'Acidosis por Anion GAP Elevado';
+    } else {
+      return 'Normal';
+    }
+  }
+
+  //
   static double get GAP =>
       (Valores.sodio! + Valores.potasio!) -
       (Valores.cloro! + Valores.bicarbonatoArteriales!);
@@ -1460,6 +1530,50 @@ class Valores {
   // # (((Valores.presionArterialMedia! - 12.0) / IC) * 79.9)
   static double get IEO =>
       (((DAV / CAO) * 100)); // # Indice de Extracción de Oxígeno
+  static double get IV =>
+      (Valores.presionMediaViaAerea * Valores.frecuenciaVentilatoria!) *
+      (Valores.pcoArteriales! / 10);
+
+  static double get EV {
+    if (Valores.pcoArteriales != 0) {
+      return (Valores.volumenMinutoIdeal * Valores.pcoArteriales!) /
+          ((Valores.volumenMinutoIdeal * 37.5));
+    } else if (Valores.pcoArteriales! == 0) {
+      return (Valores.volumenMinutoIdeal) /
+          ((3.2 * Valores.pesoCorporalTotal!)) *
+          (100);
+    } else {
+      return 0;
+    }
+  }
+
+  static int get PPI => Valores.presionFinalEsiracion! + Valores.presionSoporte!;
+  static int get PPE => Valores.presionFinalEsiracion!;
+  static double get CI => (Valores.pcoArteriales! * Valores.frecuenciaVentilatoria!) / 40.00;
+
+  // # ######################################################
+  // # Análisis de pCO2 / pO2
+  // # ######################################################
+  static double get indiceTobinYang =>(Valores.frecuenciaVentilatoria! / Valores.volumenTidal!);
+
+  static double get FIOV =>((GAA + 100) / 760) * 100;
+
+  static double get FIOI { if (FIOV < 21)
+  {return (21.00);}
+  else
+  {return FIOV;}}
+  static double get VENT => (Valores.pcoArteriales! * Valores.frecuenciaVentilatoria!) / 40.00;
+
+  static double get VA { 
+    if (Valores.pcoArteriales! != 0) {
+      return  (0.863 * (3.2 * Valores.pesoCorporalTotal!)) / (
+          Valores.pcoArteriales!);
+    }
+  else {
+      return 00.00;
+    }
+  }
+
   static double get VL =>
       (indiceCardiaco / Valores.frecuenciaCardiaca!) *
       1000; //  # Volumen Latido De Litros a mL
@@ -1571,7 +1685,7 @@ class Valores {
     if (Valores.volumenTidal != 0 &&
         Valores.volumenTidal != null &&
         Valores.pesoCorporalPredicho != 0) {
-      // return (valores.get('FraccionInspiratoriaOxigeno') / 100) * (720 - 47) - (valores.get('PresionDioxidoCarbono') / 0.8);
+      // return (valores.get('FraccionInspiratoriaOxigeno') / 100) * (720 - 47) - (Valores.pcoArteriales! / 0.8);
       return 0;
     } else {
       return double.nan;
@@ -1706,17 +1820,17 @@ class Valores {
   // else:
   // IO = 0
   //
-  // IV = (PMVA * Valores.frecuenciaVentilatoria) * (valores.get('PresionDioxidoCarbono') / 10)
+  // IV = (PMVA * Valores.frecuenciaVentilatoria) * (Valores.pcoArteriales! / 10)
   //
-  // if valores.get('PresionDioxidoCarbono') != 0:
-  // EV = (VM * valores.get('PresionDioxidoCarbono')) / ((VMI * 37.5))
-  // else if valores.get('PresionDioxidoCarbono') == 0:
+  // if Valores.pcoArteriales! != 0:
+  // EV = (VM * Valores.pcoArteriales!) / ((VMI * 37.5))
+  // else if Valores.pcoArteriales! == 0:
   // EV = (VM) / ((3.2 * Valores.pesoCorporalTotal!)) * (100)
   // else:
   // EV = 0
   //
-  // PPI = Valores.presionFinalEsiracion+ valores.get('Presion_Soporte')
-  // PPE = Valores.presionFinalEsiracionCI = (valores.get('PresionDioxidoCarbono') * Valores.frecuenciaVentilatoria) / 40.00
+  // PPI = Valores.presionFinalEsiracion+ Valores.presionSoporte!
+  // PPE = Valores.presionFinalEsiracionCI = (Valores.pcoArteriales! * Valores.frecuenciaVentilatoria) / 40.00
   //
   // # ######################################################
   // # Análisis de pCO2 / pO2

@@ -244,6 +244,7 @@ class _IntensivaState extends State<Intensiva> {
                     },
                   ),
                   GrandLabel(
+                    iconData: Icons.g_mobiledata,
                     labelButton: 'Análisis Gasométrico',
                     onPress: () {
                       if (isMobile(context)) {
