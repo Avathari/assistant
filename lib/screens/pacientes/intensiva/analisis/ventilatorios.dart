@@ -212,7 +212,7 @@ class _VentilatoriosState extends State<Ventilatorios> {
                       ),
                       ShowText(
                         title: 'iO2',
-                        data: Valores.IEO,
+                        data: Valores.indiceOxigenacion,
                         medida: '',
                       ),
                       ShowText(

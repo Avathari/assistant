@@ -1547,29 +1547,51 @@ class Valores {
     }
   }
 
-  static int get PPI => Valores.presionFinalEsiracion! + Valores.presionSoporte!;
+  static int get PPI =>
+      Valores.presionFinalEsiracion! + Valores.presionSoporte!;
   static int get PPE => Valores.presionFinalEsiracion!;
-  static double get CI => (Valores.pcoArteriales! * Valores.frecuenciaVentilatoria!) / 40.00;
+  static double get CI =>
+      (Valores.pcoArteriales! * Valores.frecuenciaVentilatoria!) / 40.00;
 
   // # ######################################################
   // # Análisis de pCO2 / pO2
   // # ######################################################
-  static double get indiceTobinYang =>(Valores.frecuenciaVentilatoria! / Valores.volumenTidal!);
+  static double get indiceTobinYang =>
+      (Valores.frecuenciaVentilatoria! / Valores.volumenTidal!);
 
-  static double get FIOV =>((GAA + 100) / 760) * 100;
-
-  static double get FIOI { if (FIOV < 21)
-  {return (21.00);}
-  else
-  {return FIOV;}}
-  static double get VENT => (Valores.pcoArteriales! * Valores.frecuenciaVentilatoria!) / 40.00;
-
-  static double get VA { 
-    if (Valores.pcoArteriales! != 0) {
-      return  (0.863 * (3.2 * Valores.pesoCorporalTotal!)) / (
-          Valores.pcoArteriales!);
+  static double get indiceOxigenacion {
+    if (Valores.poArteriales! != 0) {
+      return (Valores.presionMediaViaAerea * (Valores.fioArteriales! / 100)) *
+          (100.00) /
+          Valores.poArteriales!;
+    } else if (Valores.soArteriales != 0) {
+      return ((Valores.presionMediaViaAerea * (Valores.fioArteriales! / 100)) *
+          (100.00) /
+          Valores.poArteriales!);
+    } //  Indice de Saturación
+    else {
+      return double.nan;
     }
-  else {
+  }
+
+  static double get FIOV => ((GAA + 100) / 760) * 100;
+
+  static double get FIOI {
+    if (FIOV < 21) {
+      return (21.00);
+    } else {
+      return FIOV;
+    }
+  }
+
+  static double get VENT =>
+      (Valores.pcoArteriales! * Valores.frecuenciaVentilatoria!) / 40.00;
+
+  static double get VA {
+    if (Valores.pcoArteriales! != 0) {
+      return (0.863 * (3.2 * Valores.pesoCorporalTotal!)) /
+          (Valores.pcoArteriales!);
+    } else {
       return 00.00;
     }
   }
