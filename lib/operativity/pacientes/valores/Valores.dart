@@ -118,7 +118,12 @@ class Valores {
   //
   static double? sodio, potasio, cloro, fosforo, calcio, magnesio;
   //
-  static double? lactato;
+  static double? procalcitonina,
+      lactato,
+      velocidadSedimentacionGlobular,
+      proteinaCreactiva,
+      factorReumatoide,
+      anticuerpoCitrulinado;
   //
   static String? ritmoCardiaco = '',
       segmentoST = '',
@@ -392,10 +397,19 @@ class Valores {
     albuminaSerica = double.parse(json['Albumina_Serica'] ?? '0');
     proteinasTotales = double.parse(json['Proteinas_Totales'] ?? '0');
     //
+    procalcitonina = double.parse(json['Procalcitonina'] ?? '0');
+    lactato = double.parse(json['Acido_Lactico'] ?? '0');
+    velocidadSedimentacionGlobular =
+        double.parse(json['Velocidad_Sedimentacion'] ?? '0');
+    proteinaCreactiva = double.parse(json['Proteina_Reactiva'] ?? '0');
+    factorReumatoide = double.parse(json['Factor_Reumatoide'] ?? '0');
+    anticuerpoCitrulinado = double.parse(json['Anticuerpo_Citrulinado'] ?? '0');
+    //
     pHArteriales = double.parse(json['Ph_Arterial'] ?? '0');
     pcoArteriales = double.parse(json['Pco_Arterial'] ?? '0');
     poArteriales = double.parse(json['Po_Arterial'] ?? '0');
     bicarbonatoArteriales = double.parse(json['Hco_Arterial'] ?? '0');
+    excesoBaseArteriales = double.parse(json['Eb_Arterial'] ?? '0');
     fioArteriales = double.parse(json['Fio_Arterial'] ?? '0');
     soArteriales = double.parse(json['So_Arterial'] ?? '0');
     // pHArteriales  = double.parse(json['Ph_Arterial'] ?? '0');
@@ -1241,96 +1255,109 @@ class Valores {
   }
 
   // Parámetros Gasométricos
-  static double get  GAP => (Valores.sodio! + Valores.potasio!) - (
-  Valores.cloro! + Valores.bicarbonatoArteriales! );
-  static double get  PAFI =>  (Valores.poArteriales! / (
-  Valores.fioArteriales! / 100));
-  static double get PAFI_PB =>  (PAFI * (presionBarometrica / 760));
-  static double get PAFI_PO2 =>  (Valores.poArteriales! * (PAFI / 100));
-  static double get PAFI_FIO =>  (Valores.poArteriales! / Valores.fioArteriales!) * 100;
-  static double get SAFI =>  (Valores.soArteriales! / (
-  Valores.fioArteriales! / 100));
+  static double get GAP =>
+      (Valores.sodio! + Valores.potasio!) -
+      (Valores.cloro! + Valores.bicarbonatoArteriales!);
+  static double get PAFI =>
+      (Valores.poArteriales! / (Valores.fioArteriales! / 100));
+  static double get PAFI_PB => (PAFI * (presionBarometrica / 760));
+  static double get PAFI_PO2 => (Valores.poArteriales! * (PAFI / 100));
+  static double get PAFI_FIO =>
+      (Valores.poArteriales! / Valores.fioArteriales!) * 100;
+  static double get SAFI =>
+      (Valores.soArteriales! / (Valores.fioArteriales! / 100));
 
   static double get PCO2C {
     if (Valores.temperaturCorporal == 37) {
-      return (Valores.pcoArteriales!
-          * math.pow(10,
-              math.pow(0.019, 2))); // # 37 - 35 °C
-     }
-    else if (Valores.temperaturCorporal! < 37) {
-      return (Valores.pcoArteriales! * math.pow(10,
-          math.pow(0.019, 37.00 - Valores.temperaturCorporal!)));
-    }
-    else if (Valores.temperaturCorporal! > 37) {
-      return 
-      (Valores.pcoArteriales! * math.pow(10, math.pow(0.019, Valores.temperaturCorporal! - 37)));
+      return (Valores.pcoArteriales! *
+          math.pow(10, math.pow(0.019, 2))); // # 37 - 35 °C
+    } else if (Valores.temperaturCorporal! < 37) {
+      return (Valores.pcoArteriales! *
+          math.pow(10, math.pow(0.019, 37.00 - Valores.temperaturCorporal!)));
+    } else if (Valores.temperaturCorporal! > 37) {
+      return (Valores.pcoArteriales! *
+          math.pow(10, math.pow(0.019, Valores.temperaturCorporal! - 37)));
     } else {
       return double.nan;
     }
   }
-  static double get EB => ((1 - 0.014 * Valores.hemoglobina!) * (
-  Valores.bicarbonatoArteriales! - 24.8 + (
-  1.43 * Valores.hemoglobina! + 7.7) * (
-  Valores.pHArteriales! - 7.4)));
-  static double get EBecf => (24) - ((Valores.bicarbonatoArteriales! + 10.00) * (
-  Valores.pHArteriales! - 7.4)); //  # Bicarbonato Standard
+
+  static double get EB => ((1 - 0.014 * Valores.hemoglobina!) *
+      (Valores.bicarbonatoArteriales! -
+          24.8 +
+          (1.43 * Valores.hemoglobina! + 7.7) * (Valores.pHArteriales! - 7.4)));
+  static double get EBecf =>
+      (24) -
+      ((Valores.bicarbonatoArteriales! + 10.00) *
+          (Valores.pHArteriales! - 7.4)); //  # Bicarbonato Standard
   static double get d_GAP => (GAP - 14) / (20 - Valores.bicarbonatoArteriales!);
   // Trastorno_DGAP = '';
   static String get trastorno_d_GAP {
-  if( d_GAP < 1) {
-    return 'Acidemia Metabólica Hipercloremica';
+    if (d_GAP < 1) {
+      return 'Acidemia Metabólica Hipercloremica';
+    } else if (d_GAP < 1) {
+      return 'Alcalosis Metabólica';
+    } else {
+      return '';
+    }
   }
-  else if (d_GAP < 1)
-  {return 'Alcalosis Metabólica';}
-  else
-  {return '';}
-  }
+
   static double get D_d_GAP => d_GAP - Valores.bicarbonatoArteriales!;
   static double get GAPO => ((280) / (Valores.osmolaridadSerica));
-  
-  static double get DIF => (Valores.sodio! + Valores.potasio! + Valores.magnesio! + Valores.calcio!) - (
-  Valores.cloro! + Valores.lactato!);
+
+  static double get DIF =>
+      (Valores.sodio! +
+          Valores.potasio! +
+          Valores.magnesio! +
+          Valores.calcio!) -
+      (Valores.cloro! + Valores.lactato!);
   // # GAPIonesLibres GIF = SID - (2.46 * 108 * Gasometria.Valores.pcoArteriales! / 10)
   static double get EBvGilFix => (Valores.sodio!) - (Valores.cloro!) - 38;
-  static double get EBb => (0.25 * (42.00 - Valores.albuminaSerica!)); //  # Efecto de Buffers Principales
+  static double get EBb => (0.25 *
+      (42.00 - Valores.albuminaSerica!)); //  # Efecto de Buffers Principales
   static double get DA => (Valores.EB - EBb); // # Diferencia Anionica
   static double get VDb => (Valores.EB - DA); // # Verdadero Déficit de Base
-
 
   static double get TCO {
     return ((Valores.bicarbonatoArteriales!) +
         (0.03 * Valores.pcoArteriales!)); //# Dioxido de Carbono Total
   }
+
   static double get PAO {
     return (Valores.fioArteriales! / 100) * (760 - 47) -
         (Valores.pcoArteriales! / 0.8); // # Presión alveolar de oxígeno
   }
 
-  static double get GAA => ((760.00 - 47.00) * (Valores.fioArteriales! / 100) - (
-  Valores.pcoArteriales! / 0.8) - Valores.poArteriales!); //  # Gradiente Alveolo Arterial
+  static double get GAA => ((760.00 - 47.00) * (Valores.fioArteriales! / 100) -
+      (Valores.pcoArteriales! / 0.8) -
+      Valores.poArteriales!); //  # Gradiente Alveolo Arterial
 
   // static double get GAA => (PAO - Valores.poArteriales!); //  # Gradiente Alveolo - Arterial
 
   static String get DiagnosticosPorGradiente {
-  if (GAA < 10)
-  {return "Hipoventilacion sin Enfermedad Pulmonar Intrinseca \n "
-  "(Considerar: Fiebre, Embarazo).";}
-  else if (GAA >= 10) {
-  return "Hipoventilación con Enfermedad Pulmonar Intrínseca \n"
-  "(Considerar: Alteracion Ventilacion/Perfusion \n"
-  "(Tromboembolia Pulmonar, Neumonia)).";}
-  else {
-  return '';}
+    if (GAA < 10) {
+      return "Hipoventilacion sin Enfermedad Pulmonar Intrinseca \n "
+          "(Considerar: Fiebre, Embarazo).";
+    } else if (GAA >= 10) {
+      return "Hipoventilación con Enfermedad Pulmonar Intrínseca \n"
+          "(Considerar: Alteracion Ventilacion/Perfusion \n"
+          "(Tromboembolia Pulmonar, Neumonia)).";
+    } else {
+      return '';
+    }
   }
 
-  static double get DAA => PAO - (Valores.poArteriales!); //  # Diferencia Alveolar
-  static double get PaO2PAO2 => (Valores.poArteriales! / PAO); //  # Relación PaO2 / PAO2
+  static double get DAA =>
+      PAO - (Valores.poArteriales!); //  # Diferencia Alveolar
+  static double get PaO2PAO2 =>
+      (Valores.poArteriales! / PAO); //  # Relación PaO2 / PAO2
 
   // # ######################################################
   // # Reglas del Bicarbonato
   // # ######################################################
   // # Trastorno de Origen Respiratorio.
-  static double get HCOR_a => (7.40) + (((40 - Valores.pcoArteriales!) * 0.08) / 10);
+  static double get HCOR_a =>
+      (7.40) + (((40 - Valores.pcoArteriales!) * 0.08) / 10);
   // # Primera Regla del Bicarbonato: Por cada 10 mmHg que varía la pCO2 mmHg, el pH se incrementa o reduce 0.08 unidades en forma inversamente proporcional
   // # Se suma el HCOR_a al pH Ideal, que es 7.40 si resulta en una discrepancia entonces el Origen del Trastorno no es respiratorio. No cumple la primera regla.
   // # Trastorno de Origen Metabólico (pH Real)
@@ -1339,10 +1366,12 @@ class Valores {
   // # Se suma el HCOR_a al pH Ideal, que es 7.40 si resulta en una discrepancia entonces el Origen del Trastorno no es respiratorio. No cumple la primera regla.
   // # Reposición de Bicarbonato
   static double get HCOR_c {
-  if (Valores.EB < 0)
-  {return (EB * (Valores.pesoCorporalTotal! * 0.3)) * (-1);}
-  else
-  {return (EB * (Valores.pesoCorporalTotal! * 0.3)) * (1);}}
+    if (Valores.EB < 0) {
+      return (EB * (Valores.pesoCorporalTotal! * 0.3)) * (-1);
+    } else {
+      return (EB * (Valores.pesoCorporalTotal! * 0.3)) * (1);
+    }
+  }
   // # Tercera Regla del Bicarbonato: Corrección de HCO3- en Acidosis Metabólica
 
   // # ######################################################
@@ -1350,49 +1379,65 @@ class Valores {
   // # ######################################################
   //  # Déficit de Bicarbonato
   static double get DHCO {
-  if (Valores.pHArteriales! < 7.34)
-  {return (28 - Valores.bicarbonatoArteriales!) * (0.2 * Valores.pesoCorporalTotal!);}
-  else if (Valores.pHArteriales! < 7.20)
-  {return (28 - Valores.bicarbonatoArteriales!) * (0.3 * Valores.pesoCorporalTotal!);}
-  else if (Valores.pHArteriales! < 7.0)
-  {return (28 - Valores.bicarbonatoArteriales!) * (0.4 * Valores.pesoCorporalTotal!);}
-  else if (Valores.pHArteriales! < 6.5)
-  {return (28 - Valores.bicarbonatoArteriales!) * (0.5 * Valores.pesoCorporalTotal!);}
-  else if (Valores.pHArteriales! < 6.0)
-  {return (28 - Valores.bicarbonatoArteriales!) * (0.8 * Valores.pesoCorporalTotal!);}
-  else {
-    return double.nan;
+    if (Valores.pHArteriales! < 7.34) {
+      return (28 - Valores.bicarbonatoArteriales!) *
+          (0.2 * Valores.pesoCorporalTotal!);
+    } else if (Valores.pHArteriales! < 7.20) {
+      return (28 - Valores.bicarbonatoArteriales!) *
+          (0.3 * Valores.pesoCorporalTotal!);
+    } else if (Valores.pHArteriales! < 7.0) {
+      return (28 - Valores.bicarbonatoArteriales!) *
+          (0.4 * Valores.pesoCorporalTotal!);
+    } else if (Valores.pHArteriales! < 6.5) {
+      return (28 - Valores.bicarbonatoArteriales!) *
+          (0.5 * Valores.pesoCorporalTotal!);
+    } else if (Valores.pHArteriales! < 6.0) {
+      return (28 - Valores.bicarbonatoArteriales!) *
+          (0.8 * Valores.pesoCorporalTotal!);
+    } else {
+      return double.nan;
+    }
   }
-  }
+
   // # Déficit de Bicarbonato mediante Astrup - Mellemgard
-  static double get HCOAM
-  { if (Valores.EB < 0)
-  {return Valores.EB * (Valores.pesoCorporalTotal! * 0.3) * (-1);}
-  else
-  {return Valores.EB * (Valores.pesoCorporalTotal! * 0.3) * (1);}
+  static double get HCOAM {
+    if (Valores.EB < 0) {
+      return Valores.EB * (Valores.pesoCorporalTotal! * 0.3) * (-1);
+    } else {
+      return Valores.EB * (Valores.pesoCorporalTotal! * 0.3) * (1);
+    }
   }
+
   // # Velocidad de Infusión para la Reposición de Bicarbonato de Sodio
-  static double get VHCOAM
-      { if (Valores.pHArteriales! <= 7.0)
-  {return HCOAM; }//  # Administar 1/1 de la solución hasta conseguir pH 7.20 - 7.30}
-  else { return HCOAM / 2 ;} }//# Administar 1/2 de la solución hasta conseguir pH 7.20 - 7.30
+  static double get VHCOAM {
+    if (Valores.pHArteriales! <= 7.0) {
+      return HCOAM;
+    } //  # Administar 1/1 de la solución hasta conseguir pH 7.20 - 7.30}
+    else {
+      return HCOAM / 2;
+    }
+  } //# Administar 1/2 de la solución hasta conseguir pH 7.20 - 7.30
 
   // # Número de Frascos / Ampulas de Bicarbonato de Sodio al  7.5%
   static double get NOAMP {
-  if (DHCO != 0)
-  {return DHCO / 20;}
-  else
-  {return 0;}}
+    if (DHCO != 0) {
+      return DHCO / 20;
+    } else {
+      return 0;
+    }
+  }
 
   // # Cociente Respiratorio
   static double get RI => 0.8;
   // # ######################################################
   // # Concentración de Hidrigeniones H+
   // # ######################################################
-  static double get H => 24 * (Valores.pcoArteriales! / Valores.bicarbonatoArteriales!);
-  static double get PH => 6.1 + numerics.log10(
-  (Valores.bicarbonatoArteriales! / (
-  0.03 * Valores.pcoArteriales!)));
+  static double get H =>
+      24 * (Valores.pcoArteriales! / Valores.bicarbonatoArteriales!);
+  static double get PH =>
+      6.1 +
+      numerics.log10(
+          (Valores.bicarbonatoArteriales! / (0.03 * Valores.pcoArteriales!)));
   static double get PaO2_estimado => 103.5 - 0.42 * Valores.edad!;
   static double get PaO2_estimado_sedestacion => 104.2 - 0.27 * Valores.edad!;
   static double get PaO2_estimado_decubito => 109.0 - 0.43 * Valores.edad!;
