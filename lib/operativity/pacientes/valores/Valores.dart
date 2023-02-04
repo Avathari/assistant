@@ -107,6 +107,8 @@ class Valores {
       albuminaSerica,
       proteinasTotales;
   //
+  static String? fechaGasometriaVenosa,
+      fechaGasometriaArterial;
   static double? pHArteriales,
       pcoArteriales,
       poArteriales,
@@ -1618,7 +1620,7 @@ class Valores {
   static double get CO =>
       ((gastoCardiaco * DAV) * (10)); // # Consumo de Oxígeno
 
-  static double get PC =>
+  static double get presionColoidoOsmotica => // PC
       ((Valores.proteinasTotales! - Valores.albuminaSerica!) * 1.4) +
       (Valores.albuminaSerica! * 5.5); //  # Presión Coloidóncotica
   static double get TC => (gastoCardiaco *
