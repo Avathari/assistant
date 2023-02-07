@@ -95,8 +95,8 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                         ),
                         TittlePanel(
                             textPanel:
-                                "T.A. ${Valores.tensionArterialSistemica} (${Valores.presionArterialMedia})"),
-                        const CrossLine(),
+                                "T.A. ${Valores.tensionArterialSistemica} (${Valores.presionArterialMedia.toStringAsFixed(0)})"),
+                        // const CrossLine(),
                         ShowText(
                           title: 'Hemoglobina',
                           data: Valores.hemoglobina,

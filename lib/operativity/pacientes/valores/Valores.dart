@@ -37,7 +37,6 @@ class Valores {
     } else {
       return 0;
     }
-
   }
 
   static String? get isEstanciaProlongada {
@@ -107,8 +106,7 @@ class Valores {
       albuminaSerica,
       proteinasTotales;
   //
-  static String? fechaGasometriaVenosa,
-      fechaGasometriaArterial;
+  static String? fechaGasometriaVenosa, fechaGasometriaArterial;
   static double? pHArteriales,
       pcoArteriales,
       poArteriales,
@@ -199,7 +197,26 @@ class Valores {
   // Variables de Valoraciones
   static String? valoracionAsa, valoracionBromage, valoracionNyha;
   // Variables de la situación hospitalaria
-  static String? dispositivoOxigeno = Items.dispositivosOxigeno[0];
+  static String? dispositivoOxigeno = Items.dispositivosOxigeno[0],
+      dispositivoEmpleado = Items.tuboendotraqueal[0],
+      auxiliarVentilacion = Items.dispositivosOxigeno[0],
+  rass = Escalas.RASS[0],
+  ramsay = Escalas.ramsay[0],
+      ashworth = Escalas.ashworth[0],
+      daniels = Escalas.daniels[0],
+      mrc = Escalas.MRC[0],
+  faseVentilatoria = Items.ventilatorio[0],
+      siedel = Escalas.siedel[0],
+      tuboEndotraqueal = Items.tuboendotraqueal[0],
+      haciaArcadaDentaria = Items.arcadaDentaria[0],
+  antibioticoterapia = Items.antibioticoterapia[0],
+  evaluacionNorton = Escalas.norton[0],
+      evaluacionBraden = Escalas.braden[0],
+  apoyoAminergico = Items.aminergico[0],
+      alimentacion = Items.dieta[0],
+      tipoSondaAlimentacion = Items.orogastrico[0],
+      tipoSondaVesical = Items.foley[0],
+  sedoanalgesia = Items.sedacion[0];
   static bool? isCateterPeriferico = false,
       isCateterLargoPeriferico = false,
       isCateterVenosoCentral = false,
@@ -306,7 +323,7 @@ class Valores {
   }
 
   Valores.fromJson(Map<String, dynamic> json) {
-    // print("Valors $json");
+    print("Valors $json");
 
     numeroPaciente = json['Pace_NSS'];
     agregadoPaciente = json['Pace_AGRE'];
@@ -2134,6 +2151,7 @@ class Valorados {
       "Grasa Corporal: ${Valores.grasaCorporalEsencial.toStringAsFixed(2)} Kg, "
       "Grasa Corporal Porcentual: ${Valores.grasaCorporalEsencial.toStringAsFixed(2)} %, "
       "Peso Corporal Magro: ${Valores.porcentajeCorporalMagro.toStringAsFixed(2)} Kg. \n";
+
   static String get metabolometrias =>
       "Análisis Energético - Gasto Energetico Basal: ${Valores.gastoEnergeticoBasal.toStringAsFixed(2)} kCal/dia "
       "(Factor de Actividad: ${Valores.factorActividad}; "
@@ -2159,6 +2177,123 @@ class Valorados {
       "Delta potasio: ${Valores.deficitSodio} mEq/L: ${Valores.deltaPotasio}";
 }
 
+class Formatos {
+  static String get cateterVenosoCentral {
+    return "Previa recolección de Material y Lavado de Manos. Se coloca a la paciente en posición en Decúbito Supino rotando la cabeza de la paciente a 45° al contrario de la Vena Subclavia Derecha. Realizado calzado de guantes estériles.\n"
+        "Se localiza el Tubérculo Coroídeo para indicar zona de punción nivel de la linea media clavicular y se procede a infiltrar con Lidocaína al 1% en Zona de Punción.\n"
+        "Posteriormente se coloca Campos Estériles y se inicia a la comprobación del Equipo corroborando permeabilidad de las lineas vasculares con solución inyectable y Heparina Sódica, para posterior mente cerrar con el Sellado los Lumenes de Acceso. \n"
+        "Corroborado el Equipo se procede a realizar la Punción de la Vena con el Trocar en orientación hacia la Horquilla Esternal a 45° con respecto a la piel, aspirando de manera continua, obteniendo sangre venosa en recamara de inserción, "
+        "comprobando el ingreso a la vena. Se inserta la guia metálica y se procede al retiro de la guia mediante la cual se introduce dilatador a tres tercios de su extensión para posteriormente retirarla. "
+        "Ex post facto, se inserta el catéter retirando al mismo tiempo la guia. Se comprueba la permeabilidad del catéter observándose ingreso de solución parenteral, y posteriormente corroborando reflujo sanguíneo por medio de la linea vascular.\n"
+        "Se procede a Fijar el Catéter Venoso Central a la piel con Sutura Nylon 2-0, colocando previamente los aditivos para la fijación. Se recubre con aditivo de tela transparente (Tegaderm) y se membrete fecha de colocación. \n";
+  }
+
+  static String get intubacionEndotraqueal {
+    return "Previo Lavado de Manos y colocación de elementos de protección personal, asi como preparación del Material a Utilizar, se revisa que el laringoscopio tenga pilas y funcione correctamente "
+        "y se comprueba la integridad del globo del ${Valores.dispositivoEmpleado} insuflandolo para corroborar su correcta dilatación sin fuga. "
+        "Se lubrica el dispositivo con xilocaína, y se corrobora que la guía metálica no rebase la punta del ${Valores.dispositivoEmpleado}.\n"
+        "Se administra Sedante Opiáceo para asegurar sedoanalgésia, mientras se realiza Preoxigenación al paciente con Dispositivo de Alto Flujo, "
+        "recolocando la cama del paciente para que la cabeza del mismo quede a la altura del apéndice xifoides del operador, inclinando la cabeza del paciente hacia posterior "
+        "resultando en una Movilidad Cervical ${Valores.movilidadCervical}, para posteriormente elevar el mentón en Posición de Olfateo; "
+        "clasificando la Distancia Esternomentoniana como ${Valores.distanciaEsternomentoniana}, y Distancia Tiromentoniana como ${Valores.distanciaTiromentoniana}. \n"
+        "Se apertura la Mandíbula Inferior clasificando la Apertura Mandibular como ${Valores.aperturaMandibular}, además de Protrusión Mandibular como ${Valores.movilidadTemporoMandibular}, "
+        "para posteriormente visualizar el Istmo Orofaríngeo, catalogándolo como ${Valores.escalaMallampati} (Mallampati). Posteriormente se ingresa la hoja del Laringoscopio del lado derecho "
+        "de la lengua empujando la misma hacia la izquierda; coadyuvado mediante la realización de la Maniobra de Sellick, "
+        "quedando asi la hoja en la línea media. "
+        "Se desciende hasta la base de la lengua hasta presionarla sobre el piso de la boca en el ángulo de la Vallecula Epiglótica, quedando el mango del laringoscopio apuntando al techo, en un ángulo de 45 grados. "
+        "Visualizando las cuerdas vocales siendo catalogado el acceso aéreo como ${Valores.escalaCormackLahane}(Cormack - Lahane). Se toma el ${Valores.dispositivoEmpleado} "
+        "con la mano derecha desplazandolo sobre la hoja del laríngoscopio para ir atravezando las Cuerdas Vocales hasta ver desaparecer el extremo inferior del ${Valores.dispositivoEmpleado}, "
+        "donde quedará ubicado el balón del dispositivo (3 - 4 cm de las Cuerdas Vocales).\n"
+        "Se retira la guia metálica, posteriormente se retira el laringoscopio para la posterior confirmación de la correcta colocacion del ${Valores.dispositivoEmpleado} mediante la visualización de la columna de aire através del dispositivo, "
+        "la simétria de la ventilación evidenciada por la mecánica tóracica y por la auscultación directa. "
+        "Toda vez corroborado la correcta inserción de este, se conecta el ${Valores.dispositivoEmpleado} al ${Valores.dispositivoOxigeno}.\n"
+        "Se ausculta el abdomen en búsqueda de presion positiva, asi como ambos pulmones a la altura de la linea media axilar obteniendo sonido simétrico en ambos pulmones.\n"
+        "Se mantiene el ${Valores.dispositivoEmpleado} a 22 cm respecto a los dientes, y se procede a asegurarlo con esparadrapo y pegarla a las mejillas. \n";
+  }
+
+  static String get sondaEndopleural {
+    return "Posterior a haber brindado información sobre el Procedimiento al Paciente, y haber recabado los Consentimientos Informados. "
+        "Se hace la Recolección del Material y se procede a realizar el procedimiento. \n"
+        "Se coloca al paciente en Decúbito Dorsal ligeramente girado respecto Sitio de Colocación, con el brazo del lado afectado detrás "
+        "de la cabeza del paciente para exponer el área axilar. Se identifica, mediante palpación, el ${Valores.sitiosSondaPleural} a la Altura "
+        "de la Línea Axilar Anterior. Se procede a realizar la investidura de ropa estéril para posteriormente realizar asepsia y antisépsia "
+        "del Hemitórax a operar. Se mide la Sonda Pleural respecto al cuerpo del paciente previo a su introducción tomando "
+        "como referencia el punto de insición y la zona de estancia. Se prepara la zona a puncionar cubriendo con campos quirúrgicos, tomando "
+        "en cuenta el Triángulo de Seguridad (conformado en su Borde Anterior el Latísimo del Músculo Dorsal Ancho, el Pectoral Mayor en su Porde Posterior, "
+        "y la Cuarta Costilla como su base marcando como referencia el nivel horizontal del pezón, y un ápice debajo de la áxila). \n"
+        "Se procede a anestesiar la zona con Lidocaína al 2% iniciando con un botón en piel, y posteriormente se infiltra el área aledaña a esta. "
+        "A nivel del ${Valores.sitiosSondaPleural} se realiza una incisión horizontal de ~1.5 cm para el paso de la Sonda Pleural, con una pinza Kelly se "
+        "apertura el trayecto subcutáneo, se introduce el dedo indice por el trayecto y se palpa el pulmón para garantizar la localización de la cavidad pleural "
+        "comprobando que no haya adherencias. Se coloca la pinza Kelly en el extremo distal de la Sonda de pleurostomía, y en el extremo proximal se localiza coloca "
+        "una Pinza Foester para introducirla através del trayecto subcutáneo hasta llegar dentro de la Cavidad Pleural. "
+        "Se abren las pinzas Kelly y se retiran para "
+        "colocar la Sonda en su posición final. \n"
+        "Se asegura la sonda con Sutura tipo Jareta con Hilo de Seda, y se realiza la conexión de la Sonda Pleural al Sístema de Sello de Agua. "
+        "Finalmente, se coloca "
+        "un vendaje para fijar la sonda con cinta adhesiva, y se comprueba nuevamente el gasto de la misma atraves de la sonda.";
+  }
+
+  static String get cateterTenckhoff {
+    return "Previa recolección de Material y Lavado de Manos. Se coloca a la paciente en posición en Decúbito Supino rotando la cabeza de la paciente a 45° al contrario de la Vena Subclavia Derecha. Realizado calzado de guantes estériles.\n"
+        "Se localiza el Tubérculo Coroídeo para indicar zona de punción nivel de la linea media clavicular y se procede a infiltrar con Lidocaína al 1% en Zona de Punción.\n"
+        "Posteriormente se coloca Campos Estériles y se inicia a la comprobación del Equipo corroborando permeabilidad de las lineas vasculares con solución inyectable y Heparina Sódica, para posterior mente cerrar con el Sellado los Lumenes de Acceso. \n"
+        "Corroborado el Equipo se procede a realizar la Punción de la Vena con el Trocar en orientación hacia la Horquilla Esternal a 45° con respecto a la piel, aspirando de manera continua, obteniendo sangre venosa en recamara de inserción, "
+        "comprobando el ingreso a la vena. Se inserta la guia metálica y se procede al retiro de la guia mediante la cual se introduce dilatador a tres tercios de su extensión para posteriormente retirarla. "
+        "Ex post facto, se inserta el catéter retirando al mismo tiempo la guia. Se comprueba la permeabilidad del catéter observándose ingreso de solución parenteral, y posteriormente corroborando reflujo sanguíneo por medio de la linea vascular.\n"
+        "Se procede a Fijar el Catéter Venoso Central a la piel con Sutura Nylon 2-0, colocando previamente los aditivos para la fijación. Se recubre con aditivo de tela transparente (Tegaderm) y se membrete fecha de colocación. \n";
+  }
+
+//   static String get exploracionTerapia => "Durante la Exploración Física, siendo evaluado por Aparatos y Sistemas, es encontrado: \n"
+//   "NEUROLOGICO: " "En sedoanalgesia con ${Valores.sedoanalgesia} consiguiendo "
+//   "R.A.S.S. " + Intensiva.Variables.Intensiva.Rass " y "
+//   "Ramsay " + Intensiva.Variables.Intensiva.Ramsay
+//   ", " " sin Datos de Focalización Neurológica. \n"
+//   "VENTILATORIO: Apoyo ventilatorio " + Intensiva.Variables.Intensiva.Ventilatorio ", mediante "
+//   + Intensiva.Variables.Intensiva.Tuboendotraqueal " " + Intensiva.Variables.Intensiva.Arcada ", "
+//   + Pacientes.Hospitalarios.Ventilaciones.prosa(self) "\n"
+//   "PCO2 " + str("%.0f" % valores.get('PresionDioxidoCarbono')) " mmHg, "
+//   "PO2 " + str("%.0f" % valores.get('PresionOxigenoArterial')) " mmHg, "
+//   "SO2 " + str("%.0f" % valores.get('SaturacionOxigeno')) " %, "
+//   "Indice PaO2/FiO2: " + str("%.0f" % PAFI) " mmHg. "
+//   "Aa-O2 " + str("%.2f" % valores.get('GradienteAlveoloArterial')) " mmHg. \n"
+//   "Ruidos Pulmonares Audibles, sin Estertores ni Sibilancias. " "\n"
+//   "HEMATOINFECCIOSO: "
+//   "Tensión arterial sistémica "
+//   + str(valores.get('Tension_Arterial_Sistolica')) "/"
+//   + str(valores.get('Tension_Arterial_Diastolica')) " mmHg, "
+//   "TAM " + str("%.0f" % PAM) " mmHg, "
+//   + Intensiva.Variables.Intensiva.Aminergico ". "
+//   "Frecuencia cardiaca " + str(valores.get('Frecuencia_Cardiaca')) " L/min, "
+//   "temperatura corporal " + str(valores.get('Temperatura_Corporal')) " °C. \n"
+//   "" + Intensiva.Variables.Intensiva.Antibiotico " con " + Pacientes.Auxiliares.Laboratorios.Biometrias.prosaSimple(
+//   self) ""
+//   "Proteína C Reactiva " + str("%.1f" % valores.get('ProteinaCReactiva')) " mg/dL, "
+//   "procalcitonina " + str("%.2f" % valores.get('Procalcitonina')) " ng/mL. \n"
+//   "Riesgo de úlceras por presión por inmovilización " + Intensiva.Variables.Intensiva.Norton " (Norton), " + Intensiva.Variables.Intensiva.Braden " (Braden). \n"
+//   "Sin datos de sangrado, sin requerimiento transfusional. \n"
+//   "GASTRONUTRICIO: " + Intensiva.Variables.Intensiva.Orogastrico "; " + Intensiva.Variables.Intensiva.Dieta ". \n"
+//   "Peso corporal total: " + str(valores.get('Peso_Corporal_Total')) " Kg, "
+//   "estatura: " + str(valores.get('Estatura')) " mts, "
+//   "I.M.C " + str("%.1f" % IMC) " Kg/m2, "
+//   "Peso predicho " + str("%.1f" % PP) " Kg. \n"
+//   "Glucosa sérica " + str("%.0f" % valores.get('Glucosa')) " mg/dL, "
+//   "albúmina " + str("%.1f" % valores.get('AlbuminaSerica')) " g/dL. "
+//   "Abdomen blando, depresible, sin datos de irritación peritoneal. \n"
+//   "HIDRORRENAL: " + Intensiva.Variables.Intensiva.Foley ", con " + Pacientes.Hospitalarios.Balances.prosa(
+//   self) "\n"
+//   "Creatinina " + str("%.1f" % valores.get('Creatinina')) " mg/dL, "
+//   "urea " + str("%.1f" % valores.get('Urea')) " mg/dL; "
+//   "tasa de filtrado glomerular " + str(
+//   "%.1f" % TFG) " mL/min/1.73 m2 (Cockcroft - Gault). \n"
+//   "pH " + str("%.2f" % valores.get('pH')) ", "
+//   "HCO3- " + str("%.2f" % valores.get('BicarbonatoSerico')) " mmol/L, "
+//   "E.B. " + str("%.2f" % valores.get('ExcesoBase')) " mmol/L. "
+//   "Sodio: " + str("%.0f" % valores.get('Sodio')) " mmol/L, "
+//   "potasio: " + str("%.1f" % valores.get('Potasio')) " mmol/L, "
+//   "cloro: " + str("%.0f" % valores.get('Cloro')) " mmol/L. \n"
+//   + Valoraciones.HidricosSimple(self) "";
+}
+
 class Escalas {
   static List<String> asa = [
     'A.S.A. I (Paciente Sano)',
@@ -2179,6 +2314,67 @@ class Escalas {
     'Clase II (Leve, Limitación leve en la actividad física)',
     'Clase III (Moderado, Limitación leve en la actividad diaria)',
     'Clase IV (Severo, Limitación para cualquier actividad diaria)',
+  ];
+  static List<String> ashworth = ["0", "1", "1+", "2", "3", "4"];
+  static List<String> daniels = ["0", "1", "2", "3", "4", "5"];
+  static List<String> MRC = [
+    "0 (Ausente)",
+    "1 (Mínima)",
+    "2 (Escasa)",
+    "3 (Regular)",
+    "3+ (Regular +)",
+    "4- (Buena -)",
+    "4 (Buena)",
+    "4+ (Buena +)",
+    "5 (Normal)"
+  ];
+  static List<String> siedel = [
+    "0 (Arreflexia)",
+    "+ (Hiporreflexia)",
+    "++ (Normal)",
+    "+++ (Hiperreflexia)",
+    "++++ (Hiperreflexia y Clonus)"
+  ];
+  static List<String> norton = [
+    "> 14 Puntos (Riesgo Mínimo)",
+    "13 a 14 Puntos (Riesgo Medio)",
+    "10 a 12 Puntos (Riesgo Alto)",
+    "5 a 9 Puntos (Riesgo Muy Alto)"
+  ];
+  static List<String> braden = [
+    "18 a 23 Puntos (Sin Riesgo)",
+    "15 a 18 Puntos (Riesgo Leve)",
+    "13 a 14 Puntos (Riesgo Moderado)",
+    "10 a 12 Puntos (Riesgo Alto)",
+    "< 9 Puntos (Riesgo Muy Alto)"
+  ];
+  static List<String> RASS = [
+    "4",
+    "3",
+    "2",
+    "1",
+    "0",
+    "-1",
+    "-2",
+    "-3",
+    "-4",
+    "-5"
+  ];
+  static List<String> ramsay = ["1", "2", "3", "4", "5"];
+  static List<String> glasgow = [
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15"
   ];
 
   static List<dynamic> serviciosHospitalarios = [];
@@ -2272,8 +2468,238 @@ class Escalas {
 
 class Items {
   static List<String> tiposAnalisis = ['Padecimiento Actual'];
+  static List<String> motivosTraslado = [
+    "Falla de Respuesta Favorable al Tratamiento",
+    "Presencia de Complicaciones",
+    "Requiere Estudios Auxiliares Diagnósticos Especiales",
+    "Riesgo de Secuelas que Requieren Tratamiento Especializado",
+    "Complementación Diagnóstica por Servicio Especializado",
+    "Requerimiento de Tratamiento Especializado"
+  ];
+  static List<String> fentanilo = [
+    "> 10 mL/Hr",
+    "10 - 5 mL/Hr",
+    "< 5 mL/Hr",
+  ];
+  static List<String> midazolam = ["> 10 mL/Hr", "< 9 mL/Hr"];
 
-  static List<String> dispositivosOxigeno = ['', 'Puntas nasales'];
+  static List<String> sedacion = [
+    "Ninguno",
+    "Midazolam",
+    "Propofol",
+    "Dexmedetomidina",
+    "Fentanilo",
+    "Buprenorfina",
+    "Morfina",
+    "Midazolam y Morfina",
+    "Midazolam y Buprenorfina",
+    "Midazolam y Propofol",
+    "Midazolam y Fentanilo",
+    "Midazolam, Propofol y Fentanilo",
+    "Midazolam, Propofol y Morfina",
+    "Dexmedetomidina y Fentanilo",
+    "Dexmedetomidina y Buprenorfina",
+    "Midazolam, Fentanilo y Dexmedetomidina",
+    "Propofol y Fentanilo",
+    "Propofol y Buprenorfina",
+    "Propofol y Morfina",
+    "Propofol y Midazolam",
+    "Tiopental Sódico",
+    "Tiopental Sódico y Morfina",
+    "Tiopental Sódico y Midazolam",
+    "Tiopental Sódico, Midazolam y Morfina",
+    "Tiopental Sódico, Midazolam y Propofol",
+    "Tiopental Sódico, Midazolam, Propofol y Morfina",
+    "Tiopental Sódico, Propofol y Morfina"
+  ];
+  static List<String> pupilar = [
+    "Púpilas Isocóricas Normorreflécticas",
+    "Púpilas Isocóricas Arreflécticas",
+    "Púpilas Anisocóricas Normorreflécticas",
+    "Púpilas Anisocóricas Arreflécticas"
+  ];
+  static List<String> respuestaOcular = [
+    "Apertura Ocular Espontánea",
+    "Apertura Ocular ante Estímulo Verbal",
+    "Apertura Ocular Ante Estímulo Doloroso",
+    "Sin Apertura Ocular Ante Estímulo"
+  ];
+  static List<String> respuestaVerbal = [
+    "Respuesta Verbal Coherente",
+    "Respuesta Verbal Confusa",
+    "Respuesta Verbal mediante Palabras Inadecuadas",
+    "Respuesta Verbal mediantes Sonidos Incomprensibles",
+    "Sin Respuesta Verbal Alguna",
+    "Respuesta Verbal Limitada"
+  ];
+  static List<String> respuestaMotora = [
+    "Respuesta Motora Obedeciendo Ordenes",
+    "Respuesta Motora Localizando el Dolor",
+    "Respuesta Motora por Movimiento de Retirada",
+    "Respuesta Motora mediante Fléxión Hipertónica",
+    "Respuesta Motora mediante Extensión Hipertónica",
+    "Sin Respuesta Motora Alguna"
+  ];
+
+  static List<String> ventilatorio = [
+    "Fase O",
+    "Fase I",
+    "Fase II",
+    "Fase III"
+  ];
+  static List<String> tuboendotraqueal = [
+    "Tubo Endotraqueal Fr. 10.0",
+    "Tubo Endotraqueal Fr. 9.5",
+    "Tubo Endotraqueal Fr. 9.0",
+    "Tubo Endotraqueal Fr. 8.0",
+    "Tubo Endotraqueal Fr. 8.5",
+    "Tubo Endotraqueal Fr. 7.5",
+    "Tubo Endotraqueal Fr. 7.0",
+    "Tubo Endotraqueal Fr. 6.5",
+    "Tubo Endotraqueal Fr. 6",
+    "Cánula de Traqueostomía Fr. 10.0",
+    "Cánula de Traqueostomía Fr. 9.5",
+    "Cánula de Traqueostomía Fr. 9.0",
+    "Cánula de Traqueostomía Fr. 8.5",
+    "Cánula de Traqueostomía Fr. 8.0",
+    "Cánula de Traqueostomía Fr. 7.5",
+    "Cánula de Traqueostomía Fr. 7.0",
+    "Cánula de Traqueostomía Fr. 6.5",
+    "Cánula de Traqueostomía Fr. 6"
+  ];
+  static List<String> arcadaDentaria = [
+    "a 18 cm de la Arcada Dentaria",
+    "a 19 cm de la Arcada Dentaria",
+    "a 20 cm de la Arcada Dentaria",
+    "a 21 cm de la Arcada Dentaria",
+    "a 22 cm de la Arcada Dentaria",
+    "a 23 cm de la Arcada Dentaria",
+    "a 24 cm de la Arcada Dentaria",
+    "a 25 cm de la Arcada Dentaria",
+    "a 26 cm de la Arcada Dentaria",
+    "a 27 cm de la Arcada Dentaria",
+    "a 28 cm de la Arcada Dentaria",
+    "a 29 cm de la Arcada Dentaria",
+    "a 30 cm de la Arcada Dentaria"
+  ];
+  static List<String> aminergico = [
+    "Sin Apoyo Aminérgico ni Inotrópicos",
+    "Con Apoyo Aminérgico",
+    "Con Soporte Inotrópico"
+  ];
+  static List<String> orogastrico = [
+    "Sin Sonda Oro/Nasogástrica",
+    "Con Sonda Orogástrica Fr. 14",
+    "Con Sonda Orogástrica Fr. 16",
+    "Con Sonda Orogástrica Fr. 18",
+    "Con Sonda Nasogástrica Fr. 14",
+    "Con Sonda Nasogástrica Fr. 16",
+    "Con Sonda Nasogástrica Fr. 18"
+  ];
+  static List<String> foley = [
+    "Sin Sonda Vesical",
+    "Con Sonda Vesical Fr. 10",
+    "Con Sonda Vesical Fr. 12",
+    "Con Sonda Vesical Fr. 14",
+    "Con Sonda Vesical Fr. 16",
+    "Con Sonda Vesical Fr. 18"
+  ];
+  static List<String> dieta = [
+    "En Ayuno Hasta Nueva Orden",
+    "Dieta Líquida",
+    "Dieta Blanda",
+    "Dieta Enteral Completa",
+    "Dieta Polimérica",
+    "Dieta Líquida por Sonda Nasogástrica",
+    "Dieta Blanda por Sonda Nasogástrica",
+    "Dieta Enteral Completa por Sonda Nasogástrica",
+    "Dieta Polimérica por Sonda Nasogástrica",
+    "Dieta Líquida por Sonda Orogástrica",
+    "Dieta Blanda por Sonda Orogástrica",
+    "Dieta Enteral Completa por Sonda Orogástrica",
+    "Dieta Polimérica por Sonda Orogástrica"
+  ];
+  static List<String> antibioticoterapia = [
+    "Sin Antibioticoterapia",
+    "Con Antibioticoterapia a Base de Penicilina Natural",
+    "Con Antibioticoterapia a Base de Penicilina Resistente a Penicilinasa",
+    "Con Antibioticoterapia a Base de Aminopenicilina",
+    "Con Antibioticoterapia a Base de Carboxipenicilina",
+    "Con Antibioticoterapia a Base de Ureidoenicilina",
+    "Con Antibioticoterapia a Base de Inhibidor de Beta - Lactamasas",
+    "Con Antibioticoterapia a Base de Polipéptido",
+    "Con Antibioticoterapia a Base de Cefalosporina de Primera Generación",
+    "Con Antibioticoterapia a Base de Cefalosporina de Segunda Generación",
+    "Con Antibioticoterapia a Base de Cefalosporina de Tercera Generación",
+    "Con Antibioticoterapia a Base de Cefalosporina de Cuarta Generación",
+    "Con Antibioticoterapia a Base de Cefalosporina de Quinta Generación",
+    "Con Antibioticoterapia a Base de Inhibidor de Beta - Lactamasas",
+    "Con Antibioticoterapia a Base de Betalactámico",
+    "Con Antibioticoterapia a Base de Sulfonamida",
+    "Con Antibioticoterapia a Base de Polimixina A",
+    "Con Antibioticoterapia a Base de Polimixina B",
+    "Con Antibioticoterapia a Base de Polimixina C",
+    "Con Antibioticoterapia a Base de Polimixina D",
+    "Con Antibioticoterapia a Base de Polimixina E",
+    "Con Antibioticoterapia a Base de Polienos",
+    "Con Antibioticoterapia a Base de Tetraciclina",
+    "Con Antibioticoterapia a Base de Fenicol",
+    "Con Antibioticoterapia a Base de Nitroimidazol",
+    "Con Antibioticoterapia a Base de Imidazol",
+    "Con Antibioticoterapia a Base de Triazol",
+    "Con Antibioticoterapia a Base de Macrólido",
+    "Con Antibioticoterapia a Base de Aminoglucósido",
+    "Con Antibioticoterapia a Base de Quinolona",
+    "Con Antibioticoterapia a Base de Ansamicina",
+    "Con Antibioticoterapia a Base de Lincosamida",
+    "Con Antibioticoterapia a Base de Glucopéptido",
+    "Con Antibioticoterapia a Base de Carbapenémico",
+    "Con Antibioticoterapia a Base de Ertapenémico",
+    "Con Antibioticoterapia a Base de Monobactámico",
+    "Con Antibioticoterapia a Base de Cefalosporina y Macrólido",
+    "Con Antibioticoterapia a Base de Cefalosporina y Quinolona",
+    "Con Antibioticoterapia a Base de Macrólido y Quinolona",
+    "Con Antibioticoterapia a Base de Glucopéptido y Quinolona",
+    "Con Antibioticoterapia a Base de Glucopéptido y Aminoglucósido",
+    "Con Antibioticoterapia a Base de Glucopéptido y Tetraciclina",
+    "Con Antibioticoterapia a Base de Glucopéptido y Glicilciclina",
+    "Con Antibioticoterapia a Base de Glucopéptido, Aminoglucósido y Polimixina",
+    "Con Antibioticoterapia a Base de Carbapenémico y Glucopéptido",
+    "Con Antibioticoterapia a Base de Carbapenémico y Imidazol",
+    "Con Antibioticoterapia a Base de Carbapenémico y Oxazolidinona",
+    "Con Antibioticoterapia a Base de Carbapenémico y Beta - Lactámico",
+    "Con Antibioticoterapia a Base de Carbapenémico y Quinolona",
+    "Con Antibioticoterapia a Base de Carbapenémico y Tetraciclina",
+    "Con Antibioticoterapia a Base de Carbapenémico y Glicilciclina",
+    "Con Antibioticoterapia a Base de Carbapenémico y Polimixina",
+    "Con Antibioticoterapia a Base de Inhibidor de Beta - Lactamasas y Betalactámico"
+  ];
+
+  static List<String> tusigeno = ["TUSIGENO", "Si", "No"];
+  static List<String> deglutorio = ["DEGLUTORIO", "Si", "No"];
+  static List<String> expectoratorio = ["EXPECTORATORIO", "Si", "No"];
+
+  static List<String> dispositivosOxigeno = [
+    'Ventilador Mecánico Controlado por Presión',
+    'Ventilador Mecánico Controlado por Volumen',
+    'Ventilador Mecánico Controlado por Presión Modalidad para Bi-Presión Continua de la Via Aérea  (BiPAP: iPAP, ePAP),'
+        'Ventilador Mecánico Controlado por Presión Modalidad para Presión Continua de la Via Aérea (C.P.A.P.)',
+    'Ventilador Mecánico Volumétrico Controlado Neumáticamente y Controlado Electrónicamente',
+    'Dispositivo Bolsa-Válvula-Mascarilla',
+    'Nebulizador con Sistema Venturi',
+    'Casco Cefálco, con Dispositivo Borboteador',
+    'Incubadora con Dispositivo Oxigenoterapia Integrado',
+    'Pieza en T, con Dispositivo Borboteador',
+    'Collarín de Traqueostomía, con Dispositivo Borboteador',
+    'Tienda Facial, con Dispositivo Borboteador',
+    'Cánula Nasal, con Dispositivo Borboteador',
+    'Cánula Nasal con Reservorio "de Bigote", con Dispositivo Borboteador',
+    'Cánula Nasal con Reservorio Colgante, con Dispositivo Borboteador',
+    'Mascarilla Simple con Dispositivo Borboteador',
+    'Máscara de Oxígeno con Reservorio, con Dispositivo Borboteador',
+    'Máscara de Reinhalación Parcial, con Dispositivo Borboteador',
+    'Máscara de No Reinhalación con Reservorio, con Dispositivo Borboteador'
+  ];
 
   static List<String> dicotomicos = Dicotomicos.dicotomicos();
 }
@@ -2294,4 +2720,3 @@ isNull(value) {
     return value;
   }
 }
-

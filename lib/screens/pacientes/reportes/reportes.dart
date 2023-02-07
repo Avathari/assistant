@@ -3,11 +3,14 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 
-import 'package:assistant/screens/pacientes/auxiliares/pacientes_auxiliares.dart';
+import 'package:assistant/screens/pacientes/auxiliares/presentaciones/presentaciones.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
+import 'package:assistant/screens/pacientes/reportes/formatos/reporteConsulta.dart';
+import 'package:assistant/screens/pacientes/reportes/formatos/reporteEvolucion.dart';
+import 'package:assistant/screens/pacientes/reportes/formatos/reporteTerapia.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/auxiliaresReportes.dart';
 import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteFormats/formatosReportes.dart';
-import 'package:assistant/screens/pacientes/reportes/gestores/consultaReporte.dart';
+
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
@@ -160,22 +163,26 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       return Expanded(
         child: Row(
           children: [
-            isTablet(context) ? const Expanded(flex: 3, child: PresentacionPacientesSimple()) : Container(),
+            isTablet(context)
+                ? const Expanded(flex: 3, child: PresentacionPacientesSimple())
+                : Container(),
             Expanded(
               flex: isTablet(context) ? 7 : 2,
               child: Column(
                 children: [
                   Expanded(
-                      child: TittlePanel(padding:  isTablet(context) ? 4 : 2,textPanel: "Tipo de Nota Médica")),
+                      child: TittlePanel(
+                          padding: isTablet(context) ? 4 : 2,
+                          textPanel: "Tipo de Nota Médica")),
                   Expanded(
-                    flex: isTablet(context) ? 2 : 1,
+                      flex: isTablet(context) ? 2 : 1,
                       child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    controller: ScrollController(),
-                    child: Column(
-                      children: tiposReportes(),
-                    ),
-                  )),
+                        scrollDirection: Axis.vertical,
+                        controller: ScrollController(),
+                        child: Column(
+                          children: tiposReportes(),
+                        ),
+                      )),
                 ],
               ),
             ),
@@ -217,9 +224,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
     if (isMobile(context) || isTablet(context)) {
       return Expanded(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-        children: [
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
             Expanded(
               flex: 3,
               child: SingleChildScrollView(
@@ -231,15 +238,15 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             ),
             Expanded(
               child: GrandButton(
-                weigth: 100,
+                  weigth: 100,
                   labelButton: "Vista previa",
                   onPress: () async {
                     await imprimirDocumento();
                   }),
             ),
-        ],
-      ),
-          ));
+          ],
+        ),
+      ));
     } else {
       return Column(
         children: [
@@ -258,7 +265,6 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SingleChildScrollView(
-
                   controller: ScrollController(),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -299,8 +305,19 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
         name:
             "(IH) - ${Pacientes.nombreCompleto} - (${Calendarios.today()}).pdf");
 
-    PdfApi.openFile(pdfFile);
-    PdfApi.openFile(pdfFileTwo);
+    // ignore: use_build_context_synchronously
+    Operadores.listOptionsActivity(
+        context: context,
+        tittle: 'Seleccione un reporte . . . ',
+        options: [
+          ["Nota Médica", pdfFile.path, Calendarios.today()],
+          ["Indicaciones Médicas", pdfFileTwo.path, Calendarios.today()],
+        ],
+        onClose: () {
+          Navigator.of(context).pop();
+        });
+    // PdfApi.openFile(pdfFile);
+    // PdfApi.openFile(pdfFileTwo);
   }
 
   TypeReportes getTypeReport() {
@@ -328,7 +345,10 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       Container(),
       const ReporteEvolucion(),
       const ReporteConsulta(),
-      const ReporteConsulta() // Reporte tipado
+      const ReporteTerapia(), // Reporte tipado
+      Container(),
+      Container(),
+      Container(),
     ];
 
     return list[actualPage];

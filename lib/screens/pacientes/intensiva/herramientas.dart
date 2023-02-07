@@ -1,5 +1,6 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/antropometricos.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/cardiovasculares.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/gasometricos.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/ventilatorios.dart';
 
@@ -225,9 +226,13 @@ class _IntensivaState extends State<Intensiva> {
                   GrandLabel(
                     labelButton: 'Análisis Cardiovascular',
                     onPress: () {
-                      setState(() {
-                        widget.actualView = 4;
-                      });
+                      if (isMobile(context)) {
+                        openDialog(const Cardiovasculares());
+                      } else {
+                        setState(() {
+                          widget.actualView = 4;
+                        });
+                      }
                     },
                   ),
                   GrandLabel(
@@ -391,7 +396,7 @@ class _IntensivaState extends State<Intensiva> {
       const Hidricos(),
       const Metabolicos(),
       const Antropometricos(),
-      Container(),
+      const Cardiovasculares(),
       const Ventilatorios(),
       const Gasometricos(),
       Container(),

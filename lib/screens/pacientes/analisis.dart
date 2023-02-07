@@ -1,6 +1,5 @@
-import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
-import 'package:assistant/screens/pacientes/auxiliares/pacientes_auxiliares.dart';
+import 'package:assistant/screens/pacientes/auxiliares/detalles/dettallesVitales.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/GrandIcon.dart';

@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:assistant/conexiones/actividades/pdfGenerete/PdfApi.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
@@ -202,9 +204,8 @@ class Opciones {
 }
 
 class Operadores {
-
-  static void openDialog({required BuildContext context,
-  required Widget chyldrim}) {
+  static void openDialog(
+      {required BuildContext context, required Widget chyldrim}) {
     showDialog(
         useSafeArea: true,
         context: context,
@@ -220,7 +221,7 @@ class Operadores {
                     Container(
                       decoration: BoxDecoration(
                           borderRadius:
-                          const BorderRadius.all(Radius.circular(20)),
+                              const BorderRadius.all(Radius.circular(20)),
                           border: Border.all(
                             color: Colors.grey,
                           )),
@@ -249,7 +250,7 @@ class Operadores {
           return SimpleDialog(
             backgroundColor: Colors.black,
             children: [
-              Flexible( child: chyldrim),
+              Flexible(child: chyldrim),
               Container(
                 decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(20)),
@@ -295,6 +296,25 @@ class Operadores {
             optionB: optionB,
             textOptionA: textOptionA,
             textOptionB: textOptionB,
+          );
+        });
+  }
+
+  static void listOptionsActivity({
+    required BuildContext context,
+    String? tittle = "Manejo de Opciones",
+    String? message = "Seleccione una opción . . . ",
+    required List<List<String>> options,
+    Function? onClose,
+  }) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialogos.listOptionsDialog(
+            tittle: tittle,
+            msg: message,
+            options: options,
+            onCloss: onClose,
           );
         });
   }
@@ -380,6 +400,58 @@ class Dialogos {
             },
             child:
                 Text(textOptionB!, style: const TextStyle(color: Colors.white)))
+      ],
+    );
+  }
+
+  static AlertDialog listOptionsDialog({
+    String? tittle,
+    String? msg,
+    Function? onCloss,
+    required List<List<String>> options,
+  }) {
+    List<Widget> list = [];
+
+    for (var element in options) {
+      list.add(Column(
+        children: [
+          ListTile(
+            onTap: () {
+              PdfApi.openFile(File(element[1]));
+            },
+            title: Text(
+              element[0],
+              style: const TextStyle(color: Colors.grey),
+            ),
+            subtitle: Text(
+              element[2],
+              textAlign: TextAlign.right,
+              style: const TextStyle(fontSize: 10,color: Colors.grey),
+            ),
+          ),
+          const CrossLine(),
+        ],
+      ));
+    }
+
+    return AlertDialog(
+      backgroundColor: Theming.secondaryColor,
+      title: Text(
+        tittle!,
+        style: const TextStyle(color: Colors.grey),
+      ),
+      content: SingleChildScrollView(
+          controller: ScrollController(),
+          child: Column(
+            children: list,
+          )),
+      actions: [
+        ElevatedButton(
+            onPressed: () {
+              onCloss!();
+            },
+            child:
+                const Text("Cancelar", style: TextStyle(color: Colors.white))),
       ],
     );
   }

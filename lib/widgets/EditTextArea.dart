@@ -21,7 +21,7 @@ class EditTextArea extends StatefulWidget {
 
   IconData? iconData = Icons.person;
 
-  EditTextArea(
+    EditTextArea(
       {Key? key,
       this.labelEditText,
       required this.textController,
@@ -117,8 +117,7 @@ class _EditTextAreaState extends State<EditTextArea> {
                       message: "Ver",
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              primary: Colors.black54,
-                              onPrimary: Colors.grey,
+                              foregroundColor: Colors.grey, backgroundColor: Colors.black54,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20)),
                               minimumSize: const Size(500, 100)),

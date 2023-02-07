@@ -30,10 +30,12 @@ class ChartLine extends StatefulWidget {
   State<ChartLine> createState() => _ChartLineState();
 }
 
-class _ChartLineState extends State<ChartLine> {
+class _ChartLineState extends State<ChartLine>  {
   @override
   void initState() {
-    getValues();
+    if (widget.dymValues[0].isNotEmpty) {
+      getValues();
+    }
 
     super.initState();
   }

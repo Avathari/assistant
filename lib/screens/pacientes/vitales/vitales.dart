@@ -1,18 +1,20 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/screens/pacientes/auxiliares/detalles/estadisticasVitales.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/antropometricos.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
+
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
-import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/GridLayout.dart';
 import 'package:assistant/widgets/Spinner.dart';
-import 'package:assistant/widgets/ThreeLabelText.dart';
-import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -110,41 +112,101 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
 
             fechaRealizacionTextController.text =
                 Pacientes.Vital['Pace_Feca_SV'].toString();
+            //
             tasTextController.text = Pacientes.Vital['Pace_SV_tas'].toString();
+            Valores.tensionArterialSystolica =
+                int.parse(tasTextController.text);
+            //
             tadTextController.text = Pacientes.Vital['Pace_SV_tad'].toString();
+            Valores.tensionArterialDyastolica =
+                int.parse(tadTextController.text);
+            //
             fcTextController.text = Pacientes.Vital['Pace_SV_fc'].toString();
+            Valores.frecuenciaCardiaca = int.parse(fcTextController.text);
+            //
             frTextController.text = Pacientes.Vital['Pace_SV_fr'].toString();
+            Valores.frecuenciaRespiratoria = int.parse(frTextController.text);
+            //
             tcTextController.text = Pacientes.Vital['Pace_SV_tc'].toString();
+            Valores.temperaturCorporal = double.parse(tcTextController.text);
+            //
             spoTextController.text = Pacientes.Vital['Pace_SV_spo'].toString();
+            Valores.saturacionPerifericaOxigeno =
+                int.parse(spoTextController.text);
+            //
             estTextController.text = Pacientes.Vital['Pace_SV_est'].toString();
+            Valores.alturaPaciente = double.parse(estTextController.text);
+            //
             pctTextController.text = Pacientes.Vital['Pace_SV_pct'].toString();
+            Valores.pesoCorporalTotal = double.parse(pctTextController.text);
+            //
             gluTextController.text = Pacientes.Vital['Pace_SV_glu'].toString();
+            Valores.glucemiaCapilar = int.parse(gluTextController.text);
+            //
             gluAyuTextController.text =
                 Pacientes.Vital['Pace_SV_glu_ayu'].toString();
+            Valores.horasAyuno = int.parse(gluAyuTextController.text);
+            //
             //
             cueTextController.text = Pacientes.Vital['Pace_SV_cue'].toString();
+            Valores.circunferenciaCuello = int.parse(cueTextController.text);
+            //
             cinTextController.text = Pacientes.Vital['Pace_SV_cin'].toString();
+            Valores.circunferenciaCintura = int.parse(cinTextController.text);
+            //
             cadTextController.text = Pacientes.Vital['Pace_SV_cad'].toString();
+            Valores.circunferenciaCadera = int.parse(cadTextController.text);
+            //
             cmbTextController.text = Pacientes.Vital['Pace_SV_cmb'].toString();
+            Valores.circunferenciaMesobraquial =
+                int.parse(cmbTextController.text);
+            //
 
             factorActividadValue = Pacientes.Vital['Pace_SV_fa'].toString();
+            Valores.factorActividad = double.parse(factorActividadValue);
+            //
             factorEstresValue = Pacientes.Vital['Pace_SV_fe'].toString();
+            Valores.factorEstres = double.parse(factorEstresValue);
+            //
 
             pectTextController.text =
                 Pacientes.Vital['Pace_SV_c_pect'].toString();
+            // Valores.pec = int.parse(pectTextController.text);
+            //
             pcbTextController.text = Pacientes.Vital['Pace_SV_pcb'].toString();
+            Valores.pliegueCutaneoBicipital = int.parse(pcbTextController.text);
+            //
             pseTextController.text = Pacientes.Vital['Pace_SV_pse'].toString();
+            Valores.pliegueCutaneoEscapular = int.parse(pseTextController.text);
+            //
             psiTextController.text = Pacientes.Vital['Pace_SV_psi'].toString();
+            Valores.pliegueCutaneoIliaco = int.parse(psiTextController.text);
+            //
             pstTextController.text = Pacientes.Vital['Pace_SV_pst'].toString();
+            Valores.pliegueCutaneoTricipital =
+                int.parse(pstTextController.text);
+            //
 
             femIzqTextController.text =
                 Pacientes.Vital['Pace_SV_c_fem_izq'].toString();
+            Valores.circunferenciaFemoralIzquierda =
+                int.parse(femIzqTextController.text);
+            //
             femDerTextController.text =
                 Pacientes.Vital['Pace_SV_c_fem_der'].toString();
+            Valores.circunferenciaFemoralDerecha =
+                int.parse(femDerTextController.text);
+            //
             suroIzqTextController.text =
                 Pacientes.Vital['Pace_SV_c_suro_izq'].toString();
+            Valores.circunferenciaSuralIzquierda =
+                int.parse(suroIzqTextController.text);
+            //
             suroDerTextController.text =
                 Pacientes.Vital['Pace_SV_c_suro_der'].toString();
+            Valores.circunferenciaSuralDerecha =
+                int.parse(suroDerTextController.text);
+            //
           });
         });
 
@@ -179,7 +241,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                   labelButton: 'Análisis de Parámetros',
                   onPress: () {
                     Operadores.openActivity(
-                        context: context, chyldrim: analisisVitales());
+                        context: context, chyldrim: const Antropometricos());
                   },
                 ),
               ]
@@ -275,7 +337,17 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                                 enableInfiniteScroll: false,
                                 viewportFraction: 1.0)),
                       ),
-                      isMobile(context) ? Container() : analisisVitales()
+                      isMobile(context)
+                          ? Container()
+                          : Expanded(
+                              child: Container(
+                                padding: const EdgeInsets.all(8.0),
+                                  decoration: const BoxDecoration(
+                                      color: Colors.black,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  child: const Antropometricos()),
+                            )
                     ],
                   ),
                 ),
@@ -292,6 +364,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
     );
   }
 
+/*
   analisisVitales() {
     return Expanded(
       child: SizedBox(
@@ -308,6 +381,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
           )),
     );
   }
+*/
 
   void returnGestion(BuildContext context) {
     switch (isMobile(context)) {
@@ -473,7 +547,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
           cmbTextController,
           false),
       Spinner(
-          width: isMobile(context)? 60: 40,
+          width: isMobile(context) ? 60 : 40,
           tittle: "Factor de actividad",
           initialValue: factorActividadValue,
           items: Vitales.factorActividad,
@@ -1074,86 +1148,3 @@ class _GestionVitalesState extends State<GestionVitales> {
   }
 }
 
-class EstadisticasVitales extends StatefulWidget {
-  const EstadisticasVitales({Key? key}) : super(key: key);
-
-  @override
-  State<EstadisticasVitales> createState() => _EstadisticasVitalesState();
-}
-
-class _EstadisticasVitalesState extends State<EstadisticasVitales> {
-  Map<String, dynamic> data = {
-    "Promedio_TAS": '0',
-    "Promedio_TAD": '0',
-    "Promedio_FC": '0',
-    "Promedio_FR": '0',
-    "Total_Registros": '0'
-  };
-  var statScrollController = ScrollController();
-
-  @override
-  void initState() {
-    Actividades.detallesById(Databases.siteground_database_regpace,
-            Vitales.vitales['vitalesStadistics'], Pacientes.ID_Paciente,
-            emulated: true)
-        .then((value) {
-      setState(() {
-        data = value;
-      });
-    });
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        TittlePanel(
-          textPanel: 'Estadisticas de signos vitales del Paciente',
-        ),
-        ThreeLabelTextAline(
-          padding: 8.0,
-          firstText: 'Total de Registros',
-          secondText: data['Total_Registros'],
-        ),
-        const CrossLine(),
-        SingleChildScrollView(
-          controller: ScrollController(),
-          child: Column(
-            children: [
-              ThreeLabelTextAline(
-                padding: 2.0,
-                firstText: Vitales.Categorias[0],
-                secondText:
-                    double.parse(data['Promedio_TAS']).toStringAsFixed(0),
-                thirdText: 'mmHg',
-              ),
-              ThreeLabelTextAline(
-                padding: 2.0,
-                firstText: Vitales.Categorias[1],
-                secondText:
-                    double.parse(data['Promedio_TAD']).toStringAsFixed(0),
-                thirdText: 'mmHg',
-              ),
-              ThreeLabelTextAline(
-                padding: 2.0,
-                firstText: Vitales.Categorias[2],
-                secondText:
-                    double.parse(data['Promedio_FC']).toStringAsFixed(0),
-                thirdText: 'L/min',
-              ),
-              ThreeLabelTextAline(
-                padding: 2.0,
-                firstText: Vitales.Categorias[3],
-                secondText:
-                    double.parse(data['Promedio_FR']).toStringAsFixed(0),
-                thirdText: 'Resp/min',
-              ),
-            ],
-          ),
-        )
-      ],
-    );
-  }
-}

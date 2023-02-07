@@ -50,8 +50,8 @@ class PdfApi {
 
   static Future<void> openFile(File pdfFile) async {
     final ur = pdfFile.path;
-    Alertas.showAlert(
-        context: Contextos.contexto, error: 'Contenido creado $ur');
+    // Alertas.showAlert(
+    //     context: Contextos.contexto, error: 'Contenido creado $ur');
 
     await OpenFile.open(ur);
   }

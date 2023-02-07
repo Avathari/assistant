@@ -1,5 +1,8 @@
+import 'package:assistant/values/SizingInfo.dart';
+import 'package:carousel_slider/carousel_options.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:path/path.dart';
 
 class gadgets {
   static const sizedBox = SizedBox(
@@ -95,4 +98,14 @@ class TextFormat {
   mask: '####',
   filter: {"#": RegExp(r'[0-9]')},
   type: MaskAutoCompletionType.lazy);
+}
+
+class Carousel {
+  static CarouselOptions carouselOptions({required BuildContext context }) {
+    return CarouselOptions(
+        height: isMobile(context ) || isTablet(context) ? 1200: 450,
+        enableInfiniteScroll: false,
+        viewportFraction: 1.0);
+  }
+
 }
