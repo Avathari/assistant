@@ -51,6 +51,7 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                       onAction: () {
                         setState(() {
                           expoTextController.text = Reportes.exploracionFisica;
+                          Reportes.reportes['Exploracion_Fisica'] = Reportes.exploracionFisica;
                         });
                       });
                     },

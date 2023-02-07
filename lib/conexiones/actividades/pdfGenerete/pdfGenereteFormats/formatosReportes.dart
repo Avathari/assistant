@@ -6,21 +6,6 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
-enum TypeReportes {
-  reporteEvolucion,
-  reporteIngreso,
-  reporteConsulta,
-  reporteTipado,
-  reporteTerapiaIntensiva,
-  valoracionPreoperatoria,
-  valoracionPrequirurgica,
-  procedimientoIntubacion,
-  procedimientoCVC,
-  procedimientoSondaEndopleural,
-  procedimientoTenckoff,
-  indicacionesHospitalarias
-}
-
 class FormatosReportes {
   static TypeReportes? indexOfReport = TypeReportes.reporteIngreso;
   bool? withIndicationReport = false;
@@ -34,16 +19,22 @@ class FormatosReportes {
 
   List<Widget> typeOfList(Map<String, dynamic> paraph) {
     List<List<Widget>> list = [
-      reporteEvolucion(paraph), // 0 : Ingreso
+      reporteIngreso(paraph), // 0 : Ingreso
       reporteEvolucion(paraph), // 1 : Evolución
       reporteConsulta(paraph), // 2 : Consulta
-      reporteConsultaTipado(paraph), // 3 : Consulta Tipada
+      reporteTerapia(paraph), // 3 : Terapia
+      reportePrequirurgico(paraph),
+      reportePreanestesico(paraph),
+      reporteEgreso(paraph),
+      reporteRevision(paraph),
+      reporteTraslado(paraph),
       indicacionesHospitalVertical(paraph), // 4 : Indicaciones Hospitalarias
+      reporteConsultaTipado(paraph), // 3 : Consulta Tipada
     ];
     print("FormatosReportes.indexOfReport! ${FormatosReportes.indexOfReport!}");
 
     if (withIndicationReport!) {
-      return list[4];
+      return list[9]; // Debe ser igual a indexOfTypeReport TypeReportes.indicacionesHospitalarias.
     } else {
       switch (FormatosReportes.indexOfReport) {
         case TypeReportes.reporteIngreso:
@@ -52,15 +43,137 @@ class FormatosReportes {
           return list[1];
         case TypeReportes.reporteConsulta:
           return list[2];
-        case TypeReportes.reporteTipado:
+        case TypeReportes.reporteTerapiaIntensiva:
           return list[3];
-        case TypeReportes.indicacionesHospitalarias:
+        case TypeReportes.reportePrequirurgica:
           return list[4];
-
+        case TypeReportes.reportePreanestesica:
+          return list[5];
+        case TypeReportes.reporteEgreso:
+          return list[6];
+        case TypeReportes.reporteRevision:
+          return list[7];
+        case TypeReportes.reporteTraslado:
+          return list[8];
+        case TypeReportes.indicacionesHospitalarias:
+          return list[9];
+        case TypeReportes.reporteTipado:
+          return list[10];
         default:
           return list[1];
       }
     }
+  }
+
+  static List<Widget> reporteIngreso(Map<String, dynamic> paraph) {
+    String tipoReporte = "NOTA DE INGRESO HOSPITALARIO";
+    // # # # # # # ### # # # # # # ###
+    // Lista de apartados del documento.
+    // # # # # # # ### # # # # # # ###
+    List<Widget> parax = [];
+    // # # # # # # ### # # # # #  # ###
+    // Datos de Identificación del Paciente.
+    // # # # # # # ### # # # # # # ###
+    parax.add(Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Nombre completo: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text("${Pacientes.nombreCompleto}",
+            textAlign: TextAlign.right, style: const TextStyle(fontSize: 8)),
+      ]),
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Número de afiliación: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text(
+            "${Pacientes.Paciente['Pace_NSS']} ${Pacientes.Paciente['Pace_AGRE']}",
+            textAlign: TextAlign.right,
+            style: const TextStyle(fontSize: 8)),
+      ]),
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Fecha Actual: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text(Calendarios.completeToday(),
+            textAlign: TextAlign.right, style: const TextStyle(fontSize: 8)),
+      ]),
+      SizedBox(height: 10),
+    ]));
+    // # # # # # # ### # # # # # # ###
+    //
+    // # # # # # # ### # # # # # # ###
+    parax.add(Divider(color: PdfColors.black));
+    parax.add(Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Text(tipoReporte,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 9,
+              decoration: TextDecoration.underline,
+              fontWeight: FontWeight.bold)),
+    ]));
+    parax.add(Divider(color: PdfColors.black));
+    // # # # # # # ### # # # # # # ###
+    //
+    // # # # # # # ### # # # # # # ###
+    parax.add(paragraphWithTittle(
+        titulo: "Datos generales", subTitulo: "${paraph['Datos_Generales']}"));
+    // # # # # # # ### # # # # # # ###
+    parax.add(paragraphFromList(listado: [
+      [
+        "Antecedentes heredofamiliares ",
+        paraph['Antecedentes_Heredofamiliares']
+      ],
+      ["Antecedentes hospitalarios ", paraph['Antecedentes_Hospitalarios']],
+      ["Antecedentes alergicos ", paraph['Antecedentes_Alergicos']],
+      ["Antecedentes patológicos ", paraph['Antecedentes_Patologicos']],
+    ]));
+    // # # # # # # ### # # # # # # ###
+    parax.add(
+      paragraph(
+        isBefore: true,
+        anteTexto: "A la exploración física con ",
+        texto: "${paraph['Signos_Vitales']}\n",
+        subTexto: "${paraph['Exploracion_Fisica']}",
+      ),
+    );
+    if (paraph['Auxiliares_Diagnosticos'] != "") {
+      parax.add(
+        paragraphWithTittleAndSeparated(
+          titulo: "Auxiliares diagnósticos",
+          subTitulo: "${paraph['Auxiliares_Diagnosticos']}",
+        ),
+      );
+    }
+
+    if (paraph['Analisis_Complementarios'] != "") {
+      parax.add(
+        paragraphWithBullets(
+          titulo: "Análisis complementarios",
+          subTitulo: "${paraph['Analisis_Complementarios']}",
+        ),
+      );
+    }
+    parax.add(
+      paragraphWithBullets(
+        titulo: "Impresiones diagnósticas",
+        subTitulo: "${paraph['Impresiones_Diagnosticas']}",
+      ),
+    );
+    parax.add(paragraph(
+      texto: "${paraph['Analisis_Medico']}",
+    ));
+    if (paraph['Pronostico_Medico'] != "") {
+      parax.add(paragraphSeparatedBy(
+        pax: "${paraph['Pronostico_Medico']}",
+      ));
+    }
+    parax.add(
+      footerParagraph(
+          text:
+              "Med. Gral. Romero Pantoja Luis\nCed. Prof. 12210866\nMedicina General"),
+    );
+    return parax;
   }
 
   static List<Widget> reporteEvolucion(Map<String, dynamic> paraph) {
@@ -880,6 +993,646 @@ class FormatosReportes {
     return parax;
   }
 
+  static List<Widget> reporteTraslado(Map<String, dynamic> paraph) {
+    String tipoReporte = "NOTA DE TRASLADO";
+    // # # # # # # ### # # # # # # ###
+    // Lista de apartados del documento.
+    // # # # # # # ### # # # # # # ###
+    List<Widget> parax = [];
+    // # # # # # # ### # # # # #  # ###
+    // Datos de Identificación del Paciente.
+    // # # # # # # ### # # # # # # ###
+    parax.add(Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Nombre completo: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text("${Pacientes.nombreCompleto}",
+            textAlign: TextAlign.right, style: const TextStyle(fontSize: 8)),
+      ]),
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Número de afiliación: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text(
+            "${Pacientes.Paciente['Pace_NSS']} ${Pacientes.Paciente['Pace_AGRE']}",
+            textAlign: TextAlign.right,
+            style: const TextStyle(fontSize: 8)),
+      ]),
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Fecha Actual: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text(Calendarios.completeToday(),
+            textAlign: TextAlign.right, style: const TextStyle(fontSize: 8)),
+      ]),
+      SizedBox(height: 10),
+    ]));
+    // # # # # # # ### # # # # # # ###
+    //
+    // # # # # # # ### # # # # # # ###
+    parax.add(Divider(color: PdfColors.black));
+    parax.add(Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Text(tipoReporte,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 9,
+              decoration: TextDecoration.underline,
+              fontWeight: FontWeight.bold)),
+    ]));
+    parax.add(Divider(color: PdfColors.black));
+    // # # # # # # ### # # # # # # ###
+    //
+    // # # # # # # ### # # # # # # ###
+    parax.add(paragraphWithTittle(
+        titulo: "Datos generales", subTitulo: "${paraph['Datos_Generales']}"));
+    // # # # # # # ### # # # # # # ###
+    parax.add(paragraphFromList(listado: [
+      [
+        "Antecedentes heredofamiliares ",
+        paraph['Antecedentes_Heredofamiliares']
+      ],
+      ["Antecedentes hospitalarios ", paraph['Antecedentes_Hospitalarios']],
+      ["Antecedentes alergicos ", paraph['Antecedentes_Alergicos']],
+      ["Antecedentes patológicos ", paraph['Antecedentes_Patologicos']],
+    ]));
+    // # # # # # # ### # # # # # # ###
+    parax.add(
+      paragraph(
+        isBefore: true,
+        anteTexto: "A la exploración física con ",
+        texto: "${paraph['Signos_Vitales']}\n",
+        subTexto: "${paraph['Exploracion_Fisica']}",
+      ),
+    );
+    if (paraph['Auxiliares_Diagnosticos'] != "") {
+      parax.add(
+        paragraphWithTittleAndSeparated(
+          titulo: "Auxiliares diagnósticos",
+          subTitulo: "${paraph['Auxiliares_Diagnosticos']}",
+        ),
+      );
+    }
+
+    if (paraph['Analisis_Complementarios'] != "") {
+      parax.add(
+        paragraphWithBullets(
+          titulo: "Análisis complementarios",
+          subTitulo: "${paraph['Analisis_Complementarios']}",
+        ),
+      );
+    }
+    parax.add(
+      paragraphWithBullets(
+        titulo: "Impresiones diagnósticas",
+        subTitulo: "${paraph['Impresiones_Diagnosticas']}",
+      ),
+    );
+    parax.add(paragraph(
+      texto: "${paraph['Analisis_Medico']}",
+    ));
+    if (paraph['Pronostico_Medico'] != "") {
+      parax.add(paragraphSeparatedBy(
+        pax: "${paraph['Pronostico_Medico']}",
+      ));
+    }
+    parax.add(
+      footerParagraph(
+          text:
+              "Med. Gral. Romero Pantoja Luis\nCed. Prof. 12210866\nMedicina General"),
+    );
+    return parax;
+  }
+
+  static List<Widget> reportePrequirurgico(Map<String, dynamic> paraph) {
+    String tipoReporte = "VALORACION PREQUIRURGICA";
+    // # # # # # # ### # # # # # # ###
+    // Lista de apartados del documento.
+    // # # # # # # ### # # # # # # ###
+    List<Widget> parax = [];
+    // # # # # # # ### # # # # #  # ###
+    // Datos de Identificación del Paciente.
+    // # # # # # # ### # # # # # # ###
+    parax.add(Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Nombre completo: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text("${Pacientes.nombreCompleto}",
+            textAlign: TextAlign.right, style: const TextStyle(fontSize: 8)),
+      ]),
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Número de afiliación: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text(
+            "${Pacientes.Paciente['Pace_NSS']} ${Pacientes.Paciente['Pace_AGRE']}",
+            textAlign: TextAlign.right,
+            style: const TextStyle(fontSize: 8)),
+      ]),
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Fecha Actual: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text(Calendarios.completeToday(),
+            textAlign: TextAlign.right, style: const TextStyle(fontSize: 8)),
+      ]),
+      SizedBox(height: 10),
+    ]));
+    // # # # # # # ### # # # # # # ###
+    //
+    // # # # # # # ### # # # # # # ###
+    parax.add(Divider(color: PdfColors.black));
+    parax.add(Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Text(tipoReporte,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 9,
+              decoration: TextDecoration.underline,
+              fontWeight: FontWeight.bold)),
+    ]));
+    parax.add(Divider(color: PdfColors.black));
+    // # # # # # # ### # # # # # # ###
+    //
+    // # # # # # # ### # # # # # # ###
+    parax.add(paragraphWithTittle(
+        titulo: "Datos generales", subTitulo: "${paraph['Datos_Generales']}"));
+    // # # # # # # ### # # # # # # ###
+    parax.add(paragraphFromList(listado: [
+      [
+        "Antecedentes heredofamiliares ",
+        paraph['Antecedentes_Heredofamiliares']
+      ],
+      ["Antecedentes hospitalarios ", paraph['Antecedentes_Hospitalarios']],
+      ["Antecedentes alergicos ", paraph['Antecedentes_Alergicos']],
+      ["Antecedentes patológicos ", paraph['Antecedentes_Patologicos']],
+    ]));
+    // # # # # # # ### # # # # # # ###
+    parax.add(
+      paragraph(
+        isBefore: true,
+        anteTexto: "A la exploración física con ",
+        texto: "${paraph['Signos_Vitales']}\n",
+        subTexto: "${paraph['Exploracion_Fisica']}",
+      ),
+    );
+    if (paraph['Auxiliares_Diagnosticos'] != "") {
+      parax.add(
+        paragraphWithTittleAndSeparated(
+          titulo: "Auxiliares diagnósticos",
+          subTitulo: "${paraph['Auxiliares_Diagnosticos']}",
+        ),
+      );
+    }
+
+    if (paraph['Analisis_Complementarios'] != "") {
+      parax.add(
+        paragraphWithBullets(
+          titulo: "Análisis complementarios",
+          subTitulo: "${paraph['Analisis_Complementarios']}",
+        ),
+      );
+    }
+    parax.add(
+      paragraphWithBullets(
+        titulo: "Impresiones diagnósticas",
+        subTitulo: "${paraph['Impresiones_Diagnosticas']}",
+      ),
+    );
+    parax.add(paragraph(
+      texto: "${paraph['Analisis_Medico']}",
+    ));
+    if (paraph['Pronostico_Medico'] != "") {
+      parax.add(paragraphSeparatedBy(
+        pax: "${paraph['Pronostico_Medico']}",
+      ));
+    }
+    parax.add(
+      footerParagraph(
+          text:
+              "Med. Gral. Romero Pantoja Luis\nCed. Prof. 12210866\nMedicina General"),
+    );
+    return parax;
+  }
+
+  static List<Widget> reportePreanestesico(Map<String, dynamic> paraph) {
+    String tipoReporte = "VALORACION PREANESTESICA";
+    // # # # # # # ### # # # # # # ###
+    // Lista de apartados del documento.
+    // # # # # # # ### # # # # # # ###
+    List<Widget> parax = [];
+    // # # # # # # ### # # # # #  # ###
+    // Datos de Identificación del Paciente.
+    // # # # # # # ### # # # # # # ###
+    parax.add(Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Nombre completo: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text("${Pacientes.nombreCompleto}",
+            textAlign: TextAlign.right, style: const TextStyle(fontSize: 8)),
+      ]),
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Número de afiliación: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text(
+            "${Pacientes.Paciente['Pace_NSS']} ${Pacientes.Paciente['Pace_AGRE']}",
+            textAlign: TextAlign.right,
+            style: const TextStyle(fontSize: 8)),
+      ]),
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Fecha Actual: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text(Calendarios.completeToday(),
+            textAlign: TextAlign.right, style: const TextStyle(fontSize: 8)),
+      ]),
+      SizedBox(height: 10),
+    ]));
+    // # # # # # # ### # # # # # # ###
+    //
+    // # # # # # # ### # # # # # # ###
+    parax.add(Divider(color: PdfColors.black));
+    parax.add(Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Text(tipoReporte,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 9,
+              decoration: TextDecoration.underline,
+              fontWeight: FontWeight.bold)),
+    ]));
+    parax.add(Divider(color: PdfColors.black));
+    // # # # # # # ### # # # # # # ###
+    //
+    // # # # # # # ### # # # # # # ###
+    parax.add(paragraphWithTittle(
+        titulo: "Datos generales", subTitulo: "${paraph['Datos_Generales']}"));
+    // # # # # # # ### # # # # # # ###
+    parax.add(paragraphFromList(listado: [
+      [
+        "Antecedentes heredofamiliares ",
+        paraph['Antecedentes_Heredofamiliares']
+      ],
+      ["Antecedentes hospitalarios ", paraph['Antecedentes_Hospitalarios']],
+      ["Antecedentes alergicos ", paraph['Antecedentes_Alergicos']],
+      ["Antecedentes patológicos ", paraph['Antecedentes_Patologicos']],
+    ]));
+    // # # # # # # ### # # # # # # ###
+    parax.add(
+      paragraph(
+        isBefore: true,
+        anteTexto: "A la exploración física con ",
+        texto: "${paraph['Signos_Vitales']}\n",
+        subTexto: "${paraph['Exploracion_Fisica']}",
+      ),
+    );
+    if (paraph['Auxiliares_Diagnosticos'] != "") {
+      parax.add(
+        paragraphWithTittleAndSeparated(
+          titulo: "Auxiliares diagnósticos",
+          subTitulo: "${paraph['Auxiliares_Diagnosticos']}",
+        ),
+      );
+    }
+
+    if (paraph['Analisis_Complementarios'] != "") {
+      parax.add(
+        paragraphWithBullets(
+          titulo: "Análisis complementarios",
+          subTitulo: "${paraph['Analisis_Complementarios']}",
+        ),
+      );
+    }
+    parax.add(
+      paragraphWithBullets(
+        titulo: "Impresiones diagnósticas",
+        subTitulo: "${paraph['Impresiones_Diagnosticas']}",
+      ),
+    );
+    parax.add(paragraph(
+      texto: "${paraph['Analisis_Medico']}",
+    ));
+    if (paraph['Pronostico_Medico'] != "") {
+      parax.add(paragraphSeparatedBy(
+        pax: "${paraph['Pronostico_Medico']}",
+      ));
+    }
+    parax.add(
+      footerParagraph(
+          text:
+              "Med. Gral. Romero Pantoja Luis\nCed. Prof. 12210866\nMedicina General"),
+    );
+    return parax;
+  }
+
+  static List<Widget> reporteTerapia(Map<String, dynamic> paraph) {
+    String tipoReporte = "NOTA DE TERAPIA INTENSIVA";
+    // # # # # # # ### # # # # # # ###
+    // Lista de apartados del documento.
+    // # # # # # # ### # # # # # # ###
+    List<Widget> parax = [];
+    // # # # # # # ### # # # # #  # ###
+    // Datos de Identificación del Paciente.
+    // # # # # # # ### # # # # # # ###
+    parax.add(Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Nombre completo: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text("${Pacientes.nombreCompleto}",
+            textAlign: TextAlign.right, style: const TextStyle(fontSize: 8)),
+      ]),
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Número de afiliación: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text(
+            "${Pacientes.Paciente['Pace_NSS']} ${Pacientes.Paciente['Pace_AGRE']}",
+            textAlign: TextAlign.right,
+            style: const TextStyle(fontSize: 8)),
+      ]),
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Fecha Actual: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text(Calendarios.completeToday(),
+            textAlign: TextAlign.right, style: const TextStyle(fontSize: 8)),
+      ]),
+      SizedBox(height: 10),
+    ]));
+    // # # # # # # ### # # # # # # ###
+    //
+    // # # # # # # ### # # # # # # ###
+    parax.add(Divider(color: PdfColors.black));
+    parax.add(Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Text(tipoReporte,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 9,
+              decoration: TextDecoration.underline,
+              fontWeight: FontWeight.bold)),
+    ]));
+    parax.add(Divider(color: PdfColors.black));
+    // # # # # # # ### # # # # # # ###
+    //
+    // # # # # # # ### # # # # # # ###
+    parax.add(paragraphWithTittle(
+        titulo: "Datos generales", subTitulo: "${paraph['Datos_Generales']}"));
+    parax.add(
+      paragraphWithBullets(
+        titulo: "", // "Impresiones diagnósticas",
+        subTitulo: "${paraph['Impresiones_Diagnosticas']}",
+      ),
+    );
+
+    // # # # # # # ### # # # # # # ###
+    parax.add(paragraph(texto:
+        paraph['Eventualidades']
+    ));
+    // # # # # # # ### # # # # # # ###
+    parax.add(paragraphWithTittle(
+        titulo: "Exploración Física".toUpperCase(), subTitulo: "${paraph['Exploracion_Fisica']}"));
+
+    parax.add(paragraph(
+      texto: "${paraph['Analisis_Terapia']}",
+    ));
+
+    if (paraph['Pronostico_Medico'] != "") {
+      parax.add(paragraphSeparatedBy(
+        pax: "${paraph['Pronostico_Medico']}",
+      ));
+    }
+    parax.add(
+      footerParagraph(
+          text:
+              "Med. Gral. Romero Pantoja Luis\nCed. Prof. 12210866\nMedicina General"),
+    );
+    return parax;
+  }
+
+  static List<Widget> reporteEgreso(Map<String, dynamic> paraph) {
+    String tipoReporte = "REPORTE DE EGRESO HOSPITALARIO";
+    // # # # # # # ### # # # # # # ###
+    // Lista de apartados del documento.
+    // # # # # # # ### # # # # # # ###
+    List<Widget> parax = [];
+    // # # # # # # ### # # # # #  # ###
+    // Datos de Identificación del Paciente.
+    // # # # # # # ### # # # # # # ###
+    parax.add(Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Nombre completo: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text("${Pacientes.nombreCompleto}",
+            textAlign: TextAlign.right, style: const TextStyle(fontSize: 8)),
+      ]),
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Número de afiliación: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text(
+            "${Pacientes.Paciente['Pace_NSS']} ${Pacientes.Paciente['Pace_AGRE']}",
+            textAlign: TextAlign.right,
+            style: const TextStyle(fontSize: 8)),
+      ]),
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Fecha Actual: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text(Calendarios.completeToday(),
+            textAlign: TextAlign.right, style: const TextStyle(fontSize: 8)),
+      ]),
+      SizedBox(height: 10),
+    ]));
+    // # # # # # # ### # # # # # # ###
+    //
+    // # # # # # # ### # # # # # # ###
+    parax.add(Divider(color: PdfColors.black));
+    parax.add(Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Text(tipoReporte,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 9,
+              decoration: TextDecoration.underline,
+              fontWeight: FontWeight.bold)),
+    ]));
+    parax.add(Divider(color: PdfColors.black));
+    // # # # # # # ### # # # # # # ###
+    //
+    // # # # # # # ### # # # # # # ###
+    parax.add(paragraphWithTittle(
+        titulo: "Datos generales", subTitulo: "${paraph['Datos_Generales']}"));
+    // # # # # # # ### # # # # # # ###
+    parax.add(paragraphFromList(listado: [
+      [
+        "Antecedentes heredofamiliares ",
+        paraph['Antecedentes_Heredofamiliares']
+      ],
+      ["Antecedentes hospitalarios ", paraph['Antecedentes_Hospitalarios']],
+      ["Antecedentes alergicos ", paraph['Antecedentes_Alergicos']],
+      ["Antecedentes patológicos ", paraph['Antecedentes_Patologicos']],
+    ]));
+    // # # # # # # ### # # # # # # ###
+    parax.add(
+      paragraph(
+        isBefore: true,
+        anteTexto: "A la exploración física con ",
+        texto: "${paraph['Signos_Vitales']}\n",
+        subTexto: "${paraph['Exploracion_Fisica']}",
+      ),
+    );
+    if (paraph['Auxiliares_Diagnosticos'] != "") {
+      parax.add(
+        paragraphWithTittleAndSeparated(
+          titulo: "Auxiliares diagnósticos",
+          subTitulo: "${paraph['Auxiliares_Diagnosticos']}",
+        ),
+      );
+    }
+
+    if (paraph['Analisis_Complementarios'] != "") {
+      parax.add(
+        paragraphWithBullets(
+          titulo: "Análisis complementarios",
+          subTitulo: "${paraph['Analisis_Complementarios']}",
+        ),
+      );
+    }
+    parax.add(
+      paragraphWithBullets(
+        titulo: "Impresiones diagnósticas",
+        subTitulo: "${paraph['Impresiones_Diagnosticas']}",
+      ),
+    );
+    parax.add(paragraph(
+      texto: "${paraph['Analisis_Medico']}",
+    ));
+    if (paraph['Pronostico_Medico'] != "") {
+      parax.add(paragraphSeparatedBy(
+        pax: "${paraph['Pronostico_Medico']}",
+      ));
+    }
+    parax.add(
+      footerParagraph(
+          text:
+              "Med. Gral. Romero Pantoja Luis\nCed. Prof. 12210866\nMedicina General"),
+    );
+    return parax;
+  }
+
+  static List<Widget> reporteRevision(Map<String, dynamic> paraph) {
+    String tipoReporte = "REVISION MEDICA";
+    // # # # # # # ### # # # # # # ###
+    // Lista de apartados del documento.
+    // # # # # # # ### # # # # # # ###
+    List<Widget> parax = [];
+    // # # # # # # ### # # # # #  # ###
+    // Datos de Identificación del Paciente.
+    // # # # # # # ### # # # # # # ###
+    parax.add(Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Nombre completo: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text("${Pacientes.nombreCompleto}",
+            textAlign: TextAlign.right, style: const TextStyle(fontSize: 8)),
+      ]),
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Número de afiliación: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text(
+            "${Pacientes.Paciente['Pace_NSS']} ${Pacientes.Paciente['Pace_AGRE']}",
+            textAlign: TextAlign.right,
+            style: const TextStyle(fontSize: 8)),
+      ]),
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Fecha Actual: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text(Calendarios.completeToday(),
+            textAlign: TextAlign.right, style: const TextStyle(fontSize: 8)),
+      ]),
+      SizedBox(height: 10),
+    ]));
+    // # # # # # # ### # # # # # # ###
+    //
+    // # # # # # # ### # # # # # # ###
+    parax.add(Divider(color: PdfColors.black));
+    parax.add(Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Text(tipoReporte,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 9,
+              decoration: TextDecoration.underline,
+              fontWeight: FontWeight.bold)),
+    ]));
+    parax.add(Divider(color: PdfColors.black));
+    // # # # # # # ### # # # # # # ###
+    //
+    // # # # # # # ### # # # # # # ###
+    parax.add(paragraphWithTittle(
+        titulo: "Datos generales", subTitulo: "${paraph['Datos_Generales']}"));
+    // # # # # # # ### # # # # # # ###
+    parax.add(paragraphFromList(listado: [
+      [
+        "Antecedentes heredofamiliares ",
+        paraph['Antecedentes_Heredofamiliares']
+      ],
+      ["Antecedentes hospitalarios ", paraph['Antecedentes_Hospitalarios']],
+      ["Antecedentes alergicos ", paraph['Antecedentes_Alergicos']],
+      ["Antecedentes patológicos ", paraph['Antecedentes_Patologicos']],
+    ]));
+    // # # # # # # ### # # # # # # ###
+    parax.add(
+      paragraph(
+        isBefore: true,
+        anteTexto: "A la exploración física con ",
+        texto: "${paraph['Signos_Vitales']}\n",
+        subTexto: "${paraph['Exploracion_Fisica']}",
+      ),
+    );
+    if (paraph['Auxiliares_Diagnosticos'] != "") {
+      parax.add(
+        paragraphWithTittleAndSeparated(
+          titulo: "Auxiliares diagnósticos",
+          subTitulo: "${paraph['Auxiliares_Diagnosticos']}",
+        ),
+      );
+    }
+
+    if (paraph['Analisis_Complementarios'] != "") {
+      parax.add(
+        paragraphWithBullets(
+          titulo: "Análisis complementarios",
+          subTitulo: "${paraph['Analisis_Complementarios']}",
+        ),
+      );
+    }
+    parax.add(
+      paragraphWithBullets(
+        titulo: "Impresiones diagnósticas",
+        subTitulo: "${paraph['Impresiones_Diagnosticas']}",
+      ),
+    );
+    parax.add(paragraph(
+      texto: "${paraph['Analisis_Medico']}",
+    ));
+    if (paraph['Pronostico_Medico'] != "") {
+      parax.add(paragraphSeparatedBy(
+        pax: "${paraph['Pronostico_Medico']}",
+      ));
+    }
+    parax.add(
+      footerParagraph(
+          text:
+              "Med. Gral. Romero Pantoja Luis\nCed. Prof. 12210866\nMedicina General"),
+    );
+    return parax;
+  }
+
   static List<Widget> indicacionesHospital(Map<String, dynamic> paraph) {
     String tipoReporte = "HOJA DE INDICACIONES";
     // # # # # # # ### # # # # # # ###
@@ -1277,6 +2030,13 @@ class FormatosReportes {
               verticalAlignment: TableCellVerticalAlignment.middle,
               children: [
                 textTittleWithLabel(
+                    tittle: "No. Cama: ",
+                    label: Valores.numeroCama!.toStringAsFixed(0)),
+              ]),
+          TableRow(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              children: [
+                textTittleWithLabel(
                     tittle: "Edad: ", label: '${Valores.edad} Años'),
               ]),
           TableRow(
@@ -1375,4 +2135,24 @@ class FormatosReportes {
               ]),
         ]);
   }
+}
+
+enum TypeReportes {
+  reporteEvolucion,
+  reporteIngreso,
+  reporteConsulta,
+  reporteTipado,
+  reporteTerapiaIntensiva,
+  valoracionPreoperatoria,
+  valoracionPrequirurgica,
+  procedimientoIntubacion,
+  procedimientoCVC,
+  procedimientoSondaEndopleural,
+  procedimientoTenckoff,
+  indicacionesHospitalarias,
+  reportePrequirurgica,
+  reportePreanestesica,
+  reporteEgreso,
+  reporteRevision,
+  reporteTraslado
 }

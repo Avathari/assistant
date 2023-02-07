@@ -5,11 +5,11 @@ import 'package:assistant/conexiones/controladores/Pacientes.dart';
 
 import 'package:assistant/screens/pacientes/auxiliares/presentaciones/presentaciones.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
-import 'package:assistant/screens/pacientes/reportes/formatos/reporteConsulta.dart';
-import 'package:assistant/screens/pacientes/reportes/formatos/reporteEvolucion.dart';
-import 'package:assistant/screens/pacientes/reportes/formatos/reporteTerapia.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/auxiliaresReportes.dart';
 import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteFormats/formatosReportes.dart';
+import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteConsulta.dart';
+import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteEvolucion.dart';
+import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteTerapia.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
@@ -330,7 +330,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       case 2:
         return TypeReportes.reporteConsulta;
       case 3:
-        return TypeReportes.reporteTipado;
+        return TypeReportes.reporteTerapiaIntensiva;
       case 4:
         return TypeReportes.indicacionesHospitalarias;
       case 5:
@@ -414,6 +414,22 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
         onPress: () {
           setState(() {
             widget.actualPage = 6;
+          });
+        },
+      ),
+      ListValue(
+        title: "Nota de Revisión",
+        onPress: () {
+          setState(() {
+            widget.actualPage = 7;
+          });
+        },
+      ),
+      ListValue(
+        title: "Nota de Traslado",
+        onPress: () {
+          setState(() {
+            widget.actualPage = 8;
           });
         },
       ),

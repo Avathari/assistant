@@ -274,8 +274,12 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                 withShowOption: true,
                 onChange: ((value) {
                   Reportes.eventualidadesOcurridas = "$value.";
+                  Reportes.reportes['Eventualidades'] ="$value.";
+                  // ************ ******* *****************
                   Reportes.reportes['Analisis_Medico'] =
                       "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                  Reportes.reportes['Analisis_Terapia'] =
+                  "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
                 }),
                 inputFormat: MaskTextInputFormatter()),
             EditTextArea(
@@ -288,6 +292,8 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                   Reportes.terapiasPrevias = "$value.";
                   Reportes.reportes['Analisis_Medico'] =
                       "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                  Reportes.reportes['Analisis_Terapia'] =
+                  "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
                 }),
                 inputFormat: MaskTextInputFormatter()),
             EditTextArea(
@@ -300,6 +306,8 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                   Reportes.analisisMedico = "$value.";
                   Reportes.reportes['Analisis_Medico'] =
                       "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                  Reportes.reportes['Analisis_Terapia'] =
+                  "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
                 }),
                 inputFormat: MaskTextInputFormatter()),
             EditTextArea(
@@ -312,6 +320,8 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                   Reportes.tratamientoPropuesto = "$value.";
                   Reportes.reportes['Analisis_Medico'] =
                       "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                  Reportes.reportes['Analisis_Terapia'] =
+                  "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
                 }),
                 inputFormat: MaskTextInputFormatter()),
           ]),
@@ -398,7 +408,7 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                     controller: scrollController,
                     child: Column(children: [
                       Spinner(
-                        width: isMobile(context) ? 60: 200,
+                        width: isMobile(context) ? 60: isTablet(context) ? 150: 200,
                         tittle: "Estado médico",
                         initialValue: estadoValue,
                         onChangeValue: (String? newValue) {
@@ -409,7 +419,7 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                         items: Pacientes.PronosticoEstado,
                       ),
                       Spinner(
-                        width: isMobile(context) ? 60: 200,
+                        width: isMobile(context) ? 60: isTablet(context) ? 150: 200,
                         tittle: "Para la función",
                         initialValue: funcionValue,
                         onChangeValue: (String? newValue) {
@@ -420,7 +430,7 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                         items: Pacientes.PronosticoFuncion,
                       ),
                       Spinner(
-                          width: isMobile(context) ? 60: 200,
+                          width: isMobile(context) ? 60: isTablet(context) ? 150: 200,
                           tittle: "Para la vida",
                           initialValue: vidaValue,
                           onChangeValue: (String? newValue) {
@@ -430,7 +440,7 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                           },
                           items: Pacientes.PronosticoVida),
                       Spinner(
-                        width: isMobile(context) ? 60: 200,
+                        width: isMobile(context) ? 60: isTablet(context) ? 150: 200,
                         tittle: "Para el tiempo",
                         initialValue: tiempoValue,
                         onChangeValue: (String? newValue) {

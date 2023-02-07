@@ -22,6 +22,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
 
   void reInit() {
     Reportes.exploracionFisica = Formatos.exploracionTerapia;
+    Reportes.reportes['Exploracion_Fisica'] = Formatos.exploracionTerapia;
   }
 
   @override
@@ -220,7 +221,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                              ? 150
+                              ? 200
                               : isMobile(context)
                               ? 100
                               : 300,
@@ -238,7 +239,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                              ? 150
+                              ? 200
                               : isMobile(context)
                               ? 100
                               : 300,
@@ -256,7 +257,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                              ? 150
+                              ? 200
                               : isMobile(context)
                               ? 100
                               : 300,
@@ -276,7 +277,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                              ? 150
+                              ? 200
                               : isMobile(context)
                               ? 100
                               : 300,
@@ -294,7 +295,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                              ? 150
+                              ? 200
                               : isMobile(context)
                               ? 100
                               : 300,
@@ -312,7 +313,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                              ? 150
+                              ? 200
                               : isMobile(context)
                               ? 100
                               : 300,
@@ -332,7 +333,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                              ? 150
+                              ? 250
                               : isMobile(context)
                               ? 100
                               : 300,
@@ -350,7 +351,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                              ? 150
+                              ? 200
                               : isMobile(context)
                               ? 100
                               : 300,
@@ -368,7 +369,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                              ? 150
+                              ? 200
                               : isMobile(context)
                               ? 100
                               : 300,
@@ -386,7 +387,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                              ? 150
+                              ? 200
                               : isMobile(context)
                               ? 100
                               : 300,

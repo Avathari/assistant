@@ -111,6 +111,43 @@ class Pacientes {
   static List? Paraclinicos = [];
   static List? Pendiente = [];
 
+  static String get diasOrdinalesEstancia {
+    List ordinales = [
+      "Primer",
+      "Segundo",
+      "Tercer",
+      "Cuarto",
+      "Quinto",
+      "Sexto",
+      "Séptimo",
+      "Octavo",
+      "Noveno",
+      "Décimo",
+      "Décimo Primer",
+      "Décimo Segundo",
+      "Décimo Tercer",
+      "Décimo Cuarto",
+      "Décimo Quinto",
+      "Décimo Sexto",
+      "Décimo Séptimo",
+      "Décimo Octavo",
+      "Décimo Noveno",
+      "Vigésimo",
+      "Vigésimo Primer",
+      "Vigésimo Segundo",
+      "Vigésimo Tercer",
+      "Vigésimo Cuarto",
+      "Vigésimo Quinto",
+      "Vigésimo Sexto",
+      "Vigésimo Séptimo",
+      "Vigésimo Octavo",
+      "Vigésimo Noveno",
+      "Trigésimo",
+    ];
+
+    return ordinales[Valores.diasEstancia];
+  }
+
   // static List? Imagenologias = [];
 
   Pacientes(numeroPaciente, agregadoPaciente, primerNombre, segundoNombre,
@@ -138,13 +175,20 @@ class Pacientes {
   }
 
   static String prosa() {
-    return "${Pacientes.Paciente['Pace_Ses']} de ${Pacientes.Paciente['Pace_Eda']} años, "
-        "con fecha de nacimiento el ${Pacientes.Paciente['Pace_Nace']}. "
-        "Originario/a de ${originario()}, residente de ${residente()} . "
-        "Escolaridad hasta ${Pacientes.Paciente['Pace_Esco']}, "
-        "ocupación como ${Pacientes.Paciente['Pace_Ocupa']}, "
-        "religión ${Pacientes.Paciente['Pace_Reli']}, "
-        "y estado civil ${Pacientes.Paciente['Pace_Edo_Civ']}.n ";
+    if (Pacientes.esHospitalizado!) {
+      // ************* *********** ************* ************ ********* ********
+      return "${Pacientes.Paciente['Pace_Ses']} de ${Pacientes.Paciente['Pace_Eda']} años, "
+          "en su ${Pacientes.diasOrdinalesEstancia.toLowerCase()} día de estancia intrahospitalaria, "
+          "bajo los siguientes diagnósticos: \n";
+    } else {
+      return "${Pacientes.Paciente['Pace_Ses']} de ${Pacientes.Paciente['Pace_Eda']} años, "
+          "con fecha de nacimiento el ${Pacientes.Paciente['Pace_Nace']}. "
+          "Originario/a de ${originario()}, residente de ${residente()} . "
+          "Escolaridad hasta ${Pacientes.Paciente['Pace_Esco']}, "
+          "ocupación como ${Pacientes.Paciente['Pace_Ocupa']}, "
+          "religión ${Pacientes.Paciente['Pace_Reli']}, "
+          "y estado civil ${Pacientes.Paciente['Pace_Edo_Civ']}.\n ";
+    }
   }
 
   static String heredofamiliares() {
@@ -2486,8 +2530,22 @@ class Auxiliares {
       "Anticuerpo Antipéptido Citrulinado"
     ],
     //
-    Categorias[9]: ["pH", "Presión de Dióxido de Carbono", "Presión de Oxígeno", "Bicarbonato Sérico", "Fracción Inspiratoria de Oxígeno", "Saturación de Oxígeno"],
-    Categorias[10]: ["pH", "Presión de Dióxido de Carbono", "Presión de Oxígeno", "Bicarbonato Sérico", "Fracción Inspiratoria de Oxígeno", "Saturación de Oxígeno"],
+    Categorias[9]: [
+      "pH",
+      "Presión de Dióxido de Carbono",
+      "Presión de Oxígeno",
+      "Bicarbonato Sérico",
+      "Fracción Inspiratoria de Oxígeno",
+      "Saturación de Oxígeno"
+    ],
+    Categorias[10]: [
+      "pH",
+      "Presión de Dióxido de Carbono",
+      "Presión de Oxígeno",
+      "Bicarbonato Sérico",
+      "Fracción Inspiratoria de Oxígeno",
+      "Saturación de Oxígeno"
+    ],
     //
     Categorias[11]: [""],
     Categorias[12]: [""],
@@ -2512,7 +2570,6 @@ class Auxiliares {
       "Conteo de Linfocitos CD4+",
       "Porcentaje de Linfocitos CD4+"
     ]
-
   };
   static Map<String, dynamic> Medidas = {
     Categorias[0]: ["g/dL", "%", "fL", "pg", "10^3/UL", "10^6/UL"],
@@ -2632,26 +2689,26 @@ class Auxiliares {
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Leucocitos' ORDER BY Fecha_Registro DESC limit 1) as Leucocitos_Totales,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Neutrofilos' ORDER BY Fecha_Registro DESC limit 1) as Neutrofilos_Totales,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Linfocitos' ORDER BY Fecha_Registro DESC limit 1) as Linfocitos_Totales,"
-    //
+        //
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Glucosa' ORDER BY Fecha_Registro DESC limit 1) as Glucosa,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Urea' ORDER BY Fecha_Registro DESC limit 1) as Urea,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Creatinina' ORDER BY Fecha_Registro DESC limit 1) as Creatinina,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Acido Úrico' ORDER BY Fecha_Registro DESC limit 1) as Acido_Urico,"
-    //
+        //
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Sodio' ORDER BY Fecha_Registro DESC limit 1) as Sodio,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Potasio' ORDER BY Fecha_Registro DESC limit 1) as Potasio,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Cloro' ORDER BY Fecha_Registro DESC limit 1) as Cloro,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Calcio' ORDER BY Fecha_Registro DESC limit 1) as Calcio,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Fósforo' ORDER BY Fecha_Registro DESC limit 1) as Fosforo,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Magnesio' ORDER BY Fecha_Registro DESC limit 1) as Magnesio,"
-    //
+        //
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Procalcitonina' ORDER BY Fecha_Registro DESC limit 1) as Procalcitonina,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Ácido Láctico' ORDER BY Fecha_Registro DESC limit 1) as Acido_Lactico,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Velocidad de Sedimentación Globular' ORDER BY Fecha_Registro DESC limit 1) as Velocidad_Sedimentacion,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Proteina C Reactiva' ORDER BY Fecha_Registro DESC limit 1) as Proteina_Reactiva,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Factor Reumatoide' ORDER BY Fecha_Registro DESC limit 1) as Factor_Reumatoide,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Anticuerpo Antipéptido Citrulinado' ORDER BY Fecha_Registro DESC limit 1) as Anticuerpo_Citrulinado,"
-    //
+        //
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Alaninoaminotrasferasa' ORDER BY Fecha_Registro DESC limit 1) as Alaninoaminotrasferasa,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Aspartatoaminotransferasa' ORDER BY Fecha_Registro DESC limit 1) as Aspartatoaminotransferasa,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Bilirrubinas Totales' ORDER BY Fecha_Registro DESC limit 1) as Bilirrubinas_Totales,"
@@ -2662,8 +2719,8 @@ class Auxiliares {
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Fosfatasa Alcalina' ORDER BY Fecha_Registro DESC limit 1) as Fosfatasa_Alcalina,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Albúmina' ORDER BY Fecha_Registro DESC limit 1) as Albumina_Serica,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Proteínas Totales' ORDER BY Fecha_Registro DESC limit 1) as Proteinas_Totales,"
-    // Gasometría Venosa
-         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Arterial' AND Estudio = 'pH' ORDER BY Fecha_Registro DESC limit 1) as Ph_Arterial,"
+        // Gasometría Venosa
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Arterial' AND Estudio = 'pH' ORDER BY Fecha_Registro DESC limit 1) as Ph_Arterial,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Arterial' AND Estudio = 'Presión de Dióxido de Carbono' ORDER BY Fecha_Registro DESC limit 1) as Pco_Arterial,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Arterial' AND Estudio = 'Presión de Oxígeno' ORDER BY Fecha_Registro DESC limit 1) as Po_Arterial,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Arterial' AND Estudio = 'Bicarbonato Sérico' ORDER BY Fecha_Registro DESC limit 1) as Hco_Arterial,"
@@ -2676,7 +2733,7 @@ class Auxiliares {
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Venosa' AND Estudio = 'Bicarbonato Sérico' ORDER BY Fecha_Registro DESC limit 1) as Hco_Venosa,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Venosa' AND Estudio = 'Fracción Inspiratoria de Oxígeno' ORDER BY Fecha_Registro DESC limit 1) as Fio_Venosa,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Venosa' AND Estudio = 'Saturación de Oxígeno' ORDER BY Fecha_Registro DESC limit 1) as So_Venosa,"
-    //
+        //
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Linfocitos' ORDER BY Fecha_Registro DESC limit 1) as Linfocitos_Totales;"
   };
 
@@ -2789,6 +2846,9 @@ class Reportes {
     "Auxiliares_Diagnosticos": Reportes.auxiliaresDiagnosticos,
     "Analisis_Complementarios": Reportes.analisisComplementarios,
     //
+    "Eventualidades": Reportes.eventualidadesOcurridas,
+    "Analisis_Terapia":
+        "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}",
     "Analisis_Medico":
         "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}",
     "Impresiones_Diagnosticas": Reportes.impresionesDiagnosticas,

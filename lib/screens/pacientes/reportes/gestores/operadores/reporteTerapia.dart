@@ -117,36 +117,36 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
                           numOfLines: 5,
                           withShowOption: true,
                           inputFormat: MaskTextInputFormatter()),
-                      EditTextArea(
-                          textController: consultaTextController,
-                          labelEditText: "Motivo de Consulta",
-                          keyBoardType: TextInputType.multiline,
-                          numOfLines: 5,
-                          onChange: (value) {
-                            setState(() {
-                              Reportes.motivoConsulta = "$value.";
-                              Reportes.reportes['Motivo_Consulta'] = "$value.";
-                            });
-                          },
-                          inputFormat: MaskTextInputFormatter()),
-                      EditTextArea(
-                          textController: heredoTextController,
-                          labelEditText: "Antecedentes heredofamiliares",
-                          keyBoardType: TextInputType.multiline,
-                          numOfLines: 5,
-                          inputFormat: MaskTextInputFormatter()),
-                      EditTextArea(
-                          textController: hospiTextController,
-                          labelEditText: "Antecedentes hospitalarios",
-                          keyBoardType: TextInputType.multiline,
-                          numOfLines: 5,
-                          inputFormat: MaskTextInputFormatter()),
-                      EditTextArea(
-                          textController: patoloTextController,
-                          labelEditText: "Antecedentes personales patológicos",
-                          keyBoardType: TextInputType.multiline,
-                          numOfLines: 5,
-                          inputFormat: MaskTextInputFormatter()),
+                      // EditTextArea(
+                      //     textController: consultaTextController,
+                      //     labelEditText: "Motivo de Consulta",
+                      //     keyBoardType: TextInputType.multiline,
+                      //     numOfLines: 5,
+                      //     onChange: (value) {
+                      //       setState(() {
+                      //         Reportes.motivoConsulta = "$value.";
+                      //         Reportes.reportes['Motivo_Consulta'] = "$value.";
+                      //       });
+                      //     },
+                      //     inputFormat: MaskTextInputFormatter()),
+                      // EditTextArea(
+                      //     textController: heredoTextController,
+                      //     labelEditText: "Antecedentes heredofamiliares",
+                      //     keyBoardType: TextInputType.multiline,
+                      //     numOfLines: 5,
+                      //     inputFormat: MaskTextInputFormatter()),
+                      // EditTextArea(
+                      //     textController: hospiTextController,
+                      //     labelEditText: "Antecedentes hospitalarios",
+                      //     keyBoardType: TextInputType.multiline,
+                      //     numOfLines: 5,
+                      //     inputFormat: MaskTextInputFormatter()),
+                      // EditTextArea(
+                      //     textController: patoloTextController,
+                      //     labelEditText: "Antecedentes personales patológicos",
+                      //     keyBoardType: TextInputType.multiline,
+                      //     numOfLines: 5,
+                      //     inputFormat: MaskTextInputFormatter()),
                     ],
                   ),
                 ),
