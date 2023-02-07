@@ -47,7 +47,12 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                   child: GrandButton(
                     labelButton: "Valores",
                     onPress: () {
-                      Operadores.openDialog(context: context, chyldrim: const TerapiasItems(), );
+                      Operadores.openDialog(context: context, chyldrim: const TerapiasItems(),
+                      onAction: () {
+                        setState(() {
+                          expoTextController.text = Reportes.exploracionFisica;
+                        });
+                      });
                     },
                   ),
                 )

@@ -205,7 +205,8 @@ class Opciones {
 
 class Operadores {
   static void openDialog(
-      {required BuildContext context, required Widget chyldrim}) {
+      {required BuildContext context, required Widget chyldrim,
+        Function? onAction}) {
     showDialog(
         useSafeArea: true,
         context: context,
@@ -228,7 +229,12 @@ class Operadores {
                       child: GrandButton(
                         labelButton: 'Cerrar',
                         onPress: () {
-                          Navigator.of(context).pop();
+                          if (onAction == null || onAction == Null) {
+                            Navigator.of(context).pop();
+                          } else {
+                            onAction();
+                            Navigator.of(context).pop();
+                          }
                         },
                       ),
                     ),

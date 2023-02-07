@@ -6,10 +6,8 @@ import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class TerapiasItems extends StatefulWidget {
   const TerapiasItems({Key? key}) : super(key: key);
@@ -23,7 +21,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
   //
 
   void reInit() {
-
+    Reportes.exploracionFisica = Formatos.exploracionTerapia;
   }
 
   @override
