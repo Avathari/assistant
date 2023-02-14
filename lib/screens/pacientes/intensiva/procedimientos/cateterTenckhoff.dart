@@ -28,7 +28,7 @@ class _CateterTenckhoffState extends State<CateterTenckhoff> {
 
   @override
   void initState() {
-    Valores.sitiosCateterTenckhoff = Escalas.sitiosCateterTenckhoff[0];
+    Valores.sitiosCateterTenckhoff = Items.sitiosCateterTenckhoff[0];
     Valores.motivoProcedimiento =
         "Ministración de solución dializante en cavidad peritoneal.  ";
     Valores.complicacionesProcedimiento = 'Ninguna. ';
@@ -113,7 +113,7 @@ class _CateterTenckhoffState extends State<CateterTenckhoff> {
                               reInit();
                             });
                           },
-                          items: Escalas.sitiosCateterTenckhoff,
+                          items: Items.sitiosCateterTenckhoff,
                           initialValue: Valores.sitiosCateterTenckhoff,
                         ),
                         const CrossLine(),

@@ -119,7 +119,7 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                   ),
                 ),
           Expanded(
-            flex: widget.isTerapia! ? 6 : 4,
+            flex: widget.isTerapia! ? 8 : 4, // 6
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,7 +160,14 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                               GrandButton(
                                 labelButton: "Analisis de terapia intensiva",
                                 onPress: () {
-                                  asignarExploracion(indice: 3);
+                                  Operadores.openDialog(context: context, chyldrim: const TerapiasItems(),
+                                      onAction: () {
+                                        setState(() {
+                                          expoTextController.text = Reportes.exploracionFisica;
+                                          Reportes.reportes['Exploracion_Fisica'] = Reportes.exploracionFisica;
+                                        });
+                                      });
+                                  // asignarExploracion(indice: 3);
                                 },
                               ),
                               GrandButton(

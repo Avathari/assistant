@@ -28,13 +28,16 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
     Vitales.ultimoRegistro();
     // # # # ############## #### ########
     setState(() {
-      initialTextController.text = Pacientes.prosa();
+      initialTextController.text = Pacientes.prosa(isTerapia: true);
+      //
+      diagoTextController.text = Pacientes.diagnosticos();
+      //
       consultaTextController.text = Reportes.motivoConsulta;
       heredoTextController.text = Pacientes.heredofamiliares();
       hospiTextController.text = Pacientes.hospitalarios();
       patoloTextController.text = Pacientes.patologicos();
 
-      Reportes.reportes['Datos_Generales'] = Pacientes.prosa();
+      Reportes.reportes['Datos_Generales'] = Pacientes.prosa(isTerapia: true);
       Reportes.reportes['Motivo_Consulta'] = Reportes.motivoConsulta;
       Reportes.reportes['Antecedentes_Heredofamiliares'] =
           Pacientes.heredofamiliares();
@@ -73,33 +76,33 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
                     onPress: () {
                       carouselController.jumpToPage(1);
                     }),
-                GrandIcon(
-                    iconData: Icons.medical_information,
-                    labelButton: "Auxiliares Diagnósticos",
-                    weigth: wieghtRow / index,
-                    onPress: () {
-                      carouselController.jumpToPage(2);
-                    }),
+                // GrandIcon(
+                //     iconData: Icons.medical_information,
+                //     labelButton: "Auxiliares Diagnósticos",
+                //     weigth: wieghtRow / index,
+                //     onPress: () {
+                //       carouselController.jumpToPage(2);
+                //     }),
                 GrandIcon(
                     iconData: Icons.explore,
                     labelButton: "Análisis y propuestas",
                     weigth: wieghtRow / index,
                     onPress: () {
-                      carouselController.jumpToPage(3);
+                      carouselController.jumpToPage(2);
                     }),
                 GrandIcon(
                     iconData: Icons.next_plan,
                     labelButton: "Diagnósticos y Pronóstico",
                     weigth: wieghtRow / index,
                     onPress: () {
-                      carouselController.jumpToPage(4);
+                      carouselController.jumpToPage(3);
                     }),
               ],
             ),
           ),
         ),
         Expanded(
-          flex: 6,
+          flex: 7,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: CarouselSlider(
@@ -117,6 +120,17 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
                           numOfLines: 5,
                           withShowOption: true,
                           inputFormat: MaskTextInputFormatter()),
+    EditTextArea(
+    textController: diagoTextController,
+    labelEditText: "Impresiones diagnósticas",
+    keyBoardType: TextInputType.multiline,
+    numOfLines: 10,
+    onChange: ((value) {
+    Reportes.impresionesDiagnosticas = "$value.";
+    Reportes.reportes['Impresiones_Diagnosticas'] = "$value.";
+    }),
+    inputFormat: MaskTextInputFormatter()),
+
                       // EditTextArea(
                       //     textController: consultaTextController,
                       //     labelEditText: "Motivo de Consulta",
@@ -151,9 +165,9 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
                   ),
                 ),
                 ExploracionFisica(isTerapia: true,),
-                const AuxiliaresExploracion(),
+                // const AuxiliaresExploracion(),
                 const AnalisisMedico(),
-                const DiagnosticosAndPronostico(),
+                DiagnosticosAndPronostico(isTerapia: true,),
               ],
             ),
           ),
@@ -175,6 +189,7 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
   // Controladores de widgets tipo valores.
   // ######################### ### # ### ############################
   var initialTextController = TextEditingController();
+  var diagoTextController = TextEditingController();
   var consultaTextController = TextEditingController();
   var heredoTextController = TextEditingController();
   var hospiTextController = TextEditingController();

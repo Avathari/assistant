@@ -203,20 +203,31 @@ Column paragraphWithTittleAndSeparated(
 
   if (subTitulo != "") {
     for (String element in subTitulo!.split('\n')) {
+
       var elem = element.split(comma);
-      if (elem[0] != "") {
-        textSpan.add(
-          TextSpan(
-              text: "${elem[0]}$comma",
+      // print("Elem ${elem.length} SubTitulo $subTitulo");
+      if (elem.length > 1) {
+        if (elem[0] != "") {
+          textSpan.add(
+            TextSpan(
+                text: "${elem[0]}$comma",
+                style: TextStyle(
+                    fontSize: 8.0,
+                    color: PdfColors.black,
+                    fontWeight: FontWeight.bold)),
+          );
+        }
+        if (elem[1] != "") {
+          textSpan.add(TextSpan(
+              text: "${elem[1]}\n",
               style: TextStyle(
                   fontSize: 8.0,
                   color: PdfColors.black,
-                  fontWeight: FontWeight.bold)),
-        );
-      }
-      if (elem[1] != "") {
+                  fontWeight: FontWeight.normal)));
+        }
+      } else {
         textSpan.add(TextSpan(
-            text: "${elem[1]}\n",
+            text: "${elem[0]}\n",
             style: TextStyle(
                 fontSize: 8.0,
                 color: PdfColors.black,
@@ -310,8 +321,8 @@ Column buildDoubleBulletPoints(String para) {
     );
   }
   //
-  print("inBullets $inBullets");
-  print("titulos $titulo");
+  // print("inBullets $inBullets");
+  // print("titulos $titulo");
   //
   return Column(children: [
     Bullet(

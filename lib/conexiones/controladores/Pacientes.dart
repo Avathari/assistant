@@ -167,6 +167,7 @@ class Pacientes {
   // Prosas y apartados literales en la formación de las Actividades.
   // ####### ### ### ## ### ### ####### ####### ####### #######
   static String originario() {
+    // print("Pacientes.Paciente ${Pacientes.Paciente}");
     return "${Pacientes.Paciente['Pace_Orig_Muni']}, ${Pacientes.Paciente['Pace_Orig_EntFed']}";
   }
 
@@ -174,8 +175,8 @@ class Pacientes {
     return "la localidad de ${Pacientes.Paciente['Pace_Resi_Loca']} por ${Pacientes.Paciente['Pace_Resi_Dur'].toString()} año(s)";
   }
 
-  static String prosa() {
-    if (Pacientes.esHospitalizado!) {
+  static String prosa({bool isTerapia = false}) {
+    if (isTerapia == true) {
       // ************* *********** ************* ************ ********* ********
       return "${Pacientes.Paciente['Pace_Ses']} de ${Pacientes.Paciente['Pace_Eda']} años, "
           "en su ${Pacientes.diasOrdinalesEstancia.toLowerCase()} día de estancia intrahospitalaria, "
@@ -200,15 +201,88 @@ class Pacientes {
   }
 
   static String hospitalarios() {
-    return "negados";
+    // ************************ ************** ********** **** *** *
+    // Reportes.reportes['Antecedentes_Quirurgicos'] = "";
+    // Reportes.antecedentesQuirurgicos = "";
+
+    print("Quirurgicos ${Quirurgicos!.length} $Quirurgicos \n "
+        "Reportes.Antecedentes_Quirurgicos ${Reportes.antecedentesQuirurgicos}");
+    // ************************ ************** ********** **** *** *
+    if (Quirurgicos != []) {
+      for (var element in Quirurgicos!) {
+        if (Reportes.antecedentesQuirurgicos == "") {
+          Reportes.antecedentesQuirurgicos =
+          "${Reportes.antecedentesQuirurgicos}${element['Pace_APP_QUI']} realizado hace ${element['Pace_APP_QUI_dia']} años, "
+              "${element['Pace_APP_QUI_com'].toString().toLowerCase()} ";
+        }
+      }
+    } else {
+      Reportes.antecedentesQuirurgicos = "negados";
+    }
+    // ************************ ************** ********** **** *** *
+    // print("Reportes.impresionesDiagnosticas ${Reportes.impresionesDiagnosticas}");
+    // Reportes.reportes['Antecedentes_Quirurgicos'] =
+    //     Reportes.antecedentesQuirurgicos;
+    // ************************ ************** ********** **** *** *
+    return Reportes.antecedentesQuirurgicos;
+    // return "negados";
   }
 
   static String alergicos() {
-    return "negados";
+    // ************************ ************** ********** **** *** *
+    // Reportes.reportes['Antecedentes_Alergicos'] = "";
+    // Reportes.antecedentesAlergicos = "";
+
+    print("Alergicos ${Alergicos!.length} $Alergicos \n "
+        "Reportes.Antecedentes_Alergicos ${Reportes.antecedentesAlergicos}");
+    // ************************ ************** ********** **** *** *
+    if (Alergicos != []) {
+      for (var element in Alergicos!) {
+        if (Reportes.antecedentesAlergicos == "") {
+          Reportes.antecedentesAlergicos =
+          "${Reportes.antecedentesAlergicos}${element['Pace_APP_ALE']} diagnósticado hace ${element['Pace_APP_ALE_dia']} años. ";
+        }
+      }
+    } else {
+      Reportes.antecedentesAlergicos = "negados";
+    }
+    // ************************ ************** ********** **** *** *
+    // print("Reportes.impresionesDiagnosticas ${Reportes.impresionesDiagnosticas}");
+    // Reportes.reportes['Antecedentes_Alergicos'] =
+    //     Reportes.antecedentesAlergicos;
+    // ************************ ************** ********** **** *** *
+    return Reportes.antecedentesAlergicos;
+    // return "negados";
+  }
+
+  static String noPatologicos() {
+    return 'Sin información recabada';
   }
 
   static String patologicos() {
-    return "negados";
+    // ************************ ************** ********** **** *** *
+    // Reportes.reportes['Antecedentes_Patologicos'] = "";
+    // Reportes.personalesPatologicos = "";
+    print("Patologicos ${Patologicos!.length} $Patologicos \n "
+        "Reportes.Antecedentes_Patologicos ${Reportes.personalesPatologicos}");
+    // ************************ ************** ********** **** *** *
+    if (Patologicos != []) {
+      for (var element in Patologicos!) {
+        if (Reportes.personalesPatologicos == "") {
+          Reportes.personalesPatologicos =
+              "${Reportes.personalesPatologicos}${element['Pace_APP_DEG']} diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+              "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. ";
+        }
+      }
+    } else {
+      Reportes.personalesPatologicos = "negados";
+    }
+    // ************************ ************** ********** **** *** *
+    // print("Reportes.impresionesDiagnosticas ${Reportes.impresionesDiagnosticas}");
+    // Reportes.reportes['Antecedentes_Patologicos'] =
+    //     Reportes.personalesPatologicos;
+    // ************************ ************** ********** **** *** *
+    return Reportes.personalesPatologicos;
   }
 
   static String perinatales() {
@@ -251,7 +325,20 @@ class Pacientes {
       case 0:
         return "Sin hallazgos relevantes en la exploración física";
       case 1:
-        return "Exploración acortada";
+        // "Exploración acortada";
+        return "Conciente, orientado y cooperador. Palidez mucotegumentaria, sin datos de deshidratación. "
+            "Pupilas isocóricas normorreflectivas, con respuesta fotomotora adecuada. \n"
+            "Tórax con movimientos de amplexión y amplexación sin restricciones."
+            "Ruidos pulmonares con murmullo vesicular audible, sin presencia a la exploración de "
+            "estertores y/o sibilancias. "
+            "Ruidos cardiacos consecuentes con pulso, de aspecto rimico sin sonidos agregados, descartándose "
+            "ruidos adventicios e incluso tercer ruido. \n"
+            "Abdomen con peristalsis normoaudible, timpánico a la percusión, sin evidencia de lesiones "
+            "dermatológicas. A la palpación superficial sin datos de irritación peritoneal, con sensibilidad "
+            "normal; a la palpación media sin dolor referido, puntos dolorosos negativos. \n"
+            "Extremidades integras con movimiento activo y pasivo sin restricciones. Fuerza muscular 5/5 (Daniels), "
+            "reflejos de estiramiento muscular ++/++++ (Siedel). \n"
+            "Columna sin limitación a los movimientos, vertebras integras en lo que respecta a la apófisis espinosa";
       case 2:
         return "Exploración extensa";
       case 3:
@@ -1304,7 +1391,13 @@ class Alergicos {
       Alergicos.Alergias = value;
     });
   }
-
+  static void registros() {
+    Actividades.consultarAllById(
+        Databases.siteground_database_regpace,
+        Alergicos.alergias['consultByIdPrimaryQuery'],
+        Pacientes.ID_Paciente)
+        .then((value) => Pacientes.Alergicos = value);
+  }
   static void consultarRegistro() {
     Actividades.consultarAllById(Databases.siteground_database_regpace,
             Alergicos.alergias['consultIdQuery'], Pacientes.ID_Paciente)
@@ -1379,7 +1472,6 @@ class Quirurgicos {
   //
   static String selectedDiagnosis = "";
   //
-
   static Map<String, dynamic> Cirugias = {};
 
   static List<String> actualDiagno = Dicotomicos.dicotomicos();
@@ -1394,7 +1486,13 @@ class Quirurgicos {
       Quirurgicos.Cirugias = value;
     });
   }
-
+  static void registros() {
+    Actividades.consultarAllById(
+        Databases.siteground_database_regpace,
+        Quirurgicos.cirugias['consultByIdPrimaryQuery'],
+        Pacientes.ID_Paciente)
+        .then((value) => Pacientes.Quirurgicos = value);
+  }
   static void consultarRegistro() {
     Actividades.consultarAllById(Databases.siteground_database_regpace,
             Quirurgicos.cirugias['consultIdQuery'], Pacientes.ID_Paciente)
@@ -1482,7 +1580,13 @@ class Transfusionales {
       Transfusionales.Transfusiones = value;
     });
   }
-
+  static void registros() {
+    Actividades.consultarAllById(
+        Databases.siteground_database_regpace,
+        Transfusionales.transfusiones['consultByIdPrimaryQuery'],
+        Pacientes.ID_Paciente)
+        .then((value) => Pacientes.Transfusionales = value);
+  }
   static void consultarRegistro() {
     Actividades.consultarAllById(
             Databases.siteground_database_regpace,
@@ -1573,7 +1677,13 @@ class Traumatologicos {
       Traumatologicos.Traumaticos = value;
     });
   }
-
+  static void registros() {
+    Actividades.consultarAllById(
+        Databases.siteground_database_regpace,
+        Traumatologicos.traumaticos['consultByIdPrimaryQuery'],
+        Pacientes.ID_Paciente)
+        .then((value) => Pacientes.Traumatologicos = value);
+  }
   static void consultarRegistro() {
     Actividades.consultarAllById(
             Databases.siteground_database_regpace,
@@ -2831,14 +2941,16 @@ class Reportes {
   //  # # # # ### ### ### # # # # . # # # # ### ### ### # # # #
   static Map<String, dynamic> reportes = {
     "Datos_Generales": Pacientes.prosa(),
+    "Antecedentes_No_Patologicos": "Sin información recabada",
     "Antecedentes_Heredofamiliares": Pacientes.heredofamiliares(),
-    "Antecedentes_Hospitalarios": Pacientes.hospitalarios(),
+    "Antecedentes_Quirurgicos": Pacientes.hospitalarios(),
     "Antecedentes_Patologicos": Pacientes.patologicos(),
     "Antecedentes_Perinatales": Pacientes.perinatales(),
     "Antecedentes_Sexuales": Pacientes.sexuales(),
     "Antecedentes_Alergicos": Pacientes.alergicos(),
     //
     "Motivo_Consulta": Reportes.motivoConsulta,
+    "Padecimiento_Actual": Reportes.padecimientoActual,
     //
     "Signos_Vitales": Reportes.signosVitales,
     "Exploracion_Fisica": Reportes.exploracionFisica,
@@ -2873,11 +2985,10 @@ class Reportes {
   //  # # # # ### ### ### # # # # . # # # # ### ### ### # # # #
   static String datosGenerales = "";
   static String antecedentesHeredofamiliares = "";
-  static String antecedentesHospitalarios = "";
+  // static String antecedentesHospitalarios = "";
   static String padecimientoActual = "";
-  static String personalesPatologicos = "";
-  static String antecedentesPerinatales = "";
-  static String antecedentesSexuales = "";
+  static String personalesPatologicos = "", antecedentesQuirurgicos = "",
+      antecedentesPerinatales = "", antecedentesSexuales = "", antecedentesAlergicos = "";
   //
   static String signosVitales = "";
   static String exploracionFisica =
@@ -2886,7 +2997,7 @@ class Reportes {
   static String auxiliaresDiagnosticos = "";
   static String analisisComplementarios = "";
   //
-  static String eventualidadesOcurridas = "";
+  static String eventualidadesOcurridas = "Sin eventualidades reportadas. ";
   static String terapiasPrevias = "";
   static String analisisMedico = "";
   static String tratamientoPropuesto = "";
@@ -2920,7 +3031,8 @@ class Reportes {
   static void close() {
     datosGenerales = "";
     antecedentesHeredofamiliares = "";
-    antecedentesHospitalarios = "";
+    // antecedentesHospitalarios = "";
+    antecedentesQuirurgicos = "";
     personalesPatologicos = "";
     antecedentesPerinatales = "";
     antecedentesSexuales = "";
@@ -2949,6 +3061,11 @@ class Reportes {
     // *** * *** *** *** * ***
 
     Pacientes.Patologicos = [];
+    Pacientes.Quirurgicos = [];
+    Pacientes.Alergicos = [];
+    Pacientes.Transfusionales = [];
+    Pacientes.Traumatologicos = [];
+
     Pacientes.Vitales = [];
     Pacientes.Vital = {};
     Patologicos.Degenerativos = {};
@@ -3105,11 +3222,11 @@ class Ventilaciones {
 
   static List<String> actualDiagno = [
     'Ningún modo ventilatorio',
-    'Ventilación Limitada por Presión Ciclada por Tiempo (P-VMC)',
-    'Ventilación Limitada por Flujo Ciclada por Volumen (V-VMC)',
-    'Ventilación Mandatoria Intermitente Sincronizada (SIMV / VMC)',
-    'Ventilación Mandatoria Intermitente Sincronizada (SIMV / PMC)',
-    'Ventilación Positiva en Vía Aerea con Presión Soporte (CPAP/PS)',
+    'Ventilación Limitada por Presión Ciclada por Tiempo (P-VMC / VCP)',
+    'Ventilación Limitada por Flujo Ciclada por Volumen (V-VMC / VCV)',
+    'Ventilación Mandatoria Intermitente Sincrónizada (SIMV / VCV)',
+    'Ventilación Mandatoria Intermitente Sincrónizada (SIMV / VCP)',
+    'Presión Positiva en Vía Aérea con Presión Soporte (CPAP / PS)',
     'Espontáneo (ESPON)',
   ];
 
@@ -3293,11 +3410,12 @@ class Repositorios {
 
   static List<String> actualDiagno = Opciones.horarios();
 
-  static void ultimoRegistro() {
+  static void padecimientoActual() {
     Actividades.consultarId(Databases.siteground_database_reghosp,
-            Repositorio['consultLastQuery'], Pacientes.ID_Paciente)
+            Repositorios.repositorio['consultarPadecimientoActualQuery'], Pacientes.ID_Paciente)
         .then((value) {
 // Enfermedades de base del paciente, asi como las Hospitalarias.
+    Reportes.padecimientoActual = value['TipoAnalisis'];
       Repositorio = value;
     });
   }
@@ -3370,6 +3488,10 @@ class Repositorios {
     "consultIdQuery": "SELECT * FROM pace_hosp_repo WHERE ID_Pace = ?",
     "consultByIdPrimaryQuery": "SELECT * FROM pace_hosp_repo WHERE ID_Hosp = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_hosp_repo",
+    "consultarPadecimientoActualQuery": "SELECT TipoAnalisis FROM pace_hosp_repo "
+        "WHERE TipoAnalisis = '${Items.tiposAnalisis[0]}' "
+        "AND ID_Hosp = '${Pacientes.ID_Hospitalizacion}' "
+        "AND ID_Pace = ? ORDER Y ID_Hosp DESC",
     "consultLastQuery":
         "SELECT * FROM pace_hosp_repo WHERE ID_Pace = ? ORDER BY ID_Hosp DESC",
     "consultByName": "SELECT * FROM pace_hosp_repo WHERE Pace_APP_DEG LIKE '%",

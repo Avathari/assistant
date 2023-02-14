@@ -19,7 +19,6 @@ class TerapiasItems extends StatefulWidget {
 class _TerapiasItemsState extends State<TerapiasItems> {
   var carouselController = CarouselController();
   //
-
   void reInit() {
     Reportes.exploracionFisica = Formatos.exploracionTerapia;
     Reportes.reportes['Exploracion_Fisica'] = Formatos.exploracionTerapia;
@@ -111,7 +110,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                                  ? 150
+                                  ? 250
                                   : isMobile(context)
                                       ? 100
                                       : 300,
@@ -234,6 +233,24 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           },
                           items:Items.ventilatorio,
                           initialValue: Valores.faseVentilatoria,
+                        ),
+                        Spinner(
+                          width: isDesktop(context)
+                              ? 400
+                              : isTablet(context)
+                              ? 350
+                              : isMobile(context)
+                              ? 100
+                              : 300,
+                          tittle: 'Dispositivo empleado',
+                          onChangeValue: (value) {
+                            setState(() {
+                              Valores.dispositivoEmpleado = value;
+                              reInit();
+                            });
+                          },
+                          items:Items.dispositivosOxigeno,
+                          initialValue: Valores.dispositivoEmpleado,
                         ),
                         Spinner(
                           width: isDesktop(context)

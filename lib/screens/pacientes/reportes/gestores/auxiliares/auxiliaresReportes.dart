@@ -332,7 +332,9 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
 }
 
 class DiagnosticosAndPronostico extends StatefulWidget {
-  const DiagnosticosAndPronostico({super.key});
+  bool? isTerapia;
+
+  DiagnosticosAndPronostico({this.isTerapia = false, super.key});
 
   @override
   State<DiagnosticosAndPronostico> createState() =>
@@ -385,6 +387,7 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
       Expanded(
           child: Column(
         children: [
+          widget.isTerapia == true ? Container() :
           Expanded(
             child: EditTextArea(
                 textController: diagoTextController,
@@ -932,3 +935,15 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
     );
   }
 }
+
+
+// No suspender Metformina, sólo el día de la cirugía control con Insulina y durante el transquirurgico.
+// Medidas universales de cuidados y prevención de paciente quirúrgico
+// Monitoreo y control de cifras tensionales mantener TAM>65.
+// Mantener cifras de glicemia entre 100 y 185, en caso de hiperglicemia infusión de insulina durante el tranquirúrgico.
+// Evitar AINES
+// No sobrecargar, se sugiere uso de soluciones cristaloides balanceadas sólo de ser necesario.
+// Analgesia con opioides intermedios o fuertes.
+// No ayuno mayor de 8hrs pre y postqx.
+// Requiere envío a MI posteriormente para tratamiento de DM2.
+// Se sugire inicio de Metformina 850 mg cada 12hrs. Y realizar labs de control.

@@ -28,7 +28,7 @@ class _SondaEndopleuralState extends State<SondaEndopleural> {
 
   @override
   void initState() {
-    Valores.sitiosSondaPleural = Escalas.sitiosSondaPleural[0];
+    Valores.sitiosSondaPleural = Items.sitiosSondaPleural[0];
     Valores.motivoProcedimiento =
         "Evvacuación de líquido ocupante en espacio pleural. \n Evacuación de contenido gaseoso ocupante del espacio pleural. ";
     Valores.complicacionesProcedimiento = 'Ninguna. ';
@@ -109,7 +109,7 @@ class _SondaEndopleuralState extends State<SondaEndopleural> {
                               reInit();
                             });
                           },
-                          items: Escalas.sitiosSondaPleural,
+                          items: Items.sitiosSondaPleural,
                           initialValue: Valores.sitiosSondaPleural,
                         ),
                         const CrossLine(),

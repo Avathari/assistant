@@ -99,7 +99,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
           //
           modoVentilatorioValue =
               Ventilaciones.Ventilacion['VM_Mod'].toString();
-          Valores.modalidadVentilatoria = fechaRealizacionTextController.text;
+          Valores.modalidadVentilatoria = modoVentilatorioValue;
           //
           //
           volTidalTextController.text =

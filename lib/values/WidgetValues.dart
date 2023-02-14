@@ -103,7 +103,7 @@ class TextFormat {
 class Carousel {
   static CarouselOptions carouselOptions({required BuildContext context }) {
     return CarouselOptions(
-        height: isMobile(context ) || isTablet(context) ? 1200: 450,
+        height: isMobile(context ) || isTablet(context) ? 1200: isDesktop(context) ? 600: 450,
         enableInfiniteScroll: false,
         viewportFraction: 1.0);
   }

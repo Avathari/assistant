@@ -28,6 +28,7 @@ class Valores {
       modoAtencion;
   static int? edad, numeroCama;
   static bool? isHospitalizado;
+
   static int get diasEstancia {
     if (fechaIngresoHospitalario != '' && fechaIngresoHospitalario != null) {
       print(fechaIngresoHospitalario!);
@@ -191,32 +192,34 @@ class Valores {
   static String? motivoProcedimiento;
   static String? sitiosCateterCentral,
       sitiosSondaPleural,
-      sitiosCateterTenckhoff;
-  static String? complicacionesProcedimiento;
-  static String? pendientesProcedimiento;
+      sitiosCateterTenckhoff,
+      sitiosPuncionLumbar,
+  sitios
+  ;
+  static String? complicacionesProcedimiento, pendientesProcedimiento, anestesiaEmpleada;
   // Variables de Valoraciones
   static String? valoracionAsa, valoracionBromage, valoracionNyha;
   // Variables de la situación hospitalaria
   static String? dispositivoOxigeno = Items.dispositivosOxigeno[0],
-      dispositivoEmpleado = Items.tuboendotraqueal[0],
+      dispositivoEmpleado = Items.dispositivosOxigeno[0],
       auxiliarVentilacion = Items.dispositivosOxigeno[0],
-  rass = Escalas.RASS[0],
-  ramsay = Escalas.ramsay[0],
+      rass = Escalas.RASS[0],
+      ramsay = Escalas.ramsay[0],
       ashworth = Escalas.ashworth[0],
       daniels = Escalas.daniels[0],
       mrc = Escalas.MRC[0],
-  faseVentilatoria = Items.ventilatorio[0],
+      faseVentilatoria = Items.ventilatorio[0],
       siedel = Escalas.siedel[0],
       tuboEndotraqueal = Items.tuboendotraqueal[0],
       haciaArcadaDentaria = Items.arcadaDentaria[0],
-  antibioticoterapia = Items.antibioticoterapia[0],
-  evaluacionNorton = Escalas.norton[0],
+      antibioticoterapia = Items.antibioticoterapia[0],
+      evaluacionNorton = Escalas.norton[0],
       evaluacionBraden = Escalas.braden[0],
-  apoyoAminergico = Items.aminergico[0],
+      apoyoAminergico = Items.aminergico[0],
       alimentacion = Items.dieta[0],
       tipoSondaAlimentacion = Items.orogastrico[0],
       tipoSondaVesical = Items.foley[0],
-  sedoanalgesia = Items.sedacion[0];
+      sedoanalgesia = Items.sedacion[0];
   static bool? isCateterPeriferico = false,
       isCateterLargoPeriferico = false,
       isCateterVenosoCentral = false,
@@ -270,6 +273,14 @@ class Valores {
     Vitales.ultimoRegistro();
     Patologicos.registros();
     Patologicos.consultarRegistro();
+    Alergicos.registros();
+    Alergicos.consultarRegistro();
+    Quirurgicos.registros();
+    Quirurgicos.consultarRegistro();
+    Transfusionales.registros();
+    Transfusionales.consultarRegistro();
+    Traumatologicos.registros();
+    Traumatologicos.consultarRegistro();
 
     // Llamado a las distintas clases de valores.
     // final patol = await Actividades.consultarId(
@@ -346,10 +357,13 @@ class Valores {
     // Comprobar estado de Atención del Paciente.
     if (modoAtencion == 'Hospitalización') {
       isHospitalizado = true;
+      Pacientes.esHospitalizado = true;
     } else if (modoAtencion == 'Consulta Externa') {
       isHospitalizado = false;
+      Pacientes.esHospitalizado = false;
     } else {
       isHospitalizado = false;
+      Pacientes.esHospitalizado = false;
     }
     //
     pesoCorporalTotal = double.parse(
@@ -1859,6 +1873,18 @@ class Valores {
     }
   }
 
+  static double get presionDistencion {
+    if (Valores.presionMaxima != 0 &&
+        Valores.presionMaxima != null &&
+        Valores.presionFinalEsiracion != 0 &&
+        Valores.presionFinalEsiracion != null) {
+      return (Valores.presionMaxima!.toDouble() -
+          Valores.presionFinalEsiracion!.toDouble());
+    } else {
+      return double.nan;
+    }
+  }
+
   // if valores.get('PresionOxigenoArterial') != 0:
   // IO = (PMVA * (valores.get('FraccionInspiratoriaOxigeno') / 100)) * (100.00) / valores.get(
   // 'PresionOxigenoArterial')
@@ -2099,6 +2125,16 @@ class Valores {
   static String aperturaMandibular = Escalas.aperturaMandibular[0];
   static String escalaMallampati = Escalas.escalaMallampati[0];
   static String escalaCormackLahane = Escalas.escalaCormackLahane[0];
+
+}
+
+enum sitiosPuncionLumbar {
+  l3l4(''),
+  l4l5('');
+
+  const sitiosPuncionLumbar(this.sitio);
+  final String sitio;
+
 }
 
 class Valorados {
@@ -2131,40 +2167,40 @@ class Valorados {
       "Glucemia capilar ${Valores.glucemiaCapilar} mg/dL, con ${Valores.horasAyuno} horas de ayuno";
 
   static String get asociadosRiesgo =>
-      "ANALISIS ANTROPOMÉTRICO ENFOCADO A RIESGO - "
-      "Pliegue Cutáneo Trícipital: ${Valores.pliegueCutaneoTricipital} mm, "
-      "Circunferencia Mesobraquial: ${Valores.circunferenciaMesobraquial} cm, "
-      "Perimetro Muscular Mesobraquial: ${Valores.perimetroMesobraquial} cm, "
-      "Área Muscular Mesobraquial: ${Valores.AM} cm2, "
-      "Área Adiposa Mesobraquial: ${Valores.areaAdiposaMesobraquial} cm2, "
-      "Área Mesobraquial: ${Valores.areaMesobraquial} cm2. \n";
+      "Análisis Antropométrico enfocado al Riesgo: "
+      "Pliegue Cutáneo Trícipital ${Valores.pliegueCutaneoTricipital} mm, "
+      "Circunferencia Mesobraquial ${Valores.circunferenciaMesobraquial} cm, "
+      "Perimetro Muscular Mesobraquial ${Valores.perimetroMesobraquial} cm, "
+      "Área Muscular Mesobraquial ${Valores.AM} cm2, "
+      "Área Adiposa Mesobraquial ${Valores.areaAdiposaMesobraquial} cm2, "
+      "Área Mesobraquial ${Valores.areaMesobraquial} cm2. ";
 
-  static String get antropometricos => "Análisis de Medidas Corporales -  "
-      "Peso Corporal Ideal: ${Valores.pesoCorporalPredicho.toStringAsFixed(2)} Kg, (${Valores.PCIP.toStringAsFixed(2)} %), "
-      "Peso Corporal Ajustado: ${Valores.pesoCorporalAjustado.toStringAsFixed(2)} Kg, "
-      "Exceso de Peso Corporal: ${Valores.excesoPesoCorporal.toStringAsFixed(2)} Kg, "
-      "Indice de Masa Corporal: ${Valores.imc.toStringAsFixed(2)} Kg/m2. (${Valores.claseIMC}). "
-      "Peso Corporal Blanco: ${Valores.PCB_25.toStringAsFixed(2)} Kg, "
-      "Peso Corporal Blanco (I.M.C. 30): ${Valores.PCB_30.toStringAsFixed(2)} Kg. "
-      "Superficie Corporal Total: ${Valores.SC.toStringAsFixed(2)} m2 "
-      "Relacion Cintura : Cadera ${Valores.indiceCinturaCadera.toStringAsFixed(2)} cm. \n"
-      "Grasa Corporal: ${Valores.grasaCorporalEsencial.toStringAsFixed(2)} Kg, "
-      "Grasa Corporal Porcentual: ${Valores.grasaCorporalEsencial.toStringAsFixed(2)} %, "
-      "Peso Corporal Magro: ${Valores.porcentajeCorporalMagro.toStringAsFixed(2)} Kg. \n";
+  static String get antropometricos => "Análisis de Medidas Corporales: "
+      "Peso Corporal Ideal ${Valores.pesoCorporalPredicho.toStringAsFixed(2)} Kg, (${Valores.PCIP.toStringAsFixed(2)} %), "
+      "Peso Corporal Ajustado ${Valores.pesoCorporalAjustado.toStringAsFixed(2)} Kg, "
+      "Exceso de Peso Corporal ${Valores.excesoPesoCorporal.toStringAsFixed(2)} Kg, "
+      "Indice de Masa Corporal ${Valores.imc.toStringAsFixed(2)} Kg/m2. (${Valores.claseIMC}). "
+      "Peso Corporal Blanco ${Valores.PCB_25.toStringAsFixed(2)} Kg, "
+      "Peso Corporal Blanco (I.M.C. 30) ${Valores.PCB_30.toStringAsFixed(2)} Kg. "
+      "Superficie Corporal Total ${Valores.SC.toStringAsFixed(2)} m2 "
+      "Relacion Cintura  Cadera ${Valores.indiceCinturaCadera.toStringAsFixed(2)} cm. " // \n"
+      "Grasa Corporal ${Valores.grasaCorporalEsencial.toStringAsFixed(2)} Kg, "
+      "Grasa Corporal Porcentual ${Valores.grasaCorporalEsencial.toStringAsFixed(2)} %, "
+      "Peso Corporal Magro ${Valores.porcentajeCorporalMagro.toStringAsFixed(2)} Kg. ";
 
   static String get metabolometrias =>
-      "Análisis Energético - Gasto Energetico Basal: ${Valores.gastoEnergeticoBasal.toStringAsFixed(2)} kCal/dia "
-      "(Factor de Actividad: ${Valores.factorActividad}; "
-      "Factor de Estres: ${Valores.factorEstres}); "
-      "Metabolismo Basal: ${Valores.metabolismoBasal.toStringAsFixed(2)} kCal/m2/hr, "
-      "Efecto Termico de los Alimentos: ${Valores.efectoTermicoAlimentos.toStringAsFixed(2)} kCal/m2/hr. "
-      "Gasto Energetico Total: ${Valores.gastoEnergeticoTotal.toStringAsFixed(2)} kCal/dia. \n";
+      "Análisis Energético: Gasto Energetico Basal ${Valores.gastoEnergeticoBasal.toStringAsFixed(2)} kCal/dia "
+      "(Factor de Actividad ${Valores.factorActividad}; "
+      "Factor de Estres ${Valores.factorEstres}); "
+      "Metabolismo Basal ${Valores.metabolismoBasal.toStringAsFixed(2)} kCal/m2/hr, "
+      "Efecto Termico de los Alimentos ${Valores.efectoTermicoAlimentos.toStringAsFixed(2)} kCal/m2/hr. "
+      "Gasto Energetico Total ${Valores.gastoEnergeticoTotal.toStringAsFixed(2)} kCal/dia. ";
 
-  static String get renales => "Tasa de Filtrado Glomerular - "
-      "${Valores.tasaRenalCrockoft_Gault.toStringAsFixed(2)} mL/min/1.73 m2 (Cockcroft - Gault), "
+  static String get renales => "Tasa de Filtrado Glomerular : "
+      "${Valores.tasaRenalCrockoft_Gault.toStringAsFixed(2)} mL/min/1.73 m2 (Cockcroft : Gault), "
       "${Valores.tasaRenalMDRD.toStringAsFixed(2)} mL/min/1.73 m2 (M.D.R.D. 4), "
       "${Valores.tasaRenalCKDEPI.toStringAsFixed(2)} mL/min/1.73 m2 (C.K.D. E.P.I.); "
-      "Clasificación (Estadio) ${Valores.claseTasaRenal} (KDOQI / KDIGO).\n";
+      "Clasificación (Estadio) ${Valores.claseTasaRenal} (KDOQI / KDIGO).";
 
   static String get hidricos =>
       "Requerimiento hídrico diario: ${Valores.requerimientoHidrico.toStringAsFixed(2)} mL/dia (${Valores.constanteRequerimientos} mL/Kg/dia), "
@@ -2219,12 +2255,14 @@ class Formatos {
         "de la Línea Axilar Anterior. Se procede a realizar la investidura de ropa estéril para posteriormente realizar asepsia y antisépsia "
         "del Hemitórax a operar. Se mide la Sonda Pleural respecto al cuerpo del paciente previo a su introducción tomando "
         "como referencia el punto de insición y la zona de estancia. Se prepara la zona a puncionar cubriendo con campos quirúrgicos, tomando "
-        "en cuenta el Triángulo de Seguridad (conformado en su Borde Anterior el Latísimo del Músculo Dorsal Ancho, el Pectoral Mayor en su Porde Posterior, "
+        "en cuenta el Triángulo de Seguridad (conformado en su Borde Anterior el Latísimo del Músculo Dorsal Ancho, "
+        "el Pectoral Mayor en su borde Posterior, "
         "y la Cuarta Costilla como su base marcando como referencia el nivel horizontal del pezón, y un ápice debajo de la áxila). \n"
         "Se procede a anestesiar la zona con Lidocaína al 2% iniciando con un botón en piel, y posteriormente se infiltra el área aledaña a esta. "
         "A nivel del ${Valores.sitiosSondaPleural} se realiza una incisión horizontal de ~1.5 cm para el paso de la Sonda Pleural, con una pinza Kelly se "
         "apertura el trayecto subcutáneo, se introduce el dedo indice por el trayecto y se palpa el pulmón para garantizar la localización de la cavidad pleural "
-        "comprobando que no haya adherencias. Se coloca la pinza Kelly en el extremo distal de la Sonda de pleurostomía, y en el extremo proximal se localiza coloca "
+        "comprobando que no haya adherencias. Se coloca la pinza Kelly en el extremo distal de la Sonda de pleurostomía, "
+        "y en el extremo proximal se localiza coloca "
         "una Pinza Foester para introducirla através del trayecto subcutáneo hasta llegar dentro de la Cavidad Pleural. "
         "Se abren las pinzas Kelly y se retiran para "
         "colocar la Sonda en su posición final. \n"
@@ -2234,60 +2272,173 @@ class Formatos {
   }
 
   static String get cateterTenckhoff {
-    return "Previa recolección de Material y Lavado de Manos. Se coloca a la paciente en posición en Decúbito Supino rotando la cabeza de la paciente a 45° al contrario de la Vena Subclavia Derecha. Realizado calzado de guantes estériles.\n"
-        "Se localiza el Tubérculo Coroídeo para indicar zona de punción nivel de la linea media clavicular y se procede a infiltrar con Lidocaína al 1% en Zona de Punción.\n"
-        "Posteriormente se coloca Campos Estériles y se inicia a la comprobación del Equipo corroborando permeabilidad de las lineas vasculares con solución inyectable y Heparina Sódica, para posterior mente cerrar con el Sellado los Lumenes de Acceso. \n"
-        "Corroborado el Equipo se procede a realizar la Punción de la Vena con el Trocar en orientación hacia la Horquilla Esternal a 45° con respecto a la piel, aspirando de manera continua, obteniendo sangre venosa en recamara de inserción, "
-        "comprobando el ingreso a la vena. Se inserta la guia metálica y se procede al retiro de la guia mediante la cual se introduce dilatador a tres tercios de su extensión para posteriormente retirarla. "
-        "Ex post facto, se inserta el catéter retirando al mismo tiempo la guia. Se comprueba la permeabilidad del catéter observándose ingreso de solución parenteral, y posteriormente corroborando reflujo sanguíneo por medio de la linea vascular.\n"
-        "Se procede a Fijar el Catéter Venoso Central a la piel con Sutura Nylon 2-0, colocando previamente los aditivos para la fijación. Se recubre con aditivo de tela transparente (Tegaderm) y se membrete fecha de colocación. \n";
+    return "Previa recolección de Material y Lavado de Manos. Se procede a realizar antisepsia de la región abdominal, se colocan campos estériles, "
+        "considerando como sitio de punción la región paraumbilical derecha a 3 cm de la cicatriz umbilical, en dirección hacia la fosa iliaca derecha, se infiltra el sitio para la punción "
+        "con lidocaina al 2%, se icide la piel aproximadamente un centímetro y se diseca por planos anatomicos atravezando la piel, el téjido subcutáneo, la aponeurosis, "
+        "hasta las membranas extraperitoneales hasta llegar al peritoneo. \n"
+        "Se verifica la posición del cáteter tipo Tenchkoff, se introduce en guía de alambre y se dirige a la cavidad pélvica en dirección a la fosa iliaca izquierda, "
+        "y se posiciona el coginete proximal en la aponeurosis muscular. "
+        "Se realiza la tunelación del catéter a aproximadamente 4 cm del orificio de entrada, mediante el tunelador cuidando de no sobreestirar el catéter ni torcerlo, "
+        "posicionando el coginete distal a 2 cm del sitio de salida. \n"
+        "Instalado el conector de titanio y la linea de transferencia, se infunde solución dializante al 1.5% para verificar los tiempos de ingreso y egreso del líquido dialítico. "
+        "Se cierra el tejido celular con catgut crómico de 2-0 y la piel con sutura nylon 2-0. Se coloca gasa esteril en el sitio de salida.";
+    // Tiempo de ingreso ideal: 12 minutos; tiempo de egreso ideal 15 minutos.
+    // Pendientes: S
+  }
+
+  static String get puncionLumbar {
+    return "Posterior a haber brindado información sobre el Procedimiento al Paciente, y haber recabado los Consentimientos Informados. "
+        "Se hace la Recolección del Material y se procede a realizar el procedimiento. \n"
+        "Se localizan el sitio de punción tomando como referencias las espinas iliacas posterosuperiores y se traza una linea imaginaria perpendicular "
+        "entre ambas, encontrandose a la altura de ${Valores.sitiosPuncionLumbar}. "
+        "${Valores.anestesiaEmpleada}"
+        // "Se coloca un parche con un combinado de lidocaína-prilocaína al 2.5% en crema, aproximadamente 1 gr del compuesto, siendo cubierto con un "
+        // "apósito oclusivo adhesivo. "
+        "Se coloca al paciente en decúbito lateral "  // En posición sentada
+        // "Se procede a realizar asepsia y antisepsia de la zona para posteriormente infiltrar la zona con lidocaina al 2%"
+        "Se realiza higiene de manos "
+        // "y se procede a retirar la anestesia tópica"
+        "y se comienza con la colocación de la vestimenta estéril. "
+        "Se localiza nuevamente el sitio de punción encontrandose, nuevamente, a la altura de ${Valores.sitiosPuncionLumbar}. "
+        "Se realiza asepsia y antisepsia de la zona, "
+        "se toma la aguja"
+        "posteriormente se procede a introducir la aguja con el bisel considerando un ángulo de 30° hacia arriba" // Hacia la derecha o izquierda si es sentado
+        "Se retira el mandril obteniendo líquido de aspecto " //
+        "y se procede a obtener muestras del fluido. "
+        "Se obtiene un total de " // Generalmente tres muestras (PCR para virus/bacterias, citología y bioquímica, cultivo microbiológico.)
+        "Tras la recogida del líquido cefalorraquídeo, se introduce el mandril y se retira la aguda. Una vez retirada la aguja se deja colocado una "
+        "gasa estéril haciendo una breve presión sobre el sitio de punción. \n"
+        "Se realiza el envió de las muestras al laboratorio. "
+    ;
   }
 
   static String get exploracionTerapia => ""
       "Durante la Exploración Física, siendo evaluado por Aparatos y Sistemas, es encontrado: \n"
-  "NEUROLOGICO: " "En sedoanalgesia con ${Valores.sedoanalgesia} consiguiendo "
-  "R.A.S.S. ${Valores.rass} y "
-  "Ramsay ${Valores.ramsay}, sin Datos de Focalización Neurológica. \n"
-  "VENTILATORIO: Apoyo ventilatorio ${Valores.dispositivoEmpleado}, "
-      "mediante ${Valores.tuboEndotraqueal} ${Valores.haciaArcadaDentaria}, "
-  // + Pacientes.Hospitalarios.Ventilaciones.prosa(self) "\n"
-  "PCO2 ${Valores.pcoArteriales} mmHg, "
-  "PO2 ${Valores.poArteriales} mmHg, "
-  "SO2 ${Valores.soArteriales} %, "
-  "Indice PaO2/FiO2: ${Valores.PAFI} mmHg. "
-  "Aa-O2 ${Valores.GAA} mmHg. \n"
-  "Ruidos Pulmonares Audibles, sin Estertores ni Sibilancias. " "\n"
-  "HEMATOINFECCIOSO: "
-  "Tensión arterial sistémica ${Valores.tensionArterialSistemica} mmHg, "
-  "TAM ${Valores.presionArterialMedia.toStringAsFixed(0)} mmHg, ${Valores.apoyoAminergico}. "
-  "Frecuencia cardiaca ${Valores.frecuenciaCardiaca} L/min, "
-  "temperatura corporal ${Valores.temperaturCorporal} °C. \n"
-  "${Valores.antibioticoterapia} con "
+      "NEUROLOGICO: "
+      "En sedoanalgesia con ${Valores.sedoanalgesia} consiguiendo "
+      "R.A.S.S. ${Valores.rass} y "
+      "Ramsay ${Valores.ramsay}, sin datos de focalización neurológica. \n"
+      "VENTILATORIO: Apoyo ventilatorio ${Valores.dispositivoEmpleado!.toLowerCase()}, "
+      "mediante ${Valores.tuboEndotraqueal} ${Valores.haciaArcadaDentaria!.toLowerCase()}, "
+      "${Formatos.ventilatorios} \n"
+      // + Pacientes.Hospitalarios.Ventilaciones.prosa(self) "\n"
+      "PCO2 ${Valores.pcoArteriales!.toStringAsFixed(0)} mmHg, "
+      "PO2 ${Valores.poArteriales!.toStringAsFixed(0)} mmHg, "
+      "SO2 ${Valores.soArteriales!.toStringAsFixed(0)} %, "
+      "Indice PaO2/FiO2: ${Valores.PAFI.toStringAsFixed(0)} mmHg. "
+      "Aa-O2 ${Valores.GAA.toStringAsFixed(0)} mmHg. \n"
+      "Ruidos pulmonares audibles, sin estertores ni sibilancias. "
+      "\n"
+      "HEMATOINFECCIOSO: "
+      "Tensión arterial sistémica ${Valores.tensionArterialSistemica} mmHg, "
+      "TAM ${Valores.presionArterialMedia.toStringAsFixed(0)} mmHg, ${Valores.apoyoAminergico}. "
+      "Frecuencia cardiaca ${Valores.frecuenciaCardiaca!.toStringAsFixed(0)} L/min, "
+      "temperatura corporal ${Valores.temperaturCorporal!.toStringAsFixed(1)} °C. \n"
+      "${Valores.antibioticoterapia} con "
       // + Pacientes.Auxiliares.Laboratorios.Biometrias.prosaSimple(self) ""
-  "Proteína C Reactiva ${Valores.proteinaCreactiva} mg/dL, "
-  "procalcitonina ${Valores.procalcitonina} ng/mL. \n"
-  "Riesgo de úlceras por presión por inmovilización ${Valores.evaluacionNorton} (Norton), ${Valores.evaluacionBraden} (Braden). \n"
-  "Sin datos de sangrado, sin requerimiento transfusional. \n"
-  "GASTRONUTRICIO: ${Valores.tipoSondaAlimentacion}; ${Valores.alimentacion}. \n"
-  "Peso corporal total: ${Valores.pesoCorporalTotal} Kg, "
-  "estatura: ${Valores.alturaPaciente} mts, "
-  "I.M.C ${Valores.imc.toStringAsFixed(0)} Kg/m2, "
-  "Peso predicho ${Valores.pesoCorporalPredicho.toStringAsFixed(1)} Kg. \n"
-  "Glucosa sérica ${Valores.glucosa} mg/dL, "
-  "albúmina ${Valores.albuminaSerica} g/dL. "
-  "Abdomen blando, depresible, sin datos de irritación peritoneal. \n"
-  "HIDRORRENAL: ${Valores.tipoSondaVesical}, con "
+      "Proteína C Reactiva ${Valores.proteinaCreactiva} mg/dL, "
+      "procalcitonina ${Valores.procalcitonina} ng/mL. \n"
+      // "Riesgo de úlceras por presión por inmovilización ${Valores.evaluacionNorton} (Norton), "
+      // "${Valores.evaluacionBraden} (Braden). \n"
+      "Sin datos de sangrado, sin requerimiento transfusional. \n"
+      "GASTRONUTRICIO: ${Valores.tipoSondaAlimentacion}; ${Valores.alimentacion}. \n"
+      "Peso corporal total: ${Valores.pesoCorporalTotal!.toStringAsFixed(2)} Kg, "
+      "estatura: ${Valores.alturaPaciente} mts, "
+      "I.M.C ${Valores.imc.toStringAsFixed(0)} Kg/m2, "
+      "Peso predicho ${Valores.pesoCorporalPredicho.toStringAsFixed(1)} Kg. \n"
+      "Glucosa sérica ${Valores.glucosa!.toStringAsFixed(0)} mg/dL, "
+      "albúmina ${Valores.albuminaSerica!.toStringAsFixed(1)} g/dL. "
+      "Abdomen blando, depresible, sin datos de irritación peritoneal. \n"
+      "HIDRORRENAL: ${Valores.tipoSondaVesical}, con "
       // + Pacientes.Hospitalarios.Balances.prosa(self) "\n"
-  "Creatinina ${Valores.creatinina} mg/dL, "
-  "urea ${Valores.urea} mg/dL; "
-  "tasa de filtrado glomerular ${Valores.tasaRenalCrockoft_Gault.toStringAsFixed(0)} mL/min/1.73 m2 (Cockcroft - Gault). \n"
-  "pH ${Valores.pHArteriales}, "
-  "HCO3- ${Valores.bicarbonatoArteriales} mmol/L, "
-  "E.B. ${Valores.excesoBaseArteriales} mmol/L. "
-  "Sodio ${Valores.sodio} mmol/L, "
-  "potasio ${Valores.potasio} mmol/L, "
-  "cloro: ${Valores.cloro} mmol/L. \n";
+      "Creatinina ${Valores.creatinina!.toStringAsFixed(1)} mg/dL, "
+      "urea ${Valores.urea!.toStringAsFixed(1)} mg/dL; "
+      "tasa de filtrado glomerular ${Valores.tasaRenalCrockoft_Gault.toStringAsFixed(0)} mL/min/1.73 m2 (Cockcroft - Gault). \n"
+      "pH ${Valores.pHArteriales}, "
+      "HCO3- ${Valores.bicarbonatoArteriales!.toStringAsFixed(1)} mmol/L, "
+      "E.B. ${Valores.excesoBaseArteriales!.toStringAsFixed(1)} mmol/L. "
+      "Sodio ${Valores.sodio!.toStringAsFixed(0)} mmol/L, "
+      "potasio ${Valores.potasio!.toStringAsFixed(1)} mmol/L, "
+      "cloro: ${Valores.cloro!.toStringAsFixed(0)} mmol/L. \n";
   // + Valoraciones.HidricosSimple(self) "";
+
+  static String get ventilatorios {
+    var MOD = ' ';
+    if (Valores.modalidadVentilatoria ==
+        'Ventilación Limitada por Presión Ciclada por Tiempo (P-VMC / VCP)') {
+      MOD = 'AC-VCP'; // # 'P-VMC/VCP';
+    } else if (Valores.modalidadVentilatoria ==
+        'Ventilación Limitada por Flujo Ciclada por Volumen (V-VMC / VCV)') {
+      MOD = 'AC-VCV'; // # 'V-VMC/VCV';
+    } else if (Valores.modalidadVentilatoria ==
+        'Ventilación Mandatoria Intermitente Sincrónizada (SIMV / VCV)') {
+      MOD = 'SIMV/VCV';
+    } else if (Valores.modalidadVentilatoria ==
+        'Ventilación Mandatoria Intermitente Sincrónizada (SIMV / VCP)') {
+      MOD = 'SIMV/VCP';
+    } else if (Valores.modalidadVentilatoria ==
+        'Presión Positiva en Vía Aérea con Presión Soporte (CPAP / PS)') {
+      MOD = 'CPAP/PS';
+    } else if (Valores.modalidadVentilatoria == 'Espontáneo (ESPON)') {
+      MOD = 'ESPON';
+    }
+    else {
+      MOD = ' ';
+    }
+      print("MODALIDAD VENTILATORIA ${Valores.modalidadVentilatoria} $MOD");
+    var PS = '';
+    if (MOD == 'ESPON') {
+      PS = "Psopp ${Valores.presionSoporte} cmH2O, "
+          "P. pulmonar insp. ${Valores.presionInspiratoriaPico} cmH2O, "
+          "P. pulmonar esp. ${Valores.presionFinalEsiracion} cmH2O, ";
+    } else if (MOD == 'CPAP/PS') {
+      PS = "Psopp ${Valores.presionSoporte} cmH2O, "
+          "P. pulmonar insp. ${Valores.presionInspiratoriaPico} cmH2O, "
+          "P. pulmonar esp. ${Valores.presionFinalEsiracion} cmH2O, ";
+    } else if (MOD == 'AC-VCV') {
+      PS = "VM ${Valores.volumenMinuto.toStringAsFixed(1)} L/min, "
+          "Flujo ${Valores.flujoVentilatorioMedido.toStringAsFixed(2)} L/min, "
+          "VTI ${Valores.volumenTidal} mL, ";
+    } else if (MOD == 'AC-VCP') {
+      PS = "Pinsp ${Valores.presionControl} cmH2O, "
+          "PIP ${Valores.presionMaxima} cmH2O, "
+          "Pplat ${Valores.presionPlateau} cmH2O. \n"
+          "PmVA ${Valores.presionMediaViaAerea.toStringAsFixed(0)} cmH2O, "
+          "WOB ${Valores.poderMecanico.toStringAsFixed(2)} J/min, "
+          "Dist P. ${Valores.distensibilidadPulmonar.toStringAsFixed(2)} mL/cmH2O, "
+          "Dest ${Valores.distensibilidadPulmonarEstatica.toStringAsFixed(2)} mL/cmH2O, "
+          "Ddyn ${Valores.distensibilidadPulmonarDinamica.toStringAsFixed(2)} mL/cmH2O, "
+          "RP ${Valores.resistenciaPulmonar.toStringAsFixed(2)} mL/cmH2O, "
+          "Elast ${Valores.elastanciaPulmonar.toStringAsFixed(2)} cmH2O/mL, "
+          "D. Pressure ${Valores.presionDistencion.toStringAsFixed(0)} mmHg, "
+          "VM ${Valores.volumenMinuto.toStringAsFixed(1)} L/min, "
+          "Flujo ${Valores.flujoVentilatorioMedido.toStringAsFixed(2)} L/min, ";
+    } else if (MOD == 'SIMV/VCV') {
+      PS = "Psopp ${Valores.presionSoporte} cmH2O, "
+          "VM ${Valores.volumenMinuto.toStringAsFixed(1)} L/min, "
+          "Flujo ${Valores.flujoVentilatorioMedido.toStringAsFixed(2)} L/min, "
+          "VTI ${Valores.volumenTidal} mL, ";
+    } else if (MOD == 'SIMV/VCP') {
+      PS = "Psopp ${Valores.presionSoporte} cmH2O, "
+          "Pinsp ${Valores.presionControl} cmH2O, "
+          "PIP ${Valores.presionMaxima} cmH2O, "
+          "Pplat ${Valores.presionPlateau} cmH2O. \n"
+          "PmVA ${Valores.presionMediaViaAerea.toStringAsFixed(0)} cmH2O, "
+          "WOB ${Valores.poderMecanico.toStringAsFixed(2)} J/min, "
+          "Dist P. ${Valores.distensibilidadPulmonar.toStringAsFixed(2)} mL/cmH2O, "
+          "Dest ${Valores.distensibilidadPulmonarEstatica.toStringAsFixed(2)} mL/cmH2O, "
+          "Ddyn ${Valores.distensibilidadPulmonarDinamica.toStringAsFixed(2)} mL/cmH2O, "
+          "RP ${Valores.resistenciaPulmonar.toStringAsFixed(2)} mL/cmH2O, "
+          "Elast ${Valores.elastanciaPulmonar.toStringAsFixed(2)} cmH2O/mL, "
+          "D. Pressure ${Valores.presionDistencion.toStringAsFixed(0)} mmHg, "
+          "VM ${Valores.volumenMinuto.toStringAsFixed(1)} L/min, "
+          "Flujo ${Valores.flujoVentilatorioMedido.toStringAsFixed(2)} L/min, ";
+    } else {
+      PS = '';
+    }
+    // print("PROSA VENTILATORIA $PS");
+    return PS;
+  }
 }
 
 class Escalas {
@@ -2381,23 +2532,6 @@ class Escalas {
     'Traslado',
     'Alta voluntaria',
     'Defunción',
-  ];
-
-  static List<String> sitiosCateterCentral = [
-    'Vena Yugular Anterior Derecha',
-    'Vena Yugular Anterior Izquierda',
-    'Vena Subclavia Derecha',
-    'Vena Subclavia Izquierda',
-  ];
-  static List<String> sitiosSondaPleural = [
-    'Cuarto Espacio Intercostal Derecho',
-    'Cuarto Espacio Intercostal Izquierdo',
-    'Quinto Espacio Intercostal Derecho',
-    'Quinto Espacio Intercostal Izquierdo',
-  ];
-  static List<String> sitiosCateterTenckhoff = [
-    'Linea Media Infraumbilical',
-    'Linea Paramedia Derecha',
   ];
 
   static List<String> saturacionPerifericaOrigeno = [
@@ -2695,6 +2829,27 @@ class Items {
     'Máscara de Oxígeno con Reservorio, con Dispositivo Borboteador',
     'Máscara de Reinhalación Parcial, con Dispositivo Borboteador',
     'Máscara de No Reinhalación con Reservorio, con Dispositivo Borboteador'
+  ];
+
+  static List<String> sitiosCateterCentral = [
+    'Vena Yugular Anterior Derecha',
+    'Vena Yugular Anterior Izquierda',
+    'Vena Subclavia Derecha',
+    'Vena Subclavia Izquierda',
+  ];
+  static List<String> sitiosSondaPleural = [
+    'Cuarto Espacio Intercostal Derecho',
+    'Cuarto Espacio Intercostal Izquierdo',
+    'Quinto Espacio Intercostal Derecho',
+    'Quinto Espacio Intercostal Izquierdo',
+  ];
+  static List<String> sitiosCateterTenckhoff = [
+    'Linea Media Infraumbilical',
+    'Linea Paramedia Derecha',
+  ];
+  static List<String> sitiosPuncionLumbar = [
+    'L3-L4',
+    'L4-L5',
   ];
 
   static List<String> dicotomicos = Dicotomicos.dicotomicos();

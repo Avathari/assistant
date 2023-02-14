@@ -129,6 +129,9 @@ class FormatosReportes {
       ["Antecedentes patológicos ", paraph['Antecedentes_Patologicos']],
     ]));
     // # # # # # # ### # # # # # # ###
+    parax.add(paragraphWithTittle(
+        titulo: "Padecimiento Actual", subTitulo: "${paraph['Padecimiento_Actual']}"));
+    // # # # # # # ### # # # # # # ###
     parax.add(
       paragraph(
         isBefore: true,
@@ -146,14 +149,16 @@ class FormatosReportes {
       );
     }
 
+    // print("paraph['Analisis_Complementarios'] ${paraph['Analisis_Complementarios']}");
     if (paraph['Analisis_Complementarios'] != "") {
       parax.add(
-        paragraphWithBullets(
+        paragraphWithTittleAndSeparated(
           titulo: "Análisis complementarios",
           subTitulo: "${paraph['Analisis_Complementarios']}",
         ),
       );
     }
+
     parax.add(
       paragraphWithBullets(
         titulo: "Impresiones diagnósticas",
@@ -1876,9 +1881,9 @@ class FormatosReportes {
       paraph['Pendientes'],
     ];
     // # # # # # # ### # # # # # # ###
-    print("paraph['Oxigenoterapia'] ${paraph['Oxigenoterapia']}\n"
-        "paraph['Insulinoterapia'] ${paraph['Insulinoterapia']}\n"
-        "paraph['Hemoterapia'] ${paraph['Hemoterapia']}\n");
+    // print("paraph['Oxigenoterapia'] ${paraph['Oxigenoterapia']}\n"
+       // "paraph['Insulinoterapia'] ${paraph['Insulinoterapia']}\n"
+       // "paraph['Hemoterapia'] ${paraph['Hemoterapia']}\n");
     // # # # # # # ### # # # # # # ###
     if (paraph['Hemoterapia'][0] != 'Sin reposicion sanguinea.') {
       tittles.insert(2, 'Hemoterapia y derivados');

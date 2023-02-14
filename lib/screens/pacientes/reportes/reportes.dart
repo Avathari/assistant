@@ -9,6 +9,7 @@ import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/auxilia
 import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteFormats/formatosReportes.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteConsulta.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteEvolucion.dart';
+import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteIngreso.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteTerapia.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
@@ -21,7 +22,7 @@ import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';
 
 class ReportesMedicos extends StatefulWidget {
-  int actualPage = 0;
+  int actualPage = 6;
 
   ReportesMedicos({super.key});
 
@@ -251,8 +252,10 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       return Column(
         children: [
           SizedBox(
-            height: 60,
-            child: GrandButton(labelButton: "", onPress: () {}),
+            height: 80,
+            child: GrandButton(labelButton: "Indicaciones Médicas", onPress: () {
+              Operadores.openDialog(context: context, chyldrim: const IndicacionesHospital());
+            }),
           ),
           const SizedBox(
             height: 20,
@@ -342,7 +345,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
 
   Widget pantallasReportesMedicos(int actualPage) {
     List<Widget> list = [
-      Container(),
+      const ReporteIngreso(),
       const ReporteEvolucion(),
       const ReporteConsulta(),
       const ReporteTerapia(), // Reporte tipado
@@ -441,14 +444,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       GrandButton(
           labelButton: "Indicaciones Médicas",
           onPress: () {
-            showDialog(
-                useSafeArea: true,
-                context: context,
-                builder: (context) {
-                  return const Dialog(
-                    child: IndicacionesHospital(),
-                  ); // IndicacionesConsulta(),);
-                });
+
           }),
       GrandButton(labelButton: "Licencia médica", onPress: () {}),
       GrandButton(labelButton: "Licencia médica", onPress: () {}),

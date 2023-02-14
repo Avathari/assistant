@@ -28,7 +28,7 @@ class _CateterVenosoCentralState extends State<CateterVenosoCentral> {
 
   @override
   void initState() {
-    Valores.sitiosCateterCentral = Escalas.sitiosCateterCentral[0];
+    Valores.sitiosCateterCentral = Items.sitiosCateterCentral[0];
     Valores.motivoProcedimiento =
         "Ministración continua de líquidos parenterales.\nMinistración de fármacos intravenosos. ";
     Valores.complicacionesProcedimiento = 'Ninguna. ';
@@ -109,7 +109,7 @@ class _CateterVenosoCentralState extends State<CateterVenosoCentral> {
                               reInit();
                             });
                           },
-                          items: Escalas.sitiosCateterCentral,
+                          items: Items.sitiosCateterCentral,
                           initialValue: Valores.sitiosCateterCentral,
                         ),
                         const CrossLine(),
