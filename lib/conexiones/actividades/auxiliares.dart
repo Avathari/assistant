@@ -55,6 +55,16 @@ class Dicotomicos {
     }
   }
 
+  static bool  fromString(String boolItem) {
+    if (boolItem == 'Si') {
+      return true;
+    } else if (boolItem == 'No') {
+      return false;
+    } else {
+      return false;
+    }
+  }
+
   static int toInt(String boolItem) {
     if (boolItem == "Si") {
       return 1;

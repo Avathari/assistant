@@ -9,7 +9,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-
 class ReporteTerapia extends StatefulWidget {
   const ReporteTerapia({super.key});
 
@@ -18,7 +17,6 @@ class ReporteTerapia extends StatefulWidget {
 }
 
 class _ReporteTerapiaState extends State<ReporteTerapia> {
-
   @override
   void initState() {
     // # # # ############## #### ########
@@ -120,16 +118,17 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
                           numOfLines: 5,
                           withShowOption: true,
                           inputFormat: MaskTextInputFormatter()),
-    EditTextArea(
-    textController: diagoTextController,
-    labelEditText: "Impresiones diagnósticas",
-    keyBoardType: TextInputType.multiline,
-    numOfLines: 10,
-    onChange: ((value) {
-    Reportes.impresionesDiagnosticas = "$value.";
-    Reportes.reportes['Impresiones_Diagnosticas'] = "$value.";
-    }),
-    inputFormat: MaskTextInputFormatter()),
+                      EditTextArea(
+                          textController: diagoTextController,
+                          labelEditText: "Impresiones diagnósticas",
+                          keyBoardType: TextInputType.multiline,
+                          numOfLines: 10,
+                          onChange: ((value) {
+                            Reportes.impresionesDiagnosticas = "$value.";
+                            Reportes.reportes['Impresiones_Diagnosticas'] =
+                                "$value.";
+                          }),
+                          inputFormat: MaskTextInputFormatter()),
 
                       // EditTextArea(
                       //     textController: consultaTextController,
@@ -164,10 +163,14 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
                     ],
                   ),
                 ),
-                ExploracionFisica(isTerapia: true,),
+                ExploracionFisica(
+                  isTerapia: true,
+                ),
                 // const AuxiliaresExploracion(),
-                const AnalisisMedico(),
-                DiagnosticosAndPronostico(isTerapia: true,),
+                 AnalisisMedico(),
+                DiagnosticosAndPronostico(
+                  isTerapia: true,
+                ),
               ],
             ),
           ),

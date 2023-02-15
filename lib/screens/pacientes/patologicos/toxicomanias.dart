@@ -1,3 +1,5 @@
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/epidemiologicos/alcoholismo.dart';
 import 'package:assistant/screens/pacientes/epidemiologicos/drogadismo.dart';
 import 'package:assistant/screens/pacientes/epidemiologicos/tabaquismo.dart';
@@ -147,5 +149,15 @@ class _GestionToxicomaniasState extends State<GestionToxicomanias> {
 
   void onActionActivity() {
     // Actualización de los Elementos Presentados.
+    try {
+      Toxicomanias.actualizarRegistro();
+    } catch (ex) {
+      Operadores.alertActivity(
+          context: context,
+          tittle: 'Error al actualizar los registros',
+          message: '$ex');
+    } finally {
+      toNextScreen(context: context, screen: VisualPacientes(actualPage: 2));
+    }
   }
 }

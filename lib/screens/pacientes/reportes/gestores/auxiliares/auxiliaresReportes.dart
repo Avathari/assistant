@@ -1,4 +1,5 @@
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/DialogSelector.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
@@ -27,8 +28,10 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
   @override
   void initState() {
     Auxiliares.registros();
-    auxTextController.text = Reportes.auxiliaresDiagnosticos;
-    commenTextController.text = Reportes.analisisComplementarios;
+    setState(() {
+      auxTextController.text = Reportes.auxiliaresDiagnosticos;
+      commenTextController.text = Reportes.analisisComplementarios;
+    });
     super.initState();
   }
 
@@ -238,7 +241,10 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
 }
 
 class AnalisisMedico extends StatefulWidget {
-  const AnalisisMedico({super.key});
+
+  bool? isPrequirurgica;
+
+  AnalisisMedico({super.key, this.isPrequirurgica = false});
 
   @override
   State<AnalisisMedico> createState() => _AnalisisMedicoState();
@@ -252,6 +258,10 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
 
   @override
   void initState() {
+    if (widget.isPrequirurgica!) {
+      Reportes.tratamientoPropuesto = Formatos.indicacionesPreoperatorias;
+    }
+
     eventualidadesTextController.text = Reportes.eventualidadesOcurridas;
     terapiasTextController.text = Reportes.terapiasPrevias;
     analisisTextController.text = Reportes.analisisMedico;

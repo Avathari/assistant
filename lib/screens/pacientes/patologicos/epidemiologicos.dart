@@ -1,3 +1,5 @@
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/conexiones/controladores/Pacientes.dart' as patients;
 import 'package:assistant/screens/pacientes/epidemiologicos/alimenticios.dart';
 import 'package:assistant/screens/pacientes/epidemiologicos/diarios.dart';
 import 'package:assistant/screens/pacientes/epidemiologicos/eticos.dart';
@@ -149,13 +151,14 @@ class _GestionNoPatologicosState extends State<GestionNoPatologicos> {
                 ),
                 Expanded(
                     child: Container(
-                      width: 1400,
-                      decoration: ContainerDecoration.roundedDecoration(),
-                      child: GrandButton(
-                          labelButton: 'Actualizar / Registrar', onPress: () {
-                            onActionActivity();
+                  width: 1400,
+                  decoration: ContainerDecoration.roundedDecoration(),
+                  child: GrandButton(
+                      labelButton: 'Actualizar / Registrar',
+                      onPress: () {
+                        onActionActivity();
                       }),
-                    ))
+                ))
               ]),
             ),
           ),
@@ -187,5 +190,25 @@ class _GestionNoPatologicosState extends State<GestionNoPatologicos> {
 
   void onActionActivity() {
     // Actualización de los Elementos Presentados.
+    try {
+      patients.Eticos.actualizarRegistro();
+      patients.Viviendas.actualizarRegistro();
+      patients.Higienes.actualizarRegistro();
+      patients.Diarios.actualizarRegistro();
+      patients.Alimenticios.actualizarRegistro();
+      patients.Limitaciones.actualizarRegistro();
+      patients.Sustancias.actualizarRegistro();
+    } catch (ex) {
+      Operadores.alertActivity(
+          context: context,
+          tittle: 'Error al actualizar los registros',
+          message: '$ex');
+    } finally {
+      // Operadores.alertActivity(
+      //     context: context,
+      //     tittle: 'Actualización de registros',
+      //     message: 'Registros Actualizaados');
+      toNextScreen(context: context, screen: VisualPacientes(actualPage: 2));
+    }
   }
 }

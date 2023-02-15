@@ -21,12 +21,16 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
   void initState() {
     // # # # ############## #### ########
     setState(() {
-      initialTextController.text = Pacientes.prosa();
+      initialTextController.text = Pacientes.prosa(isTerapia: true);
+      //
+      diagoTextController.text = Pacientes.diagnosticos();
+      subjetivoTextController.text = Pacientes.subjetivos();
+      //
       heredoTextController.text = Pacientes.heredofamiliares();
       hospiTextController.text = Pacientes.hospitalarios();
       patoloTextController.text = Pacientes.patologicos();
 
-      Reportes.reportes['Datos_Generales'] = Pacientes.prosa();
+      Reportes.reportes['Datos_Generales'] = Pacientes.prosa(isTerapia: true);
       Reportes.reportes['Antecedentes_Heredofamiliares'] =
           Pacientes.heredofamiliares();
       Reportes.reportes['Antecedentes_Hospitalarios'] =
@@ -114,30 +118,32 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
                           withShowOption: true,
                           inputFormat: MaskTextInputFormatter()),
                       EditTextArea(
-                          textController: heredoTextController,
-                          labelEditText: "Antecedentes heredofamiliares",
+                          textController: diagoTextController,
+                          labelEditText: "Impresiones diagnósticas",
                           keyBoardType: TextInputType.multiline,
                           numOfLines: 5,
+                          onChange: ((value) {
+                            Reportes.impresionesDiagnosticas = "$value.";
+                            Reportes.reportes['Impresiones_Diagnosticas'] = "$value.";
+                          }),
                           inputFormat: MaskTextInputFormatter()),
                       EditTextArea(
-                          textController: hospiTextController,
-                          labelEditText: "Antecedentes hospitalarios",
+                          textController: subjetivoTextController,
+                          labelEditText: "Referidos del Paciente",
                           keyBoardType: TextInputType.multiline,
                           numOfLines: 5,
-                          inputFormat: MaskTextInputFormatter()),
-                      EditTextArea(
-                          textController: patoloTextController,
-                          labelEditText: "Antecedentes personales patológicos",
-                          keyBoardType: TextInputType.multiline,
-                          numOfLines: 5,
+                          onChange: ((value) {
+                            Reportes.subjetivoHospitalizacion = "$value.";
+                            Reportes.reportes['Subjetivo'] = "$value.";
+                          }),
                           inputFormat: MaskTextInputFormatter()),
                     ],
                   ),
                 ),
                 ExploracionFisica(),
                 const AuxiliaresExploracion(),
-                const AnalisisMedico(),
-                DiagnosticosAndPronostico(),
+                 AnalisisMedico(),
+                DiagnosticosAndPronostico(isTerapia: true,),
               ],
             ),
           ),
@@ -159,6 +165,8 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
   // Controladores de widgets tipo valores.
   // ######################### ### # ### ############################
   var initialTextController = TextEditingController();
+  var diagoTextController = TextEditingController();
+  var subjetivoTextController = TextEditingController();
   var heredoTextController = TextEditingController();
   var hospiTextController = TextEditingController();
   var patoloTextController = TextEditingController();

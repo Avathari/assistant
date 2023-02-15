@@ -251,16 +251,17 @@ class FormatosReportes {
     // # # # # # # ### # # # # # # ###
     parax.add(paragraphWithTittle(
         titulo: "Datos generales", subTitulo: "${paraph['Datos_Generales']}"));
+    parax.add(
+      paragraphWithBullets(
+        titulo: "", // "Impresiones diagnósticas",
+        subTitulo: "${paraph['Impresiones_Diagnosticas']}",
+      ),
+    );
     // # # # # # # ### # # # # # # ###
-    parax.add(paragraphFromList(listado: [
-      [
-        "Antecedentes heredofamiliares ",
-        paraph['Antecedentes_Heredofamiliares']
-      ],
-      ["Antecedentes hospitalarios ", paraph['Antecedentes_Hospitalarios']],
-      ["Antecedentes alergicos ", paraph['Antecedentes_Alergicos']],
-      ["Antecedentes patológicos ", paraph['Antecedentes_Patologicos']],
-    ]));
+    parax.add(paragraph(texto:
+    paraph['Subjetivo']
+    ));
+
     // # # # # # # ### # # # # # # ###
     parax.add(
       paragraph(
@@ -1127,7 +1128,7 @@ class FormatosReportes {
   }
 
   static List<Widget> reportePrequirurgico(Map<String, dynamic> paraph) {
-    String tipoReporte = "VALORACION PREQUIRURGICA";
+    String tipoReporte = "VALORACION PREQUIRURGICA\nMEDICINA INTERNA";
     // # # # # # # ### # # # # # # ###
     // Lista de apartados del documento.
     // # # # # # # ### # # # # # # ###
@@ -1177,18 +1178,26 @@ class FormatosReportes {
     // # # # # # # ### # # # # # # ###
     //
     // # # # # # # ### # # # # # # ###
+    if (paraph['Motivo_Prequirurgico'] != "") {
+      parax.add(
+        paragraphWithTittleAndSeparated(
+          titulo: "Fecha: ${Calendarios.today(format: "dd/MM/yyyy")}",
+          subTitulo: "${paraph['Motivo_Prequirurgico']}",
+        ),
+      );
+    }
+    // # # # # # # ### # # # # # # ###
     parax.add(paragraphWithTittle(
         titulo: "Datos generales", subTitulo: "${paraph['Datos_Generales']}"));
     // # # # # # # ### # # # # # # ###
-    parax.add(paragraphFromList(listado: [
-      [
-        "Antecedentes heredofamiliares ",
-        paraph['Antecedentes_Heredofamiliares']
-      ],
-      ["Antecedentes hospitalarios ", paraph['Antecedentes_Hospitalarios']],
-      ["Antecedentes alergicos ", paraph['Antecedentes_Alergicos']],
-      ["Antecedentes patológicos ", paraph['Antecedentes_Patologicos']],
-    ]));
+    if (paraph['Antecedetes_No_Patologicos_Analisis'] != "") {
+      parax.add(
+        paragraphWithTittleAndSeparated(
+          titulo: "Antecedentes Personales No Patológicos",
+          subTitulo: "${paraph['Antecedetes_No_Patologicos_Analisis']}",
+        ),
+      );
+    }
     // # # # # # # ### # # # # # # ###
     parax.add(
       paragraph(
@@ -1209,12 +1218,13 @@ class FormatosReportes {
 
     if (paraph['Analisis_Complementarios'] != "") {
       parax.add(
-        paragraphWithBullets(
-          titulo: "Análisis complementarios",
+        paragraphWithTittleAndSeparated(
+          titulo: "Escalas de Riesgo",
           subTitulo: "${paraph['Analisis_Complementarios']}",
         ),
       );
     }
+
     parax.add(
       paragraphWithBullets(
         titulo: "Impresiones diagnósticas",

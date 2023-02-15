@@ -42,9 +42,12 @@ class Valores {
     }
   }
 
-  static String? creenciasPaciente = 'Refiere Ningún Prejuicio Relacionado a Creencias Personales',
-      valoresPaciente = 'Refiere Ningún Prejuicio Relacionado a Valores Personales',
-      costumbresPaciente = 'Refiere Ningun Prejuicio Relacionado a Costumbres Personales';
+  static String? creenciasPaciente =
+          'Refiere Ningún Prejuicio Relacionado a Creencias Personales',
+      valoresPaciente =
+          'Refiere Ningún Prejuicio Relacionado a Valores Personales',
+      costumbresPaciente =
+          'Refiere Ningun Prejuicio Relacionado a Costumbres Personales';
   static bool? prejuiciosAtencion = false,
       redesApoyo = true,
       apoyoMadre = false,
@@ -61,7 +64,7 @@ class Valores {
       viviendaCantidadOvinos = '0',
       viviendaCantidadPorcinos = '0',
       viviendaCantidadAves = '0',
-  // ******** ******** ******** ******** ******
+      // ******** ******** ******** ******** ******
       viviendaCantidadCaninos = '0',
       viviendaCantidadFelinos = '0',
       viviendaCantidadReptiles = '0',
@@ -82,28 +85,33 @@ class Valores {
       viviendaComedor = true,
       viviendaBano = true,
       viviendaHabitacionesSeparadas = true,
-  // *********************************
+      // *********************************
       viviendaPatioDelantero = false,
       viviendaPatioTrasero = false,
-  // *********************************
-      viviendaAnimalesCorral = false, viviendaAnimalesCompania = false,
-  // *********************************
+      // *********************************
+      viviendaAnimalesCorral = false,
+      viviendaAnimalesCompania = false,
+      // *********************************
       viviendaVacunos = false,
       viviendaOvinos = false,
       viviendaPorcinos = false,
       viviendaAves = false,
-  // *********************************
+      // *********************************
       viviendaCaninos = false,
       viviendaFelinos = false,
       viviendaReptiles = false,
       viviendaParvada = false;
 
-  static String? alimentacionDiariaDescripcion = 'Refiere alimentación diaria tres veces al dia',
+  static String? alimentacionDiariaDescripcion =
+          'Refiere alimentación diaria tres veces al dia',
       dietaAsignadaDescripcion = 'Sin dieta asignada por nutriologo',
       variacionAlimentacionDescripcion = 'Sin variaciones en la alimentación',
-      problemasMasticacionDescripcion = 'No refiere problemas en la masticación',
-      intoleranciaAlimentariaDescripcion = 'No refiere alergia o intolerancia alimentaria de ningún tipo',
-      alteracionesPesoDescripcion ='No refiere variaciones significativas del peso en los últimos dos meses';
+      problemasMasticacionDescripcion =
+          'No refiere problemas en la masticación',
+      intoleranciaAlimentariaDescripcion =
+          'No refiere alergia o intolerancia alimentaria de ningún tipo',
+      alteracionesPesoDescripcion =
+          'No refiere variaciones significativas del peso en los últimos dos meses';
   static bool? alimentacionDiaria = false,
       dietaAsignada = false,
       variacionAlimentacion = false,
@@ -129,10 +137,13 @@ class Valores {
       higieneManos = false,
       cambiosRopa = false,
       aseoDental = false;
-  static String? banoCorporalDescripcion = 'Refiere realizar aseo corporal diario',
-      higieneManosDescripcion = 'Refiere realizar aseo de manos antes y después de comer e ir al baño',
+  static String? banoCorporalDescripcion =
+          'Refiere realizar aseo corporal diario',
+      higieneManosDescripcion =
+          'Refiere realizar aseo de manos antes y después de comer e ir al baño',
       cambiosRopaDescripcion = 'Refiere cambio diario de ropa',
-      aseoDentalDescripcion = 'Refiere aseo dental tres veces al dia, pero no usa hilo dental';
+      aseoDentalDescripcion =
+          'Refiere aseo dental tres veces al dia, pero no usa hilo dental';
 
   static bool? usoLentes = false,
       aparatoSordera = false,
@@ -152,11 +163,16 @@ class Valores {
       exposicionPesticidas = false,
       exposicionMetalesPesados = false,
       exposicionPsicotropicos = false;
-  static String? exposicionBiomasaDescripcion = 'No refiere uso o exposición a humo de biomasa',
-      exposicionHumosQuimicosDescripcion = 'No refiere uso o exposición a humos químicos',
-      exposicionPesticidasDescripcion = 'No refiere uso o exposición a pesticidas',
-      exposicionMetalesPesadosDescripcion = 'No refiere uso o exposición a metales pesados',
-      exposicionPsicotropicosDescripcion = 'Sin referencia de uso de psicotrópicos';
+  static String? exposicionBiomasaDescripcion =
+          'No refiere uso o exposición a humo de biomasa',
+      exposicionHumosQuimicosDescripcion =
+          'No refiere uso o exposición a humos químicos',
+      exposicionPesticidasDescripcion =
+          'No refiere uso o exposición a pesticidas',
+      exposicionMetalesPesadosDescripcion =
+          'No refiere uso o exposición a metales pesados',
+      exposicionPsicotropicosDescripcion =
+          'Sin referencia de uso de psicotrópicos';
 
   static bool? esAlcoholismo = false, suspensionAlcoholismo = false;
   static String? edadInicioAlcoholismo = '',
@@ -215,6 +231,10 @@ class Valores {
       motivoEgreso,
       fechaPadecimientoActual,
       padecimientoActual;
+  //
+  static String motivoCirugia = "",
+      tipoCirugia = "",
+      tipoInterrogatorio = 'Directo';
   //
   static int? tensionArterialSystolica,
       tensionArterialDyastolica,
@@ -433,6 +453,8 @@ class Valores {
     Alimenticios.consultarRegistro();
     Limitaciones.consultarRegistro();
     Sustancias.consultarRegistro();
+    //
+    Toxicomanias.consultarRegistro();
     // ********* *********** ********** ******
     Vitales.registros();
     Vitales.ultimoRegistro();
@@ -2366,9 +2388,31 @@ class Valorados {
       "Brecha osmolar: ${Valores.brechaOsmolar} mOsm/L. "
       "${Valores.sodioCorregido} ${Valores.requerimientoPotasio} "
       "Delta potasio: ${Valores.deficitSodio} mEq/L: ${Valores.deltaPotasio}";
+
+  static String get prequirurgicos {
+    return ""
+        "A.S.A.: ${Valores.valoracionAsa}. \n"
+        "Goldmann: ${Valores.valoracionGoldmann}. \n"
+        "Detsky: ${Valores.valoracionDetsky}. \n"
+        "ARISCAT: ${Valores.valoracionAriscat}. "
+        "";
+  }
 }
 
 class Formatos {
+  static String indicacionesPreoperatorias =
+      "No suspender Metformina, sólo el día de la cirugía control con Insulina y durante el transquirurgico. \n"
+      "Medidas universales de cuidados y prevención de paciente quirúrgico. \n"
+      "Monitoreo y control de cifras tensionales mantener TAM >65. \n"
+      "Mantener cifras de glicemia entre 100 y 185, en caso de hiperglicemia infusión de insulina durante el tranquirúrgico. \n"
+      "Evitar AINES \n"
+      "No sobrecargar, se sugiere uso de soluciones cristaloides balanceadas sólo de ser necesario. \n"
+      "Analgesia con opioides intermedios o fuertes. \n"
+      "No ayuno mayor de 8hrs pre y postqx. \n"
+      "Requiere envío a MI posteriormente para tratamiento de DM2. \n"
+      "Se sugire inicio de Metformina 850 mg cada 12hrs. Y realizar labs de control. \n"
+      "";
+
   static String get ideologias {
     String prejuicios = "", creencias = "", valores = "", costumbres = "";
     // ******** **** ******* **** *******
@@ -2398,8 +2442,12 @@ class Formatos {
 
   static String get viviendas {
     // Variables ******** **** ********* ******** **********
-    String formacion = "", comodidades = "", servicios = "", conformacion = "",
-        corral = "", compania = "";
+    String formacion = "",
+        comodidades = "",
+        servicios = "",
+        conformacion = "",
+        corral = "",
+        compania = "";
     // Formación ******** **** ********* ******** **********
     if (Valores.viviendaSala) {
       formacion = "$formacion con sala";
@@ -2494,20 +2542,20 @@ class Formatos {
       compania = "Sin animales de compañia en la vivienda. ";
     }
     // ******** **** ********* ******** **********
-  return "Vivienda: Propiedad ${Valores.propiedadVivienda}. "
-   "Conformacion interna de la vivienda con "
-   "piso de ${Valores.materialPiso!.toLowerCase()}, "
-   "pared de ${Valores.materialParedes!.toLowerCase()}, "
-   "techo de ${Valores.materialTecho!.toLowerCase()}. \n"
-  "Separación habitacional$formacion. "
-  "Servicios publicos habitacionales$servicios. "
-   "Servicios domiciliarios$comodidades. "
-  "Conformación externa de la vivienda$conformacion. \n"
-   "Presencia de animales en la vivienda: "
-   // "Animales de corral en la vivienda (${Dicotomicos.fromBoolean(Valores.viviendaAnimalesCorral)})"
-       "$corral"
-   // " Animales de compañia en la vivienda (${Dicotomicos.fromBoolean(Valores.viviendaAnimalesCompania)})"
-       "$compania";
+    return "Vivienda: Propiedad ${Valores.propiedadVivienda}. "
+        "Conformacion interna de la vivienda con "
+        "piso de ${Valores.materialPiso!.toLowerCase()}, "
+        "pared de ${Valores.materialParedes!.toLowerCase()}, "
+        "techo de ${Valores.materialTecho!.toLowerCase()}. \n"
+        "Separación habitacional$formacion. "
+        "Servicios publicos habitacionales$servicios. "
+        "Servicios domiciliarios$comodidades. "
+        "Conformación externa de la vivienda$conformacion. \n"
+        "Presencia de animales en la vivienda: "
+        // "Animales de corral en la vivienda (${Dicotomicos.fromBoolean(Valores.viviendaAnimalesCorral)})"
+        "$corral"
+        // " Animales de compañia en la vivienda (${Dicotomicos.fromBoolean(Valores.viviendaAnimalesCompania)})"
+        "$compania";
   }
 
   static String get alimentarios {
@@ -2518,12 +2566,12 @@ class Formatos {
         "${Valores.problemasMasticacionDescripcion}. "
         "${Valores.intoleranciaAlimentariaDescripcion}. "
         "${Valores.alteracionesPesoDescripcion}. ";
-        // "Alimentacion Diaria (${Dicotomicos.fromBoolean(Valores.alimentacionDiaria!)}). "
-        // "Dieta Asignada (${Dicotomicos.fromBoolean(Valores.dietaAsignada!)}) ${Valores.dietaAsignadaDescripcion}. "
-        // "Variaciones de la Dieta (${Dicotomicos.fromBoolean(Valores.variacionAlimentacion!)}) ${Valores.variacionAlimentacionDescripcion}. "
-        // "Problemas con la Alimentación (${Dicotomicos.fromBoolean(Valores.problemasMasticacion!)}) ${Valores.problemasMasticacionDescripcion}. "
-        // "Intolerancias Alimentarias (${Dicotomicos.fromBoolean(Valores.intoleranciaAlimentaria!)}) ${Valores.intoleranciaAlimentariaDescripcion}. "
-        // "Alteraciones del Peso (${Dicotomicos.fromBoolean(Valores.alteracionesPeso!)}) ${Valores.alteracionesPesoDescripcion}. ";
+    // "Alimentacion Diaria (${Dicotomicos.fromBoolean(Valores.alimentacionDiaria!)}). "
+    // "Dieta Asignada (${Dicotomicos.fromBoolean(Valores.dietaAsignada!)}) ${Valores.dietaAsignadaDescripcion}. "
+    // "Variaciones de la Dieta (${Dicotomicos.fromBoolean(Valores.variacionAlimentacion!)}) ${Valores.variacionAlimentacionDescripcion}. "
+    // "Problemas con la Alimentación (${Dicotomicos.fromBoolean(Valores.problemasMasticacion!)}) ${Valores.problemasMasticacionDescripcion}. "
+    // "Intolerancias Alimentarias (${Dicotomicos.fromBoolean(Valores.intoleranciaAlimentaria!)}) ${Valores.intoleranciaAlimentariaDescripcion}. "
+    // "Alteraciones del Peso (${Dicotomicos.fromBoolean(Valores.alteracionesPeso!)}) ${Valores.alteracionesPesoDescripcion}. ";
   }
 
   static String get diarios {
@@ -2572,14 +2620,19 @@ class Formatos {
         "${Valores.higieneManosDescripcion}. "
         "${Valores.cambiosRopaDescripcion}. "
         "${Valores.aseoDentalDescripcion}. ";
-        // "Bano corporal diario (${Dicotomicos.fromBoolean(Valores.banoCorporal!)}) (${Valores.banoCorporalDescripcion}). "
+    // "Bano corporal diario (${Dicotomicos.fromBoolean(Valores.banoCorporal!)}) (${Valores.banoCorporalDescripcion}). "
     // "Lavado de manos (${Dicotomicos.fromBoolean(Valores.higieneManos!)}) (${Valores.higieneManosDescripcion}). "
 //         "Cambio de ropa (${Dicotomicos.fromBoolean(Valores.cambiosRopa!)}) (${Valores.cambiosRopaDescripcion}). "
     //      "Aseo dental ${Dicotomicos.fromBoolean(Valores.aseoDental!)} (${Valores.aseoDentalDescripcion}). "
   }
 
   static String get limitaciones {
-    String lentes = "", sordera = "", dentaria = "", marcapasos = "", protesis = "", limitacion = "";
+    String lentes = "",
+        sordera = "",
+        dentaria = "",
+        marcapasos = "",
+        protesis = "",
+        limitacion = "";
     // ******** ********** ******* ****** ******
     if (Valores.usoLentes!) {
       lentes = Valores.usoLentesDescripcion!;
@@ -2624,13 +2677,13 @@ class Formatos {
         "$marcapasos"
         "$protesis"
         "$limitacion";
-    
-        // "Uso de Lentes ${Dicotomicos.fromBoolean(Valores.usoLentes!)}. "
-        // "Uso de Aparatos de Sordera ${Dicotomicos.fromBoolean(Valores.aparatoSordera!)}. "
-        // "Uso de Protesis Dentaria ${Dicotomicos.fromBoolean(Valores.protesisDentaria!)}. "
-        // "Uso de Marcapasos Cardiaco ${Dicotomicos.fromBoolean(Valores.marcapasosCardiaco!)}. "
-        // "Uso de Protesis para Deambular ${Dicotomicos.fromBoolean(Valores.ortesisDeambular!)}. "
-        // "Limitaciones Fisicas para las Actividades Diarias ${Dicotomicos.fromBoolean(Valores.limitacionesActividadCotidiana!)}. ";
+
+    // "Uso de Lentes ${Dicotomicos.fromBoolean(Valores.usoLentes!)}. "
+    // "Uso de Aparatos de Sordera ${Dicotomicos.fromBoolean(Valores.aparatoSordera!)}. "
+    // "Uso de Protesis Dentaria ${Dicotomicos.fromBoolean(Valores.protesisDentaria!)}. "
+    // "Uso de Marcapasos Cardiaco ${Dicotomicos.fromBoolean(Valores.marcapasosCardiaco!)}. "
+    // "Uso de Protesis para Deambular ${Dicotomicos.fromBoolean(Valores.ortesisDeambular!)}. "
+    // "Limitaciones Fisicas para las Actividades Diarias ${Dicotomicos.fromBoolean(Valores.limitacionesActividadCotidiana!)}. ";
   }
 
   static String get exposiciones {
@@ -2642,11 +2695,77 @@ class Formatos {
         "${Valores.exposicionMetalesPesadosDescripcion}. "
         "${Valores.exposicionPsicotropicosDescripcion}. ";
 
-        // "Exposicion a Humos de Leña ${Dicotomicos.fromBoolean(Valores.exposicionBiomasa!)}. "
-        // "Exposicion a Humos Quimicos ${Dicotomicos.fromBoolean(Valores.exposicionHumosQuimicos!)}. "
-        // "Exposicion a Pesticidas ${Dicotomicos.fromBoolean(Valores.exposicionPesticidas!)}. "
-        // "Exposicion a Metales Pesados ${Dicotomicos.fromBoolean(Valores.exposicionMetalesPesados!)}. "
-        // "Uso de Medicamentos Psicotropicos ${Dicotomicos.fromBoolean(Valores.exposicionPsicotropicos!)}. ";
+    // "Exposicion a Humos de Leña ${Dicotomicos.fromBoolean(Valores.exposicionBiomasa!)}. "
+    // "Exposicion a Humos Quimicos ${Dicotomicos.fromBoolean(Valores.exposicionHumosQuimicos!)}. "
+    // "Exposicion a Pesticidas ${Dicotomicos.fromBoolean(Valores.exposicionPesticidas!)}. "
+    // "Exposicion a Metales Pesados ${Dicotomicos.fromBoolean(Valores.exposicionMetalesPesados!)}. "
+    // "Uso de Medicamentos Psicotropicos ${Dicotomicos.fromBoolean(Valores.exposicionPsicotropicos!)}. ";
+  }
+
+  // ************* ********** ************** ***
+  static String get toxicomanias {
+    String alcoholismo = "", tabaquismo = "", drogadismo = "";
+    // ************* ********** ************** ***
+    if (Valores.esAlcoholismo!) {
+      String suspension = "";
+      if (Valores.suspensionAlcoholismo!) {
+        suspension =
+            "Suspendido hace ${Valores.aosSuspensionAlcoholismo} años. ";
+      } else {
+        suspension = "";
+      }
+      // ***** // ******************** // ************
+      alcoholismo =
+          "Alcoholismo iniciado a los ${Valores.edadInicioAlcoholismo}, "
+          "con duración aproximada de  ${Valores.duracionAnosAlcoholismo} años, "
+          "a razón de  ${Valores.periodicidadAlcoholismo} cada  ${Valores.intervaloAlcoholismo}. "
+          "$suspension"
+          "Tipo de alcohol usado ( ${Valores.tiposAlcoholismoDescripcion}). ";
+    } else {
+      alcoholismo = 'Alcoholismo negado. ';
+    }
+    // ************* ********** ************** ***
+    if (Valores.esTabaquismo!) {
+      String suspension = "";
+      if (Valores.suspensionTabaquismo!) {
+        suspension =
+            "Suspendido hace ${Valores.aosSuspensionTabaquismo} años. ";
+      } else {
+        suspension = "";
+      }
+      // ***** // ******************** // ************
+      tabaquismo = "Tabaquismo iniciado a los ${Valores.edadInicioTabaquismo}, "
+          "con duración aproximada de  ${Valores.duracionAnosTabaquismo} años, "
+          "a razón de  ${Valores.periodicidadTabaquismo} cada  ${Valores.intervaloTabaquismo}. "
+          "$suspension"
+          "Tipo de tabaco usado ( ${Valores.tiposTabaquismoDescripcion}). ";
+    } else {
+      tabaquismo = 'Tabaquismo negado. ';
+    }
+    // ************* ********** ************** ***
+    if (Valores.esDrogadismo!) {
+      String suspension = "";
+      if (Valores.suspensionDrogadismo!) {
+        suspension =
+            "Suspendido hace ${Valores.aosSuspensionDrogadismo} años. ";
+      } else {
+        suspension = "";
+      }
+      // ***** // ******************** // ************
+      drogadismo = "Drogadismo iniciado a los ${Valores.edadInicioDrogadismo}, "
+          "con duración aproximada de  ${Valores.duracionAnosDrogadismo} años, "
+          "a razón de  ${Valores.periodicidadDrogadismo} cada  ${Valores.intervaloDrogadismo}. "
+          "$suspension"
+          "Tipo de drogas usadas ( ${Valores.tiposDrogadismoDescripcion}). ";
+    } else {
+      drogadismo = 'Drogadismo negado. ';
+    }
+    // ************* ********** ************** ***
+
+    return 'Toxicomanias: '
+        '$alcoholismo'
+        '$tabaquismo'
+        '$drogadismo';
   }
 
   // ************* ********** ************** ***
@@ -3374,6 +3493,8 @@ class Items {
     'Oclusion Tubarica Bilateral',
     'Histerectomia'
   ];
+
+  static List<String> tipoInterrogatorio = ['Directo', 'Indirecto'];
 }
 
 isNull(value) {
