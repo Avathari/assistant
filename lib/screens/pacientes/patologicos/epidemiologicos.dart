@@ -4,11 +4,10 @@ import 'package:assistant/screens/pacientes/epidemiologicos/eticos.dart';
 import 'package:assistant/screens/pacientes/epidemiologicos/exposiciones.dart';
 import 'package:assistant/screens/pacientes/epidemiologicos/higienicos.dart';
 import 'package:assistant/screens/pacientes/epidemiologicos/limitaciones.dart';
+import 'package:assistant/screens/pacientes/epidemiologicos/viviendas.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
-import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/GrandButton.dart';
-import 'package:assistant/widgets/GrandLabel.dart';
 import 'package:assistant/widgets/GrandLabel.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -123,7 +122,7 @@ class _GestionNoPatologicosState extends State<GestionNoPatologicos> {
                       ),
                       SingleChildScrollView(
                         controller: ScrollController(),
-                        child: Container(),
+                        child: const Viviendas(),
                       ),
                       SingleChildScrollView(
                         controller: ScrollController(),

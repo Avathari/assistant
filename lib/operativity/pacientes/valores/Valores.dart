@@ -31,7 +31,7 @@ class Valores {
 
   static int get edadDesdeNacimiento {
     if (fechaNacimiento != '' && fechaNacimiento != null) {
-      print(fechaNacimiento!);
+      // print(fechaNacimiento!);
       return int.parse(((DateTime.now()
                   .difference(DateTime.parse(fechaNacimiento!))
                   .inDays) /
@@ -51,6 +51,51 @@ class Valores {
       apoyoPadre = false,
       apoyoHermanos = false,
       apoyoHijosMayores = false;
+
+  static String? propiedadVivienda = '',
+      otrosCohabitantes = '',
+      materialPiso = '',
+      materialParedes = '',
+      materialTecho = '',
+      viviendaCantidadVacunos = '',
+      viviendaCantidadOvinos = '',
+      viviendaCantidadPorcinos = '',
+      viviendaCantidadAves = '',
+      viviendaCantidadCaninos = '',
+      viviendaCantidadFelinos = '',
+      viviendaCantidadReptiles = '',
+      viviendaCantidadParvada = '';
+  static bool cohabitaPadre = false,
+      cohabitaMadre = false,
+      cohabitaHijos = false,
+      cohabitaFamiliares = false,
+      cohabitaOtros = false,
+      viviendaElectricidad = false,
+      viviendaAguaPotable = false,
+      viviendaAlcantarillado = false,
+      viviendaDrenaje = false,
+      viviendaTelevision = false,
+      viviendaEstufa = false,
+      viviendaHornoLena = false,
+      viviendaSala = false,
+      viviendaComedor = false,
+      viviendaBano = false,
+      viviendaHabitacionesSeparadas = false,
+  // *********************************
+      viviendaPatioDelantero = false,
+      viviendaPatioTrasero = false,
+  // *********************************
+      viviendaAnimalesCorral = false, viviendaAnimalesCompania = false,
+  // *********************************
+      viviendaVacunos = false,
+      viviendaOvinos = false,
+      viviendaPorcinos = false,
+      viviendaAves = false,
+  // *********************************
+      viviendaCaninos = false,
+      viviendaFelinos = false,
+      viviendaReptiles = false,
+      viviendaParvada = false;
 
   static String? alimentacionDiariaDescripcion = '',
       dietaAsignadaDescripcion = '',
@@ -141,7 +186,7 @@ class Valores {
 
   static int get diasEstancia {
     if (fechaIngresoHospitalario != '' && fechaIngresoHospitalario != null) {
-      print(fechaIngresoHospitalario!);
+      // print(fechaIngresoHospitalario!);
       return DateTime.now()
           .difference(DateTime.parse(fechaIngresoHospitalario!))
           .inDays;
@@ -445,7 +490,7 @@ class Valores {
   }
 
   Valores.fromJson(Map<String, dynamic> json) {
-    print("Valors $json");
+    // print("Valors $json");
 
     numeroPaciente = json['Pace_NSS'];
     agregadoPaciente = json['Pace_AGRE'];
@@ -644,7 +689,7 @@ class Valores {
     Valores.fechaEgresoHospitalario = json['Feca_EGE_Hosp'] ?? '';
     Valores.motivoEgreso = json['EGE_Motivo'] ?? '';
 
-    print("Valores.gastoCardiaco ${Valores.gastoCardiaco}");
+    // print("Valores.gastoCardiaco ${Valores.gastoCardiaco}");
   }
 
   static String get numeroExpediente =>
@@ -2315,7 +2360,6 @@ class Valorados {
 }
 
 class Formatos {
-
   static String get ideologias {
     String prejuicios = "", creencias = "", valores = "", costumbres = "";
     // ******** **** ******* **** *******
@@ -2330,7 +2374,8 @@ class Formatos {
           "$valores"
           "$costumbres \n";
     } else {
-      prejuicios = "Sin existencia de prejuicios respecto a la atención médica. ";
+      prejuicios =
+          "Sin existencia de prejuicios respecto a la atención médica. ";
     }
     // ******** **** ******* **** *******
     return "Ideologias: "
@@ -2343,58 +2388,59 @@ class Formatos {
   }
 
   static String get alimentarios {
-    return  "Hábitos alimenticios: "
-    "Alimentacion Diaria (${Dicotomicos.fromBoolean(Valores.alimentacionDiaria!)}). "
-    "Dieta Asignada (${Dicotomicos.fromBoolean(Valores.dietaAsignada!)}) ${Valores.dietaAsignadaDescripcion}. "
-    "Variaciones de la Dieta (${Dicotomicos.fromBoolean(Valores.variacionAlimentacion!) }) ${Valores.variacionAlimentacionDescripcion}. "
-    "Problemas con la Alimentación (${Dicotomicos.fromBoolean(Valores.problemasMasticacion!)}) ${Valores.problemasMasticacionDescripcion}. "
-    "Intolerancias Alimentarias (${Dicotomicos.fromBoolean(Valores.intoleranciaAlimentaria!)}) ${Valores.intoleranciaAlimentariaDescripcion}. "
-    "Alteraciones del Peso (${Dicotomicos.fromBoolean(Valores.alteracionesPeso!)}) ${Valores.alteracionesPesoDescripcion}.  ";
+    return "Hábitos alimenticios: "
+        "Alimentacion Diaria (${Dicotomicos.fromBoolean(Valores.alimentacionDiaria!)}). "
+        "Dieta Asignada (${Dicotomicos.fromBoolean(Valores.dietaAsignada!)}) ${Valores.dietaAsignadaDescripcion}. "
+        "Variaciones de la Dieta (${Dicotomicos.fromBoolean(Valores.variacionAlimentacion!)}) ${Valores.variacionAlimentacionDescripcion}. "
+        "Problemas con la Alimentación (${Dicotomicos.fromBoolean(Valores.problemasMasticacion!)}) ${Valores.problemasMasticacionDescripcion}. "
+        "Intolerancias Alimentarias (${Dicotomicos.fromBoolean(Valores.intoleranciaAlimentaria!)}) ${Valores.intoleranciaAlimentariaDescripcion}. "
+        "Alteraciones del Peso (${Dicotomicos.fromBoolean(Valores.alteracionesPeso!)}) ${Valores.alteracionesPesoDescripcion}.  ";
   }
 
   static String get diarios {
-  return "Hábitos diarios: "
-   "Actividad Habitual ${Valores.actividadesDiariasDescripcion}; "
-   "Pasatiempos referidos ${Valores.pasatiemposDescripcion}; "
-   "Horas de Sueño ${Valores.horasSuenoDescripcion}; "
-   "Viajes al Nacionales / Extranjero Recientemente ( ${Dicotomicos.fromBoolean(Valores.acosoLaboral!)}) ${Valores.viajesRecientesDescripcion}. \n"
-   "Problemas en Interacciones Cotidianas: "
-   "Problemas Familiares (${Dicotomicos.fromBoolean(Valores.acosoLaboral!)}): "
-   "Violencia Infantil ${Dicotomicos.fromBoolean(Valores.acosoLaboral!)}, "
-   "Abuso de Sustancias ${Dicotomicos.fromBoolean(Valores.acosoLaboral!)}. "
-   "Problemas Laborales (${Dicotomicos.fromBoolean(Valores.acosoLaboral!)}): "
-   "Estres Laboral ${Dicotomicos.fromBoolean(Valores.acosoLaboral!)}, "
-   "Hostilidad en el Trabajo ${Dicotomicos.fromBoolean(Valores.acosoLaboral!)}, "
-   "Abuso Sexual ${Dicotomicos.fromBoolean(Valores.acosoLaboral!)}, "
-   "Acoso Sexual ${Dicotomicos.fromBoolean(Valores.acosoLaboral!)}. ";
+    return "Hábitos diarios: "
+        "Actividad Habitual ${Valores.actividadesDiariasDescripcion}; "
+        "Pasatiempos referidos ${Valores.pasatiemposDescripcion}; "
+        "Horas de Sueño ${Valores.horasSuenoDescripcion}; "
+        "Viajes al Nacionales / Extranjero Recientemente ( ${Dicotomicos.fromBoolean(Valores.acosoLaboral!)}) ${Valores.viajesRecientesDescripcion}. \n"
+        "Problemas en Interacciones Cotidianas: "
+        "Problemas Familiares (${Dicotomicos.fromBoolean(Valores.acosoLaboral!)}): "
+        "Violencia Infantil ${Dicotomicos.fromBoolean(Valores.acosoLaboral!)}, "
+        "Abuso de Sustancias ${Dicotomicos.fromBoolean(Valores.acosoLaboral!)}. "
+        "Problemas Laborales (${Dicotomicos.fromBoolean(Valores.acosoLaboral!)}): "
+        "Estres Laboral ${Dicotomicos.fromBoolean(Valores.acosoLaboral!)}, "
+        "Hostilidad en el Trabajo ${Dicotomicos.fromBoolean(Valores.acosoLaboral!)}, "
+        "Abuso Sexual ${Dicotomicos.fromBoolean(Valores.acosoLaboral!)}, "
+        "Acoso Sexual ${Dicotomicos.fromBoolean(Valores.acosoLaboral!)}. ";
   }
 
   static String get higienicos {
     return "Hábitos higiénicos: "
-     "Bano corporal diario (${Dicotomicos.fromBoolean(Valores.banoCorporal!)}) (${Valores.banoCorporalDescripcion}). "
-     "Lavado de manos (${Dicotomicos.fromBoolean(Valores.higieneManos!)}) (${Valores.higieneManosDescripcion}). "
-     "Cambio de ropa (${Dicotomicos.fromBoolean(Valores.cambiosRopa!)}) (${Valores.cambiosRopaDescripcion}). "
-     "Aseo dental ${Dicotomicos.fromBoolean(Valores.aseoDental!)} (${Valores.aseoDentalDescripcion}). ";
+        "Bano corporal diario (${Dicotomicos.fromBoolean(Valores.banoCorporal!)}) (${Valores.banoCorporalDescripcion}). "
+        "Lavado de manos (${Dicotomicos.fromBoolean(Valores.higieneManos!)}) (${Valores.higieneManosDescripcion}). "
+        "Cambio de ropa (${Dicotomicos.fromBoolean(Valores.cambiosRopa!)}) (${Valores.cambiosRopaDescripcion}). "
+        "Aseo dental ${Dicotomicos.fromBoolean(Valores.aseoDental!)} (${Valores.aseoDentalDescripcion}). ";
   }
 
   static String get limitaciones {
     return "Limitaciones físicas: "
-     "Uso de Lentes ${Dicotomicos.fromBoolean(Valores.usoLentes!)}. "
-     "Uso de Aparatos de Sordera ${Dicotomicos.fromBoolean(Valores.aparatoSordera!)}. "
-     "Uso de Protesis Dentaria ${Dicotomicos.fromBoolean(Valores.protesisDentaria!)}. "
-    "Uso de Marcapasos Cardiaco ${Dicotomicos.fromBoolean(Valores.marcapasosCardiaco!)}. "
-     "Uso de Protesis para Deambular ${Dicotomicos.fromBoolean(Valores.ortesisDeambular!)}. "
-     "Limitaciones Fisicas para las Actividades Diarias ${Dicotomicos.fromBoolean(Valores.limitacionesActividadCotidiana!)}. ";
+        "Uso de Lentes ${Dicotomicos.fromBoolean(Valores.usoLentes!)}. "
+        "Uso de Aparatos de Sordera ${Dicotomicos.fromBoolean(Valores.aparatoSordera!)}. "
+        "Uso de Protesis Dentaria ${Dicotomicos.fromBoolean(Valores.protesisDentaria!)}. "
+        "Uso de Marcapasos Cardiaco ${Dicotomicos.fromBoolean(Valores.marcapasosCardiaco!)}. "
+        "Uso de Protesis para Deambular ${Dicotomicos.fromBoolean(Valores.ortesisDeambular!)}. "
+        "Limitaciones Fisicas para las Actividades Diarias ${Dicotomicos.fromBoolean(Valores.limitacionesActividadCotidiana!)}. ";
   }
 
   static String get exposiciones {
     return "Exposición a sustancias tóxicas: "
-     "Exposicion a Humos de Leña ${Dicotomicos.fromBoolean(Valores.exposicionBiomasa!)}. "
-     "Exposicion a Humos Quimicos ${Dicotomicos.fromBoolean(Valores.exposicionHumosQuimicos!)}. "
-     "Exposicion a Pesticidas ${Dicotomicos.fromBoolean(Valores.exposicionPesticidas!)}. "
-    "Exposicion a Metales Pesados ${Dicotomicos.fromBoolean(Valores.exposicionMetalesPesados!)}. "
-     "Uso de Medicamentos Psicotropicos ${Dicotomicos.fromBoolean(Valores.exposicionPsicotropicos!)}. ";
+        "Exposicion a Humos de Leña ${Dicotomicos.fromBoolean(Valores.exposicionBiomasa!)}. "
+        "Exposicion a Humos Quimicos ${Dicotomicos.fromBoolean(Valores.exposicionHumosQuimicos!)}. "
+        "Exposicion a Pesticidas ${Dicotomicos.fromBoolean(Valores.exposicionPesticidas!)}. "
+        "Exposicion a Metales Pesados ${Dicotomicos.fromBoolean(Valores.exposicionMetalesPesados!)}. "
+        "Uso de Medicamentos Psicotropicos ${Dicotomicos.fromBoolean(Valores.exposicionPsicotropicos!)}. ";
   }
+
   // ************* ********** ************** ***
   static String get cateterVenosoCentral {
     return "Previa recolección de Material y Lavado de Manos. Se coloca a la paciente en posición en Decúbito Supino rotando la cabeza de la paciente a 45° al contrario de la Vena Subclavia Derecha. Realizado calzado de guantes estériles.\n"
@@ -3040,6 +3086,31 @@ class Items {
   ];
   static List<String> dicotomicos = Dicotomicos.dicotomicos();
 
+  static List<String> propiedad = [
+    'Propia',
+    'Rentada',
+  ];
+
+  static List<String> materialesPiso = [
+    'Cemento',
+    'Madera',
+    'Tierra',
+    'Azulejo',
+  ];
+  static List<String> materialesParedes = [
+    'Cemento',
+    'Madera',
+    'Lámina de Zinc',
+    'Lámina de Cartón',
+    'Ladrillos',
+  ];
+  static List<String> materialesTecho = [
+    'Cemento',
+    'Huano',
+    'Lámina de Zinc',
+    'Lámina de Cartón',
+  ];
+
   static List<String> periodicidad = [
     'Días',
     'Mes',
@@ -3076,6 +3147,24 @@ class Items {
     'Cristal',
     '',
     '',
+  ];
+
+  static List<String> interaccionesSexuales = [
+    'Heterosexual',
+    'Bisexual',
+    'Homosexual',
+    'Asexual'
+  ];
+  static List<String> metodosPlanificacionFamiliar = [
+    'D.I.U.',
+    'D.I.U. Hormonal',
+    'Implante Sub - Dermico',
+    'Hormonales Inyectables',
+    'Condon Masculino',
+    'Condon Femenino',
+    'Diafragma',
+    'Oclusion Tubarica Bilateral',
+    'Histerectomia'
   ];
 }
 
