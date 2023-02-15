@@ -127,15 +127,24 @@ class FormatosReportes {
         ),
       );
     }
-    parax.add(paragraphFromList(listado: [
-      [
-        "Antecedentes heredofamiliares ",
-        paraph['Antecedentes_Heredofamiliares']
-      ],
-      ["Antecedentes hospitalarios ", paraph['Antecedentes_Hospitalarios']],
-      ["Antecedentes alergicos ", paraph['Antecedentes_Alergicos']],
-      ["Antecedentes patológicos ", paraph['Antecedentes_Patologicos']],
-    ]));
+    if (paraph['Antecedentes_Patologicos_Otros'] != "") {
+      parax.add(
+        paragraphWithTittleAndSeparated(
+          titulo: "Antecedentes Personales Patológicos",
+          subTitulo: "${paraph['Antecedentes_Patologicos_Otros']}",
+        ),
+      );
+    }
+
+    // parax.add(paragraphFromList(listado: [
+    //   [
+    //     "Antecedentes heredofamiliares ",
+    //     paraph['Antecedentes_Heredofamiliares']
+    //   ],
+    //   ["Antecedentes hospitalarios ", paraph['Antecedentes_Hospitalarios']],
+    //   ["Antecedentes alergicos ", paraph['Antecedentes_Alergicos']],
+    //   ["Antecedentes patológicos ", paraph['Antecedentes_Patologicos']],
+    // ]));
     // # # # # # # ### # # # # # # ###
     parax.add(paragraphWithTittle(
         titulo: "Padecimiento Actual", subTitulo: "${paraph['Padecimiento_Actual']}"));

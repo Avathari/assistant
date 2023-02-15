@@ -1,6 +1,7 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/values/Strings.dart';
 
 class Pacientes {
   static int ID_Paciente = 0;
@@ -203,7 +204,7 @@ class Pacientes {
   static String hospitalarios() {
     // ************************ ************** ********** **** *** *
     // Reportes.reportes['Antecedentes_Quirurgicos'] = "";
-    // Reportes.antecedentesQuirurgicos = "";
+    Reportes.antecedentesQuirurgicos = "";
 
     print("Quirurgicos ${Quirurgicos!.length} $Quirurgicos \n "
         "Reportes.Antecedentes_Quirurgicos ${Reportes.antecedentesQuirurgicos}");
@@ -212,8 +213,12 @@ class Pacientes {
       for (var element in Quirurgicos!) {
         if (Reportes.antecedentesQuirurgicos == "") {
           Reportes.antecedentesQuirurgicos =
-          "${Reportes.antecedentesQuirurgicos}${element['Pace_APP_QUI']} realizado hace ${element['Pace_APP_QUI_dia']} años, "
-              "${element['Pace_APP_QUI_com'].toString().toLowerCase()} ";
+          "${element['Pace_APP_QUI']} realizado hace ${element['Pace_APP_QUI_dia']} años, "
+              "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
+        } else {
+          Reportes.antecedentesQuirurgicos =
+          "${Reportes.antecedentesQuirurgicos}; ${element['Pace_APP_QUI']} realizado hace ${element['Pace_APP_QUI_dia']} años, "
+              "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
         }
       }
     } else {
@@ -224,7 +229,7 @@ class Pacientes {
     // Reportes.reportes['Antecedentes_Quirurgicos'] =
     //     Reportes.antecedentesQuirurgicos;
     // ************************ ************** ********** **** *** *
-    return Reportes.antecedentesQuirurgicos;
+    return Reportes.antecedentesQuirurgicos!;
     // return "negados";
   }
 
@@ -251,18 +256,26 @@ class Pacientes {
     // Reportes.reportes['Antecedentes_Alergicos'] =
     //     Reportes.antecedentesAlergicos;
     // ************************ ************** ********** **** *** *
-    return Reportes.antecedentesAlergicos;
+    return Reportes.antecedentesAlergicos!;
     // return "negados";
   }
 
   static String noPatologicos() {
     // return 'Sin información recabada';
     return "${Formatos.ideologias}\n"
+        "${Formatos.viviendas}\n"
         "${Formatos.alimentarios}\n"
         "${Formatos.diarios}\n"
         "${Formatos.higienicos}\n"
         "${Formatos.limitaciones}\n"
         "${Formatos.exposiciones}\n";
+  }
+
+  static String antecedentesPatologicos() {
+    return "Antecedentes heredofamiliares: ${Sentences.capitalize(Pacientes.heredofamiliares())}.\n"
+        "Antecedentes quirúrgicos: ${Pacientes.hospitalarios()}.\n"
+        "Antecedentes alérgicos: ${Pacientes.alergicos()}\n"
+        "Antecedentes patológicos: ${Pacientes.patologicos()}\n";
   }
 
   static String patologicos() {
@@ -276,7 +289,8 @@ class Pacientes {
       for (var element in Patologicos!) {
         if (Reportes.personalesPatologicos == "") {
           Reportes.personalesPatologicos =
-              "${Reportes.personalesPatologicos}${element['Pace_APP_DEG']} diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+              "${Reportes.personalesPatologicos}${element['Pace_APP_DEG']} "
+                  "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
               "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. ";
         }
       }
@@ -288,7 +302,7 @@ class Pacientes {
     // Reportes.reportes['Antecedentes_Patologicos'] =
     //     Reportes.personalesPatologicos;
     // ************************ ************** ********** **** *** *
-    return Reportes.personalesPatologicos;
+    return Reportes.personalesPatologicos!;
   }
 
   static String perinatales() {
@@ -2948,6 +2962,7 @@ class Reportes {
   static Map<String, dynamic> reportes = {
     "Datos_Generales": Pacientes.prosa(),
     "Antecedentes_No_Patologicos":  Pacientes.noPatologicos(), //"Sin información recabada",
+    "Antecedentes_Patologicos_Otros": Pacientes.antecedentesPatologicos(),
     "Antecedentes_Heredofamiliares": Pacientes.heredofamiliares(),
     "Antecedentes_Quirurgicos": Pacientes.hospitalarios(),
     "Antecedentes_Patologicos": Pacientes.patologicos(),
@@ -2993,8 +3008,9 @@ class Reportes {
   static String antecedentesHeredofamiliares = "";
   // static String antecedentesHospitalarios = "";
   static String padecimientoActual = "";
-  static String personalesPatologicos = "", antecedentesQuirurgicos = "",
-      antecedentesPerinatales = "", antecedentesSexuales = "", antecedentesAlergicos = "";
+  static String? personalesPatologicos = "", antecedentesQuirurgicos = "",
+      antecedentesAlergicos = "", // negados
+      antecedentesPerinatales = "", antecedentesSexuales = "";
   //
   static String signosVitales = "";
   static String exploracionFisica =
@@ -3421,7 +3437,7 @@ class Repositorios {
             Repositorios.repositorio['consultarPadecimientoActualQuery'], Pacientes.ID_Paciente)
         .then((value) {
 // Enfermedades de base del paciente, asi como las Hospitalarias.
-    Reportes.padecimientoActual = value['TipoAnalisis'];
+    Reportes.padecimientoActual = "${value['TipoAnalisis']}. ";
       Repositorio = value;
     });
   }

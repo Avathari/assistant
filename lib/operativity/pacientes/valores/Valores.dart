@@ -52,35 +52,36 @@ class Valores {
       apoyoHermanos = false,
       apoyoHijosMayores = false;
 
-  static String? propiedadVivienda = '',
-      otrosCohabitantes = '',
-      materialPiso = '',
-      materialParedes = '',
-      materialTecho = '',
-      viviendaCantidadVacunos = '',
-      viviendaCantidadOvinos = '',
-      viviendaCantidadPorcinos = '',
-      viviendaCantidadAves = '',
-      viviendaCantidadCaninos = '',
-      viviendaCantidadFelinos = '',
-      viviendaCantidadReptiles = '',
-      viviendaCantidadParvada = '';
-  static bool cohabitaPadre = false,
-      cohabitaMadre = false,
-      cohabitaHijos = false,
+  static String? propiedadVivienda = Items.propiedad[0],
+      otrosCohabitantes = '0',
+      materialPiso = 'Cemento',
+      materialParedes = 'Cemento',
+      materialTecho = 'Cemento',
+      viviendaCantidadVacunos = '0',
+      viviendaCantidadOvinos = '0',
+      viviendaCantidadPorcinos = '0',
+      viviendaCantidadAves = '0',
+  // ******** ******** ******** ******** ******
+      viviendaCantidadCaninos = '0',
+      viviendaCantidadFelinos = '0',
+      viviendaCantidadReptiles = '0',
+      viviendaCantidadParvada = '0';
+  static bool cohabitaPadre = true,
+      cohabitaMadre = true,
+      cohabitaHijos = true,
       cohabitaFamiliares = false,
       cohabitaOtros = false,
-      viviendaElectricidad = false,
-      viviendaAguaPotable = false,
-      viviendaAlcantarillado = false,
-      viviendaDrenaje = false,
-      viviendaTelevision = false,
-      viviendaEstufa = false,
+      viviendaElectricidad = true,
+      viviendaAguaPotable = true,
+      viviendaAlcantarillado = true,
+      viviendaDrenaje = true,
+      viviendaTelevision = true,
+      viviendaEstufa = true,
       viviendaHornoLena = false,
-      viviendaSala = false,
-      viviendaComedor = false,
-      viviendaBano = false,
-      viviendaHabitacionesSeparadas = false,
+      viviendaSala = true,
+      viviendaComedor = true,
+      viviendaBano = true,
+      viviendaHabitacionesSeparadas = true,
   // *********************************
       viviendaPatioDelantero = false,
       viviendaPatioTrasero = false,
@@ -2380,11 +2381,127 @@ class Formatos {
     // ******** **** ******* **** *******
     return "Ideologias: "
         "$prejuicios"
-        "Redes de apoyo durante la hospitalizacion "
+        "Redes de apoyo durante la hospitalización "
         "por parte de la Madre (${Dicotomicos.fromBoolean(Valores.apoyoMadre!)}), "
-        "por parte del Padre( ${Dicotomicos.fromBoolean(Valores.apoyoPadre!)}), "
+        "por parte del Padre (${Dicotomicos.fromBoolean(Valores.apoyoPadre!)}), "
         "por parte de los Hermanos (${Dicotomicos.fromBoolean(Valores.apoyoHermanos!)}), "
         "por parte de los Hijos o familiares (${Dicotomicos.fromBoolean(Valores.apoyoHijosMayores!)}). ";
+  }
+
+  static String get viviendas {
+    // Variables ******** **** ********* ******** **********
+    String formacion = "", comodidades = "", servicios = "", conformacion = "",
+        corral = "", compania = "";
+    // Formación ******** **** ********* ******** **********
+    if (Valores.viviendaSala) {
+      formacion = "$formacion con sala";
+    }
+    if (Valores.viviendaComedor) {
+      formacion = "$formacion, comedor";
+    }
+    if (Valores.viviendaBano) {
+      formacion = "$formacion, baño";
+    }
+    if (Valores.viviendaHabitacionesSeparadas) {
+      formacion = "$formacion, habitaciones separadas";
+    }
+    // Servicios ******** **** ********* ******** **********
+    if (Valores.viviendaAguaPotable) {
+      servicios = "$servicios con agua potable";
+    }
+    if (Valores.viviendaDrenaje) {
+      servicios = "$servicios, drenaje";
+    }
+    if (Valores.viviendaAlcantarillado) {
+      servicios = "$servicios, alcantarillado";
+    }
+    if (Valores.viviendaElectricidad) {
+      servicios = "$servicios, electricidad";
+    }
+    // Comodidades ******** **** ********* ******** **********
+    if (Valores.viviendaTelevision) {
+      comodidades = "$comodidades con televisión";
+    }
+    if (Valores.viviendaEstufa) {
+      comodidades = "$comodidades, estufa";
+    }
+    if (Valores.viviendaHornoLena) {
+      comodidades = "$comodidades, leña";
+    }
+    // Conformación ******** **** ********* ******** **********
+    if (Valores.viviendaPatioDelantero) {
+      conformacion = "$conformacion con patio delantero";
+    } else {
+      conformacion = "$conformacion sin patio delantero";
+    }
+    if (Valores.viviendaPatioTrasero) {
+      conformacion = "$conformacion, con patio trasero";
+    } else {
+      conformacion = "$conformacion, sin patio trasero";
+    }
+    // ******** **** ********* ******** **********
+    if (Valores.viviendaAnimalesCorral) {
+      if (Valores.viviendaVacunos) {
+        corral = "$corral, ${Valores.viviendaCantidadVacunos} vacas. ";
+      }
+      if (Valores.viviendaOvinos) {
+        var aux = corral.substring(0, corral.length - 2);
+        //
+        corral = "$aux, ${Valores.viviendaCantidadOvinos} ovejas. ";
+      }
+      if (Valores.viviendaPorcinos) {
+        var aux = corral.substring(0, corral.length - 2);
+        //
+        corral = "$aux, ${Valores.viviendaCantidadPorcinos} cerdos. ";
+      }
+      if (Valores.viviendaAves) {
+        var aux = corral.substring(0, corral.length - 2);
+        //
+        corral = "$aux, ${Valores.viviendaCantidadAves} aves. ";
+      }
+    } else {
+      corral = ".";
+    }
+    // ******** **** ********* ******** **********
+    if (Valores.viviendaAnimalesCompania) {
+      if (Valores.viviendaCaninos) {
+        compania = "$compania, ${Valores.viviendaCantidadCaninos} perros. ";
+      }
+      if (Valores.viviendaFelinos) {
+        var aux = compania.substring(0, compania.length - 2);
+        //
+        compania = "$aux, ${Valores.viviendaCantidadFelinos} felinnoss. ";
+      }
+      if (Valores.viviendaReptiles) {
+        var aux = compania.substring(0, compania.length - 2);
+        //
+        compania = "$aux, ${Valores.viviendaCantidadReptiles} réptiles. ";
+      }
+      if (Valores.viviendaParvada) {
+        var aux = compania.substring(0, compania.length - 2);
+        //
+        compania = "$aux, ${Valores.viviendaCantidadParvada} aves. ";
+      }
+    } else {
+      compania = ".";
+    }
+    // ******** **** ********* ******** **********
+  return "Vivienda: Propiedad ${Valores.propiedadVivienda}. "
+   "Conformacion interna de la vivienda con "
+   "piso de ${Valores.materialPiso!.toLowerCase()}, "
+   "pared de ${Valores.materialParedes!.toLowerCase()}, "
+   "techo de ${Valores.materialTecho!.toLowerCase()}. \n"
+  "Separación habitacional$formacion. "
+  "Servicios publicos habitacionales$servicios. "
+   "Servicios domiciliarios$comodidades. "
+  "Conformación externa de la vivienda$conformacion. \n"
+   "Presencia de animales en la vivienda: "
+   "Animales de corral en la vivienda "
+      "(${Dicotomicos.fromBoolean(Valores.viviendaAnimalesCorral)})"
+       "$corral"
+   " Animales de compañia en la vivienda "
+       "(${Dicotomicos.fromBoolean(Valores.viviendaAnimalesCompania)})"
+       "$compania";
   }
 
   static String get alimentarios {
@@ -2394,7 +2511,7 @@ class Formatos {
         "Variaciones de la Dieta (${Dicotomicos.fromBoolean(Valores.variacionAlimentacion!)}) ${Valores.variacionAlimentacionDescripcion}. "
         "Problemas con la Alimentación (${Dicotomicos.fromBoolean(Valores.problemasMasticacion!)}) ${Valores.problemasMasticacionDescripcion}. "
         "Intolerancias Alimentarias (${Dicotomicos.fromBoolean(Valores.intoleranciaAlimentaria!)}) ${Valores.intoleranciaAlimentariaDescripcion}. "
-        "Alteraciones del Peso (${Dicotomicos.fromBoolean(Valores.alteracionesPeso!)}) ${Valores.alteracionesPesoDescripcion}.  ";
+        "Alteraciones del Peso (${Dicotomicos.fromBoolean(Valores.alteracionesPeso!)}) ${Valores.alteracionesPesoDescripcion}. ";
   }
 
   static String get diarios {

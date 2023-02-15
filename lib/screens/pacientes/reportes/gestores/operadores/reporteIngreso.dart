@@ -25,7 +25,7 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
         Repositorios.repositorio['consultPadecimientoQuery'],
         Pacientes.ID_Hospitalizacion)
         .then((response) {
-      print("RESPUESTA $response");
+      // print("RESPUESTA $response");
       setState(() {
         Reportes.padecimientoActual = "Inicia padecimiento actual el dia ${response['FechaPadecimiento']}, ${response['Contexto']}";
         padesTextController.text = Reportes.padecimientoActual;
@@ -44,13 +44,16 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
       Reportes.reportes['Datos_Generales'] = Pacientes.prosa();
       Reportes.reportes['Padecimiento_Actual'] = Reportes.padecimientoActual;
       //
-      Reportes.reportes['Antecedentes_No_Patologicos'] =Pacientes.noPatologicos().toLowerCase();
+      Reportes.reportes['Antecedentes_No_Patologicos'] =Pacientes.noPatologicos(); // .toLowerCase();
+
       Reportes.reportes['Antecedentes_Heredofamiliares'] =
           Pacientes.heredofamiliares().toLowerCase();
       Reportes.reportes['Antecedentes_Quirurgicos'] =
           Pacientes.hospitalarios().toLowerCase(); // Contiene el antecedente de cirugias.
       Reportes.reportes['Antecedentes_Patologicos'] = Pacientes.patologicos().toLowerCase();
       Reportes.reportes['Antecedentes_Alergicos'] = Pacientes.alergicos().toLowerCase();
+
+      Reportes.reportes['Antecedentes_Patologicos_Otros'] =Pacientes.antecedentesPatologicos();
     });
     super.initState();
   }

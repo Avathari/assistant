@@ -44,6 +44,16 @@ class _ViviendasState extends State<Viviendas> {
       cohabitantesTextController.text = '';
       // ************ *********** *********
       cohabitantesTextController.text = Valores.otrosCohabitantes!;
+      // ************ *********** *********
+      vacunosTextController.text = Valores.viviendaCantidadVacunos!;
+      ovinosTextController.text = Valores.viviendaCantidadOvinos!;
+      porcinosTextController.text = Valores.viviendaCantidadPorcinos!;
+      avesTextController.text = Valores.viviendaCantidadAves!;
+
+      caninosTextController.text = Valores.viviendaCantidadCaninos!;
+      felinosTextController.text = Valores.viviendaCantidadFelinos!;
+      reptilesTextController.text = Valores.viviendaCantidadReptiles!;
+      parvadaTextController.text = Valores.viviendaCantidadParvada!;
     });
     super.initState();
   }
@@ -134,7 +144,7 @@ class _ViviendasState extends State<Viviendas> {
                         });
                       },
                       items: Items.propiedad,
-                      initialValue: Items.propiedad[0],
+                      initialValue: Valores.propiedadVivienda, //Items.propiedad[0],
                     ),
                     const CrossLine(),
                     TittlePanel(textPanel: 'Co-Habitantes'),
@@ -483,7 +493,7 @@ class _ViviendasState extends State<Viviendas> {
                                 }
                               });
                             },
-                            isSwitched: Valores.viajesRecientes,
+                            isSwitched: Valores.viviendaVacunos,
                           ),
                         ),
                         Expanded(
@@ -519,7 +529,7 @@ class _ViviendasState extends State<Viviendas> {
                                 }
                               });
                             },
-                            isSwitched: Valores.viajesRecientes,
+                            isSwitched: Valores.viviendaOvinos,
                           ),
                         ),
                         Expanded(
@@ -555,7 +565,7 @@ class _ViviendasState extends State<Viviendas> {
                                 }
                               });
                             },
-                            isSwitched: Valores.viajesRecientes,
+                            isSwitched: Valores.viviendaPorcinos,
                           ),
                         ),
                         Expanded(
@@ -591,7 +601,7 @@ class _ViviendasState extends State<Viviendas> {
                                 }
                               });
                             },
-                            isSwitched: Valores.viajesRecientes,
+                            isSwitched: Valores.viviendaAves,
                           ),
                         ),
                         Expanded(
