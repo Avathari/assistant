@@ -424,6 +424,7 @@ class Dialogos {
           ListTile(
             onTap: () {
               PdfApi.openFile(File(element[1]));
+              onCloss!();
             },
             title: Text(
               element[0],

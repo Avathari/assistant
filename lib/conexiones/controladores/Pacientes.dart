@@ -256,7 +256,13 @@ class Pacientes {
   }
 
   static String noPatologicos() {
-    return 'Sin información recabada';
+    // return 'Sin información recabada';
+    return "${Formatos.ideologias}\n"
+        "${Formatos.alimentarios}\n"
+        "${Formatos.diarios}\n"
+        "${Formatos.higienicos}\n"
+        "${Formatos.limitaciones}\n"
+        "${Formatos.exposiciones}\n";
   }
 
   static String patologicos() {
@@ -2941,7 +2947,7 @@ class Reportes {
   //  # # # # ### ### ### # # # # . # # # # ### ### ### # # # #
   static Map<String, dynamic> reportes = {
     "Datos_Generales": Pacientes.prosa(),
-    "Antecedentes_No_Patologicos": "Sin información recabada",
+    "Antecedentes_No_Patologicos":  Pacientes.noPatologicos(), //"Sin información recabada",
     "Antecedentes_Heredofamiliares": Pacientes.heredofamiliares(),
     "Antecedentes_Quirurgicos": Pacientes.hospitalarios(),
     "Antecedentes_Patologicos": Pacientes.patologicos(),

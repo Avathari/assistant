@@ -5,7 +5,6 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/CrossLine.dart';
-import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/Switched.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';

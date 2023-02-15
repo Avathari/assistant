@@ -1,4 +1,5 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 
 import 'package:flutter/material.dart';
@@ -36,8 +37,11 @@ class _SwitchedState extends State<Switched> {
                   blurRadius: 5) //blur radius of shadow
             ]),
         child: Padding(
-          padding:
-              const EdgeInsets.only(top: 10, bottom: 4, left: 20, right: 20),
+          padding: EdgeInsets.only(
+              top: 10,
+              bottom: 4,
+              left: isMobile(context) ? 15 : 20,
+              right: isMobile(context) ? 15 : 20),
           child: Row(
             children: [
               Text("${widget.tittle}:",
@@ -52,8 +56,13 @@ class _SwitchedState extends State<Switched> {
                 inactiveThumbColor: Colors.black,
                 inactiveTrackColor: Colors.grey,
               ),
-              Text(Dicotomicos.fromBoolean(widget.isSwitched!, toInt: false).toString(),
-                  style: const TextStyle(fontSize: 10, color: Colors.white)),
+              isMobile(context)
+                  ? Container()
+                  : Text(
+                      Dicotomicos.fromBoolean(widget.isSwitched!, toInt: false)
+                          .toString(),
+                      style:
+                          const TextStyle(fontSize: 10, color: Colors.white)),
             ],
           ),
         ),

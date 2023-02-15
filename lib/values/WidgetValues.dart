@@ -90,22 +90,59 @@ class Styles {
 
 class TextFormat {
   static MaskTextInputFormatter dateFormat = MaskTextInputFormatter(
-  mask: '####/##/##',
-  filter: {"#": RegExp(r'[0-9]')},
-  type: MaskAutoCompletionType.lazy);
+      mask: '####/##/##',
+      filter: {"#": RegExp(r'[0-9]')},
+      type: MaskAutoCompletionType.lazy);
 
   static MaskTextInputFormatter numberFourFormat = MaskTextInputFormatter(
-  mask: '####',
-  filter: {"#": RegExp(r'[0-9]')},
-  type: MaskAutoCompletionType.lazy);
+      mask: '####',
+      filter: {"#": RegExp(r'[0-9]')},
+      type: MaskAutoCompletionType.lazy);
+}
+
+class SpinnersValues {
+
+    static double mediumWidth ({required BuildContext context}) {
+      return isTablet(context) || isMobile(context) ? 250 : 300;
+    }
+
+  static double minimunWidth({required BuildContext context}) {
+    return isTablet(context) ? 150 : isMobile(context) ? 70 : 200;
+  }
+
+}
+
+class ContainerDecoration {
+  static BoxDecoration containerDecoration({double radius = 20.0}) {
+    return BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.all(Radius.circular(radius)));
+  }
+
+  static BoxDecoration roundedDecoration({double radius = 20.0}) {
+    return BoxDecoration(
+      borderRadius: BorderRadius.circular(radius),
+      border:  Border.all(
+        color: Colors.grey,
+        style: BorderStyle.solid,
+        width: 1.0,
+      ),
+    );
+  }
 }
 
 class Carousel {
-  static CarouselOptions carouselOptions({required BuildContext context }) {
+  static CarouselOptions carouselOptions(
+      {required BuildContext context, double height = 0}) {
     return CarouselOptions(
-        height: isMobile(context ) || isTablet(context) ? 1200: isDesktop(context) ? 600: 450,
+        height: height != 0
+            ? height
+            : isMobile(context) || isTablet(context)
+                ? 1200
+                : isDesktop(context)
+                    ? 600
+                    : 450,
         enableInfiniteScroll: false,
         viewportFraction: 1.0);
   }
-
 }

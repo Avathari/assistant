@@ -29,6 +29,116 @@ class Valores {
   static int? edad, numeroCama;
   static bool? isHospitalizado;
 
+  static int get edadDesdeNacimiento {
+    if (fechaNacimiento != '' && fechaNacimiento != null) {
+      print(fechaNacimiento!);
+      return int.parse(((DateTime.now()
+                  .difference(DateTime.parse(fechaNacimiento!))
+                  .inDays) /
+              365)
+          .toString());
+    } else {
+      return 0;
+    }
+  }
+
+  static String? creenciasPaciente = '',
+      valoresPaciente = '',
+      costumbresPaciente = '';
+  static bool? prejuiciosAtencion = false,
+      redesApoyo = false,
+      apoyoMadre = false,
+      apoyoPadre = false,
+      apoyoHermanos = false,
+      apoyoHijosMayores = false;
+
+  static String? alimentacionDiariaDescripcion = '',
+      dietaAsignadaDescripcion = '',
+      variacionAlimentacionDescripcion = '',
+      problemasMasticacionDescripcion = '',
+      intoleranciaAlimentariaDescripcion = '',
+      alteracionesPesoDescripcion = '';
+  static bool? alimentacionDiaria = false,
+      dietaAsignada = false,
+      variacionAlimentacion = false,
+      problemasMasticacion = false,
+      intoleranciaAlimentaria = false,
+      alteracionesPeso = false;
+
+  static String? actividadesDiariasDescripcion = '',
+      pasatiemposDescripcion = '',
+      horasSuenoDescripcion = Items.horasSueno[2],
+      viajesRecientesDescripcion = '';
+  static bool? viajesRecientes = false,
+      problemasFamiliares = false,
+      violenciaInfantil = false,
+      abusoSustancias = false,
+      problemasLaborales = false,
+      estresLaboral = false,
+      hostilidadLaboral = false,
+      abusoLaboral = false,
+      acosoLaboral = false;
+
+  static bool? banoCorporal = false,
+      higieneManos = false,
+      cambiosRopa = false,
+      aseoDental = false;
+  static String? banoCorporalDescripcion = '',
+      higieneManosDescripcion = '',
+      cambiosRopaDescripcion = '',
+      aseoDentalDescripcion = '';
+
+  static bool? usoLentes = false,
+      aparatoSordera = false,
+      protesisDentaria = false,
+      marcapasosCardiaco = false,
+      ortesisDeambular = false,
+      limitacionesActividadCotidiana = false;
+  static String? usoLentesDescripcion = '',
+      aparatoSorderaDescripcion = '',
+      protesisDentariaDescripcion = '',
+      marcapasosCardiacoDescripcion = '',
+      ortesisDeambularDescripcion = '',
+      limitacionesActividadCotidianaDescripcion = '';
+
+  static bool? exposicionBiomasa = false,
+      exposicionHumosQuimicos = false,
+      exposicionPesticidas = false,
+      exposicionMetalesPesados = false,
+      exposicionPsicotropicos = false;
+  static String? exposicionBiomasaDescripcion = '',
+      exposicionHumosQuimicosDescripcion = '',
+      exposicionPesticidasDescripcion = '',
+      exposicionMetalesPesadosDescripcion = '',
+      exposicionPsicotropicosDescripcion = '';
+
+  static bool? esAlcoholismo = false, suspensionAlcoholismo = false;
+  static String? edadInicioAlcoholismo = '',
+      duracionAnosAlcoholismo = '',
+      periodicidadAlcoholismo = '',
+      intervaloAlcoholismo = Items.periodicidad[0],
+      aosSuspensionAlcoholismo = '',
+      tiposAlcoholismo = Items.tiposAlcoholes[0],
+      tiposAlcoholismoDescripcion = '';
+
+  static bool? esTabaquismo = false, suspensionTabaquismo = false;
+  static String? edadInicioTabaquismo = '',
+      duracionAnosTabaquismo = '',
+      periodicidadTabaquismo = '',
+      intervaloTabaquismo = Items.periodicidad[0],
+      aosSuspensionTabaquismo = '',
+      tiposTabaquismo = Items.tiposTabacos[0],
+      tiposTabaquismoDescripcion = '';
+
+  static bool? esDrogadismo = false, suspensionDrogadismo = false;
+  static String? edadInicioDrogadismo = '',
+      duracionAnosDrogadismo = '',
+      periodicidadDrogadismo = '',
+      intervaloDrogadismo = Items.periodicidad[0],
+      aosSuspensionDrogadismo = '',
+      tiposDrogadismo = Items.tiposDrogas[0],
+      tiposDrogadismoDescripcion = '';
+
   static int get diasEstancia {
     if (fechaIngresoHospitalario != '' && fechaIngresoHospitalario != null) {
       print(fechaIngresoHospitalario!);
@@ -194,9 +304,10 @@ class Valores {
       sitiosSondaPleural,
       sitiosCateterTenckhoff,
       sitiosPuncionLumbar,
-  sitios
-  ;
-  static String? complicacionesProcedimiento, pendientesProcedimiento, anestesiaEmpleada;
+      sitios;
+  static String? complicacionesProcedimiento,
+      pendientesProcedimiento,
+      anestesiaEmpleada;
   // Variables de Valoraciones
   static String? valoracionAsa, valoracionBromage, valoracionNyha;
   // Variables de la situación hospitalaria
@@ -2125,16 +2236,6 @@ class Valores {
   static String aperturaMandibular = Escalas.aperturaMandibular[0];
   static String escalaMallampati = Escalas.escalaMallampati[0];
   static String escalaCormackLahane = Escalas.escalaCormackLahane[0];
-
-}
-
-enum sitiosPuncionLumbar {
-  l3l4(''),
-  l4l5('');
-
-  const sitiosPuncionLumbar(this.sitio);
-  final String sitio;
-
 }
 
 class Valorados {
@@ -2214,6 +2315,87 @@ class Valorados {
 }
 
 class Formatos {
+
+  static String get ideologias {
+    String prejuicios = "", creencias = "", valores = "", costumbres = "";
+    // ******** **** ******* **** *******
+    if (Valores.prejuiciosAtencion!) {
+      if (Valores.creenciasPaciente != '' ||
+          Valores.creenciasPaciente != null) {
+        creencias = "debido a las creencias del paciente argumentadas por "
+            "${Valores.creenciasPaciente!}";
+      }
+      prejuicios = "Existencia de prejuicios respecto a la atención médica "
+          "$creencias"
+          "$valores"
+          "$costumbres \n";
+    } else {
+      prejuicios = "Sin existencia de prejuicios respecto a la atención médica. ";
+    }
+    // ******** **** ******* **** *******
+    return "Ideologias: "
+        "$prejuicios"
+        "Redes de apoyo durante la hospitalizacion "
+        "por parte de la Madre (${Dicotomicos.fromBoolean(Valores.apoyoMadre!)}), "
+        "por parte del Padre( ${Dicotomicos.fromBoolean(Valores.apoyoPadre!)}), "
+        "por parte de los Hermanos (${Dicotomicos.fromBoolean(Valores.apoyoHermanos!)}), "
+        "por parte de los Hijos o familiares (${Dicotomicos.fromBoolean(Valores.apoyoHijosMayores!)}). ";
+  }
+
+  static String get alimentarios {
+    return  "Hábitos alimenticios: "
+    "Alimentacion Diaria (${Dicotomicos.fromBoolean(Valores.alimentacionDiaria!)}). "
+    "Dieta Asignada (${Dicotomicos.fromBoolean(Valores.dietaAsignada!)}) ${Valores.dietaAsignadaDescripcion}. "
+    "Variaciones de la Dieta (${Dicotomicos.fromBoolean(Valores.variacionAlimentacion!) }) ${Valores.variacionAlimentacionDescripcion}. "
+    "Problemas con la Alimentación (${Dicotomicos.fromBoolean(Valores.problemasMasticacion!)}) ${Valores.problemasMasticacionDescripcion}. "
+    "Intolerancias Alimentarias (${Dicotomicos.fromBoolean(Valores.intoleranciaAlimentaria!)}) ${Valores.intoleranciaAlimentariaDescripcion}. "
+    "Alteraciones del Peso (${Dicotomicos.fromBoolean(Valores.alteracionesPeso!)}) ${Valores.alteracionesPesoDescripcion}.  ";
+  }
+
+  static String get diarios {
+  return "Hábitos diarios: "
+   "Actividad Habitual ${Valores.actividadesDiariasDescripcion}; "
+   "Pasatiempos referidos ${Valores.pasatiemposDescripcion}; "
+   "Horas de Sueño ${Valores.horasSuenoDescripcion}; "
+   "Viajes al Nacionales / Extranjero Recientemente ( ${Dicotomicos.fromBoolean(Valores.acosoLaboral!)}) ${Valores.viajesRecientesDescripcion}. \n"
+   "Problemas en Interacciones Cotidianas: "
+   "Problemas Familiares (${Dicotomicos.fromBoolean(Valores.acosoLaboral!)}): "
+   "Violencia Infantil ${Dicotomicos.fromBoolean(Valores.acosoLaboral!)}, "
+   "Abuso de Sustancias ${Dicotomicos.fromBoolean(Valores.acosoLaboral!)}. "
+   "Problemas Laborales (${Dicotomicos.fromBoolean(Valores.acosoLaboral!)}): "
+   "Estres Laboral ${Dicotomicos.fromBoolean(Valores.acosoLaboral!)}, "
+   "Hostilidad en el Trabajo ${Dicotomicos.fromBoolean(Valores.acosoLaboral!)}, "
+   "Abuso Sexual ${Dicotomicos.fromBoolean(Valores.acosoLaboral!)}, "
+   "Acoso Sexual ${Dicotomicos.fromBoolean(Valores.acosoLaboral!)}. ";
+  }
+
+  static String get higienicos {
+    return "Hábitos higiénicos: "
+     "Bano corporal diario (${Dicotomicos.fromBoolean(Valores.banoCorporal!)}) (${Valores.banoCorporalDescripcion}). "
+     "Lavado de manos (${Dicotomicos.fromBoolean(Valores.higieneManos!)}) (${Valores.higieneManosDescripcion}). "
+     "Cambio de ropa (${Dicotomicos.fromBoolean(Valores.cambiosRopa!)}) (${Valores.cambiosRopaDescripcion}). "
+     "Aseo dental ${Dicotomicos.fromBoolean(Valores.aseoDental!)} (${Valores.aseoDentalDescripcion}). ";
+  }
+
+  static String get limitaciones {
+    return "Limitaciones físicas: "
+     "Uso de Lentes ${Dicotomicos.fromBoolean(Valores.usoLentes!)}. "
+     "Uso de Aparatos de Sordera ${Dicotomicos.fromBoolean(Valores.aparatoSordera!)}. "
+     "Uso de Protesis Dentaria ${Dicotomicos.fromBoolean(Valores.protesisDentaria!)}. "
+    "Uso de Marcapasos Cardiaco ${Dicotomicos.fromBoolean(Valores.marcapasosCardiaco!)}. "
+     "Uso de Protesis para Deambular ${Dicotomicos.fromBoolean(Valores.ortesisDeambular!)}. "
+     "Limitaciones Fisicas para las Actividades Diarias ${Dicotomicos.fromBoolean(Valores.limitacionesActividadCotidiana!)}. ";
+  }
+
+  static String get exposiciones {
+    return "Exposición a sustancias tóxicas: "
+     "Exposicion a Humos de Leña ${Dicotomicos.fromBoolean(Valores.exposicionBiomasa!)}. "
+     "Exposicion a Humos Quimicos ${Dicotomicos.fromBoolean(Valores.exposicionHumosQuimicos!)}. "
+     "Exposicion a Pesticidas ${Dicotomicos.fromBoolean(Valores.exposicionPesticidas!)}. "
+    "Exposicion a Metales Pesados ${Dicotomicos.fromBoolean(Valores.exposicionMetalesPesados!)}. "
+     "Uso de Medicamentos Psicotropicos ${Dicotomicos.fromBoolean(Valores.exposicionPsicotropicos!)}. ";
+  }
+  // ************* ********** ************** ***
   static String get cateterVenosoCentral {
     return "Previa recolección de Material y Lavado de Manos. Se coloca a la paciente en posición en Decúbito Supino rotando la cabeza de la paciente a 45° al contrario de la Vena Subclavia Derecha. Realizado calzado de guantes estériles.\n"
         "Se localiza el Tubérculo Coroídeo para indicar zona de punción nivel de la linea media clavicular y se procede a infiltrar con Lidocaína al 1% en Zona de Punción.\n"
@@ -2294,7 +2476,7 @@ class Formatos {
         "${Valores.anestesiaEmpleada}"
         // "Se coloca un parche con un combinado de lidocaína-prilocaína al 2.5% en crema, aproximadamente 1 gr del compuesto, siendo cubierto con un "
         // "apósito oclusivo adhesivo. "
-        "Se coloca al paciente en decúbito lateral "  // En posición sentada
+        "Se coloca al paciente en decúbito lateral " // En posición sentada
         // "Se procede a realizar asepsia y antisepsia de la zona para posteriormente infiltrar la zona con lidocaina al 2%"
         "Se realiza higiene de manos "
         // "y se procede a retirar la anestesia tópica"
@@ -2308,8 +2490,7 @@ class Formatos {
         "Se obtiene un total de " // Generalmente tres muestras (PCR para virus/bacterias, citología y bioquímica, cultivo microbiológico.)
         "Tras la recogida del líquido cefalorraquídeo, se introduce el mandril y se retira la aguda. Una vez retirada la aguja se deja colocado una "
         "gasa estéril haciendo una breve presión sobre el sitio de punción. \n"
-        "Se realiza el envió de las muestras al laboratorio. "
-    ;
+        "Se realiza el envió de las muestras al laboratorio. ";
   }
 
   static String get exploracionTerapia => ""
@@ -2381,11 +2562,10 @@ class Formatos {
       MOD = 'CPAP/PS';
     } else if (Valores.modalidadVentilatoria == 'Espontáneo (ESPON)') {
       MOD = 'ESPON';
-    }
-    else {
+    } else {
       MOD = ' ';
     }
-      print("MODALIDAD VENTILATORIA ${Valores.modalidadVentilatoria} $MOD");
+    print("MODALIDAD VENTILATORIA ${Valores.modalidadVentilatoria} $MOD");
     var PS = '';
     if (MOD == 'ESPON') {
       PS = "Psopp ${Valores.presionSoporte} cmH2O, "
@@ -2852,7 +3032,51 @@ class Items {
     'L4-L5',
   ];
 
+  static List<String> horasSueno = [
+    'Menos de 4 horas',
+    'De 4 a 6 horas',
+    'De 6 a 8 Horas',
+    'Más de 8 horas'
+  ];
   static List<String> dicotomicos = Dicotomicos.dicotomicos();
+
+  static List<String> periodicidad = [
+    'Días',
+    'Mes',
+    'Año',
+  ];
+  static List<String> tiposAlcoholes = [
+    'Cerveza',
+    'Ron',
+    'Whisky',
+    'Tequila',
+    'Vodka',
+    'Brandy',
+    'Vino Tinto',
+    'Vino Blanco',
+    'Vino Rosado',
+    'Ginebra',
+    '',
+    '',
+  ];
+  static List<String> tiposTabacos = [
+    'Cigarrillos',
+    'Puros Cubanos',
+    'Cigarrillos Electronicos',
+    '',
+    '',
+  ];
+  static List<String> tiposDrogas = [
+    'MMDA',
+    'Yie',
+    'Tusi Rosa',
+    'L.S.D.',
+    'Cocaína',
+    'Metanfetaminas',
+    'Cristal',
+    '',
+    '',
+  ];
 }
 
 isNull(value) {
@@ -2870,4 +3094,12 @@ isNull(value) {
   } else {
     return value;
   }
+}
+
+enum sitiosPuncionLumbar {
+  l3l4(''),
+  l4l5('');
+
+  const sitiosPuncionLumbar(this.sitio);
+  final String sitio;
 }

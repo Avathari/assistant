@@ -37,7 +37,7 @@ Container imageWidget(
 }
 
 Column header({required File imageHeader, String? titulo, String? subTitulo}) {
-  var valax = Container();
+  // var valax = Container();
 
   return Column(children: [
     Row(mainAxisAlignment: MainAxisAlignment.start, children: [
@@ -63,7 +63,7 @@ Table headerInTable(
     File? secondImageHeader,
     String? titulo,
     String? subTitulo}) {
-  var valax = Container();
+  // var valax = Container();
 
   return Table(children: [
     TableRow(verticalAlignment: TableCellVerticalAlignment.middle, children: [
@@ -128,7 +128,7 @@ Column paragraphFromList({
   List<List>? listado,
 }) {
   List<TextSpan> textSpan = [];
-  listado!.forEach((element) {
+  for (var element in listado!) {
     textSpan.add(
       TextSpan(
           text: element[0],
@@ -143,7 +143,7 @@ Column paragraphFromList({
             fontSize: 8.0,
             color: PdfColors.black,
             fontWeight: FontWeight.normal)));
-  });
+  }
 
   return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
     RichText(textAlign: TextAlign.justify, text: TextSpan(children: textSpan)),
@@ -159,7 +159,7 @@ Column paragraphSeparatedBy({
   List<TextSpan> textSpan = [];
   //
   List aux = pax!.split(split);
-  aux.forEach((element) {
+  for (var element in aux) {
     var elem = element.split(comma);
     textSpan.add(
       TextSpan(
@@ -175,7 +175,7 @@ Column paragraphSeparatedBy({
             fontSize: 8.0,
             color: PdfColors.black,
             fontWeight: FontWeight.normal)));
-  });
+  }
 
   return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
     RichText(textAlign: TextAlign.justify, text: TextSpan(children: textSpan)),

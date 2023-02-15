@@ -119,6 +119,14 @@ class FormatosReportes {
     parax.add(paragraphWithTittle(
         titulo: "Datos generales", subTitulo: "${paraph['Datos_Generales']}"));
     // # # # # # # ### # # # # # # ###
+    if (paraph['Antecedentes_No_Patologicos'] != "") {
+      parax.add(
+        paragraphWithTittleAndSeparated(
+          titulo: "Antecedentes Personales No Patológicos",
+          subTitulo: "${paraph['Antecedentes_No_Patologicos']}",
+        ),
+      );
+    }
     parax.add(paragraphFromList(listado: [
       [
         "Antecedentes heredofamiliares ",

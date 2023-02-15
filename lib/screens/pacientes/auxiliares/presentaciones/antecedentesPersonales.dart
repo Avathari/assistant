@@ -1,6 +1,8 @@
 import 'package:assistant/screens/pacientes/patologicos/alergicos.dart';
+import 'package:assistant/screens/pacientes/patologicos/epidemiologicos.dart';
 import 'package:assistant/screens/pacientes/patologicos/patologicos.dart';
 import 'package:assistant/screens/pacientes/patologicos/quirurgicos.dart';
+import 'package:assistant/screens/pacientes/patologicos/toxicomanias.dart';
 import 'package:assistant/screens/pacientes/patologicos/transfusionales.dart';
 import 'package:assistant/screens/pacientes/patologicos/vacunales.dart';
 
@@ -52,7 +54,15 @@ class MenuPersonales extends StatelessWidget {
                     MenuButton(
                         iconData: Icons.person_pin,
                         labelButton: "Antecedentes Personales No Patológicos",
-                        onPress: () {}),
+                        onPress: () {
+                          toNextPage(context, const GestionNoPatologicos());
+                        }),
+                    MenuButton(
+                        iconData: Icons.draw_outlined,
+                        labelButton: "Antecedentes Toxicomanos",
+                        onPress: () {
+                          toNextPage(context, const GestionToxicomanias());
+                        }),
                     MenuButton(
                         iconData: Icons.bloodtype,
                         labelButton: "Antecedentes Transfusionales",

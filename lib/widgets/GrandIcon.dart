@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class GrandIcon extends StatefulWidget {
   String? labelButton;
-  double? weigth;
+  double? weigth, heigth;
   var onPress;
   IconData? iconData;
 
@@ -11,6 +11,7 @@ class GrandIcon extends StatefulWidget {
       {Key? key,
       this.labelButton = "message",
       this.weigth = 6,
+        this.heigth = 6,
       this.iconData = Icons.wallet,
       required this.onPress})
       : super(key: key);
@@ -28,13 +29,12 @@ class _GrandIconState extends State<GrandIcon> {
         message: widget.labelButton!,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-              primary: Colors.black54,
-              onPrimary: Colors.grey,
+              foregroundColor: Colors.grey, backgroundColor: Colors.black54,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               minimumSize: Size(
                   isMobileAndTablet(context) ? widget.weigth! : widget.weigth! * 10,
-                  isMobileAndTablet(context) ? widget.weigth! : widget.weigth! * 10)),
+                  isMobileAndTablet(context) ? widget.heigth! : widget.heigth! * 10)),
           onPressed: () {
             widget.onPress();
           },
