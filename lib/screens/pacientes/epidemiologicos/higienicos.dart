@@ -51,7 +51,8 @@ class _HigienicosState extends State<Higienicos> {
                   setState(() {
                     Valores.banoCorporal = value;
                     if (value) {
-                      banoCorporalTextController.text = '';
+                      banoCorporalTextController.text =
+                      'Refiere realizar aseo corporal diario';
                     } else {
                       banoCorporalTextController.text =
                       'Refiere no realizar aseo corporal diario';
@@ -88,13 +89,14 @@ class _HigienicosState extends State<Higienicos> {
                   setState(() {
                     Valores.higieneManos = value;
                     if (value) {
-                      higieneManosTextController.text = '';
+                      higieneManosTextController.text =
+                      'Refiere realizar aseo de manos antes y después de comer e ir al baño';
                     } else {
                       higieneManosTextController.text =
                       'Refiere realizar un mal aseo de manos';
-                      Valores.higieneManosDescripcion =
-                          higieneManosTextController.text;
                     }
+                    Valores.higieneManosDescripcion =
+                        higieneManosTextController.text;
                   });
                 },
                 isSwitched: Valores.higieneManos,
@@ -125,13 +127,14 @@ class _HigienicosState extends State<Higienicos> {
                   setState(() {
                     Valores.cambiosRopa = value;
                     if (value) {
-                      cambiosRopaTextController.text = '';
+                      cambiosRopaTextController.text =
+                      'Refiere cambio diario de ropa';
                     } else {
                       cambiosRopaTextController.text =
                       'No tiene cambios de ropa diario';
-                      Valores.cambiosRopaDescripcion =
-                          cambiosRopaTextController.text;
                     }
+                    Valores.cambiosRopaDescripcion =
+                        cambiosRopaTextController.text;
                   });
                 },
                 isSwitched: Valores.cambiosRopa,
@@ -162,13 +165,14 @@ class _HigienicosState extends State<Higienicos> {
                   setState(() {
                     Valores.aseoDental = value;
                     if (value) {
-                      aseoDentalTextController.text = '';
+                      aseoDentalTextController.text =
+                      'Refiere aseo dental tres veces al dia, pero no usa hilo dental';
                     } else {
                       aseoDentalTextController.text =
                       'No tiene un adecuado aseo dental, ni usa hilo dental';
-                      Valores.aseoDentalDescripcion =
-                          aseoDentalTextController.text;
                     }
+                    Valores.aseoDentalDescripcion =
+                        aseoDentalTextController.text;
                   });
                 },
                 isSwitched: Valores.aseoDental,

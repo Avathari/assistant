@@ -80,6 +80,15 @@ class Pacientes {
   static Map<String, dynamic> Imagenologias = {};
 
   //
+  static List? Eticos = [],
+      Viviendas = [],
+      Alimenticios = [],
+      Diarios = [],
+      Higienes = [],
+      Limitantes = [],
+      Exposiciones = [],
+      Toxicomanias = [];
+  //
   static List? Heredofamiliares = [];
   //
   static List? Vitales = [];
@@ -213,11 +222,11 @@ class Pacientes {
       for (var element in Quirurgicos!) {
         if (Reportes.antecedentesQuirurgicos == "") {
           Reportes.antecedentesQuirurgicos =
-          "${element['Pace_APP_QUI']} realizado hace ${element['Pace_APP_QUI_dia']} años, "
+              "${element['Pace_APP_QUI']} realizado hace ${element['Pace_APP_QUI_dia']} años, "
               "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
         } else {
           Reportes.antecedentesQuirurgicos =
-          "${Reportes.antecedentesQuirurgicos}; ${element['Pace_APP_QUI']} realizado hace ${element['Pace_APP_QUI_dia']} años, "
+              "${Reportes.antecedentesQuirurgicos}; ${element['Pace_APP_QUI']} realizado hace ${element['Pace_APP_QUI_dia']} años, "
               "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
         }
       }
@@ -245,7 +254,7 @@ class Pacientes {
       for (var element in Alergicos!) {
         if (Reportes.antecedentesAlergicos == "") {
           Reportes.antecedentesAlergicos =
-          "${Reportes.antecedentesAlergicos}${element['Pace_APP_ALE']} diagnósticado hace ${element['Pace_APP_ALE_dia']} años. ";
+              "${Reportes.antecedentesAlergicos}${element['Pace_APP_ALE']} diagnósticado hace ${element['Pace_APP_ALE_dia']} años. ";
         }
       }
     } else {
@@ -290,7 +299,7 @@ class Pacientes {
         if (Reportes.personalesPatologicos == "") {
           Reportes.personalesPatologicos =
               "${Reportes.personalesPatologicos}${element['Pace_APP_DEG']} "
-                  "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+              "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
               "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. ";
         }
       }
@@ -553,51 +562,51 @@ class Pacientes {
   ];
 
   static final Map<String, dynamic> pacientes = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_regpace` "
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_regpace`",
+    "dropDatabase": "DROP DATABASE bd_regpace",
     "describeTable": "DESCRIBE pace_iden_iden;",
     "showColumns": "SHOW columns FROM pace_iden_iden",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_iden_iden'",
-    "createQuery": """CREATE TABLE `pace_iden_iden` (
-                  `ID_Pace` int(10) NOT NULL,
-                  `Pace_NSS` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_AGRE` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_Nome_PI` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_Nome_SE` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_Ape_Pat` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_Ape_Mat` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_FIAT` longblob NOT NULL, 
-                  `Pace_UMF` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_Hosp_Real` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_Turo` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_Feca_Hace` date NOT NULL,
-                  `Pace_Hora_Hace` time(6) NOT NULL,
-                  `Pace_Tele` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_Nace` date NOT NULL,
-                  `Pace_Ses` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_Hosp` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_Curp` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_RFC` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_Eda` int(11) NOT NULL,
-                  `Pace_Stat` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_Ocupa` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_Edo_Civ` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_Reli` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_Esco` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_Esco_COM` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_Esco_ESPE` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_Orig_Muni` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_Orig_EntFed` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_Resi_Loca` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_Resi_Dur` int(11) NOT NULL,
-                  `Pace_Domi` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-                  `Indi_Pace_SiNo` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `IndiIdio_Pace_SiNo` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `IndiIdio_Pace_Espe` varchar(50) COLLATE utf8_unicode_ci NOT NULL 
+    "createQuery": """CREATE TABLE pace_iden_iden (
+                  ID_Pace int(10) NOT NULL,
+                  Pace_NSS varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_AGRE varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_Nome_PI varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_Nome_SE varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_Ape_Pat varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_Ape_Mat varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_FIAT longblob NOT NULL, 
+                  Pace_UMF varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_Hosp_Real varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_Turo varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_Feca_Hace date NOT NULL,
+                  Pace_Hora_Hace time(6) NOT NULL,
+                  Pace_Tele varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_Nace date NOT NULL,
+                  Pace_Ses varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_Hosp varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_Curp varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_RFC varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_Eda int(11) NOT NULL,
+                  Pace_Stat varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_Ocupa varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_Edo_Civ varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_Reli varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_Esco varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_Esco_COM varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_Esco_ESPE varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_Orig_Muni varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_Orig_EntFed varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_Resi_Loca varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_Resi_Dur int(11) NOT NULL,
+                  Pace_Domi varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+                  Indi_Pace_SiNo varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  IndiIdio_Pace_SiNo varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  IndiIdio_Pace_Espe varchar(50) COLLATE utf8_unicode_ci NOT NULL 
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Esta Tabla es para Agregar Datos Generales de los Pacientes';""",
     "truncateQuery": "TRUNCATE pace_iden_iden",
     "dropQuery": "DROP TABLE pace_iden_iden",
@@ -710,18 +719,18 @@ class Pacientes {
       "otal_Traslado_Extra",
     ],
     "pacientesStadistics": "SELECT "
-        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE `Pace_Ses` = '${Pacientes.Sexo[0]}') as Total_Mujeres,"
-        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE `Pace_Ses` = '${Pacientes.Sexo[1]}') as Total_Hombres,"
-        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE `Pace_Hosp_Real` = '${Pacientes.Atencion[0]}') as Total_Hospitalizacion,"
-        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE `Pace_Hosp_Real` = '${Pacientes.Atencion[1]}') as Total_Consulta,"
-        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE `Pace_Turo` = '${Pacientes.Turno[0]}') as Total_Matutino,"
-        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE `Pace_Turo` = '${Pacientes.Turno[1]}') as Total_Vespertino,"
-        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE `Pace_Stat` = '${Pacientes.Vivo[0]}') as Total_Vivos,"
-        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE `Pace_Stat` = '${Pacientes.Vivo[1]}') as Total_Fallecidos,"
-        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE `IndiIdio_Pace_SiNo` = '${Pacientes.Indigena[0]}') as Total_Indigenas,"
-        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE `IndiIdio_Pace_SiNo` = '${Pacientes.Indigena[1]}') as Total_No_Indigenas,"
-        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE `IndiIdio_Pace_SiNo` = '${Pacientes.lenguaIndigena[0]}') as Total_Hablantes,"
-        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE `IndiIdio_Pace_SiNo` = '${Pacientes.lenguaIndigena[1]}') as Total_No_Hablantes,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE Pace_Ses = '${Pacientes.Sexo[0]}') as Total_Mujeres,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE Pace_Ses = '${Pacientes.Sexo[1]}') as Total_Hombres,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE Pace_Hosp_Real = '${Pacientes.Atencion[0]}') as Total_Hospitalizacion,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE Pace_Hosp_Real = '${Pacientes.Atencion[1]}') as Total_Consulta,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE Pace_Turo = '${Pacientes.Turno[0]}') as Total_Matutino,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE Pace_Turo = '${Pacientes.Turno[1]}') as Total_Vespertino,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE Pace_Stat = '${Pacientes.Vivo[0]}') as Total_Vivos,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE Pace_Stat = '${Pacientes.Vivo[1]}') as Total_Fallecidos,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE IndiIdio_Pace_SiNo = '${Pacientes.Indigena[0]}') as Total_Indigenas,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE IndiIdio_Pace_SiNo = '${Pacientes.Indigena[1]}') as Total_No_Indigenas,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE IndiIdio_Pace_SiNo = '${Pacientes.lenguaIndigena[0]}') as Total_Hablantes,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE IndiIdio_Pace_SiNo = '${Pacientes.lenguaIndigena[1]}') as Total_No_Hablantes,"
         "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden) as Total_Pacientes;"
   };
 
@@ -888,22 +897,22 @@ class Heredofamiliares {
   }
 
   static final Map<String, dynamic> familiares = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_regpace` "
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_regpace`",
+    "dropDatabase": "DROP DATABASE bd_regpace",
     "describeTable": "DESCRIBE pace_ahf;",
     "showColumns": "SHOW columns FROM pace_ahf",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_ahf'",
     "createQuery": """CREATE TABLE pace_ahf (
-                  `ID_MEFAM` int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                  `ID_Pace` int(10) NOT NULL,
-                  `Pace_MEFAM` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `MEFAM_VFS` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `MEFAM_EdaL` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `AHF_INFO_APato` varchar(50) COLLATE utf8_unicode_ci NOT NULL
+                  ID_MEFAM int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                  ID_Pace int(10) NOT NULL,
+                  Pace_MEFAM varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  MEFAM_VFS varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  MEFAM_EdaL varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  AHF_INFO_APato varchar(50) COLLATE utf8_unicode_ci NOT NULL
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Esta Tabla se Agregan los Registro de AHF_Pace';
                 """,
     "truncateQuery": "TRUNCATE pace_ahf",
@@ -914,8 +923,8 @@ class Heredofamiliares {
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_ahf",
     "consultLastQuery": "SELECT * FROM pace_ahf WHERE ID_Pace = ?",
     "consultByName": "SELECT * FROM pace_ahf WHERE Pace_APP_DEG LIKE '%",
-    "registerQuery": "INSERT INTO `pace_ahf` (`ID_Pace`, `Pace_MEFAM`, "
-        "`MEFAM_VFS`, `MEFAM_EdaL`, `AHF_INFO_APato`) "
+    "registerQuery": "INSERT INTO pace_ahf (ID_Pace, Pace_MEFAM, "
+        "MEFAM_VFS, MEFAM_EdaL, AHF_INFO_APato) "
         "VALUES (?, ?, ?, ?, ?)",
     "updateQuery": "UPDATE pace_ahf SET ID_MEFAM = ?, ID_Pace = ?, "
         "Pace_MEFAM = ?, MEFAM_VFS = ?, MEFAM_EdaL = ?, "
@@ -941,17 +950,1511 @@ class Heredofamiliares {
   };
 }
 
+// ********* ******** ******* ********* ***   // ********* ******** ******* ********* ***
+class Eticos {
+  static int ID_Eticos = 8;
+  // ********* ******** ******* ********* ***
+  static Map<String, dynamic> Eticas = {};
+  // ********* ******** ******* ********* ***
+  static void consultarRegistro() {
+    Actividades.consultarId(Databases.siteground_database_regepi,
+            Eticos.eticos['consultIdQuery'], Pacientes.ID_Paciente)
+        .then((value) {
+      // Asignación de Valores ********* ******** ******* ********* ***
+      Eticos.Eticas = value;
+
+      Eticos.ID_Eticos = value['ID_PACE_EYM'];
+      Valores.prejuiciosAtencion =
+          Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      Valores.creenciasPaciente = value['Pace_EYM_xise_CREE'];
+      Valores.valoresPaciente = value['Pace_EYM_xise_VALO'];
+      Valores.costumbresPaciente = value['Pace_EYM_xise_COSU'];
+
+      Valores.redesApoyo =
+          Dicotomicos.fromInt(value['Pace_EYM_REDE'], toBoolean: true) as bool?;
+      Valores.apoyoMadre =
+          Dicotomicos.fromInt(value['Pace_EYM_REDE_Ma'], toBoolean: true)
+              as bool?;
+      Valores.apoyoPadre =
+          Dicotomicos.fromInt(value['Pace_EYM_REDE_Pa'], toBoolean: true)
+              as bool?;
+      Valores.apoyoHermanos =
+          Dicotomicos.fromInt(value['Pace_EYM_REDE_He'], toBoolean: true)
+              as bool?;
+      Valores.apoyoHijosMayores =
+          Dicotomicos.fromInt(value['Pace_EYM_REDE_Hi'], toBoolean: true)
+              as bool?;
+
+      print("Valores de Eticos asignado : : : $value");
+    });
+  }
+
+  static void actualizarRegistro() {
+    Actividades.actualizar(
+      Databases.siteground_database_regepi,
+      Eticos.eticos['updateQuery'],
+      [
+        Eticos.ID_Eticos,
+        Pacientes.ID_Paciente,
+        Valores.prejuiciosAtencion,
+        Valores.creenciasPaciente,
+        Valores.valoresPaciente,
+        Valores.costumbresPaciente,
+        Valores.redesApoyo,
+        Valores.apoyoMadre,
+        Valores.apoyoPadre,
+        Valores.apoyoHermanos,
+        Valores.apoyoHijosMayores,
+        Eticos.ID_Eticos,
+      ],
+      Eticos.ID_Eticos,
+    );
+  }
+
+  static void registrarRegistro() {
+    Actividades.registrar(
+      Databases.siteground_database_regepi,
+      Eticos.eticos['registerQuery'],
+      [
+        Pacientes.ID_Paciente,
+        Valores.prejuiciosAtencion,
+        Valores.creenciasPaciente,
+        Valores.valoresPaciente,
+        Valores.costumbresPaciente,
+        Valores.redesApoyo,
+        Valores.apoyoMadre,
+        Valores.apoyoPadre,
+        Valores.apoyoHermanos,
+        Valores.apoyoHijosMayores,
+      ],
+    );
+  }
+
+// ********* ******** ******* ********* ***
+  static final Map<String, dynamic> eticos = {
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
+        "DEFAULT CHARACTER SET utf8 "
+        "COLLATE utf8_unicode_ci;",
+    "showTables": "SHOW tables;",
+    "dropDatabase": "DROP DATABASE bd_regpace",
+    "describeTable": "DESCRIBE pace_apnp_eym;",
+    "showColumns": "SHOW columns FROM pace_apnp_eym",
+    "showInformation":
+        "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_apnp_eym'",
+    "createQuery": """CREATE TABLE pace_apnp_eym (
+                                            ID_PACE_EYM int(11) PRIMARY_KEY AUTO_INCREMENT NOT NULL,
+                                            ID_Pace int(10) NOT NULL,
+                                            Pace_EYM_xise tinyint(1) NOT NULL,
+                                            Pace_EYM_xise_CREE varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+                                            Pace_EYM_xise_VALO varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+                                            Pace_EYM_xise_COSU varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+                                            Pace_EYM_REDE tinyint(1) NOT NULL,
+                                            Pace_EYM_REDE_Ma tinyint(1) NOT NULL,
+                                            Pace_EYM_REDE_Pa tinyint(1) NOT NULL,
+                                            Pace_EYM_REDE_He tinyint(1) NOT NULL,
+                                            Pace_EYM_REDE_Hi tinyint(1) NOT NULL
+                                          ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+                                          COMMENT='Tabla para Agregar A.P.N.P.';
+            """,
+    "truncateQuery": "TRUNCATE pace_apnp_eym",
+    "dropQuery": "DROP TABLE pace_apnp_eym",
+    "consultQuery": "SELECT * FROM pace_apnp_eym",
+    "consultIdQuery": "SELECT * FROM pace_apnp_eym WHERE ID_Pace = ?",
+    "consultByIdPrimaryQuery": "SELECT * FROM pace_apnp_eym WHERE ID_Pace = ?",
+    "consultAllIdsQuery": "SELECT ID_Pace FROM pace_apnp_eym",
+    "consultLastQuery": "SELECT * FROM pace_apnp_eym WHERE ID_Pace = ?",
+    "consultByName": "SELECT * FROM pace_apnp_eym WHERE Pace_APP_DEG LIKE '%",
+    "registerQuery": "INSERT INTO pace_apnp_eym "
+        "(ID_Pace, Pace_EYM_xise, Pace_EYM_xise_CREE, "
+        "Pace_EYM_xise_VALO, Pace_EYM_xise_COSU, Pace_EYM_REDE, Pace_EYM_REDE_Ma, "
+        "Pace_EYM_REDE_Pa, Pace_EYM_REDE_He, Pace_EYM_REDE_Hi) "
+        "VALUES (?,?,?,?,?,?,?,?,?,?)",
+    "updateQuery": "UPDATE pace_apnp_eym "
+        "SET ID_PACE_EYM = ?, ID_Pace = ?, Pace_EYM_xise = ?, Pace_EYM_xise_CREE = ?, "
+        "Pace_EYM_xise_VALO = ?, Pace_EYM_xise_COSU = ?, Pace_EYM_REDE = ?, "
+        "Pace_EYM_REDE_Ma = ?, "
+        "Pace_EYM_REDE_Pa = ?, Pace_EYM_REDE_He = ?, Pace_EYM_REDE_Hi = ? "
+        "WHERE ID_PACE_EYM = ?",
+    "deleteQuery": "DELETE FROM pace_apnp_eym WHERE ID_pace_apnp_eym = ?",
+    "eticosColumns": [
+      "ID_Pace",
+    ],
+    "eticosItems": [
+      "ID_Pace",
+    ],
+    "eticosColums": [
+      "ID Paciente",
+    ],
+    "eticosStats": [
+      "Total_Administradores",
+    ],
+    "eticosStadistics": "SELECT "
+        "(SELECT IFNULL(AVG('Pace_SV_tas'), 0) FROM pace_apnp_eym WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAS,"
+        "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM pace_apnp_eym WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_apnp_eym  WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
+  };
+// ********* ******** ******* ********* ***
+}
+
+class Viviendas {
+  static int ID_Viviendas = 0;
+  // ********* ******** ******* ********* ***
+  static Map<String, dynamic> Vivienda = {};
+  // ********* ******** ******* ********* ***
+  static void consultarRegistro() {
+    Actividades.consultarId(Databases.siteground_database_regepi,
+            Viviendas.viviendas['consultIdQuery'], Pacientes.ID_Paciente)
+        .then((value) {
+      // Asignación de Valores ********* ******** ******* ********* ***
+      Viviendas.Vivienda = value;
+
+//       Viviendas.ID_Viviendas = value['ID_PACE_EYM'];
+//
+//       // *********************************
+//       Valores.propiedadVivienda = value['Pace_EYM_xise_CREE'];
+//       // ******** ******** ******** ******** ******
+//       Valores.viviendaElectricidad =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+//       Valores.viviendaAguaPotable =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+//       Valores.viviendaAlcantarillado =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+//       Valores.viviendaDrenaje =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+//       Valores.viviendaHornoLena =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+//       Valores.viviendaEstufa =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+//       Valores.viviendaTelevision =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+// // ******** ******** ******** ******** ******
+//       Valores.cohabitaPadre =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+//       Valores.cohabitaMadre =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+//       Valores.cohabitaHijos =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+//       Valores.cohabitaFamiliares =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+//       Valores.cohabitaOtros =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+//       Valores.otrosCohabitantes = value['Pace_EYM_xise_CREE'];
+//       // ******** ******** ******** ******** ******
+//       Valores.materialPiso =
+//       value['Pace_EYM_xise_CREE'];
+//       Valores.materialTecho =
+//       value['Pace_EYM_xise_CREE'];
+//       Valores.materialParedes =
+//       value['Pace_EYM_xise_CREE'];
+//       // ******** ******** ******** ******** ******
+//       Valores.viviendaSala =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+//       Valores.viviendaBano =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+//       Valores.viviendaComedor =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+//       Valores.viviendaHabitacionesSeparadas =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+//       // ******** ******** ******** ******** ******
+//       // 'No',
+//       Valores.viviendaPatioDelantero =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+//       Valores.viviendaPatioTrasero =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+//       // *********************************
+//       Valores.viviendaAnimalesCorral =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+//       Valores.viviendaVacunos =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+//       Valores.viviendaCantidadVacunos = value['Pace_EYM_xise_CREE'];
+//       Valores.viviendaOvinos =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+//       Valores.viviendaCantidadOvinos = value['Pace_EYM_xise_CREE'];
+//       Valores.viviendaPorcinos =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+//       Valores.viviendaCantidadPorcinos = value['Pace_EYM_xise_CREE'];
+//       Valores.viviendaAves =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+//       Valores.viviendaCantidadAves = value['Pace_EYM_xise_CREE'];
+//       // ******** ******** ******** ******** ******
+//       Valores.viviendaAnimalesCompania =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+//       Valores.viviendaCaninos =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+//       Valores.viviendaCantidadCaninos = value['Pace_EYM_xise_CREE'];
+//       Valores.viviendaFelinos =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+//       Valores.viviendaCantidadFelinos = value['Pace_EYM_xise_CREE'];
+//       Valores.viviendaReptiles =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+//       Valores.viviendaCantidadReptiles = value['Pace_EYM_xise_CREE'];
+//       Valores.viviendaParvada =
+//       Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool;
+//       Valores.viviendaCantidadParvada = value['Pace_EYM_xise_CREE'];
+//       // *********************************
+//
+      print("Valores de Viviendas asignado : : : $value");
+    });
+  }
+
+  static void actualizarRegistro() {
+    Actividades.actualizar(
+      Databases.siteground_database_regepi,
+      Viviendas.viviendas['updateQuery'],
+      [
+        Viviendas.ID_Viviendas,
+        Pacientes.ID_Paciente,
+        DateTime.now(),
+        // *********************************
+        Valores.propiedadVivienda,
+        // ******** ******** ******** ******** ******
+        Valores.viviendaElectricidad,
+        Valores.viviendaAguaPotable,
+        Valores.viviendaAlcantarillado,
+        Valores.viviendaDrenaje,
+        Valores.viviendaHornoLena,
+        Valores.viviendaEstufa,
+        Valores.viviendaTelevision,
+// ******** ******** ******** ******** ******
+        Valores.cohabitaPadre,
+        Valores.cohabitaMadre,
+        Valores.cohabitaHijos,
+        Valores.cohabitaFamiliares,
+        Valores.cohabitaOtros,
+        Valores.otrosCohabitantes,
+        // ******** ******** ******** ******** ******
+    Valores.materialPiso,
+        Valores.materialTecho,
+        Valores.materialParedes,
+        // ******** ******** ******** ******** ******
+        Valores.viviendaSala,
+        Valores.viviendaBano,
+        Valores.viviendaComedor,
+        Valores.viviendaHabitacionesSeparadas,
+        // ******** ******** ******** ******** ******
+        'No',
+        Valores.viviendaPatioDelantero,
+        Valores.viviendaPatioTrasero,
+        // *********************************
+        Valores.viviendaAnimalesCorral,
+        Valores.viviendaVacunos,
+        Valores.viviendaCantidadVacunos,
+        Valores.viviendaOvinos,
+        Valores.viviendaCantidadOvinos,
+        Valores.viviendaPorcinos,
+    Valores.viviendaCantidadPorcinos,
+        Valores.viviendaAves,
+        Valores.viviendaCantidadAves,
+        // ******** ******** ******** ******** ******
+        Valores.viviendaAnimalesCompania,
+        Valores.viviendaCaninos,
+    Valores.viviendaCantidadCaninos,
+        Valores.viviendaFelinos,
+        Valores.viviendaCantidadFelinos,
+        Valores.viviendaReptiles,
+        Valores.viviendaCantidadReptiles,
+        Valores.viviendaParvada,
+    Valores.viviendaCantidadParvada,
+    // *********************************
+      ],
+      Viviendas.ID_Viviendas,
+    );
+  }
+
+  static void registrarRegistro() {
+    Actividades.registrar(
+      Databases.siteground_database_regepi,
+      Viviendas.viviendas['registerQuery'],
+      [
+        Pacientes.ID_Paciente,
+        // *********************************
+        Valores.propiedadVivienda,
+        // ******** ******** ******** ******** ******
+        Valores.viviendaElectricidad,
+        Valores.viviendaAguaPotable,
+        Valores.viviendaAlcantarillado,
+        Valores.viviendaDrenaje,
+        Valores.viviendaHornoLena,
+        Valores.viviendaEstufa,
+        Valores.viviendaTelevision,
+// ******** ******** ******** ******** ******
+        Valores.cohabitaPadre,
+        Valores.cohabitaMadre,
+        Valores.cohabitaHijos,
+        Valores.cohabitaFamiliares,
+        Valores.cohabitaOtros,
+        Valores.otrosCohabitantes,
+        // ******** ******** ******** ******** ******
+        Valores.materialPiso,
+        Valores.materialTecho,
+        Valores.materialParedes,
+        // ******** ******** ******** ******** ******
+        Valores.viviendaSala,
+        Valores.viviendaBano,
+        Valores.viviendaComedor,
+        Valores.viviendaHabitacionesSeparadas,
+        // ******** ******** ******** ******** ******
+        'No',
+        Valores.viviendaPatioDelantero,
+        Valores.viviendaPatioTrasero,
+        // *********************************
+        Valores.viviendaAnimalesCorral,
+        Valores.viviendaVacunos,
+        Valores.viviendaCantidadVacunos,
+        Valores.viviendaOvinos,
+        Valores.viviendaCantidadOvinos,
+        Valores.viviendaPorcinos,
+        Valores.viviendaCantidadPorcinos,
+        Valores.viviendaAves,
+        Valores.viviendaCantidadAves,
+        // ******** ******** ******** ******** ******
+        Valores.viviendaAnimalesCompania,
+        Valores.viviendaCaninos,
+        Valores.viviendaCantidadCaninos,
+        Valores.viviendaFelinos,
+        Valores.viviendaCantidadFelinos,
+        Valores.viviendaReptiles,
+        Valores.viviendaCantidadReptiles,
+        Valores.viviendaParvada,
+        Valores.viviendaCantidadParvada,
+        // *********************************
+      ],
+    );
+  }
+
+// ********* ******** ******* ********* ***
+  static final Map<String, dynamic> viviendas = {
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
+        "DEFAULT CHARACTER SET utf8 "
+        "COLLATE utf8_unicode_ci;",
+    "showTables": "SHOW tables;",
+    "dropDatabase": "DROP DATABASE bd_regpace",
+    "describeTable": "DESCRIBE pace_apnp_hys;",
+    "showColumns": "SHOW columns FROM pace_apnp_hys",
+    "showInformation":
+        "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_apnp_hys'",
+    "createQuery": """
+    CREATE TABLE pace_apnp_hys (
+                          ID_PACE_HYS int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                          ID_Pace int(11) NOT NULL,
+                          Pace_APNP_HYS_Feca date NOT NULL,
+                          Pace_APNP_HYS_Hab_ varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                          Pace_APNP_HYS_Ser_ele tinyint(1) NOT NULL,
+                          Pace_APNP_HYS_Ser_agu tinyint(1) NOT NULL,
+                          Pace_APNP_HYS_Ser_alc tinyint(1) NOT NULL,
+                          Pace_APNP_HYS_Ser_dre tinyint(1) NOT NULL,
+                          Pace_APNP_HYS_Sed_len tinyint(1) NOT NULL,
+                          Pace_APNP_HYS_Sed_est tinyint(1) NOT NULL,
+                          Pace_APNP_HYS_Sed_tel tinyint(1) NOT NULL,
+                          Pace_APNP_HYS_Tes_pa tinyint(1) NOT NULL,
+                          Pace_APNP_HYS_Tes_ma tinyint(1) NOT NULL,
+                          Pace_APNP_HYS_Tes_ho tinyint(1) NOT NULL,
+                          Pace_APNP_HYS_Tes_hi tinyint(1) NOT NULL,
+                          Pace_APNP_HYS_Tes_ot tinyint(1) NOT NULL,
+                          REGE_Pace_APNP_HYS_Tes_ot varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                          Pace_APNP_HYS_Coh_pis varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+                          Pace_APNP_HYS_Coh_tec varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+                          Pace_APNP_HYS_Coh_pad varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+                          Pace_APNP_HYS_Coh_sal tinyint(1) NOT NULL,
+                          Pace_APNP_HYS_Coh_ban tinyint(1) NOT NULL,
+                          Pace_APNP_HYS_Coh_sac tinyint(1) NOT NULL,
+                          Pace_APNP_HYS_Coh_cua tinyint(1) NOT NULL,
+                          Pace_APNP_HYS_Coe_ varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                          Pace_APNP_HYS_Coe_pad tinyint(1) NOT NULL,
+                          Pace_APNP_HYS_Coe_pat tinyint(1) NOT NULL,
+                          Pace_APNP_HYS_Coe_core tinyint(1) NOT NULL,
+                          Pace_APNP_HYS_vac varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                          REGE_Pace_APNP_HYS_vac int(11) NOT NULL,
+                          Pace_APNP_HYS_ovi varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                          REGE_Pace_APNP_HYS_ovi int(11) NOT NULL,
+                          Pace_APNP_HYS_por varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                          REGE_Pace_APNP_HYS_por int(11) NOT NULL,
+                          Pace_APNP_HYS_avi varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                          REGE_Pace_APNP_HYS_avi int(11) NOT NULL,
+                          Pace_APNP_HYS_Coe_coma tinyint(1) NOT NULL,
+                          Pace_APNP_HYS_Coe_can varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                          REGE_Pace_APNP_HYS_Coe_can int(11) NOT NULL,
+                          Pace_APNP_HYS_Coe_rep varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                          REGE_Pace_APNP_HYS_Coe_rep int(11) NOT NULL,
+                          Pace_APNP_HYS_Coe_fel varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                          REGE_Pace_APNP_HYS_Coe_fel int(11) NOT NULL,
+                          Pace_APNP_HYS_Coe_avi varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                          REGE_Pace_APNP_HYS_Coe_avi int(11) NOT NULL
+                        ) ENGINE=InnoDB AUTO_INCREMENT=4
+                        DEFAULT CHARSET=utf8
+                        COLLATE=utf8_unicode_ci
+                        COMMENT='Esta Tabla es para Agregar Datos de Vivienda';
+            """,
+    "truncateQuery": "TRUNCATE pace_apnp_hys",
+    "dropQuery": "DROP TABLE pace_apnp_hys",
+    "consultQuery": "SELECT * FROM pace_apnp_hys",
+    "consultIdQuery": "SELECT * FROM pace_apnp_hys WHERE ID_Pace = ?",
+    "consultByIdPrimaryQuery": "SELECT * FROM pace_apnp_hys WHERE ID_Pace = ?",
+    "consultAllIdsQuery": "SELECT ID_Pace FROM pace_apnp_hys",
+    "consultLastQuery": "SELECT * FROM pace_apnp_hys WHERE ID_Pace = ?",
+    "consultByName": "SELECT * FROM pace_apnp_hys WHERE Pace_APP_DEG LIKE '%",
+    "registerQuery": "INSERT INTO pace_apnp_hys (ID_Pace, Pace_APNP_HYS_Feca, "
+        "Pace_APNP_HYS_Hab_, Pace_APNP_HYS_Ser_ele, Pace_APNP_HYS_Ser_agu, "
+        "Pace_APNP_HYS_Ser_alc, Pace_APNP_HYS_Ser_dre, Pace_APNP_HYS_Sed_len, "
+        "Pace_APNP_HYS_Sed_est, Pace_APNP_HYS_Sed_tel, Pace_APNP_HYS_Tes_pa, "
+        "Pace_APNP_HYS_Tes_ma, Pace_APNP_HYS_Tes_ho, Pace_APNP_HYS_Tes_hi, "
+        "Pace_APNP_HYS_Tes_ot, REGE_Pace_APNP_HYS_Tes_ot, Pace_APNP_HYS_Coh_pis, "
+        "Pace_APNP_HYS_Coh_tec, Pace_APNP_HYS_Coh_pad, Pace_APNP_HYS_Coh_sal, "
+        "Pace_APNP_HYS_Coh_ban, Pace_APNP_HYS_Coh_sac, Pace_APNP_HYS_Coh_cua, "
+        "Pace_APNP_HYS_Coe_, Pace_APNP_HYS_Coe_pad, Pace_APNP_HYS_Coe_pat, "
+        "Pace_APNP_HYS_Coe_core, Pace_APNP_HYS_vac, REGE_Pace_APNP_HYS_vac, "
+        "Pace_APNP_HYS_ovi, REGE_Pace_APNP_HYS_ovi, Pace_APNP_HYS_por, "
+        "REGE_Pace_APNP_HYS_por, Pace_APNP_HYS_avi, REGE_Pace_APNP_HYS_avi, "
+        "Pace_APNP_HYS_Coe_coma, Pace_APNP_HYS_Coe_can, REGE_Pace_APNP_HYS_Coe_can, "
+        "Pace_APNP_HYS_Coe_rep, REGE_Pace_APNP_HYS_Coe_rep, Pace_APNP_HYS_Coe_fel, "
+        "REGE_Pace_APNP_HYS_Coe_fel, Pace_APNP_HYS_Coe_avi, REGE_Pace_APNP_HYS_Coe_avi) "
+        "VALUES (?,?,?,?,?,?,?,?,?,?,"
+        "?,?,?,?,?,?,?,?,?,?,"
+        "?,?,?,?,?,?,?,?,?,?,"
+        "?,?,?,?,?,?,?,?,?,?,"
+        "?,?,?,?)",
+    "updateQuery": "UPDATE pace_apnp_hys "
+        "SET ID_PACE_HYS = ?, ID_Pace = ?, Pace_APNP_HYS_Feca = ?, Pace_APNP_HYS_Hab_ = "
+        "?, Pace_APNP_HYS_Ser_ele = ?, Pace_APNP_HYS_Ser_agu = ?, Pace_APNP_HYS_Ser_alc "
+        "= ?, Pace_APNP_HYS_Ser_dre = ?, Pace_APNP_HYS_Sed_len = ?, "
+        "Pace_APNP_HYS_Sed_est = ?, Pace_APNP_HYS_Sed_tel = ?, Pace_APNP_HYS_Tes_pa = ?, "
+        "Pace_APNP_HYS_Tes_ma = ?, Pace_APNP_HYS_Tes_ho = ?, Pace_APNP_HYS_Tes_hi = ?, "
+        "Pace_APNP_HYS_Tes_ot = ?, REGE_Pace_APNP_HYS_Tes_ot = ?, Pace_APNP_HYS_Coh_pis = "
+        "?, Pace_APNP_HYS_Coh_tec = ?, Pace_APNP_HYS_Coh_pad = ?, Pace_APNP_HYS_Coh_sal "
+        "= ?, Pace_APNP_HYS_Coh_ban = ?, Pace_APNP_HYS_Coh_sac = ?, "
+        "Pace_APNP_HYS_Coh_cua = ?, Pace_APNP_HYS_Coe_ = ?, Pace_APNP_HYS_Coe_pad = ?, "
+        "Pace_APNP_HYS_Coe_pat = ?, Pace_APNP_HYS_Coe_core = ?, Pace_APNP_HYS_vac = ?, "
+        "REGE_Pace_APNP_HYS_vac = ?, Pace_APNP_HYS_ovi = ?, REGE_Pace_APNP_HYS_ovi = ?, "
+        "Pace_APNP_HYS_por = ?, REGE_Pace_APNP_HYS_por = ?, Pace_APNP_HYS_avi = ?, "
+        "REGE_Pace_APNP_HYS_avi = ?, Pace_APNP_HYS_Coe_coma = ?, Pace_APNP_HYS_Coe_can = "
+        "?, REGE_Pace_APNP_HYS_Coe_can = ?, Pace_APNP_HYS_Coe_rep = ?, "
+        "REGE_Pace_APNP_HYS_Coe_rep = ?, Pace_APNP_HYS_Coe_fel = ?, "
+        "REGE_Pace_APNP_HYS_Coe_fel = ?, Pace_APNP_HYS_Coe_avi = ?, "
+        "REGE_Pace_APNP_HYS_Coe_avi = ? "
+        "WHERE ID_PACE_HYS = ?",
+    "deleteQuery": "DELETE FROM pace_apnp_hys WHERE ID_pace_apnp_hys = ?",
+    "viviendasColumns": [
+      "ID_Pace",
+    ],
+    "viviendasItems": [
+      "ID_Pace",
+    ],
+    "viviendasColums": [
+      "ID Paciente",
+    ],
+    "viviendasStats": [
+      "Total_Administradores",
+    ],
+    "viviendasStadistics": "SELECT "
+        "(SELECT IFNULL(AVG('Pace_SV_tas'), 0) FROM pace_apnp_hys WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAS,"
+        "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM pace_apnp_hys WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_apnp_hys  WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
+  };
+// ********* ******** ******* ********* ***
+}
+
+class Alimenticios {
+  static int ID_Alimenticios = 0;
+  // ********* ******** ******* ********* ***
+  static Map<String, dynamic> Alimenticio = {};
+  // ********* ******** ******* ********* ***
+  static void consultarRegistro() {
+    Actividades.consultarId(Databases.siteground_database_regepi,
+            Alimenticios.alimenticios['consultIdQuery'], Pacientes.ID_Paciente)
+        .then((value) {
+      // Asignación de Valores ********* ******** ******* ********* ***
+      Alimenticios.Alimenticio = value;
+      // Alimenticios.ID_Alimenticios = value['ID_PACE_EYM'];
+      //
+      // Valores.alimentacionDiaria =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.alimentacionDiariaDescripcion = value['Pace_EYM_xise_CREE'];
+      // Valores.dietaAsignada =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.dietaAsignadaDescripcion = value['Pace_EYM_xise_CREE'];
+      // Valores.variacionAlimentacion =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.variacionAlimentacionDescripcion = value['Pace_EYM_xise_CREE'];
+      // Valores.problemasMasticacion =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.problemasMasticacionDescripcion = value['Pace_EYM_xise_CREE'];
+      // Valores.intoleranciaAlimentaria =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.intoleranciaAlimentariaDescripcion = value['Pace_EYM_xise_CREE'];
+      // Valores.alteracionesPeso =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.alteracionesPesoDescripcion = value['Pace_EYM_xise_CREE'];
+      //
+      print("Valores de Alimenticios asignado : : : $value");
+    });
+  }
+
+  static void actualizarRegistro() {
+    Actividades.actualizar(
+      Databases.siteground_database_regepi,
+      Alimenticios.alimenticios['updateQuery'],
+      [
+        Alimenticios.ID_Alimenticios,
+        // ********* ******** ******* ********* ***
+        Pacientes.ID_Paciente,
+        Valores.alimentacionDiaria,
+        Valores.alimentacionDiariaDescripcion,
+        Valores.dietaAsignada,
+        Valores.dietaAsignadaDescripcion,
+        Valores.variacionAlimentacion,
+        Valores.variacionAlimentacionDescripcion,
+        Valores.problemasMasticacion,
+        Valores.problemasMasticacionDescripcion,
+        Valores.intoleranciaAlimentaria,
+        Valores.intoleranciaAlimentariaDescripcion,
+        Valores.alteracionesPeso,
+        Valores.alteracionesPesoDescripcion,
+        // ********* ******** ******* ********* ***
+        Alimenticios.ID_Alimenticios,
+      ],
+      Alimenticios.ID_Alimenticios,
+    );
+  }
+
+  static void registrarRegistro() {
+    Actividades.registrar(
+      Databases.siteground_database_regepi,
+      Alimenticios.alimenticios['registerQuery'],
+      [
+        Pacientes.ID_Paciente,
+        // ********* ******** ******* ********* ***
+        Valores.alimentacionDiaria,
+        Valores.alimentacionDiariaDescripcion,
+        Valores.dietaAsignada,
+        Valores.dietaAsignadaDescripcion,
+        Valores.variacionAlimentacion,
+        Valores.variacionAlimentacionDescripcion,
+        Valores.problemasMasticacion,
+        Valores.problemasMasticacionDescripcion,
+        Valores.intoleranciaAlimentaria,
+        Valores.intoleranciaAlimentariaDescripcion,
+        Valores.alteracionesPeso,
+        Valores.alteracionesPesoDescripcion,
+        // ********* ******** ******* ********* ***
+      ],
+    );
+  }
+
+// ********* ******** ******* ********* ***
+  static final Map<String, dynamic> alimenticios = {
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
+        "DEFAULT CHARACTER SET utf8 "
+        "COLLATE utf8_unicode_ci;",
+    "showTables": "SHOW tables;",
+    "dropDatabase": "DROP DATABASE bd_regpace",
+    "describeTable": "DESCRIBE pace_apnp_ali;",
+    "showColumns": "SHOW columns FROM pace_apnp_ali",
+    "showInformation":
+        "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_apnp_ali'",
+    "createQuery": """
+    CREATE TABLE pace_apnp_ali (
+                          ID_PACE_APNP_ALI int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL ,
+                          ID_Pace int(11) NOT NULL,
+                          Pace_APNP_ALI_ali_SINO tinyint(1) NOT NULL,
+                          Pace_APNP_ALI_ali varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                          Pace_APNP_ALI_die_SINO tinyint(1) NOT NULL,
+                          Pace_APNP_ALI_die varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                          Pace_APNP_ALI_var_SINO tinyint(1) NOT NULL,
+                          Pace_APNP_ALI_var varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                          Pace_APNP_ALI_mas_SINO tinyint(1) NOT NULL,
+                          Pace_APNP_ALI_mas varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                          Pace_APNP_ALI_int_SINO tinyint(1) NOT NULL,
+                          Pace_APNP_ALI_int varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                          Pace_APNP_ALI_pes_SINO tinyint(1) NOT NULL,
+                          Pace_APNP_ALI_pes varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                        ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Esta Tabla es para Agregar Datos de Habitos Alimentarios';
+            """,
+    "truncateQuery": "TRUNCATE pace_apnp_ali",
+    "dropQuery": "DROP TABLE pace_apnp_ali",
+    "consultQuery": "SELECT * FROM pace_apnp_ali",
+    "consultIdQuery": "SELECT * FROM pace_apnp_ali WHERE ID_Pace = ?",
+    "consultByIdPrimaryQuery": "SELECT * FROM pace_apnp_ali WHERE ID_Pace = ?",
+    "consultAllIdsQuery": "SELECT ID_Pace FROM pace_apnp_ali",
+    "consultLastQuery": "SELECT * FROM pace_apnp_ali WHERE ID_Pace = ?",
+    "consultByName": "SELECT * FROM pace_apnp_ali WHERE Pace_APP_DEG LIKE '%",
+    "registerQuery":
+        "INSERT INTO pace_apnp_ali (ID_Pace, Pace_APNP_ALI_ali_SINO, "
+            "Pace_APNP_ALI_ali, Pace_APNP_ALI_die_SINO, Pace_APNP_ALI_die, "
+            "Pace_APNP_ALI_var_SINO, Pace_APNP_ALI_var, Pace_APNP_ALI_mas_SINO, "
+            "Pace_APNP_ALI_mas, Pace_APNP_ALI_int_SINO, Pace_APNP_ALI_int, "
+            "Pace_APNP_ALI_pes_SINO, Pace_APNP_ALI_pes) "
+            "VALUES (?,?,?,?,?,?,?,?,?,?,"
+            "?,?,?)",
+    "updateQuery": "UPDATE pace_apnp_ali "
+        "SET ID_PACE_APNP_ALI = ?, ID_Pace = ?,Pace_APNP_ALI_ali_SINO = ?,"
+        "Pace_APNP_ALI_ali = ?,Pace_APNP_ALI_die_SINO = ?,Pace_APNP_ALI_die = ?,"
+        "Pace_APNP_ALI_var_SINO = ?,Pace_APNP_ALI_var = ?,Pace_APNP_ALI_mas_SINO = ?,"
+        "Pace_APNP_ALI_mas = ?,Pace_APNP_ALI_int_SINO = ?,Pace_APNP_ALI_int = ?,"
+        "Pace_APNP_ALI_pes_SINO = ?,Pace_APNP_ALI_pes = ? "
+        "WHERE ID_PACE_APNP_ALI = ?",
+    "deleteQuery": "DELETE FROM pace_apnp_ali WHERE ID_pace_apnp_ali = ?",
+    "alimenticiosColumns": [
+      "ID_Pace",
+    ],
+    "alimenticiosItems": [
+      "ID_Pace",
+    ],
+    "alimenticiosColums": [
+      "ID Paciente",
+    ],
+    "alimenticiosStats": [
+      "Total_Administradores",
+    ],
+    "alimenticiosStadistics": "SELECT "
+        "(SELECT IFNULL(AVG('Pace_SV_tas'), 0) FROM pace_apnp_ali WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAS,"
+        "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM pace_apnp_ali WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_apnp_ali  WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
+  };
+// ********* ******** ******* ********* ***
+}
+
+class Diarios {
+  static int ID_Diarios = 0;
+  // ********* ******** ******* ********* ***
+  static Map<String, dynamic> Diario = {};
+  // ********* ******** ******* ********* ***
+  static void consultarRegistro() {
+    Actividades.consultarId(Databases.siteground_database_regepi,
+            Diarios.diarios['consultIdQuery'], Pacientes.ID_Paciente)
+        .then((value) {
+      // Asignación de Valores ********* ******** ******* ********* ***
+      Diarios.Diario = value;
+
+      // Diarios.ID_Diarios = value['ID_PACE_EYM'];
+      //
+      // Valores.actividadesDiariasDescripcion = value['Pace_EYM_xise_CREE'];
+      // Valores.pasatiemposDescripcion = value['Pace_EYM_xise_CREE'];
+      // Valores.horasSuenoDescripcion = value['Pace_EYM_xise_CREE'];
+      // Valores.viajesRecientes =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.viajesRecientesDescripcion = value['Pace_EYM_xise_CREE'];
+      // Valores.problemasFamiliares =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.violenciaInfantil =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.abusoSustancias =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.problemasLaborales =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.estresLaboral =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.hostilidadLaboral =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.abusoLaboral =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.acosoLaboral =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      //
+      print("Valores de Diarios asignado : : : $value");
+    });
+  }
+
+  static void actualizarRegistro() {
+    Actividades.actualizar(
+      Databases.siteground_database_regepi,
+      Diarios.diarios['updateQuery'],
+      [
+        Diarios.ID_Diarios,
+        Pacientes.ID_Paciente,
+        // ********* ******** ******* ********* ***
+        Valores.actividadesDiariasDescripcion,
+        Valores.pasatiemposDescripcion,
+        Valores.horasSuenoDescripcion,
+        Valores.viajesRecientes,
+        Valores.viajesRecientesDescripcion,
+        Valores.problemasFamiliares,
+        Valores.violenciaInfantil,
+        Valores.abusoSustancias,
+        Valores.problemasLaborales,
+        Valores.estresLaboral,
+        Valores.hostilidadLaboral,
+        Valores.abusoLaboral,
+        Valores.acosoLaboral,
+        // ********* ******** ******* ********* ***
+        Diarios.ID_Diarios,
+      ],
+      Diarios.ID_Diarios,
+    );
+  }
+
+  static void registrarRegistro() {
+    Actividades.registrar(
+      Databases.siteground_database_regepi,
+      Diarios.diarios['registerQuery'],
+      [
+        Pacientes.ID_Paciente,
+        // ********* ******** ******* ********* ***
+        Valores.actividadesDiariasDescripcion,
+        Valores.pasatiemposDescripcion,
+        Valores.horasSuenoDescripcion,
+        Valores.viajesRecientes,
+        Valores.viajesRecientesDescripcion,
+        Valores.problemasFamiliares,
+        Valores.violenciaInfantil,
+        Valores.abusoSustancias,
+        Valores.problemasLaborales,
+        Valores.estresLaboral,
+        Valores.hostilidadLaboral,
+        Valores.abusoLaboral,
+        Valores.acosoLaboral,
+      ],
+    );
+  }
+
+// ********* ******** ******* ********* ***
+  static final Map<String, dynamic> diarios = {
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
+        "DEFAULT CHARACTER SET utf8 "
+        "COLLATE utf8_unicode_ci;",
+    "showTables": "SHOW tables;",
+    "dropDatabase": "DROP DATABASE bd_regpace",
+    "describeTable": "DESCRIBE pace_apnp_had;",
+    "showColumns": "SHOW columns FROM pace_apnp_had",
+    "showInformation":
+        "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_apnp_had'",
+    "createQuery": """
+    CREATE TABLE pace_apnp_had (
+                          ID_PACE_HAD int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                          ID_Pace int(11) NOT NULL,
+                          Pace_APNP_HAD_pas varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                          Pace_APNP_HAD_dia varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                          Pace_APNP_HAD_sue varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                          Pace_APNP_HAD_via_SINO tinyint(1) NOT NULL,
+                          Pace_APNP_HAD_via varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                          Pace_APNP_HAD_pof_SINO tinyint(1) NOT NULL,
+                          Pace_APNP_HAD_pol_vif tinyint(1) NOT NULL,
+                          Pace_APNP_HAD_pol_vit tinyint(1) NOT NULL,
+                          Pace_APNP_HAD_pol tinyint(1) NOT NULL,
+                          Pace_APNP_HAD_pol_est tinyint(1) NOT NULL,
+                          Pace_APNP_HAD_pol_hos tinyint(1) NOT NULL,
+                          Pace_APNP_HAD_pol_abu tinyint(1) NOT NULL,
+                          Pace_APNP_HAD_pol_aco tinyint(1) NOT NULL
+                        ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8
+                        COLLATE=utf8_unicode_ci
+                        COMMENT='Tabla para Agregar Datos de Habitos Diarios';
+            """,
+    "truncateQuery": "TRUNCATE pace_apnp_had",
+    "dropQuery": "DROP TABLE pace_apnp_had",
+    "consultQuery": "SELECT * FROM pace_apnp_had",
+    "consultIdQuery": "SELECT * FROM pace_apnp_had WHERE ID_Pace = ?",
+    "consultByIdPrimaryQuery": "SELECT * FROM pace_apnp_had WHERE ID_Pace = ?",
+    "consultAllIdsQuery": "SELECT ID_Pace FROM pace_apnp_had",
+    "consultLastQuery": "SELECT * FROM pace_apnp_had WHERE ID_Pace = ?",
+    "consultByName": "SELECT * FROM pace_apnp_had WHERE Pace_APP_DEG LIKE '%",
+    "registerQuery": "INSERT INTO pace_apnp_had (ID_Pace, Pace_APNP_HAD_pas, "
+        "Pace_APNP_HAD_dia, Pace_APNP_HAD_sue, Pace_APNP_HAD_via_SINO, Pace_APNP_HAD_via, "
+        "Pace_APNP_HAD_pof_SINO, Pace_APNP_HAD_pol_vif, Pace_APNP_HAD_pol_vit, "
+        "Pace_APNP_HAD_pol, Pace_APNP_HAD_pol_est, Pace_APNP_HAD_pol_hos, "
+        "Pace_APNP_HAD_pol_abu, Pace_APNP_HAD_pol_aco) "
+        "VALUES (?,?,?,?,?,?,?,?,?,?,"
+        "?,?,?,?)",
+    "updateQuery": "UPDATE pace_apnp_had "
+        "SET ID_PACE_HAD = ?,  ID_Pace = ?,  Pace_APNP_HAD_pas = ?,  Pace_APNP_HAD_dia = "
+        "?,  Pace_APNP_HAD_sue = ?,  Pace_APNP_HAD_via_SINO = ?,  Pace_APNP_HAD_via = "
+        "?,  Pace_APNP_HAD_pof_SINO = ?,  Pace_APNP_HAD_pol_vif = ?,  "
+        "Pace_APNP_HAD_pol_vit = ?,  Pace_APNP_HAD_pol = ?,  Pace_APNP_HAD_pol_est = ?,  "
+        "Pace_APNP_HAD_pol_hos = ?,  Pace_APNP_HAD_pol_abu = ?,  Pace_APNP_HAD_pol_aco = "
+        "? WHERE ID_PACE_HAD = ?",
+    "deleteQuery": "DELETE FROM pace_apnp_had WHERE ID_pace_apnp_had = ?",
+    "diariosColumns": [
+      "ID_Pace",
+    ],
+    "diariosItems": [
+      "ID_Pace",
+    ],
+    "diariosColums": [
+      "ID Paciente",
+    ],
+    "diariosStats": [
+      "Total_Administradores",
+    ],
+    "diariosStadistics": "SELECT "
+        "(SELECT IFNULL(AVG('Pace_SV_tas'), 0) FROM pace_apnp_had WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAS,"
+        "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM pace_apnp_had WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_apnp_had  WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
+  };
+// ********* ******** ******* ********* ***
+}
+
+class Higienes {
+  static int ID_Higienes = 0;
+  // ********* ******** ******* ********* ***
+  static Map<String, dynamic> Higiene = {};
+  // ********* ******** ******* ********* ***
+  static void consultarRegistro() {
+    Actividades.consultarId(Databases.siteground_database_regepi,
+            Higienes.higienes['consultIdQuery'], Pacientes.ID_Paciente)
+        .then((value) {
+      // Asignación de Valores ********* ******** ******* ********* ***
+      Higienes.Higiene = value;
+
+      Higienes.ID_Higienes = value['ID_PACE_EYM'];
+
+      // Valores.banoCorporal =
+      // Dicotomicos.fromInt(value['Pace_EYM_REDE'], toBoolean: true) as bool?;
+      // Valores.higieneManos =
+      // Dicotomicos.fromInt(value['Pace_EYM_REDE'], toBoolean: true) as bool?;
+      // Valores.cambiosRopa =
+      // Dicotomicos.fromInt(value['Pace_EYM_REDE'], toBoolean: true) as bool?;
+      // Valores.aseoDental =
+      // Dicotomicos.fromInt(value['Pace_EYM_REDE'], toBoolean: true) as bool?;
+      // Valores.banoCorporalDescripcion = value['Pace_EYM_xise_VALO'];
+      // Valores.higieneManosDescripcion = value['Pace_EYM_xise_VALO'];
+      // Valores.cambiosRopaDescripcion = value['Pace_EYM_xise_VALO'];
+      // Valores.aseoDentalDescripcion = value['Pace_EYM_xise_VALO'];
+      //
+      print("Valores de Higienes asignado : : : $value");
+    });
+  }
+
+  static void actualizarRegistro() {
+    Actividades.actualizar(
+      Databases.siteground_database_regepi,
+      Higienes.higienes['updateQuery'],
+      [
+        Higienes.ID_Higienes,
+        Pacientes.ID_Paciente,
+        // ********* ******** ******* ********* ***
+        Valores.banoCorporal,
+        Valores.banoCorporalDescripcion,
+        Valores.higieneManos,
+        Valores.higieneManosDescripcion,
+        Valores.cambiosRopa,
+        Valores.cambiosRopaDescripcion,
+        Valores.aseoDental,
+        Valores.aseoDentalDescripcion,
+        // ********* ******** ******* ********* ***
+        Higienes.ID_Higienes,
+      ],
+      Higienes.ID_Higienes,
+    );
+  }
+
+  static void registrarRegistro() {
+    Actividades.registrar(
+      Databases.siteground_database_regepi,
+      Higienes.higienes['registerQuery'],
+      [
+        Pacientes.ID_Paciente,
+        // ********* ******** ******* ********* ***
+        Valores.banoCorporal,
+        Valores.banoCorporalDescripcion,
+        Valores.higieneManos,
+        Valores.higieneManosDescripcion,
+        Valores.cambiosRopa,
+        Valores.cambiosRopaDescripcion,
+        Valores.aseoDental,
+        Valores.aseoDentalDescripcion,
+      ],
+    );
+  }
+
+// ********* ******** ******* ********* ***
+  static final Map<String, dynamic> higienes = {
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
+        "DEFAULT CHARACTER SET utf8 "
+        "COLLATE utf8_unicode_ci;",
+    "showTables": "SHOW tables;",
+    "dropDatabase": "DROP DATABASE bd_regpace",
+    "describeTable": "DESCRIBE pace_apnp_hig;",
+    "showColumns": "SHOW columns FROM pace_apnp_hig",
+    "showInformation":
+        "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_apnp_hig'",
+    "createQuery": """
+    CREATE TABLE pace_apnp_hig (
+                          ID_PACE_APNP_HIG int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                          ID_Pace int(11) NOT NULL,
+                          Pace_APNP_HIG_Feca date NOT NULL,
+                          Pace_APNP_HIG_bac_SINO tinyint(1) NOT NULL,
+                          REGE_Pace_APNP_HIG_bac varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                          Pace_APNP_HIG_man_SINO tinyint(1) NOT NULL,
+                          REGE_Pace_APNP_HIG_man varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                          Pace_APNP_HIG_rop_SINO tinyint(1) NOT NULL,
+                          REGE_Pace_APNP_HIG_rop varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                          Pace_APNP_HIG_den_SINO tinyint(1) NOT NULL,
+                          REGE_Pace_APNP_HIG_den varchar(200) COLLATE utf8_unicode_ci NOT NULL
+                        ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla para Agregar Datos de Habitos Higienicos';
+            """,
+    "truncateQuery": "TRUNCATE pace_apnp_hig",
+    "dropQuery": "DROP TABLE pace_apnp_hig",
+    "consultQuery": "SELECT * FROM pace_apnp_hig",
+    "consultIdQuery": "SELECT * FROM pace_apnp_hig WHERE ID_Pace = ?",
+    "consultByIdPrimaryQuery": "SELECT * FROM pace_apnp_hig WHERE ID_Pace = ?",
+    "consultAllIdsQuery": "SELECT ID_Pace FROM pace_apnp_hig",
+    "consultLastQuery": "SELECT * FROM pace_apnp_hig WHERE ID_Pace = ?",
+    "consultByName": "SELECT * FROM pace_apnp_hig WHERE Pace_APP_DEG LIKE '%",
+    "registerQuery": "INSERT INTO pace_apnp_hig (ID_Pace, Pace_APNP_HIG_Feca, "
+        "Pace_APNP_HIG_bac_SINO, REGE_Pace_APNP_HIG_bac, Pace_APNP_HIG_man_SINO, "
+        "REGE_Pace_APNP_HIG_man, Pace_APNP_HIG_rop_SINO, REGE_Pace_APNP_HIG_rop, "
+        "Pace_APNP_HIG_den_SINO, REGE_Pace_APNP_HIG_den) "
+        "VALUES (?,?,?,?,?,?,?,?,?,?)",
+    "updateQuery": "UPDATE pace_apnp_hig "
+        "SET ID_PACE_APNP_HIG = ?,  ID_Pace = ?,  Pace_APNP_HIG_Feca = ?,  "
+        "Pace_APNP_HIG_bac_SINO = ?,  REGE_Pace_APNP_HIG_bac = ?,  Pace_APNP_HIG_man_SINO "
+        "= ?,  REGE_Pace_APNP_HIG_man = ?,  Pace_APNP_HIG_rop_SINO = ?,  "
+        "REGE_Pace_APNP_HIG_rop = ?,  Pace_APNP_HIG_den_SINO = ?,  REGE_Pace_APNP_HIG_den = ? "
+        "WHERE ID_PACE_APNP_HIG = ?",
+    "deleteQuery": "DELETE FROM pace_apnp_hig WHERE ID_pace_apnp_hig = ?",
+    "higienesColumns": [
+      "ID_Pace",
+    ],
+    "higienesItems": [
+      "ID_Pace",
+    ],
+    "higienesColums": [
+      "ID Paciente",
+    ],
+    "higienesStats": [
+      "Total_Administradores",
+    ],
+    "higienesStadistics": "SELECT "
+        "(SELECT IFNULL(AVG('Pace_SV_tas'), 0) FROM pace_apnp_hig WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAS,"
+        "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM pace_apnp_hig WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_apnp_hig  WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
+  };
+// ********* ******** ******* ********* ***
+}
+
+class Limitaciones {
+  static int ID_Limitaciones = 0;
+  // ********* ******** ******* ********* ***
+  static Map<String, dynamic> Limitacion = {};
+  // ********* ******** ******* ********* ***
+  static void consultarRegistro() {
+    Actividades.consultarId(Databases.siteground_database_regepi,
+            Limitaciones.limitaciones['consultIdQuery'], Pacientes.ID_Paciente)
+        .then((value) {
+      // Asignación de Valores ********* ******** ******* ********* ***
+      Limitaciones.Limitacion = value;
+
+      // Limitaciones.ID_Limitaciones = value['ID_PACE_EYM'];
+
+      // Valores.usoLentes =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.usoLentesDescripcion = value['Pace_EYM_xise_CREE'];
+      // Valores.aparatoSordera =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.aparatoSorderaDescripcion = value['Pace_EYM_xise_CREE'];
+      // Valores.protesisDentaria =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.protesisDentariaDescripcion = value['Pace_EYM_xise_CREE'];
+      // Valores.marcapasosCardiaco =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.marcapasosCardiacoDescripcion = value['Pace_EYM_xise_CREE'];
+      // Valores.ortesisDeambular =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.ortesisDeambularDescripcion = value['Pace_EYM_xise_CREE'];
+      // Valores.limitacionesActividadCotidiana =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.limitacionesActividadCotidianaDescripcion = value['Pace_EYM_xise_CREE'];
+
+      print("Valores de Limitaciones asignado : : : $value");
+    });
+  }
+
+  static void actualizarRegistro() {
+    Actividades.actualizar(
+      Databases.siteground_database_regepi,
+      Limitaciones.limitaciones['updateQuery'],
+      [
+        Limitaciones.ID_Limitaciones,
+        Pacientes.ID_Paciente,
+        // ********* ******** ******* ********* ***
+        Valores.usoLentes,
+        Valores.usoLentesDescripcion,
+        Valores.aparatoSordera,
+        Valores.aparatoSorderaDescripcion,
+        Valores.protesisDentaria,
+        Valores.protesisDentariaDescripcion,
+        Valores.marcapasosCardiaco,
+        Valores.marcapasosCardiacoDescripcion,
+        Valores.ortesisDeambular,
+        Valores.ortesisDeambularDescripcion,
+        Valores.limitacionesActividadCotidiana,
+        Valores.limitacionesActividadCotidianaDescripcion,
+        // ********* ******** ******* ********* ***
+        Limitaciones.ID_Limitaciones,
+      ],
+      Limitaciones.ID_Limitaciones,
+    );
+  }
+
+  static void registrarRegistro() {
+    Actividades.registrar(
+      Databases.siteground_database_regepi,
+      Limitaciones.limitaciones['registerQuery'],
+      [
+        Pacientes.ID_Paciente,
+        // ********* ******** ******* ********* ***
+        Valores.usoLentes,
+        Valores.usoLentesDescripcion,
+        Valores.aparatoSordera,
+        Valores.aparatoSorderaDescripcion,
+        Valores.protesisDentaria,
+        Valores.protesisDentariaDescripcion,
+        Valores.marcapasosCardiaco,
+        Valores.marcapasosCardiacoDescripcion,
+        Valores.ortesisDeambular,
+        Valores.ortesisDeambularDescripcion,
+        Valores.limitacionesActividadCotidiana,
+        Valores.limitacionesActividadCotidianaDescripcion,
+      ],
+    );
+  }
+
+// ********* ******** ******* ********* ***
+  static final Map<String, dynamic> limitaciones = {
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
+        "DEFAULT CHARACTER SET utf8 "
+        "COLLATE utf8_unicode_ci;",
+    "showTables": "SHOW tables;",
+    "dropDatabase": "DROP DATABASE bd_regpace",
+    "describeTable": "DESCRIBE pace_apnp_lim;",
+    "showColumns": "SHOW columns FROM pace_apnp_lim",
+    "showInformation":
+        "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_apnp_lim'",
+    "createQuery": """
+    CREATE TABLE pace_apnp_lim (
+                      ID_PACE_APNP_LIM int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                      ID_Pace int(11) NOT NULL,
+                      Pace_APNP_LIM_Feca date NOT NULL,
+                      Pace_APNP_LIM_len_SINO tinyint(1) NOT NULL,
+                      Pace_APNP_LIM_sor_SINO tinyint(1) NOT NULL,
+                      Pace_APNP_LIM_ria_SINO tinyint(1) NOT NULL,
+                      Pace_APNP_LIM_mar_SINO tinyint(1) NOT NULL,
+                      Pace_APNP_LIM_dea_SINO tinyint(1) NOT NULL,
+                      Pace_APNP_LIM_lim_SINO tinyint(1) NOT NULL
+                    ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8
+                    COLLATE=utf8_unicode_ci
+                    COMMENT='Tabla para Agregar Datos de Limitación Física';
+            """,
+    "truncateQuery": "TRUNCATE pace_apnp_lim",
+    "dropQuery": "DROP TABLE pace_apnp_lim",
+    "consultQuery": "SELECT * FROM pace_apnp_lim",
+    "consultIdQuery": "SELECT * FROM pace_apnp_lim WHERE ID_Pace = ?",
+    "consultByIdPrimaryQuery": "SELECT * FROM pace_apnp_lim WHERE ID_Pace = ?",
+    "consultAllIdsQuery": "SELECT ID_Pace FROM pace_apnp_lim",
+    "consultLastQuery": "SELECT * FROM pace_apnp_lim WHERE ID_Pace = ?",
+    "consultByName": "SELECT * FROM pace_apnp_lim WHERE Pace_APP_DEG LIKE '%",
+    "registerQuery": "INSERT INTO pace_apnp_lim (ID_Pace, Pace_APNP_LIM_Feca, "
+        "Pace_APNP_LIM_len_SINO, Pace_APNP_LIM_sor_SINO, Pace_APNP_LIM_ria_SINO, "
+        "Pace_APNP_LIM_mar_SINO, Pace_APNP_LIM_dea_SINO, Pace_APNP_LIM_lim_SINO) "
+        "VALUES (?,?,?,?,?,?,?,?)",
+    "updateQuery": "UPDATE pace_apnp_lim "
+        "SET ID_PACE_APNP_LIM = ?,  ID_Pace = ?,  Pace_APNP_LIM_Feca = ?,  "
+        "Pace_APNP_LIM_len_SINO = ?,  Pace_APNP_LIM_sor_SINO = ?,  Pace_APNP_LIM_ria_SINO = ?,  "
+        "Pace_APNP_LIM_mar_SINO = ?,  Pace_APNP_LIM_dea_SINO = ?,  "
+        "Pace_APNP_LIM_lim_SINO = ? "
+        "WHERE ID_PACE_APNP_LIM = ?",
+    "deleteQuery": "DELETE FROM pace_apnp_lim WHERE ID_pace_apnp_lim = ?",
+    "limitacionesColumns": [
+      "ID_Pace",
+    ],
+    "limitacionesItems": [
+      "ID_Pace",
+    ],
+    "limitacionesColums": [
+      "ID Paciente",
+    ],
+    "limitacionesStats": [
+      "Total_Administradores",
+    ],
+    "limitacionesStadistics": "SELECT "
+        "(SELECT IFNULL(AVG('Pace_SV_tas'), 0) FROM pace_apnp_lim WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAS,"
+        "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM pace_apnp_lim WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_apnp_lim  WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
+  };
+// ********* ******** ******* ********* ***
+}
+
+class Sustancias {
+  static int ID_Sustancias = 0;
+  // ********* ******** ******* ********* ***
+  static Map<String, dynamic> Sustancia = {};
+  // ********* ******** ******* ********* ***
+  static void consultarRegistro() {
+    Actividades.consultarId(Databases.siteground_database_regepi,
+            Sustancias.sustancias['consultIdQuery'], Pacientes.ID_Paciente)
+        .then((value) {
+      // Asignación de Valores ********* ******** ******* ********* ***
+      Sustancias.Sustancia = value;
+
+      // Sustancias.ID_Sustancias = value['ID_PACE_EYM'];
+      //
+      // Valores.exposicionBiomasa =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.exposicionBiomasaDescripcion = value['Pace_EYM_xise_CREE'];
+      // Valores.exposicionHumosQuimicos =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.exposicionHumosQuimicosDescripcion = value['Pace_EYM_xise_CREE'];
+      // Valores.exposicionPesticidas =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.exposicionPesticidasDescripcion = value['Pace_EYM_xise_CREE'];
+      // Valores.exposicionMetalesPesados =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.exposicionMetalesPesadosDescripcion = value['Pace_EYM_xise_CREE'];
+      // Valores.exposicionPsicotropicos =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.exposicionPsicotropicosDescripcion = value['Pace_EYM_xise_CREE'];
+      //
+      print("Valores de Sustancias asignado : : : $value");
+    });
+  }
+
+  static void actualizarRegistro() {
+    Actividades.actualizar(
+      Databases.siteground_database_regepi,
+      Sustancias.sustancias['updateQuery'],
+      [
+        Sustancias.ID_Sustancias,
+        Pacientes.ID_Paciente,
+        // ********* ******** ******* ********* ***
+        Valores.exposicionBiomasa,
+        Valores.exposicionBiomasaDescripcion,
+        Valores.exposicionHumosQuimicos,
+        Valores.exposicionHumosQuimicosDescripcion,
+        Valores.exposicionPesticidas,
+        Valores.exposicionPesticidasDescripcion,
+        Valores.exposicionMetalesPesados,
+        Valores.exposicionMetalesPesadosDescripcion,
+        Valores.exposicionPsicotropicos,
+        Valores.exposicionPsicotropicosDescripcion,
+        // ********* ******** ******* ********* ***
+        Sustancias.ID_Sustancias,
+      ],
+      Sustancias.ID_Sustancias,
+    );
+  }
+
+  static void registrarRegistro() {
+    Actividades.registrar(
+      Databases.siteground_database_regepi,
+      Sustancias.sustancias['registerQuery'],
+      [
+        Pacientes.ID_Paciente,
+        // ********* ******** ******* ********* ***
+        Valores.exposicionBiomasa,
+        Valores.exposicionBiomasaDescripcion,
+        Valores.exposicionHumosQuimicos,
+        Valores.exposicionHumosQuimicosDescripcion,
+        Valores.exposicionPesticidas,
+        Valores.exposicionPesticidasDescripcion,
+        Valores.exposicionMetalesPesados,
+        Valores.exposicionMetalesPesadosDescripcion,
+        Valores.exposicionPsicotropicos,
+        Valores.exposicionPsicotropicosDescripcion,
+      ],
+    );
+  }
+
+// ********* ******** ******* ********* ***
+  static final Map<String, dynamic> sustancias = {
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
+        "DEFAULT CHARACTER SET utf8 "
+        "COLLATE utf8_unicode_ci;",
+    "showTables": "SHOW tables;",
+    "dropDatabase": "DROP DATABASE bd_regpace",
+    "describeTable": "DESCRIBE pace_apnp_sus;",
+    "showColumns": "SHOW columns FROM pace_apnp_sus",
+    "showInformation":
+        "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_apnp_sus'",
+    "createQuery": """
+    CREATE TABLE pace_apnp_sus (
+                          ID_PACE_APNP_SUS int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                          ID_Pace int(11) NOT NULL,
+                          Pace_APNP_SUS_Feca date NOT NULL,
+                          Pace_APNP_SUS_len_SINO tinyint(1) NOT NULL,
+                          Pace_APNP_SUS_qui_SINO tinyint(1) NOT NULL,
+                          Pace_APNP_SUS_pes_SINO tinyint(1) NOT NULL,
+                          Pace_APNP_SUS_met_SINO tinyint(1) NOT NULL,
+                          Pace_APNP_SUS_psi_SINO tinyint(1) NOT NULL
+                        ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8
+                        COLLATE=utf8_unicode_ci
+                        COMMENT='Tabla para Datos relacionados con Sustancias Toxicas';
+            """,
+    "truncateQuery": "TRUNCATE pace_apnp_sus",
+    "dropQuery": "DROP TABLE pace_apnp_sus",
+    "consultQuery": "SELECT * FROM pace_apnp_sus",
+    "consultIdQuery": "SELECT * FROM pace_apnp_sus WHERE ID_Pace = ?",
+    "consultByIdPrimaryQuery": "SELECT * FROM pace_apnp_sus WHERE ID_Pace = ?",
+    "consultAllIdsQuery": "SELECT ID_Pace FROM pace_apnp_sus",
+    "consultLastQuery": "SELECT * FROM pace_apnp_sus WHERE ID_Pace = ?",
+    "consultByName": "SELECT * FROM pace_apnp_sus WHERE Pace_APP_DEG LIKE '%",
+    "registerQuery": "INSERT INTO pace_apnp_sus (ID_Pace, Pace_APNP_SUS_Feca, "
+        "Pace_APNP_SUS_len_SINO, Pace_APNP_SUS_qui_SINO, Pace_APNP_SUS_pes_SINO, "
+        "Pace_APNP_SUS_met_SINO, Pace_APNP_SUS_psi_SINO) "
+        "VALUES (?,?,?,?,?,?,?)",
+    "updateQuery": "UPDATE pace_apnp_sus "
+        "SET ID_PACE_APNP_SUS = ?,  ID_Pace = ?,  Pace_APNP_SUS_Feca = ?,  "
+        "Pace_APNP_SUS_len_SINO = ?,  Pace_APNP_SUS_qui_SINO = ?,  Pace_APNP_SUS_pes_SINO = ?, "
+        "Pace_APNP_SUS_met_SINO = ?,  Pace_APNP_SUS_psi_SINO = ? "
+        "WHERE ID_PACE_APNP_SUS = ?",
+    "deleteQuery": "DELETE FROM pace_apnp_sus WHERE ID_pace_apnp_sus = ?",
+    "sustanciasColumns": [
+      "ID_Pace",
+    ],
+    "sustanciasItems": [
+      "ID_Pace",
+    ],
+    "sustanciasColums": [
+      "ID Paciente",
+    ],
+    "sustanciasStats": [
+      "Total_Administradores",
+    ],
+    "sustanciasStadistics": "SELECT "
+        "(SELECT IFNULL(AVG('Pace_SV_tas'), 0) FROM pace_apnp_sus WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAS,"
+        "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM pace_apnp_sus WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_apnp_sus  WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
+  };
+// ********* ******** ******* ********* ***
+}
+
+class Toxicomanias {
+  static int ID_Toxicomanias = 0;
+  // ********* ******** ******* ********* ***
+  static Map<String, dynamic> Toxicomania = {};
+  // ********* ******** ******* ********* ***
+  static void consultarRegistro() {
+    Actividades.consultarId(Databases.siteground_database_regepi,
+            Toxicomanias.toxicomanias['consultIdQuery'], Pacientes.ID_Paciente)
+        .then((value) {
+      // Asignación de Valores ********* ******** ******* ********* ***
+      Toxicomanias.Toxicomania = value;
+
+      // Toxicomanias.ID_Toxicomanias = value['ID_PACE_EYM'];
+      //
+      // Valores.esAlcoholismo =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.suspensionAlcoholismo =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.edadInicioAlcoholismo = value['Pace_EYM_xise_CREE'];
+      // Valores.duracionAnosAlcoholismo = value['Pace_EYM_xise_CREE'];
+      // Valores.periodicidadAlcoholismo = value['Pace_EYM_xise_CREE'];
+      // Valores.intervaloAlcoholismo = value['Pace_EYM_xise_CREE'];
+      // Valores.aosSuspensionAlcoholismo = value['Pace_EYM_xise_CREE'];
+      // Valores.tiposAlcoholismoDescripcion = value['Pace_EYM_xise_CREE'];
+      // // ********* ******** ******* ********* ***
+      // Valores.esTabaquismo =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.suspensionTabaquismo =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.edadInicioTabaquismo = value['Pace_EYM_xise_CREE'];
+      // Valores.duracionAnosTabaquismo = value['Pace_EYM_xise_CREE'];
+      // Valores.periodicidadTabaquismo = value['Pace_EYM_xise_CREE'];
+      // Valores.intervaloTabaquismo = value['Pace_EYM_xise_CREE'];
+      // Valores.aosSuspensionTabaquismo = value['Pace_EYM_xise_CREE'];
+      // Valores.tiposTabaquismoDescripcion = value['Pace_EYM_xise_CREE'];
+      // // ********* ******** ******* ********* ***
+      // Valores.esDrogadismo =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.suspensionDrogadismo =
+      // Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      // Valores.edadInicioDrogadismo = value['Pace_EYM_xise_CREE'];
+      // Valores.duracionAnosDrogadismo = value['Pace_EYM_xise_CREE'];
+      // Valores.periodicidadDrogadismo = value['Pace_EYM_xise_CREE'];
+      // Valores.intervaloDrogadismo = value['Pace_EYM_xise_CREE'];
+      // Valores.aosSuspensionDrogadismo = value['Pace_EYM_xise_CREE'];
+      // Valores.tiposDrogadismoDescripcion = value['Pace_EYM_xise_CREE'];
+      //
+      print("Valores de Toxicomanias asignado : : : $value");
+    });
+  }
+
+  static void actualizarRegistro() {
+    Actividades.actualizar(
+      Databases.siteground_database_regepi,
+      Toxicomanias.toxicomanias['updateQuery'],
+      [
+        Toxicomanias.ID_Toxicomanias,
+        Pacientes.ID_Paciente,
+        DateTime.now(),
+        // ********* ******** ******* ********* ***
+        Valores.esAlcoholismo,
+        Valores.edadInicioAlcoholismo,
+        Valores.duracionAnosAlcoholismo,
+        Valores.periodicidadAlcoholismo,
+        Valores.intervaloAlcoholismo,
+        Valores.suspensionAlcoholismo,
+        Valores.aosSuspensionAlcoholismo,
+        Valores.tiposAlcoholismoDescripcion,
+        // ********* ******** ******* ********* ***
+        Valores.esTabaquismo,
+        Valores.edadInicioTabaquismo,
+        Valores.duracionAnosTabaquismo,
+        Valores.periodicidadTabaquismo,
+        Valores.intervaloTabaquismo,
+        Valores.suspensionTabaquismo,
+        Valores.aosSuspensionTabaquismo,
+        Valores.tiposTabaquismoDescripcion,
+        // ********* ******** ******* ********* ***
+        Valores.esDrogadismo,
+        Valores.edadInicioDrogadismo,
+        Valores.duracionAnosDrogadismo,
+        Valores.periodicidadDrogadismo,
+        Valores.intervaloDrogadismo,
+        Valores.suspensionDrogadismo,
+        Valores.aosSuspensionDrogadismo,
+        Valores.tiposDrogadismoDescripcion,
+        // ********* ******** ******* ********* ***
+        Toxicomanias.ID_Toxicomanias,
+      ],
+      Toxicomanias.ID_Toxicomanias,
+    );
+  }
+
+  static void registrarRegistro() {
+    Actividades.registrar(
+      Databases.siteground_database_regepi,
+      Toxicomanias.toxicomanias['registerQuery'],
+      [
+        Pacientes.ID_Paciente,
+        // ********* ******** ******* ********* ***
+        Valores.esAlcoholismo,
+        Valores.suspensionAlcoholismo,
+        Valores.edadInicioAlcoholismo,
+        Valores.duracionAnosAlcoholismo,
+        Valores.periodicidadAlcoholismo,
+        Valores.intervaloAlcoholismo,
+        Valores.aosSuspensionAlcoholismo,
+        Valores.tiposAlcoholismoDescripcion,
+        // ********* ******** ******* ********* ***
+        Valores.esTabaquismo,
+        Valores.suspensionTabaquismo,
+        Valores.edadInicioTabaquismo,
+        Valores.duracionAnosTabaquismo,
+        Valores.periodicidadTabaquismo,
+        Valores.intervaloTabaquismo,
+        Valores.aosSuspensionTabaquismo,
+        Valores.tiposTabaquismoDescripcion,
+        // ********* ******** ******* ********* ***
+        Valores.esDrogadismo,
+        Valores.suspensionDrogadismo,
+        Valores.edadInicioDrogadismo,
+        Valores.duracionAnosDrogadismo,
+        Valores.periodicidadDrogadismo,
+        Valores.intervaloDrogadismo,
+        Valores.aosSuspensionDrogadismo,
+        Valores.tiposDrogadismoDescripcion,
+      ],
+    );
+  }
+
+// ********* ******** ******* ********* ***
+  static final Map<String, dynamic> toxicomanias = {
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
+        "DEFAULT CHARACTER SET utf8 "
+        "COLLATE utf8_unicode_ci;",
+    "showTables": "SHOW tables;",
+    "dropDatabase": "DROP DATABASE bd_regpace",
+    "describeTable": "DESCRIBE pace_apnp_dro;",
+    "showColumns": "SHOW columns FROM pace_apnp_dro",
+    "showInformation":
+        "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_apnp_dro'",
+    "createQuery": """
+    CREATE TABLE pace_apnp_dro (
+                      ID_PACE_APNP_DRO int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                      ID_Pace int(11) NOT NULL,
+                      Pace_APNP_DRO_Feca date NOT NULL,
+                      Pace_APNP_DRO_alc_SINO tinyint(1) NOT NULL,
+                      REGE_Pace_APNP_DRO_alc_INE int(200) NOT NULL,
+                      REGE_Pace_APNP_DRO_alc_DUR int(200) NOT NULL,
+                      REGE_Pace_APNP_DRO_alc_PER int(200) NOT NULL,
+                      Pace_APNP_DRO_alc_DUR_PER_ varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                      Pace_APNP_DRO_alc_SUS_SINO tinyint(1) NOT NULL,
+                      REGE_Pace_APNP_DRO_alc_SUS int(200) NOT NULL,
+                      Pace_APNP_DRO_alc_TIP varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                      Pace_APNP_DRO_tab_SINO tinyint(1) NOT NULL,
+                      REGE_Pace_APNP_DRO_tab_INE int(200) NOT NULL,
+                      REGE_Pace_APNP_DRO_tab_DUR int(200) NOT NULL,
+                      REGE_Pace_APNP_DRO_tab_PER int(200) NOT NULL,
+                      Pace_APNP_DRO_tab_DUR_PER_ varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                      Pace_APNP_DRO_tab_SUS_SINO tinyint(1) NOT NULL,
+                      REGE_Pace_APNP_DRO_tab_SUS int(200) NOT NULL,
+                      Pace_APNP_DRO_tab_TIP varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                      Pace_APNP_DRO_tox_SINO tinyint(1) NOT NULL,
+                      REGE_Pace_APNP_DRO_tox_INE int(200) NOT NULL,
+                      REGE_Pace_APNP_DRO_tox_DUR int(200) NOT NULL,
+                      REGE_Pace_APNP_DRO_tox_PER int(200) NOT NULL,
+                      Pace_APNP_DRO_tox_DUR_PER_ varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                      Pace_APNP_DRO_tox_SUS_SINO tinyint(1) NOT NULL,
+                      REGE_Pace_APNP_DRO_tox_SUS int(200) NOT NULL,
+                      Pace_APNP_DRO_tox_TIP varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                    ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8
+                    COLLATE=utf8_unicode_ci
+                    COMMENT='Tabla para Agregar antecedentes de Uso de Drogas Ilegales';
+            """,
+    "truncateQuery": "TRUNCATE pace_apnp_dro",
+    "dropQuery": "DROP TABLE pace_apnp_dro",
+    "consultQuery": "SELECT * FROM pace_apnp_dro",
+    "consultIdQuery": "SELECT * FROM pace_apnp_dro WHERE ID_Pace = ?",
+    "consultByIdPrimaryQuery": "SELECT * FROM pace_apnp_dro WHERE ID_Pace = ?",
+    "consultAllIdsQuery": "SELECT ID_Pace FROM pace_apnp_dro",
+    "consultLastQuery": "SELECT * FROM pace_apnp_dro WHERE ID_Pace = ?",
+    "consultByName": "SELECT * FROM pace_apnp_dro WHERE Pace_APP_DEG LIKE '%",
+    "registerQuery": "INSERT INTO pace_apnp_dro (ID_Pace, Pace_APNP_DRO_Feca, "
+        "Pace_APNP_DRO_alc_SINO, "
+        "REGE_Pace_APNP_DRO_alc_INE, REGE_Pace_APNP_DRO_alc_DUR, "
+        "REGE_Pace_APNP_DRO_alc_PER, Pace_APNP_DRO_alc_DUR_PER_, "
+        "Pace_APNP_DRO_alc_SUS_SINO, "
+        "REGE_Pace_APNP_DRO_alc_SUS, Pace_APNP_DRO_alc_TIP, "
+        "Pace_APNP_DRO_tab_SINO, "
+        "REGE_Pace_APNP_DRO_tab_INE, REGE_Pace_APNP_DRO_tab_DUR, "
+        "REGE_Pace_APNP_DRO_tab_PER, Pace_APNP_DRO_tab_DUR_PER_, "
+        "Pace_APNP_DRO_tab_SUS_SINO, "
+        "REGE_Pace_APNP_DRO_tab_SUS, Pace_APNP_DRO_tab_TIP, "
+        "Pace_APNP_DRO_tox_SINO, "
+        "REGE_Pace_APNP_DRO_tox_INE, REGE_Pace_APNP_DRO_tox_DUR, "
+        "REGE_Pace_APNP_DRO_tox_PER, Pace_APNP_DRO_tox_DUR_PER_, "
+        "Pace_APNP_DRO_tox_SUS_SINO, "
+        "REGE_Pace_APNP_DRO_tox_SUS, Pace_APNP_DRO_tox_TIP) "
+        "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+    "updateQuery": "UPDATE pace_apnp_dro "
+        "SET ID_PACE_APNP_DRO = ?,  ID_Pace = ?,  Pace_APNP_DRO_Feca = ?,  "
+        "Pace_APNP_DRO_alc_SINO = ?,  REGE_Pace_APNP_DRO_alc_INE = ?,  "
+        "REGE_Pace_APNP_DRO_alc_DUR = ?,  REGE_Pace_APNP_DRO_alc_PER = ?,  "
+        "Pace_APNP_DRO_alc_DUR_PER_ = ?,  Pace_APNP_DRO_alc_SUS_SINO = ?,  "
+        "REGE_Pace_APNP_DRO_alc_SUS = ?,  Pace_APNP_DRO_alc_TIP = ?,  "
+        "Pace_APNP_DRO_tab_SINO = ?,  REGE_Pace_APNP_DRO_tab_INE = ?,  "
+        "REGE_Pace_APNP_DRO_tab_DUR = ?,  REGE_Pace_APNP_DRO_tab_PER = ?,  "
+        "Pace_APNP_DRO_tab_DUR_PER_ = ?,  Pace_APNP_DRO_tab_SUS_SINO = ?,  "
+        "REGE_Pace_APNP_DRO_tab_SUS = ?,  Pace_APNP_DRO_tab_TIP = ?,  "
+        "Pace_APNP_DRO_tox_SINO = ?,  REGE_Pace_APNP_DRO_tox_INE = ?,  "
+        "REGE_Pace_APNP_DRO_tox_DUR = ?,  REGE_Pace_APNP_DRO_tox_PER = ?,  "
+        "Pace_APNP_DRO_tox_DUR_PER_ = ?,  Pace_APNP_DRO_tox_SUS_SINO = ?,  "
+        "REGE_Pace_APNP_DRO_tox_SUS = ?,  Pace_APNP_DRO_tox_TIP = ? "
+        "WHERE ID_Pace = ?",
+    "deleteQuery": "DELETE FROM pace_apnp_dro WHERE ID_pace_apnp_dro = ?",
+    "toxicomaniasColumns": [
+      "ID_Pace",
+    ],
+    "toxicomaniasItems": [
+      "ID_Pace",
+    ],
+    "toxicomaniasColums": [
+      "ID Paciente",
+    ],
+    "toxicomaniasStats": [
+      "Total_Administradores",
+    ],
+    "toxicomaniasStadistics": "SELECT "
+        "(SELECT IFNULL(AVG('Pace_SV_tas'), 0) FROM pace_apnp_dro WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAS,"
+        "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM pace_apnp_dro WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_apnp_dro  WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
+  };
+// ********* ******** ******* ********* ***
+}
+
+// ********* ******** ******* ********* ***   // ********* ******** ******* ********* ***
 class Sexualogicos {
   static int ID_Sexualogicos = 0;
   //
-  static String selectedDiagnosis = "";
-  //
-
   static Map<String, dynamic> Sexuales = {};
-
-  static List<String> actualDiagno = Dicotomicos.dicotomicos();
-  static List<String> actualTratamiento = Dicotomicos.dicotomicos();
-  static List<String> actualSuspendido = Dicotomicos.dicotomicos();
 
   static void ultimoRegistro() {
     Actividades.consultarId(Databases.siteground_database_regpace,
@@ -972,26 +2475,26 @@ class Sexualogicos {
   }
 
   static final Map<String, dynamic> sexuales = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_regpace` "
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_regpace`",
+    "dropDatabase": "DROP DATABASE bd_regpace",
     "describeTable": "DESCRIBE pace_aps;",
     "showColumns": "SHOW columns FROM pace_aps",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_aps'",
     "createQuery": """
-CREATE TABLE `pace_aps` (
-                  `ID_Pace_APS_ets_` int(11) NOT NULL,
-                  `ID_Pace` int(11) NOT NULL,
-                  `Pace_APS_ets_SINO` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_APS_ets` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_APS_ets_DIA` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_APS_ets_TRA_SINO` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_APS_ets_TRA` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_APS_ets_SUS_` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_APS_ets_SUS` varchar(300) COLLATE utf8_unicode_ci NOT NULL
+CREATE TABLE pace_aps (
+                  ID_Pace_APS_ets_ int(11) NOT NULL,
+                  ID_Pace int(11) NOT NULL,
+                  Pace_APS_ets_SINO varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_APS_ets varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_APS_ets_DIA varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_APS_ets_TRA_SINO varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_APS_ets_TRA varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_APS_ets_SUS_ varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_APS_ets_SUS varchar(300) COLLATE utf8_unicode_ci NOT NULL
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla para Antecedentes de Enf. de Transmision Sexual';
             """,
     "truncateQuery": "TRUNCATE pace_aps",
@@ -1003,7 +2506,7 @@ CREATE TABLE `pace_aps` (
     "consultLastQuery": "SELECT * FROM pace_aps WHERE ID_Pace = ?",
     "consultByName": "SELECT * FROM pace_aps WHERE Pace_APP_DEG LIKE '%",
     "registerQuery":
-        "INSERT INTO `pace_aps` (ID_Pace, Pace_APS_ets_SINO, Pace_APS_ets, "
+        "INSERT INTO pace_aps (ID_Pace, Pace_APS_ets_SINO, Pace_APS_ets, "
             "Pace_APS_ets_DIA, Pace_APS_ets_TRA_SINO, Pace_APS_ets_TRA, Pace_APS_ets_SUS_, "
             "Pace_APS_ets_SUS) "
             "VALUES (?,?,?,?,?,?,?,?)",
@@ -1035,72 +2538,122 @@ CREATE TABLE `pace_aps` (
 class Femeninologicos {
   static int ID_Femeninologicos = 0;
   //
-  static String selectedDiagnosis = "";
-  //
-
   static Map<String, dynamic> Femeninos = {};
 
-  static List<String> actualDiagno = Dicotomicos.dicotomicos();
-  static List<String> actualTratamiento = Dicotomicos.dicotomicos();
-  static List<String> actualSuspendido = Dicotomicos.dicotomicos();
-
-  static void ultimoRegistro() {
-    Actividades.consultarId(
-            Databases.siteground_database_regpace,
-            Femeninologicos.femeninos['consultLastQuery'],
-            Pacientes.ID_Paciente)
-        .then((value) {
-// Enfermedades de base del paciente, asi como las Hospitalarias.
-      Femeninologicos.Femeninos = value;
-    });
-  }
-
+  // ********* ******** ******* ********* ***
   static void consultarRegistro() {
-    Actividades.consultarAllById(Databases.siteground_database_regpace,
+    Actividades.consultarId(Databases.siteground_database_regepi,
             Femeninologicos.femeninos['consultIdQuery'], Pacientes.ID_Paciente)
         .then((value) {
-      // Enfermedades de base del paciente, asi como las Hospitalarias.
-      Pacientes.Femeninologicos = value;
+      // Asignación de Valores ********* ******** ******* ********* ***
+      Femeninologicos.Femeninos = value;
+
+      Femeninologicos.ID_Femeninologicos = value['ID_PACE_EYM'];
+      Valores.prejuiciosAtencion =
+          Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      Valores.creenciasPaciente = value['Pace_EYM_xise_CREE'];
+      Valores.valoresPaciente = value['Pace_EYM_xise_VALO'];
+      Valores.costumbresPaciente = value['Pace_EYM_xise_COSU'];
+
+      Valores.redesApoyo =
+          Dicotomicos.fromInt(value['Pace_EYM_REDE'], toBoolean: true) as bool?;
+      Valores.apoyoMadre =
+          Dicotomicos.fromInt(value['Pace_EYM_REDE_Ma'], toBoolean: true)
+              as bool?;
+      Valores.apoyoPadre =
+          Dicotomicos.fromInt(value['Pace_EYM_REDE_Pa'], toBoolean: true)
+              as bool?;
+      Valores.apoyoHermanos =
+          Dicotomicos.fromInt(value['Pace_EYM_REDE_He'], toBoolean: true)
+              as bool?;
+      Valores.apoyoHijosMayores =
+          Dicotomicos.fromInt(value['Pace_EYM_REDE_Hi'], toBoolean: true)
+              as bool?;
+
+      print("Valores de Femeninologicos asignado : : : $value");
     });
   }
 
+  static void actualizarRegistro() {
+    Actividades.actualizar(
+      Databases.siteground_database_regepi,
+      Femeninologicos.femeninos['updateQuery'],
+      [
+        Femeninologicos.ID_Femeninologicos,
+        Pacientes.ID_Paciente,
+        Valores.prejuiciosAtencion,
+        Valores.creenciasPaciente,
+        Valores.valoresPaciente,
+        Valores.costumbresPaciente,
+        Valores.redesApoyo,
+        Valores.apoyoMadre,
+        Valores.apoyoPadre,
+        Valores.apoyoHermanos,
+        Valores.apoyoHijosMayores,
+        Femeninologicos.ID_Femeninologicos,
+      ],
+      Femeninologicos.ID_Femeninologicos,
+    );
+  }
+
+  static void registrarRegistro() {
+    Actividades.registrar(
+      Databases.siteground_database_regepi,
+      Femeninologicos.femeninos['registerQuery'],
+      [
+        Pacientes.ID_Paciente,
+        Valores.prejuiciosAtencion,
+        Valores.creenciasPaciente,
+        Valores.valoresPaciente,
+        Valores.costumbresPaciente,
+        Valores.redesApoyo,
+        Valores.apoyoMadre,
+        Valores.apoyoPadre,
+        Valores.apoyoHermanos,
+        Valores.apoyoHijosMayores,
+      ],
+    );
+  }
+
+// ********* ******** ******* ********* ***
+
   static final Map<String, dynamic> femeninos = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_regpace` "
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_regpace`",
+    "dropDatabase": "DROP DATABASE bd_regpace",
     "describeTable": "DESCRIBE pace_aps_femi;",
     "showColumns": "SHOW columns FROM pace_aps_femi",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_aps_femi'",
-    "createQuery": """CREATE TABLE `pace_aps_femi` (
-                      `ID_PACE_APS` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                      `ID_Pace` int(11) NOT NULL,
-                      `PACE_APS_Feca` date NOT NULL,
-                      `Pace_APS_arc` tinyint(1) NOT NULL,
-                      `REGE_Pace_APS_arc` int(11) NOT NULL,
-                      `Pace_APS_cat_DIA` int(200) NOT NULL,
-                      `Pace_APS_cat_CIC` int(200) NOT NULL,
-                      `Pace_APS_pub_SINO` tinyint(1) NOT NULL,
-                      `Pace_APS_pub` int(200) NOT NULL,
-                      `Pace_APS_tel_SINO` tinyint(1) NOT NULL,
-                      `REGE_Pace_APS_tel` int(200) NOT NULL,
-                      `FEF_Pace_APS_fur` date NOT NULL,
-                      `REGE_Pace_APS_ivs` int(200) NOT NULL,
-                      `REGE_Pace_APS_pas` int(200) NOT NULL,
-                      `Pace_APS_ise_` varchar(200) COLLATE utf8_unicode_520_ci NOT NULL,
-                      `Pace_APS_mpf_` varchar(200) COLLATE utf8_unicode_520_ci NOT NULL,
-                      `REGE_Pace_APS_ago_GES` int(200) NOT NULL,
-                      `REGE_Pace_APS_ago_PAR` int(200) NOT NULL,
-                      `REGE_Pace_APS_ago_CES` int(200) NOT NULL,
-                      `REGE_Pace_APS_ago_ABO` int(200) NOT NULL,
-                      `Pace_APS_ago_CLI_SINO` tinyint(1) NOT NULL,
-                      `REGE_Pace_APS_ago_CLI` int(200) NOT NULL,
-                      `Pace_APS_ago_MEN_` tinyint(1) NOT NULL,
-                      `REGE_Pace_APS_ago_MEN` int(200) NOT NULL,
-                      `Pace_APS_ago_PAP_` tinyint(1) NOT NULL,
-                      `FEF_Pace_APS_ago_PAP` date NOT NULL
+    "createQuery": """CREATE TABLE pace_aps_femi (
+                      ID_PACE_APS int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                      ID_Pace int(11) NOT NULL,
+                      PACE_APS_Feca date NOT NULL,
+                      Pace_APS_arc tinyint(1) NOT NULL,
+                      REGE_Pace_APS_arc int(11) NOT NULL,
+                      Pace_APS_cat_DIA int(200) NOT NULL,
+                      Pace_APS_cat_CIC int(200) NOT NULL,
+                      Pace_APS_pub_SINO tinyint(1) NOT NULL,
+                      Pace_APS_pub int(200) NOT NULL,
+                      Pace_APS_tel_SINO tinyint(1) NOT NULL,
+                      REGE_Pace_APS_tel int(200) NOT NULL,
+                      FEF_Pace_APS_fur date NOT NULL,
+                      REGE_Pace_APS_ivs int(200) NOT NULL,
+                      REGE_Pace_APS_pas int(200) NOT NULL,
+                      Pace_APS_ise_ varchar(200) COLLATE utf8_unicode_520_ci NOT NULL,
+                      Pace_APS_mpf_ varchar(200) COLLATE utf8_unicode_520_ci NOT NULL,
+                      REGE_Pace_APS_ago_GES int(200) NOT NULL,
+                      REGE_Pace_APS_ago_PAR int(200) NOT NULL,
+                      REGE_Pace_APS_ago_CES int(200) NOT NULL,
+                      REGE_Pace_APS_ago_ABO int(200) NOT NULL,
+                      Pace_APS_ago_CLI_SINO tinyint(1) NOT NULL,
+                      REGE_Pace_APS_ago_CLI int(200) NOT NULL,
+                      Pace_APS_ago_MEN_ tinyint(1) NOT NULL,
+                      REGE_Pace_APS_ago_MEN int(200) NOT NULL,
+                      Pace_APS_ago_PAP_ tinyint(1) NOT NULL,
+                      FEF_Pace_APS_ago_PAP date NOT NULL
                     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_520_ci COMMENT='Tabla para Antecedentes Gineco - Obstetricos';
             """,
     "truncateQuery": "TRUNCATE pace_aps_femi",
@@ -1155,61 +2708,111 @@ class Femeninologicos {
 
 class Masculinologicos {
   static int ID_Masculinologicos = 0;
-  //
-  static String selectedDiagnosis = "";
-  //
-
+  // ********* ******** ******* ********* ***
   static Map<String, dynamic> Masculinos = {};
 
-  static List<String> actualDiagno = Dicotomicos.dicotomicos();
-  static List<String> actualTratamiento = Dicotomicos.dicotomicos();
-  static List<String> actualSuspendido = Dicotomicos.dicotomicos();
-
-  static void ultimoRegistro() {
-    Actividades.consultarId(
-            Databases.siteground_database_regpace,
-            Masculinologicos.masculinos['consultLastQuery'],
-            Pacientes.ID_Paciente)
-        .then((value) {
-// Enfermedades de base del paciente, asi como las Hospitalarias.
-      Masculinologicos.Masculinos = value;
-    });
-  }
-
+  // ********* ******** ******* ********* ***
   static void consultarRegistro() {
-    Actividades.consultarAllById(
-            Databases.siteground_database_regpace,
+    Actividades.consultarId(
+            Databases.siteground_database_regepi,
             Masculinologicos.masculinos['consultIdQuery'],
             Pacientes.ID_Paciente)
         .then((value) {
-      // Enfermedades de base del paciente, asi como las Hospitalarias.
-      Pacientes.Masculinologicos = value;
+      // Asignación de Valores ********* ******** ******* ********* ***
+      Masculinologicos.Masculinos = value;
+
+      Masculinologicos.ID_Masculinologicos = value['ID_PACE_EYM'];
+      Valores.prejuiciosAtencion =
+          Dicotomicos.fromInt(value['Pace_EYM_xise'], toBoolean: true) as bool?;
+      Valores.creenciasPaciente = value['Pace_EYM_xise_CREE'];
+      Valores.valoresPaciente = value['Pace_EYM_xise_VALO'];
+      Valores.costumbresPaciente = value['Pace_EYM_xise_COSU'];
+
+      Valores.redesApoyo =
+          Dicotomicos.fromInt(value['Pace_EYM_REDE'], toBoolean: true) as bool?;
+      Valores.apoyoMadre =
+          Dicotomicos.fromInt(value['Pace_EYM_REDE_Ma'], toBoolean: true)
+              as bool?;
+      Valores.apoyoPadre =
+          Dicotomicos.fromInt(value['Pace_EYM_REDE_Pa'], toBoolean: true)
+              as bool?;
+      Valores.apoyoHermanos =
+          Dicotomicos.fromInt(value['Pace_EYM_REDE_He'], toBoolean: true)
+              as bool?;
+      Valores.apoyoHijosMayores =
+          Dicotomicos.fromInt(value['Pace_EYM_REDE_Hi'], toBoolean: true)
+              as bool?;
+
+      print("Valores de Masculinologicos asignado : : : $value");
     });
   }
 
+  static void actualizarRegistro() {
+    Actividades.actualizar(
+      Databases.siteground_database_regepi,
+      Masculinologicos.masculinos['updateQuery'],
+      [
+        Masculinologicos.ID_Masculinologicos,
+        Pacientes.ID_Paciente,
+        Valores.prejuiciosAtencion,
+        Valores.creenciasPaciente,
+        Valores.valoresPaciente,
+        Valores.costumbresPaciente,
+        Valores.redesApoyo,
+        Valores.apoyoMadre,
+        Valores.apoyoPadre,
+        Valores.apoyoHermanos,
+        Valores.apoyoHijosMayores,
+        Masculinologicos.ID_Masculinologicos,
+      ],
+      Masculinologicos.ID_Masculinologicos,
+    );
+  }
+
+  static void registrarRegistro() {
+    Actividades.registrar(
+      Databases.siteground_database_regepi,
+      Masculinologicos.masculinos['registerQuery'],
+      [
+        Pacientes.ID_Paciente,
+        Valores.prejuiciosAtencion,
+        Valores.creenciasPaciente,
+        Valores.valoresPaciente,
+        Valores.costumbresPaciente,
+        Valores.redesApoyo,
+        Valores.apoyoMadre,
+        Valores.apoyoPadre,
+        Valores.apoyoHermanos,
+        Valores.apoyoHijosMayores,
+      ],
+    );
+  }
+
+// ********* ******** ******* ********* ***
+
   static final Map<String, dynamic> masculinos = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_regpace` "
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_regpace`",
+    "dropDatabase": "DROP DATABASE bd_regpace",
     "describeTable": "DESCRIBE pace_aps_masc;",
     "showColumns": "SHOW columns FROM pace_aps_masc",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_aps_masc'",
     "createQuery": """
-CREATE TABLE `pace_aps_masc` (
-                      `ID_PACE_APS` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                      `ID_Pace` int(11) NOT NULL,
-                      `PACE_APS_Feca` date NOT NULL,
-                      `REGE_Pace_APS_cri_SINO` tinyint(1) NOT NULL,
-                      `Pace_APS_cri` int(200) NOT NULL,
-                      `REGE_Pace_APS_cir_SINO` tinyint(1) NOT NULL,
-                      `Pace_APS_cir` int(200) NOT NULL,
-                      `REGE_Pace_APS_ivs` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-                      `REGE_Pace_APS_pas` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-                      `Pace_APS_ise_` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-                      `Pace_APS_mpf_` varchar(200) COLLATE utf8_unicode_ci NOT NULL
+CREATE TABLE pace_aps_masc (
+                      ID_PACE_APS int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                      ID_Pace int(11) NOT NULL,
+                      PACE_APS_Feca date NOT NULL,
+                      REGE_Pace_APS_cri_SINO tinyint(1) NOT NULL,
+                      Pace_APS_cri int(200) NOT NULL,
+                      REGE_Pace_APS_cir_SINO tinyint(1) NOT NULL,
+                      Pace_APS_cir int(200) NOT NULL,
+                      REGE_Pace_APS_ivs varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                      REGE_Pace_APS_pas varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                      Pace_APS_ise_ varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                      Pace_APS_mpf_ varchar(200) COLLATE utf8_unicode_ci NOT NULL
                     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de Antecedentes Andrologicos';
             """,
     "truncateQuery": "TRUNCATE pace_aps_masc",
@@ -1220,7 +2823,7 @@ CREATE TABLE `pace_aps_masc` (
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_aps_masc",
     "consultLastQuery": "SELECT * FROM pace_aps_masc WHERE ID_Pace = ?",
     "consultByName": "SELECT * FROM pace_aps_masc WHERE Pace_APP_DEG LIKE '%",
-    "registerQuery": "INSERT INTO `pace_aps_masc` (ID_Pace, PACE_APS_Feca, "
+    "registerQuery": "INSERT INTO pace_aps_masc (ID_Pace, PACE_APS_Feca, "
         "REGE_Pace_APS_cri_SINO, Pace_APS_cri, REGE_Pace_APS_cir_SINO, Pace_APS_cir, "
         "REGE_Pace_APS_ivs, REGE_Pace_APS_pas, Pace_APS_ise_, Pace_APS_mpf_)"
         "VALUES (?,?,?,?,?,?,?,?,?,?)",
@@ -1248,7 +2851,10 @@ CREATE TABLE `pace_aps_masc` (
         "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM pace_aps_masc WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
         "(SELECT IFNULL(count(*), 0) FROM pace_aps_masc WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
   };
+// ********* ******** ******* ********* ***
 }
+
+// ********* ******** ******* ********* ***   // ********* ******** ******* ********* ***
 
 class Patologicos {
   static int ID_Patologicos = 0;
@@ -1289,26 +2895,26 @@ class Patologicos {
   }
 
   static final Map<String, dynamic> patologicos = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_regpace` "
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_regpace`",
+    "dropDatabase": "DROP DATABASE bd_regpace",
     "describeTable": "DESCRIBE pace_app_deg;",
     "showColumns": "SHOW columns FROM pace_app_deg",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_app_deg'",
-    "createQuery": """CREATE TABLE `pace_app_deg` (
-                        `ID_PACE_APP_DEG` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                        `ID_Pace` int(11) NOT NULL,
-                        `Pace_APP_DEG_SINO` tinyint(1) NOT NULL,
-                        `Pace_APP_DEG` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-                        `Pace_APP_DEG_com` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-                        `Pace_APP_DEG_dia` int(200) NOT NULL,
-                        `Pace_APP_DEG_tra_SINO` tinyint(1) NOT NULL,
-                        `Pace_APP_DEG_tra` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-                        `Pace_APP_DEG_sus_SINO` tinyint(1) NOT NULL,
-                        `Pace_APP_DEG_sus` varchar(200) COLLATE utf8_unicode_ci NOT NULL
+    "createQuery": """CREATE TABLE pace_app_deg (
+                        ID_PACE_APP_DEG int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                        ID_Pace int(11) NOT NULL,
+                        Pace_APP_DEG_SINO tinyint(1) NOT NULL,
+                        Pace_APP_DEG varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                        Pace_APP_DEG_com varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+                        Pace_APP_DEG_dia int(200) NOT NULL,
+                        Pace_APP_DEG_tra_SINO tinyint(1) NOT NULL,
+                        Pace_APP_DEG_tra varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                        Pace_APP_DEG_sus_SINO tinyint(1) NOT NULL,
+                        Pace_APP_DEG_sus varchar(200) COLLATE utf8_unicode_ci NOT NULL
                         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci 
                         COMMENT='Tabla para Antecedentes Cronico Degenerativos';
             """,
@@ -1320,7 +2926,7 @@ class Patologicos {
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_app_deg",
     "consultLastQuery": "SELECT * FROM pace_app_deg WHERE ID_Pace = ?",
     "consultByName": "SELECT * FROM pace_app_deg WHERE Pace_APP_DEG LIKE '%",
-    "registerQuery": "INSERT INTO `pace_app_deg` (ID_Pace, Pace_APP_DEG_SINO, "
+    "registerQuery": "INSERT INTO pace_app_deg (ID_Pace, Pace_APP_DEG_SINO, "
         "Pace_APP_DEG, Pace_APP_DEG_com, "
         "Pace_APP_DEG_dia, Pace_APP_DEG_tra_SINO, "
         "Pace_APP_DEG_tra, Pace_APP_DEG_sus_SINO, "
@@ -1411,13 +3017,15 @@ class Alergicos {
       Alergicos.Alergias = value;
     });
   }
+
   static void registros() {
     Actividades.consultarAllById(
-        Databases.siteground_database_regpace,
-        Alergicos.alergias['consultByIdPrimaryQuery'],
-        Pacientes.ID_Paciente)
+            Databases.siteground_database_regpace,
+            Alergicos.alergias['consultByIdPrimaryQuery'],
+            Pacientes.ID_Paciente)
         .then((value) => Pacientes.Alergicos = value);
   }
+
   static void consultarRegistro() {
     Actividades.consultarAllById(Databases.siteground_database_regpace,
             Alergicos.alergias['consultIdQuery'], Pacientes.ID_Paciente)
@@ -1428,24 +3036,24 @@ class Alergicos {
   }
 
   static final Map<String, dynamic> alergias = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_regpace` "
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_regpace`",
+    "dropDatabase": "DROP DATABASE bd_regpace",
     "describeTable": "DESCRIBE pace_app_ale;",
     "showColumns": "SHOW columns FROM pace_app_ale",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_app_ale'",
     "createQuery": """CREATE TABLE pace_app_ale (
-                      `ID_PACE_APP_ALE` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                      `ID_Pace` int(11) NOT NULL,
-                      `Pace_APP_ALE_SINO` tinyint(1) NOT NULL,
-                      `Pace_APP_ALE` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-                      `Pace_APP_ALE_com` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-                      `Pace_APP_ALE_dia` int(200) NOT NULL,
-                      `Pace_APP_ALE_tra_SINO` tinyint(1) COLLATE utf8_unicode_ci NOT NULL,
-                      `Pace_APP_ALE_tra` varchar(200) COLLATE utf8_unicode_ci NOT NULL
+                      ID_PACE_APP_ALE int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                      ID_Pace int(11) NOT NULL,
+                      Pace_APP_ALE_SINO tinyint(1) NOT NULL,
+                      Pace_APP_ALE varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                      Pace_APP_ALE_com varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                      Pace_APP_ALE_dia int(200) NOT NULL,
+                      Pace_APP_ALE_tra_SINO tinyint(1) COLLATE utf8_unicode_ci NOT NULL,
+                      Pace_APP_ALE_tra varchar(200) COLLATE utf8_unicode_ci NOT NULL
                     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla para Antecedentes Alérgicos.';
             """,
     "truncateQuery": "TRUNCATE pace_app_ale",
@@ -1506,13 +3114,15 @@ class Quirurgicos {
       Quirurgicos.Cirugias = value;
     });
   }
+
   static void registros() {
     Actividades.consultarAllById(
-        Databases.siteground_database_regpace,
-        Quirurgicos.cirugias['consultByIdPrimaryQuery'],
-        Pacientes.ID_Paciente)
+            Databases.siteground_database_regpace,
+            Quirurgicos.cirugias['consultByIdPrimaryQuery'],
+            Pacientes.ID_Paciente)
         .then((value) => Pacientes.Quirurgicos = value);
   }
+
   static void consultarRegistro() {
     Actividades.consultarAllById(Databases.siteground_database_regpace,
             Quirurgicos.cirugias['consultIdQuery'], Pacientes.ID_Paciente)
@@ -1523,23 +3133,23 @@ class Quirurgicos {
   }
 
   static final Map<String, dynamic> cirugias = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_regpace` "
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_regpace`",
+    "dropDatabase": "DROP DATABASE bd_regpace",
     "describeTable": "DESCRIBE pace_app_qui;",
     "showColumns": "SHOW columns FROM pace_app_qui",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_app_qui'",
     "createQuery": """CREATE TABLE pace_app_qui (
-                      `ID_PACE_APP_QUI` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                      `ID_Pace` int(11) NOT NULL,
-                      `Pace_APP_QUI_SINO` tinyint(1) NOT NULL,
-                      `Pace_APP_QUI` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-                      `Pace_APP_QUI_dia` int(200) NOT NULL,
-                      `Pace_APP_QUI_com_SINO` tinyint(1) NOT NULL,
-                      `Pace_APP_QUI_com` varchar(200) COLLATE utf8_unicode_ci NOT NULL
+                      ID_PACE_APP_QUI int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                      ID_Pace int(11) NOT NULL,
+                      Pace_APP_QUI_SINO tinyint(1) NOT NULL,
+                      Pace_APP_QUI varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                      Pace_APP_QUI_dia int(200) NOT NULL,
+                      Pace_APP_QUI_com_SINO tinyint(1) NOT NULL,
+                      Pace_APP_QUI_com varchar(200) COLLATE utf8_unicode_ci NOT NULL
                     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla para Antecedentes Quirurgicos.';
             """,
     "truncateQuery": "TRUNCATE pace_app_qui",
@@ -1551,7 +3161,7 @@ class Quirurgicos {
     "consultLastQuery": "SELECT * FROM pace_app_qui WHERE ID_Pace = ?",
     "consultByName": "SELECT * FROM pace_app_qui WHERE Pace_APP_DEG LIKE '%",
     "registerQuery":
-        "INSERT INTO `pace_app_qui` (ID_Pace, Pace_APP_QUI_SINO, Pace_APP_QUI, "
+        "INSERT INTO pace_app_qui (ID_Pace, Pace_APP_QUI_SINO, Pace_APP_QUI, "
             "Pace_APP_QUI_dia, Pace_APP_QUI_com_SINO, Pace_APP_QUI_com) "
             "VALUES (?,?,?,?,?,?)",
     "updateQuery": "UPDATE pace_app_qui "
@@ -1600,13 +3210,15 @@ class Transfusionales {
       Transfusionales.Transfusiones = value;
     });
   }
+
   static void registros() {
     Actividades.consultarAllById(
-        Databases.siteground_database_regpace,
-        Transfusionales.transfusiones['consultByIdPrimaryQuery'],
-        Pacientes.ID_Paciente)
+            Databases.siteground_database_regpace,
+            Transfusionales.transfusiones['consultByIdPrimaryQuery'],
+            Pacientes.ID_Paciente)
         .then((value) => Pacientes.Transfusionales = value);
   }
+
   static void consultarRegistro() {
     Actividades.consultarAllById(
             Databases.siteground_database_regpace,
@@ -1619,23 +3231,23 @@ class Transfusionales {
   }
 
   static final Map<String, dynamic> transfusiones = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_regpace` "
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_regpace`",
+    "dropDatabase": "DROP DATABASE bd_regpace",
     "describeTable": "DESCRIBE pace_app_tra;",
     "showColumns": "SHOW columns FROM pace_app_tra",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_app_tra'",
     "createQuery": """CREATE TABLE pace_app_tra (
-                      `ID_PACE_APP_TRA` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                      `ID_Pace` int(11) NOT NULL,
-                      `Pace_APP_TRA_SINO` tinyint(1) NOT NULL,
-                      `Pace_APP_TRA` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-                      `Pace_APP_TRA_dia` int(11) NOT NULL,
-                      `Pace_APP_TRA_com_SINO` tinyint(1) NOT NULL,
-                      `Pace_APP_TRA_com` varchar(200) COLLATE utf8_unicode_ci NOT NULL
+                      ID_PACE_APP_TRA int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                      ID_Pace int(11) NOT NULL,
+                      Pace_APP_TRA_SINO tinyint(1) NOT NULL,
+                      Pace_APP_TRA varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                      Pace_APP_TRA_dia int(11) NOT NULL,
+                      Pace_APP_TRA_com_SINO tinyint(1) NOT NULL,
+                      Pace_APP_TRA_com varchar(200) COLLATE utf8_unicode_ci NOT NULL
                     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla para Antecedentes Transfusionales.';
             """,
     "truncateQuery": "TRUNCATE pace_app_tra",
@@ -1646,7 +3258,7 @@ class Transfusionales {
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_app_tra",
     "consultLastQuery": "SELECT * FROM pace_app_tra WHERE ID_Pace = ?",
     "consultByName": "SELECT * FROM pace_app_tra WHERE Pace_APP_DEG LIKE '%",
-    "registerQuery": "INSERT INTO `pace_app_tra` (ID_Pace, Pace_APP_TRA_SINO, "
+    "registerQuery": "INSERT INTO pace_app_tra (ID_Pace, Pace_APP_TRA_SINO, "
         "Pace_APP_TRA, Pace_APP_TRA_dia, Pace_APP_TRA_com_SINO, "
         "Pace_APP_TRA_com) "
         "VALUES (?,?,?,?,?,?)",
@@ -1697,13 +3309,15 @@ class Traumatologicos {
       Traumatologicos.Traumaticos = value;
     });
   }
+
   static void registros() {
     Actividades.consultarAllById(
-        Databases.siteground_database_regpace,
-        Traumatologicos.traumaticos['consultByIdPrimaryQuery'],
-        Pacientes.ID_Paciente)
+            Databases.siteground_database_regpace,
+            Traumatologicos.traumaticos['consultByIdPrimaryQuery'],
+            Pacientes.ID_Paciente)
         .then((value) => Pacientes.Traumatologicos = value);
   }
+
   static void consultarRegistro() {
     Actividades.consultarAllById(
             Databases.siteground_database_regpace,
@@ -1716,22 +3330,22 @@ class Traumatologicos {
   }
 
   static final Map<String, dynamic> traumaticos = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_regpace` "
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_regpace`",
+    "dropDatabase": "DROP DATABASE bd_regpace",
     "describeTable": "DESCRIBE pace_app_inf;",
     "showColumns": "SHOW columns FROM pace_app_inf",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_app_inf'",
     "createQuery": """CREATE TABLE pace_app_inf (
-                      `ID_PACE_APP_INF` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                      `ID_Pace` int(11) NOT NULL,
-                      `Pace_APP_INF_SINO` tinyint(1) NOT NULL,
-                      `Pace_APP_INF` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-                      `Pace_APP_INF_dia` int(11) NOT NULL,
-                      `Pace_APP_INF_tra` varchar(200) COLLATE utf8_unicode_ci NOT NULL
+                      ID_PACE_APP_INF int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                      ID_Pace int(11) NOT NULL,
+                      Pace_APP_INF_SINO tinyint(1) NOT NULL,
+                      Pace_APP_INF varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                      Pace_APP_INF_dia int(11) NOT NULL,
+                      Pace_APP_INF_tra varchar(200) COLLATE utf8_unicode_ci NOT NULL
                     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla para Antecedentes Enfermedades de la Infancia';
             """,
     "truncateQuery": "TRUNCATE pace_app_inf",
@@ -1743,7 +3357,7 @@ class Traumatologicos {
     "consultLastQuery": "SELECT * FROM pace_app_inf WHERE ID_Pace = ?",
     "consultByName": "SELECT * FROM pace_app_inf WHERE Pace_APP_DEG LIKE '%",
     "registerQuery":
-        "INSERT INTO `pace_app_inf` (ID_PACE_APP_INF, ID_Pace, Pace_APP_INF_SINO, "
+        "INSERT INTO pace_app_inf (ID_PACE_APP_INF, ID_Pace, Pace_APP_INF_SINO, "
             "Pace_APP_INF, Pace_APP_INF_dia, Pace_APP_INF_tra) "
             "VALUES (?,?,?,?,?)",
     "updateQuery": "UPDATE pace_app_inf "
@@ -1805,23 +3419,23 @@ class Antirretrovirales {
   }
 
   static final Map<String, dynamic> antirretroviral = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_regpace` "
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_regpace`",
+    "dropDatabase": "DROP DATABASE bd_regpace",
     "describeTable": "DESCRIBE pace_aps;",
     "showColumns": "SHOW columns FROM pace_aps",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_aps'",
     "createQuery": """CREATE TABLE pace_tar (
-                  `ID_TAR` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                  `ID_Pace` int(11) NOT NULL,
-                  `TARactu` tinyint(1) NOT NULL,
-                  `Pace_Fe_TAR` date NOT NULL,
-                  `Pace_Ca_TAR` date NOT NULL,
-                  `Pace_TAR` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_Mov_TAR` varchar(300) COLLATE utf8_unicode_ci NOT NULL
+                  ID_TAR int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                  ID_Pace int(11) NOT NULL,
+                  TARactu tinyint(1) NOT NULL,
+                  Pace_Fe_TAR date NOT NULL,
+                  Pace_Ca_TAR date NOT NULL,
+                  Pace_TAR varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_Mov_TAR varchar(300) COLLATE utf8_unicode_ci NOT NULL
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla para Agregar Datos de Antirretrovirales';
             """,
     "truncateQuery": "TRUNCATE pace_aps",
@@ -1833,7 +3447,7 @@ class Antirretrovirales {
     "consultLastQuery": "SELECT * FROM pace_aps WHERE ID_Pace = ?",
     "consultByName": "SELECT * FROM pace_aps WHERE Pace_APP_DEG LIKE '%",
     "registerQuery":
-        "INSERT INTO `pace_tar` (ID_Pace, TARactu, Pace_Fe_TAR, Pace_Ca_TAR, Pace_TAR, Pace_Mov_TAR) "
+        "INSERT INTO pace_tar (ID_Pace, TARactu, Pace_Fe_TAR, Pace_Ca_TAR, Pace_TAR, Pace_Mov_TAR) "
             "VALUES (?,?,?,?,?,?)",
     "updateQuery": "UPDATE pace_tar "
         "SET ID_TAR = ?, ID_Pace = ?, TARactu = ?, "
@@ -1891,26 +3505,26 @@ class Vihs {
   }
 
   static final Map<String, dynamic> vih = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_regpace` "
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_regpace`",
+    "dropDatabase": "DROP DATABASE bd_regpace",
     "describeTable": "DESCRIBE pace_tar_vih;",
     "showColumns": "SHOW columns FROM pace_tar_vih",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_tar_vih'",
     "createQuery": """CREATE TABLE pace_tar_vih (
-                  `ID_TARVIH` int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                  `ID_Pace` int(10) NOT NULL,
-                  `Pace_DIA_VIH` date NOT NULL,
-                  `Pace_CRIBAMO` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_CDC_DIA` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_Fese_TAR` date NOT NULL,
-                  `Pace_Fe_TAR` date NOT NULL,
-                  `Rede_TAR_SINO` tinyint(1) NOT NULL,
-                  `Pace_TAR_EMBA` tinyint(1) NOT NULL,
-                  `Pace_No_TAR` int(10) NOT NULL
+                  ID_TARVIH int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                  ID_Pace int(10) NOT NULL,
+                  Pace_DIA_VIH date NOT NULL,
+                  Pace_CRIBAMO varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_CDC_DIA varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_Fese_TAR date NOT NULL,
+                  Pace_Fe_TAR date NOT NULL,
+                  Rede_TAR_SINO tinyint(1) NOT NULL,
+                  Pace_TAR_EMBA tinyint(1) NOT NULL,
+                  Pace_No_TAR int(10) NOT NULL
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla para Agregar Datos de Retrovirosis';
             """,
     "truncateQuery": "TRUNCATE pace_tar_vih",
@@ -1921,11 +3535,11 @@ class Vihs {
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_tar_vih",
     "consultLastQuery": "SELECT * FROM pace_tar_vih WHERE ID_Pace = ?",
     "consultByName": "SELECT * FROM pace_tar_vih WHERE Pace_APP_DEG LIKE '%",
-    "registerQuery": "INSERT INTO pace_tar_vih (`ID_Pace`, "
-        "`Pace_DIA_VIH`, `Pace_CRIBAMO`, "
-        "`Pace_CDC_DIA`, `Pace_Fese_TAR`, "
-        "`Pace_Fe_TAR`, `Rede_TAR_SINO`, "
-        "`Pace_TAR_EMBA`, `Pace_No_TAR`) "
+    "registerQuery": "INSERT INTO pace_tar_vih (ID_Pace, "
+        "Pace_DIA_VIH, Pace_CRIBAMO, "
+        "Pace_CDC_DIA, Pace_Fese_TAR, "
+        "Pace_Fe_TAR, Rede_TAR_SINO, "
+        "Pace_TAR_EMBA, Pace_No_TAR) "
         "VALUES (?,?,?,?,?,?,?,?,?)",
     "updateQuery": "UPDATE pace_tar_vih "
         "SET ID_TARVIH = ?, ID_Pace = ?, Pace_DIA_VIH = ?, "
@@ -1985,34 +3599,34 @@ class Embarazos {
   }
 
   static final Map<String, dynamic> embarazo = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_regpace` "
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_regpace`",
+    "dropDatabase": "DROP DATABASE bd_regpace",
     "describeTable": "DESCRIBE pace_tar_embarazo;",
     "showColumns": "SHOW columns FROM pace_tar_embarazo",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_tar_embarazo'",
-    "createQuery": """CREATE TABLE `pace_emba` (
-                  `ID_Pace_EMB` int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                  `ID_Pace` int(10) NOT NULL,
-                  `ID_Gestacion` int(10) NOT NULL,
-                  `Pace_Feca_EMB` date NOT NULL,
-                  `Pace_Feca_FUR` date NOT NULL,
-                  `Pace_EMB_fpp` varchar(20) NOT NULL,
-                  `Pace_EMB_c_sit_fet` int(10) NOT NULL,
-                  `Pace_EMB_afu` int(10) NOT NULL,
-                  `Pace_EMB_pfe` double NOT NULL,
-                  `Pace_EMB_c_johnson` double NOT NULL,
-                  `Pace_EMB_fcf` int(10) NOT NULL,
-                  `Pace_EMB_gmp` varchar(20) NOT NULL,
-                  `Pace_EMB_dbp` double NOT NULL, 
-                  `Pace_EMB_cc` double NOT NULL, 
-                  `Pace_EMB_ca` double NOT NULL, 
-                  `Pace_EMB_lfe` double NOT NULL, 
-                  `Pace_EMB_phelan` double NOT NULL, 
-                  `Pace_EMB_pfe_usg` double NOT NULL 
+    "createQuery": """CREATE TABLE pace_emba (
+                  ID_Pace_EMB int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                  ID_Pace int(10) NOT NULL,
+                  ID_Gestacion int(10) NOT NULL,
+                  Pace_Feca_EMB date NOT NULL,
+                  Pace_Feca_FUR date NOT NULL,
+                  Pace_EMB_fpp varchar(20) NOT NULL,
+                  Pace_EMB_c_sit_fet int(10) NOT NULL,
+                  Pace_EMB_afu int(10) NOT NULL,
+                  Pace_EMB_pfe double NOT NULL,
+                  Pace_EMB_c_johnson double NOT NULL,
+                  Pace_EMB_fcf int(10) NOT NULL,
+                  Pace_EMB_gmp varchar(20) NOT NULL,
+                  Pace_EMB_dbp double NOT NULL, 
+                  Pace_EMB_cc double NOT NULL, 
+                  Pace_EMB_ca double NOT NULL, 
+                  Pace_EMB_lfe double NOT NULL, 
+                  Pace_EMB_phelan double NOT NULL, 
+                  Pace_EMB_pfe_usg double NOT NULL 
                 ) ENGINE=InnoDB AUTO_INCREMENT=1 
                 DEFAULT CHARSET=utf8 
                 COLLATE=utf8_unicode_ci 
@@ -2090,29 +3704,29 @@ class Vitales {
   }
 
   static final Map<String, dynamic> vitales = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_regpace` "
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_regpace`",
+    "dropDatabase": "DROP DATABASE bd_regpace",
     "describeTable": "DESCRIBE pace_sv;",
     "showColumns": "SHOW columns FROM pace_sv",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_sv'",
-    "createQuery": """CREATE TABLE `pace_sv` (
-              `ID_Pace_SV` int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-              `ID_Pace` int(10) NOT NULL,
-              `Pace_Feca_SV` date NOT NULL,
-              `Pace_SV_tas` int(10) NOT NULL,
-              `Pace_SV_tad` int(10) NOT NULL,
-              `Pace_SV_fc` int(10) NOT NULL,
-              `Pace_SV_fr` int(10) NOT NULL,
-              `Pace_SV_tc` double NOT NULL,
-              `Pace_SV_spo` int(10) NOT NULL,
-              `Pace_SV_est` double NOT NULL,
-              `Pace_SV_pct` double NOT NULL, 
-              `Pace_SV_glu` double NOT NULL, 
-              `Pace_SV_glu_ayu` double NOT NULL
+    "createQuery": """CREATE TABLE pace_sv (
+              ID_Pace_SV int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+              ID_Pace int(10) NOT NULL,
+              Pace_Feca_SV date NOT NULL,
+              Pace_SV_tas int(10) NOT NULL,
+              Pace_SV_tad int(10) NOT NULL,
+              Pace_SV_fc int(10) NOT NULL,
+              Pace_SV_fr int(10) NOT NULL,
+              Pace_SV_tc double NOT NULL,
+              Pace_SV_spo int(10) NOT NULL,
+              Pace_SV_est double NOT NULL,
+              Pace_SV_pct double NOT NULL, 
+              Pace_SV_glu double NOT NULL, 
+              Pace_SV_glu_ayu double NOT NULL
             ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla para Agregar Signos Vitales del Paciente.';""",
     "truncateQuery": "TRUNCATE pace_sv",
     "dropQuery": "DROP TABLE pace_sv",
@@ -2204,35 +3818,35 @@ class Vitales {
         "(SELECT IFNULL(count(*), 0) FROM pace_sv WHERE ID_Pace = :id) as Total_Registros;"
   };
   static final Map<String, dynamic> antropo = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_regpace` "
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_regpace`",
+    "dropDatabase": "DROP DATABASE bd_regpace",
     "describeTable": "DESCRIBE pace_antropo;",
     "showColumns": "SHOW columns FROM pace_antropo",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_antropo'",
-    "createQuery": """CREATE TABLE `pace_antropo` (
-              `ID_Pace_SV` int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-              `ID_Pace` int(10) NOT NULL,
-              `Pace_Feca_SV` date NOT NULL,
-              `Pace_SV_cue` double NOT NULL,
-              `Pace_SV_cin` double NOT NULL,
-              `Pace_SV_cad` double NOT NULL,
-              `Pace_SV_cmb` double NOT NULL,
-              `Pace_SV_pct` double NOT NULL,
-              `Pace_SV_fa` double NOT NULL,
-              `Pace_SV_fe` double NOT NULL,
-              `Pace_SV_pcb` double NOT NULL,
-              `Pace_SV_pse` double NOT NULL,
-              `Pace_SV_psi` double NOT NULL,
-              `Pace_SV_pst` double NOT NULL, 
-              `Pace_SV_c_pect` double NOT NULL,
-              `Pace_SV_c_fem_izq` double NOT NULL,
-              `Pace_SV_c_fem_der` double NOT NULL,
-              `Pace_SV_c_fem_izq`, double NOT NULL,
-              `Pace_SV_c_suro_der` double NOT NULL
+    "createQuery": """CREATE TABLE pace_antropo (
+              ID_Pace_SV int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+              ID_Pace int(10) NOT NULL,
+              Pace_Feca_SV date NOT NULL,
+              Pace_SV_cue double NOT NULL,
+              Pace_SV_cin double NOT NULL,
+              Pace_SV_cad double NOT NULL,
+              Pace_SV_cmb double NOT NULL,
+              Pace_SV_pct double NOT NULL,
+              Pace_SV_fa double NOT NULL,
+              Pace_SV_fe double NOT NULL,
+              Pace_SV_pcb double NOT NULL,
+              Pace_SV_pse double NOT NULL,
+              Pace_SV_psi double NOT NULL,
+              Pace_SV_pst double NOT NULL, 
+              Pace_SV_c_pect double NOT NULL,
+              Pace_SV_c_fem_izq double NOT NULL,
+              Pace_SV_c_fem_der double NOT NULL,
+              Pace_SV_c_fem_izq, double NOT NULL,
+              Pace_SV_c_suro_der double NOT NULL
             ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla para Agregar Signos Vitales del Paciente.';""",
     "truncateQuery": "TRUNCATE pace_antropo",
     "dropQuery": "DROP TABLE pace_antropo",
@@ -2315,18 +3929,18 @@ class Vitales {
       "otal_Traslado_Extra",
     ],
     "antropoStadistics": "SELECT "
-        "(SELECT IFNULL(count(*), 0) FROM pace_antropo WHERE `Pace_Ses` = '${Pacientes.Sexo[0]}') as Total_Mujeres,"
-        "(SELECT IFNULL(count(*), 0) FROM pace_antropo WHERE `Pace_Ses` = '${Pacientes.Sexo[1]}') as Total_Hombres,"
-        "(SELECT IFNULL(count(*), 0) FROM pace_antropo WHERE `Pace_Hosp_Real` = '${Pacientes.Atencion[0]}') as Total_Hospitalizacion,"
-        "(SELECT IFNULL(count(*), 0) FROM pace_antropo WHERE `Pace_Hosp_Real` = '${Pacientes.Atencion[1]}') as Total_Consulta,"
-        "(SELECT IFNULL(count(*), 0) FROM pace_antropo WHERE `Pace_Turo` = '${Pacientes.Turno[0]}') as Total_Matutino,"
-        "(SELECT IFNULL(count(*), 0) FROM pace_antropo WHERE `Pace_Turo` = '${Pacientes.Turno[1]}') as Total_Vespertino,"
-        "(SELECT IFNULL(count(*), 0) FROM pace_antropo WHERE `Pace_Stat` = '${Pacientes.Vivo[0]}') as Total_Vivos,"
-        "(SELECT IFNULL(count(*), 0) FROM pace_antropo WHERE `Pace_Stat` = '${Pacientes.Vivo[1]}') as Total_Fallecidos,"
-        "(SELECT IFNULL(count(*), 0) FROM pace_antropo WHERE `IndiIdio_Pace_SiNo` = '${Pacientes.Indigena[0]}') as Total_Hablantes,"
-        "(SELECT IFNULL(count(*), 0) FROM pace_antropo WHERE `IndiIdio_Pace_SiNo` = '${Pacientes.Indigena[1]}') as Total_No_Hablantes,"
-        "(SELECT IFNULL(count(*), 0) FROM pace_antropo WHERE `IndiIdio_Pace_SiNo` = '${Pacientes.lenguaIndigena[0]}') as Total_Hablantes,"
-        "(SELECT IFNULL(count(*), 0) FROM pace_antropo WHERE `IndiIdio_Pace_SiNo` = '${Pacientes.lenguaIndigena[1]}') as Total_No_Hablantes,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_antropo WHERE Pace_Ses = '${Pacientes.Sexo[0]}') as Total_Mujeres,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_antropo WHERE Pace_Ses = '${Pacientes.Sexo[1]}') as Total_Hombres,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_antropo WHERE Pace_Hosp_Real = '${Pacientes.Atencion[0]}') as Total_Hospitalizacion,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_antropo WHERE Pace_Hosp_Real = '${Pacientes.Atencion[1]}') as Total_Consulta,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_antropo WHERE Pace_Turo = '${Pacientes.Turno[0]}') as Total_Matutino,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_antropo WHERE Pace_Turo = '${Pacientes.Turno[1]}') as Total_Vespertino,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_antropo WHERE Pace_Stat = '${Pacientes.Vivo[0]}') as Total_Vivos,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_antropo WHERE Pace_Stat = '${Pacientes.Vivo[1]}') as Total_Fallecidos,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_antropo WHERE IndiIdio_Pace_SiNo = '${Pacientes.Indigena[0]}') as Total_Hablantes,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_antropo WHERE IndiIdio_Pace_SiNo = '${Pacientes.Indigena[1]}') as Total_No_Hablantes,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_antropo WHERE IndiIdio_Pace_SiNo = '${Pacientes.lenguaIndigena[0]}') as Total_Hablantes,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_antropo WHERE IndiIdio_Pace_SiNo = '${Pacientes.lenguaIndigena[1]}') as Total_No_Hablantes,"
         "(SELECT IFNULL(count(*), 0) FROM pace_antropo) as Total_Pacientes;"
   };
 
@@ -2345,48 +3959,48 @@ class Vitales {
 
 class Electrocardiogramas {
   static final Map<String, dynamic> electrocardiogramas = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_reggabo` "
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_reggabo "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_reggabo`",
+    "dropDatabase": "DROP DATABASE bd_reggabo",
     "describeTable": "DESCRIBE gabo_ecg;",
     "showColumns": "SHOW columns FROM gabo_ecg",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'gabo_ecg'",
     "createQuery": """CREATE TABLE gabo_ecg (
-              `ID_Pace_GAB_EC` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-              `ID_Pace` int(11) NOT NULL,
-              `Pace_GAB_EC_Feca` date NOT NULL,
-              `Pace_EC_rit` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-              `Pace_EC_rr` int(50) NOT NULL,
-              `Pace_EC_dop` double NOT NULL,
-              `Pace_EC_aop` double NOT NULL,
-              `Pace_EC_dpr` double NOT NULL,
-              `Pace_EC_dqrs` double NOT NULL,
-              `Pace_EC_aqrs` double NOT NULL,
-              `Pace_EC_qrsi` double NOT NULL,
-              `Pace_EC_qrsa` double NOT NULL,
-              `Pace_QRS` double NOT NULL,
-              `Pace_EC_ast_` double NOT NULL,
-              `Pace_EC_st` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-              `Pace_EC_dqt` double NOT NULL,
-              `Pace_EC_dot` double NOT NULL,
-              `Pace_EC_aot` double NOT NULL,
-              `EC_rV1` double NOT NULL,
-              `EC_sV6` double NOT NULL,
-              `EC_sV1` double NOT NULL,
-              `EC_rV6` double NOT NULL,
-              `EC_rAVL` double NOT NULL,
-              `EC_sV3` double NOT NULL,
-              `PatronQRS` varchar(100) NOT NULL, 
-              `DeflexionIntrinsecoide` int(10) NOT NULL, 
-              `EC_rDI` int(10) NOT NULL, 
-              `EC_sDI` int(10) NOT NULL, 
-              `EC_rDIII` int(10) NOT NULL, 
-              `EC_sDIII` int(10) NOT NULL,
-              `Pace_EC_CON` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
-              `Pace_GAB_Tee` varchar(100) COLLATE utf8_unicode_ci NOT NULL
+              ID_Pace_GAB_EC int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+              ID_Pace int(11) NOT NULL,
+              Pace_GAB_EC_Feca date NOT NULL,
+              Pace_EC_rit varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+              Pace_EC_rr int(50) NOT NULL,
+              Pace_EC_dop double NOT NULL,
+              Pace_EC_aop double NOT NULL,
+              Pace_EC_dpr double NOT NULL,
+              Pace_EC_dqrs double NOT NULL,
+              Pace_EC_aqrs double NOT NULL,
+              Pace_EC_qrsi double NOT NULL,
+              Pace_EC_qrsa double NOT NULL,
+              Pace_QRS double NOT NULL,
+              Pace_EC_ast_ double NOT NULL,
+              Pace_EC_st varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+              Pace_EC_dqt double NOT NULL,
+              Pace_EC_dot double NOT NULL,
+              Pace_EC_aot double NOT NULL,
+              EC_rV1 double NOT NULL,
+              EC_sV6 double NOT NULL,
+              EC_sV1 double NOT NULL,
+              EC_rV6 double NOT NULL,
+              EC_rAVL double NOT NULL,
+              EC_sV3 double NOT NULL,
+              PatronQRS varchar(100) NOT NULL, 
+              DeflexionIntrinsecoide int(10) NOT NULL, 
+              EC_rDI int(10) NOT NULL, 
+              EC_sDI int(10) NOT NULL, 
+              EC_rDIII int(10) NOT NULL, 
+              EC_sDIII int(10) NOT NULL,
+              Pace_EC_CON varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+              Pace_GAB_Tee varchar(100) COLLATE utf8_unicode_ci NOT NULL
             ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci 
             COMMENT='Registro de los electrogramas de los pacientes registrados';""",
     "truncateQuery": "TRUNCATE gabo_ecg",
@@ -2424,7 +4038,7 @@ class Electrocardiogramas {
     "antropoColums": [],
     "antropoStats": [],
     "electroStadistics": "SELECT "
-        "(SELECT IFNULL(count(*), 0) FROM gabo_ecg WHERE `Pace_Ses` = '${Pacientes.Sexo[0]}') as Total_Mujeres,"
+        "(SELECT IFNULL(count(*), 0) FROM gabo_ecg WHERE Pace_Ses = '${Pacientes.Sexo[0]}') as Total_Mujeres,"
         "(SELECT IFNULL(count(*), 0) FROM gabo_ecg) as Total_Pacientes;"
   };
 
@@ -2444,11 +4058,11 @@ class Electrocardiogramas {
 
 class Imagenologias {
   static final Map<String, dynamic> imagenologias = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_reggabo` "
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_reggabo "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_reggabo`",
+    "dropDatabase": "DROP DATABASE bd_reggabo",
     "describeTable": "DESCRIBE gabo_rae;",
     "showColumns": "SHOW columns FROM gabo_rae",
     "showInformation":
@@ -2456,15 +4070,15 @@ class Imagenologias {
             "FROM information_schema.columns "
             "WHERE table_name = 'gabo_rae'",
     "createQuery": """CREATE TABLE gabo_rae (
-                  `ID_Pace_GAB_RA` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                  `ID_Pace` int(11) NOT NULL,
-                  `Pace_GAB_RA_Feca` date NOT NULL,
-                  `Pace_GAB_RA_typ` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_GAB_RA_reg` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_GAB_RA_hal` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_GAB_RA_con` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
-                   `Pace_GAB_RA_IMG` longblob NOT NULL, 
-                  `Pace_GAB_Tee` varchar(100) COLLATE utf8_unicode_ci NOT NULL
+                  ID_Pace_GAB_RA int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                  ID_Pace int(11) NOT NULL,
+                  Pace_GAB_RA_Feca date NOT NULL,
+                  Pace_GAB_RA_typ varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_GAB_RA_reg varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_GAB_RA_hal varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_GAB_RA_con varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+                   Pace_GAB_RA_IMG longblob NOT NULL, 
+                  Pace_GAB_Tee varchar(100) COLLATE utf8_unicode_ci NOT NULL
                 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci 
                 COMMENT='Registro de los Estudios de imagen realizados a los pacientes.';""",
     "truncateQuery": "TRUNCATE gabo_rae",
@@ -2493,7 +4107,7 @@ class Imagenologias {
     "antropoColums": [],
     "antropoStats": [],
     "electroStadistics": "SELECT "
-        "(SELECT IFNULL(count(*), 0) FROM gabo_rae WHERE `Pace_Ses` = '${Pacientes.Sexo[0]}') as Total_Mujeres,"
+        "(SELECT IFNULL(count(*), 0) FROM gabo_rae WHERE Pace_Ses = '${Pacientes.Sexo[0]}') as Total_Mujeres,"
         "(SELECT IFNULL(count(*), 0) FROM gabo_rae) as Total_Pacientes;"
   };
 
@@ -2723,24 +4337,24 @@ class Auxiliares {
   };
 
   static final Map<String, dynamic> auxiliares = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_reglabo` "
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_reglabo "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_reglabo`",
+    "dropDatabase": "DROP DATABASE bd_reglabo",
     "describeTable": "DESCRIBE laboratorios;",
     "showColumns": "SHOW columns FROM laboratorios",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'laboratorios'",
     "createQuery": """
-                CREATE TABLE `laboratorios` (
-                  `ID_Laboratorio` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL, 
-                  `ID_Pace` int(11) NOT NULL,
-                  `Fecha_Registro` DATE NOT NULL, 
-                  `Tipo_Estudio` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `Estudio` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `Resultado` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                  `Unidad_Medida` varchar(50) COLLATE utf8_unicode_ci NOT NULL
+                CREATE TABLE laboratorios (
+                  ID_Laboratorio int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL, 
+                  ID_Pace int(11) NOT NULL,
+                  Fecha_Registro DATE NOT NULL, 
+                  Tipo_Estudio varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  Estudio varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  Resultado varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  Unidad_Medida varchar(50) COLLATE utf8_unicode_ci NOT NULL
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 
                 COLLATE=utf8_unicode_ci 
                 COMMENT='En esta Tabla se agregan los laboratorios de los pacientes';
@@ -2895,24 +4509,24 @@ class Auxiliares {
 
 class Pendientes {
   static final Map<String, dynamic> pendientes = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_reggabo` "
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_reggabo "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_reggabo`",
+    "dropDatabase": "DROP DATABASE bd_reggabo",
     "describeTable": "DESCRIBE pace_pen;",
     "showColumns": "SHOW columns FROM pace_pen",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default "
             "FROM information_schema.columns "
             "WHERE table_name = 'pace_pen'",
-    "createQuery": """CREATE TABLE `pace_pen` (
-              `ID_Pace_Pen` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-              `ID_Pace` int(11) NOT NULL,
-              `ID_Hosp` int(11) NOT NULL,
-              `Feca_PEN` date NOT NULL,
-              `Pace_PEN` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
-              `Pace_Desc_PEN` varchar(300) COLLATE utf8_unicode_ci NOT NULL
+    "createQuery": """CREATE TABLE pace_pen (
+              ID_Pace_Pen int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+              ID_Pace int(11) NOT NULL,
+              ID_Hosp int(11) NOT NULL,
+              Feca_PEN date NOT NULL,
+              Pace_PEN varchar(150) COLLATE utf8_unicode_ci NOT NULL,
+              Pace_Desc_PEN varchar(300) COLLATE utf8_unicode_ci NOT NULL
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci 
             COMMENT='Tabla para Registro de Pendientes durante Hospitalización.';
             """,
@@ -2925,7 +4539,7 @@ class Pendientes {
     "consultLastQuery":
         "SELECT * FROM pace_pen WHERE ID_Pace = ? ORDER BY Feca_PEN DESC",
     "consultByName": "SELECT * FROM pace_pen WHERE Pace_PEN LIKE '%",
-    "registerQuery": "INSERT INTO `pace_pen` (ID_Pace, ID_Hosp, "
+    "registerQuery": "INSERT INTO pace_pen (ID_Pace, ID_Hosp, "
         "Feca_PEN, Pace_PEN, Pace_Desc_PEN) "
         "VALUES (?,?,?,?,?)",
     "updateQuery": "UPDATE pace_pen "
@@ -2940,7 +4554,7 @@ class Pendientes {
     "antropoColums": [],
     "antropoStats": [],
     "electroStadistics": "SELECT "
-        "(SELECT IFNULL(count(*), 0) FROM pace_pen WHERE `Pace_Ses` = '${Pacientes.Sexo[0]}') as Total_Mujeres,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_pen WHERE Pace_Ses = '${Pacientes.Sexo[0]}') as Total_Mujeres,"
         "(SELECT IFNULL(count(*), 0) FROM pace_pen) as Total_Pacientes;"
   };
 
@@ -2961,7 +4575,8 @@ class Reportes {
   //  # # # # ### ### ### # # # # . # # # # ### ### ### # # # #
   static Map<String, dynamic> reportes = {
     "Datos_Generales": Pacientes.prosa(),
-    "Antecedentes_No_Patologicos":  Pacientes.noPatologicos(), //"Sin información recabada",
+    "Antecedentes_No_Patologicos":
+        Pacientes.noPatologicos(), //"Sin información recabada",
     "Antecedentes_Patologicos_Otros": Pacientes.antecedentesPatologicos(),
     "Antecedentes_Heredofamiliares": Pacientes.heredofamiliares(),
     "Antecedentes_Quirurgicos": Pacientes.hospitalarios(),
@@ -3008,9 +4623,11 @@ class Reportes {
   static String antecedentesHeredofamiliares = "";
   // static String antecedentesHospitalarios = "";
   static String padecimientoActual = "";
-  static String? personalesPatologicos = "", antecedentesQuirurgicos = "",
+  static String? personalesPatologicos = "",
+      antecedentesQuirurgicos = "",
       antecedentesAlergicos = "", // negados
-      antecedentesPerinatales = "", antecedentesSexuales = "";
+      antecedentesPerinatales = "",
+      antecedentesSexuales = "";
   //
   static String signosVitales = "";
   static String exploracionFisica =
@@ -3158,35 +4775,35 @@ class Balances {
   }
 
   static final Map<String, dynamic> balance = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_regpace` "
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_regpace`",
+    "dropDatabase": "DROP DATABASE bd_regpace",
     "describeTable": "DESCRIBE pace_bala;",
     "showColumns": "SHOW columns FROM pace_bala",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_bala'",
-    "createQuery": """CREATE TABLE `pace_bala` (
-                  `ID_Bala` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                  `ID_Pace` int(11) NOT NULL,
-                  `Pace_bala_Fecha` date NOT NULL,
-                  `Pace_bala_Time` time NOT NULL,
-                  `Pace_bala_Oral` double NOT NULL,
-                  `Pace_bala_Sonda` double NOT NULL,
-                  `Pace_bala_Hemo` double NOT NULL,
-                  `Pace_bala_NPT` double NOT NULL,
-                  `Pace_bala_Sol` double NOT NULL,
-                  `Pace_bala_Dil` double NOT NULL,
-                  `Pace_bala_ING` double NOT NULL,
-                  `Pace_bala_Uresis` double NOT NULL,
-                  `Pace_bala_Evac` double NOT NULL,
-                  `Pace_bala_Sangrado` double NOT NULL,
-                  `Pace_bala_Succion` double NOT NULL,
-                  `Pace_bala_Drenes` double NOT NULL,
-                  `Pace_bala_PER` double NOT NULL,
-                  `Pace_bala_ENG` double NOT NULL,
-                  `Pace_bala_HOR` int NOT NULL 
+    "createQuery": """CREATE TABLE pace_bala (
+                  ID_Bala int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                  ID_Pace int(11) NOT NULL,
+                  Pace_bala_Fecha date NOT NULL,
+                  Pace_bala_Time time NOT NULL,
+                  Pace_bala_Oral double NOT NULL,
+                  Pace_bala_Sonda double NOT NULL,
+                  Pace_bala_Hemo double NOT NULL,
+                  Pace_bala_NPT double NOT NULL,
+                  Pace_bala_Sol double NOT NULL,
+                  Pace_bala_Dil double NOT NULL,
+                  Pace_bala_ING double NOT NULL,
+                  Pace_bala_Uresis double NOT NULL,
+                  Pace_bala_Evac double NOT NULL,
+                  Pace_bala_Sangrado double NOT NULL,
+                  Pace_bala_Succion double NOT NULL,
+                  Pace_bala_Drenes double NOT NULL,
+                  Pace_bala_PER double NOT NULL,
+                  Pace_bala_ENG double NOT NULL,
+                  Pace_bala_HOR int NOT NULL 
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla para Registro de Líquidos en Pacientes Hospitalizados.';
             """,
     "truncateQuery": "TRUNCATE pace_bala",
@@ -3273,33 +4890,33 @@ class Ventilaciones {
   }
 
   static final Map<String, dynamic> ventilacion = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_regpace` "
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_regpace`",
+    "dropDatabase": "DROP DATABASE bd_regpace",
     "describeTable": "DESCRIBE pace_vm;",
     "showColumns": "SHOW columns FROM pace_vm",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_vm'",
-    "createQuery": """CREATE TABLE `pace_vm` (
-                  `ID_Ventilacion` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                  `ID_Pace` int(11) NOT NULL,
-                  `Feca_VEN` date NOT NULL,
-                  `Pace_Vt` double NOT NULL,
-                  `Pace_Fr` int(11) NOT NULL,
-                  `Pace_Fio` int(11) NOT NULL,
-                  `Pace_Peep` int(11) NOT NULL,
-                  `Pace_Insp` int(11) NOT NULL,
-                  `Pace_Espi` int(11) NOT NULL,
-                  `Pace_Pc` int(11) NOT NULL,
-                  `Pace_Pm` int(11) NOT NULL,
-                  `Pace_V` int(11) NOT NULL,
-                  `Pace_F` int(11) NOT NULL,
-                  `Pace_Ps` int(11) NOT NULL,
-                  `Pace_Pip` int(11) NOT NULL,
-                  `Pace_Pmet` int(11) NOT NULL,
-                  `VM_Mod` varchar(200) COLLATE utf8_unicode_ci NOT NULL
+    "createQuery": """CREATE TABLE pace_vm (
+                  ID_Ventilacion int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                  ID_Pace int(11) NOT NULL,
+                  Feca_VEN date NOT NULL,
+                  Pace_Vt double NOT NULL,
+                  Pace_Fr int(11) NOT NULL,
+                  Pace_Fio int(11) NOT NULL,
+                  Pace_Peep int(11) NOT NULL,
+                  Pace_Insp int(11) NOT NULL,
+                  Pace_Espi int(11) NOT NULL,
+                  Pace_Pc int(11) NOT NULL,
+                  Pace_Pm int(11) NOT NULL,
+                  Pace_V int(11) NOT NULL,
+                  Pace_F int(11) NOT NULL,
+                  Pace_Ps int(11) NOT NULL,
+                  Pace_Pip int(11) NOT NULL,
+                  Pace_Pmet int(11) NOT NULL,
+                  VM_Mod varchar(200) COLLATE utf8_unicode_ci NOT NULL
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla para Registro de Valores de Ventilación Mecánica';
             """,
     "truncateQuery": "TRUNCATE pace_vm",
@@ -3310,7 +4927,7 @@ class Ventilaciones {
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_vm",
     "consultLastQuery": "SELECT * FROM pace_vm WHERE ID_Pace = ?",
     "consultByName": "SELECT * FROM pace_vm WHERE Pace_APP_DEG LIKE '%",
-    "registerQuery": "INSERT INTO `pace_vm` (ID_Pace, "
+    "registerQuery": "INSERT INTO pace_vm (ID_Pace, "
         "Feca_VEN, Pace_Vt, Pace_Fr, Pace_Fio, Pace_Peep, Pace_Insp, "
         "Pace_Espi, Pace_Pc, Pace_Pm, Pace_V, Pace_F, Pace_Ps, Pace_Pip, "
         "Pace_Pmet, VM_Mod) "
@@ -3367,26 +4984,26 @@ class Hospitalizaciones {
   }
 
   static final Map<String, dynamic> hospitalizacion = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_reghosp` "
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_reghosp "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_reghosp`",
+    "dropDatabase": "DROP DATABASE bd_reghosp",
     "describeTable": "DESCRIBE pace_hosp;",
     "showColumns": "SHOW columns FROM pace_hosp",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_hosp'",
-    "createQuery": """CREATE TABLE `pace_hosp` (
-              `ID_Hosp` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-              `ID_Pace` int(11) NOT NULL,
-              `Feca_INI_Hosp` date NOT NULL,
-              `Id_Cama` int(11) NOT NULL,
-              `Dia_Estan` int(11) NOT NULL,
-              `Medi_Trat` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-              `Serve_Trat` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-              `Serve_Trat_INI` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-              `Feca_EGE_Hosp` date NOT NULL,
-              `EGE_Motivo` varchar(100) COLLATE utf8_unicode_ci NOT NULL
+    "createQuery": """CREATE TABLE pace_hosp (
+              ID_Hosp int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+              ID_Pace int(11) NOT NULL,
+              Feca_INI_Hosp date NOT NULL,
+              Id_Cama int(11) NOT NULL,
+              Dia_Estan int(11) NOT NULL,
+              Medi_Trat varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+              Serve_Trat varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+              Serve_Trat_INI varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+              Feca_EGE_Hosp date NOT NULL,
+              EGE_Motivo varchar(100) COLLATE utf8_unicode_ci NOT NULL
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla Inicial para la Hospitalizacion de Pacientes.';
             """,
     "truncateQuery": "TRUNCATE pace_hosp",
@@ -3433,11 +5050,13 @@ class Repositorios {
   static List<String> actualDiagno = Opciones.horarios();
 
   static void padecimientoActual() {
-    Actividades.consultarId(Databases.siteground_database_reghosp,
-            Repositorios.repositorio['consultarPadecimientoActualQuery'], Pacientes.ID_Paciente)
+    Actividades.consultarId(
+            Databases.siteground_database_reghosp,
+            Repositorios.repositorio['consultarPadecimientoActualQuery'],
+            Pacientes.ID_Paciente)
         .then((value) {
 // Enfermedades de base del paciente, asi como las Hospitalarias.
-    Reportes.padecimientoActual = "${value['TipoAnalisis']}. ";
+      Reportes.padecimientoActual = "${value['TipoAnalisis']}. ";
       Repositorio = value;
     });
   }
@@ -3481,24 +5100,24 @@ class Repositorios {
   }
 
   static final Map<String, dynamic> repositorio = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_reghosp` "
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_reghosp "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_reghosp`",
+    "dropDatabase": "DROP DATABASE bd_reghosp",
     "describeTable": "DESCRIBE pace_hosp_repo;",
     "showColumns": "SHOW columns FROM pace_hosp_repo",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_hosp_repo'",
     "createQuery": """CREATE TABLE pace_hosp_repo (
-              `ID_Compendio` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-              `ID_Pace` int(11) NOT NULL,
-              `ID_Hosp` int(11) NOT NULL,
-              `FechaPadecimiento` date NOT NULL,
-              `FechaRealizacion` date NOT NULL,
-              `ServicioMedico` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
-              `Contexto` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
-              `TipoAnalisis` varchar(150) COLLATE utf8_unicode_ci NOT NULL
+              ID_Compendio int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+              ID_Pace int(11) NOT NULL,
+              ID_Hosp int(11) NOT NULL,
+              FechaPadecimiento date NOT NULL,
+              FechaRealizacion date NOT NULL,
+              ServicioMedico varchar(150) COLLATE utf8_unicode_ci NOT NULL,
+              Contexto varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+              TipoAnalisis varchar(150) COLLATE utf8_unicode_ci NOT NULL
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla para Almacenar Análisis por Reporte del Paciente.';
             """,
     "truncateQuery": "TRUNCATE pace_hosp_repo",
@@ -3510,10 +5129,11 @@ class Repositorios {
     "consultIdQuery": "SELECT * FROM pace_hosp_repo WHERE ID_Pace = ?",
     "consultByIdPrimaryQuery": "SELECT * FROM pace_hosp_repo WHERE ID_Hosp = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_hosp_repo",
-    "consultarPadecimientoActualQuery": "SELECT TipoAnalisis FROM pace_hosp_repo "
-        "WHERE TipoAnalisis = '${Items.tiposAnalisis[0]}' "
-        "AND ID_Hosp = '${Pacientes.ID_Hospitalizacion}' "
-        "AND ID_Pace = ? ORDER Y ID_Hosp DESC",
+    "consultarPadecimientoActualQuery":
+        "SELECT TipoAnalisis FROM pace_hosp_repo "
+            "WHERE TipoAnalisis = '${Items.tiposAnalisis[0]}' "
+            "AND ID_Hosp = '${Pacientes.ID_Hospitalizacion}' "
+            "AND ID_Pace = ? ORDER Y ID_Hosp DESC",
     "consultLastQuery":
         "SELECT * FROM pace_hosp_repo WHERE ID_Pace = ? ORDER BY ID_Hosp DESC",
     "consultByName": "SELECT * FROM pace_hosp_repo WHERE Pace_APP_DEG LIKE '%",
@@ -3617,32 +5237,32 @@ class Situaciones {
   }
 
   static final Map<String, dynamic> situacion = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_reghosp` "
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_reghosp "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_reghosp`",
+    "dropDatabase": "DROP DATABASE bd_reghosp",
     "describeTable": "DESCRIBE siti_pace;",
     "showColumns": "SHOW columns FROM siti_pace",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'siti_pace'",
-    "createQuery": """ CREATE TABLE `siti_pace` (
-                    `ID_Siti` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                    `ID_Pace` int(11) NOT NULL,
-                    `ID_Hosp` int(11) NOT NULL,
-                    `Hosp_Siti` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-                    `Disp_Oxigen` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-                    `CVP` tinyint(1) NOT NULL,
-                    `CVLP` tinyint(1) NOT NULL,
-                    `CVC` tinyint(1) NOT NULL,
-                    `S_Foley` tinyint(1) NOT NULL,
-                    `SNG` tinyint(1) NOT NULL,
-                    `SOG` tinyint(1) NOT NULL,
-                    `Drenaje` tinyint(1) NOT NULL,
-                    `Pleuro_Vac` tinyint(1) NOT NULL,
-                    `Colostomia` tinyint(1) NOT NULL,
-                    `Gastrostomia` tinyint(4) NOT NULL,
-                    `Dialisis_Peritoneal` tinyint(4) NOT NULL
+    "createQuery": """ CREATE TABLE siti_pace (
+                    ID_Siti int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                    ID_Pace int(11) NOT NULL,
+                    ID_Hosp int(11) NOT NULL,
+                    Hosp_Siti varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+                    Disp_Oxigen varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+                    CVP tinyint(1) NOT NULL,
+                    CVLP tinyint(1) NOT NULL,
+                    CVC tinyint(1) NOT NULL,
+                    S_Foley tinyint(1) NOT NULL,
+                    SNG tinyint(1) NOT NULL,
+                    SOG tinyint(1) NOT NULL,
+                    Drenaje tinyint(1) NOT NULL,
+                    Pleuro_Vac tinyint(1) NOT NULL,
+                    Colostomia tinyint(1) NOT NULL,
+                    Gastrostomia tinyint(4) NOT NULL,
+                    Dialisis_Peritoneal tinyint(4) NOT NULL
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 
                 COLLATE=utf8_unicode_ci 
                 COMMENT='Tabla de Registro de Situacion Hospitalaria.';
@@ -3658,7 +5278,7 @@ class Situaciones {
     "consultLastQuery":
         "SELECT * FROM siti_pace WHERE ID_Pace = ? ORDER BY ID_Hosp DESC",
     "consultByName": "SELECT * FROM siti_pace WHERE Pace_APP_DEG LIKE '%",
-    "registerQuery": "INSERT INTO `siti_pace` (ID_Pace, ID_Hosp, "
+    "registerQuery": "INSERT INTO siti_pace (ID_Pace, ID_Hosp, "
         "Hosp_Siti, Disp_Oxigen, CVP, CVLP, CVC, "
         "S_Foley, SNG, SOG, Drenaje, Pleuro_Vac, "
         "Colostomia, Gastrostomia, Dialisis_Peritoneal) "
@@ -3752,26 +5372,26 @@ class Expedientes {
   }
 
   static final Map<String, dynamic> expedientes = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_reghosp` "
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_reghosp "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_reghosp`",
+    "dropDatabase": "DROP DATABASE bd_reghosp",
     "describeTable": "DESCRIBE expe_pace;",
     "showColumns": "SHOW columns FROM expe_pace",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'expe_pace'",
-    "createQuery": """CREATE TABLE `expe_pace` (
-                  `ID_Expe` int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                  `ID_Pace` int(10) NOT NULL,
-                  `ID_Hosp` int(11) NOT NULL,
-                  `POR` tinyint(1) NOT NULL,
-                  `HIS` tinyint(1) NOT NULL,
-                  `ING` tinyint(1) NOT NULL,
-                  `EVA` tinyint(1) NOT NULL,
-                  `VAL` tinyint(1) NOT NULL,
-                  `CON` tinyint(1) NOT NULL,
-                  `ORD` tinyint(1) NOT NULL
+    "createQuery": """CREATE TABLE expe_pace (
+                  ID_Expe int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                  ID_Pace int(10) NOT NULL,
+                  ID_Hosp int(11) NOT NULL,
+                  POR tinyint(1) NOT NULL,
+                  HIS tinyint(1) NOT NULL,
+                  ING tinyint(1) NOT NULL,
+                  EVA tinyint(1) NOT NULL,
+                  VAL tinyint(1) NOT NULL,
+                  CON tinyint(1) NOT NULL,
+                  ORD tinyint(1) NOT NULL
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci 
                 COMMENT='Tabla para Registro de Estado de Expediente Clinico.';
             """,
@@ -3842,26 +5462,26 @@ class Licencias {
   }
 
   static final Map<String, dynamic> vicencia = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_regpace` "
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_regpace`",
+    "dropDatabase": "DROP DATABASE bd_regpace",
     "describeTable": "DESCRIBE licen_med;",
     "showColumns": "SHOW columns FROM licen_med",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'licen_med'",
     "createQuery": """CREATE TABLE licen_med (
-                          `ID_Licen_Med` int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                          `ID_Pace` int(10) NOT NULL,
-                          `Folio` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-                          `Dias_Otorgados` int(10) NOT NULL,
-                          `Fecha_Realizacion` date NOT NULL,
-                          `Fecha_Inicio` date NOT NULL,
-                          `Fecha_Termino` date NOT NULL,
-                          `Motivo_Incapacidad` varchar(200) COLLATE utf8_unicode_ci NOT NULL, 
-                          `Caracter` varchar(200) COLLATE utf8_unicode_ci NOT NULL, 
-                          `Lugar_Expedicion` varchar(200) COLLATE utf8_unicode_ci NOT NULL
+                          ID_Licen_Med int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                          ID_Pace int(10) NOT NULL,
+                          Folio varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                          Dias_Otorgados int(10) NOT NULL,
+                          Fecha_Realizacion date NOT NULL,
+                          Fecha_Inicio date NOT NULL,
+                          Fecha_Termino date NOT NULL,
+                          Motivo_Incapacidad varchar(200) COLLATE utf8_unicode_ci NOT NULL, 
+                          Caracter varchar(200) COLLATE utf8_unicode_ci NOT NULL, 
+                          Lugar_Expedicion varchar(200) COLLATE utf8_unicode_ci NOT NULL
                     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 
                     COLLATE=utf8_unicode_ci 
                     COMMENT='Tabla para Registro de Expedición de Licencias Médicas.';
@@ -3934,23 +5554,23 @@ class Vacunales {
   }
 
   static final Map<String, dynamic> vacuna = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_regpace` "
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_regpace`",
+    "dropDatabase": "DROP DATABASE bd_regpace",
     "describeTable": "DESCRIBE pace_app_vac;",
     "showColumns": "SHOW columns FROM pace_app_vac",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_app_vac'",
     "createQuery": """CREATE TABLE pace_app_vac (
-                        `ID_PACE_APP_VAC` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                        `ID_Pace` int(11) NOT NULL,
-                        `Pace_APP_VAC_SINO` tinyint(1) NOT NULL,
-                        `Pace_APP_VAC` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-                        `Pace_APP_VAC_dia` int(200) NOT NULL,
-                        `Pace_APP_VAC_tra_SINO` tinyint(1) NOT NULL,
-                        `Pace_APP_VAC_tra` varchar(200) COLLATE utf8_unicode_ci NOT NULL
+                        ID_PACE_APP_VAC int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                        ID_Pace int(11) NOT NULL,
+                        Pace_APP_VAC_SINO tinyint(1) NOT NULL,
+                        Pace_APP_VAC varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                        Pace_APP_VAC_dia int(200) NOT NULL,
+                        Pace_APP_VAC_tra_SINO tinyint(1) NOT NULL,
+                        Pace_APP_VAC_tra varchar(200) COLLATE utf8_unicode_ci NOT NULL
                         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
                         COMMENT='Tabla para antecedentes vacunales';
             """,
@@ -3962,7 +5582,7 @@ class Vacunales {
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_app_vac",
     "consultLastQuery": "SELECT * FROM pace_app_vac WHERE ID_Pace = ?",
     "consultByName": "SELECT * FROM pace_app_vac WHERE Pace_APP_VAC LIKE '%",
-    "registerQuery": "INSERT INTO `pace_app_vac` (ID_Pace, Pace_APP_VAC_SINO, "
+    "registerQuery": "INSERT INTO pace_app_vac (ID_Pace, Pace_APP_VAC_SINO, "
         "Pace_APP_VAC, "
         "Pace_APP_VAC_dia, Pace_APP_VAC_tra_SINO, "
         "Pace_APP_VAC_tra) "

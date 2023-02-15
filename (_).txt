@@ -1,96 +1,88 @@
-class Vacunales {
-  static int ID_Vacunales = 0;
-  //
-  static String selectedDiagnosis = "";
-  //
-
-  static Map<String, dynamic> Vacuna = {};
-
-  static List<String> actualDiagno = Dicotomicos.dicotomicos();
-  static List<String> actualTratamiento = Dicotomicos.dicotomicos();
-  static List<String> actualSuspendido = Dicotomicos.dicotomicos();
-
-  static void ultimoRegistro() {
-    Actividades.consultarId(Databases.siteground_database_regpace,
-            Vacunales.vacuna['consultLastQuery'], Pacientes.ID_Paciente)
-        .then((value) {
-// Enfermedades de base del paciente, asi como las Hospitalarias.
-      Vacunales.Vacuna =
-          value; 
-    });
-  }
-
-  static void consultarRegistro() {
-    Actividades.consultarAllById(Databases.siteground_database_regpace,
-            Vacunales.vacuna['consultIdQuery'], Pacientes.ID_Paciente)
-        .then((value) {
-      // Enfermedades de base del paciente, asi como las Hospitalarias.
-      Pacientes.Vacunales = value;
-    });
-  }
-
-  static final Map<String, dynamic> vacuna = {
-    "createDatabase": "CREATE DATABASE IF NOT EXISTS `bd_regpace` "
+static final Map<String, dynamic> femeninos = {
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
-    "dropDatabase": "DROP DATABASE `bd_regpace`",
-    "describeTable": "DESCRIBE licen_med;",
-    "showColumns": "SHOW columns FROM licen_med",
+    "dropDatabase": "DROP DATABASE bd_regpace",
+    "describeTable": "DESCRIBE pace_aps_femi;",
+    "showColumns": "SHOW columns FROM pace_aps_femi",
     "showInformation":
-        "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'licen_med'",
-    "createQuery": """CREATE TABLE `licen_med` (
-                        `ID_PACE_APP_DEG` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                        `ID_Pace` int(11) NOT NULL,
-                        `Pace_APP_DEG_SINO` tinyint(1) NOT NULL,
-                        `Pace_APP_DEG` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-                        `Pace_APP_DEG_com` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-                        `Pace_APP_DEG_dia` int(200) NOT NULL,
-                        `Pace_APP_DEG_tra_SINO` tinyint(1) NOT NULL,
-                        `Pace_APP_DEG_tra` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-                        `Pace_APP_DEG_sus_SINO` tinyint(1) NOT NULL,
-                        `Pace_APP_DEG_sus` varchar(200) COLLATE utf8_unicode_ci NOT NULL
-                        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci 
-                        COMMENT='Tabla para Antecedentes Cronico vacuna';
+        "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_aps_femi'",
+    "createQuery": """
+    CREATE TABLE pace_aps_femi (
+                      ID_PACE_APS int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                      ID_Pace int(11) NOT NULL,
+                      PACE_APS_Feca date NOT NULL,
+                      Pace_APS_arc tinyint(1) NOT NULL,
+                      REGE_Pace_APS_arc int(11) NOT NULL,
+                      Pace_APS_cat_DIA int(200) NOT NULL,
+                      Pace_APS_cat_CIC int(200) NOT NULL,
+                      Pace_APS_pub_SINO tinyint(1) NOT NULL,
+                      Pace_APS_pub int(200) NOT NULL,
+                      Pace_APS_tel_SINO tinyint(1) NOT NULL,
+                      REGE_Pace_APS_tel int(200) NOT NULL,
+                      FEF_Pace_APS_fur date NOT NULL,
+                      REGE_Pace_APS_ivs int(200) NOT NULL,
+                      REGE_Pace_APS_pas int(200) NOT NULL,
+                      Pace_APS_ise_ varchar(200) COLLATE utf8_unicode_520_ci NOT NULL,
+                      Pace_APS_mpf_ varchar(200) COLLATE utf8_unicode_520_ci NOT NULL,
+                      REGE_Pace_APS_ago_GES int(200) NOT NULL,
+                      REGE_Pace_APS_ago_PAR int(200) NOT NULL,
+                      REGE_Pace_APS_ago_CES int(200) NOT NULL,
+                      REGE_Pace_APS_ago_ABO int(200) NOT NULL,
+                      Pace_APS_ago_CLI_SINO tinyint(1) NOT NULL,
+                      REGE_Pace_APS_ago_CLI int(200) NOT NULL,
+                      Pace_APS_ago_MEN_ tinyint(1) NOT NULL,
+                      REGE_Pace_APS_ago_MEN int(200) NOT NULL,
+                      Pace_APS_ago_PAP_ tinyint(1) NOT NULL,
+                      FEF_Pace_APS_ago_PAP date NOT NULL
+                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_520_ci COMMENT='Tabla para Antecedentes Gineco - Obstetricos';
             """,
-    "truncateQuery": "TRUNCATE licen_med",
-    "dropQuery": "DROP TABLE licen_med",
-    "consultQuery": "SELECT * FROM licen_med",
-    "consultIdQuery": "SELECT * FROM licen_med WHERE ID_Pace = ?",
-    "consultByIdPrimaryQuery": "SELECT * FROM licen_med WHERE ID_Pace = ?",
-    "consultAllIdsQuery": "SELECT ID_Pace FROM licen_med",
-    "consultLastQuery": "SELECT * FROM licen_med WHERE ID_Pace = ?",
-    "consultByName": "SELECT * FROM licen_med WHERE Pace_APP_DEG LIKE '%",
-    "registerQuery": "INSERT INTO `licen_med` (ID_Pace, Pace_APP_DEG_SINO, "
-        "Pace_APP_DEG, Pace_APP_DEG_com, "
-        "Pace_APP_DEG_dia, Pace_APP_DEG_tra_SINO, "
-        "Pace_APP_DEG_tra, Pace_APP_DEG_sus_SINO, "
-        "Pace_APP_DEG_sus) "
-        "VALUES (?,?,?,?,?,?,?,?,?)",
-    "updateQuery": "UPDATE licen_med "
-        "SET ID_PACE_APP_DEG = ?, ID_Pace = ?, "
-        "Pace_APP_DEG_SINO = ?, Pace_APP_DEG = ?, "
-        "Pace_APP_DEG_com = ?, Pace_APP_DEG_dia = ?, "
-        "Pace_APP_DEG_tra_SINO = ?,  "
-        "Pace_APP_DEG_tra = ?, Pace_APP_DEG_sus_SINO = ?, "
-        "Pace_APP_DEG_sus = ? "
-        "WHERE ID_PACE_APP_DEG = ?",
-    "deleteQuery": "DELETE FROM licen_med WHERE ID_PACE_APP_DEG = ?",
-    "vacunaColumns": [
+    "truncateQuery": "TRUNCATE pace_aps_femi",
+    "dropQuery": "DROP TABLE pace_aps_femi",
+    "consultQuery": "SELECT * FROM pace_aps_femi",
+    "consultIdQuery": "SELECT * FROM pace_aps_femi WHERE ID_Pace = ?",
+    "consultByIdPrimaryQuery": "SELECT * FROM pace_aps_femi WHERE ID_Pace = ?",
+    "consultAllIdsQuery": "SELECT ID_Pace FROM pace_aps_femi",
+    "consultLastQuery": "SELECT * FROM pace_aps_femi WHERE ID_Pace = ?",
+    "consultByName": "SELECT * FROM pace_aps_femi WHERE Pace_APP_DEG LIKE '%",
+    "registerQuery": "INSERT INTO pace_aps_femi (ID_Pace, PACE_APS_Feca, Pace_APS_arc, "
+        "REGE_Pace_APS_arc, Pace_APS_cat_DIA, Pace_APS_cat_CIC, Pace_APS_pub_SINO, "
+        "Pace_APS_pub, Pace_APS_tel_SINO, REGE_Pace_APS_tel, FEF_Pace_APS_fur, "
+        "REGE_Pace_APS_ivs, REGE_Pace_APS_pas, Pace_APS_ise_, Pace_APS_mpf_, "
+        "REGE_Pace_APS_ago_GES, REGE_Pace_APS_ago_PAR, REGE_Pace_APS_ago_CES, "
+        "REGE_Pace_APS_ago_ABO, Pace_APS_ago_CLI_SINO, REGE_Pace_APS_ago_CLI, "
+        "Pace_APS_ago_MEN_, REGE_Pace_APS_ago_MEN, Pace_APS_ago_PAP_, "
+        "FEF_Pace_APS_ago_PAP)"
+        "VALUES (?,?,?,?,?,?,?,?,?,?,"
+        "?,?,?,?,?,?,?,?,?,?,"
+        "?,?,?,?,?)",
+    "updateQuery": "UPDATE pace_aps_femi "
+        "SET ID_PACE_APS = ?, ID_Pace = ?, PACE_APS_Feca = ?, Pace_APS_arc = ?, "
+        "REGE_Pace_APS_arc = ?, Pace_APS_cat_DIA = ?, Pace_APS_cat_CIC = ?, "
+        "Pace_APS_pub_SINO = ?, Pace_APS_pub = ?, Pace_APS_tel_SINO = ?, "
+        "REGE_Pace_APS_tel = ?, FEF_Pace_APS_fur = ?, REGE_Pace_APS_ivs = ?, "
+        "REGE_Pace_APS_pas = ?, Pace_APS_ise_ = ?, Pace_APS_mpf_ = ?, "
+        "REGE_Pace_APS_ago_GES = ?, REGE_Pace_APS_ago_PAR = ?, REGE_Pace_APS_ago_CES "
+        "= ?, REGE_Pace_APS_ago_ABO = ?, Pace_APS_ago_CLI_SINO = ?, "
+        "REGE_Pace_APS_ago_CLI = ?, Pace_APS_ago_MEN_ = ?, REGE_Pace_APS_ago_MEN = "
+        "?, Pace_APS_ago_PAP_ = ?, FEF_Pace_APS_ago_PAP = ? "
+        "WHERE ID_PACE_APS = ?",
+    "deleteQuery": "DELETE FROM pace_aps_femi WHERE ID_PACE_APS = ?",
+    "femeninosColumns": [
       "ID_Pace",
     ],
-    "vacunaItems": [
+    "femeninosItems": [
       "ID_Pace",
     ],
-    "vacunaColums": [
+    "femeninosColums": [
       "ID Paciente",
     ],
-    "vacunaStats": [
+    "femeninosStats": [
       "Total_Administradores",
     ],
-    "vacunaStadistics": "SELECT "
-        "(SELECT IFNULL(AVG('Pace_SV_tas'), 0) FROM licen_med WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAS,"
-        "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM licen_med WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
-        "(SELECT IFNULL(count(*), 0) FROM licen_med WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
+    "femeninosStadistics": "SELECT "
+        "(SELECT IFNULL(AVG('Pace_SV_tas'), 0) FROM pace_aps_femi WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAS,"
+        "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM pace_aps_femi WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_aps_femi WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
   };
-}

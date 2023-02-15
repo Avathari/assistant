@@ -53,13 +53,14 @@ class _AlimenticiosState extends State<Alimenticios> {
                   setState(() {
                     Valores.alimentacionDiaria = value;
                     if (value) {
-                      alimentacionDiariaTextController.text = '';
+                      alimentacionDiariaTextController.text =
+                      'Refiere alimentación diaria tres veces al dia';
                     } else {
                       alimentacionDiariaTextController.text =
                           'No tiene dieta diaria estable';
-                      Valores.alimentacionDiariaDescripcion =
-                          alimentacionDiariaTextController.text;
                     }
+                    Valores.alimentacionDiariaDescripcion =
+                        alimentacionDiariaTextController.text;
                   });
                 },
                 isSwitched: Valores.alimentacionDiaria,
@@ -94,9 +95,9 @@ class _AlimenticiosState extends State<Alimenticios> {
                     } else {
                       dietaAsignadaTextController.text =
                           'Sin dieta asignada por nutriologo';
-                      Valores.dietaAsignadaDescripcion =
-                          dietaAsignadaTextController.text;
                     }
+                    Valores.dietaAsignadaDescripcion =
+                        dietaAsignadaTextController.text;
                   });
                 },
                 isSwitched: Valores.dietaAsignada,
@@ -131,9 +132,9 @@ class _AlimenticiosState extends State<Alimenticios> {
                     } else {
                       variacionAlimentacionTextController.text =
                           'Sin variaciones en la alimentación';
-                      Valores.variacionAlimentacionDescripcion =
-                          variacionAlimentacionTextController.text;
                     }
+                    Valores.variacionAlimentacionDescripcion =
+                        variacionAlimentacionTextController.text;
                   });
                 },
                 isSwitched: Valores.variacionAlimentacion,
@@ -168,9 +169,9 @@ class _AlimenticiosState extends State<Alimenticios> {
                     } else {
                       problemasMasticacionTextController.text =
                           'No refiere problemas en la masticación';
-                      Valores.problemasMasticacionDescripcion =
-                          problemasMasticacionTextController.text;
                     }
+                    Valores.problemasMasticacionDescripcion =
+                        problemasMasticacionTextController.text;
                   });
                 },
                 isSwitched: Valores.problemasMasticacion,
@@ -205,9 +206,9 @@ class _AlimenticiosState extends State<Alimenticios> {
                     } else {
                       intoleranciaAlimentariaTextController.text =
                           'No refiere alergia o intolerancia alimentaria de ningún tipo';
-                      Valores.intoleranciaAlimentariaDescripcion =
-                          intoleranciaAlimentariaTextController.text;
                     }
+                    Valores.intoleranciaAlimentariaDescripcion =
+                        intoleranciaAlimentariaTextController.text;
                   });
                 },
                 isSwitched: Valores.intoleranciaAlimentaria,
@@ -242,9 +243,9 @@ class _AlimenticiosState extends State<Alimenticios> {
                     } else {
                       alteracionesPesoTextController.text =
                           'No refiere variaciones significativas del peso en los últimos dos meses';
-                      Valores.alteracionesPesoDescripcion =
-                          alteracionesPesoTextController.text;
                     }
+                    Valores.alteracionesPesoDescripcion =
+                        alteracionesPesoTextController.text;
                   });
                 },
                 isSwitched: Valores.alteracionesPeso,
