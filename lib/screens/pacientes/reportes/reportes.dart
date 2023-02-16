@@ -5,6 +5,8 @@ import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 
 import 'package:assistant/screens/pacientes/auxiliares/presentaciones/presentaciones.dart';
+import 'package:assistant/screens/pacientes/hospitalizacion/padecimientoActual.dart';
+import 'package:assistant/screens/pacientes/intensiva/valoraciones/aereos.dart';
 import 'package:assistant/screens/pacientes/intensiva/valoraciones/prequirurgicos.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/auxiliaresReportes.dart';
@@ -175,12 +177,15 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               child: Column(
                 children: [
                   Expanded(
-                      child: Container(
-                    decoration: ContainerDecoration.roundedDecoration(),
-                    child: TittlePanel(
-                        padding: isTablet(context) ? 4 : 2,
-                        textPanel: "Tipo de Nota Médica"),
-                  )),
+                    child: GrandButton(
+                        labelButton: "Tipo de Nota Médica", onPress: () {}),
+                    //     child: Container(
+                    //   decoration: ContainerDecoration.roundedDecoration(),
+                    //   child: TittlePanel(
+                    //       padding: isTablet(context) ? 4 : 2,
+                    //       textPanel: "Tipo de Nota Médica"),
+                    // ),
+                  ),
                   Expanded(
                       flex: isTablet(context) ? 2 : 1,
                       child: SingleChildScrollView(
@@ -207,7 +212,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                       ? const PresentacionPacientes()
                       : Container(),
           const CrossLine(),
-          TittlePanel(textPanel: "Tipo de Nota Médica"),
+          GrandButton(labelButton: "Tipo de Nota Médica", onPress: () {}),
+          const CrossLine(),
+          // TittlePanel(textPanel: "Tipo de Nota Médica"),
           Expanded(
               flex: 3,
               child: Padding(
@@ -218,10 +225,10 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                 ),
               )),
           const SizedBox(height: 20, child: CrossLine()),
-          ListValue(
-            title: "",
-            onPress: () {},
-          ),
+          // ListValue(
+          //   title: "",
+          //   onPress: () {},
+          // ),
         ],
       );
     }
@@ -262,8 +269,11 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             child: GrandButton(
                 labelButton: "Indicaciones Médicas",
                 onPress: () {
-                  Operadores.openDialog(
-                      context: context, chyldrim: const IndicacionesHospital());
+                  setState(() {
+                    widget.actualPage = 9;
+                  });
+                  // Operadores.openDialog(
+                  //     context: context, chyldrim: const IndicacionesHospital());
                 }),
           ),
           const SizedBox(
@@ -369,8 +379,15 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       const ReporteConsulta(),
       const ReporteTerapia(), // Reporte tipado
       const ReportePrequirurgico(),
-      Container(),
-      Container(),
+      Container(), // Preanestésico
+      Container(), // Egreso
+      Container(), // Revisión
+      Container(), // Traslado
+      Pacientes.esHospitalizado == true
+          ? const IndicacionesHospital()
+          : const IndicacionesConsulta(), // Container(), // Indicaciones
+      const Prequirurgicos(),
+      const Aereas(),
     ];
 
     return list[actualPage];
@@ -460,16 +477,26 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
 
   List<Widget> actionsReportes() {
     return [
-      GrandButton(labelButton: "Valoración Prequirúrgica", onPress: () {
-        Operadores.openDialog(context: context, chyldrim: const Prequirurgicos(),
-        onAction: (){
-          setState(() {
-            Reportes.analisisComplementarios = Valorados.prequirurgicos;
-            Reportes.reportes['Analisis_Complementarios'] = Reportes.analisisComplementarios;
-          });
-        });
-      }),
-      GrandButton(labelButton: "Licencia médica", onPress: () {}),
+      GrandButton(
+          labelButton: "Padecimiento Actual",
+          onPress: () {
+            Operadores.openDialog(
+                context: context, chyldrim: const PadecimientoActual());
+          }),
+      GrandButton(
+          labelButton: "Valoración Prequirúrgica",
+          onPress: () {
+            setState(() {
+              widget.actualPage = 10;
+            });
+          }),
+      GrandButton(
+          labelButton: "Valoración de la Vía Aerea",
+          onPress: () {
+            setState(() {
+              widget.actualPage = 11;
+            });
+          }),
       GrandButton(labelButton: "Licencia médica", onPress: () {}),
       GrandButton(labelButton: "Licencia médica", onPress: () {}),
       GrandButton(labelButton: "Licencia médica", onPress: () {}),

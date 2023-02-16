@@ -26,7 +26,6 @@ class _ReportePrequirurgicoState extends State<ReportePrequirurgico> {
     // # # # ############## #### ########
     setState(() {
       initialTextController.text = Pacientes.prosa();
-      // padesTextController.text = Reportes.padecimientoActual;
       noPatolTextController.text = Pacientes.noPatologicosAnalisis();
 
       typQuiroTextController.text = Valores.tipoCirugia;
@@ -38,7 +37,6 @@ class _ReportePrequirurgicoState extends State<ReportePrequirurgico> {
       //
       Reportes.reportes['noPatologicosAnalisis'] =
           noPatolTextController.text;
-          // Pacientes.noPatologicosAnalisis(); // .toLowerCase();
 
     });
     super.initState();
@@ -182,7 +180,7 @@ class _ReportePrequirurgicoState extends State<ReportePrequirurgico> {
                           textController: noPatolTextController,
                           labelEditText: "Antecedentes No Patológicos",
                           keyBoardType: TextInputType.multiline,
-                          numOfLines: 15,
+                          numOfLines: 10,
                           withShowOption: true,
                           inputFormat: MaskTextInputFormatter()),
 
@@ -190,7 +188,7 @@ class _ReportePrequirurgicoState extends State<ReportePrequirurgico> {
                   ),
                 ),
                 ExploracionFisica(),
-                const AuxiliaresExploracion(),
+                AuxiliaresExploracion(isPrequirurgico: true,),
                 AnalisisMedico(isPrequirurgica: true,),
                 DiagnosticosAndPronostico(),
               ],

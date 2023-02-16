@@ -124,7 +124,7 @@ class _DialogSelectorState extends State<DialogSelector> {
       padding: const EdgeInsets.all(8.0),
       color: Colors.black,
       height: 900,
-      width: 400,
+      width: 2000, // 400
       child: Column(
         children: [
           Expanded(

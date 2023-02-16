@@ -1,6 +1,7 @@
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
+import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/DialogSelector.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
@@ -10,7 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class AuxiliaresExploracion extends StatefulWidget {
-  const AuxiliaresExploracion({super.key});
+  bool? isPrequirurgico;
+
+  AuxiliaresExploracion({super.key, this.isPrequirurgico = false});
 
   @override
   State<AuxiliaresExploracion> createState() => _AuxiliaresExploracionState();
@@ -29,6 +32,10 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
   void initState() {
     Auxiliares.registros();
     setState(() {
+      if (widget.isPrequirurgico! == true) {
+        Reportes.analisisComplementarios = Valorados.prequirurgicos;
+      }
+
       auxTextController.text = Reportes.auxiliaresDiagnosticos;
       commenTextController.text = Reportes.analisisComplementarios;
     });
@@ -134,6 +141,7 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
               ],
             ),
           ),
+          const CrossLine(),
           Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -260,12 +268,18 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
   void initState() {
     if (widget.isPrequirurgica!) {
       Reportes.tratamientoPropuesto = Formatos.indicacionesPreoperatorias;
+
+      eventualidadesTextController.text = "";
+      terapiasTextController.text = "";
+      analisisTextController.text = "";
+      tratamientoTextController.text = Reportes.tratamientoPropuesto;
+    } else {
+      eventualidadesTextController.text = Reportes.eventualidadesOcurridas;
+      terapiasTextController.text = Reportes.terapiasPrevias;
+      analisisTextController.text = Reportes.analisisMedico;
+      tratamientoTextController.text = Reportes.tratamientoPropuesto;
     }
 
-    eventualidadesTextController.text = Reportes.eventualidadesOcurridas;
-    terapiasTextController.text = Reportes.terapiasPrevias;
-    analisisTextController.text = Reportes.analisisMedico;
-    tratamientoTextController.text = Reportes.tratamientoPropuesto;
     super.initState();
   }
 
@@ -273,6 +287,29 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        widget.isPrequirurgica == true?
+        Expanded(
+            child: SingleChildScrollView(
+              child: Column(children: [
+                EditTextArea(
+                    textController: tratamientoTextController,
+                    labelEditText: "Recomendaciones",
+                    keyBoardType: TextInputType.multiline,
+                    numOfLines: 20,
+                    withShowOption: true,
+                    onChange: ((value) {
+                      Reportes.tratamientoPropuesto = "$value.";
+                      Reportes.reportes['Analisis_Medico'] =
+                      "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                      Reportes.reportes['Analisis_Terapia'] =
+                      "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                      Reportes.reportes['Recomendaciones_Generales'] =
+                      Reportes.tratamientoPropuesto;
+                    }),
+                    inputFormat: MaskTextInputFormatter()),
+              ]),
+            ))
+            :
         Expanded(
             child: SingleChildScrollView(
           child: Column(children: [
@@ -756,7 +793,7 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
       color: Colors.black,
       child: Column(
         children: [
-          TittlePanel(textPanel: 'Indicaciones'),
+          TittlePanel(textPanel: 'Indicaciones de la Hospitalización'),
           Expanded(
               child: SingleChildScrollView(
             controller: ScrollController(),

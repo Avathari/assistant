@@ -228,24 +228,29 @@ class Operadores {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(flex: 5, child: chyldrim),
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(20)),
-                          border: Border.all(
-                            color: Colors.grey,
-                          )),
-                      child: GrandButton(
-                        labelButton: 'Cerrar',
-                        onPress: () {
-                          if (onAction == null || onAction == Null) {
-                            Navigator.of(context).pop();
-                          } else {
-                            onAction();
-                            Navigator.of(context).pop();
-                          }
-                        },
+                    Expanded(flex: 10, child: chyldrim),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        width: 2000,
+                        decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(20)),
+                            border: Border.all(
+                              color: Colors.grey,
+                            )),
+                        child: GrandButton(
+                          height: 10,
+                          labelButton: 'Cerrar',
+                          onPress: () {
+                            if (onAction == null || onAction == Null) {
+                              Navigator.of(context).pop();
+                            } else {
+                              onAction();
+                              Navigator.of(context).pop();
+                            }
+                          },
+                        ),
                       ),
                     ),
                   ],

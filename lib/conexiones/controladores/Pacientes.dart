@@ -285,14 +285,14 @@ class Pacientes {
     return "${antecedentesPatologicos()}"
         "${Formatos.limitaciones}\n"
         "${Formatos.exposiciones}\n"
-        "${Formatos.toxicomanias}\n";
+        "${Formatos.toxicomanias}";
   }
 
   static String motivoPrequirurgico() {
     return ""
         "Tipo de Cirugía: ${Valores.tipoCirugia}. \n"
         "Motivo de la Cirugía: ${Valores.motivoCirugia}. \n"
-        "Tipo de Interrogatorio: ${Valores.tipoInterrogatorio}. \n"
+        "Tipo de Interrogatorio: ${Valores.tipoInterrogatorio}. "
         "";
   }
 
@@ -4698,6 +4698,7 @@ class Reportes {
         "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}",
     "Analisis_Medico":
         "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}",
+    "Recomendaciones_Generales": Reportes.tratamientoPropuesto,
     "Impresiones_Diagnosticas": Reportes.impresionesDiagnosticas,
     // "Bullets": "Auxiliares:\n\tOtro.\tOtro.\nDiagnosticos:\n\tOtro.\tOtro.",
     "Hidroterapia": Reportes.hidroterapia,

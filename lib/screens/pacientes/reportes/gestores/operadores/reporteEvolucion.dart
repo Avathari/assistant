@@ -141,7 +141,7 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
                   ),
                 ),
                 ExploracionFisica(),
-                const AuxiliaresExploracion(),
+                 AuxiliaresExploracion(),
                  AnalisisMedico(),
                 DiagnosticosAndPronostico(isTerapia: true,),
               ],

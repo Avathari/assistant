@@ -1153,14 +1153,14 @@ class FormatosReportes {
             textAlign: TextAlign.right,
             style: const TextStyle(fontSize: 8)),
       ]),
-      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-        Text("Fecha Actual: ",
-            textAlign: TextAlign.right,
-            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
-        Text(Calendarios.completeToday(),
-            textAlign: TextAlign.right, style: const TextStyle(fontSize: 8)),
-      ]),
-      SizedBox(height: 10),
+      // Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+      //   Text("Fecha Actual: ",
+      //       textAlign: TextAlign.right,
+      //       style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+      //   Text(Calendarios.completeToday(),
+      //       textAlign: TextAlign.right, style: const TextStyle(fontSize: 8)),
+      // ]),
+      SizedBox(height: 5),
     ]));
     // # # # # # # ### # # # # # # ###
     //
@@ -1193,7 +1193,7 @@ class FormatosReportes {
     if (paraph['Antecedetes_No_Patologicos_Analisis'] != "") {
       parax.add(
         paragraphWithTittleAndSeparated(
-          titulo: "Antecedentes Personales No Patológicos",
+          titulo: "Antecedentes Personales Patológicos",
           subTitulo: "${paraph['Antecedetes_No_Patologicos_Analisis']}",
         ),
       );
@@ -1225,20 +1225,21 @@ class FormatosReportes {
       );
     }
 
-    parax.add(
-      paragraphWithBullets(
-        titulo: "Impresiones diagnósticas",
-        subTitulo: "${paraph['Impresiones_Diagnosticas']}",
-      ),
-    );
-    parax.add(paragraph(
-      texto: "${paraph['Analisis_Medico']}",
+    // parax.add(
+    //   paragraphWithBullets(
+    //     titulo: "Impresiones diagnósticas",
+    //     subTitulo: "${paraph['Impresiones_Diagnosticas']}",
+    //   ),
+    // );
+    parax.add(paragraphWithTittle(
+      titulo: "Recomendaciones Generales",
+      subTitulo: "${paraph['Recomendaciones_Generales']}",
     ));
-    if (paraph['Pronostico_Medico'] != "") {
-      parax.add(paragraphSeparatedBy(
-        pax: "${paraph['Pronostico_Medico']}",
-      ));
-    }
+    // if (paraph['Pronostico_Medico'] != "") {
+    //   parax.add(paragraphSeparatedBy(
+    //     pax: "${paraph['Pronostico_Medico']}",
+    //   ));
+    // }
     parax.add(
       footerParagraph(
           text:

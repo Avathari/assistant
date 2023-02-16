@@ -30,8 +30,8 @@ class _TittlePanelState extends State<TittlePanel> {
         decoration: BoxDecoration(
             color: widget.color!,
             shape: BoxShape.rectangle,
-            borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(20), topLeft: Radius.circular(20))),
+            borderRadius: const BorderRadius.all(Radius.circular(20))),
+                // topRight: Radius.circular(20), topLeft: Radius.circular(20))),
         child: Column(
           children: [
             Text(

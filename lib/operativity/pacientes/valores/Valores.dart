@@ -499,6 +499,7 @@ class Valores {
         Electrocardiogramas.electrocardiogramas['consultLastQuery'],
         Pacientes.ID_Paciente,
         emulated: true);
+    // Pacientes.Electrocardiogramas = elect;
     valores.addAll(elect);
 
     final vento = await Actividades.consultarId(

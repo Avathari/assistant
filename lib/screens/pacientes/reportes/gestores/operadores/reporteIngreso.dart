@@ -192,7 +192,7 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
                   ),
                 ),
                 ExploracionFisica(),
-                const AuxiliaresExploracion(),
+                AuxiliaresExploracion(),
                  AnalisisMedico(),
                 DiagnosticosAndPronostico(),
               ],

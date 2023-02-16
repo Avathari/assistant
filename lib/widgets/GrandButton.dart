@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 
 class GrandButton extends StatefulWidget {
   String? labelButton;
-  double? weigth;
+  double? weigth, height;
   void Function() onPress;
 
   GrandButton(
-      {Key? key, this.labelButton, this.weigth = 0, required this.onPress})
+      {Key? key, this.labelButton, this.weigth = 0, this.height = 0, required this.onPress})
       : super(key: key);
 
   @override
@@ -33,7 +33,11 @@ class _GrandButtonState extends State<GrandButton> {
                       : isMobile(context) || isTablet(context)
                           ? 170
                           : 500,
-                  60)),
+                widget.height != 0.0
+                    ? widget.height!
+                    : isMobile(context) || isTablet(context)
+                    ? 60
+                    : 60,)),
           onPressed: () {
             widget.onPress();
           },

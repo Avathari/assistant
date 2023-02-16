@@ -58,10 +58,10 @@ class PdfApi {
 
 class PdfParagraphsApi {
   static Future<File> generate(
-      {double? topMargin = 30,
+      {double? topMargin = 20,
       double? rightMargin = 30,
       double? leftMargin = 30,
-      double? bottomMargin = 30,
+      double? bottomMargin = 10,
       String? imageHeader = "assets/images/issste_logo.png",
       required TypeReportes indexOfTypeReport,
       bool withIndicationReport = false,

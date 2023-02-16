@@ -1,6 +1,7 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/terapias.dart';
+import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:flutter/material.dart';
@@ -118,6 +119,7 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                     ],
                   ),
                 ),
+          const CrossLine(),
           Expanded(
             flex: widget.isTerapia! ? 8 : 4, // 6
             child: Row(

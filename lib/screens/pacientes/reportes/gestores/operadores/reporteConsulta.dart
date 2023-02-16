@@ -159,7 +159,7 @@ class _ReporteConsultaState extends State<ReporteConsulta> {
                   ),
                 ),
                  ExploracionFisica(),
-                const AuxiliaresExploracion(),
+                 AuxiliaresExploracion(),
                  AnalisisMedico(),
                 DiagnosticosAndPronostico(),
               ],

@@ -64,319 +64,318 @@ class _PrequirurgicosState extends State<Prequirurgicos> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: Column(
+    return Column(
       children: [
-        TittlePanel(color: Colors.black, textPanel: 'Valoración Prequirúrgica'),
-        Expanded(
-          child: SingleChildScrollView(
-            controller: ScrollController(),
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GrandIcon(
-                  iconData: Icons.dataset,
-                  labelButton: 'Datos Iniciales',
-                  onPress: () {
-                    setState(() {
-                      carouselController.jumpToPage(0);
-                    });
-                  },
-                ),
-                GrandIcon(
-                  iconData: Icons.add_chart,
-                  labelButton: 'Escalas',
-                  onPress: () {
-                    setState(() {
-                      carouselController.jumpToPage(1);
-                    });
-                  },
-                ),
-              ],
+    TittlePanel(color: Colors.black, textPanel: 'Valoración Prequirúrgica'),
+    Expanded(
+      child: SingleChildScrollView(
+        controller: ScrollController(),
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            GrandIcon(
+              iconData: Icons.dataset,
+              labelButton: 'Datos Iniciales',
+              onPress: () {
+                setState(() {
+                  carouselController.jumpToPage(0);
+                });
+              },
             ),
-          ),
+            GrandIcon(
+              iconData: Icons.add_chart,
+              labelButton: 'Escalas',
+              onPress: () {
+                setState(() {
+                  carouselController.jumpToPage(1);
+                });
+              },
+            ),
+          ],
         ),
-        Expanded(
-          flex: 5,
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: CarouselSlider(
-                items: [
-                  SingleChildScrollView(
-                    controller: ScrollController(),
-                    child: Column(
-                      children: [
-                        Spinner(
-                          width: isDesktop(context) ? 400 : 100,
-                          tittle: 'Antecedente de Infarto',
-                          onChangeValue: (value) {
-                            setState(() {
-                              Valores.antecedenteInfarto = value;
-                              reInit();
-                            });
-                          },
-                          items: Dicotomicos.dicotomicos(),
-                          initialValue: Valores.antecedenteInfarto,
-                        ),
-                        Spinner(
-                          width: isDesktop(context) ? 400 : 100,
-                          tittle: 'Ritmo Sinusal',
-                          onChangeValue: (value) {
-                            setState(() {
-                              Valores.ritmoSinusal = value;
-                              reInit();
-                            });
-                          },
-                          items: Dicotomicos.dicotomicos(),
-                          initialValue: Valores.ritmoSinusal,
-                        ),
-                        Spinner(
-                          width: isDesktop(context) ? 400 : 100,
-                          tittle: 'Extrasistoles Ventriculares',
-                          onChangeValue: (value) {
-                            setState(() {
-                              Valores.extrasistolesVentriculares = value;
-                              reInit();
-                            });
-                          },
-                          items: Dicotomicos.dicotomicos(),
-                          initialValue: Valores.extrasistolesVentriculares,
-                        ),
-                        Spinner(
-                          width: isDesktop(context) ? 400 : 100,
-                          tittle: 'Ingurgitación Yugular',
-                          onChangeValue: (value) {
-                            setState(() {
-                              Valores.ingurgitacionYugular = value;
-                              reInit();
-                            });
-                          },
-                          items: Dicotomicos.dicotomicos(),
-                          initialValue: Valores.ingurgitacionYugular,
-                        ),
-                        Spinner(
-                          width: isDesktop(context) ? 400 : 100,
-                          tittle: 'Estenosis Aórticaa',
-                          onChangeValue: (value) {
-                            setState(() {
-                              Valores.estenosisAortica = value;
-                              reInit();
-                            });
-                          },
-                          items: Dicotomicos.dicotomicos(),
-                          initialValue: Valores.estenosisAortica,
-                        ),
-                        Spinner(
-                          width: isDesktop(context) ? 400 : 100,
-                          tittle: 'Cirugía de Urgencia',
-                          onChangeValue: (value) {
-                            setState(() {
-                              Valores.cirugiaUrgencia = value;
-                              reInit();
-                            });
-                          },
-                          items: Dicotomicos.dicotomicos(),
-                          initialValue: Valores.cirugiaUrgencia,
-                        ),
-                        Spinner(
-                          width: isDesktop(context) ? 400 : 100,
-                          tittle: 'Cirugía de Abdomen',
-                          onChangeValue: (value) {
-                            setState(() {
-                              Valores.cirugiaAbdomen = value;
-                              reInit();
-                            });
-                          },
-                          items: Dicotomicos.dicotomicos(),
-                          initialValue: Valores.cirugiaAbdomen,
-                        ),
-                        Spinner(
-                          width: isDesktop(context) ? 400 : 100,
-                          tittle: 'Mal Estado Orgánico',
-                          onChangeValue: (value) {
-                            setState(() {
-                              Valores.malEstadoOrganico = value;
-                              reInit();
-                            });
-                          },
-                          items: Dicotomicos.dicotomicos(),
-                          initialValue: Valores.malEstadoOrganico,
-                        ),
-                        Spinner(
-                          width: isDesktop(context) ? 400 : 100,
-                          tittle: 'Angina < 3 meses',
-                          onChangeValue: (value) {
-                            setState(() {
-                              Valores.anginaEnMeses = value;
-                              reInit();
-                            });
-                          },
-                          items: Dicotomicos.dicotomicos(),
-                          initialValue: Valores.anginaEnMeses,
-                        ),
-                        Spinner(
-                          width: isDesktop(context) ? 400 : 100,
-                          tittle: 'Edema Pulmonar < 1 mes',
-                          onChangeValue: (value) {
-                            setState(() {
-                              Valores.edemaPulmonar = value;
-                              reInit();
-                            });
-                          },
-                          items: Dicotomicos.dicotomicos(),
-                          initialValue: Valores.edemaPulmonar,
-                        ),
-                        Spinner(
-                          width: isDesktop(context) ? 400 : 100,
-                          tittle: 'Edema Pulmonar Pasado',
-                          onChangeValue: (value) {
-                            setState(() {
-                              Valores.edemaPulmonarPasado = value;
-                              reInit();
-                            });
-                          },
-                          items: Dicotomicos.dicotomicos(),
-                          initialValue: Valores.edemaPulmonarPasado,
-                        ),
-                        Spinner(
-                          width: isDesktop(context) ? 400 : 100,
-                          tittle: 'SpO2 (%) Previa',
-                          onChangeValue: (value) {
-                            setState(() {
-                              Valores.saturacionPerifericaOrigeno = value;
-                              reInit();
-                            });
-                          },
-                          items: Escalas.saturacionPerifericaOrigeno,
-                          initialValue: Valores.saturacionPerifericaOrigeno,
-                        ),
-                        Spinner(
-                          width: isDesktop(context) ? 400 : 100,
-                          tittle: 'Infección Respiratoria Previa',
-                          onChangeValue: (value) {
-                            setState(() {
-                              Valores.infeccionRespiratoria = value;
-                              reInit();
-                            });
-                          },
-                          items: Dicotomicos.dicotomicos(),
-                          initialValue: Valores.infeccionRespiratoria,
-                        ),
-                        Spinner(
-                          width: isDesktop(context) ? 400 : 100,
-                          tittle: 'Hemoglobina menor a 10 g/dL',
-                          onChangeValue: (value) {
-                            setState(() {
-                              Valores.hemoglobinaInferior = value;
-                              reInit();
-                            });
-                          },
-                          items: Dicotomicos.dicotomicos(),
-                          initialValue: Valores.hemoglobinaInferior,
-                        ),
-                        Spinner(
-                          width: isDesktop(context) ? 400 : 100,
-                          tittle: 'Tipo de Incisión',
-                          onChangeValue: (value) {
-                            setState(() {
-                              Valores.incisionTipo = value;
-                              reInit();
-                            });
-                          },
-                          items: Escalas.incisionTipo,
-                          initialValue: Valores.incisionTipo,
-                        ),
-                        Spinner(
-                          width: isDesktop(context) ? 400 : 100,
-                          tittle: 'Duración en Horas',
-                          onChangeValue: (value) {
-                            setState(() {
-                              Valores.duracionCirugiaHoras = value;
-                              reInit();
-                            });
-                          },
-                          items: Escalas.duracionCirugiaHoras,
-                          initialValue: Valores.duracionCirugiaHoras,
-                        ),
-                      ],
+      ),
+    ),
+    Expanded(
+      flex: 7,
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: CarouselSlider(
+            items: [
+              SingleChildScrollView(
+                controller: ScrollController(),
+                child: Column(
+                  children: [
+                    Spinner(
+                      width: isDesktop(context) ? 400 : 100,
+                      tittle: 'Antecedente de Infarto',
+                      onChangeValue: (value) {
+                        setState(() {
+                          Valores.antecedenteInfarto = value;
+                          reInit();
+                        });
+                      },
+                      items: Dicotomicos.dicotomicos(),
+                      initialValue: Valores.antecedenteInfarto,
                     ),
-                  ),
-                  SingleChildScrollView(
-                    controller: ScrollController(),
-                    child: Column(
-                      children: [
-                        Spinner(
-                          width: isDesktop(context) ? 400 : 100,
-                          tittle: 'Valoración A.S.A.',
-                          onChangeValue: (value) {
-                            setState(() {
-                              Valores.valoracionAsa = value;
-                            });
-                          },
-                          items: Escalas.asa,
-                          initialValue: Valores.valoracionAsa,
-                        ),
-                        const CrossLine(),
-                        EditTextArea(
-                          labelEditText: 'Riesgo Anestésicco (Goldmann)',
-                          textController: goldmanntextController,
-                          keyBoardType: TextInputType.number,
-                          numOfLines: 1,
-                          inputFormat: MaskTextInputFormatter(),
-                          onChange: (value) {},
-                        ),
-                        EditTextArea(
-                          labelEditText: 'Riesgo Cárdiaco (Detsky)',
-                          textController: detskytextController,
-                          keyBoardType: TextInputType.number,
-                          numOfLines: 1,
-                          inputFormat: MaskTextInputFormatter(),
-                          onChange: (value) {},
-                        ),
-                        EditTextArea(
-                          labelEditText: 'Riesgo Pulmonar (A.R.I.S.C.A.T)',
-                          textController: ariscatextController,
-                          keyBoardType: TextInputType.number,
-                          numOfLines: 1,
-                          inputFormat: MaskTextInputFormatter(),
-                          onChange: (value) {},
-                        ),
-                        const CrossLine(),
-                        Spinner(
-                          width: isDesktop(context) ? 400 : 100,
-                          tittle: 'Valoración Bromage',
-                          onChangeValue: (value) {
-                            setState(() {
-                              Valores.valoracionBromage = value;
-                            });
-                          },
-                          items: Escalas.bromage,
-                          initialValue: Valores.valoracionBromage,
-                        ),
-                        Spinner(
-                          width: isDesktop(context) ? 400 : 100,
-                          tittle: 'Valoración N.Y.H.A.',
-                          onChangeValue: (value) {
-                            setState(() {
-                              Valores.valoracionNyha = value;
-                            });
-                          },
-                          items: Escalas.nyha,
-                          initialValue: Valores.valoracionNyha,
-                        ),
-                      ],
+                    Spinner(
+                      width: isDesktop(context) ? 400 : 100,
+                      tittle: 'Ritmo Sinusal',
+                      onChangeValue: (value) {
+                        setState(() {
+                          Valores.ritmoSinusal = value;
+                          reInit();
+                        });
+                      },
+                      items: Dicotomicos.dicotomicos(),
+                      initialValue: Valores.ritmoSinusal,
                     ),
-                  ),
-                ],
-                carouselController: carouselController,
-                options: CarouselOptions(
-                    height: isDesktop(context) ? 900 : 500,
-                    enableInfiniteScroll: false,
-                    viewportFraction: 1.0)),
-          ),
-        ),
+                    Spinner(
+                      width: isDesktop(context) ? 400 : 100,
+                      tittle: 'Extrasistoles Ventriculares',
+                      onChangeValue: (value) {
+                        setState(() {
+                          Valores.extrasistolesVentriculares = value;
+                          reInit();
+                        });
+                      },
+                      items: Dicotomicos.dicotomicos(),
+                      initialValue: Valores.extrasistolesVentriculares,
+                    ),
+                    Spinner(
+                      width: isDesktop(context) ? 400 : 100,
+                      tittle: 'Ingurgitación Yugular',
+                      onChangeValue: (value) {
+                        setState(() {
+                          Valores.ingurgitacionYugular = value;
+                          reInit();
+                        });
+                      },
+                      items: Dicotomicos.dicotomicos(),
+                      initialValue: Valores.ingurgitacionYugular,
+                    ),
+                    Spinner(
+                      width: isDesktop(context) ? 400 : 100,
+                      tittle: 'Estenosis Aórticaa',
+                      onChangeValue: (value) {
+                        setState(() {
+                          Valores.estenosisAortica = value;
+                          reInit();
+                        });
+                      },
+                      items: Dicotomicos.dicotomicos(),
+                      initialValue: Valores.estenosisAortica,
+                    ),
+                    Spinner(
+                      width: isDesktop(context) ? 400 : 100,
+                      tittle: 'Cirugía de Urgencia',
+                      onChangeValue: (value) {
+                        setState(() {
+                          Valores.cirugiaUrgencia = value;
+                          reInit();
+                        });
+                      },
+                      items: Dicotomicos.dicotomicos(),
+                      initialValue: Valores.cirugiaUrgencia,
+                    ),
+                    Spinner(
+                      width: isDesktop(context) ? 400 : 100,
+                      tittle: 'Cirugía de Abdomen',
+                      onChangeValue: (value) {
+                        setState(() {
+                          Valores.cirugiaAbdomen = value;
+                          reInit();
+                        });
+                      },
+                      items: Dicotomicos.dicotomicos(),
+                      initialValue: Valores.cirugiaAbdomen,
+                    ),
+                    Spinner(
+                      width: isDesktop(context) ? 400 : 100,
+                      tittle: 'Mal Estado Orgánico',
+                      onChangeValue: (value) {
+                        setState(() {
+                          Valores.malEstadoOrganico = value;
+                          reInit();
+                        });
+                      },
+                      items: Dicotomicos.dicotomicos(),
+                      initialValue: Valores.malEstadoOrganico,
+                    ),
+                    Spinner(
+                      width: isDesktop(context) ? 400 : 100,
+                      tittle: 'Angina < 3 meses',
+                      onChangeValue: (value) {
+                        setState(() {
+                          Valores.anginaEnMeses = value;
+                          reInit();
+                        });
+                      },
+                      items: Dicotomicos.dicotomicos(),
+                      initialValue: Valores.anginaEnMeses,
+                    ),
+                    Spinner(
+                      width: isDesktop(context) ? 400 : 100,
+                      tittle: 'Edema Pulmonar < 1 mes',
+                      onChangeValue: (value) {
+                        setState(() {
+                          Valores.edemaPulmonar = value;
+                          reInit();
+                        });
+                      },
+                      items: Dicotomicos.dicotomicos(),
+                      initialValue: Valores.edemaPulmonar,
+                    ),
+                    Spinner(
+                      width: isDesktop(context) ? 400 : 100,
+                      tittle: 'Edema Pulmonar Pasado',
+                      onChangeValue: (value) {
+                        setState(() {
+                          Valores.edemaPulmonarPasado = value;
+                          reInit();
+                        });
+                      },
+                      items: Dicotomicos.dicotomicos(),
+                      initialValue: Valores.edemaPulmonarPasado,
+                    ),
+                    Spinner(
+                      width: isDesktop(context) ? 400 : 100,
+                      tittle: 'SpO2 (%) Previa',
+                      onChangeValue: (value) {
+                        setState(() {
+                          Valores.saturacionPerifericaOrigeno = value;
+                          reInit();
+                        });
+                      },
+                      items: Escalas.saturacionPerifericaOrigeno,
+                      initialValue: Valores.saturacionPerifericaOrigeno,
+                    ),
+                    Spinner(
+                      width: isDesktop(context) ? 400 : 100,
+                      tittle: 'Infección Respiratoria Previa',
+                      onChangeValue: (value) {
+                        setState(() {
+                          Valores.infeccionRespiratoria = value;
+                          reInit();
+                        });
+                      },
+                      items: Dicotomicos.dicotomicos(),
+                      initialValue: Valores.infeccionRespiratoria,
+                    ),
+                    Spinner(
+                      width: isDesktop(context) ? 400 : 100,
+                      tittle: 'Hemoglobina menor a 10 g/dL',
+                      onChangeValue: (value) {
+                        setState(() {
+                          Valores.hemoglobinaInferior = value;
+                          reInit();
+                        });
+                      },
+                      items: Dicotomicos.dicotomicos(),
+                      initialValue: Valores.hemoglobinaInferior,
+                    ),
+                    Spinner(
+                      width: isDesktop(context) ? 400 : 100,
+                      tittle: 'Tipo de Incisión',
+                      onChangeValue: (value) {
+                        setState(() {
+                          Valores.incisionTipo = value;
+                          reInit();
+                        });
+                      },
+                      items: Escalas.incisionTipo,
+                      initialValue: Valores.incisionTipo,
+                    ),
+                    Spinner(
+                      width: isDesktop(context) ? 400 : 100,
+                      tittle: 'Duración en Horas',
+                      onChangeValue: (value) {
+                        setState(() {
+                          Valores.duracionCirugiaHoras = value;
+                          reInit();
+                        });
+                      },
+                      items: Escalas.duracionCirugiaHoras,
+                      initialValue: Valores.duracionCirugiaHoras,
+                    ),
+                  ],
+                ),
+              ),
+              SingleChildScrollView(
+                controller: ScrollController(),
+                child: Column(
+                  children: [
+                    Spinner(
+                      width: isDesktop(context) ? 400 : 100,
+                      tittle: 'Valoración A.S.A.',
+                      onChangeValue: (value) {
+                        setState(() {
+                          Valores.valoracionAsa = value;
+                        });
+                      },
+                      items: Escalas.asa,
+                      initialValue: Valores.valoracionAsa,
+                    ),
+                    const CrossLine(),
+                    EditTextArea(
+                      labelEditText: 'Riesgo Anestésicco (Goldmann)',
+                      textController: goldmanntextController,
+                      keyBoardType: TextInputType.number,
+                      numOfLines: 1,
+                      inputFormat: MaskTextInputFormatter(),
+                      onChange: (value) {},
+                    ),
+                    EditTextArea(
+                      labelEditText: 'Riesgo Cárdiaco (Detsky)',
+                      textController: detskytextController,
+                      keyBoardType: TextInputType.number,
+                      numOfLines: 1,
+                      inputFormat: MaskTextInputFormatter(),
+                      onChange: (value) {},
+                    ),
+                    EditTextArea(
+                      labelEditText: 'Riesgo Pulmonar (A.R.I.S.C.A.T)',
+                      textController: ariscatextController,
+                      keyBoardType: TextInputType.number,
+                      numOfLines: 1,
+                      inputFormat: MaskTextInputFormatter(),
+                      onChange: (value) {},
+                    ),
+                    const CrossLine(),
+                    Spinner(
+                      width: isDesktop(context) ? 400 : 100,
+                      tittle: 'Valoración Bromage',
+                      onChangeValue: (value) {
+                        setState(() {
+                          Valores.valoracionBromage = value;
+                        });
+                      },
+                      items: Escalas.bromage,
+                      initialValue: Valores.valoracionBromage,
+                    ),
+                    Spinner(
+                      width: isDesktop(context) ? 400 : 100,
+                      tittle: 'Valoración N.Y.H.A.',
+                      onChangeValue: (value) {
+                        setState(() {
+                          Valores.valoracionNyha = value;
+                        });
+                      },
+                      items: Escalas.nyha,
+                      initialValue: Valores.valoracionNyha,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+            carouselController: carouselController,
+            options: CarouselOptions(
+                height: isDesktop(context) ? 900 : 500,
+                enableInfiniteScroll: false,
+                viewportFraction: 1.0)),
+      ),
+    ),
       ],
-    ));
+    );
   }
 }
