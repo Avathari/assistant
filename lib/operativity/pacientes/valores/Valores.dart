@@ -1854,6 +1854,14 @@ class Valores {
   static double get FE => 0.0;
 
   // Parámetros de Electrocardiogramas
+  static double get frecuenciaCardiacaElectrocardiograma {
+    if (Valores.intervaloRR! != 0 && Valores.intervaloRR! != null) {
+      return (1500 / Valores.intervaloRR!);
+    } else {
+      return 0.0;
+    }
+  }
+
   static double get indiceSokolowLyon {
     if (Valores.sV1 != 0 &&
         Valores.sV1 != null &&
