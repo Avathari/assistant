@@ -62,7 +62,7 @@ class _AereasState extends State<Aereas> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                                  ? 150
+                                  ? 400
                                   : isMobile(context)
                                       ? 100
                                       : 300,
@@ -80,7 +80,7 @@ class _AereasState extends State<Aereas> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                              ? 150
+                              ? 400
                                   : isMobile(context)
                                       ? 100
                                       : 300,
@@ -98,7 +98,7 @@ class _AereasState extends State<Aereas> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                              ? 150
+                              ? 400
                                   : isMobile(context)
                                       ? 100
                                       : 300,
@@ -116,7 +116,7 @@ class _AereasState extends State<Aereas> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                              ? 150
+                              ? 400
                                   : isMobile(context)
                                       ? 100
                                       : 300,
@@ -134,7 +134,7 @@ class _AereasState extends State<Aereas> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                              ? 150
+                              ? 400
                                   : isMobile(context)
                                       ? 100
                                       : 300,
@@ -152,7 +152,7 @@ class _AereasState extends State<Aereas> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                              ? 150
+                              ? 400
                                   : isMobile(context)
                                       ? 100
                                       : 300,
@@ -170,7 +170,7 @@ class _AereasState extends State<Aereas> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                              ? 150
+                              ? 400
                                   : isMobile(context)
                                       ? 100
                                       : 300,

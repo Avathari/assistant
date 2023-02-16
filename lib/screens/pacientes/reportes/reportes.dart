@@ -178,6 +178,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                 children: [
                   Expanded(
                     child: GrandButton(
+                        weigth: 2000,
                         labelButton: "Tipo de Nota Médica", onPress: () {}),
                     //     child: Container(
                     //   decoration: ContainerDecoration.roundedDecoration(),
@@ -212,19 +213,18 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                       ? const PresentacionPacientes()
                       : Container(),
           const CrossLine(),
-          GrandButton(labelButton: "Tipo de Nota Médica", onPress: () {}),
+          GrandButton(
+              weigth: 2000,labelButton: "Tipo de Nota Médica", onPress: () {}),
           const CrossLine(),
           // TittlePanel(textPanel: "Tipo de Nota Médica"),
           Expanded(
               flex: 3,
-              child: Padding(
+              child: ListView(
                 padding: const EdgeInsets.all(12.0),
-                child: ListView(
-                  controller: ScrollController(),
-                  children: tiposReportes(),
-                ),
+                controller: ScrollController(),
+                children: tiposReportes(),
               )),
-          const SizedBox(height: 20, child: CrossLine()),
+          const Expanded(child: SizedBox(height: 20, child: CrossLine())),
           // ListValue(
           //   title: "",
           //   onPress: () {},
@@ -478,12 +478,14 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
   List<Widget> actionsReportes() {
     return [
       GrandButton(
+        weigth: 2000,
           labelButton: "Padecimiento Actual",
           onPress: () {
             Operadores.openDialog(
                 context: context, chyldrim: const PadecimientoActual());
           }),
       GrandButton(
+          weigth: 2000,
           labelButton: "Valoración Prequirúrgica",
           onPress: () {
             setState(() {
@@ -491,18 +493,19 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             });
           }),
       GrandButton(
+          weigth: 2000,
           labelButton: "Valoración de la Vía Aerea",
           onPress: () {
             setState(() {
               widget.actualPage = 11;
             });
           }),
-      GrandButton(labelButton: "Licencia médica", onPress: () {}),
-      GrandButton(labelButton: "Licencia médica", onPress: () {}),
-      GrandButton(labelButton: "Licencia médica", onPress: () {}),
-      GrandButton(labelButton: "Licencia médica", onPress: () {}),
-      GrandButton(labelButton: "Licencia médica", onPress: () {}),
-      GrandButton(labelButton: "Licencia médica", onPress: () {}),
+      GrandButton(weigth: 2000,labelButton: "Licencia médica", onPress: () {}),
+      GrandButton(weigth: 2000,labelButton: "Licencia médica", onPress: () {}),
+      GrandButton(weigth: 2000,labelButton: "Licencia médica", onPress: () {}),
+      GrandButton(weigth: 2000,labelButton: "Licencia médica", onPress: () {}),
+      GrandButton(weigth: 2000,labelButton: "Licencia médica", onPress: () {}),
+      GrandButton(weigth: 2000,labelButton: "Licencia médica", onPress: () {}),
     ];
   }
 }

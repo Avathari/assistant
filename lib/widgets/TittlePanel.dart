@@ -34,6 +34,7 @@ class _TittlePanelState extends State<TittlePanel> {
                 // topRight: Radius.circular(20), topLeft: Radius.circular(20))),
         child: Column(
           children: [
+            const SizedBox(height: 12.0),
             Text(
               widget.textPanel!,
               textAlign: TextAlign.center,
@@ -41,6 +42,7 @@ class _TittlePanelState extends State<TittlePanel> {
                 color: widget.colorText,
               ),
             ),
+            const SizedBox(height: 8.0),
             const CrossLine()
           ],
         ),

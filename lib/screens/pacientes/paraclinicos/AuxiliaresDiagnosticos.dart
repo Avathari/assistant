@@ -140,11 +140,11 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
       appBar: isMobile(context) || isTablet(context)
           ? AppBar(
               backgroundColor: Theming.primaryColor,
-              leading: isMobile(context)
+              leading: isMobile(context)|| isTablet(context)
                   ? IconButton(
                       icon: const Icon(Icons.arrow_back),
                       onPressed: () {
-                        if (isMobile(context)) {
+                        if (isMobile(context)|| isTablet(context)) {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: ((context) =>
                                   VisualPacientes(actualPage: 0))));

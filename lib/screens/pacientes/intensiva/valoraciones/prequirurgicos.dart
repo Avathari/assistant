@@ -306,7 +306,7 @@ class _PrequirurgicosState extends State<Prequirurgicos> {
                 child: Column(
                   children: [
                     Spinner(
-                      width: isDesktop(context) ? 400 : 100,
+                      width: isDesktop(context) || isTablet(context) ? 400 : 100,
                       tittle: 'Valoración A.S.A.',
                       onChangeValue: (value) {
                         setState(() {
@@ -343,7 +343,7 @@ class _PrequirurgicosState extends State<Prequirurgicos> {
                     ),
                     const CrossLine(),
                     Spinner(
-                      width: isDesktop(context) ? 400 : 100,
+                      width: isDesktop(context)  || isTablet(context) ? 400 : 100,
                       tittle: 'Valoración Bromage',
                       onChangeValue: (value) {
                         setState(() {
@@ -354,7 +354,7 @@ class _PrequirurgicosState extends State<Prequirurgicos> {
                       initialValue: Valores.valoracionBromage,
                     ),
                     Spinner(
-                      width: isDesktop(context) ? 400 : 100,
+                      width: isDesktop(context)  || isTablet(context) ? 400 : 100,
                       tittle: 'Valoración N.Y.H.A.',
                       onChangeValue: (value) {
                         setState(() {

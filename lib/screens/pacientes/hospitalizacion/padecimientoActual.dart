@@ -2,6 +2,7 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +69,7 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
             inputFormat: MaskTextInputFormatter(),
             labelEditText: 'Descripción del Padecimiento Actual',
             textController: padecimientoActualTextController,
-            numOfLines: 15,
+            numOfLines: isTablet(context) ? 35 : 15,
             onChange: (value) {
               setState(() {
                 Valores.padecimientoActual = value;
@@ -78,5 +79,11 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 }

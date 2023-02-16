@@ -546,7 +546,7 @@ class _ElectrocardiogramasGestionState
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            if (isMobile(context)) {
+            if (isMobile(context) || isTablet(context)) {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: ((context) => const AuxiliaresDiagnosticos())));
             } else {

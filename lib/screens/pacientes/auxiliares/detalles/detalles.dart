@@ -17,91 +17,94 @@ class Detalles extends StatefulWidget {
 class _DetallesState extends State<Detalles> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TittlePanel(padding: 5, textPanel: 'Datos generales del paciente'),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Expanded(
-                flex: isTablet(context) ? 3 : 1,
-                child: SingleChildScrollView(
-                  controller: ScrollController(),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      ThreeLabelTextAline(
-                        padding: 2.0,
-                        firstText: 'Fecha Nacimiento',
-                        secondText: Pacientes.Paciente['Pace_Nace'],
-                      ),
-                      ThreeLabelTextAline(
-                        padding: 2.0,
-                        firstText: 'Edad',
-                        secondText: '${Pacientes.Paciente['Pace_Eda']} Años',
-                      ),
-                      ThreeLabelTextAline(
-                        padding: 2.0,
-                        firstText: 'Sexo',
-                        secondText: Pacientes.Paciente['Pace_Ses'],
-                      ),
-                      ThreeLabelTextAline(
-                        padding: 2.0,
-                        firstText: 'Teléfono',
-                        secondText: Pacientes.Paciente['Pace_Tele'],
-                      ),
-                      ThreeLabelTextAline(
-                        padding: 2.0,
-                        firstText: 'Modo Atención',
-                        secondText: Pacientes.Paciente['Pace_Hosp'],
-                      ),
-                      ThreeLabelTextAline(
-                        padding: 2.0,
-                        firstText: 'Estado Civil',
-                        secondText: Pacientes.Paciente['Pace_Edo_Civ'],
-                      ),
-                      ThreeLabelTextAline(
-                        padding: 2.0,
-                        firstText: 'Ocupación',
-                        secondText: Pacientes.Paciente['Pace_Ocupa'],
-                      ),
-                      ThreeLabelTextAline(
-                        padding: 2.0,
-                        firstText: 'Religión',
-                        secondText: Pacientes.Paciente['Pace_Reli'],
-                      ),
-                      ThreeLabelTextAline(
-                        padding: 2.0,
-                        firstText: 'C.U.R.P.',
-                        secondText: Pacientes.Paciente['Pace_Curp'],
-                      ),
-                      ThreeLabelTextAline(
-                        padding: 2.0,
-                        firstText: 'R.F.C.',
-                        secondText: Pacientes.Paciente['Pace_RFC'],
-                      ),
-                    ],
+    return SingleChildScrollView(
+      controller: ScrollController(),
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TittlePanel(padding: 5, textPanel: 'Datos generales del paciente'),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: isTablet(context) ? 3 : 1,
+                  child: SingleChildScrollView(
+                    controller: ScrollController(),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        ThreeLabelTextAline(
+                          padding: 2.0,
+                          firstText: 'Fecha Nacimiento',
+                          secondText: Pacientes.Paciente['Pace_Nace'],
+                        ),
+                        ThreeLabelTextAline(
+                          padding: 2.0,
+                          firstText: 'Edad',
+                          secondText: '${Pacientes.Paciente['Pace_Eda']} Años',
+                        ),
+                        ThreeLabelTextAline(
+                          padding: 2.0,
+                          firstText: 'Sexo',
+                          secondText: Pacientes.Paciente['Pace_Ses'],
+                        ),
+                        ThreeLabelTextAline(
+                          padding: 2.0,
+                          firstText: 'Teléfono',
+                          secondText: Pacientes.Paciente['Pace_Tele'],
+                        ),
+                        ThreeLabelTextAline(
+                          padding: 2.0,
+                          firstText: 'Modo Atención',
+                          secondText: Pacientes.Paciente['Pace_Hosp'],
+                        ),
+                        ThreeLabelTextAline(
+                          padding: 2.0,
+                          firstText: 'Estado Civil',
+                          secondText: Pacientes.Paciente['Pace_Edo_Civ'],
+                        ),
+                        ThreeLabelTextAline(
+                          padding: 2.0,
+                          firstText: 'Ocupación',
+                          secondText: Pacientes.Paciente['Pace_Ocupa'],
+                        ),
+                        ThreeLabelTextAline(
+                          padding: 2.0,
+                          firstText: 'Religión',
+                          secondText: Pacientes.Paciente['Pace_Reli'],
+                        ),
+                        ThreeLabelTextAline(
+                          padding: 2.0,
+                          firstText: 'C.U.R.P.',
+                          secondText: Pacientes.Paciente['Pace_Curp'],
+                        ),
+                        ThreeLabelTextAline(
+                          padding: 2.0,
+                          firstText: 'R.F.C.',
+                          secondText: Pacientes.Paciente['Pace_RFC'],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              isTablet(context)
-                  ? Expanded(
-                flex: isTablet(context) ? 1 : 0,
-                child: CircleAvatar(
-                    backgroundColor: Colors.black,
-                    radius: 100,
-                    child: ClipOval(
-                        child: Image.memory(
-                          base64Decode(Pacientes.Paciente['Pace_FIAT']),
-                          fit: BoxFit.cover,
-                        ))),
-              )
-                  : Container()
-            ],
-          )
-        ]);
+                isTablet(context)
+                    ? Expanded(
+                  flex: isTablet(context) ? 1 : 0,
+                  child: CircleAvatar(
+                      backgroundColor: Colors.black,
+                      radius: 100,
+                      child: ClipOval(
+                          child: Image.memory(
+                            base64Decode(Pacientes.Paciente['Pace_FIAT']),
+                            fit: BoxFit.cover,
+                          ))),
+                )
+                    : Container()
+              ],
+            )
+          ]),
+    );
   }
 }
