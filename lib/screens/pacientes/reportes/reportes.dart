@@ -36,13 +36,13 @@ class ReportesMedicos extends StatefulWidget {
 }
 
 class _ReportesMedicosState extends State<ReportesMedicos> {
+
   @override
   void initState() {
-    // # # # ############## #### ######## #### ########
     // Llamado a los ultimos registros agregados.
-    // # # # ############## #### ######## #### ########
     setState(() {
       Reportes.consultarRegistros();
+      Diagnosticos.consultarRegistro();
     });
     // # # # ############## #### ######## #### ########
     super.initState();

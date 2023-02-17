@@ -1,4 +1,6 @@
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/subjetivos.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/auxiliaresReportes.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/exploracionFisica.dart';
 import 'package:assistant/values/SizingInfo.dart';
@@ -16,7 +18,6 @@ class ReporteEvolucion extends StatefulWidget {
 }
 
 class _ReporteEvolucionState extends State<ReporteEvolucion> {
-
   @override
   void initState() {
     // # # # ############## #### ########
@@ -102,7 +103,7 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
             child: CarouselSlider(
               carouselController: carouselController,
               options: CarouselOptions(
-                  height: isMobile(context) || isTablet(context) ? 900: 450,
+                  height: isMobile(context) || isTablet(context) ? 900 : 450,
                   enableInfiniteScroll: false,
                   viewportFraction: 1.0),
               items: [
@@ -124,7 +125,8 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
                           numOfLines: 5,
                           onChange: ((value) {
                             Reportes.impresionesDiagnosticas = "$value.";
-                            Reportes.reportes['Impresiones_Diagnosticas'] = "$value.";
+                            Reportes.reportes['Impresiones_Diagnosticas'] =
+                                "$value.";
                           }),
                           inputFormat: MaskTextInputFormatter()),
                       EditTextArea(
@@ -132,6 +134,21 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
                           labelEditText: "Referidos del Paciente",
                           keyBoardType: TextInputType.multiline,
                           numOfLines: 5,
+                          selection: true,
+                          withShowOption: true,
+                          onSelected: () {
+                            Operadores.openDialog(
+                                context: context,
+                                chyldrim: const Subjetivos(),
+                                onAction: () {
+                                  setState(() {
+                                    subjetivoTextController.text =
+                                        Reportes.subjetivoHospitalizacion;
+                                    Reportes.reportes['Subjetivo'] =
+                                        "${subjetivoTextController.text}.";
+                                  });
+                                });
+                          },
                           onChange: ((value) {
                             Reportes.subjetivoHospitalizacion = "$value.";
                             Reportes.reportes['Subjetivo'] = "$value.";
@@ -141,9 +158,11 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
                   ),
                 ),
                 ExploracionFisica(),
-                 AuxiliaresExploracion(),
-                 AnalisisMedico(),
-                DiagnosticosAndPronostico(isTerapia: true,),
+                AuxiliaresExploracion(),
+                AnalisisMedico(),
+                DiagnosticosAndPronostico(
+                  isTerapia: true,
+                ),
               ],
             ),
           ),
@@ -173,5 +192,4 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
 // ######################### ### # ### ############################
 // INICIO DE LAS OPERACIONES STATE() Y BUILD().
 // ######################### ### # ### ############################
-
 }

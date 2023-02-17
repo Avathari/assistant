@@ -112,7 +112,7 @@ class Pacientes {
   static List? Ventilaciones = [];
   //
   static List? Hospitalizaciones = [];
-
+  static List? Diagnosticos = [];
   //
   static List? Sexuales = [];
   static List? Antirretrovirales = [];
@@ -437,8 +437,6 @@ class Pacientes {
     Reportes.reportes['Impresiones_Diagnosticas'] = "";
     Reportes.impresionesDiagnosticas = "";
 
-    // print("Patologicos ${Patologicos!.length} $Patologicos \n "
-    //"Reportes.impresionesDiagnosticas ${Reportes.impresionesDiagnosticas}");
     // ************************ ************** ********** **** *** *
     if (Patologicos != []) {
       for (var element in Patologicos!) {
@@ -447,13 +445,20 @@ class Pacientes {
               "${element['Pace_APP_DEG']} (${element['Pace_APP_DEG_com']}). ";
         } else {
           Reportes.impresionesDiagnosticas =
-              "${Reportes.impresionesDiagnosticas} ${element['Pace_APP_DEG']} (${element['Pace_APP_DEG_com']}). \n";
+              "${Reportes.impresionesDiagnosticas}\n${element['Pace_APP_DEG']} (${element['Pace_APP_DEG_com']}). \n";
         }
       }
     }
     // ************************ ************** ********** **** *** *
-    // print(
-    //"Reportes.impresionesDiagnosticas ${Reportes.impresionesDiagnosticas}");
+    if (Diagnosticos != []) {
+      for (var element in Diagnosticos!) {
+        Reportes.impresionesDiagnosticas =
+        "${Reportes.impresionesDiagnosticas.substring(0, Reportes.impresionesDiagnosticas.length - 1)} \n"
+            "${element['Pace_APP_DEG']} (${element['Pace_APP_DEG_com']}). ";
+      }
+    }
+
+    // print("Reportes.impresionesDiagnosticas ${Reportes.impresionesDiagnosticas}");
     Reportes.reportes['Impresiones_Diagnosticas'] =
         Reportes.impresionesDiagnosticas;
     // ************************ ************** ********** **** *** *
@@ -4766,7 +4771,13 @@ class Reportes {
   static String impresionesDiagnosticas = "";
   static String pronosticoMedico = "";
   //
-  static String motivoConsulta = "", subjetivoHospitalizacion = "";
+  static String motivoConsulta = "", subjetivoHospitalizacion =
+    "El paciente se refiere ${Valores.estadoGeneral}. "
+      "Via oral a base de ${Valores.viaOral}. "
+      "Uresis con frecuencia ${Valores.uresisCantidad}, "
+      "excretas con frecuencia ${Valores.excretasCantidad}. "
+      "${Valores.referenciasHospitalizacion}. ";
+      // "Sin rerencias particulares del paciente durante la hospitalización";
   //
   static List<String> hidroterapia = ['Sin terapia hídrica.'];
   static List<String> medicamentosIndicados = ['Sin medicamentos otorgados.'];
@@ -5163,6 +5174,146 @@ class Hospitalizaciones {
         "(SELECT IFNULL(AVG('Pace_SV_tas'), 0) FROM pace_hosp WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAS,"
         "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM pace_hosp WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
         "(SELECT IFNULL(count(*), 0) FROM pace_hosp WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
+  };
+}
+
+class Diagnosticos {
+  static int ID_Diagnosticos = 0;
+  //
+  static String selectedDiagnosis = "";
+  //
+
+  static Map<String, dynamic> Diagnostico = {};
+
+  static List<String> actualDiagno = Dicotomicos.dicotomicos();
+  static List<String> actualTratamiento = Dicotomicos.dicotomicos();
+  static List<String> actualSuspendido = Dicotomicos.dicotomicos();
+
+  static void registros() {
+    Actividades.consultarAllById(
+        Databases.siteground_database_reghosp,
+        Diagnosticos.diagnosticos['consultByIdPrimaryQuery'],
+        Pacientes.ID_Paciente)
+        .then((value) => Pacientes.Diagnosticos = value);
+  }
+
+  static void ultimoRegistro() {
+    Actividades.consultarId(Databases.siteground_database_reghosp,
+        Diagnosticos.diagnosticos['consultLastQuery'], Pacientes.ID_Hospitalizacion)
+        .then((value) {
+      Diagnosticos.Diagnostico =
+          value; // Enfermedades de base del paciente, asi como las Hospitalarias.
+    });
+  }
+
+  static void consultarRegistro() {
+    Actividades.consultarAllById(Databases.siteground_database_reghosp,
+        Diagnosticos.diagnosticos['consultIdQuery'], Pacientes.ID_Hospitalizacion)
+        .then((value) {
+      // Enfermedades de base del paciente, asi como las Hospitalarias.
+      Pacientes.Diagnosticos = value;
+    });
+  }
+
+  static final Map<String, dynamic> diagnosticos = {
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
+        "DEFAULT CHARACTER SET utf8 "
+        "COLLATE utf8_unicode_ci;",
+    "showTables": "SHOW tables;",
+    "dropDatabase": "DROP DATABASE bd_regpace",
+    "describeTable": "DESCRIBE pace_dia;",
+    "showColumns": "SHOW columns FROM pace_dia",
+    "showInformation":
+    "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_dia'",
+    "createQuery": """
+    CREATE TABLE `pace_dia` (
+                  `ID_PACE_APP_DEG` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                  `ID_Pace` int(11) NOT NULL,
+                  `ID_Hosp` int(11) NOT NULL,
+                  `Pace_APP_DEG_SINO` tinyint(1) NOT NULL,
+                  `Pace_APP_DEG` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                  `Pace_APP_DEG_com` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+                  `Pace_APP_DEG_dia` int(200) NOT NULL,
+                  `Pace_APP_DEG_tra_SINO` tinyint(1) NOT NULL,
+                  `Pace_APP_DEG_tra` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                  `Pace_APP_DEG_sus_SINO` tinyint(1) NOT NULL,
+                  `Pace_APP_DEG_sus` varchar(200) COLLATE utf8_unicode_ci NOT NULL
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+                COLLATE=utf8_unicode_ci
+                COMMENT='Tabla para Diagnósticos Intrahospitalarios';
+            """,
+    "truncateQuery": "TRUNCATE pace_dia",
+    "dropQuery": "DROP TABLE pace_dia",
+    "consultQuery": "SELECT * FROM pace_dia",
+    "consultIdQuery": "SELECT * FROM pace_dia WHERE ID_Hosp = ?",
+    "consultByIdPrimaryQuery": "SELECT * FROM pace_dia WHERE ID_Pace = ?",
+    "consultAllIdsQuery": "SELECT ID_Pace FROM pace_dia",
+    "consultLastQuery": "SELECT * FROM pace_dia WHERE ID_Hosp = ?",
+    "consultByName": "SELECT * FROM pace_dia WHERE Pace_APP_DEG LIKE '%",
+    "registerQuery": "INSERT INTO `pace_dia` (ID_Pace, ID_Hosp, Pace_APP_DEG_SINO, " 
+    "Pace_APP_DEG, Pace_APP_DEG_com, Pace_APP_DEG_dia, Pace_APP_DEG_tra_SINO, " 
+    "Pace_APP_DEG_tra, Pace_APP_DEG_sus_SINO, Pace_APP_DEG_sus) " 
+    "VALUES (?,?,?,?,?,?,?,?,?,?)",
+    "updateQuery": "UPDATE pace_dia " 
+    "SET ID_PACE_APP_DEG = ?,  ID_Pace = ?,  ID_Hosp = ?,  Pace_APP_DEG_SINO = ?,  " 
+    "Pace_APP_DEG = ?,  Pace_APP_DEG_com = ?,  Pace_APP_DEG_dia = ?,  " 
+    "Pace_APP_DEG_tra_SINO = ?,  Pace_APP_DEG_tra = ?,  Pace_APP_DEG_sus_SINO = ?,  " 
+    "Pace_APP_DEG_sus = ? " 
+    "WHERE ID_PACE_APP_DEG = ?",
+    "deleteQuery": "DELETE FROM pace_dia WHERE ID_pace_dia = ?",
+    "vitalesColumns": [
+      "ID_Pace",
+    ],
+    "vitalesItems": [
+      "ID_Pace",
+      "Nombre_Completo",
+      "Apellido_Paterno",
+      "Apellido_Materno",
+      "Paciente",
+      "Contraseña",
+      "Permisos",
+      "Especialización",
+      "Area",
+      "Estatus",
+      "Anexado_por"
+    ],
+    "vitalesColums": [
+      "ID Paciente",
+      "Nombre Completo",
+      "Apellido Paterno",
+      "Apellido Materno",
+      "Paciente",
+      "Contraseña",
+      "Permiso(s)",
+      "Especialización",
+      "Area",
+      "Estatus",
+      "Anexado Por"
+    ],
+    "vitalesStats": [
+      "Total_Administradores",
+      "Total_Mip",
+      "Total_Mpss",
+      "Total_Mg",
+      "Total_Medesp",
+      "Total_Tegra",
+      "Total_Enfra",
+      "Total_Enfesp",
+      "Total_Tec",
+      "Total_Secre",
+      "Total_Captu",
+      "Total_Inge",
+      "Total_Directivos",
+      "Total_Guardias",
+      "Total_Logistica",
+      "Total_Mantenimiento",
+      "Total_Traslado_Intra",
+      "otal_Traslado_Extra",
+    ],
+    "vitalesStadistics": "SELECT "
+        "(SELECT IFNULL(AVG('Pace_SV_tas'), 0) FROM pace_sv WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAS,"
+        "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM pace_sv WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_sv WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
   };
 }
 

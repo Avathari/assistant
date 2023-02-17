@@ -129,6 +129,21 @@ class _ReportePrequirurgicoState extends State<ReportePrequirurgico> {
                                 labelEditText: "Motivo de la Cirugía",
                                 keyBoardType: TextInputType.multiline,
                                 numOfLines: 1,
+                                withShowOption: true,
+                                selection: true,
+                                onSelected: () {
+                                  Operadores.selectOptionsActivity(
+                                      context: context,
+                                      tittle: 'Seleccione un diagnóstico . . . ',
+                                      options: Pacientes.diagnosticos().split("\n"),
+                                      onClose: (value) {
+                                        setState(() {
+                                          Valores.motivoCirugia = value;
+                                          motivoQuiroTextController.text = value;
+                                        });
+                                        Navigator.of(context).pop();
+                                      });
+                                },
                                 onChange: (value) {
                                   setState(() {
                                     Valores.motivoCirugia = value;
@@ -198,6 +213,7 @@ class _ReportePrequirurgicoState extends State<ReportePrequirurgico> {
       ]),
     );
   }
+
 
   // ######################### ### # ### ############################
   // Controladores de widgets en general.

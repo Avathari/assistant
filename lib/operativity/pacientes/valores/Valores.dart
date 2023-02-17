@@ -357,6 +357,12 @@ class Valores {
       presionPlateau = 0;
   static double? volumenTidal = 0;
 
+  // Referencias del paciente
+  static String estadoGeneral = Items.estadoGeneral[0],
+      viaOral = Items.viaOralAlimentacion[0],
+      uresisCantidad = Items.uresisCantidad[0],
+      excretasCantidad = Items.excretasCantidad[0],
+      referenciasHospitalizacion = "Sin referencias por parte del paciente";
   // Variables Estaticas
   static int? constanteRequerimientos = 30;
   static int porcentajeCarbohidratos = 50;
@@ -2422,6 +2428,14 @@ class Formatos {
       "Se sugire inicio de Metformina 850 mg cada 12hrs. Y realizar labs de control. \n"
       "";
 
+  static String get subjetivos {
+    return "El paciente se refiere ${Valores.estadoGeneral}. "
+        "Via oral a base de ${Valores.viaOral}. "
+        "Uresis con frecuencia ${Valores.uresisCantidad}, "
+        "excretas con frecuencia ${Valores.excretasCantidad}. "
+        "${Valores.referenciasHospitalizacion}. ";
+  }
+
   static String get ideologias {
     String prejuicios = "", creencias = "", valores = "", costumbres = "";
     // ******** **** ******* **** *******
@@ -3504,6 +3518,28 @@ class Items {
   ];
 
   static List<String> tipoInterrogatorio = ['Directo', 'Indirecto'];
+
+  static List<String> estadoGeneral = [
+    'Asintomático',
+    'Dolor localizado',
+    'Dolor generalizado'
+  ];
+  static List<String> viaOralAlimentacion = [
+    'Ayuno',
+    'Dieta líquida',
+    'Dieta blanda',
+    'Dieta completa'
+  ];
+  static List<String> uresisCantidad = [
+    'Menor a 2 veces',
+    'Entre 2 - 4 veces',
+    'Mayor a 4 veces'
+  ];
+  static List<String> excretasCantidad = [
+    'Menor a 2 veces',
+    'Entre 2 - 4 veces',
+    'Mayor a 4 veces'
+  ];
 }
 
 isNull(value) {

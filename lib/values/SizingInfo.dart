@@ -19,10 +19,10 @@ bool isTabletAndDesktop(BuildContext context) {
 }
 
 bool isDesktop(BuildContext context) {
-  print(
-      "MediaQuery.of(context).size.width  ${MediaQuery.of(context).size.width}");
   return MediaQuery.of(context).size.width > desktopSmall; // desktopNormal
 }
+
+// print("MediaQuery.of(context).size.width  ${MediaQuery.of(context).size.width}");
 
 //Mobile size
 double get mobileSmall => 320;

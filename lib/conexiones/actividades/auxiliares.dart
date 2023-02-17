@@ -340,6 +340,26 @@ class Operadores {
         });
   }
 
+  static void selectOptionsActivity({
+    required BuildContext context,
+    String? tittle = "Manejo de Opciones",
+    String? message = "Seleccione una opción . . . ",
+    required List<String> options,
+    Function(String)? onClose,
+  }) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialogos.selectOptionsActivity(
+            tittle: tittle,
+            msg: message,
+            options: options,
+            onCloss: onClose,
+          );
+        });
+  }
+
+
   static void alertActivity(
       {required BuildContext context,
       String? tittle = "Manejo de registro",
@@ -477,4 +497,54 @@ class Dialogos {
       ],
     );
   }
+
+  static AlertDialog selectOptionsActivity({
+    String? tittle,
+    String? msg,
+    ValueChanged<String>? onCloss,
+    required List<String> options,
+  }) {
+    List<Widget> list = [];
+    var selected = "";
+
+    for (var element in options) {
+      list.add(Column(
+        children: [
+          ListTile(
+            onTap: () {
+              // PdfApi.openFile(File(element[1]));
+              onCloss!(element);
+            },
+            title: Text(
+              element,
+              style: const TextStyle(color: Colors.grey),
+            ),
+          ),
+          const CrossLine(),
+        ],
+      ));
+    }
+
+    return AlertDialog(
+      backgroundColor: Theming.secondaryColor,
+      title: Text(
+        tittle!,
+        style: const TextStyle(color: Colors.grey),
+      ),
+      content: SingleChildScrollView(
+          controller: ScrollController(),
+          child: Column(
+            children: list,
+          )),
+      actions: [
+        ElevatedButton(
+            onPressed: () {
+              onCloss!(selected);
+            },
+            child:
+            const Text("Cancelar", style: TextStyle(color: Colors.white))),
+      ],
+    );
+  }
+
 }

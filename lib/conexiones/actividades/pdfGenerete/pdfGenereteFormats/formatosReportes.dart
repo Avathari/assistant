@@ -288,12 +288,12 @@ class FormatosReportes {
         ),
       );
     }
-    parax.add(
-      paragraphWithBullets(
-        titulo: "Impresiones diagnósticas",
-        subTitulo: "${paraph['Impresiones_Diagnosticas']}",
-      ),
-    );
+    // parax.add(
+    //   paragraphWithBullets(
+    //     titulo: "Impresiones diagnósticas",
+    //     subTitulo: "${paraph['Impresiones_Diagnosticas']}",
+    //   ),
+    // );
     parax.add(paragraph(
       texto: "${paraph['Analisis_Medico']}",
     ));

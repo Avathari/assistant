@@ -2,6 +2,7 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/screens/pacientes/hospitalizacion/diagnosticados.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/expedientes.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/padecimientoActual.dart';
@@ -100,7 +101,13 @@ class _HospitalizadoState extends State<Hospitalizado> {
               GrandIcon(
                   iconData: Icons.restore_page_outlined,
                   labelButton: 'Diagnósticos de la Hospitalización',
-                  onPress: () {}),
+                  onPress: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          GestionDiagnosticos(
+                          ),
+                    ));
+                  }),
               GrandIcon(
                   iconData: Icons.airline_seat_flat,
                   labelButton: 'Protocolo Quirúrgico',
@@ -197,7 +204,13 @@ class _HospitalizadoState extends State<Hospitalizado> {
                 GrandIcon(
                     iconData: Icons.restore_page_outlined,
                     labelButton: 'Diagnósticos de la Hospitalización',
-                    onPress: () {}),
+                    onPress: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            GestionDiagnosticos(
+                            ),
+                      ));
+                    }),
                 GrandIcon(
                     iconData: Icons.airline_seat_flat,
                     labelButton: 'Protocolo Quirúrgico',
@@ -294,7 +307,13 @@ class _HospitalizadoState extends State<Hospitalizado> {
                         child: GrandIcon(
                             iconData: Icons.restore_page_outlined,
                             labelButton: 'Diagnósticos de la Hospitalización',
-                            onPress: () {}),
+                            onPress: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    GestionDiagnosticos(
+                                    ),
+                              ));
+                            }),
                       ),
                     ],
                   ),
