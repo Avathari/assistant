@@ -113,9 +113,10 @@ class _IntensivaState extends State<Intensiva> {
                     iconData: Icons.balance,
                     labelButton: 'Concentraciones y Diluciones',
                     onPress: () {
-                      openDialog(
-                          const Concentraciones(),
-                          );
+                      Operadores.openDialog(
+                        context: context,
+                        chyldrim: const Concentraciones(),
+                      );
                     },
                   ),
                   const CrossLine(),
@@ -189,7 +190,8 @@ class _IntensivaState extends State<Intensiva> {
                     labelButton: 'Análisis Hidrico',
                     onPress: () {
                       if (isMobile(context)) {
-                        openDialog(const Hidricos());
+                        Operadores.openDialog(
+                            context: context, chyldrim: const Hidricos());
                       } else {
                         setState(() {
                           widget.actualView = 1;
@@ -202,7 +204,8 @@ class _IntensivaState extends State<Intensiva> {
                     labelButton: 'Análisis Metabólico',
                     onPress: () {
                       if (isMobile(context)) {
-                        openDialog(const Metabolicos());
+                        Operadores.openDialog(
+                            context: context, chyldrim: const Metabolicos());
                       } else {
                         setState(() {
                           widget.actualView = 2;
@@ -215,7 +218,9 @@ class _IntensivaState extends State<Intensiva> {
                     labelButton: 'Análisis Antropométrico',
                     onPress: () {
                       if (isMobile(context)) {
-                        openDialog(const Antropometricos());
+                        Operadores.openDialog(
+                            context: context,
+                            chyldrim: const Antropometricos());
                       } else {
                         setState(() {
                           widget.actualView = 3;
@@ -227,7 +232,9 @@ class _IntensivaState extends State<Intensiva> {
                     labelButton: 'Análisis Cardiovascular',
                     onPress: () {
                       if (isMobile(context)) {
-                        openDialog(const Cardiovasculares());
+                        Operadores.openDialog(
+                            context: context,
+                            chyldrim: const Cardiovasculares());
                       } else {
                         setState(() {
                           widget.actualView = 4;
@@ -240,7 +247,8 @@ class _IntensivaState extends State<Intensiva> {
                     labelButton: 'Análisis Ventilatorio',
                     onPress: () {
                       if (isMobile(context)) {
-                        openDialog(const Ventilatorios());
+                        Operadores.openDialog(
+                            context: context, chyldrim: const Ventilatorios());
                       } else {
                         setState(() {
                           widget.actualView = 5;
@@ -253,7 +261,8 @@ class _IntensivaState extends State<Intensiva> {
                     labelButton: 'Análisis Gasométrico',
                     onPress: () {
                       if (isMobile(context)) {
-                        openDialog(const Gasometricos());
+                        Operadores.openDialog(
+                            context: context, chyldrim: const Gasometricos());
                       } else {
                         setState(() {
                           widget.actualView = 6;
@@ -322,7 +331,8 @@ class _IntensivaState extends State<Intensiva> {
               labelButton: 'Valoración Prequirúrgica',
               onPress: () {
                 if (isMobile(context)) {
-                  openDialog(const Prequirurgicos());
+                  Operadores.openDialog(
+                      context: context, chyldrim: const Prequirurgicos());
                 } else {
                   setState(() {
                     widget.actualView = 11;
@@ -334,7 +344,8 @@ class _IntensivaState extends State<Intensiva> {
               labelButton: 'Valoración de Vía Aerea',
               onPress: () {
                 if (isMobile(context)) {
-                  openDialog(const Aereas());
+                  Operadores.openDialog(
+                      context: context, chyldrim: const Aereas());
                 } else {
                   setState(() {
                     widget.actualView = 12;
@@ -359,29 +370,56 @@ class _IntensivaState extends State<Intensiva> {
             GrandLabel(
               labelButton: 'Catéter Venoso Central',
               onPress: () {
-                Operadores.openDialog(
-                    context: context, chyldrim: const CateterVenosoCentral());
+                if (isMobile(context)) {
+                  Operadores.openDialog(
+                      context: context, chyldrim: const CateterVenosoCentral());
+                } else {
+                  setState(() {
+                    widget.actualView = 13;
+                  });
+                }
               },
             ),
             GrandLabel(
               labelButton: 'Intubación Endotraqueal',
               onPress: () {
-                Operadores.openDialog(
-                    context: context, chyldrim: const IntubacionEndotraqueal());
+                if (isMobile(context)) {
+                  Operadores.openDialog(
+                      context: context,
+                      chyldrim: const IntubacionEndotraqueal());
+                } else {
+                  setState(() {
+                    widget.actualView = 14;
+                  });
+                }
               },
             ),
             GrandLabel(
               labelButton: 'Sonda Endopleural',
               onPress: () {
-                Operadores.openDialog(
-                    context: context, chyldrim: const SondaEndopleural());
+                if (isMobile(context)) {
+                  Operadores.openDialog(
+                      context: context,
+                      chyldrim: const SondaEndopleural());
+                } else {
+                  setState(() {
+                    widget.actualView = 15;
+                  });
+                }
               },
             ),
             GrandLabel(
               labelButton: 'Catéter Tenckhoff',
               onPress: () {
-                Operadores.openDialog(
-                    context: context, chyldrim: const CateterTenckhoff());
+                if (isMobile(context)) {
+                  Operadores.openDialog(
+                      context: context,
+                      chyldrim: const CateterTenckhoff());
+                } else {
+                  setState(() {
+                    widget.actualView = 16;
+                  });
+                }
               },
             ),
           ],
@@ -413,36 +451,36 @@ class _IntensivaState extends State<Intensiva> {
     return list[actualView];
   }
 
-  void openDialog(chyldrim) {
-    showDialog(
-        useSafeArea: true,
-        context: context,
-        builder: (context) {
-          return Dialog(
-              backgroundColor: Colors.black,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(flex: 5, child: chyldrim),
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(20)),
-                          border: Border.all(
-                            color: Colors.grey,
-                          )),
-                      child: GrandButton(
-                        labelButton: 'Cerrar',
-                        onPress: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ));
-        });
-  }
+  // void openDialog(chyldrim) {
+  //   showDialog(
+  //       useSafeArea: true,
+  //       context: context,
+  //       builder: (context) {
+  //         return Dialog(
+  //             backgroundColor: Colors.black,
+  //             child: Padding(
+  //               padding: const EdgeInsets.all(8.0),
+  //               child: Column(
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: [
+  //                   Expanded(flex: 5, child: chyldrim),
+  //                   Container(
+  //                     decoration: BoxDecoration(
+  //                         borderRadius:
+  //                             const BorderRadius.all(Radius.circular(20)),
+  //                         border: Border.all(
+  //                           color: Colors.grey,
+  //                         )),
+  //                     child: GrandButton(
+  //                       labelButton: 'Cerrar',
+  //                       onPress: () {
+  //                         Navigator.of(context).pop();
+  //                       },
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ));
+  //       });
+  // }
 }

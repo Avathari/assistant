@@ -1,5 +1,6 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart' as patients;
+import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/screens/pacientes/epidemiologicos/alimenticios.dart';
 import 'package:assistant/screens/pacientes/epidemiologicos/diarios.dart';
 import 'package:assistant/screens/pacientes/epidemiologicos/eticos.dart';

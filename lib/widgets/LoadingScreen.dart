@@ -15,19 +15,23 @@ class _LoadingScreenState extends State<LoadingScreen> {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      color: Theming.bdColor,
+      color: Theming.secondaryColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const CircularProgressIndicator(),
           const SizedBox(
-            height: 15,
+            height: 200,
+            width: 200,
+            child: CircularProgressIndicator(),
+          ),
+          const SizedBox(
+            height: 30,
           ),
           Text(
             widget.error!,
             textAlign: TextAlign.center,
             style: const TextStyle(color: Colors.white, fontSize: 12),
-          )
+          ),
         ],
       ),
     );

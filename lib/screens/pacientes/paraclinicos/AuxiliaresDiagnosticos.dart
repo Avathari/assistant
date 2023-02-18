@@ -1,4 +1,5 @@
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/Electrocardiogramas.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/imagenologias.dart';

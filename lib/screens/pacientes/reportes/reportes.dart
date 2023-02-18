@@ -2,13 +2,12 @@ import 'package:assistant/conexiones/actividades/pdfGenerete/PdfApi.dart';
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
-import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 
 import 'package:assistant/screens/pacientes/auxiliares/presentaciones/presentaciones.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/padecimientoActual.dart';
 import 'package:assistant/screens/pacientes/intensiva/valoraciones/aereos.dart';
 import 'package:assistant/screens/pacientes/intensiva/valoraciones/prequirurgicos.dart';
-import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/auxiliaresReportes.dart';
 import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteFormats/formatosReportes.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteConsulta.dart';
@@ -23,7 +22,6 @@ import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/ListValue.dart';
-import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';
 
 class ReportesMedicos extends StatefulWidget {
@@ -218,13 +216,13 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           const CrossLine(),
           // TittlePanel(textPanel: "Tipo de Nota Médica"),
           Expanded(
-              flex: 3,
+              flex: 8,
               child: ListView(
                 padding: const EdgeInsets.all(12.0),
                 controller: ScrollController(),
                 children: tiposReportes(),
               )),
-          const Expanded(child: SizedBox(height: 20, child: CrossLine())),
+          const Expanded(child: SizedBox(height: 10, child: CrossLine())),
           // ListValue(
           //   title: "",
           //   onPress: () {},

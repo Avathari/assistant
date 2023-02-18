@@ -121,6 +121,7 @@ class _ChartLineState extends State<ChartLine>  {
 
     //print("widget.values ${widget.values!.length} ${widget.values}");
     for (var i = 0; i < widget.values!.length; i++) {
+      // print("${Colores.locales[i]!}, ${widget.values![i]}");
       widget.spotsVals!.add(getSpots(Colores.locales[i]!, widget.values![i]));
     }
   }

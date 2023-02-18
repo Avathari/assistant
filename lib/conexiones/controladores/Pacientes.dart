@@ -450,6 +450,7 @@ class Pacientes {
       }
     }
     // ************************ ************** ********** **** *** *
+    print("Diagnosticos $Diagnosticos");
     if (Diagnosticos != []) {
       for (var element in Diagnosticos!) {
         Reportes.impresionesDiagnosticas =

@@ -6,6 +6,7 @@ import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandButton.dart';
+import 'package:assistant/widgets/LoadingScreen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 
@@ -214,6 +215,7 @@ class Opciones {
 }
 
 class Operadores {
+
   static void openDialog(
       {required BuildContext context, required Widget chyldrim,
         Function? onAction}) {
@@ -339,6 +341,24 @@ class Operadores {
           );
         });
   }
+
+  static void loadingActivity({
+    required BuildContext context,
+    String? tittle,
+    String? message,
+    Function? onCloss,
+  }) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialogos.loadingActivity(
+            tittle: tittle,
+            msg: message,
+            onCloss: onCloss,
+          );
+        });
+  }
+
 
   static void selectOptionsActivity({
     required BuildContext context,
@@ -540,6 +560,38 @@ class Dialogos {
         ElevatedButton(
             onPressed: () {
               onCloss!(selected);
+            },
+            child:
+            const Text("Cancelar", style: TextStyle(color: Colors.white))),
+      ],
+    );
+  }
+
+  static AlertDialog loadingActivity({
+    String? tittle,
+    String? msg,
+    Function? onCloss,
+  }) {
+
+    return AlertDialog(
+      backgroundColor: Theming.secondaryColor,
+      title: Text(
+        tittle!,
+        style: const TextStyle(color: Colors.grey),
+      ),
+      content: SingleChildScrollView(
+          controller: ScrollController(),
+          child: Column(
+            children: [
+              LoadingScreen(
+                error: 'Iniciando Interfaz . . . ',
+              ),
+            ],
+          )),
+      actions: [
+        ElevatedButton(
+            onPressed: () {
+              onCloss!();
             },
             child:
             const Text("Cancelar", style: TextStyle(color: Colors.white))),
