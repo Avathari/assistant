@@ -6,7 +6,7 @@ import 'package:assistant/screens/pacientes/auxiliares/detalles/estadisticasVita
 import 'package:assistant/screens/pacientes/auxiliares/diagnosticos/degenerativos.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizado.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';
-import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/pendientes.dart';
+import 'package:assistant/screens/pacientes/hospitalizacion/pendientes.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/ChartLine.dart';

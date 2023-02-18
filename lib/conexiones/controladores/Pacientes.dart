@@ -4644,6 +4644,7 @@ class Pendientes {
               ID_Pace_Pen int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
               ID_Pace int(11) NOT NULL,
               ID_Hosp int(11) NOT NULL,
+              Pace_PEN_realized tinyint(1) NOT NULL,
               Feca_PEN date NOT NULL,
               Pace_PEN varchar(150) COLLATE utf8_unicode_ci NOT NULL,
               Pace_Desc_PEN varchar(300) COLLATE utf8_unicode_ci NOT NULL
@@ -4653,20 +4654,26 @@ class Pendientes {
     "truncateQuery": "TRUNCATE pace_pen",
     "dropQuery": "DROP TABLE pace_pen",
     "consultQuery": "SELECT * FROM pace_pen",
-    "consultIdQuery": "SELECT * FROM pace_pen WHERE ID_Pace_Pen = ?",
+    "consultIdQuery": "SELECT * FROM pace_pen WHERE ID_Hosp = ?",
     "consultByIdPrimaryQuery": "SELECT * FROM pace_pen WHERE ID_Pace = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_pen",
     "consultLastQuery":
         "SELECT * FROM pace_pen WHERE ID_Pace = ? ORDER BY Feca_PEN DESC",
     "consultByName": "SELECT * FROM pace_pen WHERE Pace_PEN LIKE '%",
     "registerQuery": "INSERT INTO pace_pen (ID_Pace, ID_Hosp, "
+        "Pace_PEN_realized, "
         "Feca_PEN, Pace_PEN, Pace_Desc_PEN) "
-        "VALUES (?,?,?,?,?)",
+        "VALUES (?,?,?,?,?,?)",
     "updateQuery": "UPDATE pace_pen "
         "SET ID_Pace_Pen = ?,  ID_Pace = ?,  ID_Hosp = ?,  "
-        "Feca_PEN = ?,  Pace_PEN = ?,  Pace_Desc_PEN = ? "
+        "Feca_PEN = ?,  "
+        "Pace_PEN_realized = ?, "
+        "Pace_PEN = ?,  Pace_Desc_PEN = ? "
         "WHERE ID_Pace_Pen = ?",
-    "deleteQuery": "DELETE FROM pace_pen WHERE ID_Pace_Pen = ",
+    "updateDoQuery": "UPDATE pace_pen "
+        "SET Pace_PEN_realized = ? "
+        "WHERE ID_Pace_Pen = ?",
+    "deleteQuery": "DELETE FROM pace_pen WHERE ID_Pace_Pen = ?",
     "antropoColumns": [
       "ID_Pace",
     ],

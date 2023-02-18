@@ -1,15 +1,17 @@
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
-import 'package:assistant/screens/pacientes/pacientes.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
-import 'package:assistant/widgets/GridLayout.dart';
+import 'package:assistant/widgets/GrandButton.dart';
+import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/Spinner.dart';
+import 'package:assistant/widgets/Switched.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
@@ -28,6 +30,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 // # # # # updateQuery
 // # # # Reemplazar .pendiente por el nombre del Map() correspondiente.
 //
+// ignore: must_be_immutable
 class OperacionesPendiente extends StatefulWidget {
   String? operationActivity;
 
@@ -51,8 +54,9 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
   List<dynamic>? listOfValues;
 
   var fechaRealizacionTextController = TextEditingController();
+  bool? realized = false;
+  //
   var pendienteValue = Pendientes.typesPendientes[0];
-
   var descripcionPendienteTextController = TextEditingController();
   //
   var carouselController = CarouselController();
@@ -74,17 +78,24 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
 
         break;
       case Constantes.Update:
+        print("Pendientes.Pendiente['Pace_PEN_realized'] "
+            "${Pendientes.Pendiente['Pace_PEN_realized']} "
+            "${Pendientes.Pendiente['Pace_PEN_realized'].runtimeType} "
+            "${Dicotomicos.fromInt(Pendientes.Pendiente['Pace_PEN_realized'], toBoolean: true) as bool} ");
+
         setState(() {
           widget._operationButton = 'Actualizar';
           //
           idOperation = Pendientes.Pendiente['ID_Pace_Pen'];
+          realized = Dicotomicos.fromInt(
+              Pendientes.Pendiente['Pace_PEN_realized'],
+              toBoolean: true) as bool;
           fechaRealizacionTextController.text =
               Pendientes.Pendiente['Feca_PEN'];
           pendienteValue = Pendientes.Pendiente['Pace_PEN'].toString();
 
           descripcionPendienteTextController.text =
               Pendientes.Pendiente['Pace_Desc_PEN'].toString();
-
         });
         super.initState();
         break;
@@ -110,103 +121,43 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
                   onClose(context);
                 },
               )),
-      body: Card(
-        color: const Color.fromARGB(255, 61, 57, 57),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              editFormattedText(
-                  TextInputType.number,
-                  MaskTextInputFormatter(
-                      mask: '####/##/##',
-                      filter: {"#": RegExp(r'[0-9]')},
-                      type: MaskAutoCompletionType.lazy),
-                  false,
-                  'Fecha de realización',
-                  fechaRealizacionTextController,
-                  false),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [
-              //     GrandButton(
-              //         weigth: isMobile(context) ? 50 : 200,
-              //         labelButton: "Ingresos",
-              //         onPress: () {
-              //           setState(() {
-              //             carouselController.jumpToPage(0);
-              //           });
-              //         }),
-              //     GrandButton(
-              //         weigth: isMobile(context) ? 50 : 200,
-              //         labelButton: "Egresos",
-              //         onPress: () {
-              //           setState(() {
-              //             carouselController.jumpToPage(1);
-              //           });
-              //         })
-              //   ],
-              // ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: CarouselSlider(
-                            items: [
-                              SingleChildScrollView(
-                                  controller: ScrollController(),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: GridLayout(
-                                      childAspectRatio: isMobile(context)
-                                          ? 2.0
-                                          : isTablet(context)
-                                              ? 5.0
-                                              : 7.0,
-                                      columnCount: isMobile(context)
-                                          ? 1
-                                          : isTablet(context)
-                                              ? 1
-                                              : 1,
-                                      children: component(context),
-                                    ),
-                                  )),
-                              SingleChildScrollView(
-                                  controller: ScrollController(),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: GridLayout(
-                                      childAspectRatio: isMobile(context)
-                                          ? 5
-                                          : isTablet(context)
-                                              ? 6.0
-                                              : 5.0,
-                                      columnCount: isMobile(context)
-                                          ? 1
-                                          : isTablet(context)
-                                              ? 2
-                                              : 2,
-                                      children: secondComponent(context),
-                                    ),
-                                  ))
-                            ],
-                            carouselController: carouselController,
-                            options: CarouselOptions(
-                                height: 500,
-                                enableInfiniteScroll: false,
-                                viewportFraction: 1.0)),
-                      ),
-                    ],
-                  ),
+      body: Container(
+        padding: const EdgeInsets.all(8.0),
+        decoration: ContainerDecoration.roundedDecoration(),
+        child: Column(
+          children: [
+            EditTextArea(
+              keyBoardType: TextInputType.number,
+              inputFormat: MaskTextInputFormatter(
+                  mask: '####/##/##',
+                  filter: {"#": RegExp(r'[0-9]')},
+                  type: MaskAutoCompletionType.lazy),
+              labelEditText: 'Fecha de realización',
+              textController: fechaRealizacionTextController,
+              numOfLines: 1,
+            ),
+            Expanded(
+              flex: 10,
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(10.0),
+                controller: ScrollController(),
+                child: Column(
+                  children: component(context),
                 ),
               ),
-              grandButton(context, widget._operationButton, () {
-                operationMethod(context);
-              })
-            ],
-          ),
+            ),
+            Expanded(
+              child: Container(
+                decoration: ContainerDecoration.roundedDecoration(),
+                child: GrandButton(
+                    labelButton: widget._operationButton,
+                    weigth: 2000,
+                    onPress: () {
+                      operationMethod(context);
+                    }),
+              ),
+            )
+          ],
         ),
       ),
     );
@@ -214,22 +165,43 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
 
   List<Widget> component(BuildContext context) {
     return [
-      Spinner(
-          width: isDesktop(context)
-              ? 400
-              : isTablet(context)
-              ? 200
-              : isMobile(context)
-              ? 100
-              : 200,
-          tittle: "Tipo de Pendiente",
-          onChangeValue: (String value) {
-            setState(() {
-              pendienteValue = value;
-            });
-          },
-          items: Pendientes.typesPendientes,
-          initialValue: pendienteValue),
+      Row(
+        children: [
+          Expanded(
+            child: Switched(
+              tittle: "¿Realizado?",
+              isSwitched: realized,
+              onChangeValue: (value) {
+                setState(() {
+                  realized = value;
+                });
+              },
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Spinner(
+                width: isDesktop(context)
+                    ? 200
+                    : isTablet(context)
+                        ? 200
+                        : isMobile(context)
+                            ? 100
+                            : 200,
+                tittle: "Tipo de Pendiente",
+                onChangeValue: (String value) {
+                  setState(() {
+                    pendienteValue = value;
+                  });
+                },
+                items: Pendientes.typesPendientes,
+                initialValue: pendienteValue),
+          ),
+        ],
+      ),
+      const SizedBox(
+        height: 10,
+      ),
       EditTextArea(
         keyBoardType: TextInputType.text,
         inputFormat: MaskTextInputFormatter(
@@ -244,12 +216,6 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
     ];
   }
 
-  List<Widget> secondComponent(BuildContext context) {
-    return [
-      const CrossLine(),
-    ];
-  }
-
   void operationMethod(BuildContext context) {
     try {
       listOfValues = [
@@ -258,6 +224,7 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
         Pacientes.ID_Hospitalizacion,
         fechaRealizacionTextController.text,
         // hora
+        Dicotomicos.fromBoolean(realized!, toInt: true),
         pendienteValue,
         descripcionPendienteTextController.text,
         //
@@ -266,6 +233,9 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
 
       print(
           "${widget.operationActivity} listOfValues $listOfValues ${listOfValues!.length}");
+      // print("realized! ${realized!} ${realized!.runtimeType} "
+      //     "${ Dicotomicos.fromBoolean(realized!, toInt: true)} "
+      //     "${ Dicotomicos.fromBoolean(realized!, toInt: true).runtimeType} ");
 
       switch (widget.operationActivity) {
         case Constantes.Nulo:
@@ -324,6 +294,8 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
   }
 
   void onClose(BuildContext context) {
+    Constantes.reinit();
+
     switch (isMobile(context)) {
       case true:
         Navigator.push(
@@ -344,10 +316,11 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
   }
 }
 
+// ignore: must_be_immutable
 class GestionPendiente extends StatefulWidget {
   Widget? actualSidePage = Container();
   // ****************** *** ****** **************
-  var keySearch = "Pace_APP_ALE";
+  var keySearch = "Feca_PEN";
   // ****************** *** ****** **************
 
   GestionPendiente({Key? key, this.actualSidePage}) : super(key: key);
@@ -371,7 +344,7 @@ class _GestionPendienteState extends State<GestionPendiente> {
     if (Constantes.dummyArray!.isNotEmpty) {
       if (Constantes.dummyArray![0] == "Vacio") {
         Actividades.consultarAllById(Databases.siteground_database_reghosp,
-                consultQuery!, Pacientes.ID_Paciente)
+                consultQuery!, Pacientes.ID_Hospitalizacion)
             .then((value) {
           setState(() {
             print(" . . . Buscando items \n $value");
@@ -485,8 +458,9 @@ class _GestionPendienteState extends State<GestionPendiente> {
                     builder: (context, AsyncSnapshot snapshot) {
                       if (snapshot.hasError) print(snapshot.error);
                       return snapshot.hasData
-                          ? ListView.builder(
+                          ? GridView.builder(
                               controller: gestionScrollController,
+                              padding: const EdgeInsets.all(10),
                               shrinkWrap: true,
                               itemCount: snapshot.data == null
                                   ? 0
@@ -495,6 +469,8 @@ class _GestionPendienteState extends State<GestionPendiente> {
                                 return itemListView(
                                     snapshot, posicion, context);
                               },
+                              gridDelegate:
+                                  GridViewTools.gridDelegate(crossAxisCount: 3),
                             )
                           : Center(
                               child: Column(
@@ -531,92 +507,118 @@ class _GestionPendienteState extends State<GestionPendiente> {
   Container itemListView(
       AsyncSnapshot snapshot, int posicion, BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(2.0),
+      padding: const EdgeInsets.all(12.0),
+      decoration: ContainerDecoration.roundedDecoration(),
       child: GestureDetector(
         onTap: () {
           onSelected(snapshot, posicion, context, Constantes.Update);
         },
-        child: Card(
-          color: const Color.fromARGB(255, 54, 50, 50),
-          child: Container(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "ID : ${snapshot.data[posicion]['ID_Pace_Pen'].toString()}",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                                fontSize: 12),
-                          ),
-                          Text(
-                            "${snapshot.data[posicion]['Feca_PEN']}",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                                fontSize: 14),
-                          ),
-                          Text(
-                            "${snapshot.data[posicion]['Pace_PEN']}",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                                fontSize: 14),
-                          ),
-                        ],
-                      ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.grey,
+                    child: Text(
+                      snapshot.data[posicion]['ID_Pace_Pen'].toString(),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontSize: 24),
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        IconButton(
-                          color: Colors.grey,
-                          icon: const Icon(Icons.update_rounded),
+                  ),
+                  // const SizedBox(
+                  //   height: 10,
+                  // ),
+                  snapshot.data[posicion]['Pace_PEN_realized'] == 0
+                      ? IconButton(
+                          icon: const Icon(Icons.not_interested,
+                              color: Colors.redAccent),
                           onPressed: () {
-                            //
-                            onSelected(
-                                snapshot, posicion, context, Constantes.Update);
-                          },
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        IconButton(
-                          color: Colors.grey,
-                          icon: const Icon(Icons.delete),
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return alertDialog(
-                                    'Eliminar registro',
-                                    '¿Esta seguro de querer eliminar el registro?',
-                                    () {
-                                      closeDialog(context);
-                                    },
-                                    () {
-                                      deleteRegister(
-                                          snapshot, posicion, context);
-                                    },
-                                  );
-                                });
+                            Actividades.actualizar(
+                                    Databases.siteground_database_reghosp,
+                                    Pendientes.pendientes['updateDoQuery'],
+                                    [
+                                      Dicotomicos.fromBoolean(true,
+                                          toInt: true),
+                                      snapshot.data[posicion]['ID_Pace_Pen']
+                                    ],
+                                    snapshot.data[posicion]['ID_Pace_Pen'])
+                                .then((value) => _pullListRefresh());
                           },
                         )
-                      ],
-                    )
-                  ],
-                ),
-              ],
+                      : IconButton(
+                          icon: const Icon(Icons.check, color: Colors.green),
+                          onPressed: () {
+                            Actividades.actualizar(
+                                    Databases.siteground_database_reghosp,
+                                    Pendientes.pendientes['updateDoQuery'],
+                                    [
+                                      Dicotomicos.fromBoolean(false,
+                                          toInt: true),
+                                      snapshot.data[posicion]['ID_Pace_Pen']
+                                    ],
+                                    snapshot.data[posicion]['ID_Pace_Pen'])
+                                .then((value) => _pullListRefresh());
+                          },
+                        ),
+                  // const SizedBox(
+                  //   height: 30,
+                  // ),
+                  GrandIcon(
+                    labelButton: "Eliminar registro",
+                    iconData: Icons.delete,
+                    onPress: () {
+                      Operadores.optionsActivity(
+                        context: context,
+                        tittle: "Eliminar registro . . .",
+                        message: '¿Esta seguro de querer eliminar el registro?',
+                        textOptionA: "No",
+                        optionA: () {
+                          Navigator.of(context).pop();
+                        },
+                        textOptionB: "Aceptar",
+                        optionB: () {
+                          deleteRegister(snapshot, posicion, context);
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
+            const SizedBox(
+              width: 20,
+            ),
+            Expanded(
+              flex: 5,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    snapshot.data[posicion]['Feca_PEN'].toString(),
+                    style: Styles.textSyleGrowth(fontSize: 18),
+                    textAlign: TextAlign.start,
+                  ),
+                  Text(
+                    snapshot.data[posicion]['Pace_PEN'].toString(),
+                    style: Styles.textSyleGrowth(fontSize: 16),
+                    textAlign: TextAlign.start,
+                  ),
+                  const CrossLine(),
+                  Text(
+                    snapshot.data[posicion]['Pace_Desc_PEN'].toString(),
+                    maxLines: 7,
+                    style: Styles.textSyle,
+                    textAlign: TextAlign.start,
+                  ),
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );
@@ -638,8 +640,10 @@ class _GestionPendienteState extends State<GestionPendiente> {
   void deleteRegister(
       AsyncSnapshot<dynamic> snapshot, int posicion, BuildContext context) {
     try {
-      Actividades.eliminar(Databases.siteground_database_reghosp,
-          Pendientes.pendientes['deleteQuery'], snapshot.data[posicion]['ID_Pace_Pen']);
+      Actividades.eliminar(
+          Databases.siteground_database_reghosp,
+          Pendientes.pendientes['deleteQuery'],
+          snapshot.data[posicion]['ID_Pace_Pen']);
       setState(() {
         snapshot.data.removeAt(posicion);
       });
@@ -688,9 +692,10 @@ class _GestionPendienteState extends State<GestionPendiente> {
             pageBuilder: (a, b, c) => GestionPendiente(
                   actualSidePage: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: OperacionesPendiente(
-                      operationActivity: Constantes.operationsActividad,
-                    ),
+                    child: Container(),
+                    // OperacionesPendiente(
+                    //   operationActivity: Constantes.operationsActividad,
+                    // ),
                   ),
                 ),
             transitionDuration: const Duration(seconds: 0)));

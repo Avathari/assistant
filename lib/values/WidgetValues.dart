@@ -2,7 +2,6 @@ import 'package:assistant/values/SizingInfo.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:path/path.dart';
 
 class gadgets {
   static const sizedBox = SizedBox(
@@ -76,7 +75,20 @@ class Styles {
   static const TextStyle textSyleBold =
       TextStyle(color: Colors.white, fontWeight: FontWeight.bold);
   static const TextStyle textSyle = TextStyle(
-      color: Colors.white, fontWeight: FontWeight.normal, fontSize: 14); //
+    color: Colors.white,
+    fontWeight: FontWeight.normal,
+    overflow: TextOverflow.ellipsis,
+    fontSize: 14,
+  ); //
+
+  static TextStyle textSyleGrowth({double fontSize = 14}) {
+    return TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.normal,
+      overflow: TextOverflow.ellipsis,
+      fontSize: fontSize,
+    ); //
+  }
 
   static TextStyle textSyleFailed = const TextStyle(
       color: Colors.red, fontWeight: FontWeight.bold, fontSize: 24);
@@ -101,15 +113,31 @@ class TextFormat {
 }
 
 class SpinnersValues {
-
-    static double mediumWidth ({required BuildContext context}) {
-      return isTablet(context) || isMobile(context) ? 250 : 300;
-    }
-
-  static double minimunWidth({required BuildContext context}) {
-    return isTablet(context) ? 150 : isMobile(context) ? 70 : 200;
+  static double mediumWidth({required BuildContext context}) {
+    return isTablet(context) || isMobile(context) ? 250 : 300;
   }
 
+  static double minimunWidth({required BuildContext context}) {
+    return isTablet(context)
+        ? 150
+        : isMobile(context)
+            ? 70
+            : 200;
+  }
+}
+
+class ClipOvalClipper extends CustomClipper<Rect> {
+  @override
+  Rect getClip(Size size) {
+    return const Rect.fromLTWH(0, 0, 200, 100);
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Rect> oldClipper) {
+    // TODO: implement shouldReclip
+    // throw UnimplementedError();
+    return false;
+  }
 }
 
 class ContainerDecoration {
@@ -122,7 +150,7 @@ class ContainerDecoration {
   static BoxDecoration roundedDecoration({double radius = 20.0}) {
     return BoxDecoration(
       borderRadius: BorderRadius.circular(radius),
-      border:  Border.all(
+      border: Border.all(
         color: Colors.grey,
         style: BorderStyle.solid,
         width: 1.0,
@@ -144,5 +172,16 @@ class Carousel {
                     : 450,
         enableInfiniteScroll: false,
         viewportFraction: 1.0);
+  }
+}
+
+class GridViewTools {
+  static SliverGridDelegateWithFixedCrossAxisCount gridDelegate(
+      {int crossAxisCount = 3}) {
+    return SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: crossAxisCount,
+      mainAxisSpacing: 10.0,
+      crossAxisSpacing: 10.0,
+    );
   }
 }

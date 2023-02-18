@@ -38,7 +38,7 @@ class Dicotomicos {
     return ["Si", "No"];
   }
 
-  static Object fromInt(int boolItem, {toBoolean = false}) {
+  static Object fromInt(int boolItem, {bool toBoolean = false}) {
     if (boolItem == 1) {
       if (toBoolean) {
         return true;
@@ -52,7 +52,11 @@ class Dicotomicos {
         return "No";
       }
     } else {
-      return "No";
+      if (toBoolean) {
+        return false;
+      } else {
+        return "No";
+      }
     }
   }
 
@@ -76,7 +80,7 @@ class Dicotomicos {
     }
   }
 
-  static Object fromBoolean(bool boolItem, {toInt = false}) {
+  static Object fromBoolean(bool boolItem, {bool toInt = false}) {
     if (boolItem) {
       if (toInt) {
         return 1;
