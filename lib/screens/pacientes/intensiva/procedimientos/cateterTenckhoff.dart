@@ -141,7 +141,7 @@ class _CateterTenckhoffState extends State<CateterTenckhoff> {
                 ],
                 carouselController: carouselController,
                 options: CarouselOptions(
-                    height: isDesktop(context) ? 1000 : 500,
+                    height: isDesktop(context) || isTablet(context) ? 1000 : 500,
                     enableInfiniteScroll: false,
                     viewportFraction: 1.0)),
           ),

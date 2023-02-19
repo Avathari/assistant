@@ -190,7 +190,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                             iconData: Icons.candlestick_chart,
                             labelButton: 'Análisis de Parámetros',
                             onPress: () {
-                              Operadores.openActivity(context: context, chyldrim: const AnalisisVentilatorio());
+                              Operadores.openDialog(context: context, chyldrim: const AnalisisVentilatorio());
                             },
                           ),
                         ]
@@ -200,7 +200,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                                 iconData: Icons.candlestick_chart,
                                 labelButton: 'Análisis de Parámetros',
                                 onPress: () {
-                                   Operadores.openActivity(context: context, chyldrim: const AnalisisVentilatorio());
+                                   Operadores.openDialog(context: context, chyldrim: const AnalisisVentilatorio());
                                 },
                               ),
                             ]
@@ -857,13 +857,13 @@ class _GestionVentilacionesState extends State<GestionVentilaciones> {
               iconData: Icons.candlestick_chart,
               labelButton: 'Análisis de Parámetros',
               onPress: () {
-                openActivity(const AnalisisVentilatorio());
+                Operadores.openDialog(context: context, chyldrim: const AnalisisVentilatorio());
               },
             ) : isDesktop(context) ? GrandIcon(
               iconData: Icons.candlestick_chart,
               labelButton: 'Análisis de Parámetros',
               onPress: () {
-                openActivity(const AnalisisVentilatorio());
+                Operadores.openDialog(context: context, chyldrim: const AnalisisVentilatorio());
               },
             ) : Container(),
             IconButton(
@@ -1164,38 +1164,6 @@ class _GestionVentilacionesState extends State<GestionVentilaciones> {
             transitionDuration: const Duration(seconds: 0)));
   }
 
-  void openActivity(chyldrim) {
-    showDialog(
-        useSafeArea: true,
-        context: context,
-        builder: (context) {
-          return Dialog(
-              backgroundColor: Colors.black,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(flex: 5, child: chyldrim),
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius:
-                          const BorderRadius.all(Radius.circular(20)),
-                          border: Border.all(
-                            color: Colors.grey,
-                          )),
-                      child: GrandButton(
-                        labelButton: 'Cerrar',
-                        onPress: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ));
-        });
-  }
 }
 
 class AnalisisVentilatorio extends StatefulWidget {
@@ -1206,7 +1174,6 @@ class AnalisisVentilatorio extends StatefulWidget {
 }
 
 class _AnalisisVentilatorioState extends State<AnalisisVentilatorio> {
-  var carouselController = CarouselController();
 
   @override
   Widget build(BuildContext context) {

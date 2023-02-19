@@ -98,91 +98,104 @@ class _ReportePrequirurgicoState extends State<ReportePrequirurgico> {
           ),
         ),
         Expanded(
-          flex: 5,
+          flex: 7,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: CarouselSlider(
               carouselController: carouselController,
               options: CarouselOptions(
-                  height: isMobile(context) || isTablet(context) ? 900 : 600,
+                  height: isMobile(context) || isTablet(context) ? 1200 : 600,
                   enableInfiniteScroll: false,
                   viewportFraction: 1.0),
               items: [
                 SingleChildScrollView(
                   controller: ScrollController(),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Spinner(
-                        tittle: "Tipo de Interrogatorio",
-                          width: SpinnersValues.mediumWidth(context: context),
-                          onChangeValue: (value) {
-                        setState(() {
-                          Valores.tipoInterrogatorio = value;
-                          Reportes.reportes['Motivo_Prequirurgico'] = Pacientes.motivoPrequirurgico();
-                        });
-                      }, items: Items.tipoInterrogatorio, initialValue: Valores.tipoInterrogatorio),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: EditTextArea(
-                                textController: motivoQuiroTextController,
-                                labelEditText: "Motivo de la Cirugía",
-                                keyBoardType: TextInputType.multiline,
-                                numOfLines: 1,
-                                withShowOption: true,
-                                selection: true,
-                                onSelected: () {
-                                  Operadores.selectOptionsActivity(
-                                      context: context,
-                                      tittle: 'Seleccione un diagnóstico . . . ',
-                                      options: Pacientes.diagnosticos().split("\n"),
-                                      onClose: (value) {
-                                        setState(() {
-                                          Valores.motivoCirugia = value;
-                                          motivoQuiroTextController.text = value;
-                                        });
-                                        Navigator.of(context).pop();
-                                      });
-                                },
-                                onChange: (value) {
-                                  setState(() {
-                                    Valores.motivoCirugia = value;
-                                    Reportes.reportes['Motivo_Prequirurgico'] = Pacientes.motivoPrequirurgico();
-                                  });
-                                },
-                                inputFormat: MaskTextInputFormatter()),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: EditTextArea(
-                                textController: typQuiroTextController,
-                                labelEditText: "Tipo de Cirugía",
-                                keyBoardType: TextInputType.multiline,
-                                numOfLines: 1,
-                                selection: true,
-                                withShowOption: true,
-                                onSelected: () {
-                                  Operadores.openDialog(
-                                      context: context,
-                                      chyldrim: DialogSelector(
-                                        tittle: 'Elemento quirúrgico',
-                                        searchCriteria: 'Buscar por',
-                                        typeOfDocument: 'txt',
-                                        pathForFileSource:
-                                            'assets/diccionarios/Cirugias.txt',
-                                        onSelected: ((value) {
+                      Container(
+                        padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                        decoration: ContainerDecoration.roundedDecoration(),
+                        child: Spinner(
+                          tittle: "Tipo de Interrogatorio",
+                            width: SpinnersValues.mediumWidth(context: context),
+                            onChangeValue: (value) {
+                          setState(() {
+                            Valores.tipoInterrogatorio = value;
+                            Reportes.reportes['Motivo_Prequirurgico'] = Pacientes.motivoPrequirurgico();
+                          });
+                        }, items: Items.tipoInterrogatorio, initialValue: Valores.tipoInterrogatorio),
+                      ),
+                      const SizedBox(height: 5.0,),
+                      Container(
+                        padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                        decoration: ContainerDecoration.roundedDecoration(),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: EditTextArea(
+                                  textController: motivoQuiroTextController,
+                                  labelEditText: "Motivo de la Cirugía",
+                                  keyBoardType: TextInputType.multiline,
+                                  numOfLines: 1,
+                                  withShowOption: true,
+                                  selection: true,
+                                  onSelected: () {
+                                    Operadores.selectOptionsActivity(
+                                        context: context,
+                                        tittle: 'Seleccione un diagnóstico . . . ',
+                                        options: Pacientes.diagnosticos().split("\n"),
+                                        onClose: (value) {
                                           setState(() {
-                                            Valores.tipoCirugia = value;
-                                            typQuiroTextController.text =
-                                                Valores.tipoCirugia;
-                                            Reportes.reportes['Motivo_Prequirurgico'] = Pacientes.motivoPrequirurgico();
+                                            Valores.motivoCirugia = value;
+                                            motivoQuiroTextController.text = value;
                                           });
-                                        }),
-                                      ));
-                                },
-                                inputFormat: MaskTextInputFormatter()),
-                          ),
-                        ],
+                                          Navigator.of(context).pop();
+                                        });
+                                  },
+                                  onChange: (value) {
+                                    setState(() {
+                                      Valores.motivoCirugia = value;
+                                      Reportes.reportes['Motivo_Prequirurgico'] = Pacientes.motivoPrequirurgico();
+                                    });
+                                  },
+                                  inputFormat: MaskTextInputFormatter()),
+                            ),
+                            // const Expanded(child: SizedBox(width: 5,)),
+                            Expanded(
+                              flex: 3,
+                              child: EditTextArea(
+                                  textController: typQuiroTextController,
+                                  labelEditText: "Tipo de Cirugía",
+                                  keyBoardType: TextInputType.multiline,
+                                  numOfLines: 1,
+                                  selection: true,
+                                  withShowOption: true,
+                                  onSelected: () {
+                                    Operadores.openDialog(
+                                        context: context,
+                                        chyldrim: DialogSelector(
+                                          tittle: 'Elemento quirúrgico',
+                                          searchCriteria: 'Buscar por',
+                                          typeOfDocument: 'txt',
+                                          pathForFileSource:
+                                              'assets/diccionarios/Cirugias.txt',
+                                          onSelected: ((value) {
+                                            setState(() {
+                                              Valores.tipoCirugia = value;
+                                              typQuiroTextController.text =
+                                                  Valores.tipoCirugia;
+                                              Reportes.reportes['Motivo_Prequirurgico'] = Pacientes.motivoPrequirurgico();
+                                            });
+                                          }),
+                                        ));
+                                  },
+                                  inputFormat: MaskTextInputFormatter()),
+                            ),
+                          ],
+                        ),
                       ),
                       EditTextArea(
                           textController: initialTextController,
@@ -198,7 +211,6 @@ class _ReportePrequirurgicoState extends State<ReportePrequirurgico> {
                           numOfLines: 10,
                           withShowOption: true,
                           inputFormat: MaskTextInputFormatter()),
-
                     ],
                   ),
                 ),

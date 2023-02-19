@@ -1,6 +1,8 @@
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
+import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/DialogSelector.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
@@ -249,7 +251,6 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
 }
 
 class AnalisisMedico extends StatefulWidget {
-
   bool? isPrequirurgica;
 
   AnalisisMedico({super.key, this.isPrequirurgica = false});
@@ -287,92 +288,91 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        widget.isPrequirurgica == true?
-        Expanded(
-            child: SingleChildScrollView(
-              child: Column(children: [
-                EditTextArea(
-                    textController: tratamientoTextController,
-                    labelEditText: "Recomendaciones",
-                    keyBoardType: TextInputType.multiline,
-                    numOfLines: 20,
-                    withShowOption: true,
-                    onChange: ((value) {
-                      Reportes.tratamientoPropuesto = "$value.";
-                      Reportes.reportes['Analisis_Medico'] =
-                      "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                      Reportes.reportes['Analisis_Terapia'] =
-                      "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                      Reportes.reportes['Recomendaciones_Generales'] =
-                      Reportes.tratamientoPropuesto;
-                    }),
-                    inputFormat: MaskTextInputFormatter()),
-              ]),
-            ))
-            :
-        Expanded(
-            child: SingleChildScrollView(
-          child: Column(children: [
-            EditTextArea(
-                textController: eventualidadesTextController,
-                labelEditText: "Eventualidades sucitadas",
-                keyBoardType: TextInputType.multiline,
-                numOfLines: 5,
-                withShowOption: true,
-                onChange: ((value) {
-                  Reportes.eventualidadesOcurridas = "$value.";
-                  Reportes.reportes['Eventualidades'] ="$value.";
-                  // ************ ******* *****************
-                  Reportes.reportes['Analisis_Medico'] =
-                      "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                  Reportes.reportes['Analisis_Terapia'] =
-                  "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                }),
-                inputFormat: MaskTextInputFormatter()),
-            EditTextArea(
-                textController: terapiasTextController,
-                labelEditText: "Terapias previas",
-                keyBoardType: TextInputType.multiline,
-                numOfLines: 5,
-                withShowOption: true,
-                onChange: ((value) {
-                  Reportes.terapiasPrevias = "$value.";
-                  Reportes.reportes['Analisis_Medico'] =
-                      "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                  Reportes.reportes['Analisis_Terapia'] =
-                  "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                }),
-                inputFormat: MaskTextInputFormatter()),
-            EditTextArea(
-                textController: analisisTextController,
-                labelEditText: "Análisis médico",
-                keyBoardType: TextInputType.multiline,
-                numOfLines: 5,
-                withShowOption: true,
-                onChange: ((value) {
-                  Reportes.analisisMedico = "$value.";
-                  Reportes.reportes['Analisis_Medico'] =
-                      "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                  Reportes.reportes['Analisis_Terapia'] =
-                  "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                }),
-                inputFormat: MaskTextInputFormatter()),
-            EditTextArea(
-                textController: tratamientoTextController,
-                labelEditText: "Terapéutica propuesta",
-                keyBoardType: TextInputType.multiline,
-                numOfLines: 5,
-                withShowOption: true,
-                onChange: ((value) {
-                  Reportes.tratamientoPropuesto = "$value.";
-                  Reportes.reportes['Analisis_Medico'] =
-                      "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                  Reportes.reportes['Analisis_Terapia'] =
-                  "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                }),
-                inputFormat: MaskTextInputFormatter()),
-          ]),
-        ))
+        widget.isPrequirurgica == true
+            ? Expanded(
+                child: SingleChildScrollView(
+                child: Column(children: [
+                  EditTextArea(
+                      textController: tratamientoTextController,
+                      labelEditText: "Recomendaciones",
+                      keyBoardType: TextInputType.multiline,
+                      numOfLines: 20,
+                      withShowOption: true,
+                      onChange: ((value) {
+                        Reportes.tratamientoPropuesto = "$value.";
+                        Reportes.reportes['Analisis_Medico'] =
+                            "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                        Reportes.reportes['Analisis_Terapia'] =
+                            "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                        Reportes.reportes['Recomendaciones_Generales'] =
+                            Reportes.tratamientoPropuesto;
+                      }),
+                      inputFormat: MaskTextInputFormatter()),
+                ]),
+              ))
+            : Expanded(
+                child: SingleChildScrollView(
+                child: Column(children: [
+                  EditTextArea(
+                      textController: eventualidadesTextController,
+                      labelEditText: "Eventualidades sucitadas",
+                      keyBoardType: TextInputType.multiline,
+                      numOfLines: 5,
+                      withShowOption: true,
+                      onChange: ((value) {
+                        Reportes.eventualidadesOcurridas = "$value.";
+                        Reportes.reportes['Eventualidades'] = "$value.";
+                        // ************ ******* *****************
+                        Reportes.reportes['Analisis_Medico'] =
+                            "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                        Reportes.reportes['Analisis_Terapia'] =
+                            "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                      }),
+                      inputFormat: MaskTextInputFormatter()),
+                  EditTextArea(
+                      textController: terapiasTextController,
+                      labelEditText: "Terapias previas",
+                      keyBoardType: TextInputType.multiline,
+                      numOfLines: 5,
+                      withShowOption: true,
+                      onChange: ((value) {
+                        Reportes.terapiasPrevias = "$value.";
+                        Reportes.reportes['Analisis_Medico'] =
+                            "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                        Reportes.reportes['Analisis_Terapia'] =
+                            "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                      }),
+                      inputFormat: MaskTextInputFormatter()),
+                  EditTextArea(
+                      textController: analisisTextController,
+                      labelEditText: "Análisis médico",
+                      keyBoardType: TextInputType.multiline,
+                      numOfLines: 5,
+                      withShowOption: true,
+                      onChange: ((value) {
+                        Reportes.analisisMedico = "$value.";
+                        Reportes.reportes['Analisis_Medico'] =
+                            "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                        Reportes.reportes['Analisis_Terapia'] =
+                            "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                      }),
+                      inputFormat: MaskTextInputFormatter()),
+                  EditTextArea(
+                      textController: tratamientoTextController,
+                      labelEditText: "Terapéutica propuesta",
+                      keyBoardType: TextInputType.multiline,
+                      numOfLines: 5,
+                      withShowOption: true,
+                      onChange: ((value) {
+                        Reportes.tratamientoPropuesto = "$value.";
+                        Reportes.reportes['Analisis_Medico'] =
+                            "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                        Reportes.reportes['Analisis_Terapia'] =
+                            "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                      }),
+                      inputFormat: MaskTextInputFormatter()),
+                ]),
+              ))
       ],
     );
   }
@@ -434,19 +434,21 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
       Expanded(
           child: Column(
         children: [
-          widget.isTerapia == true ? Container() :
-          Expanded(
-            child: EditTextArea(
-                textController: diagoTextController,
-                labelEditText: "Impresiones diagnósticas",
-                keyBoardType: TextInputType.multiline,
-                numOfLines: 10,
-                onChange: ((value) {
-                  Reportes.impresionesDiagnosticas = "$value.";
-                  Reportes.reportes['Impresiones_Diagnosticas'] = "$value.";
-                }),
-                inputFormat: MaskTextInputFormatter()),
-          ),
+          widget.isTerapia == true
+              ? Container()
+              : Expanded(
+                  child: EditTextArea(
+                      textController: diagoTextController,
+                      labelEditText: "Impresiones diagnósticas",
+                      keyBoardType: TextInputType.multiline,
+                      numOfLines: 10,
+                      onChange: ((value) {
+                        Reportes.impresionesDiagnosticas = "$value.";
+                        Reportes.reportes['Impresiones_Diagnosticas'] =
+                            "$value.";
+                      }),
+                      inputFormat: MaskTextInputFormatter()),
+                ),
           Expanded(
             flex: 3,
             child: Row(
@@ -458,7 +460,11 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                     controller: scrollController,
                     child: Column(children: [
                       Spinner(
-                        width: isMobile(context) ? 60: isTablet(context) ? 150: 200,
+                        width: isMobile(context)
+                            ? 60
+                            : isTablet(context)
+                                ? 150
+                                : 200,
                         tittle: "Estado médico",
                         initialValue: estadoValue,
                         onChangeValue: (String? newValue) {
@@ -469,7 +475,11 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                         items: Pacientes.PronosticoEstado,
                       ),
                       Spinner(
-                        width: isMobile(context) ? 60: isTablet(context) ? 150: 200,
+                        width: isMobile(context)
+                            ? 60
+                            : isTablet(context)
+                                ? 150
+                                : 200,
                         tittle: "Para la función",
                         initialValue: funcionValue,
                         onChangeValue: (String? newValue) {
@@ -480,7 +490,11 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                         items: Pacientes.PronosticoFuncion,
                       ),
                       Spinner(
-                          width: isMobile(context) ? 60: isTablet(context) ? 150: 200,
+                          width: isMobile(context)
+                              ? 60
+                              : isTablet(context)
+                                  ? 150
+                                  : 200,
                           tittle: "Para la vida",
                           initialValue: vidaValue,
                           onChangeValue: (String? newValue) {
@@ -490,7 +504,11 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                           },
                           items: Pacientes.PronosticoVida),
                       Spinner(
-                        width: isMobile(context) ? 60: isTablet(context) ? 150: 200,
+                        width: isMobile(context)
+                            ? 60
+                            : isTablet(context)
+                                ? 150
+                                : 200,
                         tittle: "Para el tiempo",
                         initialValue: tiempoValue,
                         onChangeValue: (String? newValue) {
@@ -790,10 +808,16 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(8.0),
-      color: Colors.black,
+      decoration: ContainerDecoration.containerDecoration(),
       child: Column(
         children: [
-          TittlePanel(textPanel: 'Indicaciones de la Hospitalización'),
+          TittlePanel(
+            color: Colores.backgroundPanel,
+            textPanel: 'Indicaciones de la Hospitalización',
+          ),
+          const SizedBox(
+            height: 10,
+          ),
           Expanded(
               child: SingleChildScrollView(
             controller: ScrollController(),
@@ -839,25 +863,20 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
                   withShowOption: true,
                   selection: true,
                   onSelected: () {
-                    showDialog(
-                        useSafeArea: true,
+                    Operadores.openDialog(
                         context: context,
-                        builder: (context) {
-                          return Dialog(
-                              child: DialogSelector(
-                            tittle: 'Medicamentos',
-                            pathForFileSource:
-                                'assets/diccionarios/Farmacos.txt',
-                            typeOfDocument: 'txt',
-                            onSelected: ((value) {
-                              setState(() {
-                                Reportes.medicamentosIndicados.add(value);
-                                medicamentosTextController.text =
-                                    "${medicamentosTextController.text}$value\n";
-                              });
-                            }),
-                          ));
-                        });
+                        chyldrim: DialogSelector(
+                          tittle: 'Medicamentos',
+                          pathForFileSource: 'assets/diccionarios/Farmacos.txt',
+                          typeOfDocument: 'txt',
+                          onSelected: ((value) {
+                            setState(() {
+                              Reportes.medicamentosIndicados.add(value);
+                              medicamentosTextController.text =
+                                  "${medicamentosTextController.text}$value\n";
+                            });
+                          }),
+                        ));
                   },
                   onChange: ((value) {
                     Reportes.medicamentosIndicados = traslate(value);
@@ -982,7 +1001,6 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
     );
   }
 }
-
 
 // No suspender Metformina, sólo el día de la cirugía control con Insulina y durante el transquirurgico.
 // Medidas universales de cuidados y prevención de paciente quirúrgico

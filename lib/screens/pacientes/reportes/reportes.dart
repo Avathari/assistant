@@ -132,7 +132,6 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           padding: const EdgeInsets.all(8.0),
           child: Container(
             decoration: BoxDecoration(
-                color: Colores.backgroundPanel,
                 borderRadius: BorderRadius.circular(20)),
             child: sideLeft(),
           ),
@@ -249,12 +248,28 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   )),
             ),
             Expanded(
-              child: GrandButton(
-                  weigth: 100,
-                  labelButton: "Vista previa",
-                  onPress: () async {
-                    await imprimirDocumento();
-                  }),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: GrandButton(
+                        weigth: 200,
+                        labelButton: "Indicaciones Médicas",
+                        onPress: () {
+                          setState(() {
+                            widget.actualPage = 9;
+                          });
+                        }),
+                  ),
+                  Expanded(
+                    child: GrandButton(
+                        weigth: 200,
+                        labelButton: "Vista previa",
+                        onPress: () async {
+                          await imprimirDocumento();
+                        }),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -270,8 +285,6 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   setState(() {
                     widget.actualPage = 9;
                   });
-                  // Operadores.openDialog(
-                  //     context: context, chyldrim: const IndicacionesHospital());
                 }),
           ),
           const SizedBox(

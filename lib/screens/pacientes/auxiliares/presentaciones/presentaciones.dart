@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/ImageDialog.dart';
@@ -26,9 +27,9 @@ class _PresentacionPacientesState extends State<PresentacionPacientes> {
               Operadores.openDialog(
                 context: context,
                 chyldrim: ImageDialog(
-                    tittle: Pacientes.nombreCompleto,
-                    stringImage: Pacientes.Paciente['Pace_FIAT'],
-                    ),
+                  tittle: Pacientes.nombreCompleto,
+                  stringImage: Pacientes.Paciente['Pace_FIAT'],
+                ),
               );
             },
             child: CircleAvatar(
@@ -121,62 +122,66 @@ class _PresentacionPacientesSimpleState
             Operadores.openDialog(
               context: context,
               chyldrim: ImageDialog(
-                  tittle: Pacientes.nombreCompleto,
-                  stringImage: Pacientes.Paciente['Pace_FIAT'],),
+                tittle: Pacientes.nombreCompleto,
+                stringImage: Valores.imagenUsuario,
+              ), //Pacientes.Paciente['Pace_FIAT'],),
             );
           },
           child: Padding(
             padding: const EdgeInsets.only(left: 10.0, top: 10.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  "${Pacientes.Paciente['Pace_Ape_Pat']} ${Pacientes.Paciente['Pace_Ape_Mat']} \n"
-                  "${Pacientes.Paciente['Pace_Nome_PI']} ${Pacientes.Paciente['Pace_Nome_SE']}",
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.white,
-                    overflow: TextOverflow.ellipsis,
+            child: SingleChildScrollView(
+              controller: ScrollController(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "${Pacientes.Paciente['Pace_Ape_Pat']} ${Pacientes.Paciente['Pace_Ape_Mat']} \n"
+                    "${Pacientes.Paciente['Pace_Nome_PI']} ${Pacientes.Paciente['Pace_Nome_SE']}",
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.white,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-                Text(
-                  "${Pacientes.Paciente['Pace_NSS']} ${Pacientes.Paciente['Pace_AGRE']}",
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.white,
-                    overflow: TextOverflow.ellipsis,
+                  Text(
+                    "${Pacientes.Paciente['Pace_NSS']} ${Pacientes.Paciente['Pace_AGRE']}",
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Colors.white,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-                Text(
-                  "Edad: ${Pacientes.Paciente['Pace_Eda'].toString()} Años",
-                  style: const TextStyle(
-                    fontSize: 10,
-                    color: Colors.white,
-                    overflow: TextOverflow.ellipsis,
+                  Text(
+                    "Edad: ${Pacientes.Paciente['Pace_Eda'].toString()} Años",
+                    style: const TextStyle(
+                      fontSize: 10,
+                      color: Colors.white,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                  child: CrossLine(),
-                ),
-                Text(
-                  "Estado actual: ${Pacientes.Paciente['Pace_Stat']}",
-                  style: const TextStyle(
-                    fontSize: 10,
-                    color: Colors.white,
-                    overflow: TextOverflow.ellipsis,
+                  const SizedBox(
+                    height: 20,
+                    child: CrossLine(),
                   ),
-                ),
-                Text(
-                  "Turno de Atención: ${Pacientes.Paciente['Pace_Turo']}",
-                  style: const TextStyle(
-                    fontSize: 10,
-                    color: Colors.white,
-                    overflow: TextOverflow.ellipsis,
+                  Text(
+                    "Estado actual: ${Pacientes.Paciente['Pace_Stat']}",
+                    style: const TextStyle(
+                      fontSize: 10,
+                      color: Colors.white,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-              ],
+                  Text(
+                    "Turno de Atención: ${Pacientes.Paciente['Pace_Turo']}",
+                    style: const TextStyle(
+                      fontSize: 10,
+                      color: Colors.white,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ));

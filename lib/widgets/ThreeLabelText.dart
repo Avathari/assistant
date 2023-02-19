@@ -36,11 +36,14 @@ class _ThreeLabelTextAlineState extends State<ThreeLabelTextAline> {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-            child: Text(widget.secondText!,
-                style: const TextStyle(
-                  color: Colors.grey,
-                  fontWeight: FontWeight.normal,
-                )),
+            child: Text(
+              widget.secondText!,
+              style: const TextStyle(
+                color: Colors.grey,
+                fontWeight: FontWeight.normal,
+              ),
+              textAlign: TextAlign.left,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8.0),

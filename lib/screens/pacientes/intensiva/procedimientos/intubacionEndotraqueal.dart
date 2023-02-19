@@ -133,7 +133,7 @@ class _IntubacionEndotraquealState extends State<IntubacionEndotraqueal> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                              ? 200
+                              ? 150
                               : isMobile(context)
                               ? 100
                               : 300,
@@ -205,7 +205,7 @@ class _IntubacionEndotraquealState extends State<IntubacionEndotraqueal> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                              ? 200
+                              ? 150
                               : isMobile(context)
                               ? 100
                               : 300,
@@ -244,7 +244,7 @@ class _IntubacionEndotraquealState extends State<IntubacionEndotraqueal> {
                 ],
                 carouselController: carouselController,
                 options: CarouselOptions(
-                    height: isDesktop(context) ? 1000 : 500,
+                    height: isDesktop(context) || isTablet(context) ? 1000 : 500,
                     enableInfiniteScroll: false,
                     viewportFraction: 1.0)),
           ),

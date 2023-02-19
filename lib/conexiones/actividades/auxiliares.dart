@@ -234,7 +234,7 @@ class Operadores {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(flex: 10, child: chyldrim),
+                    Expanded(flex: 15, child: chyldrim),
                     Expanded(
                       flex: 1,
                       child: Container(
@@ -247,7 +247,7 @@ class Operadores {
                             )),
                         child: GrandButton(
                           height: 10,
-                          labelButton: 'Cerrar',
+                          labelButton: 'Aceptar',
                           onPress: () {
                             if (onAction == null || onAction == Null) {
                               Navigator.of(context).pop();

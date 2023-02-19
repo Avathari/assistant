@@ -26,11 +26,10 @@ class _TerapiasItemsState extends State<TerapiasItems> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: Column(
+    return Column(
       children: [
         TittlePanel(
-            color: Colors.black, textPanel: 'Valoración en Terapia Intensia'),
+            color: Colors.black, textPanel: 'Valoración en Terapia Intensiva'),
         Expanded(
           child: SingleChildScrollView(
             controller: ScrollController(),
@@ -39,11 +38,38 @@ class _TerapiasItemsState extends State<TerapiasItems> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GrandIcon(
-                  iconData: Icons.dataset,
-                  labelButton: 'Parámetros Iniciales',
+                  iconData: Icons.branding_watermark_outlined,
+                  labelButton: 'Evaluación Neurológica y Muscular',
                   onPress: () {
                     setState(() {
                       carouselController.jumpToPage(0);
+                    });
+                  },
+                ),
+                GrandIcon(
+                  iconData: Icons.bookmark_remove_outlined,
+                  labelButton: 'Evaluación Ventilatoria',
+                  onPress: () {
+                    setState(() {
+                      carouselController.jumpToPage(1);
+                    });
+                  },
+                ),
+                GrandIcon(
+                  iconData: Icons.info_outline_rounded,
+                  labelButton: 'Evaluación Hematoinfecciosa',
+                  onPress: () {
+                    setState(() {
+                      carouselController.jumpToPage(2);
+                    });
+                  },
+                ),
+                GrandIcon(
+                  iconData: Icons.event_available_sharp,
+                  labelButton: 'Evaluación Complementaria',
+                  onPress: () {
+                    setState(() {
+                      carouselController.jumpToPage(3);
                     });
                   },
                 ),
@@ -52,7 +78,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
           ),
         ),
         Expanded(
-          flex: 5,
+          flex: 15,
           child: Padding(
             padding: const EdgeInsets.all(12.0),
             child: CarouselSlider(
@@ -69,10 +95,10 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                 width: isDesktop(context)
                                     ? 400
                                     : isTablet(context)
-                                    ? 100
-                                    : isMobile(context)
-                                    ? 100
-                                    : 300,
+                                        ? 100
+                                        : isMobile(context)
+                                            ? 100
+                                            : 300,
                                 tittle: 'R.A.S.S.',
                                 onChangeValue: (value) {
                                   setState(() {
@@ -89,10 +115,10 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                 width: isDesktop(context)
                                     ? 400
                                     : isTablet(context)
-                                    ? 100
-                                    : isMobile(context)
-                                    ? 100
-                                    : 300,
+                                        ? 100
+                                        : isMobile(context)
+                                            ? 100
+                                            : 300,
                                 tittle: 'Ramsay',
                                 onChangeValue: (value) {
                                   setState(() {
@@ -121,7 +147,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                               reInit();
                             });
                           },
-                          items:Items.sedacion,
+                          items: Items.sedacion,
                           initialValue: Valores.sedoanalgesia,
                         ),
                         const CrossLine(),
@@ -188,7 +214,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                     reInit();
                                   });
                                 },
-                                items:Escalas.siedel,
+                                items: Escalas.siedel,
                                 initialValue: Valores.siedel,
                               ),
                             ),
@@ -208,13 +234,20 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                     reInit();
                                   });
                                 },
-                                items:Escalas.MRC,
+                                items: Escalas.MRC,
                                 initialValue: Valores.mrc,
                               ),
                             ),
                           ],
                         ),
                         const CrossLine(),
+                      ],
+                    ),
+                  ),
+                  SingleChildScrollView(
+                    controller: ScrollController(),
+                    child: Column(
+                      children: [
                         TittlePanel(textPanel: "Evaluación Ventilatoria"),
                         Spinner(
                           width: isDesktop(context)
@@ -231,7 +264,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                               reInit();
                             });
                           },
-                          items:Items.ventilatorio,
+                          items: Items.ventilatorio,
                           initialValue: Valores.faseVentilatoria,
                         ),
                         Spinner(
@@ -249,7 +282,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                               reInit();
                             });
                           },
-                          items:Items.dispositivosOxigeno,
+                          items: Items.dispositivosOxigeno,
                           initialValue: Valores.dispositivoEmpleado,
                         ),
                         Spinner(
@@ -267,7 +300,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                               reInit();
                             });
                           },
-                          items:Items.tuboendotraqueal,
+                          items: Items.tuboendotraqueal,
                           initialValue: Valores.tuboEndotraqueal,
                         ),
                         Spinner(
@@ -285,10 +318,17 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                               reInit();
                             });
                           },
-                          items:Items.arcadaDentaria,
+                          items: Items.arcadaDentaria,
                           initialValue: Valores.haciaArcadaDentaria,
                         ),
                         const CrossLine(),
+                      ],
+                    ),
+                  ),
+                  SingleChildScrollView(
+                    controller: ScrollController(),
+                    child: Column(
+                      children: [
                         TittlePanel(textPanel: "Evaluación Hematoinfecciosa"),
                         Spinner(
                           width: isDesktop(context)
@@ -305,7 +345,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                               reInit();
                             });
                           },
-                          items:Escalas.braden,
+                          items: Escalas.braden,
                           initialValue: Valores.evaluacionBraden,
                         ),
                         Spinner(
@@ -323,14 +363,14 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                               reInit();
                             });
                           },
-                          items:Escalas.norton,
+                          items: Escalas.norton,
                           initialValue: Valores.evaluacionNorton,
                         ),
                         Spinner(
                           width: isDesktop(context)
-                              ? 400
+                              ? 600
                               : isTablet(context)
-                              ? 200
+                              ? 300
                               : isMobile(context)
                               ? 100
                               : 300,
@@ -341,10 +381,16 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                               reInit();
                             });
                           },
-                          items:Items.antibioticoterapia,
+                          items: Items.antibioticoterapia,
                           initialValue: Valores.antibioticoterapia,
                         ),
-                        const CrossLine(),
+                      ],
+                    ),
+                  ),
+                  SingleChildScrollView(
+                    controller: ScrollController(),
+                    child: Column(
+                      children: [
                         TittlePanel(textPanel: "Evaluación Complementaria"),
                         Spinner(
                           width: isDesktop(context)
@@ -361,7 +407,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                               reInit();
                             });
                           },
-                          items:Items.aminergico,
+                          items: Items.aminergico,
                           initialValue: Valores.apoyoAminergico,
                         ),
                         Spinner(
@@ -379,7 +425,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                               reInit();
                             });
                           },
-                          items:Items.dieta,
+                          items: Items.dieta,
                           initialValue: Valores.alimentacion,
                         ),
                         Spinner(
@@ -397,7 +443,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                               reInit();
                             });
                           },
-                          items:Items.orogastrico,
+                          items: Items.orogastrico,
                           initialValue: Valores.tipoSondaAlimentacion,
                         ),
                         Spinner(
@@ -415,7 +461,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                               reInit();
                             });
                           },
-                          items:Items.foley,
+                          items: Items.foley,
                           initialValue: Valores.tipoSondaVesical,
                         ),
                         const CrossLine(),
@@ -428,6 +474,6 @@ class _TerapiasItemsState extends State<TerapiasItems> {
           ),
         ),
       ],
-    ));
+    );
   }
 }

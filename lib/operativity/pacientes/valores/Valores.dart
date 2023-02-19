@@ -538,6 +538,8 @@ class Valores {
     apellidoMaterno = json['Pace_Ape_Mat'];
     imagenUsuario = json['Pace_FIAT'];
     Pacientes.imagenPaciente = json['Pace_FIAT'];
+
+    Pacientes.nombreCompleto = Valores.nombreCompleto;
     //
     edad = json['Pace_Eda']; // int.parse();
     sexo = json['Pace_Ses'];
@@ -728,6 +730,14 @@ class Valores {
     Valores.motivoEgreso = json['EGE_Motivo'] ?? '';
 
     // print("Valores.gastoCardiaco ${Valores.gastoCardiaco}");
+  }
+
+  static String get nombreCompleto {
+    if (Valores.segundoNombre == '' || Valores.segundoNombre == null) {
+      return "${Valores.primerNombre} ${Valores.apellidoPaterno} ${Valores.apellidoMaterno}";
+    } else {
+      return "${Valores.primerNombre} ${Valores.segundoNombre} ${Valores.apellidoPaterno} ${Valores.apellidoMaterno}";
+    }
   }
 
   static String get numeroExpediente =>

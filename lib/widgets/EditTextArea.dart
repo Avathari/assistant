@@ -1,3 +1,4 @@
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';
@@ -111,46 +112,32 @@ class _EditTextAreaState extends State<EditTextArea> {
           widget.withShowOption
               ? Expanded(
                   flex: 1,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Tooltip(
-                      message: "Ver",
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              foregroundColor: Colors.grey, backgroundColor: Colors.black54,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              minimumSize: const Size(500, 100)),
-                          onPressed: widget.selection
-                              ? widget.onSelected
-                              : () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return Dialog(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: SingleChildScrollView(
-                                                child: Column(
-                                              children: [
-                                                TittlePanel(
-                                                    colorText: Colors.black,
-                                                    textPanel:
-                                                        widget.labelEditText!),
-                                                Text(
-                                                  widget.textController.text,
-                                                  style: const TextStyle(
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                                const CrossLine(),
-                                              ],
-                                            )),
-                                          ),
-                                        );
-                                      });
-                                },
-                          child: const Icon(Icons.slideshow)),
+                  child: Tooltip(
+                    message: "Ver",
+                    child: IconButton(
+                        icon: const Icon(Icons.slideshow, color: Colors.grey,),
+                        onPressed: widget.selection
+                            ? widget.onSelected
+                            : () {
+                          Operadores.openDialog(context: context, chyldrim: SingleChildScrollView(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  TittlePanel(
+                                      colorText: Colors.grey,
+                                      textPanel:
+                                      widget.labelEditText!),
+                                  Text(
+                                    widget.textController.text,
+                                    style: const TextStyle(
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  const CrossLine(),
+                                ],
+                              )),);
+
+                              },
                     ),
                   ),
                 )

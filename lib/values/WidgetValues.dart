@@ -143,8 +143,11 @@ class ClipOvalClipper extends CustomClipper<Rect> {
 class ContainerDecoration {
   static BoxDecoration containerDecoration({double radius = 20.0}) {
     return BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.all(Radius.circular(radius)));
+      color: Colores.backgroundPanel,
+      borderRadius: BorderRadius.all(
+        Radius.circular(radius),
+      ),
+    );
   }
 
   static BoxDecoration roundedDecoration({double radius = 20.0}) {
@@ -165,11 +168,13 @@ class Carousel {
     return CarouselOptions(
         height: height != 0
             ? height
-            : isMobile(context) || isTablet(context)
+            : isMobile(context)
                 ? 1200
-                : isDesktop(context)
-                    ? 600
-                    : 450,
+                : isTablet(context)
+                    ? 1600
+                    : isDesktop(context)
+                        ? 600
+                        : 450,
         enableInfiniteScroll: false,
         viewportFraction: 1.0);
   }

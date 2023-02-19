@@ -137,7 +137,7 @@ class _SondaEndopleuralState extends State<SondaEndopleural> {
                 ],
                 carouselController: carouselController,
                 options: CarouselOptions(
-                    height: isDesktop(context) ? 1000 : 500,
+                    height: isDesktop(context) || isTablet(context) ? 1000 : 500,
                     enableInfiniteScroll: false,
                     viewportFraction: 1.0)),
           ),
