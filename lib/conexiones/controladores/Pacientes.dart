@@ -4735,14 +4735,19 @@ class Reportes {
         "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}",
     "Recomendaciones_Generales": Reportes.tratamientoPropuesto,
     "Impresiones_Diagnosticas": Reportes.impresionesDiagnosticas,
-    // "Bullets": "Auxiliares:\n\tOtro.\tOtro.\nDiagnosticos:\n\tOtro.\tOtro.",
+    // ***************************************
     "Hidroterapia": Reportes.hidroterapia,
     "Insulinoterapia": Reportes.insulinoterapia,
     "Hemoterapia": Reportes.hemoterapia,
     "Oxigenoterapia": Reportes.oxigenoterapia,
-    //
     "Medicamentos": Reportes
-        .medicamentosIndicados, // ['Paracetamol Tabletas 500, tomar 1 cada 8 horas por 7 dias',],
+        .medicamentosIndicados,
+    // ***************************************
+    "Motivo_Procedimiento": Valores.motivoProcedimiento,
+    "Procedimiento_Realizado": Reportes.procedimientoRealizado,
+    "Complicaciones_Procedimiento": Valores.complicacionesProcedimiento,
+    "Pendientes_Procedimiento": Valores.pendientesProcedimiento,
+    // ***************************************
     "Medidas_Generales": Reportes.medidasGenerales,
     "Licencia_Medica": Reportes.licenciasMedicas, // ['Sin licencia médica'],
     "Pendientes": Reportes.pendientes, // ['Sin pendientes'],
@@ -4764,12 +4769,10 @@ class Reportes {
       antecedentesPerinatales = "",
       antecedentesSexuales = "";
   //
-  static String signosVitales = "";
-  static String exploracionFisica =
+  static String signosVitales = "", exploracionFisica =
       "Sin hallazgos relevantes en la exploración física";
   //
-  static String auxiliaresDiagnosticos = "";
-  static String analisisComplementarios = "";
+  static String auxiliaresDiagnosticos = "", analisisComplementarios = "";
   //
   static String eventualidadesOcurridas = "Sin eventualidades reportadas. ";
   static String terapiasPrevias = "";
@@ -4786,6 +4789,8 @@ class Reportes {
       "excretas con frecuencia ${Valores.excretasCantidad}. "
       "${Valores.referenciasHospitalizacion}. ";
       // "Sin rerencias particulares del paciente durante la hospitalización";
+  //
+  static String procedimientoRealizado = "";
   //
   static List<String> hidroterapia = ['Sin terapia hídrica.'];
   static List<String> medicamentosIndicados = ['Sin medicamentos otorgados.'];
@@ -4832,6 +4837,8 @@ class Reportes {
     impresionesDiagnosticas = "";
     pronosticoMedico = "";
     //
+    procedimientoRealizado = "";
+    //
     medicamentosIndicados = [''];
     medidasGenerales = [''];
     licenciasMedicas = [''];
@@ -4862,7 +4869,7 @@ class Reportes {
       case 3: // Nota de Terapia Intensiva
         return "(NT) - ${Pacientes.nombreCompleto} - (${Calendarios.today()}).pdf";
       case 4: // Nota de Valoración Prequirúrgica
-        return "(N-QUI) - ${Pacientes.nombreCompleto} - (${Calendarios.today()}).pdf";
+        return "(N-VPO) - ${Pacientes.nombreCompleto} - (${Calendarios.today()}).pdf";
       case 5: // Nota de Valoración Preanestésica
         return "(N-ANES) - ${Pacientes.nombreCompleto} - (${Calendarios.today()}).pdf";
       case 6: // Nota de Egreso

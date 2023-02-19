@@ -6,6 +6,10 @@ import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 
 import 'package:assistant/screens/pacientes/auxiliares/presentaciones/presentaciones.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/padecimientoActual.dart';
+import 'package:assistant/screens/pacientes/intensiva/procedimientos/cateterTenckhoff.dart';
+import 'package:assistant/screens/pacientes/intensiva/procedimientos/cateterVenosoCentral.dart';
+import 'package:assistant/screens/pacientes/intensiva/procedimientos/intubacionEndotraqueal.dart';
+import 'package:assistant/screens/pacientes/intensiva/procedimientos/sondaEndopleural.dart';
 import 'package:assistant/screens/pacientes/intensiva/valoraciones/aereos.dart';
 import 'package:assistant/screens/pacientes/intensiva/valoraciones/prequirurgicos.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/auxiliaresReportes.dart';
@@ -128,35 +132,27 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
     return Row(
       children: [
         Expanded(
-            child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20)),
-            child: sideLeft(),
-          ),
-        )),
-        Expanded(
-            flex: 3,
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Colores.backgroundPanel,
-                    borderRadius: BorderRadius.circular(20)),
-                child: pantallasReportesMedicos(widget.actualPage),
-              ),
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              margin: const EdgeInsets.all(8.0),
+              decoration: ContainerDecoration.containerDecoration(),
+              child: sideLeft(),
             )),
         Expanded(
-            child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            decoration: BoxDecoration(
-                color: Colores.backgroundPanel,
-                borderRadius: BorderRadius.circular(20)),
-            child: sideRight(),
-          ),
-        )),
+            flex: 3,
+            child: Container(
+              padding: const EdgeInsets.all(15.0),
+              margin: const EdgeInsets.all(8.0),
+              decoration: ContainerDecoration.containerDecoration(),
+              child: pantallasReportesMedicos(widget.actualPage),
+            )),
+        Expanded(
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              margin: const EdgeInsets.all(8.0),
+              decoration: ContainerDecoration.containerDecoration(),
+              child: sideRight(),
+            )),
       ],
     );
   }
@@ -378,6 +374,16 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
         return TypeReportes.reportePreanestesica;
       case 10:
         return TypeReportes.reportePreanestesica;
+      case 11:
+        return TypeReportes.reportePreanestesica;
+      case 12:
+        return TypeReportes.procedimientoCVC;
+      case 13:
+        return TypeReportes.procedimientoIntubacion;
+      case 14:
+        return TypeReportes.procedimientoSondaEndopleural;
+      case 15:
+        return TypeReportes.procedimientoTenckoff;
       default:
         return TypeReportes.reporteIngreso;
     }
@@ -396,9 +402,14 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       Container(), // Traslado
       Pacientes.esHospitalizado == true
           ? const IndicacionesHospital()
-          : const IndicacionesConsulta(), // Container(), // Indicaciones
+          : const IndicacionesConsulta(), // Container(),
       const Prequirurgicos(),
       const Aereas(),
+      const CateterVenosoCentral(),
+      const IntubacionEndotraqueal(),
+      const SondaEndopleural(),
+      const CateterTenckhoff(),
+      Container(), //
     ];
 
     return list[actualPage];
@@ -511,11 +522,31 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               widget.actualPage = 11;
             });
           }),
-      GrandButton(weigth: 2000,labelButton: "Licencia médica", onPress: () {}),
-      GrandButton(weigth: 2000,labelButton: "Licencia médica", onPress: () {}),
-      GrandButton(weigth: 2000,labelButton: "Licencia médica", onPress: () {}),
-      GrandButton(weigth: 2000,labelButton: "Licencia médica", onPress: () {}),
-      GrandButton(weigth: 2000,labelButton: "Licencia médica", onPress: () {}),
+      GrandButton(weigth: 2000,labelButton: "Catéter Venoso Central", onPress: () {
+        setState(() {
+          widget.actualPage = 12;
+        });
+      }),
+      GrandButton(weigth: 2000,labelButton: "Intubación Endotraqueal", onPress: () {
+        setState(() {
+          widget.actualPage = 13;
+        });
+      }),
+      GrandButton(weigth: 2000,labelButton: "Sonda Endopleural", onPress: () {
+        setState(() {
+          widget.actualPage = 14;
+        });
+      }),
+      GrandButton(weigth: 2000,labelButton: "Catéter Tenckhoff", onPress: () {
+        setState(() {
+          widget.actualPage = 15;
+        });
+      }),
+      GrandButton(weigth: 2000,labelButton: "Punción Lumbar", onPress: () {
+        setState(() {
+          widget.actualPage = 16;
+        });
+      }),
       GrandButton(weigth: 2000,labelButton: "Licencia médica", onPress: () {}),
     ];
   }

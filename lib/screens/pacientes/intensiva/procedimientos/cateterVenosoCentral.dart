@@ -1,3 +1,4 @@
+import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/CrossLine.dart';
@@ -28,23 +29,34 @@ class _CateterVenosoCentralState extends State<CateterVenosoCentral> {
 
   @override
   void initState() {
-    Valores.sitiosCateterCentral = Items.sitiosCateterCentral[0];
-    Valores.motivoProcedimiento =
-        "Ministración continua de líquidos parenterales.\nMinistración de fármacos intravenosos. ";
-    Valores.complicacionesProcedimiento = 'Ninguna. ';
-    Valores.pendientesProcedimiento =
-        'Se deja solicitud para radiografía de tórax anteroposterior para corroborar la correcta instalación dentro del acceso vascular';
-
-    //
-    reInit();
+    setState(() {
+      Valores.sitiosCateterCentral = Items.sitiosCateterCentral[0];
+      motivoTextController.text =
+          "Ministración continua de líquidos parenterales.\nMinistración de fármacos intravenosos. ";
+      complicacionesTextController.text = 'Ninguna. ';
+      pendientesTextController.text =
+          'Se deja solicitud para radiografía de tórax anteroposterior para corroborar la correcta instalación dentro del acceso vascular';
+      //
+      reInit();
+    });
     super.initState();
   }
 
   void reInit() {
     setState(() {
-      motivoTextController.text = Valores.motivoProcedimiento!;
-      complicacionesTextController.text = Valores.complicacionesProcedimiento!;
-      pendientesTextController.text = Valores.pendientesProcedimiento!;
+      Valores.motivoProcedimiento = motivoTextController.text;
+      Valores.complicacionesProcedimiento = complicacionesTextController.text;
+      Valores.pendientesProcedimiento = pendientesTextController.text;
+      // ********* *********** ********* **** ***
+      Reportes.procedimientoRealizado = Formatos.cateterVenosoCentral;
+    // ********* *********** ********* **** **
+      Reportes.reportes['Motivo_Procedimiento'] = Valores.motivoProcedimiento;
+      Reportes.reportes['Procedimiento_Realizado'] =
+          Formatos.cateterVenosoCentral;
+      Reportes.reportes['Complicaciones_Procedimiento'] =
+          Valores.complicacionesProcedimiento;
+      Reportes.reportes['Pendientes_Procedimiento'] =
+          Valores.pendientesProcedimiento;
     });
   }
 
@@ -91,7 +103,12 @@ class _CateterVenosoCentralState extends State<CateterVenosoCentral> {
                           keyBoardType: TextInputType.text,
                           numOfLines: 1,
                           inputFormat: MaskTextInputFormatter(),
-                          onChange: (value) {},
+                          onChange: (value) {
+                            setState(() {
+                              Valores.motivoProcedimiento = value;
+                              reInit();
+                            });
+                          },
                         ),
                         const CrossLine(),
                         Spinner(
@@ -120,7 +137,12 @@ class _CateterVenosoCentralState extends State<CateterVenosoCentral> {
                           keyBoardType: TextInputType.text,
                           numOfLines: 1,
                           inputFormat: MaskTextInputFormatter(),
-                          onChange: (value) {},
+                          onChange: (value) {
+                            setState(() {
+                              Valores.complicacionesProcedimiento = value;
+                              reInit();
+                            });
+                          },
                         ),
                         EditTextArea(
                           labelEditText:
@@ -129,7 +151,12 @@ class _CateterVenosoCentralState extends State<CateterVenosoCentral> {
                           keyBoardType: TextInputType.text,
                           numOfLines: 1,
                           inputFormat: MaskTextInputFormatter(),
-                          onChange: (value) {},
+                          onChange: (value) {
+                            setState(() {
+                              Valores.pendientesProcedimiento = value;
+                              reInit();
+                            });
+                          },
                         ),
                       ],
                     ),
@@ -137,7 +164,8 @@ class _CateterVenosoCentralState extends State<CateterVenosoCentral> {
                 ],
                 carouselController: carouselController,
                 options: CarouselOptions(
-                    height: isDesktop(context) || isTablet(context) ? 1000 : 500,
+                    height:
+                        isDesktop(context) || isTablet(context) ? 1000 : 500,
                     enableInfiniteScroll: false,
                     viewportFraction: 1.0)),
           ),

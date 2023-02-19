@@ -28,8 +28,13 @@ class FormatosReportes {
       reporteEgreso(paraph),
       reporteRevision(paraph),
       reporteTraslado(paraph),
-      indicacionesHospitalVertical(paraph), // 4 : Indicaciones Hospitalarias
-      reporteConsultaTipado(paraph), // 3 : Consulta Tipada
+      indicacionesHospitalVertical(paraph), // 9 : Indicaciones Hospitalarias
+      reporteConsultaTipado(paraph), // 10 : Consulta Tipada
+      //
+      procedimientoCVC(paraph), // 11 : Catéter Venoso Central
+      procedimientoIOT(paraph), // 12 : Intubación Endotraqueal
+      procedimientoSOP(paraph), // 13 : Sonda Endopleural
+      procedimientoTEN(paraph), // 14 : Catéter Temckhoff
     ];
     print("FormatosReportes.indexOfReport! ${FormatosReportes.indexOfReport!}");
 
@@ -59,6 +64,14 @@ class FormatosReportes {
           return list[9];
         case TypeReportes.reporteTipado:
           return list[10];
+        case TypeReportes.procedimientoCVC:
+          return list[11];
+        case TypeReportes.procedimientoIntubacion:
+          return list[12];
+        case TypeReportes.procedimientoSondaEndopleural:
+          return list[13];
+        case TypeReportes.procedimientoTenckoff:
+          return list[14];
         default:
           return list[1];
       }
@@ -2168,6 +2181,293 @@ class FormatosReportes {
               ]),
         ]);
   }
+
+  // Reportes de Procedimientos *********** ************ ***** ***
+  static List<Widget> procedimientoCVC(Map<String, dynamic> paraph) {
+    String tipoReporte = "NOTA DE PROCEDIMIENTO\nCATÉTER VENOSO CENTRAL";
+    // Lista de apartados del documento. # # # # # # ### # # # # #  # ###
+    List<Widget> parax = [];
+    // Datos de Identificación del Paciente. # # # # # # ### # # # # #  # ###
+    parax.add(Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Nombre completo: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text("${Pacientes.nombreCompleto}",
+            textAlign: TextAlign.right, style: const TextStyle(fontSize: 8)),
+      ]),
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Número de afiliación: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text(
+            "${Pacientes.Paciente['Pace_NSS']} ${Pacientes.Paciente['Pace_AGRE']}",
+            textAlign: TextAlign.right,
+            style: const TextStyle(fontSize: 8)),
+      ]),
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Fecha Actual: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text(Calendarios.completeToday(),
+            textAlign: TextAlign.right, style: const TextStyle(fontSize: 8)),
+      ]),
+      SizedBox(height: 10),
+    ]));
+    // # # # # # # ### # # # # # # ###
+    //
+    // # # # # # # ### # # # # # # ###
+    parax.add(Divider(color: PdfColors.black));
+    parax.add(Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Text(tipoReporte,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 9,
+              decoration: TextDecoration.underline,
+              fontWeight: FontWeight.bold)),
+    ]));
+    parax.add(Divider(color: PdfColors.black));
+    // # # # # # # ### # # # # # # ###
+    //
+    // # # # # # # ### # # # # # # ###
+    parax.add(paragraphWithTittle(
+        titulo: "Motivo del procedimiento", subTitulo: "${paraph['Motivo_Procedimiento']}"));
+    // # # # # # # ### # # # # # # ###
+    parax.add(paragraphWithTittle(
+        titulo: "Descripción de la técnica", subTitulo: "${paraph['Procedimiento_Realizado']}"));
+
+    // # # # # # # ### # # # # # # ###
+    if (paraph['Complicaciones_Procedimiento'] != "") {
+      parax.add(
+        paragraphWithTittleAndSeparated(
+          titulo: "",
+          subTitulo: "Complicaciones durante el procedimiento: ${paraph['Complicaciones_Procedimiento']}\n"
+              "Pendientes del procedimiento: ${paraph['Pendientes_Procedimiento']}",
+        ),
+      );
+    }
+    // # # # # # # ### # # # # # # ###
+    parax.add(
+      footerParagraph(
+          text:
+          "Med. Gral. Romero Pantoja Luis\nCed. Prof. 12210866\nMedicina General"),
+    );
+    return parax;
+  }
+  static List<Widget> procedimientoIOT(Map<String, dynamic> paraph) {
+    String tipoReporte = "NOTA DE PROCEDIMIENTO\nINTUBACION ENDOTRAQUEAL";
+    // Lista de apartados del documento. # # # # # # ### # # # # #  # ###
+    List<Widget> parax = [];
+    // Datos de Identificación del Paciente. # # # # # # ### # # # # #  # ###
+    parax.add(Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Nombre completo: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text("${Pacientes.nombreCompleto}",
+            textAlign: TextAlign.right, style: const TextStyle(fontSize: 8)),
+      ]),
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Número de afiliación: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text(
+            "${Pacientes.Paciente['Pace_NSS']} ${Pacientes.Paciente['Pace_AGRE']}",
+            textAlign: TextAlign.right,
+            style: const TextStyle(fontSize: 8)),
+      ]),
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Fecha Actual: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text(Calendarios.completeToday(),
+            textAlign: TextAlign.right, style: const TextStyle(fontSize: 8)),
+      ]),
+      SizedBox(height: 10),
+    ]));
+    // # # # # # # ### # # # # # # ###
+    //
+    // # # # # # # ### # # # # # # ###
+    parax.add(Divider(color: PdfColors.black));
+    parax.add(Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Text(tipoReporte,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 9,
+              decoration: TextDecoration.underline,
+              fontWeight: FontWeight.bold)),
+    ]));
+    parax.add(Divider(color: PdfColors.black));
+    // # # # # # # ### # # # # # # ###
+    //
+    // # # # # # # ### # # # # # # ###
+    parax.add(paragraphWithTittle(
+        titulo: "Motivo del procedimiento", subTitulo: "${paraph['Motivo_Procedimiento']}"));
+    // # # # # # # ### # # # # # # ###
+    parax.add(paragraphWithTittle(
+        titulo: "Descripción de la técnica", subTitulo: "${paraph['Procedimiento_Realizado']}"));
+
+    // # # # # # # ### # # # # # # ###
+    if (paraph['Complicaciones_Procedimiento'] != "") {
+      parax.add(
+        paragraphWithTittleAndSeparated(
+          titulo: "",
+          subTitulo: "Complicaciones durante el procedimiento: ${paraph['Complicaciones_Procedimiento']}\n"
+              "Pendientes del procedimiento: ${paraph['Pendientes_Procedimiento']}",
+        ),
+      );
+    }
+    // # # # # # # ### # # # # # # ###
+    parax.add(
+      footerParagraph(
+          text:
+          "Med. Gral. Romero Pantoja Luis\nCed. Prof. 12210866\nMedicina General"),
+    );
+    return parax;
+  }
+  static List<Widget> procedimientoSOP(Map<String, dynamic> paraph) {
+    String tipoReporte = "NOTA DE PROCEDIMIENTO\nSONDA ENDOPLEURAL";
+    // Lista de apartados del documento. # # # # # # ### # # # # #  # ###
+    List<Widget> parax = [];
+    // Datos de Identificación del Paciente. # # # # # # ### # # # # #  # ###
+    parax.add(Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Nombre completo: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text("${Pacientes.nombreCompleto}",
+            textAlign: TextAlign.right, style: const TextStyle(fontSize: 8)),
+      ]),
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Número de afiliación: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text(
+            "${Pacientes.Paciente['Pace_NSS']} ${Pacientes.Paciente['Pace_AGRE']}",
+            textAlign: TextAlign.right,
+            style: const TextStyle(fontSize: 8)),
+      ]),
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Fecha Actual: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text(Calendarios.completeToday(),
+            textAlign: TextAlign.right, style: const TextStyle(fontSize: 8)),
+      ]),
+      SizedBox(height: 10),
+    ]));
+    // # # # # # # ### # # # # # # ###
+    //
+    // # # # # # # ### # # # # # # ###
+    parax.add(Divider(color: PdfColors.black));
+    parax.add(Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Text(tipoReporte,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 9,
+              decoration: TextDecoration.underline,
+              fontWeight: FontWeight.bold)),
+    ]));
+    parax.add(Divider(color: PdfColors.black));
+    // # # # # # # ### # # # # # # ###
+    //
+    // # # # # # # ### # # # # # # ###
+    parax.add(paragraphWithTittle(
+        titulo: "Motivo del procedimiento", subTitulo: "${paraph['Motivo_Procedimiento']}"));
+    // # # # # # # ### # # # # # # ###
+    parax.add(paragraphWithTittle(
+        titulo: "Descripción de la técnica", subTitulo: "${paraph['Procedimiento_Realizado']}"));
+
+    // # # # # # # ### # # # # # # ###
+    if (paraph['Complicaciones_Procedimiento'] != "") {
+      parax.add(
+        paragraphWithTittleAndSeparated(
+          titulo: "",
+          subTitulo: "Complicaciones durante el procedimiento: ${paraph['Complicaciones_Procedimiento']}\n"
+              "Pendientes del procedimiento: ${paraph['Pendientes_Procedimiento']}",
+        ),
+      );
+    }
+    // # # # # # # ### # # # # # # ###
+    parax.add(
+      footerParagraph(
+          text:
+          "Med. Gral. Romero Pantoja Luis\nCed. Prof. 12210866\nMedicina General"),
+    );
+    return parax;
+  }
+  static List<Widget> procedimientoTEN(Map<String, dynamic> paraph) {
+    String tipoReporte = "NOTA DE PROCEDIMIENTO\nCATÉTER TENCHKOFF";
+    // Lista de apartados del documento. # # # # # # ### # # # # #  # ###
+    List<Widget> parax = [];
+    // Datos de Identificación del Paciente. # # # # # # ### # # # # #  # ###
+    parax.add(Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Nombre completo: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text("${Pacientes.nombreCompleto}",
+            textAlign: TextAlign.right, style: const TextStyle(fontSize: 8)),
+      ]),
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Número de afiliación: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text(
+            "${Pacientes.Paciente['Pace_NSS']} ${Pacientes.Paciente['Pace_AGRE']}",
+            textAlign: TextAlign.right,
+            style: const TextStyle(fontSize: 8)),
+      ]),
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Fecha Actual: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text(Calendarios.completeToday(),
+            textAlign: TextAlign.right, style: const TextStyle(fontSize: 8)),
+      ]),
+      SizedBox(height: 10),
+    ]));
+    // # # # # # # ### # # # # # # ###
+    //
+    // # # # # # # ### # # # # # # ###
+    parax.add(Divider(color: PdfColors.black));
+    parax.add(Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Text(tipoReporte,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 9,
+              decoration: TextDecoration.underline,
+              fontWeight: FontWeight.bold)),
+    ]));
+    parax.add(Divider(color: PdfColors.black));
+    // # # # # # # ### # # # # # # ###
+    //
+    // # # # # # # ### # # # # # # ###
+    parax.add(paragraphWithTittle(
+        titulo: "Motivo del procedimiento", subTitulo: "${paraph['Motivo_Procedimiento']}"));
+    // # # # # # # ### # # # # # # ###
+    parax.add(paragraphWithTittle(
+        titulo: "Descripción de la técnica", subTitulo: "${paraph['Procedimiento_Realizado']}"));
+
+    // # # # # # # ### # # # # # # ###
+    if (paraph['Complicaciones_Procedimiento'] != "") {
+      parax.add(
+        paragraphWithTittleAndSeparated(
+          titulo: "",
+          subTitulo: "Complicaciones durante el procedimiento: ${paraph['Complicaciones_Procedimiento']}\n"
+              "Pendientes del procedimiento: ${paraph['Pendientes_Procedimiento']}",
+        ),
+      );
+    }
+    // # # # # # # ### # # # # # # ###
+    parax.add(
+      footerParagraph(
+          text:
+          "Med. Gral. Romero Pantoja Luis\nCed. Prof. 12210866\nMedicina General"),
+    );
+    return parax;
+  }
+
 }
 
 enum TypeReportes {

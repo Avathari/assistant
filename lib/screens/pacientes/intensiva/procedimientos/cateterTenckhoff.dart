@@ -1,3 +1,4 @@
+import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/CrossLine.dart';
@@ -29,15 +30,15 @@ class _CateterTenckhoffState extends State<CateterTenckhoff> {
   @override
   void initState() {
     Valores.sitiosCateterTenckhoff = Items.sitiosCateterTenckhoff[0];
-    Valores.motivoProcedimiento =
+    motivoTextController.text =
         "Ministración de solución dializante en cavidad peritoneal.  ";
-    Valores.complicacionesProcedimiento = 'Ninguna. ';
-    Valores.pendientesProcedimiento =
+    complicacionesTextController.text = 'Ninguna. ';
+    pendientesTextController.text =
         'Iniciar diálisis peritoneal ccon solución dializante al 1.5%.\n'
-            'Administrar tres recambios de enttrada por salida del liquido, y proseguir con 32 recambios '
-            'de solución dializante al 1.5% con estancia de 30 minutos, realizando balances negativos. \n'
-            'Posteriormente realizar recambios con solución dializante al 1.5% con estancia en cavidad de '
-            '4 horas, realizando balances neutros. ';
+        'Administrar tres recambios de enttrada por salida del liquido, y proseguir con 32 recambios '
+        'de solución dializante al 1.5% con estancia de 30 minutos, realizando balances negativos. \n'
+        'Posteriormente realizar recambios con solución dializante al 1.5% con estancia en cavidad de '
+        '4 horas, realizando balances neutros. ';
 
     //
     reInit();
@@ -46,9 +47,16 @@ class _CateterTenckhoffState extends State<CateterTenckhoff> {
 
   void reInit() {
     setState(() {
-      motivoTextController.text = Valores.motivoProcedimiento!;
-      complicacionesTextController.text = Valores.complicacionesProcedimiento!;
-      pendientesTextController.text = Valores.pendientesProcedimiento!;
+      Valores.motivoProcedimiento = motivoTextController.text;
+      Valores.complicacionesProcedimiento = complicacionesTextController.text;
+      Valores.pendientesProcedimiento = pendientesTextController.text;
+      // ********* *********** ********* **** **
+      Reportes.reportes['Motivo_Procedimiento'] = Valores.motivoProcedimiento;
+      Reportes.reportes['Procedimiento_Realizado'] = Formatos.cateterTenckhoff;
+      Reportes.reportes['Complicaciones_Procedimiento'] =
+          Valores.complicacionesProcedimiento;
+      Reportes.reportes['Pendientes_Procedimiento'] =
+          Valores.pendientesProcedimiento;
     });
   }
 
@@ -95,7 +103,12 @@ class _CateterTenckhoffState extends State<CateterTenckhoff> {
                           keyBoardType: TextInputType.text,
                           numOfLines: 1,
                           inputFormat: MaskTextInputFormatter(),
-                          onChange: (value) {},
+                          onChange: (value) {
+                            setState(() {
+                              Valores.motivoProcedimiento = value;
+                              reInit();
+                            });
+                          },
                         ),
                         const CrossLine(),
                         Spinner(
@@ -118,14 +131,18 @@ class _CateterTenckhoffState extends State<CateterTenckhoff> {
                         ),
                         const CrossLine(),
                         EditTextArea(
-                          labelEditText:
-                              'Complicaciones durante el Procedimiento',
-                          textController: complicacionesTextController,
-                          keyBoardType: TextInputType.text,
-                          numOfLines: 1,
-                          inputFormat: MaskTextInputFormatter(),
-                          onChange: (value) {},
-                        ),
+                            labelEditText:
+                                'Complicaciones durante el Procedimiento',
+                            textController: complicacionesTextController,
+                            keyBoardType: TextInputType.text,
+                            numOfLines: 1,
+                            inputFormat: MaskTextInputFormatter(),
+                            onChange: (value) {
+                              setState(() {
+                                Valores.complicacionesProcedimiento = value;
+                                reInit();
+                              });
+                            }),
                         EditTextArea(
                           labelEditText:
                               'Pendientes derivados del Procedimiento',
@@ -133,7 +150,12 @@ class _CateterTenckhoffState extends State<CateterTenckhoff> {
                           keyBoardType: TextInputType.text,
                           numOfLines: 7,
                           inputFormat: MaskTextInputFormatter(),
-                          onChange: (value) {},
+                          onChange: (value) {
+                            setState(() {
+                              Valores.pendientesProcedimiento = value;
+                              reInit();
+                            });
+                          },
                         ),
                       ],
                     ),
@@ -141,7 +163,8 @@ class _CateterTenckhoffState extends State<CateterTenckhoff> {
                 ],
                 carouselController: carouselController,
                 options: CarouselOptions(
-                    height: isDesktop(context) || isTablet(context) ? 1000 : 500,
+                    height:
+                        isDesktop(context) || isTablet(context) ? 1000 : 500,
                     enableInfiniteScroll: false,
                     viewportFraction: 1.0)),
           ),

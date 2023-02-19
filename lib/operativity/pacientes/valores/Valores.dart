@@ -2425,6 +2425,7 @@ class Valorados {
 }
 
 class Formatos {
+
   static String indicacionesPreoperatorias =
       "No suspender Metformina, sólo el día de la cirugía control con Insulina y durante el transquirurgico. \n"
       "Medidas universales de cuidados y prevención de paciente quirúrgico. \n"
@@ -2803,13 +2804,18 @@ class Formatos {
 
   // ************* ********** ************** ***
   static String get cateterVenosoCentral {
-    return "Previa recolección de Material y Lavado de Manos. Se coloca a la paciente en posición en Decúbito Supino rotando la cabeza de la paciente a 45° al contrario de la Vena Subclavia Derecha. Realizado calzado de guantes estériles.\n"
-        "Se localiza el Tubérculo Coroídeo para indicar zona de punción nivel de la linea media clavicular y se procede a infiltrar con Lidocaína al 1% en Zona de Punción.\n"
-        "Posteriormente se coloca Campos Estériles y se inicia a la comprobación del Equipo corroborando permeabilidad de las lineas vasculares con solución inyectable y Heparina Sódica, para posterior mente cerrar con el Sellado los Lumenes de Acceso. \n"
-        "Corroborado el Equipo se procede a realizar la Punción de la Vena con el Trocar en orientación hacia la Horquilla Esternal a 45° con respecto a la piel, aspirando de manera continua, obteniendo sangre venosa en recamara de inserción, "
+    return "Previa recolección de Material y Lavado de Manos. "
+        "Se coloca a la paciente en posición en Decúbito Supino rotando la cabeza de la paciente a 45° al contrario de la ${Valores.sitiosCateterCentral}. Realizado calzado de guantes estériles.\n"
+        "Se localiza el Tubérculo Coroídeo para indicar zona de punción y se procede a infiltrar con Lidocaína al 1%.\n"
+        "Posteriormente se coloca Campos Estériles y se inicia a la comprobación del Equipo corroborando permeabilidad de las lineas vasculares con solución inyectable y Heparina Sódica, "
+        "para posteriormente sellar los lumenes de acceso. \n"
+        "Corroborado el Equipo se procede a realizar la Punción de la Vena con el Trocar en orientación hacia la Horquilla Esternal a 45° con respecto a la piel, aspirando de manera continua, "
+        "obteniendo sangre venosa en recamara de inserción, "
         "comprobando el ingreso a la vena. Se inserta la guia metálica y se procede al retiro de la guia mediante la cual se introduce dilatador a tres tercios de su extensión para posteriormente retirarla. "
-        "Ex post facto, se inserta el catéter retirando al mismo tiempo la guia. Se comprueba la permeabilidad del catéter observándose ingreso de solución parenteral, y posteriormente corroborando reflujo sanguíneo por medio de la linea vascular.\n"
-        "Se procede a Fijar el Catéter Venoso Central a la piel con Sutura Nylon 2-0, colocando previamente los aditivos para la fijación. Se recubre con aditivo de tela transparente (Tegaderm) y se membrete fecha de colocación. \n";
+        "Ex post facto, se inserta el catéter retirando al mismo tiempo la guia. Se comprueba la permeabilidad del catéter observándose ingreso de solución parenteral, "
+        "y posteriormente corroborando reflujo sanguíneo por medio de la linea vascular.\n"
+        "Se procede a Fijar el Catéter Venoso Central a la piel con Sutura Nylon 2-0, colocando previamente los aditivos para la fijación. Se recubre con aditivo de tela transparente (Tegaderm) "
+        "y se membrete fecha de colocación. ";
   }
 
   static String get intubacionEndotraqueal {
@@ -2832,7 +2838,7 @@ class Formatos {
         "la simétria de la ventilación evidenciada por la mecánica tóracica y por la auscultación directa. "
         "Toda vez corroborado la correcta inserción de este, se conecta el ${Valores.dispositivoEmpleado} al ${Valores.dispositivoOxigeno}.\n"
         "Se ausculta el abdomen en búsqueda de presion positiva, asi como ambos pulmones a la altura de la linea media axilar obteniendo sonido simétrico en ambos pulmones.\n"
-        "Se mantiene el ${Valores.dispositivoEmpleado} a 22 cm respecto a los dientes, y se procede a asegurarlo con esparadrapo y pegarla a las mejillas. \n";
+        "Se mantiene el ${Valores.dispositivoEmpleado} a 22 cm respecto a los dientes, y se procede a asegurarlo con esparadrapo y pegarla a las mejillas. ";
   }
 
   static String get sondaEndopleural {

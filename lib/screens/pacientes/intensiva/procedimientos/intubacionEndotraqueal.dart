@@ -1,3 +1,4 @@
+import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/CrossLine.dart';
@@ -28,11 +29,11 @@ class _IntubacionEndotraquealState extends State<IntubacionEndotraqueal> {
 
   @override
   void initState() {
-    Valores.motivoProcedimiento =
+    motivoTextController.text =
         "Protección de la vía aérea. \n Administración de oxígeno suplementario por falla respiratoria severa. ";
-    Valores.complicacionesProcedimiento = 'Ninguna. ';
-    Valores.pendientesProcedimiento =
-    'Se deja solicitud para radiografía de tórax anteroposterior para corroborar la correcta instalación, por encima de la carina traqueal. ';
+    complicacionesTextController.text = 'Ninguna. ';
+    pendientesTextController.text =
+        'Se deja solicitud para radiografía de tórax anteroposterior para corroborar la correcta instalación, por encima de la carina traqueal. ';
 
     //
     reInit();
@@ -41,9 +42,17 @@ class _IntubacionEndotraquealState extends State<IntubacionEndotraqueal> {
 
   void reInit() {
     setState(() {
-      motivoTextController.text = Valores.motivoProcedimiento!;
-      complicacionesTextController.text = Valores.complicacionesProcedimiento!;
-      pendientesTextController.text = Valores.pendientesProcedimiento!;
+      Valores.motivoProcedimiento = motivoTextController.text;
+      Valores.complicacionesProcedimiento = complicacionesTextController.text;
+      Valores.pendientesProcedimiento = pendientesTextController.text;
+      // ********* *********** ********* **** **
+      Reportes.reportes['Motivo_Procedimiento'] = Valores.motivoProcedimiento;
+      Reportes.reportes['Procedimiento_Realizado'] =
+          Formatos.intubacionEndotraqueal;
+      Reportes.reportes['Complicaciones_Procedimiento'] =
+          Valores.complicacionesProcedimiento;
+      Reportes.reportes['Pendientes_Procedimiento'] =
+          Valores.pendientesProcedimiento;
     });
   }
 
@@ -90,17 +99,22 @@ class _IntubacionEndotraquealState extends State<IntubacionEndotraqueal> {
                           keyBoardType: TextInputType.text,
                           numOfLines: 1,
                           inputFormat: MaskTextInputFormatter(),
-                          onChange: (value) {},
+                          onChange: (value) {
+                            setState(() {
+                              Valores.motivoProcedimiento = value;
+                              reInit();
+                            });
+                          },
                         ),
                         const CrossLine(),
                         Spinner(
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                              ? 200
-                              : isMobile(context)
-                              ? 100
-                              : 300,
+                                  ? 200
+                                  : isMobile(context)
+                                      ? 100
+                                      : 300,
                           tittle: 'Movilidad Cervical',
                           onChangeValue: (value) {
                             setState(() {
@@ -115,10 +129,10 @@ class _IntubacionEndotraquealState extends State<IntubacionEndotraqueal> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                              ? 200
-                              : isMobile(context)
-                              ? 100
-                              : 300,
+                                  ? 200
+                                  : isMobile(context)
+                                      ? 100
+                                      : 300,
                           tittle: 'Distancia Tiromentoniana',
                           onChangeValue: (value) {
                             setState(() {
@@ -133,10 +147,10 @@ class _IntubacionEndotraquealState extends State<IntubacionEndotraqueal> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                              ? 150
-                              : isMobile(context)
-                              ? 100
-                              : 300,
+                                  ? 150
+                                  : isMobile(context)
+                                      ? 100
+                                      : 300,
                           tittle: 'Distancia Esternomentoniana',
                           onChangeValue: (value) {
                             setState(() {
@@ -151,10 +165,10 @@ class _IntubacionEndotraquealState extends State<IntubacionEndotraqueal> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                              ? 200
-                              : isMobile(context)
-                              ? 100
-                              : 300,
+                                  ? 200
+                                  : isMobile(context)
+                                      ? 100
+                                      : 300,
                           tittle: 'Apertura Mandibular',
                           onChangeValue: (value) {
                             setState(() {
@@ -169,10 +183,10 @@ class _IntubacionEndotraquealState extends State<IntubacionEndotraqueal> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                              ? 200
-                              : isMobile(context)
-                              ? 100
-                              : 300,
+                                  ? 200
+                                  : isMobile(context)
+                                      ? 100
+                                      : 300,
                           tittle: 'Protusión Mandibular',
                           onChangeValue: (value) {
                             setState(() {
@@ -187,10 +201,10 @@ class _IntubacionEndotraquealState extends State<IntubacionEndotraqueal> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                              ? 200
-                              : isMobile(context)
-                              ? 100
-                              : 300,
+                                  ? 200
+                                  : isMobile(context)
+                                      ? 100
+                                      : 300,
                           tittle: 'Valoración por Mallampati',
                           onChangeValue: (value) {
                             setState(() {
@@ -205,10 +219,10 @@ class _IntubacionEndotraquealState extends State<IntubacionEndotraqueal> {
                           width: isDesktop(context)
                               ? 400
                               : isTablet(context)
-                              ? 150
-                              : isMobile(context)
-                              ? 100
-                              : 300,
+                                  ? 150
+                                  : isMobile(context)
+                                      ? 100
+                                      : 300,
                           tittle: 'Valoración por Cormack-Lahane',
                           onChangeValue: (value) {
                             setState(() {
@@ -227,7 +241,12 @@ class _IntubacionEndotraquealState extends State<IntubacionEndotraqueal> {
                           keyBoardType: TextInputType.text,
                           numOfLines: 1,
                           inputFormat: MaskTextInputFormatter(),
-                          onChange: (value) {},
+                          onChange: (value) {
+                            setState(() {
+                              Valores.complicacionesProcedimiento = value;
+                              reInit();
+                            });
+                          },
                         ),
                         EditTextArea(
                           labelEditText:
@@ -236,7 +255,12 @@ class _IntubacionEndotraquealState extends State<IntubacionEndotraqueal> {
                           keyBoardType: TextInputType.text,
                           numOfLines: 7,
                           inputFormat: MaskTextInputFormatter(),
-                          onChange: (value) {},
+                          onChange: (value) {
+                            setState(() {
+                              Valores.pendientesProcedimiento = value;
+                              reInit();
+                            });
+                          },
                         ),
                       ],
                     ),
@@ -244,7 +268,8 @@ class _IntubacionEndotraquealState extends State<IntubacionEndotraqueal> {
                 ],
                 carouselController: carouselController,
                 options: CarouselOptions(
-                    height: isDesktop(context) || isTablet(context) ? 1000 : 500,
+                    height:
+                        isDesktop(context) || isTablet(context) ? 1000 : 500,
                     enableInfiniteScroll: false,
                     viewportFraction: 1.0)),
           ),

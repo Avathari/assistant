@@ -197,6 +197,17 @@ Column paragraphWithTittle({String? titulo, String? subTitulo}) {
   ]);
 }
 
+Row paragraphWithTittleAline({String? titulo, String? subTitulo}) {
+  return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+    Text("${titulo!}: ",
+        textAlign: TextAlign.right,
+        style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+    Text(subTitulo!,
+        textAlign: TextAlign.right,
+        style: TextStyle(fontSize: 8, fontWeight: FontWeight.normal)),
+  ]);
+}
+
 Column paragraphWithTittleAndSeparated(
     {String? titulo, String? subTitulo, String comma = ':'}) {
   List<TextSpan> textSpan = [];

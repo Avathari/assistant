@@ -1,3 +1,4 @@
+import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/CrossLine.dart';
@@ -29,10 +30,10 @@ class _SondaEndopleuralState extends State<SondaEndopleural> {
   @override
   void initState() {
     Valores.sitiosSondaPleural = Items.sitiosSondaPleural[0];
-    Valores.motivoProcedimiento =
+    motivoTextController.text =
         "Evvacuación de líquido ocupante en espacio pleural. \n Evacuación de contenido gaseoso ocupante del espacio pleural. ";
-    Valores.complicacionesProcedimiento = 'Ninguna. ';
-    Valores.pendientesProcedimiento =
+    complicacionesTextController.text = 'Ninguna. ';
+    pendientesTextController.text =
         'Se deja solicitud para radiografía de tórax anteroposterior para corroborar la correcta instalación dentro del espacio pleural.';
 
     //
@@ -42,9 +43,17 @@ class _SondaEndopleuralState extends State<SondaEndopleural> {
 
   void reInit() {
     setState(() {
-      motivoTextController.text = Valores.motivoProcedimiento!;
-      complicacionesTextController.text = Valores.complicacionesProcedimiento!;
-      pendientesTextController.text = Valores.pendientesProcedimiento!;
+      Valores.motivoProcedimiento = motivoTextController.text;
+      Valores.complicacionesProcedimiento = complicacionesTextController.text;
+      Valores.pendientesProcedimiento = pendientesTextController.text;
+      // ********* *********** ********* **** **
+      Reportes.reportes['Motivo_Procedimiento'] = Valores.motivoProcedimiento;
+      Reportes.reportes['Procedimiento_Realizado'] =
+          Formatos.sondaEndopleural;
+      Reportes.reportes['Complicaciones_Procedimiento'] =
+          Valores.complicacionesProcedimiento;
+      Reportes.reportes['Pendientes_Procedimiento'] =
+          Valores.pendientesProcedimiento;
     });
   }
 
@@ -91,7 +100,12 @@ class _SondaEndopleuralState extends State<SondaEndopleural> {
                           keyBoardType: TextInputType.text,
                           numOfLines: 1,
                           inputFormat: MaskTextInputFormatter(),
-                          onChange: (value) {},
+                          onChange: (value) {
+                            setState(() {
+                              Valores.motivoProcedimiento = value;
+                              reInit();
+                            });
+                          },
                         ),
                         const CrossLine(),
                         Spinner(
@@ -120,7 +134,11 @@ class _SondaEndopleuralState extends State<SondaEndopleural> {
                           keyBoardType: TextInputType.text,
                           numOfLines: 1,
                           inputFormat: MaskTextInputFormatter(),
-                          onChange: (value) {},
+    onChange: (value) {
+    setState(() {
+    Valores.complicacionesProcedimiento = value;
+    reInit();
+    });},
                         ),
                         EditTextArea(
                           labelEditText:
@@ -129,7 +147,12 @@ class _SondaEndopleuralState extends State<SondaEndopleural> {
                           keyBoardType: TextInputType.text,
                           numOfLines: 1,
                           inputFormat: MaskTextInputFormatter(),
-                          onChange: (value) {},
+                          onChange: (value) {
+                            setState(() {
+                              Valores.pendientesProcedimiento = value;
+                              reInit();
+                            });
+                          },
                         ),
                       ],
                     ),
