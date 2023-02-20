@@ -31,6 +31,7 @@ class _ThreeLabelTextAlineState extends State<ThreeLabelTextAline> {
             child: Text(widget.firstText!,
                 style: const TextStyle(
                   color: Colors.grey,
+                  overflow: TextOverflow.ellipsis,
                   fontWeight: FontWeight.bold,
                 )),
           ),
@@ -40,6 +41,7 @@ class _ThreeLabelTextAlineState extends State<ThreeLabelTextAline> {
               widget.secondText!,
               style: const TextStyle(
                 color: Colors.grey,
+                overflow: TextOverflow.ellipsis,
                 fontWeight: FontWeight.normal,
               ),
               textAlign: TextAlign.left,
@@ -50,6 +52,7 @@ class _ThreeLabelTextAlineState extends State<ThreeLabelTextAline> {
             child: Text(widget.thirdText!,
                 style: const TextStyle(
                   color: Colors.grey,
+                  overflow: TextOverflow.ellipsis,
                   fontWeight: FontWeight.normal,
                 )),
           ),

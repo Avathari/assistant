@@ -51,31 +51,11 @@ class _GestionPacientesState extends State<GestionPacientes> {
     Actividades.consultar(Databases.siteground_database_regpace, consultQuery!)
         .then((value) {
       setState(() {
+        // print("Gestion pacientes $value");
         foundedUsuarios = value;
       });
     });
-
     super.initState();
-  }
-
-  void _runFilterSearch(String enteredKeyword) {
-    List? results = [];
-
-    if (enteredKeyword.isEmpty) {
-      _pullListRefresh();
-    } else {
-      Actividades.consultar(
-              Databases.siteground_database_regpace, consultQuery!)
-          .then((value) {
-        results = value
-            .where((user) => user["Pace_Ape_Pat"].contains(enteredKeyword))
-            .toList();
-
-        setState(() {
-          foundedUsuarios = results;
-        });
-      });
-    }
   }
 
   @override
@@ -431,7 +411,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
       ]),
     );
   }
-  
+
   void deleteRegister(
       AsyncSnapshot<dynamic> snapshot, int posicion, BuildContext context) {
     try {
@@ -482,6 +462,27 @@ class _GestionPacientesState extends State<GestionPacientes> {
             pageBuilder: (a, b, c) => const GestionPacientes(),
             transitionDuration: const Duration(seconds: 0)));
   }
+
+  void _runFilterSearch(String enteredKeyword) {
+    List? results = [];
+
+    if (enteredKeyword.isEmpty) {
+      _pullListRefresh();
+    } else {
+      Actividades.consultar(
+          Databases.siteground_database_regpace, consultQuery!)
+          .then((value) {
+        results = value
+            .where((user) => user["Pace_Ape_Pat"].contains(enteredKeyword))
+            .toList();
+
+        setState(() {
+          foundedUsuarios = results;
+        });
+      });
+    }
+  }
+
 }
 
 class OperacionesPacientes extends StatefulWidget {

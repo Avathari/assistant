@@ -25,7 +25,8 @@ class OperacionesDiagnosticos extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<OperacionesDiagnosticos> createState() => _OperacionesDiagnosticosState();
+  State<OperacionesDiagnosticos> createState() =>
+      _OperacionesDiagnosticosState();
 }
 
 class _OperacionesDiagnosticosState extends State<OperacionesDiagnosticos> {
@@ -68,8 +69,9 @@ class _OperacionesDiagnosticosState extends State<OperacionesDiagnosticos> {
           widget._operationButton = 'Actualizar';
           idOperation = Diagnosticos.Diagnostico['ID_PACE_APP_DEG'];
 
-          isActualDiagoValue = Dicotomicos.fromInt(
-              Diagnosticos.Diagnostico['Pace_APP_DEG_SINO']).toString();
+          isActualDiagoValue =
+              Dicotomicos.fromInt(Diagnosticos.Diagnostico['Pace_APP_DEG_SINO'])
+                  .toString();
           if (Diagnosticos.selectedDiagnosis == "") {
             cieDiagnoTextController.text =
                 Diagnosticos.Diagnostico['Pace_APP_DEG'];
@@ -82,11 +84,13 @@ class _OperacionesDiagnosticosState extends State<OperacionesDiagnosticos> {
               Diagnosticos.Diagnostico['Pace_APP_DEG_dia'].toString();
           //
           isTratamientoDiagoValue = Dicotomicos.fromInt(
-              Diagnosticos.Diagnostico['Pace_APP_DEG_tra_SINO']).toString();
+                  Diagnosticos.Diagnostico['Pace_APP_DEG_tra_SINO'])
+              .toString();
           tratamientoTextController.text =
               Diagnosticos.Diagnostico['Pace_APP_DEG_tra'];
           isSuspendTratoValue = Dicotomicos.fromInt(
-              Diagnosticos.Diagnostico['Pace_APP_DEG_sus_SINO']).toString();
+                  Diagnosticos.Diagnostico['Pace_APP_DEG_sus_SINO'])
+              .toString();
           suspensionesTextController.text =
               Diagnosticos.Diagnostico['Pace_APP_DEG_sus'];
         });
@@ -114,14 +118,15 @@ class _OperacionesDiagnosticosState extends State<OperacionesDiagnosticos> {
                 },
               ))
           : null,
-      body: Card(
-        color: const Color.fromARGB(255, 61, 57, 57),
+      body: Container(
+        decoration: ContainerDecoration.roundedDecoration(),
         child: Column(
           children: [
             Expanded(
-              flex: 3,
+              flex: 9,
               child: SingleChildScrollView(
                   controller: diagnosticosScroller,
+                  padding: const EdgeInsets.all(10),
                   child: Column(
                     children: component(context),
                   )),
@@ -129,11 +134,18 @@ class _OperacionesDiagnosticosState extends State<OperacionesDiagnosticos> {
             const SizedBox(
               height: 10,
             ),
-            GrandButton(
-                labelButton: widget._operationButton,
-                onPress: () {
-                  operationMethod(context);
-                })
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.all(10),
+                decoration: ContainerDecoration.roundedDecoration(),
+                child: GrandButton(
+                  weigth: 2000,
+                    labelButton: widget._operationButton,
+                    onPress: () {
+                      operationMethod(context);
+                    }),
+              ),
+            )
           ],
         ),
       ),
@@ -366,7 +378,8 @@ class GestionDiagnosticos extends StatefulWidget {
 }
 
 class _GestionDiagnosticosState extends State<GestionDiagnosticos> {
-  String appTittle = "Gestion de diagnósiticos de la Hospitalización del paciente";
+  String appTittle =
+      "Gestion de diagnósiticos de la Hospitalización del paciente";
   String searchCriteria = "Buscar por diagnóstico";
   String? consultQuery = Diagnosticos.diagnosticos['consultIdQuery'];
 
@@ -494,7 +507,7 @@ class _GestionDiagnosticosState extends State<GestionDiagnosticos> {
                     builder: (context, AsyncSnapshot snapshot) {
                       if (snapshot.hasError) print(snapshot.error);
                       return snapshot.hasData
-                          ? ListView.builder(
+                          ? GridView.builder(gridDelegate: GridViewTools.gridDelegate(),
                               controller: gestionScrollController,
                               shrinkWrap: true,
                               itemCount: snapshot.data == null
@@ -528,7 +541,7 @@ class _GestionDiagnosticosState extends State<GestionDiagnosticos> {
             ],
           ),
         ),
-        isDesktop(context)
+        isDesktop(context) || isTabletAndDesktop(context)
             ? widget.actualSidePage != null
                 ? Expanded(flex: 1, child: widget.actualSidePage!)
                 : Expanded(flex: 1, child: Container())
@@ -540,92 +553,96 @@ class _GestionDiagnosticosState extends State<GestionDiagnosticos> {
   Container itemListView(
       AsyncSnapshot snapshot, int posicion, BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(2.0),
+      padding: const EdgeInsets.all(10.0),
+      decoration: ContainerDecoration.roundedDecoration(),
       child: GestureDetector(
         onTap: () {
           onSelected(snapshot, posicion, context, Constantes.Update);
         },
-        child: Card(
-          color: const Color.fromARGB(255, 54, 50, 50),
-          child: Container(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
+        child: Column(
+          children: [
+            Expanded(
+              flex: 3,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: CircleAvatar(
+                      radius: 300,
+                      backgroundColor: Colors.grey,
+                      child: Text(
+                        snapshot.data[posicion]['ID_PACE_APP_DEG'].toString(),
+                        style: Styles.textSyleGrowth(),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 4,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "ID : ${snapshot.data[posicion]['ID_PACE_APP_DEG'].toString()}",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                                fontSize: 12),
-                          ),
-                          Text(
                             "${snapshot.data[posicion]['Pace_APP_DEG']}",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                                fontSize: 14),
+                            style: Styles.textSyleGrowth(fontSize: 18),
+                            maxLines: 3,
                           ),
                           Text(
                             "${snapshot.data[posicion]['Pace_APP_DEG_com']}",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                                fontSize: 14),
+                              style: Styles.textSyleGrowth(fontSize: 14)
                           ),
+                          const CrossLine(),
                         ],
                       ),
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        IconButton(
-                          color: Colors.grey,
-                          icon: const Icon(Icons.update_rounded),
-                          onPressed: () {
-                            //
-                            onSelected(
-                                snapshot, posicion, context, Constantes.Update);
-                          },
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        IconButton(
-                          color: Colors.grey,
-                          icon: const Icon(Icons.delete),
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return alertDialog(
-                                    'Eliminar registro',
-                                    '¿Esta seguro de querer eliminar el registro?',
-                                    () {
-                                      closeDialog(context);
-                                    },
-                                    () {
-                                      deleteRegister(
-                                          snapshot, posicion, context);
-                                    },
-                                  );
-                                });
-                          },
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ],
+                  ),
+
+                ],
+              ),
             ),
-          ),
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  IconButton(
+                    color: Colors.grey,
+                    icon: const Icon(Icons.update_rounded),
+                    onPressed: () {
+                      //
+                      onSelected(
+                          snapshot, posicion, context, Constantes.Update);
+                    },
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  IconButton(
+                    color: Colors.grey,
+                    icon: const Icon(Icons.delete),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return alertDialog(
+                              'Eliminar registro',
+                              '¿Esta seguro de querer eliminar el registro?',
+                                  () {
+                                closeDialog(context);
+                              },
+                                  () {
+                                deleteRegister(snapshot, posicion, context);
+                              },
+                            );
+                          });
+                    },
+                  )
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );

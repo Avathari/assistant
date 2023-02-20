@@ -217,7 +217,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                 controller: ScrollController(),
                 children: tiposReportes(),
               )),
-          const Expanded(child: SizedBox(height: 10, child: CrossLine())),
+          const Expanded(child: CrossLine()),
           // ListValue(
           //   title: "",
           //   onPress: () {},

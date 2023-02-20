@@ -107,7 +107,7 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: isDesktop(context)
+      appBar: isDesktop(context) || isTabletAndDesktop(context)
           ? null
           : AppBar(
               backgroundColor: Theming.primaryColor,
@@ -168,6 +168,7 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
       Row(
         children: [
           Expanded(
+            flex: isTabletAndDesktop(context) ? 2 : 1,
             child: Switched(
               tittle: "¿Realizado?",
               isSwitched: realized,
@@ -179,10 +180,10 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
             ),
           ),
           Expanded(
-            flex: 2,
+            flex: isTabletAndDesktop(context) ? 3 : 2,
             child: Spinner(
                 width: isDesktop(context)
-                    ? 200
+                    ? 200 : isTabletAndDesktop(context) ? 130
                     : isTablet(context)
                         ? 200
                         : isMobile(context)
@@ -495,7 +496,7 @@ class _GestionPendienteState extends State<GestionPendiente> {
             ],
           ),
         ),
-        isDesktop(context)
+        isDesktop(context) || isTabletAndDesktop(context)
             ? widget.actualSidePage != null
                 ? Expanded(flex: 1, child: widget.actualSidePage!)
                 : Expanded(flex: 1, child: Container())
@@ -598,22 +599,29 @@ class _GestionPendienteState extends State<GestionPendiente> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    snapshot.data[posicion]['Feca_PEN'].toString(),
-                    style: Styles.textSyleGrowth(fontSize: 18),
-                    textAlign: TextAlign.start,
+                  Expanded(
+                    child: Text(
+                      snapshot.data[posicion]['Feca_PEN'].toString(),
+                      style: Styles.textSyleGrowth(fontSize: 18),
+                      textAlign: TextAlign.start,
+                    ),
                   ),
-                  Text(
-                    snapshot.data[posicion]['Pace_PEN'].toString(),
-                    style: Styles.textSyleGrowth(fontSize: 16),
-                    textAlign: TextAlign.start,
+                  Expanded(
+                    child: Text(
+                      snapshot.data[posicion]['Pace_PEN'].toString(),
+                      style: Styles.textSyleGrowth(fontSize: 16),
+                      textAlign: TextAlign.start,
+                    ),
                   ),
-                  const CrossLine(),
-                  Text(
-                    snapshot.data[posicion]['Pace_Desc_PEN'].toString(),
-                    maxLines: 7,
-                    style: Styles.textSyle,
-                    textAlign: TextAlign.start,
+                  const Expanded(child: CrossLine()),
+                  Expanded(
+                    flex: 4,
+                    child: Text(
+                      snapshot.data[posicion]['Pace_Desc_PEN'].toString(),
+                      maxLines: 7,
+                      style: Styles.textSyle,
+                      textAlign: TextAlign.start,
+                    ),
                   ),
                 ],
               ),
@@ -653,7 +661,7 @@ class _GestionPendienteState extends State<GestionPendiente> {
   }
 
   void toOperaciones(BuildContext context, String operationActivity) {
-    if (isDesktop(context)) {
+    if (isDesktop(context) || isTabletAndDesktop(context)) {
       Constantes.operationsActividad = operationActivity;
       Constantes.reinit(value: foundedItems!);
       _pullListRefresh();
@@ -692,10 +700,10 @@ class _GestionPendienteState extends State<GestionPendiente> {
             pageBuilder: (a, b, c) => GestionPendiente(
                   actualSidePage: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Container(),
-                    // OperacionesPendiente(
-                    //   operationActivity: Constantes.operationsActividad,
-                    // ),
+                    child:
+                    OperacionesPendiente(
+                      operationActivity: Constantes.operationsActividad,
+                    ),
                   ),
                 ),
             transitionDuration: const Duration(seconds: 0)));

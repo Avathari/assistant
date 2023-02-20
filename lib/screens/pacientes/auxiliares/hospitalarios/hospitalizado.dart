@@ -245,13 +245,14 @@ class _HospitalizadoState extends State<Hospitalizado> {
       child: Column(
         children: [
           Expanded(
-              flex: 2,
+              flex: 3,
               child: SingleChildScrollView(
                   controller: ScrollController(),
                   child: Column(
                     children: component(context),
                   ))),
           Expanded(
+            flex: 2,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -282,6 +283,7 @@ class _HospitalizadoState extends State<Hospitalizado> {
                             onPress: () {
                               Operadores.openActivity(
                                   context: context,
+                                  labelButton: 'Actualizar',
                                   chyldrim: const PadecimientoActual(),
                                   onAction: () {
                                     Repositorios.actualizarRegistro();
@@ -296,10 +298,9 @@ class _HospitalizadoState extends State<Hospitalizado> {
                               Operadores.openActivity(
                                   context: context,
                                   chyldrim: const SituacionesHospitalizacion(),
+                                  labelButton: 'Actualizar',
                                   onAction: () {
-                                    setState(() {
-                                      Situaciones.actualizarRegistro();
-                                    });
+                                    Situaciones.actualizarRegistro();
                                   });
                             }),
                       ),
@@ -334,9 +335,11 @@ class _HospitalizadoState extends State<Hospitalizado> {
                       GrandIcon(
                           iconData: Icons.data_array,
                           labelButton: 'Situación del Expediente Clínico',
+
                           onPress: () {
                             Operadores.openActivity(
                                 context: context,
+                                labelButton: 'Actualizar',
                                 chyldrim: const ExpedientesClinicos(),
                                 onAction: () {
                                   setState(() {

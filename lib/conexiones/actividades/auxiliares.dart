@@ -60,7 +60,7 @@ class Dicotomicos {
     }
   }
 
-  static bool  fromString(String boolItem) {
+  static bool fromString(String boolItem) {
     if (boolItem == 'Si') {
       return true;
     } else if (boolItem == 'No') {
@@ -160,6 +160,34 @@ class Archivos {
   }
 }
 
+class Listas {
+  static List<dynamic> listFromMap(
+      {required List<dynamic> lista, // <Map<String, dynamic>>
+      required String keySearched,
+      required String elementSearched}) {
+
+
+    return lista
+        .where((user) => user[keySearched].contains(elementSearched))
+        .toList();
+  }
+
+  static List<dynamic> listWithoutRepitedValues(List<dynamic> listado) {
+    var seen = <dynamic>{};
+    List uniquelist =
+        listado.where((country) => seen.add(country)).toList();
+    return uniquelist;
+  }
+
+  static List<dynamic> listFromMapWithOneKey (List<dynamic> aux) {
+    List<dynamic> listado = [];
+    for (var item in aux) {
+      listado.add(item['Fecha_Registro']);
+    }
+    return listado;
+  }
+}
+
 class Alertas {
   static void showAlert({BuildContext? context, required String error}) {
     showDialog(
@@ -219,10 +247,10 @@ class Opciones {
 }
 
 class Operadores {
-
   static void openDialog(
-      {required BuildContext context, required Widget chyldrim,
-        Function? onAction}) {
+      {required BuildContext context,
+      required Widget chyldrim,
+      Function? onAction}) {
     showDialog(
         useSafeArea: true,
         context: context,
@@ -268,6 +296,7 @@ class Operadores {
   static Future<void> openActivity(
       {required BuildContext context,
       required Widget chyldrim,
+      String? labelButton = 'Cerrar',
       Function? onAction}) async {
     showDialog(
         useSafeArea: true,
@@ -285,7 +314,7 @@ class Operadores {
                       color: Colors.grey,
                     )),
                 child: GrandButton(
-                  labelButton: 'Cerrar',
+                  labelButton: labelButton,
                   onPress: () {
                     if (onAction == null || onAction == Null) {
                       Navigator.of(context).pop();
@@ -363,12 +392,11 @@ class Operadores {
         });
   }
 
-
   static void selectOptionsActivity({
     required BuildContext context,
     String? tittle = "Manejo de Opciones",
     String? message = "Seleccione una opción . . . ",
-    required List<String> options,
+    required List<dynamic> options,
     Function(String)? onClose,
   }) {
     showDialog(
@@ -382,7 +410,6 @@ class Operadores {
           );
         });
   }
-
 
   static void alertActivity(
       {required BuildContext context,
@@ -492,7 +519,7 @@ class Dialogos {
             subtitle: Text(
               element[2],
               textAlign: TextAlign.right,
-              style: const TextStyle(fontSize: 10,color: Colors.grey),
+              style: const TextStyle(fontSize: 10, color: Colors.grey),
             ),
           ),
           const CrossLine(),
@@ -526,7 +553,7 @@ class Dialogos {
     String? tittle,
     String? msg,
     ValueChanged<String>? onCloss,
-    required List<String> options,
+    required List<dynamic> options,
   }) {
     List<Widget> list = [];
     var selected = "";
@@ -536,11 +563,10 @@ class Dialogos {
         children: [
           ListTile(
             onTap: () {
-              // PdfApi.openFile(File(element[1]));
               onCloss!(element);
             },
             title: Text(
-              element,
+              "$element",
               style: const TextStyle(color: Colors.grey),
             ),
           ),
@@ -566,7 +592,7 @@ class Dialogos {
               onCloss!(selected);
             },
             child:
-            const Text("Cancelar", style: TextStyle(color: Colors.white))),
+                const Text("Cancelar", style: TextStyle(color: Colors.white))),
       ],
     );
   }
@@ -576,7 +602,6 @@ class Dialogos {
     String? msg,
     Function? onCloss,
   }) {
-
     return AlertDialog(
       backgroundColor: Theming.secondaryColor,
       title: Text(
@@ -598,9 +623,8 @@ class Dialogos {
               onCloss!();
             },
             child:
-            const Text("Cancelar", style: TextStyle(color: Colors.white))),
+                const Text("Cancelar", style: TextStyle(color: Colors.white))),
       ],
     );
   }
-
 }

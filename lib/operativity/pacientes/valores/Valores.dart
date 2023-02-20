@@ -463,9 +463,11 @@ class Valores {
     Toxicomanias.consultarRegistro();
     // ********* *********** ********** ******
     Vitales.registros();
-    Vitales.ultimoRegistro();
+    // Vitales.ultimoRegistro();
     Patologicos.registros();
     Patologicos.consultarRegistro();
+    Diagnosticos.registros();
+    Diagnosticos.consultarRegistro();
     Alergicos.registros();
     Alergicos.consultarRegistro();
     Quirurgicos.registros();
@@ -474,6 +476,10 @@ class Valores {
     Transfusionales.consultarRegistro();
     Traumatologicos.registros();
     Traumatologicos.consultarRegistro();
+// ********* *********** ********** ******
+//     Electrocardiogramas.ultimoRegistro();
+    // Pacientes.diagnosticos();
+    // Ventilaciones.ultimoRegistro();
 // ********* *********** ********** ******
     // Llamado a las distintas clases de valores.
     // final patol = await Actividades.consultarId(
@@ -487,7 +493,7 @@ class Valores {
         Pacientes.ID_Paciente);
     // Pacientes.Vital = vital;
     valores.addAll(vital);
-    Pacientes.diagnosticos();
+
     final antro = await Actividades.consultarId(
         Databases.siteground_database_regpace,
         Vitales.antropo['consultLastQuery'],
@@ -505,7 +511,7 @@ class Valores {
         Electrocardiogramas.electrocardiogramas['consultLastQuery'],
         Pacientes.ID_Paciente,
         emulated: true);
-    // Pacientes.Electrocardiogramas = elect;
+    Pacientes.Electrocardiogramas = elect;
     valores.addAll(elect);
 
     final vento = await Actividades.consultarId(
@@ -522,7 +528,6 @@ class Valores {
         emulated: true);
     valores.addAll(hosp);
 
-    //valores.map((key, value) => value = null);
     Valores.fromJson(valores);
     return true;
   }
@@ -658,64 +663,60 @@ class Valores {
     //
     fechaElectrocardiograma = json['Pace_GAB_EC_Feca'] ?? '';
     ritmoCardiaco = json['Pace_EC_rit'] ?? '';
-    intervaloRR = json['Pace_EC_rr'] == null ? json['Pace_EC_rr'] : 0;
-    duracionOndaP = json['Pace_EC_dop'] == null ? json['Pace_EC_dop'] : 0;
-    alturaOndaP = json['Pace_EC_aop'] == null ? json['Pace_EC_aop'] : 0;
-    duracionPR = json['Pace_EC_dpr'] == null ? json['Pace_EC_dpr'] : 0;
-    duracionQRS = json['Pace_EC_dqrs'] == null ? json['Pace_EC_dqrs'] : 0;
-    alturaQRS = json['Pace_EC_aqrs'] == null ? json['Pace_EC_aqrs'] : 0;
-    QRSi = json['Pace_EC_qrsi'] == null ? json['Pace_EC_qrsi'] : 0;
-    QRSa = json['Pace_EC_qrsa'] == null ? json['Pace_EC_qrsa'] : 0;
+    intervaloRR = double.parse(json['Pace_EC_rr'].toString());
+    duracionOndaP = double.parse(json['Pace_EC_dop'].toString());
+    alturaOndaP = double.parse(json['Pace_EC_aop'].toString());
+    duracionPR = double.parse(json['Pace_EC_dpr'].toString());
+    duracionQRS = double.parse(json['Pace_EC_dqrs'].toString());
+    alturaQRS = double.parse(json['Pace_EC_aqrs'].toString());
+    QRSi = double.parse(json['Pace_EC_qrsi'].toString());
+    QRSa = double.parse(json['Pace_EC_qrsa'].toString());
     //
-    ejeCardiaco = double.parse(
-        json['Pace_QRS'] != '' && json['Pace_QRS'] != null
-            ? json['Pace_QRS']
-            : '0');
+    ejeCardiaco =
+        double.parse(json['Pace_QRS'].toString());
     //
     segmentoST = json['Pace_EC_st'] ?? '';
-    alturaSegmentoST = json['Pace_EC_ast_'] == null ? json['Pace_EC_ast_'] : 0;
-    duracionQT = json['Pace_EC_dqt'] == null ? json['Pace_EC_dqt'] : 0;
-    duracionOndaT = json['Pace_EC_dot'] == null ? json['Pace_EC_dot'] : 0;
-    alturaOndaT = json['Pace_EC_aot'] == null ? json['Pace_EC_aot'] : 0;
+    alturaSegmentoST = double.parse(json['Pace_EC_ast_'].toString());
+    duracionQT = double.parse(json['Pace_EC_dqt'].toString());
+    duracionOndaT = double.parse(json['Pace_EC_dot'].toString());
+    alturaOndaT = double.parse(json['Pace_EC_aot'].toString());
 
     //
-    rV1 = json['EC_rV1'] == null ? json['EC_rV1'] : 0;
-    sV6 = json['EC_sV6'] == null ? json['EC_sV6'] : 0;
-    sV1 = json['EC_sV1'] == null ? json['EC_sV1'] : 0;
-    rV6 = json['EC_rV6'] == null ? json['EC_rV6'] : 0;
-    rAvL = json['EC_rAVL'] == null ? json['EC_rAVL'] : 0;
-    sV3 = json['EC_sV3'] == null ? json['EC_sV3'] : 0;
+    rV1 = double.parse(json['EC_rV1'].toString());
+    sV6 = double.parse(json['EC_sV6'].toString());
+    sV1 = double.parse(json['EC_sV1'].toString());
+    rV6 = double.parse(json['EC_rV6'].toString());
+    rAvL = double.parse(json['EC_rAVL'].toString());
+    sV3 = double.parse(json['EC_sV3'].toString());
     //
     patronQRS = json['PatronQRS'] ?? '';
-    deflexionIntrinsecoide = json['DeflexionIntrinsecoide'] == null
-        ? json['DeflexionIntrinsecoide']
-        : 0;
+    deflexionIntrinsecoide = double.parse(json['DeflexionIntrinsecoide'].toString());
 
-    rDI = json['EC_rDI'] == null ? json['EC_rDI'] : 0;
-    sDI = json['EC_sDI'] == null ? json['EC_sDI'] : 0;
-    rDIII = json['EC_rDIII'] == null ? json['EC_rDIII'] : 0;
-    sDIII = json['EC_sDIII'] == null ? json['EC_sDIII'] : 0;
+    rDI = double.parse(json['EC_rDI'].toString().toString());
+    sDI = double.parse(json['EC_sDI'].toString());
+    rDIII = double.parse(json['EC_rDIII'].toString());
+    sDIII = double.parse(json['EC_sDIII'].toString());
 
     conclusionElectrocardiograma = json['Pace_EC_CON'] ?? '';
     //
     fechaVentilaciones = json['Feca_VEN'] ?? '';
     modalidadVentilatoria = json['VM_Mod'] ?? '';
-    frecuenciaVentilatoria = json['Pace_Fr'] == null ? json['Pace_Fr'] : 0;
+    frecuenciaVentilatoria = json['Pace_Fr'] ?? 0;
     fraccionInspiratoriaVentilatoria =
-        json['Pace_Fio'] == null ? json['Pace_Fio'] : 0;
-    presionFinalEsiracion = json['Pace_Peep'] == null ? json['Pace_Peep'] : 0;
+        json['Pace_Fio'] ?? '0';
+    presionFinalEsiracion = json['Pace_Peep'] ?? '0';
     sensibilidadInspiratoria =
-        json['Pace_Insp'] == null ? json['Pace_Insp'] : 0;
-    sensibilidadEspiratoria = json['Pace_Espi'] == null ? json['Pace_Espi'] : 0;
-    presionControl = json['Pace_Pc'] == null ? json['Pace_Pc'] : 0;
-    presionMaxima = json['Pace_Pm'] == null ? json['Pace_Pm'] : 0;
+        json['Pace_Insp'] ?? '0';
+    sensibilidadEspiratoria = json['Pace_Espi'] ?? '0';
+    presionControl = json['Pace_Pc'] ?? '0';
+    presionMaxima = json['Pace_Pm'] ?? '0';
 
-    volumenVentilatorio = json['Pace_V'] == null ? json['Pace_V'] : 0;
-    flujoVentilatorio = json['Pace_F'] == null ? json['Pace_F'] : 0;
-    presionSoporte = json['Pace_Ps'] == null ? json['Pace_Ps'] : 0;
-    presionInspiratoriaPico = json['Pace_Pip'] == null ? json['Pace_Pip'] : 0;
-    presionPlateau = json['Pace_Pmet'] == null ? json['Pace_Pmet'] : 0;
-    volumenTidal = json['Pace_Vt'] == null ? json['Pace_Vt'] : 0;
+    volumenVentilatorio = json['Pace_V'] ?? '0';
+    flujoVentilatorio = json['Pace_F'] ?? '0';
+    presionSoporte = json['Pace_Ps'] ?? '0';
+    presionInspiratoriaPico = json['Pace_Pip'] ?? '0';
+    presionPlateau = json['Pace_Pmet'] ?? '0';
+    volumenTidal = double.parse(json['Pace_Vt'].toString());
 
     // Datos generales de la última Hospitalización.
     Pacientes.ID_Hospitalizacion = json['ID_Hosp'] ?? 0;

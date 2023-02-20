@@ -422,9 +422,9 @@ class Pacientes {
     }
   }
 
-  static String auxiliaresDiagnosticos({int? indice = 0}) {
+  static String auxiliaresDiagnosticos({int? indice = 0, String fechaActual = ""}) {
     if (indice! < 20) {
-      return Auxiliares.porTipoEstudio(indice: indice);
+      return Auxiliares.porTipoEstudio(indice: indice, fechaActual: fechaActual);
     } else if (indice == 20) {
       return Auxiliares.electrocardiograma();
     } else {
@@ -453,9 +453,14 @@ class Pacientes {
     print("Diagnosticos $Diagnosticos");
     if (Diagnosticos != []) {
       for (var element in Diagnosticos!) {
-        Reportes.impresionesDiagnosticas =
-        "${Reportes.impresionesDiagnosticas.substring(0, Reportes.impresionesDiagnosticas.length - 1)} \n"
-            "${element['Pace_APP_DEG']} (${element['Pace_APP_DEG_com']}). ";
+        if (Reportes.impresionesDiagnosticas != "") {
+          Reportes.impresionesDiagnosticas =
+          "${Reportes.impresionesDiagnosticas.substring(0, Reportes.impresionesDiagnosticas.length - 1)} \n"
+              "${element['Pace_APP_DEG']} (${element['Pace_APP_DEG_com']}). ";
+        } else {
+          Reportes.impresionesDiagnosticas =
+              "${element['Pace_APP_DEG']} (${element['Pace_APP_DEG_com']}). ";
+        }
       }
     }
 
@@ -4152,6 +4157,53 @@ class Electrocardiogramas {
     'Patrón sR',
     'Patrón Q'
   ];
+
+  // static void fromJson(Map<String, dynamic> json) {
+  //   print("Electrocardiogramas $json");
+  //   //
+  //   Valores.fechaElectrocardiograma = json['Pace_GAB_EC_Feca'] ?? '';
+  //   Valores.ritmoCardiaco = json['Pace_EC_rit'] ?? '';
+  //   Valores.intervaloRR = json['Pace_EC_rr'] == null ? json['Pace_EC_rr'] : 0;
+  //   Valores.duracionOndaP = json['Pace_EC_dop'] == null ? json['Pace_EC_dop'] : 0;
+  //   Valores.alturaOndaP = json['Pace_EC_aop'] == null ? json['Pace_EC_aop'] : 0;
+  //   Valores.duracionPR = json['Pace_EC_dpr'] == null ? json['Pace_EC_dpr'] : 0;
+  //   Valores.duracionQRS = json['Pace_EC_dqrs'] == null ? json['Pace_EC_dqrs'] : 0;
+  //   Valores.alturaQRS = json['Pace_EC_aqrs'] == null ? json['Pace_EC_aqrs'] : 0;
+  //   Valores.QRSi = json['Pace_EC_qrsi'] == null ? json['Pace_EC_qrsi'] : 0;
+  //   Valores.QRSa = json['Pace_EC_qrsa'] == null ? json['Pace_EC_qrsa'] : 0;
+  //   //
+  //   Valores.ejeCardiaco = double.parse(
+  //       json['Pace_QRS'] != '' && json['Pace_QRS'] != null
+  //           ? json['Pace_QRS']
+  //           : '0');
+  //   //
+  //   Valores.segmentoST = json['Pace_EC_st'] ?? '';
+  //   Valores.alturaSegmentoST = json['Pace_EC_ast_'] == null ? json['Pace_EC_ast_'] : 0;
+  //   Valores.duracionQT = json['Pace_EC_dqt'] == null ? json['Pace_EC_dqt'] : 0;
+  //   Valores.duracionOndaT = json['Pace_EC_dot'] == null ? json['Pace_EC_dot'] : 0;
+  //   Valores.alturaOndaT = json['Pace_EC_aot'] == null ? json['Pace_EC_aot'] : 0;
+  //
+  //   //
+  //   Valores.rV1 = json['EC_rV1'] == null ? json['EC_rV1'] : 0;
+  //   Valores.sV6 = json['EC_sV6'] == null ? json['EC_sV6'] : 0;
+  //   Valores.sV1 = json['EC_sV1'] == null ? json['EC_sV1'] : 0;
+  //   Valores.rV6 = json['EC_rV6'] == null ? json['EC_rV6'] : 0;
+  //   Valores.rAvL = json['EC_rAVL'] == null ? json['EC_rAVL'] : 0;
+  //   Valores.sV3 = json['EC_sV3'] == null ? json['EC_sV3'] : 0;
+  //   //
+  //   Valores.patronQRS = json['PatronQRS'] ?? '';
+  //   Valores.deflexionIntrinsecoide = json['DeflexionIntrinsecoide'] == null
+  //       ? json['DeflexionIntrinsecoide']
+  //       : 0;
+  //
+  //   Valores.rDI = json['EC_rDI'] == null ? json['EC_rDI'] : 0;
+  //   Valores.sDI = json['EC_sDI'] == null ? json['EC_sDI'] : 0;
+  //   Valores.rDIII = json['EC_rDIII'] == null ? json['EC_rDIII'] : 0;
+  //   Valores.sDIII = json['EC_sDIII'] == null ? json['EC_sDIII'] : 0;
+  //
+  //   Valores.conclusionElectrocardiograma = json['Pace_EC_CON'] ?? '';
+  //
+  // }
 }
 
 class Imagenologias {
@@ -4256,31 +4308,34 @@ class Auxiliares {
     });
   }
 
-  static String porTipoEstudio({int? indice = 0}) {
-    // ####### ### ### ## ### ### ####### ####### ####### #######
+  static String porTipoEstudio({int? indice = 0, String fechaActual = ""}) {
     // Filtro por estudio de los registros de Pacientes.Paraclinicos
-    // ####### ### ### ## ### ### ####### ####### ####### #######
     var aux = Pacientes.Paraclinicos!
         .where((user) =>
             user["Tipo_Estudio"].contains(Auxiliares.Categorias[indice!]))
         .toList();
-    // ####### ### ### ## ### ### ####### ####### ####### #######
     // Inicio del formato de la prosa.
-    // ####### ### ### ## ### ### ####### ####### ####### #######
+    if (fechaActual == "") {
+      fechaActual = aux[0]['Fecha_Registro'];
+    }
+    //
     String prosa =
-        "${Auxiliares.Categorias[indice!]} (${aux[0]['Fecha_Registro']}): ";
+        "${Auxiliares.Categorias[indice!]} ($fechaActual): ";
     String max = "";
-    // ####### ### ### ## ### ### ####### ####### ####### #######
     // Anexación de los valores correlacionados.
-    // ####### ### ### ## ### ### ####### ####### ####### #######
-    aux.forEach((element) {
-      max =
-          "$max ${element['Estudio']} ${element['Resultado']} ${element['Unidad_Medida']}. ";
-    });
-    // ####### ### ### ## ### ### ####### ####### ####### #######
+    for (var element in aux) {
+      if (element['Fecha_Registro'] == fechaActual) {
+        if (max == ""){
+          max =
+          "${element['Estudio']} ${element['Resultado']} ${element['Unidad_Medida']}";
+        } else {
+          max =
+          "$max, ${element['Estudio']} ${element['Resultado']} ${element['Unidad_Medida']}";
+        }
+      }
+    }
     // Devolución de la prosa.
-    // ####### ### ### ## ### ### ####### ####### ####### #######
-    return prosa + max;
+    return "$prosa$max. ";
   }
 
   static List<String> Categorias = [
@@ -4433,7 +4488,6 @@ class Auxiliares {
     Categorias[16]: [""],
     Categorias[17]: [""]
   };
-
   static final Map<String, dynamic> auxiliares = {
     "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_reglabo "
         "DEFAULT CHARACTER SET utf8 "
@@ -4602,6 +4656,7 @@ class Auxiliares {
         "Indice de Lewis ${(Valores.indiceLewis * 0.1).toStringAsFixed(2)} mV, "
         "Voltaje de Cornell ${(Valores.voltajeCornell * 0.1).toStringAsFixed(2)} mV, "
         "RaVL ${(Valores.rAvL! * 0.1).toStringAsFixed(2)  } mV. ";
+
     // return "Electrocardiograma (${Pacientes.Electrocardiogramas['Pace_GAB_EC_Feca']}): "
     //     "${Pacientes.Electrocardiogramas['Pace_EC_rit']} "
     //     "con Intervalo R-R ${Pacientes.Electrocardiogramas['Pace_EC_rr']} mm, "
@@ -4616,7 +4671,7 @@ class Auxiliares {
     //     "Altura de la Onda T ${Pacientes.Electrocardiogramas['Pace_EC_aot'] * 0.1} mV, "
     //     "Duración de la Onda T ${Pacientes.Electrocardiogramas['Pace_EC_dot'] * 0.04} mSeg, "
     //     "Intervalo ST ${Pacientes.Electrocardiogramas['Pace_EC_ast_']}, "
-    //     "Duracion del Segmento ST ${Pacientes.Electrocardiogramas['Pace_EC_st'] * 0.04} mSeg, "
+    //     // "Duracion del Segmento ST ${Pacientes.Electrocardiogramas['Pace_EC_st'] * 0.04} mSeg, "
     //     "Duracion del Intervalo QT ${Pacientes.Electrocardiogramas['Pace_EC_dqt'] * 0.04} mSeg, "
     //     "Deflexión Intrinsecoide ${Pacientes.Electrocardiogramas['DeflexionIntrinsecoide'] * 0.04} mSeg. "
     //     "Indice Sokolow - Lyon ${(Pacientes.Electrocardiogramas['isl'] * 0.1).toStringAsFixed(0)} mV, "
@@ -5019,7 +5074,7 @@ class Ventilaciones {
 
   static void ultimoRegistro() {
     Actividades.consultarId(
-            Databases.siteground_database_regpace,
+            Databases.siteground_database_reghosp,
             Ventilaciones.ventilacion['consultLastQuery'],
             Pacientes.ID_Paciente)
         .then((value) {
@@ -5029,7 +5084,7 @@ class Ventilaciones {
   }
 
   static void consultarRegistro() {
-    Actividades.consultarAllById(Databases.siteground_database_regpace,
+    Actividades.consultarAllById(Databases.siteground_database_reghosp,
             Ventilaciones.ventilacion['consultIdQuery'], Pacientes.ID_Paciente)
         .then((value) {
       // Enfermedades de base del paciente, asi como las Hospitalarias.
@@ -5073,7 +5128,7 @@ class Ventilaciones {
     "consultIdQuery": "SELECT * FROM pace_vm WHERE ID_Pace = ?",
     "consultByIdPrimaryQuery": "SELECT * FROM pace_vm WHERE ID_Pace = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_vm",
-    "consultLastQuery": "SELECT * FROM pace_vm WHERE ID_Pace = ?",
+    "consultLastQuery": "SELECT * FROM pace_vm WHERE ID_Pace = ? ORDER BY ID_Ventilacion ASC",
     "consultByName": "SELECT * FROM pace_vm WHERE Pace_APP_DEG LIKE '%",
     "registerQuery": "INSERT INTO pace_vm (ID_Pace, "
         "Feca_VEN, Pace_Vt, Pace_Fr, Pace_Fio, Pace_Peep, Pace_Insp, "

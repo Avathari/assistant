@@ -35,6 +35,8 @@ class _SituacionesHospitalizacionState
 
   @override
   void initState() {
+    dispositivoOxigenoValue = Valores.dispositivoOxigeno!;
+    // *********** ********* *********
     Actividades.consultarId(Databases.siteground_database_reghosp,
             Situaciones.situacion['consultQuery'], Pacientes.ID_Hospitalizacion)
         .then((response) {
@@ -87,7 +89,7 @@ class _SituacionesHospitalizacionState
           TittlePanel(textPanel: 'Situación General en la Hospitalización'),
           Spinner(
               tittle: 'Dispositivo de Oxígeno',
-              width: isTablet(context) ? 200 : 100,
+              width: isDesktop(context) || isTabletAndDesktop(context)? 400 : isTablet(context) ? 200 : 100,
               onChangeValue: (value) {
                 setState(() {
                   dispositivoOxigenoValue = value;

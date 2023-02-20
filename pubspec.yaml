@@ -75,6 +75,14 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  # Cambiar icono de la aplicación.
+#flutter_launcher_icons: ^0.8.1
+#
+## flutter_icons: image_path_android:"images/logoapp.png" image_path_ios:"images/logoapp.png" android:true ios:true
+#flutter_icons:
+#  image_path: "appicon/appicon.png"
+#  android: true
+#  ios: true
 
 dev_dependencies:
   flutter_test:
@@ -105,6 +113,7 @@ flutter:
   assets:
     - assets/images/
     - assets/diccionarios/
+    - assets/appicon/
     
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
