@@ -227,7 +227,7 @@ class _ElectrocardiogramasGestionState
         numOfLines: 1,
         onChange: (value) {
           setState(() {
-            Valores.intervaloRR = double.parse(value);
+            Valores.intervaloRR = int.parse(value);
           });
         },
       ),
@@ -398,7 +398,7 @@ class _ElectrocardiogramasGestionState
         numOfLines: 1,
         onChange: (value) {
           setState(() {
-            Valores.rV1 = double.parse(value);
+            Valores.rV1 = int.parse(value);
           });
         },
       ),
@@ -410,7 +410,7 @@ class _ElectrocardiogramasGestionState
         numOfLines: 1,
         onChange: (value) {
           setState(() {
-            Valores.sV1 = double.parse(value);
+            Valores.sV1 = int.parse(value);
           });
         },
       ),
@@ -422,7 +422,7 @@ class _ElectrocardiogramasGestionState
         numOfLines: 1,
         onChange: (value) {
           setState(() {
-            Valores.rV6 = double.parse(value);
+            Valores.rV6 = int.parse(value);
           });
         },
       ),
@@ -434,7 +434,7 @@ class _ElectrocardiogramasGestionState
         numOfLines: 1,
         onChange: (value) {
           setState(() {
-            Valores.sV6 = double.parse(value);
+            Valores.sV6 = int.parse(value);
           });
         },
       ),
@@ -446,7 +446,7 @@ class _ElectrocardiogramasGestionState
         numOfLines: 1,
         onChange: (value) {
           setState(() {
-            Valores.rAvL = double.parse(value);
+            Valores.rAvL = int.parse(value);
           });
         },
       ),
@@ -458,7 +458,7 @@ class _ElectrocardiogramasGestionState
         numOfLines: 1,
         onChange: (value) {
           setState(() {
-            Valores.sV3 = double.parse(value);
+            Valores.sV3 = int.parse(value);
           });
         },
       ),

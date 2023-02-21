@@ -313,8 +313,13 @@ class Valores {
       patronQRS = '',
       conclusionElectrocardiograma = '',
       fechaElectrocardiograma = '';
-  static double? intervaloRR,
-      duracionOndaP,
+  static int? intervaloRR, rV1,
+      sV6,
+      sV1,
+      rV6,
+      rAvL,
+      sV3;
+  static double? duracionOndaP,
       alturaOndaP,
       duracionPR,
       duracionQRS,
@@ -327,13 +332,6 @@ class Valores {
       duracionQT,
       duracionOndaT,
       alturaOndaT,
-      //
-      rV1,
-      sV6,
-      sV1,
-      rV6,
-      rAvL,
-      sV3,
       //
       deflexionIntrinsecoide,
       rDI,
@@ -665,60 +663,58 @@ class Valores {
     //
     fechaElectrocardiograma = json['Pace_GAB_EC_Feca'] ?? '';
     ritmoCardiaco = json['Pace_EC_rit'] ?? '';
-    intervaloRR = double.parse(json['Pace_EC_rr'].toString());
-    duracionOndaP = double.parse(json['Pace_EC_dop'].toString());
-    alturaOndaP = double.parse(json['Pace_EC_aop'].toString());
-    duracionPR = double.parse(json['Pace_EC_dpr'].toString());
-    duracionQRS = double.parse(json['Pace_EC_dqrs'].toString());
-    alturaQRS = double.parse(json['Pace_EC_aqrs'].toString());
-    QRSi = double.parse(json['Pace_EC_qrsi'].toString());
-    QRSa = double.parse(json['Pace_EC_qrsa'].toString());
+    intervaloRR = json['Pace_EC_rr'] ?? 0;
+    duracionOndaP = double.parse(
+        json['Pace_EC_dop'] != null ? json['Pace_EC_dop'].toString() : '0');
+
+    alturaOndaP = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_aop');
+    duracionPR = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dpr');
+    duracionQRS = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dqrs');
+    alturaQRS = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_aqrs');
+    QRSi = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_qrsi');
+    QRSa = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_qrsa');
     //
-    ejeCardiaco =
-        double.parse(json['Pace_QRS'].toString());
+    ejeCardiaco = double.parse(json['Pace_QRS'] ?? '0');
     //
     segmentoST = json['Pace_EC_st'] ?? '';
-    alturaSegmentoST = double.parse(json['Pace_EC_ast_'].toString());
-    duracionQT = double.parse(json['Pace_EC_dqt'].toString());
-    duracionOndaT = double.parse(json['Pace_EC_dot'].toString());
-    alturaOndaT = double.parse(json['Pace_EC_aot'].toString());
-
+    alturaSegmentoST = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_ast_');
+    duracionQT = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dqt');
+    duracionOndaT = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dot');
+    alturaOndaT = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_aot');
     //
-    rV1 = double.parse(json['EC_rV1'].toString());
-    sV6 = double.parse(json['EC_sV6'].toString());
-    sV1 = double.parse(json['EC_sV1'].toString());
-    rV6 = double.parse(json['EC_rV6'].toString());
-    rAvL = double.parse(json['EC_rAVL'].toString());
-    sV3 = double.parse(json['EC_sV3'].toString());
+    rV1 = json['EC_rV1'] ?? 0;
+    sV6 = json['EC_sV6'] ?? 0;
+    sV1 = json['EC_sV1'] ?? 0;
+    rV6 = json['EC_rV6'] ?? 0;
+    rAvL = json['EC_rAVL'] ?? 0;
+    sV3 = json['EC_sV3'] ?? 0;
     //
     patronQRS = json['PatronQRS'] ?? '';
-    deflexionIntrinsecoide = double.parse(json['DeflexionIntrinsecoide'].toString());
+    deflexionIntrinsecoide = toDoubleFromInt(json: json, keyEntered: 'DeflexionIntrinsecoide');
 
-    rDI = double.parse(json['EC_rDI'].toString().toString());
-    sDI = double.parse(json['EC_sDI'].toString());
-    rDIII = double.parse(json['EC_rDIII'].toString());
-    sDIII = double.parse(json['EC_sDIII'].toString());
-
+    rDI = toDoubleFromInt(json: json, keyEntered: 'EC_rDI');
+    sDI = toDoubleFromInt(json: json, keyEntered: 'EC_sDI');
+    rDIII = toDoubleFromInt(json: json, keyEntered: 'EC_rDIII');
+    sDIII = toDoubleFromInt(json: json, keyEntered: 'EC_sDIII');
+    //
     conclusionElectrocardiograma = json['Pace_EC_CON'] ?? '';
     //
     fechaVentilaciones = json['Feca_VEN'] ?? '';
     modalidadVentilatoria = json['VM_Mod'] ?? '';
     frecuenciaVentilatoria = json['Pace_Fr'] ?? 0;
-    fraccionInspiratoriaVentilatoria =
-        json['Pace_Fio'] ?? '0';
-    presionFinalEsiracion = json['Pace_Peep'] ?? '0';
-    sensibilidadInspiratoria =
-        json['Pace_Insp'] ?? '0';
-    sensibilidadEspiratoria = json['Pace_Espi'] ?? '0';
-    presionControl = json['Pace_Pc'] ?? '0';
-    presionMaxima = json['Pace_Pm'] ?? '0';
+    fraccionInspiratoriaVentilatoria = json['Pace_Fio'] ?? 0;
+    presionFinalEsiracion = json['Pace_Peep'] ?? 0;
+    sensibilidadInspiratoria = json['Pace_Insp'] ?? 0;
+    sensibilidadEspiratoria = json['Pace_Espi'] ?? 0;
+    presionControl = json['Pace_Pc'] ?? 0;
+    presionMaxima = json['Pace_Pm'] ?? 0;
 
-    volumenVentilatorio = json['Pace_V'] ?? '0';
-    flujoVentilatorio = json['Pace_F'] ?? '0';
-    presionSoporte = json['Pace_Ps'] ?? '0';
-    presionInspiratoriaPico = json['Pace_Pip'] ?? '0';
-    presionPlateau = json['Pace_Pmet'] ?? '0';
-    volumenTidal = double.parse(json['Pace_Vt'].toString());
+    volumenVentilatorio = json['Pace_V'] ?? 0;
+    flujoVentilatorio = json['Pace_F'] ?? 0;
+    presionSoporte = json['Pace_Ps'] ?? 0;
+    presionInspiratoriaPico = json['Pace_Pip'] ?? 0;
+    presionPlateau = json['Pace_Pmet'] ?? 0;
+    volumenTidal = toDoubleFromInt(json: json, keyEntered: 'Pace_Vt');
 
     // Datos generales de la última Hospitalización.
     Pacientes.ID_Hospitalizacion = json['ID_Hosp'] ?? 0;
@@ -1886,7 +1882,7 @@ class Valores {
         Valores.sV1 != null &&
         Valores.rV6 != 0 &&
         Valores.rV6 != null) {
-      return (Valores.sV1! + Valores.rV6!);
+      return (Valores.sV1! + Valores.rV6!).toDouble();
     } else {
       return double.nan;
     }
@@ -1923,7 +1919,7 @@ class Valores {
         Valores.rAvL != null &&
         Valores.sV3 != 0 &&
         Valores.sV3 != null) {
-      return (Valores.rAvL! + Valores.sV3!);
+      return (Valores.rAvL! + Valores.sV3!).toDouble();
     } else {
       return double.nan;
     }
@@ -2428,7 +2424,6 @@ class Valorados {
 }
 
 class Formatos {
-
   static String indicacionesPreoperatorias =
       "No suspender Metformina, sólo el día de la cirugía control con Insulina y durante el transquirurgico. \n"
       "Medidas universales de cuidados y prevención de paciente quirúrgico. \n"
@@ -3562,6 +3557,10 @@ class Items {
   ];
 }
 
+double toDoubleFromInt({required Map<String, dynamic> json, required String keyEntered}){
+  return double.parse(
+      json[keyEntered] != null ? json[keyEntered].toString() : '0');
+}
 isNull(value) {
   print("Is Value method : : ${value.runtimeType} \n"
       " : : : $value");
@@ -3586,3 +3585,4 @@ enum sitiosPuncionLumbar {
   const sitiosPuncionLumbar(this.sitio);
   final String sitio;
 }
+

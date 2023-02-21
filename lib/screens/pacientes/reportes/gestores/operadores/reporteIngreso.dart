@@ -29,6 +29,7 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
       setState(() {
         Reportes.padecimientoActual = "Inicia padecimiento actual el dia ${response['FechaPadecimiento']}, ${response['Contexto']}";
         padesTextController.text = Reportes.padecimientoActual;
+        Reportes.reportes['Padecimiento_Actual'] = Reportes.padecimientoActual;
       });
     });
     // # # # ############## #### ########
