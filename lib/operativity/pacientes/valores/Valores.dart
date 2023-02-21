@@ -452,6 +452,8 @@ class Valores {
     //
     valores.addAll(Pacientes.Paciente);
     // ********* *********** ********** ******
+    Pacientes.getImage();
+    // ********* *********** ********** ******
     Eticos.consultarRegistro();
     Viviendas.consultarRegistro();
     Higienes.consultarRegistro();
@@ -541,8 +543,8 @@ class Valores {
     segundoNombre = json['Pace_Nome_SE'];
     apellidoPaterno = json['Pace_Ape_Pat'];
     apellidoMaterno = json['Pace_Ape_Mat'];
-    imagenUsuario = json['Pace_FIAT'];
-    Pacientes.imagenPaciente = json['Pace_FIAT'];
+    // imagenUsuario = json['Pace_FIAT'];
+    // Pacientes.imagenPaciente = json['Pace_FIAT'];
 
     Pacientes.nombreCompleto = Valores.nombreCompleto;
     //

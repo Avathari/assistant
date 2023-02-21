@@ -102,7 +102,7 @@ class _DetallesState extends State<Detalles> {
                       radius: 100,
                       child: ClipOval(
                           child: Image.memory(
-                            base64Decode(Pacientes.Paciente['Pace_FIAT']),
+                            base64Decode(Pacientes.imagenPaciente),
                             fit: BoxFit.cover,
                           ))),
                 )

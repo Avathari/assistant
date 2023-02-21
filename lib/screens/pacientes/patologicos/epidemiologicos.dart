@@ -9,6 +9,7 @@ import 'package:assistant/screens/pacientes/epidemiologicos/higienicos.dart';
 import 'package:assistant/screens/pacientes/epidemiologicos/limitaciones.dart';
 import 'package:assistant/screens/pacientes/epidemiologicos/viviendas.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
+import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandLabel.dart';
@@ -23,6 +24,7 @@ class GestionNoPatologicos extends StatefulWidget {
 }
 
 class _GestionNoPatologicosState extends State<GestionNoPatologicos> {
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,65 +47,65 @@ class _GestionNoPatologicosState extends State<GestionNoPatologicos> {
         padding: const EdgeInsets.all(8.0),
         child: Row(children: [
           Expanded(
-            child: Padding(
+            flex: isTablet(context) ? 2 : 1,
+            child: SingleChildScrollView(
               padding: const EdgeInsets.all(8.0),
-              child: SingleChildScrollView(
-                controller: ScrollController(),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GrandLabel(
-                      iconData: Icons.person,
-                      labelButton: "Ética y Moral",
+              controller: ScrollController(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  GrandLabel(
+                    iconData: Icons.person,
+                    labelButton: "Ética y Moral",
+                    weigth: wieghtRow / index,
+                    onPress: () {
+                      carouselController.jumpToPage(0);
+                    },
+                  ),
+                  GrandLabel(
+                      iconData: Icons.explicit,
+                      labelButton: "Vivienda",
                       weigth: wieghtRow / index,
                       onPress: () {
-                        carouselController.jumpToPage(0);
-                      },
-                    ),
-                    GrandLabel(
-                        iconData: Icons.explicit,
-                        labelButton: "Vivienda",
-                        weigth: wieghtRow / index,
-                        onPress: () {
-                          carouselController.jumpToPage(1);
-                        }),
-                    GrandLabel(
-                        iconData: Icons.medical_information,
-                        labelButton: "Habitos Alimenticios",
-                        weigth: wieghtRow / index,
-                        onPress: () {
-                          carouselController.jumpToPage(2);
-                        }),
-                    GrandLabel(
-                        iconData: Icons.explore,
-                        labelButton: "Hábitos Diarios",
-                        weigth: wieghtRow / index,
-                        onPress: () {
-                          carouselController.jumpToPage(3);
-                        }),
-                    GrandLabel(
-                        iconData: Icons.next_plan,
-                        labelButton: "Hábitos Higienicos",
-                        weigth: wieghtRow / index,
-                        onPress: () {
-                          carouselController.jumpToPage(4);
-                        }),
-                    GrandLabel(
-                        iconData: Icons.explore,
-                        labelButton: "Limitaciones Físicas",
-                        weigth: wieghtRow / index,
-                        onPress: () {
-                          carouselController.jumpToPage(5);
-                        }),
-                    GrandLabel(
-                        iconData: Icons.next_plan,
-                        labelButton: "Exposición a Sustancias Nocivas",
-                        weigth: wieghtRow / index,
-                        onPress: () {
-                          carouselController.jumpToPage(6);
-                        }),
-                  ],
-                ),
+                        carouselController.jumpToPage(1);
+                      }),
+                  GrandLabel(
+                      iconData: Icons.medical_information,
+                      labelButton: "Habitos Alimenticios",
+                      weigth: wieghtRow / index,
+                      onPress: () {
+                        carouselController.jumpToPage(2);
+                      }),
+                  GrandLabel(
+                      iconData: Icons.explore,
+                      labelButton: "Hábitos Diarios",
+                      weigth: wieghtRow / index,
+                      onPress: () {
+                        carouselController.jumpToPage(3);
+                      }),
+                  GrandLabel(
+                      iconData: Icons.next_plan,
+                      labelButton: "Hábitos Higienicos",
+                      weigth: wieghtRow / index,
+                      onPress: () {
+                        carouselController.jumpToPage(4);
+                      }),
+                  GrandLabel(
+                      iconData: Icons.explore,
+                      labelButton: "Limitaciones Físicas",
+                      weigth: wieghtRow / index,
+                      onPress: () {
+                        carouselController.jumpToPage(5);
+                      }),
+                  GrandLabel(
+                      iconData: Icons.next_plan,
+                      labelButton: "Exposición a Sustancias Nocivas",
+                      weigth: wieghtRow / index,
+                      onPress: () {
+                        carouselController.jumpToPage(6);
+                      }),
+                ],
               ),
             ),
           ),

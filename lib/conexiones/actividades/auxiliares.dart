@@ -134,13 +134,13 @@ class Archivos {
     // var file = File(path), contents;
     var file, contents;
     //
-    List<dynamic> _list = [];
+    List<dynamic> list = [];
     //
     if (Platform.isAndroid) {
       contents = await rootBundle.loadString(path);
       print("${file.runtimeType} :: $file");
       for (var elem in contents.split(splitChar)) {
-        _list.add(elem);
+        list.add(elem);
       }
     } else {
       file = File(path);
@@ -148,7 +148,7 @@ class Archivos {
       if (await file.exists()) {
         contents = await file.readAsString();
         for (var elem in contents.split(splitChar)) {
-          _list.add(elem);
+          list.add(elem);
         }
       } else {
         throw "No existe el archivo $path";
@@ -156,7 +156,7 @@ class Archivos {
     }
     // print(_list);
     //
-    return _list;
+    return list;
   }
 }
 

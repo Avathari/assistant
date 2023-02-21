@@ -7,7 +7,6 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/estadisticas/estadisticas.dart';
 
-
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
@@ -38,7 +37,6 @@ class GestionPacientes extends StatefulWidget {
 }
 
 class _GestionPacientesState extends State<GestionPacientes> {
-  String? consultQuery = Pacientes.pacientes['consultQuery'];
 
   late List? foundedUsuarios = [];
   var gestionScrollController = ScrollController();
@@ -48,10 +46,11 @@ class _GestionPacientesState extends State<GestionPacientes> {
 
   @override
   void initState() {
-    Actividades.consultar(Databases.siteground_database_regpace, consultQuery!)
+    Actividades.consultar(Databases.siteground_database_regpace,
+            Pacientes.pacientes['consultQuery']!)
         .then((value) {
       setState(() {
-        // print("Gestion pacientes $value");
+        print("Gestion pacientes $value");
         foundedUsuarios = value;
       });
     });
@@ -185,10 +184,6 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                       Pacientes.Paciente =
                                           snapshot.data[posicion];
                                       // Cambio de la Variable de imagen al actualizar.
-                                      Pacientes.imagenPaciente =
-                                          snapshot.data[posicion]['Pace_FIAT'];
-                                      Pacientes.Paciente['Pace_FIAT'] =
-                                          snapshot.data[posicion]['Pace_FIAT'];
 
                                       toVisual(context, Constantes.Update);
                                     },
@@ -202,21 +197,14 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                             Row(
                                               children: [
                                                 Column(
-                                                  children: [
+                                                  children: const [
                                                     CircleAvatar(
                                                         backgroundColor:
                                                             Colors.grey,
                                                         radius: 50,
-                                                        child: ClipOval(
-                                                            child: Image.memory(
-                                                          base64Decode(snapshot
-                                                                      .data[
-                                                                  posicion]
-                                                              ['Pace_FIAT']),
-                                                          width: 100,
-                                                          height: 100,
-                                                          fit: BoxFit.cover,
-                                                        ))),
+                                                        child: Icon(Icons.person,
+                                                        size: 75.0,
+                                                        color: Colors.black,)),
                                                   ],
                                                 ),
                                                 const SizedBox(
@@ -352,7 +340,9 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                                     'Eliminar registro',
                                                                     '¿Esta seguro de querer eliminar el registro?',
                                                                     () {
-                                                                      Navigator.of(context).pop();
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
                                                                     },
                                                                     () {
                                                                       deleteRegister(
@@ -470,7 +460,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
       _pullListRefresh();
     } else {
       Actividades.consultar(
-          Databases.siteground_database_regpace, consultQuery!)
+              Databases.siteground_database_regpace, Pacientes.pacientes['consultQuery']!)
           .then((value) {
         results = value
             .where((user) => user["Pace_Ape_Pat"].contains(enteredKeyword))
@@ -482,7 +472,6 @@ class _GestionPacientesState extends State<GestionPacientes> {
       });
     }
   }
-
 }
 
 class OperacionesPacientes extends StatefulWidget {
@@ -567,7 +556,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
         indigenaHablanteEspecificacioTextController.text =
             Pacientes.Paciente['IndiIdio_Pace_Espe'];
 
-        img = Pacientes.Paciente['Pace_FIAT'];
+        img = Pacientes.imagenPaciente; // Pacientes.Paciente['Pace_FIAT'];
 
         super.initState();
         break;
@@ -852,7 +841,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
       Uint8List bytes = await xFileImage.readAsBytes();
       setState(() {
         img = base64.encode(bytes);
-        // Pacientes.imagenPaciente = img;
+        Pacientes.imagenPaciente = img;
       });
     }
   }

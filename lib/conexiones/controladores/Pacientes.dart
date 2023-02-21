@@ -11,7 +11,7 @@ class Pacientes {
   static int ID_Hospitalizacion = 0;
 
   static String? nombreCompleto;
-  static String? imagenPaciente;
+  static String imagenPaciente = "";
 
   // ####### ### ### ## ### ### ####### ####### ####### #######
   // Variables para la asignación del pronóstico médico.
@@ -422,9 +422,11 @@ class Pacientes {
     }
   }
 
-  static String auxiliaresDiagnosticos({int? indice = 0, String fechaActual = ""}) {
+  static String auxiliaresDiagnosticos(
+      {int? indice = 0, String fechaActual = ""}) {
     if (indice! < 20) {
-      return Auxiliares.porTipoEstudio(indice: indice, fechaActual: fechaActual);
+      return Auxiliares.porTipoEstudio(
+          indice: indice, fechaActual: fechaActual);
     } else if (indice == 20) {
       return Auxiliares.electrocardiograma();
     } else {
@@ -455,7 +457,7 @@ class Pacientes {
       for (var element in Diagnosticos!) {
         if (Reportes.impresionesDiagnosticas != "") {
           Reportes.impresionesDiagnosticas =
-          "${Reportes.impresionesDiagnosticas.substring(0, Reportes.impresionesDiagnosticas.length - 1)} \n"
+              "${Reportes.impresionesDiagnosticas.substring(0, Reportes.impresionesDiagnosticas.length - 1)} \n"
               "${element['Pace_APP_DEG']} (${element['Pace_APP_DEG_com']}). ";
         } else {
           Reportes.impresionesDiagnosticas =
@@ -641,10 +643,17 @@ class Pacientes {
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Esta Tabla es para Agregar Datos Generales de los Pacientes';""",
     "truncateQuery": "TRUNCATE pace_iden_iden",
     "dropQuery": "DROP TABLE pace_iden_iden",
-    "consultQuery": "SELECT ID_Pace, Pace_NSS, Pace_AGRE, Pace_Nome_PI, Pace_Nome_SE, Pace_Ape_Pat, Pace_Ape_Mat, Pace_FIAT, "
-        "Pace_UMF, Pace_Hosp_Real, Pace_Turo, Pace_Feca_Hace, Pace_Hora_Hace, Pace_Tele, Pace_Nace, Pace_Ses, Pace_Hosp, "
-        "Pace_Curp, Pace_RFC, Pace_Eda, Pace_Stat, Pace_Ocupa, Pace_Edo_Civ, Pace_Reli, Pace_Esco, Pace_Esco_COM, Pace_Esco_ESPE, "
-        "Pace_Orig_Muni, Pace_Orig_EntFed, Pace_Resi_Loca, Pace_Resi_Dur, Pace_Domi, Indi_Pace_SiNo, IndiIdio_Pace_SiNo, IndiIdio_Pace_Espe "
+    "consultQuery": "SELECT ID_Pace, Pace_NSS, Pace_AGRE, "
+        "Pace_Nome_PI, Pace_Nome_SE, Pace_Ape_Pat, Pace_Ape_Mat, " // Pace_FIAT, "
+        "Pace_UMF, Pace_Hosp_Real, Pace_Turo, "
+        "Pace_Feca_Hace, Pace_Hora_Hace, "
+        "Pace_Tele, Pace_Nace, Pace_Ses, Pace_Hosp, "
+        "Pace_Curp, Pace_RFC, Pace_Eda, Pace_Stat, "
+        "Pace_Ocupa, Pace_Edo_Civ, Pace_Reli, "
+        "Pace_Esco, Pace_Esco_COM, Pace_Esco_ESPE, "
+        "Pace_Orig_Muni, Pace_Orig_EntFed, "
+        "Pace_Resi_Loca, Pace_Resi_Dur, Pace_Domi, Indi_Pace_SiNo, "
+        "IndiIdio_Pace_SiNo, IndiIdio_Pace_Espe "
         "FROM pace_iden_iden",
     "consultIdQuery": "SELECT ID_Pace, Pace_NSS, Pace_AGRE, "
         "Pace_Nome_PI, Pace_Nome_SE, Pace_Ape_Pat, "
@@ -656,6 +665,7 @@ class Pacientes {
         "Pace_Orig_Muni, Pace_Orig_EntFed, Pace_Resi_Loca, Pace_Resi_Dur, "
         "Pace_Domi, Indi_Pace_SiNo, "
         "IndiIdio_Pace_SiNo, IndiIdio_Pace_Espe FROM pace_iden_iden WHERE ID_Pace = ?",
+    "consultImage": "SELECT Pace_FIAT FROM pace_iden_iden WHERE ID_Pace = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_iden_iden",
     "consultLastQuery": "SELECT * FROM pace_iden_iden ORDER BY ID_Pace DESC",
     "consultByName":
@@ -851,6 +861,15 @@ class Pacientes {
     } else {
       return false;
     }
+  }
+
+  static getImage() {
+    Actividades.consultarId(Databases.siteground_database_regpace,
+        pacientes['consultImage'], Pacientes.ID_Paciente).then((value) {
+          // print("consultImage $value");
+          Pacientes.imagenPaciente = value['Pace_FIAT'];
+          Valores.imagenUsuario = value['Pace_FIAT'];
+    });
   }
 
   static void close() {
@@ -4319,18 +4338,17 @@ class Auxiliares {
       fechaActual = aux[0]['Fecha_Registro'];
     }
     //
-    String prosa =
-        "${Auxiliares.Categorias[indice!]} ($fechaActual): ";
+    String prosa = "${Auxiliares.Categorias[indice!]} ($fechaActual): ";
     String max = "";
     // Anexación de los valores correlacionados.
     for (var element in aux) {
       if (element['Fecha_Registro'] == fechaActual) {
-        if (max == ""){
+        if (max == "") {
           max =
-          "${element['Estudio']} ${element['Resultado']} ${element['Unidad_Medida']}";
+              "${element['Estudio']} ${element['Resultado']} ${element['Unidad_Medida']}";
         } else {
           max =
-          "$max, ${element['Estudio']} ${element['Resultado']} ${element['Unidad_Medida']}";
+              "$max, ${element['Estudio']} ${element['Resultado']} ${element['Unidad_Medida']}";
         }
       }
     }
@@ -4638,7 +4656,7 @@ class Auxiliares {
         "${Valores.ritmoCardiaco} "
         "con Intervalo R-R ${Valores.intervaloRR!.toStringAsFixed(0)} mm, "
         "Frecuencia Cardiaca ${(Valores.frecuenciaCardiacaElectrocardiograma).toStringAsFixed(0)} Lat/min; "
-        "Duración de la Onda P ${(Valores.duracionOndaP!  * 0.04).toStringAsFixed(2)} mSeg, "
+        "Duración de la Onda P ${(Valores.duracionOndaP! * 0.04).toStringAsFixed(2)} mSeg, "
         "Altura de la Onda P ${(Valores.alturaOndaP! * 0.1).toStringAsFixed(2)} mV, "
         "Duración de Intervalo PR ${(Valores.duracionPR! * 0.04).toStringAsFixed(2)} mSeg, "
         "Duración del Complejo QRS ${(Valores.duracionQRS! * 0.04).toStringAsFixed(2)} mSeg, "
@@ -4655,7 +4673,7 @@ class Auxiliares {
         "Indice Gubner - Ungerleider ${(Valores.indiceGubnerUnderleiger * 0.1).toStringAsFixed(2)} mV, "
         "Indice de Lewis ${(Valores.indiceLewis * 0.1).toStringAsFixed(2)} mV, "
         "Voltaje de Cornell ${(Valores.voltajeCornell * 0.1).toStringAsFixed(2)} mV, "
-        "RaVL ${(Valores.rAvL! * 0.1).toStringAsFixed(2)  } mV. ";
+        "RaVL ${(Valores.rAvL! * 0.1).toStringAsFixed(2)} mV. ";
 
     // return "Electrocardiograma (${Pacientes.Electrocardiogramas['Pace_GAB_EC_Feca']}): "
     //     "${Pacientes.Electrocardiogramas['Pace_EC_rit']} "
@@ -4795,8 +4813,7 @@ class Reportes {
     "Insulinoterapia": Reportes.insulinoterapia,
     "Hemoterapia": Reportes.hemoterapia,
     "Oxigenoterapia": Reportes.oxigenoterapia,
-    "Medicamentos": Reportes
-        .medicamentosIndicados,
+    "Medicamentos": Reportes.medicamentosIndicados,
     // ***************************************
     "Motivo_Procedimiento": Valores.motivoProcedimiento,
     "Procedimiento_Realizado": Reportes.procedimientoRealizado,
@@ -4824,8 +4841,8 @@ class Reportes {
       antecedentesPerinatales = "",
       antecedentesSexuales = "";
   //
-  static String signosVitales = "", exploracionFisica =
-      "Sin hallazgos relevantes en la exploración física";
+  static String signosVitales = "",
+      exploracionFisica = "Sin hallazgos relevantes en la exploración física";
   //
   static String auxiliaresDiagnosticos = "", analisisComplementarios = "";
   //
@@ -4837,13 +4854,14 @@ class Reportes {
   static String impresionesDiagnosticas = "";
   static String pronosticoMedico = "";
   //
-  static String motivoConsulta = "", subjetivoHospitalizacion =
-    "El paciente se refiere ${Valores.estadoGeneral}. "
-      "Via oral a base de ${Valores.viaOral}. "
-      "Uresis con frecuencia ${Valores.uresisCantidad}, "
-      "excretas con frecuencia ${Valores.excretasCantidad}. "
-      "${Valores.referenciasHospitalizacion}. ";
-      // "Sin rerencias particulares del paciente durante la hospitalización";
+  static String motivoConsulta = "",
+      subjetivoHospitalizacion =
+          "El paciente se refiere ${Valores.estadoGeneral}. "
+          "Via oral a base de ${Valores.viaOral}. "
+          "Uresis con frecuencia ${Valores.uresisCantidad}, "
+          "excretas con frecuencia ${Valores.excretasCantidad}. "
+          "${Valores.referenciasHospitalizacion}. ";
+  // "Sin rerencias particulares del paciente durante la hospitalización";
   //
   static String procedimientoRealizado = "";
   //
@@ -5128,7 +5146,8 @@ class Ventilaciones {
     "consultIdQuery": "SELECT * FROM pace_vm WHERE ID_Pace = ?",
     "consultByIdPrimaryQuery": "SELECT * FROM pace_vm WHERE ID_Pace = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_vm",
-    "consultLastQuery": "SELECT * FROM pace_vm WHERE ID_Pace = ? ORDER BY ID_Ventilacion ASC",
+    "consultLastQuery":
+        "SELECT * FROM pace_vm WHERE ID_Pace = ? ORDER BY ID_Ventilacion ASC",
     "consultByName": "SELECT * FROM pace_vm WHERE Pace_APP_DEG LIKE '%",
     "registerQuery": "INSERT INTO pace_vm (ID_Pace, "
         "Feca_VEN, Pace_Vt, Pace_Fr, Pace_Fio, Pace_Peep, Pace_Insp, "
@@ -5261,15 +5280,17 @@ class Diagnosticos {
 
   static void registros() {
     Actividades.consultarAllById(
-        Databases.siteground_database_reghosp,
-        Diagnosticos.diagnosticos['consultByIdPrimaryQuery'],
-        Pacientes.ID_Paciente)
+            Databases.siteground_database_reghosp,
+            Diagnosticos.diagnosticos['consultByIdPrimaryQuery'],
+            Pacientes.ID_Paciente)
         .then((value) => Pacientes.Diagnosticos = value);
   }
 
   static void ultimoRegistro() {
-    Actividades.consultarId(Databases.siteground_database_reghosp,
-        Diagnosticos.diagnosticos['consultLastQuery'], Pacientes.ID_Hospitalizacion)
+    Actividades.consultarId(
+            Databases.siteground_database_reghosp,
+            Diagnosticos.diagnosticos['consultLastQuery'],
+            Pacientes.ID_Hospitalizacion)
         .then((value) {
       Diagnosticos.Diagnostico =
           value; // Enfermedades de base del paciente, asi como las Hospitalarias.
@@ -5277,8 +5298,10 @@ class Diagnosticos {
   }
 
   static void consultarRegistro() {
-    Actividades.consultarAllById(Databases.siteground_database_reghosp,
-        Diagnosticos.diagnosticos['consultIdQuery'], Pacientes.ID_Hospitalizacion)
+    Actividades.consultarAllById(
+            Databases.siteground_database_reghosp,
+            Diagnosticos.diagnosticos['consultIdQuery'],
+            Pacientes.ID_Hospitalizacion)
         .then((value) {
       // Enfermedades de base del paciente, asi como las Hospitalarias.
       Pacientes.Diagnosticos = value;
@@ -5294,7 +5317,7 @@ class Diagnosticos {
     "describeTable": "DESCRIBE pace_dia;",
     "showColumns": "SHOW columns FROM pace_dia",
     "showInformation":
-    "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_dia'",
+        "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_dia'",
     "createQuery": """
     CREATE TABLE `pace_dia` (
                   `ID_PACE_APP_DEG` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
@@ -5320,16 +5343,16 @@ class Diagnosticos {
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_dia",
     "consultLastQuery": "SELECT * FROM pace_dia WHERE ID_Hosp = ?",
     "consultByName": "SELECT * FROM pace_dia WHERE Pace_APP_DEG LIKE '%",
-    "registerQuery": "INSERT INTO `pace_dia` (ID_Pace, ID_Hosp, Pace_APP_DEG_SINO, " 
-    "Pace_APP_DEG, Pace_APP_DEG_com, Pace_APP_DEG_dia, Pace_APP_DEG_tra_SINO, " 
-    "Pace_APP_DEG_tra, Pace_APP_DEG_sus_SINO, Pace_APP_DEG_sus) " 
-    "VALUES (?,?,?,?,?,?,?,?,?,?)",
-    "updateQuery": "UPDATE pace_dia " 
-    "SET ID_PACE_APP_DEG = ?,  ID_Pace = ?,  ID_Hosp = ?,  Pace_APP_DEG_SINO = ?,  " 
-    "Pace_APP_DEG = ?,  Pace_APP_DEG_com = ?,  Pace_APP_DEG_dia = ?,  " 
-    "Pace_APP_DEG_tra_SINO = ?,  Pace_APP_DEG_tra = ?,  Pace_APP_DEG_sus_SINO = ?,  " 
-    "Pace_APP_DEG_sus = ? " 
-    "WHERE ID_PACE_APP_DEG = ?",
+    "registerQuery": "INSERT INTO `pace_dia` (ID_Pace, ID_Hosp, Pace_APP_DEG_SINO, "
+        "Pace_APP_DEG, Pace_APP_DEG_com, Pace_APP_DEG_dia, Pace_APP_DEG_tra_SINO, "
+        "Pace_APP_DEG_tra, Pace_APP_DEG_sus_SINO, Pace_APP_DEG_sus) "
+        "VALUES (?,?,?,?,?,?,?,?,?,?)",
+    "updateQuery": "UPDATE pace_dia "
+        "SET ID_PACE_APP_DEG = ?,  ID_Pace = ?,  ID_Hosp = ?,  Pace_APP_DEG_SINO = ?,  "
+        "Pace_APP_DEG = ?,  Pace_APP_DEG_com = ?,  Pace_APP_DEG_dia = ?,  "
+        "Pace_APP_DEG_tra_SINO = ?,  Pace_APP_DEG_tra = ?,  Pace_APP_DEG_sus_SINO = ?,  "
+        "Pace_APP_DEG_sus = ? "
+        "WHERE ID_PACE_APP_DEG = ?",
     "deleteQuery": "DELETE FROM pace_dia WHERE ID_pace_dia = ?",
     "vitalesColumns": [
       "ID_Pace",

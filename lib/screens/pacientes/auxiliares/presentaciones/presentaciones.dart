@@ -28,17 +28,17 @@ class _PresentacionPacientesState extends State<PresentacionPacientes> {
                 context: context,
                 chyldrim: ImageDialog(
                   tittle: Pacientes.nombreCompleto,
-                  stringImage: Pacientes.Paciente['Pace_FIAT'],
+                  stringImage: Pacientes.imagenPaciente, //Paciente['Pace_FIAT'],
                 ),
               );
             },
             child: CircleAvatar(
                 backgroundColor: Colors.grey,
                 radius: 40,
-                child: Pacientes.Paciente['Pace_FIAT'] != ""
+                child: Pacientes.imagenPaciente != ""
                     ? ClipOval(
                         child: Image.memory(
-                        base64Decode(Pacientes.Paciente['Pace_FIAT']),
+                        base64Decode(Pacientes.imagenPaciente), // Pacientes.Paciente['Pace_FIAT']),
                         width: 250,
                         height: 250,
                         fit: BoxFit.cover,
