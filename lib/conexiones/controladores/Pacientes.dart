@@ -5809,16 +5809,26 @@ class Licencias {
 
   static Map<String, dynamic> Licencia = {};
 
-  static List<String> actualDiagno = Dicotomicos.dicotomicos();
-  static List<String> actualTratamiento = Dicotomicos.dicotomicos();
-  static List<String> actualSuspendido = Dicotomicos.dicotomicos();
+  static List<String> typesLicencias = Items.typesLicencias;
+  static List<String> lugarExpedicion = Items.lugarExpedicion;
+  static List<String> caracterLicencia = Items.caracterLicencia;
 
   static void ultimoRegistro() {
     Actividades.consultarId(Databases.siteground_database_regpace,
             Licencias.vicencia['consultLastQuery'], Pacientes.ID_Paciente)
         .then((value) {
-// Enfermedades de base del paciente, asi como las Hospitalarias.
+      // Enfermedades de base del paciente, asi como las Hospitalarias.
       Licencias.Licencia = value;
+      //
+      Valores.folioLicencia = value['Folio'];
+      Valores.diasOtorgadosLicencia = value['Dias_Otorgados'];
+      Valores.fechaRealizacionLicencia = value['Fecha_Realizacion'];
+      Valores.fechaInicioLicencia = value['Fecha_Inicio'];
+      Valores.fechaTerminoLicencia = value['Fecha_Termino'];
+      Valores.motivoLicencia = value['Motivo_Incapacidad'];
+      Valores.caracterLicencia = value['Caracter'];
+      Valores.lugarExpedicionLicencia = value['Lugar_Expedicion'];
+      Valores.diagnosticoLicencia = value['Diagnos_Expedicion'];
     });
   }
 
@@ -5851,7 +5861,8 @@ class Licencias {
                           Fecha_Termino date NOT NULL,
                           Motivo_Incapacidad varchar(200) COLLATE utf8_unicode_ci NOT NULL, 
                           Caracter varchar(200) COLLATE utf8_unicode_ci NOT NULL, 
-                          Lugar_Expedicion varchar(200) COLLATE utf8_unicode_ci NOT NULL
+                          Lugar_Expedicion varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+                          Diagnos_Expedicion varchar(200) COLLATE utf8_unicode_ci NOT NULL,
                     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 
                     COLLATE=utf8_unicode_ci 
                     COMMENT='Tabla para Registro de Expedición de Licencias Médicas.';
@@ -5862,16 +5873,18 @@ class Licencias {
     "consultIdQuery": "SELECT * FROM licen_med WHERE ID_Pace = ?",
     "consultByIdPrimaryQuery": "SELECT * FROM licen_med WHERE ID_Pace = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM licen_med",
-    "consultLastQuery": "SELECT * FROM licen_med WHERE ID_Pace = ?",
+      "consultLastQuery": "SELECT * FROM licen_med WHERE ID_Pace = ? ORDER BY Fecha_Realizacion DESC",
     "consultByName": "SELECT * FROM licen_med WHERE Pace_APP_DEG LIKE '%",
     "registerQuery": "INSERT INTO licen_med (ID_Pace, Folio, Dias_Otorgados, "
         "Fecha_Realizacion, Fecha_Inicio, Fecha_Termino, "
-        "Motivo_Incapacidad, Caracter, Lugar_Expedicion) "
-        "VALUES (?,?,?,?,?,?,?,?,?)",
+        "Motivo_Incapacidad, Caracter, Lugar_Expedicion, "
+        "Diagnos_Expedicion) "
+        "VALUES (?,?,?,?,?,?,?,?,?,?)",
     "updateQuery": "UPDATE licen_med "
         "SET ID_Licen_Med = ?, ID_Pace = ?, Folio = ?, "
         "Dias_Otorgados = ?, Fecha_Realizacion = ?, Fecha_Inicio = ?, Fecha_Termino = ?, "
-        "Motivo_Incapacidad = ?, Caracter = ?, Lugar_Expedicion = ? "
+        "Motivo_Incapacidad = ?, Caracter = ?, Lugar_Expedicion = ?, "
+        "Diagnos_Expedicion = ? "
         "WHERE ID_Licen_Med = ?",
     "deleteQuery": "DELETE FROM licen_med WHERE ID_Licen_Med = ?",
     "vicenciaColumns": [

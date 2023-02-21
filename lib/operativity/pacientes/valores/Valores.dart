@@ -29,6 +29,10 @@ class Valores {
   static int? edad, numeroCama;
   static bool? isHospitalizado;
 
+  static String folioLicencia = "", diasOtorgadosLicencia = "",fechaRealizacionLicencia = "",
+      fechaInicioLicencia = "",fechaTerminoLicencia = "", motivoLicencia = "",
+      caracterLicencia = "", lugarExpedicionLicencia = "", diagnosticoLicencia = "";
+  //
   static int get edadDesdeNacimiento {
     if (fechaNacimiento != '' && fechaNacimiento != null) {
       // print(fechaNacimiento!);
@@ -3030,6 +3034,13 @@ class Formatos {
     // print("PROSA VENTILATORIA $PS");
     return PS;
   }
+
+  static String get licenciaMedica {
+    return "Licencia médica otorgada con folio ${Valores.folioLicencia}, "
+        "con ${Valores.diasOtorgadosLicencia} dias otorgados desde la "
+        "fecha de inicio ${Valores.fechaInicioLicencia} hasta el ${Valores.fechaTerminoLicencia}, "
+        "por ${Valores.motivoLicencia}, de cáracter ${Valores.caracterLicencia}. ";
+  }
 }
 
 class Escalas {
@@ -3554,6 +3565,21 @@ class Items {
     'Menor a 2 veces',
     'Entre 2 - 4 veces',
     'Mayor a 4 veces'
+  ];
+  static List<String> typesLicencias = [
+    'Enfermedad General',
+  ];
+  static List<String> lugarExpedicion = [
+    'Consulta Externa',
+    'Hospitalización',
+    'Urgencias',
+  ];
+  static List<String> caracterLicencia = [
+    'Inicial',
+    'Subsecuente',
+    'Maternidad Inicial',
+    'Maternidad Subsecuente',
+    'Retroactiva'
   ];
 }
 

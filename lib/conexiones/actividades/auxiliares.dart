@@ -186,6 +186,13 @@ class Listas {
     }
     return listado;
   }
+
+  static List<String> listOfRange({required int maxNum}) {
+    List<String> list = List<String>.generate(22, (i) => (i + 1).toString());
+    list.add("N/A");
+    // ******* ************ ******** ********* ***
+    return list;
+  }
 }
 
 class Alertas {

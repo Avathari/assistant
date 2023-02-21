@@ -3,83 +3,75 @@ import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
+
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
+import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/Spinner.dart';
-import 'package:assistant/widgets/ThreeLabelText.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 // # Clase .dart para la creación predeterminada de interfaces de registro, consulta y actualización.
-// Contiene un botón que enn _OperacionesHospitalizacionesState.build que desplega una ventana emergente,
+// Contiene un botón que enn _OperacionesLicenciaState.build que desplega una ventana emergente,
 // de la cual es posible elegir desde un catálogo de opciones.
 // # # INSTRUCCIONES DE USO
-// # # # Reemplazar .Hospitalizaciones por el valor
-// # # # Reemplazar Hospitalizaciones. por la clase que contiene el mapa .hospitalizacion con las claves
+// # # # Reemplazar .Licencia por el valor
+// # # # Reemplazar Licencias. por la clase que contiene el mapa .pendiente con las claves
 // # # # # consultIdQuery
 // # # # # registerQuery
 // # # # # updateQuery
-// # # # Reemplazar .hospitalizacion por el nombre del Map() correspondiente.
+// # # # Reemplazar .pendiente por el nombre del Map() correspondiente.
 //
-class OperacionesHospitalizaciones extends StatefulWidget {
+// ignore: must_be_immutable
+class OperacionesLicencia extends StatefulWidget {
   String? operationActivity;
 
   String _operationButton = 'Nulo';
-  bool? retornar;
 
-  OperacionesHospitalizaciones(
-      {Key? key,
-      this.operationActivity = Constantes.Nulo,
-      this.retornar = false})
+  OperacionesLicencia({Key? key, this.operationActivity = Constantes.Nulo})
       : super(key: key);
 
   @override
-  State<OperacionesHospitalizaciones> createState() =>
-      _OperacionesHospitalizacionesState();
+  State<OperacionesLicencia> createState() => _OperacionesLicenciaState();
 }
 
-class _OperacionesHospitalizacionesState
-    extends State<OperacionesHospitalizaciones> {
-  String appBarTitile = "Gestión de Hospitalizaciones";
-  String? consultIdQuery = Hospitalizaciones.hospitalizacion['consultIdQuery'];
-  String? registerQuery = Hospitalizaciones.hospitalizacion['registerQuery'];
-  String? updateQuery = Hospitalizaciones.hospitalizacion['updateQuery'];
+class _OperacionesLicenciaState extends State<OperacionesLicencia> {
+  String appBarTitile = "Gestión de Licencias";
+  String? consultIdQuery = Licencias.vicencia['consultIdQuery'];
+  String? registerQuery = Licencias.vicencia['registerQuery'];
+  String? updateQuery = Licencias.vicencia['updateQuery'];
 
-  int idOperation = Pacientes.ID_Hospitalizacion; //= 0;
+  int idOperation = 0; // diasOtorgados = 0;
 
   List<dynamic>? listOfValues;
 
   var fechaRealizacionTextController = TextEditingController();
-  var isNumCama = "N/A"; //Hospitalizaciones.actualDiagno[0];
-
-  var fechaIngresoTextController = TextEditingController();
-  var fechaEgresoTextController = TextEditingController();
-  var diasEstanciaTextController = TextEditingController();
-  var medicoTratanteTextController = TextEditingController();
+  //
+  var folioLicenciaTextController = TextEditingController();
+  var diasOtorgadosTextController = TextEditingController();
+  var fechaInicioTextController = TextEditingController();
+  var fechaTerminoTextController = TextEditingController();
+  var motivoValue = Licencias.typesLicencias[0];
+  var caracterValue = Licencias.caracterLicencia[0];
+  var expedicionValue  = Licencias.lugarExpedicion[0];
+  var diagnosticoLicenciaTextController = TextEditingController();
+  // var descripcionLicenciaTextController = TextEditingController();
   //
   var carouselController = CarouselController();
 
-  var servicioTratanteValue;
-  var servicioTratanteInicialValue;
-  var motivoEgresoValue;
+
   //
-  List<String> auxiliarServicios = [];
 
   @override
   void initState() {
-    for (var element in Escalas.serviciosHospitalarios) {
-      auxiliarServicios.add(element.toString());
-    }
-
-    servicioTratanteValue = auxiliarServicios[0];
-    servicioTratanteInicialValue = auxiliarServicios[0];
-    motivoEgresoValue = Escalas.motivosEgresos[0];
     //
     switch (widget.operationActivity) {
       case Constantes.Nulo:
@@ -89,40 +81,29 @@ class _OperacionesHospitalizacionesState
       case Constantes.Register:
         widget._operationButton = 'Registrar';
 
-        fechaIngresoTextController.text =
-            Calendarios.today(format: 'yyyy/MM/dd');
+        final f = DateFormat('yyyy-MM-dd');
+        fechaRealizacionTextController.text = f.format(DateTime.now());
+        fechaInicioTextController.text = f.format(DateTime.now());
+
         break;
       case Constantes.Update:
         setState(() {
           widget._operationButton = 'Actualizar';
           //
-          idOperation = // Pacientes.ID_Hospitalizacion;
-          Hospitalizaciones.Hospitalizacion['ID_Hosp']; // Pacientes.ID_Hospitalizacion;
-          fechaRealizacionTextController.text =
-              // Valores.fechaIngresoHospitalario!;
-          Hospitalizaciones.Hospitalizacion['Feca_INI_Hosp'];
-          isNumCama = Hospitalizaciones.Hospitalizacion['Id_Cama'] == 0 // Valores.numeroCama
-              ? "N/A" // 1.toString()
-              : // Valores.numeroCama.toString();
-          Hospitalizaciones.Hospitalizacion['Id_Cama'].toString();
+          idOperation = Licencias.Licencia['ID_Licen_Med'];
+          fechaRealizacionTextController.text = Licencias.Licencia['Fecha_Realizacion'];
+          //
+          folioLicenciaTextController.text = Licencias.Licencia['Folio'];
+          diasOtorgadosTextController.text = Licencias.Licencia['Dias_Otorgados'].toString();
+          fechaInicioTextController.text = Licencias.Licencia['Fecha_Inicio'];
+          fechaTerminoTextController.text = Licencias.Licencia['Fecha_Termino'];
+          motivoValue = Licencias.Licencia['Motivo_Incapacidad'];
+          caracterValue = Licencias.Licencia['Caracter'];
+          expedicionValue = Licencias.Licencia['Lugar_Expedicion'];
+          diagnosticoLicenciaTextController.text = Licencias.Licencia['Diagnos_Expedicion'];
 
-          fechaIngresoTextController.text = // Valores.fechaIngresoHospitalario!;
-          Hospitalizaciones.Hospitalizacion['Feca_INI_Hosp'].toString();
-          fechaEgresoTextController.text = // Valores.fechaEgresoHospitalario!;
-           Hospitalizaciones.Hospitalizacion['Feca_EGE_Hosp'].toString();
-          diasEstanciaTextController.text = // Valores.diasEstancia.toString();
-           Hospitalizaciones.Hospitalizacion['Dia_Estan'].toString();
-          medicoTratanteTextController.text = // Valores.medicoTratante!;
-           Hospitalizaciones.Hospitalizacion['Medi_Trat'].toString();
-
-          servicioTratanteValue = // Valores.servicioTratante!;
-           Hospitalizaciones.Hospitalizacion['Serve_Trat'].toString();
-          servicioTratanteInicialValue = // Valores.servicioTratanteInicial!;
-          Hospitalizaciones.Hospitalizacion['Serve_Trat_INI'].toString();
-          motivoEgresoValue = Valores.motivoEgreso != ''
-              ? Hospitalizaciones.Hospitalizacion['EGE_Motivo'].toString() // Valores.motivoEgreso
-              : Escalas.motivosEgresos[0];
-
+          // descripcionLicenciaTextController.text =
+          //     Licencias.Licencia['Pace_Desc_PEN'].toString();
         });
         super.initState();
         break;
@@ -134,7 +115,7 @@ class _OperacionesHospitalizacionesState
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: isDesktop(context)
+      appBar: isDesktop(context) || isTabletAndDesktop(context)
           ? null
           : AppBar(
               backgroundColor: Theming.primaryColor,
@@ -149,13 +130,24 @@ class _OperacionesHospitalizacionesState
                 },
               )),
       body: Container(
-        decoration: ContainerDecoration.roundedDecoration(),
         padding: const EdgeInsets.all(8.0),
+        decoration: ContainerDecoration.roundedDecoration(),
         child: Column(
           children: [
+            EditTextArea(
+              keyBoardType: TextInputType.number,
+              inputFormat: MaskTextInputFormatter(
+                  mask: '####/##/##',
+                  filter: {"#": RegExp(r'[0-9]')},
+                  type: MaskAutoCompletionType.lazy),
+              labelEditText: 'Fecha de realización',
+              textController: fechaRealizacionTextController,
+              numOfLines: 1,
+            ),
             Expanded(
-              flex: 8,
+              flex: 10,
               child: SingleChildScrollView(
+                padding: const EdgeInsets.all(10.0),
                 controller: ScrollController(),
                 child: Column(
                   children: component(context),
@@ -166,8 +158,8 @@ class _OperacionesHospitalizacionesState
               child: Container(
                 decoration: ContainerDecoration.roundedDecoration(),
                 child: GrandButton(
-                  weigth: 2000,
                     labelButton: widget._operationButton,
+                    weigth: 2000,
                     onPress: () {
                       operationMethod(context);
                     }),
@@ -181,19 +173,49 @@ class _OperacionesHospitalizacionesState
 
   List<Widget> component(BuildContext context) {
     return [
-      ThreeLabelTextAline(
-          firstText: 'ID Hospitalización', secondText: idOperation.toString()),
-      Spinner(
-          tittle: "Número de Cama",
-          onChangeValue: (String value) {
-            setState(() {
-              isNumCama = value;
-            });
-          },
-          items: Listas.listOfRange(maxNum: 22),
-          width: isTablet(context) || isMobile(context) ? 120 : 200,
-          initialValue: isNumCama),
-      const CrossLine(),
+      Row(
+        children: [
+          Expanded(
+            child: EditTextArea(
+              keyBoardType: TextInputType.text,
+              inputFormat: MaskTextInputFormatter(
+                  // mask: '####',
+                  // filter: {"#": RegExp(r'[0-9]')},
+                  // type: MaskAutoCompletionType.lazy
+                  ),
+              labelEditText: 'Folio del Licencia',
+              textController: folioLicenciaTextController,
+              numOfLines: 1,
+            ),
+          ),
+          Expanded(
+            child: EditTextArea(
+              keyBoardType: TextInputType.number,
+              inputFormat: MaskTextInputFormatter(
+                  mask: '##',
+                  filter: {"#": RegExp(r'[0-9]')},
+                  type: MaskAutoCompletionType.lazy),
+              labelEditText: 'Dias Otorgados',
+              textController: diasOtorgadosTextController,
+              numOfLines: 1,
+              onChange: (value) {
+                setState(() {
+                  try {
+                    DateFormat dateFormat = DateFormat("yyyy-MM-dd"); // how you want it to be formatted
+                    fechaTerminoTextController
+                        .text = dateFormat.format(DateTime.parse(fechaInicioTextController.text)
+                        .add(Duration(
+                        days:
+                        int.parse(value) - 1)));
+                  } on Exception {
+                    // TODO
+                  }
+                });
+              },
+            ),
+          ),
+        ],
+      ),
       Row(
         children: [
           Expanded(
@@ -203,100 +225,126 @@ class _OperacionesHospitalizacionesState
                   mask: '####/##/##',
                   filter: {"#": RegExp(r'[0-9]')},
                   type: MaskAutoCompletionType.lazy),
-              labelEditText: 'Fecha de Ingreso',
-              textController: fechaIngresoTextController,
-              withShowOption: true,
-              selection: true,
-              onSelected: () {
-                fechaEgresoTextController.text =
-                    Calendarios.today(format: 'yyyy/MM/dd');
-              },
+              labelEditText: 'Fecha de Inicio de la Licencia',
+              textController: fechaInicioTextController,
               numOfLines: 1,
+              onChange: (value) {
+                setState(() {
+                  diasOtorgadosTextController.text =
+                      DateTime.parse(fechaTerminoTextController.text)
+                          .difference(
+                              DateTime.parse(fechaInicioTextController.text))
+                          .inDays.toString();
+                });
+              },
             ),
           ),
           Expanded(
             child: EditTextArea(
-              keyBoardType: TextInputType.number,
+              keyBoardType: TextInputType.text,
               inputFormat: MaskTextInputFormatter(
                   mask: '####/##/##',
                   filter: {"#": RegExp(r'[0-9]')},
                   type: MaskAutoCompletionType.lazy),
-              labelEditText: 'Fecha de Egreso',
-              textController: fechaEgresoTextController,
+              labelEditText: 'Fecha de Termino de la Licencia',
+              textController: fechaTerminoTextController,
               numOfLines: 1,
-              withShowOption: true,
-              selection: true,
-              onSelected: () {
-                fechaEgresoTextController.text =
-                    Calendarios.today(format: 'yyyy/MM/dd');
+              onChange: (value) {
+                setState(() {
+                  diasOtorgadosTextController.text =
+                      DateTime.parse(fechaTerminoTextController.text)
+                          .difference(
+                              DateTime.parse(fechaInicioTextController.text))
+                          .inDays.toString();
+                });
               },
             ),
           ),
         ],
       ),
-      // const CrossLine(),
-      //
-      EditTextArea(
-        keyBoardType: TextInputType.number,
-        inputFormat: MaskTextInputFormatter(
-            mask: '####',
-            filter: {"#": RegExp(r'[0-9]')},
-            type: MaskAutoCompletionType.lazy),
-        labelEditText: 'Días de Estancia Intrahospitalaria',
-        textController: diasEstanciaTextController,
-        numOfLines: 1,
-      ),
-      EditTextArea(
-        keyBoardType: TextInputType.text,
-        inputFormat: MaskTextInputFormatter(),
-        labelEditText: 'Médico Tratante',
-        textController: medicoTratanteTextController,
-        numOfLines: 1,
-      ),
+      Spinner(
+          width: isDesktop(context)
+              ? 200
+              : isTabletAndDesktop(context)
+                  ? 130
+                  : isTablet(context)
+                      ? 200
+                      : isMobile(context)
+                          ? 100
+                          : 200,
+          tittle: "Tipo de Licencia",
+          onChangeValue: (String value) {
+            setState(() {
+              motivoValue = value;
+            });
+          },
+          items: Licencias.typesLicencias,
+          initialValue: motivoValue),
+      Spinner(
+          width: isDesktop(context)
+              ? 200
+              : isTabletAndDesktop(context)
+                  ? 130
+                  : isTablet(context)
+                      ? 200
+                      : isMobile(context)
+                          ? 100
+                          : 200,
+          tittle: "Carácter de Licencia",
+          onChangeValue: (String value) {
+            setState(() {
+              caracterValue = value;
+            });
+          },
+          items: Licencias.caracterLicencia,
+          initialValue: caracterValue),
       const CrossLine(),
       Spinner(
-          tittle: "Servicio Tratante",
-          onChangeValue: (String value) {
-            setState(() {
-              servicioTratanteValue = value;
-            });
-          },
-          items: auxiliarServicios,
-          width: isTablet(context)
+          width: isDesktop(context)
+              ? 200
+              : isTabletAndDesktop(context)
+              ? 130
+              : isTablet(context)
               ? 200
               : isMobile(context)
-                  ? 120
-                  : 200,
-          initialValue: servicioTratanteValue),
-      Spinner(
-          tittle: "Servicio Que Inicia Tratamiento",
+              ? 100
+              : 200,
+          tittle: "Lugar de Expedición",
           onChangeValue: (String value) {
             setState(() {
-              servicioTratanteInicialValue = value;
+              expedicionValue = value;
             });
           },
-          items: auxiliarServicios,
-          width: isTablet(context)
-              ? 200
-              : isMobile(context)
-                  ? 120
-                  : 200,
-          initialValue: servicioTratanteInicialValue),
-      Spinner(
-          tittle: "Motivo del Egreso",
-          onChangeValue: (String value) {
-            setState(() {
-              motivoEgresoValue = value;
-            });
-          },
-          items: Escalas.motivosEgresos,
-          width: isTablet(context)
-              ? 200
-              : isMobile(context)
-                  ? 120
-                  : 200,
-          initialValue: motivoEgresoValue),
+          items: Licencias.lugarExpedicion,
+          initialValue: expedicionValue),
       const CrossLine(),
+      EditTextArea(
+          textController: diagnosticoLicenciaTextController,
+          labelEditText: "Diagnóstico",
+          keyBoardType: TextInputType.text,
+          numOfLines: 1,
+          withShowOption: true,
+          selection: true,
+          onSelected: () {
+            Operadores.selectOptionsActivity(
+                context: context,
+                tittle: 'Seleccione un diagnóstico . . . ',
+                options: Pacientes.diagnosticos().split("\n"),
+                onClose: (value) {
+                  setState(() {
+                    Valores.diagnosticoLicencia = value;
+                    diagnosticoLicenciaTextController.text = value;
+                  });
+                  Navigator.of(context).pop();
+                });
+          },
+          onChange: (value) {
+            setState(() {
+              Valores.motivoCirugia = value;
+              Reportes.reportes['Motivo_Prequirurgico'] = Pacientes.motivoPrequirurgico();
+            });
+          },
+          inputFormat: MaskTextInputFormatter()),
     ];
   }
 
@@ -305,20 +353,26 @@ class _OperacionesHospitalizacionesState
       listOfValues = [
         idOperation,
         Pacientes.ID_Paciente,
-        fechaIngresoTextController.text,
-        isNumCama,
-        diasEstanciaTextController.text,
-        medicoTratanteTextController.text,
-        servicioTratanteValue,
-        servicioTratanteInicialValue,
-        fechaEgresoTextController.text,
-        motivoEgresoValue,
+        folioLicenciaTextController.text,
+        diasOtorgadosTextController.text,
+        fechaRealizacionTextController.text,
+        fechaInicioTextController.text,
+        fechaTerminoTextController.text,
+        //
+        motivoValue,
+        caracterValue,
+        expedicionValue,
+        //
+        diagnosticoLicenciaTextController.text,
         //
         idOperation
       ];
 
       print(
           "${widget.operationActivity} listOfValues $listOfValues ${listOfValues!.length}");
+      // print("realized! ${realized!} ${realized!.runtimeType} "
+      //     "${ Dicotomicos.fromBoolean(realized!, toInt: true)} "
+      //     "${ Dicotomicos.fromBoolean(realized!, toInt: true).runtimeType} ");
 
       switch (widget.operationActivity) {
         case Constantes.Nulo:
@@ -344,7 +398,7 @@ class _OperacionesHospitalizacionesState
                           Pacientes.ID_Paciente) // idOperation)
                       .then((value) {
                     // ******************************************** *** *
-                    Pacientes.Hospitalizaciones = value;
+                    Pacientes.Alergicos = value;
                     Constantes.reinit(value: value);
                     // ******************************************** *** *
                   }).then((value) => onClose(context)));
@@ -358,20 +412,7 @@ class _OperacionesHospitalizacionesState
                           Pacientes.ID_Paciente) // idOperation)
                       .then((value) {
                     // ******************************************** *** *
-                    Pacientes.Hospitalizaciones = value;
-                    //
-                    Valores.fechaIngresoHospitalario =
-                        fechaIngresoTextController.text;
-                    Valores.numeroCama = int.parse(isNumCama);
-                    // Valores.diasEstancia = int.parse(diasEstanciaTextController.text);
-                    Valores.medicoTratante = medicoTratanteTextController.text;
-                    Valores.servicioTratante = servicioTratanteValue;
-                    Valores.servicioTratanteInicial =
-                        servicioTratanteInicialValue;
-                    Valores.fechaEgresoHospitalario =
-                        fechaEgresoTextController.text;
-                    Valores.motivoEgreso = motivoEgresoValue;
-                    //
+                    Pacientes.Alergicos = value;
                     Constantes.reinit(value: value);
                     // ******************************************** *** *
                   }).then((value) => onClose(context)));
@@ -390,50 +431,45 @@ class _OperacionesHospitalizacionesState
   }
 
   void onClose(BuildContext context) {
-    if (widget.retornar == true) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => VisualPacientes(actualPage: 0)));
-    } else {
-      switch (isMobile(context)) {
-        case true:
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  // maintainState: false,
-                  builder: (context) => GestionHospitalizaciones()));
-          break;
-        case false:
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  // maintainState: false,
-                  builder: (context) => GestionHospitalizaciones()));
-          break;
-        default:
-      }
+    Constantes.reinit();
+
+    switch (isMobile(context)) {
+      case true:
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                // maintainState: false,
+                builder: (context) => GestionLicencia()));
+        break;
+      case false:
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                // maintainState: false,
+                builder: (context) => GestionLicencia()));
+        break;
+      default:
     }
   }
 }
 
-class GestionHospitalizaciones extends StatefulWidget {
+// ignore: must_be_immutable
+class GestionLicencia extends StatefulWidget {
   Widget? actualSidePage = Container();
   // ****************** *** ****** **************
-  var keySearch = "Pace_APP_ALE";
+  var keySearch = "Feca_PEN";
   // ****************** *** ****** **************
 
-  GestionHospitalizaciones({Key? key, this.actualSidePage}) : super(key: key);
+  GestionLicencia({Key? key, this.actualSidePage}) : super(key: key);
 
   @override
-  State<GestionHospitalizaciones> createState() =>
-      _GestionHospitalizacionesState();
+  State<GestionLicencia> createState() => _GestionLicenciaState();
 }
 
-class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
-  String appTittle = "Gestion de hospitalizaciones del paciente";
+class _GestionLicenciaState extends State<GestionLicencia> {
+  String appTittle = "Gestion de vicencia del paciente";
   String searchCriteria = "Buscar por Fecha";
-  String? consultQuery = Hospitalizaciones.hospitalizacion['consultIdQuery'];
+  String? consultQuery = Licencias.vicencia['consultIdQuery'];
 
   late List? foundedItems = [];
   var gestionScrollController = ScrollController();
@@ -453,7 +489,7 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
           });
         });
       } else {
-        print(" . . . Hospitalizaciones array iniciado");
+        print(" . . . Licencia array iniciado");
         foundedItems = Constantes.dummyArray;
       }
     }
@@ -560,8 +596,8 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
                       if (snapshot.hasError) print(snapshot.error);
                       return snapshot.hasData
                           ? GridView.builder(
-                              gridDelegate: GridViewTools.gridDelegate(),
                               controller: gestionScrollController,
+                              padding: const EdgeInsets.all(10),
                               shrinkWrap: true,
                               itemCount: snapshot.data == null
                                   ? 0
@@ -570,6 +606,8 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
                                 return itemListView(
                                     snapshot, posicion, context);
                               },
+                              gridDelegate:
+                                  GridViewTools.gridDelegate(crossAxisCount: 3),
                             )
                           : Center(
                               child: Column(
@@ -594,7 +632,7 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
             ],
           ),
         ),
-        isDesktop(context)
+        isDesktop(context) || isTabletAndDesktop(context)
             ? widget.actualSidePage != null
                 ? Expanded(flex: 1, child: widget.actualSidePage!)
                 : Expanded(flex: 1, child: Container())
@@ -606,109 +644,133 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
   Container itemListView(
       AsyncSnapshot snapshot, int posicion, BuildContext context) {
     return Container(
+      padding: const EdgeInsets.all(12.0),
       decoration: ContainerDecoration.roundedDecoration(),
-      padding: const EdgeInsets.all(20.0),
       child: GestureDetector(
         onTap: () {
           onSelected(snapshot, posicion, context, Constantes.Update);
         },
-        child: Column(
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Expanded(
-              flex: 4,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.grey,
+                    child: Text(
+                      snapshot.data[posicion]['ID_Licen_Med'].toString(),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontSize: 24),
+                    ),
+                  ),
+                  GrandIcon(
+                    labelButton: "Eliminar registro",
+                    iconData: Icons.delete,
+                    onPress: () {
+                      Operadores.optionsActivity(
+                        context: context,
+                        tittle: "Eliminar registro . . .",
+                        message: '¿Esta seguro de querer eliminar el registro?',
+                        textOptionA: "No",
+                        optionA: () {
+                          Navigator.of(context).pop();
+                        },
+                        textOptionB: "Aceptar",
+                        optionB: () {
+                          deleteRegister(snapshot, posicion, context);
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              width: 20,
+            ),
+            Expanded(
+              flex: 5,
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                      flex: 2,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: CircleAvatar(
-                          backgroundColor: Colors.grey,
-                          radius: 100,
-                          child: Text(
-                              snapshot.data[posicion]['ID_Hosp'].toString(),
-                              style: Styles.textSyleGrowth(fontSize: 18)),
-                        ),
-                      )),
+                    child: Text(
+                      snapshot.data[posicion]['Fecha_Realizacion'].toString(),
+                      style: Styles.textSyleGrowth(fontSize: 18),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
                   Expanded(
-                    flex: 4,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Ingreso: \n${snapshot.data[posicion]['Feca_INI_Hosp']}",
-                            style: Styles.textSyleGrowth(fontSize: 16)),
-                        Text(
-                          "Servicio: ${snapshot.data[posicion]['Serve_Trat']}",
-                          maxLines: 2,
-                          style: Styles.textSyleGrowth(fontSize: 12),
-                        ),
-                        Text(
-                          "${snapshot.data[posicion]['Medi_Trat']}",
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: Styles.textSyleGrowth(fontSize: 12),
-                        ),
-                        Text(
-                          "Egreso: ${snapshot.data[posicion]['Feca_EGE_Hosp']}",
-                          style: Styles.textSyleGrowth(fontSize: 12),
-                        ),
-                        Text("D.E.H.: ${snapshot.data[posicion]['Dia_Estan']}",
-                            style: Styles.textSyleGrowth(fontSize: 14)),
-                        Text(
-                          "${snapshot.data[posicion]['EGE_Motivo']}",
-                          style: Styles.textSyleGrowth(fontSize: 12),
-                        ),
-                      ],
+                    child: Text(
+                      snapshot.data[posicion]['Folio'].toString(),
+                      style: Styles.textSyleGrowth(fontSize: 16),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  const Expanded(child: CrossLine()),
+                  Expanded(
+                    child: Text(
+                      snapshot.data[posicion]['Fecha_Inicio'].toString(),
+                      maxLines: 1,
+                      style: Styles.textSyle,
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      snapshot.data[posicion]['Fecha_Termino'].toString(),
+                      maxLines: 1,
+                      style: Styles.textSyle,
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      snapshot.data[posicion]['Motivo_Incapacidad'].toString(),
+                      maxLines: 1,
+                      style: Styles.textSyle,
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      "${snapshot.data[posicion]['Dias_Otorgados'].toString()} Días Otorgados",
+                      maxLines: 1,
+                      style: Styles.textSyleGrowth(fontSize: 10),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      "Carácter ${snapshot.data[posicion]['Caracter'].toString()}",
+                      maxLines: 1,
+                      style: Styles.textSyleGrowth(fontSize: 10),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      snapshot.data[posicion]['Lugar_Expedicion'].toString(),
+                      maxLines: 1,
+                      style: Styles.textSyleGrowth(fontSize: 10),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      snapshot.data[posicion]['Diagnos_Expedicion'].toString(),
+                      maxLines: 1,
+                      style: Styles.textSyleGrowth(fontSize: 10),
+                      textAlign: TextAlign.start,
                     ),
                   ),
                 ],
               ),
-            ),
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  IconButton(
-                    color: Colors.grey,
-                    icon: const Icon(Icons.update_rounded),
-                    onPressed: () {
-                      //
-                      onSelected(
-                          snapshot, posicion, context, Constantes.Update);
-                    },
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  IconButton(
-                    color: Colors.grey,
-                    icon: const Icon(Icons.delete),
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return alertDialog(
-                              'Eliminar registro',
-                              '¿Esta seguro de querer eliminar el registro?',
-                              () {
-                                closeDialog(context);
-                              },
-                              () {
-                                deleteRegister(snapshot, posicion, context);
-                              },
-                            );
-                          });
-                    },
-                  )
-                ],
-              ),
-            ),
+            )
           ],
         ),
       ),
@@ -717,9 +779,9 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
 
   void onSelected(AsyncSnapshot<dynamic> snapshot, int posicion,
       BuildContext context, String operaciones) {
-    Hospitalizaciones.Hospitalizacion = snapshot.data[posicion];
-    // Hospitalizaciones.selectedDiagnosis = Hospitalizaciones.hospitalizacion['Pace_APP_ALE'];
-    Pacientes.Hospitalizaciones = snapshot.data;
+    Licencias.Licencia = snapshot.data[posicion];
+    // Licencias.selectedDiagnosis = Licencias.vicencia['Pace_APP_ALE'];
+    Pacientes.Licencias = snapshot.data;
     //
     toOperaciones(context, operaciones);
   }
@@ -733,8 +795,8 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
     try {
       Actividades.eliminar(
           Databases.siteground_database_reghosp,
-          Hospitalizaciones.hospitalizacion['deleteQuery'],
-          snapshot.data[posicion]['ID_Hosp']);
+          Licencias.vicencia['deleteQuery'],
+          snapshot.data[posicion]['ID_Pace_Pen']);
       setState(() {
         snapshot.data.removeAt(posicion);
       });
@@ -744,13 +806,13 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
   }
 
   void toOperaciones(BuildContext context, String operationActivity) {
-    if (isDesktop(context)) {
+    if (isDesktop(context) || isTabletAndDesktop(context)) {
       Constantes.operationsActividad = operationActivity;
       Constantes.reinit(value: foundedItems!);
       _pullListRefresh();
     } else {
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (BuildContext context) => OperacionesHospitalizaciones(
+          builder: (BuildContext context) => OperacionesLicencia(
                 operationActivity: operationActivity,
               )));
     }
@@ -780,10 +842,10 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
     Navigator.pushReplacement(
         context,
         PageRouteBuilder(
-            pageBuilder: (a, b, c) => GestionHospitalizaciones(
+            pageBuilder: (a, b, c) => GestionLicencia(
                   actualSidePage: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: OperacionesHospitalizaciones(
+                    child: OperacionesLicencia(
                       operationActivity: Constantes.operationsActividad,
                     ),
                   ),

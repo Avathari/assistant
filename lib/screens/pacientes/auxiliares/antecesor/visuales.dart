@@ -4,6 +4,7 @@ import 'package:assistant/screens/pacientes/auxiliares/dashboard.dart';
 import 'package:assistant/screens/pacientes/auxiliares/presentaciones/antecedentesPersonales.dart';
 
 import 'package:assistant/screens/pacientes/auxiliares/presentaciones/presentaciones.dart';
+import 'package:assistant/screens/pacientes/epidemiologicos/licencias.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';
 import 'package:assistant/screens/pacientes/intensiva/herramientas.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
@@ -264,6 +265,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
         child: Text('Body 7'),
       ),
       GestionHospitalizaciones(),
+      GestionLicencia(),
       const Center(
         child: Text('Body 9'),
       ),
