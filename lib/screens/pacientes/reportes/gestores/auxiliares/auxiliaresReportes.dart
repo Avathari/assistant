@@ -405,6 +405,8 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
   void initState() {
     if (widget.isPrequirurgica!) {
       Reportes.tratamientoPropuesto = Formatos.indicacionesPreoperatorias;
+      Reportes.reportes['Recomendaciones_Generales'] =
+          Reportes.tratamientoPropuesto;
 
       eventualidadesTextController.text = "";
       terapiasTextController.text = "";
@@ -598,8 +600,8 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                       Spinner(
                         width: isMobile(context)
                             ? 60
-                            : isTablet(context)
-                                ? 150
+                            : isTablet(context) || isTabletAndDesktop(context)
+                                ? 140
                                 : 200,
                         tittle: "Estado médico",
                         initialValue: estadoValue,
@@ -613,8 +615,8 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                       Spinner(
                         width: isMobile(context)
                             ? 60
-                            : isTablet(context)
-                                ? 150
+                            : isTablet(context) || isTabletAndDesktop(context)
+                                ? 140
                                 : 200,
                         tittle: "Para la función",
                         initialValue: funcionValue,
@@ -628,7 +630,7 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                       Spinner(
                           width: isMobile(context)
                               ? 60
-                              : isTablet(context)
+                              : isTablet(context) || isTabletAndDesktop(context)
                                   ? 150
                                   : 200,
                           tittle: "Para la vida",
@@ -642,7 +644,7 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                       Spinner(
                         width: isMobile(context)
                             ? 60
-                            : isTablet(context)
+                            : isTablet(context) || isTabletAndDesktop(context)
                                 ? 150
                                 : 200,
                         tittle: "Para el tiempo",

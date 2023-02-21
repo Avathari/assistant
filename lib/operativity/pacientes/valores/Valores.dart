@@ -2433,13 +2433,14 @@ class Formatos {
       "No suspender Metformina, sólo el día de la cirugía control con Insulina y durante el transquirurgico. \n"
       "Medidas universales de cuidados y prevención de paciente quirúrgico. \n"
       "Monitoreo y control de cifras tensionales mantener TAM >65. \n"
-      "Mantener cifras de glicemia entre 100 y 185, en caso de hiperglicemia infusión de insulina durante el tranquirúrgico. \n"
-      "Evitar AINES \n"
-      "No sobrecargar, se sugiere uso de soluciones cristaloides balanceadas sólo de ser necesario. \n"
+      "Mantener cifras de glicemia entre 100 a 185 mg/dL, "
+      "en caso de hiperglicemia aplicar infusión de insulina durante el tranquirúrgico. \n"
+      "Evitar uso de antiinflamatorios no esteroideos. \n"
+      "Procurar hidroterapia en rangos del requerimiento basal; "
+      "se sugiere uso de soluciones cristaloides isotónicas en caso de ser necesario. \n"
       "Analgesia con opioides intermedios o fuertes. \n"
-      "No ayuno mayor de 8hrs pre y postqx. \n"
-      "Requiere envío a MI posteriormente para tratamiento de DM2. \n"
-      "Se sugire inicio de Metformina 850 mg cada 12hrs. Y realizar labs de control. \n"
+      "Evitar el ayuno mayor de 8 horas durante los momentos prequirúrgicos y/o postquirúrgicos por riesgo de disglicemia. \n"
+      "Se sugire inicio de Metformina 850 mg cada 12 horas, asi como realización de estudios paraclinicos para valoración ulterior. "
       "";
 
   static String get subjetivos {
