@@ -124,6 +124,18 @@ class SpinnersValues {
             ? 70
             : 200;
   }
+
+  static double maximumWidth({required BuildContext context}) {
+    return   isDesktop(context)
+        ? 200
+        : isTabletAndDesktop(context)
+        ? 130
+        : isTablet(context)
+        ? 200
+        : isMobile(context)
+        ? 100
+        : 200;
+  }
 }
 
 class ClipOvalClipper extends CustomClipper<Rect> {
@@ -182,11 +194,12 @@ class Carousel {
 
 class GridViewTools {
   static SliverGridDelegateWithFixedCrossAxisCount gridDelegate(
-      {int crossAxisCount = 3}) {
+      {int crossAxisCount = 3, double mainAxisExtent =  250}) {
     return SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: crossAxisCount,
       mainAxisSpacing: 10.0,
       crossAxisSpacing: 10.0,
+      mainAxisExtent: mainAxisExtent,
     );
   }
 }

@@ -1,9 +1,12 @@
 import 'package:assistant/conexiones/actividades/Compuesto.dart';
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/screens/bibiliotecarios/bibliotecas.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/screens/usuarios/usuarios.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/FtpAccount.dart';
 import 'package:assistant/widgets/GrandButton.dart';
+import 'package:assistant/widgets/HomeButton.dart';
 import 'package:assistant/widgets/ReproductorVideos.dart';
 import 'package:flutter/material.dart';
 
@@ -72,15 +75,15 @@ class _HomeState extends State<Home> {
                 : isDesktop(context)
                     ? 2
                     : isMobile(context)
-                ? 0
-                : 2,
+                        ? 0
+                        : 2,
             child: isTablet(context)
                 ? sideBar()
                 : isDesktop(context)
                     ? sideBar()
                     : isMobile(context)
-                ? Container()
-                : sideBar()),
+                        ? Container()
+                        : sideBar()),
         Expanded(
             flex: isTablet(context)
                 ? 7
@@ -109,7 +112,8 @@ class _HomeState extends State<Home> {
         children: <Widget>[
           Container(
             decoration: const BoxDecoration(color: Colors.black),
-            child: Column(mainAxisAlignment: MainAxisAlignment.center,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 // ignore: prefer_const_literals_to_create_immutables
                 children: [
                   isTablet(context)
@@ -210,56 +214,63 @@ class _HomeState extends State<Home> {
                                 ),
                               ],
                             )
-                          :  isMobile(context)
-                      ?  Container() : Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      const CircleAvatar(
-                        backgroundImage:
-                        AssetImage('assets/images/Luis.jpg'),
-                        backgroundColor: Colors.grey,
-                        radius: 60,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const <Widget>[
-                          Text(
-                            "Luis Romero Pantoja",
-                            style: TextStyle(
-                                fontSize: 14, color: Colors.white),
-                          ),
-                          Text(
-                            "Medicina General",
-                            style: TextStyle(
-                                fontSize: 12, color: Colors.white),
-                          ),
-                          Text(
-                            "Ced. Prof. 12210866",
-                            style: TextStyle(
-                                fontSize: 10, color: Colors.white),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Text(
-                            "CAF Bacalar",
-                            style: TextStyle(
-                                fontSize: 10, color: Colors.white),
-                          ),
-                          Text(
-                            "ISSSTE Quintana Roo",
-                            style: TextStyle(
-                                fontSize: 10, color: Colors.white),
-                          ),
-                        ],
-                      ),
-                    ],
-                  )
-
+                          : isMobile(context)
+                              ? Container()
+                              : Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    const CircleAvatar(
+                                      backgroundImage:
+                                          AssetImage('assets/images/Luis.jpg'),
+                                      backgroundColor: Colors.grey,
+                                      radius: 60,
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: const <Widget>[
+                                        Text(
+                                          "Luis Romero Pantoja",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.white),
+                                        ),
+                                        Text(
+                                          "Medicina General",
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.white),
+                                        ),
+                                        Text(
+                                          "Ced. Prof. 12210866",
+                                          style: TextStyle(
+                                              fontSize: 10,
+                                              color: Colors.white),
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Text(
+                                          "CAF Bacalar",
+                                          style: TextStyle(
+                                              fontSize: 10,
+                                              color: Colors.white),
+                                        ),
+                                        Text(
+                                          "ISSSTE Quintana Roo",
+                                          style: TextStyle(
+                                              fontSize: 10,
+                                              color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                )
                 ]),
           ),
           const SizedBox(
@@ -362,7 +373,8 @@ class _HomeState extends State<Home> {
         children: <Widget>[
           DrawerHeader(
             decoration: const BoxDecoration(color: Colors.black),
-            child: Column(mainAxisAlignment: MainAxisAlignment.center,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 // ignore: prefer_const_literals_to_create_immutables
                 children: [
                   Row(
@@ -610,82 +622,64 @@ class PacientesPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late int axisCount = isMobile(context) ? 1 : 2;
-
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       color: Colors.black54,
       child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: GridView(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 5,
-                mainAxisSpacing: 5,
-                mainAxisExtent: 150),
-            padding: const EdgeInsets.all(10),
-            shrinkWrap: true,
-            children: [
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      primary: Colores.backgroundWidget,
-                      onPrimary: Colors.grey,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      minimumSize: const Size(50, 50)),
-                  onPressed: () {
-                    toPacientes(context);
-                  },
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(
-                          Icons.person,
-                          size: 70,
-                        ),
-                        SizedBox(height: 10),
-                        Text('Pacientes', style: TextStyle(color: Colors.white))
-                      ])),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      primary: Colores.backgroundWidget,
-                      onPrimary: Colors.grey,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      minimumSize: const Size(50, 50)),
-                  onPressed: () {
-                    toUsuarios(context);
-                  },
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(
-                          Icons.medical_services,
-                          size: 70,
-                        ),
-                        SizedBox(height: 10),
-                        Text('Pacientes', style: TextStyle(color: Colors.white))
-                      ])),
-            ],
-          ),
+        controller: ScrollController(),
+        padding: const EdgeInsets.all(10),
+        child: GridView(
+          gridDelegate: GridViewTools.gridDelegate(
+              crossAxisCount: 2, mainAxisExtent: 150),
+          shrinkWrap: true,
+          children: [
+            HomeButton(
+              iconData: Icons.person,
+              labelButton: "Paciente",
+              onPress: () {
+                toNextScreen(
+                    context: context, screen: const GestionPacientes());
+              },
+            ),
+            HomeButton(
+              iconData: Icons.airline_seat_individual_suite_outlined,
+              labelButton: "Pacientes Hospitalizados",
+              onPress: () {
+                // toNextScreen(context: context, screen: const GestionPacientes());
+                Operadores.alertActivity(
+                    context: context,
+                    tittle: "Error",
+                    message: "Interfaz en contrucción");
+              },
+            ),
+            HomeButton(
+              iconData: Icons.book_outlined,
+              labelButton: "Bibliotecario",
+              onPress: () {
+                toNextScreen(
+                    context: context, screen: GestionBibliotecas());
+              },
+            ),
+            HomeButton(
+              iconData: Icons.warning_amber,
+              labelButton: "",
+              onPress: () {
+                // toNextScreen(context: context, screen: const GestionPacientes());
+                Operadores.alertActivity(
+                    context: context,
+                    tittle: "Error",
+                    message: "Interfaz en contrucción");
+              },
+            ),
+          ],
         ),
       ),
     );
   }
 
-  void toUsuarios(BuildContext context) {
+  void toNextScreen({required BuildContext context, required screen}) {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (BuildContext context) => const GestionPacientes()));
-  }
-
-  void toPacientes(BuildContext context) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (BuildContext context) => const GestionPacientes()));
+        context, MaterialPageRoute(builder: (BuildContext context) => screen));
   }
 }
 

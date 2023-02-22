@@ -15,7 +15,7 @@ class App extends StatelessWidget {
       theme: ThemeData(
         scrollbarTheme: ScrollbarThemeData(
           interactive: true,
-          isAlwaysShown: true,
+          // thumbVisibility: true,
           radius: const Radius.circular(10.0),
           thumbColor: MaterialStateProperty.all(Colors.grey),
           thickness: MaterialStateProperty.all(5.0),
