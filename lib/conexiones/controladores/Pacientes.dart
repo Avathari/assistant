@@ -5804,7 +5804,18 @@ class Expedientes {
 class Licencias {
   static int ID_Licencias = 0;
   //
-  static String selectedDiagnosis = "";
+  static void fromJson(Map<String, dynamic> json) {
+    Valores.folioLicencia = json['Folio'];
+    Valores.diasOtorgadosLicencia = json['Dias_Otorgados'].toString();
+    Valores.fechaRealizacionLicencia = json['Fecha_Realizacion'];
+    Valores.fechaInicioLicencia = json['Fecha_Inicio'];
+    Valores.fechaTerminoLicencia = json['Fecha_Termino'];
+    Valores.motivoLicencia = json['Motivo_Incapacidad'];
+    Valores.caracterLicencia = json['Caracter'];
+    Valores.lugarExpedicionLicencia = json['Lugar_Expedicion'];
+    Valores.diagnosticoLicencia = json['Diagnos_Expedicion'];
+  }
+
   //
 
   static Map<String, dynamic> Licencia = {};
@@ -5814,14 +5825,14 @@ class Licencias {
   static List<String> caracterLicencia = Items.caracterLicencia;
 
   static void ultimoRegistro() {
-    Actividades.consultarId(Databases.siteground_database_regpace,
+    Actividades.consultarId(Databases.siteground_database_reghosp,
             Licencias.vicencia['consultLastQuery'], Pacientes.ID_Paciente)
         .then((value) {
       // Enfermedades de base del paciente, asi como las Hospitalarias.
       Licencias.Licencia = value;
       //
       Valores.folioLicencia = value['Folio'];
-      Valores.diasOtorgadosLicencia = value['Dias_Otorgados'];
+      Valores.diasOtorgadosLicencia = value['Dias_Otorgados'].toString();
       Valores.fechaRealizacionLicencia = value['Fecha_Realizacion'];
       Valores.fechaInicioLicencia = value['Fecha_Inicio'];
       Valores.fechaTerminoLicencia = value['Fecha_Termino'];
@@ -5833,12 +5844,42 @@ class Licencias {
   }
 
   static void consultarRegistro() {
-    Actividades.consultarAllById(Databases.siteground_database_regpace,
+    Actividades.consultarAllById(Databases.siteground_database_reghosp,
             Licencias.vicencia['consultIdQuery'], Pacientes.ID_Paciente)
         .then((value) {
       // Enfermedades de base del paciente, asi como las Hospitalarias.
       Pacientes.Licencias = value;
+      print("Pacientes.Licencias ${Pacientes.Licencias}");
     });
+  }
+
+  static String porTipoEstudio({int? indice = 0, String fechaActual = ""}) {
+    // Filtro por estudio de los registros de Pacientes.Paraclinicos
+    var aux = Pacientes.Licencias!
+        .where((user) =>
+        user["Tipo_Estudio"].contains(Auxiliares.Categorias[indice!]))
+        .toList();
+    // Inicio del formato de la prosa.
+    if (fechaActual == "") {
+      fechaActual = aux[0]['Fecha_Registro'];
+    }
+    //
+    String prosa = "${Auxiliares.Categorias[indice!]} ($fechaActual): ";
+    String max = "";
+    // Anexación de los valores correlacionados.
+    for (var element in aux) {
+      if (element['Fecha_Registro'] == fechaActual) {
+        if (max == "") {
+          max =
+          "${element['Estudio']} ${element['Resultado']} ${element['Unidad_Medida']}";
+        } else {
+          max =
+          "$max, ${element['Estudio']} ${element['Resultado']} ${element['Unidad_Medida']}";
+        }
+      }
+    }
+    // Devolución de la prosa.
+    return "$prosa$max. ";
   }
 
   static final Map<String, dynamic> vicencia = {
@@ -5870,10 +5911,10 @@ class Licencias {
     "truncateQuery": "TRUNCATE licen_med",
     "dropQuery": "DROP TABLE licen_med",
     "consultQuery": "SELECT * FROM licen_med",
-    "consultIdQuery": "SELECT * FROM licen_med WHERE ID_Pace = ?",
+    "consultIdQuery": "SELECT * FROM licen_med WHERE ID_Pace = ? ORDER BY Fecha_Realizacion DESC",
     "consultByIdPrimaryQuery": "SELECT * FROM licen_med WHERE ID_Pace = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM licen_med",
-      "consultLastQuery": "SELECT * FROM licen_med WHERE ID_Pace = ? ORDER BY Fecha_Realizacion DESC",
+    "consultLastQuery": "SELECT * FROM licen_med WHERE ID_Pace = ? ORDER BY Fecha_Realizacion ASC",
     "consultByName": "SELECT * FROM licen_med WHERE Pace_APP_DEG LIKE '%",
     "registerQuery": "INSERT INTO licen_med (ID_Pace, Folio, Dias_Otorgados, "
         "Fecha_Realizacion, Fecha_Inicio, Fecha_Termino, "

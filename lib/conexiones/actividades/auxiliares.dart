@@ -165,8 +165,6 @@ class Listas {
       {required List<dynamic> lista, // <Map<String, dynamic>>
       required String keySearched,
       required String elementSearched}) {
-
-
     return lista
         .where((user) => user[keySearched].contains(elementSearched))
         .toList();
@@ -174,15 +172,15 @@ class Listas {
 
   static List<dynamic> listWithoutRepitedValues(List<dynamic> listado) {
     var seen = <dynamic>{};
-    List uniquelist =
-        listado.where((country) => seen.add(country)).toList();
+    List uniquelist = listado.where((country) => seen.add(country)).toList();
     return uniquelist;
   }
 
-  static List<dynamic> listFromMapWithOneKey (List<dynamic> aux) {
+  static List<dynamic> listFromMapWithOneKey(List<dynamic> aux,
+      {String keySearched = 'Fecha_Registro'}) {
     List<dynamic> listado = [];
     for (var item in aux) {
-      listado.add(item['Fecha_Registro']);
+      listado.add(item[keySearched]);
     }
     return listado;
   }

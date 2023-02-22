@@ -424,7 +424,9 @@ class FormatosReportes {
         subTitulo: "${paraph['Impresiones_Diagnosticas']}",
       ),
     );
-
+    parax.add(paragraph(
+      texto: "${paraph['Analisis_Medico']}",
+    ));
     parax.add(buildListado(
       'Indicaciones médicas',
       [
@@ -443,9 +445,6 @@ class FormatosReportes {
       ],
     ));
 
-    parax.add(paragraph(
-      texto: "${paraph['Analisis_Medico']}",
-    ));
     if (paraph['Pronostico_Medico'] != "") {
       parax.add(paragraphSeparatedBy(
         pax: "${paraph['Pronostico_Medico']}",

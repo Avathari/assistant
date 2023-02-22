@@ -2,6 +2,7 @@ import 'package:assistant/conexiones/actividades/pdfGenerete/PdfApi.dart';
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 
 import 'package:assistant/screens/pacientes/auxiliares/presentaciones/presentaciones.dart';
@@ -38,7 +39,6 @@ class ReportesMedicos extends StatefulWidget {
 }
 
 class _ReportesMedicosState extends State<ReportesMedicos> {
-
   @override
   void initState() {
     // Llamado a los ultimos registros agregados.
@@ -133,11 +133,11 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       children: [
         Expanded(
             child: Container(
-              padding: const EdgeInsets.all(8.0),
-              margin: const EdgeInsets.all(8.0),
-              decoration: ContainerDecoration.containerDecoration(),
-              child: sideLeft(),
-            )),
+          padding: const EdgeInsets.all(8.0),
+          margin: const EdgeInsets.all(8.0),
+          decoration: ContainerDecoration.containerDecoration(),
+          child: sideLeft(),
+        )),
         Expanded(
             flex: 3,
             child: Container(
@@ -148,11 +148,11 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             )),
         Expanded(
             child: Container(
-              padding: const EdgeInsets.all(8.0),
-              margin: const EdgeInsets.all(8.0),
-              decoration: ContainerDecoration.containerDecoration(),
-              child: sideRight(),
-            )),
+          padding: const EdgeInsets.all(8.0),
+          margin: const EdgeInsets.all(8.0),
+          decoration: ContainerDecoration.containerDecoration(),
+          child: sideRight(),
+        )),
       ],
     );
   }
@@ -172,7 +172,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   Expanded(
                     child: GrandButton(
                         weigth: 2000,
-                        labelButton: "Tipo de Nota Médica", onPress: () {}),
+                        labelButton: "Tipo de Nota Médica",
+                        onPress: () {}),
                     //     child: Container(
                     //   decoration: ContainerDecoration.roundedDecoration(),
                     //   child: TittlePanel(
@@ -207,7 +208,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                       : Container(),
           const CrossLine(),
           GrandButton(
-              weigth: 2000,labelButton: "Tipo de Nota Médica", onPress: () {}),
+              weigth: 2000, labelButton: "Tipo de Nota Médica", onPress: () {}),
           const CrossLine(),
           // TittlePanel(textPanel: "Tipo de Nota Médica"),
           Expanded(
@@ -436,12 +437,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       ListValue(
         title: "Nota de Consulta",
         onPress: () {
+          Licencias.consultarRegistro();
           setState(() {
-            // showDialog(
-            //     context: context,
-            //     builder: ((context) => AlertDialog(
-            //         title: const Text("Nota de Consulta"),
-            //         content: Text("${widget.actualPage}"))));
             widget.actualPage = 2;
           });
         },
@@ -500,7 +497,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
   List<Widget> actionsReportes() {
     return [
       GrandButton(
-        weigth: 2000,
+          weigth: 2000,
           labelButton: "Padecimiento Actual",
           onPress: () {
             Operadores.openDialog(
@@ -522,32 +519,95 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               widget.actualPage = 11;
             });
           }),
-      GrandButton(weigth: 2000,labelButton: "Catéter Venoso Central", onPress: () {
-        setState(() {
-          widget.actualPage = 12;
-        });
-      }),
-      GrandButton(weigth: 2000,labelButton: "Intubación Endotraqueal", onPress: () {
-        setState(() {
-          widget.actualPage = 13;
-        });
-      }),
-      GrandButton(weigth: 2000,labelButton: "Sonda Endopleural", onPress: () {
-        setState(() {
-          widget.actualPage = 14;
-        });
-      }),
-      GrandButton(weigth: 2000,labelButton: "Catéter Tenckhoff", onPress: () {
-        setState(() {
-          widget.actualPage = 15;
-        });
-      }),
-      GrandButton(weigth: 2000,labelButton: "Punción Lumbar", onPress: () {
-        setState(() {
-          widget.actualPage = 16;
-        });
-      }),
-      GrandButton(weigth: 2000,labelButton: "Licencia médica", onPress: () {}),
+      GrandButton(
+          weigth: 2000,
+          labelButton: "Catéter Venoso Central",
+          onPress: () {
+            setState(() {
+              widget.actualPage = 12;
+            });
+          }),
+      GrandButton(
+          weigth: 2000,
+          labelButton: "Intubación Endotraqueal",
+          onPress: () {
+            setState(() {
+              widget.actualPage = 13;
+            });
+          }),
+      GrandButton(
+          weigth: 2000,
+          labelButton: "Sonda Endopleural",
+          onPress: () {
+            setState(() {
+              widget.actualPage = 14;
+            });
+          }),
+      GrandButton(
+          weigth: 2000,
+          labelButton: "Catéter Tenckhoff",
+          onPress: () {
+            setState(() {
+              widget.actualPage = 15;
+            });
+          }),
+      GrandButton(
+          weigth: 2000,
+          labelButton: "Punción Lumbar",
+          onPress: () {
+            setState(() {
+              widget.actualPage = 16;
+            });
+          }),
+      GrandButton(
+          weigth: 2000,
+          labelButton: "Licencia médica",
+          onPress: () {
+            // print("Pacientes.Licencias ${Pacientes.Licencias}\n ");
+            // print("Reportes.licenciasMedicas ${Reportes.licenciasMedicas}");
+            // Consultar última licencia médica.
+            // setState(() {
+            //   Reportes.licenciasMedicas.clear();
+            //   Licencias.ultimoRegistro();
+            //   Reportes.licenciasMedicas.add(Formatos.licenciaMedica);
+            // });
+
+            // Consultar todas las Incapacidades
+            // for (var item in Pacientes.Licencias!) {
+            //   print("item ${item.runtimeType} $item");
+            //   Licencias.fromJson(item);
+            //   Reportes.licenciasMedicas.add(Formatos.licenciaMedica);
+            // }
+            // ****************** *************************
+            var opciones = Listas.listWithoutRepitedValues(
+              Listas.listFromMapWithOneKey(Pacientes.Licencias!,
+                  keySearched: "Fecha_Realizacion"),
+            );
+            opciones.add('Sin licencia médica otorgada.');
+            // ****************** *************************
+            Operadores.selectOptionsActivity(
+              context: context,
+              tittle: "Elija la fecha de la incapacidad a anexar . . . ",
+              options: opciones,
+              onClose: (value) {
+                setState(() {
+                  Reportes.licenciasMedicas.clear();
+                  if (value == 'Sin licencia médica otorgada.') {
+                    Reportes.licenciasMedicas.add(value);
+                  } else {
+                    for (var element in Pacientes.Licencias!) {
+                      if (value == element['Fecha_Realizacion']) {
+                        Licencias.fromJson(element);
+                        Reportes.licenciasMedicas.add(Formatos.licenciaMedica);
+                      }
+                    }
+                  }
+                });
+                // ****************** *************************
+                Navigator.of(context).pop();
+              },
+            );
+          }),
     ];
   }
 }

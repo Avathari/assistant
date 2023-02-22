@@ -359,6 +359,7 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
 
   void asignarParaclinico({required int indice, String fechaActual = ""}) {
     setState(() {
+
       if (auxTextController.text == "") {
         auxTextController.text = Pacientes.auxiliaresDiagnosticos(
             indice: indice, fechaActual: fechaActual);

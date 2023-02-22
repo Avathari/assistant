@@ -50,7 +50,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
             Pacientes.pacientes['consultQuery']!)
         .then((value) {
       setState(() {
-        print("Gestion pacientes $value");
+        // print("Gestion pacientes $value");
         foundedUsuarios = value;
       });
     });

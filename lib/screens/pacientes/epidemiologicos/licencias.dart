@@ -796,7 +796,7 @@ class _GestionLicenciaState extends State<GestionLicencia> {
       Actividades.eliminar(
           Databases.siteground_database_reghosp,
           Licencias.vicencia['deleteQuery'],
-          snapshot.data[posicion]['ID_Pace_Pen']);
+          snapshot.data[posicion]['ID_Licen_Med']);
       setState(() {
         snapshot.data.removeAt(posicion);
       });
