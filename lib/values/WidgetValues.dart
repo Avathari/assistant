@@ -129,9 +129,9 @@ class SpinnersValues {
     return   isDesktop(context)
         ? 200
         : isTabletAndDesktop(context)
-        ? 130
+        ? 140
         : isTablet(context)
-        ? 200
+        ? 170
         : isMobile(context)
         ? 100
         : 200;

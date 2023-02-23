@@ -1,10 +1,12 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Bibliotecarios.dart';
-import 'package:assistant/conexiones/controladores/Pacientes.dart';
-import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
+import 'package:assistant/screens/bibiliotecarios/fragmentos.dart';
+import 'package:assistant/screens/home.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
@@ -16,14 +18,16 @@ import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/GrandLabel.dart';
 import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
-import 'package:assistant/widgets/WidgetsModels.dart';
+import 'package:assistant/widgets/ViewDocument.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-// import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+
 
 // # Clase .dart para la creación predeterminada de interfaces de registro, consulta y actualización.
 // Contiene un botón que enn _OperacionesBibliotecasState.build que desplega una ventana emergente,
@@ -31,7 +35,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 // # # INSTRUCCIONES DE USO
 // # # # Reemplazar .Bibliotecas por el valor
 // # # # Reemplazar Bibliotecas. por la clase que contiene el mapa .pendiente con las claves
-// # # # # consultIdQuery
+// # # # # consultQuery
 // # # # # registerQuery
 // # # # # updateQuery
 // # # # Reemplazar .pendiente por el nombre del Map() correspondiente.
@@ -50,39 +54,11 @@ class OperacionesBibliotecas extends StatefulWidget {
 }
 
 class _OperacionesBibliotecasState extends State<OperacionesBibliotecas> {
-  String appBarTitile = "Gestión de Bibliotecas";
+  String appBarTitile = "Operación del Recurso Bibliográfico";
 
-  String? consultIdQuery = Bibliotecas.bibliotecas['consultIdQuery'];
+  String? consultQuery = Bibliotecas.bibliotecas['consultQuery'];
   String? registerQuery = Bibliotecas.bibliotecas['registerQuery'];
   String? updateQuery = Bibliotecas.bibliotecas['updateQuery'];
-
-  int idOperation = 0;
-
-  List<dynamic>? listOfValues;
-
-  var fechaRealizacionTextController = TextEditingController();
-  var tyttleBibliotecasTextController = TextEditingController();
-  var autoresBibliotecasTextController = TextEditingController();
-  var nameRevTextController = TextEditingController();
-  var idDataRevTextController = TextEditingController();
-  var doiRevTextController = TextEditingController();
-  var annoPubRevTextController = TextEditingController();
-
-  var remBibliotecasTextController = TextEditingController();
-  var matemBibliotecasTextController = TextEditingController();
-  var conclusionesBibliotecasTextController = TextEditingController();
-  var observacionesBibliotecasTextController = TextEditingController();
-  //
-  var typesArteValue = Bibliotecas.typesBibliotecas[0];
-  var catysAbaValue = Bibliotecas.catyeA[0];
-  var catysEbeValue = Bibliotecas.catyeB[0];
-  var catysIbyValue = Bibliotecas.catyeC[0];
-  var conceptoBibliotecasTextController = TextEditingController();
-  //
-  var carouselController = CarouselController();
-
-  String? filePath;
-  //
 
   @override
   void initState() {
@@ -100,18 +76,41 @@ class _OperacionesBibliotecasState extends State<OperacionesBibliotecas> {
 
         break;
       case Constantes.Update:
+        // ******** ********** ******** *******
         setState(() {
           widget._operationButton = 'Actualizar';
-          //
-          idOperation = Bibliotecas.biblioteca['ID_Pace_Pen'];
-
+          // ******** ********** ******** *******
+          idOperation = Bibliotecas.biblioteca['ID_Lyben'];
+          Bibliotecas.ID_Bibliografia = idOperation;
+          // ******** ********** ******** *******
           fechaRealizacionTextController.text =
-              Bibliotecas.biblioteca['Feca_PEN'];
-          catysAbaValue = Bibliotecas.biblioteca['Pace_PEN'];
-
+              Bibliotecas.biblioteca['Feca_Lyben_REG'];
           tyttleBibliotecasTextController.text =
-              Bibliotecas.biblioteca['Pace_Desc_PEN'].toString();
+              Bibliotecas.biblioteca['Lyben_Tyttle'];
+          autoresBibliotecasTextController.text =
+              Bibliotecas.biblioteca['Lyben_Autores'];
+          nameRevTextController.text =
+              Bibliotecas.biblioteca['Lyben_Rev_Journal'];
+          idDataRevTextController.text =
+              Bibliotecas.biblioteca['Lyben_Database_Id'];
+          doiRevTextController.text = Bibliotecas.biblioteca['Lyben_DOI'];
+          annoPubRevTextController.text =
+              Bibliotecas.biblioteca['Lyben_Anno_Pub'];
+          keyWordsBibliotecasTextController.text =
+          Bibliotecas.biblioteca['Lyben_Keyword'];
+
+          remBibliotecasTextController.text =
+              Bibliotecas.biblioteca['Lyben_Absctract'];
+          matemBibliotecasTextController.text =
+              Bibliotecas.biblioteca['Lyben_Methods'];
+          conclusionesBibliotecasTextController.text =
+              Bibliotecas.biblioteca['Lyben_Conclusiones'];
+          observacionesBibliotecasTextController.text =
+              Bibliotecas.biblioteca['Lyben_Obs'];
+          //
+          typesArteValue = Bibliotecas.biblioteca['Lyben_Type_Rev'];
         });
+        getImage();
         super.initState();
         break;
       default:
@@ -121,371 +120,368 @@ class _OperacionesBibliotecasState extends State<OperacionesBibliotecas> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: isDesktop(context) || isTabletAndDesktop(context)
-          ? null
-          : AppBar(
-              backgroundColor: Theming.primaryColor,
-              title: Text(appBarTitile),
-              leading: IconButton(
-                icon: const Icon(
-                  Icons.arrow_back,
-                ),
-                tooltip: Sentences.regresar,
-                onPressed: () {
-                  onClose(context);
-                },
-              )),
-      body: Container(
-        padding: const EdgeInsets.all(8.0),
-        decoration: ContainerDecoration.roundedDecoration(),
-        child: Column(
-          children: [
-            EditTextArea(
-              keyBoardType: TextInputType.number,
-              inputFormat: MaskTextInputFormatter(
-                  mask: '####/##/##',
-                  filter: {"#": RegExp(r'[0-9]')},
-                  type: MaskAutoCompletionType.lazy),
-              labelEditText: 'Fecha de realización',
-              textController: fechaRealizacionTextController,
-              numOfLines: 1,
-            ),
-            Expanded(
-              flex: 11,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        backgroundColor: Colors.black,
+        appBar: AppBar(
+            backgroundColor: Theming.primaryColor,
+            title: Text(appBarTitile),
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back,
+              ),
+              tooltip: Sentences.regresar,
+              onPressed: () {
+                onClose(context);
+              },
+            )),
+        body: isTablet(context) || isMobile(context)
+            ? Column(
                 children: [
                   Expanded(
-                      flex: 2,
-                      child: Container(
-                        margin: const EdgeInsets.all(5.0),
-                        decoration: ContainerDecoration.roundedDecoration(),
-                        child: SingleChildScrollView(
+                      child: ViewDocument(
+                    isFromMemory: widget.operationActivity == Constantes.Update
+                        ? true
+                        : false,
+                    filePath: widget.operationActivity == Constantes.Update
+                        ? Bibliotecas.documentoBibliografia
+                        : filePath,
+                  )),
+                  Expanded(child: operativity()),
+                ],
+              )
+            : Row(
+                children: [
+                  Expanded(
+                      child: ViewDocument(
+                    isFromMemory: widget.operationActivity == Constantes.Update
+                        ? true
+                        : false,
+                    filePath: widget.operationActivity == Constantes.Update
+                        ? Bibliotecas.documentoBibliografia
+                        : filePath,
+                  )),
+                  Expanded(child: operativity()),
+                ],
+              ));
+  }
+
+  Container operativity() {
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      decoration: ContainerDecoration.roundedDecoration(),
+      child: Column(
+        children: [
+          EditTextArea(
+            keyBoardType: TextInputType.number,
+            inputFormat: MaskTextInputFormatter(
+                mask: '####/##/##',
+                filter: {"#": RegExp(r'[0-9]')},
+                type: MaskAutoCompletionType.lazy),
+            labelEditText: 'Fecha de realización',
+            textController: fechaRealizacionTextController,
+            numOfLines: 1,
+          ),
+          Expanded(
+            flex: 11,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                    flex: 2,
+                    child: Container(
+                      margin: const EdgeInsets.all(5.0),
+                      decoration: ContainerDecoration.roundedDecoration(),
+                      child: SingleChildScrollView(
+                        padding: const EdgeInsets.all(10.0),
+                        controller: ScrollController(),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GrandIcon(
+                              labelButton: "Datos Generales",
+                              heigth: 4,
+                              iconData: Icons.book,
+                              onPress: () {
+                                setState(() {
+                                  carouselController.jumpToPage(0);
+                                });
+                              },
+                            ),
+                            GrandIcon(
+                              labelButton: "Resumenes",
+                              heigth: 4,
+                              iconData: Icons.bookmark_outline,
+                              onPress: () {
+                                setState(() {
+                                  carouselController.jumpToPage(1);
+                                });
+                              },
+                            ),
+                            GrandIcon(
+                              labelButton: "Categorización General",
+                              iconData: Icons.line_weight,
+                              onPress: () {
+                                setState(() {
+                                  carouselController.jumpToPage(2);
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    )),
+                Expanded(
+                  flex: 11,
+                  child: Container(
+                    margin: const EdgeInsets.all(10.0),
+                    decoration: ContainerDecoration.roundedDecoration(),
+                    child: CarouselSlider(
+                      carouselController: carouselController,
+                      options: Carousel.carouselOptions(context: context),
+                      items: [
+                        SingleChildScrollView(
                           padding: const EdgeInsets.all(10.0),
                           controller: ScrollController(),
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              GrandIcon(
-                                labelButton: "Datos Generales",
-                                heigth: 4,
-                                iconData: Icons.book,
-                                onPress: () {
-                                  setState(() {
-                                    carouselController.jumpToPage(0);
-                                  });
-                                },
-                              ),
-                              GrandIcon(
-                                labelButton: "Resumenes",
-                                heigth: 4,
-                                iconData: Icons.bookmark_outline,
-                                onPress: () {
-                                  setState(() {
-                                    carouselController.jumpToPage(1);
-                                  });
-                                },
-                              ),
-                              GrandIcon(
-                                labelButton: "Categorización General",
-                                iconData: Icons.line_weight,
-                                onPress: () {
-                                  setState(() {
-                                    carouselController.jumpToPage(2);
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      )),
-                  Expanded(
-                    flex: 11,
-                    child: Container(
-                      margin: const EdgeInsets.all(10.0),
-                      decoration: ContainerDecoration.roundedDecoration(),
-                      child: CarouselSlider(
-                        carouselController: carouselController,
-                        options: Carousel.carouselOptions(context: context),
-                        items: [
-                          SingleChildScrollView(
-                            padding: const EdgeInsets.all(10.0),
-                            controller: ScrollController(),
-                            child: Column(
-                              children: [
-                                EditTextArea(
-                                  keyBoardType: TextInputType.text,
-                                  inputFormat: MaskTextInputFormatter(),
-                                  labelEditText: 'Título del Recurso',
-                                  textController:
-                                      tyttleBibliotecasTextController,
-                                  numOfLines: 1,
-                                ),
-                                EditTextArea(
-                                  keyBoardType: TextInputType.text,
-                                  inputFormat: MaskTextInputFormatter(),
-                                  labelEditText: 'Autor(es)',
-                                  textController:
-                                      autoresBibliotecasTextController,
-                                  numOfLines: 1,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: EditTextArea(
-                                        keyBoardType: TextInputType.text,
-                                        inputFormat: MaskTextInputFormatter(),
-                                        labelEditText: 'Nombre de la Revista',
-                                        textController: nameRevTextController,
-                                        numOfLines: 1,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: isTabletAndDesktop(context) ? 3 : 2,
-                                      child: Spinner(
-                                          width: SpinnersValues.maximumWidth(
-                                              context: context),
-                                          tittle: "Tipo de Articulo",
-                                          onChangeValue: (String value) {
-                                            setState(() {
-                                              typesArteValue = value;
-                                            });
-                                          },
-                                          items: Bibliotecas.typesBibliotecas,
-                                          initialValue: typesArteValue),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: EditTextArea(
-                                        keyBoardType: TextInputType.text,
-                                        inputFormat: MaskTextInputFormatter(),
-                                        labelEditText: 'Año de Publicación',
-                                        textController:
-                                            annoPubRevTextController,
-                                        numOfLines: 1,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: EditTextArea(
-                                        keyBoardType: TextInputType.text,
-                                        inputFormat: MaskTextInputFormatter(),
-                                        labelEditText: 'DOI de la Revista',
-                                        textController: doiRevTextController,
-                                        numOfLines: 1,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: EditTextArea(
-                                        keyBoardType: TextInputType.text,
-                                        inputFormat: MaskTextInputFormatter(),
-                                        labelEditText: 'ID de la Base de Datos',
-                                        textController: idDataRevTextController,
-                                        numOfLines: 1,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                const CrossLine(),
-                              ],
-                            ),
-                          ),
-                          SingleChildScrollView(
-                            padding: const EdgeInsets.all(10.0),
-                            controller: ScrollController(),
-                            child: Column(
-                              children: [
-                                EditTextArea(
-                                  keyBoardType: TextInputType.text,
-                                  inputFormat: MaskTextInputFormatter(),
-                                  labelEditText: 'Abstract del Recurso',
-                                  textController: remBibliotecasTextController,
-                                  numOfLines: 7,
-                                  withShowOption: true,
-                                ),
-                                EditTextArea(
-                                  keyBoardType: TextInputType.text,
-                                  inputFormat: MaskTextInputFormatter(),
-                                  labelEditText:
-                                      'Materiales y Métodos del Recurso',
-                                  textController:
-                                      matemBibliotecasTextController,
-                                  numOfLines: 7,
-                                  withShowOption: true,
-                                ),
-                                EditTextArea(
-                                  keyBoardType: TextInputType.text,
-                                  inputFormat: MaskTextInputFormatter(),
-                                  labelEditText: 'Conclusiones del Recurso',
-                                  textController:
-                                      conclusionesBibliotecasTextController,
-                                  numOfLines: 7,
-                                  withShowOption: true,
-                                ),
-                                EditTextArea(
-                                  keyBoardType: TextInputType.text,
-                                  inputFormat: MaskTextInputFormatter(),
-                                  labelEditText: 'Observaciones del Recurso',
-                                  textController:
-                                      observacionesBibliotecasTextController,
-                                  numOfLines: 2,
-                                  withShowOption: true,
-                                ),
-                                const CrossLine(),
-                              ],
-                            ),
-                          ),
-                          SingleChildScrollView(
-                            padding: const EdgeInsets.all(10.0),
-                            controller: ScrollController(),
-                            child: Column(children: [
-                              Spinner(
-                                  width: SpinnersValues.maximumWidth(
-                                      context: context),
-                                  tittle: "Familia de Categorias del Articulo",
-                                  onChangeValue: (String value) {
-                                    setState(() {
-                                      catysAbaValue = value;
-                                    });
-                                  },
-                                  items: Bibliotecas.catyeA,
-                                  initialValue: catysAbaValue),
-                              Spinner(
-                                  width: SpinnersValues.maximumWidth(
-                                      context: context),
-                                  tittle: "Categoria del Articulo",
-                                  onChangeValue: (String value) {
-                                    setState(() {
-                                      catysEbeValue = value;
-                                    });
-                                  },
-                                  items: Bibliotecas.catyeB,
-                                  initialValue: catysEbeValue),
-                              Spinner(
-                                  width: SpinnersValues.maximumWidth(
-                                      context: context),
-                                  tittle: "Sub-Categoria del Articulo",
-                                  onChangeValue: (String value) {
-                                    setState(() {
-                                      catysIbyValue = value;
-                                    });
-                                  },
-                                  items: Bibliotecas.catyeC,
-                                  initialValue: catysIbyValue),
                               EditTextArea(
                                 keyBoardType: TextInputType.text,
                                 inputFormat: MaskTextInputFormatter(),
-                                labelEditText: 'Concepto del Recurso',
+                                labelEditText: 'Título del Recurso',
+                                textController: tyttleBibliotecasTextController,
+                                numOfLines: 1,
+                              ),
+                              EditTextArea(
+                                keyBoardType: TextInputType.text,
+                                inputFormat: MaskTextInputFormatter(),
+                                labelEditText: 'Autor(es)',
                                 textController:
-                                    conceptoBibliotecasTextController,
-                                numOfLines: 2,
-                                withShowOption: true,
+                                    autoresBibliotecasTextController,
+                                numOfLines: 1,
                               ),
                               Row(
                                 children: [
                                   Expanded(
-                                      child: TittlePanel(
-                                    textPanel: 'Subir archivo PDF',
-                                  )),
+                                    child: EditTextArea(
+                                      keyBoardType: TextInputType.text,
+                                      inputFormat: MaskTextInputFormatter(),
+                                      labelEditText: 'Nombre de la Revista',
+                                      textController: nameRevTextController,
+                                      numOfLines: 1,
+                                    ),
+                                  ),
                                   Expanded(
-                                    child: Container(
-                                      decoration: ContainerDecoration
-                                          .roundedDecoration(),
-                                      child: GrandLabel(
-                                        iconData: Icons.pageview_outlined,
-                                        fontSized: 12,
-                                        labelButton: "Desde Dispositivo",
-                                        onPress: () async {
-                                          final result = await FilePicker
-                                              .platform
-                                              .pickFiles(
-                                            withReadStream: true,
-                                            allowMultiple: false,
-                                            allowedExtensions: ['pdf'],
-                                          );
-
-                                          try {
-                                            setState(() {
-                                              filePath = result!.paths[0];
-                                            });
-
-                                            print("paths ${result!.paths}");
-                                            print("names ${result.names}");
-                                            print("count ${result.count}");
-                                            print(
-                                                "isSingle ${result.isSinglePick}");
-                                          } on Exception catch (e) {
-                                            // TODO
-                                          }
+                                    flex: isTabletAndDesktop(context) ? 3 : 2,
+                                    child: Spinner(
+                                        width: SpinnersValues.maximumWidth(
+                                            context: context),
+                                        tittle: "Tipo de Articulo",
+                                        onChangeValue: (String value) {
+                                          setState(() {
+                                            typesArteValue = value;
+                                          });
                                         },
-                                      ),
+                                        items: Bibliotecas.typesBibliotecas,
+                                        initialValue: typesArteValue),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: EditTextArea(
+                                      keyBoardType: TextInputType.text,
+                                      inputFormat: MaskTextInputFormatter(),
+                                      labelEditText: 'Año de Publicación',
+                                      textController: annoPubRevTextController,
+                                      numOfLines: 1,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: EditTextArea(
+                                      keyBoardType: TextInputType.text,
+                                      inputFormat: MaskTextInputFormatter(),
+                                      labelEditText: 'DOI de la Revista',
+                                      textController: doiRevTextController,
+                                      numOfLines: 1,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: EditTextArea(
+                                      keyBoardType: TextInputType.text,
+                                      inputFormat: MaskTextInputFormatter(),
+                                      labelEditText: 'ID de la Base de Datos',
+                                      textController: idDataRevTextController,
+                                      numOfLines: 1,
                                     ),
                                   ),
                                 ],
                               ),
-                              GrandLabel(
-                                iconData: Icons.view_quilt_outlined,
-                                fontSized: 12,
-                                labelButton: "Ver Archivo $filePath",
-                                onPress: () {
-                                  // Navigator.of(context).push(
-                                  //   MaterialPageRoute(
-                                  //     builder: (BuildContext context) =>
-                                  //         ViewDocument(
-                                  //       filePath: filePath,
-                                  //     ),
-                                  //   ),
-                                  // );
-                                  try {
-                                    // Operadores.openDialog(
-                                    //   context: context,
-                                    //   chyldrim: Container(
-                                    //     padding: const EdgeInsets.all(10.0),
-                                    //     margin: const EdgeInsets.all(10.0),
-                                    //     decoration: ContainerDecoration
-                                    //         .roundedDecoration(),
-                                    //     child: ViewDocument(),
-                                    //   ),
-                                    // );
-                                  } on Exception catch (e) {
-                                    print("Error $e");
-                                  }
-                                },
+                              EditTextArea(
+                                keyBoardType: TextInputType.text,
+                                inputFormat: MaskTextInputFormatter(),
+                                labelEditText: 'Palabras Claves del Recurso',
+                                textController: keyWordsBibliotecasTextController,
+                                numOfLines: 1,
                               ),
-                            ]),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              const CrossLine(),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                        SingleChildScrollView(
+                          padding: const EdgeInsets.all(10.0),
+                          controller: ScrollController(),
+                          child: Column(
+                            children: [
+                              EditTextArea(
+                                keyBoardType: TextInputType.text,
+                                inputFormat: MaskTextInputFormatter(),
+                                labelEditText: 'Abstract del Recurso',
+                                textController: remBibliotecasTextController,
+                                numOfLines: 7,
+                                withShowOption: true,
+                              ),
+                              EditTextArea(
+                                keyBoardType: TextInputType.text,
+                                inputFormat: MaskTextInputFormatter(),
+                                labelEditText:
+                                    'Materiales y Métodos del Recurso',
+                                textController: matemBibliotecasTextController,
+                                numOfLines: 7,
+                                withShowOption: true,
+                              ),
+                              EditTextArea(
+                                keyBoardType: TextInputType.text,
+                                inputFormat: MaskTextInputFormatter(),
+                                labelEditText: 'Conclusiones del Recurso',
+                                textController:
+                                    conclusionesBibliotecasTextController,
+                                numOfLines: 7,
+                                withShowOption: true,
+                              ),
+                              EditTextArea(
+                                keyBoardType: TextInputType.text,
+                                inputFormat: MaskTextInputFormatter(),
+                                labelEditText: 'Observaciones del Recurso',
+                                textController:
+                                    observacionesBibliotecasTextController,
+                                numOfLines: 2,
+                                withShowOption: true,
+                              ),
+                              const CrossLine(),
+                            ],
+                          ),
+                        ),
+                        SingleChildScrollView(
+                          padding: const EdgeInsets.all(10.0),
+                          controller: ScrollController(),
+                          child: Column(children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                    child: TittlePanel(
+                                  textPanel: 'Subir archivo PDF',
+                                )),
+                                Expanded(
+                                  child: Container(
+                                    decoration:
+                                        ContainerDecoration.roundedDecoration(),
+                                    child: GrandLabel(
+                                      iconData: Icons.pageview_outlined,
+                                      fontSized: 12,
+                                      labelButton: "Desde Dispositivo",
+                                      onPress: () async {
+                                        final result =
+                                            await FilePicker.platform.pickFiles(
+                                          withReadStream: true,
+                                          allowMultiple: false,
+                                          type: FileType.custom,
+                                          allowedExtensions: ['pdf'],
+                                        );
+
+                                        try {
+                                          setState(() {
+                                            filePath = result!.paths[0];
+                                          });
+                                          toBase();
+                                          // print("paths ${result!.paths}");
+                                          // print("names ${result.names}");
+                                          // print("count ${result.count}");
+                                          // print("isSingle ${result.isSinglePick}");
+                                        } on Exception catch (e) {
+                                          // TODO
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            GrandLabel(
+                              iconData: Icons.view_quilt_outlined,
+                              fontSized: 12,
+                              labelButton: "Ver Archivo $filePath",
+                              onPress: () {
+                                // Navigator.of(context).push(
+                                //   MaterialPageRoute(
+                                //     builder: (BuildContext context) =>
+                                //         ViewDocument(
+                                //       filePath: filePath,
+                                //     ),
+                                //   ),
+                                // );
+                                try {
+                                  Operadores.openDialog(
+                                    context: context,
+                                    chyldrim: Container(
+                                      padding: const EdgeInsets.all(10.0),
+                                      margin: const EdgeInsets.all(10.0),
+                                      decoration: ContainerDecoration
+                                          .roundedDecoration(),
+                                      child: ViewDocument(
+                                        filePath: filePath,
+                                      ),
+                                    ),
+                                  );
+                                } on Exception catch (e) {
+                                  print("Error $e");
+                                }
+                              },
+                            ),
+                          ]),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            Expanded(
-              child: Container(
-                decoration: ContainerDecoration.roundedDecoration(),
-                child: GrandButton(
-                    labelButton: widget._operationButton,
-                    weigth: 2000,
-                    onPress: () {
-                      operationMethod(context);
-                    }),
-              ),
-            )
-          ],
-        ),
+          ),
+          Expanded(
+            child: Container(
+              decoration: ContainerDecoration.roundedDecoration(),
+              child: GrandButton(
+                  labelButton: widget._operationButton,
+                  weigth: 2000,
+                  onPress: () {
+                    operationMethod(context);
+                  }),
+            ),
+          )
+        ],
       ),
     );
   }
 
   void operationMethod(BuildContext context) {
     try {
+      Operadores.alertActivity(
+          context: context,
+          tittle: "Operación . . . ",
+          message: "Operado registro");
+
       listOfValues = [
         idOperation,
         fechaRealizacionTextController.text,
@@ -493,30 +489,24 @@ class _OperacionesBibliotecasState extends State<OperacionesBibliotecas> {
         tyttleBibliotecasTextController.text,
         autoresBibliotecasTextController.text,
         nameRevTextController.text,
-        idDataRevTextController.text,
-        doiRevTextController.text,
+        typesArteValue,
         annoPubRevTextController.text,
-
+        doiRevTextController.text,
+        idDataRevTextController.text,
+        keyWordsBibliotecasTextController.text,
+//
         remBibliotecasTextController.text,
         matemBibliotecasTextController.text,
         conclusionesBibliotecasTextController.text,
         observacionesBibliotecasTextController.text,
         //
-        typesArteValue,
-        catysAbaValue,
-        catysEbeValue,
-        catysIbyValue,
-        conceptoBibliotecasTextController.text,
-// file
+        Bibliotecas.documentoBibliografia,
         //
         idOperation
       ];
 
       print(
-          "${widget.operationActivity} listOfValues $listOfValues ${listOfValues!.length}");
-      // print("realized! ${realized!} ${realized!.runtimeType} "
-      //     "${ Dicotomicos.fromBoolean(realized!, toInt: true)} "
-      //     "${ Dicotomicos.fromBoolean(realized!, toInt: true).runtimeType} ");
+          "${widget.operationActivity} listOfValues ${listOfValues!.length} $listOfValues");
 
       switch (widget.operationActivity) {
         case Constantes.Nulo:
@@ -536,13 +526,12 @@ class _OperacionesBibliotecasState extends State<OperacionesBibliotecas> {
           // ******************************************** *** *
           Actividades.registrar(Databases.siteground_database_regasca,
                   registerQuery!, listOfValues!)
-              .then((value) => Actividades.consultarAllById(
-                          Databases.siteground_database_regasca,
-                          consultIdQuery!,
-                          Pacientes.ID_Paciente) // idOperation)
-                      .then((value) {
+              .then((value) => Actividades.consultar(
+                    Databases.siteground_database_regasca,
+                    consultQuery!,
+                  ).then((value) {
                     // ******************************************** *** *
-                    Pacientes.Alergicos = value;
+                    Bibliotecas.librerias = value;
                     Constantes.reinit(value: value);
                     // ******************************************** *** *
                   }).then((value) => onClose(context)));
@@ -550,13 +539,12 @@ class _OperacionesBibliotecasState extends State<OperacionesBibliotecas> {
         case Constantes.Update:
           Actividades.actualizar(Databases.siteground_database_regasca,
                   updateQuery!, listOfValues!, idOperation)
-              .then((value) => Actividades.consultarAllById(
-                          Databases.siteground_database_regasca,
-                          consultIdQuery!,
-                          Pacientes.ID_Paciente) // idOperation)
-                      .then((value) {
+              .then((value) => Actividades.consultar(
+                    Databases.siteground_database_regasca,
+                    consultQuery!,
+                  ).then((value) {
                     // ******************************************** *** *
-                    Pacientes.Alergicos = value;
+                    Bibliotecas.librerias = value;
                     Constantes.reinit(value: value);
                     // ******************************************** *** *
                   }).then((value) => onClose(context)));
@@ -564,37 +552,85 @@ class _OperacionesBibliotecasState extends State<OperacionesBibliotecas> {
         default:
       }
     } catch (ex) {
-      showDialog(
+      Operadores.alertActivity(
           context: context,
-          builder: (context) {
-            return alertDialog("Error al operar con los valores", "$ex", () {
-              Navigator.of(context).pop();
-            }, () {});
-          });
+          tittle: "Error al Actualizar registro",
+          message: "$ex");
     }
   }
 
   void onClose(BuildContext context) {
     Constantes.reinit();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        // maintainState: false,
+        builder: (context) => GestionBibliotecas(),
+      ),
+    );
+  }
 
-    switch (isMobile(context)) {
-      case true:
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                // maintainState: false,
-                builder: (context) => GestionBibliotecas()));
-        break;
-      case false:
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                // maintainState: false,
-                builder: (context) => GestionBibliotecas()));
-        break;
-      default:
+  // ****************************************
+  toBase() async {
+    if (filePath != null || filePath != "") {
+      Uint8List bytes = await File(filePath!).readAsBytes();
+      setState(() {
+        Bibliotecas.documentoBibliografia = base64.encode(bytes);
+        print("fileStringBaseEncode $Bibliotecas.documentoBibliografia");
+      });
     }
   }
+
+  Future<void> fromBase() async {
+    String name = tyttleBibliotecasTextController.text.isEmpty
+        ? "name"
+        : tyttleBibliotecasTextController.text;
+    File decodedimgfile = await File("${name}.pdf")
+        .writeAsBytes(base64.decode(Bibliotecas.biblioteca['Lyben_File']!));
+
+    setState(() {
+      filePath = decodedimgfile.path;
+    });
+  }
+
+  void getImage() {
+    Actividades.consultarId(
+            Databases.siteground_database_regasca,
+            Bibliotecas.bibliotecas['consultDocument'],
+            Bibliotecas.ID_Bibliografia)
+        .then((value) {
+      setState(() {
+        print("consultImage ${Bibliotecas.ID_Bibliografia} $value");
+        Bibliotecas.documentoBibliografia = value['Lyben_File'];
+      });
+    });
+  }
+
+  // ****************************************
+  int idOperation = 0;
+
+  List<dynamic>? listOfValues;
+
+  var fechaRealizacionTextController = TextEditingController();
+  var tyttleBibliotecasTextController = TextEditingController();
+  var autoresBibliotecasTextController = TextEditingController();
+  var nameRevTextController = TextEditingController();
+  var idDataRevTextController = TextEditingController();
+  var doiRevTextController = TextEditingController();
+  var annoPubRevTextController = TextEditingController();
+  var keyWordsBibliotecasTextController = TextEditingController();
+
+  var remBibliotecasTextController = TextEditingController();
+  var matemBibliotecasTextController = TextEditingController();
+  var conclusionesBibliotecasTextController = TextEditingController();
+  var observacionesBibliotecasTextController = TextEditingController();
+  //
+  var typesArteValue = Bibliotecas.typesBibliotecas[0];
+  //
+  var carouselController = CarouselController();
+
+  String? filePath = ""; // , fileStringBaseEncode = "";
+//
 }
 
 // ignore: must_be_immutable
@@ -613,7 +649,7 @@ class GestionBibliotecas extends StatefulWidget {
 class _GestionBibliotecasState extends State<GestionBibliotecas> {
   String appTittle = "Gestion de recursos bibliográficos";
   String searchCriteria = "Buscar por Fecha";
-  String? consultQuery = Bibliotecas.bibliotecas['consultIdQuery'];
+  String? consultQuery = Bibliotecas.bibliotecas['consultQuery'];
 
   late List? foundedItems = [];
   var gestionScrollController = ScrollController();
@@ -624,8 +660,8 @@ class _GestionBibliotecasState extends State<GestionBibliotecas> {
     print(" . . . Iniciando array ");
     if (Constantes.dummyArray!.isNotEmpty) {
       if (Constantes.dummyArray![0] == "Vacio") {
-        Actividades.consultarAllById(Databases.siteground_database_regasca,
-                consultQuery!, Pacientes.ID_Hospitalizacion)
+        Actividades.consultar(
+                Databases.siteground_database_regasca, consultQuery!)
             .then((value) {
           setState(() {
             print(" . . . Buscando items \n $value");
@@ -653,8 +689,8 @@ class _GestionBibliotecasState extends State<GestionBibliotecas> {
             tooltip: Sentences.regresar,
             onPressed: () {
               Constantes.reinit();
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => VisualPacientes(actualPage: 0)));
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => const Home()));
             },
           ),
           title: Text(appTittle),
@@ -750,8 +786,10 @@ class _GestionBibliotecasState extends State<GestionBibliotecas> {
                                 return itemListView(
                                     snapshot, posicion, context);
                               },
-                              gridDelegate:
-                                  GridViewTools.gridDelegate(crossAxisCount: 3),
+                              gridDelegate: GridViewTools.gridDelegate(
+                                crossAxisCount: 2,
+                                mainAxisExtent: 320,
+                              ),
                             )
                           : Center(
                               child: Column(
@@ -792,7 +830,7 @@ class _GestionBibliotecasState extends State<GestionBibliotecas> {
       decoration: ContainerDecoration.roundedDecoration(),
       child: GestureDetector(
         onTap: () {
-          onSelected(snapshot, posicion, context, Constantes.Update);
+          // onSelected(snapshot, posicion, context, Constantes.Update);
         },
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -804,51 +842,29 @@ class _GestionBibliotecasState extends State<GestionBibliotecas> {
                   CircleAvatar(
                     backgroundColor: Colors.grey,
                     child: Text(
-                      snapshot.data[posicion]['ID_Pace_Pen'].toString(),
+                      snapshot.data[posicion]['ID_Lyben'].toString(),
                       style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                           fontSize: 24),
                     ),
                   ),
-                  // const SizedBox(
-                  //   height: 10,
-                  // ),
-                  snapshot.data[posicion]['Pace_PEN_realized'] == 0
-                      ? IconButton(
-                          icon: const Icon(Icons.not_interested,
-                              color: Colors.redAccent),
-                          onPressed: () {
-                            Actividades.actualizar(
-                                    Databases.siteground_database_regasca,
-                                    Bibliotecas.bibliotecas['updateDoQuery'],
-                                    [
-                                      Dicotomicos.fromBoolean(true,
-                                          toInt: true),
-                                      snapshot.data[posicion]['ID_Pace_Pen']
-                                    ],
-                                    snapshot.data[posicion]['ID_Pace_Pen'])
-                                .then((value) => _pullListRefresh());
-                          },
-                        )
-                      : IconButton(
-                          icon: const Icon(Icons.check, color: Colors.green),
-                          onPressed: () {
-                            Actividades.actualizar(
-                                    Databases.siteground_database_regasca,
-                                    Bibliotecas.bibliotecas['updateDoQuery'],
-                                    [
-                                      Dicotomicos.fromBoolean(false,
-                                          toInt: true),
-                                      snapshot.data[posicion]['ID_Pace_Pen']
-                                    ],
-                                    snapshot.data[posicion]['ID_Pace_Pen'])
-                                .then((value) => _pullListRefresh());
-                          },
-                        ),
-                  // const SizedBox(
-                  //   height: 30,
-                  // ),
+                  GrandIcon(
+                    labelButton: "Añadir fragmento",
+                    iconData: Icons.add,
+                    onPress: () {
+                      onSelected(
+                          snapshot, posicion, context, Constantes.Update, isFragment: true);
+                    },
+                  ),
+                  GrandIcon(
+                    labelButton: "Actualizar registro",
+                    iconData: Icons.update,
+                    onPress: () {
+                      onSelected(
+                          snapshot, posicion, context, Constantes.Update);
+                    },
+                  ),
                   GrandIcon(
                     labelButton: "Eliminar registro",
                     iconData: Icons.delete,
@@ -881,14 +897,15 @@ class _GestionBibliotecasState extends State<GestionBibliotecas> {
                 children: [
                   Expanded(
                     child: Text(
-                      snapshot.data[posicion]['Feca_PEN'].toString(),
+                      snapshot.data[posicion]['Lyben_Tyttle'].toString(),
+                      maxLines: 2,
                       style: Styles.textSyleGrowth(fontSize: 18),
                       textAlign: TextAlign.start,
                     ),
                   ),
                   Expanded(
                     child: Text(
-                      snapshot.data[posicion]['Pace_PEN'].toString(),
+                      snapshot.data[posicion]['Lyben_Autores'].toString(),
                       style: Styles.textSyleGrowth(fontSize: 16),
                       textAlign: TextAlign.start,
                     ),
@@ -897,7 +914,7 @@ class _GestionBibliotecasState extends State<GestionBibliotecas> {
                   Expanded(
                     flex: 4,
                     child: Text(
-                      snapshot.data[posicion]['Pace_Desc_PEN'].toString(),
+                      snapshot.data[posicion]['Lyben_Rev_Journal'].toString(),
                       maxLines: 7,
                       style: Styles.textSyle,
                       textAlign: TextAlign.start,
@@ -913,16 +930,21 @@ class _GestionBibliotecasState extends State<GestionBibliotecas> {
   }
 
   void onSelected(AsyncSnapshot<dynamic> snapshot, int posicion,
-      BuildContext context, String operaciones) {
+      BuildContext context, String operaciones, {bool isFragment = false}) {
+    Bibliotecas.fromJson(snapshot.data[posicion]);
+    //
     Bibliotecas.biblioteca = snapshot.data[posicion];
-    // Bibliotecas.selectedDiagnosis = Bibliotecas.bibliotecas['Pace_APP_ALE'];
     Bibliotecas.librerias = snapshot.data;
     //
-    toOperaciones(context, operaciones);
-  }
+    getImage();
+    //
+    if (isFragment) {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (BuildContext context) => GestionFragmentos()));
+    } else {
+      toOperaciones(context, operaciones);
+    }
 
-  void closeDialog(BuildContext context) {
-    Navigator.of(context).pop();
   }
 
   void deleteRegister(
@@ -931,7 +953,7 @@ class _GestionBibliotecasState extends State<GestionBibliotecas> {
       Actividades.eliminar(
           Databases.siteground_database_regasca,
           Bibliotecas.bibliotecas['deleteQuery'],
-          snapshot.data[posicion]['ID_Pace_Pen']);
+          snapshot.data[posicion]['ID_Lyben']);
       setState(() {
         snapshot.data.removeAt(posicion);
       });
@@ -941,16 +963,21 @@ class _GestionBibliotecasState extends State<GestionBibliotecas> {
   }
 
   void toOperaciones(BuildContext context, String operationActivity) {
-    if (isDesktop(context) || isTabletAndDesktop(context)) {
-      Constantes.operationsActividad = operationActivity;
-      Constantes.reinit(value: foundedItems!);
-      _pullListRefresh();
-    } else {
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (BuildContext context) => OperacionesBibliotecas(
-                operationActivity: operationActivity,
-              )));
-    }
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (BuildContext context) => OperacionesBibliotecas(
+              operationActivity: operationActivity,
+            )));
+
+    // if (isDesktop(context) || isTabletAndDesktop(context)) {
+    //   Constantes.operationsActividad = operationActivity;
+    //   Constantes.reinit(value: foundedItems!);
+    //   _pullListRefresh();
+    // } else {
+    //   Navigator.of(context).push(MaterialPageRoute(
+    //       builder: (BuildContext context) => OperacionesBibliotecas(
+    //             operationActivity: operationActivity,
+    //           )));
+    // }
   }
 
   void _runFilterSearch(String enteredKeyword) {
@@ -987,65 +1014,25 @@ class _GestionBibliotecasState extends State<GestionBibliotecas> {
                 ),
             transitionDuration: const Duration(seconds: 0)));
   }
+
+  getImage() {
+    if (Bibliotecas.documentoBibliografia == "") {
+      Actividades.consultarId(
+              Databases.siteground_database_regasca,
+              Bibliotecas.bibliotecas['consultDocument'],
+              Bibliotecas.ID_Bibliografia)
+          .then((value) {
+        setState(() {
+          print("consultImage ${Bibliotecas.ID_Bibliografia} $value");
+          Bibliotecas.documentoBibliografia = value['Lyben_File'];
+        });
+      });
+    } else {
+      setState(() {
+        Bibliotecas.documentoBibliografia;
+      });
+    }
+  }
+
 }
 
-// // ignore: must_be_immutable
-// class ViewDocument extends StatefulWidget {
-//   var filePath;
-//
-//   ViewDocument(
-//       {Key? key,
-//       this.filePath = "C:/Users/Luis%20Romero%20Pantoja/Documents/prueba.pdf"})
-//       : super(key: key);
-//
-//   @override
-//   State<ViewDocument> createState() => _ViewDocumentState();
-// }
-//
-// class _ViewDocumentState extends State<ViewDocument> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.black,
-//       appBar: AppBar(
-//           backgroundColor: Theming.primaryColor,
-//           leading: IconButton(
-//             icon: const Icon(
-//               Icons.arrow_back,
-//             ),
-//             tooltip: Sentences.regresar,
-//             onPressed: () {
-//               Constantes.reinit();
-//               Navigator.of(context).push(MaterialPageRoute(
-//                   builder: (context) => VisualPacientes(actualPage: 0)));
-//             },
-//           ),
-//           title: Text("Ver documento"),
-//           actions: <Widget>[
-//             IconButton(
-//               icon: const Icon(
-//                 Icons.replay_outlined,
-//               ),
-//               tooltip: Sentences.reload,
-//               onPressed: () {
-//                 // _pullListRefresh();
-//               },
-//             ),
-//             IconButton(
-//               icon: const Icon(
-//                 Icons.add_card,
-//               ),
-//               tooltip: Sentences.add_vitales,
-//               onPressed: () {
-//                 // toOperaciones(context, Constantes.Register);
-//               },
-//             ),
-//           ]),
-//       body: SafeArea(
-//         child: SfPdfViewer.file(
-//           File(widget.filePath!),
-//         ),
-//       ),
-//     );
-//   }
-// }
