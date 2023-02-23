@@ -473,6 +473,45 @@ class Pacientes {
     return Reportes.impresionesDiagnosticas;
   }
 
+  static String diagnosticosCie() {
+    // ************************ ************** ********** **** *** *
+    Reportes.reportes['Impresiones_Diagnosticas'] = "";
+    Reportes.impresionesDiagnosticas = "";
+
+    // ************************ ************** ********** **** *** *
+    if (Patologicos != []) {
+      for (var element in Patologicos!) {
+        if (Reportes.impresionesDiagnosticas == "") {
+          Reportes.impresionesDiagnosticas =
+          "${element['Pace_APP_DEG']}";
+        } else {
+          Reportes.impresionesDiagnosticas =
+          "${Reportes.impresionesDiagnosticas}\n${element['Pace_APP_DEG']}\n";
+        }
+      }
+    }
+    // ************************ ************** ********** **** *** *
+    print("Diagnosticos $Diagnosticos");
+    if (Diagnosticos != []) {
+      for (var element in Diagnosticos!) {
+        if (Reportes.impresionesDiagnosticas != "") {
+          Reportes.impresionesDiagnosticas =
+          "${Reportes.impresionesDiagnosticas.substring(0, Reportes.impresionesDiagnosticas.length - 1)} \n"
+              "${element['Pace_APP_DEG']}";
+        } else {
+          Reportes.impresionesDiagnosticas =
+          "${element['Pace_APP_DEG']}";
+        }
+      }
+    }
+
+    // print("Reportes.impresionesDiagnosticas ${Reportes.impresionesDiagnosticas}");
+    Reportes.reportes['Impresiones_Diagnosticas'] =
+        Reportes.impresionesDiagnosticas;
+    // ************************ ************** ********** **** *** *
+    return Reportes.impresionesDiagnosticas;
+  }
+
   static String subjetivos() {
     return Reportes.subjetivoHospitalizacion;
   }
@@ -4863,7 +4902,7 @@ class Reportes {
           "${Valores.referenciasHospitalizacion}. ";
   // "Sin rerencias particulares del paciente durante la hospitalización";
   //
-  static String procedimientoRealizado = "";
+  static String procedimientoRealizado = "", bibliografias = "";
   //
   static List<String> hidroterapia = ['Sin terapia hídrica.'];
   static List<String> medicamentosIndicados = ['Sin medicamentos otorgados.'];
@@ -4911,6 +4950,7 @@ class Reportes {
     pronosticoMedico = "";
     //
     procedimientoRealizado = "";
+    bibliografias = "";
     //
     medicamentosIndicados = [''];
     medidasGenerales = [''];

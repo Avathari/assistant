@@ -226,7 +226,6 @@ class _ReportePrequirurgicoState extends State<ReportePrequirurgico> {
     );
   }
 
-
   // ######################### ### # ### ############################
   // Controladores de widgets en general.
   // ######################### ### # ### ############################

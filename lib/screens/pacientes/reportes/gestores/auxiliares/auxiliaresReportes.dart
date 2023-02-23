@@ -1,6 +1,7 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/analisis.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
@@ -488,6 +489,15 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                       keyBoardType: TextInputType.multiline,
                       numOfLines: 5,
                       withShowOption: true,
+                      selection: true,
+                      onSelected: () {
+                        Operadores.openDialog(context: context, chyldrim: const Bibliografico(),
+                        onAction: () {
+                          setState(() {
+                            analisisTextController.text = Reportes.analisisMedico;
+                          });
+                        });
+                      },
                       onChange: ((value) {
                         Reportes.analisisMedico = "$value.";
                         Reportes.reportes['Analisis_Medico'] =
