@@ -136,4 +136,83 @@ class PdfParagraphsApi {
       return PdfApi.saveDocument(name: name!, pdf: pdf);
     }
   }
+
+  static Future<File> generateFromList(
+      {double? topMargin = 20,
+        double? rightMargin = 30,
+        double? leftMargin = 30,
+        double? bottomMargin = 10,
+        String? imageHeader = "assets/images/issste_logo.png",
+        required TypeReportes indexOfTypeReport,
+        bool withIndicationReport = false,
+        required List<dynamic> paraph,
+        String? name = "my_example.pdf"}) async {
+    final pdf = Document();
+
+    // # # # # # # # ### #  # # # # # # # ### #
+    // Carga del logotipo del documento para el Header.
+    Uint8List logobytes =
+    (await rootBundle.load(imageHeader!)).buffer.asUint8List();
+    Uint8List logoSecondbytes =
+    (await rootBundle.load("assets/images/logoIsssteHorizontal.png"))
+        .buffer
+        .asUint8List();
+    Uint8List logoShieldbytes =
+    (await rootBundle.load("assets/images/logoNacional.png"))
+        .buffer
+        .asUint8List();
+
+    final tempDir = await getTemporaryDirectory();
+    // # # # # # # ### # # # # # # ### # # # # # # ###
+    final file = await File('${tempDir.path}/logo_image.png').create();
+    file.writeAsBytesSync(logobytes);
+    // # # # # # # ### # # # # # # ### # # # # # # ###
+    final fileSecond =
+    await File('${tempDir.path}/logoIsssteHorizontal.png').create();
+    fileSecond.writeAsBytesSync(logoSecondbytes);
+    // # # # # # # ### # # # # # # ### # # # # # # ###
+    final fileShield = await File('${tempDir.path}/logoNacional.png').create();
+    fileShield.writeAsBytesSync(logoShieldbytes);
+    // # # # # # # ### # # # # # # ### # # # # # # ###
+    // Creación de documento en base al paraph.
+    // # # # # # # ### # # # # # # ### # # # # # # ###
+    try {
+      print("indexOfTypeReport $indexOfTypeReport");
+      pdf.addPage(MultiPage(
+        orientation: PageOrientation.landscape,
+        margin: EdgeInsets.only(
+            top: topMargin!,
+            right: rightMargin!,
+            left: leftMargin!,
+            bottom: bottomMargin!),
+        header: (context) => headerInTable(
+            imageHeader: fileSecond,
+            secondImageHeader: fileShield,
+            titulo:
+            "Instituto de Seguridad y Servicios Sociales\npara los Trabajadores\ndel Estado"
+                .toUpperCase(),
+            subTitulo: "Subdelegación de Quintana Roo\nCAF Bacalar"),
+        build: ((context) => FormatosReportes.censoHospitalario(
+          paraph)),
+        footer: (context) {
+          final text = "Pagina ${context.pageNumber} de ${context.pagesCount}";
+          return Container(
+              alignment: Alignment.centerRight,
+              margin: const EdgeInsets.only(top: 1.0 * PdfPageFormat.mm),
+              child:
+              Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+                Divider(color: PdfColors.black),
+                Text(text,
+                    style: const TextStyle(fontSize: 8, color: PdfColors.black))
+              ]));
+        },
+      ));
+      return PdfApi.saveDocument(name: name!, pdf: pdf);
+    } on Exception catch (e) {
+      Alertas.showAlert(
+          context: Contextos.contexto,
+          error: "Error al generar documento PDF ${e.toString()}");
+      return PdfApi.saveDocument(name: name!, pdf: pdf);
+    }
+  }
 }

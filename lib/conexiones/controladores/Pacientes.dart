@@ -5061,6 +5061,10 @@ class Reportes {
         return "(NE) - ${Pacientes.nombreCompleto} - (${Calendarios.today()}).pdf";
       case 8: //
         return "(CE) - ${Pacientes.nombreCompleto} - (${Calendarios.today()}).pdf";
+      case 9: //
+        return "(CE) - ${Pacientes.nombreCompleto} - (${Calendarios.today()}).pdf";
+      case 10: //
+        return "(CEN) - (${Calendarios.today()}).pdf";
       default: // Nota auxiliar por default
         return "(AUX) - ${Pacientes.nombreCompleto} - (${Calendarios.today()}).pdf";
 

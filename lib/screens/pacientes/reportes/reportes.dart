@@ -385,6 +385,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
         return TypeReportes.procedimientoSondaEndopleural;
       case 15:
         return TypeReportes.procedimientoTenckoff;
+      case 16:
+        return TypeReportes.procedimientoTenckoff;
       default:
         return TypeReportes.reporteIngreso;
     }

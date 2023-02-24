@@ -1,4 +1,6 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/conexiones/actividades/pdfGenerete/PdfApi.dart';
+import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteFormats/formatosReportes.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
@@ -34,7 +36,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
   @override
   void initState() {
     print(" . . . Iniciando array ");
-    List hospitalizaed = [];
+    List hospitalizaed = [], diagos = [];
 // ********** ************** ***********
     Actividades.consultar(
       Databases.siteground_database_regpace,
@@ -64,10 +66,29 @@ class _HospitalizadosState extends State<Hospitalizados> {
             "EGE_Motivo": ""
           });
           response[v].addAll({
+            "Cronicos": [],
+          });
+          response[v].addAll({
+            "Diagnosticos": [],
+          });
+          response[v].addAll({
             "Pendientes": [],
           });
         } else {
           response[v].addAll(hospitalizaed[v]);
+          response[v].addAll({
+            "Cronicos": await Actividades.consultarAllById(Databases.siteground_database_regpace,
+              "SELECT * FROM pace_app_deg WHERE ID_Pace = ? ",
+              response[v]['ID_Pace'],
+            ),
+          });
+          response[v].addAll({
+            "Diagnosticos": await Actividades.consultarAllById(Databases.siteground_database_reghosp,
+              "SELECT * FROM pace_dia WHERE ID_Pace = ? "
+                  "AND ID_Hosp = '${hospitalizaed[v]['ID_Hosp']}'",
+              response[v]['ID_Pace'],
+            ),
+          });
           response[v].addAll({
             "Pendientes": await Actividades.consultarAllById(
               Databases.siteground_database_reghosp,
@@ -77,6 +98,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
               response[v]['ID_Pace'],
             )
           });
+
         }
       }
       // ********** ************** ***********
@@ -121,15 +143,18 @@ class _HospitalizadosState extends State<Hospitalizados> {
             ),
             IconButton(
               icon: const Icon(
-                Icons.add_card,
+                Icons.list,
               ),
-              tooltip: Sentences.add_vitales,
-              onPressed: () {
-                // Navigator.of(context).push(MaterialPageRoute(
-                //   builder: (BuildContext context) => OperacionesPacientes(
-                //     operationActivity: Constantes.Register,
-                //   ),
-                // ));
+              tooltip: "Imprimir cennso hospitalario",
+              onPressed: () async {
+                final pdfFile = await PdfParagraphsApi.generateFromList(
+                    withIndicationReport: false,
+                    indexOfTypeReport: TypeReportes.censoHospitalario,
+                    paraph: foundedItems!,
+                    name: "(CEN) - (${Calendarios.today()}).pdf",
+                );
+
+                PdfApi.openFile(pdfFile);
               },
             ),
           ]),

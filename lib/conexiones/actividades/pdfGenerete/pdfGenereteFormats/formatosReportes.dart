@@ -35,11 +35,19 @@ class FormatosReportes {
       procedimientoIOT(paraph), // 12 : Intubación Endotraqueal
       procedimientoSOP(paraph), // 13 : Sonda Endopleural
       procedimientoTEN(paraph), // 14 : Catéter Temckhoff
+      //
+      reporteIngreso(paraph), // 0 : Ingreso
+      reporteIngreso(paraph), // 0 : Ingreso
+      reporteIngreso(paraph), // 0 : Ingreso
+      reporteIngreso(paraph), // 0 : Ingreso
+      reporteIngreso(paraph), // 0 : Ingreso
+      //
     ];
     print("FormatosReportes.indexOfReport! ${FormatosReportes.indexOfReport!}");
 
     if (withIndicationReport!) {
-      return list[9]; // Debe ser igual a indexOfTypeReport TypeReportes.indicacionesHospitalarias.
+      return list[
+          9]; // Debe ser igual a indexOfTypeReport TypeReportes.indicacionesHospitalarias.
     } else {
       switch (FormatosReportes.indexOfReport) {
         case TypeReportes.reporteIngreso:
@@ -72,6 +80,8 @@ class FormatosReportes {
           return list[13];
         case TypeReportes.procedimientoTenckoff:
           return list[14];
+        case TypeReportes.censoHospitalario:
+          return list[20];
         default:
           return list[1];
       }
@@ -160,7 +170,8 @@ class FormatosReportes {
     // ]));
     // # # # # # # ### # # # # # # ###
     parax.add(paragraphWithTittle(
-        titulo: "Padecimiento Actual", subTitulo: "${paraph['Padecimiento_Actual']}"));
+        titulo: "Padecimiento Actual",
+        subTitulo: "${paraph['Padecimiento_Actual']}"));
     // # # # # # # ### # # # # # # ###
     parax.add(
       paragraph(
@@ -271,9 +282,7 @@ class FormatosReportes {
       ),
     );
     // # # # # # # ### # # # # # # ###
-    parax.add(paragraph(texto:
-    paraph['Subjetivo']
-    ));
+    parax.add(paragraph(texto: paraph['Subjetivo']));
 
     // # # # # # # ### # # # # # # ###
     parax.add(
@@ -1432,12 +1441,11 @@ class FormatosReportes {
     );
 
     // # # # # # # ### # # # # # # ###
-    parax.add(paragraph(texto:
-        paraph['Eventualidades']
-    ));
+    parax.add(paragraph(texto: paraph['Eventualidades']));
     // # # # # # # ### # # # # # # ###
     parax.add(paragraphWithTittle(
-        titulo: "Exploración Física".toUpperCase(), subTitulo: "${paraph['Exploracion_Fisica']}"));
+        titulo: "Exploración Física".toUpperCase(),
+        subTitulo: "${paraph['Exploracion_Fisica']}"));
 
     parax.add(paragraph(
       texto: "${paraph['Analisis_Terapia']}",
@@ -1922,8 +1930,8 @@ class FormatosReportes {
     ];
     // # # # # # # ### # # # # # # ###
     // print("paraph['Oxigenoterapia'] ${paraph['Oxigenoterapia']}\n"
-       // "paraph['Insulinoterapia'] ${paraph['Insulinoterapia']}\n"
-       // "paraph['Hemoterapia'] ${paraph['Hemoterapia']}\n");
+    // "paraph['Insulinoterapia'] ${paraph['Insulinoterapia']}\n"
+    // "paraph['Hemoterapia'] ${paraph['Hemoterapia']}\n");
     // # # # # # # ### # # # # # # ###
     if (paraph['Hemoterapia'][0] != 'Sin reposicion sanguinea.') {
       tittles.insert(2, 'Hemoterapia y derivados');
@@ -2230,17 +2238,20 @@ class FormatosReportes {
     //
     // # # # # # # ### # # # # # # ###
     parax.add(paragraphWithTittle(
-        titulo: "Motivo del procedimiento", subTitulo: "${paraph['Motivo_Procedimiento']}"));
+        titulo: "Motivo del procedimiento",
+        subTitulo: "${paraph['Motivo_Procedimiento']}"));
     // # # # # # # ### # # # # # # ###
     parax.add(paragraphWithTittle(
-        titulo: "Descripción de la técnica", subTitulo: "${paraph['Procedimiento_Realizado']}"));
+        titulo: "Descripción de la técnica",
+        subTitulo: "${paraph['Procedimiento_Realizado']}"));
 
     // # # # # # # ### # # # # # # ###
     if (paraph['Complicaciones_Procedimiento'] != "") {
       parax.add(
         paragraphWithTittleAndSeparated(
           titulo: "",
-          subTitulo: "Complicaciones durante el procedimiento: ${paraph['Complicaciones_Procedimiento']}\n"
+          subTitulo:
+              "Complicaciones durante el procedimiento: ${paraph['Complicaciones_Procedimiento']}\n"
               "Pendientes del procedimiento: ${paraph['Pendientes_Procedimiento']}",
         ),
       );
@@ -2249,10 +2260,11 @@ class FormatosReportes {
     parax.add(
       footerParagraph(
           text:
-          "Med. Gral. Romero Pantoja Luis\nCed. Prof. 12210866\nMedicina General"),
+              "Med. Gral. Romero Pantoja Luis\nCed. Prof. 12210866\nMedicina General"),
     );
     return parax;
   }
+
   static List<Widget> procedimientoIOT(Map<String, dynamic> paraph) {
     String tipoReporte = "NOTA DE PROCEDIMIENTO\nINTUBACION ENDOTRAQUEAL";
     // Lista de apartados del documento. # # # # # # ### # # # # #  # ###
@@ -2301,17 +2313,20 @@ class FormatosReportes {
     //
     // # # # # # # ### # # # # # # ###
     parax.add(paragraphWithTittle(
-        titulo: "Motivo del procedimiento", subTitulo: "${paraph['Motivo_Procedimiento']}"));
+        titulo: "Motivo del procedimiento",
+        subTitulo: "${paraph['Motivo_Procedimiento']}"));
     // # # # # # # ### # # # # # # ###
     parax.add(paragraphWithTittle(
-        titulo: "Descripción de la técnica", subTitulo: "${paraph['Procedimiento_Realizado']}"));
+        titulo: "Descripción de la técnica",
+        subTitulo: "${paraph['Procedimiento_Realizado']}"));
 
     // # # # # # # ### # # # # # # ###
     if (paraph['Complicaciones_Procedimiento'] != "") {
       parax.add(
         paragraphWithTittleAndSeparated(
           titulo: "",
-          subTitulo: "Complicaciones durante el procedimiento: ${paraph['Complicaciones_Procedimiento']}\n"
+          subTitulo:
+              "Complicaciones durante el procedimiento: ${paraph['Complicaciones_Procedimiento']}\n"
               "Pendientes del procedimiento: ${paraph['Pendientes_Procedimiento']}",
         ),
       );
@@ -2320,10 +2335,11 @@ class FormatosReportes {
     parax.add(
       footerParagraph(
           text:
-          "Med. Gral. Romero Pantoja Luis\nCed. Prof. 12210866\nMedicina General"),
+              "Med. Gral. Romero Pantoja Luis\nCed. Prof. 12210866\nMedicina General"),
     );
     return parax;
   }
+
   static List<Widget> procedimientoSOP(Map<String, dynamic> paraph) {
     String tipoReporte = "NOTA DE PROCEDIMIENTO\nSONDA ENDOPLEURAL";
     // Lista de apartados del documento. # # # # # # ### # # # # #  # ###
@@ -2372,17 +2388,20 @@ class FormatosReportes {
     //
     // # # # # # # ### # # # # # # ###
     parax.add(paragraphWithTittle(
-        titulo: "Motivo del procedimiento", subTitulo: "${paraph['Motivo_Procedimiento']}"));
+        titulo: "Motivo del procedimiento",
+        subTitulo: "${paraph['Motivo_Procedimiento']}"));
     // # # # # # # ### # # # # # # ###
     parax.add(paragraphWithTittle(
-        titulo: "Descripción de la técnica", subTitulo: "${paraph['Procedimiento_Realizado']}"));
+        titulo: "Descripción de la técnica",
+        subTitulo: "${paraph['Procedimiento_Realizado']}"));
 
     // # # # # # # ### # # # # # # ###
     if (paraph['Complicaciones_Procedimiento'] != "") {
       parax.add(
         paragraphWithTittleAndSeparated(
           titulo: "",
-          subTitulo: "Complicaciones durante el procedimiento: ${paraph['Complicaciones_Procedimiento']}\n"
+          subTitulo:
+              "Complicaciones durante el procedimiento: ${paraph['Complicaciones_Procedimiento']}\n"
               "Pendientes del procedimiento: ${paraph['Pendientes_Procedimiento']}",
         ),
       );
@@ -2391,10 +2410,11 @@ class FormatosReportes {
     parax.add(
       footerParagraph(
           text:
-          "Med. Gral. Romero Pantoja Luis\nCed. Prof. 12210866\nMedicina General"),
+              "Med. Gral. Romero Pantoja Luis\nCed. Prof. 12210866\nMedicina General"),
     );
     return parax;
   }
+
   static List<Widget> procedimientoTEN(Map<String, dynamic> paraph) {
     String tipoReporte = "NOTA DE PROCEDIMIENTO\nCATÉTER TENCHKOFF";
     // Lista de apartados del documento. # # # # # # ### # # # # #  # ###
@@ -2443,17 +2463,20 @@ class FormatosReportes {
     //
     // # # # # # # ### # # # # # # ###
     parax.add(paragraphWithTittle(
-        titulo: "Motivo del procedimiento", subTitulo: "${paraph['Motivo_Procedimiento']}"));
+        titulo: "Motivo del procedimiento",
+        subTitulo: "${paraph['Motivo_Procedimiento']}"));
     // # # # # # # ### # # # # # # ###
     parax.add(paragraphWithTittle(
-        titulo: "Descripción de la técnica", subTitulo: "${paraph['Procedimiento_Realizado']}"));
+        titulo: "Descripción de la técnica",
+        subTitulo: "${paraph['Procedimiento_Realizado']}"));
 
     // # # # # # # ### # # # # # # ###
     if (paraph['Complicaciones_Procedimiento'] != "") {
       parax.add(
         paragraphWithTittleAndSeparated(
           titulo: "",
-          subTitulo: "Complicaciones durante el procedimiento: ${paraph['Complicaciones_Procedimiento']}\n"
+          subTitulo:
+              "Complicaciones durante el procedimiento: ${paraph['Complicaciones_Procedimiento']}\n"
               "Pendientes del procedimiento: ${paraph['Pendientes_Procedimiento']}",
         ),
       );
@@ -2462,11 +2485,124 @@ class FormatosReportes {
     parax.add(
       footerParagraph(
           text:
-          "Med. Gral. Romero Pantoja Luis\nCed. Prof. 12210866\nMedicina General"),
+              "Med. Gral. Romero Pantoja Luis\nCed. Prof. 12210866\nMedicina General"),
     );
     return parax;
   }
 
+  // Reportes de Censos Hospitalarios *********** ************ ***** ***
+  static List<Widget> censoHospitalario(List<dynamic> paraph) {
+    String tipoReporte = "CENSO HOSPITALARIO - MEDICINA INTERNA";
+    // Lista de apartados del documento. ***** ****** *********** *********
+    List<Widget> parax = [];
+
+    // Datos de Identificación del Paciente. . ***** ****** *********** *********
+    parax.add(Divider(color: PdfColors.black));
+    parax.add(Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Text(tipoReporte,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 8,
+              decoration: TextDecoration.underline,
+              fontWeight: FontWeight.bold)),
+    ]));
+    parax.add(Divider(color: PdfColors.black));
+    // # # # # # # ### # # # # # # ###
+    parax.add(
+      SizedBox(height: 4),
+    );
+    // Listado de Celdas. ***** ****** *********** *********
+    List<TableRow> censo = [];
+    censo.add(
+      TableRow(verticalAlignment: TableCellVerticalAlignment.middle, children: [
+        Padding(padding: const EdgeInsets.all(4.0), child: Container())
+      ]),
+    );
+    censo.add(
+      TableRow(
+        // decoration: BoxDecoration(padding: EdgeInsets.all(4.0)),
+        verticalAlignment: TableCellVerticalAlignment.middle,
+        children: [
+          textTittle("ID"),
+          textTittle("N.S.S."),
+          textTittle("Nombre(s) del Paciente"),
+          textTittle("Fecha de Ingreso"),
+          textTittle("D.E.H."),
+          textTittle("Médico Tratante"),
+          textTittle("Diagnóstico(s)"),
+          textTittle("Pendiente(s)"),
+        ],
+      ),
+    );
+    censo.add(
+      TableRow(verticalAlignment: TableCellVerticalAlignment.middle, children: [
+        Padding(padding: const EdgeInsets.all(4.0), child: Container())
+      ]),
+    );
+
+    int index = 1;
+    // Despliegue del listado . ***** ****** *********** *********
+    for (var item in paraph) {
+      print("item $item");
+      String penden = "", cronicos = "", diagos = "";
+      for (var i in item['Pendientes']) {
+        penden = "$penden${i['Pace_Desc_PEN']}\n";
+      }
+      for (var i in item['Cronicos']) {
+        // print("Cronicos $i");
+        cronicos = "$cronicos${i['Pace_APP_DEG']}\n";
+      }
+      for (var i in item['Diagnosticos']) {
+        // print("item $i");
+        diagos = "$diagos${i['Pace_APP_DEG']}\n";
+      }
+      censo.add(
+        TableRow(
+          verticalAlignment: TableCellVerticalAlignment.middle,
+          children: [
+            textLabel("$index"),
+            textLabel("${item['Pace_NSS']}\n${item['Pace_AGRE']}"),
+            textLabel("${item['Pace_Ape_Pat']} ${item['Pace_Ape_Mat']}"
+                " ${item['Pace_Nome_PI']} ${item['Pace_Nome_SE']}"),
+            textLabel("${item['Feca_INI_Hosp']}"),
+            textLabel("${item['Dia_Estan']}"),
+            textLabel("${item['Medi_Trat']}"),
+            textLabel("$cronicos$diagos"),
+            textLabel(penden),
+          ],
+        ),
+      );
+      index++;
+    }
+    // # # # # # # ### # # # # # # ###
+    parax.add(
+      Table(
+        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+        border: const TableBorder(
+          horizontalInside: BorderSide(width: 0.7),
+          left: BorderSide(width: 0.7),
+          right: BorderSide(width: 0.7),
+          top: BorderSide(width: 0.7),
+          bottom: BorderSide(width: 0.7),
+        ), //width: 0.7),
+        children: censo,
+      ),
+    );
+    // # # # # # # ### # # # # # # ###
+    parax.add(
+      SizedBox(height: 12),
+    );
+    // # # # # # # ### # # # # # # ###
+    //
+    // # # # # # # ### # # # # # # ###
+    parax.add(
+      footerParagraph(
+          text:
+              "Med. Gral. Romero Pantoja Luis\nCed. Prof. 12210866\nMedicina General"),
+    );
+    // # # # # # # ### # # # # # # ###
+    return parax;
+  }
 }
 
 enum TypeReportes {
@@ -2486,5 +2622,6 @@ enum TypeReportes {
   reportePreanestesica,
   reporteEgreso,
   reporteRevision,
-  reporteTraslado
+  reporteTraslado,
+  censoHospitalario
 }
