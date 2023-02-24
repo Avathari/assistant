@@ -43,7 +43,7 @@ class _ViewDocumentState extends State<ViewDocument> {
 
   void _showContextMenu(
       BuildContext context, PdfTextSelectionChangedDetails details) {
-    final OverlayState _overlayState = Overlay.of(context)!;
+    final OverlayState _overlayState = Overlay.of(context);
     _overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
         top: details.globalSelectedRegion!.center.dy - 55,

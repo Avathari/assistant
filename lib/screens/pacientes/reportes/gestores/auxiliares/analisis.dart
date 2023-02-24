@@ -2,6 +2,7 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Bibliotecarios.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
@@ -128,7 +129,7 @@ class _BibliograficoState extends State<Bibliografico> {
                       if (snapshot.hasError) print(snapshot.error);
                       return snapshot.hasData
                           ? GridView.builder(
-                          gridDelegate: GridViewTools.gridDelegate(crossAxisCount: 2),
+                          gridDelegate: GridViewTools.gridDelegate(crossAxisCount: isTablet(context) ? 1 : 2),
                               controller: ScrollController(),
                               shrinkWrap: true,
                               itemCount: snapshot.data == null

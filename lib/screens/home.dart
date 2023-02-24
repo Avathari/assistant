@@ -1,6 +1,7 @@
 import 'package:assistant/conexiones/actividades/Compuesto.dart';
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/screens/bibiliotecarios/bibliotecas.dart';
+import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizados.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/screens/usuarios/usuarios.dart';
 import 'package:assistant/values/SizingInfo.dart';
@@ -645,11 +646,12 @@ class PacientesPanel extends StatelessWidget {
               iconData: Icons.airline_seat_individual_suite_outlined,
               labelButton: "Pacientes Hospitalizados",
               onPress: () {
-                // toNextScreen(context: context, screen: const GestionPacientes());
-                Operadores.alertActivity(
-                    context: context,
-                    tittle: "Error",
-                    message: "Interfaz en contrucción");
+
+                toNextScreen(context: context, screen: Hospitalizados());
+                // Operadores.alertActivity(
+                //     context: context,
+                //     tittle: "Error",
+                //     message: "Interfaz en contrucción");
               },
             ),
             HomeButton(

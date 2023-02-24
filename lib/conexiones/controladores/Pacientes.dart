@@ -159,6 +159,58 @@ class Pacientes {
   }
 
   // static List? Imagenologias = [];
+  static Future pacientesHospitalizados() async {
+    List hospitalizaed = [];
+    List respuesta = [];
+    // ********** ************** ***********
+    Actividades.consultar(
+      Databases.siteground_database_regpace,
+      Pacientes.pacientes['consultHospitalized'],
+    ).then((response) async {
+      var ids = Listas.listFromMapWithOneKey(response, keySearched: 'ID_Pace');
+      for (var item in ids) {
+        hospitalizaed.add(await Actividades.consultarId(
+          Databases.siteground_database_reghosp,
+          "SELECT * FROM pace_hosp WHERE ID_Pace = ? "
+          "ORDER BY ID_Hosp ASC",
+          item,
+        ));
+      }
+      // ********** ************** ***********
+      for (var v = 0; v < response.length; v++) {
+        if (hospitalizaed[v].keys.contains('Error')) {
+          response[v].addAll({
+            "ID_Hosp": 0,
+            "Feca_INI_Hosp": '0000-00-00',
+            "Id_Cama": 'NA',
+            "Dia_Estan": 0,
+            "Medi_Trat": 'N/A',
+            "Serve_Trat": 'N/A',
+            "Serve_Trat_INI": 'N/A',
+            "Feca_EGE_Hosp": '0000-00-00',
+            "EGE_Motivo": ""
+          });
+          response[v].addAll({
+            "Pendientes": [],
+          });
+        } else {
+          response[v].addAll(hospitalizaed[v]);
+          response[v].addAll({
+            "Pendientes": await Actividades.consultarAllById(
+              Databases.siteground_database_reghosp,
+              "SELECT * FROM pace_pen WHERE ID_Pace = ? "
+              "AND ID_Hosp = '${hospitalizaed[v]['ID_Hosp']}' "
+              "AND Pace_PEN_realized = '1'",
+              response[v]['ID_Pace'],
+            )
+          });
+        }
+      }
+      // ********** ************** ***********
+      return response;
+      // ********** ************** ***********
+    });
+  }
 
   Pacientes(numeroPaciente, agregadoPaciente, primerNombre, segundoNombre,
       apellidoPaterno, apellidoMaterno, imagenUsuario) {
@@ -482,11 +534,10 @@ class Pacientes {
     if (Patologicos != []) {
       for (var element in Patologicos!) {
         if (Reportes.impresionesDiagnosticas == "") {
-          Reportes.impresionesDiagnosticas =
-          "${element['Pace_APP_DEG']}";
+          Reportes.impresionesDiagnosticas = "${element['Pace_APP_DEG']}";
         } else {
           Reportes.impresionesDiagnosticas =
-          "${Reportes.impresionesDiagnosticas}\n${element['Pace_APP_DEG']}\n";
+              "${Reportes.impresionesDiagnosticas}\n${element['Pace_APP_DEG']}\n";
         }
       }
     }
@@ -496,11 +547,10 @@ class Pacientes {
       for (var element in Diagnosticos!) {
         if (Reportes.impresionesDiagnosticas != "") {
           Reportes.impresionesDiagnosticas =
-          "${Reportes.impresionesDiagnosticas.substring(0, Reportes.impresionesDiagnosticas.length - 1)} \n"
+              "${Reportes.impresionesDiagnosticas.substring(0, Reportes.impresionesDiagnosticas.length - 1)} \n"
               "${element['Pace_APP_DEG']}";
         } else {
-          Reportes.impresionesDiagnosticas =
-          "${element['Pace_APP_DEG']}";
+          Reportes.impresionesDiagnosticas = "${element['Pace_APP_DEG']}";
         }
       }
     }
@@ -704,6 +754,22 @@ class Pacientes {
         "Pace_Orig_Muni, Pace_Orig_EntFed, Pace_Resi_Loca, Pace_Resi_Dur, "
         "Pace_Domi, Indi_Pace_SiNo, "
         "IndiIdio_Pace_SiNo, IndiIdio_Pace_Espe FROM pace_iden_iden WHERE ID_Pace = ?",
+    "consultHospitalized": "SELECT "
+        "ID_Pace, Pace_NSS, Pace_AGRE, "
+        "Pace_Nome_PI, Pace_Nome_SE, Pace_Ape_Pat, Pace_Ape_Mat, "
+        "Pace_UMF, Pace_Hosp_Real, Pace_Turo, "
+        "Pace_Feca_Hace, Pace_Hora_Hace, "
+        "Pace_Tele, Pace_Nace, Pace_Ses, Pace_Hosp, "
+        "Pace_Curp, Pace_RFC, Pace_Eda, Pace_Stat, "
+        "Pace_Ocupa, Pace_Edo_Civ, Pace_Reli, "
+        "Pace_Esco, Pace_Esco_COM, Pace_Esco_ESPE, "
+        "Pace_Orig_Muni, Pace_Orig_EntFed, "
+        "Pace_Resi_Loca, Pace_Resi_Dur, Pace_Domi, Indi_Pace_SiNo, "
+        "IndiIdio_Pace_SiNo, IndiIdio_Pace_Espe "
+        "FROM pace_iden_iden WHERE Pace_Hosp = '${Pacientes.Atencion[0]}' "
+        "ORDER BY ID_Pace ASC",
+    "consultConsulted":
+        "SELECT ID_Pace FROM pace_iden_iden WHERE Pace_Hosp = '${Pacientes.Atencion[1]}'",
     "consultImage": "SELECT Pace_FIAT FROM pace_iden_iden WHERE ID_Pace = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_iden_iden",
     "consultLastQuery": "SELECT * FROM pace_iden_iden ORDER BY ID_Pace DESC",
@@ -904,10 +970,11 @@ class Pacientes {
 
   static getImage() {
     Actividades.consultarId(Databases.siteground_database_regpace,
-        pacientes['consultImage'], Pacientes.ID_Paciente).then((value) {
-          // print("consultImage $value");
-          Pacientes.imagenPaciente = value['Pace_FIAT'];
-          Valores.imagenUsuario = value['Pace_FIAT'];
+            pacientes['consultImage'], Pacientes.ID_Paciente)
+        .then((value) {
+      // print("consultImage $value");
+      Pacientes.imagenPaciente = value['Pace_FIAT'];
+      Valores.imagenUsuario = value['Pace_FIAT'];
     });
   }
 
@@ -4767,6 +4834,9 @@ class Pendientes {
     "dropQuery": "DROP TABLE pace_pen",
     "consultQuery": "SELECT * FROM pace_pen",
     "consultIdQuery": "SELECT * FROM pace_pen WHERE ID_Hosp = ?",
+    "consultIdDoQuery": "SELECT * FROM pace_pen WHERE ID_Pace = ?"
+        "AND ID_Hosp = ? "
+        "AND Pace_PEN_realized = '1'",
     "consultByIdPrimaryQuery": "SELECT * FROM pace_pen WHERE ID_Pace = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_pen",
     "consultLastQuery":
@@ -5255,7 +5325,8 @@ class Hospitalizaciones {
     "showColumns": "SHOW columns FROM pace_hosp",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_hosp'",
-    "createQuery": """CREATE TABLE pace_hosp (
+    "createQuery": """
+    CREATE TABLE pace_hosp (
               ID_Hosp int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
               ID_Pace int(11) NOT NULL,
               Feca_INI_Hosp date NOT NULL,
@@ -5272,6 +5343,8 @@ class Hospitalizaciones {
     "dropQuery": "DROP TABLE pace_hosp",
     "consultQuery": "SELECT * FROM pace_hosp WHERE",
     "consultIdQuery": "SELECT * FROM pace_hosp WHERE ID_Pace = ?",
+    "consultIdLastQuery": "SELECT * FROM pace_hosp WHERE ID_Pace = ? "
+        "ORDER BY ID_Hosp DESC",
     "consultByIdPrimaryQuery": "SELECT * FROM pace_hosp WHERE ID_Hosp = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_hosp",
     "consultLastQuery":
@@ -5897,7 +5970,7 @@ class Licencias {
     // Filtro por estudio de los registros de Pacientes.Paraclinicos
     var aux = Pacientes.Licencias!
         .where((user) =>
-        user["Tipo_Estudio"].contains(Auxiliares.Categorias[indice!]))
+            user["Tipo_Estudio"].contains(Auxiliares.Categorias[indice!]))
         .toList();
     // Inicio del formato de la prosa.
     if (fechaActual == "") {
@@ -5911,10 +5984,10 @@ class Licencias {
       if (element['Fecha_Registro'] == fechaActual) {
         if (max == "") {
           max =
-          "${element['Estudio']} ${element['Resultado']} ${element['Unidad_Medida']}";
+              "${element['Estudio']} ${element['Resultado']} ${element['Unidad_Medida']}";
         } else {
           max =
-          "$max, ${element['Estudio']} ${element['Resultado']} ${element['Unidad_Medida']}";
+              "$max, ${element['Estudio']} ${element['Resultado']} ${element['Unidad_Medida']}";
         }
       }
     }
@@ -5951,10 +6024,12 @@ class Licencias {
     "truncateQuery": "TRUNCATE licen_med",
     "dropQuery": "DROP TABLE licen_med",
     "consultQuery": "SELECT * FROM licen_med",
-    "consultIdQuery": "SELECT * FROM licen_med WHERE ID_Pace = ? ORDER BY Fecha_Realizacion DESC",
+    "consultIdQuery":
+        "SELECT * FROM licen_med WHERE ID_Pace = ? ORDER BY Fecha_Realizacion DESC",
     "consultByIdPrimaryQuery": "SELECT * FROM licen_med WHERE ID_Pace = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM licen_med",
-    "consultLastQuery": "SELECT * FROM licen_med WHERE ID_Pace = ? ORDER BY Fecha_Realizacion ASC",
+    "consultLastQuery":
+        "SELECT * FROM licen_med WHERE ID_Pace = ? ORDER BY Fecha_Realizacion ASC",
     "consultByName": "SELECT * FROM licen_med WHERE Pace_APP_DEG LIKE '%",
     "registerQuery": "INSERT INTO licen_med (ID_Pace, Folio, Dias_Otorgados, "
         "Fecha_Realizacion, Fecha_Inicio, Fecha_Termino, "
