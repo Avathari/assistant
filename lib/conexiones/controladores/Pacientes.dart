@@ -161,7 +161,6 @@ class Pacientes {
   // static List? Imagenologias = [];
   static Future pacientesHospitalizados() async {
     List hospitalizaed = [];
-    List respuesta = [];
     // ********** ************** ***********
     Actividades.consultar(
       Databases.siteground_database_regpace,
@@ -5028,6 +5027,9 @@ class Reportes {
     pendientes = [''];
     citasMedicas = [''];
     recomendacionesGenerales = [''];
+
+    // *** * *** *** *** * ***
+    Hospitalizaciones.Hospitalizacion = {};
     // *** * *** *** *** * ***
 
     Pacientes.Patologicos = [];
@@ -5035,7 +5037,6 @@ class Reportes {
     Pacientes.Alergicos = [];
     Pacientes.Transfusionales = [];
     Pacientes.Traumatologicos = [];
-
     Pacientes.Vitales = [];
     Pacientes.Vital = {};
     Patologicos.Degenerativos = {};
@@ -5300,6 +5301,27 @@ class Hospitalizaciones {
   static Map<String, dynamic> Hospitalizacion = {};
 
   static List<String> actualDiagno = Opciones.horarios();
+
+  static fromJson( Map<String, dynamic> json) {
+    Pacientes.ID_Hospitalizacion = json['ID_Hosp'] ?? 0;
+    Hospitalizaciones.Hospitalizacion['ID_Hosp'] = Pacientes.ID_Hospitalizacion;
+    // ******************************************** *** *
+    Valores.fechaIngresoHospitalario = json['Feca_INI_Hosp'] ?? '';
+    Hospitalizaciones.Hospitalizacion['Feca_INI_Hosp'] = Valores.fechaIngresoHospitalario;
+    Valores.numeroCama = json['Id_Cama'] == null ? json['Id_Cama'] : 0;
+    Hospitalizaciones.Hospitalizacion['Id_Cama'] = Valores.numeroCama;
+    Valores.medicoTratante = json['Medi_Trat'] ?? '';
+    Hospitalizaciones.Hospitalizacion['Medi_Trat'] = Valores.medicoTratante;
+    Valores.servicioTratante = json['Serve_Trat'] ?? '';
+    Hospitalizaciones.Hospitalizacion['Serve_Trat'] = Valores.servicioTratante;
+    Valores.servicioTratanteInicial = json['Serve_Trat_INI'] ?? '';
+    Hospitalizaciones.Hospitalizacion['Serve_Trat_INI'] = Valores.servicioTratanteInicial;
+    Valores.fechaEgresoHospitalario = json['Feca_EGE_Hosp'] ?? '';
+    Hospitalizaciones.Hospitalizacion['Feca_EGE_Hosp'] = Valores.fechaEgresoHospitalario;
+    Valores.motivoEgreso = json['EGE_Motivo'] ?? '';
+    Hospitalizaciones.Hospitalizacion['EGE_Motivo'] = Valores.motivoEgreso;
+
+  }
 
   static void ultimoRegistro() {
     Actividades.consultarId(Databases.siteground_database_reghosp,

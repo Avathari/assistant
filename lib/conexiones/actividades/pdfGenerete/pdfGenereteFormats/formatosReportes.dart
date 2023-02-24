@@ -2,6 +2,7 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteComponents/PdfApiComponents.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:intl/intl.dart';
 
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
@@ -2497,37 +2498,52 @@ class FormatosReportes {
     List<Widget> parax = [];
 
     // Datos de Identificación del Paciente. . ***** ****** *********** *********
-    parax.add(Divider(color: PdfColors.black));
-    parax.add(Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Text(tipoReporte,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: 8,
-              decoration: TextDecoration.underline,
-              fontWeight: FontWeight.bold)),
-    ]));
-    parax.add(Divider(color: PdfColors.black));
-    // # # # # # # ### # # # # # # ###
     parax.add(
-      SizedBox(height: 4),
+      Table(
+        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+        border: const TableBorder(
+          horizontalInside: BorderSide(width: 0.7),
+          left: BorderSide(width: 0.7),
+          right: BorderSide(width: 0.7),
+          top: BorderSide(width: 0.7),
+          bottom: BorderSide(width: 0.7),
+        ), //width: 0.7),
+        children: [
+          TableRow(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              children: [
+                Container(
+                    child: textBoldTittle(
+                        "CENSO HOSPITALARIO - MEDICINA INTERNA")),
+              ]),
+          TableRow(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              children: [
+                Container(
+                  child: textTittle(
+                      "Fecha: ${Calendarios.today(format: 'dd/MM/yyyy')}",
+                      textAlign: TextAlign.right),
+                ),
+              ]),
+        ],
+      ),
     );
     // Listado de Celdas. ***** ****** *********** *********
     List<TableRow> censo = [];
-    censo.add(
-      TableRow(verticalAlignment: TableCellVerticalAlignment.middle, children: [
-        Padding(padding: const EdgeInsets.all(4.0), child: Container())
-      ]),
-    );
     censo.add(
       TableRow(
         // decoration: BoxDecoration(padding: EdgeInsets.all(4.0)),
         verticalAlignment: TableCellVerticalAlignment.middle,
         children: [
           textTittle("ID"),
+          textTittle("No Cama"),
           textTittle("N.S.S."),
           textTittle("Nombre(s) del Paciente"),
+          textTittle("Sexo"),
+          textTittle("Edad"),
           textTittle("Fecha de Ingreso"),
           textTittle("D.E.H."),
+          textTittle("Servicio Tratante"),
           textTittle("Médico Tratante"),
           textTittle("Diagnóstico(s)"),
           textTittle("Pendiente(s)"),
@@ -2561,11 +2577,15 @@ class FormatosReportes {
           verticalAlignment: TableCellVerticalAlignment.middle,
           children: [
             textLabel("$index"),
+            textLabel("${item['Id_Cama']}"),
             textLabel("${item['Pace_NSS']}\n${item['Pace_AGRE']}"),
             textLabel("${item['Pace_Ape_Pat']} ${item['Pace_Ape_Mat']}"
                 " ${item['Pace_Nome_PI']} ${item['Pace_Nome_SE']}"),
-            textLabel("${item['Feca_INI_Hosp']}"),
+            textLabel("${item['Pace_Ses']}"),
+            textLabel("${item['Pace_Eda']}"),
+            textLabel("${DateTime.now().difference(DateTime.parse(item['Feca_INI_Hosp'])).inDays}"),
             textLabel("${item['Dia_Estan']}"),
+            textLabel("${item['Serve_Trat']}"),
             textLabel("${item['Medi_Trat']}"),
             textLabel("$cronicos$diagos"),
             textLabel(penden),

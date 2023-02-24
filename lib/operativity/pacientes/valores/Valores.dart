@@ -29,9 +29,15 @@ class Valores {
   static int? edad, numeroCama;
   static bool? isHospitalizado;
 
-  static String folioLicencia = "", diasOtorgadosLicencia = "",fechaRealizacionLicencia = "",
-      fechaInicioLicencia = "",fechaTerminoLicencia = "", motivoLicencia = "",
-      caracterLicencia = "", lugarExpedicionLicencia = "", diagnosticoLicencia = "";
+  static String folioLicencia = "",
+      diasOtorgadosLicencia = "",
+      fechaRealizacionLicencia = "",
+      fechaInicioLicencia = "",
+      fechaTerminoLicencia = "",
+      motivoLicencia = "",
+      caracterLicencia = "",
+      lugarExpedicionLicencia = "",
+      diagnosticoLicencia = "";
   //
   static int get edadDesdeNacimiento {
     if (fechaNacimiento != '' && fechaNacimiento != null) {
@@ -317,12 +323,7 @@ class Valores {
       patronQRS = '',
       conclusionElectrocardiograma = '',
       fechaElectrocardiograma = '';
-  static int? intervaloRR, rV1,
-      sV6,
-      sV1,
-      rV6,
-      rAvL,
-      sV3;
+  static int? intervaloRR, rV1, sV6, sV1, rV6, rAvL, sV3;
   static double? duracionOndaP,
       alturaOndaP,
       duracionPR,
@@ -694,7 +695,8 @@ class Valores {
     sV3 = json['EC_sV3'] ?? 0;
     //
     patronQRS = json['PatronQRS'] ?? '';
-    deflexionIntrinsecoide = toDoubleFromInt(json: json, keyEntered: 'DeflexionIntrinsecoide');
+    deflexionIntrinsecoide =
+        toDoubleFromInt(json: json, keyEntered: 'DeflexionIntrinsecoide');
 
     rDI = toDoubleFromInt(json: json, keyEntered: 'EC_rDI');
     sDI = toDoubleFromInt(json: json, keyEntered: 'EC_sDI');
@@ -720,17 +722,24 @@ class Valores {
     presionPlateau = json['Pace_Pmet'] ?? 0;
     volumenTidal = toDoubleFromInt(json: json, keyEntered: 'Pace_Vt');
 
-    // Datos generales de la última Hospitalización.
+    // Datos generales de la última Hospitalización. **** ** *********** ****** * *** *
     Pacientes.ID_Hospitalizacion = json['ID_Hosp'] ?? 0;
+    Hospitalizaciones.Hospitalizacion['ID_Hosp'] = Pacientes.ID_Hospitalizacion;
     // ******************************************** *** *
     Valores.fechaIngresoHospitalario = json['Feca_INI_Hosp'] ?? '';
-    // Valores.diasEstancia = json['Dia_Estan'] == null ? json['Dia_Estan'] : 0;
+    Hospitalizaciones.Hospitalizacion['Feca_INI_Hosp'] = Valores.fechaIngresoHospitalario;
     Valores.numeroCama = json['Id_Cama'] == null ? json['Id_Cama'] : 0;
+    Hospitalizaciones.Hospitalizacion['Id_Cama'] = Valores.numeroCama;
     Valores.medicoTratante = json['Medi_Trat'] ?? '';
+    Hospitalizaciones.Hospitalizacion['Medi_Trat'] = Valores.medicoTratante;
     Valores.servicioTratante = json['Serve_Trat'] ?? '';
+    Hospitalizaciones.Hospitalizacion['Serve_Trat'] = Valores.servicioTratante;
     Valores.servicioTratanteInicial = json['Serve_Trat_INI'] ?? '';
+    Hospitalizaciones.Hospitalizacion['Serve_Trat_INI'] = Valores.servicioTratanteInicial;
     Valores.fechaEgresoHospitalario = json['Feca_EGE_Hosp'] ?? '';
+    Hospitalizaciones.Hospitalizacion['Feca_EGE_Hosp'] = Valores.fechaEgresoHospitalario;
     Valores.motivoEgreso = json['EGE_Motivo'] ?? '';
+    Hospitalizaciones.Hospitalizacion['EGE_Motivo'] = Valores.motivoEgreso;
 
     // print("Valores.gastoCardiaco ${Valores.gastoCardiaco}");
   }
@@ -3583,10 +3592,12 @@ class Items {
   ];
 }
 
-double toDoubleFromInt({required Map<String, dynamic> json, required String keyEntered}){
+double toDoubleFromInt(
+    {required Map<String, dynamic> json, required String keyEntered}) {
   return double.parse(
       json[keyEntered] != null ? json[keyEntered].toString() : '0');
 }
+
 isNull(value) {
   print("Is Value method : : ${value.runtimeType} \n"
       " : : : $value");
@@ -3611,4 +3622,3 @@ enum sitiosPuncionLumbar {
   const sitiosPuncionLumbar(this.sitio);
   final String sitio;
 }
-

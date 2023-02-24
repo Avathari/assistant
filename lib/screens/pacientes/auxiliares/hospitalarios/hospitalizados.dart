@@ -7,7 +7,6 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/home.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
-import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +35,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
   @override
   void initState() {
     print(" . . . Iniciando array ");
-    List hospitalizaed = [], diagos = [];
+    List hospitalizaed = [];
 // ********** ************** ***********
     Actividades.consultar(
       Databases.siteground_database_regpace,
@@ -102,8 +101,26 @@ class _HospitalizadosState extends State<Hospitalizados> {
         }
       }
       // ********** ************** ***********
+      List<String> order = [
+        'N/A',
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+        '10',
+      ];
+      foundedItems = response;
       setState(() {
-        foundedItems = response;
+        // foundedItems!.sort((a, b) => a["Id_Cama"].compareTo(b["Id_Cama"]));
+        foundedItems!.sort((a, b)  {
+          return order.indexOf(a['Id_Cama'].toString()) -
+              order.indexOf(b['Id_Cama'].toString());
+        });
       });
       // ********** ************** ***********
     });
@@ -148,6 +165,8 @@ class _HospitalizadosState extends State<Hospitalizados> {
               tooltip: "Imprimir cennso hospitalario",
               onPressed: () async {
                 final pdfFile = await PdfParagraphsApi.generateFromList(
+                  rightMargin: 10,
+                    leftMargin: 10,
                     withIndicationReport: false,
                     indexOfTypeReport: TypeReportes.censoHospitalario,
                     paraph: foundedItems!,
@@ -282,7 +301,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Expanded(
-                            flex: 2,
+                            flex: 1,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: CircleAvatar(
@@ -303,6 +322,19 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                 radius: 50,
                                 child: Text(
                                     snapshot.data[posicion]['ID_Hosp']
+                                        .toString(),
+                                    style: Styles.textSyleGrowth(fontSize: 18)),
+                              ),
+                            )),
+                        Expanded(
+                            flex: 1,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: CircleAvatar(
+                                backgroundColor: Colors.grey,
+                                radius: 50,
+                                child: Text(
+                                    snapshot.data[posicion]['Id_Cama']
                                         .toString(),
                                     style: Styles.textSyleGrowth(fontSize: 18)),
                               ),
@@ -359,7 +391,11 @@ class _HospitalizadosState extends State<Hospitalizados> {
                     color: Colors.grey,
                     icon: const Icon(Icons.update_rounded),
                     onPressed: () {
+                      Pacientes.ID_Paciente = snapshot.data[posicion]['ID_Pace'];
+                      Pacientes.Paciente = snapshot.data[posicion];
+                      print("Pacientes.ID_Paciente ${Pacientes.ID_Paciente}");
                       toVisual(context, Constantes.Update);
+                      // toOperaciones(context, posicion, snapshot, Constantes.Update);
                     },
                   ),
                   const SizedBox(

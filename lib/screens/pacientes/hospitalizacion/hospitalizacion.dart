@@ -80,6 +80,12 @@ class _OperacionesHospitalizacionesState
     servicioTratanteValue = auxiliarServicios[0];
     servicioTratanteInicialValue = auxiliarServicios[0];
     motivoEgresoValue = Escalas.motivosEgresos[0];
+
+    print("Pacientes.ID_Hospitalizacion ${Pacientes.ID_Hospitalizacion}");
+    if (Hospitalizaciones.Hospitalizacion['ID_Hosp'] == null ||
+        Pacientes.ID_Hospitalizacion == 0) {
+      widget.operationActivity = Constantes.Register;
+    }
     //
     switch (widget.operationActivity) {
       case Constantes.Nulo:
@@ -97,32 +103,35 @@ class _OperacionesHospitalizacionesState
           widget._operationButton = 'Actualizar';
           //
           idOperation = // Pacientes.ID_Hospitalizacion;
-          Hospitalizaciones.Hospitalizacion['ID_Hosp']; // Pacientes.ID_Hospitalizacion;
+              Hospitalizaciones
+                  .Hospitalizacion['ID_Hosp']; // Pacientes.ID_Hospitalizacion;
           fechaRealizacionTextController.text =
               // Valores.fechaIngresoHospitalario!;
-          Hospitalizaciones.Hospitalizacion['Feca_INI_Hosp'];
-          isNumCama = Hospitalizaciones.Hospitalizacion['Id_Cama'] == 0 // Valores.numeroCama
+              Hospitalizaciones.Hospitalizacion['Feca_INI_Hosp'];
+          isNumCama = Hospitalizaciones.Hospitalizacion['Id_Cama'] ==
+                  0 // Valores.numeroCama
               ? "N/A" // 1.toString()
               : // Valores.numeroCama.toString();
-          Hospitalizaciones.Hospitalizacion['Id_Cama'].toString();
+              Hospitalizaciones.Hospitalizacion['Id_Cama'].toString();
 
-          fechaIngresoTextController.text = // Valores.fechaIngresoHospitalario!;
-          Hospitalizaciones.Hospitalizacion['Feca_INI_Hosp'].toString();
+          fechaIngresoTextController
+                  .text = // Valores.fechaIngresoHospitalario!;
+              Hospitalizaciones.Hospitalizacion['Feca_INI_Hosp'].toString();
           fechaEgresoTextController.text = // Valores.fechaEgresoHospitalario!;
-           Hospitalizaciones.Hospitalizacion['Feca_EGE_Hosp'].toString();
-          diasEstanciaTextController.text = // Valores.diasEstancia.toString();
-           Hospitalizaciones.Hospitalizacion['Dia_Estan'].toString();
+              Hospitalizaciones.Hospitalizacion['Feca_EGE_Hosp'].toString();
+          diasEstanciaTextController.text = Valores.diasEstancia.toString();
+              // Hospitalizaciones.Hospitalizacion['Dia_Estan'].toString();
           medicoTratanteTextController.text = // Valores.medicoTratante!;
-           Hospitalizaciones.Hospitalizacion['Medi_Trat'].toString();
+              Hospitalizaciones.Hospitalizacion['Medi_Trat'].toString();
 
           servicioTratanteValue = // Valores.servicioTratante!;
-           Hospitalizaciones.Hospitalizacion['Serve_Trat'].toString();
+              Hospitalizaciones.Hospitalizacion['Serve_Trat'].toString();
           servicioTratanteInicialValue = // Valores.servicioTratanteInicial!;
-          Hospitalizaciones.Hospitalizacion['Serve_Trat_INI'].toString();
+              Hospitalizaciones.Hospitalizacion['Serve_Trat_INI'].toString();
           motivoEgresoValue = Valores.motivoEgreso != ''
-              ? Hospitalizaciones.Hospitalizacion['EGE_Motivo'].toString() // Valores.motivoEgreso
+              ? Hospitalizaciones.Hospitalizacion['EGE_Motivo']
+                  .toString() // Valores.motivoEgreso
               : Escalas.motivosEgresos[0];
-
         });
         super.initState();
         break;
@@ -166,7 +175,7 @@ class _OperacionesHospitalizacionesState
               child: Container(
                 decoration: ContainerDecoration.roundedDecoration(),
                 child: GrandButton(
-                  weigth: 2000,
+                    weigth: 2000,
                     labelButton: widget._operationButton,
                     onPress: () {
                       operationMethod(context);
@@ -640,7 +649,8 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Ingreso: \n${snapshot.data[posicion]['Feca_INI_Hosp']}",
+                        Text(
+                            "Ingreso: \n${snapshot.data[posicion]['Feca_INI_Hosp']}",
                             style: Styles.textSyleGrowth(fontSize: 16)),
                         Text(
                           "Servicio: ${snapshot.data[posicion]['Serve_Trat']}",
@@ -718,8 +728,8 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
   void onSelected(AsyncSnapshot<dynamic> snapshot, int posicion,
       BuildContext context, String operaciones) {
     Hospitalizaciones.Hospitalizacion = snapshot.data[posicion];
-    // Hospitalizaciones.selectedDiagnosis = Hospitalizaciones.hospitalizacion['Pace_APP_ALE'];
     Pacientes.Hospitalizaciones = snapshot.data;
+    Hospitalizaciones.fromJson(snapshot.data[posicion]);
     //
     toOperaciones(context, operaciones);
   }
