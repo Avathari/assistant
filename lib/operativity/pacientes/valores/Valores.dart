@@ -564,6 +564,16 @@ class Valores {
         'reportes/';
 
     // Actualización de las Directrices Complementarias ********** ***********
+    Eticos.fileAssocieted ="${Pacientes.localRepositoryPath}eticos.json"; // Eticos.registrarRegistro(); // Si
+    Viviendas.fileAssocieted = "${Pacientes.localRepositoryPath}viviendas.json"; // Viviendas.registrarRegistro(); // Si
+    Higienes.fileAssocieted = "${Pacientes.localRepositoryPath}higienicos.json"; // Higienes.registrarRegistro(); // Si
+    Diarios.fileAssocieted = "${Pacientes.localRepositoryPath}diarios.json"; // Diarios.registrarRegistro();
+   Alimenticios.fileAssocieted = "${Pacientes.localRepositoryPath}alimenticios.json"; // Alimenticios.registrarRegistro(); // Si
+    Limitaciones.fileAssocieted = "${Pacientes.localRepositoryPath}limitaciones.json"; // Limitaciones.registrarRegistro(); // Si
+    Sustancias.fileAssocieted = "${Pacientes.localRepositoryPath}exposiciones.json"; // Sustancias.registrarRegistro();
+
+    Toxicomanias.fileAssocieted = "${Pacientes.localRepositoryPath}toxicomanias.json"; // Toxicomanias.registrarRegistro();
+    //
     Vitales.fileAssocieted = '${Pacientes.localRepositoryPath}vitales.json';
     Auxiliares.fileAssocieted = '${Pacientes.localRepositoryPath}paraclinicos.json';
     Imagenologias.fileAssocieted = '${Pacientes.localRepositoryPath}imagenologicos.json';

@@ -1220,6 +1220,17 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           Actividades.registrar(Databases.siteground_database_regpace,
                   registerQuery, listOfValues!)
               .then((value) {
+            // Registro de Antecedentes No Patológicos ******** ******** ********
+            // Eticos.registrarRegistro(); // Si
+            // Viviendas.registrarRegistro(); // Si
+            // Higienes.registrarRegistro(); // Si
+            // Diarios.registrarRegistro();
+            // Alimenticios.registrarRegistro(); // Si
+            // Limitaciones.registrarRegistro();
+            // Sustancias.registrarRegistro();
+            //
+            // Toxicomanias.consultarRegistro();
+            // ******** ******** ********
             reiniciar().then((value) {
               Operadores.alertActivity(
                   context: context,
