@@ -156,6 +156,7 @@ class _GestionToxicomaniasState extends State<GestionToxicomanias> {
           tittle: 'Error al actualizar los registros',
           message: '$ex');
     } finally {
+
       toNextScreen(context: context, screen: VisualPacientes(actualPage: 2));
     }
   }

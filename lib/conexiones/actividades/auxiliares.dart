@@ -217,7 +217,7 @@ class Archivos {
     }
   }
 
-  static deleteFile({required filePath}) async {
+  static Future deleteFile({required filePath}) async {
     if (Platform.isAndroid) {
       final directory = await getTemporaryDirectory();
       final File file = File("${directory.path}/$filePath");

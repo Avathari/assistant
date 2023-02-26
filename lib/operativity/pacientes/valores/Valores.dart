@@ -191,16 +191,16 @@ class Valores {
       intervaloAlcoholismo = Items.periodicidad[0],
       aosSuspensionAlcoholismo = '',
       tiposAlcoholismo = Items.tiposAlcoholes[0],
-      tiposAlcoholismoDescripcion = '';
+      tiposAlcoholismoDescripcion = 'Alcoholes';
 
   static bool? esTabaquismo = false, suspensionTabaquismo = false;
   static String? edadInicioTabaquismo = '',
       duracionAnosTabaquismo = '',
       periodicidadTabaquismo = '',
-      intervaloTabaquismo = Items.periodicidad[0],
+      intervaloTabaquismo = Items.periodicidad[0], //'Días'
       aosSuspensionTabaquismo = '',
       tiposTabaquismo = Items.tiposTabacos[0],
-      tiposTabaquismoDescripcion = '';
+      tiposTabaquismoDescripcion = 'Tabacos';
 
   static bool? esDrogadismo = false, suspensionDrogadismo = false;
   static String? edadInicioDrogadismo = '',
@@ -209,7 +209,7 @@ class Valores {
       intervaloDrogadismo = Items.periodicidad[0],
       aosSuspensionDrogadismo = '',
       tiposDrogadismo = Items.tiposDrogas[0],
-      tiposDrogadismoDescripcion = '';
+      tiposDrogadismoDescripcion = 'Drogas';
 
   static int get diasEstancia {
     if (fechaIngresoHospitalario != '' && fechaIngresoHospitalario != null) {

@@ -207,10 +207,15 @@ class _GestionNoPatologicosState extends State<GestionNoPatologicos> {
           tittle: 'Error al actualizar los registros',
           message: '$ex');
     } finally {
-      // Operadores.alertActivity(
-      //     context: context,
-      //     tittle: 'Actualización de registros',
-      //     message: 'Registros Actualizaados');
+      // Consulta de Antecedentes No Patológicos **** ***** ******* ****
+      patients.Eticos.consultarRegistro();
+      patients.Viviendas.consultarRegistro();
+      patients.Higienes.consultarRegistro();
+      patients.Diarios.consultarRegistro();
+      patients.Alimenticios.consultarRegistro();
+      patients.Limitaciones.consultarRegistro();
+      patients.Sustancias.consultarRegistro();
+
       toNextScreen(context: context, screen: VisualPacientes(actualPage: 2));
     }
   }

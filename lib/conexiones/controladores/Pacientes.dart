@@ -242,6 +242,7 @@ class Pacientes {
     localReportsPath = 'assets/vault/'
         '$nombreCompleto/'
         'reportes/';
+
   }
 
   // Prosas y apartados literales en la formación de las Actividades.
@@ -1223,7 +1224,17 @@ class Eticos {
         Eticos.ID_Eticos,
       ],
       Eticos.ID_Eticos,
-    );
+    ).then((value) {
+      Terminal.printAlert(
+          message:
+          "RESPUESTA al Actualizar Eticos - $value "); // ${listOfValues.length}
+      if (value == "SUCCESS" || value == '"SUCCESS"') {
+        Terminal.printOther(message: "Actualización $value - Eliminando $fileAssocieted");
+        Archivos.deleteFile(filePath: fileAssocieted).then((value) => consultarRegistro());
+      }
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(message: "ERROR al registrar Eticos - $error");
+    });
   }
 
   static void registrarRegistro() {
@@ -1250,7 +1261,7 @@ class Eticos {
         consultarRegistro();
       }
     }).onError((error, stackTrace) {
-      Terminal.printAlert(message: "ERROR al registrar Eticos - $error");
+      Terminal.printAlert(message: "ERROR al actualizar Eticos - $error");
     });
   }
 
@@ -1632,9 +1643,20 @@ class Viviendas {
         Valores.viviendaParvada,
         Valores.viviendaCantidadParvada,
         // *********************************
+        Viviendas.ID_Viviendas,
       ],
       Viviendas.ID_Viviendas,
-    );
+    ).then((value) {
+      Terminal.printAlert(
+          message:
+          "RESPUESTA al Actualizar Viviendas - $value "); // ${listOfValues.length}
+      if (value == "SUCCESS" || value == '"SUCCESS"') {
+        Terminal.printOther(message: "Actualización $value - Eliminando $fileAssocieted");
+        Archivos.deleteFile(filePath: fileAssocieted).then((value) => consultarRegistro());
+      }
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(message: "ERROR al actualizar Viviendas - $error");
+    });
   }
 
   static void registrarRegistro() {
@@ -1801,24 +1823,32 @@ class Viviendas {
         "?,?,?,?,?,?,?,?,?,?,"
         "?,?,?,?)", // 44 :
     "updateQuery": "UPDATE pace_apnp_hys "
-        "SET ID_PACE_HYS = ?, ID_Pace = ?, Pace_APNP_HYS_Feca = ?, Pace_APNP_HYS_Hab_ = "
-        "?, Pace_APNP_HYS_Ser_ele = ?, Pace_APNP_HYS_Ser_agu = ?, Pace_APNP_HYS_Ser_alc "
-        "= ?, Pace_APNP_HYS_Ser_dre = ?, Pace_APNP_HYS_Sed_len = ?, "
-        "Pace_APNP_HYS_Sed_est = ?, Pace_APNP_HYS_Sed_tel = ?, Pace_APNP_HYS_Tes_pa = ?, "
-        "Pace_APNP_HYS_Tes_ma = ?, Pace_APNP_HYS_Tes_ho = ?, Pace_APNP_HYS_Tes_hi = ?, "
-        "Pace_APNP_HYS_Tes_ot = ?, REGE_Pace_APNP_HYS_Tes_ot = ?, Pace_APNP_HYS_Coh_pis = "
-        "?, Pace_APNP_HYS_Coh_tec = ?, Pace_APNP_HYS_Coh_pad = ?, Pace_APNP_HYS_Coh_sal "
-        "= ?, Pace_APNP_HYS_Coh_ban = ?, Pace_APNP_HYS_Coh_sac = ?, "
-        "Pace_APNP_HYS_Coh_cua = ?, Pace_APNP_HYS_Coe_ = ?, Pace_APNP_HYS_Coe_pad = ?, "
-        "Pace_APNP_HYS_Coe_pat = ?, Pace_APNP_HYS_Coe_core = ?, Pace_APNP_HYS_vac = ?, "
-        "REGE_Pace_APNP_HYS_vac = ?, Pace_APNP_HYS_ovi = ?, REGE_Pace_APNP_HYS_ovi = ?, "
-        "Pace_APNP_HYS_por = ?, REGE_Pace_APNP_HYS_por = ?, Pace_APNP_HYS_avi = ?, "
-        "REGE_Pace_APNP_HYS_avi = ?, Pace_APNP_HYS_Coe_coma = ?, Pace_APNP_HYS_Coe_can = "
-        "?, REGE_Pace_APNP_HYS_Coe_can = ?, Pace_APNP_HYS_Coe_rep = ?, "
-        "REGE_Pace_APNP_HYS_Coe_rep = ?, Pace_APNP_HYS_Coe_fel = ?, "
-        "REGE_Pace_APNP_HYS_Coe_fel = ?, Pace_APNP_HYS_Coe_avi = ?, "
-        "REGE_Pace_APNP_HYS_Coe_avi = ? "
-        "WHERE ID_PACE_HYS = ?",
+        "SET ID_PACE_HYS = ?, ID_Pace = ?, Pace_APNP_HYS_Feca = ?, "
+        "Pace_APNP_HYS_Hab_ = ?, "
+        "Pace_APNP_HYS_Ser_ele = ?, Pace_APNP_HYS_Ser_agu = ?, "
+        "Pace_APNP_HYS_Ser_alc = ?, Pace_APNP_HYS_Ser_dre = ?, "
+        "Pace_APNP_HYS_Sed_len = ?, Pace_APNP_HYS_Sed_est = ?, "
+        "Pace_APNP_HYS_Sed_tel = ?, "
+        "Pace_APNP_HYS_Tes_pa = ?, Pace_APNP_HYS_Tes_ma = ?, "
+        "Pace_APNP_HYS_Tes_ho = ?, Pace_APNP_HYS_Tes_hi = ?, "
+        "Pace_APNP_HYS_Tes_ot = ?, REGE_Pace_APNP_HYS_Tes_ot = ?, "
+        "Pace_APNP_HYS_Coh_pis = ?, Pace_APNP_HYS_Coh_tec = ?, "
+        "Pace_APNP_HYS_Coh_pad = ?, "
+        "Pace_APNP_HYS_Coh_sal = ?, Pace_APNP_HYS_Coh_ban = ?, "
+        "Pace_APNP_HYS_Coh_sac = ?, Pace_APNP_HYS_Coh_cua = ?, "
+        "Pace_APNP_HYS_Coe_ = ?, "
+        "Pace_APNP_HYS_Coe_pad = ?, Pace_APNP_HYS_Coe_pat = ?, "
+        "Pace_APNP_HYS_Coe_core = ?, "
+        "Pace_APNP_HYS_vac = ?, REGE_Pace_APNP_HYS_vac = ?, "
+        "Pace_APNP_HYS_ovi = ?, REGE_Pace_APNP_HYS_ovi = ?, "
+        "Pace_APNP_HYS_por = ?, REGE_Pace_APNP_HYS_por = ?, "
+        "Pace_APNP_HYS_avi = ?, REGE_Pace_APNP_HYS_avi = ?, "
+        "Pace_APNP_HYS_Coe_coma = ?, "
+        "Pace_APNP_HYS_Coe_can = ?, REGE_Pace_APNP_HYS_Coe_can = ?, "
+        "Pace_APNP_HYS_Coe_rep = ?, REGE_Pace_APNP_HYS_Coe_rep = ?, "
+        "Pace_APNP_HYS_Coe_fel = ?, REGE_Pace_APNP_HYS_Coe_fel = ?, "
+        "Pace_APNP_HYS_Coe_avi = ?, REGE_Pace_APNP_HYS_Coe_avi = ? "
+        "WHERE ID_PACE_HYS = ?", // 45
     "deleteQuery": "DELETE FROM pace_apnp_hys WHERE ID_pace_apnp_hys = ?",
     "viviendasColumns": [
       "ID_Pace",
@@ -1950,7 +1980,17 @@ class Alimenticios {
         Alimenticios.ID_Alimenticios,
       ],
       Alimenticios.ID_Alimenticios,
-    );
+    ).then((value) {
+      Terminal.printAlert(
+          message:
+          "RESPUESTA al Actualizar Alimenticios - $value "); // ${listOfValues.length}
+      if (value == "SUCCESS" || value == '"SUCCESS"') {
+        Terminal.printOther(message: "Actualización $value - Eliminando $fileAssocieted");
+        Archivos.deleteFile(filePath: fileAssocieted).then((value) => consultarRegistro());
+      }
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(message: "ERROR al actualizar Alimenticios - $error");
+    });
   }
 
   static void registrarRegistro() {
@@ -2186,7 +2226,17 @@ class Diarios {
         Diarios.ID_Diarios,
       ],
       Diarios.ID_Diarios,
-    );
+    ).then((value) {
+      Terminal.printAlert(
+          message:
+          "RESPUESTA al Actualizar Diarios - $value "); // ${listOfValues.length}
+      if (value == "SUCCESS" || value == '"SUCCESS"') {
+        Terminal.printOther(message: "Actualización $value - Eliminando $fileAssocieted");
+        Archivos.deleteFile(filePath: fileAssocieted).then((value) => consultarRegistro());
+      }
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(message: "ERROR al actualizar Diarios - $error");
+    });
   }
 
   static void registrarRegistro() {
@@ -2376,6 +2426,7 @@ class Higienes {
       [
         Higienes.ID_Higienes,
         Pacientes.ID_Paciente,
+        Calendarios.today(format: 'yyyy/MM/dd'),
         // ********* ******** ******* ********* ***
         Valores.banoCorporal,
         Valores.banoCorporalDescripcion,
@@ -2389,7 +2440,17 @@ class Higienes {
         Higienes.ID_Higienes,
       ],
       Higienes.ID_Higienes,
-    );
+    ).then((value) {
+      Terminal.printAlert(
+          message:
+          "RESPUESTA al Actualizar Higienes - $value "); // ${listOfValues.length}
+      if (value == "SUCCESS" || value == '"SUCCESS"') {
+        Terminal.printOther(message: "Actualización $value - Eliminando $fileAssocieted");
+        Archivos.deleteFile(filePath: fileAssocieted).then((value) => consultarRegistro());
+      }
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(message: "ERROR al actualizar Higienes - $error");
+    });
   }
 
   static void registrarRegistro() {
@@ -2398,6 +2459,7 @@ class Higienes {
       Higienes.higienes['registerQuery'],
       [
         Pacientes.ID_Paciente,
+        Calendarios.today(format: 'yyyy/MM/dd'),
         // ********* ******** ******* ********* ***
         Valores.banoCorporal,
         Valores.banoCorporalDescripcion,
@@ -2579,6 +2641,7 @@ class Limitaciones {
       [
         Limitaciones.ID_Limitaciones,
         Pacientes.ID_Paciente,
+        Calendarios.today(format: 'yyyy/MM/dd'),
         // ********* ******** ******* ********* ***
         Valores.usoLentes,
         Valores.usoLentesDescripcion,
@@ -2596,7 +2659,17 @@ class Limitaciones {
         Limitaciones.ID_Limitaciones,
       ],
       Limitaciones.ID_Limitaciones,
-    );
+    ).then((value) {
+      Terminal.printAlert(
+          message:
+          "RESPUESTA al Actualizar Limitaciones - $value "); // ${listOfValues.length}
+      if (value == "SUCCESS" || value == '"SUCCESS"') {
+        Terminal.printOther(message: "Actualización $value - Eliminando $fileAssocieted");
+        Archivos.deleteFile(filePath: fileAssocieted).then((value) => consultarRegistro());
+      }
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(message: "ERROR al actualizar Limitaciones - $error");
+    });
   }
 
   static void registrarRegistro() {
@@ -2795,6 +2868,7 @@ class Sustancias {
       [
         Sustancias.ID_Sustancias,
         Pacientes.ID_Paciente,
+        Calendarios.today(format: 'yyyy/MM/dd'),
         // ********* ******** ******* ********* ***
         Valores.exposicionBiomasa,
         Valores.exposicionBiomasaDescripcion,
@@ -2807,10 +2881,20 @@ class Sustancias {
         Valores.exposicionPsicotropicos,
         Valores.exposicionPsicotropicosDescripcion,
         // ********* ******** ******* ********* ***
-        Sustancias.ID_Sustancias,
+        // Sustancias.ID_Sustancias,
       ],
       Sustancias.ID_Sustancias,
-    );
+    ).then((value) {
+      Terminal.printAlert(
+          message:
+          "RESPUESTA al Actualizar Sustancias - $value "); // ${listOfValues.length}
+      if (value == "SUCCESS" || value == '"SUCCESS"') {
+        Terminal.printOther(message: "Actualización $value - Eliminando $fileAssocieted");
+        Archivos.deleteFile(filePath: fileAssocieted).then((value) => consultarRegistro());
+      }
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(message: "ERROR al actualizar Sustancias - $error");
+    });
   }
 
   static void registrarRegistro() {
@@ -2890,7 +2974,8 @@ class Sustancias {
   "Pace_APNP_SUS_psi_SINO, Pace_APNP_SUS_psi_DESC) "
         "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
     "updateQuery": "UPDATE pace_apnp_sus "
-        "SET Pace_APNP_SUS_len_SINO = ?, Pace_APNP_SUS_len_DESC = ?, "
+        "SET ID_Pace = ?, Pace_APNP_SUS_Feca = ?, "
+        "Pace_APNP_SUS_len_SINO = ?, Pace_APNP_SUS_len_DESC = ?, "
         "Pace_APNP_SUS_qui_SINO = ?, Pace_APNP_SUS_qui_DESC = ?, "
         "Pace_APNP_SUS_pes_SINO = ?, Pace_APNP_SUS_pes_DESC = ?, "
         "Pace_APNP_SUS_met_SINO = ?, Pace_APNP_SUS_met_DESC = ?, "
@@ -3099,7 +3184,18 @@ class Toxicomanias {
         Toxicomanias.ID_Toxicomanias,
       ],
       Toxicomanias.ID_Toxicomanias,
-    );
+    ).then((value) {
+      Terminal.printAlert(
+          message:
+          "RESPUESTA al Actualizar Toxicomanias - $value "); // ${listOfValues.length}
+      if (value == "SUCCESS" || value == '"SUCCESS"') {
+        Terminal.printOther(message: "Actualización $value - Eliminando $fileAssocieted");
+        Archivos.deleteFile(filePath: fileAssocieted).then((value) => consultarRegistro());
+
+      }
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(message: "ERROR al actualizar Toxicomanias - $error");
+    });
   }
 
   static void registrarRegistro() {
@@ -3111,31 +3207,32 @@ class Toxicomanias {
         Calendarios.today(format: 'yyyy/MM/dd'),
         // ********* ******** ******* ********* ***
         Valores.esAlcoholismo,
-        Valores.suspensionAlcoholismo,
         Valores.edadInicioAlcoholismo,
         Valores.duracionAnosAlcoholismo,
         Valores.periodicidadAlcoholismo,
         Valores.intervaloAlcoholismo,
+        Valores.suspensionAlcoholismo,
         Valores.aosSuspensionAlcoholismo,
         Valores.tiposAlcoholismoDescripcion,
         // ********* ******** ******* ********* ***
         Valores.esTabaquismo,
-        Valores.suspensionTabaquismo,
         Valores.edadInicioTabaquismo,
         Valores.duracionAnosTabaquismo,
         Valores.periodicidadTabaquismo,
         Valores.intervaloTabaquismo,
+        Valores.suspensionTabaquismo,
         Valores.aosSuspensionTabaquismo,
         Valores.tiposTabaquismoDescripcion,
         // ********* ******** ******* ********* ***
         Valores.esDrogadismo,
-        Valores.suspensionDrogadismo,
         Valores.edadInicioDrogadismo,
         Valores.duracionAnosDrogadismo,
         Valores.periodicidadDrogadismo,
         Valores.intervaloDrogadismo,
+        Valores.suspensionDrogadismo,
         Valores.aosSuspensionDrogadismo,
         Valores.tiposDrogadismoDescripcion,
+        // ********* ******** ******* ********* ***
       ],
     ).then((value) {
       Terminal.printAlert(

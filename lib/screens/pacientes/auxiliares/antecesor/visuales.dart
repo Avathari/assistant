@@ -34,6 +34,11 @@ class VisualPacientes extends StatefulWidget {
 class _VisualPacientesState extends State<VisualPacientes> {
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,

@@ -177,7 +177,6 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                           snapshot.data[posicion]['ID_Pace'];
                                       Pacientes.Paciente =
                                           snapshot.data[posicion];
-
                                       setState(() {
                                         Pacientes.fromJson(
                                             snapshot.data[posicion]);
@@ -186,6 +185,16 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                         message:
                                             "Nombre conformado ${Pacientes.nombreCompleto}",
                                       );
+                                      // Consulta de Antecedentes No Patológicos **** ***** ******* **** 
+                                      Eticos.consultarRegistro();
+                                      Viviendas.consultarRegistro();
+                                      Higienes.consultarRegistro();
+                                      Diarios.consultarRegistro();
+                                      Alimenticios.consultarRegistro();
+                                      Limitaciones.consultarRegistro();
+                                      Sustancias.consultarRegistro();
+
+                                      Toxicomanias.consultarRegistro();
 
                                       toVisual(context, Constantes.Update);
                                     },
@@ -448,7 +457,6 @@ class _GestionPacientesState extends State<GestionPacientes> {
 
   void toVisual(BuildContext context, String operationActivity) async {
     //
-
     Archivos.readJsonToMap(filePath: Pacientes.localPath).then((value) {
       Pacientes.Paciente = value[0];
       setState(() {
@@ -459,10 +467,21 @@ class _GestionPacientesState extends State<GestionPacientes> {
       //
       Terminal.printData(
           message: 'Nombre obtenido ${Pacientes.nombreCompleto}\n'
-              '\tLocal ${Pacientes.localPath}\n'
-              '\tRepository ${Pacientes.localRepositoryPath}\n'
-              '\tReports ${Pacientes.localReportsPath}\n'
-              '\tReports ${Electrocardiogramas.fileAssocieted}\n');
+              '\t Local ${Pacientes.localPath}\n'
+              '\t Repository ${Pacientes.localRepositoryPath}\n'
+              '\t Reports ${Pacientes.localReportsPath}\n'
+              '\t Eticos ${Eticos.fileAssocieted}\n'
+              '\t Viviendas ${Viviendas.fileAssocieted}\n'
+              '\t Alimenticios ${Alimenticios.fileAssocieted}\n'
+              '\t Diarios ${Diarios.fileAssocieted}\n'
+              '\t Higienes ${Higienes.fileAssocieted}\n'
+              '\t Limitaciones ${Limitaciones.fileAssocieted}\n'
+              '\t Sustancias ${Sustancias.fileAssocieted}\n'
+              '\t Toxicomanias ${Toxicomanias.fileAssocieted}\n'
+              '\t Vitales ${Vitales.fileAssocieted}\n'
+              '\t Auxiliares ${Auxiliares.fileAssocieted}\n'
+              '\t Imagenologias ${Imagenologias.fileAssocieted}\n'
+              '\t Electrocardiogramas ${Electrocardiogramas.fileAssocieted}\n');
 
       Navigator.of(context).push(
         MaterialPageRoute(
@@ -1221,13 +1240,13 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                   registerQuery, listOfValues!)
               .then((value) {
             // Registro de Antecedentes No Patológicos ******** ******** ********
-            // Eticos.registrarRegistro(); // Si
-            // Viviendas.registrarRegistro(); // Si
-            // Higienes.registrarRegistro(); // Si
-            // Diarios.registrarRegistro();
-            // Alimenticios.registrarRegistro(); // Si
-            // Limitaciones.registrarRegistro();
-            // Sustancias.registrarRegistro();
+            Eticos.registrarRegistro(); // Si
+            Viviendas.registrarRegistro(); // Si
+            Higienes.registrarRegistro(); // Si
+            Diarios.registrarRegistro(); // Si
+            Alimenticios.registrarRegistro(); // Si
+            Limitaciones.registrarRegistro(); // Si
+            Sustancias.registrarRegistro(); // Si
             //
             // Toxicomanias.consultarRegistro();
             // ******** ******** ********
