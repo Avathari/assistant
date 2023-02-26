@@ -22,6 +22,8 @@ class EditTextArea extends StatefulWidget {
 
   IconData? iconData = Icons.person;
 
+  var iconColor;
+
     EditTextArea(
       {Key? key,
       this.labelEditText,
@@ -37,7 +39,8 @@ class EditTextArea extends StatefulWidget {
       this.onSelected,
       this.onChange,
       this.withShowOption = false,
-      this.iconData})
+      this.iconData,
+      this.iconColor = Colors.white})
       : super(key: key) {
     inputFormat = MaskTextInputFormatter();
     keyBoardType = TextInputType.multiline;
@@ -78,7 +81,7 @@ class _EditTextAreaState extends State<EditTextArea> {
                 prefix: widget.prefixIcon == true
                     ? Icon(
                         widget.iconData,
-                        color: Colors.white,
+                        color: widget.iconColor,
                       )
                     : null,
                 helperStyle: const TextStyle(
@@ -115,7 +118,7 @@ class _EditTextAreaState extends State<EditTextArea> {
                   child: Tooltip(
                     message: "Ver",
                     child: IconButton(
-                        icon: Icon(widget.iconData, color: Colors.grey,),
+                        icon: Icon(widget.iconData, color: widget.iconColor,),
                         onPressed: widget.selection
                             ? widget.onSelected
                             : () {

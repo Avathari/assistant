@@ -999,6 +999,10 @@ class Pacientes {
     Pacientes.ID_Paciente = 0;
     Pacientes.nombreCompleto = "";
     Pacientes.imagenPaciente = "";
+// ******* *** *******
+    localPath = '';
+    localRepositoryPath = '';
+    localReportsPath = '';
     // ******* *** *******
     Pacientes.esHospitalizado = false;
     // ******* *** *******
@@ -3962,13 +3966,16 @@ static var fileAssocieted = '${Pacientes.localRepositoryPath}vitales.json';
           .then((value) {
         int index = 0;
         for (var item in result) {
-          var thirdMap = {};
-          thirdMap.addAll(item);
-          thirdMap.addAll(value[index]);
-
-          // Adición a Vitales ********** ************ ************** ********
-          Pacientes.Vitales!.add(thirdMap);
-          index++;
+          if (index <= result.length ){
+            var thirdMap = {};
+            // print("${value.length} ${result.length}");
+            // print("${value[index]['ID_Pace_SV']} ${item['ID_Pace_SV']}");
+            thirdMap.addAll(item);
+            thirdMap.addAll(value[index]);
+            // Adición a Vitales ********** ************ ************** ********
+            Pacientes.Vitales!.add(thirdMap);
+            index++;
+          }
         }
         Terminal.printExpected(message: "${Pacientes.Vitales!}");
         Archivos.createJsonFromMap(Pacientes.Vitales!, filePath: fileAssocieted);
@@ -4296,6 +4303,9 @@ static var fileAssocieted = '${Pacientes.localRepositoryPath}vitales.json';
 }
 
 class Electrocardiogramas {
+  static   var fileAssocieted =
+      '${Pacientes.localRepositoryPath}/electrocardiogramas.json';
+
   static final Map<String, dynamic> electrocardiogramas = {
     "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_reggabo "
         "DEFAULT CHARACTER SET utf8 "
@@ -4717,7 +4727,7 @@ class Auxiliares {
     Categorias[5]: [""],
     Categorias[6]: [""],
     Categorias[7]: [""],
-    Categorias[8]: [""],
+    Categorias[8]: ["ng/dL", ""],
     Categorias[9]: ["", "mmHg", "cmH20", "mmol/L"],
     Categorias[10]: ["", "mmHg", "cmH20", "mmol/L"],
     Categorias[11]: [""],

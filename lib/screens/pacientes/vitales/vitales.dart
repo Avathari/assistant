@@ -280,13 +280,16 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
           .then((value) {
         int index = 0;
         for (var item in result) {
-          var thirdMap = {};
-          thirdMap.addAll(item);
-          thirdMap.addAll(value[index]);
-
-          // Adición a Vitales ********** ************ ************** ********
-          Pacientes.Vitales!.add(thirdMap);
-          index++;
+          if (index <= result.length ){
+            var thirdMap = {};
+            // print("${value.length} ${result.length}");
+            // print("${value[index]['ID_Pace_SV']} ${item['ID_Pace_SV']}");
+            thirdMap.addAll(item);
+            thirdMap.addAll(value[index]);
+            // Adición a Vitales ********** ************ ************** ********
+            Pacientes.Vitales!.add(thirdMap);
+            index++;
+          }
         }
         setState(() {
           Terminal.printSuccess(
@@ -684,11 +687,6 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
 
       switch (widget.operationActivity) {
         case Constantes.Nulo:
-          // listOfFirstValues!.removeAt(0);
-          // listOfFirstValues!.removeLast();
-          //
-          // Actividades.registrar(Databases.siteground_database_regpace,
-          //     registerQueryvitales!, listOfFirstValues!.removeLast());
           break;
         case Constantes.Consult:
           break;
@@ -771,6 +769,7 @@ class GestionVitales extends StatefulWidget {
 }
 
 class _GestionVitalesState extends State<GestionVitales> {
+
   var fileAssocieted = Vitales.fileAssocieted;
 
   @override
@@ -946,13 +945,16 @@ class _GestionVitalesState extends State<GestionVitales> {
             .then((value) {
           int index = 0;
           for (var item in result) {
-            var thirdMap = {};
-            thirdMap.addAll(item);
-            thirdMap.addAll(value[index]);
-
-            // Adición a Vitales ********** ************ ************** ********
-            Pacientes.Vitales!.add(thirdMap);
-            index++;
+            if (index <= result.length ){
+              var thirdMap = {};
+              // print("${value.length} ${result.length}");
+              // print("${value[index]['ID_Pace_SV']} ${item['ID_Pace_SV']}");
+              thirdMap.addAll(item);
+              thirdMap.addAll(value[index]);
+              // Adición a Vitales ********** ************ ************** ********
+              Pacientes.Vitales!.add(thirdMap);
+              index++;
+            }
           }
           setState(() {
             Terminal.printSuccess(

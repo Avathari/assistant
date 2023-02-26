@@ -230,7 +230,7 @@ class Archivos {
       final file = File(filePath);
       if (await file.exists()) {
         file.delete(recursive: true);
-        throw "\x1B[35mEl Archivo FUE ELIMINADO\x1B[0m";
+        // throw "\x1B[35mEl Archivo FUE ELIMINADO\x1B[0m";
       } else {
         throw "\x1B[31mEl Archivo no Existe\x1B[0m";
       }

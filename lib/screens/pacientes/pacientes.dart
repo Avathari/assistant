@@ -448,9 +448,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
 
   void toVisual(BuildContext context, String operationActivity) async {
     //
-    Terminal.printData(
-        message: 'Nombre obtenido ${Pacientes.nombreCompleto}\n'
-            '${Pacientes.localPath}');
+
     Archivos.readJsonToMap(filePath: Pacientes.localPath).then((value) {
       Pacientes.Paciente = value[0];
       setState(() {
@@ -458,6 +456,13 @@ class _GestionPacientesState extends State<GestionPacientes> {
       });
       Terminal.printSuccess(message: 'Archivo ${Pacientes.localPath} Obtenido');
       Valores.fromJson(value[0]);
+      //
+      Terminal.printData(
+          message: 'Nombre obtenido ${Pacientes.nombreCompleto}\n'
+              '\tLocal ${Pacientes.localPath}\n'
+              '\tRepository ${Pacientes.localRepositoryPath}\n'
+              '\tReports ${Pacientes.localReportsPath}\n'
+              '\tReports ${Electrocardiogramas.fileAssocieted}\n');
 
       Navigator.of(context).push(
         MaterialPageRoute(
@@ -514,7 +519,6 @@ class _GestionPacientesState extends State<GestionPacientes> {
       });
     }
   }
-  
 }
 
 class OperacionesPacientes extends StatefulWidget {
@@ -846,25 +850,27 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
   }
 
   void returnGestion(BuildContext context) {
-    switch (widget.operationActivity) {
-      case Constantes.Nulo:
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const GestionPacientes()));
-        break;
-      case Constantes.Consult:
-        break;
-      case Constantes.Register:
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const GestionPacientes()));
-        break;
-      case Constantes.Update:
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => VisualPacientes(actualPage: 0)));
-        break;
-      default:
-    }
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const GestionPacientes()));
+    // switch (widget.operationActivity) {
+    //   case Constantes.Nulo:
+    //     Navigator.push(context,
+    //         MaterialPageRoute(builder: (context) => const GestionPacientes()));
+    //     break;
+    //   case Constantes.Consult:
+    //     break;
+    //   case Constantes.Register:
+    //     Navigator.push(context,
+    //         MaterialPageRoute(builder: (context) => const GestionPacientes()));
+    //     break;
+    //   case Constantes.Update:
+    //     Navigator.push(
+    //         context,
+    //         MaterialPageRoute(
+    //             builder: (context) => VisualPacientes(actualPage: 0)));
+    //     break;
+    //   default:
+    // }
   }
 
   choiseFromCamara() async {
@@ -1213,20 +1219,43 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
 
           Actividades.registrar(Databases.siteground_database_regpace,
                   registerQuery, listOfValues!)
-              .then((value) => returnGestion(context));
+              .then((value) {
+            reiniciar().then((value) {
+              Operadores.alertActivity(
+                  context: context,
+                  tittle: "Registro de los Valores",
+                  message: 'El registro del paciente fue agregado',
+                  onAcept: () {
+                    returnGestion(context);
+                    // Navigator.of(context).pop();
+                  });
+            });
+          });
           break;
         case Constantes.Update:
           Actividades.actualizar(Databases.siteground_database_regpace,
                   updateQuery, listOfValues!, idOperation)
-              .then((value) => Actividades.consultarId(
-                          Databases.siteground_database_regpace,
-                          consultIdQuery,
-                          idOperation)
-                      .then((value) {
-                    // print("Imagen paciente ${value['Pace_FIAT']}");
-                    img = value['Pace_FIAT'];
-                    Pacientes.Paciente = value;
-                  }).then((value) => returnGestion(context)));
+              .then((value) {
+            reiniciar().then((value) {
+              Operadores.alertActivity(
+                  context: context,
+                  tittle: "Actualización de los Valores",
+                  message: 'El registro del paciente fue Actualizado',
+                  onAcept: () {
+                      returnGestion(context);
+                      // Navigator.of(context).pop();
+                  });
+            });
+          });
+          // .then((value) => Actividades.consultarId(
+          //             Databases.siteground_database_regpace,
+          //             consultIdQuery,
+          //             idOperation)
+          //         .then((value) {
+          //       // print("Imagen paciente ${value['Pace_FIAT']}");
+          //       img = value['Pace_FIAT'];
+          //       Pacientes.Paciente = value;
+          //     }).then((value) => returnGestion(context)));
           break;
         default:
       }
@@ -1241,6 +1270,14 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
     } finally {
       // returnGestion(context);
     }
+  }
+
+  Future<void> reiniciar() async {
+    Archivos.deleteFile(filePath: Pacientes.localPath);
+    var fileAssocieted = 'assets/vault/pacientesRepository.json';
+    Terminal.printWarning(
+        message: " . . . Reiniciando Actividad - Repositorio de Pacientes");
+    Archivos.deleteFile(filePath: fileAssocieted);
   }
 
   // VARIABLES

@@ -6,6 +6,7 @@ import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/conmutadorParaclinicos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/paraclinicos.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
@@ -50,7 +51,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
       setState(() {
         values = value;
         Terminal.printSuccess(
-            message: 'Repositorio Paraclinicos del Pacientes Obtenido$values');
+            message: 'Repositorio Paraclinicos del Pacientes Obtenido');
       });
     }).onError((error, stackTrace) {
       final f = DateFormat('yyyy-MM-dd');
@@ -239,6 +240,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                             numOfLines: 1,
                             selection: true,
                             withShowOption: true,
+                            iconData: Icons.calendar_month,
                             onSelected: () {
                               Operadores.selectOptionsActivity(
                                   context: context,
@@ -480,33 +482,83 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
               numOfLines: 1,
               textController: textDateEstudyController,
               keyBoardType: TextInputType.datetime,
+              withShowOption: true,
+              selection: true,
+              iconData: Icons.calculate_outlined,
+              onSelected: () {
+                setState(() {
+                  textDateEstudyController.text =
+                      Calendarios.today(format: "yyyy/MM/dd");
+                });
+              },
               inputFormat: MaskTextInputFormatter(
                   mask: '####/##/##',
                   filter: {"#": RegExp(r'[0-9]')},
                   type: MaskAutoCompletionType.lazy),
             ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: Spinner(
+                      width: isTabletAndDesktop(context) ? 190 : 220,
+                      // 90
+                      tittle: "Tipo de Estudio",
+                      initialValue: tipoEstudioValue!,
+                      items: Auxiliares.Categorias,
+                      onChangeValue: (String? newValue) {
+                        setState(() {
+                          tipoEstudioValue = newValue!;
+                          // *************** *********** **************
+                          // Actualización del Indice
+                          // *************** *********** **************
+                          index = Auxiliares.Categorias.indexOf(newValue);
+                          // *************** *********** **************
+                          estudioValue = Auxiliares
+                              .Laboratorios[Auxiliares.Categorias[index]][0];
+                          unidadMedidaValue = Auxiliares
+                              .Medidas[Auxiliares.Categorias[index]][0];
+                          // *************** *********** **************
+                        });
+                      }),
+                ),
+                Expanded(
+                    child: GrandIcon(
+                  labelButton: "Agregar por Categoría",
+                  iconData: Icons.list_alt,
+                  onPress: () {
+                    Operadores.selectOptionsActivity(
+                        context: context,
+                        tittle: 'Seleccione un Tipo de Estudio',
+                        options: Auxiliares.Categorias,
+                        onClose: (value) {
+                          setState(() {
+                            tipoEstudioValue = value!;
+                            // *************** *********** **************
+                            // Actualización del Indice
+                            // *************** *********** **************
+                            index = Auxiliares.Categorias.indexOf(value);
+                            // *************** *********** **************
+                            estudioValue = Auxiliares
+                                .Laboratorios[Auxiliares.Categorias[index]][0];
+                            unidadMedidaValue = Auxiliares
+                                .Medidas[Auxiliares.Categorias[index]][0];
+                            // *************** *********** **************
+                            Navigator.of(context).pop();
+                          });
+                          Operadores.openDialog(
+                              context: context,
+                              chyldrim: ConmutadorParaclinicos(
+                                categoriaEstudio: value,
+                              ));
+                        });
+                  },
+                )),
+              ],
+            ),
             Spinner(
-                width: isTabletAndDesktop(context) ? 190 : 170, // 90
-                tittle: "Tipo de Estudio",
-                initialValue: tipoEstudioValue!,
-                items: Auxiliares.Categorias,
-                onChangeValue: (String? newValue) {
-                  setState(() {
-                    tipoEstudioValue = newValue!;
-                    // *************** *********** **************
-                    // Actualización del Indice
-                    // *************** *********** **************
-                    index = Auxiliares.Categorias.indexOf(newValue);
-                    // *************** *********** **************
-                    estudioValue = Auxiliares
-                        .Laboratorios[Auxiliares.Categorias[index]][0];
-                    unidadMedidaValue =
-                        Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
-                    // *************** *********** **************
-                  });
-                }),
-            Spinner(
-                width: isTabletAndDesktop(context) ? 120 : 170, // 90
+                width: isTabletAndDesktop(context) ? 120 : 170,
+                // 90
                 tittle: "Estudio",
                 initialValue: estudioValue!,
                 items: Auxiliares.Laboratorios[tipoEstudioValue],
@@ -524,7 +576,8 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
               numOfLines: 1,
             ),
             Spinner(
-                width: isTabletAndDesktop(context) ? 120 : 170, // 90
+                width: isTabletAndDesktop(context) ? 120 : 170,
+                // 90
                 tittle: "Unidad de Medida",
                 initialValue: unidadMedidaValue!,
                 items: Auxiliares.Medidas[tipoEstudioValue],
@@ -607,7 +660,8 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                       type: MaskAutoCompletionType.lazy),
                 ),
                 Spinner(
-                    width: isTabletAndDesktop(context) ? 190 : 170, // 90
+                    width: isTabletAndDesktop(context) ? 190 : 170,
+                    // 90
                     tittle: "Tipo de Estudio",
                     initialValue: tipoEstudioValue!,
                     items: Auxiliares.Categorias,
@@ -627,7 +681,8 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                       });
                     }),
                 Spinner(
-                    width: isTabletAndDesktop(context) ? 120 : 170, // 90
+                    width: isTabletAndDesktop(context) ? 120 : 170,
+                    // 90
                     tittle: "Estudio",
                     initialValue: estudioValue!,
                     items: Auxiliares.Laboratorios[tipoEstudioValue],
@@ -782,6 +837,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
   String? tipoEstudioValue = Auxiliares.Categorias[0];
   String? estudioValue = Auxiliares.Laboratorios[Auxiliares.Categorias[0]][0];
   String? unidadMedidaValue = Auxiliares.Medidas[Auxiliares.Categorias[0]][0];
+
   // ############################ ####### ####### #############################
   late List? values = [];
 
@@ -802,17 +858,18 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
         Auxiliares.auxiliares['registerQuery'],
         aux,
       ).then((value) {
-        Operadores.alertActivity(
-            context: context,
-            tittle: "Registro de los Valores",
-            message: 'Los registros fueron agregados');
         reiniciar().then((value) {
-          setState(() {
-            carouselController.jumpToPage(0);
-          });
+          Operadores.alertActivity(
+              context: context,
+              tittle: "Registro de los Valores",
+              message: 'Los registros fueron agregados',
+              onAcept: () {
+                setState(() {
+                  carouselController.jumpToPage(0);
+                  Navigator.of(context).pop();
+                });
+              });
         });
-        // Navigator.of(context).push(MaterialPageRoute(
-        //     builder: (context) => VisualPacientes(actualPage: 5)));
       });
     } else {
       Actividades.actualizar(
@@ -821,17 +878,18 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
               listOfValues(),
               idOperacion!)
           .then((value) {
-        Operadores.alertActivity(
-            context: context,
-            tittle: "Actualizacion de los Valores",
-            message: 'Los registros fueron Actualizados');
         reiniciar().then((value) {
-          setState(() {
-            carouselController.jumpToPage(0);
-          });
+          Operadores.alertActivity(
+              context: context,
+              tittle: "Actualizacion de los Valores",
+              message: 'Los registros fueron Actualizados',
+              onAcept: () {
+                setState(() {
+                  carouselController.jumpToPage(0);
+                  Navigator.of(context).pop();
+                });
+              });
         });
-        // Navigator.of(context).push(MaterialPageRoute(
-        //     builder: (context) => VisualPacientes(actualPage: 5)));
       });
     }
   }

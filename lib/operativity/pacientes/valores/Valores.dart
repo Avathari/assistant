@@ -552,7 +552,22 @@ class Valores {
     // Pacientes.imagenPaciente = json['Pace_FIAT'];
     json.addAll({'Pace_FIAT': ''});
 
+    // Actualización de las Directrices ********** ***********
     Pacientes.nombreCompleto = Valores.nombreCompleto;
+    Pacientes.localPath = 'assets/vault/'
+        '${Pacientes.nombreCompleto}/'
+        '${Pacientes.nombreCompleto}.json';
+    Pacientes.localRepositoryPath = 'assets/vault/'
+        '${Pacientes.nombreCompleto}/';
+    Pacientes.localReportsPath = 'assets/vault/'
+        '${Pacientes.nombreCompleto}/'
+        'reportes/';
+
+    // Actualización de las Directrices Complementarias ********** ***********
+    Vitales.fileAssocieted = '${Pacientes.localRepositoryPath}vitales.json';
+    Auxiliares.fileAssocieted = '${Pacientes.localRepositoryPath}paraclinicos.json';
+    Imagenologias.fileAssocieted = '${Pacientes.localRepositoryPath}imagenologicos.json';
+    Electrocardiogramas.fileAssocieted = '${Pacientes.localRepositoryPath}electrocardiogramas.json';
     //
     edad = json['Pace_Eda']; // int.parse();
     sexo = json['Pace_Ses'];
