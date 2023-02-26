@@ -1,3 +1,5 @@
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 
 import 'package:assistant/widgets/TittlePanel.dart';
@@ -12,8 +14,34 @@ class Degenerativos extends StatefulWidget {
 
 class _DegenerativosState extends State<Degenerativos> {
 
+  var fileAssocieted = Patologicos.fileAssocieted;
+  
   @override
   void initState() {
+    Terminal.printWarning(
+        message: " . . . Iniciando Actividad - Antecedentes Degenerativos");
+    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+      setState(() {
+        Pacientes.Patologicos = value;
+      });
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(
+          message: "Iniciando actividad : : \n "
+              "Consulta de Antecedentes Degenerativos . . .");
+      Actividades.consultarAllById(
+          Databases.siteground_database_regpace,
+          Patologicos.patologicos['consultByIdPrimaryQuery'],
+          Pacientes.ID_Paciente)
+          .then((value) {
+        setState(() {
+          Terminal.printSuccess(
+              message: "Actualizando Antecedentes Degenerativos del paciente . . . ");
+          Pacientes.Patologicos = value;
+          Archivos.createJsonFromMap(Pacientes.Patologicos!, filePath: fileAssocieted);
+        });
+      });
+    });
+    Terminal.printWarning(message: " . . . Actividad Iniciada");
     super.initState();
   }
 

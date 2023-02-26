@@ -1,9 +1,11 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/detalles/detalles.dart';
 import 'package:assistant/screens/pacientes/auxiliares/detalles/estadisticasVitales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/diagnosticos/degenerativos.dart';
+import 'package:assistant/screens/pacientes/auxiliares/diagnosticos/diagnosticos.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/actividadesHospitalarias.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizado.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';
@@ -20,9 +22,12 @@ import 'package:flutter/material.dart';
 
 class Dashboard extends StatefulWidget {
   List<List> dymValues = [
-    ['0','0','0','0','0','0'],
-    ['0','0','0','0','0','0'],
-    ['0','0','0','0','0','0'],
+    ["0000/00/00", 0, 0, 0, 0, 0, 0],
+    ["0000/00/00", 0, 0, 0, 0, 0, 0],
+    ["0000/00/00", 0, 0, 0, 0, 0, 0],
+    ["0000/00/00", 0, 0, 0, 0, 0, 0],
+    ["0000/00/00", 0, 0, 0, 0, 0, 0],
+    ["0000/00/00", 0, 0, 0, 0, 0, 0],
   ];
   List tittles = [
     'T. Sistólica',
@@ -40,6 +45,8 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  var fileAssocieted = '${Pacientes.localRepositoryPath}vitales.json';
+
   @override
   void initState() {
     //
@@ -63,8 +70,33 @@ class _DashboardState extends State<Dashboard> {
     } else {
       widget.dymValues.insert(0, ["0000/00/00", 0, 0, 0, 0, 0, 0]);
     }
-
     super.initState();
+  }
+
+  void iniciar() {
+    Terminal.printWarning(
+        message: " . . . Iniciando Actividad - Repositorio de Pacientes");
+    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+      setState(() {
+        Pacientes.Vitales = value;
+      });
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(
+          message: "Iniciando actividad : : \n "
+              "Consulta de pacientes hospitalizados . . .");
+      Actividades.consultarAllById(Databases.siteground_database_regpace,
+              Vitales.vitales['consultIdQuery'], Pacientes.ID_Paciente)
+          .then((value) {
+        setState(() {
+          Terminal.printSuccess(
+              message: "Actualizando repositorio de pacientes . . . ");
+          Pacientes.Vitales = value;
+          Archivos.createJsonFromMap(Pacientes.Vitales!,
+              filePath: fileAssocieted);
+        });
+      });
+    });
+    Terminal.printWarning(message: " . . . Actividad Iniciada");
   }
 
   @override
@@ -97,9 +129,14 @@ class _DashboardState extends State<Dashboard> {
           ),
           const SizedBox(height: 6),
           Expanded(
-              child: RoundedPanel(
-                  child: const Degenerativos()
-                  )),
+            child: Row(
+              children: [
+                Expanded(child: RoundedPanel(child: const Degenerativos())),
+                const SizedBox(width: 6),
+                Expanded(child: RoundedPanel(child: const Diagnosis())),
+              ],
+            ),
+          ),
           const SizedBox(height: 6),
           Expanded(
               child: RoundedPanel(

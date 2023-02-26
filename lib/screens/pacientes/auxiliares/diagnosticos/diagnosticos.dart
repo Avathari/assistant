@@ -1,18 +1,49 @@
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';
 
-class Diagnosticos extends StatefulWidget {
-  const Diagnosticos({super.key});
+class Diagnosis extends StatefulWidget {
+  const Diagnosis({super.key});
 
   @override
-  State<Diagnosticos> createState() => _DiagnosticosState();
+  State<Diagnosis> createState() => _DiagnosisState();
 }
 
-class _DiagnosticosState extends State<Diagnosticos> {
+class _DiagnosisState extends State<Diagnosis> {
+
+  var fileAssocieted = Diagnosticos.fileAssocieted;
+
   @override
   void initState() {
+    Terminal.printWarning(
+        message: " . . . Iniciando Actividad - Antecedentes Degenerativos");
+    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+      setState(() {
+        Pacientes.Diagnosticos = value;
+        Terminal.printSuccess(
+            message: "Diagnósticos de la hospitalizacion del paciente . . . ");
+      });
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(
+          message: "Iniciando actividad : : \n "
+              "Consulta de Antecedentes Degenerativos . . .");
+      Actividades.consultarAllById(
+          Databases.siteground_database_reghosp,
+          Diagnosticos.diagnosticos['consultByIdPrimaryQuery'],
+          Pacientes.ID_Paciente)
+          .then((value) {
+        setState(() {
+          Terminal.printSuccess(
+              message: "Actualizando Diagnósticos de la hospitalizacion del paciente . . . ");
+          Pacientes.Diagnosticos = value;
+          Archivos.createJsonFromMap(Pacientes.Diagnosticos!, filePath: fileAssocieted);
+        });
+      });
+    });
+    Terminal.printWarning(message: " . . . Actividad Iniciada");
     super.initState();
   }
 

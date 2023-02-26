@@ -37,7 +37,6 @@ class GestionPacientes extends StatefulWidget {
 }
 
 class _GestionPacientesState extends State<GestionPacientes> {
-
   late List? foundedItems = [];
   var gestionScrollController = ScrollController();
   var searchTextController = TextEditingController();
@@ -45,7 +44,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
   String searchCriteria = "Buscar por Apellido";
 
   var fileAssocieted = 'assets/vault/pacientesRepository.json';
-  
+
   @override
   void initState() {
     iniciar();
@@ -174,14 +173,18 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                   padding: const EdgeInsets.all(2.0),
                                   child: GestureDetector(
                                     onTap: () {
-                                      Pacientes.ID_Paciente = snapshot.data[posicion]['ID_Pace'];
-                                      Pacientes.Paciente = snapshot.data[posicion];
+                                      Pacientes.ID_Paciente =
+                                          snapshot.data[posicion]['ID_Pace'];
+                                      Pacientes.Paciente =
+                                          snapshot.data[posicion];
 
                                       setState(() {
-                                        Pacientes.fromJson(snapshot.data[posicion]);
+                                        Pacientes.fromJson(
+                                            snapshot.data[posicion]);
                                       });
                                       Terminal.printNotice(
-                                          message: "Nombre conformado ${Pacientes.nombreCompleto}",
+                                        message:
+                                            "Nombre conformado ${Pacientes.nombreCompleto}",
                                       );
 
                                       toVisual(context, Constantes.Update);
@@ -201,9 +204,11 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                         backgroundColor:
                                                             Colors.grey,
                                                         radius: 50,
-                                                        child: Icon(Icons.person,
-                                                        size: 75.0,
-                                                        color: Colors.black,)),
+                                                        child: Icon(
+                                                          Icons.person,
+                                                          size: 75.0,
+                                                          color: Colors.black,
+                                                        )),
                                                   ],
                                                 ),
                                                 const SizedBox(
@@ -402,7 +407,8 @@ class _GestionPacientesState extends State<GestionPacientes> {
   }
 
   void iniciar() {
-    Terminal.printWarning(message: " . . . Iniciando Actividad - Repositorio de Pacientes");
+    Terminal.printWarning(
+        message: " . . . Iniciando Actividad - Repositorio de Pacientes");
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       setState(() {
         foundedItems = value;
@@ -412,7 +418,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
           message: "Iniciando actividad : : \n "
               "Consulta de pacientes hospitalizados . . .");
       Actividades.consultar(Databases.siteground_database_regpace,
-          Pacientes.pacientes['consultQuery']!)
+              Pacientes.pacientes['consultQuery']!)
           .then((value) {
         setState(() {
           Terminal.printSuccess(
@@ -442,24 +448,22 @@ class _GestionPacientesState extends State<GestionPacientes> {
 
   void toVisual(BuildContext context, String operationActivity) async {
     //
-    Terminal.printData(message: 'Nombre obtenido ${Pacientes.nombreCompleto}\n'
-        '${Pacientes.localPath}');
-    Archivos.readJsonToMap(
-        filePath: Pacientes.localPath)
-        .then((value) {
+    Terminal.printData(
+        message: 'Nombre obtenido ${Pacientes.nombreCompleto}\n'
+            '${Pacientes.localPath}');
+    Archivos.readJsonToMap(filePath: Pacientes.localPath).then((value) {
       Pacientes.Paciente = value[0];
       setState(() {
         Pacientes.imagenPaciente = value[0]['Pace_FIAT'];
       });
-      Terminal.printSuccess(
-          message:
-          'Archivo ${Pacientes.localPath} Obtenido');
+      Terminal.printSuccess(message: 'Archivo ${Pacientes.localPath} Obtenido');
       Valores.fromJson(value[0]);
 
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (BuildContext context) => VisualPacientes(actualPage: 0),
-        ),);
+        ),
+      );
     }).onError((error, stackTrace) async {
       Operadores.loadingActivity(
         context: context,
@@ -467,8 +471,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
         message: "Iniciando Interfaz",
       );
       Terminal.printAlert(
-          message:
-          'Archivo ${Pacientes.localPath} No Encontrado');
+          message: 'Archivo ${Pacientes.localPath} No Encontrado');
       Terminal.printWarning(message: 'Iniciando búsqueda en Valores . . . ');
       var response = await Valores().load(); // print("response $response");
       //
@@ -492,7 +495,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
   }
 
   Future<Null> _pullListRefresh() async {
-iniciar();
+    iniciar();
   }
 
   void _runFilterSearch(String enteredKeyword) {
@@ -501,19 +504,17 @@ iniciar();
     if (enteredKeyword.isEmpty) {
       _pullListRefresh();
     } else {
-      Actividades.consultar(
-              Databases.siteground_database_regpace, Pacientes.pacientes['consultQuery']!)
-          .then((value) {
-        results = value
-            .where((user) => user["Pace_Ape_Pat"].contains(enteredKeyword))
-            .toList();
+      results = Listas.listFromMap(
+          lista: foundedItems!,
+          keySearched: 'Pace_Ape_Pat',
+          elementSearched: enteredKeyword);
 
-        setState(() {
-          foundedItems = results;
-        });
+      setState(() {
+        foundedItems = results;
       });
     }
   }
+  
 }
 
 class OperacionesPacientes extends StatefulWidget {

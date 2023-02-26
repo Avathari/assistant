@@ -227,11 +227,13 @@ class Pacientes {
     Paciente = json;
 
     if (json['Pace_Nome_SE'] == '' || json['Pace_Nome_SE'] == null) {
-      nombreCompleto = "${json['Pace_Nome_PI']} ${json['Pace_Ape_Pat']} ${json['Pace_Ape_Mat']}";
+      nombreCompleto =
+          "${json['Pace_Nome_PI']} ${json['Pace_Ape_Pat']} ${json['Pace_Ape_Mat']}";
     } else {
-      nombreCompleto = "${json['Pace_Nome_PI']} ${json['Pace_Nome_SE']} ${json['Pace_Ape_Pat']} ${json['Pace_Ape_Mat']}";
+      nombreCompleto =
+          "${json['Pace_Nome_PI']} ${json['Pace_Nome_SE']} ${json['Pace_Ape_Pat']} ${json['Pace_Ape_Mat']}";
     }
-    
+
     localPath = 'assets/vault/'
         '$nombreCompleto/'
         '$nombreCompleto.json';
@@ -240,10 +242,7 @@ class Pacientes {
     localReportsPath = 'assets/vault/'
         '$nombreCompleto/'
         'reportes/';
-
   }
-
-
 
   // Prosas y apartados literales en la formación de las Actividades.
   static String originario() {
@@ -1160,6 +1159,8 @@ class Eticos {
               as bool?;
 
       // print("Valores de Eticos asignado : : : $value");
+      Archivos.createJsonFromMap([value],
+          filePath: "${Pacientes.localRepositoryPath}eticos.json");
     });
   }
 
@@ -3104,6 +3105,8 @@ CREATE TABLE pace_aps_masc (
 
 class Patologicos {
   static int ID_Patologicos = 0;
+  static var fileAssocieted =
+      '${Pacientes.localRepositoryPath}patologicos.json';
   //
   static String selectedDiagnosis = "";
   //
@@ -3119,7 +3122,11 @@ class Patologicos {
             Databases.siteground_database_regpace,
             Patologicos.patologicos['consultByIdPrimaryQuery'],
             Pacientes.ID_Paciente)
-        .then((value) => Pacientes.Patologicos = value);
+        .then((value) {
+      Pacientes.Patologicos = value;
+      Archivos.createJsonFromMap(value,
+          filePath: "${Pacientes.localRepositoryPath}patologicos.json");
+    });
   }
 
   static void ultimoRegistro() {
@@ -3944,9 +3951,27 @@ class Vitales {
   }
 
   static void registros() {
+    List result = [];
     Actividades.consultarAllById(Databases.siteground_database_regpace,
             vitales['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
-        .then((value) => Pacientes.Vitales = value);
+        .then((value) {
+      result.addAll(value);
+      Actividades.consultarAllById(Databases.siteground_database_regpace,
+              antropo['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
+          .then((value) {
+        int index = 0;
+        for (var item in result) {
+          var thirdMap = {};
+          thirdMap.addAll(item);
+          thirdMap.addAll(value[index]);
+
+          // Adición a Vitales ********** ************ ************** ********
+          Pacientes.Vitales!.add(thirdMap);
+          index++;
+        }
+        Terminal.printExpected(message: "${Pacientes.Vitales!}");
+      });
+    });
   }
 
   static final Map<String, dynamic> vitales = {
@@ -5321,12 +5346,13 @@ class Hospitalizaciones {
 
   static List<String> actualDiagno = Opciones.horarios();
 
-  static fromJson( Map<String, dynamic> json) {
+  static fromJson(Map<String, dynamic> json) {
     Pacientes.ID_Hospitalizacion = json['ID_Hosp'] ?? 0;
     Hospitalizaciones.Hospitalizacion['ID_Hosp'] = Pacientes.ID_Hospitalizacion;
     // ******************************************** *** *
     Valores.fechaIngresoHospitalario = json['Feca_INI_Hosp'] ?? '';
-    Hospitalizaciones.Hospitalizacion['Feca_INI_Hosp'] = Valores.fechaIngresoHospitalario;
+    Hospitalizaciones.Hospitalizacion['Feca_INI_Hosp'] =
+        Valores.fechaIngresoHospitalario;
     Valores.numeroCama = json['Id_Cama'] == null ? json['Id_Cama'] : 0;
     Hospitalizaciones.Hospitalizacion['Id_Cama'] = Valores.numeroCama;
     Valores.medicoTratante = json['Medi_Trat'] ?? '';
@@ -5334,12 +5360,13 @@ class Hospitalizaciones {
     Valores.servicioTratante = json['Serve_Trat'] ?? '';
     Hospitalizaciones.Hospitalizacion['Serve_Trat'] = Valores.servicioTratante;
     Valores.servicioTratanteInicial = json['Serve_Trat_INI'] ?? '';
-    Hospitalizaciones.Hospitalizacion['Serve_Trat_INI'] = Valores.servicioTratanteInicial;
+    Hospitalizaciones.Hospitalizacion['Serve_Trat_INI'] =
+        Valores.servicioTratanteInicial;
     Valores.fechaEgresoHospitalario = json['Feca_EGE_Hosp'] ?? '';
-    Hospitalizaciones.Hospitalizacion['Feca_EGE_Hosp'] = Valores.fechaEgresoHospitalario;
+    Hospitalizaciones.Hospitalizacion['Feca_EGE_Hosp'] =
+        Valores.fechaEgresoHospitalario;
     Valores.motivoEgreso = json['EGE_Motivo'] ?? '';
     Hospitalizaciones.Hospitalizacion['EGE_Motivo'] = Valores.motivoEgreso;
-
   }
 
   static void ultimoRegistro() {
@@ -5426,6 +5453,8 @@ class Hospitalizaciones {
 
 class Diagnosticos {
   static int ID_Diagnosticos = 0;
+  static var fileAssocieted =
+      '${Pacientes.localRepositoryPath}diagnosticos.json';
   //
   static String selectedDiagnosis = "";
   //
@@ -5441,7 +5470,11 @@ class Diagnosticos {
             Databases.siteground_database_reghosp,
             Diagnosticos.diagnosticos['consultByIdPrimaryQuery'],
             Pacientes.ID_Paciente)
-        .then((value) => Pacientes.Diagnosticos = value);
+        .then((value) {
+      Pacientes.Diagnosticos = value;
+      Archivos.createJsonFromMap(value,
+          filePath: "${Pacientes.localRepositoryPath}diagnosticos.json");
+    });
   }
 
   static void ultimoRegistro() {

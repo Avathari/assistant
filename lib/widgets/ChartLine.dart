@@ -33,15 +33,24 @@ class ChartLine extends StatefulWidget {
 class _ChartLineState extends State<ChartLine>  {
   @override
   void initState() {
-    if (widget.dymValues[0].isNotEmpty) {
-      getValues();
-    }
+    setState(() {
+      if (widget.dymValues[0].isNotEmpty) {
+        getValues();
+      } else {
+        getValues();
+      }
+    });
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    print("widget.dymValues! : ${widget.dymValues!}");
+    print("widget.spotsVals! : ${widget.spotsVals!}");
+    print("widget.tittles! : ${widget.tittles!}");
+    print("widget.bottomTittles! : ${widget.bottomTittles!}");
+
     return Column(
       children: [
         TittlePanel(textPanel: 'Estadísticas de signos vitales'),
@@ -49,6 +58,7 @@ class _ChartLineState extends State<ChartLine>  {
           flex: 1,
           child: Row(
             children: [
+
               Expanded(
                 flex: widget.withTittles ? 6 : 1,
                 child: LineChart(LineChartData(
@@ -111,6 +121,7 @@ class _ChartLineState extends State<ChartLine>  {
     }
     //
     for (var element in widget.dymValues) {
+      print("element Of $element");
       // Se agregan como bottomTittles el primer elemento de la lista.
       widget.bottomTittles!.add(element[0]);
       // Se agregan los valores de dymValues de la posición 1, ..., n
