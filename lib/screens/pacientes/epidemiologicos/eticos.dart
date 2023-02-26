@@ -44,7 +44,7 @@ class _EticosState extends State<Eticos> {
     return Column(
       children: [
         TittlePanel(textPanel: 'Ética y Moral'),
-        const CrossLine(),
+        CrossLine(),
         Switched(
           tittle: 'Refiere algun prejuicio con la Atención Médica',
           onChangeValue: (value) {
@@ -84,7 +84,7 @@ class _EticosState extends State<Eticos> {
             Valores.costumbresPaciente = value;
           },
         ),
-        const CrossLine(),
+        CrossLine(),
         Switched(
           tittle: 'Redes de Apoyo durante la Atención Médica',
           onChangeValue: (value) {

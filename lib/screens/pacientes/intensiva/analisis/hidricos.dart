@@ -136,7 +136,7 @@ class _HidricosState extends State<Hidricos> {
                           data: Valores.calcio,
                           medida: 'mg/dL',
                         ),
-                        const CrossLine(),
+                        CrossLine(),
                         ShowText(
                           title: 'Glucosa',
                           data: Valores.glucosa,

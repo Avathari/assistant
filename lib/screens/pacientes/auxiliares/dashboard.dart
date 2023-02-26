@@ -4,6 +4,7 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/detalles/detalles.dart';
 import 'package:assistant/screens/pacientes/auxiliares/detalles/estadisticasVitales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/diagnosticos/degenerativos.dart';
+import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/actividadesHospitalarias.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizado.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/pendientes.dart';
@@ -76,102 +77,37 @@ class _DashboardState extends State<Dashboard> {
             : desktopView();
   }
 
-  ListView mobileView() {
-    return ListView(
-      shrinkWrap: true,
-      controller: ScrollController(),
-      padding: const EdgeInsets.all(4.0),
-      children: [
-        RoundedPanel(
-          child: const Detalles(),
-        ),
-        const SizedBox(height: 6),
-        RoundedPanel(
-          child: Pacientes.esHospitalizado == true
-              ? const Hospitalizado()
-              : const EstadisticasVitales(),
-        ),
-        const SizedBox(height: 6),
-        Expanded(
-            child: RoundedPanel(
-                // child: const Degenerativos()
-                )),
-        const SizedBox(height: 6),
-        Expanded(
-            child: RoundedPanel(
-          child: SingleChildScrollView(
-            controller: ScrollController(),
-            child: Column(
-              children: [
-                GrandLabel(
-                  iconData: Icons.padding,
-                  fontSized: 14,
-                  labelButton: 'Pendientes de la Atención',
-                  onPress: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (BuildContext context) => GestionPendiente(),
-                    ));
-                  },
-                ),
-                TittlePanel(
-                  textPanel: Pacientes.modoAtencion,
-                ),
-                GrandLabel(
-                  iconData: Icons.local_hospital,
-                  fontSized: 14,
-                  labelButton: Pacientes.esHospitalizado == true
-                      ? 'Egresar paciente'
-                      : 'Hospitalizar paciente',
-                  onPress: () async {
-                    // Navigator.of(context).push(MaterialPageRoute(
-                    //   builder: (BuildContext context) =>
-                    //       GestionPendiente(),
-                    // ));
-                    final respo = await Pacientes.hospitalizar();
-                    // Actualizar vista.
-                    setState(() {
-                      if (respo) {
-                        Valores.modoAtencion = 'Hospitalización';
-                        Pacientes.modoAtencion = 'Hospitalización';
-                        // Actualizar valores de Hospitalización.
-                        Valores.isHospitalizado = respo;
-                        Pacientes.esHospitalizado = respo;
-
-                        // asyncHospitalizar(context);
-                        Operadores.openActivity(
-                          context: context,
-                          chyldrim: const OpcionesHospitalizacion(),
-                          onAction: () {},
-                        );
-                      } else {
-                        Valores.modoAtencion = 'Consulta Externa';
-                        Pacientes.modoAtencion = 'Consulta Externa';
-                        // Actualizar valores de Hospitalización.
-                        Valores.isHospitalizado = respo;
-                        Pacientes.esHospitalizado = respo;
-                      }
-                    });
-                    //
-                  },
-                ),
-                const CrossLine(),
-                GrandLabel(
-                  iconData: Icons.padding,
-                  fontSized: 14,
-                  labelButton: 'Registro de Hospitalizaciones',
-                  onPress: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          GestionHospitalizaciones(),
-                    ));
-                  },
-                ),
-              ],
-            ),
+  Container mobileView() {
+    return Container(
+      padding: const EdgeInsets.all(5.0),
+      margin: const EdgeInsets.all(5.0),
+      child: Column(
+        // shrinkWrap: true,
+        // controller: ScrollController(),
+        // padding: const EdgeInsets.all(4.0),
+        children: [
+          RoundedPanel(
+            child: const Detalles(),
           ),
-        )),
-        const SizedBox(height: 6),
-      ],
+          const SizedBox(height: 6),
+          RoundedPanel(
+            child: Pacientes.esHospitalizado == true
+                ? const Hospitalizado()
+                : const EstadisticasVitales(),
+          ),
+          const SizedBox(height: 6),
+          Expanded(
+              child: RoundedPanel(
+                  child: const Degenerativos()
+                  )),
+          const SizedBox(height: 6),
+          Expanded(
+              child: RoundedPanel(
+            child: const ActividadesHospitalarias(),
+          )),
+          const SizedBox(height: 6),
+        ],
+      ),
     );
 
     // RoundedPanel(
@@ -293,7 +229,7 @@ class _DashboardState extends State<Dashboard> {
                               //
                             },
                           ),
-                          const CrossLine(),
+                          CrossLine(),
                           GrandLabel(
                             iconData: Icons.padding,
                             fontSized: 14,

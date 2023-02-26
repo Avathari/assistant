@@ -109,7 +109,7 @@ class _GestionToxicomaniasState extends State<GestionToxicomanias> {
               ]),
             ),
           ),
-          const CrossLine(),
+          CrossLine(),
           Expanded(
               child: Container(
                 padding: const EdgeInsets.all(8.0),

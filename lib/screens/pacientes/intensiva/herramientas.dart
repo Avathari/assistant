@@ -119,7 +119,7 @@ class _IntensivaState extends State<Intensiva> {
                       );
                     },
                   ),
-                  const CrossLine(),
+                  CrossLine(),
                   GrandLabel(
                     iconData: Icons.analytics_outlined,
                     labelButton: 'Análisis basado en Información',
@@ -147,7 +147,7 @@ class _IntensivaState extends State<Intensiva> {
                       });
                     },
                   ),
-                  const CrossLine(),
+                  CrossLine(),
                   GrandLabel(
                     iconData: Icons.multiline_chart,
                     labelButton: 'Destete de la Intubación Endotraqueal',

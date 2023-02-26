@@ -1,8 +1,8 @@
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/dummy/Electrocardiogramas.dart';
+import 'package:assistant/dummy/dummyWithTable.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
-import 'package:assistant/screens/pacientes/pacientes.dart';
-import 'package:assistant/screens/pacientes/paraclinicos/Electrocardiogramas.dart';
-import 'package:assistant/screens/pacientes/paraclinicos/imagenologias.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 
 import 'package:assistant/widgets/EditTextArea.dart';
@@ -53,34 +53,6 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
   String? unidadMedidaValue = Auxiliares.Medidas[Auxiliares.Categorias[0]][0];
   // ############################ ####### ####### #############################
   late List? values = [];
-  //   {
-  //     "ID": 1,
-  //     // "ID_Pace": 1,
-  //     "Fecha_Registro": "2022/04/22",
-  //     "Tipo_Estudio": Auxiliares.Categorias[0],
-  //     "Estudio": "Hemoglobina",
-  //     "Resultado": 14.3,
-  //     "Unidad_Medida": "g/dL"
-  //   },
-  //   {
-  //     "ID": 2,
-  //     // "ID_Pace": 1,
-  //     "Fecha_Registro": "2022/04/22",
-  //     "Tipo_Estudio": Auxiliares.Categorias[1],
-  //     "Estudio": "Glucosa",
-  //     "Resultado": 103,
-  //     "Unidad_Medida": "mg/dL"
-  //   },
-  //   {
-  //     "ID": 3,
-  //     // "ID_Pace": 1,
-  //     "Fecha_Registro": "2022/01/15",
-  //     "Tipo_Estudio": Auxiliares.Categorias[4],
-  //     "Estudio": "Albumina",
-  //     "Resultado": 31,
-  //     "Unidad_Medida": "g/dL"
-  //   }
-  // ];
 
   Map<String, dynamic>? elementSelected;
 
@@ -89,21 +61,35 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
   int index = 0, secondIndex = 0;
 
   // ############################ ####### ####### #############################
+  var fileAssocieted = '${Pacientes.localRepositoryPath}/paraclinicos.json';
 
   @override
   void initState() {
-    final f = DateFormat('yyyy-MM-dd');
-    textDateEstudyController.text = f.format(DateTime.now());
 
-    Actividades.consultarAllById(
-            Databases.siteground_database_reggabo,
-            Auxiliares.auxiliares['consultByIdPrimaryQuery'],
-            Pacientes.ID_Paciente)
-        .then((value) {
+    Terminal.printWarning(message: " . . . Iniciando Actividad - Repositorio Paraclinicos del Pacientes");
+    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       setState(() {
         values = value;
+        Terminal.printSuccess(message: 'Repositorio Paraclinicos del Pacientes Obtenido');
       });
+    }).onError((error, stackTrace) {
+      final f = DateFormat('yyyy-MM-dd');
+      textDateEstudyController.text = f.format(DateTime.now());
+
+      Actividades.consultarAllById(
+          Databases.siteground_database_reggabo,
+          Auxiliares.auxiliares['consultByIdPrimaryQuery'],
+          Pacientes.ID_Paciente)
+          .then((value) {
+        setState(() {
+          values = value;
+          Archivos.createJsonFromMap(values!, filePath: fileAssocieted);
+        });
+      });
+
     });
+    Terminal.printOther(message: " . . . Actividad Iniciada");
+
     super.initState();
   }
 
@@ -361,7 +347,7 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
                                         });
                                       }),
                                 ]),
-                            const CrossLine(),
+                            CrossLine(),
                             GridLayout(
                               childAspectRatio: isMobile(context) ? 3.0 : 5.0,
                               columnCount: isMobile(context) ? 2 : 3,

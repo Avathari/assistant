@@ -202,7 +202,7 @@ class _OperacionesHospitalizacionesState
           items: Listas.listOfRange(maxNum: 22),
           width: isTablet(context) || isMobile(context) ? 120 : 200,
           initialValue: isNumCama),
-      const CrossLine(),
+      CrossLine(),
       Row(
         children: [
           Expanded(
@@ -243,7 +243,7 @@ class _OperacionesHospitalizacionesState
           ),
         ],
       ),
-      // const CrossLine(),
+      // CrossLine(),
       //
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -262,7 +262,7 @@ class _OperacionesHospitalizacionesState
         textController: medicoTratanteTextController,
         numOfLines: 1,
       ),
-      const CrossLine(),
+      CrossLine(),
       Spinner(
           tittle: "Servicio Tratante",
           onChangeValue: (String value) {
@@ -305,7 +305,7 @@ class _OperacionesHospitalizacionesState
                   ? 120
                   : 200,
           initialValue: motivoEgresoValue),
-      const CrossLine(),
+      CrossLine(),
     ];
   }
 

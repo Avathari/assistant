@@ -153,7 +153,7 @@ class _GasometricosState extends State<Gasometricos> {
                           data: Valores.fioArteriales,
                           medida: '%',
                         ),
-                        const CrossLine(),
+                        CrossLine(),
                         ShowText(
                           title: 'Temperatura Corporal',
                           data: Valores.temperaturCorporal,
@@ -340,7 +340,7 @@ class _GasometricosState extends State<Gasometricos> {
                         data: Valores.HCOAM,
                         medida: 'mEq/L',
                       ),
-                      const CrossLine(),
+                      CrossLine(),
                       ShowText(
                         title: 'Reposición de Bicarbonato',
                         data: Valores.VHCOAM,

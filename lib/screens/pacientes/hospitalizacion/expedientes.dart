@@ -52,7 +52,7 @@ class _ExpedientesClinicosState
       child: Column(
         children: [
           TittlePanel(textPanel: 'Cumplimiento del Expediente Clínico'),
-          const CrossLine(),
+          CrossLine(),
           Row(
             children: [
               Switched(
@@ -82,7 +82,7 @@ class _ExpedientesClinicosState
                 });
               },
               isSwitched: Valores.isNotaIngreso),
-          const CrossLine(),
+          CrossLine(),
           Row(
             children: [
               Switched(
@@ -114,7 +114,7 @@ class _ExpedientesClinicosState
                 });
               },
               isSwitched: Valores.isEvaluacionInicial),
-          const CrossLine(),
+          CrossLine(),
           Row(
             children: [
               Switched(
@@ -139,7 +139,7 @@ class _ExpedientesClinicosState
       child: Column(
         children: [
           TittlePanel(textPanel: 'Cumplimiento del Expediente Clínico'),
-          const CrossLine(),
+          CrossLine(),
           Switched(
               tittle: 'Hoja Frontal',
               onChangeValue: (value) {
@@ -165,7 +165,7 @@ class _ExpedientesClinicosState
                 });
               },
               isSwitched: Valores.isNotaIngreso),
-          const CrossLine(),
+          CrossLine(),
           Switched(
               tittle: 'Consentimientos',
               onChangeValue: (value) {
@@ -193,7 +193,7 @@ class _ExpedientesClinicosState
                 });
               },
               isSwitched: Valores.isEvaluacionInicial),
-          const CrossLine(),
+          CrossLine(),
           Switched(
               tittle: 'Expediente Ordenado',
               onChangeValue: (value) {

@@ -213,7 +213,7 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
         textController: descripcionPendienteTextController,
         numOfLines: 7,
       ),
-      const CrossLine(),
+      CrossLine(),
     ];
   }
 
@@ -613,7 +613,7 @@ class _GestionPendienteState extends State<GestionPendiente> {
                       textAlign: TextAlign.start,
                     ),
                   ),
-                  const Expanded(child: CrossLine()),
+                  Expanded(child: CrossLine()),
                   Expanded(
                     flex: 4,
                     child: Text(

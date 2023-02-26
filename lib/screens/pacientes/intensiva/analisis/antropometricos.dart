@@ -131,7 +131,7 @@ class _AntropometricosState extends State<Antropometricos> {
                           data: Valores.alturaPaciente,
                           medida: 'mts',
                         ),
-                        const CrossLine(),
+                        CrossLine(),
                         ShowText(
                           title: 'C. Cervical',
                           data: Valores.circunferenciaCuello!.toDouble(),

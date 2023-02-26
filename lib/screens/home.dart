@@ -1,5 +1,6 @@
 import 'package:assistant/conexiones/actividades/Compuesto.dart';
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/bibiliotecarios/bibliotecas.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizados.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
@@ -646,7 +647,6 @@ class PacientesPanel extends StatelessWidget {
               iconData: Icons.airline_seat_individual_suite_outlined,
               labelButton: "Pacientes Hospitalizados",
               onPress: () {
-
                 toNextScreen(context: context, screen: Hospitalizados());
                 // Operadores.alertActivity(
                 //     context: context,
@@ -658,8 +658,7 @@ class PacientesPanel extends StatelessWidget {
               iconData: Icons.book_outlined,
               labelButton: "Bibliotecario",
               onPress: () {
-                toNextScreen(
-                    context: context, screen: GestionBibliotecas());
+                toNextScreen(context: context, screen: GestionBibliotecas());
               },
             ),
             HomeButton(

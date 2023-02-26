@@ -126,15 +126,15 @@ class SpinnersValues {
   }
 
   static double maximumWidth({required BuildContext context}) {
-    return   isDesktop(context)
+    return isDesktop(context)
         ? 200
         : isTabletAndDesktop(context)
-        ? 140
-        : isTablet(context)
-        ? 170
-        : isMobile(context)
-        ? 100
-        : 200;
+            ? 140
+            : isTablet(context)
+                ? 170
+                : isMobile(context)
+                    ? 100
+                    : 200;
   }
 }
 
@@ -162,11 +162,11 @@ class ContainerDecoration {
     );
   }
 
-  static BoxDecoration roundedDecoration({double radius = 20.0}) {
+  static BoxDecoration roundedDecoration({Color color = Colors.grey, double radius = 20.0}) {
     return BoxDecoration(
       borderRadius: BorderRadius.circular(radius),
       border: Border.all(
-        color: Colors.grey,
+        color: color,
         style: BorderStyle.solid,
         width: 1.0,
       ),
@@ -194,11 +194,14 @@ class Carousel {
 
 class GridViewTools {
   static SliverGridDelegateWithFixedCrossAxisCount gridDelegate(
-      {int crossAxisCount = 3, double mainAxisExtent =  250}) {
+      {int crossAxisCount = 3,
+      double mainAxisExtent = 250,
+      crossAxisSpacing = 10.0,
+      mainAxisSpacing = 10.0}) {
     return SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: crossAxisCount,
-      mainAxisSpacing: 10.0,
-      crossAxisSpacing: 10.0,
+      mainAxisSpacing: mainAxisSpacing,
+      crossAxisSpacing: crossAxisSpacing,
       mainAxisExtent: mainAxisExtent,
     );
   }

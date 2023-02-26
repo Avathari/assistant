@@ -3,7 +3,9 @@ import 'package:assistant/values/WidgetValues.dart';
 import 'package:flutter/material.dart';
 
 class CrossLine extends StatefulWidget {
-  const CrossLine({super.key});
+  Color? color;
+
+  CrossLine({super.key, this.color = Colores.backgroundWidget});
 
   @override
   State<CrossLine> createState() => _CrossLineState();
@@ -14,10 +16,10 @@ class _CrossLineState extends State<CrossLine> {
   Widget build(BuildContext context) {
     return  Padding(
         padding: isMobile(context) ? const EdgeInsets.all(4.0) : const EdgeInsets.all(8.0),
-        child: const Divider(
+        child: Divider(
           height: 2,
           thickness: 2,
-          color: Colores.backgroundWidget,
+          color: widget.color!,
         ));
   }
 }

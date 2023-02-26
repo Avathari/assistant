@@ -110,7 +110,7 @@ class _CateterVenosoCentralState extends State<CateterVenosoCentral> {
                             });
                           },
                         ),
-                        const CrossLine(),
+                        CrossLine(),
                         Spinner(
                           width: isDesktop(context)
                               ? 400
@@ -129,7 +129,7 @@ class _CateterVenosoCentralState extends State<CateterVenosoCentral> {
                           items: Items.sitiosCateterCentral,
                           initialValue: Valores.sitiosCateterCentral,
                         ),
-                        const CrossLine(),
+                        CrossLine(),
                         EditTextArea(
                           labelEditText:
                               'Complicaciones durante el Procedimiento',

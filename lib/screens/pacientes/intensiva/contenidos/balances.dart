@@ -279,7 +279,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         textController: viaOrogasTextController,
         numOfLines: 1,
       ),
-      const CrossLine(),
+      CrossLine(),
       //
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -331,7 +331,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         textController: viaOtrosIngresosTextController,
         numOfLines: 1,
       ),
-      const CrossLine(),
+      CrossLine(),
     ];
   }
 
@@ -397,7 +397,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         textController: viaOtrosEgresosTextController,
         numOfLines: 1,
       ),
-      const CrossLine(),
+      CrossLine(),
     ];
   }
 

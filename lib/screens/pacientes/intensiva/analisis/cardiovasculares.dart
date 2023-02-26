@@ -96,7 +96,7 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                         TittlePanel(
                             textPanel:
                                 "T.A. ${Valores.tensionArterialSistemica} (${Valores.presionArterialMedia.toStringAsFixed(0)})"),
-                        // const CrossLine(),
+                        // CrossLine(),
                         ShowText(
                           title: 'Hemoglobina',
                           data: Valores.hemoglobina,
@@ -122,10 +122,10 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                           data: Valores.poVenosos,
                           medida: 'mmHg',
                         ),
-                        const CrossLine(),
+                        CrossLine(),
                         // TittlePanel(textPanel: "Fecha G. Venosa ${Valores.fechaGasometriaVenosa}"),
                         // TittlePanel(textPanel: "Fecha G. Arterial ${Valores.fechaGasometriaArterial}"),
-                        // const CrossLine(),
+                        // CrossLine(),
                       ],
                     ),
                   ),

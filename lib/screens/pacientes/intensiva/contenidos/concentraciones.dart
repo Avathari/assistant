@@ -106,7 +106,7 @@ class _ConcentracionesState extends State<Concentraciones> {
                             });
                           },
                         ),
-                         const CrossLine(),
+                         CrossLine(),
                         ShowText(title: 'Peso Corporal Total', data: pesoCorporalTotal, medida: 'Kg',),
                       ],
                     ),
@@ -127,7 +127,7 @@ class _ConcentracionesState extends State<Concentraciones> {
                         ShowText(title: '', data: mgKgHr, medida: 'mg/Kg/Hr',),
                         ShowText(title: '', data: mgKgMin, medida: 'mg/Kg/min',),
                         ShowText(title: '', data: mcgKgMin, medida: 'mcg/Kg/min',),
-                        const CrossLine(),
+                        CrossLine(),
                       ],
                     ),
                   ),

@@ -106,7 +106,7 @@ class _IntubacionEndotraquealState extends State<IntubacionEndotraqueal> {
                             });
                           },
                         ),
-                        const CrossLine(),
+                        CrossLine(),
                         Spinner(
                           width: isDesktop(context)
                               ? 400
@@ -233,7 +233,7 @@ class _IntubacionEndotraquealState extends State<IntubacionEndotraqueal> {
                           items: Escalas.escalaCormackLahane,
                           initialValue: Valores.escalaCormackLahane,
                         ),
-                        const CrossLine(),
+                        CrossLine(),
                         EditTextArea(
                           labelEditText:
                               'Complicaciones durante el Procedimiento',

@@ -636,7 +636,7 @@ class _GestionFragmentosState extends State<GestionFragmentos> {
                       textAlign: TextAlign.start,
                     ),
                   ),
-                  const Expanded(child: CrossLine()),
+                   Expanded(child: CrossLine()),
                   Expanded(
                     child: Text(
                       snapshot.data[posicion]['Lyben_Catego_C'].toString(),

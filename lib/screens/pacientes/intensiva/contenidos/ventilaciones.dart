@@ -420,7 +420,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
           });
         },
       ),
-      const CrossLine(),
+      CrossLine(),
       //
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -471,7 +471,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         },
       ),
 
-      const CrossLine(),
+      CrossLine(),
     ];
   }
 
@@ -513,7 +513,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
           });
         },
       ),
-      const CrossLine(),
+      CrossLine(),
     ];
   }
 
@@ -543,7 +543,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
           });
         },
       ),
-      const CrossLine(),
+      CrossLine(),
     ];
   }
 
@@ -621,7 +621,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
           });
         },
       ),
-      const CrossLine(),
+      CrossLine(),
     ];
   }
 
@@ -651,7 +651,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
           });
         },
       ),
-      const CrossLine(),
+      CrossLine(),
     ];
   }
 

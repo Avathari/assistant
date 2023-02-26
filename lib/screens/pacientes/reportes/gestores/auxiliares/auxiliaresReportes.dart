@@ -280,7 +280,7 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
               ],
             ),
           ),
-          const CrossLine(),
+          CrossLine(),
           Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,

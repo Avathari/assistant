@@ -8,7 +8,6 @@ import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
-import 'package:assistant/screens/pacientes/paraclinicos/AuxiliaresDiagnosticos.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
@@ -38,84 +37,39 @@ class ElectrocardiogramasGestion extends StatefulWidget {
 
 class _ElectrocardiogramasGestionState
     extends State<ElectrocardiogramasGestion> {
-  String? stringImage = '';
-  // ############################ ####### ####### #############################
-  // Variables de Ejecución
-  // ############################ ####### ####### #############################
-  var carouselController = CarouselController();
-  var scrollController = ScrollController();
-  // ############################ ####### ####### #############################
-  // Variables de Ejecución
-  // ############################ ####### ####### #############################
-  late List? values = [];
-  Map<String, dynamic>? elementSelected;
-
-  bool operationActivity = true; // Si true entonces REGISTER.register.
-  String tittle = "Registro de electrocardiogramas del paciente";
-  String idWidget = 'ID_Pace_GAB_EC';
-  // TextController for search.
-  var textDateController = TextEditingController();
-  // ############################ ####### ####### #############################
-  // Variables de Valores de Interés
-  // ############################ ####### ####### #############################
-  int? idOperacion = 0;
-
-  String? ritmoCardiacoValue = Electrocardiogramas.ritmos[0];
-  var textDateEstudyController = TextEditingController();
-  var intervaloRRTextController = TextEditingController();
-  var dopTextController = TextEditingController();
-  var aopTextController = TextEditingController();
-  var dprTextController = TextEditingController();
-  var dqrsTextController = TextEditingController();
-  var aqrsTextController = TextEditingController();
-  var qrsiTextController = TextEditingController();
-  var qrsaTextController = TextEditingController();
-  var paceQrsTextController = TextEditingController();
- //
-  String? segmentoSTValue = Electrocardiogramas.ast[0];
-  var stTextController = TextEditingController();
-  //
-  var dqtTextController = TextEditingController();
-  var dotTextController = TextEditingController();
-  var aotTextController = TextEditingController();
-  //
-  var rv1TextController = TextEditingController();
-  var sv6TextController = TextEditingController();
-  var sv1TextController = TextEditingController();
-  var rv6TextController = TextEditingController();
-  var ravlTextController = TextEditingController();
-  var sv3TextController = TextEditingController();
-  //
-  String? patronQRSValue = Electrocardiogramas.patronQRS[0];
-  var deflexTextController = TextEditingController();
-  var rdiTextController = TextEditingController();
-  var sdiTextController = TextEditingController();
-  var rdiiiTextController = TextEditingController();
-  var sdiiiTextController = TextEditingController();
-  var conclusionTextController = TextEditingController();
-  //
-  String tipoEstudio = "Electrocardiograma";
 
   // ############################ ####### ####### #############################
+  var fileAssocieted = '${Pacientes.localRepositoryPath}/electrocardiogramas.json';
 
   @override
   void initState() {
-    final f = DateFormat('yyyy-MM-dd');
-    textDateEstudyController.text = f.format(DateTime.now());
-
-    Actividades.consultarAllById(
-            Databases.siteground_database_reggabo,
-            Electrocardiogramas.electrocardiogramas['consultByIdPrimaryQuery'],
-            Pacientes.ID_Paciente)
-        .then((value) {
+    Terminal.printWarning(message: " . . . Iniciando Actividad - Repositorio Electrocardiogramas del Pacientes");
+    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       setState(() {
-        print("ELECTROS ${value[0]} ${Pacientes.ID_Paciente}");
         values = value;
+        Terminal.printSuccess(message: 'Repositorio Electrocardiogramas del Pacientes Obtenido');
       });
-    });
-    super.initState();
+    }).onError((error, stackTrace) {
+      final f = DateFormat('yyyy-MM-dd');
+      textDateEstudyController.text = f.format(DateTime.now());
 
-    toBaseImage();
+      Actividades.consultarAllById(
+          Databases.siteground_database_reggabo,
+          Electrocardiogramas.electrocardiogramas['consultByIdPrimaryQuery'],
+          Pacientes.ID_Paciente)
+          .then((value) {
+        setState(() {
+          Archivos.createJsonFromMap(value, filePath: fileAssocieted);
+          values = value;
+        });
+
+      });
+      toBaseImage();
+    });
+    Terminal.printOther(message: " . . . Actividad Iniciada");
+
+
+    super.initState();
   }
 
   void initAllElement() {
@@ -289,7 +243,7 @@ class _ElectrocardiogramasGestionState
           });
         },
       ),
-      const CrossLine(),
+      CrossLine(),
       EditTextArea(
         keyBoardType: TextInputType.number,
         inputFormat: MaskTextInputFormatter(),
@@ -326,7 +280,7 @@ class _ElectrocardiogramasGestionState
         labelEditText: "Eje Cardiaco",
         textController: paceQrsTextController,
       ),
-      const CrossLine(),
+      CrossLine(),
       //
       Spinner(
           width: isMobile(context) || isTablet(context) ? 170: 110,
@@ -388,7 +342,7 @@ class _ElectrocardiogramasGestionState
           });
         },
       ),
-      const CrossLine(),
+      CrossLine(),
       //
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -546,8 +500,8 @@ class _ElectrocardiogramasGestionState
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
             if (isMobile(context) || isTablet(context)) {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: ((context) => const AuxiliaresDiagnosticos())));
+              // Navigator.of(context).push(MaterialPageRoute(
+              //     builder: ((context) => const AuxiliaresDiagnosticos())));
             } else {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: ((context) => VisualPacientes(actualPage: 5))));
@@ -1255,6 +1209,66 @@ class _ElectrocardiogramasGestionState
       stringImage = base64.encode(Uint8List.view(buffer));
     });
   }
+
+  // VARIABLES DE LA INTERFAZ ****** ************ ************
+  String? stringImage = '';
+  // ############################ ####### ####### #############################
+  // Variables de Ejecución
+  // ############################ ####### ####### #############################
+  var carouselController = CarouselController();
+  var scrollController = ScrollController();
+  // ############################ ####### ####### #############################
+  // Variables de Ejecución
+  // ############################ ####### ####### #############################
+  late List? values = [];
+  Map<String, dynamic>? elementSelected;
+
+  bool operationActivity = true; // Si true entonces REGISTER.register.
+  String tittle = "Registro de electrocardiogramas del paciente";
+  String idWidget = 'ID_Pace_GAB_EC';
+  // TextController for search.
+  var textDateController = TextEditingController();
+  // ############################ ####### ####### #############################
+  // Variables de Valores de Interés
+  // ############################ ####### ####### #############################
+  int? idOperacion = 0;
+
+  String? ritmoCardiacoValue = Electrocardiogramas.ritmos[0];
+  var textDateEstudyController = TextEditingController();
+  var intervaloRRTextController = TextEditingController();
+  var dopTextController = TextEditingController();
+  var aopTextController = TextEditingController();
+  var dprTextController = TextEditingController();
+  var dqrsTextController = TextEditingController();
+  var aqrsTextController = TextEditingController();
+  var qrsiTextController = TextEditingController();
+  var qrsaTextController = TextEditingController();
+  var paceQrsTextController = TextEditingController();
+  //
+  String? segmentoSTValue = Electrocardiogramas.ast[0];
+  var stTextController = TextEditingController();
+  //
+  var dqtTextController = TextEditingController();
+  var dotTextController = TextEditingController();
+  var aotTextController = TextEditingController();
+  //
+  var rv1TextController = TextEditingController();
+  var sv6TextController = TextEditingController();
+  var sv1TextController = TextEditingController();
+  var rv6TextController = TextEditingController();
+  var ravlTextController = TextEditingController();
+  var sv3TextController = TextEditingController();
+  //
+  String? patronQRSValue = Electrocardiogramas.patronQRS[0];
+  var deflexTextController = TextEditingController();
+  var rdiTextController = TextEditingController();
+  var sdiTextController = TextEditingController();
+  var rdiiiTextController = TextEditingController();
+  var sdiiiTextController = TextEditingController();
+  var conclusionTextController = TextEditingController();
+  //
+  String tipoEstudio = "Electrocardiograma";
+
 }
 
 // ignore: must_be_immutable

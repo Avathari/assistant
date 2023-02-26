@@ -206,10 +206,10 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   : isDesktop(context)
                       ? const PresentacionPacientes()
                       : Container(),
-          const CrossLine(),
+          CrossLine(),
           GrandButton(
               weigth: 2000, labelButton: "Tipo de Nota Médica", onPress: () {}),
-          const CrossLine(),
+          CrossLine(),
           // TittlePanel(textPanel: "Tipo de Nota Médica"),
           Expanded(
               flex: 8,
@@ -218,7 +218,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                 controller: ScrollController(),
                 children: tiposReportes(),
               )),
-          const Expanded(child: CrossLine()),
+          Expanded(child: CrossLine()),
           // ListValue(
           //   title: "",
           //   onPress: () {},
@@ -284,7 +284,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   });
                 }),
           ),
-          const SizedBox(
+           SizedBox(
             height: 20,
             child: CrossLine(),
           ),
@@ -306,7 +306,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               ),
             ),
           ),
-          const SizedBox(
+           SizedBox(
             height: 20,
             child: CrossLine(),
           ),

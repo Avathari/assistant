@@ -133,7 +133,7 @@ class _EditTextAreaState extends State<EditTextArea> {
                                       color: Colors.grey,
                                     ),
                                   ),
-                                  const CrossLine(),
+                                  CrossLine(),
                                 ],
                               )),);
 

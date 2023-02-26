@@ -42,7 +42,7 @@ class _AlimenticiosState extends State<Alimenticios> {
     return Column(
       children: [
         TittlePanel(textPanel: 'Hábitos Alimenticios'),
-        const CrossLine(),
+        CrossLine(),
         Row(
           children: [
             Expanded(
@@ -266,7 +266,7 @@ class _AlimenticiosState extends State<Alimenticios> {
             ),
           ],
         ),
-        const CrossLine(),
+        CrossLine(),
       ],
     );
   }

@@ -45,7 +45,7 @@ class _AlcoholismoState extends State<Alcoholismo> {
     return Column(
       children: [
         TittlePanel(textPanel: 'Hábitos Alcoholismo'),
-        const CrossLine(),
+        CrossLine(),
         Row(children: [
           Expanded(
             child: EditTextArea(
@@ -100,7 +100,7 @@ class _AlcoholismoState extends State<Alcoholismo> {
             ),
           ),
         ],),
-        const CrossLine(),
+        CrossLine(),
         Row(
           children: [
             Expanded(
@@ -175,7 +175,7 @@ class _AlcoholismoState extends State<Alcoholismo> {
             ),
           ],
         ),
-        const CrossLine(),
+        CrossLine(),
       ],
     );
   }

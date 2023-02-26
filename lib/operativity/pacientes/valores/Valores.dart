@@ -548,6 +548,7 @@ class Valores {
     apellidoMaterno = json['Pace_Ape_Mat'];
     // imagenUsuario = json['Pace_FIAT'];
     // Pacientes.imagenPaciente = json['Pace_FIAT'];
+    json.addAll({'Pace_FIAT': ''});
 
     Pacientes.nombreCompleto = Valores.nombreCompleto;
     //
@@ -741,7 +742,9 @@ class Valores {
     Valores.motivoEgreso = json['EGE_Motivo'] ?? '';
     Hospitalizaciones.Hospitalizacion['EGE_Motivo'] = Valores.motivoEgreso;
 
-    // print("Valores.gastoCardiaco ${Valores.gastoCardiaco}");
+    json['Pace_FIAT'] =  Pacientes.imagenPaciente;
+    //
+    Archivos.createJsonFromMap([json], filePath: Pacientes.localPath);
   }
 
   static String get nombreCompleto {
@@ -3589,6 +3592,20 @@ class Items {
     'Maternidad Inicial',
     'Maternidad Subsecuente',
     'Retroactiva'
+  ];
+
+  static List<String> orderOfCamas = [
+    'N/A',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
   ];
 }
 

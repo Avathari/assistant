@@ -25,13 +25,15 @@ class _TittlePanelState extends State<TittlePanel> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(
-          left: 8.0, right: 8.0, top: 12.0, bottom: widget.padding!),
+          left: 8.0, right: 8.0, top: widget.padding! + 3.0, bottom: widget.padding!),
+      // margin: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
           color: widget.color!,
           shape: BoxShape.rectangle,
           borderRadius: const BorderRadius.all(Radius.circular(20))),
               // topRight: Radius.circular(20), topLeft: Radius.circular(20))),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           // const SizedBox(height: 12.0),
           Text(
@@ -41,8 +43,8 @@ class _TittlePanelState extends State<TittlePanel> {
               color: widget.colorText,
             ),
           ),
-          const SizedBox(height: 8.0),
-          const CrossLine()
+          // SizedBox(height: widget.padding!),
+           CrossLine()
         ],
       ),
     );

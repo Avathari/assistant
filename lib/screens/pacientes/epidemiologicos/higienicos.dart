@@ -40,7 +40,7 @@ class _HigienicosState extends State<Higienicos> {
     return Column(
       children: [
         TittlePanel(textPanel: 'Hábitos Higienicos'),
-        const CrossLine(),
+        CrossLine(),
         Row(
           children: [
             Expanded(
@@ -193,7 +193,7 @@ class _HigienicosState extends State<Higienicos> {
             ),
           ],
         ),
-        const CrossLine(),
+        CrossLine(),
       ],
     );
   }

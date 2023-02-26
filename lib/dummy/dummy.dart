@@ -193,7 +193,7 @@ class _OperacionesDummyState extends State<OperacionesDummy> {
         textController: ayoDiagoTextController,
         numOfLines: 1,
       ),
-      const CrossLine(),
+      CrossLine(),
       Spinner(
           tittle: "¿Tratamiento actual?",
           onChangeValue: (String value) {
@@ -215,7 +215,7 @@ class _OperacionesDummyState extends State<OperacionesDummy> {
         textController: tratamientoTextController,
         numOfLines: 3,
       ),
-      const CrossLine(),
+      CrossLine(),
     ];
   }
 

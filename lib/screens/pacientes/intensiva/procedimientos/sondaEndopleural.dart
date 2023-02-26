@@ -107,7 +107,7 @@ class _SondaEndopleuralState extends State<SondaEndopleural> {
                             });
                           },
                         ),
-                        const CrossLine(),
+                        CrossLine(),
                         Spinner(
                           width: isDesktop(context)
                               ? 400
@@ -126,7 +126,7 @@ class _SondaEndopleuralState extends State<SondaEndopleural> {
                           items: Items.sitiosSondaPleural,
                           initialValue: Valores.sitiosSondaPleural,
                         ),
-                        const CrossLine(),
+                        CrossLine(),
                         EditTextArea(
                           labelEditText:
                               'Complicaciones durante el Procedimiento',

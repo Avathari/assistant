@@ -390,7 +390,7 @@ class _HospitalizadoState extends State<Hospitalizado> {
         firstText: 'Servicio de Ingreso',
         secondText: Valores.servicioTratanteInicial,
       ),
-      const CrossLine(),
+      CrossLine(),
       ThreeLabelTextAline(
         padding: 2.0,
         firstText: 'C. Programada',

@@ -98,7 +98,7 @@ class _SituacionesHospitalizacionState
               },
               items: Items.dispositivosOxigeno,
               initialValue: dispositivoOxigenoValue),
-          const CrossLine(),
+          CrossLine(),
           Row(
             children: [
               Switched(
@@ -130,7 +130,7 @@ class _SituacionesHospitalizacionState
                 });
               },
               isSwitched: Valores.isCateterVenosoCentral),
-          const CrossLine(),
+          CrossLine(),
           Row(
             children: [
               Switched(
@@ -163,7 +163,7 @@ class _SituacionesHospitalizacionState
                 });
               },
               isSwitched: Valores.isSondaFoley),
-          const CrossLine(),
+          CrossLine(),
           Row(
             children: [
               Switched(
@@ -240,7 +240,7 @@ class _SituacionesHospitalizacionState
               },
               items: Items.dispositivosOxigeno,
               initialValue: dispositivoOxigenoValue),
-          const CrossLine(),
+          CrossLine(),
           Switched(
               tittle: 'Cáteter Venoso Periférico',
               onChangeValue: (value) {
@@ -268,7 +268,7 @@ class _SituacionesHospitalizacionState
                 });
               },
               isSwitched: Valores.isCateterVenosoCentral),
-          const CrossLine(),
+          CrossLine(),
           Switched(
               tittle: 'Sonda Orogástrica',
               onChangeValue: (value) {
@@ -297,7 +297,7 @@ class _SituacionesHospitalizacionState
                 });
               },
               isSwitched: Valores.isSondaFoley),
-          const CrossLine(),
+          CrossLine(),
           Switched(
               tittle: 'Drenaje Penrose',
               onChangeValue: (value) {

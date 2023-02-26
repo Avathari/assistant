@@ -201,7 +201,7 @@ class _OperacionesDiagnosticosState extends State<OperacionesDiagnosticos> {
         textController: ayoDiagoTextController,
         numOfLines: 1,
       ),
-      const CrossLine(),
+      CrossLine(),
       Spinner(
           tittle: "¿Tratamiento actual?",
           onChangeValue: (String value) {
@@ -223,7 +223,7 @@ class _OperacionesDiagnosticosState extends State<OperacionesDiagnosticos> {
         textController: tratamientoTextController,
         numOfLines: 3,
       ),
-      const CrossLine(),
+      CrossLine(),
       Spinner(
           tittle: "¿Suspensión reciente?",
           onChangeValue: (String value) {
@@ -593,7 +593,7 @@ class _GestionDiagnosticosState extends State<GestionDiagnosticos> {
                             "${snapshot.data[posicion]['Pace_APP_DEG_com']}",
                               style: Styles.textSyleGrowth(fontSize: 14)
                           ),
-                          const CrossLine(),
+                          CrossLine(),
                         ],
                       ),
                     ),

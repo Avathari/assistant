@@ -1,3 +1,4 @@
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:flutter/foundation.dart';
 import 'package:assistant/conexiones/conexiones.dart';
@@ -35,15 +36,27 @@ class _EstadisticasPacientesState extends State<EstadisticasPacientes> {
   };
   var statScrollController = ScrollController();
 
+  var fileAssocieted = 'assets/vault/patientsStats.json';
+
   @override
   void initState() {
-    Actividades.detalles(Databases.siteground_database_regpace,
-            Pacientes.pacientes['pacientesStadistics'])
-        .then((value) {
+    Terminal.printWarning(message: " . . . Iniciando Actividad - Estádisticas del Repositorio de Pacientes");
+    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       setState(() {
-        data = value;
+        data = value[0];
+      });
+    }).onError((error, stackTrace) {
+      Actividades.detalles(Databases.siteground_database_regpace,
+          Pacientes.pacientes['pacientesStadistics'])
+          .then((value) {
+        setState(() {
+          data = value;
+          Archivos.createJsonFromMap([data], filePath: fileAssocieted);
+        });
       });
     });
+    Terminal.printWarning(message: " . . . Actividad Iniciada");
+
     super.initState();
   }
 

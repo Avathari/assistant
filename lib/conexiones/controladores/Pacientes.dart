@@ -4,13 +4,19 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/Strings.dart';
 
 class Pacientes {
-  static int ID_Paciente = 0;
+  static int ID_Paciente = 0, ID_Hospitalizacion = 0;
 
-  static String? modoAtencion = Valores.modoAtencion;
+  static String localPath = 'assets/vault/'
+      '${Pacientes.nombreCompleto}/'
+      '${Pacientes.nombreCompleto}.json';
+  static String localRepositoryPath = 'assets/vault/'
+      '${Pacientes.nombreCompleto}/';
+  static String localReportsPath = 'assets/vault/'
+      '${Pacientes.nombreCompleto}/'
+      'reportes/';
+
+  static String? modoAtencion = Valores.modoAtencion, nombreCompleto;
   static bool? esHospitalizado = Valores.isHospitalizado;
-  static int ID_Hospitalizacion = 0;
-
-  static String? nombreCompleto;
   static String imagenPaciente = "";
 
   // ####### ### ### ## ### ### ####### ####### ####### #######
@@ -20,13 +26,8 @@ class Pacientes {
       pronosticoEstado = PronosticoEstado[0],
       pronosticoFuncion = PronosticoFuncion[0],
       pronosticoVida = PronosticoVida[0];
-  // ####### ### ### ## ### ### ####### ####### ####### #######
+
   // Diccionarios por Actividades y gestores.
-  // ####### ### ### ## ### ### ####### ####### ####### #######
-  // static Map<String, dynamic> Valores = {};
-  // ####### ### ### ## ### ### ####### ####### ####### #######
-  // Diccionarios por Actividades y gestores.
-  // ####### ### ### ## ### ### ####### ####### ####### #######
   static Map<String, dynamic> Paciente = {
     "ID_Pace": 0,
     "Pace_NSS": "",
@@ -218,15 +219,33 @@ class Pacientes {
     Pacientes.imagenPaciente = "$imagenUsuario";
   }
 
-  // Pacientes.fromJson(Map json) {
-  //   nombreCompleto =
-  //       "${json['Us_Ape_Pat']} ${json['Us_Ape_Pat']} ${json['Us_Nome']}";
-  //   imagenPaciente = json['Pace_FIAT'];
-  // }
+  static fromJson(Map<String, dynamic> json) {
+    // numeroPaciente = json['Pace_NSS'];
+    // agregadoPaciente = json['Pace_AGRE'];
 
-  // ####### ### ### ## ### ### ####### ####### ####### #######
+    ID_Paciente = json['ID_Pace'];
+    Paciente = json;
+
+    if (json['Pace_Nome_SE'] == '' || json['Pace_Nome_SE'] == null) {
+      nombreCompleto = "${json['Pace_Nome_PI']} ${json['Pace_Ape_Pat']} ${json['Pace_Ape_Mat']}";
+    } else {
+      nombreCompleto = "${json['Pace_Nome_PI']} ${json['Pace_Nome_SE']} ${json['Pace_Ape_Pat']} ${json['Pace_Ape_Mat']}";
+    }
+    
+    localPath = 'assets/vault/'
+        '$nombreCompleto/'
+        '$nombreCompleto.json';
+    localRepositoryPath = 'assets/vault/'
+        '$nombreCompleto/';
+    localReportsPath = 'assets/vault/'
+        '$nombreCompleto/'
+        'reportes/';
+
+  }
+
+
+
   // Prosas y apartados literales en la formación de las Actividades.
-  // ####### ### ### ## ### ### ####### ####### ####### #######
   static String originario() {
     // // print("Pacientes.Paciente ${Pacientes.Paciente}");
     return "${Pacientes.Paciente['Pace_Orig_Muni']}, ${Pacientes.Paciente['Pace_Orig_EntFed']}";

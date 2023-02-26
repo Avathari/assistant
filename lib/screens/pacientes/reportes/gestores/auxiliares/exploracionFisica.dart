@@ -119,7 +119,7 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                     ],
                   ),
                 ),
-          const CrossLine(),
+          CrossLine(),
           Expanded(
             flex: widget.isTerapia! ? 8 : 4, // 6
             child: Row(

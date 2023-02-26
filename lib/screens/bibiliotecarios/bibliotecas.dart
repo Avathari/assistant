@@ -326,7 +326,7 @@ class _OperacionesBibliotecasState extends State<OperacionesBibliotecas> {
                               const SizedBox(
                                 height: 10,
                               ),
-                              const CrossLine(),
+                              CrossLine(),
                             ],
                           ),
                         ),
@@ -370,7 +370,7 @@ class _OperacionesBibliotecasState extends State<OperacionesBibliotecas> {
                                 numOfLines: 2,
                                 withShowOption: true,
                               ),
-                              const CrossLine(),
+                              CrossLine(),
                             ],
                           ),
                         ),
@@ -910,7 +910,7 @@ class _GestionBibliotecasState extends State<GestionBibliotecas> {
                       textAlign: TextAlign.start,
                     ),
                   ),
-                  const Expanded(child: CrossLine()),
+                   Expanded(child: CrossLine()),
                   Expanded(
                     flex: 4,
                     child: Text(

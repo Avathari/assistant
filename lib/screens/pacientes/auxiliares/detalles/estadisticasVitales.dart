@@ -48,7 +48,7 @@ class _EstadisticasVitalesState extends State<EstadisticasVitales> {
           firstText: 'Total de Registros',
           secondText: data['Total_Registros'],
         ),
-        const CrossLine(),
+        CrossLine(),
         SingleChildScrollView(
           controller: ScrollController(),
           child: Column(

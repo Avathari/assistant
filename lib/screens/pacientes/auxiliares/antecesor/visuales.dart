@@ -8,7 +8,7 @@ import 'package:assistant/screens/pacientes/epidemiologicos/licencias.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';
 import 'package:assistant/screens/pacientes/intensiva/herramientas.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
-import 'package:assistant/screens/pacientes/paraclinicos/AuxiliaresDiagnosticos.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/paraclinicos.dart';
 import 'package:assistant/screens/pacientes/reportes/reportes.dart';
 
 import 'package:assistant/screens/pacientes/vitales/vitales.dart';
@@ -257,7 +257,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
       const Center(
         child: Text('Body 3'),
       ),
-      const AuxiliaresDiagnosticos(),
+      const Paraclinicos(),
       Intensiva(), // Analisis(),
       ReportesMedicos(),
       // GestionBalances(),
@@ -375,11 +375,9 @@ class _VisualPacientesState extends State<VisualPacientes> {
           if (isMobile(context) || isTablet(context)) {
             Navigator.of(context).pop();
           }
-          // Update the state of the app
-          toNextScreen(
-              context: context,
-              index: 5,
-              screen: const AuxiliaresDiagnosticos());
+          setState(() {
+            widget.actualPage = 5;
+          });
         },
       ),
       ListTile(

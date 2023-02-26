@@ -45,7 +45,7 @@ class _TabaquismoState extends State<Tabaquismo> {
     return Column(
       children: [
         TittlePanel(textPanel: 'Hábitos Tabaquismo'),
-        const CrossLine(),
+        CrossLine(),
         Row(children: [
           Expanded(
             child: EditTextArea(
@@ -100,7 +100,7 @@ class _TabaquismoState extends State<Tabaquismo> {
             ),
           ),
         ],),
-        const CrossLine(),
+        CrossLine(),
         Row(
           children: [
             Expanded(
@@ -175,7 +175,7 @@ class _TabaquismoState extends State<Tabaquismo> {
             ),
           ],
         ),
-        const CrossLine(),
+        CrossLine(),
       ],
     );
   }

@@ -38,22 +38,17 @@ class GestionPacientes extends StatefulWidget {
 
 class _GestionPacientesState extends State<GestionPacientes> {
 
-  late List? foundedUsuarios = [];
+  late List? foundedItems = [];
   var gestionScrollController = ScrollController();
   var searchTextController = TextEditingController();
 
   String searchCriteria = "Buscar por Apellido";
 
+  var fileAssocieted = 'assets/vault/pacientesRepository.json';
+  
   @override
   void initState() {
-    Actividades.consultar(Databases.siteground_database_regpace,
-            Pacientes.pacientes['consultQuery']!)
-        .then((value) {
-      setState(() {
-        // print("Gestion pacientes $value");
-        foundedUsuarios = value;
-      });
-    });
+    iniciar();
     super.initState();
   }
 
@@ -163,8 +158,8 @@ class _GestionPacientesState extends State<GestionPacientes> {
                   backgroundColor: Colors.black,
                   onRefresh: _pullListRefresh,
                   child: FutureBuilder<List>(
-                    initialData: foundedUsuarios!,
-                    future: Future.value(foundedUsuarios!),
+                    initialData: foundedItems!,
+                    future: Future.value(foundedItems!),
                     builder: (context, AsyncSnapshot snapshot) {
                       if (snapshot.hasError) print(snapshot.error);
                       return snapshot.hasData
@@ -179,11 +174,15 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                   padding: const EdgeInsets.all(2.0),
                                   child: GestureDetector(
                                     onTap: () {
-                                      Pacientes.ID_Paciente =
-                                          snapshot.data[posicion]['ID_Pace'];
-                                      Pacientes.Paciente =
-                                          snapshot.data[posicion];
-                                      // Cambio de la Variable de imagen al actualizar.
+                                      Pacientes.ID_Paciente = snapshot.data[posicion]['ID_Pace'];
+                                      Pacientes.Paciente = snapshot.data[posicion];
+
+                                      setState(() {
+                                        Pacientes.fromJson(snapshot.data[posicion]);
+                                      });
+                                      Terminal.printNotice(
+                                          message: "Nombre conformado ${Pacientes.nombreCompleto}",
+                                      );
 
                                       toVisual(context, Constantes.Update);
                                     },
@@ -402,6 +401,30 @@ class _GestionPacientesState extends State<GestionPacientes> {
     );
   }
 
+  void iniciar() {
+    Terminal.printWarning(message: " . . . Iniciando Actividad - Repositorio de Pacientes");
+    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+      setState(() {
+        foundedItems = value;
+      });
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(
+          message: "Iniciando actividad : : \n "
+              "Consulta de pacientes hospitalizados . . .");
+      Actividades.consultar(Databases.siteground_database_regpace,
+          Pacientes.pacientes['consultQuery']!)
+          .then((value) {
+        setState(() {
+          Terminal.printSuccess(
+              message: "Actualizando repositorio de pacientes . . . ");
+          foundedItems = value;
+          Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
+        });
+      });
+    });
+    Terminal.printWarning(message: " . . . Actividad Iniciada");
+  }
+
   void deleteRegister(
       AsyncSnapshot<dynamic> snapshot, int posicion, BuildContext context) {
     try {
@@ -419,21 +442,44 @@ class _GestionPacientesState extends State<GestionPacientes> {
 
   void toVisual(BuildContext context, String operationActivity) async {
     //
-    Operadores.loadingActivity(
-      context: context,
-      tittle: "Iniciando interfaz . . . ",
-      message: "Iniciando Interfaz",
-    );
-    // Despues de la selección se espera  5 segundos
-    var response = await Valores().load(); // print("response $response");
-    //
-    if (response == true) {
+    Terminal.printData(message: 'Nombre obtenido ${Pacientes.nombreCompleto}\n'
+        '${Pacientes.localPath}');
+    Archivos.readJsonToMap(
+        filePath: Pacientes.localPath)
+        .then((value) {
+      Pacientes.Paciente = value[0];
+      setState(() {
+        Pacientes.imagenPaciente = value[0]['Pace_FIAT'];
+      });
+      Terminal.printSuccess(
+          message:
+          'Archivo ${Pacientes.localPath} Obtenido');
+      Valores.fromJson(value[0]);
+
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (BuildContext context) => VisualPacientes(actualPage: 0),
-        ),
+        ),);
+    }).onError((error, stackTrace) async {
+      Operadores.loadingActivity(
+        context: context,
+        tittle: "Iniciando interfaz . . . ",
+        message: "Iniciando Interfaz",
       );
-    }
+      Terminal.printAlert(
+          message:
+          'Archivo ${Pacientes.localPath} No Encontrado');
+      Terminal.printWarning(message: 'Iniciando búsqueda en Valores . . . ');
+      var response = await Valores().load(); // print("response $response");
+      //
+      if (response == true) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (BuildContext context) => VisualPacientes(actualPage: 0),
+          ),
+        );
+      }
+    });
   }
 
   void toOperaciones(BuildContext context, int posicion,
@@ -446,11 +492,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
   }
 
   Future<Null> _pullListRefresh() async {
-    Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-            pageBuilder: (a, b, c) => const GestionPacientes(),
-            transitionDuration: const Duration(seconds: 0)));
+iniciar();
   }
 
   void _runFilterSearch(String enteredKeyword) {
@@ -467,7 +509,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
             .toList();
 
         setState(() {
-          foundedUsuarios = results;
+          foundedItems = results;
         });
       });
     }

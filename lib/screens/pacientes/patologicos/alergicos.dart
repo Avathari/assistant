@@ -184,7 +184,7 @@ class _OperacionesAlergicosState extends State<OperacionesAlergicos> {
         textController: ayoDiagoTextController,
         numOfLines: 1,
       ),
-      const CrossLine(),
+      CrossLine(),
       Spinner(
           tittle: "¿Tratamiento actual?",
           onChangeValue: (String value) {
@@ -206,7 +206,7 @@ class _OperacionesAlergicosState extends State<OperacionesAlergicos> {
         textController: tratamientoTextController,
         numOfLines: 3,
       ),
-      const CrossLine(),
+      CrossLine(),
     ];
   }
 

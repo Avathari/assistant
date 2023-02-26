@@ -298,7 +298,7 @@ class _OperacionesLicenciaState extends State<OperacionesLicencia> {
           },
           items: Licencias.caracterLicencia,
           initialValue: caracterValue),
-      const CrossLine(),
+      CrossLine(),
       Spinner(
           width: isDesktop(context)
               ? 200
@@ -317,7 +317,7 @@ class _OperacionesLicenciaState extends State<OperacionesLicencia> {
           },
           items: Licencias.lugarExpedicion,
           initialValue: expedicionValue),
-      const CrossLine(),
+      CrossLine(),
       EditTextArea(
           textController: diagnosticoLicenciaTextController,
           labelEditText: "Diagnóstico",
@@ -711,7 +711,7 @@ class _GestionLicenciaState extends State<GestionLicencia> {
                       textAlign: TextAlign.start,
                     ),
                   ),
-                  const Expanded(child: CrossLine()),
+                  Expanded(child: CrossLine()),
                   Expanded(
                     child: Text(
                       snapshot.data[posicion]['Fecha_Inicio'].toString(),

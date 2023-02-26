@@ -39,7 +39,7 @@ class _LimitacionesState extends State<Limitaciones> {
     return Column(
       children: [
         TittlePanel(textPanel: 'Limitaciones Físicas'),
-        const CrossLine(),
+        CrossLine(),
         Row(
           children: [
             Expanded(
@@ -262,7 +262,7 @@ class _LimitacionesState extends State<Limitaciones> {
             ),
           ],
         ),
-        const CrossLine(),
+        CrossLine(),
       ],
     );
   }

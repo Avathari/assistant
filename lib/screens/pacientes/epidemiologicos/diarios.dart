@@ -40,7 +40,7 @@ class _DiariosState extends State<Diarios> {
     return Column(
       children: [
         TittlePanel(textPanel: 'Hábitos Diarios'),
-        const CrossLine(),
+        CrossLine(),
         EditTextArea(
           keyBoardType: TextInputType.text,
           inputFormat: MaskTextInputFormatter(),
@@ -72,7 +72,7 @@ class _DiariosState extends State<Diarios> {
           items: Items.horasSueno,
           initialValue: Items.horasSueno[2],
         ),
-        const CrossLine(),
+        CrossLine(),
         Row(
           children: [
             Expanded(
@@ -110,7 +110,7 @@ class _DiariosState extends State<Diarios> {
             ),
           ],
         ),
-        const CrossLine(),
+        CrossLine(),
         Switched(
           tittle: 'Problemas Familiares',
           onChangeValue: (value) {
@@ -146,7 +146,7 @@ class _DiariosState extends State<Diarios> {
             ),
           ],
         ),
-        const CrossLine(),
+        CrossLine(),
         Switched(
           tittle: 'Problemas Laborales',
           onChangeValue: (value) {
@@ -208,7 +208,7 @@ class _DiariosState extends State<Diarios> {
             ),
           ],
         ),
-        const CrossLine(),
+        CrossLine(),
       ],
     );
   }

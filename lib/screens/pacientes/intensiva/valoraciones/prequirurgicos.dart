@@ -316,7 +316,7 @@ class _PrequirurgicosState extends State<Prequirurgicos> {
                       items: Escalas.asa,
                       initialValue: Valores.valoracionAsa,
                     ),
-                    const CrossLine(),
+                    CrossLine(),
                     EditTextArea(
                       labelEditText: 'Riesgo Anestésicco (Goldmann)',
                       textController: goldmanntextController,
@@ -341,7 +341,7 @@ class _PrequirurgicosState extends State<Prequirurgicos> {
                       inputFormat: MaskTextInputFormatter(),
                       onChange: (value) {},
                     ),
-                    const CrossLine(),
+                    CrossLine(),
                     Spinner(
                       width: isDesktop(context)  || isTablet(context) ? 400 : 100,
                       tittle: 'Valoración Bromage',

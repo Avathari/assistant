@@ -6,7 +6,6 @@ import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
-import 'package:assistant/screens/pacientes/paraclinicos/AuxiliaresDiagnosticos.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
@@ -65,22 +64,35 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
   String tipoEstudio = "Imagenologias";
 
   // ############################ ####### ####### #############################
+  var fileAssocieted = '${Pacientes.localRepositoryPath}/imagenologicos.json';
 
   @override
   void initState() {
-    final f = DateFormat('yyyy-MM-dd');
-    textDateEstudyController.text = f.format(DateTime.now());
 
-    Actividades.consultarAllById(
-            Databases.siteground_database_reggabo,
-            Imagenologias.imagenologias['consultByIdPrimaryQuery'],
-            Pacientes.ID_Paciente)
-        .then((value) {
+    Terminal.printWarning(message: " . . . Iniciando Actividad - Repositorio Paraclinicos del Pacientes");
+    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       setState(() {
-        print("IMAGENOS ${value[0]} ${Pacientes.ID_Paciente}");
         values = value;
+        Terminal.printSuccess(message: 'Repositorio Paraclinicos del Pacientes Obtenido');
       });
+    }).onError((error, stackTrace) {
+      final f = DateFormat('yyyy-MM-dd');
+      textDateEstudyController.text = f.format(DateTime.now());
+
+      Actividades.consultarAllById(
+          Databases.siteground_database_reggabo,
+          Imagenologias.imagenologias['consultByIdPrimaryQuery'],
+          Pacientes.ID_Paciente)
+          .then((value) {
+        setState(() {
+          Archivos.createJsonFromMap(value, filePath: fileAssocieted);
+          values = value;
+        });
+      });
+
     });
+    Terminal.printOther(message: " . . . Actividad Iniciada");
+
     super.initState();
 
     toBaseImage();
@@ -187,8 +199,8 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
             if (isMobile(context)) {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: ((context) => const AuxiliaresDiagnosticos())));
+              // Navigator.of(context).push(MaterialPageRoute(
+              //     builder: ((context) => const AuxiliaresDiagnosticos())));
             } else {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: ((context) => VisualPacientes(actualPage: 5))));
@@ -278,38 +290,35 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
         children: [
           isMobile(context)
               ? Container()
-              : Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GrandButton(
-                          weigth: 100,
-                          labelButton: "Registro de imagenológicos",
-                          onPress: () {
-                            carouselController.jumpToPage(0);
-                          }),
-                      GrandButton(
-                          weigth: 100,
-                          labelButton: "Gestion del Registro",
-                          onPress: () {
-                            carouselController.jumpToPage(1);
-                          }),
-                      GrandButton(
-                          weigth: 100,
-                          labelButton: "Imagen del Registro",
-                          onPress: () {
-                            carouselController.jumpToPage(2);
-                          }),
-                      // GrandButton(
-                      //     weigth: 100,
-                      //     labelButton: "Gestion del Registro",
-                      //     onPress: () {
-                      //       carouselController.jumpToPage(2);
-                      //     }),
-                    ],
-                  ),
-                ),
+              : Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GrandButton(
+                      weigth: 100,
+                      labelButton: "Registro de imagenológicos",
+                      onPress: () {
+                        carouselController.jumpToPage(0);
+                      }),
+                  GrandButton(
+                      weigth: 100,
+                      labelButton: "Gestion del Registro",
+                      onPress: () {
+                        carouselController.jumpToPage(1);
+                      }),
+                  GrandButton(
+                      weigth: 100,
+                      labelButton: "Imagen del Registro",
+                      onPress: () {
+                        carouselController.jumpToPage(2);
+                      }),
+                  // GrandButton(
+                  //     weigth: 100,
+                  //     labelButton: "Gestion del Registro",
+                  //     onPress: () {
+                  //       carouselController.jumpToPage(2);
+                  //     }),
+                ],
+              ),
           Expanded(
             child: Row(
               children: [

@@ -38,7 +38,7 @@ class _ExposicionesState extends State<Exposiciones> {
     return Column(
       children: [
         TittlePanel(textPanel: 'Exposiciones a Sustancias Nocivas'),
-        const CrossLine(),
+        CrossLine(),
         Row(
           children: [
             Expanded(
@@ -224,7 +224,7 @@ class _ExposicionesState extends State<Exposiciones> {
             ),
           ],
         ),
-        const CrossLine(),
+        CrossLine(),
       ],
     );
   }

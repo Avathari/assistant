@@ -77,7 +77,7 @@ class _PresentacionPacientesState extends State<PresentacionPacientes> {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              const SizedBox(
+               SizedBox(
                 height: 20,
                 child: CrossLine(),
               ),
@@ -160,7 +160,7 @@ class _PresentacionPacientesSimpleState
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     height: 20,
                     child: CrossLine(),
                   ),

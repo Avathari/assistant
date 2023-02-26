@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/actividades/pdfGenerete/PdfApi.dart';
 import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteFormats/formatosReportes.dart';
@@ -32,98 +34,20 @@ class _HospitalizadosState extends State<Hospitalizados> {
   var gestionScrollController = ScrollController();
   var searchTextController = TextEditingController();
 
+  var fileAssocieted = 'assets/vault/hospitalized.json';
+
   @override
   void initState() {
-    print(" . . . Iniciando array ");
-    List hospitalizaed = [];
-// ********** ************** ***********
-    Actividades.consultar(
-      Databases.siteground_database_regpace,
-      Pacientes.pacientes['consultHospitalized'],
-    ).then((response) async {
-      var ids = Listas.listFromMapWithOneKey(response, keySearched: 'ID_Pace');
-      for (var item in ids) {
-        hospitalizaed.add(await Actividades.consultarId(
-          Databases.siteground_database_reghosp,
-          "SELECT * FROM pace_hosp WHERE ID_Pace = ? "
-          "ORDER BY ID_Hosp ASC",
-          item,
-        ));
-      }
-      // ********** ************** ***********
-      for (var v = 0; v < response.length; v++) {
-        if (hospitalizaed[v].keys.contains('Error')) {
-          response[v].addAll({
-            "ID_Hosp": 0,
-            "Feca_INI_Hosp": '0000-00-00',
-            "Id_Cama": 'NA',
-            "Dia_Estan": 0,
-            "Medi_Trat": 'N/A',
-            "Serve_Trat": 'N/A',
-            "Serve_Trat_INI": 'N/A',
-            "Feca_EGE_Hosp": '0000-00-00',
-            "EGE_Motivo": ""
-          });
-          response[v].addAll({
-            "Cronicos": [],
-          });
-          response[v].addAll({
-            "Diagnosticos": [],
-          });
-          response[v].addAll({
-            "Pendientes": [],
-          });
-        } else {
-          response[v].addAll(hospitalizaed[v]);
-          response[v].addAll({
-            "Cronicos": await Actividades.consultarAllById(Databases.siteground_database_regpace,
-              "SELECT * FROM pace_app_deg WHERE ID_Pace = ? ",
-              response[v]['ID_Pace'],
-            ),
-          });
-          response[v].addAll({
-            "Diagnosticos": await Actividades.consultarAllById(Databases.siteground_database_reghosp,
-              "SELECT * FROM pace_dia WHERE ID_Pace = ? "
-                  "AND ID_Hosp = '${hospitalizaed[v]['ID_Hosp']}'",
-              response[v]['ID_Pace'],
-            ),
-          });
-          response[v].addAll({
-            "Pendientes": await Actividades.consultarAllById(
-              Databases.siteground_database_reghosp,
-              "SELECT * FROM pace_pen WHERE ID_Pace = ? "
-              "AND ID_Hosp = '${hospitalizaed[v]['ID_Hosp']}' "
-              "AND Pace_PEN_realized = '1'",
-              response[v]['ID_Pace'],
-            )
-          });
-
-        }
-      }
-      // ********** ************** ***********
-      List<String> order = [
-        'N/A',
-        '1',
-        '2',
-        '3',
-        '4',
-        '5',
-        '6',
-        '7',
-        '8',
-        '9',
-        '10',
-      ];
-      foundedItems = response;
+    Terminal.printWarning(message: " . . . Iniciando Actividad ");
+    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       setState(() {
-        // foundedItems!.sort((a, b) => a["Id_Cama"].compareTo(b["Id_Cama"]));
-        foundedItems!.sort((a, b)  {
-          return order.indexOf(a['Id_Cama'].toString()) -
-              order.indexOf(b['Id_Cama'].toString());
-        });
+        foundedItems = value;
       });
-      // ********** ************** ***********
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(message: "Error : $error");
+      _pullListRefresh();
     });
+    Terminal.printWarning(message: " . . . Actividad Iniciada");
     super.initState();
   }
 
@@ -155,7 +79,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
               ),
               tooltip: Sentences.reload,
               onPressed: () {
-                // _pullListRefresh();
+                _pullListRefresh();
               },
             ),
             IconButton(
@@ -166,11 +90,11 @@ class _HospitalizadosState extends State<Hospitalizados> {
               onPressed: () async {
                 final pdfFile = await PdfParagraphsApi.generateFromList(
                   rightMargin: 10,
-                    leftMargin: 10,
-                    withIndicationReport: false,
-                    indexOfTypeReport: TypeReportes.censoHospitalario,
-                    paraph: foundedItems!,
-                    name: "(CEN) - (${Calendarios.today()}).pdf",
+                  leftMargin: 10,
+                  withIndicationReport: false,
+                  indexOfTypeReport: TypeReportes.censoHospitalario,
+                  paraph: foundedItems!,
+                  name: "(CEN) - (${Calendarios.today()}).pdf",
                 );
 
                 PdfApi.openFile(pdfFile);
@@ -235,6 +159,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                   if (snapshot.hasError) print(snapshot.error);
                   return snapshot.hasData
                       ? GridView.builder(
+                          padding: const EdgeInsets.all(10.0),
                           gridDelegate: GridViewTools.gridDelegate(),
                           controller: gestionScrollController,
                           shrinkWrap: true,
@@ -273,135 +198,90 @@ class _HospitalizadosState extends State<Hospitalizados> {
       AsyncSnapshot snapshot, int posicion, BuildContext context) {
     return Container(
       decoration: ContainerDecoration.roundedDecoration(),
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(10.0),
       child: GestureDetector(
         onTap: () {
-          print("${snapshot.data[posicion]['Pendientes']}");
+          Terminal.printExpected(message: "${snapshot.data[posicion]['Pendientes']}");
         },
         onDoubleTap: () {
           Pacientes.ID_Paciente = snapshot.data[posicion]['ID_Pace'];
           Pacientes.Paciente = snapshot.data[posicion];
-          print("Pacientes.ID_Paciente ${Pacientes.ID_Paciente}");
+
+          Pacientes.fromJson(snapshot.data[posicion]);
+
           toVisual(context, Constantes.Update);
-          // toOperaciones(context, posicion, snapshot, Constantes.Update);
         },
-        child: Column(
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Expanded(
-              flex: 4,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+              flex: 2,
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Expanded(
-                            flex: 1,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: CircleAvatar(
-                                backgroundColor: Colors.grey,
-                                radius: 100,
-                                child: Text(
-                                    snapshot.data[posicion]['ID_Pace']
-                                        .toString(),
-                                    style: Styles.textSyleGrowth(fontSize: 18)),
-                              ),
-                            )),
-                        Expanded(
-                            flex: 1,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: CircleAvatar(
-                                backgroundColor: Colors.grey,
-                                radius: 50,
-                                child: Text(
-                                    snapshot.data[posicion]['ID_Hosp']
-                                        .toString(),
-                                    style: Styles.textSyleGrowth(fontSize: 18)),
-                              ),
-                            )),
-                        Expanded(
-                            flex: 1,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: CircleAvatar(
-                                backgroundColor: Colors.grey,
-                                radius: 50,
-                                child: Text(
-                                    snapshot.data[posicion]['Id_Cama']
-                                        .toString(),
-                                    style: Styles.textSyleGrowth(fontSize: 18)),
-                              ),
-                            )),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    flex: 4,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                            "${snapshot.data[posicion]['Pace_Ape_Pat']} "
-                            "${snapshot.data[posicion]['Pace_Ape_Mat']} "
-                            "${snapshot.data[posicion]['Pace_Nome_PI']} "
-                            "${snapshot.data[posicion]['Pace_Nome_SE']}",
-                            maxLines: 2,
-                            style: Styles.textSyleGrowth(fontSize: 16)),
-                        Text(
-                          "Servicio: ${snapshot.data[posicion]['Serve_Trat']}",
-                          maxLines: 2,
-                          style: Styles.textSyleGrowth(fontSize: 12),
-                        ),
-                        Text(
-                          "${snapshot.data[posicion]['Medi_Trat']}",
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: Styles.textSyleGrowth(fontSize: 12),
-                        ),
-                        Text(
-                          "Egreso: ${snapshot.data[posicion]['Feca_EGE_Hosp']}",
-                          style: Styles.textSyleGrowth(fontSize: 12),
-                        ),
-                        Text("D.E.H.: ${snapshot.data[posicion]['Dia_Estan']}",
-                            style: Styles.textSyleGrowth(fontSize: 14)),
-                        Text(
-                          "${snapshot.data[posicion]['EGE_Motivo']}",
-                          style: Styles.textSyleGrowth(fontSize: 12),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
+                  Expanded(
+                      flex: 1,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.grey,
+                        radius: 50,
+                        child: Text(
+                            snapshot.data[posicion]['Id_Cama'].toString(),
+                            style: Styles.textSyleGrowth(fontSize: 18)),
+                      )),
                   IconButton(
                     color: Colors.grey,
                     icon: const Icon(Icons.update_rounded),
                     onPressed: () {
                       Pacientes.ID_Paciente = snapshot.data[posicion]['ID_Pace'];
                       Pacientes.Paciente = snapshot.data[posicion];
-                      print("Pacientes.ID_Paciente ${Pacientes.ID_Paciente}");
+
+                      Pacientes.fromJson(snapshot.data[posicion]);
+
                       toVisual(context, Constantes.Update);
-                      // toOperaciones(context, posicion, snapshot, Constantes.Update);
                     },
                   ),
-                  const SizedBox(
-                    width: 20,
-                  ),
                 ],
+              ),
+            ),
+            Expanded(
+              flex: 4,
+              child: Container(
+                margin: const EdgeInsets.all(10.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                        "${snapshot.data[posicion]['Pace_Ape_Pat']} "
+                        "${snapshot.data[posicion]['Pace_Ape_Mat']} "
+                        "${snapshot.data[posicion]['Pace_Nome_PI']} "
+                        "${snapshot.data[posicion]['Pace_Nome_SE']}",
+                        maxLines: 2,
+                        style: Styles.textSyleGrowth(fontSize: 16)),
+                    Text(
+                      "Servicio: ${snapshot.data[posicion]['Serve_Trat']}",
+                      maxLines: 2,
+                      style: Styles.textSyleGrowth(fontSize: 12),
+                    ),
+                    Text(
+                      "${snapshot.data[posicion]['Medi_Trat']}",
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Styles.textSyleGrowth(fontSize: 12),
+                    ),
+                    Text(
+                      "Egreso: ${snapshot.data[posicion]['Feca_EGE_Hosp']}",
+                      style: Styles.textSyleGrowth(fontSize: 12),
+                    ),
+                    Text("D.E.H.: ${snapshot.data[posicion]['Dia_Estan']}",
+                        style: Styles.textSyleGrowth(fontSize: 14)),
+                    Text(
+                      "${snapshot.data[posicion]['EGE_Motivo']}",
+                      style: Styles.textSyleGrowth(fontSize: 12),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -412,21 +292,44 @@ class _HospitalizadosState extends State<Hospitalizados> {
 
   void toVisual(BuildContext context, String operationActivity) async {
     //
-    Operadores.loadingActivity(
-      context: context,
-      tittle: "Iniciando interfaz . . . ",
-      message: "Iniciando Interfaz",
-    );
-    // Despues de la selección se espera  5 segundos
-    var response = await Valores().load(); // print("response $response");
-    //
-    if (response == true) {
+    Terminal.printData(message: 'Nombre obtenido ${Pacientes.nombreCompleto}\n'
+        '${Pacientes.localPath}');
+    Archivos.readJsonToMap(
+            filePath: Pacientes.localPath)
+        .then((value) {
+      Pacientes.Paciente = value[0];
+      setState(() {
+        Pacientes.imagenPaciente = value[0]['Pace_FIAT'];
+      });
+      Terminal.printSuccess(
+          message:
+              'Archivo ${Pacientes.localPath} Obtenido');
+      Valores.fromJson(value[0]);
+
       Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (BuildContext context) => VisualPacientes(actualPage: 0),
-        ),
+          MaterialPageRoute(
+            builder: (BuildContext context) => VisualPacientes(actualPage: 0),
+          ),);
+    }).onError((error, stackTrace) async {
+      Operadores.loadingActivity(
+        context: context,
+        tittle: "Iniciando interfaz . . . ",
+        message: "Iniciando Interfaz",
       );
-    }
+      Terminal.printAlert(
+          message:
+              'Archivo ${Pacientes.localPath} No Encontrado');
+      Terminal.printWarning(message: 'Iniciando busqueda en Valores . . . ');
+      var response = await Valores().load(); // print("response $response");
+      //
+      if (response == true) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (BuildContext context) => VisualPacientes(actualPage: 0),
+          ),
+        );
+      }
+    });
   }
 
   void toOperaciones(BuildContext context, int posicion,
@@ -459,17 +362,88 @@ class _HospitalizadosState extends State<Hospitalizados> {
   }
 
   Future<Null> _pullListRefresh() async {
-    // Navigator.pushReplacement(
-    //     context,
-    //     PageRouteBuilder(
-    //         pageBuilder: (a, b, c) => Hospitalizados(
-    //               actualSidePage: Padding(
-    //                 padding: const EdgeInsets.all(8.0),
-    //                 child: OperacionesHospitalizados(
-    //                   operationActivity: Constantes.operationsActividad,
-    //                 ),
-    //               ),
-    //             ),
-    //         transitionDuration: const Duration(seconds: 0)));
+    Terminal.printAlert(
+        message: "Iniciando actividad : : \n "
+            "Consulta de pacientes hospitalizados . . .");
+    List hospitalizaed = [];
+
+    Actividades.consultar(
+      Databases.siteground_database_regpace,
+      Pacientes.pacientes['consultHospitalized'],
+    ).then((response) async {
+      var ids = Listas.listFromMapWithOneKey(response, keySearched: 'ID_Pace');
+      for (var item in ids) {
+        hospitalizaed.add(await Actividades.consultarId(
+          Databases.siteground_database_reghosp,
+          "SELECT * FROM pace_hosp WHERE ID_Pace = ? "
+          "ORDER BY ID_Hosp ASC",
+          item,
+        ));
+      }
+      // ********** ************** ***********
+      for (var v = 0; v < response.length; v++) {
+        if (hospitalizaed[v].keys.contains('Error')) {
+          response[v].addAll({
+            "ID_Hosp": 0,
+            "Feca_INI_Hosp": '0000-00-00',
+            "Id_Cama": 'NA',
+            "Dia_Estan": 0,
+            "Medi_Trat": 'N/A',
+            "Serve_Trat": 'N/A',
+            "Serve_Trat_INI": 'N/A',
+            "Feca_EGE_Hosp": '0000-00-00',
+            "EGE_Motivo": ""
+          });
+          response[v].addAll({
+            "Cronicos": [],
+          });
+          response[v].addAll({
+            "Diagnosticos": [],
+          });
+          response[v].addAll({
+            "Pendientes": [],
+          });
+        } else {
+          response[v].addAll(hospitalizaed[v]);
+          response[v].addAll({
+            "Cronicos": await Actividades.consultarAllById(
+              Databases.siteground_database_regpace,
+              "SELECT * FROM pace_app_deg WHERE ID_Pace = ? ",
+              response[v]['ID_Pace'],
+            ),
+          });
+          response[v].addAll({
+            "Diagnosticos": await Actividades.consultarAllById(
+              Databases.siteground_database_reghosp,
+              "SELECT * FROM pace_dia WHERE ID_Pace = ? "
+              "AND ID_Hosp = '${hospitalizaed[v]['ID_Hosp']}'",
+              response[v]['ID_Pace'],
+            ),
+          });
+          response[v].addAll({
+            "Pendientes": await Actividades.consultarAllById(
+              Databases.siteground_database_reghosp,
+              "SELECT * FROM pace_pen WHERE ID_Pace = ? "
+              "AND ID_Hosp = '${hospitalizaed[v]['ID_Hosp']}' "
+              "AND Pace_PEN_realized = '1'",
+              response[v]['ID_Pace'],
+            )
+          });
+        }
+      }
+      // ********** ************** ***********
+      foundedItems = response;
+      setState(() {
+        Terminal.printSuccess(
+            message: "Actualizando pacientes hospitalizados . . . ");
+        // foundedItems!.sort((a, b) => a["Id_Cama"].compareTo(b["Id_Cama"]));
+        foundedItems!.sort((a, b) {
+          return Items.orderOfCamas.indexOf(a['Id_Cama'].toString()) -
+              Items.orderOfCamas.indexOf(b['Id_Cama'].toString());
+        });
+        Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
+      });
+      // ********** ************** ***********
+    });
   }
 }

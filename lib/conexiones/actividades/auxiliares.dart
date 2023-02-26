@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
+
 import 'package:assistant/conexiones/actividades/pdfGenerete/PdfApi.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/LoadingScreen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 
@@ -158,9 +159,89 @@ class Archivos {
     //
     return list;
   }
+
+  static createJsonFromMap(List<dynamic> map, {String filePath = ''}) async {
+    Terminal.printWarning(message: 'Creando archivo JSON en $filePath');
+    if (Platform.isAndroid) {
+      final directory = await getTemporaryDirectory();
+      final File file = File("${directory.path}/$filePath");
+      if (await file.exists()) {
+        file.writeAsStringSync(json.encode(map));
+        Terminal.printExpected(message: "Obtenido desde ${directory.path}/$filePath");
+      } else {
+        file.create(recursive: true).then((value) {
+          file.writeAsStringSync(json.encode(map));
+          Terminal.printExpected(message: "Obtenido desde ${directory.path}/$filePath");
+        }).onError((error, stackTrace) {
+          Terminal.printAlert(message: "Error: $error desde ${directory.path}/$filePath");
+        });
+      }
+    } else {
+      final File file = File(filePath);
+      file.create(recursive: true);
+      file.writeAsStringSync(json.encode(map));
+    }
+
+  }
+
+  static Future readJsonToMap({required String filePath}) async {
+    var file, contents;
+    if (Platform.isAndroid) {
+      final directory = await getTemporaryDirectory();
+      final File file = File("${directory.path}/$filePath");
+
+      contents = await file.readAsString();
+      Terminal.printOther(message: "Obtenido desde ${directory.path}/$filePath");
+      return jsonDecode(contents);
+    } else {
+      file = File(filePath);
+      //
+      if (await file.exists()) {
+        contents = await file.readAsString();
+        return jsonDecode(contents);
+      } else {
+        throw "No existe el archivo $filePath";
+      }
+    }
+  }
+
+  static deleteFile( {required filePath}) async {
+    if (Platform.isAndroid) {
+      final directory = await getTemporaryDirectory();
+      final File file = File("${directory.path}/$filePath");
+      if (await file.exists()) {
+        file.delete();
+      } else {
+        throw "\x1B[31mEl Archivo no Existe\x1B[0m";
+      }
+    } else {
+      final file = File(filePath);
+      if (await file.exists()) {
+        file.delete();
+      } else {
+        throw "\x1B[31mEl Archivo no Existe\x1B[0m";
+      }
+    }
+  }
+
+  static listDirectoriesFromPath({required filePath}) {
+    List<String> paths = [];
+    //
+    var dir = Directory(filePath);
+    List contents = dir.listSync();
+    for (var fileOrDir in contents) {
+      paths.add(fileOrDir.path.toString());
+    }
+
+    return paths;
+  }
 }
 
 class Listas {
+  static listFromString(String stringOfList) {
+    return json.decode(stringOfList).cast<String>().toList();
+  }
+
   static List<dynamic> listFromMap(
       {required List<dynamic> lista, // <Map<String, dynamic>>
       required String keySearched,
@@ -182,6 +263,7 @@ class Listas {
     for (var item in aux) {
       listado.add(item[keySearched]);
     }
+    // Terminal.printOther(message: listado.toString());
     return listado;
   }
 
@@ -386,6 +468,7 @@ class Operadores {
     String? message,
     Function? onCloss,
   }) {
+    Terminal.printWarning(message: '$message');
     showDialog(
         context: context,
         builder: (context) {
@@ -527,7 +610,7 @@ class Dialogos {
               style: const TextStyle(fontSize: 10, color: Colors.grey),
             ),
           ),
-          const CrossLine(),
+          CrossLine(),
         ],
       ));
     }
@@ -575,7 +658,7 @@ class Dialogos {
               style: const TextStyle(color: Colors.grey),
             ),
           ),
-          const CrossLine(),
+          CrossLine(),
         ],
       ));
     }
@@ -631,5 +714,32 @@ class Dialogos {
                 const Text("Cancelar", style: TextStyle(color: Colors.white))),
       ],
     );
+  }
+}
+
+class Terminal {
+  static void printNotice({required String message}){
+    print("\x1B[30m$message\x1B[0m"); // Black
+  }
+  static void printAlert({required String message}){
+    print("\x1B[31m$message\x1B[0m"); // Red
+  }
+  static void printSuccess({required String message}){
+    print("\x1B[32m$message\x1B[0m"); // Green
+  }
+  static void printWarning({required String message}){
+    print("\x1B[33m$message\x1B[0m"); // Yellow
+  }
+  static void printOther({required String message}){
+    print("\x1B[34m$message\x1B[0m"); // Blue
+  }
+  static void printData({required String message}){
+    print("\x1B[35m$message\x1B[0m"); // Magenta
+  }
+  static void printExpected({required String message}){
+    print("\x1B[36m$message\x1B[0m"); // Cyan
+  }
+  static void printWhite({required String message}){
+    print("\x1B[37m$message\x1B[0m"); //White
   }
 }

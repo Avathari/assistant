@@ -126,7 +126,7 @@ class _ViviendasState extends State<Viviendas> {
             ],
           ),
         ),
-        const CrossLine(),
+        CrossLine(),
         CarouselSlider(
             carouselController: carouselController,
             options: Carousel.carouselOptions(context: context),
@@ -146,7 +146,7 @@ class _ViviendasState extends State<Viviendas> {
                       items: Items.propiedad,
                       initialValue: Valores.propiedadVivienda, //Items.propiedad[0],
                     ),
-                    const CrossLine(),
+                    CrossLine(),
                     TittlePanel(textPanel: 'Co-Habitantes'),
                     Row(
                       children: [
@@ -227,7 +227,7 @@ class _ViviendasState extends State<Viviendas> {
                         ),
                       ],
                     ),
-                    const CrossLine(),
+                    CrossLine(),
                   ],
                 ),
               ),
@@ -287,7 +287,7 @@ class _ViviendasState extends State<Viviendas> {
                       ),
                     ],
                   ),
-                  const CrossLine(),
+                  CrossLine(),
                   TittlePanel(textPanel: 'Servicios Domiciliarios'),
                   Row(
                     children: [
@@ -330,7 +330,7 @@ class _ViviendasState extends State<Viviendas> {
                       ),
                     ],
                   ),
-                  const CrossLine(),
+                  CrossLine(),
                 ]),
               ),
               SingleChildScrollView(
@@ -370,7 +370,7 @@ class _ViviendasState extends State<Viviendas> {
                     items: Items.materialesTecho,
                     initialValue: Items.materialesTecho[0],
                   ),
-                  const CrossLine(),
+                  CrossLine(),
                 ]),
               ),
               SingleChildScrollView(
@@ -430,7 +430,7 @@ class _ViviendasState extends State<Viviendas> {
                         ),
                       ],
                     ),
-                    const CrossLine(),
+                    CrossLine(),
                     TittlePanel(textPanel: 'Conformación Extradomiciliaria'),
                     Row(
                       children: [
@@ -619,7 +619,7 @@ class _ViviendasState extends State<Viviendas> {
                         ),
                       ],
                     ),
-                    const CrossLine(),
+                    CrossLine(),
                   ],
                 ),
               ),
@@ -781,7 +781,7 @@ class _ViviendasState extends State<Viviendas> {
                         ),
                       ],
                     ),
-                    const CrossLine(),
+                    CrossLine(),
                   ],
                 ),
               ),

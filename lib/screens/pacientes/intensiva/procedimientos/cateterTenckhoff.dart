@@ -110,7 +110,7 @@ class _CateterTenckhoffState extends State<CateterTenckhoff> {
                             });
                           },
                         ),
-                        const CrossLine(),
+                        CrossLine(),
                         Spinner(
                           width: isDesktop(context)
                               ? 400
@@ -129,7 +129,7 @@ class _CateterTenckhoffState extends State<CateterTenckhoff> {
                           items: Items.sitiosCateterTenckhoff,
                           initialValue: Valores.sitiosCateterTenckhoff,
                         ),
-                        const CrossLine(),
+                        CrossLine(),
                         EditTextArea(
                             labelEditText:
                                 'Complicaciones durante el Procedimiento',

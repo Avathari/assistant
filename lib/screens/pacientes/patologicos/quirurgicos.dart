@@ -173,7 +173,7 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
         textController: ayoDiagoTextController,
         numOfLines: 1,
       ),
-      const CrossLine(),
+      CrossLine(),
       Spinner(
           tittle: "¿Complicaciones?",
           onChangeValue: (String value) {
