@@ -1,0 +1,98 @@
+          widget._operationButton = 'Actualizar';
+          idOperation = Pacientes.Vital['ID_Pace_SV'];
+
+          fechaRealizacionTextController.text =
+              Pacientes.Vital['Pace_Feca_SV'].toString();
+          // Variables Vitales ********* *************** **********
+          tasTextController.text = Pacientes.Vital['Pace_SV_tas'].toString();
+          Valores.tensionArterialSystolica =
+              int.parse(tasTextController.text);
+          //
+          tadTextController.text = Pacientes.Vital['Pace_SV_tad'].toString();
+          Valores.tensionArterialDyastolica =
+              int.parse(tadTextController.text);
+          //
+          fcTextController.text = Pacientes.Vital['Pace_SV_fc'].toString();
+          Valores.frecuenciaCardiaca = int.parse(fcTextController.text);
+          //
+          frTextController.text = Pacientes.Vital['Pace_SV_fr'].toString();
+          Valores.frecuenciaRespiratoria = int.parse(frTextController.text);
+          //
+          tcTextController.text = Pacientes.Vital['Pace_SV_tc'].toString();
+          Valores.temperaturCorporal = double.parse(tcTextController.text);
+          //
+          spoTextController.text = Pacientes.Vital['Pace_SV_spo'].toString();
+          Valores.saturacionPerifericaOxigeno =
+              int.parse(spoTextController.text);
+          //
+          estTextController.text = Pacientes.Vital['Pace_SV_est'].toString();
+          Valores.alturaPaciente = double.parse(estTextController.text);
+          //
+          pctTextController.text = Pacientes.Vital['Pace_SV_pct'].toString();
+          Valores.pesoCorporalTotal = double.parse(pctTextController.text);
+          //
+          gluTextController.text = Pacientes.Vital['Pace_SV_glu'].toString();
+          Valores.glucemiaCapilar = int.parse(gluTextController.text);
+          //
+          gluAyuTextController.text =
+              Pacientes.Vital['Pace_SV_glu_ayu'].toString();
+          Valores.horasAyuno = int.parse(gluAyuTextController.text);
+          //
+          // Variables Antropométricas ********* *************** **********
+          cueTextController.text = Pacientes.Vital['Pace_SV_cue'].toString();
+          Valores.circunferenciaCuello = int.parse(cueTextController.text);
+          //
+          cinTextController.text = Pacientes.Vital['Pace_SV_cin'].toString();
+          Valores.circunferenciaCintura = int.parse(cinTextController.text);
+          //
+          cadTextController.text = Pacientes.Vital['Pace_SV_cad'].toString();
+          Valores.circunferenciaCadera = int.parse(cadTextController.text);
+          //
+          cmbTextController.text = Pacientes.Vital['Pace_SV_cmb'].toString();
+          Valores.circunferenciaMesobraquial =
+              int.parse(cmbTextController.text);
+          //
+
+          factorActividadValue = Pacientes.Vital['Pace_SV_fa'].toString();
+          Valores.factorActividad = double.parse(factorActividadValue);
+          //
+          factorEstresValue = Pacientes.Vital['Pace_SV_fe'].toString();
+          Valores.factorEstres = double.parse(factorEstresValue);
+          //
+
+          pectTextController.text =
+              Pacientes.Vital['Pace_SV_c_pect'].toString();
+          // Valores.pec = int.parse(pectTextController.text);
+          //
+          pcbTextController.text = Pacientes.Vital['Pace_SV_pcb'].toString();
+          Valores.pliegueCutaneoBicipital = int.parse(pcbTextController.text);
+          //
+          pseTextController.text = Pacientes.Vital['Pace_SV_pse'].toString();
+          Valores.pliegueCutaneoEscapular = int.parse(pseTextController.text);
+          //
+          psiTextController.text = Pacientes.Vital['Pace_SV_psi'].toString();
+          Valores.pliegueCutaneoIliaco = int.parse(psiTextController.text);
+          //
+          pstTextController.text = Pacientes.Vital['Pace_SV_pst'].toString();
+          Valores.pliegueCutaneoTricipital =
+              int.parse(pstTextController.text);
+          //
+          femIzqTextController.text =
+              Pacientes.Vital['Pace_SV_c_fem_izq'].toString();
+          Valores.circunferenciaFemoralIzquierda =
+              int.parse(femIzqTextController.text);
+          //
+          femDerTextController.text =
+              Pacientes.Vital['Pace_SV_c_fem_der'].toString();
+          Valores.circunferenciaFemoralDerecha =
+              int.parse(femDerTextController.text);
+          //
+          suroIzqTextController.text =
+              Pacientes.Vital['Pace_SV_c_suro_izq'].toString();
+          Valores.circunferenciaSuralIzquierda =
+              int.parse(suroIzqTextController.text);
+          //
+          suroDerTextController.text =
+              Pacientes.Vital['Pace_SV_c_suro_der'].toString();
+          Valores.circunferenciaSuralDerecha =
+              int.parse(suroDerTextController.text);

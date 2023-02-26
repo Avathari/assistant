@@ -246,6 +246,7 @@ class Valores {
       tipoCirugia = "",
       tipoInterrogatorio = 'Directo';
   //
+  static String? fechaVitales;
   static int? tensionArterialSystolica,
       tensionArterialDyastolica,
       frecuenciaCardiaca,
@@ -257,6 +258,7 @@ class Valores {
       circunferenciaCadera,
       circunferenciaCuello,
       circunferenciaMesobraquial,
+  circunferenciaPectoral,
       pliegueCutaneoBicipital,
       pliegueCutaneoEscapular,
       pliegueCutaneoIliaco,

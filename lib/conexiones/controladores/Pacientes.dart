@@ -3936,6 +3936,7 @@ class Embarazos {
 
 class Vitales {
   static int ID_Vitales = 0;
+static var fileAssocieted = '${Pacientes.localRepositoryPath}vitales.json';
 
   static void ultimoRegistro() {
     Actividades.consultarId(Databases.siteground_database_regpace,
@@ -3970,6 +3971,7 @@ class Vitales {
           index++;
         }
         Terminal.printExpected(message: "${Pacientes.Vitales!}");
+        Archivos.createJsonFromMap(Pacientes.Vitales!, filePath: fileAssocieted);
       });
     });
   }
@@ -4014,9 +4016,9 @@ class Vitales {
             "Pace_SV_glu, Pace_SV_glu_ayu) "
             "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
     "updateQuery": "UPDATE pace_sv "
-        "SET ID_Pace_SV = ?, ID_Pace = ?, Pace_Feca_SV = ?, Pace_SV_tas = ?, Pace_SV_tad = "
-        "?, Pace_SV_fc = ?, Pace_SV_fr = ?, Pace_SV_tc = ?, Pace_SV_spo = ?, Pace_SV_est = "
-        "?, Pace_SV_pct = ?, "
+        "SET ID_Pace_SV = ?, ID_Pace = ?, Pace_Feca_SV = ?, Pace_SV_tas = ?, Pace_SV_tad = ?, "
+        "Pace_SV_fc = ?, Pace_SV_fr = ?, Pace_SV_tc = ?, Pace_SV_spo = ?, "
+        "Pace_SV_est = ?, Pace_SV_pct = ?, "
         "Pace_SV_glu = ?, Pace_SV_glu_ayu = ? "
         "WHERE ID_Pace_SV = ?",
     "deleteQuery": "DELETE FROM pace_sv WHERE ID_Pace_SV = ?",
@@ -4216,7 +4218,6 @@ class Vitales {
   };
 
   static final List<String> factorActividad = ["0.9", "1", "1.2", "3", "5"];
-
   static final List<String> factorEstres = ["0.9", "1", "1.2", "3", "5"];
 
   static List<String> Categorias = [
@@ -4226,6 +4227,72 @@ class Vitales {
     'Promedio de FR',
     'Total de Registros'
   ];
+
+  static void fromJson (Map<dynamic, dynamic> json) {
+    // Pacientes.Vital = json;
+
+    ID_Vitales = json['ID_Pace_SV'];
+
+    Valores.fechaVitales =
+        json['Pace_Feca_SV'].toString();
+    // Variables Vitales ********* *************** **********
+    Valores.tensionArterialSystolica =
+        int.parse(json['Pace_SV_tas'].toString());
+    //
+    Valores.tensionArterialDyastolica =
+        int.parse(json['Pace_SV_tad'].toString());
+    //
+    Valores.frecuenciaCardiaca = int.parse(json['Pace_SV_fc'].toString());
+    //
+    Valores.frecuenciaRespiratoria = int.parse(json['Pace_SV_fr'].toString());
+    //
+    Valores.temperaturCorporal = double.parse(json['Pace_SV_tc'].toString());
+    //
+    Valores.saturacionPerifericaOxigeno =
+        int.parse(json['Pace_SV_spo'].toString());
+    //
+    Valores.alturaPaciente = double.parse(json['Pace_SV_est'].toString());
+    //
+    Valores.pesoCorporalTotal = double.parse(json['Pace_SV_pct'].toString());
+    //
+    Valores.glucemiaCapilar = int.parse(json['Pace_SV_glu'].toString());
+    //
+    Valores.horasAyuno = int.parse(json['Pace_SV_glu_ayu'].toString());
+    //
+    // Variables Antropométricas ********* *************** **********
+    Valores.circunferenciaCuello = int.parse(json['Pace_SV_cue'].toString());
+    //
+    Valores.circunferenciaCintura = int.parse(json['Pace_SV_cin'].toString());
+    //
+    Valores.circunferenciaCadera = int.parse(json['Pace_SV_cad'].toString());
+    //
+    Valores.circunferenciaMesobraquial =
+        int.parse(json['Pace_SV_cmb'].toString());
+    //
+
+    Valores.factorActividad = double.parse(json['Pace_SV_fa'].toString());
+    //
+    Valores.factorEstres = double.parse(json['Pace_SV_fe'].toString());
+    //
+
+    // Circunferencias y Pliegues ************ ****************** *************
+    Valores.circunferenciaPectoral = int.parse(json['Pace_SV_c_pect'].toString());
+    Valores.pliegueCutaneoBicipital = int.parse(json['Pace_SV_pcb'].toString());
+    Valores.pliegueCutaneoEscapular = int.parse(json['Pace_SV_pse'].toString());
+    Valores.pliegueCutaneoIliaco = int.parse(json['Pace_SV_psi'].toString());
+    Valores.pliegueCutaneoTricipital =
+        int.parse(json['Pace_SV_pst'].toString());
+    Valores.circunferenciaFemoralIzquierda =
+        int.parse(json['Pace_SV_c_fem_izq'].toString());
+    Valores.circunferenciaFemoralDerecha =
+        int.parse(json['Pace_SV_c_fem_der'].toString());
+    Valores.circunferenciaSuralIzquierda =
+        int.parse(json['Pace_SV_c_suro_izq'].toString());
+    Valores.circunferenciaSuralDerecha =
+        int.parse(json['Pace_SV_c_suro_der'].toString());
+
+
+  }
 }
 
 class Electrocardiogramas {
@@ -4283,7 +4350,8 @@ class Electrocardiogramas {
     "consultLastQuery":
         "SELECT * FROM gabo_ecg WHERE ID_Pace = ? ORDER BY ID_Pace_GAB_EC DESC",
     "consultByName": "SELECT * FROM gabo_ecg WHERE Pace_GAB_EC_Feca LIKE '%",
-    "registerQuery": "INSERT INTO gabo_ecg (ID_Pace, Pace_GAB_EC_Feca, Pace_EC_rit, Pace_EC_rr, Pace_EC_dop, "
+    "registerQuery": "INSERT INTO gabo_ecg (ID_Pace, Pace_GAB_EC_Feca, Pace_EC_rit, "
+        "Pace_EC_rr, Pace_EC_dop, "
         "Pace_EC_aop, Pace_EC_dpr, Pace_EC_dqrs, Pace_EC_aqrs, Pace_EC_qrsi, Pace_EC_qrsa, "
         "Pace_QRS, Pace_EC_ast_, Pace_EC_st, Pace_EC_dqt, Pace_EC_dot, Pace_EC_aot, EC_rV1, "
         "EC_sV6, EC_sV1, EC_rV6, EC_rAVL, EC_sV3, PatronQRS, DeflexionIntrinsecoide, EC_rDI, "
@@ -4375,6 +4443,9 @@ class Electrocardiogramas {
 }
 
 class Imagenologias {
+
+  static var fileAssocieted = '${Pacientes.localRepositoryPath}/imagenologicos.json';
+
   static final Map<String, dynamic> imagenologias = {
     "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_reggabo "
         "DEFAULT CHARACTER SET utf8 "
@@ -4439,6 +4510,8 @@ class Imagenologias {
 }
 
 class Auxiliares {
+  static var fileAssocieted = '${Pacientes.localRepositoryPath}paraclinicos.json';
+
   static void ultimoRegistro() {
     Actividades.detallesById(Databases.siteground_database_reggabo,
             Auxiliares.auxiliares['auxiliarStadistics'], Pacientes.ID_Paciente,

@@ -65,7 +65,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
   String tipoEstudio = "Imagenologias";
 
   // ############################ ####### ####### #############################
-  var fileAssocieted = '${Pacientes.localRepositoryPath}/imagenologicos.json';
+  var fileAssocieted = Imagenologias.fileAssocieted;
 
   @override
   void initState() {
@@ -83,16 +83,8 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
       final f = DateFormat('yyyy-MM-dd');
       textDateEstudyController.text = f.format(DateTime.now());
 
-      Actividades.consultarAllById(
-              Databases.siteground_database_reggabo,
-              Imagenologias.imagenologias['consultByIdPrimaryQuery'],
-              Pacientes.ID_Paciente)
-          .then((value) {
-        setState(() {
-          Archivos.createJsonFromMap(value, filePath: fileAssocieted);
-          values = value;
-        });
-      });
+      reiniciar();
+
     });
     Terminal.printOther(message: " . . . Actividad Iniciada");
 
@@ -319,6 +311,19 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
     );
   }
 
+  Future<void> reiniciar() async {
+    Terminal.printExpected(message: "Reinicio de los valores . . .");
+    Actividades.consultarAllById(
+        Databases.siteground_database_reggabo,
+        Imagenologias.imagenologias['consultByIdPrimaryQuery'],
+        Pacientes.ID_Paciente)
+        .then((value) {
+      setState(() {
+        Archivos.createJsonFromMap(value, filePath: fileAssocieted);
+        values = value;
+      });
+    });
+  }
   void deleteDialog(Map<String, dynamic> element) {
     showDialog(
         context: context,
@@ -635,58 +640,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                           ? "Agregar"
                           : "Actualizar",
                       onPress: () {
-                        if (operationActivity) {
-                          var aux = listOfValues();
-                          aux.removeAt(0);
-                          aux.removeLast();
-
-                          Actividades.registrar(
-                            Databases
-                                .siteground_database_reggabo,
-                            Imagenologias.imagenologias[
-                            'registerQuery'],
-                            aux,
-                          ).then((value) => showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: const Text(
-                                      "Registrados"),
-                                  content: Text(
-                                      "Los registros \n${listOfValues().toString()} \n fueron registrados"),
-                                );
-                              }).then((value) => Navigator.of(
-                              context)
-                              .push(MaterialPageRoute(
-                              builder: (context) =>
-                              const ImagenologiasGestion()))));
-                        } else {
-                          Actividades.actualizar(
-                              Databases
-                                  .siteground_database_reggabo,
-                              Imagenologias.imagenologias[
-                              'updateQuery'],
-                              listOfValues(),
-                              idOperacion!)
-                              .then((value) => showDialog(
-                              context: context,
-                              builder: (context) {
-                                print(
-                                    "Imagenologias.imagenologias['updateQuery'] ${Imagenologias.imagenologias['updateQuery']}");
-                                print(
-                                    "LIST OF VLUES ${listOfValues()}");
-                                return AlertDialog(
-                                  title: const Text(
-                                      "Actualizados"),
-                                  content: Text(
-                                      "Los registros \n${listOfValues().toString()} \n fueron actualizados"),
-                                );
-                              }).then((value) => Navigator
-                              .of(context)
-                              .push(MaterialPageRoute(
-                              builder: (context) =>
-                              const ImagenologiasGestion()))));
-                        }
+                        operationMethod(context: context, operationActivity: operationActivity);
                       }),
                 ),
               ],
@@ -820,58 +774,8 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                             ? "Agregar"
                             : "Actualizar",
                         onPress: () {
-                          if (operationActivity) {
-                            var aux = listOfValues();
-                            aux.removeAt(0);
-                            aux.removeLast();
+                          operationMethod(context: context, operationActivity: operationActivity);
 
-                            Actividades.registrar(
-                              Databases
-                                  .siteground_database_reggabo,
-                              Imagenologias.imagenologias[
-                              'registerQuery'],
-                              aux,
-                            ).then((value) => showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: const Text(
-                                        "Registrados"),
-                                    content: Text(
-                                        "Los registros \n${listOfValues().toString()} \n fueron registrados"),
-                                  );
-                                }).then((value) => Navigator.of(
-                                context)
-                                .push(MaterialPageRoute(
-                                builder: (context) =>
-                                const ImagenologiasGestion()))));
-                          } else {
-                            Actividades.actualizar(
-                                Databases
-                                    .siteground_database_reggabo,
-                                Imagenologias.imagenologias[
-                                'updateQuery'],
-                                listOfValues(),
-                                idOperacion!)
-                                .then((value) => showDialog(
-                                context: context,
-                                builder: (context) {
-                                  print(
-                                      "Imagenologias.imagenologias['updateQuery'] ${Imagenologias.imagenologias['updateQuery']}");
-                                  print(
-                                      "LIST OF VLUES ${listOfValues()}");
-                                  return AlertDialog(
-                                    title: const Text(
-                                        "Actualizados"),
-                                    content: Text(
-                                        "Los registros \n${listOfValues().toString()} \n fueron actualizados"),
-                                  );
-                                }).then((value) => Navigator
-                                .of(context)
-                                .push(MaterialPageRoute(
-                                builder: (context) =>
-                                const ImagenologiasGestion()))));
-                          }
                         }),
                   ],
                 )
@@ -880,6 +784,52 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
           )
         ],
       );
+    }
+  }
+
+  void operationMethod(
+      {required BuildContext context, required bool operationActivity}) {
+    if (operationActivity) {
+      var aux = listOfValues();
+      aux.removeLast();
+
+      Actividades.registrar(
+        Databases
+            .siteground_database_reggabo,
+        Imagenologias.imagenologias[
+        'registerQuery'],
+        aux,
+
+      ).then((value) {
+        Operadores.alertActivity(
+            context: context,
+            tittle: "Registro de los Valores",
+            message: 'Los registros fueron agregados');
+        reiniciar().then((value) {
+          setState(() {
+            carouselController.jumpToPage(0);
+          });
+        });
+      });
+    } else {
+      Actividades.actualizar(
+          Databases
+              .siteground_database_reggabo,
+          Imagenologias.imagenologias[
+          'updateQuery'],
+          listOfValues(),
+          idOperacion!)
+          .then((value) {
+        Operadores.alertActivity(
+            context: context,
+            tittle: "Actualizacion de los Valores",
+            message: 'Los registros fueron Actualizados');
+        reiniciar().then((value) {
+          setState(() {
+            carouselController.jumpToPage(0);
+          });
+        });
+      });
     }
   }
 

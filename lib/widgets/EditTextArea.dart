@@ -115,7 +115,7 @@ class _EditTextAreaState extends State<EditTextArea> {
                   child: Tooltip(
                     message: "Ver",
                     child: IconButton(
-                        icon: const Icon(Icons.slideshow, color: Colors.grey,),
+                        icon: Icon(widget.iconData, color: Colors.grey,),
                         onPressed: widget.selection
                             ? widget.onSelected
                             : () {

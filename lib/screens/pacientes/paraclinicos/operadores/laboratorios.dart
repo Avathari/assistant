@@ -34,7 +34,7 @@ class LaboratoriosGestion extends StatefulWidget {
 
 class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
   // ############################ ####### ####### #############################
-  var fileAssocieted = '${Pacientes.localRepositoryPath}paraclinicos.json';
+  var fileAssocieted = Auxiliares.fileAssocieted;
 
   @override
   void initState() {
@@ -56,45 +56,22 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
       final f = DateFormat('yyyy-MM-dd');
       textDateEstudyController.text = f.format(DateTime.now());
 
-      Actividades.consultarAllById(
-              Databases.siteground_database_reggabo,
-              Auxiliares.auxiliares['consultByIdPrimaryQuery'],
-              Pacientes.ID_Paciente)
-          .then((value) {
-        setState(() {
-          values = value;
-          Archivos.createJsonFromMap(values!, filePath: fileAssocieted);
-        });
-      });
+      reiniciar();
     });
     Terminal.printOther(message: " . . . Actividad Iniciada");
   }
 
-  void initAllElement() {
-    setState(() {
-      operationActivity = true;
-
-      idOperacion = 0;
-      final f = DateFormat('yyyy-MM-dd');
-      textDateEstudyController.text = f.format(DateTime.now());
-
-      tipoEstudioValue = Auxiliares.Categorias[0];
-      estudioValue = Auxiliares.Laboratorios[Auxiliares.Categorias[0]][0];
-      textResultController.text = "";
-      unidadMedidaValue = Auxiliares.Medidas[Auxiliares.Categorias[0]][0];
-    });
-  }
-
-  void updateElement(Map<String, dynamic> element) {
-    setState(() {
-      print("element $element");
-
-      idOperacion = element[idWidget];
-      textDateEstudyController.text = element['Fecha_Registro'];
-      tipoEstudioValue = element['Tipo_Estudio'];
-      estudioValue = element['Estudio'];
-      textResultController.text = element['Resultado'].toString();
-      unidadMedidaValue = element['Unidad_Medida'];
+  Future<void> reiniciar() async {
+    Terminal.printExpected(message: "Reinicio de los valores . . .");
+    Actividades.consultarAllById(
+            Databases.siteground_database_reggabo,
+            Auxiliares.auxiliares['consultByIdPrimaryQuery'],
+            Pacientes.ID_Paciente)
+        .then((value) {
+      setState(() {
+        values = value;
+        Archivos.createJsonFromMap(values!, filePath: fileAssocieted);
+      });
     });
   }
 
@@ -342,6 +319,35 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
     );
   }
 
+// OPERACIONES DE LA INTERFAZ ****** ************ ************
+  void initAllElement() {
+    setState(() {
+      operationActivity = true;
+
+      idOperacion = 0;
+      final f = DateFormat('yyyy-MM-dd');
+      textDateEstudyController.text = f.format(DateTime.now());
+
+      tipoEstudioValue = Auxiliares.Categorias[0];
+      estudioValue = Auxiliares.Laboratorios[Auxiliares.Categorias[0]][0];
+      textResultController.text = "";
+      unidadMedidaValue = Auxiliares.Medidas[Auxiliares.Categorias[0]][0];
+    });
+  }
+
+  void updateElement(Map<String, dynamic> element) {
+    setState(() {
+      print("element $element");
+
+      idOperacion = element[idWidget];
+      textDateEstudyController.text = element['Fecha_Registro'];
+      tipoEstudioValue = element['Tipo_Estudio'];
+      estudioValue = element['Estudio'];
+      textResultController.text = element['Resultado'].toString();
+      unidadMedidaValue = element['Unidad_Medida'];
+    });
+  }
+
   void deleteDialog(Map<String, dynamic> element) {
     showDialog(
         context: context,
@@ -426,7 +432,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                     style: Styles.textSyleGrowth(fontSize: 12),
                   ),
                   Text(
-                    data[index]['Estudio'],
+                    "${data[index]['Estudio']} ${data[index]['Resultado']} ${data[index]['Unidad_Medida']}",
                     style: Styles.textSyleGrowth(fontSize: 10),
                   ),
                   CrossLine(),
@@ -570,47 +576,9 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                       weigth: isTablet(context) ? 200 : 500,
                       labelButton: operationActivity ? "Agregar" : "Actualizar",
                       onPress: () {
-                        if (operationActivity) {
-                          var aux = listOfValues();
-                          aux.removeLast();
-
-                          Actividades.registrar(
-                            Databases.siteground_database_reggabo,
-                            Auxiliares.auxiliares['registerQuery'],
-                            aux,
-                          ).then((value) => showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: const Text("Registrados"),
-                                      content: Text(
-                                          "Los registros \n${listOfValues().toString()} \n fueron actualizados"),
-                                    );
-                                  })
-                              .then((value) => Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          VisualPacientes(actualPage: 5)))));
-                        } else {
-                          Actividades.actualizar(
-                                  Databases.siteground_database_reggabo,
-                                  Auxiliares.auxiliares['updateQuery'],
-                                  listOfValues(),
-                                  idOperacion!)
-                              .then((value) => showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: const Text("Actualizados"),
-                                      content: Text(
-                                          "Los registros \n${listOfValues().toString()} \n fueron actualizados"),
-                                    );
-                                  }).then((value) => Navigator.of(
-                                      context)
-                                  .push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          VisualPacientes(actualPage: 5)))));
-                        }
+                        operationMethod(
+                            context: context,
+                            operationActivity: operationActivity);
                       }),
                 ),
               ],
@@ -822,4 +790,49 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
   var carouselController = CarouselController();
 
   int index = 0, secondIndex = 0;
+
+  void operationMethod(
+      {required BuildContext context, required bool operationActivity}) {
+    if (operationActivity) {
+      var aux = listOfValues();
+      aux.removeLast();
+
+      Actividades.registrar(
+        Databases.siteground_database_reggabo,
+        Auxiliares.auxiliares['registerQuery'],
+        aux,
+      ).then((value) {
+        Operadores.alertActivity(
+            context: context,
+            tittle: "Registro de los Valores",
+            message: 'Los registros fueron agregados');
+        reiniciar().then((value) {
+          setState(() {
+            carouselController.jumpToPage(0);
+          });
+        });
+        // Navigator.of(context).push(MaterialPageRoute(
+        //     builder: (context) => VisualPacientes(actualPage: 5)));
+      });
+    } else {
+      Actividades.actualizar(
+              Databases.siteground_database_reggabo,
+              Auxiliares.auxiliares['updateQuery'],
+              listOfValues(),
+              idOperacion!)
+          .then((value) {
+        Operadores.alertActivity(
+            context: context,
+            tittle: "Actualizacion de los Valores",
+            message: 'Los registros fueron Actualizados');
+        reiniciar().then((value) {
+          setState(() {
+            carouselController.jumpToPage(0);
+          });
+        });
+        // Navigator.of(context).push(MaterialPageRoute(
+        //     builder: (context) => VisualPacientes(actualPage: 5)));
+      });
+    }
+  }
 }

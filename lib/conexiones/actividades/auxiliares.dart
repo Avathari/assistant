@@ -167,21 +167,32 @@ class Archivos {
       final File file = File("${directory.path}/$filePath");
       if (await file.exists()) {
         file.writeAsStringSync(json.encode(map));
-        Terminal.printExpected(message: "Obtenido desde ${directory.path}/$filePath");
+        Terminal.printExpected(
+            message: "Obtenido desde ${directory.path}/$filePath");
       } else {
         file.create(recursive: true).then((value) {
           file.writeAsStringSync(json.encode(map));
-          Terminal.printExpected(message: "Obtenido desde ${directory.path}/$filePath");
+          Terminal.printExpected(
+              message: "Obtenido desde ${directory.path}/$filePath");
         }).onError((error, stackTrace) {
-          Terminal.printAlert(message: "Error: $error desde ${directory.path}/$filePath");
+          Terminal.printAlert(
+              message: "Error: $error desde ${directory.path}/$filePath");
         });
       }
     } else {
       final File file = File(filePath);
-      file.create(recursive: true);
-      file.writeAsStringSync(json.encode(map));
+      if (await file.exists()) {
+        file.writeAsStringSync(json.encode(map));
+        Terminal.printExpected(message: "Obtenido desde $filePath");
+      } else {
+        file.create(recursive: true).then((value) {
+          file.writeAsStringSync(json.encode(map));
+          Terminal.printExpected(message: "Obtenido desde $filePath");
+        }).onError((error, stackTrace) {
+          Terminal.printAlert(message: "Error: $error desde $filePath");
+        });
+      }
     }
-
   }
 
   static Future readJsonToMap({required String filePath}) async {
@@ -191,7 +202,8 @@ class Archivos {
       final File file = File("${directory.path}/$filePath");
 
       contents = await file.readAsString();
-      Terminal.printOther(message: "Obtenido desde ${directory.path}/$filePath");
+      Terminal.printOther(
+          message: "Obtenido desde ${directory.path}/$filePath");
       return jsonDecode(contents);
     } else {
       file = File(filePath);
@@ -205,7 +217,7 @@ class Archivos {
     }
   }
 
-  static deleteFile( {required filePath}) async {
+  static deleteFile({required filePath}) async {
     if (Platform.isAndroid) {
       final directory = await getTemporaryDirectory();
       final File file = File("${directory.path}/$filePath");
@@ -217,7 +229,8 @@ class Archivos {
     } else {
       final file = File(filePath);
       if (await file.exists()) {
-        file.delete();
+        file.delete(recursive: true);
+        throw "\x1B[35mEl Archivo FUE ELIMINADO\x1B[0m";
       } else {
         throw "\x1B[31mEl Archivo no Existe\x1B[0m";
       }
@@ -502,13 +515,14 @@ class Operadores {
   static void alertActivity(
       {required BuildContext context,
       String? tittle = "Manejo de registro",
-      String? message = "El registro ha sido actualizado / creado"}) {
+      String? message = "El registro ha sido actualizado / creado",
+      onAcept, }) {
     showDialog(
         context: context,
         builder: (context) {
           return Dialogos.alertDialog(tittle, message, () {
             Navigator.of(context).pop();
-          }, () {});
+          }, onAcept);
         });
   }
 }
@@ -718,28 +732,35 @@ class Dialogos {
 }
 
 class Terminal {
-  static void printNotice({required String message}){
+  static void printNotice({required String message}) {
     print("\x1B[30m$message\x1B[0m"); // Black
   }
-  static void printAlert({required String message}){
+
+  static void printAlert({required String message}) {
     print("\x1B[31m$message\x1B[0m"); // Red
   }
-  static void printSuccess({required String message}){
+
+  static void printSuccess({required String message}) {
     print("\x1B[32m$message\x1B[0m"); // Green
   }
-  static void printWarning({required String message}){
+
+  static void printWarning({required String message}) {
     print("\x1B[33m$message\x1B[0m"); // Yellow
   }
-  static void printOther({required String message}){
+
+  static void printOther({required String message}) {
     print("\x1B[34m$message\x1B[0m"); // Blue
   }
-  static void printData({required String message}){
+
+  static void printData({required String message}) {
     print("\x1B[35m$message\x1B[0m"); // Magenta
   }
-  static void printExpected({required String message}){
+
+  static void printExpected({required String message}) {
     print("\x1B[36m$message\x1B[0m"); // Cyan
   }
-  static void printWhite({required String message}){
+
+  static void printWhite({required String message}) {
     print("\x1B[37m$message\x1B[0m"); //White
   }
 }

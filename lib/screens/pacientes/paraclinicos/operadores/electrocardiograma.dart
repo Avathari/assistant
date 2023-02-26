@@ -46,29 +46,19 @@ class _ElectrocardiogramasGestionState
   void initState() {
     Terminal.printWarning(
         message:
-            " . . . Iniciando Actividad - Repositorio Paraclinicos del Pacientes");
+            " . . . Iniciando Actividad - Repositorio Electrocardiogramas del Pacientes");
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       setState(() {
         values = value;
-        Terminal.printData(message: values.toString());
+        // Terminal.printData(message: values.toString());
         Terminal.printSuccess(
-            message: 'Repositorio Paraclinicos del Pacientes Obtenido');
+            message: 'Repositorio Electrocardiogramas del Pacientes Obtenido');
       });
     }).onError((error, stackTrace) {
       final f = DateFormat('yyyy-MM-dd');
       textDateEstudyController.text = f.format(DateTime.now());
 
-      Actividades.consultarAllById(
-              Databases.siteground_database_reggabo,
-              Electrocardiogramas
-                  .electrocardiogramas['consultByIdPrimaryQuery'],
-              Pacientes.ID_Paciente)
-          .then((value) {
-        setState(() {
-          Archivos.createJsonFromMap(value, filePath: fileAssocieted);
-          values = value;
-        });
-      });
+      reiniciar();
       toBaseImage();
     });
     Terminal.printOther(message: " . . . Actividad Iniciada");
@@ -279,6 +269,21 @@ class _ElectrocardiogramasGestionState
         ),
       ),
     );
+  }
+
+  Future<void> reiniciar() async {
+    Terminal.printExpected(message: "Reinicio de los valores . . .");
+    Actividades.consultarAllById(
+        Databases.siteground_database_reggabo,
+        Electrocardiogramas
+            .electrocardiogramas['consultByIdPrimaryQuery'],
+        Pacientes.ID_Paciente)
+        .then((value) {
+      setState(() {
+        Archivos.createJsonFromMap(value, filePath: fileAssocieted);
+        values = value;
+      });
+    });
   }
 
   void deleteDialog(Map<String, dynamic> element) {
@@ -871,11 +876,13 @@ class _ElectrocardiogramasGestionState
     if (isMobile(context) || isTablet(context)) {
       return Column(
         children: [
+          isMobile(context) ?
           Expanded(
               child: TittlePanel(
                   padding: 4,
                   color: Colores.backgroundWidget,
-                  textPanel: tittle)),
+                  textPanel: tittle)) :
+          Container(),
           Expanded(
             flex: 2,
             child: EditTextArea(
@@ -887,6 +894,12 @@ class _ElectrocardiogramasGestionState
               numOfLines: 1,
               labelEditText: "Fecha de realización",
               textController: textDateEstudyController,
+              withShowOption: true,
+              selection: true,
+              iconData: Icons.calendar_month,
+              onSelected: () {
+                textDateEstudyController.text = Calendarios.today(format: 'yyyy/MM/dd');
+              },
             ),
           ),
           Expanded(
@@ -900,7 +913,7 @@ class _ElectrocardiogramasGestionState
                   mainAxisExtent: 75),
               children: [
                 Spinner(
-                    width: isMobile(context) ? 150 : 100,
+                    width: isMobile(context) ? 150 : 150,
                     isRow: false,
                     tittle: "Ritmo cardiaco",
                     initialValue: ritmoCardiacoValue!,
@@ -1290,53 +1303,7 @@ class _ElectrocardiogramasGestionState
                       weigth: isMobile(context) || isTablet(context) ? 30 : 100,
                       labelButton: operationActivity ? "Agregar" : "Actualizar",
                       onPress: () {
-                        if (operationActivity) {
-                          var aux = listOfValues();
-                          aux.removeAt(0);
-                          aux.removeLast();
-
-                          Actividades.registrar(
-                            Databases.siteground_database_reggabo,
-                            Electrocardiogramas
-                                .electrocardiogramas['registerQuery'],
-                            aux,
-                          ).then((value) => showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: const Text("Registrados"),
-                                  content: Text(
-                                      "Los registros \n${listOfValues().toString()} \n fueron registrados"),
-                                );
-                              }).then((value) => Navigator.of(
-                                  context)
-                              .push(MaterialPageRoute(
-                                  builder: (context) =>
-                                      const ElectrocardiogramasGestion()))));
-                        } else {
-                          Actividades.actualizar(
-                                  Databases.siteground_database_reggabo,
-                                  Electrocardiogramas
-                                      .electrocardiogramas['updateQuery'],
-                                  listOfValues(),
-                                  idOperacion!)
-                              .then((value) => showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    print(
-                                        "Electrocardiogramas.electrocardiogramas['updateQuery'] ${Electrocardiogramas.electrocardiogramas['updateQuery']}");
-                                    print("LIST OF VLUES ${listOfValues()}");
-                                    return AlertDialog(
-                                      title: const Text("Actualizados"),
-                                      content: Text(
-                                          "Los registros \n${listOfValues().toString()} \n fueron actualizados"),
-                                    );
-                                  }).then((value) => Navigator.of(
-                                      context)
-                                  .push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ElectrocardiogramasGestion()))));
-                        }
+                        operationMethod(context: context, operationActivity: operationActivity);
                       }),
                 ),
               ],
@@ -1362,6 +1329,12 @@ class _ElectrocardiogramasGestionState
                   numOfLines: 1,
                   labelEditText: "Fecha de realización",
                   textController: textDateEstudyController,
+                  withShowOption: true,
+                  selection: true,
+                  iconData: Icons.calendar_month,
+                  onSelected: () {
+                    textDateEstudyController.text = Calendarios.today(format: 'yyyy/MM/dd');
+                  },
                 ),
               ),
               Expanded(
@@ -1768,54 +1741,7 @@ class _ElectrocardiogramasGestionState
                           labelButton:
                               operationActivity ? "Agregar" : "Actualizar",
                           onPress: () {
-                            if (operationActivity) {
-                              var aux = listOfValues();
-                              aux.removeAt(0);
-                              aux.removeLast();
-
-                              Actividades.registrar(
-                                Databases.siteground_database_reggabo,
-                                Electrocardiogramas
-                                    .electrocardiogramas['registerQuery'],
-                                aux,
-                              ).then((value) => showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: const Text("Registrados"),
-                                      content: Text(
-                                          "Los registros \n${listOfValues().toString()} \n fueron registrados"),
-                                    );
-                                  }).then((value) => Navigator.of(
-                                      context)
-                                  .push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ElectrocardiogramasGestion()))));
-                            } else {
-                              Actividades.actualizar(
-                                      Databases.siteground_database_reggabo,
-                                      Electrocardiogramas
-                                          .electrocardiogramas['updateQuery'],
-                                      listOfValues(),
-                                      idOperacion!)
-                                  .then((value) => showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        print(
-                                            "Electrocardiogramas.electrocardiogramas['updateQuery'] ${Electrocardiogramas.electrocardiogramas['updateQuery']}");
-                                        print(
-                                            "LIST OF VLUES ${listOfValues()}");
-                                        return AlertDialog(
-                                          title: const Text("Actualizados"),
-                                          content: Text(
-                                              "Los registros \n${listOfValues().toString()} \n fueron actualizados"),
-                                        );
-                                      }).then((value) => Navigator.of(
-                                          context)
-                                      .push(MaterialPageRoute(
-                                          builder: (context) =>
-                                              const ElectrocardiogramasGestion()))));
-                            }
+                            operationMethod(context: context, operationActivity: operationActivity);
                           }),
                     ],
                   ),
@@ -1891,6 +1817,58 @@ class _ElectrocardiogramasGestionState
   var conclusionTextController = TextEditingController();
   //
   String tipoEstudio = "Electrocardiograma";
+
+  void operationMethod(
+      {required BuildContext context, required bool operationActivity}) {
+
+    if (operationActivity) {
+      var aux = listOfValues();
+      aux.removeAt(0);
+      aux.removeLast();
+      Terminal.printExpected(message: "operationActivity $operationActivity ${aux.length}");
+      Actividades.registrar(
+        Databases.siteground_database_reggabo,
+        Electrocardiogramas
+            .electrocardiogramas['registerQuery'],
+        aux,
+      ).then((value) {
+        // Terminal.printExpected(message: "registerActivity $value");
+        Operadores.alertActivity(
+            context: context,
+            tittle: "Registro de los Valores",
+            message: 'Los registros fueron agregados');
+        reiniciar().then((value) {
+          setState(() {
+            carouselController.jumpToPage(0);
+          });
+        });
+      }).onError((error, stackTrace)
+      {
+        Terminal.printWarning(message: "ERROR - $error");
+      });
+    } else {
+      Actividades.actualizar(
+          Databases.siteground_database_reggabo,
+          Electrocardiogramas
+              .electrocardiogramas['updateQuery'],
+          listOfValues(),
+          idOperacion!)
+          .then((value) {
+        Operadores.alertActivity(
+            context: context,
+            tittle: "Actualizacion de los Valores",
+            message: 'Los registros fueron Actualizados');
+        reiniciar().then((value) {
+          setState(() {
+            carouselController.jumpToPage(0);
+          });
+        });
+      }).onError((error, stackTrace)
+      {
+        Terminal.printWarning(message: "ERROR - $error");
+      });
+    }
+  }
 }
 
 // ignore: must_be_immutable

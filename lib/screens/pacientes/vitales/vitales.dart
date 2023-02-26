@@ -5,7 +5,6 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/detalles/estadisticasVitales.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/antropometricos.dart';
-import 'package:assistant/screens/pacientes/pacientes.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
@@ -34,57 +33,6 @@ class OperacionesVitales extends StatefulWidget {
 }
 
 class _OperacionesVitalesState extends State<OperacionesVitales> {
-  String? consultIdQueryvitales = Vitales.vitales['consultIdQuery'];
-  String? consultIdQueryantropo = Vitales.antropo['consultIdQuery'];
-  //
-  String? registerQueryvitales = Vitales.vitales['registerQuery'];
-  String? registerQueryantropo = Vitales.antropo['registerQuery'];
-  //
-  String? updateQueryvitales = Vitales.vitales['updateQuery'];
-  String? updateQueryantropo = Vitales.antropo['updateQuery'];
-
-  int idOperation = 0;
-
-  List<dynamic>? listOfFirstValues, listOfSecondValues;
-
-  String appBarTitile = "Gestión de Vitales";
-
-  var fechaRealizacionTextController = TextEditingController();
-  var tasTextController = TextEditingController();
-  var tadTextController = TextEditingController();
-  var fcTextController = TextEditingController();
-  var frTextController = TextEditingController();
-  var tcTextController = TextEditingController();
-  var spoTextController = TextEditingController();
-  var estTextController = TextEditingController();
-  var pctTextController = TextEditingController();
-  var gluTextController = TextEditingController();
-  var gluAyuTextController = TextEditingController();
-  //
-  var cueTextController = TextEditingController();
-  var cinTextController = TextEditingController();
-  var cadTextController = TextEditingController();
-  var cmbTextController = TextEditingController();
-
-  String factorActividadValue = Vitales.factorActividad[0];
-  String factorEstresValue = Vitales.factorEstres[0];
-
-  var pectTextController = TextEditingController();
-  var pcbTextController = TextEditingController();
-  var pseTextController = TextEditingController();
-  var psiTextController = TextEditingController();
-  var pstTextController = TextEditingController();
-
-  var femIzqTextController = TextEditingController();
-  var femDerTextController = TextEditingController();
-  var suroIzqTextController = TextEditingController();
-  var suroDerTextController = TextEditingController();
-
-  var antropoScroller = ScrollController();
-  var vitalesScroller = ScrollController();
-
-  var carouselController = CarouselController();
-
   @override
   void initState() {
     Actividades.consultarId(Databases.siteground_database_regpace,
@@ -99,221 +47,72 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
       case Constantes.Register:
         widget._operationButton = 'Registrar';
 
-        estTextController.text = Pacientes.Vital['Pace_SV_est'].toString();
-        pctTextController.text = Pacientes.Vital['Pace_SV_pct'].toString();
+        // estTextController.text = Pacientes.Vital['Pace_SV_est'].toString();
+        // pctTextController.text = Pacientes.Vital['Pace_SV_pct'].toString();
+        estTextController.text = Valores.alturaPaciente!.toString();
+        pctTextController.text = Valores.pesoCorporalTotal!.toString();
         break;
       case Constantes.Update:
         setState(() {
-
           widget._operationButton = 'Actualizar';
-          idOperation = Pacientes.Vital['ID_Pace_SV'];
+          idOperation = Vitales.ID_Vitales;
 
-          fechaRealizacionTextController.text =
-              Pacientes.Vital['Pace_Feca_SV'].toString();
+          fechaRealizacionTextController.text = Valores.fechaVitales!;
           // Variables Vitales ********* *************** **********
-          tasTextController.text = Pacientes.Vital['Pace_SV_tas'].toString();
-          Valores.tensionArterialSystolica =
-              int.parse(tasTextController.text);
+          tasTextController.text = Valores.tensionArterialSystolica!.toString();
+          tadTextController.text =
+              Valores.tensionArterialDyastolica!.toString();
+          fcTextController.text = Valores.frecuenciaCardiaca!.toString();
+          frTextController.text = Valores.frecuenciaRespiratoria!.toString();
+          tcTextController.text = Valores.temperaturCorporal!.toString();
           //
-          tadTextController.text = Pacientes.Vital['Pace_SV_tad'].toString();
-          Valores.tensionArterialDyastolica =
-              int.parse(tadTextController.text);
+          spoTextController.text =
+              Valores.saturacionPerifericaOxigeno!.toString();
           //
-          fcTextController.text = Pacientes.Vital['Pace_SV_fc'].toString();
-          Valores.frecuenciaCardiaca = int.parse(fcTextController.text);
+          estTextController.text = Valores.alturaPaciente!.toString();
+          pctTextController.text = Valores.pesoCorporalTotal!.toString();
           //
-          frTextController.text = Pacientes.Vital['Pace_SV_fr'].toString();
-          Valores.frecuenciaRespiratoria = int.parse(frTextController.text);
-          //
-          tcTextController.text = Pacientes.Vital['Pace_SV_tc'].toString();
-          Valores.temperaturCorporal = double.parse(tcTextController.text);
-          //
-          spoTextController.text = Pacientes.Vital['Pace_SV_spo'].toString();
-          Valores.saturacionPerifericaOxigeno =
-              int.parse(spoTextController.text);
-          //
-          estTextController.text = Pacientes.Vital['Pace_SV_est'].toString();
-          Valores.alturaPaciente = double.parse(estTextController.text);
-          //
-          pctTextController.text = Pacientes.Vital['Pace_SV_pct'].toString();
-          Valores.pesoCorporalTotal = double.parse(pctTextController.text);
-          //
-          gluTextController.text = Pacientes.Vital['Pace_SV_glu'].toString();
-          Valores.glucemiaCapilar = int.parse(gluTextController.text);
-          //
-          gluAyuTextController.text =
-              Pacientes.Vital['Pace_SV_glu_ayu'].toString();
-          Valores.horasAyuno = int.parse(gluAyuTextController.text);
-          //
+          gluTextController.text = Valores.glucemiaCapilar!.toString();
+          gluAyuTextController.text = Valores.horasAyuno!.toString();
+
           // Variables Antropométricas ********* *************** **********
-          cueTextController.text = Pacientes.Vital['Pace_SV_cue'].toString();
-          Valores.circunferenciaCuello = int.parse(cueTextController.text);
+          cueTextController.text = Valores.circunferenciaCuello!.toString();
           //
-          cinTextController.text = Pacientes.Vital['Pace_SV_cin'].toString();
-          Valores.circunferenciaCintura = int.parse(cinTextController.text);
+          cinTextController.text = Valores.circunferenciaCintura!.toString();
           //
-          cadTextController.text = Pacientes.Vital['Pace_SV_cad'].toString();
-          Valores.circunferenciaCadera = int.parse(cadTextController.text);
+          cadTextController.text = Valores.circunferenciaCadera!.toString();
           //
-          cmbTextController.text = Pacientes.Vital['Pace_SV_cmb'].toString();
-          Valores.circunferenciaMesobraquial =
-              int.parse(cmbTextController.text);
+          cmbTextController.text =
+              Valores.circunferenciaMesobraquial!.toString();
           //
 
-          factorActividadValue = Pacientes.Vital['Pace_SV_fa'].toString();
-          Valores.factorActividad = double.parse(factorActividadValue);
+          factorActividadValue = Valores.factorActividad!.toString();
           //
-          factorEstresValue = Pacientes.Vital['Pace_SV_fe'].toString();
-          Valores.factorEstres = double.parse(factorEstresValue);
+          factorEstresValue = Valores.factorEstres!.toString();
           //
 
-          pectTextController.text =
-              Pacientes.Vital['Pace_SV_c_pect'].toString();
-          // Valores.pec = int.parse(pectTextController.text);
+          pectTextController.text = Valores.circunferenciaPectoral!.toString();
           //
-          pcbTextController.text = Pacientes.Vital['Pace_SV_pcb'].toString();
-          Valores.pliegueCutaneoBicipital = int.parse(pcbTextController.text);
+          pcbTextController.text = Valores.pliegueCutaneoBicipital!.toString();
           //
-          pseTextController.text = Pacientes.Vital['Pace_SV_pse'].toString();
-          Valores.pliegueCutaneoEscapular = int.parse(pseTextController.text);
+          pseTextController.text = Valores.pliegueCutaneoEscapular!.toString();
           //
-          psiTextController.text = Pacientes.Vital['Pace_SV_psi'].toString();
-          Valores.pliegueCutaneoIliaco = int.parse(psiTextController.text);
+          psiTextController.text = Valores.pliegueCutaneoIliaco!.toString();
           //
-          pstTextController.text = Pacientes.Vital['Pace_SV_pst'].toString();
-          Valores.pliegueCutaneoTricipital =
-              int.parse(pstTextController.text);
+          pstTextController.text = Valores.pliegueCutaneoTricipital!.toString();
           //
           femIzqTextController.text =
-              Pacientes.Vital['Pace_SV_c_fem_izq'].toString();
-          Valores.circunferenciaFemoralIzquierda =
-              int.parse(femIzqTextController.text);
+              Valores.circunferenciaFemoralIzquierda!.toString();
           //
           femDerTextController.text =
-              Pacientes.Vital['Pace_SV_c_fem_der'].toString();
-          Valores.circunferenciaFemoralDerecha =
-              int.parse(femDerTextController.text);
+              Valores.circunferenciaFemoralDerecha!.toString();
           //
           suroIzqTextController.text =
-              Pacientes.Vital['Pace_SV_c_suro_izq'].toString();
-          Valores.circunferenciaSuralIzquierda =
-              int.parse(suroIzqTextController.text);
+              Valores.circunferenciaSuralIzquierda!.toString();
           //
           suroDerTextController.text =
-              Pacientes.Vital['Pace_SV_c_suro_der'].toString();
-          Valores.circunferenciaSuralDerecha =
-              int.parse(suroDerTextController.text);
-
+              Valores.circunferenciaSuralDerecha!.toString();
         });
-        // Actividades.consultarId(Databases.siteground_database_regpace,
-        //         consultIdQueryantropo!, Vitales.ID_Vitales)
-        //     .then((value) {
-        //   setState(() {
-        //     Pacientes.Vital.addAll(value);
-        //
-        //     widget._operationButton = 'Actualizar';
-        //     idOperation = Pacientes.Vital['ID_Pace_SV'];
-        //
-        //     fechaRealizacionTextController.text =
-        //         Pacientes.Vital['Pace_Feca_SV'].toString();
-        //     //
-        //     tasTextController.text = Pacientes.Vital['Pace_SV_tas'].toString();
-        //     Valores.tensionArterialSystolica =
-        //         int.parse(tasTextController.text);
-        //     //
-        //     tadTextController.text = Pacientes.Vital['Pace_SV_tad'].toString();
-        //     Valores.tensionArterialDyastolica =
-        //         int.parse(tadTextController.text);
-        //     //
-        //     fcTextController.text = Pacientes.Vital['Pace_SV_fc'].toString();
-        //     Valores.frecuenciaCardiaca = int.parse(fcTextController.text);
-        //     //
-        //     frTextController.text = Pacientes.Vital['Pace_SV_fr'].toString();
-        //     Valores.frecuenciaRespiratoria = int.parse(frTextController.text);
-        //     //
-        //     tcTextController.text = Pacientes.Vital['Pace_SV_tc'].toString();
-        //     Valores.temperaturCorporal = double.parse(tcTextController.text);
-        //     //
-        //     spoTextController.text = Pacientes.Vital['Pace_SV_spo'].toString();
-        //     Valores.saturacionPerifericaOxigeno =
-        //         int.parse(spoTextController.text);
-        //     //
-        //     estTextController.text = Pacientes.Vital['Pace_SV_est'].toString();
-        //     Valores.alturaPaciente = double.parse(estTextController.text);
-        //     //
-        //     pctTextController.text = Pacientes.Vital['Pace_SV_pct'].toString();
-        //     Valores.pesoCorporalTotal = double.parse(pctTextController.text);
-        //     //
-        //     gluTextController.text = Pacientes.Vital['Pace_SV_glu'].toString();
-        //     Valores.glucemiaCapilar = int.parse(gluTextController.text);
-        //     //
-        //     gluAyuTextController.text =
-        //         Pacientes.Vital['Pace_SV_glu_ayu'].toString();
-        //     Valores.horasAyuno = int.parse(gluAyuTextController.text);
-        //     //
-        //     //
-        //     cueTextController.text = Pacientes.Vital['Pace_SV_cue'].toString();
-        //     Valores.circunferenciaCuello = int.parse(cueTextController.text);
-        //     //
-        //     cinTextController.text = Pacientes.Vital['Pace_SV_cin'].toString();
-        //     Valores.circunferenciaCintura = int.parse(cinTextController.text);
-        //     //
-        //     cadTextController.text = Pacientes.Vital['Pace_SV_cad'].toString();
-        //     Valores.circunferenciaCadera = int.parse(cadTextController.text);
-        //     //
-        //     cmbTextController.text = Pacientes.Vital['Pace_SV_cmb'].toString();
-        //     Valores.circunferenciaMesobraquial =
-        //         int.parse(cmbTextController.text);
-        //     //
-        //
-        //     factorActividadValue = Pacientes.Vital['Pace_SV_fa'].toString();
-        //     Valores.factorActividad = double.parse(factorActividadValue);
-        //     //
-        //     factorEstresValue = Pacientes.Vital['Pace_SV_fe'].toString();
-        //     Valores.factorEstres = double.parse(factorEstresValue);
-        //     //
-        //
-        //     pectTextController.text =
-        //         Pacientes.Vital['Pace_SV_c_pect'].toString();
-        //     // Valores.pec = int.parse(pectTextController.text);
-        //     //
-        //     pcbTextController.text = Pacientes.Vital['Pace_SV_pcb'].toString();
-        //     Valores.pliegueCutaneoBicipital = int.parse(pcbTextController.text);
-        //     //
-        //     pseTextController.text = Pacientes.Vital['Pace_SV_pse'].toString();
-        //     Valores.pliegueCutaneoEscapular = int.parse(pseTextController.text);
-        //     //
-        //     psiTextController.text = Pacientes.Vital['Pace_SV_psi'].toString();
-        //     Valores.pliegueCutaneoIliaco = int.parse(psiTextController.text);
-        //     //
-        //     pstTextController.text = Pacientes.Vital['Pace_SV_pst'].toString();
-        //     Valores.pliegueCutaneoTricipital =
-        //         int.parse(pstTextController.text);
-        //     //
-        //
-        //     femIzqTextController.text =
-        //         Pacientes.Vital['Pace_SV_c_fem_izq'].toString();
-        //     Valores.circunferenciaFemoralIzquierda =
-        //         int.parse(femIzqTextController.text);
-        //     //
-        //     femDerTextController.text =
-        //         Pacientes.Vital['Pace_SV_c_fem_der'].toString();
-        //     Valores.circunferenciaFemoralDerecha =
-        //         int.parse(femDerTextController.text);
-        //     //
-        //     suroIzqTextController.text =
-        //         Pacientes.Vital['Pace_SV_c_suro_izq'].toString();
-        //     Valores.circunferenciaSuralIzquierda =
-        //         int.parse(suroIzqTextController.text);
-        //     //
-        //     suroDerTextController.text =
-        //         Pacientes.Vital['Pace_SV_c_suro_der'].toString();
-        //     Valores.circunferenciaSuralDerecha =
-        //         int.parse(suroDerTextController.text);
-        //     //
-        //   });
-        // });
-
         super.initState();
         break;
       default:
@@ -468,6 +267,39 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
     );
   }
 
+  Future<void> reiniciar() async {
+    Terminal.printExpected(message: "Reinicio de los valores . . .");
+    List result = [];
+    Pacientes.Vitales!.clear();
+    Actividades.consultarAllById(Databases.siteground_database_regpace,
+            Vitales.vitales['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
+        .then((value) {
+      result.addAll(value);
+      Actividades.consultarAllById(Databases.siteground_database_regpace,
+              Vitales.antropo['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
+          .then((value) {
+        int index = 0;
+        for (var item in result) {
+          var thirdMap = {};
+          thirdMap.addAll(item);
+          thirdMap.addAll(value[index]);
+
+          // Adición a Vitales ********** ************ ************** ********
+          Pacientes.Vitales!.add(thirdMap);
+          index++;
+        }
+        setState(() {
+          Terminal.printSuccess(
+              message:
+                  "Actualizando Repositorio de Signos Vitales del Paciente . . . ${Pacientes.Vitales}");
+          Pacientes.Vitales!;
+          Archivos.createJsonFromMap(Pacientes.Vitales!,
+              filePath: Vitales.fileAssocieted);
+        });
+      });
+    });
+  }
+
 /*
   analisisVitales() {
     return Expanded(
@@ -488,7 +320,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
 */
 
   void returnGestion(BuildContext context) {
-    switch (isMobile(context)) {
+    switch (isMobile(context) || isTablet(context)) {
       case true:
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const GestionVitales()));
@@ -753,6 +585,58 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
     ];
   }
 
+  // VARIABLES DE LA INTERFAZ *********** *********** **********
+  String? consultIdQueryvitales = Vitales.vitales['consultIdQuery'];
+  String? consultIdQueryantropo = Vitales.antropo['consultIdQuery'];
+  //
+  String? registerQueryvitales = Vitales.vitales['registerQuery'];
+  String? registerQueryantropo = Vitales.antropo['registerQuery'];
+  //
+  String? updateQueryvitales = Vitales.vitales['updateQuery'];
+  String? updateQueryantropo = Vitales.antropo['updateQuery'];
+
+  int idOperation = 0;
+
+  List<dynamic>? listOfFirstValues, listOfSecondValues;
+
+  String appBarTitile = "Gestión de Vitales";
+
+  var fechaRealizacionTextController = TextEditingController();
+  var tasTextController = TextEditingController();
+  var tadTextController = TextEditingController();
+  var fcTextController = TextEditingController();
+  var frTextController = TextEditingController();
+  var tcTextController = TextEditingController();
+  var spoTextController = TextEditingController();
+  var estTextController = TextEditingController();
+  var pctTextController = TextEditingController();
+  var gluTextController = TextEditingController();
+  var gluAyuTextController = TextEditingController();
+  //
+  var cueTextController = TextEditingController();
+  var cinTextController = TextEditingController();
+  var cadTextController = TextEditingController();
+  var cmbTextController = TextEditingController();
+
+  String factorActividadValue = Vitales.factorActividad[0];
+  String factorEstresValue = Vitales.factorEstres[0];
+
+  var pectTextController = TextEditingController();
+  var pcbTextController = TextEditingController();
+  var pseTextController = TextEditingController();
+  var psiTextController = TextEditingController();
+  var pstTextController = TextEditingController();
+
+  var femIzqTextController = TextEditingController();
+  var femDerTextController = TextEditingController();
+  var suroIzqTextController = TextEditingController();
+  var suroDerTextController = TextEditingController();
+
+  var antropoScroller = ScrollController();
+  var vitalesScroller = ScrollController();
+
+  var carouselController = CarouselController();
+
   void operationMethod(BuildContext context) {
     try {
       listOfFirstValues = [
@@ -794,15 +678,17 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
         idOperation
       ];
 
-      //print("${widget.operationActivity} listOfValues $listOfValues ${listOfValues!.length}");
+      Terminal.printExpected(
+          message:
+              "${widget.operationActivity} listOfValues $listOfFirstValues ${listOfFirstValues!.length}");
 
       switch (widget.operationActivity) {
         case Constantes.Nulo:
-          listOfFirstValues!.removeAt(0);
-          listOfFirstValues!.removeLast();
-
-          Actividades.registrar(Databases.siteground_database_regpace,
-              registerQueryvitales!, listOfFirstValues!.removeLast());
+          // listOfFirstValues!.removeAt(0);
+          // listOfFirstValues!.removeLast();
+          //
+          // Actividades.registrar(Databases.siteground_database_regpace,
+          //     registerQueryvitales!, listOfFirstValues!.removeLast());
           break;
         case Constantes.Consult:
           break;
@@ -818,9 +704,17 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
               .then((value) {
             Actividades.registrar(Databases.siteground_database_regpace,
                     registerQueryantropo!, listOfSecondValues!)
-                .then((value) => returnGestion(context));
+                .then((value) {
+              Archivos.deleteFile(filePath: Vitales.fileAssocieted);
+              reiniciar().then((value) => Operadores.alertActivity(
+                  context: context,
+                  tittle: "Anexión de registros",
+                  message: "Registros Agregados",
+                  onAcept: () {
+                    returnGestion(context);
+                  }));
+            }); // );
           });
-
           break;
         case Constantes.Update:
           Actividades.actualizar(Databases.siteground_database_regpace,
@@ -828,22 +722,31 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
               .then((value) {
             Actividades.actualizar(Databases.siteground_database_regpace,
                     updateQueryantropo!, listOfSecondValues!, idOperation)
-                .then((value) => Actividades.consultarId(
-                        Databases.siteground_database_regpace,
-                        consultIdQueryvitales!,
-                        idOperation)
-                    .then((value) {
-                      Pacientes.Vital = value;
-                    })
-                    .then((value) => Actividades.consultarId(
-                                Databases.siteground_database_regpace,
-                                consultIdQueryantropo!,
-                                idOperation)
-                            .then((value) {
-                          Pacientes.Vital.addAll(value);
-                          print("Pacientes.Vital ${Pacientes.Vital}");
-                        }))
-                    .then((value) => returnGestion(context)));
+                // .then((value) => Actividades.consultarId(
+                //         Databases.siteground_database_regpace,
+                //         consultIdQueryvitales!,
+                //         idOperation)
+                //     .then((value) {
+                //       Pacientes.Vital = value;
+                //     })
+                //     .then((value) => Actividades.consultarId(
+                //                 Databases.siteground_database_regpace,
+                //                 consultIdQueryantropo!,
+                //                 idOperation)
+                //             .then((value) {
+                //           Pacientes.Vital.addAll(value);
+                //           print("Pacientes.Vital ${Pacientes.Vital}");
+                //         }))
+                .then((value) {
+              Archivos.deleteFile(filePath: Vitales.fileAssocieted);
+              reiniciar().then((value) => Operadores.alertActivity(
+                  context: context,
+                  tittle: "Actualización de registros",
+                  message: "Registros Actualizados",
+                  onAcept: () {
+                    returnGestion(context);
+                  }));
+            }); // );
           });
           break;
         default:
@@ -868,7 +771,7 @@ class GestionVitales extends StatefulWidget {
 }
 
 class _GestionVitalesState extends State<GestionVitales> {
-  var fileAssocieted = '${Pacientes.localRepositoryPath}vitales.json';
+  var fileAssocieted = Vitales.fileAssocieted;
 
   @override
   void initState() {
@@ -897,6 +800,13 @@ class _GestionVitalesState extends State<GestionVitales> {
                     )
                   : null,
               title: Text(appBarSentence),
+              actions: [
+                GrandIcon(
+                  onPress: () {
+                    iniciar();
+                  },
+                ),
+              ],
             )
           : null,
       body: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
@@ -1018,7 +928,7 @@ class _GestionVitalesState extends State<GestionVitales> {
         foundedItems = value;
         Pacientes.Vitales = value;
         Terminal.printSuccess(
-            message: "Repositorio de Signos Vitales del Paciente . . . $value");
+            message: "Repositorio de Signos Vitales del Paciente . . . ");
       });
     }).onError((error, stackTrace) {
       Terminal.printAlert(
@@ -1026,11 +936,13 @@ class _GestionVitalesState extends State<GestionVitales> {
               "Repositorio de Signos Vitales del Paciente . . .");
       List result = [];
       Actividades.consultarAllById(Databases.siteground_database_regpace,
-          Vitales.vitales['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
+              Vitales.vitales['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
           .then((value) {
         result.addAll(value);
-        Actividades.consultarAllById(Databases.siteground_database_regpace,
-            Vitales.antropo['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
+        Actividades.consultarAllById(
+                Databases.siteground_database_regpace,
+                Vitales.antropo['consultByIdPrimaryQuery'],
+                Pacientes.ID_Paciente)
             .then((value) {
           int index = 0;
           for (var item in result) {
@@ -1045,16 +957,13 @@ class _GestionVitalesState extends State<GestionVitales> {
           setState(() {
             Terminal.printSuccess(
                 message:
-                "Actualizando Repositorio de Signos Vitales del Paciente . . . ");
+                    "Actualizando Repositorio de Signos Vitales del Paciente . . . ");
             foundedItems = Pacientes.Vitales!;
             Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
-
           });
         });
       });
-
     });
-
 
     Terminal.printWarning(message: " . . . Actividad Iniciada");
   }
@@ -1065,8 +974,10 @@ class _GestionVitalesState extends State<GestionVitales> {
       padding: const EdgeInsets.all(2.0),
       child: GestureDetector(
         onTap: () {
-          Vitales.ID_Vitales = snapshot.data[posicion]['ID_Pace_SV'];
-          Pacientes.Vital = snapshot.data[posicion];
+          // Vitales.ID_Vitales = snapshot.data[posicion]['ID_Pace_SV'];
+          // Pacientes.Vital = snapshot.data[posicion];
+          Vitales.fromJson(snapshot.data[posicion]);
+
           toOperaciones(context, Constantes.Update);
         },
         child: Card(
@@ -1266,3 +1177,112 @@ class _GestionVitalesState extends State<GestionVitales> {
 
   String appBarSentence = 'Gestor de signos vitales';
 }
+
+// Actividades.consultarId(Databases.siteground_database_regpace,
+//         consultIdQueryantropo!, Vitales.ID_Vitales)
+//     .then((value) {
+//   setState(() {
+//     Pacientes.Vital.addAll(value);
+//
+//     widget._operationButton = 'Actualizar';
+//     idOperation = Pacientes.Vital['ID_Pace_SV'];
+//
+//     fechaRealizacionTextController.text =
+//         Pacientes.Vital['Pace_Feca_SV'].toString();
+//     //
+//     tasTextController.text = Pacientes.Vital['Pace_SV_tas'].toString();
+//     Valores.tensionArterialSystolica =
+//         int.parse(tasTextController.text);
+//     //
+//     tadTextController.text = Pacientes.Vital['Pace_SV_tad'].toString();
+//     Valores.tensionArterialDyastolica =
+//         int.parse(tadTextController.text);
+//     //
+//     fcTextController.text = Pacientes.Vital['Pace_SV_fc'].toString();
+//     Valores.frecuenciaCardiaca = int.parse(fcTextController.text);
+//     //
+//     frTextController.text = Pacientes.Vital['Pace_SV_fr'].toString();
+//     Valores.frecuenciaRespiratoria = int.parse(frTextController.text);
+//     //
+//     tcTextController.text = Pacientes.Vital['Pace_SV_tc'].toString();
+//     Valores.temperaturCorporal = double.parse(tcTextController.text);
+//     //
+//     spoTextController.text = Pacientes.Vital['Pace_SV_spo'].toString();
+//     Valores.saturacionPerifericaOxigeno =
+//         int.parse(spoTextController.text);
+//     //
+//     estTextController.text = Pacientes.Vital['Pace_SV_est'].toString();
+//     Valores.alturaPaciente = double.parse(estTextController.text);
+//     //
+//     pctTextController.text = Pacientes.Vital['Pace_SV_pct'].toString();
+//     Valores.pesoCorporalTotal = double.parse(pctTextController.text);
+//     //
+//     gluTextController.text = Pacientes.Vital['Pace_SV_glu'].toString();
+//     Valores.glucemiaCapilar = int.parse(gluTextController.text);
+//     //
+//     gluAyuTextController.text =
+//         Pacientes.Vital['Pace_SV_glu_ayu'].toString();
+//     Valores.horasAyuno = int.parse(gluAyuTextController.text);
+//     //
+//     //
+//     cueTextController.text = Pacientes.Vital['Pace_SV_cue'].toString();
+//     Valores.circunferenciaCuello = int.parse(cueTextController.text);
+//     //
+//     cinTextController.text = Pacientes.Vital['Pace_SV_cin'].toString();
+//     Valores.circunferenciaCintura = int.parse(cinTextController.text);
+//     //
+//     cadTextController.text = Pacientes.Vital['Pace_SV_cad'].toString();
+//     Valores.circunferenciaCadera = int.parse(cadTextController.text);
+//     //
+//     cmbTextController.text = Pacientes.Vital['Pace_SV_cmb'].toString();
+//     Valores.circunferenciaMesobraquial =
+//         int.parse(cmbTextController.text);
+//     //
+//
+//     factorActividadValue = Pacientes.Vital['Pace_SV_fa'].toString();
+//     Valores.factorActividad = double.parse(factorActividadValue);
+//     //
+//     factorEstresValue = Pacientes.Vital['Pace_SV_fe'].toString();
+//     Valores.factorEstres = double.parse(factorEstresValue);
+//     //
+//
+//     pectTextController.text =
+//         Pacientes.Vital['Pace_SV_c_pect'].toString();
+//     // Valores.pec = int.parse(pectTextController.text);
+//     //
+//     pcbTextController.text = Pacientes.Vital['Pace_SV_pcb'].toString();
+//     Valores.pliegueCutaneoBicipital = int.parse(pcbTextController.text);
+//     //
+//     pseTextController.text = Pacientes.Vital['Pace_SV_pse'].toString();
+//     Valores.pliegueCutaneoEscapular = int.parse(pseTextController.text);
+//     //
+//     psiTextController.text = Pacientes.Vital['Pace_SV_psi'].toString();
+//     Valores.pliegueCutaneoIliaco = int.parse(psiTextController.text);
+//     //
+//     pstTextController.text = Pacientes.Vital['Pace_SV_pst'].toString();
+//     Valores.pliegueCutaneoTricipital =
+//         int.parse(pstTextController.text);
+//     //
+//
+//     femIzqTextController.text =
+//         Pacientes.Vital['Pace_SV_c_fem_izq'].toString();
+//     Valores.circunferenciaFemoralIzquierda =
+//         int.parse(femIzqTextController.text);
+//     //
+//     femDerTextController.text =
+//         Pacientes.Vital['Pace_SV_c_fem_der'].toString();
+//     Valores.circunferenciaFemoralDerecha =
+//         int.parse(femDerTextController.text);
+//     //
+//     suroIzqTextController.text =
+//         Pacientes.Vital['Pace_SV_c_suro_izq'].toString();
+//     Valores.circunferenciaSuralIzquierda =
+//         int.parse(suroIzqTextController.text);
+//     //
+//     suroDerTextController.text =
+//         Pacientes.Vital['Pace_SV_c_suro_der'].toString();
+//     Valores.circunferenciaSuralDerecha =
+//         int.parse(suroDerTextController.text);
+//     //
+//   });
+// });
