@@ -52,6 +52,8 @@ class _OperacionesDiagnosticosState extends State<OperacionesDiagnosticos> {
   //
   var diagnosticosScroller = ScrollController();
 
+  var fileAssocieted = Diagnosticos.fileAssocieted;
+
   @override
   void initState() {
     //
@@ -139,7 +141,7 @@ class _OperacionesDiagnosticosState extends State<OperacionesDiagnosticos> {
                 margin: const EdgeInsets.all(10),
                 decoration: ContainerDecoration.roundedDecoration(),
                 child: GrandButton(
-                  weigth: 2000,
+                    weigth: 2000,
                     labelButton: widget._operationButton,
                     onPress: () {
                       operationMethod(context);
@@ -152,6 +154,29 @@ class _OperacionesDiagnosticosState extends State<OperacionesDiagnosticos> {
     );
   }
 
+  // Actividades de Inicio *********************
+  Future<void> reiniciar() async {
+    Terminal.printExpected(message: "Reinicio de los valores . . .");
+
+    Pacientes.Diagnosticos!.clear();
+    Actividades.consultarAllById(
+            Databases.siteground_database_reghosp,
+            Diagnosticos.diagnosticos['consultByIdPrimaryQuery'],
+            Pacientes.ID_Paciente)
+        .then((value) {
+      setState(() {
+        Pacientes.Diagnosticos = value;
+        Terminal.printSuccess(
+            message:
+                "Actualizando Repositorio de Diagnósticos del Paciente . . . ${Pacientes.Diagnosticos}");
+
+        Archivos.createJsonFromMap(Pacientes.Diagnosticos!,
+            filePath: Diagnosticos.fileAssocieted);
+      });
+    });
+  }
+
+  // Actividades de la Intefaz *********************
   List<Widget> component(BuildContext context) {
     return [
       Spinner(
@@ -288,30 +313,33 @@ class _OperacionesDiagnosticosState extends State<OperacionesDiagnosticos> {
           // ******************************************** *** *
           Actividades.registrar(Databases.siteground_database_reghosp,
                   registerQuery!, listOfValues!)
-              .then((value) => Actividades.consultarAllById(
-                          Databases.siteground_database_reghosp,
-                          consultIdQuery!,
-                          Pacientes.ID_Paciente) // idOperation)
-                      .then((value) {
-                    // ******************************************** *** *
-                    Pacientes.Diagnosticos = value;
-                    Constantes.reinit(value: value);
-                    // ******************************************** *** *
-                  }).then((value) => onClose(context)));
+              .then((value) {
+            Archivos.deleteFile(filePath: fileAssocieted);
+            reiniciar().then((value) => Operadores.alertActivity(
+                context: context,
+                tittle: "Anexión de registros",
+                message: "Registros Agregados",
+                onAcept: () {
+                  onClose(context);
+                }));
+            // ******************************************** *** *
+          });
           break;
         case Constantes.Update:
           Actividades.actualizar(Databases.siteground_database_reghosp,
                   updateQuery!, listOfValues!, idOperation)
-              .then((value) => Actividades.consultarAllById(
-                          Databases.siteground_database_reghosp,
-                          consultIdQuery!,
-                          Pacientes.ID_Paciente) // idOperation)
-                      .then((value) {
-                    // ******************************************** *** *
-                    Pacientes.Diagnosticos = value;
-                    Constantes.reinit(value: value);
-                    // ******************************************** *** *
-                  }).then((value) => onClose(context)));
+              .then((value) {
+            Archivos.deleteFile(filePath: fileAssocieted);
+            reiniciar().then((value) => Operadores.alertActivity(
+                context: context,
+                tittle: "Actualización de registros",
+                message: "Registros Actualizados",
+                onAcept: () {
+                  onClose(context);
+                }));
+
+            // ******************************************** *** *
+          });
           break;
         default:
       }
@@ -378,33 +406,11 @@ class GestionDiagnosticos extends StatefulWidget {
 }
 
 class _GestionDiagnosticosState extends State<GestionDiagnosticos> {
-  String appTittle =
-      "Gestion de diagnósiticos de la Hospitalización del paciente";
-  String searchCriteria = "Buscar por diagnóstico";
-  String? consultQuery = Diagnosticos.diagnosticos['consultIdQuery'];
-
-  late List? foundedItems = [];
-  var gestionScrollController = ScrollController();
-  var searchTextController = TextEditingController();
+  var fileAssocieted = Diagnosticos.fileAssocieted;
 
   @override
   void initState() {
-    print(" . . . Iniciando array ");
-    if (Constantes.dummyArray!.isNotEmpty) {
-      if (Constantes.dummyArray![0] == "Vacio") {
-        Actividades.consultarAllById(Databases.siteground_database_reghosp,
-                consultQuery!, Pacientes.ID_Hospitalizacion)
-            .then((value) {
-          setState(() {
-            print(" . . . Buscando items \n");
-            foundedItems = value;
-          });
-        });
-      } else {
-        print(" . . . Dummy array iniciado");
-        foundedItems = Constantes.dummyArray;
-      }
-    }
+    iniciar();
     super.initState();
   }
 
@@ -433,7 +439,7 @@ class _GestionDiagnosticosState extends State<GestionDiagnosticos> {
               ),
               tooltip: Sentences.reload,
               onPressed: () {
-                // _pullListRefresh();
+                reiniciar();
               },
             ),
             IconButton(
@@ -489,7 +495,7 @@ class _GestionDiagnosticosState extends State<GestionDiagnosticos> {
                           ),
                           tooltip: Sentences.reload,
                           onPressed: () {
-                            _pullListRefresh();
+                            reiniciar();
                           },
                         ),
                       )),
@@ -507,7 +513,8 @@ class _GestionDiagnosticosState extends State<GestionDiagnosticos> {
                     builder: (context, AsyncSnapshot snapshot) {
                       if (snapshot.hasError) print(snapshot.error);
                       return snapshot.hasData
-                          ? GridView.builder(gridDelegate: GridViewTools.gridDelegate(),
+                          ? GridView.builder(
+                              gridDelegate: GridViewTools.gridDelegate(),
                               controller: gestionScrollController,
                               shrinkWrap: true,
                               itemCount: snapshot.data == null
@@ -550,6 +557,36 @@ class _GestionDiagnosticosState extends State<GestionDiagnosticos> {
     );
   }
 
+  // Operaciones de Inicio ***** ******* ********** ****
+  void iniciar() {
+    Terminal.printWarning(
+        message:
+            " . . . Iniciando Actividad - Repositorio Diagnósticos del Pacientes");
+    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+      setState(() {
+        foundedItems = value;
+        Terminal.printSuccess(
+            message: 'Repositorio Diagnósticos del Pacientes Obtenido');
+      });
+    }).onError((error, stackTrace) {
+      reiniciar();
+    });
+    Terminal.printOther(message: " . . . Actividad Iniciada");
+  }
+
+  Future<void> reiniciar() async {
+    Terminal.printExpected(message: "Reinicio de los valores . . .");
+    Actividades.consultarAllById(Databases.siteground_database_reghosp,
+            consultQuery!, Pacientes.ID_Hospitalizacion)
+        .then((value) {
+      setState(() {
+        foundedItems = value;
+        Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
+      });
+    });
+  }
+
+  // Operaciones de la Interfaz ***** ******* ********** ****
   Container itemListView(
       AsyncSnapshot snapshot, int posicion, BuildContext context) {
     return Container(
@@ -589,16 +626,13 @@ class _GestionDiagnosticosState extends State<GestionDiagnosticos> {
                             style: Styles.textSyleGrowth(fontSize: 18),
                             maxLines: 3,
                           ),
-                          Text(
-                            "${snapshot.data[posicion]['Pace_APP_DEG_com']}",
-                              style: Styles.textSyleGrowth(fontSize: 14)
-                          ),
+                          Text("${snapshot.data[posicion]['Pace_APP_DEG_com']}",
+                              style: Styles.textSyleGrowth(fontSize: 14)),
                           CrossLine(),
                         ],
                       ),
                     ),
                   ),
-
                 ],
               ),
             ),
@@ -629,10 +663,10 @@ class _GestionDiagnosticosState extends State<GestionDiagnosticos> {
                             return alertDialog(
                               'Eliminar registro',
                               '¿Esta seguro de querer eliminar el registro?',
-                                  () {
+                              () {
                                 closeDialog(context);
                               },
-                                  () {
+                              () {
                                 deleteRegister(snapshot, posicion, context);
                               },
                             );
@@ -689,38 +723,35 @@ class _GestionDiagnosticosState extends State<GestionDiagnosticos> {
     }
   }
 
+  // Operaciones de Búsqueda ***** ******* ********** ****
   void _runFilterSearch(String enteredKeyword) {
     List? results = [];
 
     if (enteredKeyword.isEmpty) {
       _pullListRefresh();
     } else {
-      Actividades.consultar(
-              Databases.siteground_database_reghosp, consultQuery!)
-          .then((value) {
-        results = value
-            .where((user) => user[widget.keySearch].contains(enteredKeyword))
-            .toList();
+      results = Listas.listFromMap(
+          lista: foundedItems!,
+          keySearched: widget.keySearch,
+          elementSearched: enteredKeyword);
 
-        setState(() {
-          foundedItems = results;
-        });
+      setState(() {
+        foundedItems = results;
       });
     }
   }
 
   Future<Null> _pullListRefresh() async {
-    Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-            pageBuilder: (a, b, c) => GestionDiagnosticos(
-                  actualSidePage: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: OperacionesDiagnosticos(
-                      operationActivity: Constantes.operationsActividad,
-                    ),
-                  ),
-                ),
-            transitionDuration: const Duration(seconds: 0)));
+    iniciar();
   }
+
+  // VARIABLES DE LA INTERFAZ ***** ******* ********** ****
+  String appTittle =
+      "Gestion de diagnósiticos de la Hospitalización del paciente";
+  String searchCriteria = "Buscar por diagnóstico";
+  String? consultQuery = Diagnosticos.diagnosticos['consultIdQuery'];
+
+  late List? foundedItems = [];
+  var gestionScrollController = ScrollController();
+  var searchTextController = TextEditingController();
 }

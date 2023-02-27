@@ -258,7 +258,7 @@ class Valores {
       circunferenciaCadera,
       circunferenciaCuello,
       circunferenciaMesobraquial,
-  circunferenciaPectoral,
+      circunferenciaPectoral,
       pliegueCutaneoBicipital,
       pliegueCutaneoEscapular,
       pliegueCutaneoIliaco,
@@ -564,20 +564,41 @@ class Valores {
         'reportes/';
 
     // Actualización de las Directrices Complementarias ********** ***********
-    Eticos.fileAssocieted ="${Pacientes.localRepositoryPath}eticos.json"; // Eticos.registrarRegistro(); // Si
-    Viviendas.fileAssocieted = "${Pacientes.localRepositoryPath}viviendas.json"; // Viviendas.registrarRegistro(); // Si
-    Higienes.fileAssocieted = "${Pacientes.localRepositoryPath}higienicos.json"; // Higienes.registrarRegistro(); // Si
-    Diarios.fileAssocieted = "${Pacientes.localRepositoryPath}diarios.json"; // Diarios.registrarRegistro();
-   Alimenticios.fileAssocieted = "${Pacientes.localRepositoryPath}alimenticios.json"; // Alimenticios.registrarRegistro(); // Si
-    Limitaciones.fileAssocieted = "${Pacientes.localRepositoryPath}limitaciones.json"; // Limitaciones.registrarRegistro(); // Si
-    Sustancias.fileAssocieted = "${Pacientes.localRepositoryPath}exposiciones.json"; // Sustancias.registrarRegistro();
+    Eticos.fileAssocieted =
+        "${Pacientes.localRepositoryPath}eticos.json"; // Eticos.registrarRegistro(); // Si
+    Viviendas.fileAssocieted =
+        "${Pacientes.localRepositoryPath}viviendas.json"; // Viviendas.registrarRegistro(); // Si
+    Higienes.fileAssocieted =
+        "${Pacientes.localRepositoryPath}higienicos.json"; // Higienes.registrarRegistro(); // Si
+    Diarios.fileAssocieted =
+        "${Pacientes.localRepositoryPath}diarios.json"; // Diarios.registrarRegistro();
+    Alimenticios.fileAssocieted =
+        "${Pacientes.localRepositoryPath}alimenticios.json"; // Alimenticios.registrarRegistro(); // Si
+    Limitaciones.fileAssocieted =
+        "${Pacientes.localRepositoryPath}limitaciones.json"; // Limitaciones.registrarRegistro(); // Si
+    Sustancias.fileAssocieted =
+        "${Pacientes.localRepositoryPath}exposiciones.json"; // Sustancias.registrarRegistro();
 
-    Toxicomanias.fileAssocieted = "${Pacientes.localRepositoryPath}toxicomanias.json"; // Toxicomanias.registrarRegistro();
+    Toxicomanias.fileAssocieted =
+        "${Pacientes.localRepositoryPath}toxicomanias.json"; // Toxicomanias.registrarRegistro();
     //
+
+    Patologicos.fileAssocieted =
+        '${Pacientes.localRepositoryPath}patologicos.json';
+    Diagnosticos.fileAssocieted =
+        '${Pacientes.localRepositoryPath}diagnosticos.json';
+
+    Pendientes.fileAssocieted =
+        '${Pacientes.localRepositoryPath}pendientes.json';
+
+
     Vitales.fileAssocieted = '${Pacientes.localRepositoryPath}vitales.json';
-    Auxiliares.fileAssocieted = '${Pacientes.localRepositoryPath}paraclinicos.json';
-    Imagenologias.fileAssocieted = '${Pacientes.localRepositoryPath}imagenologicos.json';
-    Electrocardiogramas.fileAssocieted = '${Pacientes.localRepositoryPath}electrocardiogramas.json';
+    Auxiliares.fileAssocieted =
+        '${Pacientes.localRepositoryPath}paraclinicos.json';
+    Imagenologias.fileAssocieted =
+        '${Pacientes.localRepositoryPath}imagenologicos.json';
+    Electrocardiogramas.fileAssocieted =
+        '${Pacientes.localRepositoryPath}electrocardiogramas.json';
     //
     edad = json['Pace_Eda']; // int.parse();
     sexo = json['Pace_Ses'];
@@ -600,9 +621,10 @@ class Valores {
       Pacientes.esHospitalizado = false;
     }
     //
-    pesoCorporalTotal = double.parse(
-        json['Pace_SV_pct'] != null ? json['Pace_SV_pct'].toString() : '0');
-    alturaPaciente = json['Pace_SV_est'] ?? 0.0;
+    pesoCorporalTotal =toDoubleFromInt(json: json, keyEntered: 'Pace_SV_pct');
+    // = double.parse(json['Pace_SV_pct'] != null ? json['Pace_SV_pct'].toString() : '0');
+    alturaPaciente =toDoubleFromInt(json: json, keyEntered: 'Pace_SV_est');
+       // json['Pace_SV_est'] ?? 0.0;
 
     tensionArterialSystolica = json['Pace_SV_tas'] ?? 0;
     tensionArterialDyastolica = json['Pace_SV_tad'] ?? 0;
@@ -755,7 +777,8 @@ class Valores {
     Hospitalizaciones.Hospitalizacion['ID_Hosp'] = Pacientes.ID_Hospitalizacion;
     // ******************************************** *** *
     Valores.fechaIngresoHospitalario = json['Feca_INI_Hosp'] ?? '';
-    Hospitalizaciones.Hospitalizacion['Feca_INI_Hosp'] = Valores.fechaIngresoHospitalario;
+    Hospitalizaciones.Hospitalizacion['Feca_INI_Hosp'] =
+        Valores.fechaIngresoHospitalario;
     Valores.numeroCama = json['Id_Cama'] ?? 0;
     Hospitalizaciones.Hospitalizacion['Id_Cama'] = Valores.numeroCama;
     Valores.medicoTratante = json['Medi_Trat'] ?? '';
@@ -763,13 +786,15 @@ class Valores {
     Valores.servicioTratante = json['Serve_Trat'] ?? '';
     Hospitalizaciones.Hospitalizacion['Serve_Trat'] = Valores.servicioTratante;
     Valores.servicioTratanteInicial = json['Serve_Trat_INI'] ?? '';
-    Hospitalizaciones.Hospitalizacion['Serve_Trat_INI'] = Valores.servicioTratanteInicial;
+    Hospitalizaciones.Hospitalizacion['Serve_Trat_INI'] =
+        Valores.servicioTratanteInicial;
     Valores.fechaEgresoHospitalario = json['Feca_EGE_Hosp'] ?? '';
-    Hospitalizaciones.Hospitalizacion['Feca_EGE_Hosp'] = Valores.fechaEgresoHospitalario;
+    Hospitalizaciones.Hospitalizacion['Feca_EGE_Hosp'] =
+        Valores.fechaEgresoHospitalario;
     Valores.motivoEgreso = json['EGE_Motivo'] ?? '';
     Hospitalizaciones.Hospitalizacion['EGE_Motivo'] = Valores.motivoEgreso;
 
-    json['Pace_FIAT'] =  Pacientes.imagenPaciente;
+    json['Pace_FIAT'] = Pacientes.imagenPaciente;
     //
     Archivos.createJsonFromMap([json], filePath: Pacientes.localPath);
   }

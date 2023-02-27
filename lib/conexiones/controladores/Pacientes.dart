@@ -5583,6 +5583,10 @@ class Auxiliares {
 }
 
 class Pendientes {
+
+  static var fileAssocieted =
+      '${Pacientes.localRepositoryPath}pendientes.json';
+
   static final Map<String, dynamic> pendientes = {
     "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_reggabo "
         "DEFAULT CHARACTER SET utf8 "
@@ -5619,8 +5623,8 @@ class Pendientes {
         "SELECT * FROM pace_pen WHERE ID_Pace = ? ORDER BY Feca_PEN DESC",
     "consultByName": "SELECT * FROM pace_pen WHERE Pace_PEN LIKE '%",
     "registerQuery": "INSERT INTO pace_pen (ID_Pace, ID_Hosp, "
-        "Pace_PEN_realized, "
-        "Feca_PEN, Pace_PEN, Pace_Desc_PEN) "
+        "Feca_PEN, Pace_PEN_realized, "
+        "Pace_PEN, Pace_Desc_PEN) "
         "VALUES (?,?,?,?,?,?)",
     "updateQuery": "UPDATE pace_pen "
         "SET ID_Pace_Pen = ?,  ID_Pace = ?,  ID_Hosp = ?,  "

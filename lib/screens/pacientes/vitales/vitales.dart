@@ -33,6 +33,7 @@ class OperacionesVitales extends StatefulWidget {
 }
 
 class _OperacionesVitalesState extends State<OperacionesVitales> {
+
   @override
   void initState() {
     Actividades.consultarId(Databases.siteground_database_regpace,
@@ -745,6 +746,8 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                     returnGestion(context);
                   }));
             }); // );
+
+
           });
           break;
         default:
@@ -801,8 +804,9 @@ class _GestionVitalesState extends State<GestionVitales> {
               title: Text(appBarSentence),
               actions: [
                 GrandIcon(
+                  iconData: Icons.replay,
                   onPress: () {
-                    iniciar();
+                    reiniciar();
                   },
                 ),
               ],
@@ -930,44 +934,49 @@ class _GestionVitalesState extends State<GestionVitales> {
             message: "Repositorio de Signos Vitales del Paciente . . . ");
       });
     }).onError((error, stackTrace) {
-      Terminal.printAlert(
-          message: "Iniciando actividad : : \n "
-              "Repositorio de Signos Vitales del Paciente . . .");
-      List result = [];
-      Actividades.consultarAllById(Databases.siteground_database_regpace,
-              Vitales.vitales['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
-          .then((value) {
-        result.addAll(value);
-        Actividades.consultarAllById(
-                Databases.siteground_database_regpace,
-                Vitales.antropo['consultByIdPrimaryQuery'],
-                Pacientes.ID_Paciente)
-            .then((value) {
-          int index = 0;
-          for (var item in result) {
-            if (index <= result.length ){
-              var thirdMap = {};
-              // print("${value.length} ${result.length}");
-              // print("${value[index]['ID_Pace_SV']} ${item['ID_Pace_SV']}");
-              thirdMap.addAll(item);
-              thirdMap.addAll(value[index]);
-              // Adición a Vitales ********** ************ ************** ********
-              Pacientes.Vitales!.add(thirdMap);
-              index++;
-            }
-          }
-          setState(() {
-            Terminal.printSuccess(
-                message:
-                    "Actualizando Repositorio de Signos Vitales del Paciente . . . ");
-            foundedItems = Pacientes.Vitales!;
-            Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
-          });
-        });
-      });
+      reiniciar();
     });
 
     Terminal.printWarning(message: " . . . Actividad Iniciada");
+  }
+
+  void reiniciar() {
+    Terminal.printAlert(
+        message: "Iniciando actividad : : \n "
+            "Repositorio de Signos Vitales del Paciente . . .");
+    List result = [];
+    Pacientes.Vitales!.clear();
+    Actividades.consultarAllById(Databases.siteground_database_regpace,
+        Vitales.vitales['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
+        .then((value) {
+      result.addAll(value);
+      Actividades.consultarAllById(
+          Databases.siteground_database_regpace,
+          Vitales.antropo['consultByIdPrimaryQuery'],
+          Pacientes.ID_Paciente)
+          .then((value) {
+        int index = 0;
+        for (var item in result) {
+          if (index <= result.length ){
+            var thirdMap = {};
+            print("${value.length} ${result.length}");
+            print("${value[index]['ID_Pace_SV']} ${item['ID_Pace_SV']}");
+            thirdMap.addAll(item);
+            thirdMap.addAll(value[index]);
+            // Adición a Vitales ********** ************ ************** ********
+            Pacientes.Vitales!.add(thirdMap);
+            index++;
+          }
+        }
+        setState(() {
+          Terminal.printSuccess(
+              message:
+              "Actualizando Repositorio de Signos Vitales del Paciente . . . ");
+          foundedItems = Pacientes.Vitales!;
+          Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
+        });
+      });
+    });
   }
 
   Container itemListView(

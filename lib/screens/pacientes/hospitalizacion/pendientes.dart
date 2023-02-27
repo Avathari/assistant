@@ -163,6 +163,29 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
     );
   }
 
+  // Actividades de Inicio *********************
+  Future<void> reiniciar() async {
+    Terminal.printExpected(message: "Reinicio de los valores . . .");
+
+    Pacientes.Pendiente!.clear();
+    Actividades.consultarAllById(
+        Databases.siteground_database_reghosp,
+        Pendientes.pendientes['consultByIdPrimaryQuery'],
+        Pacientes.ID_Paciente)
+        .then((value) {
+      setState(() {
+        Pacientes.Pendiente = value;
+        Terminal.printSuccess(
+            message:
+            "Actualizando Repositorio de Pendientes de la Hospitalización . . . ${Pacientes.Pendiente}");
+
+        Archivos.createJsonFromMap(Pacientes.Pendiente!,
+            filePath: Pendientes.fileAssocieted);
+      });
+    });
+  }
+
+  // Actividades de la Intefaz *********************
   List<Widget> component(BuildContext context) {
     return [
       Row(
@@ -256,30 +279,32 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
           // ******************************************** *** *
           Actividades.registrar(Databases.siteground_database_reghosp,
                   registerQuery!, listOfValues!)
-              .then((value) => Actividades.consultarAllById(
-                          Databases.siteground_database_reghosp,
-                          consultIdQuery!,
-                          Pacientes.ID_Paciente) // idOperation)
-                      .then((value) {
+              .then((value) {
+            Archivos.deleteFile(filePath: Pendientes.fileAssocieted);
+            reiniciar().then((value) => Operadores.alertActivity(
+                context: context,
+                tittle: "Anexión de registros",
+                message: "Registros Agregados",
+                onAcept: () {
+                  onClose(context);
+                }));
                     // ******************************************** *** *
-                    Pacientes.Alergicos = value;
-                    Constantes.reinit(value: value);
-                    // ******************************************** *** *
-                  }).then((value) => onClose(context)));
+                  });
           break;
         case Constantes.Update:
           Actividades.actualizar(Databases.siteground_database_reghosp,
                   updateQuery!, listOfValues!, idOperation)
-              .then((value) => Actividades.consultarAllById(
-                          Databases.siteground_database_reghosp,
-                          consultIdQuery!,
-                          Pacientes.ID_Paciente) // idOperation)
-                      .then((value) {
+              .then((value) {
+            Archivos.deleteFile(filePath: Pendientes.fileAssocieted);
+            reiniciar().then((value) => Operadores.alertActivity(
+                context: context,
+                tittle: "Actualización de registros",
+                message: "Registros Actualizados",
+                onAcept: () {
+                  onClose(context);
+                }));
                     // ******************************************** *** *
-                    Pacientes.Alergicos = value;
-                    Constantes.reinit(value: value);
-                    // ******************************************** *** *
-                  }).then((value) => onClose(context)));
+                  });
           break;
         default:
       }
@@ -331,32 +356,12 @@ class GestionPendiente extends StatefulWidget {
 }
 
 class _GestionPendienteState extends State<GestionPendiente> {
-  String appTittle = "Gestion de pendientes del paciente";
-  String searchCriteria = "Buscar por Fecha";
-  String? consultQuery = Pendientes.pendientes['consultIdQuery'];
 
-  late List? foundedItems = [];
-  var gestionScrollController = ScrollController();
-  var searchTextController = TextEditingController();
-
+  var fileAssocieted = Pendientes.fileAssocieted;
+  
   @override
   void initState() {
-    print(" . . . Iniciando array ");
-    if (Constantes.dummyArray!.isNotEmpty) {
-      if (Constantes.dummyArray![0] == "Vacio") {
-        Actividades.consultarAllById(Databases.siteground_database_reghosp,
-                consultQuery!, Pacientes.ID_Hospitalizacion)
-            .then((value) {
-          setState(() {
-            print(" . . . Buscando items \n $value");
-            foundedItems = value;
-          });
-        });
-      } else {
-        print(" . . . Pendiente array iniciado");
-        foundedItems = Constantes.dummyArray;
-      }
-    }
+    iniciar();
     super.initState();
   }
 
@@ -385,7 +390,7 @@ class _GestionPendienteState extends State<GestionPendiente> {
               ),
               tooltip: Sentences.reload,
               onPressed: () {
-                // _pullListRefresh();
+                reiniciar(); // _pullListRefresh();
               },
             ),
             IconButton(
@@ -441,7 +446,7 @@ class _GestionPendienteState extends State<GestionPendiente> {
                           ),
                           tooltip: Sentences.reload,
                           onPressed: () {
-                            _pullListRefresh();
+                            reiniciar(); // _pullListRefresh();
                           },
                         ),
                       )),
@@ -505,6 +510,36 @@ class _GestionPendienteState extends State<GestionPendiente> {
     );
   }
 
+  // Operaciones de Inicio ***** ******* ********** ****
+  void iniciar() {
+    Terminal.printWarning(
+        message:
+        " . . . Iniciando Actividad - Repositorio de Pendientes de la Hospitalización");
+    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+      setState(() {
+        foundedItems = value;
+        Terminal.printSuccess(
+            message: "Repositorio de Pendientes de la Hospitalización");
+      });
+    }).onError((error, stackTrace) {
+      reiniciar();
+    });
+    Terminal.printOther(message: " . . . Actividad Iniciada");
+  }
+
+  Future<void> reiniciar() async {
+    Terminal.printExpected(message: "Reinicio de los valores . . .");
+    Actividades.consultarAllById(Databases.siteground_database_reghosp,
+        consultQuery!, Pacientes.ID_Hospitalizacion)
+        .then((value) {
+      setState(() {
+        foundedItems = value;
+        Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
+      });
+    });
+  }
+
+  // Operaciones de la Interfaz ***** ******* ********** ****
   Container itemListView(
       AsyncSnapshot snapshot, int posicion, BuildContext context) {
     return Container(
@@ -656,6 +691,7 @@ class _GestionPendienteState extends State<GestionPendiente> {
         snapshot.data.removeAt(posicion);
       });
     } finally {
+      reiniciar(); // _pullListRefresh();
       Navigator.of(context).pop();
     }
   }
@@ -673,39 +709,35 @@ class _GestionPendienteState extends State<GestionPendiente> {
     }
   }
 
+// Operaciones de Búsqueda ***** ******* ********** ****
   void _runFilterSearch(String enteredKeyword) {
     List? results = [];
 
     if (enteredKeyword.isEmpty) {
       _pullListRefresh();
     } else {
-      Actividades.consultar(
-              Databases.siteground_database_reghosp, consultQuery!)
-          .then((value) {
-        results = value
-            .where((user) => user[widget.keySearch].contains(enteredKeyword))
-            .toList();
+      results = Listas.listFromMap(
+          lista: foundedItems!,
+          keySearched: widget.keySearch,
+          elementSearched: enteredKeyword);
 
-        setState(() {
-          foundedItems = results;
-        });
+      setState(() {
+        foundedItems = results;
       });
     }
   }
 
   Future<Null> _pullListRefresh() async {
-    Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-            pageBuilder: (a, b, c) => GestionPendiente(
-                  actualSidePage: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child:
-                    OperacionesPendiente(
-                      operationActivity: Constantes.operationsActividad,
-                    ),
-                  ),
-                ),
-            transitionDuration: const Duration(seconds: 0)));
+    iniciar();
   }
+  
+  // VARIABLES DE LA INTERFAZ ***** ******* ********** ****
+  String appTittle = "Gestion de pendientes del paciente";
+  String searchCriteria = "Buscar por Fecha";
+  String? consultQuery = Pendientes.pendientes['consultIdQuery'];
+
+  late List? foundedItems = [];
+  var gestionScrollController = ScrollController();
+  var searchTextController = TextEditingController();
+
 }

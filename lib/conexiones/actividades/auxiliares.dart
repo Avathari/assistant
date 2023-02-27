@@ -224,7 +224,7 @@ class Archivos {
       if (await file.exists()) {
         file.delete();
       } else {
-        throw "\x1B[31mEl Archivo no Existe\x1B[0m";
+        throw "\x1B[31mEl Archivo $filePath no Existe\x1B[0m";
       }
     } else {
       final file = File(filePath);
@@ -232,7 +232,7 @@ class Archivos {
         file.delete(recursive: true);
         // throw "\x1B[35mEl Archivo FUE ELIMINADO\x1B[0m";
       } else {
-        throw "\x1B[31mEl Archivo no Existe\x1B[0m";
+        throw "\x1B[31mEl Archivo $filePath no Existe\x1B[0m";
       }
     }
   }

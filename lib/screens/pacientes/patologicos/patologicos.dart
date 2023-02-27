@@ -69,7 +69,8 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
           idOperation = Patologicos.Degenerativos['ID_PACE_APP_DEG'];
 
           isActualDiagoValue = Dicotomicos.fromInt(
-              Patologicos.Degenerativos['Pace_APP_DEG_SINO']).toString();
+                  Patologicos.Degenerativos['Pace_APP_DEG_SINO'])
+              .toString();
           if (Patologicos.selectedDiagnosis == "") {
             cieDiagnoTextController.text =
                 Patologicos.Degenerativos['Pace_APP_DEG'];
@@ -82,11 +83,13 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
               Patologicos.Degenerativos['Pace_APP_DEG_dia'].toString();
           //
           isTratamientoDiagoValue = Dicotomicos.fromInt(
-              Patologicos.Degenerativos['Pace_APP_DEG_tra_SINO']).toString();
+                  Patologicos.Degenerativos['Pace_APP_DEG_tra_SINO'])
+              .toString();
           tratamientoTextController.text =
               Patologicos.Degenerativos['Pace_APP_DEG_tra'];
           isSuspendTratoValue = Dicotomicos.fromInt(
-              Patologicos.Degenerativos['Pace_APP_DEG_sus_SINO']).toString();
+                  Patologicos.Degenerativos['Pace_APP_DEG_sus_SINO'])
+              .toString();
           suspensionesTextController.text =
               Patologicos.Degenerativos['Pace_APP_DEG_sus'];
         });
@@ -138,6 +141,27 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
         ),
       ),
     );
+  }
+
+  Future<void> reiniciar() async {
+    Terminal.printExpected(message: "Reinicio de los valores . . .");
+
+    Pacientes.Patologicos!.clear();
+    Actividades.consultarAllById(
+            Databases.siteground_database_regpace,
+            Patologicos.patologicos['consultByIdPrimaryQuery'],
+            Pacientes.ID_Paciente)
+        .then((value) {
+      setState(() {
+        Pacientes.Patologicos = value;
+        Terminal.printSuccess(
+            message:
+                "Actualizando Repositorio de Patologías del Paciente . . . ${Pacientes.Patologicos}");
+
+        Archivos.createJsonFromMap(Pacientes.Patologicos!,
+            filePath: Patologicos.fileAssocieted);
+      });
+    });
   }
 
   List<Widget> component(BuildContext context) {
@@ -275,30 +299,38 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
           // ******************************************** *** *
           Actividades.registrar(Databases.siteground_database_regpace,
                   registerQuery!, listOfValues!)
-              .then((value) => Actividades.consultarAllById(
-                          Databases.siteground_database_regpace,
-                          consultIdQuery!,
-                          Pacientes.ID_Paciente) // idOperation)
-                      .then((value) {
-                    // ******************************************** *** *
-                    Pacientes.Patologicos = value;
-                    Constantes.reinit(value: value);
-                    // ******************************************** *** *
-                  }).then((value) => onClose(context)));
+              .then((value) {
+            Archivos.deleteFile(filePath: Patologicos.fileAssocieted);
+            reiniciar().then((value) => Operadores.alertActivity(
+                context: context,
+                tittle: "Anexión de registros",
+                message: "Registros Agregados",
+                onAcept: () {
+                  onClose(context);
+                }));
+            // ******************************************** *** *
+            // Pacientes.Patologicos = value;
+            // Constantes.reinit(value: value);
+            // ******************************************** *** *
+          });
           break;
         case Constantes.Update:
           Actividades.actualizar(Databases.siteground_database_regpace,
                   updateQuery!, listOfValues!, idOperation)
-              .then((value) => Actividades.consultarAllById(
-                          Databases.siteground_database_regpace,
-                          consultIdQuery!,
-                          Pacientes.ID_Paciente) // idOperation)
-                      .then((value) {
-                    // ******************************************** *** *
-                    Pacientes.Patologicos = value;
-                    Constantes.reinit(value: value);
-                    // ******************************************** *** *
-                  }).then((value) => onClose(context)));
+              .then((value) {
+            Archivos.deleteFile(filePath: Patologicos.fileAssocieted);
+            reiniciar().then((value) => Operadores.alertActivity(
+                context: context,
+                tittle: "Actualización de registros",
+                message: "Registros Actualizados",
+                onAcept: () {
+                  onClose(context);
+                }));
+            // // ******************************************** *** *
+            // Pacientes.Patologicos = value;
+            // Constantes.reinit(value: value);
+            // ******************************************** *** *
+          });
           break;
         default:
       }
@@ -365,33 +397,43 @@ class GestionPatologicos extends StatefulWidget {
 }
 
 class _GestionPatologicosState extends State<GestionPatologicos> {
-  String appTittle = "Gestion de patologías del paciente";
-  String searchCriteria = "Buscar por Fecha";
-  String? consultQuery = Patologicos.patologicos['consultIdQuery'];
 
-  late List? foundedItems = [];
-  var gestionScrollController = ScrollController();
-  var searchTextController = TextEditingController();
+  var fileAssocieted = Patologicos.fileAssocieted;
 
   @override
   void initState() {
-    print(" . . . Iniciando array ");
-    if (Constantes.dummyArray!.isNotEmpty) {
-      if (Constantes.dummyArray![0] == "Vacio") {
-        Actividades.consultarAllById(Databases.siteground_database_regpace,
-                consultQuery!, Pacientes.ID_Paciente)
-            .then((value) {
-          setState(() {
-            print(" . . . Buscando items \n");
-            foundedItems = value;
-          });
-        });
-      } else {
-        print(" . . . Dummy array iniciado");
-        foundedItems = Constantes.dummyArray;
-      }
-    }
+    iniciar();
     super.initState();
+  }
+
+  void iniciar() {
+    Terminal.printWarning(
+        message:
+            " . . . Iniciando Actividad - Repositorio Patologías del Pacientes");
+    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+      setState(() {
+        foundedItems = value;
+        Terminal.printSuccess(
+            message: 'Repositorio Patologías del Pacientes Obtenido');
+      });
+    }).onError((error, stackTrace) {
+      reiniciar();
+    });
+    Terminal.printOther(message: " . . . Actividad Iniciada");
+  }
+
+  Future<void> reiniciar() async {
+    Terminal.printExpected(message: "Reinicio de los valores . . .");
+    Actividades.consultarAllById(
+            Databases.siteground_database_regpace,
+            Patologicos.patologicos['consultByIdPrimaryQuery'],
+            Pacientes.ID_Paciente)
+        .then((value) {
+      setState(() {
+        foundedItems = value;
+        Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
+      });
+    });
   }
 
   @override
@@ -419,7 +461,7 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
               ),
               tooltip: Sentences.reload,
               onPressed: () {
-                // _pullListRefresh();
+                reiniciar();
               },
             ),
             IconButton(
@@ -475,7 +517,7 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
                           ),
                           tooltip: Sentences.reload,
                           onPressed: () {
-                            _pullListRefresh();
+                            reiniciar(); // _pullListRefresh();
                           },
                         ),
                       )),
@@ -677,32 +719,27 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
     if (enteredKeyword.isEmpty) {
       _pullListRefresh();
     } else {
-      Actividades.consultar(
-              Databases.siteground_database_regpace, consultQuery!)
-          .then((value) {
-        results = value
-            .where((user) => user[widget.keySearch].contains(enteredKeyword))
-            .toList();
+      results = Listas.listFromMap(
+          lista: foundedItems!,
+          keySearched: widget.keySearch,
+          elementSearched: enteredKeyword);
 
-        setState(() {
-          foundedItems = results;
-        });
+      setState(() {
+        foundedItems = results;
       });
     }
   }
 
   Future<Null> _pullListRefresh() async {
-    Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-            pageBuilder: (a, b, c) => GestionPatologicos(
-                  actualSidePage: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: OperacionesPatologicos(
-                      operationActivity: Constantes.operationsActividad,
-                    ),
-                  ),
-                ),
-            transitionDuration: const Duration(seconds: 0)));
+    iniciar();
   }
+
+  // VARIABLES DE LA INTERFAZ ********* **** ********* ******
+  String appTittle = "Gestion de patologías del paciente";
+  String searchCriteria = "Buscar por Fecha";
+  String? consultQuery = Patologicos.patologicos['consultIdQuery'];
+
+  late List? foundedItems = [];
+  var gestionScrollController = ScrollController();
+  var searchTextController = TextEditingController();
 }
