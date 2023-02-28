@@ -17,7 +17,7 @@ class Spinner extends StatefulWidget {
       required this.items,
       required this.initialValue,
       this.tittle,
-      this.isRow = true,
+      this.isRow = false,
       this.width = 100})
       : super(key: key);
 
@@ -44,7 +44,11 @@ class _SpinnerState extends State<Spinner> {
         child: Padding(
             padding:
                 const EdgeInsets.only(top: 10, bottom: 4, left: 20, right: 20),
-            child: isMobile(context) ? columnView() : rowView()),
+            child: widget.isRow == true
+                ? rowView()
+                : isMobile(context)
+                    ? columnView()
+                    : rowView()),
       ),
     );
   }
@@ -53,8 +57,7 @@ class _SpinnerState extends State<Spinner> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Text("${widget.tittle}:",
-            style: const TextStyle( color: Colors.white)),
+        Text("${widget.tittle}:", style: const TextStyle(color: Colors.white)),
         DropdownButton(
           value: widget.initialValue,
           icon: const Icon(Icons.arrow_drop_down),

@@ -655,6 +655,7 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
                                     () {
                                       deleteRegister(
                                           snapshot, posicion, context);
+                                      Navigator.of(context).pop();
                                     },
                                   );
                                 });
@@ -687,17 +688,23 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
 
   void deleteRegister(
       AsyncSnapshot<dynamic> snapshot, int posicion, BuildContext context) {
-    try {
       Actividades.eliminar(
           Databases.siteground_database_regpace,
           Patologicos.patologicos['deleteQuery'],
-          snapshot.data[posicion]['ID_PACE_APP_DEG']);
-      setState(() {
-        snapshot.data.removeAt(posicion);
+          snapshot.data[posicion]['ID_PACE_APP_DEG']).then((value) {
+        setState(() {
+          snapshot.data.removeAt(posicion);
+          Archivos.deleteFile(filePath: fileAssocieted).then((value) {
+            Operadores.alertActivity(context: context, tittle: "Eliminación de Registros",
+            message: "Registro eliminado",
+            onAcept: () {
+              Navigator.of(context).pop();
+            });
+          });
+        });
+      }).onError((error, stackTrace) {
+        Terminal.printAlert(message: "ERROR - Hubo un error : $error");
       });
-    } finally {
-      Navigator.of(context).pop();
-    }
   }
 
   void toOperaciones(BuildContext context, String operationActivity) {
@@ -709,7 +716,18 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
     } else {
       Constantes.operationsActividad = operationActivity;
       Constantes.reinit(value: foundedItems!);
-      _pullListRefresh();
+      Navigator.pushReplacement(
+          context,
+          PageRouteBuilder(
+              pageBuilder: (a, b, c) => GestionPatologicos(
+                actualSidePage: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: OperacionesPatologicos(
+                    operationActivity: Constantes.operationsActividad,
+                  ),
+                ),
+              ),
+              transitionDuration: const Duration(seconds: 0)));
     }
   }
 

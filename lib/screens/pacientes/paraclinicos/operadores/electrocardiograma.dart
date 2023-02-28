@@ -9,6 +9,7 @@ import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/paraclinicos.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
+import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
@@ -92,60 +93,67 @@ class _ElectrocardiogramasGestionState
           style: Styles.textSyleGrowth(fontSize: 14),
         ),
         actions: <Widget>[
-                GrandIcon(
-                  iconData: Icons.dataset_linked_outlined,
-                  labelButton: "Registro de electrocardiogramas",
-                  onPress: () {
-                    carouselController.jumpToPage(0);
-                  },
-                ),
-                GrandIcon(
-                  iconData: Icons.browser_updated,
-                  labelButton: "Gestion del Registro",
-                  onPress: () {
-                    carouselController.jumpToPage(1);
-                  },
-                ),
-                GrandIcon(
-                  iconData: Icons.candlestick_chart,
-                  labelButton: 'Análisis de Parámetros',
-                  onPress: () {
-                    Operadores.openDialog(
-                        context: context,
-                        chyldrim: AnalisisElectrocardiograma(
-                            operationActivity: operationActivity));
-                  },
-                ),
-                GrandIcon(
-                  iconData: Icons.photo_camera_back_outlined,
-                  labelButton: 'Imagen del Electrocardiograma',
-                  onPress: () {
-                    Operadores.optionsActivity(
-                      context: context,
-                      tittle: 'Cargar imagen del Electrocardiograma',
-                      onClose: () {
-                        Navigator.of(context).pop();
-                      },
-                      textOptionA: 'Cargar desde Dispositivo',
-                      optionA: () async {
-                        var bytes = await Directorios.choiseFromDirectory();
-                        setState(() {
-                          stringImage = base64Encode(bytes);
-                          Navigator.of(context).pop();
-                        });
-                      },
-                      textOptionB: 'Cargar desde Cámara',
-                      optionB: () async {
-                        var bytes = await Directorios.choiseFromCamara();
-                        setState(() {
-                          stringImage = base64Encode(bytes);
-                          Navigator.of(context).pop();
-                        });
-                      },
-                    );
-                  },
-                ),
-              ],
+          GrandIcon(
+            iconData: Icons.replay_outlined,
+            labelButton: Sentences.reload,
+            onPress: () {
+              reiniciar();
+            },
+          ),
+          GrandIcon(
+            iconData: Icons.dataset_linked_outlined,
+            labelButton: "Registro de electrocardiogramas",
+            onPress: () {
+              carouselController.jumpToPage(0);
+            },
+          ),
+          GrandIcon(
+            iconData: Icons.browser_updated,
+            labelButton: "Gestion del Registro",
+            onPress: () {
+              carouselController.jumpToPage(1);
+            },
+          ),
+          GrandIcon(
+            iconData: Icons.candlestick_chart,
+            labelButton: 'Análisis de Parámetros',
+            onPress: () {
+              Operadores.openDialog(
+                  context: context,
+                  chyldrim: AnalisisElectrocardiograma(
+                      operationActivity: operationActivity));
+            },
+          ),
+          GrandIcon(
+            iconData: Icons.photo_camera_back_outlined,
+            labelButton: 'Imagen del Electrocardiograma',
+            onPress: () {
+              Operadores.optionsActivity(
+                context: context,
+                tittle: 'Cargar imagen del Electrocardiograma',
+                onClose: () {
+                  Navigator.of(context).pop();
+                },
+                textOptionA: 'Cargar desde Dispositivo',
+                optionA: () async {
+                  var bytes = await Directorios.choiseFromDirectory();
+                  setState(() {
+                    stringImage = base64Encode(bytes);
+                    Navigator.of(context).pop();
+                  });
+                },
+                textOptionB: 'Cargar desde Cámara',
+                optionB: () async {
+                  var bytes = await Directorios.choiseFromCamara();
+                  setState(() {
+                    stringImage = base64Encode(bytes);
+                    Navigator.of(context).pop();
+                  });
+                },
+              );
+            },
+          ),
+        ],
       ),
       body: Container(
         padding: const EdgeInsets.all(5),
@@ -199,6 +207,7 @@ class _ElectrocardiogramasGestionState
                     Column(
                       children: [
                         Expanded(
+                          flex: isMobile(context) ? 2 : 1,
                           child: EditTextArea(
                             keyBoardType: TextInputType.number,
                             inputFormat: MaskTextInputFormatter(
@@ -229,7 +238,11 @@ class _ElectrocardiogramasGestionState
                                         padding: const EdgeInsets.all(8.0),
                                         gridDelegate:
                                             GridViewTools.gridDelegate(
-                                                mainAxisExtent: 150),
+                                                  crossAxisCount: isMobile(context) ? 1 : 2,
+                                                  mainAxisExtent: isMobile(context) ? 170 : 150,
+                                                  crossAxisSpacing: 4.0,
+                                                  mainAxisSpacing: 4.0,
+                                                ),
                                         shrinkWrap: true,
                                         itemCount: snapshot.data == null
                                             ? 0
@@ -274,10 +287,9 @@ class _ElectrocardiogramasGestionState
   Future<void> reiniciar() async {
     Terminal.printExpected(message: "Reinicio de los valores . . .");
     Actividades.consultarAllById(
-        Databases.siteground_database_reggabo,
-        Electrocardiogramas
-            .electrocardiogramas['consultByIdPrimaryQuery'],
-        Pacientes.ID_Paciente)
+            Databases.siteground_database_reggabo,
+            Electrocardiogramas.electrocardiogramas['consultByIdPrimaryQuery'],
+            Pacientes.ID_Paciente)
         .then((value) {
       setState(() {
         Archivos.createJsonFromMap(value, filePath: fileAssocieted);
@@ -287,27 +299,23 @@ class _ElectrocardiogramasGestionState
   }
 
   void deleteDialog(Map<String, dynamic> element) {
-    showDialog(
+    Operadores.alertActivity(
         context: context,
-        builder: (context) {
-          return emergentDialog(context, "Eliminación del Registro",
-              "¿Esta usted seguro de eliminar este registro?", () {
-            Actividades.eliminar(
-                    Databases.siteground_database_reggabo,
-                    Electrocardiogramas.electrocardiogramas['deleteQuery'],
-                    element[idWidget])
-                .then((value) => showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text("Eliminados"),
-                            content: Text(listOfValues().toString()),
-                          );
-                        })
-                    .then((value) => Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const ElectrocardiogramasGestion()))));
+        tittle: "Eliminación de Registros",
+        message: "Registro eliminado",
+        onAcept: () {
+          Actividades.eliminar(
+                  Databases.siteground_database_reggabo,
+                  Electrocardiogramas.electrocardiogramas['deleteQuery'],
+                  element[idWidget])
+              .then((value) {
+                Archivos.deleteFile(filePath: fileAssocieted).then((value) {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const ElectrocardiogramasGestion()));
+                });
+          }).onError((error, stackTrace) {
+            Terminal.printAlert(message: "ERROR - Hubo un error : $error");
           });
         });
   }
@@ -840,7 +848,9 @@ class _ElectrocardiogramasGestionState
                     overflow: TextOverflow.ellipsis,
                     style: Styles.textSyleGrowth(fontSize: 10),
                   ),
-                  CrossLine(color: Colors.grey,),
+                  CrossLine(
+                    color: Colors.grey,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -876,13 +886,14 @@ class _ElectrocardiogramasGestionState
     if (isMobile(context) || isTablet(context)) {
       return Column(
         children: [
-          isMobile(context) ?
-          Expanded(
-              child: TittlePanel(
-                  padding: 4,
-                  color: Colores.backgroundWidget,
-                  textPanel: tittle)) :
-          Container(),
+          // isMobile(context)
+          //     ? Expanded(
+          //   flex: isMobile(context) ? 2 : 1,
+          //         child: TittlePanel(
+          //             padding: isMobile(context) ? 0 : 4,
+          //             color: Colores.backgroundWidget,
+          //             textPanel: tittle))
+          //     : Container(),
           Expanded(
             flex: 2,
             child: EditTextArea(
@@ -898,7 +909,8 @@ class _ElectrocardiogramasGestionState
               selection: true,
               iconData: Icons.calendar_month,
               onSelected: () {
-                textDateEstudyController.text = Calendarios.today(format: 'yyyy/MM/dd');
+                textDateEstudyController.text =
+                    Calendarios.today(format: 'yyyy/MM/dd');
               },
             ),
           ),
@@ -907,14 +919,14 @@ class _ElectrocardiogramasGestionState
             child: GridView(
               controller: ScrollController(),
               gridDelegate: GridViewTools.gridDelegate(
-                  crossAxisCount: 2,
+                  crossAxisCount: isMobile(context) ? 1: 2,
                   crossAxisSpacing: 4.0,
                   mainAxisSpacing: 4.0,
-                  mainAxisExtent: 75),
+                  mainAxisExtent: isMobile(context)? 75 : 75),
               children: [
                 Spinner(
                     width: isMobile(context) ? 150 : 150,
-                    isRow: false,
+                    isRow: true,
                     tittle: "Ritmo cardiaco",
                     initialValue: ritmoCardiacoValue!,
                     items: Electrocardiogramas.ritmos,
@@ -1039,7 +1051,7 @@ class _ElectrocardiogramasGestionState
                 //
                 Spinner(
                     width: isMobile(context) || isTablet(context) ? 170 : 110,
-                    isRow: false,
+                    isRow: true,
                     tittle: "Segmento ST",
                     initialValue: segmentoSTValue!,
                     items: Electrocardiogramas.ast,
@@ -1174,7 +1186,7 @@ class _ElectrocardiogramasGestionState
                 //
                 Spinner(
                     width: 100,
-                    isRow: false,
+                    isRow: true,
                     tittle: "Patrón QRS en DII",
                     initialValue: patronQRSValue!,
                     items: Electrocardiogramas.patronQRS,
@@ -1249,7 +1261,7 @@ class _ElectrocardiogramasGestionState
           ),
           Expanded(child: CrossLine()),
           Expanded(
-            flex: 2,
+            flex: isMobile(context) ? 4 : 2,
             child: EditTextArea(
                 keyBoardType: TextInputType.number,
                 inputFormat: MaskTextInputFormatter(),
@@ -1303,7 +1315,9 @@ class _ElectrocardiogramasGestionState
                       weigth: isMobile(context) || isTablet(context) ? 30 : 100,
                       labelButton: operationActivity ? "Agregar" : "Actualizar",
                       onPress: () {
-                        operationMethod(context: context, operationActivity: operationActivity);
+                        operationMethod(
+                            context: context,
+                            operationActivity: operationActivity);
                       }),
                 ),
               ],
@@ -1311,7 +1325,10 @@ class _ElectrocardiogramasGestionState
           )
         ],
       );
-    } else {
+
+    } if (isMobile(context)) {
+
+  } else {
       return Row(
         children: [
           Expanded(
@@ -1333,7 +1350,8 @@ class _ElectrocardiogramasGestionState
                   selection: true,
                   iconData: Icons.calendar_month,
                   onSelected: () {
-                    textDateEstudyController.text = Calendarios.today(format: 'yyyy/MM/dd');
+                    textDateEstudyController.text =
+                        Calendarios.today(format: 'yyyy/MM/dd');
                   },
                 ),
               ),
@@ -1741,7 +1759,9 @@ class _ElectrocardiogramasGestionState
                           labelButton:
                               operationActivity ? "Agregar" : "Actualizar",
                           onPress: () {
-                            operationMethod(context: context, operationActivity: operationActivity);
+                            operationMethod(
+                                context: context,
+                                operationActivity: operationActivity);
                           }),
                     ],
                   ),
@@ -1820,16 +1840,15 @@ class _ElectrocardiogramasGestionState
 
   void operationMethod(
       {required BuildContext context, required bool operationActivity}) {
-
     if (operationActivity) {
       var aux = listOfValues();
       aux.removeAt(0);
       aux.removeLast();
-      Terminal.printExpected(message: "operationActivity $operationActivity ${aux.length}");
+      Terminal.printExpected(
+          message: "operationActivity $operationActivity ${aux.length}");
       Actividades.registrar(
         Databases.siteground_database_reggabo,
-        Electrocardiogramas
-            .electrocardiogramas['registerQuery'],
+        Electrocardiogramas.electrocardiogramas['registerQuery'],
         aux,
       ).then((value) {
         // Terminal.printExpected(message: "registerActivity $value");
@@ -1842,17 +1861,15 @@ class _ElectrocardiogramasGestionState
             carouselController.jumpToPage(0);
           });
         });
-      }).onError((error, stackTrace)
-      {
+      }).onError((error, stackTrace) {
         Terminal.printWarning(message: "ERROR - $error");
       });
     } else {
       Actividades.actualizar(
-          Databases.siteground_database_reggabo,
-          Electrocardiogramas
-              .electrocardiogramas['updateQuery'],
-          listOfValues(),
-          idOperacion!)
+              Databases.siteground_database_reggabo,
+              Electrocardiogramas.electrocardiogramas['updateQuery'],
+              listOfValues(),
+              idOperacion!)
           .then((value) {
         Operadores.alertActivity(
             context: context,
@@ -1863,8 +1880,7 @@ class _ElectrocardiogramasGestionState
             carouselController.jumpToPage(0);
           });
         });
-      }).onError((error, stackTrace)
-      {
+      }).onError((error, stackTrace) {
         Terminal.printWarning(message: "ERROR - $error");
       });
     }

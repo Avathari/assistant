@@ -476,7 +476,9 @@ class _GestionPendienteState extends State<GestionPendiente> {
                                     snapshot, posicion, context);
                               },
                               gridDelegate:
-                                  GridViewTools.gridDelegate(crossAxisCount: 3),
+                                  GridViewTools.gridDelegate(crossAxisCount: isMobile(context) ? 1 :3,
+                                  mainAxisExtent: isMobile(context) ? 200 :250,
+                                  ),
                             )
                           : Center(
                               child: Column(
@@ -682,18 +684,23 @@ class _GestionPendienteState extends State<GestionPendiente> {
 
   void deleteRegister(
       AsyncSnapshot<dynamic> snapshot, int posicion, BuildContext context) {
-    try {
       Actividades.eliminar(
           Databases.siteground_database_reghosp,
           Pendientes.pendientes['deleteQuery'],
-          snapshot.data[posicion]['ID_Pace_Pen']);
-      setState(() {
-        snapshot.data.removeAt(posicion);
+          snapshot.data[posicion]['ID_Pace_Pen']).then((value) {
+        setState(() {
+          snapshot.data.removeAt(posicion);
+          Archivos.deleteFile(filePath: fileAssocieted).then((value) {
+            Operadores.alertActivity(context: context, tittle: "Eliminación de Registros",
+                message: "Registro eliminado",
+                onAcept: () {
+                  Navigator.of(context).pop();
+                });
+          });
+        });
+      }).onError((error, stackTrace) {
+        Terminal.printAlert(message: "ERROR - Hubo un error : $error");
       });
-    } finally {
-      reiniciar(); // _pullListRefresh();
-      Navigator.of(context).pop();
-    }
   }
 
   void toOperaciones(BuildContext context, String operationActivity) {

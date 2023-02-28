@@ -8,6 +8,7 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/paraclinicos.dart';
 import 'package:assistant/values/SizingInfo.dart';
+import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
@@ -115,6 +116,13 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
         title: Text(tittle, style: Styles.textSyleGrowth(fontSize: 14),),
         actions: isMobile(context) || isTablet(context)
             ? <Widget>[
+          GrandIcon(
+            iconData: Icons.replay_outlined,
+            labelButton: Sentences.reload,
+            onPress: () {
+              reiniciar();
+            },
+          ),
                 GrandIcon(
                   iconData: Icons.dataset_linked_outlined,
                   labelButton: "Registro de imagenológicos",
@@ -160,6 +168,13 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                 ),
               ]
             : <Widget>[
+          GrandIcon(
+            iconData: Icons.replay_outlined,
+            labelButton: Sentences.reload,
+            onPress: () {
+              reiniciar();
+            },
+          ),
                 GrandIcon(
                   iconData: Icons.photo_camera_back_outlined,
                   labelButton: 'Imagen del Electrocardiograma',
@@ -272,7 +287,10 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                                     ? GridView.builder(
                                         padding: const EdgeInsets.all(8.0),
                                         gridDelegate:
-                                            GridViewTools.gridDelegate(mainAxisExtent: 150),
+                                            GridViewTools.gridDelegate(
+                                                crossAxisCount: isMobile(context) ? 1 : 3,
+                                                mainAxisExtent: isMobile(context) ? 170 : 150,
+                                            ),
                                         shrinkWrap: true,
                                         itemCount: snapshot.data == null
                                             ? 0
@@ -324,28 +342,25 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
       });
     });
   }
+
   void deleteDialog(Map<String, dynamic> element) {
-    showDialog(
+    Operadores.alertActivity(
         context: context,
-        builder: (context) {
-          return emergentDialog(context, "Eliminación del Registro",
-              "¿Esta usted seguro de eliminar este registro?", () {
-            Actividades.eliminar(
-                    Databases.siteground_database_reggabo,
-                    Imagenologias.imagenologias['deleteQuery'],
-                    element[idWidget])
-                .then((value) => showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text("Eliminados"),
-                            content: Text(listOfValues().toString()),
-                          );
-                        })
-                    .then((value) => Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const ImagenologiasGestion()))));
+        tittle: "Eliminación de Registros",
+        message: "Registro eliminado",
+        onAcept: () {
+          Actividades.eliminar(
+              Databases.siteground_database_reggabo,
+              Imagenologias.imagenologias['deleteQuery'],
+              element[idWidget])
+              .then((value) {
+            Archivos.deleteFile(filePath: fileAssocieted).then((value) {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const ImagenologiasGestion()));
+            });
+          }).onError((error, stackTrace) {
+            Terminal.printAlert(message: "ERROR - Hubo un error : $error");
           });
         });
   }
@@ -524,6 +539,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
         controller: ScrollController(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TittlePanel(color: Colores.backgroundWidget, textPanel: tittle),
             EditTextArea(
@@ -542,7 +558,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                     : isTablet(context)
                     ? 200
                     : isMobile(context)
-                    ? 250
+                    ? 230
                     : 300,
                 tittle: "Tipo de Estudios",
                 initialValue: tipoEstudioValue!,
@@ -558,7 +574,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                     : isTablet(context)
                     ? 200
                     : isMobile(context)
-                    ? 250
+                    ? 230
                     : 300,
                 tittle: "Región Corporal",
                 initialValue: regionCorporalValue!,

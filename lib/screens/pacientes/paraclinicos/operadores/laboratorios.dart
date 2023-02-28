@@ -4,12 +4,12 @@ import 'dart:typed_data';
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
-import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/conmutadorParaclinicos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/paraclinicos.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
+import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
@@ -17,14 +17,12 @@ import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
-import 'package:assistant/widgets/WidgetsModels.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:photo_view/photo_view.dart';
 
 class LaboratoriosGestion extends StatefulWidget {
   const LaboratoriosGestion({super.key});
@@ -56,7 +54,6 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
     }).onError((error, stackTrace) {
       final f = DateFormat('yyyy-MM-dd');
       textDateEstudyController.text = f.format(DateTime.now());
-
       reiniciar();
     });
     Terminal.printOther(message: " . . . Actividad Iniciada");
@@ -116,65 +113,79 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                   },
                 ),
                 GrandIcon(
-                  iconData: Icons.photo_camera_back_outlined,
-                  labelButton: 'Imagen del Electrocardiograma',
+                  iconData: Icons.replay_outlined,
+                  labelButton: Sentences.reload,
                   onPress: () {
-                    Operadores.optionsActivity(
-                      context: context,
-                      tittle: 'Cargar imagen del Electrocardiograma',
-                      onClose: () {
-                        Navigator.of(context).pop();
-                      },
-                      textOptionA: 'Cargar desde Dispositivo',
-                      optionA: () async {
-                        var bytes = await Directorios.choiseFromDirectory();
-                        setState(() {
-                          stringImage = base64Encode(bytes);
-                          Navigator.of(context).pop();
-                        });
-                      },
-                      textOptionB: 'Cargar desde Cámara',
-                      optionB: () async {
-                        var bytes = await Directorios.choiseFromCamara();
-                        setState(() {
-                          stringImage = base64Encode(bytes);
-                          Navigator.of(context).pop();
-                        });
-                      },
-                    );
+                    reiniciar();
                   },
                 ),
+                // GrandIcon(
+                //   iconData: Icons.photo_camera_back_outlined,
+                //   labelButton: 'Imagen del Electrocardiograma',
+                //   onPress: () {
+                //     Operadores.optionsActivity(
+                //       context: context,
+                //       tittle: 'Cargar imagen del Electrocardiograma',
+                //       onClose: () {
+                //         Navigator.of(context).pop();
+                //       },
+                //       textOptionA: 'Cargar desde Dispositivo',
+                //       optionA: () async {
+                //         var bytes = await Directorios.choiseFromDirectory();
+                //         setState(() {
+                //           stringImage = base64Encode(bytes);
+                //           Navigator.of(context).pop();
+                //         });
+                //       },
+                //       textOptionB: 'Cargar desde Cámara',
+                //       optionB: () async {
+                //         var bytes = await Directorios.choiseFromCamara();
+                //         setState(() {
+                //           stringImage = base64Encode(bytes);
+                //           Navigator.of(context).pop();
+                //         });
+                //       },
+                //     );
+                //   },
+                // ),
               ]
             : <Widget>[
                 GrandIcon(
-                  iconData: Icons.photo_camera_back_outlined,
-                  labelButton: 'Imagen del Electrocardiograma',
+                  iconData: Icons.replay_outlined,
+                  labelButton: Sentences.reload,
                   onPress: () {
-                    Operadores.optionsActivity(
-                      context: context,
-                      tittle: 'Cargar imagen del Electrocardiograma',
-                      onClose: () {
-                        Navigator.of(context).pop();
-                      },
-                      textOptionA: 'Cargar desde Dispositivo',
-                      optionA: () async {
-                        var bytes = await Directorios.choiseFromDirectory();
-                        setState(() {
-                          stringImage = base64Encode(bytes);
-                          Navigator.of(context).pop();
-                        });
-                      },
-                      textOptionB: 'Cargar desde Cámara',
-                      optionB: () async {
-                        var bytes = await Directorios.choiseFromCamara();
-                        setState(() {
-                          stringImage = base64Encode(bytes);
-                          Navigator.of(context).pop();
-                        });
-                      },
-                    );
+                    reiniciar();
                   },
                 ),
+                // GrandIcon(
+                //   iconData: Icons.photo_camera_back_outlined,
+                //   labelButton: 'Imagen del Electrocardiograma',
+                //   onPress: () {
+                //     Operadores.optionsActivity(
+                //       context: context,
+                //       tittle: 'Cargar imagen del Electrocardiograma',
+                //       onClose: () {
+                //         Navigator.of(context).pop();
+                //       },
+                //       textOptionA: 'Cargar desde Dispositivo',
+                //       optionA: () async {
+                //         var bytes = await Directorios.choiseFromDirectory();
+                //         setState(() {
+                //           stringImage = base64Encode(bytes);
+                //           Navigator.of(context).pop();
+                //         });
+                //       },
+                //       textOptionB: 'Cargar desde Cámara',
+                //       optionB: () async {
+                //         var bytes = await Directorios.choiseFromCamara();
+                //         setState(() {
+                //           stringImage = base64Encode(bytes);
+                //           Navigator.of(context).pop();
+                //         });
+                //       },
+                //     );
+                //   },
+                // ),
               ],
       ),
       body: Container(
@@ -229,6 +240,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                     Column(
                       children: [
                         Expanded(
+                          flex: isMobile(context) ? 2 : 1,
                           child: EditTextArea(
                             keyBoardType: TextInputType.number,
                             inputFormat: MaskTextInputFormatter(
@@ -279,6 +291,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                                         padding: const EdgeInsets.all(8.0),
                                         gridDelegate:
                                             GridViewTools.gridDelegate(
+                                                crossAxisCount: isMobile(context) ? 1 : 3,
                                                 mainAxisExtent: 150),
                                         shrinkWrap: true,
                                         itemCount: snapshot.data == null
@@ -351,25 +364,21 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
   }
 
   void deleteDialog(Map<String, dynamic> element) {
-    showDialog(
+    Operadores.alertActivity(
         context: context,
-        builder: (context) {
-          return emergentDialog(context, "Eliminación del Registro",
-              "¿Esta usted seguro de eliminar este registro?", () {
-            Actividades.eliminar(Databases.siteground_database_reggabo,
-                    Auxiliares.auxiliares['deleteQuery'], element[idWidget])
-                .then((value) => showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text("Eliminados"),
-                            content: Text(listOfValues().toString()),
-                          );
-                        })
-                    .then((value) => Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                VisualPacientes(actualPage: 5)))));
+        tittle: "Eliminación de Registros",
+        message: "Registro eliminado",
+        onAcept: () {
+          Actividades.eliminar(Databases.siteground_database_reggabo,
+                  Auxiliares.auxiliares['deleteQuery'], element[idWidget])
+              .then((value) {
+            Archivos.deleteFile(filePath: fileAssocieted).then((value) {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const LaboratoriosGestion()));
+            });
+          }).onError((error, stackTrace) {
+            Terminal.printAlert(message: "ERROR - Hubo un error : $error");
           });
         });
   }
@@ -475,6 +484,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
         controller: ScrollController(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TittlePanel(textPanel: tittle),
             EditTextArea(
@@ -501,8 +511,8 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                 Expanded(
                   flex: 4,
                   child: Spinner(
-                      width: isTabletAndDesktop(context) ? 190 : 220,
-                      // 90
+                      width: isMobile(context)? 150 : isTabletAndDesktop(context) ? 190 : 220,
+                      isRow: false,
                       tittle: "Tipo de Estudio",
                       initialValue: tipoEstudioValue!,
                       items: Auxiliares.Categorias,
@@ -558,7 +568,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
             ),
             Spinner(
                 width: isTabletAndDesktop(context) ? 120 : 170,
-                // 90
+                isRow: true,
                 tittle: "Estudio",
                 initialValue: estudioValue!,
                 items: Auxiliares.Laboratorios[tipoEstudioValue],
@@ -576,8 +586,8 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
               numOfLines: 1,
             ),
             Spinner(
-                width: isTabletAndDesktop(context) ? 120 : 170,
-                // 90
+                width: isMobile(context) ? 100 : isTabletAndDesktop(context) ? 120 : 170,
+                isRow: true,
                 tittle: "Unidad de Medida",
                 initialValue: unidadMedidaValue!,
                 items: Auxiliares.Medidas[tipoEstudioValue],

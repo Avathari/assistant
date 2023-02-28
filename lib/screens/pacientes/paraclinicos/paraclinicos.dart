@@ -1,6 +1,7 @@
 import 'package:assistant/screens/pacientes/paraclinicos/operadores/electrocardiograma.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/operadores/imagenologias.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/operadores/laboratorios.dart';
+import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/GrandLabel.dart';
 import 'package:assistant/widgets/MenuButton.dart';
@@ -36,7 +37,7 @@ class _ParaclinicosState extends State<Paraclinicos> {
             decoration: ContainerDecoration.roundedDecoration(color: Colors.black),
             child: GridView(
               gridDelegate: GridViewTools.gridDelegate(
-                crossAxisCount: 2,
+                crossAxisCount: isMobile(context) ? 1 : 2,
                 mainAxisExtent: 150,
               ),
               children: [

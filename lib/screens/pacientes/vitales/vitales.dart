@@ -33,7 +33,6 @@ class OperacionesVitales extends StatefulWidget {
 }
 
 class _OperacionesVitalesState extends State<OperacionesVitales> {
-
   @override
   void initState() {
     Actividades.consultarId(Databases.siteground_database_regpace,
@@ -281,7 +280,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
           .then((value) {
         int index = 0;
         for (var item in result) {
-          if (index <= result.length ){
+          if (index <= result.length) {
             var thirdMap = {};
             // print("${value.length} ${result.length}");
             // print("${value[index]['ID_Pace_SV']} ${item['ID_Pace_SV']}");
@@ -746,8 +745,6 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                     returnGestion(context);
                   }));
             }); // );
-
-
           });
           break;
         default:
@@ -772,7 +769,6 @@ class GestionVitales extends StatefulWidget {
 }
 
 class _GestionVitalesState extends State<GestionVitales> {
-
   var fileAssocieted = Vitales.fileAssocieted;
 
   @override
@@ -854,21 +850,36 @@ class _GestionVitalesState extends State<GestionVitales> {
                   },
                 ),
               ),
-              Expanded(
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.add_card,
-                    color: Colors.grey,
-                  ),
-                  tooltip: Sentences.add_vitales,
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (BuildContext context) => OperacionesVitales(
-                        operationActivity: Constantes.Register,
+              Row(
+                children: [
+                  Expanded(
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.add_card,
+                        color: Colors.grey,
                       ),
-                    ));
-                  },
-                ),
+                      tooltip: Sentences.add_vitales,
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (BuildContext context) => OperacionesVitales(
+                            operationActivity: Constantes.Register,
+                          ),
+                        ));
+                      },
+                    ),
+                  ),
+                  isDesktop(context) == true
+                      ? Expanded(
+                          child: GrandIcon(
+                            labelButton: 'Recargar',
+                            iconData: Icons.replay,
+                            onPress: () {
+                              reiniciar();
+                            },
+                          ),
+                        )
+                      : Container()
+                ],
               ),
               Expanded(
                 flex: 12,
@@ -947,17 +958,15 @@ class _GestionVitalesState extends State<GestionVitales> {
     List result = [];
     Pacientes.Vitales!.clear();
     Actividades.consultarAllById(Databases.siteground_database_regpace,
-        Vitales.vitales['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
+            Vitales.vitales['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
         .then((value) {
       result.addAll(value);
-      Actividades.consultarAllById(
-          Databases.siteground_database_regpace,
-          Vitales.antropo['consultByIdPrimaryQuery'],
-          Pacientes.ID_Paciente)
+      Actividades.consultarAllById(Databases.siteground_database_regpace,
+              Vitales.antropo['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
           .then((value) {
         int index = 0;
         for (var item in result) {
-          if (index <= result.length ){
+          if (index <= result.length) {
             var thirdMap = {};
             print("${value.length} ${result.length}");
             print("${value[index]['ID_Pace_SV']} ${item['ID_Pace_SV']}");
@@ -971,7 +980,7 @@ class _GestionVitalesState extends State<GestionVitales> {
         setState(() {
           Terminal.printSuccess(
               message:
-              "Actualizando Repositorio de Signos Vitales del Paciente . . . ");
+                  "Actualizando Repositorio de Signos Vitales del Paciente . . . ");
           foundedItems = Pacientes.Vitales!;
           Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
         });

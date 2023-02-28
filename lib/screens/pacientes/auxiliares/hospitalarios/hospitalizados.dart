@@ -9,6 +9,7 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/home.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
+import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:flutter/material.dart';
@@ -157,34 +158,39 @@ class _HospitalizadosState extends State<Hospitalizados> {
                 future: Future.value(foundedItems!),
                 builder: (context, AsyncSnapshot snapshot) {
                   if (snapshot.hasError) print(snapshot.error);
-                  return snapshot.hasData
-                      ? GridView.builder(
-                          padding: const EdgeInsets.all(10.0),
-                          gridDelegate: GridViewTools.gridDelegate(),
-                          controller: gestionScrollController,
-                          shrinkWrap: true,
-                          itemCount:
-                              snapshot.data == null ? 0 : snapshot.data.length,
-                          itemBuilder: (context, posicion) {
-                            return itemListView(snapshot, posicion, context);
-                          },
-                        )
-                      : Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const CircularProgressIndicator(),
-                              const SizedBox(height: 50),
-                              Text(
-                                snapshot.hasError
-                                    ? snapshot.error.toString()
-                                    : snapshot.error.toString(),
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 10),
-                              ),
-                            ],
+                  if (snapshot.hasData) {
+                    return GridView.builder(
+                      padding: const EdgeInsets.all(10.0),
+                      gridDelegate: GridViewTools.gridDelegate(
+                        crossAxisCount: isMobile(context) ? 1 : 3,
+                        mainAxisExtent: isMobile(context) ? 170 : 250,
+                      ),
+                      controller: gestionScrollController,
+                      shrinkWrap: true,
+                      itemCount:
+                          snapshot.data == null ? 0 : snapshot.data.length,
+                      itemBuilder: (context, posicion) {
+                        return itemListView(snapshot, posicion, context);
+                      },
+                    );
+                  } else {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const CircularProgressIndicator(),
+                          const SizedBox(height: 50),
+                          Text(
+                            snapshot.hasError
+                                ? snapshot.error.toString()
+                                : snapshot.error.toString(),
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 10),
                           ),
-                        );
+                        ],
+                      ),
+                    );
+                  }
                 },
               ),
             ),
@@ -201,7 +207,8 @@ class _HospitalizadosState extends State<Hospitalizados> {
       padding: const EdgeInsets.all(10.0),
       child: GestureDetector(
         onTap: () {
-          Terminal.printExpected(message: "${snapshot.data[posicion]['Pendientes']}");
+          Terminal.printExpected(
+              message: "${snapshot.data[posicion]['Pendientes']}");
         },
         onDoubleTap: () {
           Pacientes.ID_Paciente = snapshot.data[posicion]['ID_Pace'];
@@ -233,7 +240,8 @@ class _HospitalizadosState extends State<Hospitalizados> {
                     color: Colors.grey,
                     icon: const Icon(Icons.update_rounded),
                     onPressed: () {
-                      Pacientes.ID_Paciente = snapshot.data[posicion]['ID_Pace'];
+                      Pacientes.ID_Paciente =
+                          snapshot.data[posicion]['ID_Pace'];
                       Pacientes.Paciente = snapshot.data[posicion];
 
                       Pacientes.fromJson(snapshot.data[posicion]);
@@ -292,24 +300,22 @@ class _HospitalizadosState extends State<Hospitalizados> {
 
   void toVisual(BuildContext context, String operationActivity) async {
     //
-    Terminal.printData(message: 'Nombre obtenido ${Pacientes.nombreCompleto}\n'
-        '${Pacientes.localPath}');
-    Archivos.readJsonToMap(
-            filePath: Pacientes.localPath)
-        .then((value) {
+    Terminal.printData(
+        message: 'Nombre obtenido ${Pacientes.nombreCompleto}\n'
+            '${Pacientes.localPath}');
+    Archivos.readJsonToMap(filePath: Pacientes.localPath).then((value) {
       Pacientes.Paciente = value[0];
       setState(() {
         Pacientes.imagenPaciente = value[0]['Pace_FIAT'];
       });
-      Terminal.printSuccess(
-          message:
-              'Archivo ${Pacientes.localPath} Obtenido');
+      Terminal.printSuccess(message: 'Archivo ${Pacientes.localPath} Obtenido');
       Valores.fromJson(value[0]);
 
       Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (BuildContext context) => VisualPacientes(actualPage: 0),
-          ),);
+        MaterialPageRoute(
+          builder: (BuildContext context) => VisualPacientes(actualPage: 0),
+        ),
+      );
     }).onError((error, stackTrace) async {
       Operadores.loadingActivity(
         context: context,
@@ -317,8 +323,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
         message: "Iniciando Interfaz",
       );
       Terminal.printAlert(
-          message:
-              'Archivo ${Pacientes.localPath} No Encontrado');
+          message: 'Archivo ${Pacientes.localPath} No Encontrado');
       Terminal.printWarning(message: 'Iniciando busqueda en Valores . . . ');
       var response = await Valores().load(); // print("response $response");
       //
