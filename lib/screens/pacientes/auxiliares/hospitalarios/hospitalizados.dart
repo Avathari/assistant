@@ -12,7 +12,11 @@ import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/EditTextArea.dart';
+import 'package:assistant/widgets/GrandIcon.dart';
+import 'package:assistant/widgets/Spinner.dart';
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Hospitalizados extends StatefulWidget {
   Widget? actualSidePage = Container();
@@ -31,18 +35,24 @@ class _HospitalizadosState extends State<Hospitalizados> {
   String searchCriteria = "Buscar por Fecha";
   String? consultQuery = Pacientes.pacientes['consultHospitalized'];
 
-  late List? foundedItems = [];
+  late List? foundedItems = [], firstFounded = [];
   var gestionScrollController = ScrollController();
   var searchTextController = TextEditingController();
 
   var fileAssocieted = 'assets/vault/hospitalized.json';
+  List<String> auxiliarServicios = [];
 
   @override
   void initState() {
+    for (var element in Escalas.serviciosHospitalarios) {
+      auxiliarServicios.add(element.toString());
+    }
+
     Terminal.printWarning(message: " . . . Iniciando Actividad ");
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       setState(() {
         foundedItems = value;
+        firstFounded = value;
       });
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "Error : $error");
@@ -76,6 +86,15 @@ class _HospitalizadosState extends State<Hospitalizados> {
           actions: <Widget>[
             IconButton(
               icon: const Icon(
+                Icons.dataset,
+              ),
+              tooltip: "Primeros Encontrados",
+              onPressed: () {
+                _reiniciar();
+              },
+            ),
+            IconButton(
+              icon: const Icon(
                 Icons.replay_outlined,
               ),
               tooltip: Sentences.reload,
@@ -87,7 +106,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
               icon: const Icon(
                 Icons.list,
               ),
-              tooltip: "Imprimir cennso hospitalario",
+              tooltip: "Imprimir censo hospitalario",
               onPressed: () async {
                 final pdfFile = await PdfParagraphsApi.generateFromList(
                   rightMargin: 10,
@@ -104,51 +123,56 @@ class _HospitalizadosState extends State<Hospitalizados> {
           ]),
       body: Column(
         children: [
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                  onChanged: (value) {
-                    _runFilterSearch(value);
+          Row(
+            children: [
+              Expanded(
+                flex: 7,
+                child: EditTextArea(
+                  labelEditText: 'Buscar por Servicio',
+                  textController: searchTextController,
+                  keyBoardType: TextInputType.text,
+                  inputFormat: MaskTextInputFormatter(),
+                  iconColor: Colors.grey,
+                  numOfLines: 1,
+                  selection: true,
+                  withShowOption: true,
+                  onSelected: () {
+                    Operadores.selectOptionsActivity(
+                        context: context,
+                        options: Listas.listWithoutRepitedValues(
+                          Listas.listFromMapWithOneKey(foundedItems!,
+                              keySearched: 'Serve_Trat'),
+                        ),
+                        onClose: (value) {
+                          List results = [];
+                          results = Listas.listFromMap(
+                              lista: foundedItems!,
+                              keySearched: 'Serve_Trat',
+                              elementSearched: value);
+                          setState(() {
+                            foundedItems = results;
+                          });
+                          Navigator.of(context).pop();
+                        });
                   },
-                  controller: searchTextController,
-                  autofocus: false,
-                  keyboardType: TextInputType.text,
-                  autocorrect: true,
-                  obscureText: false,
-                  style: const TextStyle(
-                    color: Colors.white,
-                  ),
-                  textAlign: TextAlign.center,
-                  decoration: InputDecoration(
-                    helperStyle: const TextStyle(
-                      color: Colors.white,
-                    ),
-                    labelText: searchCriteria,
-                    labelStyle: const TextStyle(
-                      color: Colors.white,
-                    ),
-                    contentPadding: const EdgeInsets.all(20),
-                    enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white, width: 0.5),
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
-                    focusColor: Colors.white,
-                    suffixIcon: IconButton(
-                      icon: const Icon(
-                        Icons.replay_outlined,
-                        color: Colors.white,
-                      ),
-                      tooltip: Sentences.reload,
-                      onPressed: () {
-                        _pullListRefresh();
-                      },
-                    ),
-                  )),
-            ),
+                ),
+              ),
+              Expanded(
+                  child: GrandIcon(
+                iconData: Icons.dataset,
+                labelButton: "Primeros Encontrados",
+                onPress: () {
+                  _reiniciar();
+                },
+              ))
+            ],
           ),
           Expanded(
-            flex: 9,
+            flex: isTablet(context)
+                ? 12
+                : isDesktop(context)
+                    ? 9
+                    : 2,
             child: RefreshIndicator(
               color: Colors.white,
               backgroundColor: Colors.black,
@@ -165,8 +189,8 @@ class _HospitalizadosState extends State<Hospitalizados> {
                         crossAxisCount: isMobile(context) ? 1 : 3,
                         mainAxisExtent: isMobile(context) ? 170 : 250,
                       ),
-                      controller: gestionScrollController,
-                      shrinkWrap: true,
+                      controller: ScrollController(),
+                      shrinkWrap: false,
                       itemCount:
                           snapshot.data == null ? 0 : snapshot.data.length,
                       itemBuilder: (context, posicion) {
@@ -200,6 +224,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
     );
   }
 
+  // Operadores de Interfaz ********* ************ ******** *
   Container itemListView(
       AsyncSnapshot snapshot, int posicion, BuildContext context) {
     return Container(
@@ -267,6 +292,11 @@ class _HospitalizadosState extends State<Hospitalizados> {
                         "${snapshot.data[posicion]['Pace_Nome_SE']}",
                         maxLines: 2,
                         style: Styles.textSyleGrowth(fontSize: 16)),
+                    Text(
+                      "Hemotipo: ${snapshot.data[posicion]['Pace_Hemo']}",
+                      maxLines: 2,
+                      style: Styles.textSyleGrowth(fontSize: 12),
+                    ),
                     Text(
                       "Servicio: ${snapshot.data[posicion]['Serve_Trat']}",
                       maxLines: 2,
@@ -346,6 +376,12 @@ class _HospitalizadosState extends State<Hospitalizados> {
     ));
   }
 
+  void _reiniciar() {
+    setState(() {
+      foundedItems = firstFounded;
+    });
+  }
+
   void _runFilterSearch(String enteredKeyword) {
     List? results = [];
 
@@ -370,6 +406,17 @@ class _HospitalizadosState extends State<Hospitalizados> {
     Terminal.printAlert(
         message: "Iniciando actividad : : \n "
             "Consulta de pacientes hospitalizados . . .");
+    Operadores.loadingActivity(
+        context: context,
+        tittle: 'Actualizando Valores . . . ',
+        message: 'Actualizando . . . ',
+    onCloss: () {
+          Navigator.of(context).pop();
+    });
+    setState(() {
+      foundedItems!.clear();
+    });
+
     List hospitalizaed = [];
 
     Actividades.consultar(

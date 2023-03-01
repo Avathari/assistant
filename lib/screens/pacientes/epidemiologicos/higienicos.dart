@@ -31,6 +31,9 @@ class _HigienicosState extends State<Higienicos> {
       // ************ *********** *********
       banoCorporalTextController.text =
           Valores.banoCorporalDescripcion!;
+      higieneManosTextController.text = Valores.higieneManosDescripcion!;
+      cambiosRopaTextController.text = Valores.cambiosRopaDescripcion!;
+      aseoDentalTextController .text= Valores.aseoDentalDescripcion!;
     });
     super.initState();
   }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class EditTextArea extends StatefulWidget {
+
   String? labelEditText;
   MaskTextInputFormatter inputFormat;
   TextInputType keyBoardType;
@@ -17,14 +18,14 @@ class EditTextArea extends StatefulWidget {
   int numOfLines;
   double fontSize;
 
+  Color? iconColor;
+
   void Function()? onSelected;
   final ValueChanged<String>? onChange;
 
   IconData? iconData = Icons.person;
 
-  var iconColor;
-
-    EditTextArea(
+  EditTextArea(
       {Key? key,
       this.labelEditText,
       required this.textController,
@@ -40,7 +41,9 @@ class EditTextArea extends StatefulWidget {
       this.onChange,
       this.withShowOption = false,
       this.iconData,
-      this.iconColor = Colors.white})
+      this.iconColor = Colors.white,
+
+      })
       : super(key: key) {
     inputFormat = MaskTextInputFormatter();
     keyBoardType = TextInputType.multiline;
@@ -118,29 +121,33 @@ class _EditTextAreaState extends State<EditTextArea> {
                   child: Tooltip(
                     message: "Ver",
                     child: IconButton(
-                        icon: Icon(widget.iconData, color: widget.iconColor,),
-                        onPressed: widget.selection
-                            ? widget.onSelected
-                            : () {
-                          Operadores.openDialog(context: context, chyldrim: SingleChildScrollView(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  TittlePanel(
-                                      colorText: Colors.grey,
-                                      textPanel:
-                                      widget.labelEditText!),
-                                  Text(
-                                    widget.textController.text,
-                                    style: const TextStyle(
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  CrossLine(),
-                                ],
-                              )),);
-
-                              },
+                      icon: Icon(
+                        widget.iconData,
+                        color: widget.iconColor,
+                      ),
+                      onPressed: widget.selection
+                          ? widget.onSelected
+                          : () {
+                              Operadores.openDialog(
+                                context: context,
+                                chyldrim: SingleChildScrollView(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        TittlePanel(
+                                            colorText: Colors.grey,
+                                            textPanel: widget.labelEditText!),
+                                        Text(
+                                          widget.textController.text,
+                                          style: const TextStyle(
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                        CrossLine(),
+                                      ],
+                                    )),
+                              );
+                            },
                     ),
                   ),
                 )

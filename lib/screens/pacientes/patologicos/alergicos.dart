@@ -50,6 +50,7 @@ class _OperacionesAlergicosState extends State<OperacionesAlergicos> {
 
   //
   var alergiasScroller = ScrollController();
+  var fileAssocieted = Alergicos.fileAssocieted;
 
   @override
   void initState() {
@@ -69,7 +70,8 @@ class _OperacionesAlergicosState extends State<OperacionesAlergicos> {
           idOperation = Alergicos.Alergias['ID_PACE_APP_ALE'];
 
           isActualDiagoValue =
-              Dicotomicos.fromInt(Alergicos.Alergias['Pace_APP_ALE_SINO']).toString();
+              Dicotomicos.fromInt(Alergicos.Alergias['Pace_APP_ALE_SINO'])
+                  .toString();
           if (Alergicos.selectedDiagnosis == "") {
             cieDiagnoTextController.text = Alergicos.Alergias['Pace_APP_ALE'];
           } else {
@@ -81,7 +83,8 @@ class _OperacionesAlergicosState extends State<OperacionesAlergicos> {
               Alergicos.Alergias['Pace_APP_ALE_dia'].toString();
           //
           isTratamientoDiagoValue =
-              Dicotomicos.fromInt(Alergicos.Alergias['Pace_APP_ALE_tra_SINO']).toString();
+              Dicotomicos.fromInt(Alergicos.Alergias['Pace_APP_ALE_tra_SINO'])
+                  .toString();
           tratamientoTextController.text =
               Alergicos.Alergias['Pace_APP_ALE_tra'];
         });
@@ -135,6 +138,29 @@ class _OperacionesAlergicosState extends State<OperacionesAlergicos> {
     );
   }
 
+  // Actividades de Inicio *********************
+  Future<void> reiniciar() async {
+    Terminal.printExpected(message: "Reinicio de los valores . . .");
+
+    Pacientes.Alergicos!.clear();
+    Actividades.consultarAllById(
+            Databases.siteground_database_regpace,
+            Alergicos.alergias['consultByIdPrimaryQuery'],
+            Pacientes.ID_Paciente)
+        .then((value) {
+      setState(() {
+        Pacientes.Alergicos = value;
+        Terminal.printSuccess(
+            message:
+                "Actualizando Repositorio de Alergicos del Paciente . . . ${Pacientes.Alergicos}");
+
+        Archivos.createJsonFromMap(Pacientes.Alergicos!,
+            filePath: Alergicos.fileAssocieted);
+      });
+    });
+  }
+
+  // Actividades de la Intefaz *********************
   List<Widget> component(BuildContext context) {
     return [
       Spinner(
@@ -245,30 +271,34 @@ class _OperacionesAlergicosState extends State<OperacionesAlergicos> {
           // ******************************************** *** *
           Actividades.registrar(Databases.siteground_database_regpace,
                   registerQuery!, listOfValues!)
-              .then((value) => Actividades.consultarAllById(
-                          Databases.siteground_database_regpace,
-                          consultIdQuery!,
-                          Pacientes.ID_Paciente) // idOperation)
-                      .then((value) {
-                    // ******************************************** *** *
-                    Pacientes.Alergicos = value;
-                    Constantes.reinit(value: value);
-                    // ******************************************** *** *
-                  }).then((value) => onClose(context)));
+              .then((value) {
+            Archivos.deleteFile(filePath: fileAssocieted);
+            reiniciar().then((value) => Operadores.alertActivity(
+                context: context,
+                tittle: "Anexión de registros",
+                message: "Registros agregados",
+                onAcept: () {
+                  onClose(context);
+                }));
+
+            // ******************************************** *** *}
+          });
           break;
         case Constantes.Update:
           Actividades.actualizar(Databases.siteground_database_regpace,
                   updateQuery!, listOfValues!, idOperation)
-              .then((value) => Actividades.consultarAllById(
-                          Databases.siteground_database_regpace,
-                          consultIdQuery!,
-                          Pacientes.ID_Paciente) // idOperation)
-                      .then((value) {
-                    // ******************************************** *** *
-                    Pacientes.Alergicos = value;
-                    Constantes.reinit(value: value);
-                    // ******************************************** *** *
-                  }).then((value) => onClose(context)));
+              .then((value) {
+            Archivos.deleteFile(filePath: fileAssocieted);
+            reiniciar().then((value) => Operadores.alertActivity(
+                context: context,
+                tittle: "Actualización de registros",
+                message: "Registros Actualizados",
+                onAcept: () {
+                  onClose(context);
+                }));
+
+            // ******************************************** *** *
+          });
           break;
         default:
       }
@@ -338,32 +368,11 @@ class GestionAlergicos extends StatefulWidget {
 }
 
 class _GestionAlergicosState extends State<GestionAlergicos> {
-  String appTittle = "Gestion de patologías del paciente";
-  String searchCriteria = "Buscar por Fecha";
-  String? consultQuery = Alergicos.alergias['consultIdQuery'];
-
-  late List? foundedItems = [];
-  var gestionScrollController = ScrollController();
-  var searchTextController = TextEditingController();
+  var fileAssocieted = Alergicos.fileAssocieted;
 
   @override
   void initState() {
-    print(" . . . Iniciando array ");
-    if (Constantes.dummyArray!.isNotEmpty) {
-      if (Constantes.dummyArray![0] == "Vacio") {
-        Actividades.consultarAllById(Databases.siteground_database_regpace,
-                consultQuery!, Pacientes.ID_Paciente)
-            .then((value) {
-          setState(() {
-            print(" . . . Buscando items \n");
-            foundedItems = value;
-          });
-        });
-      } else {
-        print(" . . . Dummy array iniciado");
-        foundedItems = Constantes.dummyArray;
-      }
-    }
+    iniciar();
     super.initState();
   }
 
@@ -392,7 +401,7 @@ class _GestionAlergicosState extends State<GestionAlergicos> {
               ),
               tooltip: Sentences.reload,
               onPressed: () {
-                // _pullListRefresh();
+                reiniciar(); // _pullListRefresh();
               },
             ),
             IconButton(
@@ -448,7 +457,7 @@ class _GestionAlergicosState extends State<GestionAlergicos> {
                           ),
                           tooltip: Sentences.reload,
                           onPressed: () {
-                            _pullListRefresh();
+                            reiniciar(); // _pullListRefresh();
                           },
                         ),
                       )),
@@ -509,6 +518,36 @@ class _GestionAlergicosState extends State<GestionAlergicos> {
     );
   }
 
+  // Operaciones de Inicio ***** ******* ********** ****
+  void iniciar() {
+    Terminal.printWarning(
+        message:
+            " . . . Iniciando Actividad - Repositorio Alérgico del Pacientes");
+    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+      setState(() {
+        foundedItems = value;
+        Terminal.printSuccess(
+            message: 'Repositorio Alérgico del Pacientes Obtenido');
+      });
+    }).onError((error, stackTrace) {
+      reiniciar();
+    });
+    Terminal.printOther(message: " . . . Actividad Iniciada");
+  }
+
+  Future<void> reiniciar() async {
+    Terminal.printExpected(message: "Reinicio de los valores . . .");
+    Actividades.consultarAllById(Databases.siteground_database_regpace,
+            consultQuery!, Pacientes.ID_Paciente)
+        .then((value) {
+      setState(() {
+        foundedItems = value;
+        Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
+      });
+    });
+  }
+
+  // Operaciones de la Interfaz ***** ******* ********** ****
   Container itemListView(
       AsyncSnapshot snapshot, int posicion, BuildContext context) {
     return Container(
@@ -618,17 +657,26 @@ class _GestionAlergicosState extends State<GestionAlergicos> {
 
   void deleteRegister(
       AsyncSnapshot<dynamic> snapshot, int posicion, BuildContext context) {
-    try {
-      Actividades.eliminar(
-          Databases.siteground_database_regpace,
-          Alergicos.alergias['deleteQuery'],
-          snapshot.data[posicion]['ID_PACE_APP_ALE']);
+    Actividades.eliminar(
+            Databases.siteground_database_regpace,
+            Alergicos.alergias['deleteQuery'],
+            snapshot.data[posicion]['ID_PACE_APP_ALE'])
+        .then((value) {
       setState(() {
         snapshot.data.removeAt(posicion);
+        Archivos.deleteFile(filePath: fileAssocieted).then((value) {
+          Operadores.alertActivity(
+              context: context,
+              tittle: "Eliminación de Registros",
+              message: "Registro eliminado",
+              onAcept: () {
+                Navigator.of(context).pop();
+              });
+        });
       });
-    } finally {
-      Navigator.of(context).pop();
-    }
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(message: "ERROR - Hubo un error : $error");
+    });
   }
 
   void toOperaciones(BuildContext context, String operationActivity) {
@@ -678,4 +726,13 @@ class _GestionAlergicosState extends State<GestionAlergicos> {
                 ),
             transitionDuration: const Duration(seconds: 0)));
   }
+
+  // VARIABLES DE LA INTERFAZ ***** ******* ********** ****
+  String appTittle = "Gestion de patologías del paciente";
+  String searchCriteria = "Buscar por Fecha";
+  String? consultQuery = Alergicos.alergias['consultIdQuery'];
+
+  late List? foundedItems = [];
+  var gestionScrollController = ScrollController();
+  var searchTextController = TextEditingController();
 }

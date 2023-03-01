@@ -30,12 +30,12 @@ class _AlcoholismoState extends State<Alcoholismo> {
       // // ************ *********** *********
       Valores.tiposAlcoholismo = Items.tiposAlcoholes[0];
       // // ************ *********** *********
-      // tiposTextController.text = "";
+      edadInicioTextController.text = Valores.edadInicioAlcoholismo!;
+      duracionAnosTextController.text = Valores.duracionAnosAlcoholismo!;
+      periodicidadTextController.text = Valores.periodicidadAlcoholismo!;
+      aosSuspensionTextController.text = Valores.aosSuspensionAlcoholismo!;
+      tiposTextController.text = Valores.tiposAlcoholismoDescripcion!;
       // // ************ *********** *********
-      // edadInicioTextController.text = '';
-      // // ************ *********** *********
-      // edadInicioTextController.text =
-      // Valores.edadInicioAlcoholismo!;
     });
     super.initState();
   }
@@ -45,6 +45,35 @@ class _AlcoholismoState extends State<Alcoholismo> {
     return Column(
       children: [
         TittlePanel(textPanel: 'Hábitos Alcoholismo'),
+        Switched(
+          tittle: '¿Alcoholismo?',
+          onChangeValue: (value) {
+            setState(() {
+              Valores.esAlcoholismo = value;
+              if (value) {
+
+              } else {
+                edadInicioTextController.text = "";
+                duracionAnosTextController.text = "";
+                periodicidadTextController.text = "";
+                aosSuspensionTextController.text = "";
+                tiposTextController.text = "";
+
+                Valores.intervaloAlcoholismo = Items.periodicidad[0];
+                Valores.suspensionAlcoholismo = false;
+
+                Valores.tiposAlcoholismoDescripcion = "";
+                // Reasignación de Valores de Alcoholismo a nulo ******* ****** *****
+                Valores.edadInicioAlcoholismo = "";
+                Valores.duracionAnosAlcoholismo = "";
+                Valores.periodicidadAlcoholismo = "";
+                Valores.aosSuspensionAlcoholismo = "";
+                Valores.tiposAlcoholismoDescripcion = "";
+              }
+            });
+          },
+          isSwitched: Valores.esAlcoholismo,
+        ),
         CrossLine(),
         Row(children: [
           Expanded(

@@ -27,12 +27,15 @@ class _AlimenticiosState extends State<Alimenticios> {
   @override
   void initState() {
     setState(() {
-      Valores.alimentacionDiariaDescripcion = '';
       // ************ *********** *********
       alimentacionDiariaTextController.text =
           Valores.alimentacionDiariaDescripcion!;
+      dietaAsignadaTextController.text = Valores.dietaAsignadaDescripcion!;
+     variacionAlimentacionTextController.text = Valores.variacionAlimentacionDescripcion!;
+     problemasMasticacionTextController.text = Valores.problemasMasticacionDescripcion!;
+     intoleranciaAlimentariaTextController.text = Valores.intoleranciaAlimentariaDescripcion!;
+     alteracionesPesoTextController.text = Valores.alteracionesPesoDescripcion!;
       // ************ *********** *********
-      Valores.alimentacionDiaria = false;
     });
     super.initState();
   }

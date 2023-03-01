@@ -719,6 +719,7 @@ class Pacientes {
                   Pace_Nome_SE varchar(50) COLLATE utf8_unicode_ci NOT NULL,
                   Pace_Ape_Pat varchar(50) COLLATE utf8_unicode_ci NOT NULL,
                   Pace_Ape_Mat varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+                  Pace_Hemo varchar(50) COLLATE utf8_unicode_ci NOT NULL,
                   Pace_FIAT longblob NOT NULL, 
                   Pace_UMF varchar(50) COLLATE utf8_unicode_ci NOT NULL,
                   Pace_Hosp_Real varchar(50) COLLATE utf8_unicode_ci NOT NULL,
@@ -751,7 +752,8 @@ class Pacientes {
     "truncateQuery": "TRUNCATE pace_iden_iden",
     "dropQuery": "DROP TABLE pace_iden_iden",
     "consultQuery": "SELECT ID_Pace, Pace_NSS, Pace_AGRE, "
-        "Pace_Nome_PI, Pace_Nome_SE, Pace_Ape_Pat, Pace_Ape_Mat, " // Pace_FIAT, "
+        "Pace_Nome_PI, Pace_Nome_SE, Pace_Ape_Pat, Pace_Ape_Mat, "
+        "Pace_Hemo, " // Pace_FIAT, "
         "Pace_UMF, Pace_Hosp_Real, Pace_Turo, "
         "Pace_Feca_Hace, Pace_Hora_Hace, "
         "Pace_Tele, Pace_Nace, Pace_Ses, Pace_Hosp, "
@@ -764,7 +766,7 @@ class Pacientes {
         "FROM pace_iden_iden",
     "consultIdQuery": "SELECT ID_Pace, Pace_NSS, Pace_AGRE, "
         "Pace_Nome_PI, Pace_Nome_SE, Pace_Ape_Pat, "
-        "Pace_Ape_Mat, Pace_FIAT, "
+        "Pace_Ape_Mat, Pace_Hemo, Pace_FIAT, "
         "Pace_UMF, Pace_Hosp_Real, Pace_Turo, Pace_Feca_Hace, Pace_Hora_Hace, "
         "Pace_Tele, Pace_Nace, Pace_Ses, Pace_Hosp, Pace_Curp, "
         "Pace_RFC, Pace_Eda, Pace_Stat, "
@@ -775,6 +777,7 @@ class Pacientes {
     "consultHospitalized": "SELECT "
         "ID_Pace, Pace_NSS, Pace_AGRE, "
         "Pace_Nome_PI, Pace_Nome_SE, Pace_Ape_Pat, Pace_Ape_Mat, "
+        "Pace_Hemo, "
         "Pace_UMF, Pace_Hosp_Real, Pace_Turo, "
         "Pace_Feca_Hace, Pace_Hora_Hace, "
         "Pace_Tele, Pace_Nace, Pace_Ses, Pace_Hosp, "
@@ -795,14 +798,15 @@ class Pacientes {
         "SELECT Pace_Ape_Pat FROM pace_iden_iden WHERE Us_Nome LIKE '%",
     "registerQuery": "INSERT INTO pace_iden_iden ("
         "Pace_NSS, Pace_AGRE, "
-        "Pace_Nome_PI, Pace_Nome_SE, Pace_Ape_Pat, Pace_Ape_Mat, Pace_FIAT, "
+        "Pace_Nome_PI, Pace_Nome_SE, Pace_Ape_Pat, Pace_Ape_Mat, "
+        "Pace_Hemo, Pace_FIAT, "
         "Pace_UMF, Pace_Hosp_Real, Pace_Turo, Pace_Feca_Hace, Pace_Hora_Hace, "
         "Pace_Tele, Pace_Nace, Pace_Ses, Pace_Hosp, Pace_Curp, "
         "Pace_RFC, Pace_Eda, Pace_Stat, "
         "Pace_Ocupa, Pace_Edo_Civ, Pace_Reli, Pace_Esco, Pace_Esco_COM, Pace_Esco_ESPE, "
         "Pace_Orig_Muni, Pace_Orig_EntFed, Pace_Resi_Loca, Pace_Resi_Dur, Pace_Domi, "
         "Indi_Pace_SiNo, IndiIdio_Pace_SiNo, IndiIdio_Pace_Espe) "
-        "VALUES (?,?,?,?,?,?, from_base64(?), "
+        "VALUES (?,?,?,?,?,?,?, from_base64(?), "
         "?,?,?,?,?, "
         "?,?,?,?,?, "
         "?,?,?, "
@@ -810,7 +814,8 @@ class Pacientes {
         "?,?,?)",
     "updateQuery": "UPDATE pace_iden_iden "
         "SET ID_Pace = ?, Pace_NSS = ?, Pace_AGRE = ?, "
-        "Pace_Nome_PI = ?, Pace_Nome_SE = ?, Pace_Ape_Pat = ?, Pace_Ape_Mat = ?, Pace_FIAT = from_base64(?), "
+        "Pace_Nome_PI = ?, Pace_Nome_SE = ?, Pace_Ape_Pat = ?, Pace_Ape_Mat = ?, "
+        "Pace_Hemo = ?, Pace_FIAT = from_base64(?), "
         "Pace_UMF = ?, Pace_Hosp_Real = ?, Pace_Turo = ?, Pace_Feca_Hace = ?, Pace_Hora_Hace = ?, "
         "Pace_Tele = ?, Pace_Nace = ?, Pace_Ses = ?, Pace_Hosp = ?, Pace_Curp = ?, "
         "Pace_RFC = ?, Pace_Eda = ?, Pace_Stat = ?, "
@@ -2881,7 +2886,7 @@ class Sustancias {
         Valores.exposicionPsicotropicos,
         Valores.exposicionPsicotropicosDescripcion,
         // ********* ******** ******* ********* ***
-        // Sustancias.ID_Sustancias,
+        Sustancias.ID_Sustancias,
       ],
       Sustancias.ID_Sustancias,
     ).then((value) {
@@ -2974,7 +2979,7 @@ class Sustancias {
   "Pace_APNP_SUS_psi_SINO, Pace_APNP_SUS_psi_DESC) "
         "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
     "updateQuery": "UPDATE pace_apnp_sus "
-        "SET ID_Pace = ?, Pace_APNP_SUS_Feca = ?, "
+        "SET ID_PACE_APNP_SUS = ?, ID_Pace = ?, Pace_APNP_SUS_Feca = ?, "
         "Pace_APNP_SUS_len_SINO = ?, Pace_APNP_SUS_len_DESC = ?, "
         "Pace_APNP_SUS_qui_SINO = ?, Pace_APNP_SUS_qui_DESC = ?, "
         "Pace_APNP_SUS_pes_SINO = ?, Pace_APNP_SUS_pes_DESC = ?, "
@@ -3906,6 +3911,8 @@ class Patologicos {
 
 class Alergicos {
   static int ID_Alergicos = 0;
+  static var fileAssocieted =
+      '${Pacientes.localRepositoryPath}alergicos.json';
   //
   static String selectedDiagnosis = "";
   //
@@ -4004,6 +4011,8 @@ class Alergicos {
 
 class Quirurgicos {
   static int ID_Quirurgicos = 0;
+  static var fileAssocieted =
+      '${Pacientes.localRepositoryPath}quirurgicos.json';
   //
   static String selectedDiagnosis = "";
   //

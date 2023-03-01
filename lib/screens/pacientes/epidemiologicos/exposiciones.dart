@@ -28,6 +28,11 @@ class _ExposicionesState extends State<Exposiciones> {
   @override
   void initState() {
     setState(() {
+      exposicionBiomasaTextController.text = Valores.exposicionBiomasaDescripcion!;
+      exposicionHumosQuimicosTextController.text = Valores.exposicionHumosQuimicosDescripcion!;
+      exposicionPesticidasTextController.text = Valores.exposicionPesticidasDescripcion!;
+      exposicionMetalesPesadosTextController.text = Valores.exposicionMetalesPesadosDescripcion!;
+      exposicionPsicotropicosTextController.text = Valores.exposicionPsicotropicosDescripcion!;
       // ************ *********** *********
     });
     super.initState();

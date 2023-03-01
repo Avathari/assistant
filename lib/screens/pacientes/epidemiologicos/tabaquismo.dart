@@ -30,12 +30,12 @@ class _TabaquismoState extends State<Tabaquismo> {
       // // ************ *********** *********
       Valores.tiposTabaquismo = Items.tiposTabacos[0];
       // // ************ *********** *********
-      // tiposTextController.text = "";
+      edadInicioTextController.text = Valores.edadInicioTabaquismo!;
+      duracionAnosTextController.text = Valores.duracionAnosTabaquismo!;
+      periodicidadTextController.text = Valores.periodicidadTabaquismo!;
+      aosSuspensionTextController.text = Valores.aosSuspensionTabaquismo!;
+      tiposTextController.text = Valores.tiposTabaquismoDescripcion!;
       // // ************ *********** *********
-      // edadInicioTextController.text = '';
-      // // ************ *********** *********
-      // edadInicioTextController.text =
-      // Valores.edadInicioTabaquismo!;
     });
     super.initState();
   }
@@ -45,6 +45,35 @@ class _TabaquismoState extends State<Tabaquismo> {
     return Column(
       children: [
         TittlePanel(textPanel: 'Hábitos Tabaquismo'),
+        Switched(
+          tittle: '¿Tabaquismo?',
+          onChangeValue: (value) {
+            setState(() {
+              Valores.esTabaquismo = value;
+              if (value) {
+
+              } else {
+                edadInicioTextController.text = "";
+                duracionAnosTextController.text = "";
+                periodicidadTextController.text = "";
+                aosSuspensionTextController.text = "";
+                tiposTextController.text = "";
+
+                Valores.intervaloTabaquismo = Items.periodicidad[0];
+                Valores.suspensionTabaquismo = false;
+
+                Valores.tiposTabaquismoDescripcion = "";
+                // Reasignación de Valores de Tabaquismo a nulo ******* ****** *****
+                Valores.edadInicioTabaquismo = "";
+                Valores.duracionAnosTabaquismo = "";
+                Valores.periodicidadTabaquismo = "";
+                Valores.aosSuspensionTabaquismo = "";
+                Valores.tiposTabaquismoDescripcion = "";
+              }
+            });
+          },
+          isSwitched: Valores.esTabaquismo,
+        ),
         CrossLine(),
         Row(children: [
           Expanded(

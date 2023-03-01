@@ -30,12 +30,12 @@ class _DrogadismoState extends State<Drogadismo> {
       // // ************ *********** *********
       Valores.tiposDrogadismo = Items.tiposDrogas[0];
       // // ************ *********** *********
-      // tiposTextController.text = "";
+      edadInicioTextController.text = Valores.edadInicioDrogadismo!;
+      duracionAnosTextController.text = Valores.duracionAnosDrogadismo!;
+      periodicidadTextController.text = Valores.periodicidadDrogadismo!;
+      aosSuspensionTextController.text = Valores.aosSuspensionDrogadismo!;
+      tiposTextController.text = Valores.tiposDrogadismoDescripcion!;
       // // ************ *********** *********
-      // edadInicioTextController.text = '';
-      // // ************ *********** *********
-      // edadInicioTextController.text =
-      // Valores.edadInicioDrogadismo!;
     });
     super.initState();
   }
@@ -45,6 +45,36 @@ class _DrogadismoState extends State<Drogadismo> {
     return Column(
       children: [
         TittlePanel(textPanel: 'Hábitos Drogadismo'),
+        Switched(
+          tittle: '¿Drogadicción?',
+          onChangeValue: (value) {
+            setState(() {
+              Valores.esDrogadismo = value;
+              if (value) {
+
+              } else {
+                edadInicioTextController.text = "";
+                duracionAnosTextController.text = "";
+                periodicidadTextController.text = "";
+                aosSuspensionTextController.text = "";
+                tiposTextController.text = "";
+
+                Valores.intervaloDrogadismo = Items.periodicidad[0];
+                Valores.suspensionDrogadismo = false;
+
+                Valores.tiposDrogadismoDescripcion = "";
+
+                // Reasignación de Valores de Drogadismos a nulo ******* ****** *****
+                Valores.edadInicioDrogadismo = "";
+                Valores.duracionAnosDrogadismo = "";
+                Valores.periodicidadDrogadismo = "";
+                Valores.aosSuspensionDrogadismo = "";
+                Valores.tiposDrogadismoDescripcion = "";
+              }
+            });
+          },
+          isSwitched: Valores.esDrogadismo,
+        ),
         CrossLine(),
         Row(children: [
           Expanded(

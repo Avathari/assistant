@@ -19,6 +19,7 @@ class Valores {
       segundoNombre,
       apellidoPaterno,
       apellidoMaterno,
+      hemotipo,
       imagenUsuario,
       sexo,
       fechaNacimiento,
@@ -548,6 +549,7 @@ class Valores {
     segundoNombre = json['Pace_Nome_SE'];
     apellidoPaterno = json['Pace_Ape_Pat'];
     apellidoMaterno = json['Pace_Ape_Mat'];
+    hemotipo = Pacientes.Paciente['Pace_Hemo'] ?? '';
     // imagenUsuario = json['Pace_FIAT'];
     // Pacientes.imagenPaciente = json['Pace_FIAT'];
     json.addAll({'Pace_FIAT': ''});
@@ -579,15 +581,18 @@ class Valores {
     Sustancias.fileAssocieted =
         "${Pacientes.localRepositoryPath}exposiciones.json"; // Sustancias.registrarRegistro();
 
+    Patologicos.fileAssocieted =
+    '${Pacientes.localRepositoryPath}patologicos.json';
     Toxicomanias.fileAssocieted =
         "${Pacientes.localRepositoryPath}toxicomanias.json"; // Toxicomanias.registrarRegistro();
     //
+    Quirurgicos.fileAssocieted =
+        '${Pacientes.localRepositoryPath}quirurgicos.json';
+    Alergicos.fileAssocieted =
+        '${Pacientes.localRepositoryPath}alergicos.json';
 
-    Patologicos.fileAssocieted =
-        '${Pacientes.localRepositoryPath}patologicos.json';
     Diagnosticos.fileAssocieted =
         '${Pacientes.localRepositoryPath}diagnosticos.json';
-
     Pendientes.fileAssocieted =
         '${Pacientes.localRepositoryPath}pendientes.json';
 
@@ -3658,6 +3663,26 @@ class Items {
     '8',
     '9',
     '10',
+  ];
+
+  static List<String> Hemotipo = [
+    '',
+    'O +',
+    'O -',
+    'A +',
+    'A -',
+    'B +',
+    'B -',
+    'AB +',
+    'AB -',
+    // 'Hemotipo O Grupo Rh Positivo',
+    // 'Hemotipo O Grupo Rh Negativo',
+    // 'Hemotipo A Grupo Rh Positivo',
+    // 'Hemotipo A Grupo Rh Negativo',
+    // 'Hemotipo B Grupo Rh Positivo',
+    // 'Hemotipo B Grupo Rh Negativo',
+    // 'Hemotipo AB Grupo Rh Positivo',
+    // 'Hemotipo AB Grupo Rh Negativo',
   ];
 }
 

@@ -47,7 +47,8 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
 
   //
   var patologicosScroller = ScrollController();
-
+  var fileAssocieted = Quirurgicos.fileAssocieted;
+  
   @override
   void initState() {
     //
@@ -87,6 +88,29 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
     }
   }
 
+  // Actividades de Inicio *********************
+  Future<void> reiniciar() async {
+    Terminal.printExpected(message: "Reinicio de los valores . . .");
+
+    Pacientes.Quirurgicos!.clear();
+    Actividades.consultarAllById(
+        Databases.siteground_database_regpace,
+        Quirurgicos.cirugias['consultByIdPrimaryQuery'],
+        Pacientes.ID_Paciente)
+        .then((value) {
+      setState(() {
+        Pacientes.Quirurgicos = value;
+        Terminal.printSuccess(
+            message:
+            "Actualizando Repositorio de Quirurgicos del Paciente . . . ${Pacientes.Quirurgicos}");
+
+        Archivos.createJsonFromMap(Pacientes.Quirurgicos!,
+            filePath: Quirurgicos.fileAssocieted);
+      });
+    });
+  }
+
+  // Actividades de la Intefaz *********************
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -233,30 +257,34 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
           // ******************************************** *** *
           Actividades.registrar(Databases.siteground_database_regpace,
                   registerQuery!, listOfValues!)
-              .then((value) => Actividades.consultarAllById(
-                          Databases.siteground_database_regpace,
-                          consultIdQuery!,
-                          Pacientes.ID_Paciente) // idOperation)
-                      .then((value) {
-                    // ******************************************** *** *
-                    Pacientes.Quirurgicos = value;
-                    Constantes.reinit(value: value);
-                    // ******************************************** *** *
-                  }).then((value) => onClose(context)));
+              .then((value) {
+            Archivos.deleteFile(filePath: fileAssocieted);
+            reiniciar().then((value) => Operadores.alertActivity(
+                context: context,
+                tittle: "Anexión de registros",
+                message: "Registros agregados",
+                onAcept: () {
+                  onClose(context);
+                }));
+
+            // ******************************************** *** *
+                  });
           break;
         case Constantes.Update:
           Actividades.actualizar(Databases.siteground_database_regpace,
                   updateQuery!, listOfValues!, idOperation)
-              .then((value) => Actividades.consultarAllById(
-                          Databases.siteground_database_regpace,
-                          consultIdQuery!,
-                          Pacientes.ID_Paciente) // idOperation)
-                      .then((value) {
-                    // ******************************************** *** *
-                    Pacientes.Quirurgicos = value;
-                    Constantes.reinit(value: value);
-                    // ******************************************** *** *
-                  }).then((value) => onClose(context)));
+              .then((value) {
+            Archivos.deleteFile(filePath: fileAssocieted);
+            reiniciar().then((value) => Operadores.alertActivity(
+                context: context,
+                tittle: "Actualización de registros",
+                message: "Registros Actualizados",
+                onAcept: () {
+                  onClose(context);
+                }));
+
+            // ******************************************** *** *
+                  });
           break;
         default:
       }
@@ -328,32 +356,11 @@ class GestionQuirurgicos extends StatefulWidget {
 }
 
 class _GestionQuirurgicosState extends State<GestionQuirurgicos> {
-  String appTittle = "Gestion de cirugias del paciente";
-  String searchCriteria = "Buscar por Fecha";
-  String? consultQuery = Quirurgicos.cirugias['consultIdQuery'];
-
-  late List? foundedItems = [];
-  var gestionScrollController = ScrollController();
-  var searchTextController = TextEditingController();
-
+  var fileAssocieted = Alergicos.fileAssocieted;
+  
   @override
   void initState() {
-    print(" . . . Iniciando array ");
-    if (Constantes.dummyArray!.isNotEmpty) {
-      if (Constantes.dummyArray![0] == "Vacio") {
-        Actividades.consultarAllById(Databases.siteground_database_regpace,
-                consultQuery!, Pacientes.ID_Paciente)
-            .then((value) {
-          setState(() {
-            print(" . . . Buscando items \n");
-            foundedItems = value;
-          });
-        });
-      } else {
-        print(" . . . Dummy array iniciado");
-        foundedItems = Constantes.dummyArray;
-      }
-    }
+iniciar();
     super.initState();
   }
 
@@ -382,7 +389,7 @@ class _GestionQuirurgicosState extends State<GestionQuirurgicos> {
               ),
               tooltip: Sentences.reload,
               onPressed: () {
-                // _pullListRefresh();
+                reiniciar(); // _pullListRefresh();
               },
             ),
             IconButton(
@@ -438,7 +445,7 @@ class _GestionQuirurgicosState extends State<GestionQuirurgicos> {
                           ),
                           tooltip: Sentences.reload,
                           onPressed: () {
-                            _pullListRefresh();
+                            reiniciar(); // _pullListRefresh();
                           },
                         ),
                       )),
@@ -499,6 +506,36 @@ class _GestionQuirurgicosState extends State<GestionQuirurgicos> {
     );
   }
 
+  // Operaciones de Inicio ***** ******* ********** ****
+  void iniciar() {
+    Terminal.printWarning(
+        message:
+        " . . . Iniciando Actividad - Repositorio Quirúrgicos del Pacientes");
+    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+      setState(() {
+        foundedItems = value;
+        Terminal.printSuccess(
+            message: 'Repositorio Quirúrgicos del Pacientes Obtenido');
+      });
+    }).onError((error, stackTrace) {
+      reiniciar();
+    });
+    Terminal.printOther(message: " . . . Actividad Iniciada");
+  }
+
+  Future<void> reiniciar() async {
+    Terminal.printExpected(message: "Reinicio de los valores . . .");
+    Actividades.consultarAllById(Databases.siteground_database_regpace,
+        consultQuery!, Pacientes.ID_Paciente)
+        .then((value) {
+      setState(() {
+        foundedItems = value;
+        Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
+      });
+    });
+  }
+
+  // Operaciones de la Interfaz ***** ******* ********** ****
   Container itemListView(
       AsyncSnapshot snapshot, int posicion, BuildContext context) {
     return Container(
@@ -608,17 +645,23 @@ class _GestionQuirurgicosState extends State<GestionQuirurgicos> {
 
   void deleteRegister(
       AsyncSnapshot<dynamic> snapshot, int posicion, BuildContext context) {
-    try {
-      Actividades.eliminar(
-          Databases.siteground_database_regpace,
-          Quirurgicos.cirugias['deleteQuery'],
-          snapshot.data[posicion][widget.idElementQuery]);
+    Actividades.eliminar(
+        Databases.siteground_database_regpace,
+        Quirurgicos.cirugias['deleteQuery'],
+        snapshot.data[posicion][widget.idElementQuery]).then((value) {
       setState(() {
         snapshot.data.removeAt(posicion);
+        Archivos.deleteFile(filePath: fileAssocieted).then((value) {
+          Operadores.alertActivity(context: context, tittle: "Eliminación de Registros",
+              message: "Registro eliminado",
+              onAcept: () {
+                Navigator.of(context).pop();
+              });
+        });
       });
-    } finally {
-      Navigator.of(context).pop();
-    }
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(message: "ERROR - Hubo un error : $error");
+    });
   }
 
   void toOperaciones(BuildContext context, String operationActivity) {
@@ -668,4 +711,14 @@ class _GestionQuirurgicosState extends State<GestionQuirurgicos> {
                 ),
             transitionDuration: const Duration(seconds: 0)));
   }
+
+  // VARIABLES DE LA INTERFAZ ***** ******* ********** ****
+  String appTittle = "Gestion de cirugias del paciente";
+  String searchCriteria = "Buscar por Fecha";
+  String? consultQuery = Quirurgicos.cirugias['consultIdQuery'];
+
+  late List? foundedItems = [];
+  var gestionScrollController = ScrollController();
+  var searchTextController = TextEditingController();
+
 }

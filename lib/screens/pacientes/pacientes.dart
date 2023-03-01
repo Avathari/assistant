@@ -562,6 +562,7 @@ class OperacionesPacientes extends StatefulWidget {
 }
 
 class _OperacionesPacientesState extends State<OperacionesPacientes> {
+
   @override
   void initState() {
     switch (widget.operationActivity) {
@@ -587,6 +588,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
 
         apellidoPaternoTextController.text = Pacientes.Paciente['Pace_Ape_Pat'];
         apellidoMaternoTextController.text = Pacientes.Paciente['Pace_Ape_Mat'];
+
+        hemotipoValue = Pacientes.Paciente['Pace_Hemo'] ?? '';
 
         localidadResidenciaTextController.text =
             Pacientes.Paciente['Pace_Resi_Loca'];
@@ -636,6 +639,43 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
     }
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: const Color.fromARGB(255, 61, 57, 57),
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              isMobile(context) || isTablet(context)
+                  ? returnOperationUserButton(context)
+                  : Container(),
+              userPresentation(context),
+              userForm(context),
+              GrandButton(
+                  labelButton: widget._operation_button,
+                  onPress: () {
+                    operationMethod(context);
+                  })
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Operaciones de Inicio ***** ******* ********** ****
+  Future<void> reiniciar() async {
+    Archivos.deleteFile(filePath: Pacientes.localPath);
+    var fileAssocieted = 'assets/vault/pacientesRepository.json';
+    Terminal.printWarning(
+        message: " . . . Reiniciando Actividad - Repositorio de Pacientes");
+    Archivos.deleteFile(filePath: fileAssocieted);
+  }
+
+// Componentes Base de Interfaz ** *********** ********* ****
   List<Widget> component(BuildContext context) {
     return [
       editText(
@@ -646,6 +686,16 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           false),
       editText(false, 'Apellido Paterno', apellidoPaternoTextController, false),
       editText(false, 'Apellido Materno', apellidoMaternoTextController, false),
+      Spinner(
+          tittle: "Tipo Sanguíneo",
+          initialValue: hemotipoValue,
+          items: Items.Hemotipo,
+          width: isMobile(context) || isTablet(context) ? 65 : 200,
+          onChangeValue: (String? newValue) {
+            setState(() {
+              hemotipoValue = newValue!;
+            });
+          }),
     ];
   }
 
@@ -780,7 +830,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
 
               if (newValue == Pacientes.EscolaridadCompletud[1]) {
                 escolaridadEspecificacionTextController.text =
-                    Pacientes.EscolaridadCompletud[1];
+                Pacientes.EscolaridadCompletud[1];
               } else {
                 escolaridadEspecificacionTextController.text = "";
               }
@@ -836,7 +886,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
 
               if (newValue == Pacientes.lenguaIndigena[0]) {
                 indigenaHablanteEspecificacioTextController.text =
-                    "Niega hablar alguna Lengua Indigena";
+                "Niega hablar alguna Lengua Indigena";
               } else {
                 indigenaHablanteEspecificacioTextController.text = "";
               }
@@ -847,87 +897,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
     ];
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: const Color.fromARGB(255, 61, 57, 57),
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              isMobile(context) || isTablet(context)
-                  ? returnOperationUserButton(context)
-                  : Container(),
-              userPresentation(context),
-              userForm(context),
-              GrandButton(
-                  labelButton: widget._operation_button,
-                  onPress: () {
-                    operationMethod(context);
-                  })
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  void returnGestion(BuildContext context) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const GestionPacientes()));
-    // switch (widget.operationActivity) {
-    //   case Constantes.Nulo:
-    //     Navigator.push(context,
-    //         MaterialPageRoute(builder: (context) => const GestionPacientes()));
-    //     break;
-    //   case Constantes.Consult:
-    //     break;
-    //   case Constantes.Register:
-    //     Navigator.push(context,
-    //         MaterialPageRoute(builder: (context) => const GestionPacientes()));
-    //     break;
-    //   case Constantes.Update:
-    //     Navigator.push(
-    //         context,
-    //         MaterialPageRoute(
-    //             builder: (context) => VisualPacientes(actualPage: 0)));
-    //     break;
-    //   default:
-    // }
-  }
-
-  choiseFromCamara() async {
-    XFile? xFileImage = await picker.pickImage(source: ImageSource.camera);
-    if (xFileImage != null) {
-      Uint8List bytes = await xFileImage.readAsBytes();
-      setState(() {
-        img = base64.encode(bytes);
-        Pacientes.imagenPaciente = img;
-      });
-    }
-  }
-
-  choiseFromDirectory() async {
-    XFile? xFileImage = await picker.pickImage(source: ImageSource.gallery);
-    if (xFileImage != null) {
-      Uint8List bytes = await xFileImage.readAsBytes();
-      setState(() {
-        img = base64.encode(bytes);
-        Pacientes.imagenPaciente = img;
-      });
-    }
-  }
-
-  toBaseImage() async {
-    ByteData bytes = await rootBundle.load('assets/images/person.png');
-    var buffer = bytes.buffer;
-
-    setState(() {
-      img = base64.encode(Uint8List.view(buffer));
-    });
-  }
+  // Visuales de la Interfaz ** *********** ********* ****
 
   Padding returnOperationUserButton(BuildContext context) {
     return Padding(
@@ -991,168 +961,168 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
         padding: const EdgeInsets.all(8.0),
         child: isMobile(context)
             ? CarouselSlider(
-                items: [
-                    SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          CircleAvatar(
-                            backgroundColor:
-                                const Color.fromARGB(255, 27, 32, 30),
-                            radius: 150,
-                            // ignore: unnecessary_null_comparison
-                            child: img != ""
-                                ? ClipOval(
-                                    child: Image.memory(
-                                    base64Decode(img),
-                                    width: 250,
-                                    height: 250,
-                                    fit: BoxFit.cover,
-                                  ))
-                                : const ClipOval(child: Icon(Icons.person)),
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      primary: Colores.backgroundWidget,
-                                      onPrimary: Colors.grey,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20)),
-                                      minimumSize: const Size(75, 75)),
-                                  onPressed: () {
-                                    choiseFromCamara();
-                                  },
-                                  child: const Icon(Icons.camera)),
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      primary: Colores.backgroundWidget,
-                                      onPrimary: Colors.grey,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(50)),
-                                      minimumSize: const Size(50, 50)),
-                                  onPressed: () {
-                                    toBaseImage();
-                                  },
-                                  child: const Icon(Icons.person)),
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      primary: Colores.backgroundWidget,
-                                      onPrimary: Colors.grey,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20)),
-                                      minimumSize: const Size(75, 75)),
-                                  onPressed: () {
-                                    choiseFromDirectory();
-                                  },
-                                  child: const Icon(Icons.file_open))
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Column(
-                            children: component(context),
-                          )
-                        ],
-                      ),
-                    ),
-                    SingleChildScrollView(
-                        child: Column(children: secondComponent(context))),
-                    GrandButton(
-                        labelButton: widget._operation_button,
-                        onPress: () {
-                          operationMethod(context);
-                        })
-                  ],
-                carouselController: carouselController,
-                options: CarouselOptions(
-                    height: isMobile(context) ? 600 : 500,
-                    enableInfiniteScroll: false,
-                    viewportFraction: 1.0))
-            : Row(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: const Color.fromARGB(255, 27, 32, 30),
-                    radius: 150,
-                    // ignore: unnecessary_null_comparison
-                    child: img != ""
-                        ? ClipOval(
-                            child: Image.memory(
+            items: [
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor:
+                      const Color.fromARGB(255, 27, 32, 30),
+                      radius: 150,
+                      // ignore: unnecessary_null_comparison
+                      child: img != ""
+                          ? ClipOval(
+                          child: Image.memory(
                             base64Decode(img),
                             width: 250,
                             height: 250,
                             fit: BoxFit.cover,
                           ))
-                        : const ClipOval(child: Icon(Icons.person)),
-                  ),
-                  const SizedBox(
-                    width: 30,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(
+                          : const ClipOval(child: Icon(Icons.person)),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 primary: Colores.backgroundWidget,
                                 onPrimary: Colors.grey,
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20)),
+                                    borderRadius:
+                                    BorderRadius.circular(20)),
                                 minimumSize: const Size(75, 75)),
                             onPressed: () {
                               choiseFromCamara();
                             },
                             child: const Icon(Icons.camera)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(
+                        ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 primary: Colores.backgroundWidget,
                                 onPrimary: Colors.grey,
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50)),
+                                    borderRadius:
+                                    BorderRadius.circular(50)),
                                 minimumSize: const Size(50, 50)),
                             onPressed: () {
                               toBaseImage();
                             },
                             child: const Icon(Icons.person)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(
+                        ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 primary: Colores.backgroundWidget,
                                 onPrimary: Colors.grey,
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20)),
+                                    borderRadius:
+                                    BorderRadius.circular(20)),
                                 minimumSize: const Size(75, 75)),
                             onPressed: () {
                               choiseFromDirectory();
                             },
-                            child: const Icon(Icons.file_open)),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: component(context),
+                            child: const Icon(Icons.file_open))
+                      ],
                     ),
-                  )
-                ],
-              ));
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Column(
+                      children: component(context),
+                    )
+                  ],
+                ),
+              ),
+              SingleChildScrollView(
+                  child: Column(children: secondComponent(context))),
+              GrandButton(
+                  labelButton: widget._operation_button,
+                  onPress: () {
+                    operationMethod(context);
+                  })
+            ],
+            carouselController: carouselController,
+            options: CarouselOptions(
+                height: isMobile(context) ? 600 : 500,
+                enableInfiniteScroll: false,
+                viewportFraction: 1.0))
+            : Row(
+          children: [
+            CircleAvatar(
+              backgroundColor: const Color.fromARGB(255, 27, 32, 30),
+              radius: 150,
+              // ignore: unnecessary_null_comparison
+              child: img != ""
+                  ? ClipOval(
+                  child: Image.memory(
+                    base64Decode(img),
+                    width: 250,
+                    height: 250,
+                    fit: BoxFit.cover,
+                  ))
+                  : const ClipOval(child: Icon(Icons.person)),
+            ),
+            const SizedBox(
+              width: 30,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          primary: Colores.backgroundWidget,
+                          onPrimary: Colors.grey,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          minimumSize: const Size(75, 75)),
+                      onPressed: () {
+                        choiseFromCamara();
+                      },
+                      child: const Icon(Icons.camera)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          primary: Colores.backgroundWidget,
+                          onPrimary: Colors.grey,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50)),
+                          minimumSize: const Size(50, 50)),
+                      onPressed: () {
+                        toBaseImage();
+                      },
+                      child: const Icon(Icons.person)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          primary: Colores.backgroundWidget,
+                          onPrimary: Colors.grey,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          minimumSize: const Size(75, 75)),
+                      onPressed: () {
+                        choiseFromDirectory();
+                      },
+                      child: const Icon(Icons.file_open)),
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            Expanded(
+              child: Column(
+                children: component(context),
+              ),
+            )
+          ],
+        ));
   }
 
   userForm(BuildContext context) {
@@ -1161,23 +1131,79 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
         child: isMobile(context)
             ? Container()
             : Column(
-                children: [
-                  GridLayout(
-                      childAspectRatio: isMobile(context)
-                          ? 4.0
-                          : isTablet(context)
-                              ? 4.0
-                              : isDesktop(context)
-                                  ? 8.0
-                                  : 7.0,
-                      columnCount: 2,
-                      children: secondComponent(context)),
-                  const SizedBox(height: 10),
-                  // grandButton(context, widget._operation_button, () {
-                  //   operationMethod(context);
-                  // }),
-                ],
-              ));
+          children: [
+            GridLayout(
+                childAspectRatio: isMobile(context)
+                    ? 4.0
+                    : isTablet(context)
+                    ? 4.0
+                    : isDesktop(context)
+                    ? 8.0
+                    : 7.0,
+                columnCount: 2,
+                children: secondComponent(context)),
+            const SizedBox(height: 10),
+            // grandButton(context, widget._operation_button, () {
+            //   operationMethod(context);
+            // }),
+          ],
+        ));
+  }
+
+  // Operaciones de la Interfaz ** *********** ********* ****
+  void returnGestion(BuildContext context) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const GestionPacientes()));
+    // switch (widget.operationActivity) {
+    //   case Constantes.Nulo:
+    //     Navigator.push(context,
+    //         MaterialPageRoute(builder: (context) => const GestionPacientes()));
+    //     break;
+    //   case Constantes.Consult:
+    //     break;
+    //   case Constantes.Register:
+    //     Navigator.push(context,
+    //         MaterialPageRoute(builder: (context) => const GestionPacientes()));
+    //     break;
+    //   case Constantes.Update:
+    //     Navigator.push(
+    //         context,
+    //         MaterialPageRoute(
+    //             builder: (context) => VisualPacientes(actualPage: 0)));
+    //     break;
+    //   default:
+    // }
+  }
+
+  choiseFromCamara() async {
+    XFile? xFileImage = await picker.pickImage(source: ImageSource.camera);
+    if (xFileImage != null) {
+      Uint8List bytes = await xFileImage.readAsBytes();
+      setState(() {
+        img = base64.encode(bytes);
+        Pacientes.imagenPaciente = img;
+      });
+    }
+  }
+
+  choiseFromDirectory() async {
+    XFile? xFileImage = await picker.pickImage(source: ImageSource.gallery);
+    if (xFileImage != null) {
+      Uint8List bytes = await xFileImage.readAsBytes();
+      setState(() {
+        img = base64.encode(bytes);
+        Pacientes.imagenPaciente = img;
+      });
+    }
+  }
+
+  toBaseImage() async {
+    ByteData bytes = await rootBundle.load('assets/images/person.png');
+    var buffer = bytes.buffer;
+
+    setState(() {
+      img = base64.encode(Uint8List.view(buffer));
+    });
   }
 
   void operationMethod(BuildContext context) {
@@ -1190,6 +1216,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
         secondNameTextController.text,
         apellidoPaternoTextController.text,
         apellidoMaternoTextController.text,
+        hemotipoValue,
         img,
         //
         unidadMedicaTextController.text,
@@ -1308,15 +1335,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
     }
   }
 
-  Future<void> reiniciar() async {
-    Archivos.deleteFile(filePath: Pacientes.localPath);
-    var fileAssocieted = 'assets/vault/pacientesRepository.json';
-    Terminal.printWarning(
-        message: " . . . Reiniciando Actividad - Repositorio de Pacientes");
-    Archivos.deleteFile(filePath: fileAssocieted);
-  }
-
-  // VARIABLES
+  // VARIABLES DE LA INTERFAZ ************ ************** *
   final picker = ImagePicker();
 
   String consultIdQuery = Pacientes.pacientes['consultIdQuery'];
@@ -1358,6 +1377,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
   String turnoValue = Pacientes.Turno[0];
   String sessoValue = Pacientes.Sexo[0];
   String unidadMedicaValue = Pacientes.Unidades[0];
+  String hemotipoValue= Items.Hemotipo[0];
   String atencionValue = Pacientes.Atencion[1];
   String statusValue = Pacientes.Status[0];
   String estadoCivilValue = Pacientes.EstadoCivil[0];

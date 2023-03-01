@@ -29,6 +29,11 @@ class _DiariosState extends State<Diarios> {
       // ************ *********** *********
       actividadesDiariasTextController.text = '';
       // ************ *********** *********
+      viajesRecientesTextController.text = Valores.viajesRecientesDescripcion!;
+
+      pasatiemposTextController.text = Valores.pasatiemposDescripcion!;
+      horasSuenoTextController.text = Valores.horasSuenoDescripcion!;
+      viajesRecientesTextController.text = Valores.viajesRecientesDescripcion!;
       actividadesDiariasTextController.text =
           Valores.actividadesDiariasDescripcion!;
     });
@@ -70,7 +75,7 @@ class _DiariosState extends State<Diarios> {
             });
           },
           items: Items.horasSueno,
-          initialValue: Items.horasSueno[2],
+          initialValue: Valores.horasSuenoDescripcion, // Items.horasSueno[2],
         ),
         CrossLine(),
         Row(

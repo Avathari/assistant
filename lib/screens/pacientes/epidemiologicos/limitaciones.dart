@@ -29,6 +29,12 @@ class _LimitacionesState extends State<Limitaciones> {
   @override
   void initState() {
     setState(() {
+      usoLentesTextController .text = Valores.usoLentesDescripcion!;
+      aparatoSorderaTextController .text = Valores.aparatoSorderaDescripcion!;
+      protesisDentariaTextController .text = Valores.protesisDentariaDescripcion!;
+      marcapasosCardiacoTextController .text = Valores.marcapasosCardiacoDescripcion!;
+      ortesisDeambularTextController .text = Valores.ortesisDeambularDescripcion!;
+      limitacionesActividadCotidianaTextController .text = Valores.limitacionesActividadCotidianaDescripcion!;
       // ************ *********** *********
     });
     super.initState();

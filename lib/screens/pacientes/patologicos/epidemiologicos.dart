@@ -194,13 +194,13 @@ class _GestionNoPatologicosState extends State<GestionNoPatologicos> {
   void onActionActivity() {
     // Actualización de los Elementos Presentados.
     try {
-      patients.Eticos.actualizarRegistro();
-      patients.Viviendas.actualizarRegistro();
-      patients.Higienes.actualizarRegistro();
-      patients.Diarios.actualizarRegistro();
+      // patients.Eticos.actualizarRegistro();
+      // patients.Viviendas.actualizarRegistro();
+      // patients.Higienes.actualizarRegistro();
+      // patients.Diarios.actualizarRegistro();
       patients.Alimenticios.actualizarRegistro();
-      patients.Limitaciones.actualizarRegistro();
-      patients.Sustancias.actualizarRegistro();
+      // patients.Limitaciones.actualizarRegistro();
+      // patients.Sustancias.actualizarRegistro();
     } catch (ex) {
       Operadores.alertActivity(
           context: context,
