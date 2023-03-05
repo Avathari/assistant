@@ -84,7 +84,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
               ),
               tooltip: Sentences.reload,
               onPressed: () {
-                _pullListRefresh();
+                reiniciar(); // _pullListRefresh();
               },
             ),
             IconButton(
@@ -144,7 +144,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
                           ),
                           tooltip: Sentences.reload,
                           onPressed: () {
-                            _pullListRefresh();
+                            reiniciar(); // _pullListRefresh();
                           },
                         ),
                       )),
@@ -185,7 +185,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                         message:
                                             "Nombre conformado ${Pacientes.nombreCompleto}",
                                       );
-                                      // Consulta de Antecedentes No Patológicos **** ***** ******* **** 
+                                      // Consulta de Antecedentes No Patológicos **** ***** ******* ****
                                       Eticos.consultarRegistro();
                                       Viviendas.consultarRegistro();
                                       Higienes.consultarRegistro();
@@ -423,19 +423,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
         foundedItems = value;
       });
     }).onError((error, stackTrace) {
-      Terminal.printAlert(
-          message: "Iniciando actividad : : \n "
-              "Consulta de pacientes hospitalizados . . .");
-      Actividades.consultar(Databases.siteground_database_regpace,
-              Pacientes.pacientes['consultQuery']!)
-          .then((value) {
-        setState(() {
-          Terminal.printSuccess(
-              message: "Actualizando repositorio de pacientes . . . ");
-          foundedItems = value;
-          Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
-        });
-      });
+      reiniciar();
     });
     Terminal.printWarning(message: " . . . Actividad Iniciada");
   }
@@ -456,6 +444,9 @@ class _GestionPacientesState extends State<GestionPacientes> {
   }
 
   void toVisual(BuildContext context, String operationActivity) async {
+    // Otras configuraciones : Inicio de Variables para Operadores
+    Escalas.serviciosHospitalarios = await Archivos.listFromText(
+        path: 'assets/diccionarios/Servicios.txt', splitChar: ',');
     //
     Archivos.readJsonToMap(filePath: Pacientes.localPath).then((value) {
       Pacientes.Paciente = value[0];
@@ -544,6 +535,29 @@ class _GestionPacientesState extends State<GestionPacientes> {
       });
     }
   }
+
+  void reiniciar() {
+    Terminal.printAlert(
+        message: "Iniciando actividad : : \n "
+            "Consulta de pacientes hospitalizados . . .");
+    Actividades.consultar(Databases.siteground_database_regpace,
+            Pacientes.pacientes['consultQuery']!)
+        .then((value) {
+      setState(() {
+        Terminal.printSuccess(
+            message: "Actualizando repositorio de pacientes . . . ");
+        foundedItems = value;
+        Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
+      });
+    }).whenComplete(() => Operadores.alertActivity(
+            context: context,
+            tittle: "Datos Recargados",
+            message: "Registro Actualizado",
+            onAcept: () {
+              Navigator.of(context).pop();
+
+            }));
+  }
 }
 
 class OperacionesPacientes extends StatefulWidget {
@@ -562,7 +576,6 @@ class OperacionesPacientes extends StatefulWidget {
 }
 
 class _OperacionesPacientesState extends State<OperacionesPacientes> {
-
   @override
   void initState() {
     switch (widget.operationActivity) {
@@ -830,7 +843,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
 
               if (newValue == Pacientes.EscolaridadCompletud[1]) {
                 escolaridadEspecificacionTextController.text =
-                Pacientes.EscolaridadCompletud[1];
+                    Pacientes.EscolaridadCompletud[1];
               } else {
                 escolaridadEspecificacionTextController.text = "";
               }
@@ -886,7 +899,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
 
               if (newValue == Pacientes.lenguaIndigena[0]) {
                 indigenaHablanteEspecificacioTextController.text =
-                "Niega hablar alguna Lengua Indigena";
+                    "Niega hablar alguna Lengua Indigena";
               } else {
                 indigenaHablanteEspecificacioTextController.text = "";
               }
@@ -961,168 +974,168 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
         padding: const EdgeInsets.all(8.0),
         child: isMobile(context)
             ? CarouselSlider(
-            items: [
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      backgroundColor:
-                      const Color.fromARGB(255, 27, 32, 30),
-                      radius: 150,
-                      // ignore: unnecessary_null_comparison
-                      child: img != ""
-                          ? ClipOval(
-                          child: Image.memory(
+                items: [
+                    SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor:
+                                const Color.fromARGB(255, 27, 32, 30),
+                            radius: 150,
+                            // ignore: unnecessary_null_comparison
+                            child: img != ""
+                                ? ClipOval(
+                                    child: Image.memory(
+                                    base64Decode(img),
+                                    width: 250,
+                                    height: 250,
+                                    fit: BoxFit.cover,
+                                  ))
+                                : const ClipOval(child: Icon(Icons.person)),
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      primary: Colores.backgroundWidget,
+                                      onPrimary: Colors.grey,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      minimumSize: const Size(75, 75)),
+                                  onPressed: () {
+                                    choiseFromCamara();
+                                  },
+                                  child: const Icon(Icons.camera)),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      primary: Colores.backgroundWidget,
+                                      onPrimary: Colors.grey,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(50)),
+                                      minimumSize: const Size(50, 50)),
+                                  onPressed: () {
+                                    toBaseImage();
+                                  },
+                                  child: const Icon(Icons.person)),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      primary: Colores.backgroundWidget,
+                                      onPrimary: Colors.grey,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      minimumSize: const Size(75, 75)),
+                                  onPressed: () {
+                                    choiseFromDirectory();
+                                  },
+                                  child: const Icon(Icons.file_open))
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          Column(
+                            children: component(context),
+                          )
+                        ],
+                      ),
+                    ),
+                    SingleChildScrollView(
+                        child: Column(children: secondComponent(context))),
+                    GrandButton(
+                        labelButton: widget._operation_button,
+                        onPress: () {
+                          operationMethod(context);
+                        })
+                  ],
+                carouselController: carouselController,
+                options: CarouselOptions(
+                    height: isMobile(context) ? 600 : 500,
+                    enableInfiniteScroll: false,
+                    viewportFraction: 1.0))
+            : Row(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: const Color.fromARGB(255, 27, 32, 30),
+                    radius: 150,
+                    // ignore: unnecessary_null_comparison
+                    child: img != ""
+                        ? ClipOval(
+                            child: Image.memory(
                             base64Decode(img),
                             width: 250,
                             height: 250,
                             fit: BoxFit.cover,
                           ))
-                          : const ClipOval(child: Icon(Icons.person)),
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ElevatedButton(
+                        : const ClipOval(child: Icon(Icons.person)),
+                  ),
+                  const SizedBox(
+                    width: 30,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 primary: Colores.backgroundWidget,
                                 onPrimary: Colors.grey,
                                 shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                    BorderRadius.circular(20)),
+                                    borderRadius: BorderRadius.circular(20)),
                                 minimumSize: const Size(75, 75)),
                             onPressed: () {
                               choiseFromCamara();
                             },
                             child: const Icon(Icons.camera)),
-                        ElevatedButton(
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 primary: Colores.backgroundWidget,
                                 onPrimary: Colors.grey,
                                 shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                    BorderRadius.circular(50)),
+                                    borderRadius: BorderRadius.circular(50)),
                                 minimumSize: const Size(50, 50)),
                             onPressed: () {
                               toBaseImage();
                             },
                             child: const Icon(Icons.person)),
-                        ElevatedButton(
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 primary: Colores.backgroundWidget,
                                 onPrimary: Colors.grey,
                                 shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                    BorderRadius.circular(20)),
+                                    borderRadius: BorderRadius.circular(20)),
                                 minimumSize: const Size(75, 75)),
                             onPressed: () {
                               choiseFromDirectory();
                             },
-                            child: const Icon(Icons.file_open))
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Column(
+                            child: const Icon(Icons.file_open)),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Expanded(
+                    child: Column(
                       children: component(context),
-                    )
-                  ],
-                ),
-              ),
-              SingleChildScrollView(
-                  child: Column(children: secondComponent(context))),
-              GrandButton(
-                  labelButton: widget._operation_button,
-                  onPress: () {
-                    operationMethod(context);
-                  })
-            ],
-            carouselController: carouselController,
-            options: CarouselOptions(
-                height: isMobile(context) ? 600 : 500,
-                enableInfiniteScroll: false,
-                viewportFraction: 1.0))
-            : Row(
-          children: [
-            CircleAvatar(
-              backgroundColor: const Color.fromARGB(255, 27, 32, 30),
-              radius: 150,
-              // ignore: unnecessary_null_comparison
-              child: img != ""
-                  ? ClipOval(
-                  child: Image.memory(
-                    base64Decode(img),
-                    width: 250,
-                    height: 250,
-                    fit: BoxFit.cover,
-                  ))
-                  : const ClipOval(child: Icon(Icons.person)),
-            ),
-            const SizedBox(
-              width: 30,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: Colores.backgroundWidget,
-                          onPrimary: Colors.grey,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
-                          minimumSize: const Size(75, 75)),
-                      onPressed: () {
-                        choiseFromCamara();
-                      },
-                      child: const Icon(Icons.camera)),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: Colores.backgroundWidget,
-                          onPrimary: Colors.grey,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50)),
-                          minimumSize: const Size(50, 50)),
-                      onPressed: () {
-                        toBaseImage();
-                      },
-                      child: const Icon(Icons.person)),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: Colores.backgroundWidget,
-                          onPrimary: Colors.grey,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
-                          minimumSize: const Size(75, 75)),
-                      onPressed: () {
-                        choiseFromDirectory();
-                      },
-                      child: const Icon(Icons.file_open)),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Expanded(
-              child: Column(
-                children: component(context),
-              ),
-            )
-          ],
-        ));
+                    ),
+                  )
+                ],
+              ));
   }
 
   userForm(BuildContext context) {
@@ -1131,23 +1144,23 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
         child: isMobile(context)
             ? Container()
             : Column(
-          children: [
-            GridLayout(
-                childAspectRatio: isMobile(context)
-                    ? 4.0
-                    : isTablet(context)
-                    ? 4.0
-                    : isDesktop(context)
-                    ? 8.0
-                    : 7.0,
-                columnCount: 2,
-                children: secondComponent(context)),
-            const SizedBox(height: 10),
-            // grandButton(context, widget._operation_button, () {
-            //   operationMethod(context);
-            // }),
-          ],
-        ));
+                children: [
+                  GridLayout(
+                      childAspectRatio: isMobile(context)
+                          ? 4.0
+                          : isTablet(context)
+                              ? 4.0
+                              : isDesktop(context)
+                                  ? 8.0
+                                  : 7.0,
+                      columnCount: 2,
+                      children: secondComponent(context)),
+                  const SizedBox(height: 10),
+                  // grandButton(context, widget._operation_button, () {
+                  //   operationMethod(context);
+                  // }),
+                ],
+              ));
   }
 
   // Operaciones de la Interfaz ** *********** ********* ****
@@ -1305,8 +1318,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                   tittle: "Actualización de los Valores",
                   message: 'El registro del paciente fue Actualizado',
                   onAcept: () {
-                      returnGestion(context);
-                      // Navigator.of(context).pop();
+                    returnGestion(context);
+                    // Navigator.of(context).pop();
                   });
             });
           });
@@ -1377,7 +1390,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
   String turnoValue = Pacientes.Turno[0];
   String sessoValue = Pacientes.Sexo[0];
   String unidadMedicaValue = Pacientes.Unidades[0];
-  String hemotipoValue= Items.Hemotipo[0];
+  String hemotipoValue = Items.Hemotipo[0];
   String atencionValue = Pacientes.Atencion[1];
   String statusValue = Pacientes.Status[0];
   String estadoCivilValue = Pacientes.EstadoCivil[0];

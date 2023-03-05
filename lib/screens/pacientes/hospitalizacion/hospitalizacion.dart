@@ -199,7 +199,7 @@ class _OperacionesHospitalizacionesState
               isNumCama = value;
             });
           },
-          items: Listas.listOfRange(maxNum: 22),
+          items: Listas.listOfRange(maxNum: 100),
           width: isTablet(context) || isMobile(context) ? 120 : 200,
           initialValue: isNumCama),
       CrossLine(),

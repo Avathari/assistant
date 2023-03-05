@@ -5,6 +5,7 @@ import 'package:assistant/conexiones/actividades/pdfGenerete/PdfApi.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
+import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/LoadingScreen.dart';
 import 'package:flutter/foundation.dart';
@@ -15,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:path_provider/path_provider.dart';
 
 Future<String> imageToBase(String pathFile) async {
@@ -280,9 +282,12 @@ class Listas {
     return listado;
   }
 
-  static List<String> listOfRange({required int maxNum}) {
-    List<String> list = List<String>.generate(22, (i) => (i + 1).toString());
-    list.add("N/A");
+  static List<String> listOfRange({required int maxNum, bool withNull = true}) {
+    List<String> list =
+        List<String>.generate(maxNum, (i) => (i + 1).toString());
+    if (withNull) {
+      list.add("N/A");
+    }
     // ******* ************ ******** ********* ***
     return list;
   }
@@ -512,15 +517,33 @@ class Operadores {
         });
   }
 
-  static void alertActivity(
-      {required BuildContext context,
-      String? tittle = "Manejo de registro",
-      String? message = "El registro ha sido actualizado / creado",
-      onAcept, }) {
+  static void alertActivity({
+    required BuildContext context,
+    String? tittle = "Manejo de registro",
+    String? message = "El registro ha sido actualizado / creado",
+    onClose,
+    onAcept,
+  }) {
     showDialog(
         context: context,
         builder: (context) {
           return Dialogos.alertDialog(tittle, message, () {
+            Navigator.of(context).pop();
+          }, onAcept);
+        });
+  }
+
+  static void editActivity({
+    required BuildContext context,
+    String? tittle = "Manejo de registro",
+    String? message = "El registro ha sido actualizado / creado",
+    onClose,
+    Function(String)? onAcept,
+  }) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialogos.editDialog(tittle, message, () {
             Navigator.of(context).pop();
           }, onAcept);
         });
@@ -550,6 +573,49 @@ class Dialogos {
         ElevatedButton(
             onPressed: () {
               onAcept();
+            },
+            child: const Text("Aceptar", style: TextStyle(color: Colors.white)))
+      ],
+    );
+  }
+
+  static AlertDialog editDialog(String? tittle, String? msg, onCloss,
+      ValueChanged<String>? onAcept) {
+    var textEditController = TextEditingController();
+
+    return AlertDialog(
+      backgroundColor: Theming.secondaryColor,
+      title: Text(
+        tittle!,
+        style: const TextStyle(color: Colors.grey),
+      ),
+      content: Column(
+        children: [
+          Text(
+            msg!,
+            style: const TextStyle(color: Colors.grey),
+          ),
+          CrossLine(),
+          Expanded(
+            child: EditTextArea(
+              numOfLines: 1,
+              keyBoardType: TextInputType.text,
+              inputFormat: MaskTextInputFormatter(),
+              textController: textEditController,
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        OutlinedButton(
+            onPressed: () {
+              onCloss();
+            },
+            child:
+                const Text("Cancelar", style: TextStyle(color: Colors.white))),
+        ElevatedButton(
+            onPressed: () {
+              onAcept!(textEditController.text);
             },
             child: const Text("Aceptar", style: TextStyle(color: Colors.white)))
       ],

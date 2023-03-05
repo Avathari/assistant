@@ -181,7 +181,7 @@ class Carousel {
         height: height != 0
             ? height
             : isMobile(context)
-                ? 1200
+                ? 1000
                 : isTablet(context)
                     ? 1600
                     : isDesktop(context)

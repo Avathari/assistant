@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class GrandLabel extends StatefulWidget {
   String? labelButton;
-  double? weigth;
+  double? weigth, height;
   var onPress;
   IconData? iconData;
 
@@ -12,7 +12,8 @@ class GrandLabel extends StatefulWidget {
   GrandLabel(
       {Key? key,
       this.labelButton = "message",
-      this.weigth = 6,
+      this.weigth,
+      this.height,
       this.fontSized = 8,
       this.iconData = Icons.wallet,
       required this.onPress})
@@ -31,17 +32,25 @@ class _GrandLabelState extends State<GrandLabel> {
         message: widget.labelButton!,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-              primary: Colors.black54,
-              onPrimary: Colors.grey,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              minimumSize: Size(
-                  isMobile(context) ? widget.weigth! : widget.weigth! * 10,
-                  isTablet(context)
-                      ? widget.weigth! * 10
+            primary: Colors.black54,
+            onPrimary: Colors.grey,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            minimumSize: Size(
+              widget.weigth != null
+                  ? widget.weigth!
+                  : isMobile(context)
+                      ? 6
+                      : 6 * 10,
+              widget.height != null
+                  ? widget.height!
+                  : isTablet(context)
+                      ? 6 * 10
                       : isDesktop(context)
-                          ? widget.weigth! * 10
-                          : widget.weigth! * 10)),
+                          ? 6 * 10
+                          : 6 * 10,
+            ),
+          ),
           onPressed: () {
             widget.onPress();
           },

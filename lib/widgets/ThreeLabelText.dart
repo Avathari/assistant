@@ -1,3 +1,5 @@
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:flutter/material.dart';
 
 class ThreeLabelTextAline extends StatefulWidget {
@@ -6,13 +8,18 @@ class ThreeLabelTextAline extends StatefulWidget {
   String? thirdText;
   double padding;
 
-  ThreeLabelTextAline(
-      {Key? key,
-      this.firstText = "",
-      this.secondText = "",
-      this.thirdText = "",
-      this.padding = 2.0})
-      : super(key: key);
+    bool? withEditMessage;
+  final ValueChanged<String>? onEdit;
+
+  ThreeLabelTextAline({
+    Key? key,
+    this.firstText = "",
+    this.secondText = "",
+    this.thirdText = "",
+    this.padding = 2.0,
+    this.withEditMessage = false,
+    this.onEdit,
+  }) : super(key: key);
 
   @override
   State<ThreeLabelTextAline> createState() => _ThreeLabelTextAlineState();
@@ -46,7 +53,6 @@ class _ThreeLabelTextAlineState extends State<ThreeLabelTextAline> {
                 overflow: TextOverflow.ellipsis,
                 fontWeight: FontWeight.normal,
               ),
-
               textAlign: TextAlign.left,
             ),
           ),
@@ -60,6 +66,16 @@ class _ThreeLabelTextAlineState extends State<ThreeLabelTextAline> {
                   fontWeight: FontWeight.normal,
                 )),
           ),
+          widget.withEditMessage!
+              ? Center(
+                child: GrandIcon(
+            iconData: Icons.edit_note,
+                    onPress: () {
+                      widget.onEdit!(widget.secondText!);
+                    },
+                  ),
+              )
+              : Container()
         ],
       ),
     );

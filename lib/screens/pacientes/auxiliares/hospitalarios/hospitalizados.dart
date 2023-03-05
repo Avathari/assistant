@@ -12,6 +12,7 @@ import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/Spinner.dart';
@@ -186,7 +187,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                     return GridView.builder(
                       padding: const EdgeInsets.all(10.0),
                       gridDelegate: GridViewTools.gridDelegate(
-                        crossAxisCount: isMobile(context) ? 1 : 3,
+                        crossAxisCount: isMobile(context) ? 1 : 1,
                         mainAxisExtent: isMobile(context) ? 170 : 250,
                       ),
                       controller: ScrollController(),
@@ -227,6 +228,8 @@ class _HospitalizadosState extends State<Hospitalizados> {
   // Operadores de Interfaz ********* ************ ******** *
   Container itemListView(
       AsyncSnapshot snapshot, int posicion, BuildContext context) {
+    Terminal.printExpected(message: "pacientes : ${snapshot.data[posicion]}");
+
     return Container(
       decoration: ContainerDecoration.roundedDecoration(),
       padding: const EdgeInsets.all(10.0),
@@ -247,7 +250,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              flex: 2,
+              flex: 1,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -277,6 +280,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                 ],
               ),
             ),
+            const SizedBox(width: 8),
             Expanded(
               flex: 4,
               child: Container(
@@ -291,37 +295,97 @@ class _HospitalizadosState extends State<Hospitalizados> {
                         "${snapshot.data[posicion]['Pace_Nome_PI']} "
                         "${snapshot.data[posicion]['Pace_Nome_SE']}",
                         maxLines: 2,
-                        style: Styles.textSyleGrowth(fontSize: 16)),
+                        style: Styles.textSyleGrowth(fontSize: 14)),
                     Text(
                       "Hemotipo: ${snapshot.data[posicion]['Pace_Hemo']}",
                       maxLines: 2,
-                      style: Styles.textSyleGrowth(fontSize: 12),
+                      style: Styles.textSyleGrowth(fontSize: 10),
                     ),
                     Text(
                       "Servicio: ${snapshot.data[posicion]['Serve_Trat']}",
                       maxLines: 2,
-                      style: Styles.textSyleGrowth(fontSize: 12),
+                      style: Styles.textSyleGrowth(fontSize: 10),
                     ),
                     Text(
                       "${snapshot.data[posicion]['Medi_Trat']}",
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: Styles.textSyleGrowth(fontSize: 12),
+                      style: Styles.textSyleGrowth(fontSize: 10),
                     ),
                     Text(
                       "Egreso: ${snapshot.data[posicion]['Feca_EGE_Hosp']}",
-                      style: Styles.textSyleGrowth(fontSize: 12),
+                      style: Styles.textSyleGrowth(fontSize: 10),
                     ),
                     Text("D.E.H.: ${snapshot.data[posicion]['Dia_Estan']}",
-                        style: Styles.textSyleGrowth(fontSize: 14)),
+                        style: Styles.textSyleGrowth(fontSize: 12)),
                     Text(
                       "${snapshot.data[posicion]['EGE_Motivo']}",
+                      style: Styles.textSyleGrowth(fontSize: 10),
+                    ),
+                    CrossLine(),
+                    Text(
+                      "Pendientes ",
                       style: Styles.textSyleGrowth(fontSize: 12),
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                          itemCount: snapshot.data[posicion]['Pendientes'].length,
+                          itemBuilder: (BuildContext context, ind) {
+                            return Text(snapshot.data[posicion]['Pendientes'][ind]
+                            ['Pace_Desc_PEN'], style: Styles.textSyleGrowth(fontSize: 9),);
+                          }),
                     ),
                   ],
                 ),
               ),
             ),
+            Expanded(
+                flex: 2,
+                child: Container(
+                  margin: const EdgeInsets.all(5.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Crónico(s) ",
+                        style: Styles.textSyleGrowth(fontSize: 12),
+                      ),
+                      CrossLine(),
+                      Expanded(
+                        child: ListView.builder(
+                            itemCount: snapshot.data[posicion]['Cronicos'].length,
+                            itemBuilder: (BuildContext context, ind) {
+                              return Text(snapshot.data[posicion]['Cronicos'][ind]
+                                  ['Pace_APP_DEG'], style: Styles.textSyleGrowth(fontSize: 9),);
+                            }),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        "Diagnóstico(s) ",
+                        style: Styles.textSyleGrowth(fontSize: 12),
+                      ),
+                      CrossLine(),
+                      Expanded(
+                        child: ListView.builder(
+                            itemCount: snapshot.data[posicion]['Diagnosticos'].length,
+                            itemBuilder: (BuildContext context, ind) {
+                              return Text(snapshot.data[posicion]['Diagnosticos'][ind]
+                              ['Pace_APP_DEG'], style: Styles.textSyleGrowth(fontSize: 9),);
+                            }),
+                      ),
+                    ],
+                  ),
+                )),
+            Expanded(flex: 1, child: Column(
+              children: [
+                GrandIcon(onPress: () { }),
+                GrandIcon(onPress: () { }),
+                GrandIcon(onPress: () { }),
+                GrandIcon(onPress: () { }),
+                GrandIcon(onPress: () { }),
+              ],
+            )),
           ],
         ),
       ),
@@ -410,9 +474,9 @@ class _HospitalizadosState extends State<Hospitalizados> {
         context: context,
         tittle: 'Actualizando Valores . . . ',
         message: 'Actualizando . . . ',
-    onCloss: () {
+        onCloss: () {
           Navigator.of(context).pop();
-    });
+        });
     setState(() {
       foundedItems!.clear();
     });

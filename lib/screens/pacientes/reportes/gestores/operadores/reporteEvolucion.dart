@@ -18,6 +18,7 @@ class ReporteEvolucion extends StatefulWidget {
 }
 
 class _ReporteEvolucionState extends State<ReporteEvolucion> {
+
   @override
   void initState() {
     // # # # ############## #### ########
@@ -103,7 +104,7 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
             child: CarouselSlider(
               carouselController: carouselController,
               options: CarouselOptions(
-                  height: isMobile(context) || isTablet(context) ? 900 : 450,
+                  height: isMobile(context) ? 900 : isTablet(context) ? 1200 : 450,
                   enableInfiniteScroll: false,
                   viewportFraction: 1.0),
               items: [

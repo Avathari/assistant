@@ -31,12 +31,30 @@ class ChartLine extends StatefulWidget {
 }
 
 class _ChartLineState extends State<ChartLine>  {
+
   @override
   void initState() {
     setState(() {
       if (widget.dymValues[0].isNotEmpty) {
         getValues();
       } else {
+        widget.dymValues = [
+          ["0000/00/00", 0, 0, 0, 0, 0, 0],
+          ["0000/00/00", 0, 0, 0, 0, 0, 0],
+          ["0000/00/00", 0, 0, 0, 0, 0, 0],
+          ["0000/00/00", 0, 0, 0, 0, 0, 0],
+          ["0000/00/00", 0, 0, 0, 0, 0, 0],
+          ["0000/00/00", 0, 0, 0, 0, 0, 0],
+        ];
+        widget.tittles = [
+          'T. Sistólica',
+          'T. Diastólica',
+          'F. Cardiaca',
+          'F. Respiratoria',
+          'T. Corporal',
+          'SPO2 %',
+        ];
+
         getValues();
       }
     });
@@ -46,7 +64,7 @@ class _ChartLineState extends State<ChartLine>  {
 
   @override
   Widget build(BuildContext context) {
-    print("widget.dymValues! : ${widget.dymValues!}");
+    print("widget.dymValues! : ${widget.dymValues}");
     print("widget.spotsVals! : ${widget.spotsVals!}");
     print("widget.tittles! : ${widget.tittles!}");
     print("widget.bottomTittles! : ${widget.bottomTittles!}");
@@ -58,7 +76,6 @@ class _ChartLineState extends State<ChartLine>  {
           flex: 1,
           child: Row(
             children: [
-
               Expanded(
                 flex: widget.withTittles ? 6 : 1,
                 child: LineChart(LineChartData(

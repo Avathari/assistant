@@ -123,40 +123,7 @@ class Pacientes {
   static List? Pendiente = [];
 
   static String get diasOrdinalesEstancia {
-    List ordinales = [
-      "Primer",
-      "Segundo",
-      "Tercer",
-      "Cuarto",
-      "Quinto",
-      "Sexto",
-      "Séptimo",
-      "Octavo",
-      "Noveno",
-      "Décimo",
-      "Décimo Primer",
-      "Décimo Segundo",
-      "Décimo Tercer",
-      "Décimo Cuarto",
-      "Décimo Quinto",
-      "Décimo Sexto",
-      "Décimo Séptimo",
-      "Décimo Octavo",
-      "Décimo Noveno",
-      "Vigésimo",
-      "Vigésimo Primer",
-      "Vigésimo Segundo",
-      "Vigésimo Tercer",
-      "Vigésimo Cuarto",
-      "Vigésimo Quinto",
-      "Vigésimo Sexto",
-      "Vigésimo Séptimo",
-      "Vigésimo Octavo",
-      "Vigésimo Noveno",
-      "Trigésimo",
-    ];
-
-    return ordinales[Valores.diasEstancia];
+    return Items.ordinales[Valores.diasEstancia];
   }
 
   // static List? Imagenologias = [];
@@ -5215,6 +5182,8 @@ class Auxiliares {
         "vc": (Pacientes.Electrocardiogramas['EC_rAVL'] +
             Pacientes.Electrocardiogramas['EC_sV3'])
       });
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(message: "ERROR - $error : : $stackTrace");
     });
   }
 

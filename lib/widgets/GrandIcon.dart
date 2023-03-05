@@ -28,7 +28,7 @@ class _GrandIconState extends State<GrandIcon> {
       child: IconButton(
         icon: Icon(widget.iconData, color: Colors.grey,),
         style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.grey, backgroundColor: Colors.black54,
+            foregroundColor: Colors.grey, backgroundColor: Colors.white,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20)),
             minimumSize: Size(

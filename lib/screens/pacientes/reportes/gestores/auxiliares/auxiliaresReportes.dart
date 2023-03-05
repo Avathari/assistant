@@ -61,7 +61,7 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                       textController: auxTextController,
                       labelEditText: "Auxiliares diagnósticos",
                       keyBoardType: TextInputType.multiline,
-                      numOfLines: 8,
+                      numOfLines: isTablet(context) ? 16: 8,
                       withShowOption: true,
                       onChange: ((value) {
                         Reportes.auxiliaresDiagnosticos = value;
@@ -291,7 +291,7 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                       textController: commenTextController,
                       labelEditText: "Análisis complementarios",
                       keyBoardType: TextInputType.multiline,
-                      numOfLines: 8,
+                      numOfLines: isTablet(context) ? 16: 8,
                       onChange: ((value) {
                         Reportes.analisisComplementarios = value;
                         Reportes.reportes['Analisis_Complementarios'] = value;

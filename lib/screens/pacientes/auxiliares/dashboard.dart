@@ -8,16 +8,19 @@ import 'package:assistant/screens/pacientes/auxiliares/diagnosticos/degenerativo
 import 'package:assistant/screens/pacientes/auxiliares/diagnosticos/diagnosticos.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/actividadesHospitalarias.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizado.dart';
+import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisiones.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/pendientes.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
+import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/ChartLine.dart';
 
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandLabel.dart';
 import 'package:assistant/widgets/RoundedPanel.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatefulWidget {
@@ -68,7 +71,30 @@ class _DashboardState extends State<Dashboard> {
         ]);
       }
     } else {
-      widget.dymValues.insert(0, ["0000/00/00", 0, 0, 0, 0, 0, 0]);
+      Archivos.readJsonToMap(filePath: Vitales.fileAssocieted).then((value) {
+        Terminal.printData(message: "Value $value");
+        Pacientes.Vitales = value;
+        for (var i = 0; i < Pacientes.Vitales!.length; i++) {
+          list.clear();
+          //
+          widget.dymValues.insert(i, [
+            Pacientes.Vitales![i]['Pace_Feca_SV'],
+            Pacientes.Vitales![i]['Pace_SV_tas'],
+            Pacientes.Vitales![i]['Pace_SV_tad'],
+            Pacientes.Vitales![i]['Pace_SV_fc'],
+            Pacientes.Vitales![i]['Pace_SV_fr'],
+            Pacientes.Vitales![i]['Pace_SV_tc'],
+            Pacientes.Vitales![i]['Pace_SV_spo']
+          ]);
+        }
+      }).onError((error, stackTrace) {
+        Terminal.printAlert(message: "ERROR - $error : : $stackTrace");
+      }).whenComplete(() {
+        setState(() {
+          widget.dymValues;
+        });
+      });
+
     }
     super.initState();
   }
@@ -105,7 +131,7 @@ class _DashboardState extends State<Dashboard> {
     return isMobile(context)
         ? mobileView()
         : isTablet(context)
-            ? mobileView()
+            ? tabletView()
             : desktopView();
   }
 
@@ -113,39 +139,104 @@ class _DashboardState extends State<Dashboard> {
     return Container(
       padding: const EdgeInsets.all(5.0),
       margin: const EdgeInsets.all(5.0),
-      child: Column(
-        // shrinkWrap: true,
-        // controller: ScrollController(),
-        // padding: const EdgeInsets.all(4.0),
-        children: [
-          RoundedPanel(
-            child: const Detalles(),
-          ),
-          const SizedBox(height: 6),
-          RoundedPanel(
-            child: Pacientes.esHospitalizado == true
-                ? const Hospitalizado()
-                : const EstadisticasVitales(),
-          ),
-          const SizedBox(height: 6),
-          Expanded(
-            child: Row(
+      child: CarouselSlider(
+        options: Carousel.carouselOptions(context: context),
+        items: [
+          SingleChildScrollView(
+            controller: ScrollController(),
+            child: Column(
               children: [
-                Expanded(child: RoundedPanel(child: const Degenerativos())),
-                const SizedBox(width: 6),
-                Expanded(child: RoundedPanel(child: const Diagnosis())),
+                RoundedPanel(
+                  child: const Detalles(),
+                ),
+                const SizedBox(height: 6),
+                RoundedPanel(
+                  child: Pacientes.esHospitalizado == true
+                      ? const Hospitalizado()
+                      : const EstadisticasVitales(),
+                ),
+                const SizedBox(height: 6),
+                RoundedPanel(
+                  child: const ActividadesHospitalarias(),
+                ),
+                const SizedBox(height: 6),
               ],
             ),
           ),
-          const SizedBox(height: 6),
-          Expanded(
-              child: RoundedPanel(
-            child: const ActividadesHospitalarias(),
-          )),
-          const SizedBox(height: 6),
+          Column(
+            children: [
+              RoundedPanel(
+                child: TittlePanel(
+                  textPanel: 'Diagnóstico(s)',
+                ),
+              ),
+              const SizedBox(height: 6),
+              Expanded(
+                child: RoundedPanel(
+                  child: const Degenerativos(),
+                ),
+              ),
+              const SizedBox(height: 6),
+              Expanded(
+                child: RoundedPanel(
+                  child: const Diagnosis(),
+                ),
+              ),
+            ],
+          ),
+          RoundedPanel(
+            child: ChartLine(
+              dymValues: widget.dymValues,
+              withTittles: true,
+              tittles: widget.tittles,
+            ),
+          ),
+          Revisiones(),
         ],
       ),
     );
+  }
+
+  Container tabletView() {
+    return Container(
+        padding: const EdgeInsets.all(5.0),
+        margin: const EdgeInsets.all(5.0),
+        child: CarouselSlider(
+          options: Carousel.carouselOptions(context: context),
+          items: [
+            Column(
+              children: [
+                RoundedPanel(
+                  child: const Detalles(),
+                ),
+                const SizedBox(height: 6),
+                RoundedPanel(
+                  child: Pacientes.esHospitalizado == true
+                      ? const Hospitalizado()
+                      : const EstadisticasVitales(),
+                ),
+                const SizedBox(height: 6),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: RoundedPanel(child: const Degenerativos())),
+                      const SizedBox(width: 6),
+                      Expanded(child: RoundedPanel(child: const Diagnosis())),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Expanded(
+                    child: RoundedPanel(
+                  child: const ActividadesHospitalarias(),
+                )),
+                const SizedBox(height: 6),
+              ],
+            ),
+            Revisiones(),
+          ],
+        ));
 
     // RoundedPanel(
     //   child: ChartLine(

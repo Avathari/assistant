@@ -4,6 +4,7 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizado.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/pendientes.dart';
+import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandLabel.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
@@ -28,7 +29,7 @@ class _ActividadesHospitalariasState extends State<ActividadesHospitalarias> {
               Expanded(
                 child: GrandLabel(
                   iconData: Icons.padding,
-                  fontSized: 14,
+                  fontSized: isMobile(context) ? 8 : 14,
                   labelButton: 'Registro de Hospitalizaciones',
                   onPress: () {
                     Navigator.of(context).push(MaterialPageRoute(
@@ -41,7 +42,7 @@ class _ActividadesHospitalariasState extends State<ActividadesHospitalarias> {
               Expanded(
                 child: GrandLabel(
                   iconData: Icons.padding,
-                  fontSized: 14,
+                  fontSized: isMobile(context) ? 8 : 14,
                   labelButton: 'Pendientes de la Atención',
                   onPress: () {
                     Navigator.of(context).push(MaterialPageRoute(
@@ -62,7 +63,7 @@ class _ActividadesHospitalariasState extends State<ActividadesHospitalarias> {
               Expanded(
                 child: GrandLabel(
                   iconData: Icons.local_hospital,
-                  fontSized: 14,
+                  fontSized: isMobile(context) ? 8 : 14,
                   labelButton: Pacientes.esHospitalizado == true
                       ? 'Egresar paciente'
                       : 'Hospitalizar paciente',
