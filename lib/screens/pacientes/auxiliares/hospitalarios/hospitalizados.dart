@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/actividades/pdfGenerete/PdfApi.dart';
@@ -15,7 +14,6 @@ import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
-import 'package:assistant/widgets/Spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
@@ -324,15 +322,13 @@ class _HospitalizadosState extends State<Hospitalizados> {
                     ),
                     CrossLine(),
                     Text(
-                      "Pendientes ",
+                      "Laboratorios",
                       style: Styles.textSyleGrowth(fontSize: 12),
                     ),
                     Expanded(
-                      child: ListView.builder(
-                          itemCount: snapshot.data[posicion]['Pendientes'].length,
-                          itemBuilder: (BuildContext context, ind) {
-                            return Text(snapshot.data[posicion]['Pendientes'][ind]
-                            ['Pace_Desc_PEN'], style: Styles.textSyleGrowth(fontSize: 9),);
+                      child: GridView.builder(gridDelegate: GridViewTools.gridDelegate(),
+                          itemBuilder: (BuildContext context, index) {
+                        return null;
                           }),
                     ),
                   ],
@@ -377,9 +373,46 @@ class _HospitalizadosState extends State<Hospitalizados> {
                     ],
                   ),
                 )),
+            Expanded(
+                flex: 2,
+                child: Container(
+                  margin: const EdgeInsets.all(5.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Pendientes(s) ",
+                        style: Styles.textSyleGrowth(fontSize: 12),
+                      ),
+                      CrossLine(),
+                      Expanded(
+                        child: ListView.builder(
+                            itemCount: snapshot.data[posicion]['Pendientes'].length,
+                            itemBuilder: (BuildContext context, ind) {
+                              return Text(snapshot.data[posicion]['Pendientes'][ind]
+                              ['Pace_Desc_PEN'], style: Styles.textSyleGrowth(fontSize: 9),);
+                            }),
+                      ),
+                      const SizedBox(height: 4),
+                      // Text(
+                      //   "Diagnóstico(s) ",
+                      //   style: Styles.textSyleGrowth(fontSize: 12),
+                      // ),
+                      // CrossLine(),
+                      // Expanded(
+                      //   child: ListView.builder(
+                      //       itemCount: snapshot.data[posicion]['Diagnosticos'].length,
+                      //       itemBuilder: (BuildContext context, ind) {
+                      //         return Text(snapshot.data[posicion]['Diagnosticos'][ind]
+                      //         ['Pace_APP_DEG'], style: Styles.textSyleGrowth(fontSize: 9),);
+                      //       }),
+                      // ),
+                    ],
+                  ),
+                )),
             Expanded(flex: 1, child: Column(
               children: [
-                GrandIcon(onPress: () { }),
                 GrandIcon(onPress: () { }),
                 GrandIcon(onPress: () { }),
                 GrandIcon(onPress: () { }),
@@ -446,25 +479,25 @@ class _HospitalizadosState extends State<Hospitalizados> {
     });
   }
 
-  void _runFilterSearch(String enteredKeyword) {
-    List? results = [];
-
-    if (enteredKeyword.isEmpty) {
-      _pullListRefresh();
-    } else {
-      Actividades.consultar(
-              Databases.siteground_database_reghosp, consultQuery!)
-          .then((value) {
-        results = value
-            .where((user) => user[widget.keySearch].contains(enteredKeyword))
-            .toList();
-
-        setState(() {
-          foundedItems = results;
-        });
-      });
-    }
-  }
+  // void _runFilterSearch(String enteredKeyword) {
+  //   List? results = [];
+  //
+  //   if (enteredKeyword.isEmpty) {
+  //     _pullListRefresh();
+  //   } else {
+  //     Actividades.consultar(
+  //             Databases.siteground_database_reghosp, consultQuery!)
+  //         .then((value) {
+  //       results = value
+  //           .where((user) => user[widget.keySearch].contains(enteredKeyword))
+  //           .toList();
+  //
+  //       setState(() {
+  //         foundedItems = results;
+  //       });
+  //     });
+  //   }
+  // }
 
   Future<Null> _pullListRefresh() async {
     Terminal.printAlert(

@@ -96,9 +96,9 @@ class _DetallesState extends State<Detalles> {
                 ),
                 isTablet(context)
                     ? Expanded(
-                  flex: isTablet(context) ? 1 : 0,
+                  flex: isTablet(context) ? 2 : 0,
                   child: CircleAvatar(
-                      backgroundColor: Colors.black,
+                      backgroundColor: Colors.grey,
                       radius: 100,
                       child: ClipOval(
                           child: Image.memory(
