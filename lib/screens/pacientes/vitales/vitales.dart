@@ -156,40 +156,61 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              editFormattedText(
-                  TextInputType.number,
-                  MaskTextInputFormatter(
-                      mask: '####/##/##',
-                      filter: {"#": RegExp(r'[0-9]')},
-                      type: MaskAutoCompletionType.lazy),
-                  false,
-                  'Fecha de realización',
-                  fechaRealizacionTextController,
-                  false),
-              SingleChildScrollView(
-                controller: ScrollController(),
-                scrollDirection: Axis.horizontal,
+              Expanded(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    GrandButton(
-                        labelButton: "Signos Vitales",
+                    Expanded(
+                      flex: 4,
+                      child: EditTextArea(
+                        labelEditText: 'Fecha de realización',
+                        keyBoardType: TextInputType.number,
+                        numOfLines: 1,
+                        inputFormat: MaskTextInputFormatter(
+                            mask: '####/##/##',
+                            filter: {"#": RegExp(r'[0-9]')},
+                            type: MaskAutoCompletionType.lazy),
+                        textController: fechaRealizacionTextController,
+                      ),
+                    ),
+                    Expanded(
+                      child: GrandIcon(iconData: Icons.calendar_month,
+                        labelButton: "Fecha Actual",
                         onPress: () {
-                          setState(() {
-                            carouselController.jumpToPage(0);
-                          });
-                        }),
-                    GrandButton(
-                        labelButton: "Medidas Antropométricas",
-                        onPress: () {
-                          setState(() {
-                            carouselController.jumpToPage(1);
-                          });
-                        })
+                        setState(() {
+                          fechaRealizacionTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
+                        });
+                      },),
+                    ),
                   ],
                 ),
               ),
               Expanded(
+                child: SingleChildScrollView(
+                  controller: ScrollController(),
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GrandButton(
+                          labelButton: "Signos Vitales",
+                          onPress: () {
+                            setState(() {
+                              carouselController.jumpToPage(0);
+                            });
+                          }),
+                      GrandButton(
+                          labelButton: "Medidas Antropométricas",
+                          onPress: () {
+                            setState(() {
+                              carouselController.jumpToPage(1);
+                            });
+                          })
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 8,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
@@ -255,11 +276,14 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                   ),
                 ),
               ),
-              GrandButton(
-                  labelButton: widget._operationButton,
-                  onPress: () {
-                    operationMethod(context);
-                  })
+              Expanded(
+                child: GrandButton(
+                  weigth: 2000,
+                    labelButton: widget._operationButton,
+                    onPress: () {
+                      operationMethod(context);
+                    }),
+              )
             ],
           ),
         ),

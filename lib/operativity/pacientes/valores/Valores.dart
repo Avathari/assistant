@@ -3526,8 +3526,9 @@ class Items {
   static List<String> horasSueno = [
     'Menos de 4 horas',
     'De 4 a 6 horas',
+    '6 a 8 Horas',
     'De 6 a 8 Horas',
-    'Más de 8 horas'
+    'Más de 8 horas',
   ];
   static List<String> dicotomicos = Dicotomicos.dicotomicos();
 

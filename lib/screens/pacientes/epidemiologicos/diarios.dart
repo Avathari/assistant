@@ -27,7 +27,7 @@ class _DiariosState extends State<Diarios> {
   void initState() {
     setState(() {
       // ************ *********** *********
-      actividadesDiariasTextController.text = '';
+      // actividadesDiariasTextController.text = '';
       // ************ *********** *********
       viajesRecientesTextController.text = Valores.viajesRecientesDescripcion!;
 

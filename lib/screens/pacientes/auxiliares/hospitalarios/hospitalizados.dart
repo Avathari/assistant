@@ -511,7 +511,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
           Navigator.of(context).pop();
         });
     setState(() {
-      foundedItems!.clear();
+      // foundedItems!.clear();
     });
 
     List hospitalizaed = [];
@@ -591,6 +591,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
               Items.orderOfCamas.indexOf(b['Id_Cama'].toString());
         });
         Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
+        Navigator.of(context).pop();
       });
       // ********** ************** ***********
     });
