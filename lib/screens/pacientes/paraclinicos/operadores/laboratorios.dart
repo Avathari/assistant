@@ -46,10 +46,10 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
         message:
             " . . . Iniciando Actividad - Repositorio Paraclinicos del Pacientes");
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+      Terminal.printSuccess(
+          message: 'Repositorio Paraclinicos del Pacientes Obtenido');
       setState(() {
         values = value;
-        Terminal.printSuccess(
-            message: 'Repositorio Paraclinicos del Pacientes Obtenido');
       });
     }).onError((error, stackTrace) {
       final f = DateFormat('yyyy-MM-dd');
@@ -82,13 +82,8 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            if (isMobile(context)) {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: ((context) => const Paraclinicos())));
-            } else {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: ((context) => VisualPacientes(actualPage: 5))));
-            }
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: ((context) => VisualPacientes(actualPage: 5))));
           },
         ),
         backgroundColor: Theming.primaryColor,
@@ -100,7 +95,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
             ? <Widget>[
                 GrandIcon(
                   iconData: Icons.dataset_linked_outlined,
-                  labelButton: "Registro de imagenológicos",
+                  labelButton: "Registro de paraclínicos",
                   onPress: () {
                     carouselController.jumpToPage(0);
                   },
@@ -204,7 +199,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                   Expanded(
                     child: GrandButton(
                         weigth: 100,
-                        labelButton: "Registro de imagenológicos",
+                        labelButton: "Registro de paraclínicos",
                         onPress: () {
                           carouselController.jumpToPage(0);
                         }),
@@ -217,14 +212,14 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                           carouselController.jumpToPage(1);
                         }),
                   ),
-                  Expanded(
-                    child: GrandButton(
-                        weigth: 100,
-                        labelButton: "Imagen del Registro",
-                        onPress: () {
-                          carouselController.jumpToPage(2);
-                        }),
-                  ),
+                  // Expanded(
+                  //   child: GrandButton(
+                  //       weigth: 100,
+                  //       labelButton: "Imagen del Registro",
+                  //       onPress: () {
+                  //         carouselController.jumpToPage(2);
+                  //       }),
+                  // ),
                 ],
               ),
             ),
@@ -240,7 +235,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                     Column(
                       children: [
                         Expanded(
-                          flex: isMobile(context) ? 2 : 1,
+                          flex: isMobile(context) ? 1 : 1,
                           child: EditTextArea(
                             keyBoardType: TextInputType.number,
                             inputFormat: MaskTextInputFormatter(
@@ -254,6 +249,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                             withShowOption: true,
                             iconData: Icons.calendar_month,
                             onSelected: () {
+                              iniciar();
                               Operadores.selectOptionsActivity(
                                   context: context,
                                   options: Listas.listWithoutRepitedValues(
@@ -543,7 +539,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                         options: Auxiliares.Categorias,
                         onClose: (value) {
                           setState(() {
-                            tipoEstudioValue = value!;
+                            tipoEstudioValue = value;
                             // *************** *********** **************
                             // Actualización del Indice
                             // *************** *********** **************

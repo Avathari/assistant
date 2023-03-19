@@ -99,6 +99,16 @@ class _DashboardState extends State<Dashboard> {
     super.initState();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    // return desktopView();
+    return isMobile(context)
+        ? mobileView()
+        : isTablet(context)
+            ? tabletView()
+            : desktopView();
+  }
+
   void iniciar() {
     Terminal.printWarning(
         message: " . . . Iniciando Actividad - Repositorio de Pacientes");
@@ -111,7 +121,7 @@ class _DashboardState extends State<Dashboard> {
           message: "Iniciando actividad : : \n "
               "Consulta de pacientes hospitalizados . . .");
       Actividades.consultarAllById(Databases.siteground_database_regpace,
-              Vitales.vitales['consultIdQuery'], Pacientes.ID_Paciente)
+          Vitales.vitales['consultIdQuery'], Pacientes.ID_Paciente)
           .then((value) {
         setState(() {
           Terminal.printSuccess(
@@ -125,16 +135,7 @@ class _DashboardState extends State<Dashboard> {
     Terminal.printWarning(message: " . . . Actividad Iniciada");
   }
 
-  @override
-  Widget build(BuildContext context) {
-    // return desktopView();
-    return isMobile(context)
-        ? mobileView()
-        : isTablet(context)
-            ? tabletView()
-            : desktopView();
-  }
-
+  // Visores ******** ****** ******* ***** ** *
   Container mobileView() {
     return Container(
       padding: const EdgeInsets.all(5.0),
@@ -184,13 +185,13 @@ class _DashboardState extends State<Dashboard> {
               ),
             ],
           ),
-          RoundedPanel(
-            child: ChartLine(
-              dymValues: widget.dymValues,
-              withTittles: true,
-              tittles: widget.tittles,
-            ),
-          ),
+          // RoundedPanel(
+          //   child: ChartLine(
+          //     dymValues: widget.dymValues,
+          //     withTittles: true,
+          //     tittles: widget.tittles,
+          //   ),
+          // ),
           Revisiones(),
         ],
       ),

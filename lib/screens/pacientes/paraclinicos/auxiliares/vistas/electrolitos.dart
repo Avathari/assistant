@@ -11,15 +11,15 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-class Biometrias extends StatefulWidget {
-  const Biometrias({Key? key}) : super(key: key);
+class Electrolitos extends StatefulWidget {
+  const Electrolitos({Key? key}) : super(key: key);
 
   @override
-  State<Biometrias> createState() => _BiometriasState();
+  State<Electrolitos> createState() => _ElectrolitosState();
 }
 
-class _BiometriasState extends State<Biometrias> {
-  static var index = 0; // Biometrias
+class _ElectrolitosState extends State<Electrolitos> {
+  static var index = 2; // Electrolitos
 
   @override
   void initState() {
@@ -57,85 +57,49 @@ class _BiometriasState extends State<Biometrias> {
           child: Column(
             children: [
               EditTextArea(
-                textController: textHemoglobinaResultController,
+                textController: textPotasioResultController,
                 keyBoardType: TextInputType.number,
                 inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Hemoglobina ($unidadMedidaHemoglobina)',
+                labelEditText: 'Potasio ($unidadMedidaPotasio)',
                 numOfLines: 1,
               ),
               EditTextArea(
-                textController: textEritrocitosResultController,
+                textController: textSodioResultController,
                 keyBoardType: TextInputType.number,
                 inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Eritrocitos ($unidadMedidaEritrocitos)',
+                labelEditText: 'Sodio ($unidadMedidaSodio)',
                 numOfLines: 1,
               ),
               EditTextArea(
-                textController: textHematocritoResultController,
+                textController: textCloroResultController,
                 keyBoardType: TextInputType.number,
                 inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Hematocrito ($unidadMedidaHematocrito)',
+                labelEditText: 'Cloro ($unidadMedidaCloro)',
                 numOfLines: 1,
               ),
 
               EditTextArea(
-                textController: textCMHCResultController,
+                textController: textFosforoResultController,
                 keyBoardType: TextInputType.number,
                 inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'CMHC ($unidadMedidaCMHC)',
+                labelEditText: 'Fosforo ($unidadMedidaFosforo)',
                 numOfLines: 1,
               ),
               EditTextArea(
-                textController: textVCMResultController,
+                textController: textCalcioResultController,
                 keyBoardType: TextInputType.number,
                 inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'VCM ($unidadMedidaVCM)',
+                labelEditText: 'Calcio ($unidadMedidaCalcio)',
                 numOfLines: 1,
               ),
               EditTextArea(
-                textController: textHCMResultController,
+                textController: textMagnesioResultController,
                 keyBoardType: TextInputType.number,
                 inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'HCM ($unidadMedidaHCM)',
+                labelEditText: 'Magnesio ($unidadMedidaMagnesio)',
                 numOfLines: 1,
               ),
 
-              EditTextArea(
-                textController: textPlaquetasResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Plaquetas ($unidadMedidaPlaquetas)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textLeucocitosResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Leucocitos ($unidadMedidaLeucocitos)',
-                numOfLines: 1,
-              ),
-
-              EditTextArea(
-                textController: textNeutrofilosResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Neutrofilos ($unidadMedidaNeutrofilos)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textLinfocitosResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Linfocitos ($unidadMedidaLinfocitos)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textMonocitosResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Monocitos ($unidadMedidaMonocitos)',
-                numOfLines: 1,
-              ),
               // Botton ***** ******* ****** * ***
               CrossLine(
                 color: Colors.grey,
@@ -180,9 +144,9 @@ class _BiometriasState extends State<Biometrias> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][1],
-        textHemoglobinaResultController.text,
-        unidadMedidaHemoglobina!
+        "Potasio",
+        textPotasioResultController.text,
+        unidadMedidaPotasio!
         //0,
       ],
       [
@@ -190,9 +154,9 @@ class _BiometriasState extends State<Biometrias> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][0],
-        textEritrocitosResultController.text,
-        unidadMedidaEritrocitos!
+        "Sodio",
+        textSodioResultController.text,
+        unidadMedidaSodio!
         //0,
       ],
       [
@@ -200,9 +164,9 @@ class _BiometriasState extends State<Biometrias> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][2],
-        textHematocritoResultController.text,
-        unidadMedidaHematocrito!
+        "Cloro",
+        textCloroResultController.text,
+        unidadMedidaCloro!
         //0,
       ],
       [
@@ -210,9 +174,9 @@ class _BiometriasState extends State<Biometrias> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][3],
-        textCMHCResultController.text,
-        unidadMedidaCMHC!
+        "Concentración Media de Potasio Corpuscular",
+        textFosforoResultController.text,
+        unidadMedidaFosforo!
         //0,
       ],
       [
@@ -220,9 +184,9 @@ class _BiometriasState extends State<Biometrias> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][4],
-        textVCMResultController.text,
-        unidadMedidaVCM!
+        "Calcio",
+        textCalcioResultController.text,
+        unidadMedidaCalcio!
         //0,
       ],
       [
@@ -230,59 +194,9 @@ class _BiometriasState extends State<Biometrias> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][5],
-        textHCMResultController.text,
-        unidadMedidaHCM!
-        //0,
-      ],
-      [
-        "0",
-        Pacientes.ID_Paciente.toString(),
-        textDateEstudyController.text,
-        Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][8],
-        textPlaquetasResultController.text,
-        unidadMedidaPlaquetas!
-        //0,
-      ],
-      [
-        "0",
-        Pacientes.ID_Paciente.toString(),
-        textDateEstudyController.text,
-        Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][9],
-        textLeucocitosResultController.text,
-        unidadMedidaLeucocitos!
-        //0,
-      ],
-      [
-        "0",
-        Pacientes.ID_Paciente.toString(),
-        textDateEstudyController.text,
-        Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][10],
-        textNeutrofilosResultController.text,
-        unidadMedidaNeutrofilos!
-        //0,
-      ],
-      [
-        "0",
-        Pacientes.ID_Paciente.toString(),
-        textDateEstudyController.text,
-        Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][11],
-        textLinfocitosResultController.text,
-        unidadMedidaLinfocitos!
-        //0,
-      ],
-      [
-        "0",
-        Pacientes.ID_Paciente.toString(),
-        textDateEstudyController.text,
-        Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][12],
-        textMonocitosResultController.text,
-        unidadMedidaMonocitos!
+        "Magnesio",
+        textMagnesioResultController.text,
+        unidadMedidaMagnesio!
         //0,
       ],
     ];
@@ -291,39 +205,22 @@ class _BiometriasState extends State<Biometrias> {
   // VARIABLES DE LA INTERFAZ ****************** ********
   var textDateEstudyController = TextEditingController();
   // ********* *************** ************* *
-  var textEritrocitosResultController = TextEditingController();
-  String? unidadMedidaEritrocitos =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][4];
-  var textHemoglobinaResultController = TextEditingController();
-  String? unidadMedidaHemoglobina =
+  var textSodioResultController = TextEditingController();
+  String? unidadMedidaSodio =
       Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
-  var textHematocritoResultController = TextEditingController();
-  String? unidadMedidaHematocrito =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
-  var textCMHCResultController = TextEditingController();
-  String? unidadMedidaCMHC =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
-  var textVCMResultController = TextEditingController();
-  String? unidadMedidaVCM = Auxiliares.Medidas[Auxiliares.Categorias[index]][2];
-  var textHCMResultController = TextEditingController();
-  String? unidadMedidaHCM = Auxiliares.Medidas[Auxiliares.Categorias[index]][3];
-
-  var textPlaquetasResultController = TextEditingController();
-  String? unidadMedidaPlaquetas =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][4];
-
-  var textLeucocitosResultController = TextEditingController();
-  String? unidadMedidaLeucocitos =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
-  var textNeutrofilosResultController = TextEditingController();
-  String? unidadMedidaNeutrofilos =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
-  var textLinfocitosResultController = TextEditingController();
-  String? unidadMedidaLinfocitos =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
-  var textMonocitosResultController = TextEditingController();
-  String? unidadMedidaMonocitos =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
+  var textPotasioResultController = TextEditingController();
+  String? unidadMedidaPotasio =
+      Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
+  var textCloroResultController = TextEditingController();
+  String? unidadMedidaCloro =
+      Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
+  var textFosforoResultController = TextEditingController();
+  String? unidadMedidaFosforo =
+      Auxiliares.Medidas[Auxiliares.Categorias[index]][2];
+  var textCalcioResultController = TextEditingController();
+  String? unidadMedidaCalcio = Auxiliares.Medidas[Auxiliares.Categorias[index]][2];
+  var textMagnesioResultController = TextEditingController();
+  String? unidadMedidaMagnesio = Auxiliares.Medidas[Auxiliares.Categorias[index]][2];
 
   // OPERACIONES DE LA INTERFAZ ****************** ********
   void cerrar() {

@@ -589,22 +589,26 @@ class Dialogos {
         tittle!,
         style: const TextStyle(color: Colors.grey),
       ),
-      content: Column(
-        children: [
-          Text(
-            msg!,
-            style: const TextStyle(color: Colors.grey),
-          ),
-          CrossLine(),
-          Expanded(
-            child: EditTextArea(
-              numOfLines: 1,
-              keyBoardType: TextInputType.text,
-              inputFormat: MaskTextInputFormatter(),
-              textController: textEditController,
+      content: SizedBox(
+        height: 100,
+        child: Column(
+          children: [
+            Text(
+              msg!,
+              style: const TextStyle(color: Colors.grey),
             ),
-          ),
-        ],
+            CrossLine(),
+            Expanded(
+              child: EditTextArea(
+                labelEditText: msg,
+                numOfLines: 1,
+                keyBoardType: TextInputType.text,
+                inputFormat: MaskTextInputFormatter(),
+                textController: textEditController,
+              ),
+            ),
+          ],
+        ),
       ),
       actions: [
         OutlinedButton(
@@ -781,7 +785,7 @@ class Dialogos {
           child: Column(
             children: [
               LoadingScreen(
-                error: 'Iniciando Interfaz . . . ',
+                error: msg, // 'Iniciando Interfaz . . . ',
               ),
             ],
           )),

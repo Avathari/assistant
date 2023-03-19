@@ -190,9 +190,9 @@ class Actividades {
         "elements": jsonEncode(elements),
       },
     );
-    // Terminal.printAlert(message: ""
-    //     "RESPONSE STATUS (REGISTER) : : ${response.statusCode} :: \n "
-    //     ":: Body ${response.body.toString()}");
+    Terminal.printAlert(message: ""
+        "RESPONSE STATUS (REGISTER) : : ${response.statusCode} :: \n "
+        ":: Body ${response.body.toString()}");
     return response.body;
   }
 

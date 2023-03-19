@@ -39,6 +39,8 @@ class Valores {
       caracterLicencia = "",
       lugarExpedicionLicencia = "",
       diagnosticoLicencia = "";
+
+  static String fileAssocieted = "${Pacientes.localRepositoryPath}valores.json";
   //
   static int get edadDesdeNacimiento {
     if (fechaNacimiento != '' && fechaNacimiento != null) {
@@ -283,7 +285,7 @@ class Valores {
       neutrofilosTotales,
       monocitosTotales;
   //
-  static double? glucosa, urea, creatinina, acidoUrico;
+  static double? glucosa, urea, creatinina, acidoUrico, nitrogenoUreico;
   //
   static double? alaninoaminotrasferasa,
       aspartatoaminotransferasa,
@@ -566,6 +568,8 @@ class Valores {
         'reportes/';
 
     // Actualización de las Directrices Complementarias ********** ***********
+    Valores.fileAssocieted =
+    "${Pacientes.localRepositoryPath}valores.json";
     Eticos.fileAssocieted =
         "${Pacientes.localRepositoryPath}eticos.json"; // Eticos.registrarRegistro(); // Si
     Viviendas.fileAssocieted =
@@ -665,7 +669,6 @@ class Valores {
     eritrocitos = double.parse(json['Eritrocitos'] ?? '0');
     hematocrito = double.parse(json['Hematocrito'] ?? '0');
     hemoglobina = double.parse(json['Hemoglobina'] ?? '0');
-    hematocrito = double.parse(json['Hematocrito'] ?? '0');
 
     leucocitosTotales = double.parse(json['Leucocitos_Totales'] ?? '0');
     neutrofilosTotales = double.parse(json['Neutrofilos_Totales'] ?? '0');
@@ -676,6 +679,8 @@ class Valores {
     urea = double.parse(json['Urea'] ?? '0');
     creatinina = double.parse(json['Creatinina'] ?? '0');
     acidoUrico = double.parse(json['Acido_Urico'] ?? '0');
+    nitrogenoUreico = double.parse(json['Nitrogeno_Ureico'] ?? '0');
+
     //
     sodio = double.parse(json['Sodio'] ?? '0');
     potasio = double.parse(json['Potasio'] ?? '0');

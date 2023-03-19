@@ -93,10 +93,12 @@ class _ShowTextState extends State<ShowText> {
       Text(
         '${widget.data!.toStringAsFixed(widget.fractionDigits)} ',
         textAlign: TextAlign.end,
+        overflow: TextOverflow.ellipsis,
         style: type,
       ),
       Text(
         widget.medida!,
+        overflow: TextOverflow.ellipsis,
         style: Styles.textSyle,
       ),
     ];

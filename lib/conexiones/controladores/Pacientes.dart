@@ -2,6 +2,7 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/Strings.dart';
+import 'package:flutter/material.dart';
 
 class Pacientes {
   static int ID_Paciente = 0, ID_Hospitalizacion = 0;
@@ -1009,6 +1010,19 @@ class Pacientes {
     // ******* *** *******
     Constantes.reinit();
     Reportes.close();
+  }
+
+  static Future<bool> loadingActivity({required BuildContext context}) async {
+    Operadores.loadingActivity(
+      context: context,
+      tittle: "Iniciando interfaz . . . ",
+      message: "Iniciando Interfaz",
+    );
+    //
+    Terminal.printWarning(message: 'Iniciando búsqueda en Valores . . . ');
+    var response = await Valores().load(); // print("response $response");
+    //
+    return response;
   }
 }
 
@@ -5259,7 +5273,7 @@ class Auxiliares {
       "Basófilos Totales",
       "Bandas Totales"
     ],
-    Categorias[1]: ["Glucosa", "Urea", "Creatinina", "Acido Úrico"],
+    Categorias[1]: ["Glucosa", "Urea", "Creatinina", "Nitrógeno Úrico", "Acido Úrico"],
     Categorias[2]: [
       "Sodio",
       "Potasio",
@@ -5347,7 +5361,7 @@ class Auxiliares {
     ]
   };
   static Map<String, dynamic> Medidas = {
-    Categorias[0]: ["g/dL", "%", "fL", "pg", "10^3/UL", "10^6/UL"],
+    Categorias[0]: ["g/dL", "%", "fL", "pg", "10^3/UL", "10^6/UL",  "K/uL"],
     Categorias[1]: ["mg/dL"],
     Categorias[2]: ["mEq/L", "mmol/L", "mg/dL"],
     Categorias[3]: ["UI/L", "g/dL", "mg/dL"],
@@ -5356,8 +5370,8 @@ class Auxiliares {
     Categorias[6]: [""],
     Categorias[7]: [""],
     Categorias[8]: ["ng/dL", ""],
-    Categorias[9]: ["", "mmHg", "cmH20", "mmol/L"],
-    Categorias[10]: ["", "mmHg", "cmH20", "mmol/L"],
+    Categorias[9]: ["", "mmHg", "cmH20", "mmol/L", "%"],
+    Categorias[10]: ["", "mmHg", "cmH20", "mmol/L", "%"],
     Categorias[11]: [""],
     Categorias[12]: [""],
     Categorias[13]: [""],
@@ -5468,6 +5482,7 @@ class Auxiliares {
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Urea' ORDER BY Fecha_Registro DESC limit 1) as Urea,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Creatinina' ORDER BY Fecha_Registro DESC limit 1) as Creatinina,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Acido Úrico' ORDER BY Fecha_Registro DESC limit 1) as Acido_Urico,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Nitrógeno Úrico' ORDER BY Fecha_Registro DESC limit 1) as Nitrogeno_Ureico,"
         //
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Sodio' ORDER BY Fecha_Registro DESC limit 1) as Sodio,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Potasio' ORDER BY Fecha_Registro DESC limit 1) as Potasio,"

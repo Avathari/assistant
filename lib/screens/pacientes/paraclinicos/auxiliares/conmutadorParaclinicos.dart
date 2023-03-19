@@ -1,6 +1,10 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/arteriales.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/biometria.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/electrolitos.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/quimicas.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/venosos.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
@@ -31,7 +35,7 @@ class _ConmutadorParaclinicosState extends State<ConmutadorParaclinicos> {
           Expanded(
               child: TittlePanel(
                   textPanel:
-                      "Anexión de Valores de ${widget.categoriaEstudio}")),
+                      "Anexión de la ${widget.categoriaEstudio}")),
           Expanded(
               flex: 10,
               child: Container(
@@ -55,13 +59,17 @@ class _ConmutadorParaclinicosState extends State<ConmutadorParaclinicos> {
             "Conmutador Iniciado - Operador de ${widget.categoriaEstudio}");
     switch (widget.categoriaEstudio) {
       case "Biometría Hemática":
-        return Biometrias();
+        return const Biometrias();
       case "Química Sanguínea":
-        return Biometrias();
+        return const Quimicas();
       case "Electrolitos Séricos":
-        return Biometrias();
+        return const Electrolitos();
+      case "Gasometría Arterial":
+        return const Arteriales();
+      case "Gasometría Venosa":
+        return const Venosos();
       default:
-        return Biometrias();
+        return const Biometrias();
     }
   }
 }

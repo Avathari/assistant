@@ -11,15 +11,15 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-class Biometrias extends StatefulWidget {
-  const Biometrias({Key? key}) : super(key: key);
+class Arteriales extends StatefulWidget {
+  const Arteriales({Key? key}) : super(key: key);
 
   @override
-  State<Biometrias> createState() => _BiometriasState();
+  State<Arteriales> createState() => _ArterialesState();
 }
 
-class _BiometriasState extends State<Biometrias> {
-  static var index = 0; // Biometrias
+class _ArterialesState extends State<Arteriales> {
+  static var index = 9; // Arteriales
 
   @override
   void initState() {
@@ -57,85 +57,50 @@ class _BiometriasState extends State<Biometrias> {
           child: Column(
             children: [
               EditTextArea(
-                textController: textHemoglobinaResultController,
+                textController: textPHResultController,
                 keyBoardType: TextInputType.number,
                 inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Hemoglobina ($unidadMedidaHemoglobina)',
+                labelEditText: 'PH',
                 numOfLines: 1,
               ),
               EditTextArea(
-                textController: textEritrocitosResultController,
+                textController: textPCOResultController,
                 keyBoardType: TextInputType.number,
                 inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Eritrocitos ($unidadMedidaEritrocitos)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textHematocritoResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Hematocrito ($unidadMedidaHematocrito)',
+                labelEditText: 'PCO ($unidadMedidaPCO)',
                 numOfLines: 1,
               ),
 
               EditTextArea(
-                textController: textCMHCResultController,
+                textController: textPOResultController,
                 keyBoardType: TextInputType.number,
                 inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'CMHC ($unidadMedidaCMHC)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textVCMResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'VCM ($unidadMedidaVCM)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textHCMResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'HCM ($unidadMedidaHCM)',
+                labelEditText: 'PO ($unidadMedidaPO)',
                 numOfLines: 1,
               ),
 
               EditTextArea(
-                textController: textPlaquetasResultController,
+                textController: textHCOResultController,
                 keyBoardType: TextInputType.number,
                 inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Plaquetas ($unidadMedidaPlaquetas)',
+                labelEditText: 'HCO ($unidadMedidaHCO)',
                 numOfLines: 1,
               ),
               EditTextArea(
-                textController: textLeucocitosResultController,
+                textController: textFIOResultController,
                 keyBoardType: TextInputType.number,
                 inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Leucocitos ($unidadMedidaLeucocitos)',
+                labelEditText: 'FIO ($unidadMedidaFIO)',
+                numOfLines: 1,
+              ),
+              EditTextArea(
+                textController: textSOResultController,
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'SO ($unidadMedidaSO)',
                 numOfLines: 1,
               ),
 
-              EditTextArea(
-                textController: textNeutrofilosResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Neutrofilos ($unidadMedidaNeutrofilos)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textLinfocitosResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Linfocitos ($unidadMedidaLinfocitos)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textMonocitosResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Monocitos ($unidadMedidaMonocitos)',
-                numOfLines: 1,
-              ),
               // Botton ***** ******* ****** * ***
               CrossLine(
                 color: Colors.grey,
@@ -180,9 +145,9 @@ class _BiometriasState extends State<Biometrias> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][1],
-        textHemoglobinaResultController.text,
-        unidadMedidaHemoglobina!
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][0],
+        textPHResultController.text,
+        unidadMedidaPH!
         //0,
       ],
       [
@@ -190,9 +155,9 @@ class _BiometriasState extends State<Biometrias> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][0],
-        textEritrocitosResultController.text,
-        unidadMedidaEritrocitos!
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][1],
+        textPCOResultController.text,
+        unidadMedidaPCO!
         //0,
       ],
       [
@@ -201,8 +166,8 @@ class _BiometriasState extends State<Biometrias> {
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
         Auxiliares.Laboratorios[Auxiliares.Categorias[index]][2],
-        textHematocritoResultController.text,
-        unidadMedidaHematocrito!
+        textPOResultController.text,
+        unidadMedidaPO!
         //0,
       ],
       [
@@ -211,8 +176,8 @@ class _BiometriasState extends State<Biometrias> {
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
         Auxiliares.Laboratorios[Auxiliares.Categorias[index]][3],
-        textCMHCResultController.text,
-        unidadMedidaCMHC!
+        textHCOResultController.text,
+        unidadMedidaHCO!
         //0,
       ],
       [
@@ -221,8 +186,8 @@ class _BiometriasState extends State<Biometrias> {
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
         Auxiliares.Laboratorios[Auxiliares.Categorias[index]][4],
-        textVCMResultController.text,
-        unidadMedidaVCM!
+        textFIOResultController.text,
+        unidadMedidaFIO!
         //0,
       ],
       [
@@ -231,58 +196,8 @@ class _BiometriasState extends State<Biometrias> {
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
         Auxiliares.Laboratorios[Auxiliares.Categorias[index]][5],
-        textHCMResultController.text,
-        unidadMedidaHCM!
-        //0,
-      ],
-      [
-        "0",
-        Pacientes.ID_Paciente.toString(),
-        textDateEstudyController.text,
-        Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][8],
-        textPlaquetasResultController.text,
-        unidadMedidaPlaquetas!
-        //0,
-      ],
-      [
-        "0",
-        Pacientes.ID_Paciente.toString(),
-        textDateEstudyController.text,
-        Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][9],
-        textLeucocitosResultController.text,
-        unidadMedidaLeucocitos!
-        //0,
-      ],
-      [
-        "0",
-        Pacientes.ID_Paciente.toString(),
-        textDateEstudyController.text,
-        Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][10],
-        textNeutrofilosResultController.text,
-        unidadMedidaNeutrofilos!
-        //0,
-      ],
-      [
-        "0",
-        Pacientes.ID_Paciente.toString(),
-        textDateEstudyController.text,
-        Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][11],
-        textLinfocitosResultController.text,
-        unidadMedidaLinfocitos!
-        //0,
-      ],
-      [
-        "0",
-        Pacientes.ID_Paciente.toString(),
-        textDateEstudyController.text,
-        Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][12],
-        textMonocitosResultController.text,
-        unidadMedidaMonocitos!
+        textSOResultController.text,
+        unidadMedidaSO!
         //0,
       ],
     ];
@@ -291,39 +206,23 @@ class _BiometriasState extends State<Biometrias> {
   // VARIABLES DE LA INTERFAZ ****************** ********
   var textDateEstudyController = TextEditingController();
   // ********* *************** ************* *
-  var textEritrocitosResultController = TextEditingController();
-  String? unidadMedidaEritrocitos =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][4];
-  var textHemoglobinaResultController = TextEditingController();
-  String? unidadMedidaHemoglobina =
+  var textPHResultController = TextEditingController();
+  String? unidadMedidaPH =
       Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
-  var textHematocritoResultController = TextEditingController();
-  String? unidadMedidaHematocrito =
+  var textPCOResultController = TextEditingController();
+  String? unidadMedidaPCO =
       Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
-  var textCMHCResultController = TextEditingController();
-  String? unidadMedidaCMHC =
+  var textPOResultController = TextEditingController();
+  String? unidadMedidaPO =
       Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
-  var textVCMResultController = TextEditingController();
-  String? unidadMedidaVCM = Auxiliares.Medidas[Auxiliares.Categorias[index]][2];
-  var textHCMResultController = TextEditingController();
-  String? unidadMedidaHCM = Auxiliares.Medidas[Auxiliares.Categorias[index]][3];
+  var textHCOResultController = TextEditingController();
+  String? unidadMedidaHCO =
+      Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
+  var textFIOResultController = TextEditingController();
+  String? unidadMedidaFIO = Auxiliares.Medidas[Auxiliares.Categorias[index]][4];
+  var textSOResultController = TextEditingController();
+  String? unidadMedidaSO = Auxiliares.Medidas[Auxiliares.Categorias[index]][4];
 
-  var textPlaquetasResultController = TextEditingController();
-  String? unidadMedidaPlaquetas =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][4];
-
-  var textLeucocitosResultController = TextEditingController();
-  String? unidadMedidaLeucocitos =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
-  var textNeutrofilosResultController = TextEditingController();
-  String? unidadMedidaNeutrofilos =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
-  var textLinfocitosResultController = TextEditingController();
-  String? unidadMedidaLinfocitos =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
-  var textMonocitosResultController = TextEditingController();
-  String? unidadMedidaMonocitos =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
 
   // OPERACIONES DE LA INTERFAZ ****************** ********
   void cerrar() {

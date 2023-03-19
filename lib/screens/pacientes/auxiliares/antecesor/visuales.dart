@@ -57,56 +57,58 @@ class _VisualPacientesState extends State<VisualPacientes> {
           )
               : null,
           backgroundColor: Colors.black,
-          title: const Text(
+          title: Text(
             Sentences.app_bar_usuarios,
-            style: TextStyle(color: Colors.white),
+            style: Styles.textSyleGrowth(),
           ),
           actions: <Widget>[
             IconButton(
               icon: const Icon(
-                Icons.home,
+                Icons.system_update_alt,
               ),
               tooltip: 'Cargando . . . ',
-              onPressed: () {
-                Operadores.loadingActivity(
-                  context: context,
-                  tittle: "Iniciando interfaz . . . ",
-                  message: "Iniciando Interfaz",
-                );
+              onPressed: () async {
+                Pacientes.loadingActivity(context: context).then((value) {
+                  if (value == true) {
+                    Terminal.printAlert(
+                        message: 'Archivo ${Pacientes.localPath} Re-Creado $value');
+                    Navigator.of(context).pop();
+                  }
+                });
               },
             ),
-            IconButton(
-              icon: const Icon(
-                Icons.question_answer,
-              ),
-              tooltip: 'Mensajería',
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return alertDialog("Manejo de registro",
-                          "El registro ha sido actualizado / creado", () {
-                            Navigator.of(context).pop();
-                          }, () {});
-                    });
-              },
-            ),
-            IconButton(
-                icon: const Icon(
-                  Icons.safety_check,
-                ),
-                tooltip: '',
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: ((context) {
-                        return emergentDialog(
-                            context, Phrases.demoTittle, Phrases.demoPhrase,
-                                () {
-                              Navigator.of(context).pop();
-                            });
-                      }));
-                }),
+            // IconButton(
+            //   icon: const Icon(
+            //     Icons.question_answer,
+            //   ),
+            //   tooltip: 'Mensajería',
+            //   onPressed: () {
+            //     showDialog(
+            //         context: context,
+            //         builder: (context) {
+            //           return alertDialog("Manejo de registro",
+            //               "El registro ha sido actualizado / creado", () {
+            //                 Navigator.of(context).pop();
+            //               }, () {});
+            //         });
+            //   },
+            // ),
+            // IconButton(
+            //     icon: const Icon(
+            //       Icons.safety_check,
+            //     ),
+            //     tooltip: '',
+            //     onPressed: () {
+            //       showDialog(
+            //           context: context,
+            //           builder: ((context) {
+            //             return emergentDialog(
+            //                 context, Phrases.demoTittle, Phrases.demoPhrase,
+            //                     () {
+            //                   Navigator.of(context).pop();
+            //                 });
+            //           }));
+            //     }),
             IconButton(
                 icon: const Icon(Icons.person),
                 tooltip: '',
@@ -291,6 +293,9 @@ class _VisualPacientesState extends State<VisualPacientes> {
         title: const Text('Dashboard',
             style: TextStyle(fontSize: Font.fontTileSize, color: Colors.grey)),
         onTap: () {
+          if (isMobile(context) || isTablet(context)) {
+            Navigator.of(context).pop();
+          }
           // Update the state of the app
           setState(() {
             widget.actualPage = 0;

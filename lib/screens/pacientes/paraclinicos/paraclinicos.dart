@@ -20,57 +20,66 @@ class _ParaclinicosState extends State<Paraclinicos> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Expanded(
-          child: Container(
-              padding: const EdgeInsets.all(5.0),
-              margin: const EdgeInsets.all(5.0),
-              decoration: ContainerDecoration.roundedDecoration(color: Colors.black),
-              child: TittlePanel(
-                textPanel: 'Repositorio de Auxiliares Diagnósticos',
-              )),
-        ),
+        Container(
+            padding: const EdgeInsets.all(5.0),
+            margin: const EdgeInsets.all(5.0),
+            decoration: ContainerDecoration.roundedDecoration(color: Colors.black),
+            child: TittlePanel(
+              textPanel: 'Repositorio de Auxiliares Diagnósticos',
+            )),
         Expanded(
           flex: 8,
           child: Container(
             padding: const EdgeInsets.all(5.0),
             margin: const EdgeInsets.all(5.0),
             decoration: ContainerDecoration.roundedDecoration(color: Colors.black),
-            child: GridView(
-              gridDelegate: GridViewTools.gridDelegate(
-                crossAxisCount: isMobile(context) ? 1 : 2,
-                mainAxisExtent: 150,
-              ),
+            child: ListView(
+              controller: ScrollController(),
+              itemExtent: 150,
+              // gridDelegate: GridViewTools.gridDelegate(
+              //   crossAxisCount: isMobile(context) ? 1 : 2,
+              //   mainAxisExtent: 150,
+              // ),
               children: [
                 Expanded(
-                  child: MenuButton(
-                    iconData: Icons.hdr_weak_sharp,
-                    labelButton: 'Getión de Laboratorios',
-                    onPress: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: ((context) => const LaboratoriosGestion())));
-                    },
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: MenuButton(
+                      iconData: Icons.hdr_weak_sharp,
+                      labelButton: 'Getión de Laboratorios',
+                      onPress: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: ((context) => const LaboratoriosGestion())));
+                      },
+                    ),
                   ),
                 ),
                 Expanded(
-                  child: MenuButton(
-                    iconData: Icons.hdr_weak_sharp,
-                    labelButton: 'Getión de Imagenológicos',
-                    onPress: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: ((context) =>
-                              const ImagenologiasGestion())));
-                    },
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: MenuButton(
+                      iconData: Icons.hdr_weak_sharp,
+                      labelButton: 'Getión de Imagenológicos',
+                      onPress: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: ((context) =>
+                                const ImagenologiasGestion())));
+                      },
+                    ),
                   ),
                 ),
                 Expanded(
-                  child: MenuButton(
-                    iconData: Icons.hdr_weak_sharp,
-                    labelButton: 'Getión de Electrocardiogramas',
-                    onPress: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: ((context) =>
-                              const ElectrocardiogramasGestion())));
-                    },
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: MenuButton(
+                      iconData: Icons.hdr_weak_sharp,
+                      labelButton: 'Getión de Electrocardiogramas',
+                      onPress: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: ((context) =>
+                                const ElectrocardiogramasGestion())));
+                      },
+                    ),
                   ),
                 ),
               ],

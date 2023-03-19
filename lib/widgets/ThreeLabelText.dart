@@ -1,4 +1,5 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +9,7 @@ class ThreeLabelTextAline extends StatefulWidget {
   String? thirdText;
   double padding;
 
-    bool? withEditMessage;
+  bool? withEditMessage, withBorder;
   final ValueChanged<String>? onEdit;
 
   ThreeLabelTextAline({
@@ -18,6 +19,7 @@ class ThreeLabelTextAline extends StatefulWidget {
     this.thirdText = "",
     this.padding = 2.0,
     this.withEditMessage = false,
+    this.withBorder = false,
     this.onEdit,
   }) : super(key: key);
 
@@ -28,10 +30,12 @@ class ThreeLabelTextAline extends StatefulWidget {
 class _ThreeLabelTextAlineState extends State<ThreeLabelTextAline> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
+      decoration: widget.withBorder == true?ContainerDecoration.roundedDecoration() : null,
       padding: EdgeInsets.all(widget.padding),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8.0),
@@ -67,14 +71,17 @@ class _ThreeLabelTextAlineState extends State<ThreeLabelTextAline> {
                 )),
           ),
           widget.withEditMessage!
-              ? Center(
-                child: GrandIcon(
-            iconData: Icons.edit_note,
+              ? Padding(
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                  child: GrandIcon(
+                    weigth: 10,
+                    heigth: 10,
+                    iconData: Icons.edit_note,
                     onPress: () {
                       widget.onEdit!(widget.secondText!);
                     },
                   ),
-              )
+                )
               : Container()
         ],
       ),

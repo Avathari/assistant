@@ -78,13 +78,8 @@ class _ElectrocardiogramasGestionState
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            if (isMobile(context)) {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: ((context) => const Paraclinicos())));
-            } else {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: ((context) => VisualPacientes(actualPage: 5))));
-            }
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: ((context) => VisualPacientes(actualPage: 5))));
           },
         ),
         backgroundColor: Theming.primaryColor,

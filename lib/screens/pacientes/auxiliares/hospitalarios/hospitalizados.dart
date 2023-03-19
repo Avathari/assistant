@@ -168,7 +168,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
           ),
           Expanded(
             flex: isTablet(context)
-                ? 12
+                ? 18
                 : isDesktop(context)
                     ? 9
                     : 2,
@@ -224,26 +224,26 @@ class _HospitalizadosState extends State<Hospitalizados> {
   }
 
   // Operadores de Interfaz ********* ************ ******** *
-  Container itemListView(
+  GestureDetector itemListView(
       AsyncSnapshot snapshot, int posicion, BuildContext context) {
     Terminal.printExpected(message: "pacientes : ${snapshot.data[posicion]}");
 
-    return Container(
-      decoration: ContainerDecoration.roundedDecoration(),
-      padding: const EdgeInsets.all(10.0),
-      child: GestureDetector(
-        onTap: () {
-          Terminal.printExpected(
-              message: "${snapshot.data[posicion]['Pendientes']}");
-        },
-        onDoubleTap: () {
-          Pacientes.ID_Paciente = snapshot.data[posicion]['ID_Pace'];
-          Pacientes.Paciente = snapshot.data[posicion];
+    return GestureDetector(
+      onTap: () {
+        Terminal.printExpected(
+            message: "${snapshot.data[posicion]['Pendientes']}");
+      },
+      onDoubleTap: () {
+        Pacientes.ID_Paciente = snapshot.data[posicion]['ID_Pace'];
+        Pacientes.Paciente = snapshot.data[posicion];
 
-          Pacientes.fromJson(snapshot.data[posicion]);
+        Pacientes.fromJson(snapshot.data[posicion]);
 
-          toVisual(context, Constantes.Update);
-        },
+        toVisual(context, Constantes.Update);
+      },
+      child: Container(
+        decoration: ContainerDecoration.roundedDecoration(),
+        padding: const EdgeInsets.all(10.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
