@@ -535,6 +535,7 @@ class Operadores {
 
   static void editActivity({
     required BuildContext context,
+    TextInputType keyBoardType = TextInputType.number,
     String? tittle = "Manejo de registro",
     String? message = "El registro ha sido actualizado / creado",
     onClose,
@@ -543,7 +544,7 @@ class Operadores {
     showDialog(
         context: context,
         builder: (context) {
-          return Dialogos.editDialog(tittle, message, () {
+          return Dialogos.editDialog(keyBoardType, tittle, message, () {
             Navigator.of(context).pop();
           }, onAcept);
         });
@@ -579,7 +580,7 @@ class Dialogos {
     );
   }
 
-  static AlertDialog editDialog(String? tittle, String? msg, onCloss,
+  static AlertDialog editDialog(TextInputType keyBoardType, String? tittle, String? msg, onCloss,
       ValueChanged<String>? onAcept) {
     var textEditController = TextEditingController();
 
@@ -602,7 +603,7 @@ class Dialogos {
               child: EditTextArea(
                 labelEditText: msg,
                 numOfLines: 1,
-                keyBoardType: TextInputType.text,
+                keyBoardType: keyBoardType, // TextInputType.text,
                 inputFormat: MaskTextInputFormatter(),
                 textController: textEditController,
               ),

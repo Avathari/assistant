@@ -296,41 +296,55 @@ class _RevisionesState extends State<Revisiones> {
             flex: 2,
             child: Container(
               decoration: ContainerDecoration.roundedDecoration(),
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(8.0),
-                controller: ScrollController(),
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  children: [
-                    GrandButton(
-                      weigth: 2000,
-                      labelButton: 'Biometría Hemática',
-                      onPress: () {
-                        setState(() {
-                          widget.actualView = 1;
-                        });
-                      },
+              child: Row(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.all(8.0),
+                      controller: ScrollController(),
+                      scrollDirection: Axis.vertical,
+                      child: Column(
+                        children: [
+                          GrandButton(
+                            weigth: 2000,
+                            labelButton: 'Biometría Hemática',
+                            onPress: () {
+                              setState(() {
+                                widget.actualView = 1;
+                              });
+                            },
+                          ),
+                          GrandButton(
+                            weigth: 2000,
+                            labelButton: 'Química Sanguínea',
+                            onPress: () {
+                              setState(() {
+                                widget.actualView = 2;
+                              });
+                            },
+                          ),
+                          GrandButton(
+                            weigth: 2000,
+                            labelButton: 'Electrolitos Séricos',
+                            onPress: () {
+                              setState(() {
+                                widget.actualView = 3;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                    GrandButton(
-                      weigth: 2000,
-                      labelButton: 'Química Sanguínea',
-                      onPress: () {
-                        setState(() {
-                          widget.actualView = 2;
-                        });
-                      },
-                    ),
-                    GrandButton(
-                      weigth: 2000,
-                      labelButton: 'Electrolitos Séricos',
-                      onPress: () {
-                        setState(() {
-                          widget.actualView = 3;
-                        });
-                      },
-                    ),
-                  ],
-                ),
+                  ),
+                  Expanded(
+                      child: GrandIcon(
+                    iconData: Icons.update,
+                        labelButton: "Actualizar",
+                    onPress: () {
+                      setState(() {});
+                    },
+                  )),
+                ],
               ),
             ),
           ),
@@ -462,7 +476,7 @@ class _RevisionesState extends State<Revisiones> {
   tabletView() {
     return RoundedPanel(
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Expanded(
           //   flex: 1,
@@ -692,47 +706,85 @@ class _RevisionesState extends State<Revisiones> {
                                           ? electrolitos()
                                           : widget.actualView == 3
                                               ? electrolitos()
-                                              : Container())),
+                                              : widget.actualView == 3
+                                                  ? electrolitos()
+                                                  : widget.actualView == 3
+                                                      ? electrolitos()
+                                                      : widget.actualView == 3
+                                                          ? electrolitos()
+                                                          : widget.actualView ==
+                                                                  3
+                                                              ? electrolitos()
+                                                              : widget.actualView ==
+                                                                      3
+                                                                  ? electrolitos()
+                                                                  : widget.actualView ==
+                                                                          10
+                                                                      ? ventilaciones()
+                                                                      : Container())),
           Expanded(
             flex: 2,
             child: Container(
               decoration: ContainerDecoration.roundedDecoration(),
               margin: const EdgeInsets.all(8.0),
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(8.0),
-                controller: ScrollController(),
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  children: [
-                    GrandIcon(
-                      iconData: Icons.bloodtype,
-                      labelButton: 'Biometría Hemática',
-                      onPress: () {
-                        setState(() {
-                          widget.actualView = 1;
-                        });
-                      },
+              child: Column(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.all(8.0),
+                      controller: ScrollController(),
+                      scrollDirection: Axis.vertical,
+                      child: Column(
+                        children: [
+                          GrandIcon(
+                            iconData: Icons.bloodtype,
+                            labelButton: 'Biometría Hemática',
+                            onPress: () {
+                              setState(() {
+                                widget.actualView = 1;
+                              });
+                            },
+                          ),
+                          GrandIcon(
+                            iconData: Icons.schema_outlined,
+                            labelButton: 'Química Sanguínea',
+                            onPress: () {
+                              setState(() {
+                                widget.actualView = 2;
+                              });
+                            },
+                          ),
+                          GrandIcon(
+                            iconData: Icons.electric_bolt,
+                            labelButton: 'Electrolitos Séricos',
+                            onPress: () {
+                              setState(() {
+                                widget.actualView = 3;
+                              });
+                            },
+                          ),
+                          GrandIcon(
+                            iconData: Icons.air,
+                            labelButton: 'Ventilatorios',
+                            onPress: () {
+                              setState(() {
+                                widget.actualView = 10;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                    GrandIcon(
-                      iconData: Icons.schema_outlined,
-                      labelButton: 'Química Sanguínea',
-                      onPress: () {
-                        setState(() {
-                          widget.actualView = 2;
-                        });
-                      },
-                    ),
-                    GrandIcon(
-                      iconData: Icons.electric_bolt,
-                      labelButton: 'Electrolitos Séricos',
-                      onPress: () {
-                        setState(() {
-                          widget.actualView = 3;
-                        });
-                      },
-                    ),
-                  ],
-                ),
+                  ),
+                  Expanded(
+                      child: GrandIcon(
+                    iconData: Icons.update,
+                    labelButton: "Actualizar",
+                    onPress: () {
+                      setState(() {});
+                    },
+                  )),
+                ],
               ),
             ),
           ),
@@ -876,6 +928,7 @@ class _RevisionesState extends State<Revisiones> {
           onEdit: (value) {
             Operadores.editActivity(
                 context: context,
+                keyBoardType: TextInputType.number,
                 tittle: "Editar . . . ",
                 message: "¿Hemoglobina? . . . ",
                 onAcept: (value) {
@@ -920,6 +973,87 @@ class _RevisionesState extends State<Revisiones> {
                   Terminal.printSuccess(message: "recieve $value");
                   setState(() {
                     Valores.hematocrito = double.parse(value);
+                    Navigator.of(context).pop();
+                  });
+                });
+          },
+        ),
+
+        ValuePanel(
+          firstText: "CMHC",
+          secondText: Valores.concentracionMediaHemoglobina.toString(),
+          thirdText: "g/dL",
+          withEditMessage: true,
+          onEdit: (value) {
+            Operadores.editActivity(
+                context: context,
+                keyBoardType: TextInputType.number,
+                tittle: "Editar . . . ",
+                message: "¿C. Media Hemoglobina Corpuscular? . . . ",
+                onAcept: (value) {
+                  Terminal.printSuccess(message: "recieve $value");
+                  setState(() {
+                    Valores.concentracionMediaHemoglobina = double.parse(value);
+                    Navigator.of(context).pop();
+                  });
+                });
+          },
+        ),
+        ValuePanel(
+          firstText: "HCM",
+          secondText: Valores.hemoglobinaCorpuscularMedia.toString(),
+          thirdText: "fL",
+          withEditMessage: true,
+          onEdit: (value) {
+            Operadores.editActivity(
+                context: context,
+                keyBoardType: TextInputType.number,
+                tittle: "Editar . . . ",
+                message: "¿Hemoglobina Corpuscular Media? . . . ",
+                onAcept: (value) {
+                  Terminal.printSuccess(message: "recieve $value");
+                  setState(() {
+                    Valores.hemoglobinaCorpuscularMedia = double.parse(value);
+                    Navigator.of(context).pop();
+                  });
+                });
+          },
+        ),
+        ValuePanel(
+          firstText: "VCM",
+          secondText: Valores.volumenCorpuscularMedio.toString(),
+          thirdText: "pg",
+          withEditMessage: true,
+          onEdit: (value) {
+            Operadores.editActivity(
+                context: context,
+                keyBoardType: TextInputType.number,
+                tittle: "Editar . . . ",
+                message: "¿Volumen Corpuscular Medio? . . . ",
+                onAcept: (value) {
+                  Terminal.printSuccess(message: "recieve $value");
+                  setState(() {
+                    Valores.volumenCorpuscularMedio = double.parse(value);
+                    Navigator.of(context).pop();
+                  });
+                });
+          },
+        ),
+
+        ValuePanel(
+          firstText: "Plaquetas",
+          secondText: Valores.plaquetas.toString(),
+          thirdText: "K/uL",
+          withEditMessage: true,
+          onEdit: (value) {
+            Operadores.editActivity(
+                context: context,
+                tittle: "Editar . . . ",
+                message: "¿Plaquetas? . . . ",
+                onAcept: (value) {
+                  Terminal.printSuccess(message: "recieve $value");
+                  setState(() {
+                    Valores.plaquetas = double.parse(value);
                     Navigator.of(context).pop();
                   });
                 });
@@ -1216,6 +1350,160 @@ class _RevisionesState extends State<Revisiones> {
           },
         ),
         CrossLine(),
+      ],
+    );
+  }
+
+  // **** ********** ********* *****************
+  GridView ventilaciones() {
+    return GridView(
+      padding: const EdgeInsets.all(5.0),
+      controller: ScrollController(),
+      gridDelegate: GridViewTools.gridDelegate(
+          crossAxisCount: isMobile(context) ? 4 : 5, mainAxisExtent: 65), //46
+      children: [
+        ValuePanel(
+          firstText: "",
+          secondText: Valores.modalidadVentilatoria.toString(),
+          thirdText: "",
+          withEditMessage: true,
+          onEdit: (value) {
+          },
+        ),
+        ValuePanel(
+          firstText: "Vt",
+          secondText: Valores.volumenTidal.toString(),
+          thirdText: "mL/min",
+          withEditMessage: true,
+          onEdit: (value) {
+            Operadores.editActivity(
+                context: context,
+                keyBoardType: TextInputType.number,
+                tittle: "Editar . . . ",
+                message: "¿Volumen Tidal? . . . ",
+                onAcept: (value) {
+                  Terminal.printSuccess(message: "recieve $value");
+                  setState(() {
+                    Valores.volumenTidal = double.parse(value);
+                    Navigator.of(context).pop();
+                  });
+                });
+          },
+        ),
+        ValuePanel(
+          firstText: "F. Vent.",
+          secondText: Valores.frecuenciaVentilatoria.toString(),
+          thirdText: "Vent/min",
+          withEditMessage: true,
+          onEdit: (value) {
+            Operadores.editActivity(
+                context: context,
+                tittle: "Editar . . . ",
+                message: "¿Frecuencia Ventilatoria? . . . ",
+                onAcept: (value) {
+                  Terminal.printSuccess(message: "recieve $value");
+                  setState(() {
+                    Valores.frecuenciaVentilatoria = int.parse(value);
+                    Navigator.of(context).pop();
+                  });
+                });
+          },
+        ),
+        ValuePanel(
+          firstText: "P.E.E.P.",
+          secondText: Valores.presionFinalEsiracion.toString(),
+          thirdText: "cmH2O",
+          withEditMessage: true,
+          onEdit: (value) {
+            Operadores.editActivity(
+                context: context,
+                tittle: "Editar . . . ",
+                message: "¿P.E.E.P.? . . . ",
+                onAcept: (value) {
+                  Terminal.printSuccess(message: "recieve $value");
+                  setState(() {
+                    Valores.presionFinalEsiracion = int.parse(value);
+                    Navigator.of(context).pop();
+                  });
+                });
+          },
+        ),
+        ValuePanel(
+          firstText: "FiO2",
+          secondText: Valores.fraccionInspiratoriaVentilatoria.toString(),
+          thirdText: "%",
+          withEditMessage: true,
+          onEdit: (value) {
+            Operadores.editActivity(
+                context: context,
+                tittle: "Editar . . . ",
+                message: "¿FiO2 Programado? . . . ",
+                onAcept: (value) {
+                  Terminal.printSuccess(message: "recieve $value");
+                  setState(() {
+                    Valores.fraccionInspiratoriaVentilatoria = int.parse(value);
+                    Navigator.of(context).pop();
+                  });
+                });
+          },
+        ),
+        ValuePanel(
+          firstText: "Presión Control",
+          secondText: Valores.presionControl.toString(),
+          thirdText: "cmH2O",
+          withEditMessage: true,
+          onEdit: (value) {
+            Operadores.editActivity(
+                context: context,
+                tittle: "Editar . . . ",
+                message: "¿Presión Control? . . . ",
+                onAcept: (value) {
+                  Terminal.printSuccess(message: "recieve $value");
+                  setState(() {
+                    Valores.presionControl = int.parse(value);
+                    Navigator.of(context).pop();
+                  });
+                });
+          },
+        ),
+        ValuePanel(
+          firstText: "P. Peak",
+          secondText: Valores.presionInspiratoriaPico.toString(),
+          thirdText: "cmH2O",
+          withEditMessage: true,
+          onEdit: (value) {
+            Operadores.editActivity(
+                context: context,
+                tittle: "Editar . . . ",
+                message: "¿P. Peak? . . . ",
+                onAcept: (value) {
+                  Terminal.printSuccess(message: "recieve $value");
+                  setState(() {
+                    Valores.presionInspiratoriaPico = int.parse(value);
+                    Navigator.of(context).pop();
+                  });
+                });
+          },
+        ),
+        ValuePanel(
+          firstText: "V. Vent. ",
+          secondText: Valores.volumenVentilatorio.toString(),
+          thirdText: "mL/min",
+          withEditMessage: true,
+          onEdit: (value) {
+            Operadores.editActivity(
+                context: context,
+                tittle: "Editar . . . ",
+                message: "¿Volumen Ventilatorio? . . . ",
+                onAcept: (value) {
+                  Terminal.printSuccess(message: "recieve $value");
+                  setState(() {
+                    Valores.volumenVentilatorio = int.parse(value);
+                    Navigator.of(context).pop();
+                  });
+                });
+          },
+        ),
       ],
     );
   }

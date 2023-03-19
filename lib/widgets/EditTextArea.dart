@@ -46,11 +46,10 @@ class EditTextArea extends StatefulWidget {
       })
       : super(key: key) {
     inputFormat = MaskTextInputFormatter();
-    keyBoardType = TextInputType.multiline;
-
-    obscureText = false;
-    prefixIcon = false;
-    isObscure = false;
+    // keyBoardType = TextInputType.multiline;
+    // obscureText = false;
+    // prefixIcon = false;
+    // isObscure = false;
   }
 
   @override

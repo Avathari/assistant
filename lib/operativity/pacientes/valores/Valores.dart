@@ -280,6 +280,10 @@ class Valores {
   static double? eritrocitos,
       hemoglobina,
       hematocrito,
+      concentracionMediaHemoglobina,
+      volumenCorpuscularMedio,
+      hemoglobinaCorpuscularMedia,
+      plaquetas,
       leucocitosTotales,
       linfocitosTotales,
       neutrofilosTotales,
@@ -515,6 +519,7 @@ class Valores {
         Auxiliares.auxiliares['auxiliarStadistics'],
         Pacientes.ID_Paciente,
         emulated: true);
+    // Terminal.printExpected(message: "Auxiliares ${Auxiliares.auxiliares['auxiliarStadistics']} $aux");
     valores.addAll(aux);
     final elect = await Actividades.consultarId(
         Databases.siteground_database_reggabo,
@@ -568,8 +573,7 @@ class Valores {
         'reportes/';
 
     // Actualización de las Directrices Complementarias ********** ***********
-    Valores.fileAssocieted =
-    "${Pacientes.localRepositoryPath}valores.json";
+    Valores.fileAssocieted = "${Pacientes.localRepositoryPath}valores.json";
     Eticos.fileAssocieted =
         "${Pacientes.localRepositoryPath}eticos.json"; // Eticos.registrarRegistro(); // Si
     Viviendas.fileAssocieted =
@@ -586,20 +590,18 @@ class Valores {
         "${Pacientes.localRepositoryPath}exposiciones.json"; // Sustancias.registrarRegistro();
 
     Patologicos.fileAssocieted =
-    '${Pacientes.localRepositoryPath}patologicos.json';
+        '${Pacientes.localRepositoryPath}patologicos.json';
     Toxicomanias.fileAssocieted =
         "${Pacientes.localRepositoryPath}toxicomanias.json"; // Toxicomanias.registrarRegistro();
     //
     Quirurgicos.fileAssocieted =
         '${Pacientes.localRepositoryPath}quirurgicos.json';
-    Alergicos.fileAssocieted =
-        '${Pacientes.localRepositoryPath}alergicos.json';
+    Alergicos.fileAssocieted = '${Pacientes.localRepositoryPath}alergicos.json';
 
     Diagnosticos.fileAssocieted =
         '${Pacientes.localRepositoryPath}diagnosticos.json';
     Pendientes.fileAssocieted =
         '${Pacientes.localRepositoryPath}pendientes.json';
-
 
     Vitales.fileAssocieted = '${Pacientes.localRepositoryPath}vitales.json';
     Auxiliares.fileAssocieted =
@@ -630,10 +632,10 @@ class Valores {
       Pacientes.esHospitalizado = false;
     }
     //
-    pesoCorporalTotal =toDoubleFromInt(json: json, keyEntered: 'Pace_SV_pct');
+    pesoCorporalTotal = toDoubleFromInt(json: json, keyEntered: 'Pace_SV_pct');
     // = double.parse(json['Pace_SV_pct'] != null ? json['Pace_SV_pct'].toString() : '0');
-    alturaPaciente =toDoubleFromInt(json: json, keyEntered: 'Pace_SV_est');
-       // json['Pace_SV_est'] ?? 0.0;
+    alturaPaciente = toDoubleFromInt(json: json, keyEntered: 'Pace_SV_est');
+    // json['Pace_SV_est'] ?? 0.0;
 
     tensionArterialSystolica = json['Pace_SV_tas'] ?? 0;
     tensionArterialDyastolica = json['Pace_SV_tad'] ?? 0;
@@ -669,6 +671,12 @@ class Valores {
     eritrocitos = double.parse(json['Eritrocitos'] ?? '0');
     hematocrito = double.parse(json['Hematocrito'] ?? '0');
     hemoglobina = double.parse(json['Hemoglobina'] ?? '0');
+
+    concentracionMediaHemoglobina = double.parse(json['CMHC'] ?? '0');
+    volumenCorpuscularMedio = double.parse(json['VCM'] ?? '0');
+    hemoglobinaCorpuscularMedia = double.parse(json['HCM'] ?? '0');
+
+    plaquetas  = double.parse(json['Plaquetas'] ?? '0');
 
     leucocitosTotales = double.parse(json['Leucocitos_Totales'] ?? '0');
     neutrofilosTotales = double.parse(json['Neutrofilos_Totales'] ?? '0');
@@ -3662,7 +3670,7 @@ class Items {
     list.add('N/A');
     list.addAll(Listas.listOfRange(maxNum: 100));
     return list;
-}
+  }
 
   static List<String> Hemotipo = [
     '',
