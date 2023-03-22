@@ -1531,7 +1531,6 @@ class Valores {
       return 0;
     } //# Frecuencia_Cardiaca_Maxima
   }
-
   static double get frecuenciaCardiacaBlanco =>
       ((220 - Valores.edad!) * 0.7); // # Frecuencia_Cardiaca_Blanco
   static double get frecuenciaCardiacaIntrinseca =>
@@ -1634,13 +1633,14 @@ class Valores {
   }
 
   static String get trastornoBases {
-    if (Valores.excesoBaseArteriales! < -3) {
+    if (Valores.EB< -3) {
       return 'Consumo de Bases'; // Acidosis
     } else if (Valores.poArteriales! > 3) {
       return 'Retención de Bases'; // Alcalosis
     } else {
       return 'Normal';
     }
+    // excesoBaseArteriales
   }
 
   static String get trastornoGap {
@@ -3034,7 +3034,7 @@ class Formatos {
       "tasa de filtrado glomerular ${Valores.tasaRenalCrockoft_Gault.toStringAsFixed(0)} mL/min/1.73 m2 (Cockcroft - Gault). \n"
       "pH ${Valores.pHArteriales}, "
       "HCO3- ${Valores.bicarbonatoArteriales!.toStringAsFixed(1)} mmol/L, "
-      "E.B. ${Valores.excesoBaseArteriales!.toStringAsFixed(1)} mmol/L. "
+      "E.B. ${Valores.EB.toStringAsFixed(1)} mmol/L. " // excesoBaseArteriales
       "Sodio ${Valores.sodio!.toStringAsFixed(0)} mmol/L, "
       "potasio ${Valores.potasio!.toStringAsFixed(1)} mmol/L, "
       "cloro: ${Valores.cloro!.toStringAsFixed(0)} mmol/L. \n";

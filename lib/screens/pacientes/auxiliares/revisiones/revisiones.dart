@@ -275,23 +275,30 @@ class _RevisionesState extends State<Revisiones> {
           Expanded(
               flex: 8,
               child: Container(
-                  margin: const EdgeInsets.only(bottom: 12.0, top: 12.0),
-                  decoration: ContainerDecoration.roundedDecoration(),
-                  child: widget.actualView == 0
-                      ? Container()
-                      : widget.actualView == 1
-                          ? biometrias()
-                          : widget.actualView == 2
-                              ? quimicas()
-                              : widget.actualView == 3
-                                  ? electrolitos()
-                                  : widget.actualView == 3
-                                      ? electrolitos()
-                                      : widget.actualView == 3
-                                          ? electrolitos()
-                                          : widget.actualView == 3
-                                              ? electrolitos()
-                                              : Container())),
+                margin: const EdgeInsets.only(bottom: 12.0, top: 12.0),
+                decoration: ContainerDecoration.roundedDecoration(),
+                child: widget.actualView == 0
+                    ? Container()
+                    : widget.actualView == 1
+                        ? biometrias()
+                        : widget.actualView == 2
+                            ? quimicas()
+                            : widget.actualView == 3
+                                ? electrolitos()
+                                : widget.actualView == 4
+                                    ? arteriales()
+                                    : widget.actualView == 5
+                                        ? venosos()
+                                        : widget.actualView == 3
+                                            ? electrolitos()
+                                            : widget.actualView == 3
+                                                ? electrolitos()
+                                                : widget.actualView == 3
+                                                    ? electrolitos()
+                                                    : widget.actualView == 3
+                                                        ? electrolitos()
+                                                        : Container(),
+              )),
           Expanded(
             flex: 2,
             child: Container(
@@ -332,6 +339,24 @@ class _RevisionesState extends State<Revisiones> {
                               });
                             },
                           ),
+                          GrandButton(
+                            weigth: 2000,
+                            labelButton: 'Gasometría Arterial',
+                            onPress: () {
+                              setState(() {
+                                widget.actualView = 4;
+                              });
+                            },
+                          ),
+                          GrandButton(
+                            weigth: 2000,
+                            labelButton: 'Gasometría Venosa',
+                            onPress: () {
+                              setState(() {
+                                widget.actualView = 5;
+                              });
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -339,7 +364,7 @@ class _RevisionesState extends State<Revisiones> {
                   Expanded(
                       child: GrandIcon(
                     iconData: Icons.update,
-                        labelButton: "Actualizar",
+                    labelButton: "Actualizar",
                     onPress: () {
                       setState(() {});
                     },
@@ -764,6 +789,24 @@ class _RevisionesState extends State<Revisiones> {
                             },
                           ),
                           GrandIcon(
+                            iconData: Icons.outbox,
+                            labelButton: 'Gasometría Arterial',
+                            onPress: () {
+                              setState(() {
+                                widget.actualView = 4;
+                              });
+                            },
+                          ),
+                          GrandIcon(
+                            iconData: Icons.outbox,
+                            labelButton: 'Gasometría Arterial',
+                            onPress: () {
+                              setState(() {
+                                widget.actualView = 5;
+                              });
+                            },
+                          ),
+                          GrandIcon(
                             iconData: Icons.air,
                             labelButton: 'Ventilatorios',
                             onPress: () {
@@ -913,6 +956,7 @@ class _RevisionesState extends State<Revisiones> {
     );
   }
 
+  // **** ********** ********* *****************
   GridView biometrias() {
     return GridView(
       padding: const EdgeInsets.all(5.0),
@@ -978,7 +1022,6 @@ class _RevisionesState extends State<Revisiones> {
                 });
           },
         ),
-
         ValuePanel(
           firstText: "CMHC",
           secondText: Valores.concentracionMediaHemoglobina.toString(),
@@ -1039,7 +1082,6 @@ class _RevisionesState extends State<Revisiones> {
                 });
           },
         ),
-
         ValuePanel(
           firstText: "Plaquetas",
           secondText: Valores.plaquetas.toString(),
@@ -1354,6 +1396,224 @@ class _RevisionesState extends State<Revisiones> {
     );
   }
 
+  GridView arteriales() {
+    return GridView(
+      padding: const EdgeInsets.all(5.0),
+      controller: ScrollController(),
+      gridDelegate: GridViewTools.gridDelegate(
+          crossAxisCount: isMobile(context) ? 4 : 5, mainAxisExtent: 65), //46
+      children: [
+        ValuePanel(
+          firstText: "pH Arterial",
+          secondText: Valores.pHArteriales.toString(),
+          thirdText: "",
+          withEditMessage: true,
+          onEdit: (value) {
+            Operadores.editActivity(
+                context: context,
+                keyBoardType: TextInputType.number,
+                tittle: "Editar . . . ",
+                message: "¿pH Arterial? . . . ",
+                onAcept: (value) {
+                  Terminal.printSuccess(message: "recieve $value");
+                  setState(() {
+                    Valores.pHArteriales = double.parse(value);
+                    Navigator.of(context).pop();
+                  });
+                });
+          },
+        ),
+        ValuePanel(
+          firstText: "pCO2 Arterial",
+          secondText: Valores.pcoArteriales.toString(),
+          thirdText: "mmHg",
+          withEditMessage: true,
+          onEdit: (value) {
+            Operadores.editActivity(
+                context: context,
+                tittle: "Editar . . . ",
+                message: "¿pCO2 Arterial? . . . ",
+                onAcept: (value) {
+                  Terminal.printSuccess(message: "recieve $value");
+                  setState(() {
+                    Valores.pcoArteriales = double.parse(value);
+                    Navigator.of(context).pop();
+                  });
+                });
+          },
+        ),
+        ValuePanel(
+          firstText: "pO2 Arterial",
+          secondText: Valores.poArteriales.toString(),
+          thirdText: "mmHg",
+          withEditMessage: true,
+          onEdit: (value) {
+            Operadores.editActivity(
+                context: context,
+                tittle: "Editar . . . ",
+                message: "¿pO2 Arteriales? . . . ",
+                onAcept: (value) {
+                  Terminal.printSuccess(message: "recieve $value");
+                  setState(() {
+                    Valores.poArteriales = double.parse(value);
+                    Navigator.of(context).pop();
+                  });
+                });
+          },
+        ),
+        ValuePanel(
+          firstText: "HCO3- Arterial",
+          secondText: Valores.bicarbonatoArteriales.toString(),
+          thirdText: "mmol/L",
+          withEditMessage: true,
+          onEdit: (value) {
+            Operadores.editActivity(
+                context: context,
+                keyBoardType: TextInputType.number,
+                tittle: "Editar . . . ",
+                message: "¿HCO3- Arterial? . . . ",
+                onAcept: (value) {
+                  Terminal.printSuccess(message: "recieve $value");
+                  setState(() {
+                    Valores.bicarbonatoArteriales = double.parse(value);
+                    Navigator.of(context).pop();
+                  });
+                });
+          },
+        ),
+        ValuePanel(
+          firstText: "SaO2",
+          secondText: Valores.soArteriales.toString(),
+          thirdText: "%",
+          withEditMessage: true,
+          onEdit: (value) {
+            Operadores.editActivity(
+                context: context,
+                keyBoardType: TextInputType.number,
+                tittle: "Editar . . . ",
+                message: "¿SO2 Arterial? . . . ",
+                onAcept: (value) {
+                  Terminal.printSuccess(message: "recieve $value");
+                  setState(() {
+                    Valores.soArteriales = double.parse(value);
+                    Navigator.of(context).pop();
+                  });
+                });
+          },
+        ),
+      ],
+    );
+  }
+
+  GridView venosos() {
+    return GridView(
+      padding: const EdgeInsets.all(5.0),
+      controller: ScrollController(),
+      gridDelegate: GridViewTools.gridDelegate(
+          crossAxisCount: isMobile(context) ? 4 : 5, mainAxisExtent: 65), //46
+      children: [
+        ValuePanel(
+          firstText: "pH Venoso",
+          secondText: Valores.pHVenosos.toString(),
+          thirdText: "",
+          withEditMessage: true,
+          onEdit: (value) {
+            Operadores.editActivity(
+                context: context,
+                keyBoardType: TextInputType.number,
+                tittle: "Editar . . . ",
+                message: "¿pH Venoso? . . . ",
+                onAcept: (value) {
+                  Terminal.printSuccess(message: "recieve $value");
+                  setState(() {
+                    Valores.pHVenosos = double.parse(value);
+                    Navigator.of(context).pop();
+                  });
+                });
+          },
+        ),
+        ValuePanel(
+          firstText: "pCO2 Venoso",
+          secondText: Valores.pcoVenosos.toString(),
+          thirdText: "mmHg",
+          withEditMessage: true,
+          onEdit: (value) {
+            Operadores.editActivity(
+                context: context,
+                tittle: "Editar . . . ",
+                message: "¿pCO2 Venoso? . . . ",
+                onAcept: (value) {
+                  Terminal.printSuccess(message: "recieve $value");
+                  setState(() {
+                    Valores.pcoVenosos = double.parse(value);
+                    Navigator.of(context).pop();
+                  });
+                });
+          },
+        ),
+        ValuePanel(
+          firstText: "pO2 Venoso",
+          secondText: Valores.poVenosos.toString(),
+          thirdText: "mmHg",
+          withEditMessage: true,
+          onEdit: (value) {
+            Operadores.editActivity(
+                context: context,
+                tittle: "Editar . . . ",
+                message: "¿pO2 Venosos? . . . ",
+                onAcept: (value) {
+                  Terminal.printSuccess(message: "recieve $value");
+                  setState(() {
+                    Valores.poVenosos = double.parse(value);
+                    Navigator.of(context).pop();
+                  });
+                });
+          },
+        ),
+        ValuePanel(
+          firstText: "HCO3- Venoso",
+          secondText: Valores.bicarbonatoVenosos.toString(),
+          thirdText: "mmol/L",
+          withEditMessage: true,
+          onEdit: (value) {
+            Operadores.editActivity(
+                context: context,
+                keyBoardType: TextInputType.number,
+                tittle: "Editar . . . ",
+                message: "¿HCO3- Venoso? . . . ",
+                onAcept: (value) {
+                  Terminal.printSuccess(message: "recieve $value");
+                  setState(() {
+                    Valores.bicarbonatoVenosos = double.parse(value);
+                    Navigator.of(context).pop();
+                  });
+                });
+          },
+        ),
+        ValuePanel(
+          firstText: "SaO2",
+          secondText: Valores.soVenosos.toString(),
+          thirdText: "%",
+          withEditMessage: true,
+          onEdit: (value) {
+            Operadores.editActivity(
+                context: context,
+                keyBoardType: TextInputType.number,
+                tittle: "Editar . . . ",
+                message: "¿SO2 Venoso? . . . ",
+                onAcept: (value) {
+                  Terminal.printSuccess(message: "recieve $value");
+                  setState(() {
+                    Valores.soVenosos = double.parse(value);
+                    Navigator.of(context).pop();
+                  });
+                });
+          },
+        ),
+      ],
+    );
+  }
+
   // **** ********** ********* *****************
   GridView ventilaciones() {
     return GridView(
@@ -1367,8 +1627,7 @@ class _RevisionesState extends State<Revisiones> {
           secondText: Valores.modalidadVentilatoria.toString(),
           thirdText: "",
           withEditMessage: true,
-          onEdit: (value) {
-          },
+          onEdit: (value) {},
         ),
         ValuePanel(
           firstText: "Vt",

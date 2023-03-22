@@ -1,14 +1,14 @@
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
+import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/GridLayout.dart';
 import 'package:assistant/widgets/ShowText.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
-import 'package:carousel_slider/carousel_controller.dart';
+import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class Gasometricos extends StatefulWidget {
   const Gasometricos({Key? key}) : super(key: key);
@@ -24,342 +24,384 @@ class _GasometricosState extends State<Gasometricos> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-    TittlePanel(color:Colors.black, textPanel: 'Análisis Gasométrico'),
-    Expanded(
-      child: SingleChildScrollView(
-        controller: ScrollController(),
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            GrandIcon(
-              iconData: Icons.dataset,
-              labelButton: 'Datos Iniciales',
-              onPress: () {
-                setState(() {
-                  carouselController.jumpToPage(0);
-                });
-              },
+        TittlePanel(color: Colors.black, textPanel: 'Análisis Gasométrico'),
+        Expanded(
+          child: SingleChildScrollView(
+            controller: ScrollController(),
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GrandIcon(
+                  iconData: Icons.dataset,
+                  labelButton: 'Datos Iniciales',
+                  onPress: () {
+                    setState(() {
+                      carouselController.jumpToPage(0);
+                    });
+                  },
+                ),
+                GrandIcon(
+                  iconData: Icons.add_chart,
+                  labelButton: 'Análisis Gasométrico',
+                  onPress: () {
+                    setState(() {
+                      carouselController.jumpToPage(1);
+                    });
+                  },
+                ),
+                GrandIcon(
+                  iconData: Icons.settings_backup_restore,
+                  labelButton: 'Complementarios',
+                  onPress: () {
+                    setState(() {
+                      carouselController.jumpToPage(2);
+                    });
+                  },
+                ),
+                GrandIcon(
+                  iconData: Icons.compress_outlined,
+                  labelButton: 'Compensación',
+                  onPress: () {
+                    setState(() {
+                      carouselController.jumpToPage(3);
+                    });
+                  },
+                ),
+                GrandIcon(
+                  iconData: Icons.change_circle_outlined,
+                  labelButton: 'Oxigenación',
+                  onPress: () {
+                    setState(() {
+                      carouselController.jumpToPage(4);
+                    });
+                  },
+                ),
+                GrandIcon(
+                  iconData: Icons.water_drop_outlined,
+                  labelButton: 'Perfil Metabólico',
+                  onPress: () {
+                    setState(() {
+                      carouselController.jumpToPage(5);
+                    });
+                  },
+                ),
+                GrandIcon(
+                  iconData: Icons.change_circle_outlined,
+                  labelButton: 'Reglas del Bicarbonato',
+                  onPress: () {
+                    setState(() {
+                      carouselController.jumpToPage(6);
+                    });
+                  },
+                ),
+              ],
             ),
-            GrandIcon(
-              iconData: Icons.add_chart,
-              labelButton: 'Análisis Gasométrico',
-              onPress: () {
-                setState(() {
-                  carouselController.jumpToPage(1);
-                });
-              },
-            ),
-            GrandIcon(
-              iconData: Icons.settings_backup_restore,
-              labelButton: 'Complementarios',
-              onPress: () {
-                setState(() {
-                  carouselController.jumpToPage(2);
-                });
-              },
-            ),
-            GrandIcon(
-              iconData: Icons.compress_outlined,
-              labelButton: 'Compensación',
-              onPress: () {
-                setState(() {
-                  carouselController.jumpToPage(3);
-                });
-              },
-            ),
-            GrandIcon(
-              iconData: Icons.change_circle_outlined,
-              labelButton: 'Oxigenación',
-              onPress: () {
-                setState(() {
-                  carouselController.jumpToPage(4);
-                });
-              },
-            ),
-            GrandIcon(
-              iconData: Icons.water_drop_outlined,
-              labelButton: 'Perfil Metabólico',
-              onPress: () {
-                setState(() {
-                  carouselController.jumpToPage(5);
-                });
-              },
-            ),
-            GrandIcon(
-              iconData: Icons.change_circle_outlined,
-              labelButton: 'Reglas del Bicarbonato',
-              onPress: () {
-                setState(() {
-                  carouselController.jumpToPage(6);
-                });
-              },
-            ),
-          ],
+          ),
         ),
-      ),
-    ),
-    Expanded(
-      flex: 5,
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: CarouselSlider(
-            items: [
-              SingleChildScrollView(
-                controller: ScrollController(),
-                child: Column(
-                  children: [
-                    ShowText(
-                      title: 'Peso Corporal Total',
-                      data: Valores.pesoCorporalTotal,
-                      medida: 'Kg',
-                    ),
-                    ShowText(
-                      title: 'pH',
-                      data: Valores.pHArteriales,
-                      medida: '',
-                    ),
-                    ShowText(
-                      title: 'PCO2',
-                      data: Valores.pcoArteriales,
-                      fractionDigits: 0,
-                      medida: 'mmHg',
-                    ),
-                    ShowText(
-                      title: 'PO2',
-                      data: Valores.poArteriales,
-                      fractionDigits: 0,
-                      medida: 'mmHg',
-                    ),
-                    ShowText(
-                      title: 'HCO3-',
-                      data: Valores.bicarbonatoArteriales,
-                      medida: 'mmol/L',
-                      fractionDigits: 0,
-                    ),
-                    ShowText(
-                      title: 'E.B.',
-                      data: Valores.excesoBaseArteriales,
-                      medida: 'mmol/L',
-                    ),
-                    ShowText(
-                      title: 'SO2',
-                      data: Valores.soArteriales,
-                      medida: '%',
-                    ),
-                    ShowText(
-                      title: 'FiO2',
-                      data: Valores.fioArteriales,
-                      medida: '%',
-                    ),
-                    CrossLine(),
-                    ShowText(
-                      title: 'Temperatura Corporal',
-                      data: Valores.temperaturCorporal,
-                      medida: '°C',
-                    ),
-                  ],
-                ),
-              ),
-              SingleChildScrollView(
-                controller: ScrollController(),
-                child: Column(
-                  children: [
-                    TittlePanel(textPanel: "Trastorno Primario \n${Valores.trastornoPrimario} (pH ${Valores.pHArteriales})"),
-                    TittlePanel(textPanel: "Trastorno Secundario \n${Valores.trastornoSecundario} (PCO2 ${Valores.pcoArteriales!.toStringAsFixed(0)})"),
-                  ],
-                ),
-              ),
-              SingleChildScrollView(
-                controller: ScrollController(),
-                child: GridLayout(columnCount: isMobile(context) ? 1 : 2,
+        Expanded(
+          flex: 5,
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: CarouselSlider(
+                items: [
+                  GridView(
+                    padding: const EdgeInsets.all(5.0),
+                    controller: ScrollController(),
+                    gridDelegate: GridViewTools.gridDelegate(
+                        crossAxisCount: isMobile(context) ? 3 : 5,
+                        mainAxisExtent: 65), //46
                     children: [
-                  TittlePanel(textPanel: "Alteración del Oxígeno \n${Valores.trastornoTerciario} (pO2 ${Valores.poArteriales!.toStringAsFixed(0)})"),
-                  TittlePanel(textPanel: "Alteración del CO2 \n${Valores.alteracionRespiratoria} (HCO3- ${Valores.pcoArteriales})"),
-                  TittlePanel(textPanel: "Alteración por Bases \n${Valores.trastornoBases} (EB ${Valores.EB.toStringAsFixed(2)})"),
-                  TittlePanel(textPanel: "Alteración del Anion Gap \n${Valores.trastornoGap} (GAP ${Valores.GAP.toStringAsFixed(0)})"),
-                ]),
-              ),
-              SingleChildScrollView(
-                controller: ScrollController(),
-                child: Column(children: [
-                  ShowText(
-                    title: 'EB Esperado',
-                    data: Valores.EBb,
-                    medida: 'mmol/L',
-                  ),
-                  ShowText(
-                    title: 'PCO2 Esperado',
-                    data: Valores.PCO2C,
-                    medida: 'mmHg',
-                  ),
-                  ShowText(
-                    title: 'TCO2',
-                    data: Valores.TCO,
-                    medida: 'mmHg',
-                  ),
-                  ShowText(
-                    title: 'PCO2 Corregido',
-                    data: Valores.PCO2C,
-                    medida: 'mmHg',
-                  ),
-                  ShowText(
-                    title: 'EB Corregido',
-                    data: Valores.EBecf,
-                    medida: 'mmol/L',
-                  ),
-                  ShowText(
-                    title: 'EB Estándar',
-                    data: Valores.EB,
-                    medida: 'mmol/L',
-                  ),
-                ]),
-              ),
-              SingleChildScrollView(
-                controller: ScrollController(),
-                child: Column(children: [
-                  ShowText(
-                    title: 'Indice PAFI',
-                    data: Valores.PAFI,
-                    medida: '',
-                  ),
-                  ShowText(
-                    title: 'Indice SAFI',
-                    data: Valores.SAFI,
-                    medida: '',
-                  ),
-                  ShowText(
-                    title: 'PAO2',
-                    data: Valores.PAO,
-                    medida: 'mmHg',
-                  ),
+                      ValuePanel(
+                        firstText: "P.C.T.",
+                        secondText: Valores.pesoCorporalTotal.toString(),
+                        thirdText: "Kg",
+                      ),
+                      ValuePanel(
+                        firstText: "pH",
+                        secondText: Valores.pHArteriales.toString(),
+                        thirdText: "",
+                      ),
+                      ValuePanel(
+                        firstText: "PaCO2",
+                        secondText: Valores.pcoArteriales.toString(),
+                        thirdText: "mmHg",
+                      ),
+                      ValuePanel(
+                        firstText: "PaO2",
+                        secondText: Valores.poArteriales.toString(),
+                        thirdText: "mmHg",
+                      ),
 
-                  ShowText(
-                    title: 'Aa-O2',
-                    data: Valores.GAA,
-                    medida: 'mmHg',
+                      ValuePanel(
+                        firstText: "HCO3-",
+                        secondText: Valores.bicarbonatoArteriales.toString(),
+                        thirdText: "mmol/L",
+                      ),
+                      ValuePanel(
+                        firstText: "EB",
+                        secondText: Valores.EB.toStringAsFixed(2), // excesoBaseArteriales
+                        thirdText: "mmol/L",
+                      ),
+                      ValuePanel(
+                        firstText: "SaO2",
+                        secondText: Valores.soArteriales.toString(),
+                        thirdText: "%",
+                      ),
+                      ValuePanel(
+                        firstText: "FiO2",
+                        secondText: Valores.fioArteriales.toString(),
+                        thirdText: "%",
+                      ),
+                      ValuePanel(
+                        firstText: "SaO2",
+                        secondText: Valores.soArteriales.toString(),
+                        thirdText: "%",
+                      ),
+                      CrossLine(),
+                      ValuePanel(
+                        firstText: "Temp. C.",
+                        secondText: Valores.temperaturCorporal.toString(),
+                        thirdText: "°C",
+                      ),
+                      CrossLine(),
+                      CrossLine(),
+                      ValuePanel(
+                        firstText: "Fecha",
+                        secondText: Valores.fechaGasometriaArterial.toString(),
+                        thirdText: "",
+                      ),
+                      CrossLine(),
+                    ],
                   ),
-                  ShowText(
-                    title: 'Dif. Aa-O2',
-                    data: Valores.DAA,
-                    medida: 'mmHg',
+                  SingleChildScrollView(
+                    controller: ScrollController(),
+                    child: Column(
+                      children: [
+                        TittlePanel(
+                            textPanel:
+                                "Trastorno Primario \n${Valores.trastornoPrimario} (pH ${Valores.pHArteriales})"),
+                        TittlePanel(
+                            textPanel:
+                                "Trastorno Secundario \n${Valores.trastornoSecundario} (PCO2 ${Valores.pcoArteriales!.toStringAsFixed(0)})"),
+                      ],
+                    ),
                   ),
-                  ShowText(
-                    title: 'Relación PaO2/PAO2',
-                    data: Valores.PaO2PAO2,
-                    medida: 'mmHg',
+                  SingleChildScrollView(
+                    controller: ScrollController(),
+                    child: GridLayout(
+                        columnCount: isMobile(context) ? 1 : 2,
+                        children: [
+                          TittlePanel(
+                              textPanel:
+                                  "Alteración del Oxígeno \n${Valores.trastornoTerciario} (pO2 ${Valores.poArteriales!.toStringAsFixed(0)})"),
+                          TittlePanel(
+                              textPanel:
+                                  "Alteración del CO2 \n${Valores.alteracionRespiratoria} (HCO3- ${Valores.pcoArteriales})"),
+                          TittlePanel(
+                              textPanel:
+                                  "Alteración por Bases \n${Valores.trastornoBases} (EB ${Valores.EB.toStringAsFixed(2)})"),
+                          TittlePanel(
+                              textPanel:
+                                  "Alteración del Anion Gap \n${Valores.trastornoGap} (GAP ${Valores.GAP.toStringAsFixed(0)})"),
+                        ]),
                   ),
-                ]),
-              ),
-              SingleChildScrollView(
-                controller: ScrollController(),
-                child: Column(children: [
-                  ShowText(
-                    title: 'Osmolaridad',
-                    data: Valores.osmolaridadSerica,
-                    medida: 'mOsm/L',
+                  SingleChildScrollView(
+                    controller: ScrollController(),
+                    child: Column(children: [
+                      ShowText(
+                        title: 'EB Esperado',
+                        data: Valores.EBb,
+                        medida: 'mmol/L',
+                      ),
+                      ShowText(
+                        title: 'PCO2 Esperado',
+                        data: Valores.PCO2C,
+                        medida: 'mmHg',
+                      ),
+                      ShowText(
+                        title: 'TCO2',
+                        data: Valores.TCO,
+                        medida: 'mmHg',
+                      ),
+                      ShowText(
+                        title: 'PCO2 Corregido',
+                        data: Valores.PCO2C,
+                        medida: 'mmHg',
+                      ),
+                      ShowText(
+                        title: 'EB Corregido',
+                        data: Valores.EBecf,
+                        medida: 'mmol/L',
+                      ),
+                      ShowText(
+                        title: 'EB Estándar',
+                        data: Valores.EB,
+                        medida: 'mmol/L',
+                      ),
+                    ]),
                   ),
-                  ShowText(
-                    title: 'GAP Osmolal',
-                    data: Valores.GAPO,
-                    medida: 'mOsm/L',
+                  SingleChildScrollView(
+                    controller: ScrollController(),
+                    child: Column(children: [
+                      ShowText(
+                        title: 'Indice PAFI',
+                        data: Valores.PAFI,
+                        medida: '',
+                      ),
+                      ShowText(
+                        title: 'Indice SAFI',
+                        data: Valores.SAFI,
+                        medida: '',
+                      ),
+                      ShowText(
+                        title: 'PAO2',
+                        data: Valores.PAO,
+                        medida: 'mmHg',
+                      ),
+                      ShowText(
+                        title: 'Aa-O2',
+                        data: Valores.GAA,
+                        medida: 'mmHg',
+                      ),
+                      ShowText(
+                        title: 'Dif. Aa-O2',
+                        data: Valores.DAA,
+                        medida: 'mmHg',
+                      ),
+                      ShowText(
+                        title: 'Relación PaO2/PAO2',
+                        data: Valores.PaO2PAO2,
+                        medida: 'mmHg',
+                      ),
+                    ]),
                   ),
-                  ShowText(
-                    title: 'Anion GAP',
-                    data: Valores.GAP,
-                    medida: '',
+                  GridView(
+                    padding: const EdgeInsets.all(5.0),
+                    controller: ScrollController(),
+                    gridDelegate: GridViewTools.gridDelegate(
+                        crossAxisCount: isMobile(context) ? 3 : 5,
+                        mainAxisExtent: 65), //46
+                    children: [
+                      ValuePanel(
+                        firstText: "Osm",
+                        secondText: Valores.osmolaridadSerica.toStringAsFixed(0),
+                        thirdText: "mOsm//L",
+                      ),
+                      ValuePanel(
+                        firstText: "Osm Gap",
+                        secondText: Valores.GAPO.toStringAsFixed(0),
+                        thirdText: "mOsm/L",
+                      ),
+                      ValuePanel(
+                        firstText: "a-GAP",
+                        secondText: Valores.GAP.toStringAsFixed(0),
+                        thirdText: "",
+                      ),
+                      ValuePanel(
+                        firstText: "Delta GAP",
+                        secondText: Valores.d_GAP.toStringAsFixed(2),
+                        thirdText: "",
+                      ),
+                      CrossLine(),
+                      ValuePanel(
+                        firstText: "Delta-Delta GAP",
+                        secondText: Valores.D_d_GAP.toStringAsFixed(2),
+                        thirdText: "",
+                      ),
+                      ValuePanel(
+                        firstText: "Dif. Aniones Libres",
+                        secondText: Valores.DIF.toStringAsFixed(2),
+                        thirdText: "",
+                      ),
+                      CrossLine(),
+                      ValuePanel(
+                        firstText: "Efecto Buffer",
+                        secondText: Valores.EBvGilFix.toStringAsFixed(2),
+                        thirdText: "",
+                      ),
+                      ValuePanel(
+                        firstText: "Dif. Anionica",
+                        secondText: Valores.DA.toStringAsFixed(2),
+                        thirdText: "",
+                      ),
+                      ValuePanel(
+                        firstText: "Verdaero Déf Base",
+                        secondText: Valores.VDb.toStringAsFixed(2),
+                        thirdText: "",
+                      ),
+                      ValuePanel(
+                        firstText: "[H+]",
+                        secondText: Valores.H.toStringAsFixed(2),
+                        thirdText: "",
+                      ),
+                      CrossLine(),
+                      ValuePanel(
+                        firstText: "pH[]",
+                        secondText: Valores.PH.toStringAsFixed(2),
+                        thirdText: "",
+                      ),
+                      CrossLine(),
+                    ],
                   ),
-                  ShowText(
-                    title: 'Delta GAP',
-                    data: Valores.d_GAP,
-                    medida: '',
+                  GridView(
+                    padding: const EdgeInsets.all(5.0),
+                    controller: ScrollController(),
+                    gridDelegate: GridViewTools.gridDelegate(
+                        crossAxisCount: isMobile(context) ? 3 : 5,
+                        mainAxisExtent: 65), //46
+                    children: [
+                      ValuePanel(
+                        firstText: "1ra HCO3-",
+                        secondText: Valores.HCOR_a.toString(),
+                        thirdText: "",
+                      ),
+                      ValuePanel(
+                        firstText: "2da HCO3-",
+                        secondText: Valores.HCOR_b.toStringAsFixed(2),
+                        thirdText: "",
+                      ),
+                      ValuePanel(
+                        firstText: "3ra HCO3-",
+                        secondText: Valores.HCOR_c.toStringAsFixed(2),
+                        thirdText: "mEq/L",
+                      ),
+                      CrossLine(),
+                      CrossLine(),
+                      CrossLine(),
+                      ValuePanel(
+                        firstText: "Def. HCO3-",
+                        secondText: Valores.deficitBicarbonato.toStringAsFixed(2),
+                        thirdText: "mEq/L",
+                      ),
+                      CrossLine(),
+                      ValuePanel(
+                        firstText: "Def. HCO3- (Astrup)",
+                        secondText: Valores.HCOAM.toStringAsFixed(2),
+                        thirdText: "mEq/L",
+                      ),
+
+                      ValuePanel(
+                        firstText: "Rep. HCO3-",
+                        secondText: Valores.VHCOAM.toStringAsFixed(2),
+                        thirdText: "mEq/L",
+                      ),
+                      CrossLine(),
+                      ValuePanel(
+                        firstText: "No. Amp. HCO3-",
+                        secondText: Valores.NOAMP.toStringAsFixed(0),
+                        thirdText: "amp al 7.5%",
+                      ),
+                    ],
                   ),
-                  ShowText(
-                    title: 'Delta-Delta GAP',
-                    data: Valores.D_d_GAP,
-                    medida: '',
-                  ),
-                  ShowText(
-                    title: 'Dif. Aniones Libres',
-                    data: Valores.DIF,
-                    medida: '',
-                  ),
-                  ShowText(
-                    title: 'Efecto Búffer',
-                    data: Valores.EBvGilFix,
-                    medida: '',
-                  ),
-                  ShowText(
-                    title: 'Diferencia Anionica',
-                    data: Valores.DA,
-                    medida: '',
-                  ),
-                  ShowText(
-                    title: 'Verdadero Déficit de Base',
-                    data: Valores.VDb,
-                    medida: '',
-                  ),
-                  ShowText(
-                    title: '[H+]',
-                    data: Valores.H,
-                    medida: '',
-                  ),
-                  ShowText(
-                    title: 'pH[]',
-                    data: Valores.PH,
-                    medida: '',
-                  ),
-                ]),
-              ),
-              SingleChildScrollView(
-                controller: ScrollController(),
-                child: Column(children: [
-                  ShowText(
-                    title: 'Primera Regla del Bicarbonato',
-                    data: Valores.HCOR_a,
-                    medida: '',
-                  ),
-                  ShowText(
-                    title: 'Segunda Regla del Bicarbonato',
-                    data: Valores.HCOR_b,
-                    medida: '',
-                  ),
-                  ShowText(
-                    title: 'Tercera Regla del Bicarbonato',
-                    data: Valores.HCOR_c,
-                    medida: 'mEq/L',
-                  ),
-                  ShowText(
-                    title: 'Déficit de Bicarbonato',
-                    data: Valores.deficitBicarbonato,
-                    medida: 'mEq/L',
-                  ),
-                  ShowText(
-                    title: 'Déficit de Bicarbonato (Astrup)',
-                    data: Valores.HCOAM,
-                    medida: 'mEq/L',
-                  ),
-                  CrossLine(),
-                  ShowText(
-                    title: 'Reposición de Bicarbonato',
-                    data: Valores.VHCOAM,
-                    medida: 'mEq/L',
-                  ),
-                  ShowText(
-                    title: 'No Ampulas de Bicarbonato',
-                    data: Valores.NOAMP,
-                    medida: 'amp al 7.5%',
-                  ),
-                ]),
-              ),
-            ],
-            carouselController: carouselController,
-            options: CarouselOptions(
-                height: 500,
-                enableInfiniteScroll: false,
-                viewportFraction: 1.0)),
-      ),
-    ),
+                ],
+                carouselController: carouselController,
+                options: CarouselOptions(
+                    height: 500,
+                    enableInfiniteScroll: false,
+                    viewportFraction: 1.0)),
+          ),
+        ),
       ],
     );
   }
