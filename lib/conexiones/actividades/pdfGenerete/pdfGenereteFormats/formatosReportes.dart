@@ -37,12 +37,14 @@ class FormatosReportes {
       procedimientoSOP(paraph), // 13 : Sonda Endopleural
       procedimientoTEN(paraph), // 14 : Catéter Temckhoff
       //
-      reporteIngreso(paraph), // 0 : Ingreso
-      reporteIngreso(paraph), // 0 : Ingreso
-      reporteIngreso(paraph), // 0 : Ingreso
-      reporteIngreso(paraph), // 0 : Ingreso
-      reporteIngreso(paraph), // 0 : Ingreso
-      //
+      reporteIngreso(paraph), // 15 : Ingreso
+      reporteIngreso(paraph), // 16 : Ingreso
+      reporteIngreso(paraph), // 17 : Ingreso
+      reporteIngreso(paraph), // 18 : Ingreso
+      reporteIngreso(paraph), // 19 : Ingreso
+      reporteIngreso(paraph), // 20 : Ingreso
+      // 20 : Censo Hospitalario
+      reporteTransfusion(paraph), // 21 : Transfusion
     ];
     print("FormatosReportes.indexOfReport! ${FormatosReportes.indexOfReport!}");
 
@@ -83,6 +85,8 @@ class FormatosReportes {
           return list[14];
         case TypeReportes.censoHospitalario:
           return list[20];
+        case TypeReportes.reporteTransfusion:
+          return list[21];
         default:
           return list[1];
       }
@@ -2586,7 +2590,8 @@ class FormatosReportes {
             textLabel("${item['Pace_Eda']}"),
             textLabel("${item['Pace_Hemo'] ?? 'Hemotipo desconocido'}"),
             textLabel("${item['Feca_INI_Hosp']}"),
-            textLabel("${DateTime.now().difference(DateTime.parse(item['Feca_INI_Hosp'])).inDays}"),
+            textLabel(
+                "${DateTime.now().difference(DateTime.parse(item['Feca_INI_Hosp'])).inDays}"),
             textLabel("${item['Dia_Estan']}"),
             textLabel("${item['Serve_Trat']}"),
             textLabel("${item['Medi_Trat']}"),
@@ -2626,6 +2631,129 @@ class FormatosReportes {
     // # # # # # # ### # # # # # # ###
     return parax;
   }
+
+  // Otros Reportes ************** *************** **********
+  static List<Widget> reporteTransfusion(Map<String, dynamic> paraph) {
+    String tipoReporte = "NOTA DE TRANSFUSIÓN";
+    // # # # # # # ### # # # # # # ###
+    // Lista de apartados del documento.
+    // # # # # # # ### # # # # # # ###
+    List<Widget> parax = [];
+    // # # # # # # ### # # # # #  # ###
+    // Datos de Identificación del Paciente.
+    // # # # # # # ### # # # # # # ###
+    parax.add(Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Nombre completo: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text("${Pacientes.nombreCompleto}",
+            textAlign: TextAlign.right, style: const TextStyle(fontSize: 8)),
+      ]),
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Número de afiliación: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text(
+            "${Pacientes.Paciente['Pace_NSS']} ${Pacientes.Paciente['Pace_AGRE']}",
+            textAlign: TextAlign.right,
+            style: const TextStyle(fontSize: 8)),
+      ]),
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Text("Fecha Actual: ",
+            textAlign: TextAlign.right,
+            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+        Text(Calendarios.completeToday(),
+            textAlign: TextAlign.right, style: const TextStyle(fontSize: 8)),
+      ]),
+      SizedBox(height: 10),
+    ]));
+    // # # # # # # ### # # # # # # ###
+    //
+    // # # # # # # ### # # # # # # ###
+    parax.add(Divider(color: PdfColors.black));
+    parax.add(Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Text(tipoReporte,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 9,
+              decoration: TextDecoration.underline,
+              fontWeight: FontWeight.bold)),
+    ]));
+    parax.add(Divider(color: PdfColors.black));
+    // # # # # # # ### # # # # # # ###
+    //
+    // # # # # # # ### # # # # # # ###
+    parax.add(paragraphWithTittle(
+        titulo: "Resumen Clínico".toUpperCase(),
+        subTitulo: "${paraph['Datos_Generales']}"));
+    parax.add(
+      paragraphWithBullets(
+        titulo: "", // "Impresiones diagnósticas",
+        subTitulo: "${paraph['Impresiones_Diagnosticas']}",
+      ),
+    );
+    // # # # # # # ### # # # # # # ###
+    parax.add(paragraph(texto: paraph['Motivo_Transfusion']));
+
+    // # # # # # # ### # # # # # # ###
+    parax.add(paragraph(
+        isBefore: true,
+        anteTexto: "Hemotipo Administrado: ".toUpperCase(),
+        texto: paraph['Hemotipo_Admnistrado'],
+        withJumpSpace: false));
+    parax.add(paragraph(
+        isBefore: true,
+        anteTexto: "Cantidad de Unidades Administradas: ".toUpperCase(),
+        texto: paraph['Cantidad_Unidades'],
+        withJumpSpace: false));
+    parax.add(paragraph(
+        isBefore: true,
+        anteTexto: "Volumen Administrado: ".toUpperCase(),
+        texto: paraph['Volumen_Administrado'],
+        withJumpSpace: false));
+    parax.add(paragraph(
+        isBefore: true,
+        anteTexto: "Número de Identifación del Hemoderivado: ".toUpperCase(),
+        texto: paraph['Num_Identificacion'],
+        withJumpSpace: false));
+
+    parax.add(paragraph(
+        isBefore: true,
+        anteTexto: "Fecha y Hora de Inicio: ".toUpperCase(),
+        texto: paraph['Inicio_Transfusion'],
+        withJumpSpace: false));
+    parax.add(paragraph(
+        isBefore: true,
+        anteTexto: "Fecha y Hora de Término: ".toUpperCase(),
+        texto: paraph['Termino_Transfusion'],
+        withJumpSpace: false));
+
+    print("paraph['Seguimiento_Vitales'])); ${paraph['Seguimiento_Vitales']}" );
+
+    parax.add(paragraphWithTittleAndSeparated(
+        titulo: "Seguimiento de Signos Vitales: ".toUpperCase(),
+        subTitulo: paraph['Seguimiento_Vitales']));
+
+    parax.add(paragraph(
+        isBefore: true,
+        anteTexto: "Estado General del Paciente: ".toUpperCase(),
+        texto: paraph['Motivo_Transfusion'],
+        withJumpSpace: false));
+    parax.add(paragraph(
+        isBefore: true,
+        anteTexto: "Reacciones Adversas presentadas: ".toUpperCase(),
+        texto: paraph['Reacciones_Presentadas'],
+        withJumpSpace: false));
+
+    // # # # # # # ### # # # # # # ###
+    parax.add(
+      footerParagraph(
+          text:
+              "Med. Gral. Romero Pantoja Luis\nCed. Prof. 12210866\nMedicina General"),
+    );
+    return parax;
+  }
 }
 
 enum TypeReportes {
@@ -2640,11 +2768,14 @@ enum TypeReportes {
   procedimientoCVC,
   procedimientoSondaEndopleural,
   procedimientoTenckoff,
+  procedimientoLumbar,
+  procedimientoToracocentesis,
   indicacionesHospitalarias,
   reportePrequirurgica,
   reportePreanestesica,
   reporteEgreso,
   reporteRevision,
   reporteTraslado,
-  censoHospitalario
+  censoHospitalario,
+  reporteTransfusion,
 }

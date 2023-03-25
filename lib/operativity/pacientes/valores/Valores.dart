@@ -249,6 +249,17 @@ class Valores {
       tipoCirugia = "",
       tipoInterrogatorio = 'Directo';
   //
+  static String motivoTransfusion = "",
+      hemotipoAdmnistrado = "",
+      cantidadUnidades = "",
+      volumenAdministrado = "",
+      numIdentificacion = "",
+      fechaCaducidad = "",
+      fechaInicioTransfusion = "",
+      fechaTerminoTransfusion = "",
+      estadoFinalTransfusion = "Se realiza seguimiento y control a la paciente durante la transfusión. Termina procedimiento sin complicaciones ni evidencia de reacciones adversas asociadas a la transfusión de hemoderivados. ",
+      reaccionesPresentadas = "Ninguna manifestada durante la transfusión. ";
+  //
   static String? fechaVitales;
   static int? tensionArterialSystolica,
       tensionArterialDyastolica,
@@ -676,7 +687,7 @@ class Valores {
     volumenCorpuscularMedio = double.parse(json['VCM'] ?? '0');
     hemoglobinaCorpuscularMedia = double.parse(json['HCM'] ?? '0');
 
-    plaquetas  = double.parse(json['Plaquetas'] ?? '0');
+    plaquetas = double.parse(json['Plaquetas'] ?? '0');
 
     leucocitosTotales = double.parse(json['Leucocitos_Totales'] ?? '0');
     neutrofilosTotales = double.parse(json['Neutrofilos_Totales'] ?? '0');
@@ -1531,6 +1542,7 @@ class Valores {
       return 0;
     } //# Frecuencia_Cardiaca_Maxima
   }
+
   static double get frecuenciaCardiacaBlanco =>
       ((220 - Valores.edad!) * 0.7); // # Frecuencia_Cardiaca_Blanco
   static double get frecuenciaCardiacaIntrinseca =>
@@ -1633,7 +1645,7 @@ class Valores {
   }
 
   static String get trastornoBases {
-    if (Valores.EB< -3) {
+    if (Valores.EB < -3) {
       return 'Consumo de Bases'; // Acidosis
     } else if (Valores.poArteriales! > 3) {
       return 'Retención de Bases'; // Alcalosis
@@ -2523,6 +2535,12 @@ class Formatos {
       "Evitar el ayuno mayor de 8 horas durante los momentos prequirúrgicos y/o postquirúrgicos por riesgo de disglicemia. \n"
       "Se sugire inicio de Metformina 850 mg cada 12 horas, asi como realización de estudios paraclinicos para valoración ulterior. "
       "";
+
+  static String transfusiones = "Debido a ${Valores.motivoTransfusion}, "
+      "se administra ${Valores.hemotipoAdmnistrado}, ${Valores.cantidadUnidades} Unidad(es), "
+      "para volumen total ${Valores.volumenAdministrado} "
+      "identificable con Folio ${Valores.numIdentificacion}; "
+      "verificando previamente fecha de caducidad (Día ${Valores.fechaCaducidad}, de acuerdo a registro).  Serología No Reactiva.";
 
   static String get subjetivos {
     return "El paciente se refiere ${Valores.estadoGeneral}. "

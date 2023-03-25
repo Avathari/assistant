@@ -210,7 +210,6 @@ class Pacientes {
     localReportsPath = 'assets/vault/'
         '$nombreCompleto/'
         'reportes/';
-
   }
 
   // Prosas y apartados literales en la formación de las Actividades.
@@ -1184,8 +1183,7 @@ class Eticos {
           Terminal.printSuccess(
               message: "Valores de Eticos asignado : : : value");
           // Terminal.printData(message: "\t$value");
-          Archivos.createJsonFromMap([value],
-              filePath: fileAssocieted);
+          Archivos.createJsonFromMap([value], filePath: fileAssocieted);
         }
       });
     });
@@ -1213,10 +1211,12 @@ class Eticos {
     ).then((value) {
       Terminal.printAlert(
           message:
-          "RESPUESTA al Actualizar Eticos - $value "); // ${listOfValues.length}
+              "RESPUESTA al Actualizar Eticos - $value "); // ${listOfValues.length}
       if (value == "SUCCESS" || value == '"SUCCESS"') {
-        Terminal.printOther(message: "Actualización $value - Eliminando $fileAssocieted");
-        Archivos.deleteFile(filePath: fileAssocieted).then((value) => consultarRegistro());
+        Terminal.printOther(
+            message: "Actualización $value - Eliminando $fileAssocieted");
+        Archivos.deleteFile(filePath: fileAssocieted)
+            .then((value) => consultarRegistro());
       }
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "ERROR al registrar Eticos - $error");
@@ -1242,7 +1242,7 @@ class Eticos {
     ).then((value) {
       Terminal.printAlert(
           message:
-          "RESPUESTA al registrar Eticos - $value "); // ${listOfValues.length}
+              "RESPUESTA al registrar Eticos - $value "); // ${listOfValues.length}
       if (value == "SUCCESS" || value == '"SUCCESS"') {
         consultarRegistro();
       }
@@ -1334,42 +1334,42 @@ class Viviendas {
       Valores.propiedadVivienda = value['Pace_APNP_HYS_Hab_'];
       // ******** ******** ******** ******** ******
       Valores.viviendaElectricidad =
-      Dicotomicos.fromInt(value['Pace_APNP_HYS_Ser_ele'], toBoolean: true)
-      as bool;
+          Dicotomicos.fromInt(value['Pace_APNP_HYS_Ser_ele'], toBoolean: true)
+              as bool;
       Valores.viviendaAguaPotable =
-      Dicotomicos.fromInt(value['Pace_APNP_HYS_Ser_agu'], toBoolean: true)
-      as bool;
+          Dicotomicos.fromInt(value['Pace_APNP_HYS_Ser_agu'], toBoolean: true)
+              as bool;
       Valores.viviendaAlcantarillado =
-      Dicotomicos.fromInt(value['Pace_APNP_HYS_Ser_alc'], toBoolean: true)
-      as bool;
+          Dicotomicos.fromInt(value['Pace_APNP_HYS_Ser_alc'], toBoolean: true)
+              as bool;
       Valores.viviendaDrenaje =
-      Dicotomicos.fromInt(value['Pace_APNP_HYS_Ser_dre'], toBoolean: true)
-      as bool;
+          Dicotomicos.fromInt(value['Pace_APNP_HYS_Ser_dre'], toBoolean: true)
+              as bool;
       Valores.viviendaHornoLena =
-      Dicotomicos.fromInt(value['Pace_APNP_HYS_Sed_len'], toBoolean: true)
-      as bool;
+          Dicotomicos.fromInt(value['Pace_APNP_HYS_Sed_len'], toBoolean: true)
+              as bool;
       Valores.viviendaEstufa =
-      Dicotomicos.fromInt(value['Pace_APNP_HYS_Sed_est'], toBoolean: true)
-      as bool;
+          Dicotomicos.fromInt(value['Pace_APNP_HYS_Sed_est'], toBoolean: true)
+              as bool;
       Valores.viviendaTelevision =
-      Dicotomicos.fromInt(value['Pace_APNP_HYS_Sed_tel'], toBoolean: true)
-      as bool;
+          Dicotomicos.fromInt(value['Pace_APNP_HYS_Sed_tel'], toBoolean: true)
+              as bool;
 // ******** ******** ******** ******** ******
       Valores.cohabitaPadre =
-      Dicotomicos.fromInt(value['Pace_APNP_HYS_Tes_pa'], toBoolean: true)
-      as bool;
+          Dicotomicos.fromInt(value['Pace_APNP_HYS_Tes_pa'], toBoolean: true)
+              as bool;
       Valores.cohabitaMadre =
-      Dicotomicos.fromInt(value['Pace_APNP_HYS_Tes_ma'], toBoolean: true)
-      as bool;
+          Dicotomicos.fromInt(value['Pace_APNP_HYS_Tes_ma'], toBoolean: true)
+              as bool;
       Valores.cohabitaHijos =
-      Dicotomicos.fromInt(value['Pace_APNP_HYS_Tes_ho'], toBoolean: true)
-      as bool;
+          Dicotomicos.fromInt(value['Pace_APNP_HYS_Tes_ho'], toBoolean: true)
+              as bool;
       Valores.cohabitaFamiliares =
-      Dicotomicos.fromInt(value['Pace_APNP_HYS_Tes_hi'], toBoolean: true)
-      as bool;
+          Dicotomicos.fromInt(value['Pace_APNP_HYS_Tes_hi'], toBoolean: true)
+              as bool;
       Valores.cohabitaOtros =
-      Dicotomicos.fromInt(value['Pace_APNP_HYS_Tes_ot'], toBoolean: true)
-      as bool;
+          Dicotomicos.fromInt(value['Pace_APNP_HYS_Tes_ot'], toBoolean: true)
+              as bool;
       Valores.otrosCohabitantes = value['REGE_Pace_APNP_HYS_Tes_ot'];
       // ******** ******** ******** ******** ******
       Valores.materialPiso = value['Pace_APNP_HYS_Coh_pis'];
@@ -1377,29 +1377,29 @@ class Viviendas {
       Valores.materialParedes = value['Pace_APNP_HYS_Coh_pad'];
       // ******** ******** ******** ******** ******
       Valores.viviendaSala =
-      Dicotomicos.fromInt(value['Pace_APNP_HYS_Coh_sal'], toBoolean: true)
-      as bool;
+          Dicotomicos.fromInt(value['Pace_APNP_HYS_Coh_sal'], toBoolean: true)
+              as bool;
       Valores.viviendaBano =
-      Dicotomicos.fromInt(value['Pace_APNP_HYS_Coh_ban'], toBoolean: true)
-      as bool;
+          Dicotomicos.fromInt(value['Pace_APNP_HYS_Coh_ban'], toBoolean: true)
+              as bool;
       Valores.viviendaComedor =
-      Dicotomicos.fromInt(value['Pace_APNP_HYS_Coh_sac'], toBoolean: true)
-      as bool;
+          Dicotomicos.fromInt(value['Pace_APNP_HYS_Coh_sac'], toBoolean: true)
+              as bool;
       Valores.viviendaHabitacionesSeparadas =
-      Dicotomicos.fromInt(value['Pace_APNP_HYS_Coh_cua'], toBoolean: true)
-      as bool;
+          Dicotomicos.fromInt(value['Pace_APNP_HYS_Coh_cua'], toBoolean: true)
+              as bool;
       // ******** ******** ******** ******** ******
       // 'No', Pace_APNP_HYS_Coe_
       Valores.viviendaPatioDelantero =
-      Dicotomicos.fromInt(value['Pace_APNP_HYS_Coe_pad'], toBoolean: true)
-      as bool;
+          Dicotomicos.fromInt(value['Pace_APNP_HYS_Coe_pad'], toBoolean: true)
+              as bool;
       Valores.viviendaPatioTrasero =
-      Dicotomicos.fromInt(value['Pace_APNP_HYS_Coe_pat'], toBoolean: true)
-      as bool;
+          Dicotomicos.fromInt(value['Pace_APNP_HYS_Coe_pat'], toBoolean: true)
+              as bool;
       // *********************************
-      Valores.viviendaAnimalesCorral = Dicotomicos.fromInt(
-          value['Pace_APNP_HYS_Coe_core'],
-          toBoolean: true) as bool;
+      Valores.viviendaAnimalesCorral =
+          Dicotomicos.fromInt(value['Pace_APNP_HYS_Coe_core'], toBoolean: true)
+              as bool;
       Valores.viviendaVacunos =
           Dicotomicos.fromString(value['Pace_APNP_HYS_vac']);
       Valores.viviendaCantidadVacunos =
@@ -1412,14 +1412,12 @@ class Viviendas {
           Dicotomicos.fromString(value['Pace_APNP_HYS_por']);
       Valores.viviendaCantidadPorcinos =
           value['REGE_Pace_APNP_HYS_por'].toString();
-      Valores.viviendaAves =
-          Dicotomicos.fromString(value['Pace_APNP_HYS_avi']);
-      Valores.viviendaCantidadAves =
-          value['REGE_Pace_APNP_HYS_avi'].toString();
+      Valores.viviendaAves = Dicotomicos.fromString(value['Pace_APNP_HYS_avi']);
+      Valores.viviendaCantidadAves = value['REGE_Pace_APNP_HYS_avi'].toString();
       // ******** ******** ******** ******** ******
-      Valores.viviendaAnimalesCompania = Dicotomicos.fromInt(
-          value['Pace_APNP_HYS_Coe_coma'],
-          toBoolean: true) as bool;
+      Valores.viviendaAnimalesCompania =
+          Dicotomicos.fromInt(value['Pace_APNP_HYS_Coe_coma'], toBoolean: true)
+              as bool;
       Valores.viviendaCaninos =
           Dicotomicos.fromString(value['Pace_APNP_HYS_Coe_can']);
       Valores.viviendaCantidadCaninos =
@@ -1437,136 +1435,134 @@ class Viviendas {
       Valores.viviendaCantidadParvada =
           value['REGE_Pace_APNP_HYS_Coe_avi'].toString();
       // *********************************
-
     }).onError((error, stackTrace) {
-    Actividades.consultarId(Databases.siteground_database_regepi,
-            Viviendas.viviendas['consultIdQuery'], Pacientes.ID_Paciente)
-        .then((value) {
-      if (value.containsKey('Error')) {
-        Terminal.printExpected(
-            message: "Viviendas consultar registro - $value");
-        registrarRegistro();
-      } else {
-        // Asignación de Valores ********* ******** ******* ********* ***
-        Viviendas.Vivienda = value;
+      Actividades.consultarId(Databases.siteground_database_regepi,
+              Viviendas.viviendas['consultIdQuery'], Pacientes.ID_Paciente)
+          .then((value) {
+        if (value.containsKey('Error')) {
+          Terminal.printExpected(
+              message: "Viviendas consultar registro - $value");
+          registrarRegistro();
+        } else {
+          // Asignación de Valores ********* ******** ******* ********* ***
+          Viviendas.Vivienda = value;
 
-        Viviendas.ID_Viviendas = value['ID_PACE_HYS'];
+          Viviendas.ID_Viviendas = value['ID_PACE_HYS'];
 
-        // *********************************
-        Valores.propiedadVivienda = value['Pace_APNP_HYS_Hab_'];
-        // ******** ******** ******** ******** ******
-        Valores.viviendaElectricidad =
-            Dicotomicos.fromInt(value['Pace_APNP_HYS_Ser_ele'], toBoolean: true)
-                as bool;
-        Valores.viviendaAguaPotable =
-            Dicotomicos.fromInt(value['Pace_APNP_HYS_Ser_agu'], toBoolean: true)
-                as bool;
-        Valores.viviendaAlcantarillado =
-            Dicotomicos.fromInt(value['Pace_APNP_HYS_Ser_alc'], toBoolean: true)
-                as bool;
-        Valores.viviendaDrenaje =
-            Dicotomicos.fromInt(value['Pace_APNP_HYS_Ser_dre'], toBoolean: true)
-                as bool;
-        Valores.viviendaHornoLena =
-            Dicotomicos.fromInt(value['Pace_APNP_HYS_Sed_len'], toBoolean: true)
-                as bool;
-        Valores.viviendaEstufa =
-            Dicotomicos.fromInt(value['Pace_APNP_HYS_Sed_est'], toBoolean: true)
-                as bool;
-        Valores.viviendaTelevision =
-            Dicotomicos.fromInt(value['Pace_APNP_HYS_Sed_tel'], toBoolean: true)
-                as bool;
+          // *********************************
+          Valores.propiedadVivienda = value['Pace_APNP_HYS_Hab_'];
+          // ******** ******** ******** ******** ******
+          Valores.viviendaElectricidad = Dicotomicos.fromInt(
+              value['Pace_APNP_HYS_Ser_ele'],
+              toBoolean: true) as bool;
+          Valores.viviendaAguaPotable = Dicotomicos.fromInt(
+              value['Pace_APNP_HYS_Ser_agu'],
+              toBoolean: true) as bool;
+          Valores.viviendaAlcantarillado = Dicotomicos.fromInt(
+              value['Pace_APNP_HYS_Ser_alc'],
+              toBoolean: true) as bool;
+          Valores.viviendaDrenaje = Dicotomicos.fromInt(
+              value['Pace_APNP_HYS_Ser_dre'],
+              toBoolean: true) as bool;
+          Valores.viviendaHornoLena = Dicotomicos.fromInt(
+              value['Pace_APNP_HYS_Sed_len'],
+              toBoolean: true) as bool;
+          Valores.viviendaEstufa = Dicotomicos.fromInt(
+              value['Pace_APNP_HYS_Sed_est'],
+              toBoolean: true) as bool;
+          Valores.viviendaTelevision = Dicotomicos.fromInt(
+              value['Pace_APNP_HYS_Sed_tel'],
+              toBoolean: true) as bool;
 // ******** ******** ******** ******** ******
-        Valores.cohabitaPadre =
-            Dicotomicos.fromInt(value['Pace_APNP_HYS_Tes_pa'], toBoolean: true)
-                as bool;
-        Valores.cohabitaMadre =
-            Dicotomicos.fromInt(value['Pace_APNP_HYS_Tes_ma'], toBoolean: true)
-                as bool;
-        Valores.cohabitaHijos =
-            Dicotomicos.fromInt(value['Pace_APNP_HYS_Tes_ho'], toBoolean: true)
-                as bool;
-        Valores.cohabitaFamiliares =
-            Dicotomicos.fromInt(value['Pace_APNP_HYS_Tes_hi'], toBoolean: true)
-                as bool;
-        Valores.cohabitaOtros =
-            Dicotomicos.fromInt(value['Pace_APNP_HYS_Tes_ot'], toBoolean: true)
-                as bool;
-        Valores.otrosCohabitantes = value['REGE_Pace_APNP_HYS_Tes_ot'];
-        // ******** ******** ******** ******** ******
-        Valores.materialPiso = value['Pace_APNP_HYS_Coh_pis'];
-        Valores.materialTecho = value['Pace_APNP_HYS_Coh_tec'];
-        Valores.materialParedes = value['Pace_APNP_HYS_Coh_pad'];
-        // ******** ******** ******** ******** ******
-        Valores.viviendaSala =
-            Dicotomicos.fromInt(value['Pace_APNP_HYS_Coh_sal'], toBoolean: true)
-                as bool;
-        Valores.viviendaBano =
-            Dicotomicos.fromInt(value['Pace_APNP_HYS_Coh_ban'], toBoolean: true)
-                as bool;
-        Valores.viviendaComedor =
-            Dicotomicos.fromInt(value['Pace_APNP_HYS_Coh_sac'], toBoolean: true)
-                as bool;
-        Valores.viviendaHabitacionesSeparadas =
-            Dicotomicos.fromInt(value['Pace_APNP_HYS_Coh_cua'], toBoolean: true)
-                as bool;
-        // ******** ******** ******** ******** ******
-        // 'No', Pace_APNP_HYS_Coe_
-        Valores.viviendaPatioDelantero =
-            Dicotomicos.fromInt(value['Pace_APNP_HYS_Coe_pad'], toBoolean: true)
-                as bool;
-        Valores.viviendaPatioTrasero =
-            Dicotomicos.fromInt(value['Pace_APNP_HYS_Coe_pat'], toBoolean: true)
-                as bool;
-        // *********************************
-        Valores.viviendaAnimalesCorral = Dicotomicos.fromInt(
-            value['Pace_APNP_HYS_Coe_core'],
-            toBoolean: true) as bool;
-        Valores.viviendaVacunos =
-            Dicotomicos.fromString(value['Pace_APNP_HYS_vac']);
-        Valores.viviendaCantidadVacunos =
-            value['REGE_Pace_APNP_HYS_vac'].toString();
-        Valores.viviendaOvinos =
-            Dicotomicos.fromString(value['Pace_APNP_HYS_ovi']);
-        Valores.viviendaCantidadOvinos =
-            value['REGE_Pace_APNP_HYS_ovi'].toString();
-        Valores.viviendaPorcinos =
-            Dicotomicos.fromString(value['Pace_APNP_HYS_por']);
-        Valores.viviendaCantidadPorcinos =
-            value['REGE_Pace_APNP_HYS_por'].toString();
-        Valores.viviendaAves =
-            Dicotomicos.fromString(value['Pace_APNP_HYS_avi']);
-        Valores.viviendaCantidadAves =
-            value['REGE_Pace_APNP_HYS_avi'].toString();
-        // ******** ******** ******** ******** ******
-        Valores.viviendaAnimalesCompania = Dicotomicos.fromInt(
-            value['Pace_APNP_HYS_Coe_coma'],
-            toBoolean: true) as bool;
-        Valores.viviendaCaninos =
-            Dicotomicos.fromString(value['Pace_APNP_HYS_Coe_can']);
-        Valores.viviendaCantidadCaninos =
-            value['REGE_Pace_APNP_HYS_Coe_can'].toString();
-        Valores.viviendaFelinos =
-            Dicotomicos.fromString(value['Pace_APNP_HYS_Coe_fel']);
-        Valores.viviendaCantidadFelinos =
-            value['REGE_Pace_APNP_HYS_Coe_fel'].toString();
-        Valores.viviendaReptiles =
-            Dicotomicos.fromString(value['Pace_APNP_HYS_Coe_rep']);
-        Valores.viviendaCantidadReptiles =
-            value['REGE_Pace_APNP_HYS_Coe_rep'].toString();
-        Valores.viviendaParvada =
-            Dicotomicos.fromString(value['Pace_APNP_HYS_Coe_avi']);
-        Valores.viviendaCantidadParvada =
-            value['REGE_Pace_APNP_HYS_Coe_avi'].toString();
-        // *********************************
+          Valores.cohabitaPadre = Dicotomicos.fromInt(
+              value['Pace_APNP_HYS_Tes_pa'],
+              toBoolean: true) as bool;
+          Valores.cohabitaMadre = Dicotomicos.fromInt(
+              value['Pace_APNP_HYS_Tes_ma'],
+              toBoolean: true) as bool;
+          Valores.cohabitaHijos = Dicotomicos.fromInt(
+              value['Pace_APNP_HYS_Tes_ho'],
+              toBoolean: true) as bool;
+          Valores.cohabitaFamiliares = Dicotomicos.fromInt(
+              value['Pace_APNP_HYS_Tes_hi'],
+              toBoolean: true) as bool;
+          Valores.cohabitaOtros = Dicotomicos.fromInt(
+              value['Pace_APNP_HYS_Tes_ot'],
+              toBoolean: true) as bool;
+          Valores.otrosCohabitantes = value['REGE_Pace_APNP_HYS_Tes_ot'];
+          // ******** ******** ******** ******** ******
+          Valores.materialPiso = value['Pace_APNP_HYS_Coh_pis'];
+          Valores.materialTecho = value['Pace_APNP_HYS_Coh_tec'];
+          Valores.materialParedes = value['Pace_APNP_HYS_Coh_pad'];
+          // ******** ******** ******** ******** ******
+          Valores.viviendaSala = Dicotomicos.fromInt(
+              value['Pace_APNP_HYS_Coh_sal'],
+              toBoolean: true) as bool;
+          Valores.viviendaBano = Dicotomicos.fromInt(
+              value['Pace_APNP_HYS_Coh_ban'],
+              toBoolean: true) as bool;
+          Valores.viviendaComedor = Dicotomicos.fromInt(
+              value['Pace_APNP_HYS_Coh_sac'],
+              toBoolean: true) as bool;
+          Valores.viviendaHabitacionesSeparadas = Dicotomicos.fromInt(
+              value['Pace_APNP_HYS_Coh_cua'],
+              toBoolean: true) as bool;
+          // ******** ******** ******** ******** ******
+          // 'No', Pace_APNP_HYS_Coe_
+          Valores.viviendaPatioDelantero = Dicotomicos.fromInt(
+              value['Pace_APNP_HYS_Coe_pad'],
+              toBoolean: true) as bool;
+          Valores.viviendaPatioTrasero = Dicotomicos.fromInt(
+              value['Pace_APNP_HYS_Coe_pat'],
+              toBoolean: true) as bool;
+          // *********************************
+          Valores.viviendaAnimalesCorral = Dicotomicos.fromInt(
+              value['Pace_APNP_HYS_Coe_core'],
+              toBoolean: true) as bool;
+          Valores.viviendaVacunos =
+              Dicotomicos.fromString(value['Pace_APNP_HYS_vac']);
+          Valores.viviendaCantidadVacunos =
+              value['REGE_Pace_APNP_HYS_vac'].toString();
+          Valores.viviendaOvinos =
+              Dicotomicos.fromString(value['Pace_APNP_HYS_ovi']);
+          Valores.viviendaCantidadOvinos =
+              value['REGE_Pace_APNP_HYS_ovi'].toString();
+          Valores.viviendaPorcinos =
+              Dicotomicos.fromString(value['Pace_APNP_HYS_por']);
+          Valores.viviendaCantidadPorcinos =
+              value['REGE_Pace_APNP_HYS_por'].toString();
+          Valores.viviendaAves =
+              Dicotomicos.fromString(value['Pace_APNP_HYS_avi']);
+          Valores.viviendaCantidadAves =
+              value['REGE_Pace_APNP_HYS_avi'].toString();
+          // ******** ******** ******** ******** ******
+          Valores.viviendaAnimalesCompania = Dicotomicos.fromInt(
+              value['Pace_APNP_HYS_Coe_coma'],
+              toBoolean: true) as bool;
+          Valores.viviendaCaninos =
+              Dicotomicos.fromString(value['Pace_APNP_HYS_Coe_can']);
+          Valores.viviendaCantidadCaninos =
+              value['REGE_Pace_APNP_HYS_Coe_can'].toString();
+          Valores.viviendaFelinos =
+              Dicotomicos.fromString(value['Pace_APNP_HYS_Coe_fel']);
+          Valores.viviendaCantidadFelinos =
+              value['REGE_Pace_APNP_HYS_Coe_fel'].toString();
+          Valores.viviendaReptiles =
+              Dicotomicos.fromString(value['Pace_APNP_HYS_Coe_rep']);
+          Valores.viviendaCantidadReptiles =
+              value['REGE_Pace_APNP_HYS_Coe_rep'].toString();
+          Valores.viviendaParvada =
+              Dicotomicos.fromString(value['Pace_APNP_HYS_Coe_avi']);
+          Valores.viviendaCantidadParvada =
+              value['REGE_Pace_APNP_HYS_Coe_avi'].toString();
+          // *********************************
 
-        Terminal.printSuccess(
-            message: "Valores de Viviendas asignado : : : value");
-        // Terminal.printData(message: "\t$value");
-        Archivos.createJsonFromMap([value],
-            filePath: fileAssocieted);
-      }
-    });
+          Terminal.printSuccess(
+              message: "Valores de Viviendas asignado : : : value");
+          // Terminal.printData(message: "\t$value");
+          Archivos.createJsonFromMap([value], filePath: fileAssocieted);
+        }
+      });
     });
   }
 
@@ -1635,10 +1631,12 @@ class Viviendas {
     ).then((value) {
       Terminal.printAlert(
           message:
-          "RESPUESTA al Actualizar Viviendas - $value "); // ${listOfValues.length}
+              "RESPUESTA al Actualizar Viviendas - $value "); // ${listOfValues.length}
       if (value == "SUCCESS" || value == '"SUCCESS"') {
-        Terminal.printOther(message: "Actualización $value - Eliminando $fileAssocieted");
-        Archivos.deleteFile(filePath: fileAssocieted).then((value) => consultarRegistro());
+        Terminal.printOther(
+            message: "Actualización $value - Eliminando $fileAssocieted");
+        Archivos.deleteFile(filePath: fileAssocieted)
+            .then((value) => consultarRegistro());
       }
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "ERROR al actualizar Viviendas - $error");
@@ -1858,7 +1856,8 @@ class Viviendas {
 
 class Alimenticios {
   static int ID_Alimenticios = 0;
-  static var fileAssocieted = "${Pacientes.localRepositoryPath}alimenticios.json";
+  static var fileAssocieted =
+      "${Pacientes.localRepositoryPath}alimenticios.json";
   // ********* ******** ******* ********* ***
   static Map<String, dynamic> Alimenticio = {};
   // ********* ******** ******* ********* ***
@@ -1868,77 +1867,79 @@ class Alimenticios {
       Alimenticios.Alimenticio = value;
       Alimenticios.ID_Alimenticios = value['ID_PACE_APNP_ALI'];
 
-      Valores.alimentacionDiaria = Dicotomicos.fromInt(
-          value['Pace_APNP_ALI_ali_SINO'],
-          toBoolean: true) as bool?;
+      Valores.alimentacionDiaria =
+          Dicotomicos.fromInt(value['Pace_APNP_ALI_ali_SINO'], toBoolean: true)
+              as bool?;
       Valores.alimentacionDiariaDescripcion = value['Pace_APNP_ALI_ali'];
-      Valores.dietaAsignada = Dicotomicos.fromInt(
-          value['Pace_APNP_ALI_die_SINO'],
-          toBoolean: true) as bool?;
+      Valores.dietaAsignada =
+          Dicotomicos.fromInt(value['Pace_APNP_ALI_die_SINO'], toBoolean: true)
+              as bool?;
       Valores.dietaAsignadaDescripcion = value['Pace_APNP_ALI_die'];
-      Valores.variacionAlimentacion = Dicotomicos.fromInt(
-          value['Pace_APNP_ALI_var_SINO'],
-          toBoolean: true) as bool?;
+      Valores.variacionAlimentacion =
+          Dicotomicos.fromInt(value['Pace_APNP_ALI_var_SINO'], toBoolean: true)
+              as bool?;
       Valores.variacionAlimentacionDescripcion = value['Pace_APNP_ALI_var'];
-      Valores.problemasMasticacion = Dicotomicos.fromInt(
-          value['Pace_APNP_ALI_mas_SINO'],
-          toBoolean: true) as bool?;
+      Valores.problemasMasticacion =
+          Dicotomicos.fromInt(value['Pace_APNP_ALI_mas_SINO'], toBoolean: true)
+              as bool?;
       Valores.problemasMasticacionDescripcion = value['Pace_APNP_ALI_mas'];
-      Valores.intoleranciaAlimentaria = Dicotomicos.fromInt(
-          value['Pace_APNP_ALI_int_SINO'],
-          toBoolean: true) as bool?;
+      Valores.intoleranciaAlimentaria =
+          Dicotomicos.fromInt(value['Pace_APNP_ALI_int_SINO'], toBoolean: true)
+              as bool?;
       Valores.intoleranciaAlimentariaDescripcion = value['Pace_APNP_ALI_int'];
-      Valores.alteracionesPeso = Dicotomicos.fromInt(
-          value['Pace_APNP_ALI_pes_SINO'],
-          toBoolean: true) as bool?;
+      Valores.alteracionesPeso =
+          Dicotomicos.fromInt(value['Pace_APNP_ALI_pes_SINO'], toBoolean: true)
+              as bool?;
       Valores.alteracionesPesoDescripcion = value['Pace_APNP_ALI_pes'];
       // *********************************
-
     }).onError((error, stackTrace) {
-    Actividades.consultarId(Databases.siteground_database_regepi,
-            Alimenticios.alimenticios['consultIdQuery'], Pacientes.ID_Paciente)
-        .then((value) {
-      if (value.containsKey('Error')) {
-        Terminal.printExpected(
-            message: "Alimenticios consultar registro - $value");
-        registrarRegistro();
-      } else {
-        // Asignación de Valores ********* ******** ******* ********* ***
-        Alimenticios.Alimenticio = value;
-        Alimenticios.ID_Alimenticios = value['ID_PACE_APNP_ALI'];
+      Actividades.consultarId(
+              Databases.siteground_database_regepi,
+              Alimenticios.alimenticios['consultIdQuery'],
+              Pacientes.ID_Paciente)
+          .then((value) {
+        if (value.containsKey('Error')) {
+          Terminal.printExpected(
+              message: "Alimenticios consultar registro - $value");
+          registrarRegistro();
+        } else {
+          // Asignación de Valores ********* ******** ******* ********* ***
+          Alimenticios.Alimenticio = value;
+          Alimenticios.ID_Alimenticios = value['ID_PACE_APNP_ALI'];
 
-        Valores.alimentacionDiaria = Dicotomicos.fromInt(
-            value['Pace_APNP_ALI_ali_SINO'],
-            toBoolean: true) as bool?;
-        Valores.alimentacionDiariaDescripcion = value['Pace_APNP_ALI_ali'];
-        Valores.dietaAsignada = Dicotomicos.fromInt(
-            value['Pace_APNP_ALI_die_SINO'],
-            toBoolean: true) as bool?;
-        Valores.dietaAsignadaDescripcion = value['Pace_APNP_ALI_die'];
-        Valores.variacionAlimentacion = Dicotomicos.fromInt(
-            value['Pace_APNP_ALI_var_SINO'],
-            toBoolean: true) as bool?;
-        Valores.variacionAlimentacionDescripcion = value['Pace_APNP_ALI_var'];
-        Valores.problemasMasticacion = Dicotomicos.fromInt(
-            value['Pace_APNP_ALI_mas_SINO'],
-            toBoolean: true) as bool?;
-        Valores.problemasMasticacionDescripcion = value['Pace_APNP_ALI_mas'];
-        Valores.intoleranciaAlimentaria = Dicotomicos.fromInt(
-            value['Pace_APNP_ALI_int_SINO'],
-            toBoolean: true) as bool?;
-        Valores.intoleranciaAlimentariaDescripcion = value['Pace_APNP_ALI_int'];
-        Valores.alteracionesPeso = Dicotomicos.fromInt(
-            value['Pace_APNP_ALI_pes_SINO'],
-            toBoolean: true) as bool?;
-        Valores.alteracionesPesoDescripcion = value['Pace_APNP_ALI_pes'];
+          Valores.alimentacionDiaria = Dicotomicos.fromInt(
+              value['Pace_APNP_ALI_ali_SINO'],
+              toBoolean: true) as bool?;
+          Valores.alimentacionDiariaDescripcion = value['Pace_APNP_ALI_ali'];
+          Valores.dietaAsignada = Dicotomicos.fromInt(
+              value['Pace_APNP_ALI_die_SINO'],
+              toBoolean: true) as bool?;
+          Valores.dietaAsignadaDescripcion = value['Pace_APNP_ALI_die'];
+          Valores.variacionAlimentacion = Dicotomicos.fromInt(
+              value['Pace_APNP_ALI_var_SINO'],
+              toBoolean: true) as bool?;
+          Valores.variacionAlimentacionDescripcion = value['Pace_APNP_ALI_var'];
+          Valores.problemasMasticacion = Dicotomicos.fromInt(
+              value['Pace_APNP_ALI_mas_SINO'],
+              toBoolean: true) as bool?;
+          Valores.problemasMasticacionDescripcion = value['Pace_APNP_ALI_mas'];
+          Valores.intoleranciaAlimentaria = Dicotomicos.fromInt(
+              value['Pace_APNP_ALI_int_SINO'],
+              toBoolean: true) as bool?;
+          Valores.intoleranciaAlimentariaDescripcion =
+              value['Pace_APNP_ALI_int'];
+          Valores.alteracionesPeso = Dicotomicos.fromInt(
+              value['Pace_APNP_ALI_pes_SINO'],
+              toBoolean: true) as bool?;
+          Valores.alteracionesPesoDescripcion = value['Pace_APNP_ALI_pes'];
 
-        Terminal.printSuccess(
-            message: "Valores de Alimenticios asignado : : : value");
-        // Terminal.printData(message: "\t$value");
-        Archivos.createJsonFromMap([value],
-            filePath: "${Pacientes.localRepositoryPath}alimenticios.json");
-      }
-    });
+          Terminal.printSuccess(
+              message: "Valores de Alimenticios asignado : : : value");
+          // Terminal.printData(message: "\t$value");
+          Archivos.createJsonFromMap([value],
+              filePath: "${Pacientes.localRepositoryPath}alimenticios.json");
+        }
+      });
     });
   }
 
@@ -1969,10 +1970,12 @@ class Alimenticios {
     ).then((value) {
       Terminal.printAlert(
           message:
-          "RESPUESTA al Actualizar Alimenticios - $value "); // ${listOfValues.length}
+              "RESPUESTA al Actualizar Alimenticios - $value "); // ${listOfValues.length}
       if (value == "SUCCESS" || value == '"SUCCESS"') {
-        Terminal.printOther(message: "Actualización $value - Eliminando $fileAssocieted");
-        Archivos.deleteFile(filePath: fileAssocieted).then((value) => consultarRegistro());
+        Terminal.printOther(
+            message: "Actualización $value - Eliminando $fileAssocieted");
+        Archivos.deleteFile(filePath: fileAssocieted)
+            .then((value) => consultarRegistro());
       }
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "ERROR al actualizar Alimenticios - $error");
@@ -2003,7 +2006,7 @@ class Alimenticios {
     ).then((value) {
       Terminal.printAlert(
           message:
-          "RESPUESTA al registrar Alimenticios - $value "); // ${listOfValues.length}
+              "RESPUESTA al registrar Alimenticios - $value "); // ${listOfValues.length}
       if (value == "SUCCESS" || value == '"SUCCESS"') {
         consultarRegistro();
       }
@@ -2101,89 +2104,87 @@ class Diarios {
       Valores.actividadesDiariasDescripcion = value['Pace_APNP_HAD_pas'];
       Valores.pasatiemposDescripcion = value['Pace_APNP_HAD_dia'];
       Valores.horasSuenoDescripcion = value['Pace_APNP_HAD_sue'];
-      Valores.viajesRecientes = Dicotomicos.fromInt(
-          value['Pace_APNP_HAD_via_SINO'],
-          toBoolean: true) as bool?;
+      Valores.viajesRecientes =
+          Dicotomicos.fromInt(value['Pace_APNP_HAD_via_SINO'], toBoolean: true)
+              as bool?;
       Valores.viajesRecientesDescripcion = value['Pace_APNP_HAD_via'];
-      Valores.problemasFamiliares = Dicotomicos.fromInt(
-          value['Pace_APNP_HAD_pof_SINO'],
-          toBoolean: true) as bool?;
+      Valores.problemasFamiliares =
+          Dicotomicos.fromInt(value['Pace_APNP_HAD_pof_SINO'], toBoolean: true)
+              as bool?;
       Valores.violenciaInfantil =
-      Dicotomicos.fromInt(value['Pace_APNP_HAD_pol_vif'], toBoolean: true)
-      as bool?;
+          Dicotomicos.fromInt(value['Pace_APNP_HAD_pol_vif'], toBoolean: true)
+              as bool?;
       Valores.abusoSustancias =
-      Dicotomicos.fromInt(value['Pace_APNP_HAD_pol_vit'], toBoolean: true)
-      as bool?;
+          Dicotomicos.fromInt(value['Pace_APNP_HAD_pol_vit'], toBoolean: true)
+              as bool?;
       Valores.problemasLaborales =
-      Dicotomicos.fromInt(value['Pace_APNP_HAD_pol'], toBoolean: true)
-      as bool?;
+          Dicotomicos.fromInt(value['Pace_APNP_HAD_pol'], toBoolean: true)
+              as bool?;
       Valores.estresLaboral =
-      Dicotomicos.fromInt(value['Pace_APNP_HAD_pol_est'], toBoolean: true)
-      as bool?;
+          Dicotomicos.fromInt(value['Pace_APNP_HAD_pol_est'], toBoolean: true)
+              as bool?;
       Valores.hostilidadLaboral =
-      Dicotomicos.fromInt(value['Pace_APNP_HAD_pol_hos'], toBoolean: true)
-      as bool?;
+          Dicotomicos.fromInt(value['Pace_APNP_HAD_pol_hos'], toBoolean: true)
+              as bool?;
       Valores.abusoLaboral =
-      Dicotomicos.fromInt(value['Pace_APNP_HAD_pol_abu'], toBoolean: true)
-      as bool?;
+          Dicotomicos.fromInt(value['Pace_APNP_HAD_pol_abu'], toBoolean: true)
+              as bool?;
       Valores.acosoLaboral =
-      Dicotomicos.fromInt(value['Pace_APNP_HAD_pol_aco'], toBoolean: true)
-      as bool?;
+          Dicotomicos.fromInt(value['Pace_APNP_HAD_pol_aco'], toBoolean: true)
+              as bool?;
       // *********************************
-
     }).onError((error, stackTrace) {
-    Actividades.consultarId(Databases.siteground_database_regepi,
-            Diarios.diarios['consultIdQuery'], Pacientes.ID_Paciente)
-        .then((value) {
-      if (value.containsKey('Error')) {
-        Terminal.printExpected(
-            message: "Diarios consultar registro - $value");
-        registrarRegistro();
-      } else {
-        // Asignación de Valores ********* ******** ******* ********* ***
-        Diarios.Diario = value;
+      Actividades.consultarId(Databases.siteground_database_regepi,
+              Diarios.diarios['consultIdQuery'], Pacientes.ID_Paciente)
+          .then((value) {
+        if (value.containsKey('Error')) {
+          Terminal.printExpected(
+              message: "Diarios consultar registro - $value");
+          registrarRegistro();
+        } else {
+          // Asignación de Valores ********* ******** ******* ********* ***
+          Diarios.Diario = value;
 
-        Diarios.ID_Diarios = value['ID_PACE_HAD'];
+          Diarios.ID_Diarios = value['ID_PACE_HAD'];
 
-        Valores.actividadesDiariasDescripcion = value['Pace_APNP_HAD_pas'];
-        Valores.pasatiemposDescripcion = value['Pace_APNP_HAD_dia'];
-        Valores.horasSuenoDescripcion = value['Pace_APNP_HAD_sue'];
-        Valores.viajesRecientes = Dicotomicos.fromInt(
-            value['Pace_APNP_HAD_via_SINO'],
-            toBoolean: true) as bool?;
-        Valores.viajesRecientesDescripcion = value['Pace_APNP_HAD_via'];
-        Valores.problemasFamiliares = Dicotomicos.fromInt(
-            value['Pace_APNP_HAD_pof_SINO'],
-            toBoolean: true) as bool?;
-        Valores.violenciaInfantil =
-            Dicotomicos.fromInt(value['Pace_APNP_HAD_pol_vif'], toBoolean: true)
-                as bool?;
-        Valores.abusoSustancias =
-            Dicotomicos.fromInt(value['Pace_APNP_HAD_pol_vit'], toBoolean: true)
-                as bool?;
-        Valores.problemasLaborales =
-            Dicotomicos.fromInt(value['Pace_APNP_HAD_pol'], toBoolean: true)
-                as bool?;
-        Valores.estresLaboral =
-            Dicotomicos.fromInt(value['Pace_APNP_HAD_pol_est'], toBoolean: true)
-                as bool?;
-        Valores.hostilidadLaboral =
-            Dicotomicos.fromInt(value['Pace_APNP_HAD_pol_hos'], toBoolean: true)
-                as bool?;
-        Valores.abusoLaboral =
-            Dicotomicos.fromInt(value['Pace_APNP_HAD_pol_abu'], toBoolean: true)
-                as bool?;
-        Valores.acosoLaboral =
-            Dicotomicos.fromInt(value['Pace_APNP_HAD_pol_aco'], toBoolean: true)
-                as bool?;
+          Valores.actividadesDiariasDescripcion = value['Pace_APNP_HAD_pas'];
+          Valores.pasatiemposDescripcion = value['Pace_APNP_HAD_dia'];
+          Valores.horasSuenoDescripcion = value['Pace_APNP_HAD_sue'];
+          Valores.viajesRecientes = Dicotomicos.fromInt(
+              value['Pace_APNP_HAD_via_SINO'],
+              toBoolean: true) as bool?;
+          Valores.viajesRecientesDescripcion = value['Pace_APNP_HAD_via'];
+          Valores.problemasFamiliares = Dicotomicos.fromInt(
+              value['Pace_APNP_HAD_pof_SINO'],
+              toBoolean: true) as bool?;
+          Valores.violenciaInfantil = Dicotomicos.fromInt(
+              value['Pace_APNP_HAD_pol_vif'],
+              toBoolean: true) as bool?;
+          Valores.abusoSustancias = Dicotomicos.fromInt(
+              value['Pace_APNP_HAD_pol_vit'],
+              toBoolean: true) as bool?;
+          Valores.problemasLaborales =
+              Dicotomicos.fromInt(value['Pace_APNP_HAD_pol'], toBoolean: true)
+                  as bool?;
+          Valores.estresLaboral = Dicotomicos.fromInt(
+              value['Pace_APNP_HAD_pol_est'],
+              toBoolean: true) as bool?;
+          Valores.hostilidadLaboral = Dicotomicos.fromInt(
+              value['Pace_APNP_HAD_pol_hos'],
+              toBoolean: true) as bool?;
+          Valores.abusoLaboral = Dicotomicos.fromInt(
+              value['Pace_APNP_HAD_pol_abu'],
+              toBoolean: true) as bool?;
+          Valores.acosoLaboral = Dicotomicos.fromInt(
+              value['Pace_APNP_HAD_pol_aco'],
+              toBoolean: true) as bool?;
 
-        Terminal.printSuccess(
-            message: "Valores de Diarios asignado : : : value");
-        // Terminal.printData(message: "\t$value");
-        Archivos.createJsonFromMap([value],
-            filePath: fileAssocieted);
-      }
-    });
+          Terminal.printSuccess(
+              message: "Valores de Diarios asignado : : : value");
+          // Terminal.printData(message: "\t$value");
+          Archivos.createJsonFromMap([value], filePath: fileAssocieted);
+        }
+      });
     });
   }
 
@@ -2215,10 +2216,12 @@ class Diarios {
     ).then((value) {
       Terminal.printAlert(
           message:
-          "RESPUESTA al Actualizar Diarios - $value "); // ${listOfValues.length}
+              "RESPUESTA al Actualizar Diarios - $value "); // ${listOfValues.length}
       if (value == "SUCCESS" || value == '"SUCCESS"') {
-        Terminal.printOther(message: "Actualización $value - Eliminando $fileAssocieted");
-        Archivos.deleteFile(filePath: fileAssocieted).then((value) => consultarRegistro());
+        Terminal.printOther(
+            message: "Actualización $value - Eliminando $fileAssocieted");
+        Archivos.deleteFile(filePath: fileAssocieted)
+            .then((value) => consultarRegistro());
       }
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "ERROR al actualizar Diarios - $error");
@@ -2249,7 +2252,7 @@ class Diarios {
     ).then((value) {
       Terminal.printAlert(
           message:
-          "RESPUESTA al registrar Diarios - $value "); // ${listOfValues.length}
+              "RESPUESTA al registrar Diarios - $value "); // ${listOfValues.length}
       if (value == "SUCCESS" || value == '"SUCCESS"') {
         consultarRegistro();
       }
@@ -2346,62 +2349,61 @@ class Higienes {
 
       Higienes.ID_Higienes = value['ID_PACE_APNP_HIG'];
 
-      Valores.banoCorporal = Dicotomicos.fromInt(
-          value['Pace_APNP_HIG_bac_SINO'],
-          toBoolean: true) as bool?;
+      Valores.banoCorporal =
+          Dicotomicos.fromInt(value['Pace_APNP_HIG_bac_SINO'], toBoolean: true)
+              as bool?;
       Valores.banoCorporalDescripcion = value['REGE_Pace_APNP_HIG_bac'];
-      Valores.higieneManos = Dicotomicos.fromInt(
-          value['Pace_APNP_HIG_man_SINO'],
-          toBoolean: true) as bool?;
+      Valores.higieneManos =
+          Dicotomicos.fromInt(value['Pace_APNP_HIG_man_SINO'], toBoolean: true)
+              as bool?;
       Valores.higieneManosDescripcion = value['REGE_Pace_APNP_HIG_man'];
-      Valores.cambiosRopa = Dicotomicos.fromInt(
-          value['Pace_APNP_HIG_rop_SINO'],
-          toBoolean: true) as bool?;
+      Valores.cambiosRopa =
+          Dicotomicos.fromInt(value['Pace_APNP_HIG_rop_SINO'], toBoolean: true)
+              as bool?;
       Valores.cambiosRopaDescripcion = value['REGE_Pace_APNP_HIG_rop'];
-      Valores.aseoDental = Dicotomicos.fromInt(
-          value['Pace_APNP_HIG_den_SINO'],
-          toBoolean: true) as bool?;
+      Valores.aseoDental =
+          Dicotomicos.fromInt(value['Pace_APNP_HIG_den_SINO'], toBoolean: true)
+              as bool?;
       Valores.aseoDentalDescripcion = value['REGE_Pace_APNP_HIG_den'];
       // *********************************
-
     }).onError((error, stackTrace) {
-    Actividades.consultarId(Databases.siteground_database_regepi,
-            Higienes.higienes['consultIdQuery'], Pacientes.ID_Paciente)
-        .then((value) {
-      if (value.containsKey('Error')) {
-        Terminal.printExpected(
-            message: "Higienes consultar registro - $value");
-        registrarRegistro();
-      } else {
-        // Asignación de Valores ********* ******** ******* ********* ***
-        Higienes.Higiene = value;
+      Actividades.consultarId(Databases.siteground_database_regepi,
+              Higienes.higienes['consultIdQuery'], Pacientes.ID_Paciente)
+          .then((value) {
+        if (value.containsKey('Error')) {
+          Terminal.printExpected(
+              message: "Higienes consultar registro - $value");
+          registrarRegistro();
+        } else {
+          // Asignación de Valores ********* ******** ******* ********* ***
+          Higienes.Higiene = value;
 
-        Higienes.ID_Higienes = value['ID_PACE_APNP_HIG'];
+          Higienes.ID_Higienes = value['ID_PACE_APNP_HIG'];
 
-        Valores.banoCorporal = Dicotomicos.fromInt(
-            value['Pace_APNP_HIG_bac_SINO'],
-            toBoolean: true) as bool?;
-        Valores.banoCorporalDescripcion = value['REGE_Pace_APNP_HIG_bac'];
-        Valores.higieneManos = Dicotomicos.fromInt(
-            value['Pace_APNP_HIG_man_SINO'],
-            toBoolean: true) as bool?;
-        Valores.higieneManosDescripcion = value['REGE_Pace_APNP_HIG_man'];
-        Valores.cambiosRopa = Dicotomicos.fromInt(
-            value['Pace_APNP_HIG_rop_SINO'],
-            toBoolean: true) as bool?;
-        Valores.cambiosRopaDescripcion = value['REGE_Pace_APNP_HIG_rop'];
-        Valores.aseoDental = Dicotomicos.fromInt(
-            value['Pace_APNP_HIG_den_SINO'],
-            toBoolean: true) as bool?;
-        Valores.aseoDentalDescripcion = value['REGE_Pace_APNP_HIG_den'];
+          Valores.banoCorporal = Dicotomicos.fromInt(
+              value['Pace_APNP_HIG_bac_SINO'],
+              toBoolean: true) as bool?;
+          Valores.banoCorporalDescripcion = value['REGE_Pace_APNP_HIG_bac'];
+          Valores.higieneManos = Dicotomicos.fromInt(
+              value['Pace_APNP_HIG_man_SINO'],
+              toBoolean: true) as bool?;
+          Valores.higieneManosDescripcion = value['REGE_Pace_APNP_HIG_man'];
+          Valores.cambiosRopa = Dicotomicos.fromInt(
+              value['Pace_APNP_HIG_rop_SINO'],
+              toBoolean: true) as bool?;
+          Valores.cambiosRopaDescripcion = value['REGE_Pace_APNP_HIG_rop'];
+          Valores.aseoDental = Dicotomicos.fromInt(
+              value['Pace_APNP_HIG_den_SINO'],
+              toBoolean: true) as bool?;
+          Valores.aseoDentalDescripcion = value['REGE_Pace_APNP_HIG_den'];
 
-        Terminal.printSuccess(
-            message: "Valores de Higienicos asignado : : : value");
-        // Terminal.printData(message: "\t$value");
-        Archivos.createJsonFromMap([value],
-            filePath: "${Pacientes.localRepositoryPath}higienicos.json");
-      }
-    });
+          Terminal.printSuccess(
+              message: "Valores de Higienicos asignado : : : value");
+          // Terminal.printData(message: "\t$value");
+          Archivos.createJsonFromMap([value],
+              filePath: "${Pacientes.localRepositoryPath}higienicos.json");
+        }
+      });
     });
   }
 
@@ -2429,10 +2431,12 @@ class Higienes {
     ).then((value) {
       Terminal.printAlert(
           message:
-          "RESPUESTA al Actualizar Higienes - $value "); // ${listOfValues.length}
+              "RESPUESTA al Actualizar Higienes - $value "); // ${listOfValues.length}
       if (value == "SUCCESS" || value == '"SUCCESS"') {
-        Terminal.printOther(message: "Actualización $value - Eliminando $fileAssocieted");
-        Archivos.deleteFile(filePath: fileAssocieted).then((value) => consultarRegistro());
+        Terminal.printOther(
+            message: "Actualización $value - Eliminando $fileAssocieted");
+        Archivos.deleteFile(filePath: fileAssocieted)
+            .then((value) => consultarRegistro());
       }
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "ERROR al actualizar Higienes - $error");
@@ -2459,7 +2463,7 @@ class Higienes {
     ).then((value) {
       Terminal.printAlert(
           message:
-          "RESPUESTA al registrar Higienes - $value "); // ${listOfValues.length}
+              "RESPUESTA al registrar Higienes - $value "); // ${listOfValues.length}
       if (value == "SUCCESS" || value == '"SUCCESS"') {
         consultarRegistro();
       }
@@ -2536,7 +2540,8 @@ class Higienes {
 
 class Limitaciones {
   static int ID_Limitaciones = 0;
-  static var fileAssocieted = "${Pacientes.localRepositoryPath}limitaciones.json";
+  static var fileAssocieted =
+      "${Pacientes.localRepositoryPath}limitaciones.json";
   // ********* ******** ******* ********* ***
   static Map<String, dynamic> Limitacion = {};
   // ********* ******** ******* ********* ***
@@ -2547,76 +2552,78 @@ class Limitaciones {
 
       Limitaciones.ID_Limitaciones = value['ID_PACE_APNP_LIM'];
 
-      Valores.usoLentes = Dicotomicos.fromInt(value['Pace_APNP_LIM_len_SINO'],
-          toBoolean: true) as bool?;
+      Valores.usoLentes =
+          Dicotomicos.fromInt(value['Pace_APNP_LIM_len_SINO'], toBoolean: true)
+              as bool?;
       // Valores.usoLentesDescripcion = value['Pace_APNP_LIM_len'];
-      Valores.aparatoSordera = Dicotomicos.fromInt(
-          value['Pace_APNP_LIM_sor_SINO'],
-          toBoolean: true) as bool?;
+      Valores.aparatoSordera =
+          Dicotomicos.fromInt(value['Pace_APNP_LIM_sor_SINO'], toBoolean: true)
+              as bool?;
       // Valores.aparatoSorderaDescripcion = value['Pace_APNP_LIM_sor'];
-      Valores.protesisDentaria = Dicotomicos.fromInt(
-          value['Pace_APNP_LIM_ria_SINO'],
-          toBoolean: true) as bool?;
+      Valores.protesisDentaria =
+          Dicotomicos.fromInt(value['Pace_APNP_LIM_ria_SINO'], toBoolean: true)
+              as bool?;
       // Valores.protesisDentariaDescripcion = value['Pace_APNP_LIM_ria'];
-      Valores.marcapasosCardiaco = Dicotomicos.fromInt(
-          value['Pace_APNP_LIM_mar_SINO'],
-          toBoolean: true) as bool?;
+      Valores.marcapasosCardiaco =
+          Dicotomicos.fromInt(value['Pace_APNP_LIM_mar_SINO'], toBoolean: true)
+              as bool?;
       // Valores.marcapasosCardiacoDescripcion = value['Pace_APNP_LIM_mar'];
-      Valores.ortesisDeambular = Dicotomicos.fromInt(
-          value['Pace_APNP_LIM_dea_SINO'],
-          toBoolean: true) as bool?;
+      Valores.ortesisDeambular =
+          Dicotomicos.fromInt(value['Pace_APNP_LIM_dea_SINO'], toBoolean: true)
+              as bool?;
       // Valores.ortesisDeambularDescripcion = value['Pace_APNP_LIM_dea'];
-      Valores.limitacionesActividadCotidiana = Dicotomicos.fromInt(
-          value['Pace_APNP_LIM_lim_SINO'],
-          toBoolean: true) as bool?;
+      Valores.limitacionesActividadCotidiana =
+          Dicotomicos.fromInt(value['Pace_APNP_LIM_lim_SINO'], toBoolean: true)
+              as bool?;
       // Valores.limitacionesActividadCotidianaDescripcion = value['Pace_APNP_LIM_lim'];
       // *********************************
-
     }).onError((error, stackTrace) {
-    Actividades.consultarId(Databases.siteground_database_regepi,
-            Limitaciones.limitaciones['consultIdQuery'], Pacientes.ID_Paciente)
-        .then((value) {
-      if (value.containsKey('Error')) {
-        Terminal.printExpected(
-            message: "Limitacciones consultar registro - $value");
-        registrarRegistro();
-      } else {
-        // Asignación de Valores ********* ******** ******* ********* ***
-        Limitaciones.Limitacion = value;
+      Actividades.consultarId(
+              Databases.siteground_database_regepi,
+              Limitaciones.limitaciones['consultIdQuery'],
+              Pacientes.ID_Paciente)
+          .then((value) {
+        if (value.containsKey('Error')) {
+          Terminal.printExpected(
+              message: "Limitacciones consultar registro - $value");
+          registrarRegistro();
+        } else {
+          // Asignación de Valores ********* ******** ******* ********* ***
+          Limitaciones.Limitacion = value;
 
-        Limitaciones.ID_Limitaciones = value['ID_PACE_APNP_LIM'];
+          Limitaciones.ID_Limitaciones = value['ID_PACE_APNP_LIM'];
 
-        Valores.usoLentes = Dicotomicos.fromInt(value['Pace_APNP_LIM_len_SINO'],
-            toBoolean: true) as bool?;
-        // Valores.usoLentesDescripcion = value['Pace_APNP_LIM_len'];
-        Valores.aparatoSordera = Dicotomicos.fromInt(
-            value['Pace_APNP_LIM_sor_SINO'],
-            toBoolean: true) as bool?;
-        // Valores.aparatoSorderaDescripcion = value['Pace_APNP_LIM_sor'];
-        Valores.protesisDentaria = Dicotomicos.fromInt(
-            value['Pace_APNP_LIM_ria_SINO'],
-            toBoolean: true) as bool?;
-        // Valores.protesisDentariaDescripcion = value['Pace_APNP_LIM_ria'];
-        Valores.marcapasosCardiaco = Dicotomicos.fromInt(
-            value['Pace_APNP_LIM_mar_SINO'],
-            toBoolean: true) as bool?;
-        // Valores.marcapasosCardiacoDescripcion = value['Pace_APNP_LIM_mar'];
-        Valores.ortesisDeambular = Dicotomicos.fromInt(
-            value['Pace_APNP_LIM_dea_SINO'],
-            toBoolean: true) as bool?;
-        // Valores.ortesisDeambularDescripcion = value['Pace_APNP_LIM_dea'];
-        Valores.limitacionesActividadCotidiana = Dicotomicos.fromInt(
-            value['Pace_APNP_LIM_lim_SINO'],
-            toBoolean: true) as bool?;
-        // Valores.limitacionesActividadCotidianaDescripcion = value['Pace_APNP_LIM_lim'];
+          Valores.usoLentes = Dicotomicos.fromInt(
+              value['Pace_APNP_LIM_len_SINO'],
+              toBoolean: true) as bool?;
+          // Valores.usoLentesDescripcion = value['Pace_APNP_LIM_len'];
+          Valores.aparatoSordera = Dicotomicos.fromInt(
+              value['Pace_APNP_LIM_sor_SINO'],
+              toBoolean: true) as bool?;
+          // Valores.aparatoSorderaDescripcion = value['Pace_APNP_LIM_sor'];
+          Valores.protesisDentaria = Dicotomicos.fromInt(
+              value['Pace_APNP_LIM_ria_SINO'],
+              toBoolean: true) as bool?;
+          // Valores.protesisDentariaDescripcion = value['Pace_APNP_LIM_ria'];
+          Valores.marcapasosCardiaco = Dicotomicos.fromInt(
+              value['Pace_APNP_LIM_mar_SINO'],
+              toBoolean: true) as bool?;
+          // Valores.marcapasosCardiacoDescripcion = value['Pace_APNP_LIM_mar'];
+          Valores.ortesisDeambular = Dicotomicos.fromInt(
+              value['Pace_APNP_LIM_dea_SINO'],
+              toBoolean: true) as bool?;
+          // Valores.ortesisDeambularDescripcion = value['Pace_APNP_LIM_dea'];
+          Valores.limitacionesActividadCotidiana = Dicotomicos.fromInt(
+              value['Pace_APNP_LIM_lim_SINO'],
+              toBoolean: true) as bool?;
+          // Valores.limitacionesActividadCotidianaDescripcion = value['Pace_APNP_LIM_lim'];
 
-        Terminal.printSuccess(
-            message: "Valores de Limitaciones asignado : : : value");
-        // Terminal.printData(message: "\t$value");
-        Archivos.createJsonFromMap([value],
-            filePath: fileAssocieted);
-      }
-    });
+          Terminal.printSuccess(
+              message: "Valores de Limitaciones asignado : : : value");
+          // Terminal.printData(message: "\t$value");
+          Archivos.createJsonFromMap([value], filePath: fileAssocieted);
+        }
+      });
     });
   }
 
@@ -2648,10 +2655,12 @@ class Limitaciones {
     ).then((value) {
       Terminal.printAlert(
           message:
-          "RESPUESTA al Actualizar Limitaciones - $value "); // ${listOfValues.length}
+              "RESPUESTA al Actualizar Limitaciones - $value "); // ${listOfValues.length}
       if (value == "SUCCESS" || value == '"SUCCESS"') {
-        Terminal.printOther(message: "Actualización $value - Eliminando $fileAssocieted");
-        Archivos.deleteFile(filePath: fileAssocieted).then((value) => consultarRegistro());
+        Terminal.printOther(
+            message: "Actualización $value - Eliminando $fileAssocieted");
+        Archivos.deleteFile(filePath: fileAssocieted)
+            .then((value) => consultarRegistro());
       }
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "ERROR al actualizar Limitaciones - $error");
@@ -2682,7 +2691,7 @@ class Limitaciones {
     ).then((value) {
       Terminal.printAlert(
           message:
-          "RESPUESTA al registrar Limitaciones - $value "); // ${listOfValues.length}
+              "RESPUESTA al registrar Limitaciones - $value "); // ${listOfValues.length}
       if (value == "SUCCESS" || value == '"SUCCESS"') {
         consultarRegistro();
       }
@@ -2733,11 +2742,11 @@ class Limitaciones {
     "consultByName": "SELECT * FROM pace_apnp_lim WHERE Pace_APP_DEG LIKE '%",
     "registerQuery": "INSERT INTO pace_apnp_lim (ID_Pace, Pace_APNP_LIM_Feca, "
         "Pace_APNP_LIM_len_SINO, Pace_APNP_LIM_len_DESC, "
-  "Pace_APNP_LIM_sor_SINO, Pace_APNP_LIM_sor_DESC, "
-  "Pace_APNP_LIM_ria_SINO, Pace_APNP_LIM_ria_DESC, "
-  "Pace_APNP_LIM_mar_SINO, Pace_APNP_LIM_mar_DESC, "
-  "Pace_APNP_LIM_dea_SINO, Pace_APNP_LIM_dea_DESC, "
-  "Pace_APNP_LIM_lim_SINO, Pace_APNP_LIM_lim_DESC) "
+        "Pace_APNP_LIM_sor_SINO, Pace_APNP_LIM_sor_DESC, "
+        "Pace_APNP_LIM_ria_SINO, Pace_APNP_LIM_ria_DESC, "
+        "Pace_APNP_LIM_mar_SINO, Pace_APNP_LIM_mar_DESC, "
+        "Pace_APNP_LIM_dea_SINO, Pace_APNP_LIM_dea_DESC, "
+        "Pace_APNP_LIM_lim_SINO, Pace_APNP_LIM_lim_DESC) "
         "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
     "updateQuery": "UPDATE pace_apnp_lim "
         "SET ID_PACE_APNP_LIM = ?,  ID_Pace = ?,  Pace_APNP_LIM_Feca = ?,  "
@@ -2771,7 +2780,8 @@ class Limitaciones {
 
 class Sustancias {
   static int ID_Sustancias = 0;
-  static var fileAssocieted = "${Pacientes.localRepositoryPath}exposiciones.json";
+  static var fileAssocieted =
+      "${Pacientes.localRepositoryPath}exposiciones.json";
   // ********* ******** ******* ********* ***
   static Map<String, dynamic> Sustancia = {};
   // ********* ******** ******* ********* ***
@@ -2782,68 +2792,67 @@ class Sustancias {
 
       Sustancias.ID_Sustancias = value['ID_PACE_APNP_SUS'];
 
-      Valores.exposicionBiomasa = Dicotomicos.fromInt(
-          value['Pace_APNP_SUS_len_SINO'],
-          toBoolean: true) as bool?;
+      Valores.exposicionBiomasa =
+          Dicotomicos.fromInt(value['Pace_APNP_SUS_len_SINO'], toBoolean: true)
+              as bool?;
       // Valores.exposicionBiomasaDescripcion = value['Pace_APNP_SUS_len'];
-      Valores.exposicionHumosQuimicos = Dicotomicos.fromInt(
-          value['Pace_APNP_SUS_qui_SINO'],
-          toBoolean: true) as bool?;
+      Valores.exposicionHumosQuimicos =
+          Dicotomicos.fromInt(value['Pace_APNP_SUS_qui_SINO'], toBoolean: true)
+              as bool?;
       // Valores.exposicionHumosQuimicosDescripcion = value['Pace_APNP_SUS_qui'];
-      Valores.exposicionPesticidas = Dicotomicos.fromInt(
-          value['Pace_APNP_SUS_pes_SINO'],
-          toBoolean: true) as bool?;
+      Valores.exposicionPesticidas =
+          Dicotomicos.fromInt(value['Pace_APNP_SUS_pes_SINO'], toBoolean: true)
+              as bool?;
       // Valores.exposicionPesticidasDescripcion = value['Pace_APNP_SUS_pes'];
-      Valores.exposicionMetalesPesados = Dicotomicos.fromInt(
-          value['Pace_APNP_SUS_met_SINO'],
-          toBoolean: true) as bool?;
+      Valores.exposicionMetalesPesados =
+          Dicotomicos.fromInt(value['Pace_APNP_SUS_met_SINO'], toBoolean: true)
+              as bool?;
       // Valores.exposicionMetalesPesadosDescripcion = value['Pace_APNP_SUS_met'];
-      Valores.exposicionPsicotropicos = Dicotomicos.fromInt(
-          value['Pace_APNP_SUS_psi_SINO'],
-          toBoolean: true) as bool?;
+      Valores.exposicionPsicotropicos =
+          Dicotomicos.fromInt(value['Pace_APNP_SUS_psi_SINO'], toBoolean: true)
+              as bool?;
       // Valores.limitacionesActividadCotidianaDescripcion = value['Pace_APNP_LIM_lim'];
       // *********************************
-
     }).onError((error, stackTrace) {
-    Actividades.consultarId(Databases.siteground_database_regepi,
-            Sustancias.sustancias['consultIdQuery'], Pacientes.ID_Paciente)
-        .then((value) {
-      if (value.containsKey('Error')) {
-        Terminal.printExpected(
-            message: "Exposiciones consultar registro - $value");
-        registrarRegistro();
-      } else {
-        // Asignación de Valores ********* ******** ******* ********* ***
-        Sustancias.Sustancia = value;
+      Actividades.consultarId(Databases.siteground_database_regepi,
+              Sustancias.sustancias['consultIdQuery'], Pacientes.ID_Paciente)
+          .then((value) {
+        if (value.containsKey('Error')) {
+          Terminal.printExpected(
+              message: "Exposiciones consultar registro - $value");
+          registrarRegistro();
+        } else {
+          // Asignación de Valores ********* ******** ******* ********* ***
+          Sustancias.Sustancia = value;
 
-        Sustancias.ID_Sustancias = value['ID_PACE_APNP_SUS'];
+          Sustancias.ID_Sustancias = value['ID_PACE_APNP_SUS'];
 
-        Valores.exposicionBiomasa = Dicotomicos.fromInt(
-            value['Pace_APNP_SUS_len_SINO'],
-            toBoolean: true) as bool?;
-        // Valores.exposicionBiomasaDescripcion = value['Pace_APNP_SUS_len'];
-        Valores.exposicionHumosQuimicos = Dicotomicos.fromInt(
-            value['Pace_APNP_SUS_qui_SINO'],
-            toBoolean: true) as bool?;
-        // Valores.exposicionHumosQuimicosDescripcion = value['Pace_APNP_SUS_qui'];
-        Valores.exposicionPesticidas = Dicotomicos.fromInt(
-            value['Pace_APNP_SUS_pes_SINO'],
-            toBoolean: true) as bool?;
-        // Valores.exposicionPesticidasDescripcion = value['Pace_APNP_SUS_pes'];
-        Valores.exposicionMetalesPesados = Dicotomicos.fromInt(
-            value['Pace_APNP_SUS_met_SINO'],
-            toBoolean: true) as bool?;
-        // Valores.exposicionMetalesPesadosDescripcion = value['Pace_APNP_SUS_met'];
-        Valores.exposicionPsicotropicos = Dicotomicos.fromInt(
-            value['Pace_APNP_SUS_psi_SINO'],
-            toBoolean: true) as bool?;
-        Terminal.printSuccess(
-            message: "Valores de Exposiciones asignado : : : value");
-        // Terminal.printData(message: "\t$value");
-        Archivos.createJsonFromMap([value],
-            filePath: "${Pacientes.localRepositoryPath}exposiciones.json");
-      }
-    });
+          Valores.exposicionBiomasa = Dicotomicos.fromInt(
+              value['Pace_APNP_SUS_len_SINO'],
+              toBoolean: true) as bool?;
+          // Valores.exposicionBiomasaDescripcion = value['Pace_APNP_SUS_len'];
+          Valores.exposicionHumosQuimicos = Dicotomicos.fromInt(
+              value['Pace_APNP_SUS_qui_SINO'],
+              toBoolean: true) as bool?;
+          // Valores.exposicionHumosQuimicosDescripcion = value['Pace_APNP_SUS_qui'];
+          Valores.exposicionPesticidas = Dicotomicos.fromInt(
+              value['Pace_APNP_SUS_pes_SINO'],
+              toBoolean: true) as bool?;
+          // Valores.exposicionPesticidasDescripcion = value['Pace_APNP_SUS_pes'];
+          Valores.exposicionMetalesPesados = Dicotomicos.fromInt(
+              value['Pace_APNP_SUS_met_SINO'],
+              toBoolean: true) as bool?;
+          // Valores.exposicionMetalesPesadosDescripcion = value['Pace_APNP_SUS_met'];
+          Valores.exposicionPsicotropicos = Dicotomicos.fromInt(
+              value['Pace_APNP_SUS_psi_SINO'],
+              toBoolean: true) as bool?;
+          Terminal.printSuccess(
+              message: "Valores de Exposiciones asignado : : : value");
+          // Terminal.printData(message: "\t$value");
+          Archivos.createJsonFromMap([value],
+              filePath: "${Pacientes.localRepositoryPath}exposiciones.json");
+        }
+      });
     });
   }
 
@@ -2873,10 +2882,12 @@ class Sustancias {
     ).then((value) {
       Terminal.printAlert(
           message:
-          "RESPUESTA al Actualizar Sustancias - $value "); // ${listOfValues.length}
+              "RESPUESTA al Actualizar Sustancias - $value "); // ${listOfValues.length}
       if (value == "SUCCESS" || value == '"SUCCESS"') {
-        Terminal.printOther(message: "Actualización $value - Eliminando $fileAssocieted");
-        Archivos.deleteFile(filePath: fileAssocieted).then((value) => consultarRegistro());
+        Terminal.printOther(
+            message: "Actualización $value - Eliminando $fileAssocieted");
+        Archivos.deleteFile(filePath: fileAssocieted)
+            .then((value) => consultarRegistro());
       }
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "ERROR al actualizar Sustancias - $error");
@@ -2905,7 +2916,7 @@ class Sustancias {
     ).then((value) {
       Terminal.printAlert(
           message:
-          "RESPUESTA al registrar Exposiciones - $value "); // ${listOfValues.length}
+              "RESPUESTA al registrar Exposiciones - $value "); // ${listOfValues.length}
       if (value == "SUCCESS" || value == '"SUCCESS"') {
         consultarRegistro();
       }
@@ -2953,11 +2964,11 @@ class Sustancias {
     "consultLastQuery": "SELECT * FROM pace_apnp_sus WHERE ID_Pace = ?",
     "consultByName": "SELECT * FROM pace_apnp_sus WHERE Pace_APP_DEG LIKE '%",
     "registerQuery": "INSERT INTO pace_apnp_sus (ID_Pace, Pace_APNP_SUS_Feca, "
-  "Pace_APNP_SUS_len_SINO, Pace_APNP_SUS_len_DESC, "
-  "Pace_APNP_SUS_qui_SINO, Pace_APNP_SUS_qui_DESC, "
-  "Pace_APNP_SUS_pes_SINO, Pace_APNP_SUS_pes_DESC, "
-  "Pace_APNP_SUS_met_SINO, Pace_APNP_SUS_met_DESC, "
-  "Pace_APNP_SUS_psi_SINO, Pace_APNP_SUS_psi_DESC) "
+        "Pace_APNP_SUS_len_SINO, Pace_APNP_SUS_len_DESC, "
+        "Pace_APNP_SUS_qui_SINO, Pace_APNP_SUS_qui_DESC, "
+        "Pace_APNP_SUS_pes_SINO, Pace_APNP_SUS_pes_DESC, "
+        "Pace_APNP_SUS_met_SINO, Pace_APNP_SUS_met_DESC, "
+        "Pace_APNP_SUS_psi_SINO, Pace_APNP_SUS_psi_DESC) "
         "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
     "updateQuery": "UPDATE pace_apnp_sus "
         "SET ID_PACE_APNP_SUS = ?, ID_Pace = ?, Pace_APNP_SUS_Feca = ?, "
@@ -2990,7 +3001,8 @@ class Sustancias {
 
 class Toxicomanias {
   static int ID_Toxicomanias = 0;
-  static var fileAssocieted = "${Pacientes.localRepositoryPath}toxicomanias.json";
+  static var fileAssocieted =
+      "${Pacientes.localRepositoryPath}toxicomanias.json";
   // ********* ******** ******* ********* ***
   static Map<String, dynamic> Toxicomania = {};
   // ********* ******** ******* ********* ***
@@ -3001,9 +3013,9 @@ class Toxicomanias {
 
       Toxicomanias.ID_Toxicomanias = value['ID_PACE_APNP_DRO'];
 
-      Valores.esAlcoholismo = Dicotomicos.fromInt(
-          value['Pace_APNP_DRO_alc_SINO'],
-          toBoolean: true) as bool?;
+      Valores.esAlcoholismo =
+          Dicotomicos.fromInt(value['Pace_APNP_DRO_alc_SINO'], toBoolean: true)
+              as bool?;
       Valores.suspensionAlcoholismo = Dicotomicos.fromInt(
           value['Pace_APNP_DRO_alc_SUS_SINO'],
           toBoolean: true) as bool?;
@@ -3018,9 +3030,9 @@ class Toxicomanias {
           value['REGE_Pace_APNP_DRO_alc_SUS'].toString();
       Valores.tiposAlcoholismoDescripcion = value['Pace_APNP_DRO_alc_TIP'];
       // ********* ******** ******* ********* ***
-      Valores.esTabaquismo = Dicotomicos.fromInt(
-          value['Pace_APNP_DRO_tab_SINO'],
-          toBoolean: true) as bool?;
+      Valores.esTabaquismo =
+          Dicotomicos.fromInt(value['Pace_APNP_DRO_tab_SINO'], toBoolean: true)
+              as bool?;
       Valores.suspensionTabaquismo = Dicotomicos.fromInt(
           value['Pace_APNP_DRO_tab_SUS_SINO'],
           toBoolean: true) as bool?;
@@ -3035,9 +3047,9 @@ class Toxicomanias {
           value['REGE_Pace_APNP_DRO_tab_SUS'].toString();
       Valores.tiposTabaquismoDescripcion = value['Pace_APNP_DRO_tab_TIP'];
       // ********* ******** ******* ********* ***
-      Valores.esDrogadismo = Dicotomicos.fromInt(
-          value['Pace_APNP_DRO_tox_SINO'],
-          toBoolean: true) as bool?;
+      Valores.esDrogadismo =
+          Dicotomicos.fromInt(value['Pace_APNP_DRO_tox_SINO'], toBoolean: true)
+              as bool?;
       Valores.suspensionDrogadismo = Dicotomicos.fromInt(
           value['Pace_APNP_DRO_tox_SUS_SINO'],
           toBoolean: true) as bool?;
@@ -3053,81 +3065,81 @@ class Toxicomanias {
       Valores.tiposDrogadismoDescripcion = value['Pace_APNP_DRO_tox_TIP'];
       // Valores.limitacionesActividadCotidianaDescripcion = value['Pace_APNP_LIM_lim'];
       // *********************************
-
     }).onError((error, stackTrace) {
-    Actividades.consultarId(Databases.siteground_database_regepi,
-            Toxicomanias.toxicomanias['consultIdQuery'], Pacientes.ID_Paciente)
-        .then((value) {
-      if (value.containsKey('Error')) {
-        Terminal.printExpected(
-            message: "Toxicomanias consultar registro - $value");
-        registrarRegistro();
-      } else {
-        // Asignación de Valores ********* ******** ******* ********* ***
-        Toxicomanias.Toxicomania = value;
+      Actividades.consultarId(
+              Databases.siteground_database_regepi,
+              Toxicomanias.toxicomanias['consultIdQuery'],
+              Pacientes.ID_Paciente)
+          .then((value) {
+        if (value.containsKey('Error')) {
+          Terminal.printExpected(
+              message: "Toxicomanias consultar registro - $value");
+          registrarRegistro();
+        } else {
+          // Asignación de Valores ********* ******** ******* ********* ***
+          Toxicomanias.Toxicomania = value;
 
-        Toxicomanias.ID_Toxicomanias = value['ID_PACE_APNP_DRO'];
+          Toxicomanias.ID_Toxicomanias = value['ID_PACE_APNP_DRO'];
 
-        Valores.esAlcoholismo = Dicotomicos.fromInt(
-            value['Pace_APNP_DRO_alc_SINO'],
-            toBoolean: true) as bool?;
-        Valores.suspensionAlcoholismo = Dicotomicos.fromInt(
-            value['Pace_APNP_DRO_alc_SUS_SINO'],
-            toBoolean: true) as bool?;
-        Valores.edadInicioAlcoholismo =
-            value['REGE_Pace_APNP_DRO_alc_INE'].toString();
-        Valores.duracionAnosAlcoholismo =
-            value['REGE_Pace_APNP_DRO_alc_DUR'].toString();
-        Valores.periodicidadAlcoholismo =
-            value['REGE_Pace_APNP_DRO_alc_PER'].toString();
-        Valores.intervaloAlcoholismo = value['Pace_APNP_DRO_alc_DUR_PER_'];
-        Valores.aosSuspensionAlcoholismo =
-            value['REGE_Pace_APNP_DRO_alc_SUS'].toString();
-        Valores.tiposAlcoholismoDescripcion = value['Pace_APNP_DRO_alc_TIP'];
-        // ********* ******** ******* ********* ***
-        Valores.esTabaquismo = Dicotomicos.fromInt(
-            value['Pace_APNP_DRO_tab_SINO'],
-            toBoolean: true) as bool?;
-        Valores.suspensionTabaquismo = Dicotomicos.fromInt(
-            value['Pace_APNP_DRO_tab_SUS_SINO'],
-            toBoolean: true) as bool?;
-        Valores.edadInicioTabaquismo =
-            value['REGE_Pace_APNP_DRO_tab_INE'].toString();
-        Valores.duracionAnosTabaquismo =
-            value['REGE_Pace_APNP_DRO_tab_DUR'].toString();
-        Valores.periodicidadTabaquismo =
-            value['REGE_Pace_APNP_DRO_tab_PER'].toString();
-        Valores.intervaloTabaquismo = value['Pace_APNP_DRO_tab_DUR_PER_'];
-        Valores.aosSuspensionTabaquismo =
-            value['REGE_Pace_APNP_DRO_tab_SUS'].toString();
-        Valores.tiposTabaquismoDescripcion = value['Pace_APNP_DRO_tab_TIP'];
-        // ********* ******** ******* ********* ***
-        Valores.esDrogadismo = Dicotomicos.fromInt(
-            value['Pace_APNP_DRO_tox_SINO'],
-            toBoolean: true) as bool?;
-        Valores.suspensionDrogadismo = Dicotomicos.fromInt(
-            value['Pace_APNP_DRO_tox_SUS_SINO'],
-            toBoolean: true) as bool?;
-        Valores.edadInicioDrogadismo =
-            value['REGE_Pace_APNP_DRO_tox_INE'].toString();
-        Valores.duracionAnosDrogadismo =
-            value['REGE_Pace_APNP_DRO_tox_DUR'].toString();
-        Valores.periodicidadDrogadismo =
-            value['REGE_Pace_APNP_DRO_tox_PER'].toString();
-        Valores.intervaloDrogadismo = value['Pace_APNP_DRO_tox_DUR_PER_'];
-        Valores.aosSuspensionDrogadismo =
-            value['REGE_Pace_APNP_DRO_tox_SUS'].toString();
-        Valores.tiposDrogadismoDescripcion = value['Pace_APNP_DRO_tox_TIP'];
-        // ********* ******** ******* ********* ***
+          Valores.esAlcoholismo = Dicotomicos.fromInt(
+              value['Pace_APNP_DRO_alc_SINO'],
+              toBoolean: true) as bool?;
+          Valores.suspensionAlcoholismo = Dicotomicos.fromInt(
+              value['Pace_APNP_DRO_alc_SUS_SINO'],
+              toBoolean: true) as bool?;
+          Valores.edadInicioAlcoholismo =
+              value['REGE_Pace_APNP_DRO_alc_INE'].toString();
+          Valores.duracionAnosAlcoholismo =
+              value['REGE_Pace_APNP_DRO_alc_DUR'].toString();
+          Valores.periodicidadAlcoholismo =
+              value['REGE_Pace_APNP_DRO_alc_PER'].toString();
+          Valores.intervaloAlcoholismo = value['Pace_APNP_DRO_alc_DUR_PER_'];
+          Valores.aosSuspensionAlcoholismo =
+              value['REGE_Pace_APNP_DRO_alc_SUS'].toString();
+          Valores.tiposAlcoholismoDescripcion = value['Pace_APNP_DRO_alc_TIP'];
+          // ********* ******** ******* ********* ***
+          Valores.esTabaquismo = Dicotomicos.fromInt(
+              value['Pace_APNP_DRO_tab_SINO'],
+              toBoolean: true) as bool?;
+          Valores.suspensionTabaquismo = Dicotomicos.fromInt(
+              value['Pace_APNP_DRO_tab_SUS_SINO'],
+              toBoolean: true) as bool?;
+          Valores.edadInicioTabaquismo =
+              value['REGE_Pace_APNP_DRO_tab_INE'].toString();
+          Valores.duracionAnosTabaquismo =
+              value['REGE_Pace_APNP_DRO_tab_DUR'].toString();
+          Valores.periodicidadTabaquismo =
+              value['REGE_Pace_APNP_DRO_tab_PER'].toString();
+          Valores.intervaloTabaquismo = value['Pace_APNP_DRO_tab_DUR_PER_'];
+          Valores.aosSuspensionTabaquismo =
+              value['REGE_Pace_APNP_DRO_tab_SUS'].toString();
+          Valores.tiposTabaquismoDescripcion = value['Pace_APNP_DRO_tab_TIP'];
+          // ********* ******** ******* ********* ***
+          Valores.esDrogadismo = Dicotomicos.fromInt(
+              value['Pace_APNP_DRO_tox_SINO'],
+              toBoolean: true) as bool?;
+          Valores.suspensionDrogadismo = Dicotomicos.fromInt(
+              value['Pace_APNP_DRO_tox_SUS_SINO'],
+              toBoolean: true) as bool?;
+          Valores.edadInicioDrogadismo =
+              value['REGE_Pace_APNP_DRO_tox_INE'].toString();
+          Valores.duracionAnosDrogadismo =
+              value['REGE_Pace_APNP_DRO_tox_DUR'].toString();
+          Valores.periodicidadDrogadismo =
+              value['REGE_Pace_APNP_DRO_tox_PER'].toString();
+          Valores.intervaloDrogadismo = value['Pace_APNP_DRO_tox_DUR_PER_'];
+          Valores.aosSuspensionDrogadismo =
+              value['REGE_Pace_APNP_DRO_tox_SUS'].toString();
+          Valores.tiposDrogadismoDescripcion = value['Pace_APNP_DRO_tox_TIP'];
+          // ********* ******** ******* ********* ***
 
-        // print("Valores de Toxicomanias asignado : : : $value");
-        Terminal.printSuccess(
-            message: "Valores de Toxicomanias asignado : : : value");
-        // Terminal.printData(message: "\t$value");
-        Archivos.createJsonFromMap([value],
-            filePath: fileAssocieted);
-      }
-    });
+          // print("Valores de Toxicomanias asignado : : : $value");
+          Terminal.printSuccess(
+              message: "Valores de Toxicomanias asignado : : : value");
+          // Terminal.printData(message: "\t$value");
+          Archivos.createJsonFromMap([value], filePath: fileAssocieted);
+        }
+      });
     });
   }
 
@@ -3173,11 +3185,12 @@ class Toxicomanias {
     ).then((value) {
       Terminal.printAlert(
           message:
-          "RESPUESTA al Actualizar Toxicomanias - $value "); // ${listOfValues.length}
+              "RESPUESTA al Actualizar Toxicomanias - $value "); // ${listOfValues.length}
       if (value == "SUCCESS" || value == '"SUCCESS"') {
-        Terminal.printOther(message: "Actualización $value - Eliminando $fileAssocieted");
-        Archivos.deleteFile(filePath: fileAssocieted).then((value) => consultarRegistro());
-
+        Terminal.printOther(
+            message: "Actualización $value - Eliminando $fileAssocieted");
+        Archivos.deleteFile(filePath: fileAssocieted)
+            .then((value) => consultarRegistro());
       }
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "ERROR al actualizar Toxicomanias - $error");
@@ -3223,7 +3236,7 @@ class Toxicomanias {
     ).then((value) {
       Terminal.printAlert(
           message:
-          "RESPUESTA al registrar Toxicomanias - $value "); // ${listOfValues.length}
+              "RESPUESTA al registrar Toxicomanias - $value "); // ${listOfValues.length}
       if (value == "SUCCESS" || value == '"SUCCESS"') {
         consultarRegistro();
       }
@@ -3892,8 +3905,7 @@ class Patologicos {
 
 class Alergicos {
   static int ID_Alergicos = 0;
-  static var fileAssocieted =
-      '${Pacientes.localRepositoryPath}alergicos.json';
+  static var fileAssocieted = '${Pacientes.localRepositoryPath}alergicos.json';
   //
   static String selectedDiagnosis = "";
   //
@@ -5273,7 +5285,13 @@ class Auxiliares {
       "Basófilos Totales",
       "Bandas Totales"
     ],
-    Categorias[1]: ["Glucosa", "Urea", "Creatinina", "Nitrógeno Úrico", "Acido Úrico"],
+    Categorias[1]: [
+      "Glucosa",
+      "Urea",
+      "Creatinina",
+      "Nitrógeno Úrico",
+      "Acido Úrico"
+    ],
     Categorias[2]: [
       "Sodio",
       "Potasio",
@@ -5361,11 +5379,11 @@ class Auxiliares {
     ]
   };
   static Map<String, dynamic> Medidas = {
-    Categorias[0]: ["g/dL", "%", "fL", "pg", "10^3/UL", "10^6/UL",  "K/uL"],
+    Categorias[0]: ["g/dL", "%", "fL", "pg", "10^3/UL", "10^6/UL", "K/uL"],
     Categorias[1]: ["mg/dL"],
     Categorias[2]: ["mEq/L", "mmol/L", "mg/dL"],
     Categorias[3]: ["UI/L", "g/dL", "mg/dL"],
-    Categorias[4]: ["mUI/L",  "pg/mL",  "ng/dL",  ""],
+    Categorias[4]: ["mUI/L", "pg/mL", "ng/dL", ""],
     Categorias[5]: [""],
     Categorias[6]: ["mg/dL"],
     Categorias[7]: ["", "seg"],
@@ -5473,13 +5491,10 @@ class Auxiliares {
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Eritrocitos' ORDER BY Fecha_Registro DESC limit 1) as Eritrocitos,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Hemoglobina' ORDER BY Fecha_Registro DESC limit 1) as Hemoglobina,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Hematocrito' ORDER BY Fecha_Registro DESC limit 1) as Hematocrito,"
-
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Concentración Media de Hemoglobina Corpuscular' ORDER BY Fecha_Registro DESC limit 1) as CHCM,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'VCM' ORDER BY Fecha_Registro DESC limit 1) as VCM,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'HCM' ORDER BY Fecha_Registro DESC limit 1) as HCM,"
-
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Plaquetas' ORDER BY Fecha_Registro DESC limit 1) as Plaquetas,"
-
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Leucocitos' ORDER BY Fecha_Registro DESC limit 1) as Leucocitos_Totales,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Neutrofilos' ORDER BY Fecha_Registro DESC limit 1) as Neutrofilos_Totales,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Linfocitos' ORDER BY Fecha_Registro DESC limit 1) as Linfocitos_Totales,"
@@ -5582,9 +5597,7 @@ class Auxiliares {
 }
 
 class Pendientes {
-
-  static var fileAssocieted =
-      '${Pacientes.localRepositoryPath}pendientes.json';
+  static var fileAssocieted = '${Pacientes.localRepositoryPath}pendientes.json';
 
   static final Map<String, dynamic> pendientes = {
     "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_reggabo "
@@ -5707,6 +5720,17 @@ class Reportes {
     "Procedimiento_Realizado": Reportes.procedimientoRealizado,
     "Complicaciones_Procedimiento": Valores.complicacionesProcedimiento,
     "Pendientes_Procedimiento": Valores.pendientesProcedimiento,
+    // ***************************************
+    "Motivo_Transfusion": "",
+    "Hemotipo_Admnistrado": "",
+    "Cantidad_Unidades": "",
+    "Volumen_Administrado": "",
+    "Num_Identificacion": "",
+    "Inicio_Transfusion": "",
+    "Termino_Transfusion": "",
+    "Seguimiento_Vitales": "",
+    "Estado_Final_Transfusion": "Se realiza seguimiento y control a la paciente durante la transfusión. Termina procedimiento sin complicaciones ni evidencia de reacciones adversas asociadas a la transfusión de hemoderivados. ",
+    "Reacciones_Presentadas": "Ninguna manifestada durante la transfusión. ",
     // ***************************************
     "Medidas_Generales": Reportes.medidasGenerales,
     "Licencia_Medica": Reportes.licenciasMedicas, // ['Sin licencia médica'],

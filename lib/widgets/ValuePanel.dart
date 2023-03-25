@@ -32,6 +32,55 @@ class _ValuePanelState extends State<ValuePanel> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: () {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                backgroundColor: Theming.secondaryColor,
+                content: SizedBox(
+                  height: 100,
+                  child: Container(
+                    decoration: ContainerDecoration.roundedDecoration(),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(widget.firstText!,
+                            maxLines: 2,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: widget.fontSize,
+                              color: Colors.grey,
+                              overflow: TextOverflow.ellipsis,
+                              fontWeight: FontWeight.bold,
+                            )),
+                        Text(
+                          widget.secondText!,
+                          style: TextStyle(
+                            fontSize: widget.fontSize - 2,
+                            color: Colors.grey,
+                            overflow: TextOverflow.ellipsis,
+                            fontWeight: FontWeight.normal,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                        Text(widget.thirdText!,
+                            style: TextStyle(
+                              fontSize: widget.fontSize - 4,
+                              color: Colors.grey,
+                              overflow: TextOverflow.ellipsis,
+                              fontWeight: FontWeight.normal,
+                            )),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            });
+      },
       onDoubleTap: () {
         widget.onEdit!(widget.secondText!);
       },

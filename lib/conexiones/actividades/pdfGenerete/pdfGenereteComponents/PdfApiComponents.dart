@@ -90,7 +90,8 @@ Column paragraph(
     {String? anteTexto,
     bool isBefore = false,
     String? texto,
-    String? subTexto}) {
+    String? subTexto,
+    bool withJumpSpace = true}) {
   return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
     isBefore
         ? RichText(
@@ -120,7 +121,7 @@ Column paragraph(
             textAlign: TextAlign.justify,
             margin: const EdgeInsets.only(bottom: 2.0 * PdfPageFormat.mm),
             style: TextStyle(fontSize: 8, fontWeight: FontWeight.normal)),
-    SizedBox(height: PdfApi.height),
+    if (withJumpSpace == true) SizedBox(height: PdfApi.height),
   ]);
 }
 
@@ -214,7 +215,6 @@ Column paragraphWithTittleAndSeparated(
 
   if (subTitulo != "") {
     for (String element in subTitulo!.split('\n')) {
-
       var elem = element.split(comma);
       // print("Elem ${elem.length} SubTitulo $subTitulo");
       if (elem.length > 1) {

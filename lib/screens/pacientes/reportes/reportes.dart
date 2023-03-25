@@ -20,6 +20,7 @@ import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporte
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteIngreso.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reportePrequirurgico.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteTerapia.dart';
+import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteTransfusion.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
@@ -39,6 +40,7 @@ class ReportesMedicos extends StatefulWidget {
 }
 
 class _ReportesMedicosState extends State<ReportesMedicos> {
+
   @override
   void initState() {
     // Llamado a los ultimos registros agregados.
@@ -65,7 +67,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   onClose(context);
                 },
               ),
-              title: const Text(Sentences.app_bar_reportes),
+              title: Text(Sentences.app_bar_reportes, style: Styles.textSyleGrowth(),),
               actions: <Widget>[
             IconButton(
               icon: const Icon(
@@ -386,7 +388,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       case 15:
         return TypeReportes.procedimientoTenckoff;
       case 16:
-        return TypeReportes.procedimientoTenckoff;
+        return TypeReportes.procedimientoLumbar; // 16 : Punción Lumbar
+      case 17:
+        return TypeReportes.reporteTransfusion; // 17 : Transfusión
       default:
         return TypeReportes.reporteIngreso;
     }
@@ -394,25 +398,26 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
 
   Widget pantallasReportesMedicos(int actualPage) {
     List<Widget> list = [
-      const ReporteIngreso(),
-      const ReporteEvolucion(),
-      const ReporteConsulta(),
-      const ReporteTerapia(), // Reporte tipado
-      const ReportePrequirurgico(),
-      Container(), // Preanestésico
-      Container(), // Egreso
-      Container(), // Revisión
-      Container(), // Traslado
+      const ReporteIngreso(), // 0 : Reporte de
+      const ReporteEvolucion(), // 1 : Reporte de
+      const ReporteConsulta(), // 2 : Reporte de
+      const ReporteTerapia(), // 3 : Reporte de Reporte tipado
+      const ReportePrequirurgico(), // 4 : Reporte de
+      Container(), // 5 : Reporte de Preanestésico
+      Container(), // 6 : Reporte de Egreso
+      Container(), // 7 : Reporte de Revisión
+      Container(), // 8 : Reporte de Traslado
       Pacientes.esHospitalizado == true
           ? const IndicacionesHospital()
           : const IndicacionesConsulta(), // Container(),
-      const Prequirurgicos(),
-      const Aereas(),
-      const CateterVenosoCentral(),
-      const IntubacionEndotraqueal(),
-      const SondaEndopleural(),
-      const CateterTenckhoff(),
-      Container(), //
+      const Prequirurgicos(), // 10 :
+      const Aereas(), // 11 :
+      const CateterVenosoCentral(), // 12 :
+      const IntubacionEndotraqueal(), // 13 :
+      const SondaEndopleural(), // 14 :
+      const CateterTenckhoff(), // 15 :
+      Container(),  // 16 : Punción Lumbar
+      const ReporteTransfusion(),  // 17 : Reporte de Transfusión
     ];
 
     return list[actualPage];
@@ -490,6 +495,14 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
         onPress: () {
           setState(() {
             widget.actualPage = 8;
+          });
+        },
+      ),
+      ListValue(
+        title: "Nota de Transfusión",
+        onPress: () {
+          setState(() {
+            widget.actualPage = 17;
           });
         },
       ),
