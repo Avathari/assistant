@@ -1,5 +1,6 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/dashboard.dart';
 import 'package:assistant/screens/pacientes/auxiliares/presentaciones/antecedentesPersonales.dart';
 
@@ -476,7 +477,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
               MaterialPageRoute(builder: (context) => GestionLicencia()));
         },
       ),
-      ListTile(
+      Valores.sexo! == 'Femenino' ? ListTile(
         leading: const Icon(
           Icons.pregnant_woman_sharp,
           color: Colors.grey,
@@ -492,7 +493,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
             widget.actualPage = 11;
           });
         },
-      ),
+      ) : Container(),
       ListTile(
         leading: const Icon(
           Icons.exit_to_app,

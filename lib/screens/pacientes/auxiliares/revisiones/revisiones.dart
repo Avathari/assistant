@@ -730,40 +730,68 @@ class _RevisionesState extends State<Revisiones> {
             ),
           ),
           Expanded(
-              flex: 8,
-              child: Container(
-                  margin: const EdgeInsets.only(bottom: 12.0, top: 12.0),
-                  decoration: ContainerDecoration.roundedDecoration(),
-                  child: widget.actualView == 0
-                      ? Container()
-                      : widget.actualView == 1
-                          ? biometrias()
-                          : widget.actualView == 2
-                              ? quimicas()
-                              : widget.actualView == 3
+            flex: 8,
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 12.0, top: 12.0),
+              decoration: ContainerDecoration.roundedDecoration(),
+              child: widget.actualView == 0
+                  ? Container()
+                  : widget.actualView == 1
+                      ? biometrias()
+                      : widget.actualView == 2
+                          ? quimicas()
+                          : widget.actualView == 3
+                              ? electrolitos()
+                              : widget.actualView == 4
                                   ? electrolitos()
-                                  : widget.actualView == 3
+                                  : widget.actualView == 5
                                       ? electrolitos()
-                                      : widget.actualView == 3
+                                      : widget.actualView == 6
                                           ? electrolitos()
-                                          : widget.actualView == 3
+                                          : widget.actualView == 7
                                               ? electrolitos()
-                                              : widget.actualView == 3
+                                              : widget.actualView == 8
                                                   ? electrolitos()
-                                                  : widget.actualView == 3
-                                                      ? electrolitos()
-                                                      : widget.actualView == 3
-                                                          ? electrolitos()
                                                           : widget.actualView ==
-                                                                  3
-                                                              ? electrolitos()
+                                                                  9
+                                                              ? balances()
                                                               : widget.actualView ==
-                                                                      9
-                                                                  ? balances()
-                                                                  : widget.actualView ==
-                                                                          10
-                                                                      ? ventilaciones()
-                                                                      : Container())),
+                                                                      10
+                                                                  ? ventilaciones()
+                  : widget.actualView ==
+                  11
+                  ? const Hidricos()
+                  : widget.actualView ==
+                  12
+                  ? const Metabolicos()
+                  : widget.actualView ==
+                  13
+                  ? const Antropometricos()
+                  : widget.actualView ==
+                  14
+                  ? const Cardiovasculares()
+                  : widget.actualView ==
+                  15
+                  ? const Ventilatorios()
+                  : widget.actualView ==
+                  16
+                  ? const Gasometricos()
+                  : widget.actualView ==
+                  17
+                  ? const Hidricos()
+                  : widget.actualView ==
+                  18
+                  ? const Hidricos()
+                  : widget.actualView ==
+                  19
+                  ? const Hidricos()
+                  : widget.actualView ==
+                  20
+                  ? const Hidricos()
+                  : Container()
+              ,
+            ),
+          ),
           Expanded(
             flex: 2,
             child: Container(
@@ -872,49 +900,53 @@ class _RevisionesState extends State<Revisiones> {
                       iconData: Icons.water_drop,
                       labelButton: 'Análisis Hidrico',
                       onPress: () {
-                        Operadores.openDialog(
-                            context: context, chyldrim: const Hidricos());
+                        setState(() {
+                          widget.actualView = 11;
+                        });
                       },
                     ),
                     GrandIcon(
                       iconData: Icons.bubble_chart,
                       labelButton: 'Análisis Metabólico',
                       onPress: () {
-                        Operadores.openDialog(
-                            context: context, chyldrim: const Metabolicos());
+                        setState(() {
+                          widget.actualView = 12;
+                        });
                       },
                     ),
                     GrandIcon(
                       iconData: Icons.horizontal_rule_sharp,
                       labelButton: 'Análisis Antropométrico',
                       onPress: () {
-                        Operadores.openDialog(
-                            context: context,
-                            chyldrim: const Antropometricos());
+                        setState(() {
+                          widget.actualView = 13;
+                        });
                       },
                     ),
                     GrandIcon(
                       labelButton: 'Análisis Cardiovascular',
                       onPress: () {
-                        Operadores.openDialog(
-                            context: context,
-                            chyldrim: const Cardiovasculares());
+                        setState(() {
+                          widget.actualView = 14;
+                        });
                       },
                     ),
                     GrandIcon(
                       iconData: Icons.all_inclusive_rounded,
                       labelButton: 'Análisis Ventilatorio',
                       onPress: () {
-                        Operadores.openDialog(
-                            context: context, chyldrim: const Ventilatorios());
+                        setState(() {
+                          widget.actualView = 15;
+                        });
                       },
                     ),
                     GrandIcon(
                       iconData: Icons.g_mobiledata,
                       labelButton: 'Análisis Gasométrico',
                       onPress: () {
-                        Operadores.openDialog(
-                            context: context, chyldrim: const Gasometricos());
+                        setState(() {
+                          widget.actualView = 16;
+                        });
                       },
                     ),
                     GrandIcon(

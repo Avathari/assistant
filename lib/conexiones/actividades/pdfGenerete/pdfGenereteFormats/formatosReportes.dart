@@ -2592,7 +2592,7 @@ class FormatosReportes {
             textLabel("${item['Feca_INI_Hosp']}"),
             textLabel(
                 "${DateTime.now().difference(DateTime.parse(item['Feca_INI_Hosp'])).inDays}"),
-            textLabel("${item['Dia_Estan']}"),
+            // textLabel("${item['Dia_Estan']}"),
             textLabel("${item['Serve_Trat']}"),
             textLabel("${item['Medi_Trat']}"),
             textLabel("$cronicos$diagos"),
