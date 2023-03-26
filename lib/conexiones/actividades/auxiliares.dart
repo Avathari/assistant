@@ -352,6 +352,7 @@ class Opciones {
 }
 
 class Operadores {
+
   static void openDialog(
       {required BuildContext context,
       required Widget chyldrim,
@@ -362,6 +363,8 @@ class Operadores {
         builder: (context) {
           return Dialog(
               backgroundColor: Colors.black,
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -434,6 +437,26 @@ class Operadores {
             ],
           );
         });
+  }
+
+  static void openWindow(
+      {required BuildContext context,
+        required Widget chyldrim,
+        Function? onAction}) {
+    showDialog(
+      useSafeArea: true,
+        context: context,
+        builder: (context) {
+                return AlertDialog(
+                    backgroundColor: Colors.black,
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    content: SizedBox(
+                      height: 500,
+                        child: chyldrim),
+
+                );
+              });
   }
 
   static void optionsActivity({
@@ -533,6 +556,22 @@ class Operadores {
         });
   }
 
+  static void notifyActivity({
+    required BuildContext context,
+    String? tittle = "Manejo de registro",
+    String? message = "El registro ha sido actualizado / creado",
+    onClose,
+    onAcept,
+  }) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialogos.notifyDialog(tittle, message, () {
+            Navigator.of(context).pop();
+          });
+        });
+  }
+
   static void editActivity({
     required BuildContext context,
     TextInputType keyBoardType = TextInputType.number,
@@ -580,6 +619,29 @@ class Dialogos {
     );
   }
 
+  static AlertDialog notifyDialog(
+      String? tittle, String? msg, onAcept) {
+    return AlertDialog(
+      backgroundColor: Theming.secondaryColor,
+      title: Text(
+        tittle!,
+        style: const TextStyle(color: Colors.grey),
+      ),
+      content: Text(
+        msg!,
+        style: const TextStyle(color: Colors.grey),
+      ),
+      actions: [
+        ElevatedButton(
+            onPressed: () {
+              onAcept();
+            },
+            child: const Text("Aceptar", style: TextStyle(color: Colors.white)))
+      ],
+    );
+  }
+
+
   static AlertDialog editDialog(TextInputType keyBoardType, String? tittle, String? msg, onCloss,
       ValueChanged<String>? onAcept) {
     var textEditController = TextEditingController();
@@ -591,7 +653,7 @@ class Dialogos {
         style: const TextStyle(color: Colors.grey),
       ),
       content: SizedBox(
-        height: 100,
+        height: 150,
         child: Column(
           children: [
             Text(
@@ -799,6 +861,17 @@ class Dialogos {
                 const Text("Cancelar", style: TextStyle(color: Colors.white))),
       ],
     );
+  }
+}
+
+class Datos {
+
+  static double fromInt(int value) {
+    return double.parse(value.toString());
+  }
+
+  static void portapapeles({required BuildContext context, required String text}) {
+      Clipboard.setData(ClipboardData(text: text)).whenComplete(() => Operadores.notifyActivity(context: context, tittle: "Portapapeles . . . ", message: "Copiado en Portapapeles . . ."));
   }
 }
 

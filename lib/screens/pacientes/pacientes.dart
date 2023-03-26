@@ -555,7 +555,6 @@ class _GestionPacientesState extends State<GestionPacientes> {
             message: "Registro Actualizado",
             onAcept: () {
               Navigator.of(context).pop();
-
             }));
   }
 }
@@ -691,8 +690,16 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
 // Componentes Base de Interfaz ** *********** ********* ****
   List<Widget> component(BuildContext context) {
     return [
-      editText(
-          false, "Número de Afiliación", numeroPacienteTextController, false),
+      EditTextArea(
+        labelEditText: "Número de Afiliación",
+        textController: numeroPacienteTextController,
+        keyBoardType: TextInputType.text,
+        numOfLines: 1,
+        inputFormat: MaskTextInputFormatter(
+            mask: '#### ## #### #',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+      ),
       editText(false, 'Agregado médico', agregadoPacienteTextController, false),
       editText(false, 'Primer nombre del paciente', firstNamePaciente, false),
       editText(false, 'Segundo nombre del paciente', secondNameTextController,
@@ -703,7 +710,11 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           tittle: "Tipo Sanguíneo",
           initialValue: hemotipoValue,
           items: Items.Hemotipo,
-          width: isMobile(context) || isTablet(context) ? 65 : 200,
+          width: isMobile(context)
+              ? 65
+              : isTablet(context)
+                  ? 100
+                  : 200,
           onChangeValue: (String? newValue) {
             setState(() {
               hemotipoValue = newValue!;
@@ -761,7 +772,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           telefonoTextController,
           false),
       EditTextArea(
-        keyBoardType: TextInputType.number,
+        keyBoardType: TextInputType.datetime,
         inputFormat: MaskTextInputFormatter(
             mask: '####/##/##',
             filter: {"#": RegExp(r'[0-9]')},
@@ -826,6 +837,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
       //
       Spinner(
           tittle: "Escolaridad",
+          width: SpinnersValues.minimunWidth(context: context),
           initialValue: escolaridadValue,
           items: Pacientes.Escolaridad,
           onChangeValue: (String? newValue) {
@@ -835,6 +847,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           }),
       Spinner(
           tittle: "Escolaridad completud",
+          width: SpinnersValues.minimunWidth(context: context),
           initialValue: escolaridadCompletudValue,
           items: Pacientes.EscolaridadCompletud,
           onChangeValue: (String? newValue) {
@@ -891,6 +904,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           }),
       Spinner(
           tittle: "Hablante Indígena",
+          width: SpinnersValues.minimunWidth(context: context),
           initialValue: indigenaHablanteValue,
           items: Pacientes.lenguaIndigena,
           onChangeValue: (String? newValue) {
@@ -1143,49 +1157,37 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
         padding: const EdgeInsets.all(8.0),
         child: isMobile(context)
             ? Container()
-            : Column(
-                children: [
-                  GridLayout(
-                      childAspectRatio: isMobile(context)
-                          ? 4.0
-                          : isTablet(context)
-                              ? 4.0
-                              : isDesktop(context)
-                                  ? 8.0
-                                  : 7.0,
-                      columnCount: 2,
-                      children: secondComponent(context)),
-                  const SizedBox(height: 10),
-                  // grandButton(context, widget._operation_button, () {
-                  //   operationMethod(context);
-                  // }),
-                ],
-              ));
+            : GridLayout(
+                childAspectRatio: isMobile(context)
+                    ? 4.0
+                    : isTablet(context)
+                        ? 5.0
+                        : isDesktop(context)
+                            ? 6.0
+                            : 7.0,
+                columnCount: 2,
+                children: secondComponent(context)));
   }
 
   // Operaciones de la Interfaz ** *********** ********* ****
   void returnGestion(BuildContext context) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const GestionPacientes()));
-    // switch (widget.operationActivity) {
-    //   case Constantes.Nulo:
-    //     Navigator.push(context,
-    //         MaterialPageRoute(builder: (context) => const GestionPacientes()));
-    //     break;
-    //   case Constantes.Consult:
-    //     break;
-    //   case Constantes.Register:
-    //     Navigator.push(context,
-    //         MaterialPageRoute(builder: (context) => const GestionPacientes()));
-    //     break;
-    //   case Constantes.Update:
-    //     Navigator.push(
-    //         context,
-    //         MaterialPageRoute(
-    //             builder: (context) => VisualPacientes(actualPage: 0)));
-    //     break;
-    //   default:
-    // }
+    switch (widget.operationActivity) {
+      case Constantes.Nulo:
+        break;
+      case Constantes.Consult:
+        break;
+      case Constantes.Register:
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const GestionPacientes()));
+        break;
+      case Constantes.Update:
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const GestionPacientes()));
+        break;
+      default:
+    }
   }
 
   choiseFromCamara() async {
@@ -1223,12 +1225,12 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
     try {
       listOfValues = [
         idOperation,
-        numeroPacienteTextController.text,
-        agregadoPacienteTextController.text,
-        firstNamePaciente.text,
-        secondNameTextController.text,
-        apellidoPaternoTextController.text,
-        apellidoMaternoTextController.text,
+        numeroPacienteTextController.text.trim(),
+        agregadoPacienteTextController.text.trim(),
+        Sentences.capitalize(firstNamePaciente.text).trim(),
+        Sentences.capitalize(secondNameTextController.text).trim(),
+        Sentences.capitalize(apellidoPaternoTextController.text).trim(),
+        Sentences.capitalize(apellidoMaternoTextController.text).trim(),
         hemotipoValue,
         img,
         //
@@ -1244,8 +1246,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
         sessoValue,
         atencionValue,
         //
-        curpTextController.text,
-        rfcTextController.text,
+        curpTextController.text.toUpperCase(),
+        rfcTextController.text.toUpperCase(),
         //
         edadTextController.text,
         vivoValue,
@@ -1255,11 +1257,11 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
         escolaridadValue,
         escolaridadCompletudValue,
         escolaridadEspecificacionTextController.text,
-        municipioTextController.text,
-        entidadFederativaValue,
-        localidadResidenciaTextController.text,
-        duracionResidenciaTextController.text,
-        domicilioTextController.text,
+        municipioTextController.text.trimRight(),
+        entidadFederativaValue.trimRight(),
+        localidadResidenciaTextController.text.trimRight(),
+        duracionResidenciaTextController.text.trimRight(),
+        domicilioTextController.text.trimRight(),
         indigenaValue,
         indigenaHablanteValue,
         indigenaHablanteEspecificacioTextController.text,
@@ -1274,7 +1276,30 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           listOfValues!.removeLast();
 
           Actividades.registrar(Databases.siteground_database_regpace,
-              registerQuery, listOfValues!.removeLast());
+                  registerQuery, listOfValues!)
+              .then((value) {
+            // Registro de Antecedentes No Patológicos ******** ******** ********
+            Eticos.registrarRegistro(); // Si
+            Viviendas.registrarRegistro(); // Si
+            Higienes.registrarRegistro(); // Si
+            Diarios.registrarRegistro(); // Si
+            Alimenticios.registrarRegistro(); // Si
+            Limitaciones.registrarRegistro(); // Si
+            Sustancias.registrarRegistro(); // Si
+            //
+            // Toxicomanias.consultarRegistro();
+            // ******** ******** ********
+            reiniciar().then((value) {
+              Operadores.alertActivity(
+                  context: context,
+                  tittle: "Registro de los Valores",
+                  message: 'El registro del paciente fue agregado',
+                  onAcept: () {
+                    returnGestion(context);
+                    // Navigator.of(context).pop();
+                  });
+            });
+          });
           break;
         case Constantes.Consult:
           break;
@@ -1335,13 +1360,17 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           break;
         default:
       }
-    } catch (ex) {
+    } on Exception catch (ex) {
+      Terminal.printAlert(
+          message: "Error al operar con los valores : : : $ex ");
       showDialog(
           context: context,
           builder: (context) {
             return alertDialog("Error al operar con los valores", "$ex", () {
               Navigator.of(context).pop();
-            }, () {});
+            }, () {
+              Navigator.of(context).pop();
+            });
           });
     } finally {
       // returnGestion(context);

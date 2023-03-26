@@ -257,7 +257,8 @@ class Valores {
       fechaCaducidad = "",
       fechaInicioTransfusion = "",
       fechaTerminoTransfusion = "",
-      estadoFinalTransfusion = "Se realiza seguimiento y control a la paciente durante la transfusión. Termina procedimiento sin complicaciones ni evidencia de reacciones adversas asociadas a la transfusión de hemoderivados. ",
+      estadoFinalTransfusion =
+          "Se realiza seguimiento y control a la paciente durante la transfusión. Termina procedimiento sin complicaciones ni evidencia de reacciones adversas asociadas a la transfusión de hemoderivados. ",
       reaccionesPresentadas = "Ninguna manifestada durante la transfusión. ";
   //
   static String? fechaVitales;
@@ -287,6 +288,23 @@ class Valores {
       alturaPaciente,
       factorActividad,
       factorEstres;
+  //
+  static String? fechaRealizacionBalances = "";
+  // static double diuresis = 0;
+  static int? viaOralBalances = 0,
+      sondaOrogastricaBalances = 0,
+      hemoderivadosBalances = 0,
+      nutricionParenteralBalances = 0,
+      parenteralesBalances = 0,
+      dilucionesBalances = 0,
+      otrosIngresosBalances = 0;
+  static int? uresisBalances = 0,
+      evacuacionesBalances = 0,
+      sangradosBalances = 0,
+      succcionBalances = 0,
+      drenesBalances = 0,
+      otrosEgresosBalances = 0;
+  static int? uresis = 0, horario = 8;
   //
   static double? eritrocitos,
       hemoglobina,
@@ -501,6 +519,8 @@ class Valores {
     Transfusionales.consultarRegistro();
     Traumatologicos.registros();
     Traumatologicos.consultarRegistro();
+    //
+    Balances.consultarRegistro();
 // ********* *********** ********** ******
 //     Electrocardiogramas.ultimoRegistro();
     // Pacientes.diagnosticos();
@@ -603,8 +623,7 @@ class Valores {
     Patologicos.fileAssocieted =
         '${Pacientes.localRepositoryPath}patologicos.json';
     Toxicomanias.fileAssocieted =
-        "${Pacientes.localRepositoryPath}toxicomanias.json"; // Toxicomanias.registrarRegistro();
-    //
+        "${Pacientes.localRepositoryPath}toxicomanias.json";
     Quirurgicos.fileAssocieted =
         '${Pacientes.localRepositoryPath}quirurgicos.json';
     Alergicos.fileAssocieted = '${Pacientes.localRepositoryPath}alergicos.json';
@@ -621,6 +640,7 @@ class Valores {
         '${Pacientes.localRepositoryPath}imagenologicos.json';
     Electrocardiogramas.fileAssocieted =
         '${Pacientes.localRepositoryPath}electrocardiogramas.json';
+    Balances.fileAssocieted = '${Pacientes.localRepositoryPath}balances.json';
     //
     edad = json['Pace_Eda']; // int.parse();
     sexo = json['Pace_Ses'];
@@ -1566,6 +1586,33 @@ class Valores {
     }
   }
 
+  static double get perdidasInsensibles =>
+      ((Valores.pesoCorporalTotal!) * constantePerdidasInsensibles) *
+      Valores.horario!;
+
+  static int get ingresosBalances {
+    return Valores.viaOralBalances! +
+        Valores.sondaOrogastricaBalances! +
+        Valores.hemoderivadosBalances! +
+        Valores.nutricionParenteralBalances! +
+        Valores.parenteralesBalances! +
+        Valores.dilucionesBalances! +
+        Valores.otrosIngresosBalances!;
+  }
+
+  static int get egresosBalances {
+    return Valores.uresisBalances! +
+        Valores.evacuacionesBalances! +
+        Valores.sangradosBalances! +
+        Valores.succcionBalances! +
+        Valores.drenesBalances! +
+        Valores.otrosEgresosBalances!;
+  }
+
+  static double get constantePerdidasInsensibles {
+    return 0.5;
+  }
+
   // # Parametros Hemodinamicos
   // # Concentración Arterial de Oxígeno
   static double get CAO =>
@@ -2042,6 +2089,26 @@ class Valores {
       return Valores.volumenTidal! ~/ Valores.pesoCorporalPredicho;
     } else {
       return 0;
+    }
+  }
+
+  //
+  static int get balanceTotal {
+    if (Valores.ingresosBalances != 0 && Valores.egresosBalances != 0) {
+      return (Valores.ingresosBalances - Valores.egresosBalances);
+    } else {
+      return 0;
+    }
+  }
+
+  static double get diuresis {
+    if (Valores.uresisBalances != 0 &&
+        Valores.pesoCorporalTotal != null &&
+        Valores.horario != 0) {
+      return (Valores.uresisBalances! / Valores.pesoCorporalTotal!) /
+          Valores.horario!;
+    } else {
+      return double.nan;
     }
   }
 
@@ -2522,25 +2589,28 @@ class Valorados {
 }
 
 class Formatos {
-  static String indicacionesPreoperatorias =
-      "No suspender Metformina, sólo el día de la cirugía control con Insulina y durante el transquirurgico. \n"
-      "Medidas universales de cuidados y prevención de paciente quirúrgico. \n"
-      "Monitoreo y control de cifras tensionales mantener TAM >65. \n"
-      "Mantener cifras de glicemia entre 100 a 185 mg/dL, "
-      "en caso de hiperglicemia aplicar infusión de insulina durante el tranquirúrgico. \n"
-      "Evitar uso de antiinflamatorios no esteroideos. \n"
-      "Procurar hidroterapia en rangos del requerimiento basal; "
-      "se sugiere uso de soluciones cristaloides isotónicas en caso de ser necesario. \n"
-      "Analgesia con opioides intermedios o fuertes. \n"
-      "Evitar el ayuno mayor de 8 horas durante los momentos prequirúrgicos y/o postquirúrgicos por riesgo de disglicemia. \n"
-      "Se sugire inicio de Metformina 850 mg cada 12 horas, asi como realización de estudios paraclinicos para valoración ulterior. "
-      "";
+  static String get indicacionesPreoperatorias {
+    return "No suspender Metformina, sólo el día de la cirugía control con Insulina y durante el transquirurgico. \n"
+        "Medidas universales de cuidados y prevención de paciente quirúrgico. \n"
+        "Monitoreo y control de cifras tensionales mantener TAM >65. \n"
+        "Mantener cifras de glicemia entre 100 a 185 mg/dL, "
+        "en caso de hiperglicemia aplicar infusión de insulina durante el tranquirúrgico. \n"
+        "Evitar uso de antiinflamatorios no esteroideos. \n"
+        "Procurar hidroterapia en rangos del requerimiento basal; "
+        "se sugiere uso de soluciones cristaloides isotónicas en caso de ser necesario. \n"
+        "Analgesia con opioides intermedios o fuertes. \n"
+        "Evitar el ayuno mayor de 8 horas durante los momentos prequirúrgicos y/o postquirúrgicos por riesgo de disglicemia. \n"
+        "Se sugire inicio de Metformina 850 mg cada 12 horas, asi como realización de estudios paraclinicos para valoración ulterior. "
+        "";
+  }
 
-  static String transfusiones = "Debido a ${Valores.motivoTransfusion}, "
-      "se administra ${Valores.hemotipoAdmnistrado}, ${Valores.cantidadUnidades} Unidad(es), "
-      "para volumen total ${Valores.volumenAdministrado} "
-      "identificable con Folio ${Valores.numIdentificacion}; "
-      "verificando previamente fecha de caducidad (Día ${Valores.fechaCaducidad}, de acuerdo a registro).  Serología No Reactiva.";
+  static String get transfusiones {
+    return "Debido a ${Valores.motivoTransfusion}, "
+        "se administra ${Valores.hemotipoAdmnistrado}, ${Valores.cantidadUnidades} Unidad(es), "
+        "para volumen total ${Valores.volumenAdministrado} "
+        "identificable con Folio ${Valores.numIdentificacion}; "
+        "verificando previamente fecha de caducidad (Día ${Valores.fechaCaducidad}, de acuerdo a registro).  Serología No Reactiva.";
+  }
 
   static String get subjetivos {
     return "El paciente se refiere ${Valores.estadoGeneral}. "
@@ -3141,6 +3211,17 @@ class Formatos {
         "fecha de inicio ${Valores.fechaInicioLicencia} hasta el ${Valores.fechaTerminoLicencia}, "
         "por ${Valores.motivoLicencia}, de cáracter ${Valores.caracterLicencia}. ";
   }
+
+  static String get balances {
+    return "Balance hídrico (${Valores.fechaRealizacionBalances}) - "
+        "Ingresos ${Valores.ingresosBalances} mL,  "
+        "Egresos ${Valores.egresosBalances} mL,  "
+        "Balance Total ${Valores.balanceTotal} mL,  "
+        "Intervalo ${Valores.horario} mL,  "
+        "Uresis ${Valores.uresis} mL,  "
+        "Diuresis ${Valores.diuresis.toStringAsFixed(2)} mL,  "
+        "\n ";
+  }
 }
 
 class Escalas {
@@ -3692,6 +3773,7 @@ class Items {
 
   static List<String> Hemotipo = [
     '',
+    'Desconoce',
     'O +',
     'O -',
     'A +',

@@ -1,12 +1,8 @@
-import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
-import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/DialogSelector.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
-import 'package:assistant/widgets/Spinner.dart';
-import 'package:assistant/widgets/Switched.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
@@ -103,7 +99,7 @@ class _HemoderivadosState extends State<Hemoderivados> {
           EditTextArea(
               textController: cantidadUnidadesTextController,
               labelEditText: "Cantidad de Unidades",
-              keyBoardType: TextInputType.multiline,
+              keyBoardType: TextInputType.number,
               numOfLines: 1,
               onChange: ((value) {
                 Valores.cantidadUnidades = "$value.";
@@ -113,7 +109,7 @@ class _HemoderivadosState extends State<Hemoderivados> {
           EditTextArea(
               textController: volumenAdministradoTextController,
               labelEditText: "Volumen Administrado (mL)",
-              keyBoardType: TextInputType.multiline,
+              keyBoardType: TextInputType.number,
               numOfLines: 1,
               onChange: ((value) {
                 Valores.volumenAdministrado = "$value.";
@@ -126,8 +122,8 @@ class _HemoderivadosState extends State<Hemoderivados> {
               keyBoardType: TextInputType.multiline,
               numOfLines: 1,
               onChange: ((value) {
-                Valores.numIdentificacion = "$value.";
-                Reportes.reportes['Num_Identificacion'] = "$value.";
+                Valores.numIdentificacion = value.toUpperCase();
+                Reportes.reportes['Num_Identificacion'] = value.toUpperCase();
               }),
               inputFormat: MaskTextInputFormatter()),
           EditTextArea(
@@ -136,7 +132,7 @@ class _HemoderivadosState extends State<Hemoderivados> {
               keyBoardType: TextInputType.datetime,
               numOfLines: 1,
               onChange: ((value) {
-                Valores.fechaCaducidad = "$value.";
+                Valores.fechaCaducidad = value;
                 // Reportes.reportes['Cantidad_Unidades'] = "$value.";
               }),
               inputFormat: MaskTextInputFormatter()),

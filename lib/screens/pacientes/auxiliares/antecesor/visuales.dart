@@ -64,6 +64,17 @@ class _VisualPacientesState extends State<VisualPacientes> {
           actions: <Widget>[
             IconButton(
               icon: const Icon(
+                Icons.remove_from_queue,
+              ),
+              tooltip: 'Refrescar . . . ',
+              onPressed: () async {
+                setState(() {
+
+                });
+              },
+            ),
+            IconButton(
+              icon: const Icon(
                 Icons.system_update_alt,
               ),
               tooltip: 'Cargando . . . ',
@@ -359,7 +370,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
       ),
       ListTile(
         leading: const Icon(
-          Icons.medical_services,
+          Icons.segment_rounded,
           color: Colors.grey,
         ),
         title: const Text('Registro de Consultas',
@@ -376,7 +387,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
       ),
       ListTile(
         leading: const Icon(
-          Icons.settings,
+          Icons.account_tree_outlined,
           color: Colors.grey,
         ),
         title: const Text('Auxiliares Diagnósticos',
@@ -392,7 +403,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
       ),
       ListTile(
         leading: const Icon(
-          Icons.settings,
+          Icons.schema_outlined,
           color: Colors.grey,
         ),
         title: const Text('Herramientas de Terapia Intensiva',
@@ -409,7 +420,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
       ),
       ListTile(
         leading: const Icon(
-          Icons.settings,
+          Icons.bookmarks_outlined,
           color: Colors.grey,
         ),
         title: const Text('Reportes y Notas Médicas',
@@ -421,7 +432,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
       ),
       ListTile(
         leading: const Icon(
-          Icons.settings,
+          Icons.file_present_sharp,
           color: Colors.grey,
         ),
         title: const Text('Archivos y Documentos',
@@ -454,24 +465,20 @@ class _VisualPacientesState extends State<VisualPacientes> {
       ),
       ListTile(
         leading: const Icon(
-          Icons.settings,
+          Icons.book_outlined,
           color: Colors.grey,
         ),
         title: const Text('Licencias Médicas',
             style: TextStyle(fontSize: Font.fontTileSize, color: Colors.grey)),
         onTap: () {
-          if (isMobile(context) || isTablet(context)) {
-            Navigator.of(context).pop();
-          }
           // Update the state of the app
-          setState(() {
-            widget.actualPage = 10;
-          });
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => GestionLicencia()));
         },
       ),
       ListTile(
         leading: const Icon(
-          Icons.settings,
+          Icons.pregnant_woman_sharp,
           color: Colors.grey,
         ),
         title: const Text('Registro de Embarazos',

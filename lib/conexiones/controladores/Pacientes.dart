@@ -214,12 +214,56 @@ class Pacientes {
 
   // Prosas y apartados literales en la formación de las Actividades.
   static String originario() {
-    // // print("Pacientes.Paciente ${Pacientes.Paciente}");
-    return "${Pacientes.Paciente['Pace_Orig_Muni']}, ${Pacientes.Paciente['Pace_Orig_EntFed']}";
+    if (Valores.sexo == 'Masculino') {
+      return "Originario de ${Pacientes.Paciente['Pace_Orig_Muni']}, ${Pacientes.Paciente['Pace_Orig_EntFed']}";
+    } else if (Valores.sexo == 'Femenino') {
+      return "Originaria ${Pacientes.Paciente['Pace_Orig_Muni']}, ${Pacientes.Paciente['Pace_Orig_EntFed']}";
+    } else {
+      return "${Pacientes.Paciente['Pace_Orig_Muni']}, ${Pacientes.Paciente['Pace_Orig_EntFed']}";
+    }
+
   }
 
   static String residente() {
-    return "la localidad de ${Pacientes.Paciente['Pace_Resi_Loca']} por ${Pacientes.Paciente['Pace_Resi_Dur'].toString()} año(s)";
+    return "la localidad de ${Pacientes.Paciente['Pace_Resi_Loca']}";
+        // "por ${Pacientes.Paciente['Pace_Resi_Dur'].toString()} año(s)";
+  }
+
+  static String estadoCivil() {
+    if (Valores.sexo == 'Masculino') {
+      switch (Pacientes.Paciente['Pace_Edo_Civ']){
+        case "Soltero(a)":
+          return "Soltero";
+        case "Casado(a)":
+          return "Casado";
+        case "Union Libre":
+          return "Unión Libre";
+        case "Separado(a)":
+          return "Separado";
+        case "Viudo(a)":
+          return "Viudo";
+        default:
+          return "";
+      }
+    } else if (Valores.sexo == 'Femenino') {
+      switch (Pacientes.Paciente['Pace_Edo_Civ']){
+        case "Soltero(a)":
+          return "Soltera";
+        case "Casado(a)":
+          return "Casada";
+        case "Union Libre":
+          return "Unión Libre";
+        case "Separado(a)":
+          return "Separada";
+        case "Viudo(a)":
+          return "Viuda";
+        default:
+          return "";
+      }
+    } else {
+      return "";
+    }
+
   }
 
   static String prosa({bool isTerapia = false}) {
@@ -230,12 +274,13 @@ class Pacientes {
           "bajo los siguientes diagnósticos: \n";
     } else {
       return "${Pacientes.Paciente['Pace_Ses']} de ${Pacientes.Paciente['Pace_Eda']} años, "
-          "con fecha de nacimiento el ${Pacientes.Paciente['Pace_Nace']}. "
-          "Originario/a de ${originario()}, residente de ${residente()} . "
-          "Escolaridad hasta ${Pacientes.Paciente['Pace_Esco']}, "
-          "ocupación como ${Pacientes.Paciente['Pace_Ocupa']}, "
-          "religión ${Pacientes.Paciente['Pace_Reli']}, "
-          "y estado civil ${Pacientes.Paciente['Pace_Edo_Civ']}.\n ";
+          "nacido el ${Pacientes.Paciente['Pace_Nace']}. "
+          "${originario()}; residente de ${residente()}. "
+          "Escolaridad hasta ${Pacientes.Paciente['Pace_Esco'].toLowerCase()}, "
+          "ocupación como ${Pacientes.Paciente['Pace_Ocupa'].toLowerCase()}, "
+          "religión ${Pacientes.Paciente['Pace_Reli'].toLowerCase()}, "
+          "estado civil ${estadoCivil().toLowerCase()}. "
+          "Hemotipo ${Pacientes.Paciente['Pace_Hemo'].toLowerCase()}. \n ";
     }
   }
 
@@ -252,10 +297,10 @@ class Pacientes {
     // Reportes.reportes['Antecedentes_Quirurgicos'] = "";
     Reportes.antecedentesQuirurgicos = "";
 
-    // print("Quirurgicos ${Quirurgicos!.length} $Quirurgicos \n "
-    //"Reportes.Antecedentes_Quirurgicos ${Reportes.antecedentesQuirurgicos}");
+    print("Quirurgicos ${Quirurgicos!.length} $Quirurgicos \n "
+    "Reportes.Antecedentes_Quirurgicos ${Reportes.antecedentesQuirurgicos}");
     // ************************ ************** ********** **** *** *
-    if (Quirurgicos != []) {
+    if (Quirurgicos != [] || Quirurgicos!.isNotEmpty) {
       for (var element in Quirurgicos!) {
         if (Reportes.antecedentesQuirurgicos == "") {
           Reportes.antecedentesQuirurgicos =
@@ -623,9 +668,12 @@ class Pacientes {
     "Grado Escolar Incompleto",
   ];
   static final List<String> Unidades = [
+    "H.G.R. 200",
+    "H.G.Z. 18",
     "H.G.R. 17",
     'H.G.Z. 1',
     'INSABI No 27',
+    "C.A.F. Bacalar",
     "Consulta Externa"
   ];
   static final List<String> Atencion = ['Hospitalización', 'Consulta Externa'];
@@ -892,7 +940,7 @@ class Pacientes {
     if (modoAtencion == 'Hospitalización') {
       modus = 'Consulta Externa';
       //
-      var resp = await Actividades.actualizar(
+      await Actividades.actualizar(
           Databases.siteground_database_regpace,
           pacientes['updateHospitalizacionQuery'],
           [modus, Pacientes.ID_Paciente],
@@ -901,7 +949,7 @@ class Pacientes {
     } else if (modoAtencion == 'Consulta Externa') {
       modus = 'Hospitalización';
       //
-      var resp = await Actividades.actualizar(
+      await Actividades.actualizar(
           Databases.siteground_database_regpace,
           pacientes['updateHospitalizacionQuery'],
           [modus, Pacientes.ID_Paciente],
@@ -5261,7 +5309,7 @@ class Auxiliares {
     "Iones Urinarios",
     "Carga Viral",
     "Conteo de Linfocitos T CD4+",
-    "",
+    "Marcadores Cárdiacos",
     "",
     "",
     "Electrocardiograma"
@@ -5376,7 +5424,24 @@ class Auxiliares {
     Categorias[17]: [
       "Conteo de Linfocitos CD4+",
       "Porcentaje de Linfocitos CD4+"
-    ]
+    ],
+    Categorias[18]: [
+      "CK Total",
+      "CK-Mb",
+      "Mioglobina",
+      "Troponina I (T nIc)",
+      "Troponina I (T nTc)",
+      "LDH",
+    ],
+    Categorias[19]: [
+      "Conteo de Linfocitos CD4+",
+      "Porcentaje de Linfocitos CD4+"
+    ],
+    Categorias[20]: [
+      "Conteo de Linfocitos CD4+",
+      "Porcentaje de Linfocitos CD4+"
+    ],
+
   };
   static Map<String, dynamic> Medidas = {
     Categorias[0]: ["g/dL", "%", "fL", "pg", "10^3/UL", "10^6/UL", "K/uL"],
@@ -5387,7 +5452,7 @@ class Auxiliares {
     Categorias[5]: [""],
     Categorias[6]: ["mg/dL"],
     Categorias[7]: ["", "seg"],
-    Categorias[8]: ["ng/dL", ""],
+    Categorias[8]: ["ng/dL", "mm/Hr", "mg/dL", "ng/mL"],
     Categorias[9]: ["", "mmHg", "cmH20", "mmol/L", "%"],
     Categorias[10]: ["", "mmHg", "cmH20", "mmol/L", "%"],
     Categorias[11]: [""],
@@ -5396,7 +5461,10 @@ class Auxiliares {
     Categorias[14]: [""],
     Categorias[15]: [""],
     Categorias[16]: [""],
-    Categorias[17]: [""]
+    Categorias[17]: [""],
+    Categorias[18]: ["UI/L", "ng/mL"],
+    Categorias[19]: [""],
+    Categorias[20]: [""],
   };
   static final Map<String, dynamic> auxiliares = {
     "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_reglabo "
@@ -5729,7 +5797,8 @@ class Reportes {
     "Inicio_Transfusion": "",
     "Termino_Transfusion": "",
     "Seguimiento_Vitales": "",
-    "Estado_Final_Transfusion": "Se realiza seguimiento y control a la paciente durante la transfusión. Termina procedimiento sin complicaciones ni evidencia de reacciones adversas asociadas a la transfusión de hemoderivados. ",
+    "Estado_Final_Transfusion":
+        "Se realiza seguimiento y control a la paciente durante la transfusión. Termina procedimiento sin complicaciones ni evidencia de reacciones adversas asociadas a la transfusión de hemoderivados. ",
     "Reacciones_Presentadas": "Ninguna manifestada durante la transfusión. ",
     // ***************************************
     "Medidas_Generales": Reportes.medidasGenerales,
@@ -5748,8 +5817,8 @@ class Reportes {
   // static String antecedentesHospitalarios = "";
   static String padecimientoActual = "";
   static String? personalesPatologicos = "",
-      antecedentesQuirurgicos = "",
-      antecedentesAlergicos = "", // negados
+      antecedentesQuirurgicos = "negados",
+      antecedentesAlergicos = "negados", // negados
       antecedentesPerinatales = "",
       antecedentesSexuales = "";
   //
@@ -5891,13 +5960,66 @@ class Reportes {
 
 class Balances {
   static int ID_Balances = 0;
-  //
+  static var fileAssocieted = '${Pacientes.localRepositoryPath}balances.json';
+
+  // *********** *********** ********* ****
   static Map<String, dynamic> Balance = {};
 
   static List<String> actualDiagno = Opciones.horarios();
 
+  // *********** *********** ********* ****
+
+  static void consultarRegistro() {
+    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+      // Asignación de Valores ********* ******** ******* ********* ***
+      Balances.Balance = value;
+      Balances.fromJson(value);
+      // *********************************
+    }).onError((error, stackTrace) {
+      Actividades.consultarAllById(
+              Databases.siteground_database_reghosp,
+              Balances.balance['consultByIdPrimaryQuery'],
+              Pacientes.ID_Paciente)
+          .then((value) {
+        // Asignación de Valores ********* ******** ******* ********* ***
+        Balances.Balance = value[value.length - 1];
+        Balances.fromJson(value[value.length - 1]);
+
+        Terminal.printSuccess(
+            message: "Valores de Balances Hídricos asignado : : : value");
+        // Terminal.printData(message: "\t$value");
+        Archivos.createJsonFromMap([value], filePath: fileAssocieted);
+      });
+    });
+  }
+
   static void ultimoRegistro() {
-    Actividades.consultarId(Databases.siteground_database_regpace,
+    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+      // Asignación de Valores ********* ******** ******* ********* ***
+      Balances.Balance = value;
+      Balances.fromJson(value);
+      // *********************************
+    }).onError((error, stackTrace) {
+      Actividades.consultarId(Databases.siteground_database_reghosp,
+              Balances.balance['consultIdQuery'], Pacientes.ID_Paciente)
+          .then((value) {
+        if (value.containsKey('Error')) {
+          Terminal.printExpected(
+              message: "Balances Hídricos : : consultar registro - $value");
+        } else {
+          // Asignación de Valores ********* ******** ******* ********* ***
+          Balances.Balance = value;
+          Balances.fromJson(value);
+
+          Terminal.printSuccess(
+              message: "Valores de Balances Hídricos asignado : : : value");
+          // Terminal.printData(message: "\t$value");
+          Archivos.createJsonFromMap([value], filePath: fileAssocieted);
+        }
+      });
+    });
+
+    Actividades.consultarId(Databases.siteground_database_reghosp,
             Balances.balance['consultLastQuery'], Pacientes.ID_Paciente)
         .then((value) {
 // Enfermedades de base del paciente, asi como las Hospitalarias.
@@ -5905,15 +6027,7 @@ class Balances {
     });
   }
 
-  static void consultarRegistro() {
-    Actividades.consultarAllById(Databases.siteground_database_regpace,
-            Balances.balance['consultIdQuery'], Pacientes.ID_Paciente)
-        .then((value) {
-      // Enfermedades de base del paciente, asi como las Hospitalarias.
-      Pacientes.Balances = value;
-    });
-  }
-
+  // *********** *********** ********* ****
   static final Map<String, dynamic> balance = {
     "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
         "DEFAULT CHARACTER SET utf8 "
@@ -5950,7 +6064,8 @@ class Balances {
     "dropQuery": "DROP TABLE pace_bala",
     "consultQuery": "SELECT * FROM pace_bala",
     "consultIdQuery": "SELECT * FROM pace_bala WHERE ID_Pace = ?",
-    "consultByIdPrimaryQuery": "SELECT * FROM pace_bala WHERE ID_Pace = ?",
+    "consultByIdPrimaryQuery":
+        "SELECT * FROM pace_bala WHERE ID_Pace = ? ORDER BY Pace_bala_Fecha ASC",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_bala",
     "consultLastQuery": "SELECT * FROM pace_bala WHERE ID_Pace = ?",
     "consultByName": "SELECT * FROM pace_bala WHERE Pace_APP_DEG LIKE '%",
@@ -5989,6 +6104,35 @@ class Balances {
         "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM pace_bala WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
         "(SELECT IFNULL(count(*), 0) FROM pace_bala WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
   };
+
+  // *********** *********** ********* ****
+  static void fromJson(Map<String, dynamic> json) {
+    Terminal.printExpected(message: "Balances seleccionados $json");
+
+    Balances.ID_Balances = json['ID_Bala'];
+    Valores.fechaRealizacionBalances = json['Pace_bala_Fecha'];
+
+    Valores.viaOralBalances = json['Pace_bala_Oral'];
+    Valores.sondaOrogastricaBalances = json['Pace_bala_Sonda'];
+    Valores.hemoderivadosBalances = json['Pace_bala_Hemo'];
+    Valores.nutricionParenteralBalances = json['Pace_bala_NPT'];
+    Valores.parenteralesBalances = json['Pace_bala_Sol'];
+    Valores.dilucionesBalances = json['Pace_bala_Dil'];
+    Valores.otrosIngresosBalances = json['Pace_bala_ING'];
+
+    Valores.uresisBalances = json['Pace_bala_Uresis'];
+    Valores.evacuacionesBalances = json['Pace_bala_Evac'];
+    Valores.sangradosBalances = json['Pace_bala_Sangrado'];
+    Valores.succcionBalances = json['Pace_bala_Succion'];
+    Valores.drenesBalances = json['Pace_bala_Drenes'];
+    Valores.otrosEgresosBalances = json['Pace_bala_ENG'];
+
+    Valores.horario = json['Pace_bala_HOR'];
+    Valores.uresis = json['Pace_bala_Uresis'];
+
+    // Valores.balanceTotal = Valores.ingresos - Valores.egresos;
+    // Valores.diuresis = (Valores.uresis / Valores.pesoCorporalTotal!) / Valores.horario;
+  }
 }
 
 class Ventilaciones {

@@ -253,10 +253,10 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                           : isTabletAndDesktop(context)
                               ? 200
                               : isDesktop(context)
-                                  ? 300
+                                  ? 250
                                   : isMobile(context)
                                       ? 200
-                                      : 200,
+                                      : 150,
                       tittle: 'M. Ventilatorio',
                       onChangeValue: (value) {
                         setState(() {

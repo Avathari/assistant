@@ -6,7 +6,6 @@ import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/conmutadorParaclinicos.dart';
-import 'package:assistant/screens/pacientes/paraclinicos/paraclinicos.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
@@ -287,7 +286,8 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                                         padding: const EdgeInsets.all(8.0),
                                         gridDelegate:
                                             GridViewTools.gridDelegate(
-                                                crossAxisCount: isMobile(context) ? 1 : 3,
+                                                crossAxisCount:
+                                                    isMobile(context) ? 1 : 3,
                                                 mainAxisExtent: 150),
                                         shrinkWrap: true,
                                         itemCount: snapshot.data == null
@@ -480,7 +480,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
         controller: ScrollController(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TittlePanel(textPanel: tittle),
             EditTextArea(
@@ -507,7 +507,11 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                 Expanded(
                   flex: 4,
                   child: Spinner(
-                      width: isMobile(context)? 150 : isTabletAndDesktop(context) ? 190 : 220,
+                      width: isMobile(context)
+                          ? 150
+                          : isTabletAndDesktop(context)
+                              ? 190
+                              : 220,
                       isRow: false,
                       tittle: "Tipo de Estudio",
                       initialValue: tipoEstudioValue!,
@@ -582,7 +586,11 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
               numOfLines: 1,
             ),
             Spinner(
-                width: isMobile(context) ? 100 : isTabletAndDesktop(context) ? 120 : 170,
+                width: isMobile(context)
+                    ? 100
+                    : isTabletAndDesktop(context)
+                        ? 120
+                        : 170,
                 isRow: true,
                 tittle: "Unidad de Medida",
                 initialValue: unidadMedidaValue!,
@@ -651,59 +659,107 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
           Expanded(child: TittlePanel(textPanel: tittle)),
           Expanded(
             flex: 4,
-            child: GridView(
-              gridDelegate: GridViewTools.gridDelegate(
-                  crossAxisCount: 2, mainAxisExtent: 75),
+            child: Column(
               children: [
-                EditTextArea(
-                  labelEditText: "Fecha de realización",
-                  numOfLines: 1,
-                  textController: textDateEstudyController,
-                  keyBoardType: TextInputType.datetime,
-                  inputFormat: MaskTextInputFormatter(
-                      mask: '####/##/##',
-                      filter: {"#": RegExp(r'[0-9]')},
-                      type: MaskAutoCompletionType.lazy),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: EditTextArea(
+                        labelEditText: "Fecha de realización",
+                        numOfLines: 1,
+                        textController: textDateEstudyController,
+                        keyBoardType: TextInputType.datetime,
+                        inputFormat: MaskTextInputFormatter(
+                            mask: '####/##/##',
+                            filter: {"#": RegExp(r'[0-9]')},
+                            type: MaskAutoCompletionType.lazy),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: Spinner(
+                          width: isTabletAndDesktop(context) ? 190 : 170,
+                          // 90
+                          tittle: "Tipo de Estudio",
+                          initialValue: tipoEstudioValue!,
+                          items: Auxiliares.Categorias,
+                          onChangeValue: (String? newValue) {
+                            setState(() {
+                              tipoEstudioValue = newValue!;
+                              // *************** *********** **************
+                              // Actualización del Indice
+                              // *************** *********** **************
+                              index = Auxiliares.Categorias.indexOf(newValue);
+                              // *************** *********** **************
+                              estudioValue = Auxiliares
+                                  .Laboratorios[Auxiliares.Categorias[index]][0];
+                              unidadMedidaValue =
+                              Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
+                              // *************** *********** **************
+                            });
+                          }),
+                    ),
+                    Expanded(
+                        child: GrandIcon(
+                          labelButton: "Agregar por Categoría",
+                          iconData: Icons.list_alt,
+                          onPress: () {
+                            Operadores.selectOptionsActivity(
+                                context: context,
+                                tittle: 'Seleccione un Tipo de Estudio',
+                                options: Auxiliares.Categorias,
+                                onClose: (value) {
+                                  setState(() {
+                                    tipoEstudioValue = value;
+                                    // *************** *********** **************
+                                    // Actualización del Indice
+                                    // *************** *********** **************
+                                    index = Auxiliares.Categorias.indexOf(value);
+                                    // *************** *********** **************
+                                    estudioValue = Auxiliares.Laboratorios[
+                                    Auxiliares.Categorias[index]][0];
+                                    unidadMedidaValue = Auxiliares
+                                        .Medidas[Auxiliares.Categorias[index]][0];
+                                    // *************** *********** **************
+                                    Navigator.of(context).pop();
+                                  });
+                                  Operadores.openDialog(
+                                      context: context,
+                                      chyldrim: ConmutadorParaclinicos(
+                                        categoriaEstudio: value,
+                                      ));
+                                });
+                          },
+                        )),
+                  ],
                 ),
-                Spinner(
-                    width: isTabletAndDesktop(context) ? 190 : 170,
-                    // 90
-                    tittle: "Tipo de Estudio",
-                    initialValue: tipoEstudioValue!,
-                    items: Auxiliares.Categorias,
-                    onChangeValue: (String? newValue) {
-                      setState(() {
-                        tipoEstudioValue = newValue!;
-                        // *************** *********** **************
-                        // Actualización del Indice
-                        // *************** *********** **************
-                        index = Auxiliares.Categorias.indexOf(newValue);
-                        // *************** *********** **************
-                        estudioValue = Auxiliares
-                            .Laboratorios[Auxiliares.Categorias[index]][0];
-                        unidadMedidaValue =
-                            Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
-                        // *************** *********** **************
-                      });
-                    }),
-                Spinner(
-                    width: isTabletAndDesktop(context) ? 120 : 170,
-                    // 90
-                    tittle: "Estudio",
-                    initialValue: estudioValue!,
-                    items: Auxiliares.Laboratorios[tipoEstudioValue],
-                    onChangeValue: (String? newValue) {
-                      setState(() {
-                        estudioValue = newValue!;
-                        //
-                      });
-                    }),
-                EditTextArea(
-                  textController: textResultController,
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(),
-                  labelEditText: "Resultado",
-                  numOfLines: 1,
+                Row(
+                  children: [
+                    Expanded(
+                      child: Spinner(
+                          width: isTabletAndDesktop(context) ? 120 : 170,
+                          // 90
+                          tittle: "Estudio",
+                          initialValue: estudioValue!,
+                          items: Auxiliares.Laboratorios[tipoEstudioValue],
+                          onChangeValue: (String? newValue) {
+                            setState(() {
+                              estudioValue = newValue!;
+                              //
+                            });
+                          }),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        textController: textResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: "Resultado",
+                        numOfLines: 1,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

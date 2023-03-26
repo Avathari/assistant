@@ -47,6 +47,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
       case Constantes.Register:
         widget._operationButton = 'Registrar';
 
+        fechaRealizacionTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
         // estTextController.text = Pacientes.Vital['Pace_SV_est'].toString();
         // pctTextController.text = Pacientes.Vital['Pace_SV_pct'].toString();
         estTextController.text = Valores.alturaPaciente!.toString();

@@ -13,7 +13,6 @@ import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/RoundedPanel.dart';
-import 'package:assistant/widgets/ThreeLabelText.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
@@ -354,6 +353,24 @@ class _RevisionesState extends State<Revisiones> {
                             onPress: () {
                               setState(() {
                                 widget.actualView = 5;
+                              });
+                            },
+                          ),
+                          GrandButton(
+                            weigth: 2000,
+                            labelButton: 'Balances Hídricos',
+                            onPress: () {
+                              setState(() {
+                                widget.actualView = 9;
+                              });
+                            },
+                          ),
+                          GrandButton(
+                            weigth: 2000,
+                            labelButton: 'Ventilaciones',
+                            onPress: () {
+                              setState(() {
+                                widget.actualView = 10;
                               });
                             },
                           ),
@@ -741,8 +758,8 @@ class _RevisionesState extends State<Revisiones> {
                                                                   3
                                                               ? electrolitos()
                                                               : widget.actualView ==
-                                                                      3
-                                                                  ? electrolitos()
+                                                                      9
+                                                                  ? balances()
                                                                   : widget.actualView ==
                                                                           10
                                                                       ? ventilaciones()
@@ -803,6 +820,15 @@ class _RevisionesState extends State<Revisiones> {
                             onPress: () {
                               setState(() {
                                 widget.actualView = 5;
+                              });
+                            },
+                          ),
+                          GrandIcon(
+                            iconData: Icons.balance,
+                            labelButton: 'Balance Hídrico',
+                            onPress: () {
+                              setState(() {
+                                widget.actualView = 9;
                               });
                             },
                           ),
@@ -1609,6 +1635,51 @@ class _RevisionesState extends State<Revisiones> {
                   });
                 });
           },
+        ),
+      ],
+    );
+  }
+
+  GridView balances() {
+    return GridView(
+      padding: const EdgeInsets.all(5.0),
+      controller: ScrollController(),
+      gridDelegate: GridViewTools.gridDelegate(
+          crossAxisCount: isMobile(context) ? 4 : 5, mainAxisExtent: 65), //46
+      children: [
+        ValuePanel(
+          secondText: Valores.fechaRealizacionBalances,
+        ),
+        ValuePanel(
+          firstText: "Ingresos",
+          secondText: Valores.ingresosBalances.toStringAsFixed(0),
+          thirdText: "mL",
+        ),
+        ValuePanel(
+          firstText: "Egresos",
+          secondText: Valores.egresosBalances.toStringAsFixed(0),
+          thirdText: "mL",
+        ),
+        ValuePanel(
+          firstText: "Balance Total",
+          secondText: Valores.balanceTotal.toStringAsFixed(0),
+          thirdText: "mL",
+        ),
+        CrossLine(),
+        ValuePanel(
+          firstText: "P. Insensibles",
+          secondText: Valores.perdidasInsensibles.toStringAsFixed(0),
+          thirdText: "mL",
+        ),
+        ValuePanel(
+          firstText: "Uresis",
+          secondText: Valores.uresis!.toStringAsFixed(0),
+          thirdText: "mL",
+        ),
+        ValuePanel(
+          firstText: "Diuresis",
+          secondText: Valores.diuresis.toStringAsFixed(2),
+          thirdText: "mL",
         ),
       ],
     );

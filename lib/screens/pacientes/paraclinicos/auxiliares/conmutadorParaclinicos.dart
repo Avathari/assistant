@@ -1,22 +1,19 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
-import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/arteriales.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/biometria.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/cardiacos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/coagulaciones.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/electrolitos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/hepaticos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/lipidicos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/pancreaticos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/quimicas.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/reactantes.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/tiroideos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/venosos.dart';
-import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
-import 'package:assistant/widgets/EditTextArea.dart';
-import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class ConmutadorParaclinicos extends StatefulWidget {
   String? categoriaEstudio;
@@ -80,12 +77,15 @@ class _ConmutadorParaclinicosState extends State<ConmutadorParaclinicos> {
       case "Tiempos de Coagulación":
         return const Coagulaciones();
       case "Reactantes de Fase Aguda":
-        return const Arteriales();
+        return const Reactantes();
 
       case "Gasometría Arterial":
         return const Arteriales();
       case "Gasometría Venosa":
         return const Venosos();
+
+      case "Marcadores Cárdiacos":
+        return const Cardiacos();
       default:
         return const Biometrias();
     }

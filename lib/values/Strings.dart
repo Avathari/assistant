@@ -15,20 +15,25 @@ class Sentences {
   static const String app_bar_reportes = "Auxiliar de reportes médicos";
 
   static String capitalize(String value) {
-    var result = value[0].toUpperCase();
-    bool cap = true;
-    for (int i = 1; i < value.length; i++) {
-      if (value[i - 1] == " " && cap == true) {
-        result = result + value[i].toUpperCase();
-      } else {
-        result = result + value[i];
-        cap = false;
+    if (value.isNotEmpty) {
+      var result = value[0].toUpperCase();
+      bool cap = true;
+      for (int i = 1; i < value.length; i++) {
+        if (value[i - 1] == " " && cap == true) {
+          result = result + value[i].toUpperCase();
+        } else {
+          result = result + value[i];
+          cap = false;
+        }
       }
+      return result;
+    } else {
+      return value;
     }
-    return result;
   }
 
   static String capitalizeAllWord(String value) {
+    print("value ${value[0]}");
     var result = value[0].toUpperCase();
     for (int i = 1; i < value.length; i++) {
       if (value[i - 1] == " ") {
@@ -37,9 +42,9 @@ class Sentences {
         result = result + value[i];
       }
     }
+    print("result $result");
     return result;
   }
-
 }
 
 class listados {

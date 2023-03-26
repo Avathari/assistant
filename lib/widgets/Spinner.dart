@@ -100,7 +100,7 @@ class _SpinnerState extends State<Spinner> {
           items: widget.items?.map<DropdownMenuItem<String>>((String val) {
             return DropdownMenuItem<String>(
               value: val,
-              child: SizedBox(width: widget.width, child: Text(val)),
+              child: SizedBox(width: widget.width, child: Text(val, overflow: TextOverflow.ellipsis,)),
             );
           }).toList(),
         ),

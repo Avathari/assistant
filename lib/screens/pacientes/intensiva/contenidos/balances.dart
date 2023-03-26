@@ -2,17 +2,21 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/balancesHidrico.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
-import 'package:assistant/widgets/GridLayout.dart';
+import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/Spinner.dart';
+import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 // # Clase .dart para la creación predeterminada de interfaces de registro, consulta y actualización.
@@ -81,9 +85,12 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
       case Constantes.Register:
         widget._operationButton = 'Registrar';
 
+        viaPerdidaTextController.text = Valores.perdidasInsensibles.toString();
+
         break;
       case Constantes.Update:
         setState(() {
+          Balances.fromJson(Balances.Balance);
           widget._operationButton = 'Actualizar';
           //
           idOperation = Balances.Balance['ID_Bala'];
@@ -144,104 +151,153 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
                 onPressed: () {
                   onClose(context);
                 },
-              )),
-      body: Card(
-        color: const Color.fromARGB(255, 61, 57, 57),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              editFormattedText(
-                  TextInputType.number,
-                  MaskTextInputFormatter(
-                      mask: '####/##/##',
-                      filter: {"#": RegExp(r'[0-9]')},
-                      type: MaskAutoCompletionType.lazy),
-                  false,
-                  'Fecha de realización',
-                  fechaRealizacionTextController,
-                  false),
-              Row(
+              ),
+        actions: isTablet(context) ? [
+          GrandIcon(
+            iconData: Icons.paste,
+            onPress: () {
+              Datos.portapapeles(context: context, text: Formatos.balances);
+            },
+          ),
+                GrandIcon(
+                  iconData: Icons.bar_chart,
+                  onPress: () {
+                    Operadores.openDialog(
+                        context: context, chyldrim: const BalanceHidrico());
+                  },
+                )
+              ] : [
+          GrandIcon(
+            iconData: Icons.paste,
+            onPress: () {
+              Clipboard.setData(ClipboardData(text: Formatos.balances));
+            },
+          ),
+          GrandIcon(
+            iconData: Icons.bar_chart,
+            onPress: () {
+              Operadores.openDialog(
+                  context: context, chyldrim: const BalanceHidrico());
+            },
+          )
+        ]
+            ),
+      body: Container(
+        padding: const EdgeInsets.all(8.0),
+        decoration: ContainerDecoration.roundedDecoration(),
+        child: Column(
+          children: [
+            EditTextArea(
+              labelEditText: "Fecha de realización",
+              numOfLines: 1,
+              textController: fechaRealizacionTextController,
+              keyBoardType: TextInputType.datetime,
+              withShowOption: true,
+              selection: true,
+              iconData: Icons.calculate_outlined,
+              onSelected: () {
+                setState(() {
+                  fechaRealizacionTextController.text =
+                      Calendarios.today(format: "yyyy/MM/dd");
+                });
+              },
+              inputFormat: MaskTextInputFormatter(
+                  mask: '####/##/##',
+                  filter: {"#": RegExp(r'[0-9]')},
+                  type: MaskAutoCompletionType.lazy),
+            ),
+            Container(
+              decoration: ContainerDecoration.roundedDecoration(),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  GrandButton(
-                      weigth: isMobile(context) ? 50 : 200,
-                      labelButton: "Ingresos",
-                      onPress: () {
-                        setState(() {
-                          carouselController.jumpToPage(0);
-                        });
-                      }),
-                  GrandButton(
-                      weigth: isMobile(context) ? 50 : 200,
-                      labelButton: "Egresos",
-                      onPress: () {
-                        setState(() {
-                          carouselController.jumpToPage(1);
-                        });
-                      })
+                  Expanded(
+                    child: GrandButton(
+                        weigth: isMobile(context) ? 50 : 200,
+                        labelButton: "Ingresos",
+                        onPress: () {
+                          setState(() {
+                            carouselController.jumpToPage(0);
+                          });
+                        }),
+                  ),
+                  Expanded(
+                    child: GrandButton(
+                        weigth: isMobile(context) ? 50 : 200,
+                        labelButton: "Egresos",
+                        onPress: () {
+                          setState(() {
+                            carouselController.jumpToPage(1);
+                          });
+                        }),
+                  ),
+                  isDesktop(context)
+                      ? Expanded(
+                          child: GrandButton(
+                              weigth: isMobile(context) ? 50 : 200,
+                              labelButton: "Balance Total",
+                              onPress: () {
+                                setState(() {
+                                  carouselController.jumpToPage(2);
+                                });
+                              }),
+                        )
+                      : Container()
                 ],
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: CarouselSlider(
-                            items: [
-                              SingleChildScrollView(
-                                  controller: ScrollController(),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: GridLayout(
-                                      childAspectRatio: isMobile(context)
-                                          ? 5.0
-                                          : isTablet(context)
-                                              ? 6.0
-                                              : 4.0,
-                                      columnCount: isMobile(context)
-                                          ? 1
-                                          : isTablet(context)
-                                              ? 2
-                                              : 2,
-                                      children: component(context),
-                                    ),
-                                  )),
-                              SingleChildScrollView(
-                                  controller: ScrollController(),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: GridLayout(
-                                      childAspectRatio: isMobile(context)
-                                          ? 5
-                                          : isTablet(context)
-                                              ? 6.0
-                                              : 5.0,
-                                      columnCount: isMobile(context)
-                                          ? 1
-                                          : isTablet(context)
-                                              ? 2
-                                              : 2,
-                                      children: secondComponent(context),
-                                    ),
-                                  ))
-                            ],
-                            carouselController: carouselController,
-                            options: CarouselOptions(
-                                height: 500,
-                                enableInfiniteScroll: false,
-                                viewportFraction: 1.0)),
+            ),
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.all(10.0),
+                margin: const EdgeInsets.all(10.0),
+                decoration: ContainerDecoration.roundedDecoration(),
+                child: CarouselSlider(
+                    items: [
+                      GridView(
+                        gridDelegate: GridViewTools.gridDelegate(
+                            crossAxisCount: isMobile(context)
+                                ? 1
+                                : isTablet(context)
+                                    ? 2
+                                    : 2,
+                            mainAxisExtent: 80),
+                        children: component(context),
                       ),
+                      GridView(
+                        gridDelegate: GridViewTools.gridDelegate(
+                          crossAxisCount: isMobile(context)
+                              ? 1
+                              : isTablet(context)
+                                  ? 2
+                                  : 2,
+                          mainAxisExtent: 80,
+                        ),
+                        children: secondComponent(context),
+                      ),
+                      const BalanceHidrico(),
                     ],
-                  ),
-                ),
+                    carouselController: carouselController,
+                    options: Carousel.carouselOptions(context: context)),
               ),
-              grandButton(context, widget._operationButton, () {
-                operationMethod(context);
-              })
-            ],
-          ),
+            ),
+            isTablet(context)
+                ? const Expanded(child: BalanceHidrico())
+                : Container(),
+            Column(
+              children: [
+                CrossLine(),
+                Container(
+                  decoration: ContainerDecoration.roundedDecoration(),
+                  child: GrandButton(
+                      labelButton: widget._operationButton,
+                      weigth: 2000,
+                      onPress: () {
+                        operationMethod(context);
+                      }),
+                ),
+              ],
+            )
+          ],
         ),
       ),
     );
@@ -254,6 +310,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
           onChangeValue: (String value) {
             setState(() {
               isHorarioValue = value;
+              Valores.horario = int.parse(value);
             });
           },
           items: Opciones.horarios(),
@@ -268,6 +325,11 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         labelEditText: 'Via Oral (mL)',
         textController: viaOralTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.viaOralBalances = int.parse(value);
+          });
+        },
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -278,6 +340,11 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         labelEditText: 'Vía Sonda Orogástrica (mL)',
         textController: viaOrogasTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.sondaOrogastricaBalances = int.parse(value);
+          });
+        },
       ),
       CrossLine(),
       //
@@ -290,6 +357,11 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         labelEditText: 'Vía Hemoderivados (mL)',
         textController: viaHemosTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.hemoderivadosBalances = int.parse(value);
+          });
+        },
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -300,6 +372,11 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         labelEditText: 'Vía N.P.T. (mL)',
         textController: viaNutrianTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.nutricionParenteralBalances = int.parse(value);
+          });
+        },
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -310,6 +387,11 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         labelEditText: 'Vía Sol. Parenterales (mL)',
         textController: viaParesTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.parenteralesBalances = int.parse(value);
+          });
+        },
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -320,6 +402,11 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         labelEditText: 'Vía Diluciones (mL)',
         textController: viaDilucionesTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.dilucionesBalances = int.parse(value);
+          });
+        },
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -330,6 +417,11 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         labelEditText: 'Otros Ingresos (mL)',
         textController: viaOtrosIngresosTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.otrosIngresosBalances = int.parse(value);
+          });
+        },
       ),
       CrossLine(),
     ];
@@ -346,6 +438,11 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         labelEditText: 'Vía Uresis (mL)',
         textController: viaUresisTextController,
         numOfLines: 1,
+        onChange: (value) {
+          Valores.uresisBalances = int.parse(value);
+          setState(() {
+          });
+        },
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -356,6 +453,11 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         labelEditText: 'Vía Evacuacionees. (mL)',
         textController: viaEvacTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.evacuacionesBalances = int.parse(value);
+          });
+        },
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -366,6 +468,11 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         labelEditText: 'Vía Sangrados (mL)',
         textController: viaSangTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.sangradosBalances = int.parse(value);
+          });
+        },
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -376,6 +483,11 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         labelEditText: 'Vía Succión (mL)',
         textController: viaSucciTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.succcionBalances = int.parse(value);
+          });
+        },
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -396,6 +508,11 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         labelEditText: 'Otros Egresos (mL)',
         textController: viaOtrosEgresosTextController,
         numOfLines: 1,
+        onChange: (value) {
+          setState(() {
+            Valores.otrosEgresosBalances = int.parse(value);
+          });
+        },
       ),
       CrossLine(),
     ];
@@ -507,6 +624,24 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         break;
       default:
     }
+  }
+
+  reValue(){
+    //
+    Valores.viaOralBalances = int.parse(viaOralTextController.text);
+    Valores.sondaOrogastricaBalances = int.parse(viaOrogasTextController.text);
+    Valores.hemoderivadosBalances = int.parse(viaHemosTextController.text);
+    Valores.nutricionParenteralBalances = int.parse(viaNutrianTextController.text);
+    Valores.parenteralesBalances = int.parse(viaParesTextController.text);
+    Valores.dilucionesBalances = int.parse(viaDilucionesTextController.text);
+    Valores.otrosIngresosBalances = int.parse(viaOtrosIngresosTextController.text);
+
+    Valores.uresisBalances = int.parse(viaUresisTextController.text);
+    Valores.evacuacionesBalances = int.parse(viaEvacTextController.text);
+    Valores.sangradosBalances = int.parse(viaSangTextController.text);
+    Valores.succcionBalances = int.parse(viaSucciTextController.text);
+    Valores.drenesBalances = int.parse(viaDreneTextController.text);
+    Valores.otrosEgresosBalances = int.parse(viaOtrosEgresosTextController.text);
   }
 }
 
@@ -651,33 +786,22 @@ class _GestionBalancesState extends State<GestionBalances> {
                     builder: (context, AsyncSnapshot snapshot) {
                       if (snapshot.hasError) print(snapshot.error);
                       return snapshot.hasData
-                          ? ListView.builder(
-                              controller: gestionScrollController,
+                          ? GridView.builder(
+                              padding: const EdgeInsets.all(8.0),
+                              gridDelegate: GridViewTools.gridDelegate(
+                                  crossAxisCount: isMobile(context) ? 1 : 3,
+                                  mainAxisExtent: 150),
                               shrinkWrap: true,
                               itemCount: snapshot.data == null
                                   ? 0
                                   : snapshot.data.length,
                               itemBuilder: (context, posicion) {
                                 return itemListView(
-                                    snapshot, posicion, context);
-                              },
-                            )
-                          : Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const CircularProgressIndicator(),
-                                  const SizedBox(height: 50),
-                                  Text(
-                                    snapshot.hasError
-                                        ? snapshot.error.toString()
-                                        : snapshot.error.toString(),
-                                    style: const TextStyle(
-                                        color: Colors.white, fontSize: 10),
-                                  ),
-                                ],
-                              ),
-                            );
+                                    context: context,
+                                    snapshot: snapshot,
+                                    posicion: posicion);
+                              })
+                          : Container();
                     },
                   ),
                 ),
@@ -687,102 +811,104 @@ class _GestionBalancesState extends State<GestionBalances> {
         ),
         isDesktop(context)
             ? widget.actualSidePage != null
-                ? Expanded(flex: 1, child: widget.actualSidePage!)
+                ? Expanded(
+                    flex: 1,
+                    child: Container(
+                        decoration: ContainerDecoration.roundedDecoration(),
+                        child: widget.actualSidePage!))
                 : Expanded(flex: 1, child: Container())
             : Container()
       ]),
     );
   }
 
-  Container itemListView(
-      AsyncSnapshot snapshot, int posicion, BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(2.0),
-      child: GestureDetector(
-        onTap: () {
-          onSelected(snapshot, posicion, context, Constantes.Update);
-        },
-        child: Card(
-          color: const Color.fromARGB(255, 54, 50, 50),
-          child: Container(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
+  GestureDetector itemListView(
+      {required AsyncSnapshot snapshot,
+      required int posicion,
+      required BuildContext context}) {
+    return GestureDetector(
+      onTap: () {
+        Balances.fromJson(snapshot.data[posicion]);
+        Operadores.openDialog(
+            context: context, chyldrim: const BalanceHidrico());
+      },
+      onDoubleTap: () {
+        onSelected(snapshot, posicion, context, Constantes.Update);
+      },
+      child: Container(
+        padding: const EdgeInsets.all(10.0),
+        margin: const EdgeInsets.all(10.0),
+        decoration: ContainerDecoration.roundedDecoration(),
+        child: Column(
+          children: [
+            Row(
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "ID : ${snapshot.data[posicion]['ID_Bala'].toString()}",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                                fontSize: 12),
-                          ),
-                          Text(
-                            "${snapshot.data[posicion]['Pace_bala_Fecha']}",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                                fontSize: 14),
-                          ),
-                          Text(
-                            "${snapshot.data[posicion]['Pace_bala_time']}",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                                fontSize: 14),
-                          ),
-                        ],
-                      ),
+                Container(
+                  margin: const EdgeInsets.all(5.0),
+                  child: CircleAvatar(
+                    backgroundColor: Colors.black,
+                    child: Text(
+                      snapshot.data[posicion]['ID_Bala'].toString(),
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        IconButton(
-                          color: Colors.grey,
-                          icon: const Icon(Icons.update_rounded),
-                          onPressed: () {
-                            //
-                            onSelected(
-                                snapshot, posicion, context, Constantes.Update);
-                          },
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        IconButton(
-                          color: Colors.grey,
-                          icon: const Icon(Icons.delete),
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return alertDialog(
-                                    'Eliminar registro',
-                                    '¿Esta seguro de querer eliminar el registro?',
-                                    () {
-                                      closeDialog(context);
-                                    },
-                                    () {
-                                      deleteRegister(
-                                          snapshot, posicion, context);
-                                    },
-                                  );
-                                });
-                          },
-                        )
-                      ],
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "${snapshot.data[posicion]['Pace_bala_Fecha']}",
+                        style: Styles.textSyleGrowth(fontSize: 18),
+                      ),
+                      Text(
+                        "${snapshot.data[posicion]['Pace_bala_time']}",
+                        style: Styles.textSyleGrowth(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    IconButton(
+                      color: Colors.grey,
+                      icon: const Icon(Icons.update_rounded),
+                      onPressed: () {
+                        //
+                        onSelected(
+                            snapshot, posicion, context, Constantes.Update);
+                      },
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    IconButton(
+                      color: Colors.grey,
+                      icon: const Icon(Icons.delete),
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return alertDialog(
+                                'Eliminar registro',
+                                '¿Esta seguro de querer eliminar el registro?',
+                                () {
+                                  closeDialog(context);
+                                },
+                                () {
+                                  deleteRegister(snapshot, posicion, context);
+                                },
+                              );
+                            });
+                      },
                     )
                   ],
-                ),
+                )
               ],
             ),
-          ),
+          ],
         ),
       ),
     );
@@ -794,6 +920,8 @@ class _GestionBalancesState extends State<GestionBalances> {
     // Balances.selectedDiagnosis = Balances.balance['Pace_APP_ALE'];
     Pacientes.Balances = snapshot.data;
     //
+    Balances.fromJson(Balances.Balance);
+    // ************** ********** ************
     toOperaciones(context, operaciones);
   }
 
@@ -815,6 +943,8 @@ class _GestionBalancesState extends State<GestionBalances> {
   }
 
   void toOperaciones(BuildContext context, String operationActivity) {
+    init();
+    // *********** ************* ********
     if (isDesktop(context)) {
       Constantes.operationsActividad = operationActivity;
       Constantes.reinit(value: foundedItems!);
@@ -861,4 +991,22 @@ class _GestionBalancesState extends State<GestionBalances> {
                 ),
             transitionDuration: const Duration(seconds: 0)));
   }
+  
+  init(){
+    Valores.viaOralBalances = 0;
+    Valores.sondaOrogastricaBalances = 0;
+    Valores.hemoderivadosBalances = 0;
+    Valores.nutricionParenteralBalances = 0;
+    Valores.parenteralesBalances = 0;
+    Valores.dilucionesBalances = 0;
+    Valores.otrosIngresosBalances = 0;
+
+    Valores.uresisBalances = 0;
+    Valores.evacuacionesBalances = 0;
+    Valores.sangradosBalances = 0;
+    Valores.succcionBalances = 0;
+    Valores.drenesBalances = 0;
+    Valores.otrosEgresosBalances = 0;
+  }
+  
 }

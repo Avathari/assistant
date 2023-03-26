@@ -89,20 +89,20 @@ class _TransfusionState extends State<Transfusion> {
             EditTextArea(
                 textController: cantidadUnidadesTextController,
                 labelEditText: "Cantidad de Unidades",
-                keyBoardType: TextInputType.multiline,
+                keyBoardType: TextInputType.number,
                 numOfLines: 1,
                 onChange: ((value) {
-                  Valores.cantidadUnidades = "$value.";
-                  Reportes.reportes['Cantidad_Unidades'] = "$value.";
+                  Valores.cantidadUnidades = value;
+                  Reportes.reportes['Cantidad_Unidades'] = value;
                 }),
                 inputFormat: MaskTextInputFormatter()),
             EditTextArea(
                 textController: volumenAdministradoTextController,
                 labelEditText: "Volumen Administrado (mL)",
-                keyBoardType: TextInputType.multiline,
+                keyBoardType: TextInputType.number,
                 numOfLines: 1,
                 onChange: ((value) {
-                  Valores.volumenAdministrado = "$value.";
+                  Valores.volumenAdministrado = value;
                   Reportes.reportes['Volumen_Administrado'] = "$value mL.";
                 }),
                 inputFormat: MaskTextInputFormatter()),
@@ -112,8 +112,8 @@ class _TransfusionState extends State<Transfusion> {
                 keyBoardType: TextInputType.multiline,
                 numOfLines: 1,
                 onChange: ((value) {
-                  Valores.numIdentificacion = "$value.";
-                  Reportes.reportes['Num_Identificacion'] = "$value.";
+                  Valores.numIdentificacion = value.toUpperCase();
+                  Reportes.reportes['Num_Identificacion'] = value.toUpperCase();
                 }),
                 inputFormat: MaskTextInputFormatter()),
             if (!isMobile(context)) Container() ,
@@ -134,8 +134,8 @@ class _TransfusionState extends State<Transfusion> {
                 });
               },
               onChange: ((value) {
-                Valores.fechaInicioTransfusion = "$value.";
-                Reportes.reportes['Inicio_Transfusion'] = "$value.";
+                Valores.fechaInicioTransfusion = value;
+                Reportes.reportes['Inicio_Transfusion'] = value;
               }),
               inputFormat: MaskTextInputFormatter(
                   mask: '####/##/## ##:##',
@@ -159,8 +159,8 @@ class _TransfusionState extends State<Transfusion> {
                 });
               },
               onChange: ((value) {
-                Valores.fechaTerminoTransfusion = "$value.";
-                Reportes.reportes['Termino_Transfusion'] = "$value.";
+                Valores.fechaTerminoTransfusion = value;
+                Reportes.reportes['Termino_Transfusion'] = value;
               }),
               inputFormat: MaskTextInputFormatter(
                   mask: '####/##/## ##:##',
@@ -176,8 +176,8 @@ class _TransfusionState extends State<Transfusion> {
           keyBoardType: TextInputType.multiline,
           numOfLines: 5,
           onChange: ((value) {
-            Valores.numIdentificacion = "$value.";
-            Reportes.reportes['Reacciones_Presentadas'] = "$value.";
+            Valores.numIdentificacion = value;
+            Reportes.reportes['Reacciones_Presentadas'] = value;
           }),
           inputFormat: MaskTextInputFormatter()),
     ]);

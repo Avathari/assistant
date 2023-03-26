@@ -2729,8 +2729,6 @@ class FormatosReportes {
         texto: paraph['Termino_Transfusion'],
         withJumpSpace: false));
 
-    print("paraph['Seguimiento_Vitales'])); ${paraph['Seguimiento_Vitales']}" );
-
     parax.add(paragraphWithTittleAndSeparated(
         titulo: "Seguimiento de Signos Vitales: ".toUpperCase(),
         subTitulo: paraph['Seguimiento_Vitales']));

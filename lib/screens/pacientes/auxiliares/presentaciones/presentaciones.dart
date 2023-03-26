@@ -63,10 +63,11 @@ class _PresentacionPacientesState extends State<PresentacionPacientes> {
               ),
               Text(
                 "${Pacientes.Paciente['Pace_NSS']} ${Pacientes.Paciente['Pace_AGRE']}",
+                overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontSize: 12,
                   color: Colors.white,
-                  overflow: TextOverflow.ellipsis,
+
                 ),
               ),
               Text(
