@@ -288,15 +288,42 @@ class _RevisionesState extends State<Revisiones> {
                                     ? arteriales()
                                     : widget.actualView == 5
                                         ? venosos()
-                                        : widget.actualView == 3
-                                            ? electrolitos()
-                                            : widget.actualView == 3
+                                        : widget.actualView == 6
+                                            ? hepaticos()
+                                            : widget.actualView == 7
                                                 ? electrolitos()
-                                                : widget.actualView == 3
+                                                : widget.actualView == 8
                                                     ? electrolitos()
-                                                    : widget.actualView == 3
-                                                        ? electrolitos()
-                                                        : Container(),
+                                                    : widget.actualView == 9
+                                                        ? balances()
+                                                        : widget.actualView ==
+                                                                10
+                                                            ? ventilaciones()
+                                                            : widget.actualView ==
+                                                                    11
+                                                                ? const Hidricos()
+                                                                : widget.actualView ==
+                                                                        12
+                                                                    ? const Metabolicos()
+                                                                    : widget.actualView ==
+                                                                            13
+                                                                        ? const Antropometricos()
+                                                                        : widget.actualView ==
+                                                                                14
+                                                                            ? const Cardiovasculares()
+                                                                            : widget.actualView == 15
+                                                                                ? const Ventilatorios()
+                                                                                : widget.actualView == 16
+                                                                                    ? const Gasometricos()
+                                                                                    : widget.actualView == 17
+                                                                                        ? const Hidricos()
+                                                                                        : widget.actualView == 18
+                                                                                            ? const Hidricos()
+                                                                                            : widget.actualView == 19
+                                                                                                ? const Hidricos()
+                                                                                                : widget.actualView == 20
+                                                                                                    ? const Hidricos()
+                                                                                                    : Container(),
               )),
           Expanded(
             flex: 2,
@@ -353,6 +380,15 @@ class _RevisionesState extends State<Revisiones> {
                             onPress: () {
                               setState(() {
                                 widget.actualView = 5;
+                              });
+                            },
+                          ),
+                          GrandButton(
+                            weigth: 2000,
+                            labelButton: 'Hepáticos',
+                            onPress: () {
+                              setState(() {
+                                widget.actualView = 6;
                               });
                             },
                           ),
@@ -526,207 +562,213 @@ class _RevisionesState extends State<Revisiones> {
           // ),
           Expanded(
             flex: 4,
-            child: GridView(
-              padding: const EdgeInsets.all(5.0),
-              controller: ScrollController(),
-              gridDelegate: GridViewTools.gridDelegate(
-                  crossAxisCount: isMobile(context) ? 4 : 2,
-                  mainAxisExtent: 65), //46
-              children: [
-                ValuePanel(
-                  firstText: "T. Sys",
-                  secondText: Valores.tensionArterialSystolica.toString(),
-                  thirdText: "mmHg",
-                  withEditMessage: true,
-                  onEdit: (value) {
-                    Operadores.editActivity(
-                        context: context,
-                        tittle: "Editar . . . ",
-                        message: "¿Tensión sistólica? . . . ",
-                        onAcept: (value) {
-                          Terminal.printSuccess(message: "recieve $value");
-                          setState(() {
-                            Valores.tensionArterialSystolica = int.parse(value);
-                            Navigator.of(context).pop();
+            child: Container(
+              padding: const EdgeInsets.all(5),
+              margin: const EdgeInsets.all(5),
+              decoration: ContainerDecoration.roundedDecoration(),
+              child: GridView(
+                padding: const EdgeInsets.all(5.0),
+                controller: ScrollController(),
+                gridDelegate: GridViewTools.gridDelegate(
+                    crossAxisCount: isMobile(context) ? 4 : 2,
+                    mainAxisExtent: 65), //46
+                children: [
+                  ValuePanel(
+                    firstText: "T. Sys",
+                    secondText: Valores.tensionArterialSystolica.toString(),
+                    thirdText: "mmHg",
+                    withEditMessage: true,
+                    onEdit: (value) {
+                      Operadores.editActivity(
+                          context: context,
+                          tittle: "Editar . . . ",
+                          message: "¿Tensión sistólica? . . . ",
+                          onAcept: (value) {
+                            Terminal.printSuccess(message: "recieve $value");
+                            setState(() {
+                              Valores.tensionArterialSystolica =
+                                  int.parse(value);
+                              Navigator.of(context).pop();
+                            });
                           });
-                        });
-                  },
-                ),
-                ValuePanel(
-                  firstText: "T. Dyas",
-                  secondText: Valores.tensionArterialDyastolica.toString(),
-                  thirdText: "mmHg",
-                  withEditMessage: true,
-                  onEdit: (value) {
-                    Operadores.editActivity(
-                        context: context,
-                        tittle: "Editar . . . ",
-                        message: "¿Tensión diastólica? . . . ",
-                        onAcept: (value) {
-                          Terminal.printSuccess(message: "recieve $value");
-                          setState(() {
-                            Valores.tensionArterialDyastolica =
-                                int.parse(value);
-                            Navigator.of(context).pop();
+                    },
+                  ),
+                  ValuePanel(
+                    firstText: "T. Dyas",
+                    secondText: Valores.tensionArterialDyastolica.toString(),
+                    thirdText: "mmHg",
+                    withEditMessage: true,
+                    onEdit: (value) {
+                      Operadores.editActivity(
+                          context: context,
+                          tittle: "Editar . . . ",
+                          message: "¿Tensión diastólica? . . . ",
+                          onAcept: (value) {
+                            Terminal.printSuccess(message: "recieve $value");
+                            setState(() {
+                              Valores.tensionArterialDyastolica =
+                                  int.parse(value);
+                              Navigator.of(context).pop();
+                            });
                           });
-                        });
-                  },
-                ),
-                ValuePanel(
-                  firstText: "F. Card.",
-                  secondText: Valores.frecuenciaCardiaca.toString(),
-                  thirdText: "Lat/min",
-                  withEditMessage: true,
-                  onEdit: (value) {
-                    Operadores.editActivity(
-                        context: context,
-                        tittle: "Editar . . . ",
-                        message: "¿Frecuencia cardiaca? . . . ",
-                        onAcept: (value) {
-                          Terminal.printSuccess(message: "recieve $value");
-                          setState(() {
-                            Valores.frecuenciaCardiaca = int.parse(value);
-                            Navigator.of(context).pop();
+                    },
+                  ),
+                  ValuePanel(
+                    firstText: "F. Card.",
+                    secondText: Valores.frecuenciaCardiaca.toString(),
+                    thirdText: "Lat/min",
+                    withEditMessage: true,
+                    onEdit: (value) {
+                      Operadores.editActivity(
+                          context: context,
+                          tittle: "Editar . . . ",
+                          message: "¿Frecuencia cardiaca? . . . ",
+                          onAcept: (value) {
+                            Terminal.printSuccess(message: "recieve $value");
+                            setState(() {
+                              Valores.frecuenciaCardiaca = int.parse(value);
+                              Navigator.of(context).pop();
+                            });
                           });
-                        });
-                  },
-                ),
-                ValuePanel(
-                  firstText: "F. Resp.",
-                  secondText: Valores.frecuenciaRespiratoria.toString(),
-                  thirdText: "Resp/min",
-                  withEditMessage: true,
-                  onEdit: (value) {
-                    Operadores.editActivity(
-                        context: context,
-                        tittle: "Editar . . . ",
-                        message: "¿Frecuencia respiratoria? . . . ",
-                        onAcept: (value) {
-                          Terminal.printSuccess(message: "recieve $value");
-                          setState(() {
-                            Valores.frecuenciaRespiratoria = int.parse(value);
-                            Navigator.of(context).pop();
+                    },
+                  ),
+                  ValuePanel(
+                    firstText: "F. Resp.",
+                    secondText: Valores.frecuenciaRespiratoria.toString(),
+                    thirdText: "Resp/min",
+                    withEditMessage: true,
+                    onEdit: (value) {
+                      Operadores.editActivity(
+                          context: context,
+                          tittle: "Editar . . . ",
+                          message: "¿Frecuencia respiratoria? . . . ",
+                          onAcept: (value) {
+                            Terminal.printSuccess(message: "recieve $value");
+                            setState(() {
+                              Valores.frecuenciaRespiratoria = int.parse(value);
+                              Navigator.of(context).pop();
+                            });
                           });
-                        });
-                  },
-                ),
-                ValuePanel(
-                  firstText: "T. C.",
-                  secondText: Valores.temperaturCorporal.toString(),
-                  thirdText: "°C",
-                  withEditMessage: true,
-                  onEdit: (value) {
-                    Operadores.editActivity(
-                        context: context,
-                        tittle: "Editar . . . ",
-                        message: "¿Temperatura corporal? . . . ",
-                        onAcept: (value) {
-                          Terminal.printSuccess(message: "recieve $value");
-                          setState(() {
-                            Valores.temperaturCorporal = double.parse(value);
-                            Navigator.of(context).pop();
+                    },
+                  ),
+                  ValuePanel(
+                    firstText: "T. C.",
+                    secondText: Valores.temperaturCorporal.toString(),
+                    thirdText: "°C",
+                    withEditMessage: true,
+                    onEdit: (value) {
+                      Operadores.editActivity(
+                          context: context,
+                          tittle: "Editar . . . ",
+                          message: "¿Temperatura corporal? . . . ",
+                          onAcept: (value) {
+                            Terminal.printSuccess(message: "recieve $value");
+                            setState(() {
+                              Valores.temperaturCorporal = double.parse(value);
+                              Navigator.of(context).pop();
+                            });
                           });
-                        });
-                  },
-                ),
-                ValuePanel(
-                  firstText: "SpO2",
-                  secondText: Valores.saturacionPerifericaOxigeno.toString(),
-                  thirdText: "Resp/min",
-                  withEditMessage: true,
-                  onEdit: (value) {
-                    Operadores.editActivity(
-                        context: context,
-                        tittle: "Editar . . . ",
-                        message: "¿Saturación periférica de oxígeno? . . . ",
-                        onAcept: (value) {
-                          Terminal.printSuccess(message: "recieve $value");
-                          setState(() {
-                            Valores.saturacionPerifericaOxigeno =
-                                int.parse(value);
-                            Navigator.of(context).pop();
+                    },
+                  ),
+                  ValuePanel(
+                    firstText: "SpO2",
+                    secondText: Valores.saturacionPerifericaOxigeno.toString(),
+                    thirdText: "Resp/min",
+                    withEditMessage: true,
+                    onEdit: (value) {
+                      Operadores.editActivity(
+                          context: context,
+                          tittle: "Editar . . . ",
+                          message: "¿Saturación periférica de oxígeno? . . . ",
+                          onAcept: (value) {
+                            Terminal.printSuccess(message: "recieve $value");
+                            setState(() {
+                              Valores.saturacionPerifericaOxigeno =
+                                  int.parse(value);
+                              Navigator.of(context).pop();
+                            });
                           });
-                        });
-                  },
-                ),
-                // CrossLine(),
-                ValuePanel(
-                  firstText: "P. Corporal",
-                  secondText: Valores.pesoCorporalTotal.toString(),
-                  thirdText: "Kg",
-                  withEditMessage: true,
-                  onEdit: (value) {
-                    Operadores.editActivity(
-                        context: context,
-                        tittle: "Editar . . . ",
-                        message: "¿Peso corporal total? . . . ",
-                        onAcept: (value) {
-                          Terminal.printSuccess(message: "recieve $value");
-                          setState(() {
-                            Valores.pesoCorporalTotal = double.parse(value);
-                            Navigator.of(context).pop();
+                    },
+                  ),
+                  // CrossLine(),
+                  ValuePanel(
+                    firstText: "P. Corporal",
+                    secondText: Valores.pesoCorporalTotal.toString(),
+                    thirdText: "Kg",
+                    withEditMessage: true,
+                    onEdit: (value) {
+                      Operadores.editActivity(
+                          context: context,
+                          tittle: "Editar . . . ",
+                          message: "¿Peso corporal total? . . . ",
+                          onAcept: (value) {
+                            Terminal.printSuccess(message: "recieve $value");
+                            setState(() {
+                              Valores.pesoCorporalTotal = double.parse(value);
+                              Navigator.of(context).pop();
+                            });
                           });
-                        });
-                  },
-                ),
-                ValuePanel(
-                  firstText: "Estatura",
-                  secondText: Valores.alturaPaciente.toString(),
-                  thirdText: "mts",
-                  withEditMessage: true,
-                  onEdit: (value) {
-                    Operadores.editActivity(
-                        context: context,
-                        tittle: "Editar . . . ",
-                        message: "¿Altura del paciente? . . . ",
-                        onAcept: (value) {
-                          Terminal.printSuccess(message: "recieve $value");
-                          setState(() {
-                            Valores.alturaPaciente = double.parse(value);
-                            Navigator.of(context).pop();
+                    },
+                  ),
+                  ValuePanel(
+                    firstText: "Estatura",
+                    secondText: Valores.alturaPaciente.toString(),
+                    thirdText: "mts",
+                    withEditMessage: true,
+                    onEdit: (value) {
+                      Operadores.editActivity(
+                          context: context,
+                          tittle: "Editar . . . ",
+                          message: "¿Altura del paciente? . . . ",
+                          onAcept: (value) {
+                            Terminal.printSuccess(message: "recieve $value");
+                            setState(() {
+                              Valores.alturaPaciente = double.parse(value);
+                              Navigator.of(context).pop();
+                            });
                           });
-                        });
-                  },
-                ),
-                ValuePanel(
-                  firstText: "G. Cap.",
-                  secondText: Valores.glucemiaCapilar.toString(),
-                  thirdText: "mg/dL",
-                  withEditMessage: true,
-                  onEdit: (value) {
-                    Operadores.editActivity(
-                        context: context,
-                        tittle: "Editar . . . ",
-                        message: "¿Glucemia capilar? . . . ",
-                        onAcept: (value) {
-                          Terminal.printSuccess(message: "recieve $value");
-                          setState(() {
-                            Valores.glucemiaCapilar = int.parse(value);
-                            Navigator.of(context).pop();
+                    },
+                  ),
+                  ValuePanel(
+                    firstText: "G. Cap.",
+                    secondText: Valores.glucemiaCapilar.toString(),
+                    thirdText: "mg/dL",
+                    withEditMessage: true,
+                    onEdit: (value) {
+                      Operadores.editActivity(
+                          context: context,
+                          tittle: "Editar . . . ",
+                          message: "¿Glucemia capilar? . . . ",
+                          onAcept: (value) {
+                            Terminal.printSuccess(message: "recieve $value");
+                            setState(() {
+                              Valores.glucemiaCapilar = int.parse(value);
+                              Navigator.of(context).pop();
+                            });
                           });
-                        });
-                  },
-                ),
-                ValuePanel(
-                  firstText: "Horas ayuno",
-                  secondText: Valores.horasAyuno.toString(),
-                  thirdText: "Horas",
-                  withEditMessage: true,
-                  onEdit: (value) {
-                    Operadores.editActivity(
-                        context: context,
-                        tittle: "Editar . . . ",
-                        message: "¿Horas de ayuno? . . . ",
-                        onAcept: (value) {
-                          Terminal.printSuccess(message: "recieve $value");
-                          setState(() {
-                            Valores.horasAyuno = int.parse(value);
-                            Navigator.of(context).pop();
+                    },
+                  ),
+                  ValuePanel(
+                    firstText: "Horas ayuno",
+                    secondText: Valores.horasAyuno.toString(),
+                    thirdText: "Horas",
+                    withEditMessage: true,
+                    onEdit: (value) {
+                      Operadores.editActivity(
+                          context: context,
+                          tittle: "Editar . . . ",
+                          message: "¿Horas de ayuno? . . . ",
+                          onAcept: (value) {
+                            Terminal.printSuccess(message: "recieve $value");
+                            setState(() {
+                              Valores.horasAyuno = int.parse(value);
+                              Navigator.of(context).pop();
+                            });
                           });
-                        });
-                  },
-                ),
-              ],
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
           Expanded(
@@ -743,53 +785,44 @@ class _RevisionesState extends State<Revisiones> {
                           : widget.actualView == 3
                               ? electrolitos()
                               : widget.actualView == 4
-                                  ? electrolitos()
+                                  ? arteriales()
                                   : widget.actualView == 5
-                                      ? electrolitos()
+                                      ? venosos()
                                       : widget.actualView == 6
-                                          ? electrolitos()
+                                          ? hepaticos()
                                           : widget.actualView == 7
                                               ? electrolitos()
                                               : widget.actualView == 8
                                                   ? electrolitos()
+                                                  : widget.actualView == 9
+                                                      ? balances()
+                                                      : widget.actualView == 10
+                                                          ? ventilaciones()
                                                           : widget.actualView ==
-                                                                  9
-                                                              ? balances()
+                                                                  11
+                                                              ? const Hidricos()
                                                               : widget.actualView ==
-                                                                      10
-                                                                  ? ventilaciones()
-                  : widget.actualView ==
-                  11
-                  ? const Hidricos()
-                  : widget.actualView ==
-                  12
-                  ? const Metabolicos()
-                  : widget.actualView ==
-                  13
-                  ? const Antropometricos()
-                  : widget.actualView ==
-                  14
-                  ? const Cardiovasculares()
-                  : widget.actualView ==
-                  15
-                  ? const Ventilatorios()
-                  : widget.actualView ==
-                  16
-                  ? const Gasometricos()
-                  : widget.actualView ==
-                  17
-                  ? const Hidricos()
-                  : widget.actualView ==
-                  18
-                  ? const Hidricos()
-                  : widget.actualView ==
-                  19
-                  ? const Hidricos()
-                  : widget.actualView ==
-                  20
-                  ? const Hidricos()
-                  : Container()
-              ,
+                                                                      12
+                                                                  ? const Metabolicos()
+                                                                  : widget.actualView ==
+                                                                          13
+                                                                      ? const Antropometricos()
+                                                                      : widget.actualView ==
+                                                                              14
+                                                                          ? const Cardiovasculares()
+                                                                          : widget.actualView == 15
+                                                                              ? const Ventilatorios()
+                                                                              : widget.actualView == 16
+                                                                                  ? const Gasometricos()
+                                                                                  : widget.actualView == 17
+                                                                                      ? const Hidricos()
+                                                                                      : widget.actualView == 18
+                                                                                          ? const Hidricos()
+                                                                                          : widget.actualView == 19
+                                                                                              ? const Hidricos()
+                                                                                              : widget.actualView == 20
+                                                                                                  ? const Hidricos()
+                                                                                                  : Container(),
             ),
           ),
           Expanded(
@@ -844,10 +877,19 @@ class _RevisionesState extends State<Revisiones> {
                           ),
                           GrandIcon(
                             iconData: Icons.outbox,
-                            labelButton: 'Gasometría Arterial',
+                            labelButton: 'Gasometría Venosa',
                             onPress: () {
                               setState(() {
                                 widget.actualView = 5;
+                              });
+                            },
+                          ),
+                          GrandIcon(
+                            iconData: Icons.live_help,
+                            labelButton: 'Hepáticos',
+                            onPress: () {
+                              setState(() {
+                                widget.actualView = 6;
                               });
                             },
                           ),
@@ -1712,6 +1754,82 @@ class _RevisionesState extends State<Revisiones> {
           firstText: "Diuresis",
           secondText: Valores.diuresis.toStringAsFixed(2),
           thirdText: "mL",
+        ),
+      ],
+    );
+  }
+
+  GridView hepaticos() {
+    return GridView(
+      padding: const EdgeInsets.all(5.0),
+      controller: ScrollController(),
+      gridDelegate: GridViewTools.gridDelegate(
+          crossAxisCount: isMobile(context) ? 4 : 4, mainAxisExtent: 65), //46
+      children: [
+        ValuePanel(
+          secondText: Valores.fechaHepaticos ?? '',
+        ),
+        ValuePanel(
+          firstText: "BT",
+          secondText: Valores.bilirrubinasTotales!.toStringAsFixed(2),
+          thirdText: "mg/dL",
+        ),
+        ValuePanel(
+          firstText: "BD",
+          secondText: Valores.bilirrubinaDirecta!.toStringAsFixed(2),
+          thirdText: "mg/dL",
+        ),
+        ValuePanel(
+          firstText: "BI",
+          secondText: Valores.bilirrubinaIndirecta!.toStringAsFixed(2),
+          thirdText: "mg/dL",
+        ),
+
+        ValuePanel(
+          firstText: "ALT / TGA",
+          secondText: Valores.alaninoaminotrasferasa!.toStringAsFixed(0),
+          thirdText: "UI/L",
+        ),
+        ValuePanel(
+          firstText: "AST / TGO",
+          secondText: Valores.aspartatoaminotransferasa!.toStringAsFixed(0),
+          thirdText: "UI/L",
+        ),
+        ValuePanel(
+          firstText: "GGT",
+          secondText: Valores.glutrailtranspeptidasa!.toStringAsFixed(0),
+          thirdText: "UI/L",
+        ),
+        ValuePanel(
+          firstText: "FA",
+          secondText: Valores.fosfatasaAlcalina!.toStringAsFixed(0),
+          thirdText: "UI/L",
+        ),
+        ValuePanel(
+          firstText: "Albúmina",
+          secondText: Valores.albuminaSerica!.toStringAsFixed(1),
+          thirdText: "g/dL",
+        ),
+        ValuePanel(
+          firstText: "Proteínas Totales",
+          secondText: Valores.proteinasTotales!.toStringAsFixed(1),
+          thirdText: "g/dL",
+        ),
+        CrossLine(),
+        ValuePanel(
+          firstText: "AST/ALT",
+          secondText: Valores.relacionASTALT.toStringAsFixed(2),
+          thirdText: "",
+        ),
+        ValuePanel(
+          firstText: "ALT/FA",
+          secondText: Valores.relacionALTFA.toStringAsFixed(2),
+          thirdText: "",
+        ),
+        ValuePanel(
+          firstText: "Factor R",
+          secondText: Valores.factorR.toStringAsFixed(2),
+          thirdText: "",
         ),
       ],
     );

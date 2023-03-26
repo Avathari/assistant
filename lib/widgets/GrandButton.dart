@@ -1,4 +1,5 @@
 import 'package:assistant/values/SizingInfo.dart';
+import 'package:assistant/values/WidgetValues.dart';
 import 'package:flutter/material.dart';
 
 class GrandButton extends StatefulWidget {
@@ -17,8 +18,12 @@ class GrandButton extends StatefulWidget {
 class _GrandButtonState extends State<GrandButton> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
+      decoration: ContainerDecoration.roundedDecoration(),
       padding: isMobile(context)
+          ? const EdgeInsets.all(4.0)
+          : const EdgeInsets.all(8.0),
+      margin: isMobile(context)
           ? const EdgeInsets.all(4.0)
           : const EdgeInsets.all(8.0),
       child: ElevatedButton(

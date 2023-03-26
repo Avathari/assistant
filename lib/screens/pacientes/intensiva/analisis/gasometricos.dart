@@ -1,7 +1,9 @@
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
+import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/GridLayout.dart';
 import 'package:assistant/widgets/ShowText.dart';
@@ -100,7 +102,7 @@ class _GasometricosState extends State<Gasometricos> {
           ),
         ),
         Expanded(
-          flex: 5,
+          flex: 7,
           child: Padding(
             padding: const EdgeInsets.all(12.0),
             child: CarouselSlider(
@@ -109,7 +111,7 @@ class _GasometricosState extends State<Gasometricos> {
                     padding: const EdgeInsets.all(5.0),
                     controller: ScrollController(),
                     gridDelegate: GridViewTools.gridDelegate(
-                        crossAxisCount: isMobile(context) ? 3 : 5,
+                        crossAxisCount: isMobile(context) ? 3 : 4,
                         mainAxisExtent: 65), //46
                     children: [
                       ValuePanel(
@@ -132,7 +134,6 @@ class _GasometricosState extends State<Gasometricos> {
                         secondText: Valores.poArteriales.toString(),
                         thirdText: "mmHg",
                       ),
-
                       ValuePanel(
                         firstText: "HCO3-",
                         secondText: Valores.bicarbonatoArteriales.toString(),
@@ -140,7 +141,8 @@ class _GasometricosState extends State<Gasometricos> {
                       ),
                       ValuePanel(
                         firstText: "EB",
-                        secondText: Valores.EB.toStringAsFixed(2), // excesoBaseArteriales
+                        secondText: Valores.EB
+                            .toStringAsFixed(2), // excesoBaseArteriales
                         thirdText: "mmol/L",
                       ),
                       ValuePanel(
@@ -153,19 +155,12 @@ class _GasometricosState extends State<Gasometricos> {
                         secondText: Valores.fioArteriales.toString(),
                         thirdText: "%",
                       ),
-                      ValuePanel(
-                        firstText: "SaO2",
-                        secondText: Valores.soArteriales.toString(),
-                        thirdText: "%",
-                      ),
                       CrossLine(),
                       ValuePanel(
                         firstText: "Temp. C.",
                         secondText: Valores.temperaturCorporal.toString(),
                         thirdText: "°C",
                       ),
-                      CrossLine(),
-                      CrossLine(),
                       ValuePanel(
                         firstText: "Fecha",
                         secondText: Valores.fechaGasometriaArterial.toString(),
@@ -187,105 +182,113 @@ class _GasometricosState extends State<Gasometricos> {
                       ],
                     ),
                   ),
-                  SingleChildScrollView(
-                    controller: ScrollController(),
-                    child: GridLayout(
-                        columnCount: isMobile(context) ? 1 : 2,
-                        children: [
-                          TittlePanel(
-                              textPanel:
-                                  "Alteración del Oxígeno \n${Valores.trastornoTerciario} (pO2 ${Valores.poArteriales!.toStringAsFixed(0)})"),
-                          TittlePanel(
-                              textPanel:
-                                  "Alteración del CO2 \n${Valores.alteracionRespiratoria} (HCO3- ${Valores.pcoArteriales})"),
-                          TittlePanel(
-                              textPanel:
-                                  "Alteración por Bases \n${Valores.trastornoBases} (EB ${Valores.EB.toStringAsFixed(2)})"),
-                          TittlePanel(
-                              textPanel:
-                                  "Alteración del Anion Gap \n${Valores.trastornoGap} (GAP ${Valores.GAP.toStringAsFixed(0)})"),
-                        ]),
-                  ),
-                  SingleChildScrollView(
-                    controller: ScrollController(),
-                    child: Column(children: [
-                      ShowText(
-                        title: 'EB Esperado',
-                        data: Valores.EBb,
-                        medida: 'mmol/L',
-                      ),
-                      ShowText(
-                        title: 'PCO2 Esperado',
-                        data: Valores.PCO2C,
-                        medida: 'mmHg',
-                      ),
-                      ShowText(
-                        title: 'TCO2',
-                        data: Valores.TCO,
-                        medida: 'mmHg',
-                      ),
-                      ShowText(
-                        title: 'PCO2 Corregido',
-                        data: Valores.PCO2C,
-                        medida: 'mmHg',
-                      ),
-                      ShowText(
-                        title: 'EB Corregido',
-                        data: Valores.EBecf,
-                        medida: 'mmol/L',
-                      ),
-                      ShowText(
-                        title: 'EB Estándar',
-                        data: Valores.EB,
-                        medida: 'mmol/L',
-                      ),
-                    ]),
-                  ),
-                  SingleChildScrollView(
-                    controller: ScrollController(),
-                    child: Column(children: [
-                      ShowText(
-                        title: 'Indice PAFI',
-                        data: Valores.PAFI,
-                        medida: '',
-                      ),
-                      ShowText(
-                        title: 'Indice SAFI',
-                        data: Valores.SAFI,
-                        medida: '',
-                      ),
-                      ShowText(
-                        title: 'PAO2',
-                        data: Valores.PAO,
-                        medida: 'mmHg',
-                      ),
-                      ShowText(
-                        title: 'Aa-O2',
-                        data: Valores.GAA,
-                        medida: 'mmHg',
-                      ),
-                      ShowText(
-                        title: 'Dif. Aa-O2',
-                        data: Valores.DAA,
-                        medida: 'mmHg',
-                      ),
-                      ShowText(
-                        title: 'Relación PaO2/PAO2',
-                        data: Valores.PaO2PAO2,
-                        medida: 'mmHg',
-                      ),
-                    ]),
-                  ),
+                  GridView(
+                      padding: const EdgeInsets.all(5.0),
+                      controller: ScrollController(),
+                      gridDelegate: GridViewTools.gridDelegate(
+                          crossAxisCount: isMobile(context) ? 1 : 1,
+                          mainAxisExtent: 75),
+                      children: [
+                        TittlePanel(
+                            textPanel:
+                                "Alteración del Oxígeno \n${Valores.trastornoTerciario} (pO2 ${Valores.poArteriales!.toStringAsFixed(0)})"),
+                        TittlePanel(
+                            textPanel:
+                                "Alteración del CO2 \n${Valores.alteracionRespiratoria} (HCO3- ${Valores.pcoArteriales})"),
+                        TittlePanel(
+                            textPanel:
+                                "Alteración por Bases \n${Valores.trastornoBases} (EB ${Valores.EB.toStringAsFixed(2)})"),
+                        TittlePanel(
+                            textPanel:
+                                "Alteración del Anion Gap \n${Valores.trastornoGap} (GAP ${Valores.GAP.toStringAsFixed(0)})"),
+                      ]),
+                  GridView(
+                      padding: const EdgeInsets.all(5.0),
+                      controller: ScrollController(),
+                      gridDelegate: GridViewTools.gridDelegate(
+                          crossAxisCount: isMobile(context) ? 3 : 4,
+                          mainAxisExtent: 65),
+                      children: [
+                        ValuePanel(
+                          firstText: "EB Esperado",
+                          secondText: Valores.EBb.toStringAsFixed(2),
+                          thirdText: "mmol/L",
+                        ),
+                        ValuePanel(
+                          firstText: "PCO2 Esperado",
+                          secondText: Valores.PCO2C.toStringAsFixed(2),
+                          thirdText: "mmHg",
+                        ),
+                        ValuePanel(
+                          firstText: "TCO2",
+                          secondText: Valores.TCO.toStringAsFixed(2),
+                          thirdText: "mmHg",
+                        ),
+                        ValuePanel(
+                          firstText: "PCO2 Corregido",
+                          secondText: Valores.PCO2C.toStringAsFixed(2),
+                          thirdText: "mmHg",
+                        ),
+                        ValuePanel(
+                          firstText: "EB Corregido",
+                          secondText: Valores.EBecf.toStringAsFixed(2),
+                          thirdText: "mmol/L",
+                        ),
+                        ValuePanel(
+                          firstText: "EB Estándar",
+                          secondText: Valores.EB.toStringAsFixed(2),
+                          thirdText: 'mmol/L',
+                        ),
+                      ]),
+                  GridView(
+                      padding: const EdgeInsets.all(5.0),
+                      controller: ScrollController(),
+                      gridDelegate: GridViewTools.gridDelegate(
+                          crossAxisCount: isMobile(context) ? 3 : 4,
+                          mainAxisExtent: 65),
+                      children: [
+                        ValuePanel(
+                          firstText: "Indice PAFI",
+                          secondText: Valores.PAFI.toStringAsFixed(0),
+                          thirdText: "",
+                        ),
+                        ValuePanel(
+                          firstText: "Indice SAFI",
+                          secondText: Valores.SAFI.toStringAsFixed(2),
+                          thirdText: "",
+                        ),
+                        ValuePanel(
+                          firstText: "PAO2",
+                          secondText: Valores.PAO.toStringAsFixed(2),
+                          thirdText: "mmHg",
+                        ),
+                        ValuePanel(
+                          firstText: "Aa-O2",
+                          secondText: Valores.GAA.toStringAsFixed(2),
+                          thirdText: "mmHg",
+                        ),
+                        ValuePanel(
+                          firstText: "Dif. Aa-O2",
+                          secondText: Valores.DAA.toStringAsFixed(2),
+                          thirdText: "mmHg",
+                        ),
+                        ValuePanel(
+                          firstText: "Relación PaO2/PAO2",
+                          secondText: Valores.PaO2PAO2.toStringAsFixed(2),
+                          thirdText: "mmHg",
+                        ),
+                      ]),
                   GridView(
                     padding: const EdgeInsets.all(5.0),
                     controller: ScrollController(),
                     gridDelegate: GridViewTools.gridDelegate(
-                        crossAxisCount: isMobile(context) ? 3 : 5,
+                        crossAxisCount: isMobile(context) ? 3 : 4,
                         mainAxisExtent: 65), //46
                     children: [
                       ValuePanel(
                         firstText: "Osm",
-                        secondText: Valores.osmolaridadSerica.toStringAsFixed(0),
+                        secondText:
+                            Valores.osmolaridadSerica.toStringAsFixed(0),
                         thirdText: "mOsm//L",
                       ),
                       ValuePanel(
@@ -348,7 +351,7 @@ class _GasometricosState extends State<Gasometricos> {
                     padding: const EdgeInsets.all(5.0),
                     controller: ScrollController(),
                     gridDelegate: GridViewTools.gridDelegate(
-                        crossAxisCount: isMobile(context) ? 3 : 5,
+                        crossAxisCount: isMobile(context) ? 3 : 3,
                         mainAxisExtent: 65), //46
                     children: [
                       ValuePanel(
@@ -371,7 +374,8 @@ class _GasometricosState extends State<Gasometricos> {
                       CrossLine(),
                       ValuePanel(
                         firstText: "Def. HCO3-",
-                        secondText: Valores.deficitBicarbonato.toStringAsFixed(2),
+                        secondText:
+                            Valores.deficitBicarbonato.toStringAsFixed(2),
                         thirdText: "mEq/L",
                       ),
                       CrossLine(),
@@ -380,7 +384,6 @@ class _GasometricosState extends State<Gasometricos> {
                         secondText: Valores.HCOAM.toStringAsFixed(2),
                         thirdText: "mEq/L",
                       ),
-
                       ValuePanel(
                         firstText: "Rep. HCO3-",
                         secondText: Valores.VHCOAM.toStringAsFixed(2),
@@ -396,10 +399,17 @@ class _GasometricosState extends State<Gasometricos> {
                   ),
                 ],
                 carouselController: carouselController,
-                options: CarouselOptions(
-                    height: 500,
-                    enableInfiniteScroll: false,
-                    viewportFraction: 1.0)),
+                options: Carousel.carouselOptions(context: context)),
+          ),
+        ),
+        Expanded(
+          child: GrandButton(
+            weigth: 2000,
+            labelButton: "Copiar en Portapapeles",
+            onPress: () {
+              Datos.portapapeles(
+                  context: context, text: 'Formatos.gasometrias()');
+            },
           ),
         ),
       ],

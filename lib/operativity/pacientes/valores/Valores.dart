@@ -320,6 +320,7 @@ class Valores {
   //
   static double? glucosa, urea, creatinina, acidoUrico, nitrogenoUreico;
   //
+  static String? fechaHepaticos;
   static double? alaninoaminotrasferasa,
       aspartatoaminotransferasa,
       bilirrubinasTotales,
@@ -1613,6 +1614,34 @@ class Valores {
     return 0.5;
   }
 
+  // Analisis de los Parámetros Hepáticos *******************
+  static double get relacionASTALT {
+    if (Valores.alaninoaminotrasferasa! != 0
+    && Valores.aspartatoaminotransferasa! != 0) {
+      return (Valores.alaninoaminotrasferasa! / Valores.aspartatoaminotransferasa!);
+    } else {
+      return double.nan;
+    }
+  }
+
+  static double get factorR {
+    if (Valores.aspartatoaminotransferasa! != 0
+        && Valores.fosfatasaAlcalina! != 0) {
+      return (Valores.aspartatoaminotransferasa! / 40) / (Valores.fosfatasaAlcalina! / 104);
+    } else {
+      return double.nan;
+    }
+  }
+
+  static double get relacionALTFA {
+    if (Valores.alaninoaminotrasferasa! != 0
+        && Valores.fosfatasaAlcalina! != 0) {
+      return (Valores.alaninoaminotrasferasa! / Valores.fosfatasaAlcalina!);
+    } else {
+      return double.nan;
+    }
+  }
+
   // # Parametros Hemodinamicos
   // # Concentración Arterial de Oxígeno
   static double get CAO =>
@@ -1634,7 +1663,7 @@ class Valores {
       (Valores.hemoglobina! * (1.36)); //  # Capacidad de Oxígeno
   // # Gasto Cardiaco
   static double get gastoCardiaco {
-    if (DAV != null && DAV != 0) {
+    if (DAV != 0) {
       return (((DAV * 100) / CAO) / (DAV)); // # Gasto Cardiaco
     } else {
       return double.nan;
@@ -1945,7 +1974,7 @@ class Valores {
   // # Análisis de pCO2 / pO2
   // # ######################################################
   static double get indiceTobinYang =>
-      (Valores.frecuenciaVentilatoria! / Valores.volumenTidal!);
+      (Valores.frecuenciaVentilatoria! / Valores.volumenTidal!) * 100;
 
   static double get indiceOxigenacion {
     if (Valores.poArteriales! != 0) {
@@ -2015,7 +2044,7 @@ class Valores {
 
   // Parámetros de Electrocardiogramas
   static double get frecuenciaCardiacaElectrocardiograma {
-    if (Valores.intervaloRR! != 0 && Valores.intervaloRR! != null) {
+    if (Valores.intervaloRR! != 0) {
       return (1500 / Valores.intervaloRR!);
     } else {
       return 0.0;
