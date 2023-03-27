@@ -342,7 +342,7 @@ class _HidricosState extends State<Hidricos> {
             labelButton: "Copiar en Portapapeles",
             onPress: () {
               Datos.portapapeles(
-                  context: context, text: 'Formatos.gasometrias()');
+                  context: context, text: Valorados.hidricos);
             },
           ),
         ),

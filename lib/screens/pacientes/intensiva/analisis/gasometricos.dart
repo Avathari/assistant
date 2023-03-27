@@ -408,7 +408,7 @@ class _GasometricosState extends State<Gasometricos> {
             labelButton: "Copiar en Portapapeles",
             onPress: () {
               Datos.portapapeles(
-                  context: context, text: 'Formatos.gasometrias()');
+                  context: context, text: Valorados.hidricos);
             },
           ),
         ),

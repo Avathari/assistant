@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:assistant/conexiones/actividades/pdfGenerete/PdfApi.dart';
 import 'package:assistant/conexiones/conexiones.dart';
+import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
@@ -372,7 +373,7 @@ class Operadores {
                   children: [
                     Expanded(flex: 15, child: chyldrim),
                     Expanded(
-                      flex: 1,
+                      flex: isDesktop(context) ? 2 : 1,
                       child: Container(
                         width: 2000,
                         decoration: BoxDecoration(

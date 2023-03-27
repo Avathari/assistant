@@ -261,7 +261,7 @@ class _VentilatoriosState extends State<Ventilatorios> {
             labelButton: "Copiar en Portapapeles",
             onPress: () {
               Datos.portapapeles(
-                  context: context, text: 'Formatos.gasometrias()');
+                  context: context, text: Formatos.ventilador);
             },
           ),
         ),

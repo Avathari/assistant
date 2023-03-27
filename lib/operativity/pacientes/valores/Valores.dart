@@ -146,10 +146,10 @@ class Valores {
       abusoLaboral = false,
       acosoLaboral = false;
 
-  static bool? banoCorporal = false,
-      higieneManos = false,
-      cambiosRopa = false,
-      aseoDental = false;
+  static bool? banoCorporal = true,
+      higieneManos = true,
+      cambiosRopa = true,
+      aseoDental = true;
   static String? banoCorporalDescripcion =
           'Refiere realizar aseo corporal diario',
       higieneManosDescripcion =
@@ -568,6 +568,13 @@ class Valores {
         emulated: true);
     valores.addAll(vento);
 
+    final bala = await Actividades.consultarId(
+        Databases.siteground_database_reghosp,
+        Balances.balance['consultLastQuery'],
+        Pacientes.ID_Paciente,
+        emulated: true);
+    valores.addAll(bala);
+
     final hosp = await Actividades.consultarId(
         Databases.siteground_database_reghosp,
         Hospitalizaciones.hospitalizacion['consultLastQuery'],
@@ -963,9 +970,9 @@ class Valores {
 
   static String get sodioCorregido {
     if (Valores.glucosa! > 200) {
-      return "Sodio Corregido: ${Valores.sodioCorregidoGlucosa} mEq/L. \n";
+      return "Sodio Corregido: ${Valores.sodioCorregidoGlucosa} mEq/L. ";
     } else {
-      return "\n";
+      return "";
     }
   }
 
@@ -1616,26 +1623,28 @@ class Valores {
 
   // Analisis de los Parámetros Hepáticos *******************
   static double get relacionASTALT {
-    if (Valores.alaninoaminotrasferasa! != 0
-    && Valores.aspartatoaminotransferasa! != 0) {
-      return (Valores.alaninoaminotrasferasa! / Valores.aspartatoaminotransferasa!);
+    if (Valores.alaninoaminotrasferasa! != 0 &&
+        Valores.aspartatoaminotransferasa! != 0) {
+      return (Valores.alaninoaminotrasferasa! /
+          Valores.aspartatoaminotransferasa!);
     } else {
       return double.nan;
     }
   }
 
   static double get factorR {
-    if (Valores.aspartatoaminotransferasa! != 0
-        && Valores.fosfatasaAlcalina! != 0) {
-      return (Valores.aspartatoaminotransferasa! / 40) / (Valores.fosfatasaAlcalina! / 104);
+    if (Valores.aspartatoaminotransferasa! != 0 &&
+        Valores.fosfatasaAlcalina! != 0) {
+      return (Valores.aspartatoaminotransferasa! / 40) /
+          (Valores.fosfatasaAlcalina! / 104);
     } else {
       return double.nan;
     }
   }
 
   static double get relacionALTFA {
-    if (Valores.alaninoaminotrasferasa! != 0
-        && Valores.fosfatasaAlcalina! != 0) {
+    if (Valores.alaninoaminotrasferasa! != 0 &&
+        Valores.fosfatasaAlcalina! != 0) {
       return (Valores.alaninoaminotrasferasa! / Valores.fosfatasaAlcalina!);
     } else {
       return double.nan;
@@ -2598,14 +2607,15 @@ class Valorados {
       "Clasificación (Estadio) ${Valores.claseTasaRenal} (KDOQI / KDIGO).";
 
   static String get hidricos =>
-      "Requerimiento hídrico diario: ${Valores.requerimientoHidrico.toStringAsFixed(2)} mL/dia (${Valores.constanteRequerimientos} mL/Kg/dia), "
-      "Agua corporal total: ${Valores.aguaCorporalTotal.toStringAsFixed(2)} mL, "
-      "Delta H2O: ${Valores.excesoAguaLibre} L, "
-      "Deficit de agua corporal: ${Valores.deficitAguaCorporal} L. "
-      "Osmolaridad: ${Valores.osmolaridadSerica} mOsm/L, "
-      "Brecha osmolar: ${Valores.brechaOsmolar} mOsm/L. "
-      "${Valores.sodioCorregido} ${Valores.requerimientoPotasio} "
-      "Delta potasio: ${Valores.deficitSodio} mEq/L: ${Valores.deltaPotasio}";
+      "Requerimiento hídrico diario: ${Valores.requerimientoHidrico.toStringAsFixed(0)} mL/dia (${Valores.constanteRequerimientos} mL/Kg/dia), "
+      "agua corporal total: ${Valores.aguaCorporalTotal.toStringAsFixed(1)} mL, "
+      "delta H2O: ${Valores.excesoAguaLibre.toStringAsFixed(1)} L, "
+      "deficit de agua corporal: ${Valores.deficitAguaCorporal.toStringAsFixed(1)} L. "
+      "osmolaridad: ${Valores.osmolaridadSerica.toStringAsFixed(1)} mOsm/L, "
+      "brecha osmolar ${Valores.brechaOsmolar.toStringAsFixed(1)} mOsm/L. "
+      "${Valores.sodioCorregido}"
+      "Requerimiento de potasio ${Valores.requerimientoPotasio.toStringAsFixed(1)} "
+      "delta de potasio ${Valores.deficitSodio.toStringAsFixed(1)} mEq/L: ${Valores.deltaPotasio.toStringAsFixed(1)}";
 
   static String get prequirurgicos {
     return ""
@@ -3113,10 +3123,10 @@ class Formatos {
       "En sedoanalgesia con ${Valores.sedoanalgesia} consiguiendo "
       "R.A.S.S. ${Valores.rass} y "
       "Ramsay ${Valores.ramsay}, sin datos de focalización neurológica. \n"
-      "VENTILATORIO: Apoyo ventilatorio ${Valores.dispositivoEmpleado!.toLowerCase()}, "
-      "mediante ${Valores.tuboEndotraqueal} ${Valores.haciaArcadaDentaria!.toLowerCase()}, "
-      "${Formatos.ventilatorios} \n"
-      // + Pacientes.Hospitalarios.Ventilaciones.prosa(self) "\n"
+      "VENTILATORIO: Apoyo ventilatorio con ${Valores.dispositivoEmpleado!.toLowerCase()}, "
+      "mediante ${Valores.tuboEndotraqueal} ${Valores.haciaArcadaDentaria!.toLowerCase()}. "
+      "${Formatos.ventilador} \n"
+      // **************** ************ ********
       "PCO2 ${Valores.pcoArteriales!.toStringAsFixed(0)} mmHg, "
       "PO2 ${Valores.poArteriales!.toStringAsFixed(0)} mmHg, "
       "SO2 ${Valores.soArteriales!.toStringAsFixed(0)} %, "
@@ -3124,29 +3134,46 @@ class Formatos {
       "Aa-O2 ${Valores.GAA.toStringAsFixed(0)} mmHg. \n"
       "Ruidos pulmonares audibles, sin estertores ni sibilancias. "
       "\n"
+      "HEMODINAMICO: "
+      "Con tensión arterial sistémica ${Valores.tensionArterialSistemica} mmHg, "
+      "(TAM ${Valores.presionArterialMedia.toStringAsFixed(0)} mmHg), ${Valores.apoyoAminergico!.toLowerCase()}; "
+      "frecuencia cardiaca ${Valores.frecuenciaCardiaca!.toStringAsFixed(0)} L/min detectada por monitoreo cardiaco continuo, "
+      "con telemetría a  ritmo sinusal; ruidos cardiacos rítmicos, "
+      "adecuada frecuencia aumentados en intensidad, llenado capilar distal de 2 segundos, pulsos presentes de adecuada frecuencia e intensidad. \n"
       "HEMATOINFECCIOSO: "
-      "Tensión arterial sistémica ${Valores.tensionArterialSistemica} mmHg, "
-      "TAM ${Valores.presionArterialMedia.toStringAsFixed(0)} mmHg, ${Valores.apoyoAminergico}. "
-      "Frecuencia cardiaca ${Valores.frecuenciaCardiaca!.toStringAsFixed(0)} L/min, "
-      "temperatura corporal ${Valores.temperaturCorporal!.toStringAsFixed(1)} °C. \n"
-      "${Valores.antibioticoterapia} con "
+      "Con temperatura corporal ${Valores.temperaturCorporal!.toStringAsFixed(1)} °C, con "
+      "${Valores.antibioticoterapia}; última biometría hemática obteniendo "
+      "hemoglobina ${Valores.hemoglobina} g/dL, "
+      "hematocrito ${Valores.hematocrito}%, "
+      "leucocitos ${Valores.leucocitosTotales} K/uL, "
+      "neutrofilos ${(Valores.neutrofilosTotales! / Valores.leucocitosTotales!).toStringAsFixed(2)} %, "
+      "linfocitos ${(Valores.linfocitosTotales! / Valores.leucocitosTotales!).toStringAsFixed(2)} %, "
+      "monocitos ${(Valores.monocitosTotales! / Valores.leucocitosTotales!).toStringAsFixed(2)} %; "
+      "reactantes con "
       // + Pacientes.Auxiliares.Laboratorios.Biometrias.prosaSimple(self) ""
-      "Proteína C Reactiva ${Valores.proteinaCreactiva} mg/dL, "
-      "procalcitonina ${Valores.procalcitonina} ng/mL. \n"
+      "proteína C reactiva ${Valores.proteinaCreactiva} mg/dL, "
+      "procalcitonina ${Valores.procalcitonina} ng/mL. "
       // "Riesgo de úlceras por presión por inmovilización ${Valores.evaluacionNorton} (Norton), "
       // "${Valores.evaluacionBraden} (Braden). \n"
-      "Sin datos de sangrado, sin requerimiento transfusional. \n"
-      "GASTRONUTRICIO: ${Valores.tipoSondaAlimentacion}; ${Valores.alimentacion}. \n"
+      "Sin datos de sangrado, ni requerimiento transfusional. \n"
+      "GASTROMETABÓLICO: ${Valores.tipoSondaAlimentacion}; ${Valores.alimentacion}. "
       "Peso corporal total: ${Valores.pesoCorporalTotal!.toStringAsFixed(2)} Kg, "
-      "estatura: ${Valores.alturaPaciente} mts, "
-      "I.M.C ${Valores.imc.toStringAsFixed(0)} Kg/m2, "
-      "Peso predicho ${Valores.pesoCorporalPredicho.toStringAsFixed(1)} Kg. \n"
-      "Glucosa sérica ${Valores.glucosa!.toStringAsFixed(0)} mg/dL, "
-      "albúmina ${Valores.albuminaSerica!.toStringAsFixed(1)} g/dL. "
+      "estatura: ${Valores.alturaPaciente} mts, I.M.C ${Valores.imc.toStringAsFixed(0)} Kg/m2, y "
+      "peso predicho ${Valores.pesoCorporalPredicho.toStringAsFixed(1)} Kg. \n"
+      "Glucometría capilar con ${Valores.glucemiaCapilar} mg/dL, y "
+      "glucosa sérica ${Valores.glucosa!.toStringAsFixed(0)} mg/dL, "
+      "albúmina en ${Valores.albuminaSerica!.toStringAsFixed(1)} g/dL. "
       "Abdomen blando, depresible, sin datos de irritación peritoneal. \n"
-      "HIDRORRENAL: ${Valores.tipoSondaVesical}, con "
-      // + Pacientes.Hospitalarios.Balances.prosa(self) "\n"
-      "Creatinina ${Valores.creatinina!.toStringAsFixed(1)} mg/dL, "
+      "HIDRICO-RENAL: ${Valores.tipoSondaVesical}, con "
+      "balance hídrico con "
+      "ingresos ${Valores.ingresosBalances} mL,  "
+      "egresos ${Valores.egresosBalances} mL  "
+      "(${Valores.balanceTotal} mL/${Valores.horario} Horas),  "
+      "perdidas insensibles ${Valores.perdidasInsensibles} mL, "
+      "uresis ${Valores.uresis} mL "
+      "(diuresis ${Valores.diuresis.toStringAsFixed(2)} mL/${Valores.horario} Horas). "
+      "Respecto a la función renal  con "
+      "creatinina ${Valores.creatinina!.toStringAsFixed(1)} mg/dL, "
       "urea ${Valores.urea!.toStringAsFixed(1)} mg/dL; "
       "tasa de filtrado glomerular ${Valores.tasaRenalCrockoft_Gault.toStringAsFixed(0)} mL/min/1.73 m2 (Cockcroft - Gault). \n"
       "pH ${Valores.pHArteriales}, "
@@ -3154,10 +3181,10 @@ class Formatos {
       "E.B. ${Valores.EB.toStringAsFixed(1)} mmol/L. " // excesoBaseArteriales
       "Sodio ${Valores.sodio!.toStringAsFixed(0)} mmol/L, "
       "potasio ${Valores.potasio!.toStringAsFixed(1)} mmol/L, "
-      "cloro: ${Valores.cloro!.toStringAsFixed(0)} mmol/L. \n";
-  // + Valoraciones.HidricosSimple(self) "";
+      "cloro: ${Valores.cloro!.toStringAsFixed(0)} mmol/L. \n"
+      "${Valorados.hidricos}";
 
-  static String get ventilatorios {
+  static String get modoVentilatorio {
     var MOD = ' ';
     if (Valores.modalidadVentilatoria ==
         'Ventilación Limitada por Presión Ciclada por Tiempo (P-VMC / VCP)') {
@@ -3179,21 +3206,77 @@ class Formatos {
     } else {
       MOD = ' ';
     }
-    print("MODALIDAD VENTILATORIA ${Valores.modalidadVentilatoria} $MOD");
+    return MOD;
+  }
+
+  static String get ventilador {
+    if (Formatos.modoVentilatorio == 'ESPON') {
+      return "Ventilación en modalidad ${Formatos.modoVentilatorio} con parámetros ajustados a "
+          "frecuencia ventilatoria ${Valores.frecuenciaVentilatoria} Vent/min, "
+          "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
+          "presión al final de la espiración ${Valores.presionFinalEsiracion} mmHg, "
+          "presión soporte ${Valores.presionControl} mmHg. "
+          "Analisis ventilatorio con  ${Formatos.ventilatorios}";
+    } else if (Formatos.modoVentilatorio == 'CPAP/PS') {
+      return "Ventilación en modalidad ${Formatos.modoVentilatorio} con parámetros ajustados a "
+          "frecuencia ventilatoria ${Valores.frecuenciaVentilatoria} Vent/min, "
+          "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
+          "presión al final de la espiración ${Valores.presionFinalEsiracion} mmHg, "
+          "presión soporte ${Valores.presionControl} mmHg. "
+          "Analisis ventilatorio con  ${Formatos.ventilatorios}";
+    } else if (Formatos.modoVentilatorio == 'AC-VCV') {
+      return "Ventilación en modalidad ${Formatos.modoVentilatorio} con parámetros ajustados a "
+          "frecuencia ventilatoria ${Valores.frecuenciaVentilatoria} Vent/min, "
+          "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
+          "presión al final de la espiración ${Valores.presionFinalEsiracion} mmHg, "
+          "volumen tidal ${Valores.volumenTidal} mmHg. "
+          "Analisis ventilatorio con  ${Formatos.ventilatorios}";
+    } else if (Formatos.modoVentilatorio == 'AC-VCP') {
+      return "Ventilación en modalidad ${Formatos.modoVentilatorio} con parámetros ajustados a "
+          "frecuencia ventilatoria ${Valores.frecuenciaVentilatoria} Vent/min, "
+          "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
+          "presión al final de la espiración ${Valores.presionFinalEsiracion} mmHg, "
+          "presión control ${Valores.presionControl} mmHg. "
+          "Analisis ventilatorio con  ${Formatos.ventilatorios}";
+    } else if (Formatos.modoVentilatorio == 'SIMV/VCV') {
+      return "Ventilación en modalidad ${Formatos.modoVentilatorio} con parámetros ajustados a "
+          "frecuencia ventilatoria ${Valores.frecuenciaVentilatoria} Vent/min, "
+          "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
+          "presión al final de la espiración ${Valores.presionFinalEsiracion} mmHg, "
+          "volumen tidal ${Valores.volumenTidal} mmHg. "
+          "Analisis ventilatorio con  ${Formatos.ventilatorios}";
+    } else if (Formatos.modoVentilatorio == 'SIMV/VCP') {
+      return "Ventilación en modalidad ${Formatos.modoVentilatorio} con parámetros ajustados a "
+          "frecuencia ventilatoria ${Valores.frecuenciaVentilatoria} Vent/min, "
+          "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
+          "presión al final de la espiración ${Valores.presionFinalEsiracion} mmHg, "
+          "presión control ${Valores.presionControl} mmHg. "
+          "Analisis ventilatorio con  ${Formatos.ventilatorios}";
+    } else {
+      return '';
+    }
+  }
+
+  static String get ventilatorios {
+    Terminal.printExpected(
+        message:
+            "Formatos.modoVentilatorioALIDAD VENTILATORIA ${Valores.modalidadVentilatoria} ${Formatos.modoVentilatorio}");
+
+    // Prosa del Análisis Ventilatorio **************** ****************** **********************
     var PS = '';
-    if (MOD == 'ESPON') {
+    if (Formatos.modoVentilatorio == 'ESPON') {
       PS = "Psopp ${Valores.presionSoporte} cmH2O, "
           "P. pulmonar insp. ${Valores.presionInspiratoriaPico} cmH2O, "
           "P. pulmonar esp. ${Valores.presionFinalEsiracion} cmH2O, ";
-    } else if (MOD == 'CPAP/PS') {
+    } else if (Formatos.modoVentilatorio == 'CPAP/PS') {
       PS = "Psopp ${Valores.presionSoporte} cmH2O, "
           "P. pulmonar insp. ${Valores.presionInspiratoriaPico} cmH2O, "
           "P. pulmonar esp. ${Valores.presionFinalEsiracion} cmH2O, ";
-    } else if (MOD == 'AC-VCV') {
+    } else if (Formatos.modoVentilatorio == 'AC-VCV') {
       PS = "VM ${Valores.volumenMinuto.toStringAsFixed(1)} L/min, "
           "Flujo ${Valores.flujoVentilatorioMedido.toStringAsFixed(2)} L/min, "
           "VTI ${Valores.volumenTidal} mL, ";
-    } else if (MOD == 'AC-VCP') {
+    } else if (Formatos.modoVentilatorio == 'AC-VCP') {
       PS = "Pinsp ${Valores.presionControl} cmH2O, "
           "PIP ${Valores.presionMaxima} cmH2O, "
           "Pplat ${Valores.presionPlateau} cmH2O. \n"
@@ -3207,12 +3290,12 @@ class Formatos {
           "D. Pressure ${Valores.presionDistencion.toStringAsFixed(0)} mmHg, "
           "VM ${Valores.volumenMinuto.toStringAsFixed(1)} L/min, "
           "Flujo ${Valores.flujoVentilatorioMedido.toStringAsFixed(2)} L/min, ";
-    } else if (MOD == 'SIMV/VCV') {
+    } else if (Formatos.modoVentilatorio == 'SIMV/VCV') {
       PS = "Psopp ${Valores.presionSoporte} cmH2O, "
           "VM ${Valores.volumenMinuto.toStringAsFixed(1)} L/min, "
           "Flujo ${Valores.flujoVentilatorioMedido.toStringAsFixed(2)} L/min, "
           "VTI ${Valores.volumenTidal} mL, ";
-    } else if (MOD == 'SIMV/VCP') {
+    } else if (Formatos.modoVentilatorio == 'SIMV/VCP') {
       PS = "Psopp ${Valores.presionSoporte} cmH2O, "
           "Pinsp ${Valores.presionControl} cmH2O, "
           "PIP ${Valores.presionMaxima} cmH2O, "
@@ -3244,11 +3327,10 @@ class Formatos {
   static String get balances {
     return "Balance hídrico (${Valores.fechaRealizacionBalances}) - "
         "Ingresos ${Valores.ingresosBalances} mL,  "
-        "Egresos ${Valores.egresosBalances} mL,  "
-        "Balance Total ${Valores.balanceTotal} mL,  "
-        "Intervalo ${Valores.horario} mL,  "
-        "Uresis ${Valores.uresis} mL,  "
-        "Diuresis ${Valores.diuresis.toStringAsFixed(2)} mL,  "
+        "egresos ${Valores.egresosBalances} mL  "
+        "(balance Total ${Valores.balanceTotal} mL${Valores.horario} mL),  "
+        "uresis ${Valores.uresis} mL,  "
+        "diuresis ${Valores.diuresis.toStringAsFixed(2)} mL/${Valores.horario} mL.  "
         "\n ";
   }
 }

@@ -1,8 +1,6 @@
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
-import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
-import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/Switched.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';
@@ -26,8 +24,6 @@ class _HigienicosState extends State<Higienicos> {
   @override
   void initState() {
     setState(() {
-      // ************ *********** *********
-      banoCorporalTextController.text = '';
       // ************ *********** *********
       banoCorporalTextController.text =
           Valores.banoCorporalDescripcion!;
@@ -59,9 +55,9 @@ class _HigienicosState extends State<Higienicos> {
                     } else {
                       banoCorporalTextController.text =
                       'Refiere no realizar aseo corporal diario';
-                      Valores.banoCorporalDescripcion =
-                          banoCorporalTextController.text;
                     }
+                    Valores.banoCorporalDescripcion =
+                        banoCorporalTextController.text;
                   });
                 },
                 isSwitched: Valores.banoCorporal,

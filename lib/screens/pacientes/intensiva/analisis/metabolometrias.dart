@@ -1,6 +1,9 @@
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
+import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
+import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/ShowText.dart';
 import 'package:assistant/widgets/Spinner.dart';
@@ -74,7 +77,7 @@ class _MetabolicosState extends State<Metabolicos> {
       ),
     ),
     Expanded(
-      flex: 5,
+      flex: 7,
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: CarouselSlider(
@@ -351,12 +354,19 @@ class _MetabolicosState extends State<Metabolicos> {
 
             ],
             carouselController: carouselController,
-            options: CarouselOptions(
-                height: 500,
-                enableInfiniteScroll: false,
-                viewportFraction: 1.0)),
+            options: Carousel.carouselOptions(context: context)),
       ),
     ),
+        Expanded(
+          child: GrandButton(
+            weigth: 2000,
+            labelButton: "Copiar en Portapapeles",
+            onPress: () {
+              Datos.portapapeles(
+                  context: context, text: Valorados.metabolometrias);
+            },
+          ),
+        ),
       ],
     );
   }

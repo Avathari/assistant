@@ -5563,9 +5563,10 @@ class Auxiliares {
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'VCM' ORDER BY Fecha_Registro DESC limit 1) as VCM,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'HCM' ORDER BY Fecha_Registro DESC limit 1) as HCM,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Plaquetas' ORDER BY Fecha_Registro DESC limit 1) as Plaquetas,"
-        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Leucocitos' ORDER BY Fecha_Registro DESC limit 1) as Leucocitos_Totales,"
-        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Neutrofilos' ORDER BY Fecha_Registro DESC limit 1) as Neutrofilos_Totales,"
-        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Linfocitos' ORDER BY Fecha_Registro DESC limit 1) as Linfocitos_Totales,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Leucocitos Totales' ORDER BY Fecha_Registro DESC limit 1) as Leucocitos_Totales,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Neutrofilos Totales' ORDER BY Fecha_Registro DESC limit 1) as Neutrofilos_Totales,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Linfocitos Totales' ORDER BY Fecha_Registro DESC limit 1) as Linfocitos_Totales,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Monocitos Totales' ORDER BY Fecha_Registro DESC limit 1) as Monocitos_Totales,"
         //
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Glucosa' ORDER BY Fecha_Registro DESC limit 1) as Glucosa,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Urea' ORDER BY Fecha_Registro DESC limit 1) as Urea,"
@@ -5610,9 +5611,9 @@ class Auxiliares {
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Venosa' AND Estudio = 'Presión de Oxígeno' ORDER BY Fecha_Registro DESC limit 1) as Po_Venosa,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Venosa' AND Estudio = 'Bicarbonato Sérico' ORDER BY Fecha_Registro DESC limit 1) as Hco_Venosa,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Venosa' AND Estudio = 'Fracción Inspiratoria de Oxígeno' ORDER BY Fecha_Registro DESC limit 1) as Fio_Venosa,"
-        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Venosa' AND Estudio = 'Saturación de Oxígeno' ORDER BY Fecha_Registro DESC limit 1) as So_Venosa,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Venosa' AND Estudio = 'Saturación de Oxígeno' ORDER BY Fecha_Registro DESC limit 1) as So_Venosa;"
         //
-        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Linfocitos' ORDER BY Fecha_Registro DESC limit 1) as Linfocitos_Totales;"
+        // "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Linfocitos' ORDER BY Fecha_Registro DESC limit 1) as Linfocitos_Totales;"
   };
 
   static String electrocardiograma() {
@@ -6067,7 +6068,7 @@ class Balances {
     "consultByIdPrimaryQuery":
         "SELECT * FROM pace_bala WHERE ID_Pace = ? ORDER BY Pace_bala_Fecha ASC",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_bala",
-    "consultLastQuery": "SELECT * FROM pace_bala WHERE ID_Pace = ?",
+    "consultLastQuery": "SELECT * FROM pace_bala WHERE ID_Pace = ? ORDER BY ID_Bala ASC",
     "consultByName": "SELECT * FROM pace_bala WHERE Pace_APP_DEG LIKE '%",
     "registerQuery": "INSERT INTO pace_bala (ID_Pace, Pace_bala_Fecha, "
         "Pace_bala_Time, "

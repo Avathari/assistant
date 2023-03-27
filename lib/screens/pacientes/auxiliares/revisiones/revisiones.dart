@@ -1204,7 +1204,7 @@ class _RevisionesState extends State<Revisiones> {
         CrossLine(),
         ValuePanel(
           firstText: "Leucocitos",
-          secondText: Valores.leucocitosTotales.toString(),
+          secondText: Valores.leucocitosTotales!.toStringAsFixed(2),
           thirdText: "K/uL",
           withEditMessage: true,
           onEdit: (value) {
