@@ -1,7 +1,9 @@
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
+import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +49,7 @@ class _BalanceHidricoState extends State<BalanceHidrico> {
             },),
           ),
           Expanded(
-            flex: 4,
+            flex: 6,
             child: GridView(
               controller: ScrollController(),
               gridDelegate: GridViewTools.gridDelegate(
@@ -91,6 +93,16 @@ class _BalanceHidricoState extends State<BalanceHidrico> {
                   thirdText: "mL",
                 ),
               ],
+            ),
+          ),
+          Expanded(
+            child: GrandButton(
+              weigth: 2000,
+              labelButton: "Copiar en Portapapeles",
+              onPress: () {
+                Datos.portapapeles(
+                    context: context, text: Formatos.balances);
+              },
             ),
           ),
         ],

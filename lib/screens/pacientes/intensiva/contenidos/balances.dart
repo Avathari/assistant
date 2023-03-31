@@ -306,6 +306,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
   List<Widget> component(BuildContext context) {
     return [
       Spinner(
+        isRow: true,
           tittle: "Intervalo de Horario",
           onChangeValue: (String value) {
             setState(() {
@@ -557,7 +558,16 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
           listOfValues!.removeLast();
           // ******************************************** *** *
           Actividades.registrar(Databases.siteground_database_reghosp,
-              registerQuery!, listOfValues!.removeLast());
+              registerQuery!, listOfValues!.removeLast()).then((value) {
+            Archivos.deleteFile(filePath: Balances.fileAssocieted);
+            reiniciar().then((value) => Operadores.alertActivity(
+                context: context,
+                tittle: "Anexión de registros",
+                message: "Registros Agregados",
+                onAcept: () {
+                  onClose(context);
+                }));
+          });
           break;
         case Constantes.Consult:
           break;
@@ -577,7 +587,17 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
                     Pacientes.Alergicos = value;
                     Constantes.reinit(value: value);
                     // ******************************************** *** *
-                  }).then((value) => onClose(context)));
+                  }).then((value) {
+            Archivos.deleteFile(filePath: Balances.fileAssocieted);
+            reiniciar().then((value) => Operadores.alertActivity(
+                context: context,
+                tittle: "Anexión de registros",
+                message: "Registros Agregados",
+                onAcept: () {
+                  onClose(context);
+                })).then((value) => onClose(context));
+          })
+          );
           break;
         case Constantes.Update:
           Actividades.actualizar(Databases.siteground_database_reghosp,
@@ -591,7 +611,16 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
                     Pacientes.Alergicos = value;
                     Constantes.reinit(value: value);
                     // ******************************************** *** *
-                  }).then((value) => onClose(context)));
+                  }).then((value) {
+            Archivos.deleteFile(filePath: Balances.fileAssocieted);
+            reiniciar().then((value) => Operadores.alertActivity(
+                context: context,
+                tittle: "Actualización de registros",
+                message: "Registros Actualizados",
+                onAcept: () {
+                  onClose(context);
+                })).then((value) => onClose(context));
+          }));
           break;
         default:
       }
@@ -604,6 +633,27 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
             }, () {});
           });
     }
+  }
+
+  Future<void> reiniciar() async {
+    Terminal.printExpected(message: "Reinicio de los valores . . .");
+
+    Pacientes.Patologicos!.clear();
+    Actividades.consultarAllById(
+        Databases.siteground_database_regpace,
+        Patologicos.patologicos['consultByIdPrimaryQuery'],
+        Pacientes.ID_Paciente)
+        .then((value) {
+      setState(() {
+        Pacientes.Patologicos = value;
+        Terminal.printSuccess(
+            message:
+            "Actualizando Repositorio de Patologías del Paciente . . . ${Pacientes.Patologicos}");
+
+        Archivos.createJsonFromMap(Pacientes.Patologicos!,
+            filePath: Patologicos.fileAssocieted);
+      });
+    });
   }
 
   void onClose(BuildContext context) {
@@ -660,30 +710,32 @@ class GestionBalances extends StatefulWidget {
 class _GestionBalancesState extends State<GestionBalances> {
   String appTittle = "Gestion de balances hídricos del paciente";
   String searchCriteria = "Buscar por Fecha";
-  String? consultQuery = Balances.balance['consultIdQuery'];
 
   late List? foundedItems = [];
   var gestionScrollController = ScrollController();
   var searchTextController = TextEditingController();
 
+  var fileAssocieted = Balances.fileAssocieted;
+
   @override
   void initState() {
-    print(" . . . Iniciando array ");
-    if (Constantes.dummyArray!.isNotEmpty) {
-      if (Constantes.dummyArray![0] == "Vacio") {
-        Actividades.consultarAllById(Databases.siteground_database_reghosp,
-                consultQuery!, Pacientes.ID_Paciente)
-            .then((value) {
-          setState(() {
-            print(" . . . Buscando items \n $value");
-            foundedItems = value;
-          });
-        });
-      } else {
-        print(" . . . Balances array iniciado");
-        foundedItems = Constantes.dummyArray;
-      }
-    }
+    // print(" . . . Iniciando array ");
+    // if (Constantes.dummyArray!.isNotEmpty) {
+    //   if (Constantes.dummyArray![0] == "Vacio") {
+    //     Actividades.consultarAllById(Databases.siteground_database_reghosp,
+    //             consultQuery!, Pacientes.ID_Paciente)
+    //         .then((value) {
+    //       setState(() {
+    //         print(" . . . Buscando items \n $value");
+    //         foundedItems = value;
+    //       });
+    //     });
+    //   } else {
+    //     print(" . . . Balances array iniciado");
+    //     foundedItems = Constantes.dummyArray;
+    //   }
+    // }
+    iniciar();
     super.initState();
   }
 
@@ -712,7 +764,7 @@ class _GestionBalancesState extends State<GestionBalances> {
               ),
               tooltip: Sentences.reload,
               onPressed: () {
-                // _pullListRefresh();
+                reiniciar(); // _pullListRefresh();
               },
             ),
             IconButton(
@@ -787,11 +839,12 @@ class _GestionBalancesState extends State<GestionBalances> {
                       if (snapshot.hasError) print(snapshot.error);
                       return snapshot.hasData
                           ? GridView.builder(
+                        controller: ScrollController(),
                               padding: const EdgeInsets.all(8.0),
                               gridDelegate: GridViewTools.gridDelegate(
                                   crossAxisCount: isMobile(context) ? 1 : 3,
-                                  mainAxisExtent: 150),
-                              shrinkWrap: true,
+                                  mainAxisExtent: isMobile(context) ? 150: 150),
+                              shrinkWrap: false,
                               itemCount: snapshot.data == null
                                   ? 0
                                   : snapshot.data.length,
@@ -822,11 +875,44 @@ class _GestionBalancesState extends State<GestionBalances> {
     );
   }
 
+  void iniciar() {
+    Terminal.printWarning(
+        message:
+        " . . . Iniciando Actividad - Repositorio Balances del Pacientes");
+    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+      setState(() {
+
+        foundedItems = value;
+        Terminal.printSuccess(
+            message: 'Repositorio Balances del Pacientes Obtenido');
+      });
+    }).onError((error, stackTrace) {
+      reiniciar();
+    });
+    Terminal.printOther(message: " . . . Actividad Iniciada");
+  }
+
+  Future<void> reiniciar() async {
+    Terminal.printExpected(message: "Reinicio de los valores . . .");
+    Actividades.consultarAllById(
+        Databases.siteground_database_reghosp,
+        Balances.balance['consultIdQuery'], Pacientes.ID_Paciente)
+        .then((value) {
+      setState(() {
+        foundedItems = value;
+        Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
+      });
+    });
+  }
+
+  
   GestureDetector itemListView(
       {required AsyncSnapshot snapshot,
       required int posicion,
       required BuildContext context}) {
+    print("posicion ${snapshot.data}");
     return GestureDetector(
+
       onTap: () {
         Balances.fromJson(snapshot.data[posicion]);
         Operadores.openDialog(
@@ -964,7 +1050,7 @@ class _GestionBalancesState extends State<GestionBalances> {
       _pullListRefresh();
     } else {
       Actividades.consultar(
-              Databases.siteground_database_reghosp, consultQuery!)
+              Databases.siteground_database_reghosp, Balances.balance['consultByIdPrimaryQuery']!)
           .then((value) {
         results = value
             .where((user) => user[widget.keySearch].contains(enteredKeyword))
