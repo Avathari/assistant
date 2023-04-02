@@ -514,9 +514,10 @@ class _GestionDiagnosticosState extends State<GestionDiagnosticos> {
                       if (snapshot.hasError) print(snapshot.error);
                       return snapshot.hasData
                           ? GridView.builder(
-                              gridDelegate: GridViewTools.gridDelegate(),
+                              gridDelegate: GridViewTools.gridDelegate(crossAxisCount: isMobile(context) ? 1 : 3,
+                              mainAxisExtent:  isMobile(context) ? 150 : 250),
                               controller: gestionScrollController,
-                              shrinkWrap: true,
+                              shrinkWrap: isMobile(context) ? false: true,
                               itemCount: snapshot.data == null
                                   ? 0
                                   : snapshot.data.length,

@@ -63,18 +63,18 @@ class _VisualPacientesState extends State<VisualPacientes> {
             style: Styles.textSyleGrowth(),
           ),
           actions: <Widget>[
-            IconButton(
-              icon: const Icon(
-                Icons.account_tree,
-              ),
-              tooltip: 'Revisiones . . . ',
-              onPressed: () {
-                setState(() {
-                  widget.actualPage = 11;
-                });
-              },
-            ),
-            Container(),
+            isMobile(context) ?
+            Container() : IconButton(
+        icon: const Icon(
+          Icons.account_tree,
+        ),
+        tooltip: 'Revisiones . . . ',
+        onPressed: () {
+          setState(() {
+            widget.actualPage = 11;
+          });
+        },
+      ),
             //
             IconButton(
               icon: const Icon(

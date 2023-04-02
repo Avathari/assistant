@@ -334,6 +334,7 @@ class _RevisionesState extends State<Revisiones> {
               child: Row(
                 children: [
                   Expanded(
+                    flex: 3,
                     child: SingleChildScrollView(
                       padding: const EdgeInsets.all(8.0),
                       controller: ScrollController(),
@@ -424,6 +425,38 @@ class _RevisionesState extends State<Revisiones> {
                       setState(() {});
                     },
                   )),
+                  Expanded(
+                      child: GrandIcon(
+                        iconData: Icons.checklist_rtl,
+                        labelButton: "Laboratorios",
+                        onPress: () {
+                          Operadores.selectOptionsActivity(
+                            context: context,
+                            tittle:
+                            "Elija la fecha de los estudios . . . ",
+                            options: Listas.listWithoutRepitedValues(
+                              Listas.listFromMapWithOneKey(
+                                Pacientes.Paraclinicos!,
+                                keySearched: 'Fecha_Registro',
+                              ),
+                            ),
+                            onClose: (value) {
+                              setState(() {
+                                Datos.portapapeles(context: context, text: Auxiliares.porFecha(fechaActual:value));
+                                Navigator.of(context).pop();
+                              });
+                            },
+                          );
+                        },
+                      )),
+                  Expanded(
+                      child: GrandIcon(
+                        iconData: Icons.checklist_sharp,
+                        labelButton: "Laboratorios",
+                        onPress: () {
+                          Datos.portapapeles(context: context, text: Auxiliares.historial());
+                        },
+                      )),
                 ],
               ),
             ),

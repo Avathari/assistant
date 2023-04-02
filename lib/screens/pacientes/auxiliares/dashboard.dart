@@ -16,6 +16,7 @@ import 'package:assistant/screens/pacientes/intensiva/contenidos/balances.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/operadores/laboratorios.dart';
 import 'package:assistant/screens/pacientes/patologicos/epidemiologicos.dart';
+import 'package:assistant/screens/pacientes/patologicos/patologicos.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
@@ -152,8 +153,71 @@ class _DashboardState extends State<Dashboard> {
             controller: ScrollController(),
             child: Column(
               children: [
-                RoundedPanel(
-                  child: const Detalles(),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 4,
+                      child: RoundedPanel(
+                        child: const Detalles(),
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Expanded(
+                        child: RoundedPanel(
+                      child: Column(
+                        children: [
+                          TittlePanel(padding: 5, textPanel: 'Revisorio'),
+                          GrandIcon(
+                              labelButton: isMobile(context)
+                                  ? "Antecedentes Personales Patológicos"
+                                  : "Revisiones",
+                              iconData: isMobile(context)
+                                  ? Icons.medical_services_outlined
+                                  : Icons.account_tree,
+                              onPress: () {
+                                if (isMobile(context)) {
+                                  toNextPage(context, GestionPatologicos());
+                                } else {
+                                  toNextPage(
+                                      context, const LaboratoriosGestion());
+                                }
+                              }),
+                          GrandIcon(
+                              labelButton:
+                                  "Antecedentes Personales No Patológicos",
+                              iconData: Icons.medication,
+                              onPress: () {
+                                toNextPage(
+                                    context, const GestionNoPatologicos());
+                              }),
+                          GrandIcon(
+                              labelButton: "Diagnósticos de la Hospitalización",
+                              iconData: Icons.restore_page_outlined,
+                              onPress: () {
+                                toNextPage(context, GestionDiagnosticos());
+                              }),
+                          GrandIcon(
+                            labelButton: "Concentraciones y Diluciones",
+                            iconData: Icons.balance,
+                            onPress: () {
+                              Operadores.openDialog(
+                                context: context,
+                                chyldrim: const Concentraciones(),
+                              );
+                            },
+                          ),
+                          GrandIcon(
+                            labelButton: "Balances Hidricos",
+                            iconData: Icons.waterfall_chart,
+                            onPress: () {
+                              toNextPage(context, GestionBalances());
+                            },
+                          ),
+                        ],
+                      ),
+                    )),
+                  ],
                 ),
                 const SizedBox(height: 6),
                 RoundedPanel(
@@ -286,8 +350,7 @@ class _DashboardState extends State<Dashboard> {
                   child: RoundedPanel(
                 child: Column(
                   children: [
-                    TittlePanel(
-                        padding: 5, textPanel: 'Revisorio'),
+                    TittlePanel(padding: 5, textPanel: 'Revisorio'),
                     GrandIcon(
                         labelButton: "Revisiones",
                         iconData: Icons.account_tree,
@@ -317,11 +380,12 @@ class _DashboardState extends State<Dashboard> {
                       },
                     ),
                     GrandIcon(
-                        labelButton: "Balances Hidricos",
-                        iconData: Icons.waterfall_chart,
+                      labelButton: "Balances Hidricos",
+                      iconData: Icons.waterfall_chart,
                       onPress: () {
                         toNextPage(context, GestionBalances());
-                      },),
+                      },
+                    ),
                   ],
                 ),
               )),

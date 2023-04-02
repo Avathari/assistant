@@ -628,9 +628,16 @@ class Dialogos {
         tittle!,
         style: const TextStyle(color: Colors.grey),
       ),
-      content: Text(
-        msg!,
-        style: const TextStyle(color: Colors.grey),
+      content: SingleChildScrollView(
+        controller: ScrollController(),
+        child: Column(
+          children: [
+            Text(
+              msg!,
+              style: const TextStyle(color: Colors.grey),
+            ),
+          ],
+        ),
       ),
       actions: [
         ElevatedButton(

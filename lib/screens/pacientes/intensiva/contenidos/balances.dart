@@ -169,7 +169,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
           GrandIcon(
             iconData: Icons.paste,
             onPress: () {
-              Clipboard.setData(ClipboardData(text: Formatos.balances));
+              Datos.portapapeles(context: context, text: Formatos.balances);
             },
           ),
           GrandIcon(
