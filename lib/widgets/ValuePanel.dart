@@ -85,6 +85,7 @@ class _ValuePanelState extends State<ValuePanel> {
         widget.onEdit!(widget.secondText!);
       },
       child: Container(
+        width: 2000,
         decoration: widget.withBorder == true
             ? ContainerDecoration.roundedDecoration()
             : null,
@@ -105,10 +106,10 @@ class _ValuePanelState extends State<ValuePanel> {
             Text(
               widget.secondText!,
               style: TextStyle(
-                fontSize: widget.fontSize - 2,
+                fontSize: widget.firstText == "" && widget.thirdText == "" ? widget.fontSize : widget.fontSize - 2,
                 color: Colors.grey,
                 overflow: TextOverflow.ellipsis,
-                fontWeight: FontWeight.normal,
+                fontWeight: widget.firstText == "" && widget.thirdText == "" ? FontWeight.bold  : FontWeight.normal,
               ),
               textAlign: TextAlign.left,
             ),

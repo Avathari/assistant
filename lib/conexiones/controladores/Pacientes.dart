@@ -221,17 +221,16 @@ class Pacientes {
     } else {
       return "${Pacientes.Paciente['Pace_Orig_Muni']}, ${Pacientes.Paciente['Pace_Orig_EntFed']}";
     }
-
   }
 
   static String residente() {
     return "la localidad de ${Pacientes.Paciente['Pace_Resi_Loca']}";
-        // "por ${Pacientes.Paciente['Pace_Resi_Dur'].toString()} año(s)";
+    // "por ${Pacientes.Paciente['Pace_Resi_Dur'].toString()} año(s)";
   }
 
   static String estadoCivil() {
     if (Valores.sexo == 'Masculino') {
-      switch (Pacientes.Paciente['Pace_Edo_Civ']){
+      switch (Pacientes.Paciente['Pace_Edo_Civ']) {
         case "Soltero(a)":
           return "Soltero";
         case "Casado(a)":
@@ -246,7 +245,7 @@ class Pacientes {
           return "";
       }
     } else if (Valores.sexo == 'Femenino') {
-      switch (Pacientes.Paciente['Pace_Edo_Civ']){
+      switch (Pacientes.Paciente['Pace_Edo_Civ']) {
         case "Soltero(a)":
           return "Soltera";
         case "Casado(a)":
@@ -263,7 +262,6 @@ class Pacientes {
     } else {
       return "";
     }
-
   }
 
   static String prosa({bool isTerapia = false}) {
@@ -298,7 +296,7 @@ class Pacientes {
     Reportes.antecedentesQuirurgicos = "";
 
     print("Quirurgicos ${Quirurgicos!.length} $Quirurgicos \n "
-    "Reportes.Antecedentes_Quirurgicos ${Reportes.antecedentesQuirurgicos}");
+        "Reportes.Antecedentes_Quirurgicos ${Reportes.antecedentesQuirurgicos}");
     // ************************ ************** ********** **** *** *
     if (Quirurgicos != [] || Quirurgicos!.isNotEmpty) {
       for (var element in Quirurgicos!) {
@@ -2603,27 +2601,28 @@ class Limitaciones {
       Valores.usoLentes =
           Dicotomicos.fromInt(value['Pace_APNP_LIM_len_SINO'], toBoolean: true)
               as bool?;
-      // Valores.usoLentesDescripcion = value['Pace_APNP_LIM_len'];
+      Valores.usoLentesDescripcion = value['Pace_APNP_LIM_len'];
       Valores.aparatoSordera =
           Dicotomicos.fromInt(value['Pace_APNP_LIM_sor_SINO'], toBoolean: true)
               as bool?;
-      // Valores.aparatoSorderaDescripcion = value['Pace_APNP_LIM_sor'];
+      Valores.aparatoSorderaDescripcion = value['Pace_APNP_LIM_sor'];
       Valores.protesisDentaria =
           Dicotomicos.fromInt(value['Pace_APNP_LIM_ria_SINO'], toBoolean: true)
               as bool?;
-      // Valores.protesisDentariaDescripcion = value['Pace_APNP_LIM_ria'];
+      Valores.protesisDentariaDescripcion = value['Pace_APNP_LIM_ria'];
       Valores.marcapasosCardiaco =
           Dicotomicos.fromInt(value['Pace_APNP_LIM_mar_SINO'], toBoolean: true)
               as bool?;
-      // Valores.marcapasosCardiacoDescripcion = value['Pace_APNP_LIM_mar'];
+      Valores.marcapasosCardiacoDescripcion = value['Pace_APNP_LIM_mar'];
       Valores.ortesisDeambular =
           Dicotomicos.fromInt(value['Pace_APNP_LIM_dea_SINO'], toBoolean: true)
               as bool?;
-      // Valores.ortesisDeambularDescripcion = value['Pace_APNP_LIM_dea'];
+      Valores.ortesisDeambularDescripcion = value['Pace_APNP_LIM_dea'];
       Valores.limitacionesActividadCotidiana =
           Dicotomicos.fromInt(value['Pace_APNP_LIM_lim_SINO'], toBoolean: true)
               as bool?;
-      // Valores.limitacionesActividadCotidianaDescripcion = value['Pace_APNP_LIM_lim'];
+      Valores.limitacionesActividadCotidianaDescripcion =
+          value['Pace_APNP_LIM_lim'];
       // *********************************
     }).onError((error, stackTrace) {
       Actividades.consultarId(
@@ -5290,6 +5289,71 @@ class Auxiliares {
     return "$prosa$max. ";
   }
 
+  static String porFecha({String fechaActual = ""}) {
+    // Filtro por estudio de los registros de Pacientes.Paraclinicos
+    var aux = Pacientes.Paraclinicos!
+        .where((user) => user["Fecha_Registro"].contains(fechaActual))
+        .toList();
+    // Inicio del formato de la prosa.
+    if (fechaActual == "") {
+      fechaActual = aux[0]['Fecha_Registro'];
+    }
+    //
+    String prosa = "($fechaActual): ";
+    String max = "";
+    // Anexación de los valores correlacionados.
+    for (var element in aux) {
+      if (element['Fecha_Registro'] == fechaActual) {
+        if (max == "") {
+          max =
+              "${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+        } else {
+          max =
+              "$max, ${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+        }
+      }
+    }
+    //* ****************************
+    // Terminal.printNotice(message:  "$prosa$max. ");
+    // Devolución de la prosa.
+    return "$prosa${Sentences.capitalize(max)}. ";
+  }
+
+  static String historial() {
+    String prosa = "";
+    var fechar = Listas.listWithoutRepitedValues(
+      Listas.listFromMapWithOneKey(
+        Pacientes.Paraclinicos!,
+        keySearched: 'Fecha_Registro',
+      ),
+    );
+
+    fechar.forEach((element) {
+      // Filtro por estudio de los registros de Pacientes.Paraclinicos
+      var aux = Pacientes.Paraclinicos!
+          .where((user) => user["Fecha_Registro"].contains(element))
+          .toList();
+      String fecha = "($element)";
+      String max = "";
+
+      aux.forEach((element) {
+        if (max == "") {
+          max =
+              "${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+        } else {
+          max =
+              "$max, ${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+        }
+      });
+
+      prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+    });
+    // ************** ***************** ***************
+    // Terminal.printExpected(message: "prosa $prosa");
+
+    return prosa; // """$prosa$max. ";
+  }
+
   static List<String> Categorias = [
     "Biometría Hemática",
     "Química Sanguínea",
@@ -5441,7 +5505,6 @@ class Auxiliares {
       "Conteo de Linfocitos CD4+",
       "Porcentaje de Linfocitos CD4+"
     ],
-
   };
   static Map<String, dynamic> Medidas = {
     Categorias[0]: ["g/dL", "%", "fL", "pg", "10^3/UL", "10^6/UL", "K/uL"],
@@ -5598,7 +5661,8 @@ class Auxiliares {
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Fosfatasa Alcalina' ORDER BY Fecha_Registro DESC limit 1) as Fosfatasa_Alcalina,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Albúmina' ORDER BY Fecha_Registro DESC limit 1) as Albumina_Serica,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Proteínas Totales' ORDER BY Fecha_Registro DESC limit 1) as Proteinas_Totales,"
-        // Gasometría Venosa
+        // Gasometría Arterial
+        "(SELECT Fecha_Registro FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Arterial' ORDER BY Fecha_Registro DESC limit 1) as Fecha_Registro_Arterial,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Arterial' AND Estudio = 'pH' ORDER BY Fecha_Registro DESC limit 1) as Ph_Arterial,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Arterial' AND Estudio = 'Presión de Dióxido de Carbono' ORDER BY Fecha_Registro DESC limit 1) as Pco_Arterial,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Arterial' AND Estudio = 'Presión de Oxígeno' ORDER BY Fecha_Registro DESC limit 1) as Po_Arterial,"
@@ -5606,14 +5670,15 @@ class Auxiliares {
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Arterial' AND Estudio = 'Fracción Inspiratoria de Oxígeno' ORDER BY Fecha_Registro DESC limit 1) as Fio_Arterial,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Arterial' AND Estudio = 'Saturación de Oxígeno' ORDER BY Fecha_Registro DESC limit 1) as So_Arterial, "
 //
+        "(SELECT Fecha_Registro FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Venosa' ORDER BY Fecha_Registro DESC limit 1) as Fecha_Registro_Venosa,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Venosa' AND Estudio = 'pH' ORDER BY Fecha_Registro DESC limit 1) as Ph_Venosa,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Venosa' AND Estudio = 'Presión de Dióxido de Carbono' ORDER BY Fecha_Registro DESC limit 1) as Pco_Venosa,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Venosa' AND Estudio = 'Presión de Oxígeno' ORDER BY Fecha_Registro DESC limit 1) as Po_Venosa,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Venosa' AND Estudio = 'Bicarbonato Sérico' ORDER BY Fecha_Registro DESC limit 1) as Hco_Venosa,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Venosa' AND Estudio = 'Fracción Inspiratoria de Oxígeno' ORDER BY Fecha_Registro DESC limit 1) as Fio_Venosa,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Gasometría Venosa' AND Estudio = 'Saturación de Oxígeno' ORDER BY Fecha_Registro DESC limit 1) as So_Venosa;"
-        //
-        // "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Linfocitos' ORDER BY Fecha_Registro DESC limit 1) as Linfocitos_Totales;"
+    //
+    // "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Linfocitos' ORDER BY Fecha_Registro DESC limit 1) as Linfocitos_Totales;"
   };
 
   static String electrocardiograma() {
@@ -6068,7 +6133,8 @@ class Balances {
     "consultByIdPrimaryQuery":
         "SELECT * FROM pace_bala WHERE ID_Pace = ? ORDER BY Pace_bala_Fecha ASC",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_bala",
-    "consultLastQuery": "SELECT * FROM pace_bala WHERE ID_Pace = ? ORDER BY ID_Bala ASC",
+    "consultLastQuery":
+        "SELECT * FROM pace_bala WHERE ID_Pace = ? ORDER BY ID_Bala ASC",
     "consultByName": "SELECT * FROM pace_bala WHERE Pace_APP_DEG LIKE '%",
     "registerQuery": "INSERT INTO pace_bala (ID_Pace, Pace_bala_Fecha, "
         "Pace_bala_Time, "

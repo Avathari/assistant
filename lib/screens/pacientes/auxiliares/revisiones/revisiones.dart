@@ -46,6 +46,7 @@ class _RevisionesState extends State<Revisiones> {
           message: " . . . Actividad no iniciada : $error \n: : $stackTrace");
     }).whenComplete(() {
       setState(() {
+        Auxiliares.registros();
         Terminal.printOther(message: " . . . Actividad Iniciada");
       });
     });
@@ -563,206 +564,220 @@ class _RevisionesState extends State<Revisiones> {
               padding: const EdgeInsets.all(5),
               margin: const EdgeInsets.all(5),
               decoration: ContainerDecoration.roundedDecoration(),
-              child: GridView(
-                padding: const EdgeInsets.all(5.0),
-                controller: ScrollController(),
-                gridDelegate: GridViewTools.gridDelegate(
-                    crossAxisCount: isMobile(context) ? 4 : 2,
-                    mainAxisExtent: 65), //46
+              child: Column(
                 children: [
-                  ValuePanel(
-                    firstText: "T. Sys",
-                    secondText: Valores.tensionArterialSystolica.toString(),
-                    thirdText: "mmHg",
-                    withEditMessage: true,
-                    onEdit: (value) {
-                      Operadores.editActivity(
-                          context: context,
-                          tittle: "Editar . . . ",
-                          message: "¿Tensión sistólica? . . . ",
-                          onAcept: (value) {
-                            Terminal.printSuccess(message: "recieve $value");
-                            setState(() {
-                              Valores.tensionArterialSystolica =
-                                  int.parse(value);
-                              Navigator.of(context).pop();
-                            });
-                          });
-                    },
+                  Expanded(
+                    child: ValuePanel(
+                      firstText: "",
+                      secondText: Valores.fechaVitales.toString(),
+                      thirdText: "",
+                    ),
                   ),
-                  ValuePanel(
-                    firstText: "T. Dyas",
-                    secondText: Valores.tensionArterialDyastolica.toString(),
-                    thirdText: "mmHg",
-                    withEditMessage: true,
-                    onEdit: (value) {
-                      Operadores.editActivity(
-                          context: context,
-                          tittle: "Editar . . . ",
-                          message: "¿Tensión diastólica? . . . ",
-                          onAcept: (value) {
-                            Terminal.printSuccess(message: "recieve $value");
-                            setState(() {
-                              Valores.tensionArterialDyastolica =
-                                  int.parse(value);
-                              Navigator.of(context).pop();
-                            });
-                          });
-                    },
-                  ),
-                  ValuePanel(
-                    firstText: "F. Card.",
-                    secondText: Valores.frecuenciaCardiaca.toString(),
-                    thirdText: "Lat/min",
-                    withEditMessage: true,
-                    onEdit: (value) {
-                      Operadores.editActivity(
-                          context: context,
-                          tittle: "Editar . . . ",
-                          message: "¿Frecuencia cardiaca? . . . ",
-                          onAcept: (value) {
-                            Terminal.printSuccess(message: "recieve $value");
-                            setState(() {
-                              Valores.frecuenciaCardiaca = int.parse(value);
-                              Navigator.of(context).pop();
-                            });
-                          });
-                    },
-                  ),
-                  ValuePanel(
-                    firstText: "F. Resp.",
-                    secondText: Valores.frecuenciaRespiratoria.toString(),
-                    thirdText: "Resp/min",
-                    withEditMessage: true,
-                    onEdit: (value) {
-                      Operadores.editActivity(
-                          context: context,
-                          tittle: "Editar . . . ",
-                          message: "¿Frecuencia respiratoria? . . . ",
-                          onAcept: (value) {
-                            Terminal.printSuccess(message: "recieve $value");
-                            setState(() {
-                              Valores.frecuenciaRespiratoria = int.parse(value);
-                              Navigator.of(context).pop();
-                            });
-                          });
-                    },
-                  ),
-                  ValuePanel(
-                    firstText: "T. C.",
-                    secondText: Valores.temperaturCorporal.toString(),
-                    thirdText: "°C",
-                    withEditMessage: true,
-                    onEdit: (value) {
-                      Operadores.editActivity(
-                          context: context,
-                          tittle: "Editar . . . ",
-                          message: "¿Temperatura corporal? . . . ",
-                          onAcept: (value) {
-                            Terminal.printSuccess(message: "recieve $value");
-                            setState(() {
-                              Valores.temperaturCorporal = double.parse(value);
-                              Navigator.of(context).pop();
-                            });
-                          });
-                    },
-                  ),
-                  ValuePanel(
-                    firstText: "SpO2",
-                    secondText: Valores.saturacionPerifericaOxigeno.toString(),
-                    thirdText: "Resp/min",
-                    withEditMessage: true,
-                    onEdit: (value) {
-                      Operadores.editActivity(
-                          context: context,
-                          tittle: "Editar . . . ",
-                          message: "¿Saturación periférica de oxígeno? . . . ",
-                          onAcept: (value) {
-                            Terminal.printSuccess(message: "recieve $value");
-                            setState(() {
-                              Valores.saturacionPerifericaOxigeno =
-                                  int.parse(value);
-                              Navigator.of(context).pop();
-                            });
-                          });
-                    },
-                  ),
-                  // CrossLine(),
-                  ValuePanel(
-                    firstText: "P. Corporal",
-                    secondText: Valores.pesoCorporalTotal.toString(),
-                    thirdText: "Kg",
-                    withEditMessage: true,
-                    onEdit: (value) {
-                      Operadores.editActivity(
-                          context: context,
-                          tittle: "Editar . . . ",
-                          message: "¿Peso corporal total? . . . ",
-                          onAcept: (value) {
-                            Terminal.printSuccess(message: "recieve $value");
-                            setState(() {
-                              Valores.pesoCorporalTotal = double.parse(value);
-                              Navigator.of(context).pop();
-                            });
-                          });
-                    },
-                  ),
-                  ValuePanel(
-                    firstText: "Estatura",
-                    secondText: Valores.alturaPaciente.toString(),
-                    thirdText: "mts",
-                    withEditMessage: true,
-                    onEdit: (value) {
-                      Operadores.editActivity(
-                          context: context,
-                          tittle: "Editar . . . ",
-                          message: "¿Altura del paciente? . . . ",
-                          onAcept: (value) {
-                            Terminal.printSuccess(message: "recieve $value");
-                            setState(() {
-                              Valores.alturaPaciente = double.parse(value);
-                              Navigator.of(context).pop();
-                            });
-                          });
-                    },
-                  ),
-                  ValuePanel(
-                    firstText: "G. Cap.",
-                    secondText: Valores.glucemiaCapilar.toString(),
-                    thirdText: "mg/dL",
-                    withEditMessage: true,
-                    onEdit: (value) {
-                      Operadores.editActivity(
-                          context: context,
-                          tittle: "Editar . . . ",
-                          message: "¿Glucemia capilar? . . . ",
-                          onAcept: (value) {
-                            Terminal.printSuccess(message: "recieve $value");
-                            setState(() {
-                              Valores.glucemiaCapilar = int.parse(value);
-                              Navigator.of(context).pop();
-                            });
-                          });
-                    },
-                  ),
-                  ValuePanel(
-                    firstText: "Horas ayuno",
-                    secondText: Valores.horasAyuno.toString(),
-                    thirdText: "Horas",
-                    withEditMessage: true,
-                    onEdit: (value) {
-                      Operadores.editActivity(
-                          context: context,
-                          tittle: "Editar . . . ",
-                          message: "¿Horas de ayuno? . . . ",
-                          onAcept: (value) {
-                            Terminal.printSuccess(message: "recieve $value");
-                            setState(() {
-                              Valores.horasAyuno = int.parse(value);
-                              Navigator.of(context).pop();
-                            });
-                          });
-                    },
+                  Expanded(
+                    flex: 8,
+                    child: GridView(
+                      padding: const EdgeInsets.all(5.0),
+                      controller: ScrollController(),
+                      gridDelegate: GridViewTools.gridDelegate(
+                          crossAxisCount: isMobile(context) ? 4 : 2,
+                          mainAxisExtent: 65), //46
+                      children: [
+                        ValuePanel(
+                          firstText: "T. Sys",
+                          secondText: Valores.tensionArterialSystolica.toString(),
+                          thirdText: "mmHg",
+                          withEditMessage: true,
+                          onEdit: (value) {
+                            Operadores.editActivity(
+                                context: context,
+                                tittle: "Editar . . . ",
+                                message: "¿Tensión sistólica? . . . ",
+                                onAcept: (value) {
+                                  Terminal.printSuccess(message: "recieve $value");
+                                  setState(() {
+                                    Valores.tensionArterialSystolica =
+                                        int.parse(value);
+                                    Navigator.of(context).pop();
+                                  });
+                                });
+                          },
+                        ),
+                        ValuePanel(
+                          firstText: "T. Dyas",
+                          secondText: Valores.tensionArterialDyastolica.toString(),
+                          thirdText: "mmHg",
+                          withEditMessage: true,
+                          onEdit: (value) {
+                            Operadores.editActivity(
+                                context: context,
+                                tittle: "Editar . . . ",
+                                message: "¿Tensión diastólica? . . . ",
+                                onAcept: (value) {
+                                  Terminal.printSuccess(message: "recieve $value");
+                                  setState(() {
+                                    Valores.tensionArterialDyastolica =
+                                        int.parse(value);
+                                    Navigator.of(context).pop();
+                                  });
+                                });
+                          },
+                        ),
+                        ValuePanel(
+                          firstText: "F. Card.",
+                          secondText: Valores.frecuenciaCardiaca.toString(),
+                          thirdText: "Lat/min",
+                          withEditMessage: true,
+                          onEdit: (value) {
+                            Operadores.editActivity(
+                                context: context,
+                                tittle: "Editar . . . ",
+                                message: "¿Frecuencia cardiaca? . . . ",
+                                onAcept: (value) {
+                                  Terminal.printSuccess(message: "recieve $value");
+                                  setState(() {
+                                    Valores.frecuenciaCardiaca = int.parse(value);
+                                    Navigator.of(context).pop();
+                                  });
+                                });
+                          },
+                        ),
+                        ValuePanel(
+                          firstText: "F. Resp.",
+                          secondText: Valores.frecuenciaRespiratoria.toString(),
+                          thirdText: "Resp/min",
+                          withEditMessage: true,
+                          onEdit: (value) {
+                            Operadores.editActivity(
+                                context: context,
+                                tittle: "Editar . . . ",
+                                message: "¿Frecuencia respiratoria? . . . ",
+                                onAcept: (value) {
+                                  Terminal.printSuccess(message: "recieve $value");
+                                  setState(() {
+                                    Valores.frecuenciaRespiratoria = int.parse(value);
+                                    Navigator.of(context).pop();
+                                  });
+                                });
+                          },
+                        ),
+                        ValuePanel(
+                          firstText: "T. C.",
+                          secondText: Valores.temperaturCorporal.toString(),
+                          thirdText: "°C",
+                          withEditMessage: true,
+                          onEdit: (value) {
+                            Operadores.editActivity(
+                                context: context,
+                                tittle: "Editar . . . ",
+                                message: "¿Temperatura corporal? . . . ",
+                                onAcept: (value) {
+                                  Terminal.printSuccess(message: "recieve $value");
+                                  setState(() {
+                                    Valores.temperaturCorporal = double.parse(value);
+                                    Navigator.of(context).pop();
+                                  });
+                                });
+                          },
+                        ),
+                        ValuePanel(
+                          firstText: "SpO2",
+                          secondText: Valores.saturacionPerifericaOxigeno.toString(),
+                          thirdText: "Resp/min",
+                          withEditMessage: true,
+                          onEdit: (value) {
+                            Operadores.editActivity(
+                                context: context,
+                                tittle: "Editar . . . ",
+                                message: "¿Saturación periférica de oxígeno? . . . ",
+                                onAcept: (value) {
+                                  Terminal.printSuccess(message: "recieve $value");
+                                  setState(() {
+                                    Valores.saturacionPerifericaOxigeno =
+                                        int.parse(value);
+                                    Navigator.of(context).pop();
+                                  });
+                                });
+                          },
+                        ),
+                        // CrossLine(),
+                        ValuePanel(
+                          firstText: "P. Corporal",
+                          secondText: Valores.pesoCorporalTotal.toString(),
+                          thirdText: "Kg",
+                          withEditMessage: true,
+                          onEdit: (value) {
+                            Operadores.editActivity(
+                                context: context,
+                                tittle: "Editar . . . ",
+                                message: "¿Peso corporal total? . . . ",
+                                onAcept: (value) {
+                                  Terminal.printSuccess(message: "recieve $value");
+                                  setState(() {
+                                    Valores.pesoCorporalTotal = double.parse(value);
+                                    Navigator.of(context).pop();
+                                  });
+                                });
+                          },
+                        ),
+                        ValuePanel(
+                          firstText: "Estatura",
+                          secondText: Valores.alturaPaciente.toString(),
+                          thirdText: "mts",
+                          withEditMessage: true,
+                          onEdit: (value) {
+                            Operadores.editActivity(
+                                context: context,
+                                tittle: "Editar . . . ",
+                                message: "¿Altura del paciente? . . . ",
+                                onAcept: (value) {
+                                  Terminal.printSuccess(message: "recieve $value");
+                                  setState(() {
+                                    Valores.alturaPaciente = double.parse(value);
+                                    Navigator.of(context).pop();
+                                  });
+                                });
+                          },
+                        ),
+                        ValuePanel(
+                          firstText: "G. Cap.",
+                          secondText: Valores.glucemiaCapilar.toString(),
+                          thirdText: "mg/dL",
+                          withEditMessage: true,
+                          onEdit: (value) {
+                            Operadores.editActivity(
+                                context: context,
+                                tittle: "Editar . . . ",
+                                message: "¿Glucemia capilar? . . . ",
+                                onAcept: (value) {
+                                  Terminal.printSuccess(message: "recieve $value");
+                                  setState(() {
+                                    Valores.glucemiaCapilar = int.parse(value);
+                                    Navigator.of(context).pop();
+                                  });
+                                });
+                          },
+                        ),
+                        ValuePanel(
+                          firstText: "Horas ayuno",
+                          secondText: Valores.horasAyuno.toString(),
+                          thirdText: "Horas",
+                          withEditMessage: true,
+                          onEdit: (value) {
+                            Operadores.editActivity(
+                                context: context,
+                                tittle: "Editar . . . ",
+                                message: "¿Horas de ayuno? . . . ",
+                                onAcept: (value) {
+                                  Terminal.printSuccess(message: "recieve $value");
+                                  setState(() {
+                                    Valores.horasAyuno = int.parse(value);
+                                    Navigator.of(context).pop();
+                                  });
+                                });
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -830,7 +845,7 @@ class _RevisionesState extends State<Revisiones> {
               child: Column(
                 children: [
                   Expanded(
-                    flex: 4,
+                    flex: 10,
                     child: SingleChildScrollView(
                       padding: const EdgeInsets.all(8.0),
                       controller: ScrollController(),
@@ -921,6 +936,38 @@ class _RevisionesState extends State<Revisiones> {
                       setState(() {});
                     },
                   )),
+                  Expanded(
+                      child: GrandIcon(
+                        iconData: Icons.checklist_rtl,
+                        labelButton: "Laboratorios",
+                        onPress: () {
+                          Operadores.selectOptionsActivity(
+                            context: context,
+                            tittle:
+                            "Elija la fecha de los estudios . . . ",
+                            options: Listas.listWithoutRepitedValues(
+                              Listas.listFromMapWithOneKey(
+                                Pacientes.Paraclinicos!,
+                                keySearched: 'Fecha_Registro',
+                              ),
+                            ),
+                            onClose: (value) {
+                              setState(() {
+                                Datos.portapapeles(context: context, text: Auxiliares.porFecha(fechaActual:value));
+                                Navigator.of(context).pop();
+                              });
+                            },
+                          );
+                        },
+                      )),
+                  Expanded(
+                      child: GrandIcon(
+                        iconData: Icons.checklist_sharp,
+                        labelButton: "Laboratorios",
+                        onPress: () {
+                          Datos.portapapeles(context: context, text: Auxiliares.historial());
+                        },
+                      )),
                 ],
               ),
             ),

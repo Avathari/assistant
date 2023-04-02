@@ -718,22 +718,6 @@ class _GestionBalancesState extends State<GestionBalances> {
 
   @override
   void initState() {
-    // print(" . . . Iniciando array ");
-    // if (Constantes.dummyArray!.isNotEmpty) {
-    //   if (Constantes.dummyArray![0] == "Vacio") {
-    //     Actividades.consultarAllById(Databases.siteground_database_reghosp,
-    //             consultQuery!, Pacientes.ID_Paciente)
-    //         .then((value) {
-    //       setState(() {
-    //         print(" . . . Buscando items \n $value");
-    //         foundedItems = value;
-    //       });
-    //     });
-    //   } else {
-    //     print(" . . . Balances array iniciado");
-    //     foundedItems = Constantes.dummyArray;
-    //   }
-    // }
     iniciar();
     super.initState();
   }
@@ -875,13 +859,13 @@ class _GestionBalancesState extends State<GestionBalances> {
   }
 
   void iniciar() {
-    foundedItems = null;
     Terminal.printWarning(
         message:
         " . . . Iniciando Actividad - Repositorio Balances del Pacientes");
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       setState(() {
         foundedItems = value;
+        Pacientes.Balances = value;
         Terminal.printSuccess(
             message: 'Repositorio Balances del Pacientes Obtenido');
       });

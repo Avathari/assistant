@@ -16,7 +16,6 @@ class Limitaciones extends StatefulWidget {
 }
 
 class _LimitacionesState extends State<Limitaciones> {
-
   // ************ *********** *********
   var usoLentesTextController = TextEditingController();
   var aparatoSorderaTextController = TextEditingController();
@@ -29,12 +28,16 @@ class _LimitacionesState extends State<Limitaciones> {
   @override
   void initState() {
     setState(() {
-      usoLentesTextController .text = Valores.usoLentesDescripcion!;
-      aparatoSorderaTextController .text = Valores.aparatoSorderaDescripcion!;
-      protesisDentariaTextController .text = Valores.protesisDentariaDescripcion!;
-      marcapasosCardiacoTextController .text = Valores.marcapasosCardiacoDescripcion!;
-      ortesisDeambularTextController .text = Valores.ortesisDeambularDescripcion!;
-      limitacionesActividadCotidianaTextController .text = Valores.limitacionesActividadCotidianaDescripcion!;
+      usoLentesTextController.text = Valores.usoLentesDescripcion!;
+      aparatoSorderaTextController.text = Valores.aparatoSorderaDescripcion!;
+      protesisDentariaTextController.text =
+          Valores.protesisDentariaDescripcion!;
+      marcapasosCardiacoTextController.text =
+          Valores.marcapasosCardiacoDescripcion!;
+      ortesisDeambularTextController.text =
+          Valores.ortesisDeambularDescripcion!;
+      limitacionesActividadCotidianaTextController.text =
+          Valores.limitacionesActividadCotidianaDescripcion!;
       // ************ *********** *********
     });
     super.initState();
@@ -59,7 +62,7 @@ class _LimitacionesState extends State<Limitaciones> {
                       usoLentesTextController.text = '';
                     } else {
                       usoLentesTextController.text =
-                      'No usa lentes graduados ni otro en particular';
+                          'No usa lentes graduados ni otro en particular';
                       Valores.usoLentesDescripcion =
                           usoLentesTextController.text;
                     }
@@ -96,7 +99,7 @@ class _LimitacionesState extends State<Limitaciones> {
                       aparatoSorderaTextController.text = '';
                     } else {
                       aparatoSorderaTextController.text =
-                      'No usa aparatos por hipoacusia';
+                          'No usa aparatos por hipoacusia';
                       Valores.aparatoSorderaDescripcion =
                           aparatoSorderaTextController.text;
                     }
@@ -133,7 +136,7 @@ class _LimitacionesState extends State<Limitaciones> {
                       protesisDentariaTextController.text = '';
                     } else {
                       protesisDentariaTextController.text =
-                      'No usa prótesis dentaria';
+                          'No usa prótesis dentaria';
                       Valores.protesisDentariaDescripcion =
                           protesisDentariaTextController.text;
                     }
@@ -170,7 +173,7 @@ class _LimitacionesState extends State<Limitaciones> {
                       marcapasosCardiacoTextController.text = '';
                     } else {
                       marcapasosCardiacoTextController.text =
-                      'No presenta uso de marcapasos cardiaco';
+                          'No presenta uso de marcapasos cardiaco';
                       Valores.marcapasosCardiacoDescripcion =
                           marcapasosCardiacoTextController.text;
                     }
@@ -207,7 +210,7 @@ class _LimitacionesState extends State<Limitaciones> {
                       ortesisDeambularTextController.text = '';
                     } else {
                       ortesisDeambularTextController.text =
-                      'No usa ortésis al deambular';
+                          'No usa ortésis al deambular';
                       Valores.ortesisDeambularDescripcion =
                           ortesisDeambularTextController.text;
                     }
@@ -244,7 +247,7 @@ class _LimitacionesState extends State<Limitaciones> {
                       limitacionesActividadCotidianaTextController.text = '';
                     } else {
                       limitacionesActividadCotidianaTextController.text =
-                      'No presenta limitaciones en la actividad cotidiana';
+                          'No presenta limitaciones en la actividad cotidiana';
                       Valores.limitacionesActividadCotidianaDescripcion =
                           limitacionesActividadCotidianaTextController.text;
                     }

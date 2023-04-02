@@ -14,6 +14,7 @@ import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart
 import 'package:assistant/screens/pacientes/hospitalizacion/pendientes.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/balances.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/operadores/laboratorios.dart';
 import 'package:assistant/screens/pacientes/patologicos/epidemiologicos.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
@@ -291,7 +292,7 @@ class _DashboardState extends State<Dashboard> {
                         labelButton: "Revisiones",
                         iconData: Icons.account_tree,
                         onPress: () {
-                          setState(() {});
+                          toNextPage(context, const LaboratoriosGestion());
                         }),
                     GrandIcon(
                         labelButton: "Antecedentes Personales Patológicos",

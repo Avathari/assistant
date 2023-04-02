@@ -164,12 +164,14 @@ class Valores {
       marcapasosCardiaco = false,
       ortesisDeambular = false,
       limitacionesActividadCotidiana = false;
-  static String? usoLentesDescripcion = '',
-      aparatoSorderaDescripcion = '',
-      protesisDentariaDescripcion = '',
-      marcapasosCardiacoDescripcion = '',
-      ortesisDeambularDescripcion = '',
-      limitacionesActividadCotidianaDescripcion = '';
+  static String? usoLentesDescripcion =
+          'No usa lentes graduados ni otro en particular',
+      aparatoSorderaDescripcion = 'No usa aparatos por hipoacusia',
+      protesisDentariaDescripcion = 'No usa prótesis dentaria',
+      marcapasosCardiacoDescripcion = 'No presenta uso de marcapasos cardiaco',
+      ortesisDeambularDescripcion = 'No usa ortésis al deambular',
+      limitacionesActividadCotidianaDescripcion =
+          'No presenta limitaciones en la actividad cotidiana';
 
   static bool? exposicionBiomasa = false,
       exposicionHumosQuimicos = false,
@@ -496,6 +498,8 @@ class Valores {
     // ********* *********** ********** ******
     Pacientes.getImage();
     // ********* *********** ********** ******
+
+    // ********* *********** ********** ******
     Eticos.consultarRegistro();
     Viviendas.consultarRegistro();
     Higienes.consultarRegistro();
@@ -522,6 +526,7 @@ class Valores {
     Traumatologicos.consultarRegistro();
     //
     Balances.consultarRegistro();
+    Auxiliares.registros();
 // ********* *********** ********** ******
 //     Electrocardiogramas.ultimoRegistro();
     // Pacientes.diagnosticos();
@@ -676,6 +681,7 @@ class Valores {
     alturaPaciente = toDoubleFromInt(json: json, keyEntered: 'Pace_SV_est');
     // json['Pace_SV_est'] ?? 0.0;
 
+    fechaVitales = json['Pace_Feca_SV'] ?? '';
     tensionArterialSystolica = json['Pace_SV_tas'] ?? 0;
     tensionArterialDyastolica = json['Pace_SV_tad'] ?? 0;
     frecuenciaCardiaca = json['Pace_SV_fc'] ?? 0;
@@ -758,6 +764,7 @@ class Valores {
     factorReumatoide = double.parse(json['Factor_Reumatoide'] ?? '0');
     anticuerpoCitrulinado = double.parse(json['Anticuerpo_Citrulinado'] ?? '0');
     //
+    fechaGasometriaArterial = json['Fecha_Registro_Arterial'];
     pHArteriales = double.parse(json['Ph_Arterial'] ?? '0');
     pcoArteriales = double.parse(json['Pco_Arterial'] ?? '0');
     poArteriales = double.parse(json['Po_Arterial'] ?? '0');
@@ -765,7 +772,8 @@ class Valores {
     excesoBaseArteriales = double.parse(json['Eb_Arterial'] ?? '0');
     fioArteriales = double.parse(json['Fio_Arterial'] ?? '0');
     soArteriales = double.parse(json['So_Arterial'] ?? '0');
-    // pHArteriales  = double.parse(json['Ph_Arterial'] ?? '0');
+    //
+    fechaGasometriaVenosa = json['Fecha_Registro_Venosa'];
     pHVenosos = double.parse(json['Ph_Venosa'] ?? '0');
     pcoVenosos = double.parse(json['Pco_Venosa'] ?? '0');
     poVenosos = double.parse(json['Po_Venosa'] ?? '0');
@@ -3411,7 +3419,7 @@ class Formatos {
         "EB ${Valores.EB.toStringAsFixed(2)} mmol/L, "
         "TCO2 ${Valores.TCO.toStringAsFixed(2)} mmHg, "
         "PCO2e ${Valores.PCO2C.toStringAsFixed(2)} mmHg, "
-    // "EBe ${Valores.pHArteriales} mmol/L, "
+        // "EBe ${Valores.pHArteriales} mmol/L, "
         "aGAP ${Valores.GAP.toStringAsFixed(1)}, "
         "Temp ${Valores.temperaturCorporal}°C, "
         "FiO2 ${Valores.fioArteriales}%, "
@@ -3453,7 +3461,6 @@ class Formatos {
         "TCO2 ${Valores.TCO.toStringAsFixed(2)} mmHg, "
         "PCO2e ${Valores.PCO2C.toStringAsFixed(2)} mmHg, "
         "Temp ${Valores.temperaturCorporal}°C, "
-
         "FiO2 ${Valores.fioArteriales}%, "
         "PAO2 ${Valores.PAO} mmHg, "
         "A-aO2 ${Valores.GAA.toStringAsFixed(1)} mmHg, "
@@ -3481,7 +3488,6 @@ class Formatos {
         "TCO2 ${Valores.TCO.toStringAsFixed(2)} mmHg, "
         "PCO2e ${Valores.PCO2C.toStringAsFixed(2)} mmHg, "
         "Temp ${Valores.temperaturCorporal}°C, "
-
         "FiO2 ${Valores.fioArteriales}%, "
         "PAO2 ${Valores.PAO} mmHg, "
         "A-aO2 ${Valores.GAA.toStringAsFixed(1)} mmHg, "
@@ -3491,11 +3497,9 @@ class Formatos {
         "aGAP ${Valores.GAP.toStringAsFixed(1)}, "
         "GAPoms ${Valores.GAPO.toStringAsFixed(1)}, "
         "RI ${Valores.RI.toStringAsFixed(1)}, "
-
         "pH- 1ra Regla ${Valores.HCOR_a.toStringAsFixed(2)}, "
         "pH- 2da Regla ${Valores.HCOR_b.toStringAsFixed(2)}, "
         "HCO3- 3ra Regla ${Valores.HCOR_c.toStringAsFixed(2)} mmol/L, "
-
         "Rep. HCO3- ${Valores.HCOAM.toStringAsFixed(2)}, "
         "en total ${Valores.NOAMP.toStringAsFixed(0)} ámpulas de bicarbonato al 7.5%"
         ".";
@@ -3516,12 +3520,10 @@ class Formatos {
         "TCO2 ${Valores.TCO.toStringAsFixed(2)} mmHg, "
         "PCO2e ${Valores.PCO2C.toStringAsFixed(2)} mmHg, "
         "Temp ${Valores.temperaturCorporal}°C, "
-
         "FiO2 ${Valores.fioArteriales}%, "
         "pH- 1ra Regla ${Valores.HCOR_a.toStringAsFixed(2)}, "
         "pH- 2da Regla ${Valores.HCOR_b.toStringAsFixed(2)}, "
         "HCO3- 3ra Regla ${Valores.HCOR_c.toStringAsFixed(2)} mmol/L, "
-
         "Rep. HCO3- ${Valores.HCOAM.toStringAsFixed(2)}, "
         "en total ${Valores.NOAMP.toStringAsFixed(0)} ámpulas de bicarbonato al 7.5%"
         ".";

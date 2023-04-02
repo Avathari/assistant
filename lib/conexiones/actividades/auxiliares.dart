@@ -872,7 +872,7 @@ class Datos {
   }
 
   static void portapapeles({required BuildContext context, required String text}) {
-      Clipboard.setData(ClipboardData(text: text)).whenComplete(() => Operadores.notifyActivity(context: context, tittle: "Portapapeles . . . ", message: "Copiado en Portapapeles . . ."));
+      Clipboard.setData(ClipboardData(text: text)).whenComplete(() => Operadores.notifyActivity(context: context, tittle: "Portapapeles . . . ", message: "Copiado en Portapapeles . . . \n$text"));
   }
 }
 
