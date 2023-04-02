@@ -4,7 +4,6 @@ import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
-import 'package:assistant/widgets/ShowText.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -78,63 +77,62 @@ class _VentilatoriosState extends State<Ventilatorios> {
             padding: const EdgeInsets.all(12.0),
             child: CarouselSlider(
                 items: [
-                  SingleChildScrollView(
+                  GridView(
+                    padding: const EdgeInsets.all(5.0),
                     controller: ScrollController(),
-                    child: Column(
-                      children: [
-                        ShowText(
-                          title: 'Volumen tidal',
-                          data: Valores.volumenTidal,
-                          fractionDigits: 0,
-                          medida: 'mL',
-                        ),
-                        ShowText(
-                          title: 'Volumen tidal (6)',
-                          data: Valores.volumentTidal6,
-                          medida: 'mL',
-                        ),
-                        ShowText(
-                          title: 'Volumen tidal (7)',
-                          data: Valores.volumentTidal7,
-                          medida: 'mL',
-                        ),
-                        ShowText(
-                          title: 'Volumen tidal (8)',
-                          data: Valores.volumentTidal8,
-                          medida: 'mL',
-                        ),
-                        ShowText(
-                          title: 'Frecuencia Ventilatoria',
-                          data: Valores.frecuenciaVentilatoria!.toDouble(),
-                          fractionDigits: 0,
-                          medida: 'Vent/min',
-                        ),
-                        ShowText(
-                          title: 'P.E.E.P.',
-                          data: Valores.presionFinalEsiracion!.toDouble(),
-                          fractionDigits: 0,
-                          medida: 'cmH2O',
-                        ),
-                        ShowText(
-                          title: 'Presión máxima',
-                          data: Valores.presionMaxima!.toDouble(),
-                          medida: 'cmH2O',
-                        ),
-                        ShowText(
-                          title: 'FiO2',
-                          data: Valores.fraccionInspiratoriaVentilatoria!
-                              .toDouble(),
-                          fractionDigits: 0,
-                          medida: '%',
-                        ),
-                        ShowText(
-                          title: 'P. Control / P. Soporte',
-                          data: Valores.presionControl!.toDouble(),
-                          fractionDigits: 0,
-                          medida: 'cmH2O',
-                        ),
-                      ],
-                    ),
+                    gridDelegate: GridViewTools.gridDelegate(
+                        crossAxisCount: isMobile(context) ? 3 : 3,
+                        mainAxisExtent: 65),
+                    children: [
+                      ValuePanel(
+                        firstText: 'Volumen tidal',
+                        secondText: Valores.volumenTidal!.toStringAsFixed(0),
+                        thirdText: 'mL',
+                      ),
+                      ValuePanel(
+                        firstText: 'Volumen tidal (6)',
+                        secondText: Valores.volumentTidal6!.toStringAsFixed(0),
+                        thirdText: 'mL',
+                      ),
+                      ValuePanel(
+                        firstText: 'Volumen tidal (7)',
+                        secondText: Valores.volumentTidal7!.toStringAsFixed(0),
+                        thirdText: 'mL',
+                      ),
+                      ValuePanel(
+                        firstText: 'Volumen tidal (8)',
+                        secondText: Valores.volumentTidal8!.toStringAsFixed(0),
+                        thirdText: 'mL',
+                      ),
+                      ValuePanel(
+                        firstText: 'Frecuencia Ventilatoria',
+                        secondText:
+                            Valores.frecuenciaVentilatoria!.toStringAsFixed(0),
+                        thirdText: 'Vent/min',
+                      ),
+                      ValuePanel(
+                        firstText: 'P.E.E.P.',
+                        secondText:
+                            Valores.presionFinalEsiracion!.toStringAsFixed(0),
+                        thirdText: 'cmH2O',
+                      ),
+                      ValuePanel(
+                        firstText: 'Presión máxima',
+                        secondText: Valores.presionMaxima!.toStringAsFixed(0),
+                        thirdText: 'cmH2O',
+                      ),
+                      ValuePanel(
+                        firstText: 'FiO2',
+                        secondText: Valores.fraccionInspiratoriaVentilatoria!
+                            .toStringAsFixed(0),
+                        thirdText: '%',
+                      ),
+                      ValuePanel(
+                        firstText: 'P. Control / P. Soporte',
+                        secondText: Valores.presionControl!.toStringAsFixed(0),
+                        thirdText: 'cmH2O',
+                      ),
+                    ],
                   ),
                   GridView(
                     padding: const EdgeInsets.all(5.0),
@@ -260,8 +258,7 @@ class _VentilatoriosState extends State<Ventilatorios> {
             weigth: 2000,
             labelButton: "Copiar en Portapapeles",
             onPress: () {
-              Datos.portapapeles(
-                  context: context, text: Formatos.ventilador);
+              Datos.portapapeles(context: context, text: Formatos.ventilador);
             },
           ),
         ),

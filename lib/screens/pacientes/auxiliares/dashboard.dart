@@ -9,14 +9,19 @@ import 'package:assistant/screens/pacientes/auxiliares/diagnosticos/diagnosticos
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/actividadesHospitalarias.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizado.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisiones.dart';
+import 'package:assistant/screens/pacientes/hospitalizacion/diagnosticados.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/pendientes.dart';
+import 'package:assistant/screens/pacientes/intensiva/contenidos/balances.dart';
+import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
+import 'package:assistant/screens/pacientes/patologicos/epidemiologicos.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/ChartLine.dart';
 
 import 'package:assistant/widgets/CrossLine.dart';
+import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/GrandLabel.dart';
 import 'package:assistant/widgets/RoundedPanel.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
@@ -94,7 +99,6 @@ class _DashboardState extends State<Dashboard> {
           widget.dymValues;
         });
       });
-
     }
     super.initState();
   }
@@ -121,7 +125,7 @@ class _DashboardState extends State<Dashboard> {
           message: "Iniciando actividad : : \n "
               "Consulta de pacientes hospitalizados . . .");
       Actividades.consultarAllById(Databases.siteground_database_regpace,
-          Vitales.vitales['consultIdQuery'], Pacientes.ID_Paciente)
+              Vitales.vitales['consultIdQuery'], Pacientes.ID_Paciente)
           .then((value) {
         setState(() {
           Terminal.printSuccess(
@@ -258,6 +262,175 @@ class _DashboardState extends State<Dashboard> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
+              child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(
+                  flex: 4,
+                  child: RoundedPanel(
+                    child: const Detalles(),
+                  )),
+              const SizedBox(width: 6),
+              Expanded(
+                  flex: 6,
+                  child: RoundedPanel(
+                    padding: 2,
+                    child: Pacientes.esHospitalizado == true
+                        ? const Hospitalizado()
+                        : const EstadisticasVitales(),
+                  )),
+              const SizedBox(width: 6),
+              Expanded(
+                  child: RoundedPanel(
+                child: Column(
+                  children: [
+                    TittlePanel(
+                        padding: 5, textPanel: 'Revisorio'),
+                    GrandIcon(
+                        labelButton: "Revisiones",
+                        iconData: Icons.account_tree,
+                        onPress: () {
+                          setState(() {});
+                        }),
+                    GrandIcon(
+                        labelButton: "Antecedentes Personales Patológicos",
+                        iconData: Icons.medication,
+                        onPress: () {
+                          toNextPage(context, const GestionNoPatologicos());
+                        }),
+                    GrandIcon(
+                        labelButton: "Diagnósticos de la Hospitalización",
+                        iconData: Icons.restore_page_outlined,
+                        onPress: () {
+                          toNextPage(context, GestionDiagnosticos());
+                        }),
+                    GrandIcon(
+                      labelButton: "Concentraciones y Diluciones",
+                      iconData: Icons.balance,
+                      onPress: () {
+                        Operadores.openDialog(
+                          context: context,
+                          chyldrim: const Concentraciones(),
+                        );
+                      },
+                    ),
+                    GrandIcon(
+                        labelButton: "Balances Hidricos",
+                        iconData: Icons.waterfall_chart,
+                      onPress: () {
+                        toNextPage(context, GestionBalances());
+                      },),
+                  ],
+                ),
+              )),
+            ],
+          )),
+          const SizedBox(height: 6),
+          Expanded(
+              flex: 1,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                      child: RoundedPanel(
+                    child: const Diagnosis(),
+                  )),
+                  const SizedBox(width: 6),
+                  Expanded(
+                      child: RoundedPanel(
+                    child: const Degenerativos(),
+                  )),
+                  const SizedBox(width: 6),
+                  Expanded(
+                      child: RoundedPanel(
+                    child: SingleChildScrollView(
+                      controller: ScrollController(),
+                      child: Column(
+                        children: [
+                          GrandLabel(
+                            iconData: Icons.padding,
+                            fontSized: 14,
+                            labelButton: 'Pendientes de la Atención',
+                            onPress: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    GestionPendiente(),
+                              ));
+                            },
+                          ),
+                          TittlePanel(
+                            textPanel: Pacientes.modoAtencion,
+                          ),
+                          GrandLabel(
+                            iconData: Icons.local_hospital,
+                            fontSized: 14,
+                            labelButton: Pacientes.esHospitalizado == true
+                                ? 'Egresar paciente'
+                                : 'Hospitalizar paciente',
+                            onPress: () async {
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //   builder: (BuildContext context) =>
+                              //       GestionPendiente(),
+                              // ));
+                              final respo = await Pacientes.hospitalizar();
+                              // Actualizar vista.
+                              setState(() {
+                                if (respo) {
+                                  Valores.modoAtencion = 'Hospitalización';
+                                  Pacientes.modoAtencion = 'Hospitalización';
+                                  // Actualizar valores de Hospitalización.
+                                  Valores.isHospitalizado = respo;
+                                  Pacientes.esHospitalizado = respo;
+
+                                  // asyncHospitalizar(context);
+                                  Operadores.openActivity(
+                                    context: context,
+                                    chyldrim: const OpcionesHospitalizacion(),
+                                    onAction: () {},
+                                  );
+                                } else {
+                                  Valores.modoAtencion = 'Consulta Externa';
+                                  Pacientes.modoAtencion = 'Consulta Externa';
+                                  // Actualizar valores de Hospitalización.
+                                  Valores.isHospitalizado = respo;
+                                  Pacientes.esHospitalizado = respo;
+                                }
+                              });
+                              //
+                            },
+                          ),
+                          CrossLine(),
+                          GrandLabel(
+                            iconData: Icons.padding,
+                            fontSized: 14,
+                            labelButton: 'Registro de Hospitalizaciones',
+                            onPress: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    GestionHospitalizaciones(),
+                              ));
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  )),
+                ],
+              ))
+        ],
+      ),
+    );
+  }
+
+  Padding bigDesktopView() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
               flex: 1,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -379,5 +552,11 @@ class _DashboardState extends State<Dashboard> {
         ],
       ),
     );
+  }
+
+  // **************************************
+  void toNextPage(BuildContext context, screen) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: ((context) => screen)));
   }
 }

@@ -5,6 +5,7 @@ import 'package:assistant/screens/pacientes/auxiliares/dashboard.dart';
 import 'package:assistant/screens/pacientes/auxiliares/presentaciones/antecedentesPersonales.dart';
 
 import 'package:assistant/screens/pacientes/auxiliares/presentaciones/presentaciones.dart';
+import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisiones.dart';
 import 'package:assistant/screens/pacientes/epidemiologicos/licencias.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';
 import 'package:assistant/screens/pacientes/intensiva/herramientas.dart';
@@ -33,7 +34,6 @@ class VisualPacientes extends StatefulWidget {
 }
 
 class _VisualPacientesState extends State<VisualPacientes> {
-
   @override
   void initState() {
     super.initState();
@@ -44,18 +44,18 @@ class _VisualPacientesState extends State<VisualPacientes> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       drawer:
-      isMobile(context) || isTablet(context) ? drawerHome(context) : null,
+          isMobile(context) || isTablet(context) ? drawerHome(context) : null,
       appBar: AppBar(
           leading: isDesktop(context)
               ? IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-            ),
-            tooltip: 'Regresar',
-            onPressed: () {
-              cerrarCasoPaciente();
-            },
-          )
+                  icon: const Icon(
+                    Icons.arrow_back,
+                  ),
+                  tooltip: 'Regresar',
+                  onPressed: () {
+                    cerrarCasoPaciente();
+                  },
+                )
               : null,
           backgroundColor: Colors.black,
           title: Text(
@@ -65,13 +65,24 @@ class _VisualPacientesState extends State<VisualPacientes> {
           actions: <Widget>[
             IconButton(
               icon: const Icon(
+                Icons.account_tree,
+              ),
+              tooltip: 'Revisiones . . . ',
+              onPressed: () {
+                setState(() {
+                  widget.actualPage = 11;
+                });
+              },
+            ),
+            Container(),
+            //
+            IconButton(
+              icon: const Icon(
                 Icons.remove_from_queue,
               ),
               tooltip: 'Refrescar . . . ',
               onPressed: () async {
-                setState(() {
-
-                });
+                setState(() {});
               },
             ),
             IconButton(
@@ -83,7 +94,8 @@ class _VisualPacientesState extends State<VisualPacientes> {
                 Pacientes.loadingActivity(context: context).then((value) {
                   if (value == true) {
                     Terminal.printAlert(
-                        message: 'Archivo ${Pacientes.localPath} Re-Creado $value');
+                        message:
+                            'Archivo ${Pacientes.localPath} Re-Creado $value');
                     Navigator.of(context).pop();
                   }
                 });
@@ -130,14 +142,14 @@ class _VisualPacientesState extends State<VisualPacientes> {
                       builder: (context) {
                         return imageDialog(
                             Pacientes.nombreCompleto, Pacientes.imagenPaciente,
-                                () {
-                              Navigator.of(context).pop();
-                            });
+                            () {
+                          Navigator.of(context).pop();
+                        });
                       });
                 }),
           ]),
       body:
-      isMobile(context) || isTablet(context) ? mobileView() : desktopView(),
+          isMobile(context) || isTablet(context) ? mobileView() : desktopView(),
     );
   }
 
@@ -155,7 +167,9 @@ class _VisualPacientesState extends State<VisualPacientes> {
     return Row(children: [
       Expanded(
         flex: 2,
-        child: isTablet(context) ? sideBarTablet(context) : sideBarDesktop(context),
+        child: isTablet(context)
+            ? sideBarTablet(context)
+            : sideBarDesktop(context),
       ),
       Expanded(flex: 7, child: pantallasAuxiliares(widget.actualPage)),
     ]);
@@ -285,9 +299,9 @@ class _VisualPacientesState extends State<VisualPacientes> {
       ),
       GestionHospitalizaciones(),
       GestionLicencia(),
-      const Center(
-        child: Text('Body 9'),
-      ),
+      Container(
+        margin: const EdgeInsets.all(10),
+          child: Revisiones()),
       const Center(
         child: Text('Body 10'),
       )
@@ -477,23 +491,26 @@ class _VisualPacientesState extends State<VisualPacientes> {
               MaterialPageRoute(builder: (context) => GestionLicencia()));
         },
       ),
-      Valores.sexo! == 'Femenino' ? ListTile(
-        leading: const Icon(
-          Icons.pregnant_woman_sharp,
-          color: Colors.grey,
-        ),
-        title: const Text('Registro de Embarazos',
-            style: TextStyle(fontSize: Font.fontTileSize, color: Colors.grey)),
-        onTap: () {
-          if (isMobile(context) || isTablet(context)) {
-            Navigator.of(context).pop();
-          }
-          // Update the state of the app
-          setState(() {
-            widget.actualPage = 11;
-          });
-        },
-      ) : Container(),
+      Valores.sexo! == 'Femenino'
+          ? ListTile(
+              leading: const Icon(
+                Icons.pregnant_woman_sharp,
+                color: Colors.grey,
+              ),
+              title: const Text('Registro de Embarazos',
+                  style: TextStyle(
+                      fontSize: Font.fontTileSize, color: Colors.grey)),
+              onTap: () {
+                if (isMobile(context) || isTablet(context)) {
+                  Navigator.of(context).pop();
+                }
+                // Update the state of the app
+                setState(() {
+                  widget.actualPage = 11;
+                });
+              },
+            )
+          : Container(),
       ListTile(
         leading: const Icon(
           Icons.exit_to_app,
@@ -512,12 +529,12 @@ class _VisualPacientesState extends State<VisualPacientes> {
   var scrollController = ScrollController();
   var scrollListController = ScrollController();
 
-@override
+  @override
   void dispose() {
-  scrollController.dispose();
-  scrollListController.dispose();
+    scrollController.dispose();
+    scrollListController.dispose();
 
-  super.dispose();
+    super.dispose();
   }
   // String? turnoPaciente,
   //     statusPaciente,

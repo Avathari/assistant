@@ -46,7 +46,7 @@ class _HospitalizadoState extends State<Hospitalizado> {
               ? mobileView()
               : isTablet(context)
               ? tabletView()
-              : deskTopView()
+              : tabletView()// deskTopView()
         ]);
   }
 
@@ -146,7 +146,7 @@ class _HospitalizadoState extends State<Hospitalizado> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Expanded(
-            flex: isTablet(context) ? 3 : 1,
+            flex: isTablet(context) || isDesktop(context) ? 3 : 1,
             child: SingleChildScrollView(
               controller: ScrollController(),
               child: Column(
@@ -155,11 +155,11 @@ class _HospitalizadoState extends State<Hospitalizado> {
               ),
             ),
           ),
-          isTablet(context)
+          isTablet(context)|| isDesktop(context)
               ? Expanded(
-            flex: isTablet(context) ? 1 : 0,
+            flex: isTablet(context) || isDesktop(context) ? 1 : 0,
             child: GridLayout(
-              // childAspectRatio: ,
+              childAspectRatio: 1.5,
               columnCount: 2,
               // mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -245,14 +245,14 @@ class _HospitalizadoState extends State<Hospitalizado> {
       child: Column(
         children: [
           Expanded(
-              flex: 3,
+              flex: isTablet(context) ? 3 : isMobile(context) ? 3 : 3,
               child: SingleChildScrollView(
                   controller: ScrollController(),
                   child: Column(
                     children: component(context),
                   ))),
           Expanded(
-            flex: 2,
+            flex: 1,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [

@@ -2,6 +2,7 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/antropometricos.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/balancesHidrico.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/cardiovasculares.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/gasometricos.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/hidricos.dart';
@@ -556,10 +557,6 @@ class _RevisionesState extends State<Revisiones> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Expanded(
-          //   flex: 1,
-          //   child: TittlePanel(textPanel: 'Revisión General'),
-          // ),
           Expanded(
             flex: 4,
             child: Container(
@@ -795,7 +792,7 @@ class _RevisionesState extends State<Revisiones> {
                                               : widget.actualView == 8
                                                   ? electrolitos()
                                                   : widget.actualView == 9
-                                                      ? balances()
+                                                      ? const BalanceHidrico()
                                                       : widget.actualView == 10
                                                           ? ventilaciones()
                                                           : widget.actualView ==
@@ -833,6 +830,7 @@ class _RevisionesState extends State<Revisiones> {
               child: Column(
                 children: [
                   Expanded(
+                    flex: 4,
                     child: SingleChildScrollView(
                       padding: const EdgeInsets.all(8.0),
                       controller: ScrollController(),
@@ -1784,7 +1782,6 @@ class _RevisionesState extends State<Revisiones> {
           secondText: Valores.bilirrubinaIndirecta!.toStringAsFixed(2),
           thirdText: "mg/dL",
         ),
-
         ValuePanel(
           firstText: "ALT / TGA",
           secondText: Valores.alaninoaminotrasferasa!.toStringAsFixed(0),

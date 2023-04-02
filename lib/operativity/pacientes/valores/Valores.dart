@@ -2544,6 +2544,53 @@ class Valores {
 class Valorados {
   static String get cardiovasculares => "Análisis cardiovascular";
 
+  // "Parámetros Cardiovasculares - Presión Arterial Media: " + str(
+  // "%.2f" % Cardiovascular.get('Tension_Media_Arterial')) + " mmHg. " \
+  // + "(" + Cardiovascular.get('Clase_Tension_Media') + "); " \
+  // + "Diferencia de Presión Arterial: " + str(
+  // "%.2f" % Cardiovascular.get('Diferencia_Presion_Arterial')) + " mmHg. " \
+  // + "Presión de Pulso: " + str("%.2f" % Cardiovascular.get('Presion_Pulso')) + " mmHg. " \
+  // + "Producto Frecuencia - Presión: " + str(
+  // "%.2f" % Cardiovascular.get('Producto_Frecuencia_Presion')) + " mmHg/Lpm. " \
+  // + "Presión Coloido - Oncótica: " + str("%.2f" % Cardiovascular.get('Presion_Coloido_Oncotica')) + " mmHg. " \
+  // + "Frecuencia Cárdiaca Máxima: " + str(
+  // "%.2f" % Cardiovascular.get('Frecuencia_Cardiaca_Maxima')) + " L/min. " \
+  // + "Frecuencia Cárdiaca Blanco: " + str(
+  // "%.2f" % Cardiovascular.get('Frecuencia_Cardiaca_Blanco')) + " L/min. " \
+  // + "Frecuencia Cárdiaca Intrínseca: " + str(
+  // "%.2f" % Cardiovascular.get('Frecuencia_Cardiaca_Intrinseca')) + " L/min. " \
+  // + "Volemia Aproximada: " + str("%.2f" % Cardiovascular.get('Volemia_Aproximada')) + " mL,  " \
+  // + "Volumen Plasmático Aproximado: " + str(
+  // "%.2f" % Cardiovascular.get('Volumen_Plasmatico_Aproximado')) + " L,  " \
+  // + "Gasto Cárdiaco Aproximado: " + str("%.2f" % Cardiovascular.get('Gasto_Cardiaco_Aproximado')) + " L/min. " \
+  // + "Volumen Látido Aproximado: " + str(
+  // "%.2f" % Cardiovascular.get('Volumen_Latido_Aproximado')) + " mL/min. " + "\n" \
+  // + "Parámetros Hemodinámicos - Concentración Arterial de Oxígeno (CaO2): " + str(
+  // "%.2f" % Cardiovascular.get('Concentracion_Arterial_Oxigeno')) + " mL/dL, " \
+  // + "Concentración Venosa de Oxígeno (CvO2): " + str(
+  // "%.2f" % Cardiovascular.get('Concentracion_Venosa_Oxigeno')) + " mL/dL, " \
+  // + "Diferencia Arterio - Venosa (DavO2): " + str(
+  // "%.2f" % Cardiovascular.get('Diferencia_Arterio_Venosa')) + " mL/dL. " \
+  // + "Capacidad de Oxígeno (CapO2): " + str("%.2f" % Cardiovascular.get('Capacidad_Oxigeno')) + " mL O2/g Hb. " \
+  // + "Indice Cárdicado (I.C.): " + str("%.2f" % Cardiovascular.get('Indice_Cardiaco')) + " L/min/m2, " \
+  // + "Resistencias Venosas Sistémicas (R.V.S.): " + str(
+  // "%.2f" % Cardiovascular.get('Resistencias_Venosas_Sistemicas')) + " Dinas/seg/cm2. " \
+  // + "Indice de Extracción de Oxígeno (I.E.O.): " + str(
+  // "%.2f" % Cardiovascular.get('Indice_Extraccion_Oxigeno')) + " %, " \
+  // + "Disponibilidad de Oxígeno (dO2): " + str(
+  // "%.2f" % Cardiovascular.get('Disponibilidad_Oxigeno')) + " mL/min,  " \
+  // + "Consumo de Oxígeno (cO2): " + str("%.2f" % Cardiovascular.get('Consumo_Oxigeno')) + " mL/min/m2, " \
+  // + "Transporte de Oxígeno (TO2): " + str("%.2f" % Cardiovascular.get('Transporte_Oxigeno')) + " mL/O2/m2. " \
+  // + "Shunt Fisiológico (QS/QT): " + str("%.2f" % Cardiovascular.get('Shunt_Fisiologico')) + " %. " \
+  // + "Gradiente Alveolo - Arterial (G(A-a)): " + str(
+  // "%.2f" % Cardiovascular.get('Gradiente_Alveolo_Arterial')) + " mmHg. " + "\n" \
+  // + "Trabajo Cardiaco - Trabajo Cardiaco: " + str("%.2f" % Cardiovascular.get('Trabajo_Cardiaco')) + " Kg*m. " \
+  // + "Trabajo Látido Ventricular Izquierdo: " + str(
+  // "%.2f" % Cardiovascular.get('Trabajo_Latido_Ventricular_Izquierdo')) + " g*m. " \
+  // + "Trabajo Látido Ventricular Derecho: " + str(
+  // "%.2f" % Cardiovascular.get('Trabajo_Latido_Ventricular_Derecho')) + " g*m. " \
+  // + "" + "\n"
+
   static String get signosVitales =>
       "Signos vitales con " // fecha de ${Pacientes.Vital['Pace_Feca_SV']} con "
       "tensión arterial sistémica en ${Valores.tensionArterialSistemica} mmHg, "
@@ -2617,6 +2664,21 @@ class Valorados {
       "Requerimiento de potasio ${Valores.requerimientoPotasio.toStringAsFixed(1)} "
       "delta de potasio ${Valores.deficitSodio.toStringAsFixed(1)} mEq/L: ${Valores.deltaPotasio.toStringAsFixed(1)}";
 
+  static String get hepaticos {
+    return "";
+    // "Perfil Hepático - " \
+    // + "Relacion ALT:FA : " + str("%.1f" % Hepaticos.get('Relacion_ALT_FA')) + "; Conclusión: " + Hepaticos.get(
+    //     'Patron_ALT_FA') + " (Consideraciones Diagnósticas: " + Hepaticos.get('Diagnosticos_ALT_FA') + ". " \
+    // + "Relacion AST:ALT : " + str(
+    //     "%.1f" % Hepaticos.get('Relacion_AST_ALT')) + "; Consideraciones Diagnósticas: " + Hepaticos.get('Patron_AST_ALT') + ". " \
+    // + "Relacion GGT:FA : " + str(
+    //     "%.1f" % Hepaticos.get('Relacion_GGT_FA')) + "; Consideraciones Diagnósticas: " + Hepaticos.get(
+    //     'Diagnosticos_GGT__FA') + ". " \
+    // + "Relacion BD:BT : " + str(
+    //     "%.1f" % Hepaticos.get('Relacion_BD_BT')) + "; Consideraciones Diagnósticas: " + Hepaticos.get('Diagnosticos_BD_BT') + ". " \
+    // + "Relacion BD:BI : " + str("%.1f" % Hepaticos.get('Relacion_BD_BI')) + ". \n"
+  }
+
   static String get prequirurgicos {
     return ""
         "A.S.A.: ${Valores.valoracionAsa}. \n"
@@ -2628,6 +2690,10 @@ class Valorados {
 }
 
 class Formatos {
+  static String get concentraciones {
+    return "";
+  }
+
   static String get indicacionesPreoperatorias {
     return "No suspender Metformina, sólo el día de la cirugía control con Insulina y durante el transquirurgico. \n"
         "Medidas universales de cuidados y prevención de paciente quirúrgico. \n"
@@ -3332,6 +3398,133 @@ class Formatos {
         "uresis ${Valores.uresis} mL,  "
         "diuresis ${Valores.diuresis.toStringAsFixed(2)} mL/${Valores.horario} mL.  "
         "\n ";
+  }
+
+  static String get gasometricos {
+    return "Gasometría Arterial (${Valores.fechaGasometriaArterial}):  "
+        "pH ${Valores.pHArteriales}, "
+        "PCO2 ${Valores.pcoArteriales} mmHg, "
+        "PO2 ${Valores.poArteriales} mmHg, "
+        "SO2 ${Valores.soArteriales} %, "
+        "HCO3- ${Valores.bicarbonatoArteriales!.toStringAsFixed(2)} mmol/L, "
+        "HCO3std ${Valores.EBecf.toStringAsFixed(2)} mmol/L, "
+        "EB ${Valores.EB.toStringAsFixed(2)} mmol/L, "
+        "TCO2 ${Valores.TCO.toStringAsFixed(2)} mmHg, "
+        "PCO2e ${Valores.PCO2C.toStringAsFixed(2)} mmHg, "
+    // "EBe ${Valores.pHArteriales} mmol/L, "
+        "aGAP ${Valores.GAP.toStringAsFixed(1)}, "
+        "Temp ${Valores.temperaturCorporal}°C, "
+        "FiO2 ${Valores.fioArteriales}%, "
+        "A-aO2 ${Valores.GAA.toStringAsFixed(1)} mmHg, "
+        "PaO2/FiO2 ${Valores.PAFI_FIO.toStringAsFixed(0)}mmHg/%";
+  }
+
+  static String get gasometricosNombrado {
+    return "${Valores.nombreCompleto} - "
+        "pH ${Valores.pHArteriales}, "
+        "PCO2 ${Valores.pcoArteriales} mmHg, "
+        "PO2 ${Valores.poArteriales} mmHg, "
+        "SO2 ${Valores.soArteriales} %, "
+        "HCO3- ${Valores.bicarbonatoArteriales!.toStringAsFixed(2)} mmol/L, "
+        "HCO3std ${Valores.EBecf.toStringAsFixed(2)} mmol/L, "
+        "EB ${Valores.EB.toStringAsFixed(2)} mmol/L, "
+        "TCO2 ${Valores.TCO.toStringAsFixed(2)} mmHg, "
+        "PCO2e ${Valores.PCO2C.toStringAsFixed(2)} mmHg, "
+        // "EBe ${Valores.pHArteriales} mmol/L, "
+        "aGAP ${Valores.GAP.toStringAsFixed(1)}, "
+        "Temp ${Valores.temperaturCorporal}°C, "
+        "FiO2 ${Valores.fioArteriales}%, "
+        "A-aO2 ${Valores.GAA.toStringAsFixed(1)} mmHg, "
+        "PaO2/FiO2 ${Valores.PAFI_FIO.toStringAsFixed(0)}mmHg/%";
+  }
+
+  static String get gasometricosMedial {
+    return "Gasometría Arterial (${Valores.fechaGasometriaArterial}):  "
+        "pH ${Valores.pHArteriales}, "
+        "PCO2 ${Valores.pcoArteriales} mmHg, "
+        "PCO2Tp ${Valores.PCO2C.toStringAsFixed(2)} mmHg, "
+        "PO2 ${Valores.poArteriales} mmHg, "
+        "SO2 ${Valores.soArteriales} %, "
+        "Hb ${Valores.hemoglobina} g/dL, "
+        "Hto ${Valores.hematocrito} %, "
+        "HCO3- ${Valores.bicarbonatoArteriales!.toStringAsFixed(2)} mmol/L, "
+        "HCO3std ${Valores.EBecf.toStringAsFixed(2)} mmol/L, "
+        "EB ${Valores.EB.toStringAsFixed(2)} mmol/L, "
+        "TCO2 ${Valores.TCO.toStringAsFixed(2)} mmHg, "
+        "PCO2e ${Valores.PCO2C.toStringAsFixed(2)} mmHg, "
+        "Temp ${Valores.temperaturCorporal}°C, "
+
+        "FiO2 ${Valores.fioArteriales}%, "
+        "PAO2 ${Valores.PAO} mmHg, "
+        "A-aO2 ${Valores.GAA.toStringAsFixed(1)} mmHg, "
+        "PAO2/PO2 ${Valores.PaO2PAO2.toStringAsFixed(0)}mmHg, "
+        "PO2/FiO2 ${Valores.PAFI_FIO.toStringAsFixed(0)}mmHg, "
+        "SO2/FiO2 ${Valores.SAFI.toStringAsFixed(0)}mmHg/%, "
+        "aGAP ${Valores.GAP.toStringAsFixed(1)}, "
+        "GAPoms ${Valores.GAPO.toStringAsFixed(1)}, "
+        "RI ${Valores.RI.toStringAsFixed(1)}"
+        ".";
+  }
+
+  static String get gasometricosCompleto {
+    return "Gasometría Arterial (${Valores.fechaGasometriaArterial}):  "
+        "pH ${Valores.pHArteriales}, "
+        "PCO2 ${Valores.pcoArteriales} mmHg, "
+        "PCO2Tp ${Valores.PCO2C.toStringAsFixed(2)} mmHg, "
+        "PO2 ${Valores.poArteriales} mmHg, "
+        "SO2 ${Valores.soArteriales} %, "
+        "Hb ${Valores.hemoglobina} g/dL, "
+        "Hto ${Valores.hematocrito} %, "
+        "HCO3- ${Valores.bicarbonatoArteriales!.toStringAsFixed(2)} mmol/L, "
+        "HCO3std ${Valores.EBecf.toStringAsFixed(2)} mmol/L, "
+        "EB ${Valores.EB.toStringAsFixed(2)} mmol/L, "
+        "TCO2 ${Valores.TCO.toStringAsFixed(2)} mmHg, "
+        "PCO2e ${Valores.PCO2C.toStringAsFixed(2)} mmHg, "
+        "Temp ${Valores.temperaturCorporal}°C, "
+
+        "FiO2 ${Valores.fioArteriales}%, "
+        "PAO2 ${Valores.PAO} mmHg, "
+        "A-aO2 ${Valores.GAA.toStringAsFixed(1)} mmHg, "
+        "PAO2/PO2 ${Valores.PaO2PAO2.toStringAsFixed(0)}mmHg, "
+        "PO2/FiO2 ${Valores.PAFI_FIO.toStringAsFixed(0)}mmHg, "
+        "SO2/FiO2 ${Valores.SAFI.toStringAsFixed(0)}mmHg/%, "
+        "aGAP ${Valores.GAP.toStringAsFixed(1)}, "
+        "GAPoms ${Valores.GAPO.toStringAsFixed(1)}, "
+        "RI ${Valores.RI.toStringAsFixed(1)}, "
+
+        "pH- 1ra Regla ${Valores.HCOR_a.toStringAsFixed(2)}, "
+        "pH- 2da Regla ${Valores.HCOR_b.toStringAsFixed(2)}, "
+        "HCO3- 3ra Regla ${Valores.HCOR_c.toStringAsFixed(2)} mmol/L, "
+
+        "Rep. HCO3- ${Valores.HCOAM.toStringAsFixed(2)}, "
+        "en total ${Valores.NOAMP.toStringAsFixed(0)} ámpulas de bicarbonato al 7.5%"
+        ".";
+  }
+
+  static String get gasometricosBicarbonato {
+    return "Gasometría Arterial (${Valores.fechaGasometriaArterial}):  "
+        "pH ${Valores.pHArteriales}, "
+        "PCO2 ${Valores.pcoArteriales} mmHg, "
+        "PCO2Tp ${Valores.PCO2C.toStringAsFixed(2)} mmHg, "
+        "PO2 ${Valores.poArteriales} mmHg, "
+        "SO2 ${Valores.soArteriales} %, "
+        "Hb ${Valores.hemoglobina} g/dL, "
+        "Hto ${Valores.hematocrito} %, "
+        "HCO3- ${Valores.bicarbonatoArteriales!.toStringAsFixed(2)} mmol/L, "
+        "HCO3std ${Valores.EBecf.toStringAsFixed(2)} mmol/L, "
+        "EB ${Valores.EB.toStringAsFixed(2)} mmol/L, "
+        "TCO2 ${Valores.TCO.toStringAsFixed(2)} mmHg, "
+        "PCO2e ${Valores.PCO2C.toStringAsFixed(2)} mmHg, "
+        "Temp ${Valores.temperaturCorporal}°C, "
+
+        "FiO2 ${Valores.fioArteriales}%, "
+        "pH- 1ra Regla ${Valores.HCOR_a.toStringAsFixed(2)}, "
+        "pH- 2da Regla ${Valores.HCOR_b.toStringAsFixed(2)}, "
+        "HCO3- 3ra Regla ${Valores.HCOR_c.toStringAsFixed(2)} mmol/L, "
+
+        "Rep. HCO3- ${Valores.HCOAM.toStringAsFixed(2)}, "
+        "en total ${Valores.NOAMP.toStringAsFixed(0)} ámpulas de bicarbonato al 7.5%"
+        ".";
   }
 }
 

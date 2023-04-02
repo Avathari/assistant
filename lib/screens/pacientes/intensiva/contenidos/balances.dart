@@ -12,7 +12,6 @@ import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/Spinner.dart';
-import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -876,12 +875,12 @@ class _GestionBalancesState extends State<GestionBalances> {
   }
 
   void iniciar() {
+    foundedItems = null;
     Terminal.printWarning(
         message:
         " . . . Iniciando Actividad - Repositorio Balances del Pacientes");
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       setState(() {
-
         foundedItems = value;
         Terminal.printSuccess(
             message: 'Repositorio Balances del Pacientes Obtenido');
