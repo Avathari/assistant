@@ -1138,10 +1138,23 @@ class Valores {
         Valores.pesoCorporalTotal != null &&
         Valores.potasio != 0 &&
         Valores.potasio != null) {
-      return (Valores.pesoCorporalTotal! * (Valores.potasio! - 4));
+      return ((4- Valores.potasio! ) * Valores.pesoCorporalTotal!);
     } else {
       return double.nan;
     }
+  }
+
+  static double get reposicionPotasio {
+    if (Valores.potasio! !=0 && Valores.potasio! != null) {
+      return ((4.0 - Valores.potasio!) * 0.4 * Valores.pesoCorporalTotal!) + (Valores.requerimientoBasalPotasio);
+    } else {
+      return double.nan;
+    }
+
+}
+
+  static double get requerimientoBasalPotasio {
+    return 1.5 * Valores.pesoCorporalTotal!;
   }
 
   static double get requerimientoPotasio {
@@ -1158,7 +1171,7 @@ class Valores {
       return 1.0 * Valores.pesoCorporalTotal!;
     } // mEq/Kg a 0.25 - 0.50 mEq/Kg/Hr [20 mEq/Hr]
     else {
-      return 0.00;
+      return 1.0 * Valores.pesoCorporalTotal!; // 0.0
     }
   }
 

@@ -7,8 +7,8 @@ import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/ShowText.dart';
 import 'package:assistant/widgets/Spinner.dart';
-import 'package:assistant/widgets/ThreeLabelText.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
+import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -86,37 +86,49 @@ class _MetabolicosState extends State<Metabolicos> {
                 controller: ScrollController(),
                 child: Column(
                   children: [
-                    ThreeLabelTextAline(
+                    ValuePanel(
                       firstText: "Sexo",
                       secondText: (Valores.sexo ?? ''),
-                      padding: 1,
+                      thirdText: "",
                     ),
-                    ShowText(
-                      title: 'Edad',
-                      data: Valores.edad!.toDouble(),
-                      fractionDigits: 0,
-                      medida: 'Años',
+                    const SizedBox(height: 8,),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ValuePanel(
+                            firstText: 'Edad',
+                            secondText: Valores.edad!.toStringAsFixed(0),
+                            thirdText: 'Años',
+                          ),
+                        ),
+                        Expanded(
+                          child: ValuePanel(
+                            firstText: 'Peso Corporal Total',
+                            secondText: Valores.pesoCorporalTotal!.toStringAsFixed(1),
+                            thirdText: 'Kg',
+                          ),
+                        ),
+                        Expanded(
+                          child: ValuePanel(
+                            firstText: 'Estatura',
+                            secondText: Valores.alturaPaciente!.toStringAsFixed(2),
+                            thirdText: 'mts',
+                          ),
+                        ),
+                      ],
                     ),
-                    ShowText(
-                      title: 'Peso Corporal Total',
-                      data: Valores.pesoCorporalTotal,
-                      medida: 'Kg',
-                    ),
-                    ShowText(
-                      title: 'Estatura',
-                      data: Valores.alturaPaciente,
-                      medida: 'mts',
-                    ),
+                    const SizedBox(height: 8,),
                     CrossLine(),
-                    ShowText(
-                      title: 'Factor de Actividad',
-                      data: Valores.factorActividad,
-                      medida: '',
+                    ValuePanel(
+                      firstText: 'Factor de Actividad',
+                      secondText: Valores.factorActividad!.toStringAsFixed(2),
+                      thirdText: '',
                     ),
-                    ShowText(
-                      title: 'Factor de Estrés',
-                      data: Valores.factorEstres,
-                      medida: '',
+                    const SizedBox(height: 8,),
+                    ValuePanel(
+                      firstText: 'Factor de Estrés',
+                      secondText: Valores.factorEstres!.toStringAsFixed(2),
+                      thirdText: '',
                     ),
                     CrossLine(),
                   ],
@@ -125,31 +137,28 @@ class _MetabolicosState extends State<Metabolicos> {
               SingleChildScrollView(
                 controller: ScrollController(),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ShowText(
-                      inRow: false,
-                      title: 'Gasto Energético Basal',
-                      data: Valores.gastoEnergeticoBasal,
-                      medida: 'kCal/Día',
+                    ValuePanel(
+                      firstText: 'Gasto Energético Basal',
+                      secondText: Valores.gastoEnergeticoBasal.toStringAsFixed(2),
+                      thirdText: 'kCal/Día',
                     ),
-                    ShowText(
-                      inRow: false,
-                      title: 'Metabolismo Basal',
-                      data: Valores.metabolismoBasal,
-                      medida: 'kCal/Día',
+                    ValuePanel(
+                      firstText: 'Metabolismo Basal',
+                      secondText: Valores.metabolismoBasal.toStringAsFixed(2),
+                      thirdText: 'kCal/Día',
                     ),
-                    ShowText(
-                      inRow: false,
-                      title: 'Efecto Térmico de los Alimentos',
-                      data: Valores.efectoTermicoAlimentos,
-                      medida: 'kCal/Día',
+                    ValuePanel(
+                      firstText: 'Efecto Térmico de los Alimentos',
+                      secondText: Valores.efectoTermicoAlimentos.toStringAsFixed(2),
+                      thirdText: 'kCal/Día',
                     ),
-                    ShowText(
-                      inRow: false,
-                      title: 'Gasto Energético Total',
-                      data: Valores.gastoEnergeticoTotal,
-                      medida: 'kCal/Día',
+                    ValuePanel(
+                      firstText: 'Gasto Energético Total',
+                      secondText: Valores.gastoEnergeticoTotal.toStringAsFixed(2),
+                      thirdText: 'kCal/Día',
                     ),
                     CrossLine(),
                   ],
@@ -229,6 +238,7 @@ class _MetabolicosState extends State<Metabolicos> {
                       ),
                       Spinner(
                         tittle: 'Constante',
+
                         onChangeValue: (value) {
                           setState(() {
                             Valores.porcentajeLipidos =
@@ -264,6 +274,7 @@ class _MetabolicosState extends State<Metabolicos> {
                       ),
                       Spinner(
                         tittle: 'Constante',
+                        width: 70,
                         onChangeValue: (value) {
                           setState(() {
                             Valores.porcentajeCarbohidratos =
@@ -292,6 +303,7 @@ class _MetabolicosState extends State<Metabolicos> {
                       ),
                       Spinner(
                         tittle: 'Constante',
+                        width: 70,
                         onChangeValue: (value) {
                           setState(() {
                             Valores.porcentajeProteinas =
@@ -320,6 +332,7 @@ class _MetabolicosState extends State<Metabolicos> {
                       ),
                       Spinner(
                         tittle: 'Constante',
+                        width: 70,
                         onChangeValue: (value) {
                           setState(() {
                             Valores.porcentajeLipidos =
@@ -351,7 +364,6 @@ class _MetabolicosState extends State<Metabolicos> {
                   ),
                 ]),
               ),
-
             ],
             carouselController: carouselController,
             options: Carousel.carouselOptions(context: context)),

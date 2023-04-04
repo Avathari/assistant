@@ -7,7 +7,7 @@ class ValuePanel extends StatefulWidget {
   String? firstText;
   String? secondText;
   String? thirdText;
-  double padding, fontSize;
+  double padding, fontSize, margin;
 
   bool? withEditMessage, withBorder;
   final ValueChanged<String>? onEdit;
@@ -18,6 +18,7 @@ class ValuePanel extends StatefulWidget {
     this.secondText = "",
     this.thirdText = "",
     this.padding = 2.0,
+    this.margin = 2.0,
     this.fontSize = 12,
     this.withEditMessage = false,
     this.withBorder = true, // false,
@@ -90,6 +91,7 @@ class _ValuePanelState extends State<ValuePanel> {
             ? ContainerDecoration.roundedDecoration()
             : null,
         padding: EdgeInsets.all(widget.padding),
+        margin: EdgeInsets.all(widget.margin),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

@@ -294,6 +294,21 @@ class _HidricosState extends State<Hidricos> {
                         medida: 'mEq/L',
                       ),
                       ShowText(
+                        title: 'Requerimiento Basal Potasio',
+                        data: Valores.requerimientoBasalPotasio,
+                        medida: 'mEq/L',
+                      ),
+                      ShowText(
+                        title: 'Requerimiento Potasio',
+                        data: Valores.requerimientoPotasio,
+                        medida: 'mEq/L',
+                      ),
+                      ShowText(
+                        title: 'Reposición Potasio',
+                        data: Valores.reposicionPotasio,
+                        medida: 'mEq/L',
+                      ),
+                      ShowText(
                         title: 'Delta Potasio',
                         data: Valores.deltaPotasio,
                         medida: 'mEq/L',
