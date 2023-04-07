@@ -171,45 +171,71 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                             filter: {"#": RegExp(r'[0-9]')},
                             type: MaskAutoCompletionType.lazy),
                         textController: fechaRealizacionTextController,
+                        iconColor: Colors.white,
+                        withShowOption: true,
+                        selection: true,
+                        onSelected: () {
+                          fechaRealizacionTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
+                        },
                       ),
                     ),
+                    // Expanded(
+                    //   child: GrandIcon(iconData: Icons.calendar_month,
+                    //     labelButton: "Fecha Actual",
+                    //     onPress: () {
+                    //     setState(() {
+                    //       fechaRealizacionTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
+                    //     });
+                    //   },),
+                    // ),
                     Expanded(
-                      child: GrandIcon(iconData: Icons.calendar_month,
-                        labelButton: "Fecha Actual",
-                        onPress: () {
-                        setState(() {
-                          fechaRealizacionTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
-                        });
-                      },),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  controller: ScrollController(),
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GrandButton(
+                      flex: 4,
+                      child: GrandButton(
                           labelButton: "Signos Vitales",
                           onPress: () {
                             setState(() {
                               carouselController.jumpToPage(0);
                             });
                           }),
-                      GrandButton(
+                    ),
+                    Expanded(
+                      flex: 4,
+                      child: GrandButton(
                           labelButton: "Medidas Antropométricas",
                           onPress: () {
                             setState(() {
                               carouselController.jumpToPage(1);
                             });
-                          })
-                    ],
-                  ),
+                          }),
+                    )
+                  ],
                 ),
               ),
+              // Expanded(
+              //   child: SingleChildScrollView(
+              //     controller: ScrollController(),
+              //     scrollDirection: Axis.horizontal,
+              //     child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //       children: [
+              //         GrandButton(
+              //             labelButton: "Signos Vitales",
+              //             onPress: () {
+              //               setState(() {
+              //                 carouselController.jumpToPage(0);
+              //               });
+              //             }),
+              //         GrandButton(
+              //             labelButton: "Medidas Antropométricas",
+              //             onPress: () {
+              //               setState(() {
+              //                 carouselController.jumpToPage(1);
+              //               });
+              //             })
+              //       ],
+              //     ),
+              //   ),
+              // ),
               Expanded(
                 flex: 8,
                 child: Padding(
@@ -219,48 +245,25 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                       Expanded(
                         child: CarouselSlider(
                             items: [
-                              SingleChildScrollView(
-                                  controller: ScrollController(),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: GridLayout(
-                                      childAspectRatio: isMobile(context)
-                                          ? 4.0
-                                          : isTablet(context)
-                                              ? 5.0
-                                              : 5.0,
-                                      columnCount: isMobile(context)
-                                          ? 1
-                                          : isTablet(context)
-                                              ? 1
-                                              : 2,
-                                      children: component(context),
-                                    ),
-                                  )),
-                              SingleChildScrollView(
-                                  controller: ScrollController(),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: GridLayout(
-                                      childAspectRatio: isMobile(context)
-                                          ? 3.2
-                                          : isTablet(context)
-                                              ? 5.0
-                                              : 5.0,
-                                      columnCount: isMobile(context)
-                                          ? 1
-                                          : isTablet(context)
-                                              ? 1
-                                              : 2,
-                                      children: secondComponent(context),
-                                    ),
-                                  ))
+                              GridView(
+                                controller: ScrollController(),
+                                padding: const EdgeInsets.all(8.0),
+                                gridDelegate: GridViewTools.gridDelegate(crossAxisCount:
+                                isMobile(context) || isTablet(context) ? 1 : 2,
+                                mainAxisExtent: 70),
+                                children: component(context),
+                              ),
+                              GridView(
+                                controller: ScrollController(),
+                                padding: const EdgeInsets.all(8.0),
+                                gridDelegate: GridViewTools.gridDelegate(crossAxisCount:
+                                isMobile(context) || isTablet(context) ? 1 : 2,
+                                    mainAxisExtent: 70),
+                                children: secondComponent(context),
+                              ),
                             ],
                             carouselController: carouselController,
-                            options: CarouselOptions(
-                                height: 500,
-                                enableInfiniteScroll: false,
-                                viewportFraction: 1.0)),
+                            options: Carousel.carouselOptions(context: context)),
                       ),
                       isMobile(context)
                           ? Container()

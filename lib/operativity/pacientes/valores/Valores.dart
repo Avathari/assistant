@@ -2744,6 +2744,11 @@ class Valorados {
 }
 
 class Formatos {
+
+  static String get dietasAyuno {
+    return 'Ayuno hasta nueva orden';
+  }
+
   static String get dietasCompletas{
   return "Dieta de ${Valores.gastoEnergeticoBasal.toStringAsFixed(0)} kCal/Día "
       "repartido en "
@@ -3758,7 +3763,7 @@ class Escalas {
 }
 
 class Items {
-  static List<String> tiposAnalisis = ['Padecimiento Actual'];
+  static List<String> tiposAnalisis = ['Padecimiento Actual', 'Análisis Médico'];
   static List<String> motivosTraslado = [
     "Falla de Respuesta Favorable al Tratamiento",
     "Presencia de Complicaciones",

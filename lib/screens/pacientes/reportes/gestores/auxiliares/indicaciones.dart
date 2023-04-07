@@ -128,33 +128,6 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
                                   labelEditText: "Dieta",
                                   keyBoardType: TextInputType.multiline,
                                   numOfLines: 7,
-                                  withShowOption: true,
-                                  selection: true,
-                                  onSelected: () {
-                                    showDialog(
-                                        useSafeArea: true,
-                                        context: context,
-                                        builder: (context) {
-                                          return Dialog(
-                                              child: DialogSelector(
-                                            tittle: 'Dieta',
-                                            pathForFileSource:
-                                                'assets/diccionarios/Farmacos.txt',
-                                            typeOfDocument: 'txt',
-                                            onSelected: ((value) {
-                                              setState(() {
-                                                Reportes.dieta.add(value);
-                                                dietaTextController.text =
-                                                    "${dietaTextController.text}$value\n";
-                                              });
-                                            }),
-                                          ));
-                                        });
-                                  },
-                                  onChange: ((value) {
-                                    Reportes.dieta = traslate(value);
-                                    Reportes.reportes['Dieta'] = Reportes.dieta;
-                                  }),
                                   inputFormat: MaskTextInputFormatter()),
                               CrossLine(),
                               Row(
@@ -211,8 +184,20 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
                                   )
                                 ],
                               ),
+                              CrossLine(),
                               Row(
                                 children: [
+                                  Expanded(
+                                    child: GrandButton(
+                                      labelButton: "A.H.N.O.",
+                                      onPress: () {
+                                        Reportes.dieta.clear();
+                                        dietaTextController.text =
+                                            Formatos.dietasAyuno;
+                                        Reportes.dieta.add(Formatos.dietasAyuno);
+                                      },
+                                    ),
+                                  ),
                                   Expanded(
                                     child: GrandButton(
                                       labelButton: "Dieta",

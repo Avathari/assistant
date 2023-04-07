@@ -4,6 +4,7 @@ import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/subjetivos.
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/auxiliaresReportes.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/exploracionFisica.dart';
 import 'package:assistant/values/SizingInfo.dart';
+import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -103,10 +104,7 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
             padding: const EdgeInsets.all(8.0),
             child: CarouselSlider(
               carouselController: carouselController,
-              options: CarouselOptions(
-                  height: isMobile(context) ? 900 : isTablet(context) ? 1200 : 450,
-                  enableInfiniteScroll: false,
-                  viewportFraction: 1.0),
+              options: Carousel.carouselOptions(context: context),
               items: [
                 SingleChildScrollView(
                   controller: ScrollController(),

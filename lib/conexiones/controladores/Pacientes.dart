@@ -308,7 +308,8 @@ class Pacientes {
         "Reportes.Antecedentes_Quirurgicos ${Reportes.antecedentesQuirurgicos}"
         "isEmpty ${Quirurgicos!.isEmpty}");
     // ************************ ************** ********** **** *** *
-    if (Quirurgicos != [] ) { // || Quirurgicos!.isNotEmpty
+    if (Quirurgicos != []) {
+      // || Quirurgicos!.isNotEmpty
       Reportes.antecedentesQuirurgicos = "";
       for (var element in Quirurgicos!) {
         if (Reportes.antecedentesQuirurgicos == "") {
@@ -4168,7 +4169,8 @@ class Quirurgicos {
 
 class Transfusionales {
   static int ID_Transfusionales = 0;
-  static var fileAssocieted = '${Pacientes.localRepositoryPath}transfusionales.json';
+  static var fileAssocieted =
+      '${Pacientes.localRepositoryPath}transfusionales.json';
   //
   static String selectedDiagnosis = "";
   //
@@ -5917,10 +5919,10 @@ class Reportes {
   //
   static String auxiliaresDiagnosticos = "", analisisComplementarios = "";
   //
-  static String eventualidadesOcurridas = "Sin eventualidades reportadas. ";
-  static String terapiasPrevias = "";
-  static String analisisMedico = "";
-  static String tratamientoPropuesto = "";
+  static String eventualidadesOcurridas = "Sin eventualidades reportadas. ",
+      terapiasPrevias = "", analisisMedico = "", tratamientoPropuesto = "";
+  //
+  static List<dynamic> analisisAnteriores = [];
   //
   static String impresionesDiagnosticas = "";
   static String pronosticoMedico = "";
@@ -6614,6 +6616,19 @@ class Repositorios {
     });
   }
 
+  static void consultarAnalisis() {
+    Actividades.consultarAllById(
+        Databases.siteground_database_reghosp,
+        Repositorios.repositorio['consultAnalisisQuery'],
+        Pacientes.ID_Hospitalizacion)
+        .then((value) {
+          Terminal.printExpected(message: "ANALISIS - $value ${value.runtimeType}");
+          Reportes.analisisMedico = value.last['Contexto'];
+          Reportes.analisisAnteriores = value;
+
+    });
+  }
+
   static void actualizarRegistro() {
     Actividades.actualizar(
       Databases.siteground_database_reghosp,
@@ -6643,12 +6658,32 @@ class Repositorios {
     );
   }
 
+  static void registrarAnalisis() {
+    Actividades.registrar(
+      Databases.siteground_database_reghosp,
+      Repositorios.repositorio['registerQuery'],
+      [
+        Pacientes.ID_Paciente,
+        Pacientes.ID_Hospitalizacion,
+        Valores.fechaPadecimientoActual,
+        Calendarios.today(format: 'yyyy/MM/dd'),
+        Valores.servicioTratante,
+        Reportes.analisisMedico, //'', // Valores.padecimientoActual,
+        Items.tiposAnalisis[1],
+      ],
+    )
+        .then((value) =>
+            Terminal.printExpected(message: "SUCCESS - Análisis registrado"))
+        .onError((error, stackTrace) =>
+      Terminal.printAlert(message: "ERROR - $error : : $stackTrace")
+    );
+  }
+
   static void consultarRegistro() {
     Actividades.consultarAllById(Databases.siteground_database_reghosp,
             Repositorio['consultIdQuery'], Pacientes.ID_Paciente)
         .then((value) {
-      // Enfermedades de base del paciente, asi como las Hospitalarias.
-      // Pacientes.Repositorios = value;
+          Reportes.analisisAnteriores = value;
     });
   }
 
@@ -6679,6 +6714,9 @@ class Repositorios {
     "consultPadecimientoQuery":
         "SELECT * FROM pace_hosp_repo WHERE ID_Hosp = ? "
             "AND TipoAnalisis = 'Padecimiento Actual'",
+    "consultAnalisisQuery":
+    "SELECT * FROM pace_hosp_repo WHERE ID_Hosp = ? "
+        "AND TipoAnalisis = 'Análisis Médico'",
     "consultIdQuery": "SELECT * FROM pace_hosp_repo WHERE ID_Pace = ?",
     "consultByIdPrimaryQuery": "SELECT * FROM pace_hosp_repo WHERE ID_Hosp = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_hosp_repo",
@@ -7150,10 +7188,8 @@ class Vacunales {
   static List<String> actualSuspendido = Dicotomicos.dicotomicos();
 
   static void registros() {
-    Actividades.consultarAllById(
-        Databases.siteground_database_regpace,
-        Vacunales.vacuna['consultByIdPrimaryQuery'],
-        Pacientes.ID_Paciente)
+    Actividades.consultarAllById(Databases.siteground_database_regpace,
+            Vacunales.vacuna['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
         .then((value) => Pacientes.Vacunales = value);
   }
 

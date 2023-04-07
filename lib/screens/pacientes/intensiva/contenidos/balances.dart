@@ -83,7 +83,8 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         break;
       case Constantes.Register:
         widget._operationButton = 'Registrar';
-
+        fechaRealizacionTextController.text =
+            Calendarios.today(format: "yyyy/MM/dd");
         viaPerdidaTextController.text = Valores.perdidasInsensibles.toString();
 
         break;
@@ -205,47 +206,50 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
                   filter: {"#": RegExp(r'[0-9]')},
                   type: MaskAutoCompletionType.lazy),
             ),
-            Container(
-              decoration: ContainerDecoration.roundedDecoration(),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: GrandButton(
-                        weigth: isMobile(context) ? 50 : 200,
-                        labelButton: "Ingresos",
-                        onPress: () {
-                          setState(() {
-                            carouselController.jumpToPage(0);
-                          });
-                        }),
-                  ),
-                  Expanded(
-                    child: GrandButton(
-                        weigth: isMobile(context) ? 50 : 200,
-                        labelButton: "Egresos",
-                        onPress: () {
-                          setState(() {
-                            carouselController.jumpToPage(1);
-                          });
-                        }),
-                  ),
-                  isDesktop(context)
-                      ? Expanded(
-                          child: GrandButton(
-                              weigth: isMobile(context) ? 50 : 200,
-                              labelButton: "Balance Total",
-                              onPress: () {
-                                setState(() {
-                                  carouselController.jumpToPage(2);
-                                });
-                              }),
-                        )
-                      : Container()
-                ],
+            Expanded(
+              child: Container(
+                decoration: ContainerDecoration.roundedDecoration(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: GrandButton(
+                          weigth: isMobile(context) ? 50 : 200,
+                          labelButton: "Ingresos",
+                          onPress: () {
+                            setState(() {
+                              carouselController.jumpToPage(0);
+                            });
+                          }),
+                    ),
+                    Expanded(
+                      child: GrandButton(
+                          weigth: isMobile(context) ? 50 : 200,
+                          labelButton: "Egresos",
+                          onPress: () {
+                            setState(() {
+                              carouselController.jumpToPage(1);
+                            });
+                          }),
+                    ),
+                    isDesktop(context)
+                        ? Expanded(
+                            child: GrandButton(
+                                weigth: isMobile(context) ? 50 : 200,
+                                labelButton: "Balance Total",
+                                onPress: () {
+                                  setState(() {
+                                    carouselController.jumpToPage(2);
+                                  });
+                                }),
+                          )
+                        : Container()
+                  ],
+                ),
               ),
             ),
             Expanded(
+              flex: 7,
               child: Container(
                 padding: const EdgeInsets.all(10.0),
                 margin: const EdgeInsets.all(10.0),

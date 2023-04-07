@@ -49,6 +49,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
     setState(() {
       Reportes.consultarRegistros();
       Diagnosticos.consultarRegistro();
+      Repositorios.consultarAnalisis();
+
+      Terminal.printExpected(message: "Analisis Previos : : ${Reportes.analisisAnteriores}");
     });
     // # # # ############## #### ######## #### ########
     super.initState();
@@ -312,7 +315,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           GrandButton(
               labelButton: "Vista previa",
               onPress: () async {
-                await imprimirDocumento();
+                await imprimirDocumento().then((value) => Operadores.alertActivity(context: context, onAcept: (){
+                  Repositorios.registrarAnalisis();
+                }));
               }),
         ],
       );
