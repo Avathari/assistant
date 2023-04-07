@@ -15,6 +15,8 @@ import 'package:assistant/screens/pacientes/intensiva/valoraciones/aereos.dart';
 import 'package:assistant/screens/pacientes/intensiva/valoraciones/prequirurgicos.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/auxiliaresReportes.dart';
 import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteFormats/formatosReportes.dart';
+import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/indicaciones.dart';
+import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/terapias.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteConsulta.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteEvolucion.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteIngreso.dart';
@@ -85,7 +87,6 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
   }
 
   void onClose(BuildContext context) {
-    Reportes.close();
     Navigator.of(context).push(MaterialPageRoute(
         builder: (BuildContext context) => VisualPacientes(
               actualPage: 0,
@@ -107,14 +108,10 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
         )),
         Expanded(
             flex: 4,
-            child: Padding(
+            child: Container(
               padding: const EdgeInsets.all(15.0),
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Colores.backgroundPanel,
-                    borderRadius: BorderRadius.circular(20)),
-                child: pantallasReportesMedicos(widget.actualPage),
-              ),
+              decoration: ContainerDecoration.roundedDecoration(),
+              child: pantallasReportesMedicos(widget.actualPage),
             )),
         Expanded(
             child: Padding(
@@ -418,6 +415,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       const CateterTenckhoff(), // 15 :
       Container(),  // 16 : Punción Lumbar
       const ReporteTransfusion(),  // 17 : Reporte de Transfusión
+      const TerapiasItems(), // 18: Evaluación de Terapia
     ];
 
     return list[actualPage];
@@ -528,6 +526,14 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           }),
       GrandButton(
           weigth: 2000,
+          labelButton: "Valoración de Terapia",
+          onPress: () {
+            setState(() {
+              widget.actualPage = 18;
+            });
+          }),
+      GrandButton(
+          weigth: 2000,
           labelButton: "Valoración de la Vía Aerea",
           onPress: () {
             setState(() {
@@ -625,4 +631,5 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           }),
     ];
   }
+
 }

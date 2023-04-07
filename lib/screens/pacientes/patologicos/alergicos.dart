@@ -525,7 +525,7 @@ class _GestionAlergicosState extends State<GestionAlergicos> {
             " . . . Iniciando Actividad - Repositorio Alérgico del Pacientes");
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       setState(() {
-        foundedItems = value;
+          foundedItems = value;
         Terminal.printSuccess(
             message: 'Repositorio Alérgico del Pacientes Obtenido');
       });
@@ -550,96 +550,106 @@ class _GestionAlergicosState extends State<GestionAlergicos> {
   // Operaciones de la Interfaz ***** ******* ********** ****
   Container itemListView(
       AsyncSnapshot snapshot, int posicion, BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(2.0),
-      child: GestureDetector(
-        onTap: () {
-          onSelected(snapshot, posicion, context, Constantes.Update);
-        },
-        child: Card(
-          color: const Color.fromARGB(255, 54, 50, 50),
-          child: Container(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "ID : ${snapshot.data[posicion]['ID_PACE_APP_ALE'].toString()}",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                                fontSize: 12),
-                          ),
-                          Text(
-                            "${snapshot.data[posicion]['Pace_APP_ALE']}",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                                fontSize: 14),
-                          ),
-                          Text(
-                            "${snapshot.data[posicion]['Pace_APP_ALE_com']}",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                                fontSize: 14),
-                          ),
-                        ],
+    Terminal.printExpected(message: "Snapshot.data ${snapshot.data} "
+        "${snapshot.data.runtimeType} "
+        "${snapshot.data[0].runtimeType} "
+        "${snapshot.data.isEmpty} "
+        "${snapshot.data[0].isNotEmpty}");
+
+    if (snapshot.data[0].isNotEmpty) {
+      return Container(
+        padding: const EdgeInsets.all(2.0),
+        child: GestureDetector(
+          onTap: () {
+            onSelected(snapshot, posicion, context, Constantes.Update);
+          },
+          child: Card(
+            color: const Color.fromARGB(255, 54, 50, 50),
+            child: Container(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "ID : ${snapshot.data[posicion]['ID_PACE_APP_ALE'].toString()}",
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey,
+                                  fontSize: 12),
+                            ),
+                            Text(
+                              "${snapshot.data[posicion]['Pace_APP_ALE']}",
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey,
+                                  fontSize: 14),
+                            ),
+                            Text(
+                              "${snapshot.data[posicion]['Pace_APP_ALE_com']}",
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey,
+                                  fontSize: 14),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        IconButton(
-                          color: Colors.grey,
-                          icon: const Icon(Icons.update_rounded),
-                          onPressed: () {
-                            //
-                            onSelected(
-                                snapshot, posicion, context, Constantes.Update);
-                          },
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        IconButton(
-                          color: Colors.grey,
-                          icon: const Icon(Icons.delete),
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return alertDialog(
-                                    'Eliminar registro',
-                                    '¿Esta seguro de querer eliminar el registro?',
-                                    () {
-                                      closeDialog(context);
-                                    },
-                                    () {
-                                      deleteRegister(
-                                          snapshot, posicion, context);
-                                    },
-                                  );
-                                });
-                          },
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ],
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          IconButton(
+                            color: Colors.grey,
+                            icon: const Icon(Icons.update_rounded),
+                            onPressed: () {
+                              //
+                              onSelected(
+                                  snapshot, posicion, context, Constantes.Update);
+                            },
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          IconButton(
+                            color: Colors.grey,
+                            icon: const Icon(Icons.delete),
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return alertDialog(
+                                      'Eliminar registro',
+                                      '¿Esta seguro de querer eliminar el registro?',
+                                      () {
+                                        closeDialog(context);
+                                      },
+                                      () {
+                                        deleteRegister(
+                                            snapshot, posicion, context);
+                                      },
+                                    );
+                                  });
+                            },
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    } else {
+      return Container();
+    }
   }
 
   void onSelected(AsyncSnapshot<dynamic> snapshot, int posicion,
@@ -728,7 +738,7 @@ class _GestionAlergicosState extends State<GestionAlergicos> {
   }
 
   // VARIABLES DE LA INTERFAZ ***** ******* ********** ****
-  String appTittle = "Gestion de patologías del paciente";
+  String appTittle = "Gestion de alergías del paciente";
   String searchCriteria = "Buscar por Fecha";
   String? consultQuery = Alergicos.alergias['consultIdQuery'];
 

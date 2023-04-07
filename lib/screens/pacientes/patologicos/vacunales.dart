@@ -30,24 +30,6 @@ class OperacionesVacunales extends StatefulWidget {
 }
 
 class _OperacionesVacunalesState extends State<OperacionesVacunales> {
-  String appBarTitile = "Gestión de Vacunales";
-  String? consultIdQuery = Vacunales.vacuna['consultIdQuery'];
-  String? registerQuery = Vacunales.vacuna['registerQuery'];
-  String? updateQuery = Vacunales.vacuna['updateQuery'];
-
-  int idOperation = 0;
-
-  List<dynamic>? listOfValues;
-
-  var isActualDiagoValue = Vacunales.actualDiagno[0];
-  var cieDiagnoTextController = TextEditingController();
-  var ayoDiagoTextController = TextEditingController();
-  //
-  var isTratamientoDiagoValue = Vacunales.actualTratamiento[0];
-  var tratamientoTextController = TextEditingController();
-
-  //
-  var patologicosScroller = ScrollController();
 
   @override
   void initState() {
@@ -130,6 +112,27 @@ class _OperacionesVacunalesState extends State<OperacionesVacunales> {
         ),
       ),
     );
+  }
+
+  Future<void> reiniciar() async {
+    Terminal.printExpected(message: "Reinicio de los valores . . .");
+
+    Pacientes.Vacunales!.clear();
+    Actividades.consultarAllById(
+        Databases.siteground_database_regpace,
+        Vacunales.vacuna['consultByIdPrimaryQuery'],
+        Pacientes.ID_Paciente)
+        .then((value) {
+      setState(() {
+        Pacientes.Vacunales = value;
+        Terminal.printSuccess(
+            message:
+            "Actualizando Repositorio de Vacunales del Paciente . . . ${Pacientes.Vacunales}");
+
+        Archivos.createJsonFromMap(Pacientes.Vacunales!,
+            filePath: Vacunales.fileAssocieted);
+      });
+    });
   }
 
   List<Widget> component(BuildContext context) {
@@ -234,30 +237,38 @@ class _OperacionesVacunalesState extends State<OperacionesVacunales> {
           // ******************************************** *** *
           Actividades.registrar(Databases.siteground_database_regpace,
                   registerQuery!, listOfValues!)
-              .then((value) => Actividades.consultarAllById(
-                          Databases.siteground_database_regpace,
-                          consultIdQuery!,
-                          Pacientes.ID_Paciente) // idOperation)
-                      .then((value) {
-                    // ******************************************** *** *
-                    Pacientes.Vacunales = value;
-                    Constantes.reinit(value: value);
-                    // ******************************************** *** *
-                  }).then((value) => onClose(context)));
+              .then((value) {
+            Archivos.deleteFile(filePath: Vacunales.fileAssocieted);
+            reiniciar().then((value) => Operadores.alertActivity(
+                context: context,
+                tittle: "Anexión de registros",
+                message: "Registros Agregados",
+                onAcept: () {
+                  onClose(context);
+                }));
+            // ******************************************** *** *
+            // Pacientes.Vacunales = value;
+            // Constantes.reinit(value: value);
+            // ******************************************** *** *
+          });
           break;
         case Constantes.Update:
           Actividades.actualizar(Databases.siteground_database_regpace,
                   updateQuery!, listOfValues!, idOperation)
-              .then((value) => Actividades.consultarAllById(
-                          Databases.siteground_database_regpace,
-                          consultIdQuery!,
-                          Pacientes.ID_Paciente) // idOperation)
-                      .then((value) {
-                    // ******************************************** *** *
-                    Pacientes.Vacunales = value;
-                    Constantes.reinit(value: value);
-                    // ******************************************** *** *
-                  }).then((value) => onClose(context)));
+              .then((value) {
+            Archivos.deleteFile(filePath: Vacunales.fileAssocieted);
+            reiniciar().then((value) => Operadores.alertActivity(
+                context: context,
+                tittle: "Actualización de registros",
+                message: "Registros Actualizados",
+                onAcept: () {
+                  onClose(context);
+                }));
+            // // ******************************************** *** *
+            // Pacientes.Vacunales = value;
+            // Constantes.reinit(value: value);
+            // ******************************************** *** *
+          });
           break;
         default:
       }
@@ -312,6 +323,26 @@ class _OperacionesVacunalesState extends State<OperacionesVacunales> {
           ));
         });
   }
+
+  String appBarTitile = "Gestión de Vacunales";
+  String? consultIdQuery = Vacunales.vacuna['consultIdQuery'];
+  String? registerQuery = Vacunales.vacuna['registerQuery'];
+  String? updateQuery = Vacunales.vacuna['updateQuery'];
+
+  int idOperation = 0;
+
+  List<dynamic>? listOfValues;
+
+  var isActualDiagoValue = Vacunales.actualDiagno[0];
+  var cieDiagnoTextController = TextEditingController();
+  var ayoDiagoTextController = TextEditingController();
+  //
+  var isTratamientoDiagoValue = Vacunales.actualTratamiento[0];
+  var tratamientoTextController = TextEditingController();
+
+  //
+  var patologicosScroller = ScrollController();
+
 }
 
 class GestionVacunales extends StatefulWidget {
@@ -329,32 +360,27 @@ class GestionVacunales extends StatefulWidget {
 }
 
 class _GestionVacunalesState extends State<GestionVacunales> {
-  String appTittle = "Gestion de vacuna del paciente";
-  String searchCriteria = "Buscar por Fecha";
-  String? consultQuery = Vacunales.vacuna['consultIdQuery'];
-
-  late List? foundedItems = [];
-  var gestionScrollController = ScrollController();
-  var searchTextController = TextEditingController();
+  var fileAssocieted = Vacunales.fileAssocieted;
 
   @override
   void initState() {
-    print(" . . . Iniciando array ");
-    if (Constantes.dummyArray!.isNotEmpty) {
-      if (Constantes.dummyArray![0] == "Vacio") {
-        Actividades.consultarAllById(Databases.siteground_database_regpace,
-                consultQuery!, Pacientes.ID_Paciente)
-            .then((value) {
-          setState(() {
-            print(" . . . Buscando items \n");
-            foundedItems = value;
-          });
-        });
-      } else {
-        print(" . . . Dummy array iniciado");
-        foundedItems = Constantes.dummyArray;
-      }
-    }
+    iniciar();
+    // print(" . . . Iniciando array ");
+    // if (Constantes.dummyArray!.isNotEmpty) {
+    //   if (Constantes.dummyArray![0] == "Vacio") {
+    //     Actividades.consultarAllById(Databases.siteground_database_regpace,
+    //             consultQuery!, Pacientes.ID_Paciente)
+    //         .then((value) {
+    //       setState(() {
+    //         print(" . . . Buscando items \n");
+    //         foundedItems = value;
+    //       });
+    //     });
+    //   } else {
+    //     print(" . . . Dummy array iniciado");
+    //     foundedItems = Constantes.dummyArray;
+    //   }
+    // }
     super.initState();
   }
 
@@ -498,6 +524,36 @@ class _GestionVacunalesState extends State<GestionVacunales> {
             : Container()
       ]),
     );
+  }
+
+  void iniciar() {
+    Terminal.printWarning(
+        message:
+        " . . . Iniciando Actividad - Repositorio Vacunales del Pacientes");
+    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+      setState(() {
+        foundedItems = value;
+        Terminal.printSuccess(
+            message: 'Repositorio Vacunales del Pacientes Obtenido');
+      });
+    }).onError((error, stackTrace) {
+      reiniciar();
+    });
+    Terminal.printOther(message: " . . . Actividad Iniciada");
+  }
+
+  Future<void> reiniciar() async {
+    Terminal.printExpected(message: "Reinicio de los valores . . .");
+    Actividades.consultarAllById(
+        Databases.siteground_database_regpace,
+        Vacunales.vacuna['consultByIdPrimaryQuery'],
+        Pacientes.ID_Paciente)
+        .then((value) {
+      setState(() {
+        foundedItems = value;
+        Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
+      });
+    });
   }
 
   Container itemListView(
@@ -669,4 +725,14 @@ class _GestionVacunalesState extends State<GestionVacunales> {
                 ),
             transitionDuration: const Duration(seconds: 0)));
   }
+
+  // VARIABLES DE LA INTERFAZ ********* **** ********* ******
+  String appTittle = "Gestion de vacuna del paciente";
+  String searchCriteria = "Buscar por Fecha";
+  String? consultQuery = Vacunales.vacuna['consultIdQuery'];
+
+  late List? foundedItems = [];
+  var gestionScrollController = ScrollController();
+  var searchTextController = TextEditingController();
+
 }

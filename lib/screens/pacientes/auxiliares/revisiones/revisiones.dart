@@ -74,7 +74,7 @@ class _RevisionesState extends State<Revisiones> {
               controller: ScrollController(),
               gridDelegate: GridViewTools.gridDelegate(
                   crossAxisCount: isMobile(context) ? 4 : 3,
-                  mainAxisExtent: 65), //46
+                  mainAxisExtent: 66), //46
               children: [
                 ValuePanel(
                   firstText: "T. Sys",
@@ -613,7 +613,7 @@ class _RevisionesState extends State<Revisiones> {
                       controller: ScrollController(),
                       gridDelegate: GridViewTools.gridDelegate(
                           crossAxisCount: isMobile(context) ? 4 : 2,
-                          mainAxisExtent: 65), //46
+                          mainAxisExtent: 66), //46
                       children: [
                         ValuePanel(
                           firstText: "T. Sys",
@@ -1135,932 +1135,1198 @@ class _RevisionesState extends State<Revisiones> {
   }
 
   // **** ********** ********* *****************
-  GridView biometrias() {
-    return GridView(
-      padding: const EdgeInsets.all(5.0),
-      controller: ScrollController(),
-      gridDelegate: GridViewTools.gridDelegate(
-          crossAxisCount: isMobile(context) ? 4 : 5, mainAxisExtent: 65), //46
+  Column biometrias() {
+    return Column(
       children: [
-        ValuePanel(
-          firstText: "Hemoglobina",
-          secondText: Valores.hemoglobina.toString(),
-          thirdText: "g/dL",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                keyBoardType: TextInputType.number,
-                tittle: "Editar . . . ",
-                message: "¿Hemoglobina? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.hemoglobina = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
+        Expanded(
+          child: ValuePanel(
+            firstText: "",
+            secondText: Valores.fechaVitales.toString(),
+            thirdText: "",
+          ),
         ),
-        ValuePanel(
-          firstText: "Eritrocitos",
-          secondText: Valores.eritrocitos.toString(),
-          thirdText: "K/uL",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿Eritrocitos? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.eritrocitos = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "Hematocrito",
-          secondText: Valores.hematocrito.toString(),
-          thirdText: "%",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿Hematocrito? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.hematocrito = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "CMHC",
-          secondText: Valores.concentracionMediaHemoglobina.toString(),
-          thirdText: "g/dL",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                keyBoardType: TextInputType.number,
-                tittle: "Editar . . . ",
-                message: "¿C. Media Hemoglobina Corpuscular? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.concentracionMediaHemoglobina = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "HCM",
-          secondText: Valores.hemoglobinaCorpuscularMedia.toString(),
-          thirdText: "fL",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                keyBoardType: TextInputType.number,
-                tittle: "Editar . . . ",
-                message: "¿Hemoglobina Corpuscular Media? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.hemoglobinaCorpuscularMedia = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "VCM",
-          secondText: Valores.volumenCorpuscularMedio.toString(),
-          thirdText: "pg",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                keyBoardType: TextInputType.number,
-                tittle: "Editar . . . ",
-                message: "¿Volumen Corpuscular Medio? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.volumenCorpuscularMedio = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "Plaquetas",
-          secondText: Valores.plaquetas.toString(),
-          thirdText: "K/uL",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿Plaquetas? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.plaquetas = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        CrossLine(),
-        ValuePanel(
-          firstText: "Leucocitos",
-          secondText: Valores.leucocitosTotales!.toStringAsFixed(2),
-          thirdText: "K/uL",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿Leucocitos? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.leucocitosTotales = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "Neutrofilos",
-          secondText: Valores.leucocitosTotales.toString(),
-          thirdText: "K/uL",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿Neutrofilos? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.leucocitosTotales = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "Linfocitos",
-          secondText: Valores.linfocitosTotales.toString(),
-          thirdText: "K/uL",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿Linfocitos? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.linfocitosTotales = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "Monocitos",
-          secondText: Valores.monocitosTotales.toString(),
-          thirdText: "K/uL",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿Monocitos? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.monocitosTotales = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
+        Expanded(
+          flex: 8,
+          child: GridView(
+            padding: const EdgeInsets.all(5.0),
+            controller: ScrollController(),
+            gridDelegate: GridViewTools.gridDelegate(
+                crossAxisCount: isMobile(context) ? 4 : 5, mainAxisExtent: 66), //46
+            children: [
+              ValuePanel(
+                firstText: "Hemoglobina",
+                secondText: Valores.hemoglobina.toString(),
+                thirdText: "g/dL",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      keyBoardType: TextInputType.number,
+                      tittle: "Editar . . . ",
+                      message: "¿Hemoglobina? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.hemoglobina = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "Eritrocitos",
+                secondText: Valores.eritrocitos.toString(),
+                thirdText: "K/uL",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      tittle: "Editar . . . ",
+                      message: "¿Eritrocitos? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.eritrocitos = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "Hematocrito",
+                secondText: Valores.hematocrito.toString(),
+                thirdText: "%",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      tittle: "Editar . . . ",
+                      message: "¿Hematocrito? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.hematocrito = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "CMHC",
+                secondText: Valores.concentracionMediaHemoglobina.toString(),
+                thirdText: "g/dL",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      keyBoardType: TextInputType.number,
+                      tittle: "Editar . . . ",
+                      message: "¿C. Media Hemoglobina Corpuscular? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.concentracionMediaHemoglobina = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "HCM",
+                secondText: Valores.hemoglobinaCorpuscularMedia.toString(),
+                thirdText: "fL",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      keyBoardType: TextInputType.number,
+                      tittle: "Editar . . . ",
+                      message: "¿Hemoglobina Corpuscular Media? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.hemoglobinaCorpuscularMedia = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "VCM",
+                secondText: Valores.volumenCorpuscularMedio.toString(),
+                thirdText: "pg",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      keyBoardType: TextInputType.number,
+                      tittle: "Editar . . . ",
+                      message: "¿Volumen Corpuscular Medio? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.volumenCorpuscularMedio = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "Plaquetas",
+                secondText: Valores.plaquetas.toString(),
+                thirdText: "K/uL",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      tittle: "Editar . . . ",
+                      message: "¿Plaquetas? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.plaquetas = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              CrossLine(),
+              ValuePanel(
+                firstText: "Leucocitos",
+                secondText: Valores.leucocitosTotales!.toStringAsFixed(2),
+                thirdText: "K/uL",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      tittle: "Editar . . . ",
+                      message: "¿Leucocitos? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.leucocitosTotales = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "Neutrofilos",
+                secondText: Valores.leucocitosTotales.toString(),
+                thirdText: "K/uL",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      tittle: "Editar . . . ",
+                      message: "¿Neutrofilos? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.leucocitosTotales = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "Linfocitos",
+                secondText: Valores.linfocitosTotales.toString(),
+                thirdText: "K/uL",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      tittle: "Editar . . . ",
+                      message: "¿Linfocitos? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.linfocitosTotales = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "Monocitos",
+                secondText: Valores.monocitosTotales.toString(),
+                thirdText: "K/uL",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      tittle: "Editar . . . ",
+                      message: "¿Monocitos? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.monocitosTotales = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+            ],
+          ),
         ),
       ],
     );
   }
 
-  GridView quimicas() {
-    return GridView(
-      padding: const EdgeInsets.all(5.0),
-      controller: ScrollController(),
-      gridDelegate: GridViewTools.gridDelegate(
-          crossAxisCount: isMobile(context) ? 4 : 5, mainAxisExtent: 65), //46
+  Column quimicas() {
+    return Column(
       children: [
-        ValuePanel(
-          firstText: "Glucosa Sérica",
-          secondText: Valores.glucosa.toString(),
-          thirdText: "mg/dL",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿Glucosa Sérica? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.glucosa = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
+        Expanded(
+          child: ValuePanel(
+            firstText: "",
+            secondText: Valores.fechaVitales.toString(),
+            thirdText: "",
+          ),
         ),
-        ValuePanel(
-          firstText: "Urea",
-          secondText: Valores.urea.toString(),
-          thirdText: "mg/dL",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿Urea? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.urea = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "Creatinina",
-          secondText: Valores.creatinina.toString(),
-          thirdText: "mg/dL",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿Creatinina? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.creatinina = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "Nitrógeno Uréico",
-          secondText: Valores.nitrogenoUreico.toString(),
-          thirdText: "mg/gL",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿Nitrógeno Uréico? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.nitrogenoUreico = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        CrossLine(),
-      ],
-    );
-  }
-
-  GridView electrolitos() {
-    return GridView(
-      padding: const EdgeInsets.all(5.0),
-      controller: ScrollController(),
-      gridDelegate: GridViewTools.gridDelegate(
-          crossAxisCount: isMobile(context) ? 4 : 5, mainAxisExtent: 65), //46
-      children: [
-        ValuePanel(
-          firstText: "Sodio Sérico",
-          secondText: Valores.sodio.toString(),
-          thirdText: "mEq/L",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿Sodio Sérico? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.sodio = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "Potasio Sérico",
-          secondText: Valores.potasio.toString(),
-          thirdText: "mEq/L",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿Potasio Sérico? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.potasio = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "Cloro Sérico",
-          secondText: Valores.cloro.toString(),
-          thirdText: "mg/dL",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿Cloro Sérico? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.cloro = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "Calcio Sérico",
-          secondText: Valores.calcio.toString(),
-          thirdText: "mg/gL",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿Calcio Sérico? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.calcio = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "Fósforo Sérico",
-          secondText: Valores.fosforo.toString(),
-          thirdText: "mg/dL",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿Fósforo Sérico? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.fosforo = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "Magnesio Sérico",
-          secondText: Valores.magnesio.toString(),
-          thirdText: "mg/gL",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿Magnesio Sérico? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.magnesio = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        CrossLine(),
-      ],
-    );
-  }
-
-  GridView arteriales() {
-    return GridView(
-      padding: const EdgeInsets.all(5.0),
-      controller: ScrollController(),
-      gridDelegate: GridViewTools.gridDelegate(
-          crossAxisCount: isMobile(context) ? 4 : 5, mainAxisExtent: 65), //46
-      children: [
-        ValuePanel(
-          firstText: "pH Arterial",
-          secondText: Valores.pHArteriales.toString(),
-          thirdText: "",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                keyBoardType: TextInputType.number,
-                tittle: "Editar . . . ",
-                message: "¿pH Arterial? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.pHArteriales = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "pCO2 Arterial",
-          secondText: Valores.pcoArteriales.toString(),
-          thirdText: "mmHg",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿pCO2 Arterial? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.pcoArteriales = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "pO2 Arterial",
-          secondText: Valores.poArteriales.toString(),
-          thirdText: "mmHg",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿pO2 Arteriales? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.poArteriales = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "HCO3- Arterial",
-          secondText: Valores.bicarbonatoArteriales.toString(),
-          thirdText: "mmol/L",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                keyBoardType: TextInputType.number,
-                tittle: "Editar . . . ",
-                message: "¿HCO3- Arterial? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.bicarbonatoArteriales = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "SaO2",
-          secondText: Valores.soArteriales.toString(),
-          thirdText: "%",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                keyBoardType: TextInputType.number,
-                tittle: "Editar . . . ",
-                message: "¿SO2 Arterial? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.soArteriales = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
+        Expanded(
+          flex: 8,
+          child: GridView(
+            padding: const EdgeInsets.all(5.0),
+            controller: ScrollController(),
+            gridDelegate: GridViewTools.gridDelegate(
+                crossAxisCount: isMobile(context) ? 4 : 5, mainAxisExtent: 66), //46
+            children: [
+              ValuePanel(
+                firstText: "Glucosa Sérica",
+                secondText: Valores.glucosa.toString(),
+                thirdText: "mg/dL",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      tittle: "Editar . . . ",
+                      message: "¿Glucosa Sérica? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.glucosa = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "Urea",
+                secondText: Valores.urea.toString(),
+                thirdText: "mg/dL",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      tittle: "Editar . . . ",
+                      message: "¿Urea? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.urea = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "Creatinina",
+                secondText: Valores.creatinina.toString(),
+                thirdText: "mg/dL",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      tittle: "Editar . . . ",
+                      message: "¿Creatinina? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.creatinina = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "Nitrógeno Uréico",
+                secondText: Valores.nitrogenoUreico.toString(),
+                thirdText: "mg/gL",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      tittle: "Editar . . . ",
+                      message: "¿Nitrógeno Uréico? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.nitrogenoUreico = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              CrossLine(),
+            ],
+          ),
         ),
       ],
     );
   }
 
-  GridView venosos() {
-    return GridView(
-      padding: const EdgeInsets.all(5.0),
-      controller: ScrollController(),
-      gridDelegate: GridViewTools.gridDelegate(
-          crossAxisCount: isMobile(context) ? 4 : 5, mainAxisExtent: 65), //46
+  Column electrolitos() {
+    return Column(
       children: [
-        ValuePanel(
-          firstText: "pH Venoso",
-          secondText: Valores.pHVenosos.toString(),
-          thirdText: "",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                keyBoardType: TextInputType.number,
-                tittle: "Editar . . . ",
-                message: "¿pH Venoso? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.pHVenosos = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
+        Expanded(
+          child: ValuePanel(
+            firstText: "",
+            secondText: Valores.fechaVitales.toString(),
+            thirdText: "",
+          ),
         ),
-        ValuePanel(
-          firstText: "pCO2 Venoso",
-          secondText: Valores.pcoVenosos.toString(),
-          thirdText: "mmHg",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿pCO2 Venoso? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.pcoVenosos = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "pO2 Venoso",
-          secondText: Valores.poVenosos.toString(),
-          thirdText: "mmHg",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿pO2 Venosos? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.poVenosos = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "HCO3- Venoso",
-          secondText: Valores.bicarbonatoVenosos.toString(),
-          thirdText: "mmol/L",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                keyBoardType: TextInputType.number,
-                tittle: "Editar . . . ",
-                message: "¿HCO3- Venoso? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.bicarbonatoVenosos = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "SaO2",
-          secondText: Valores.soVenosos.toString(),
-          thirdText: "%",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                keyBoardType: TextInputType.number,
-                tittle: "Editar . . . ",
-                message: "¿SO2 Venoso? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.soVenosos = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
+        Expanded(
+          flex:8,
+          child: GridView(
+            padding: const EdgeInsets.all(5.0),
+            controller: ScrollController(),
+            gridDelegate: GridViewTools.gridDelegate(
+                crossAxisCount: isMobile(context) ? 4 : 5, mainAxisExtent: 66), //46
+            children: [
+              Container(),
+              ValuePanel(
+                firstText: "Sodio Sérico",
+                secondText: Valores.sodio.toString(),
+                thirdText: "mEq/L",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      tittle: "Editar . . . ",
+                      message: "¿Sodio Sérico? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.sodio = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              Container(),
+              ValuePanel(
+                firstText: "Potasio Sérico",
+                secondText: Valores.potasio.toString(),
+                thirdText: "mEq/L",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      tittle: "Editar . . . ",
+                      message: "¿Potasio Sérico? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.potasio = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              Container(),
+              Container(),
+              Container(),
+              ValuePanel(
+                firstText: "Cloro Sérico",
+                secondText: Valores.cloro.toString(),
+                thirdText: "mg/dL",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      tittle: "Editar . . . ",
+                      message: "¿Cloro Sérico? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.cloro = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              Container(),
+              Container(),
+              Container(),
+              ValuePanel(
+                firstText: "Calcio Sérico",
+                secondText: Valores.calcio.toString(),
+                thirdText: "mg/gL",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      tittle: "Editar . . . ",
+                      message: "¿Calcio Sérico? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.calcio = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "Fósforo Sérico",
+                secondText: Valores.fosforo.toString(),
+                thirdText: "mg/dL",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      tittle: "Editar . . . ",
+                      message: "¿Fósforo Sérico? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.fosforo = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "Magnesio Sérico",
+                secondText: Valores.magnesio.toString(),
+                thirdText: "mg/gL",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      tittle: "Editar . . . ",
+                      message: "¿Magnesio Sérico? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.magnesio = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+            ],
+          ),
         ),
       ],
     );
   }
 
-  GridView balances() {
-    return GridView(
-      padding: const EdgeInsets.all(5.0),
-      controller: ScrollController(),
-      gridDelegate: GridViewTools.gridDelegate(
-          crossAxisCount: isMobile(context) ? 4 : 5, mainAxisExtent: 65), //46
+  Column arteriales() {
+    return Column(
       children: [
-        ValuePanel(
-          secondText: Valores.fechaRealizacionBalances,
+        Expanded(
+          child: ValuePanel(
+            firstText: "",
+            secondText: Valores.fechaGasometriaArterial.toString(),
+            thirdText: "",
+          ),
         ),
-        ValuePanel(
-          firstText: "Ingresos",
-          secondText: Valores.ingresosBalances.toStringAsFixed(0),
-          thirdText: "mL",
-        ),
-        ValuePanel(
-          firstText: "Egresos",
-          secondText: Valores.egresosBalances.toStringAsFixed(0),
-          thirdText: "mL",
-        ),
-        ValuePanel(
-          firstText: "Balance Total",
-          secondText: Valores.balanceTotal.toStringAsFixed(0),
-          thirdText: "mL",
-        ),
-        CrossLine(),
-        ValuePanel(
-          firstText: "P. Insensibles",
-          secondText: Valores.perdidasInsensibles.toStringAsFixed(0),
-          thirdText: "mL",
-        ),
-        ValuePanel(
-          firstText: "Uresis",
-          secondText: Valores.uresis!.toStringAsFixed(0),
-          thirdText: "mL",
-        ),
-        ValuePanel(
-          firstText: "Diuresis",
-          secondText: Valores.diuresis.toStringAsFixed(2),
-          thirdText: "mL",
+        Expanded(
+          flex: 8,
+          child: GridView(
+            padding: const EdgeInsets.all(5.0),
+            controller: ScrollController(),
+            gridDelegate: GridViewTools.gridDelegate(
+                crossAxisCount: isMobile(context) ? 4 : 5, mainAxisExtent: 66), //46
+            children: [
+              ValuePanel(
+                firstText: "pH Arterial",
+                secondText: Valores.pHArteriales.toString(),
+                thirdText: "",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      keyBoardType: TextInputType.number,
+                      tittle: "Editar . . . ",
+                      message: "¿pH Arterial? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.pHArteriales = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "pCO2 Arterial",
+                secondText: Valores.pcoArteriales.toString(),
+                thirdText: "mmHg",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      tittle: "Editar . . . ",
+                      message: "¿pCO2 Arterial? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.pcoArteriales = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "pO2 Arterial",
+                secondText: Valores.poArteriales.toString(),
+                thirdText: "mmHg",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      tittle: "Editar . . . ",
+                      message: "¿pO2 Arteriales? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.poArteriales = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "HCO3- Arterial",
+                secondText: Valores.bicarbonatoArteriales.toString(),
+                thirdText: "mmol/L",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      keyBoardType: TextInputType.number,
+                      tittle: "Editar . . . ",
+                      message: "¿HCO3- Arterial? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.bicarbonatoArteriales = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "SaO2",
+                secondText: Valores.soArteriales.toString(),
+                thirdText: "%",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      keyBoardType: TextInputType.number,
+                      tittle: "Editar . . . ",
+                      message: "¿SO2 Arterial? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.soArteriales = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+            ],
+          ),
         ),
       ],
     );
   }
 
-  GridView hepaticos() {
-    return GridView(
-      padding: const EdgeInsets.all(5.0),
-      controller: ScrollController(),
-      gridDelegate: GridViewTools.gridDelegate(
-          crossAxisCount: isMobile(context) ? 4 : 4, mainAxisExtent: 65), //46
+  Column venosos() {
+    return Column(
       children: [
-        ValuePanel(
-          secondText: Valores.fechaHepaticos ?? '',
+        Expanded(
+          child: ValuePanel(
+            firstText: "",
+            secondText: Valores.fechaGasometriaVenosa.toString(),
+            thirdText: "",
+          ),
         ),
-        ValuePanel(
-          firstText: "BT",
-          secondText: Valores.bilirrubinasTotales!.toStringAsFixed(2),
-          thirdText: "mg/dL",
+        Expanded(
+          flex:8,
+          child: GridView(
+            padding: const EdgeInsets.all(5.0),
+            controller: ScrollController(),
+            gridDelegate: GridViewTools.gridDelegate(
+                crossAxisCount: isMobile(context) ? 4 : 5, mainAxisExtent: 66), //46
+            children: [
+              ValuePanel(
+                firstText: "pH Venoso",
+                secondText: Valores.pHVenosos.toString(),
+                thirdText: "",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      keyBoardType: TextInputType.number,
+                      tittle: "Editar . . . ",
+                      message: "¿pH Venoso? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.pHVenosos = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "pCO2 Venoso",
+                secondText: Valores.pcoVenosos.toString(),
+                thirdText: "mmHg",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      tittle: "Editar . . . ",
+                      message: "¿pCO2 Venoso? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.pcoVenosos = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "pO2 Venoso",
+                secondText: Valores.poVenosos.toString(),
+                thirdText: "mmHg",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      tittle: "Editar . . . ",
+                      message: "¿pO2 Venosos? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.poVenosos = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "HCO3- Venoso",
+                secondText: Valores.bicarbonatoVenosos.toString(),
+                thirdText: "mmol/L",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      keyBoardType: TextInputType.number,
+                      tittle: "Editar . . . ",
+                      message: "¿HCO3- Venoso? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.bicarbonatoVenosos = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "SaO2",
+                secondText: Valores.soVenosos.toString(),
+                thirdText: "%",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      keyBoardType: TextInputType.number,
+                      tittle: "Editar . . . ",
+                      message: "¿SO2 Venoso? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.soVenosos = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+            ],
+          ),
         ),
-        ValuePanel(
-          firstText: "BD",
-          secondText: Valores.bilirrubinaDirecta!.toStringAsFixed(2),
-          thirdText: "mg/dL",
+      ],
+    );
+  }
+
+  Column balances() {
+    return Column(
+      children: [
+        Expanded(
+          child: ValuePanel(
+            firstText: "",
+            secondText: Valores.fechaRealizacionBalances.toString(),
+            thirdText: "",
+          ),
         ),
-        ValuePanel(
-          firstText: "BI",
-          secondText: Valores.bilirrubinaIndirecta!.toStringAsFixed(2),
-          thirdText: "mg/dL",
+        Expanded(
+          flex: 8,
+          child: GridView(
+            padding: const EdgeInsets.all(5.0),
+            controller: ScrollController(),
+            gridDelegate: GridViewTools.gridDelegate(
+                crossAxisCount: isMobile(context) ? 4 : 5, mainAxisExtent: 66), //46
+            children: [
+              ValuePanel(
+                secondText: Valores.fechaRealizacionBalances,
+              ),
+              ValuePanel(
+                firstText: "Ingresos",
+                secondText: Valores.ingresosBalances.toStringAsFixed(0),
+                thirdText: "mL",
+              ),
+              ValuePanel(
+                firstText: "Egresos",
+                secondText: Valores.egresosBalances.toStringAsFixed(0),
+                thirdText: "mL",
+              ),
+              ValuePanel(
+                firstText: "Balance Total",
+                secondText: Valores.balanceTotal.toStringAsFixed(0),
+                thirdText: "mL",
+              ),
+              CrossLine(),
+              ValuePanel(
+                firstText: "P. Insensibles",
+                secondText: Valores.perdidasInsensibles.toStringAsFixed(0),
+                thirdText: "mL",
+              ),
+              ValuePanel(
+                firstText: "Uresis",
+                secondText: Valores.uresis!.toStringAsFixed(0),
+                thirdText: "mL",
+              ),
+              ValuePanel(
+                firstText: "Diuresis",
+                secondText: Valores.diuresis.toStringAsFixed(2),
+                thirdText: "mL",
+              ),
+            ],
+          ),
         ),
-        ValuePanel(
-          firstText: "ALT / TGA",
-          secondText: Valores.alaninoaminotrasferasa!.toStringAsFixed(0),
-          thirdText: "UI/L",
+      ],
+    );
+  }
+
+  Column hepaticos() {
+    return Column(
+      children: [
+        Expanded(
+          child: ValuePanel(
+            firstText: "",
+            secondText: Valores.fechaVitales.toString(),
+            thirdText: "",
+          ),
         ),
-        ValuePanel(
-          firstText: "AST / TGO",
-          secondText: Valores.aspartatoaminotransferasa!.toStringAsFixed(0),
-          thirdText: "UI/L",
-        ),
-        ValuePanel(
-          firstText: "GGT",
-          secondText: Valores.glutrailtranspeptidasa!.toStringAsFixed(0),
-          thirdText: "UI/L",
-        ),
-        ValuePanel(
-          firstText: "FA",
-          secondText: Valores.fosfatasaAlcalina!.toStringAsFixed(0),
-          thirdText: "UI/L",
-        ),
-        ValuePanel(
-          firstText: "Albúmina",
-          secondText: Valores.albuminaSerica!.toStringAsFixed(1),
-          thirdText: "g/dL",
-        ),
-        ValuePanel(
-          firstText: "Proteínas Totales",
-          secondText: Valores.proteinasTotales!.toStringAsFixed(1),
-          thirdText: "g/dL",
-        ),
-        CrossLine(),
-        ValuePanel(
-          firstText: "AST/ALT",
-          secondText: Valores.relacionASTALT.toStringAsFixed(2),
-          thirdText: "",
-        ),
-        ValuePanel(
-          firstText: "ALT/FA",
-          secondText: Valores.relacionALTFA.toStringAsFixed(2),
-          thirdText: "",
-        ),
-        ValuePanel(
-          firstText: "Factor R",
-          secondText: Valores.factorR.toStringAsFixed(2),
-          thirdText: "",
+        Expanded(
+          flex: 8,
+          child: GridView(
+            padding: const EdgeInsets.all(5.0),
+            controller: ScrollController(),
+            gridDelegate: GridViewTools.gridDelegate(
+                crossAxisCount: isMobile(context) ? 4 : 4, mainAxisExtent: 66), //46
+            children: [
+              ValuePanel(
+                secondText: Valores.fechaHepaticos ?? '',
+              ),
+              ValuePanel(
+                firstText: "BT",
+                secondText: Valores.bilirrubinasTotales!.toStringAsFixed(2),
+                thirdText: "mg/dL",
+              ),
+              ValuePanel(
+                firstText: "BD",
+                secondText: Valores.bilirrubinaDirecta!.toStringAsFixed(2),
+                thirdText: "mg/dL",
+              ),
+              ValuePanel(
+                firstText: "BI",
+                secondText: Valores.bilirrubinaIndirecta!.toStringAsFixed(2),
+                thirdText: "mg/dL",
+              ),
+              ValuePanel(
+                firstText: "ALT / TGA",
+                secondText: Valores.alaninoaminotrasferasa!.toStringAsFixed(0),
+                thirdText: "UI/L",
+              ),
+              ValuePanel(
+                firstText: "AST / TGO",
+                secondText: Valores.aspartatoaminotransferasa!.toStringAsFixed(0),
+                thirdText: "UI/L",
+              ),
+              ValuePanel(
+                firstText: "GGT",
+                secondText: Valores.glutrailtranspeptidasa!.toStringAsFixed(0),
+                thirdText: "UI/L",
+              ),
+              ValuePanel(
+                firstText: "FA",
+                secondText: Valores.fosfatasaAlcalina!.toStringAsFixed(0),
+                thirdText: "UI/L",
+              ),
+              ValuePanel(
+                firstText: "Albúmina",
+                secondText: Valores.albuminaSerica!.toStringAsFixed(1),
+                thirdText: "g/dL",
+              ),
+              ValuePanel(
+                firstText: "Proteínas Totales",
+                secondText: Valores.proteinasTotales!.toStringAsFixed(1),
+                thirdText: "g/dL",
+              ),
+              CrossLine(),
+              ValuePanel(
+                firstText: "AST/ALT",
+                secondText: Valores.relacionASTALT.toStringAsFixed(2),
+                thirdText: "",
+              ),
+              ValuePanel(
+                firstText: "ALT/FA",
+                secondText: Valores.relacionALTFA.toStringAsFixed(2),
+                thirdText: "",
+              ),
+              ValuePanel(
+                firstText: "Factor R",
+                secondText: Valores.factorR.toStringAsFixed(2),
+                thirdText: "",
+              ),
+            ],
+          ),
         ),
       ],
     );
   }
 
   // **** ********** ********* *****************
-  GridView ventilaciones() {
-    return GridView(
-      padding: const EdgeInsets.all(5.0),
-      controller: ScrollController(),
-      gridDelegate: GridViewTools.gridDelegate(
-          crossAxisCount: isMobile(context) ? 4 : 5, mainAxisExtent: 65), //46
+  Column ventilaciones() {
+    return Column(
       children: [
-        ValuePanel(
+        Expanded(
+          child: ValuePanel(
+            firstText: "",
+            secondText: Valores.fechaVentilaciones.toString(),
+            thirdText: "",
+          ),
+        ),
+        Expanded(child: ValuePanel(
           firstText: "",
           secondText: Valores.modalidadVentilatoria.toString(),
           thirdText: "",
           withEditMessage: true,
           onEdit: (value) {},
+        )),
+        Expanded(
+          flex: 8,
+          child: GridView(
+            padding: const EdgeInsets.all(5.0),
+            controller: ScrollController(),
+            gridDelegate: GridViewTools.gridDelegate(
+                crossAxisCount: isMobile(context) ? 4 : 5, mainAxisExtent: 66), //46
+            children: [
+
+              ValuePanel(
+                firstText: "Vt",
+                secondText: Valores.volumenTidal.toString(),
+                thirdText: "mL/min",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      keyBoardType: TextInputType.number,
+                      tittle: "Editar . . . ",
+                      message: "¿Volumen Tidal? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.volumenTidal = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "F. Vent.",
+                secondText: Valores.frecuenciaVentilatoria.toString(),
+                thirdText: "Vent/min",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      tittle: "Editar . . . ",
+                      message: "¿Frecuencia Ventilatoria? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.frecuenciaVentilatoria = int.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "P.E.E.P.",
+                secondText: Valores.presionFinalEsiracion.toString(),
+                thirdText: "cmH2O",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      tittle: "Editar . . . ",
+                      message: "¿P.E.E.P.? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.presionFinalEsiracion = int.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "FiO2",
+                secondText: Valores.fraccionInspiratoriaVentilatoria.toString(),
+                thirdText: "%",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      tittle: "Editar . . . ",
+                      message: "¿FiO2 Programado? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.fraccionInspiratoriaVentilatoria = int.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "Presión Control",
+                secondText: Valores.presionControl.toString(),
+                thirdText: "cmH2O",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      tittle: "Editar . . . ",
+                      message: "¿Presión Control? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.presionControl = int.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "P. Peak",
+                secondText: Valores.presionInspiratoriaPico.toString(),
+                thirdText: "cmH2O",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      tittle: "Editar . . . ",
+                      message: "¿P. Peak? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.presionInspiratoriaPico = int.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+              ValuePanel(
+                firstText: "V. Vent. ",
+                secondText: Valores.volumenVentilatorio.toString(),
+                thirdText: "mL/min",
+                withEditMessage: true,
+                onEdit: (value) {
+                  Operadores.editActivity(
+                      context: context,
+                      tittle: "Editar . . . ",
+                      message: "¿Volumen Ventilatorio? . . . ",
+                      onAcept: (value) {
+                        Terminal.printSuccess(message: "recieve $value");
+                        setState(() {
+                          Valores.volumenVentilatorio = int.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
+              ),
+            ],
+          ),
         ),
-        ValuePanel(
-          firstText: "Vt",
-          secondText: Valores.volumenTidal.toString(),
-          thirdText: "mL/min",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                keyBoardType: TextInputType.number,
-                tittle: "Editar . . . ",
-                message: "¿Volumen Tidal? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.volumenTidal = double.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "F. Vent.",
-          secondText: Valores.frecuenciaVentilatoria.toString(),
-          thirdText: "Vent/min",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿Frecuencia Ventilatoria? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.frecuenciaVentilatoria = int.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "P.E.E.P.",
-          secondText: Valores.presionFinalEsiracion.toString(),
-          thirdText: "cmH2O",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿P.E.E.P.? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.presionFinalEsiracion = int.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "FiO2",
-          secondText: Valores.fraccionInspiratoriaVentilatoria.toString(),
-          thirdText: "%",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿FiO2 Programado? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.fraccionInspiratoriaVentilatoria = int.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "Presión Control",
-          secondText: Valores.presionControl.toString(),
-          thirdText: "cmH2O",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿Presión Control? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.presionControl = int.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "P. Peak",
-          secondText: Valores.presionInspiratoriaPico.toString(),
-          thirdText: "cmH2O",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿P. Peak? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.presionInspiratoriaPico = int.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
-        ValuePanel(
-          firstText: "V. Vent. ",
-          secondText: Valores.volumenVentilatorio.toString(),
-          thirdText: "mL/min",
-          withEditMessage: true,
-          onEdit: (value) {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿Volumen Ventilatorio? . . . ",
-                onAcept: (value) {
-                  Terminal.printSuccess(message: "recieve $value");
-                  setState(() {
-                    Valores.volumenVentilatorio = int.parse(value);
-                    Navigator.of(context).pop();
-                  });
-                });
-          },
-        ),
+        // Expanded(
+        //   flex: 4,
+        //   child: GridView(
+        //     padding: const EdgeInsets.all(5.0),
+        //     controller: ScrollController(),
+        //     gridDelegate: GridViewTools.gridDelegate(
+        //         crossAxisCount: isMobile(context) ? 4 : 5, mainAxisExtent: 66), //46
+        //     children: [
+        //
+        //       ValuePanel(
+        //         firstText: "Vt",
+        //         secondText: Valores.volumenTidal.toString(),
+        //         thirdText: "mL/min",
+        //         withEditMessage: true,
+        //         onEdit: (value) {
+        //           Operadores.editActivity(
+        //               context: context,
+        //               keyBoardType: TextInputType.number,
+        //               tittle: "Editar . . . ",
+        //               message: "¿Volumen Tidal? . . . ",
+        //               onAcept: (value) {
+        //                 Terminal.printSuccess(message: "recieve $value");
+        //                 setState(() {
+        //                   Valores.volumenTidal = double.parse(value);
+        //                   Navigator.of(context).pop();
+        //                 });
+        //               });
+        //         },
+        //       ),
+        //       ValuePanel(
+        //         firstText: "F. Vent.",
+        //         secondText: Valores.frecuenciaVentilatoria.toString(),
+        //         thirdText: "Vent/min",
+        //         withEditMessage: true,
+        //         onEdit: (value) {
+        //           Operadores.editActivity(
+        //               context: context,
+        //               tittle: "Editar . . . ",
+        //               message: "¿Frecuencia Ventilatoria? . . . ",
+        //               onAcept: (value) {
+        //                 Terminal.printSuccess(message: "recieve $value");
+        //                 setState(() {
+        //                   Valores.frecuenciaVentilatoria = int.parse(value);
+        //                   Navigator.of(context).pop();
+        //                 });
+        //               });
+        //         },
+        //       ),
+        //       ValuePanel(
+        //         firstText: "P.E.E.P.",
+        //         secondText: Valores.presionFinalEsiracion.toString(),
+        //         thirdText: "cmH2O",
+        //         withEditMessage: true,
+        //         onEdit: (value) {
+        //           Operadores.editActivity(
+        //               context: context,
+        //               tittle: "Editar . . . ",
+        //               message: "¿P.E.E.P.? . . . ",
+        //               onAcept: (value) {
+        //                 Terminal.printSuccess(message: "recieve $value");
+        //                 setState(() {
+        //                   Valores.presionFinalEsiracion = int.parse(value);
+        //                   Navigator.of(context).pop();
+        //                 });
+        //               });
+        //         },
+        //       ),
+        //       ValuePanel(
+        //         firstText: "FiO2",
+        //         secondText: Valores.fraccionInspiratoriaVentilatoria.toString(),
+        //         thirdText: "%",
+        //         withEditMessage: true,
+        //         onEdit: (value) {
+        //           Operadores.editActivity(
+        //               context: context,
+        //               tittle: "Editar . . . ",
+        //               message: "¿FiO2 Programado? . . . ",
+        //               onAcept: (value) {
+        //                 Terminal.printSuccess(message: "recieve $value");
+        //                 setState(() {
+        //                   Valores.fraccionInspiratoriaVentilatoria = int.parse(value);
+        //                   Navigator.of(context).pop();
+        //                 });
+        //               });
+        //         },
+        //       ),
+        //       ValuePanel(
+        //         firstText: "Presión Control",
+        //         secondText: Valores.presionControl.toString(),
+        //         thirdText: "cmH2O",
+        //         withEditMessage: true,
+        //         onEdit: (value) {
+        //           Operadores.editActivity(
+        //               context: context,
+        //               tittle: "Editar . . . ",
+        //               message: "¿Presión Control? . . . ",
+        //               onAcept: (value) {
+        //                 Terminal.printSuccess(message: "recieve $value");
+        //                 setState(() {
+        //                   Valores.presionControl = int.parse(value);
+        //                   Navigator.of(context).pop();
+        //                 });
+        //               });
+        //         },
+        //       ),
+        //       ValuePanel(
+        //         firstText: "P. Peak",
+        //         secondText: Valores.presionInspiratoriaPico.toString(),
+        //         thirdText: "cmH2O",
+        //         withEditMessage: true,
+        //         onEdit: (value) {
+        //           Operadores.editActivity(
+        //               context: context,
+        //               tittle: "Editar . . . ",
+        //               message: "¿P. Peak? . . . ",
+        //               onAcept: (value) {
+        //                 Terminal.printSuccess(message: "recieve $value");
+        //                 setState(() {
+        //                   Valores.presionInspiratoriaPico = int.parse(value);
+        //                   Navigator.of(context).pop();
+        //                 });
+        //               });
+        //         },
+        //       ),
+        //       ValuePanel(
+        //         firstText: "V. Vent. ",
+        //         secondText: Valores.volumenVentilatorio.toString(),
+        //         thirdText: "mL/min",
+        //         withEditMessage: true,
+        //         onEdit: (value) {
+        //           Operadores.editActivity(
+        //               context: context,
+        //               tittle: "Editar . . . ",
+        //               message: "¿Volumen Ventilatorio? . . . ",
+        //               onAcept: (value) {
+        //                 Terminal.printSuccess(message: "recieve $value");
+        //                 setState(() {
+        //                   Valores.volumenVentilatorio = int.parse(value);
+        //                   Navigator.of(context).pop();
+        //                 });
+        //               });
+        //         },
+        //       ),
+        //     ],
+        //   ),
+        // ),
       ],
     );
   }

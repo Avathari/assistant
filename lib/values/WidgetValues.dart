@@ -162,13 +162,13 @@ class ContainerDecoration {
     );
   }
 
-  static BoxDecoration roundedDecoration({Color color = Colors.grey, double radius = 20.0}) {
+  static BoxDecoration roundedDecoration({Color color = Colors.grey, double radius = 20.0, double width = 1.0}) {
     return BoxDecoration(
       borderRadius: BorderRadius.circular(radius),
       border: Border.all(
         color: color,
         style: BorderStyle.solid,
-        width: 1.0,
+        width: width,
       ),
     );
   }
@@ -185,7 +185,7 @@ class Carousel {
                 : isTablet(context)
                     ? 1600
                     : isDesktop(context)
-                        ? 600
+                        ? 800
                         : 450,
         enableInfiniteScroll: false,
         viewportFraction: 1.0);

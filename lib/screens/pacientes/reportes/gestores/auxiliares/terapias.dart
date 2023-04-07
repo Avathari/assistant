@@ -93,7 +93,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                             Expanded(
                               child: Spinner(
                                 width: isDesktop(context)
-                                    ? 400
+                                    ? 200
                                     : isTablet(context)
                                         ? 100
                                         : isMobile(context)
@@ -113,7 +113,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                             Expanded(
                               child: Spinner(
                                 width: isDesktop(context)
-                                    ? 400
+                                    ? 200
                                     : isTablet(context)
                                         ? 100
                                         : isMobile(context)
@@ -134,7 +134,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                         ),
                         Spinner(
                           width: isDesktop(context)
-                              ? 400
+                              ? 300
                               : isTablet(context)
                                   ? 250
                                   : isMobile(context)
@@ -157,7 +157,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                             Expanded(
                               child: Spinner(
                                 width: isDesktop(context)
-                                    ? 400
+                                    ? 200
                                     : isTablet(context)
                                     ? 100
                                     : isMobile(context)
@@ -177,7 +177,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                             Expanded(
                               child: Spinner(
                                 width: isDesktop(context)
-                                    ? 400
+                                    ? 200
                                     : isTablet(context)
                                     ? 100
                                     : isMobile(context)
@@ -201,7 +201,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                             Expanded(
                               child: Spinner(
                                 width: isDesktop(context)
-                                    ? 400
+                                    ? 200
                                     : isTablet(context)
                                     ? 100
                                     : isMobile(context)
@@ -221,7 +221,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                             Expanded(
                               child: Spinner(
                                 width: isDesktop(context)
-                                    ? 400
+                                    ? 200
                                     : isTablet(context)
                                     ? 100
                                     : isMobile(context)
@@ -251,7 +251,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                         TittlePanel(textPanel: "Evaluación Ventilatoria"),
                         Spinner(
                           width: isDesktop(context)
-                              ? 400
+                              ? 200
                               : isTablet(context)
                               ? 200
                               : isMobile(context)
@@ -269,7 +269,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                         ),
                         Spinner(
                           width: isDesktop(context)
-                              ? 400
+                              ? 300
                               : isTablet(context)
                               ? 350
                               : isMobile(context)
@@ -287,7 +287,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                         ),
                         Spinner(
                           width: isDesktop(context)
-                              ? 400
+                              ? 200
                               : isTablet(context)
                               ? 200
                               : isMobile(context)
@@ -305,7 +305,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                         ),
                         Spinner(
                           width: isDesktop(context)
-                              ? 400
+                              ? 200
                               : isTablet(context)
                               ? 200
                               : isMobile(context)
@@ -332,7 +332,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                         TittlePanel(textPanel: "Evaluación Hematoinfecciosa"),
                         Spinner(
                           width: isDesktop(context)
-                              ? 400
+                              ? 200
                               : isTablet(context)
                               ? 200
                               : isMobile(context)
@@ -350,7 +350,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                         ),
                         Spinner(
                           width: isDesktop(context)
-                              ? 400
+                              ? 200
                               : isTablet(context)
                               ? 200
                               : isMobile(context)
@@ -394,7 +394,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                         TittlePanel(textPanel: "Evaluación Complementaria"),
                         Spinner(
                           width: isDesktop(context)
-                              ? 400
+                              ? 200
                               : isTablet(context)
                               ? 250
                               : isMobile(context)
@@ -412,7 +412,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                         ),
                         Spinner(
                           width: isDesktop(context)
-                              ? 400
+                              ? 200
                               : isTablet(context)
                               ? 200
                               : isMobile(context)
@@ -430,7 +430,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                         ),
                         Spinner(
                           width: isDesktop(context)
-                              ? 400
+                              ? 200
                               : isTablet(context)
                               ? 200
                               : isMobile(context)
@@ -448,7 +448,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                         ),
                         Spinner(
                           width: isDesktop(context)
-                              ? 400
+                              ? 200
                               : isTablet(context)
                               ? 200
                               : isMobile(context)

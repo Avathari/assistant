@@ -42,6 +42,13 @@ class _BalanceHidricoState extends State<BalanceHidrico> {
       Column(
         children: [
           Expanded(
+            child: ValuePanel(
+              firstText: "",
+              secondText: Valores.fechaRealizacionBalances.toString(),
+              thirdText: "",
+            ),
+          ),
+          Expanded(
             child: GrandIcon(labelButton: "Actualizar",onPress: () {
               setState(() {
 

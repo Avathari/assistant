@@ -397,7 +397,6 @@ class GestionPatologicos extends StatefulWidget {
 }
 
 class _GestionPatologicosState extends State<GestionPatologicos> {
-
   var fileAssocieted = Patologicos.fileAssocieted;
 
   @override

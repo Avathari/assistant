@@ -84,6 +84,12 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                           child: Column(
                             children: [
                               GrandButton(
+                                labelButton: "Vitales",
+                                onPress: () {
+                                  asignarVitales(indice: 0);
+                                },
+                              ),
+                              GrandButton(
                                 labelButton: "Bioconstantes",
                                 onPress: () {
                                   asignarVitales(indice: 1);

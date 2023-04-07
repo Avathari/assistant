@@ -117,37 +117,35 @@ class _EditTextAreaState extends State<EditTextArea> {
           widget.withShowOption
               ? Expanded(
                   flex: 1,
-                  child: Tooltip(
-                    message: "Ver",
-                    child: IconButton(
-                      icon: Icon(
-                        widget.iconData,
-                        color: widget.iconColor,
-                      ),
-                      onPressed: widget.selection
-                          ? widget.onSelected
-                          : () {
-                              Operadores.openDialog(
-                                context: context,
-                                chyldrim: SingleChildScrollView(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      children: [
-                                        TittlePanel(
-                                            colorText: Colors.grey,
-                                            textPanel: widget.labelEditText!),
-                                        Text(
-                                          widget.textController.text,
-                                          style: const TextStyle(
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                        CrossLine(),
-                                      ],
-                                    )),
-                              );
-                            },
+                  child: IconButton(
+                    tooltip: "Ver",
+                    icon: Icon(
+                      widget.iconData,
+                      color: widget.iconColor,
                     ),
+                    onPressed: widget.selection
+                        ? widget.onSelected
+                        : () {
+                            Operadores.openDialog(
+                              context: context,
+                              chyldrim: SingleChildScrollView(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: [
+                                      TittlePanel(
+                                          colorText: Colors.grey,
+                                          textPanel: widget.labelEditText!),
+                                      Text(
+                                        widget.textController.text,
+                                        style: const TextStyle(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                      CrossLine(),
+                                    ],
+                                  )),
+                            );
+                          },
                   ),
                 )
               : Container()

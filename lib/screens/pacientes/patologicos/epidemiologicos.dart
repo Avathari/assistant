@@ -156,7 +156,7 @@ class _GestionNoPatologicosState extends State<GestionNoPatologicos> {
                   width: 1400,
                   decoration: ContainerDecoration.roundedDecoration(),
                   child: GrandButton(
-                      labelButton: 'Actualizar / Registrar',
+                      labelButton: 'Actualizar el Registro',
                       onPress: () {
                         onActionActivity();
                       }),

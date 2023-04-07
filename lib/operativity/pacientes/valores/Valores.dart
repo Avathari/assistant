@@ -524,6 +524,8 @@ class Valores {
     Transfusionales.consultarRegistro();
     Traumatologicos.registros();
     Traumatologicos.consultarRegistro();
+    Vacunales.registros();
+    Vacunales.consultarRegistro();
     //
     Balances.consultarRegistro();
     Auxiliares.registros();
@@ -640,6 +642,8 @@ class Valores {
     Quirurgicos.fileAssocieted =
         '${Pacientes.localRepositoryPath}quirurgicos.json';
     Alergicos.fileAssocieted = '${Pacientes.localRepositoryPath}alergicos.json';
+    Transfusionales.fileAssocieted = '${Pacientes.localRepositoryPath}transfusionales.json';
+    Vacunales.fileAssocieted = '${Pacientes.localRepositoryPath}vacunales.json';
 
     Diagnosticos.fileAssocieted =
         '${Pacientes.localRepositoryPath}diagnosticos.json';
@@ -1138,20 +1142,20 @@ class Valores {
         Valores.pesoCorporalTotal != null &&
         Valores.potasio != 0 &&
         Valores.potasio != null) {
-      return ((4- Valores.potasio! ) * Valores.pesoCorporalTotal!);
+      return ((4 - Valores.potasio!) * Valores.pesoCorporalTotal!);
     } else {
       return double.nan;
     }
   }
 
   static double get reposicionPotasio {
-    if (Valores.potasio! !=0 && Valores.potasio! != null) {
-      return ((4.0 - Valores.potasio!) * 0.4 * Valores.pesoCorporalTotal!) + (Valores.requerimientoBasalPotasio);
+    if (Valores.potasio! != 0 && Valores.potasio! != null) {
+      return ((4.0 - Valores.potasio!) * 0.4 * Valores.pesoCorporalTotal!) +
+          (Valores.requerimientoBasalPotasio);
     } else {
       return double.nan;
     }
-
-}
+  }
 
   static double get requerimientoBasalPotasio {
     return 1.5 * Valores.pesoCorporalTotal!;
@@ -1516,16 +1520,21 @@ class Valores {
   static double get efectoTermicoAlimentos => metabolismoBasal * 0.1;
   static double get gastoEnergeticoTotal {
     if (Valores.factorActividad! == 0 && Valores.factorEstres! == 0) {
-      return gastoEnergeticoBasal * Valores.factorActividad! +
-          efectoTermicoAlimentos;
+      return gastoEnergeticoBasal +
+          (gastoEnergeticoBasal *
+              (Valores.factorActividad! + efectoTermicoAlimentos));
     } else if (Valores.factorActividad! != 0 && Valores.factorEstres! != 0) {
-      return gastoEnergeticoBasal *
-          (Valores.factorActividad!) *
-          (Valores.factorEstres!);
+      return gastoEnergeticoBasal +
+          (gastoEnergeticoBasal *
+              (Valores.factorActividad!) *
+              (Valores.factorEstres!));
     } else {
       return 0.0;
     }
   }
+
+  static double get fibraDietaria =>
+      (gastoEnergeticoTotal * 0.02); // / 1000) * 10; // 0.02
 
   static double get glucosaPorcentaje =>
       ((gastoEnergeticoTotal / 100) * (porcentajeCarbohidratos));
@@ -1534,9 +1543,23 @@ class Valores {
   static double get proteinasPorcentaje =>
       ((gastoEnergeticoTotal / 100) * (porcentajeProteinas));
 
+  static double get aguaTotal => (gastoEnergeticoTotal * 1.0) / 1000; // 0.5 - 2.25
+
   static double get glucosaGramos => (glucosaPorcentaje / 4.0);
   static double get lipidosGramos => (lipidosPorcentaje / 9.0);
   static double get proteinasGramos => (proteinasPorcentaje / 4.0);
+
+  static double get proteinasAVM => (pesoCorporalPredicho / 1.5);
+  static double get sodioDietario => (pesoCorporalPredicho / 2.0);
+  static double get potasioDietario => (pesoCorporalPredicho / 3.0);
+  static double get cloroDietario => (pesoCorporalPredicho / 5.0);
+  static double get magnesioDietario => (pesoCorporalPredicho / 3.5);
+  static double get calcioDietario => (pesoCorporalPredicho / 14.0);
+
+  static double get selenioDietario => (pesoCorporalPredicho / 0.7);
+  static double get hierroDietario => (pesoCorporalPredicho / 0.14);
+  static double get fosforoDietario => (pesoCorporalPredicho / 11.42);
+  static double get cromoDietario => (pesoCorporalPredicho / 0.71);
 
   static int get sumaPorcentualMetabolicos =>
       porcentajeCarbohidratos + porcentajeProteinas + porcentajeLipidos;
@@ -2612,6 +2635,15 @@ class Valorados {
   // "%.2f" % Cardiovascular.get('Trabajo_Latido_Ventricular_Derecho')) + " g*m. " \
   // + "" + "\n"
 
+  static String get vitales =>
+      "Signos vitales con " // fecha de ${Pacientes.Vital['Pace_Feca_SV']} con "
+          "tensión arterial sistémica en ${Valores.tensionArterialSistemica} mmHg, "
+          "frecuencia cardiaca de ${Valores.frecuenciaCardiaca} L/min, "
+          "frecuencia respiratoria de ${Valores.frecuenciaRespiratoria} L/min, "
+          "temperatura corporal ${Valores.temperaturCorporal}°C, "
+          "saturación periférica de oxígeno ${Valores.saturacionPerifericaOxigeno}%, "
+          "estatura ${Valores.alturaPaciente} mts";
+
   static String get signosVitales =>
       "Signos vitales con " // fecha de ${Pacientes.Vital['Pace_Feca_SV']} con "
       "tensión arterial sistémica en ${Valores.tensionArterialSistemica} mmHg, "
@@ -2661,12 +2693,13 @@ class Valorados {
       "Peso Corporal Magro ${Valores.porcentajeCorporalMagro.toStringAsFixed(2)} Kg. ";
 
   static String get metabolometrias =>
-      "Análisis Energético: Gasto Energetico Basal ${Valores.gastoEnergeticoBasal.toStringAsFixed(2)} kCal/dia "
+      "Análisis Energético: Gasto Energético Basal ${Valores.gastoEnergeticoBasal.toStringAsFixed(2)} kCal/dia "
       "(Factor de Actividad ${Valores.factorActividad}; "
-      "Factor de Estres ${Valores.factorEstres}); "
+      "Factor de Éstres ${Valores.factorEstres}); "
       "Metabolismo Basal ${Valores.metabolismoBasal.toStringAsFixed(2)} kCal/m2/hr, "
-      "Efecto Termico de los Alimentos ${Valores.efectoTermicoAlimentos.toStringAsFixed(2)} kCal/m2/hr. "
-      "Gasto Energetico Total ${Valores.gastoEnergeticoTotal.toStringAsFixed(2)} kCal/dia. ";
+      "Efecto Térmico de los Alimentos ${Valores.efectoTermicoAlimentos.toStringAsFixed(2)} kCal/m2/hr. "
+      "Gasto Energético Total ${Valores.gastoEnergeticoTotal.toStringAsFixed(2)} kCal/dia. "
+      "Fibra total ${Valores.fibraDietaria.toStringAsFixed(2)} gr/Día";
 
   static String get renales => "Tasa de Filtrado Glomerular : "
       "${Valores.tasaRenalCrockoft_Gault.toStringAsFixed(2)} mL/min/1.73 m2 (Cockcroft : Gault), "
@@ -2711,6 +2744,32 @@ class Valorados {
 }
 
 class Formatos {
+  static String get dietasCompletas{
+  return "Dieta de ${Valores.gastoEnergeticoBasal.toStringAsFixed(0)} kCal/Día "
+      "repartido en "
+      "hidratos de carbono ${Valores.porcentajeCarbohidratos}% "
+      "(${Valores.glucosaPorcentaje.toStringAsFixed(0)} kCal/Día; ${Valores.glucosaGramos.toStringAsFixed(0)} gr/Día), "
+
+      "proteínas ${Valores.porcentajeProteinas}% "
+      "(${Valores.proteinasPorcentaje.toStringAsFixed(0)} kCal/Día; ${Valores.proteinasGramos.toStringAsFixed(0)} gr/Día), "
+
+      "lípidos ${Valores.porcentajeLipidos}% "
+      "(${Valores.lipidosPorcentaje.toStringAsFixed(0)} kCal/Día; ${Valores.lipidosGramos.toStringAsFixed(0)} gr/Día); \n"
+
+  "${Valores.proteinasAVM.toStringAsFixed(0)} gr/Día de proteína de alto valor molecular, "
+  "${Valores.sodioDietario.toStringAsFixed(0)} mEq/Día de sodio, "
+  "${Valores.fibraDietaria.toStringAsFixed(0)} gr/Día de fibra total, "
+  "${Valores.aguaTotal.toStringAsFixed(0)} Lt/Día de agua libre.\n";
+}
+
+  static String get dietas {
+    return "Dieta de ${Valores.gastoEnergeticoBasal.toStringAsFixed(0)} kCal/Día; "
+        "${Valores.proteinasAVM.toStringAsFixed(0)} gr/Día de proteína de alto valor molecular, "
+        "${Valores.sodioDietario.toStringAsFixed(0)} mEq/Día de sodio, "
+        "${Valores.fibraDietaria.toStringAsFixed(0)} gr/Día de fibra total, "
+        "${Valores.aguaTotal.toStringAsFixed(0)} Lt/Día de agua libre.\n";
+  }
+
   static String get concentraciones {
     return "";
   }

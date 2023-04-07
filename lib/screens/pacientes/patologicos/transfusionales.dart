@@ -203,6 +203,28 @@ class _OperacionesTransfusionalesState
     ];
   }
 
+  Future<void> reiniciar() async {
+    Terminal.printExpected(message: "Reinicio de los valores . . .");
+
+    Pacientes.Patologicos!.clear();
+    Actividades.consultarAllById(
+        Databases.siteground_database_regpace,
+        Transfusionales.transfusiones['consultByIdPrimaryQuery'],
+        Pacientes.ID_Paciente)
+        .then((value) {
+      setState(() {
+        Pacientes.Transfusionales = value;
+        Terminal.printSuccess(
+            message:
+            "Actualizando Repositorio de Transfusionales del Paciente . . . ${Pacientes.Transfusionales}");
+
+        Archivos.createJsonFromMap(Pacientes.Transfusionales!,
+            filePath: Transfusionales.fileAssocieted);
+      });
+    });
+  }
+
+
   void operationMethod(BuildContext context) {
     try {
       listOfValues = [
@@ -237,30 +259,34 @@ class _OperacionesTransfusionalesState
           // ******************************************** *** *
           Actividades.registrar(Databases.siteground_database_regpace,
                   registerQuery!, listOfValues!)
-              .then((value) => Actividades.consultarAllById(
-                          Databases.siteground_database_regpace,
-                          consultIdQuery!,
-                          Pacientes.ID_Paciente) // idOperation)
-                      .then((value) {
-                    // ******************************************** *** *
-                    Pacientes.Transfusionales = value;
-                    Constantes.reinit(value: value);
-                    // ******************************************** *** *
-                  }).then((value) => onClose(context)));
+              .then((value) {
+            Archivos.deleteFile(filePath: Transfusionales.fileAssocieted);
+            reiniciar().then((value) => Operadores.alertActivity(
+                context: context,
+                tittle: "Anexión de registros",
+                message: "Registros Agregados",
+                onAcept: () {
+                  onClose(context);
+                }));
+            // ******************************************** *** *
+            // Pacientes.Transfusionales = value;
+            // Constantes.reinit(value: value);
+            // ******************************************** *** *
+          });
           break;
         case Constantes.Update:
           Actividades.actualizar(Databases.siteground_database_regpace,
                   updateQuery!, listOfValues!, idOperation)
-              .then((value) => Actividades.consultarAllById(
-                          Databases.siteground_database_regpace,
-                          consultIdQuery!,
-                          Pacientes.ID_Paciente) // idOperation)
-                      .then((value) {
-                    // ******************************************** *** *
-                    Pacientes.Transfusionales = value;
-                    Constantes.reinit(value: value);
-                    // ******************************************** *** *
-                  }).then((value) => onClose(context)));
+              .then((value) {
+              Archivos.deleteFile(filePath: Transfusionales.fileAssocieted);
+          reiniciar().then((value) => Operadores.alertActivity(
+              context: context,
+              tittle: "Actualización de registros",
+              message: "Registros Actualizados",
+              onAcept: () {
+                onClose(context);
+              }));
+                  });
           break;
         default:
       }
@@ -333,32 +359,27 @@ class GestionTransfusionales extends StatefulWidget {
 }
 
 class _GestionTransfusionalesState extends State<GestionTransfusionales> {
-  String appTittle = "Gestion de transfusiones del paciente";
-  String searchCriteria = "Buscar por Fecha";
-  String? consultQuery = Transfusionales.transfusiones['consultIdQuery'];
-
-  late List? foundedItems = [];
-  var gestionScrollController = ScrollController();
-  var searchTextController = TextEditingController();
+  var fileAssocieted = Transfusionales.fileAssocieted;
 
   @override
   void initState() {
-    print(" . . . Iniciando array ");
-    if (Constantes.dummyArray!.isNotEmpty) {
-      if (Constantes.dummyArray![0] == "Vacio") {
-        Actividades.consultarAllById(Databases.siteground_database_regpace,
-                consultQuery!, Pacientes.ID_Paciente)
-            .then((value) {
-          setState(() {
-            print(" . . . Buscando items \n");
-            foundedItems = value;
-          });
-        });
-      } else {
-        print(" . . . Dummy array iniciado");
-        foundedItems = Constantes.dummyArray;
-      }
-    }
+    iniciar();
+    // print(" . . . Iniciando array ");
+    // if (Constantes.dummyArray!.isNotEmpty) {
+    //   if (Constantes.dummyArray![0] == "Vacio") {
+    //     Actividades.consultarAllById(Databases.siteground_database_regpace,
+    //             consultQuery!, Pacientes.ID_Paciente)
+    //         .then((value) {
+    //       setState(() {
+    //         print(" . . . Buscando items \n");
+    //         foundedItems = value;
+    //       });
+    //     });
+    //   } else {
+    //     print(" . . . Dummy array iniciado");
+    //     foundedItems = Constantes.dummyArray;
+    //   }
+    // }
     super.initState();
   }
 
@@ -504,6 +525,36 @@ class _GestionTransfusionalesState extends State<GestionTransfusionales> {
     );
   }
 
+  // Operaciones de Inicio ***** ******* ********** ****
+  void iniciar() {
+    Terminal.printWarning(
+        message:
+        " . . . Iniciando Actividad - Repositorio Tranfusionales del Pacientes");
+    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+      setState(() {
+        foundedItems = value;
+        Terminal.printSuccess(
+            message: 'Repositorio Tranfusionales del Pacientes Obtenido');
+      });
+    }).onError((error, stackTrace) {
+      reiniciar();
+    });
+    Terminal.printOther(message: " . . . Actividad Iniciada");
+  }
+
+  Future<void> reiniciar() async {
+    Terminal.printExpected(message: "Reinicio de los valores . . .");
+    Actividades.consultarAllById(Databases.siteground_database_regpace,
+        consultQuery!, Pacientes.ID_Paciente)
+        .then((value) {
+      setState(() {
+        foundedItems = value;
+        Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
+      });
+    });
+  }
+
+  // Operaciones de la Interfaz ***** ******* ********** ****
   Container itemListView(
       AsyncSnapshot snapshot, int posicion, BuildContext context) {
     return Container(
@@ -674,4 +725,14 @@ class _GestionTransfusionalesState extends State<GestionTransfusionales> {
                 ),
             transitionDuration: const Duration(seconds: 0)));
   }
+
+  // VARIABLES DE LA INTERFAZ ***** ******* ********** ****
+  String appTittle = "Gestion de transfusiones del paciente";
+  String searchCriteria = "Buscar por Fecha";
+  String? consultQuery = Transfusionales.transfusiones['consultIdQuery'];
+
+  late List? foundedItems = [];
+  var gestionScrollController = ScrollController();
+  var searchTextController = TextEditingController();
+
 }

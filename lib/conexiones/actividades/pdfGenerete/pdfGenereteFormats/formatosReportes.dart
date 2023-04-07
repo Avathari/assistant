@@ -1922,12 +1922,14 @@ class FormatosReportes {
     //
     // # # # # # # ### # # # # # # ###
     List<String> tittles = [
+      'Dieta',
       'Liquidos parenterales',
       'Medicamentos',
       'Medidas Generales',
       'Pendientes',
     ];
     List<List<dynamic>> contents = [
+      paraph['Dieta'],
       paraph['Hidroterapia'],
       paraph['Medicamentos'],
       paraph['Medidas_Generales'],

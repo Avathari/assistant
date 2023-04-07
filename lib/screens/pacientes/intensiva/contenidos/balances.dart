@@ -893,9 +893,8 @@ class _GestionBalancesState extends State<GestionBalances> {
       {required AsyncSnapshot snapshot,
       required int posicion,
       required BuildContext context}) {
-    print("posicion ${snapshot.data}");
+    // print("posicion ${snapshot.data}");
     return GestureDetector(
-
       onTap: () {
         Balances.fromJson(snapshot.data[posicion]);
         Operadores.openDialog(
@@ -908,75 +907,84 @@ class _GestionBalancesState extends State<GestionBalances> {
         padding: const EdgeInsets.all(10.0),
         margin: const EdgeInsets.all(10.0),
         decoration: ContainerDecoration.roundedDecoration(),
-        child: Column(
+        child: Row(
           children: [
-            Row(
-              children: [
-                Container(
-                  margin: const EdgeInsets.all(5.0),
-                  child: CircleAvatar(
-                    backgroundColor: Colors.black,
-                    child: Text(
-                      snapshot.data[posicion]['ID_Bala'].toString(),
+            Expanded(
+              flex: 3,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.all(5.0),
+                    decoration: ContainerDecoration.roundedDecoration(),
+                    child: CircleAvatar(
+                      backgroundColor: Colors.black,
+                      child: Text(
+                        snapshot.data[posicion]['ID_Bala'].toString(),
+                        style: Styles.textSyle,
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "${snapshot.data[posicion]['Pace_bala_Fecha']}",
-                        style: Styles.textSyleGrowth(fontSize: 18),
-                      ),
-                      Text(
-                        "${snapshot.data[posicion]['Pace_bala_time']}",
-                        style: Styles.textSyleGrowth(fontSize: 16),
-                      ),
-                    ],
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          "${snapshot.data[posicion]['Pace_bala_Fecha']}",
+                          style: Styles.textSyleGrowth(fontSize: 18),
+                        ),
+                        Text(
+                          "${snapshot.data[posicion]['Pace_bala_time']}",
+                          style: Styles.textSyleGrowth(fontSize: 16),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    IconButton(
-                      color: Colors.grey,
-                      icon: const Icon(Icons.update_rounded),
-                      onPressed: () {
-                        //
-                        onSelected(
-                            snapshot, posicion, context, Constantes.Update);
-                      },
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    IconButton(
-                      color: Colors.grey,
-                      icon: const Icon(Icons.delete),
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return alertDialog(
-                                'Eliminar registro',
-                                '¿Esta seguro de querer eliminar el registro?',
-                                () {
-                                  closeDialog(context);
-                                },
-                                () {
-                                  deleteRegister(snapshot, posicion, context);
-                                },
-                              );
-                            });
-                      },
-                    )
-                  ],
-                )
-              ],
+                ],
+              ),
             ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  IconButton(
+                    color: Colors.grey,
+                    icon: const Icon(Icons.update_rounded),
+                    onPressed: () {
+                      //
+                      onSelected(
+                          snapshot, posicion, context, Constantes.Update);
+                    },
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  IconButton(
+                    color: Colors.grey,
+                    icon: const Icon(Icons.delete),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return alertDialog(
+                              'Eliminar registro',
+                              '¿Esta seguro de querer eliminar el registro?',
+                              () {
+                                closeDialog(context);
+                              },
+                              () {
+                                deleteRegister(snapshot, posicion, context);
+                              },
+                            );
+                          });
+                    },
+                  )
+                ],
+              ),
+            )
           ],
         ),
       ),

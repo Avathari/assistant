@@ -20,6 +20,12 @@ class GestionToxicomanias extends StatefulWidget {
 }
 
 class _GestionToxicomaniasState extends State<GestionToxicomanias> {
+
+  @override
+  void initState() {
+    Toxicomanias.consultarRegistro();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,7 +86,7 @@ class _GestionToxicomaniasState extends State<GestionToxicomanias> {
             ),
           ),
           Expanded(
-            flex: 7,
+            flex: 6,
             child: Container(
               decoration: ContainerDecoration.containerDecoration(),
               padding: const EdgeInsets.all(8.0),
@@ -116,7 +122,7 @@ class _GestionToxicomaniasState extends State<GestionToxicomanias> {
                 width: 1400,
                 decoration: ContainerDecoration.roundedDecoration(),
                 child: GrandButton(
-                    labelButton: 'Actualizar / Registrar', onPress: () {
+                    labelButton: 'Actualizar el Registro', onPress: () {
                   onActionActivity();
                 }),
               ))

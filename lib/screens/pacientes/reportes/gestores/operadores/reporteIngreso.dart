@@ -3,6 +3,7 @@ import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/auxiliaresReportes.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/exploracionFisica.dart';
 import 'package:assistant/values/SizingInfo.dart';
+import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -61,77 +62,72 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+    return Container(
+      decoration: ContainerDecoration.roundedDecoration(),
       child: Column(children: [
         Expanded(
-          child: Padding(
+          child: SingleChildScrollView(
             padding: const EdgeInsets.all(8.0),
-            child: SingleChildScrollView(
-              controller: ScrollController(),
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GrandIcon(
-                    iconData: Icons.person,
-                    labelButton: "Información General",
+            controller: ScrollController(),
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GrandIcon(
+                  iconData: Icons.person,
+                  labelButton: "Información General",
+                  weigth: wieghtRow / index,
+                  onPress: () {
+                    carouselController.jumpToPage(0);
+                  },
+                ),
+                GrandIcon(
+                    iconData: Icons.new_releases_outlined,
+                    labelButton: "Padecimiento Actual",
                     weigth: wieghtRow / index,
                     onPress: () {
-                      carouselController.jumpToPage(0);
-                    },
-                  ),
-                  GrandIcon(
-                      iconData: Icons.new_releases_outlined,
-                      labelButton: "Padecimiento Actual",
-                      weigth: wieghtRow / index,
-                      onPress: () {
-                        carouselController.jumpToPage(1);
-                      }),
+                      carouselController.jumpToPage(1);
+                    }),
 
-                  GrandIcon(
-                      iconData: Icons.explicit,
-                      labelButton: "Exploración Física",
-                      weigth: wieghtRow / index,
-                      onPress: () {
-                        carouselController.jumpToPage(2);
-                      }),
-                  GrandIcon(
-                      iconData: Icons.medical_information,
-                      labelButton: "Auxiliares Diagnósticos",
-                      weigth: wieghtRow / index,
-                      onPress: () {
-                        carouselController.jumpToPage(3);
-                      }),
-                  GrandIcon(
-                      iconData: Icons.explore,
-                      labelButton: "Análisis y propuestas",
-                      weigth: wieghtRow / index,
-                      onPress: () {
-                        carouselController.jumpToPage(4);
-                      }),
-                  GrandIcon(
-                      iconData: Icons.next_plan,
-                      labelButton: "Diagnósticos y Pronóstico",
-                      weigth: wieghtRow / index,
-                      onPress: () {
-                        carouselController.jumpToPage(5);
-                      }),
-                ],
-              ),
+                GrandIcon(
+                    iconData: Icons.explicit,
+                    labelButton: "Exploración Física",
+                    weigth: wieghtRow / index,
+                    onPress: () {
+                      carouselController.jumpToPage(2);
+                    }),
+                GrandIcon(
+                    iconData: Icons.medical_information,
+                    labelButton: "Auxiliares Diagnósticos",
+                    weigth: wieghtRow / index,
+                    onPress: () {
+                      carouselController.jumpToPage(3);
+                    }),
+                GrandIcon(
+                    iconData: Icons.explore,
+                    labelButton: "Análisis y propuestas",
+                    weigth: wieghtRow / index,
+                    onPress: () {
+                      carouselController.jumpToPage(4);
+                    }),
+                GrandIcon(
+                    iconData: Icons.next_plan,
+                    labelButton: "Diagnósticos y Pronóstico",
+                    weigth: wieghtRow / index,
+                    onPress: () {
+                      carouselController.jumpToPage(5);
+                    }),
+              ],
             ),
           ),
         ),
         Expanded(
-          flex: 5,
+          flex: 6,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: CarouselSlider(
               carouselController: carouselController,
-              options: CarouselOptions(
-                  height: isMobile(context) || isTablet(context) ? 900: 450,
-                  enableInfiniteScroll: false,
-                  viewportFraction: 1.0),
+              options: Carousel.carouselOptions(context: context),
               items: [
                 SingleChildScrollView(
                   controller: ScrollController(),
@@ -141,7 +137,7 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
                           textController: initialTextController,
                           labelEditText: "Datos generales",
                           keyBoardType: TextInputType.multiline,
-                          numOfLines: 5,
+                          numOfLines: 3,
                           withShowOption: true,
                           inputFormat: MaskTextInputFormatter()),
                       EditTextArea(

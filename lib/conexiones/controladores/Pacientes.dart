@@ -271,14 +271,24 @@ class Pacientes {
           "en su ${Pacientes.diasOrdinalesEstancia.toLowerCase()} día de estancia intrahospitalaria, "
           "bajo los siguientes diagnósticos: \n";
     } else {
+      String nacimiento = "";
+      if (Valores.sexo == 'Masculino') {
+        nacimiento = "nacido el ${Pacientes.Paciente['Pace_Nace']}. ";
+      } else if (Valores.sexo == 'Femenino') {
+        nacimiento = "nacida el ${Pacientes.Paciente['Pace_Nace']}. ";
+      } else {
+        return "";
+      }
+
+      // ************* *********** ************* ************ ********* ********
       return "${Pacientes.Paciente['Pace_Ses']} de ${Pacientes.Paciente['Pace_Eda']} años, "
-          "nacido el ${Pacientes.Paciente['Pace_Nace']}. "
+          "$nacimiento"
           "${originario()}; residente de ${residente()}. "
-          "Escolaridad hasta ${Pacientes.Paciente['Pace_Esco'].toLowerCase()}, "
-          "ocupación como ${Pacientes.Paciente['Pace_Ocupa'].toLowerCase()}, "
-          "religión ${Pacientes.Paciente['Pace_Reli'].toLowerCase()}, "
-          "estado civil ${estadoCivil().toLowerCase()}. "
-          "Hemotipo ${Pacientes.Paciente['Pace_Hemo'].toLowerCase()}. \n ";
+          "Escolaridad hasta ${Pacientes.Paciente['Pace_Esco'].toLowerCase().trimRight()}, "
+          "ocupación como ${Pacientes.Paciente['Pace_Ocupa'].toLowerCase().trimRight()}, "
+          "religión ${Pacientes.Paciente['Pace_Reli'].toLowerCase().trimRight()}, "
+          "estado civil ${estadoCivil().toLowerCase().trimRight()}. "
+          "Hemotipo ${Pacientes.Paciente['Pace_Hemo'].trim()}. \n ";
     }
   }
 
@@ -291,14 +301,15 @@ class Pacientes {
   }
 
   static String hospitalarios() {
-    // ************************ ************** ********** **** *** *
-    // Reportes.reportes['Antecedentes_Quirurgicos'] = "";
-    Reportes.antecedentesQuirurgicos = "";
+    // Reportes.reportes['Antecedentes_Quirurgicos'] = ""; **** ********** **** ***
+    // Reportes.antecedentesQuirurgicos = "";
 
     print("Quirurgicos ${Quirurgicos!.length} $Quirurgicos \n "
-        "Reportes.Antecedentes_Quirurgicos ${Reportes.antecedentesQuirurgicos}");
+        "Reportes.Antecedentes_Quirurgicos ${Reportes.antecedentesQuirurgicos}"
+        "isEmpty ${Quirurgicos!.isEmpty}");
     // ************************ ************** ********** **** *** *
-    if (Quirurgicos != [] || Quirurgicos!.isNotEmpty) {
+    if (Quirurgicos != [] ) { // || Quirurgicos!.isNotEmpty
+      Reportes.antecedentesQuirurgicos = "";
       for (var element in Quirurgicos!) {
         if (Reportes.antecedentesQuirurgicos == "") {
           Reportes.antecedentesQuirurgicos =
@@ -313,10 +324,6 @@ class Pacientes {
     } else {
       Reportes.antecedentesQuirurgicos = "negados";
     }
-    // ************************ ************** ********** **** *** *
-    // // print("Reportes.impresionesDiagnosticas ${Reportes.impresionesDiagnosticas}");
-    // Reportes.reportes['Antecedentes_Quirurgicos'] =
-    //     Reportes.antecedentesQuirurgicos;
     // ************************ ************** ********** **** *** *
     return Reportes.antecedentesQuirurgicos!;
     // return "negados";
@@ -340,10 +347,6 @@ class Pacientes {
     } else {
       Reportes.antecedentesAlergicos = "negados";
     }
-    // ************************ ************** ********** **** *** *
-    // // print("Reportes.impresionesDiagnosticas ${Reportes.impresionesDiagnosticas}");
-    // Reportes.reportes['Antecedentes_Alergicos'] =
-    //     Reportes.antecedentesAlergicos;
     // ************************ ************** ********** **** *** *
     return Reportes.antecedentesAlergicos!;
     // return "negados";
@@ -428,12 +431,13 @@ class Pacientes {
 
   static String signosVitales({int? indice = 0}) {
     switch (indice) {
+      case 0:
+        return Valorados.vitales;
       case 1:
         return Valorados.signosVitales;
       case 2:
         return Valorados.bioconstantes;
       case 3:
-        // return "Medidas antropométricas";
         return Valorados.antropometricos;
       case 4:
         // return "Asociados a riesgo";
@@ -453,7 +457,7 @@ class Pacientes {
         // "Exploración acortada";
         return "Conciente, orientado y cooperador. Palidez mucotegumentaria, sin datos de deshidratación. "
             "Pupilas isocóricas normorreflectivas, con respuesta fotomotora adecuada. \n"
-            "Tórax con movimientos de amplexión y amplexación sin restricciones."
+            "Tórax con movimientos de amplexión y amplexación sin restricciones. "
             "Ruidos pulmonares con murmullo vesicular audible, sin presencia a la exploración de "
             "estertores y/o sibilancias. "
             "Ruidos cardiacos consecuentes con pulso, de aspecto rimico sin sonidos agregados, descartándose "
@@ -623,6 +627,7 @@ class Pacientes {
     'Hidalgo',
     'Jalisco',
     'México',
+    'Estado de México',
     'Michoacán',
     'Morelos',
     'Nayarit',
@@ -3191,51 +3196,54 @@ class Toxicomanias {
   }
 
   static void actualizarRegistro() {
+    List listOfValues = [
+      Toxicomanias.ID_Toxicomanias,
+      Pacientes.ID_Paciente,
+      Calendarios.today(format: 'yyyy/MM/dd'),
+      // ********* ******** ******* ********* ***
+      Valores.esAlcoholismo,
+      Valores.edadInicioAlcoholismo,
+      Valores.duracionAnosAlcoholismo,
+      Valores.periodicidadAlcoholismo,
+      Valores.intervaloAlcoholismo,
+      Valores.suspensionAlcoholismo,
+      Valores.aosSuspensionAlcoholismo,
+      Valores.tiposAlcoholismoDescripcion,
+      // ********* ******** ******* ********* ***
+      Valores.esTabaquismo,
+      Valores.edadInicioTabaquismo,
+      Valores.duracionAnosTabaquismo,
+      Valores.periodicidadTabaquismo,
+      Valores.intervaloTabaquismo,
+      Valores.suspensionTabaquismo,
+      Valores.aosSuspensionTabaquismo,
+      Valores.tiposTabaquismoDescripcion,
+      // ********* ******** ******* ********* ***
+      Valores.esDrogadismo,
+      Valores.edadInicioDrogadismo,
+      Valores.duracionAnosDrogadismo,
+      Valores.periodicidadDrogadismo,
+      Valores.intervaloDrogadismo,
+      Valores.suspensionDrogadismo,
+      Valores.aosSuspensionDrogadismo,
+      Valores.tiposDrogadismoDescripcion,
+      // ********* ******** ******* ********* ***
+      Toxicomanias.ID_Toxicomanias,
+    ];
+
     Actividades.actualizar(
       Databases.siteground_database_regepi,
       Toxicomanias.toxicomanias['updateQuery'],
-      [
-        Toxicomanias.ID_Toxicomanias,
-        Pacientes.ID_Paciente,
-        Calendarios.today(format: 'yyyy/MM/dd'),
-        // ********* ******** ******* ********* ***
-        Valores.esAlcoholismo,
-        Valores.edadInicioAlcoholismo,
-        Valores.duracionAnosAlcoholismo,
-        Valores.periodicidadAlcoholismo,
-        Valores.intervaloAlcoholismo,
-        Valores.suspensionAlcoholismo,
-        Valores.aosSuspensionAlcoholismo,
-        Valores.tiposAlcoholismoDescripcion,
-        // ********* ******** ******* ********* ***
-        Valores.esTabaquismo,
-        Valores.edadInicioTabaquismo,
-        Valores.duracionAnosTabaquismo,
-        Valores.periodicidadTabaquismo,
-        Valores.intervaloTabaquismo,
-        Valores.suspensionTabaquismo,
-        Valores.aosSuspensionTabaquismo,
-        Valores.tiposTabaquismoDescripcion,
-        // ********* ******** ******* ********* ***
-        Valores.esDrogadismo,
-        Valores.edadInicioDrogadismo,
-        Valores.duracionAnosDrogadismo,
-        Valores.periodicidadDrogadismo,
-        Valores.intervaloDrogadismo,
-        Valores.suspensionDrogadismo,
-        Valores.aosSuspensionDrogadismo,
-        Valores.tiposDrogadismoDescripcion,
-        // ********* ******** ******* ********* ***
-        Toxicomanias.ID_Toxicomanias,
-      ],
+      listOfValues,
       Toxicomanias.ID_Toxicomanias,
     ).then((value) {
       Terminal.printAlert(
           message:
-              "RESPUESTA al Actualizar Toxicomanias - $value "); // ${listOfValues.length}
+              "RESPUESTA al Actualizar Toxicomanias - $listOfValues "); // ${listOfValues.length}
       if (value == "SUCCESS" || value == '"SUCCESS"') {
         Terminal.printOther(
-            message: "Actualización $value - Eliminando $fileAssocieted");
+            message: "Actualización "
+                "$value - Eliminando $fileAssocieted");
         Archivos.deleteFile(filePath: fileAssocieted)
             .then((value) => consultarRegistro());
       }
@@ -3375,7 +3383,7 @@ class Toxicomanias {
         "REGE_Pace_APNP_DRO_tox_DUR = ?,  REGE_Pace_APNP_DRO_tox_PER = ?,  "
         "Pace_APNP_DRO_tox_DUR_PER_ = ?,  Pace_APNP_DRO_tox_SUS_SINO = ?,  "
         "REGE_Pace_APNP_DRO_tox_SUS = ?,  Pace_APNP_DRO_tox_TIP = ? "
-        "WHERE ID_Pace = ?",
+        "WHERE ID_PACE_APNP_DRO = ?",
     "deleteQuery": "DELETE FROM pace_apnp_dro WHERE ID_pace_apnp_dro = ?",
     "toxicomaniasColumns": [
       "ID_Pace",
@@ -3973,11 +3981,25 @@ class Alergicos {
   }
 
   static void registros() {
-    Actividades.consultarAllById(
-            Databases.siteground_database_regpace,
-            Alergicos.alergias['consultByIdPrimaryQuery'],
-            Pacientes.ID_Paciente)
-        .then((value) => Pacientes.Alergicos = value);
+    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+      // *********************************
+      Pacientes.Alergicos = value;
+    }).onError((error, stackTrace) {
+      Actividades.consultarAllById(
+              Databases.siteground_database_regpace,
+              Alergicos.alergias['consultByIdPrimaryQuery'],
+              Pacientes.ID_Paciente)
+          .then((value) {
+        // Asignación de Valores ********* ******** ******* ********* ***
+        Pacientes.Alergicos = value;
+        // ********* ******** ******* ********* ***
+        Terminal.printSuccess(
+            message: "Valores de Alérgicos asignado : : : $value");
+        // ********* ******** ******* ********* ***
+        Archivos.createJsonFromMap([value],
+            filePath: "${Pacientes.localRepositoryPath}alergicos.json");
+      });
+    });
   }
 
   static void consultarRegistro() {
@@ -4146,6 +4168,7 @@ class Quirurgicos {
 
 class Transfusionales {
   static int ID_Transfusionales = 0;
+  static var fileAssocieted = '${Pacientes.localRepositoryPath}transfusionales.json';
   //
   static String selectedDiagnosis = "";
   //
@@ -5243,18 +5266,18 @@ class Auxiliares {
         .then((value) {
       Pacientes.Electrocardiogramas = value;
       // Calculos adicionales
-      Pacientes.Electrocardiogramas.addAll({
-        "isl": (Pacientes.Electrocardiogramas['EC_sV1'] +
-            Pacientes.Electrocardiogramas['EC_rV6']),
-        "igu": (Pacientes.Electrocardiogramas['EC_rDI'] +
-            Pacientes.Electrocardiogramas['EC_sDIII']),
-        "il": (Pacientes.Electrocardiogramas['EC_rDI'] +
-                Pacientes.Electrocardiogramas['EC_sDIII']) -
-            (Pacientes.Electrocardiogramas['EC_rDIII'] +
-                Pacientes.Electrocardiogramas['EC_sDI']),
-        "vc": (Pacientes.Electrocardiogramas['EC_rAVL'] +
-            Pacientes.Electrocardiogramas['EC_sV3'])
-      });
+      // Pacientes.Electrocardiogramas.addAll({
+      //   "isl": (Pacientes.Electrocardiogramas['EC_sV1'] +
+      //       Pacientes.Electrocardiogramas['EC_rV6']),
+      //   "igu": (Pacientes.Electrocardiogramas['EC_rDI'] +
+      //       Pacientes.Electrocardiogramas['EC_sDIII']),
+      //   "il": (Pacientes.Electrocardiogramas['EC_rDI'] +
+      //           Pacientes.Electrocardiogramas['EC_sDIII']) -
+      //       (Pacientes.Electrocardiogramas['EC_rDIII'] +
+      //           Pacientes.Electrocardiogramas['EC_sDI']),
+      //   "vc": (Pacientes.Electrocardiogramas['EC_rAVL'] +
+      //       Pacientes.Electrocardiogramas['EC_sV3'])
+      // });
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "ERROR - $error : : $stackTrace");
     });
@@ -5844,6 +5867,7 @@ class Reportes {
     "Recomendaciones_Generales": Reportes.tratamientoPropuesto,
     "Impresiones_Diagnosticas": Reportes.impresionesDiagnosticas,
     // ***************************************
+    "Dieta": Reportes.dieta,
     "Hidroterapia": Reportes.hidroterapia,
     "Insulinoterapia": Reportes.insulinoterapia,
     "Hemoterapia": Reportes.hemoterapia,
@@ -5912,6 +5936,7 @@ class Reportes {
   //
   static String procedimientoRealizado = "", bibliografias = "";
   //
+  static List<String> dieta = ['Ayuno hasta nueva orden.'];
   static List<String> hidroterapia = ['Sin terapia hídrica.'];
   static List<String> medicamentosIndicados = ['Sin medicamentos otorgados.'];
   static List<String> medidasGenerales = [
@@ -7113,6 +7138,7 @@ class Licencias {
 
 class Vacunales {
   static int ID_Vacunales = 0;
+  static var fileAssocieted = '${Pacientes.localRepositoryPath}vacunales.json';
   //
   static String selectedDiagnosis = "";
   //
@@ -7122,6 +7148,14 @@ class Vacunales {
   static List<String> actualDiagno = Dicotomicos.dicotomicos();
   static List<String> actualTratamiento = Dicotomicos.dicotomicos();
   static List<String> actualSuspendido = Dicotomicos.dicotomicos();
+
+  static void registros() {
+    Actividades.consultarAllById(
+        Databases.siteground_database_regpace,
+        Vacunales.vacuna['consultByIdPrimaryQuery'],
+        Pacientes.ID_Paciente)
+        .then((value) => Pacientes.Vacunales = value);
+  }
 
   static void ultimoRegistro() {
     Actividades.consultarId(Databases.siteground_database_regpace,

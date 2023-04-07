@@ -136,31 +136,45 @@ class _MetabolicosState extends State<Metabolicos> {
               ),
               SingleChildScrollView(
                 controller: ScrollController(),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
                   children: [
-                    ValuePanel(
-                      firstText: 'Gasto Energético Basal',
-                      secondText: Valores.gastoEnergeticoBasal.toStringAsFixed(2),
-                      thirdText: 'kCal/Día',
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ValuePanel(
+                            firstText: 'Gasto Energético Basal',
+                            secondText: Valores.gastoEnergeticoBasal.toStringAsFixed(2),
+                            thirdText: 'kCal/Día',
+                          ),
+                          ValuePanel(
+                            firstText: 'Metabolismo Basal',
+                            secondText: Valores.metabolismoBasal.toStringAsFixed(2),
+                            thirdText: 'kCal/Día',
+                          ),
+                        ],
+                      ),
                     ),
-                    ValuePanel(
-                      firstText: 'Metabolismo Basal',
-                      secondText: Valores.metabolismoBasal.toStringAsFixed(2),
-                      thirdText: 'kCal/Día',
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ValuePanel(
+                            firstText: 'Efecto Térmico de los Alimentos',
+                            secondText: Valores.efectoTermicoAlimentos.toStringAsFixed(2),
+                            thirdText: 'kCal/Día',
+                          ),
+                          ValuePanel(
+                            firstText: 'Gasto Energético Total',
+                            secondText: Valores.gastoEnergeticoTotal.toStringAsFixed(2),
+                            thirdText: 'kCal/Día',
+                          ),
+                          // CrossLine(),
+                        ],
+                      ),
                     ),
-                    ValuePanel(
-                      firstText: 'Efecto Térmico de los Alimentos',
-                      secondText: Valores.efectoTermicoAlimentos.toStringAsFixed(2),
-                      thirdText: 'kCal/Día',
-                    ),
-                    ValuePanel(
-                      firstText: 'Gasto Energético Total',
-                      secondText: Valores.gastoEnergeticoTotal.toStringAsFixed(2),
-                      thirdText: 'kCal/Día',
-                    ),
-                    CrossLine(),
                   ],
                 ),
               ),

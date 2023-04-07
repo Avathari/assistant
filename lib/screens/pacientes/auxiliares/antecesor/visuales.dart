@@ -187,6 +187,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
 
   void cerrarCasoPaciente() {
     Pacientes.close();
+    Reportes.close();
 
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => const GestionPacientes()));
