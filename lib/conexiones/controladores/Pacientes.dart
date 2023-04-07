@@ -5260,7 +5260,10 @@ class Auxiliares {
             Databases.siteground_database_reggabo,
             Auxiliares.auxiliares['consultByIdPrimaryQuery'],
             Pacientes.ID_Paciente)
-        .then((value) => Pacientes.Paraclinicos = value);
+        .then((value) {
+      Pacientes.Paraclinicos = value;
+      // Archivos.createJsonFromMap(value, filePath: fileAssocieted);
+    });
     Actividades.consultarId(
             Databases.siteground_database_reggabo,
             Electrocardiogramas.electrocardiogramas['consultLastQuery'],

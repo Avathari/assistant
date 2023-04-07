@@ -270,7 +270,9 @@ class Listas {
   static List<dynamic> listWithoutRepitedValues(List<dynamic> listado) {
     var seen = <dynamic>{};
     List uniquelist = listado.where((country) => seen.add(country)).toList();
-    return uniquelist;
+    return (uniquelist..sort()).reversed.toList();
+    // uniquelist..sort() Ordenar de menor a mayor
+    //(uniquelist..sort()).reversed.toList() Ordenar de mayor a menor
   }
 
   static List<dynamic> listFromMapWithOneKey(List<dynamic> aux,

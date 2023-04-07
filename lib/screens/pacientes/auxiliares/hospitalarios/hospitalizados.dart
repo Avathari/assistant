@@ -1,4 +1,3 @@
-
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/actividades/pdfGenerete/PdfApi.dart';
 import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteFormats/formatosReportes.dart';
@@ -7,6 +6,7 @@ import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/home.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
+import 'package:assistant/screens/pacientes/hospitalizacion/padecimientoActual.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
@@ -14,6 +14,7 @@ import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
+import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
@@ -186,7 +187,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                       padding: const EdgeInsets.all(10.0),
                       gridDelegate: GridViewTools.gridDelegate(
                         crossAxisCount: isMobile(context) ? 1 : 1,
-                        mainAxisExtent: isMobile(context) ? 170 : 250,
+                        mainAxisExtent: isMobile(context) ? 170 : 290,
                       ),
                       controller: ScrollController(),
                       shrinkWrap: false,
@@ -227,6 +228,9 @@ class _HospitalizadosState extends State<Hospitalizados> {
   GestureDetector itemListView(
       AsyncSnapshot snapshot, int posicion, BuildContext context) {
     Terminal.printExpected(message: "pacientes : ${snapshot.data[posicion]}");
+    Terminal.printAlert(
+        message: "padecimiento\n"
+            "snapshot.data[posicion]['Padecimiento'] ${snapshot.data[posicion]['Padecimiento']}");
 
     return GestureDetector(
       onTap: () {
@@ -278,65 +282,149 @@ class _HospitalizadosState extends State<Hospitalizados> {
                 ],
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 4),
             Expanded(
-              flex: 4,
+              flex: 5,
               child: Container(
-                margin: const EdgeInsets.all(10.0),
+                decoration: ContainerDecoration.roundedDecoration(),
+                padding: const EdgeInsets.only(
+                    left: 10.0, right: 10.0, top: 6, bottom: 8),
+                margin: const EdgeInsets.only(
+                    left: 10.0, right: 10.0, top: 6, bottom: 2),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                        "${snapshot.data[posicion]['Pace_Ape_Pat']} "
-                        "${snapshot.data[posicion]['Pace_Ape_Mat']} "
-                        "${snapshot.data[posicion]['Pace_Nome_PI']} "
-                        "${snapshot.data[posicion]['Pace_Nome_SE']}",
-                        maxLines: 2,
-                        style: Styles.textSyleGrowth(fontSize: 14)),
-                    Text(
-                      "Hemotipo: ${snapshot.data[posicion]['Pace_Hemo']}",
-                      maxLines: 2,
-                      style: Styles.textSyleGrowth(fontSize: 10),
-                    ),
-                    Text(
-                      "Servicio: ${snapshot.data[posicion]['Serve_Trat']}",
-                      maxLines: 2,
-                      style: Styles.textSyleGrowth(fontSize: 10),
-                    ),
-                    Text(
-                      "${snapshot.data[posicion]['Medi_Trat']}",
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: Styles.textSyleGrowth(fontSize: 10),
-                    ),
-                    Text(
-                      "Egreso: ${snapshot.data[posicion]['Feca_EGE_Hosp']}",
-                      style: Styles.textSyleGrowth(fontSize: 10),
-                    ),
-                    Text("D.E.H.: ${snapshot.data[posicion]['Dia_Estan']}",
-                        style: Styles.textSyleGrowth(fontSize: 12)),
-                    Text(
-                      "${snapshot.data[posicion]['EGE_Motivo']}",
-                      style: Styles.textSyleGrowth(fontSize: 10),
+                    Expanded(
+                      flex: 2,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                    "${snapshot.data[posicion]['Pace_Ape_Pat']} "
+                                    "${snapshot.data[posicion]['Pace_Ape_Mat']} "
+                                    "${snapshot.data[posicion]['Pace_Nome_PI']} "
+                                    "${snapshot.data[posicion]['Pace_Nome_SE']}",
+                                    maxLines: 2,
+                                    style: Styles.textSyleGrowth(fontSize: 14)),
+                                Text(
+                                  "Hemotipo: ${snapshot.data[posicion]['Pace_Hemo']}",
+                                  maxLines: 2,
+                                  style: Styles.textSyleGrowth(fontSize: 10),
+                                ),
+                                Text(
+                                  "Servicio: ${snapshot.data[posicion]['Serve_Trat']}",
+                                  maxLines: 2,
+                                  style: Styles.textSyleGrowth(fontSize: 10),
+                                ),
+                                Text(
+                                  "${snapshot.data[posicion]['Medi_Trat']}",
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Styles.textSyleGrowth(fontSize: 10),
+                                ),
+                                Text(
+                                    "D.E.H.: ${snapshot.data[posicion]['Dia_Estan']}",
+                                    style: Styles.textSyleGrowth(fontSize: 12)),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                              flex: 6,
+                              child: Container(
+                                padding: const EdgeInsets.all(10.0),
+                                margin: const EdgeInsets.all(5.0),
+                                height: 500,
+                                decoration: ContainerDecoration.roundedDecoration(),
+                                child: SingleChildScrollView(
+                                  controller: ScrollController(),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "PA: ${snapshot.data[posicion]['Padecimiento']['Contexto']}",
+                                        maxLines: 10,
+                                        style:
+                                            Styles.textSyleGrowth(fontSize: 10),
+                                        textAlign: TextAlign.start,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )),
+                        ],
+                      ),
                     ),
                     CrossLine(),
-                    Text(
-                      "Laboratorios",
-                      style: Styles.textSyleGrowth(fontSize: 12),
-                    ),
                     Expanded(
-                      child: GridView.builder(gridDelegate: GridViewTools.gridDelegate(),
-                          itemBuilder: (BuildContext context, index) {
-                        return null;
-                          }),
+                      flex: 3,
+                      child: Container(
+                        padding: const EdgeInsets.only(
+                            left: 2, right: 2, top: 2, bottom: 2),
+                        margin: const EdgeInsets.only(
+                            left: 2, right: 2, top: 2, bottom: 2),
+                        decoration: ContainerDecoration.roundedDecoration(),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                "Laboratorios",
+                                style: Styles.textSyleGrowth(fontSize: 12),
+                                textAlign: TextAlign.start,
+                              ),
+                            ),
+                            Expanded(
+                              flex: 3,
+                              child: GridView.builder(
+                                  padding: const EdgeInsets.all(4),
+                                  gridDelegate: GridViewTools.gridDelegate(
+                                      crossAxisCount: 5, mainAxisExtent: 65),
+                                  itemCount: Listas.listWithoutRepitedValues(
+                                          Listas.listFromMapWithOneKey(snapshot
+                                              .data[posicion]['Auxiliares']))
+                                      .length,
+                                  // snapshot.data[posicion]['Auxiliares'].length,
+                                  itemBuilder: (BuildContext context, index) {
+                                    var list = Listas.listWithoutRepitedValues(
+                                        Listas.listFromMapWithOneKey(snapshot
+                                            .data[posicion]['Auxiliares']));
+                                    return ValuePanel(
+                                      secondText: "${list[index]}", // Resultado
+                                      withEditMessage: true,
+                                      onEdit: (value) {
+                                        Pacientes.Paraclinicos = snapshot
+                                            .data[posicion]['Auxiliares'];
+
+                                        Terminal.printExpected(
+                                            message:
+                                                "snapshot.data[posicion]['Auxiliares'] ${snapshot.data[posicion]['Auxiliares']}");
+
+                                        Datos.portapapeles(
+                                            context: context,
+                                            text: Auxiliares.porFecha(
+                                                fechaActual: value));
+                                      },
+                                    );
+                                  }),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
             ),
             Expanded(
-                flex: 2,
+                flex: 3,
                 child: Container(
                   margin: const EdgeInsets.all(5.0),
                   child: Column(
@@ -350,10 +438,14 @@ class _HospitalizadosState extends State<Hospitalizados> {
                       CrossLine(),
                       Expanded(
                         child: ListView.builder(
-                            itemCount: snapshot.data[posicion]['Cronicos'].length,
+                            itemCount:
+                                snapshot.data[posicion]['Cronicos'].length,
                             itemBuilder: (BuildContext context, ind) {
-                              return Text(snapshot.data[posicion]['Cronicos'][ind]
-                                  ['Pace_APP_DEG'], style: Styles.textSyleGrowth(fontSize: 9),);
+                              return Text(
+                                snapshot.data[posicion]['Cronicos'][ind]
+                                    ['Pace_APP_DEG'],
+                                style: Styles.textSyleGrowth(fontSize: 9),
+                              );
                             }),
                       ),
                       const SizedBox(height: 4),
@@ -364,10 +456,14 @@ class _HospitalizadosState extends State<Hospitalizados> {
                       CrossLine(),
                       Expanded(
                         child: ListView.builder(
-                            itemCount: snapshot.data[posicion]['Diagnosticos'].length,
+                            itemCount:
+                                snapshot.data[posicion]['Diagnosticos'].length,
                             itemBuilder: (BuildContext context, ind) {
-                              return Text(snapshot.data[posicion]['Diagnosticos'][ind]
-                              ['Pace_APP_DEG'], style: Styles.textSyleGrowth(fontSize: 9),);
+                              return Text(
+                                snapshot.data[posicion]['Diagnosticos'][ind]
+                                    ['Pace_APP_DEG'],
+                                style: Styles.textSyleGrowth(fontSize: 9),
+                              );
                             }),
                       ),
                     ],
@@ -388,10 +484,14 @@ class _HospitalizadosState extends State<Hospitalizados> {
                       CrossLine(),
                       Expanded(
                         child: ListView.builder(
-                            itemCount: snapshot.data[posicion]['Pendientes'].length,
+                            itemCount:
+                                snapshot.data[posicion]['Pendientes'].length,
                             itemBuilder: (BuildContext context, ind) {
-                              return Text(snapshot.data[posicion]['Pendientes'][ind]
-                              ['Pace_Desc_PEN'], style: Styles.textSyleGrowth(fontSize: 9),);
+                              return Text(
+                                snapshot.data[posicion]['Pendientes'][ind]
+                                    ['Pace_Desc_PEN'],
+                                style: Styles.textSyleGrowth(fontSize: 9),
+                              );
                             }),
                       ),
                       const SizedBox(height: 4),
@@ -411,14 +511,36 @@ class _HospitalizadosState extends State<Hospitalizados> {
                     ],
                   ),
                 )),
-            Expanded(flex: 1, child: Column(
-              children: [
-                GrandIcon(onPress: () { }),
-                GrandIcon(onPress: () { }),
-                GrandIcon(onPress: () { }),
-                GrandIcon(onPress: () { }),
-              ],
-            )),
+            Expanded(
+                flex: 1,
+                child: Column(
+                  children: [
+                    GrandIcon(
+                        iconData: Icons.medical_information_outlined,
+                        labelButton: 'Padecimiento Actual',
+                        onPress: () {
+                          Pacientes.ID_Hospitalizacion =
+                              snapshot.data[posicion]['ID_Hosp'];
+                          Operadores.openActivity(
+                              context: context,
+                              chyldrim: const PadecimientoActual(),
+                              onAction: () {
+                                Repositorios.actualizarRegistro();
+                              });
+                        }),
+                    GrandIcon(
+                        labelButton: "Historial de Laboratorios",
+                        iconData: Icons.checklist_sharp,
+                        onPress: () {
+                          Pacientes.Paraclinicos =
+                              snapshot.data[posicion]['Auxiliares'];
+                          Datos.portapapeles(
+                              context: context, text: Auxiliares.historial());
+                        }),
+                    GrandIcon(onPress: () {}),
+                    GrandIcon(onPress: () {}),
+                  ],
+                )),
           ],
         ),
       ),
@@ -554,6 +676,14 @@ class _HospitalizadosState extends State<Hospitalizados> {
           });
         } else {
           response[v].addAll(hospitalizaed[v]);
+
+          response[v].addAll({
+            "Padecimiento": await Actividades.consultarId(
+              Databases.siteground_database_reghosp,
+              Repositorios.repositorio['consultPadecimientoQuery'],
+              response[v]['ID_Hosp'],
+            ),
+          });
           response[v].addAll({
             "Cronicos": await Actividades.consultarAllById(
               Databases.siteground_database_regpace,
@@ -575,6 +705,14 @@ class _HospitalizadosState extends State<Hospitalizados> {
               "SELECT * FROM pace_pen WHERE ID_Pace = ? "
               "AND ID_Hosp = '${hospitalizaed[v]['ID_Hosp']}' "
               "AND Pace_PEN_realized = '1'",
+              response[v]['ID_Pace'],
+            )
+          });
+          // ********** ************** ***********
+          response[v].addAll({
+            "Auxiliares": await Actividades.consultarAllById(
+              Databases.siteground_database_reggabo,
+              Auxiliares.auxiliares['consultByIdPrimaryQuery'],
               response[v]['ID_Pace'],
             )
           });
