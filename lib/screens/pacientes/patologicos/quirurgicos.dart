@@ -48,7 +48,7 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
   //
   var patologicosScroller = ScrollController();
   var fileAssocieted = Quirurgicos.fileAssocieted;
-  
+
   @override
   void initState() {
     //
@@ -68,7 +68,8 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
           idOperation = Quirurgicos.Cirugias['ID_PACE_APP_QUI'];
 
           isActualDiagoValue =
-              Dicotomicos.fromInt(Quirurgicos.Cirugias['Pace_APP_QUI_SINO']).toString();
+              Dicotomicos.fromInt(Quirurgicos.Cirugias['Pace_APP_QUI_SINO'])
+                  .toString();
           if (Quirurgicos.selectedDiagnosis == "") {
             cieDiagnoTextController.text = Quirurgicos.Cirugias['Pace_APP_QUI'];
           } else {
@@ -77,8 +78,9 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
           ayoDiagoTextController.text =
               Quirurgicos.Cirugias['Pace_APP_QUI_dia'].toString();
           //
-          isTratamientoDiagoValue = Dicotomicos.fromInt(
-              Quirurgicos.Cirugias['Pace_APP_QUI_com_SINO']).toString();
+          isTratamientoDiagoValue =
+              Dicotomicos.fromInt(Quirurgicos.Cirugias['Pace_APP_QUI_com_SINO'])
+                  .toString();
           tratamientoTextController.text =
               Quirurgicos.Cirugias['Pace_APP_QUI_com'];
         });
@@ -94,15 +96,15 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
 
     Pacientes.Quirurgicos!.clear();
     Actividades.consultarAllById(
-        Databases.siteground_database_regpace,
-        Quirurgicos.cirugias['consultByIdPrimaryQuery'],
-        Pacientes.ID_Paciente)
+            Databases.siteground_database_regpace,
+            Quirurgicos.cirugias['consultByIdPrimaryQuery'],
+            Pacientes.ID_Paciente)
         .then((value) {
       setState(() {
         Pacientes.Quirurgicos = value;
         Terminal.printSuccess(
             message:
-            "Actualizando Repositorio de Quirurgicos del Paciente . . . ${Pacientes.Quirurgicos}");
+                "Actualizando Repositorio de Quirurgicos del Paciente . . . ${Pacientes.Quirurgicos}");
 
         Archivos.createJsonFromMap(Pacientes.Quirurgicos!,
             filePath: Quirurgicos.fileAssocieted);
@@ -268,7 +270,7 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
                 }));
 
             // ******************************************** *** *
-                  });
+          });
           break;
         case Constantes.Update:
           Actividades.actualizar(Databases.siteground_database_regpace,
@@ -283,7 +285,7 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
                   onClose(context);
                 }));
             // ******************************************** *** *
-                  });
+          });
           break;
         default:
       }
@@ -356,10 +358,10 @@ class GestionQuirurgicos extends StatefulWidget {
 
 class _GestionQuirurgicosState extends State<GestionQuirurgicos> {
   var fileAssocieted = Quirurgicos.fileAssocieted;
-  
+
   @override
   void initState() {
-iniciar();
+    iniciar();
     super.initState();
   }
 
@@ -509,7 +511,7 @@ iniciar();
   void iniciar() {
     Terminal.printWarning(
         message:
-        " . . . Iniciando Actividad - Repositorio Quirúrgicos del Pacientes");
+            " . . . Iniciando Actividad - Repositorio Quirúrgicos del Pacientes");
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       setState(() {
         foundedItems = value;
@@ -525,7 +527,7 @@ iniciar();
   Future<void> reiniciar() async {
     Terminal.printExpected(message: "Reinicio de los valores . . .");
     Actividades.consultarAllById(Databases.siteground_database_regpace,
-        consultQuery!, Pacientes.ID_Paciente)
+            consultQuery!, Pacientes.ID_Paciente)
         .then((value) {
       setState(() {
         foundedItems = value;
@@ -590,8 +592,8 @@ iniciar();
                             icon: const Icon(Icons.update_rounded),
                             onPressed: () {
                               //
-                              onSelected(
-                                  snapshot, posicion, context, Constantes.Update);
+                              onSelected(snapshot, posicion, context,
+                                  Constantes.Update);
                             },
                           ),
                           const SizedBox(
@@ -649,13 +651,16 @@ iniciar();
   void deleteRegister(
       AsyncSnapshot<dynamic> snapshot, int posicion, BuildContext context) {
     Actividades.eliminar(
-        Databases.siteground_database_regpace,
-        Quirurgicos.cirugias['deleteQuery'],
-        snapshot.data[posicion][widget.idElementQuery]).then((value) {
+            Databases.siteground_database_regpace,
+            Quirurgicos.cirugias['deleteQuery'],
+            snapshot.data[posicion][widget.idElementQuery])
+        .then((value) {
       setState(() {
         snapshot.data.removeAt(posicion);
         Archivos.deleteFile(filePath: fileAssocieted).then((value) {
-          Operadores.alertActivity(context: context, tittle: "Eliminación de Registros",
+          Operadores.alertActivity(
+              context: context,
+              tittle: "Eliminación de Registros",
               message: "Registro eliminado",
               onAcept: () {
                 Navigator.of(context).pop();
@@ -723,5 +728,4 @@ iniciar();
   late List? foundedItems = [];
   var gestionScrollController = ScrollController();
   var searchTextController = TextEditingController();
-
 }

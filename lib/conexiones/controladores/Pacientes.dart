@@ -293,7 +293,7 @@ class Pacientes {
   }
 
   static String heredofamiliares() {
-    return "con desconocimiento de enfermedades preexistentes";
+    return "Con desconocimiento de enfermedades preexistentes";
   }
 
   static String epidemiologicos() {
@@ -303,10 +303,9 @@ class Pacientes {
   static String hospitalarios() {
     // Reportes.reportes['Antecedentes_Quirurgicos'] = ""; **** ********** **** ***
     // Reportes.antecedentesQuirurgicos = "";
-
-    print("Quirurgicos ${Quirurgicos!.length} $Quirurgicos \n "
-        "Reportes.Antecedentes_Quirurgicos ${Reportes.antecedentesQuirurgicos}"
-        "isEmpty ${Quirurgicos!.isEmpty}");
+    // print("Quirurgicos ${Quirurgicos!.length} $Quirurgicos \n "
+    //     "Reportes.Antecedentes_Quirurgicos ${Reportes.antecedentesQuirurgicos}"
+    //     "isEmpty ${Quirurgicos!.isEmpty}");
     // ************************ ************** ********** **** *** *
     if (Quirurgicos != []) {
       // || Quirurgicos!.isNotEmpty
@@ -327,6 +326,29 @@ class Pacientes {
     }
     // ************************ ************** ********** **** *** *
     return Reportes.antecedentesQuirurgicos!;
+    // return "negados";
+  }
+
+  static String traumaticos() {
+    // ************************ ************** ********** **** *** *
+    // Reportes.reportes['Antecedentes_Alergicos'] = "";
+    // Reportes.antecedentesTraumatologicos = "";
+
+    // print("Traumatologicos ${Traumatologicos!.length} $Traumatologicos \n "
+    //"Reportes.antecedentesTraumatologicos ${Reportes.antecedentesTraumatologicos}");
+    // ************************ ************** ********** **** *** *
+    if (Traumatologicos != []) {
+      for (var element in Traumatologicos!) {
+        if (Reportes.antecedentesTraumatologicos == "") {
+          Reportes.antecedentesTraumatologicos =
+          "${Reportes.antecedentesAlergicos}${element['Pace_APP_ALE']} diagnósticado hace ${element['Pace_APP_ALE_dia']} años. ";
+        }
+      }
+    } else {
+      Reportes.antecedentesTraumatologicos = "negados";
+    }
+    // ************************ ************** ********** **** *** *
+    return Reportes.antecedentesTraumatologicos!;
     // return "negados";
   }
 
@@ -380,6 +402,14 @@ class Pacientes {
         "";
   }
 
+
+  static String antecedentesIngresosPatologicos() {
+    return "Antecedentes patológicos: ${Pacientes.patologicos()}\n"
+        "Antecedentes quirúrgicos: ${Pacientes.hospitalarios()}.\n"
+        "Antecedentes alérgicos: ${Pacientes.alergicos()}\n"
+        "Antecedentes traumáticos: ${Pacientes.traumaticos()}\n";
+  }
+
   static String antecedentesPatologicos() {
     return "Antecedentes heredofamiliares: ${Sentences.capitalize(Pacientes.heredofamiliares())}.\n"
         "Antecedentes quirúrgicos: ${Pacientes.hospitalarios()}.\n"
@@ -395,10 +425,17 @@ class Pacientes {
     //"Reportes.Antecedentes_Patologicos ${Reportes.personalesPatologicos}");
     // ************************ ************** ********** **** *** *
     if (Patologicos != []) {
+      Reportes.personalesPatologicos = "";
+
       for (var element in Patologicos!) {
         if (Reportes.personalesPatologicos == "") {
           Reportes.personalesPatologicos =
-              "${Reportes.personalesPatologicos}${element['Pace_APP_DEG']} "
+              "${element['Pace_APP_DEG']} "
+              "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+              "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. ";
+        } else {
+          Reportes.personalesPatologicos =
+          "${Reportes.personalesPatologicos}${element['Pace_APP_DEG']} "
               "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
               "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. ";
         }
@@ -1058,6 +1095,22 @@ class Pacientes {
     Sexuales = [];
     Antirretrovirales = [];
     Embarazos = [];
+    // ******* *** *******
+    Valores.actividadesDiariasDescripcion = 'Labores Propias del Trabajo';
+    Valores.pasatiemposDescripcion = 'No Comentados';
+    Valores.horasSuenoDescripcion = Items.horasSueno[2];
+    Valores.viajesRecientesDescripcion = '';
+    Valores.viajesRecientes = false;
+    Valores.problemasFamiliares = false;
+    Valores.violenciaInfantil = false;
+    Valores.abusoSustancias = false;
+    Valores.problemasLaborales = false;
+    Valores.estresLaboral = false;
+    Valores.hostilidadLaboral = false;
+    Valores.abusoLaboral = false;
+    Valores.acosoLaboral = false;
+    Valores.acosoSexual = false;
+    Valores.abusoSexual = false;
     // ******* *** *******
     Constantes.reinit();
     Reportes.close();
@@ -2178,10 +2231,10 @@ class Diarios {
       Valores.hostilidadLaboral =
           Dicotomicos.fromInt(value['Pace_APNP_HAD_pol_hos'], toBoolean: true)
               as bool?;
-      Valores.abusoLaboral =
+      Valores.abusoSexual =
           Dicotomicos.fromInt(value['Pace_APNP_HAD_pol_abu'], toBoolean: true)
               as bool?;
-      Valores.acosoLaboral =
+      Valores.acosoSexual =
           Dicotomicos.fromInt(value['Pace_APNP_HAD_pol_aco'], toBoolean: true)
               as bool?;
       // *********************************
@@ -2224,10 +2277,10 @@ class Diarios {
           Valores.hostilidadLaboral = Dicotomicos.fromInt(
               value['Pace_APNP_HAD_pol_hos'],
               toBoolean: true) as bool?;
-          Valores.abusoLaboral = Dicotomicos.fromInt(
+          Valores.abusoSexual = Dicotomicos.fromInt(
               value['Pace_APNP_HAD_pol_abu'],
               toBoolean: true) as bool?;
-          Valores.acosoLaboral = Dicotomicos.fromInt(
+          Valores.acosoSexual = Dicotomicos.fromInt(
               value['Pace_APNP_HAD_pol_aco'],
               toBoolean: true) as bool?;
 
@@ -2259,8 +2312,8 @@ class Diarios {
         Valores.problemasLaborales,
         Valores.estresLaboral,
         Valores.hostilidadLaboral,
-        Valores.abusoLaboral,
-        Valores.acosoLaboral,
+        Valores.abusoSexual,
+        Valores.acosoSexual,
         // ********* ******** ******* ********* ***
         Diarios.ID_Diarios,
       ],
@@ -2298,8 +2351,8 @@ class Diarios {
         Valores.problemasLaborales,
         Valores.estresLaboral,
         Valores.hostilidadLaboral,
-        Valores.abusoLaboral,
-        Valores.acosoLaboral,
+        Valores.abusoSexual,
+        Valores.acosoSexual,
       ],
     ).then((value) {
       Terminal.printAlert(
@@ -4108,6 +4161,7 @@ class Quirurgicos {
         .then((value) {
       // Enfermedades de base del paciente, asi como las Hospitalarias.
       Pacientes.Quirurgicos = value;
+      Archivos.createJsonFromMap(value, filePath: '${Pacientes.localRepositoryPath}quirurgicos.json');
     });
   }
 
@@ -5647,6 +5701,7 @@ class Auxiliares {
       "otal_Traslado_Extra",
     ],
     "auxiliarStadistics": "SELECT "
+        "(SELECT Fecha_Registro FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Biometría Hemática' ORDER BY Fecha_Registro DESC limit 1) as Fecha_Registro_Biometria,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Eritrocitos' ORDER BY Fecha_Registro DESC limit 1) as Eritrocitos,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Hemoglobina' ORDER BY Fecha_Registro DESC limit 1) as Hemoglobina,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Hematocrito' ORDER BY Fecha_Registro DESC limit 1) as Hematocrito,"
@@ -5841,12 +5896,13 @@ class Reportes {
     "Tipo_Interrogatorio": Valores.tipoInterrogatorio,
     "Tipo_Cirugia": Valores.tipoCirugia,
     "Motivo_Cirugia": Valores.motivoCirugia,
-    "Antecedentes_No_Patologicos": Valores.tipoInterrogatorio,
+    // "Antecedentes_No_Patologicos": Valores.tipoInterrogatorio,
     "Datos_Generales": Pacientes.prosa(),
     "Antecedentes_No_Patologicos":
         Pacientes.noPatologicos(), //"Sin información recabada",
     "Antecedetes_No_Patologicos_Analisis": Pacientes.noPatologicosAnalisis(),
     "Antecedentes_Patologicos_Otros": Pacientes.antecedentesPatologicos(),
+    "Antecedentes_Patologicos_Ingreso": Pacientes.antecedentesIngresosPatologicos(),
     "Antecedentes_Heredofamiliares": Pacientes.heredofamiliares(),
     "Antecedentes_Quirurgicos": Pacientes.hospitalarios(),
     "Antecedentes_Patologicos": Pacientes.patologicos(),
@@ -5911,9 +5967,10 @@ class Reportes {
   static String antecedentesHeredofamiliares = "";
   // static String antecedentesHospitalarios = "";
   static String padecimientoActual = "";
-  static String? personalesPatologicos = "",
-      antecedentesQuirurgicos = "negados",
-      antecedentesAlergicos = "negados", // negados
+  static String? personalesPatologicos = "Sin antecedentes patológicos de importancia. ",
+      antecedentesQuirurgicos = "Negados. ",
+      antecedentesAlergicos = "Negados. ", // negados
+  antecedentesTraumatologicos = "Negados. ",
       antecedentesPerinatales = "",
       antecedentesSexuales = "";
   //
@@ -5923,7 +5980,9 @@ class Reportes {
   static String auxiliaresDiagnosticos = "", analisisComplementarios = "";
   //
   static String eventualidadesOcurridas = "Sin eventualidades reportadas. ",
-      terapiasPrevias = "", analisisMedico = "", tratamientoPropuesto = "";
+      terapiasPrevias = "",
+      analisisMedico = "",
+      tratamientoPropuesto = "";
   //
   static List<dynamic> analisisAnteriores = [];
   //
@@ -6497,6 +6556,8 @@ class Diagnosticos {
         .then((value) {
       // Enfermedades de base del paciente, asi como las Hospitalarias.
       Pacientes.Diagnosticos = value;
+      Archivos.createJsonFromMap(value,
+          filePath: "${Pacientes.localRepositoryPath}diagnosticos.json");
     });
   }
 
@@ -6621,14 +6682,13 @@ class Repositorios {
 
   static void consultarAnalisis() {
     Actividades.consultarAllById(
-        Databases.siteground_database_reghosp,
-        Repositorios.repositorio['consultAnalisisQuery'],
-        Pacientes.ID_Hospitalizacion)
+            Databases.siteground_database_reghosp,
+            Repositorios.repositorio['consultAnalisisQuery'],
+            Pacientes.ID_Hospitalizacion)
         .then((value) {
-          Terminal.printExpected(message: "ANALISIS - $value ${value.runtimeType}");
-          Reportes.analisisMedico = value.last['Contexto'];
-          Reportes.analisisAnteriores = value;
-
+      Terminal.printExpected(message: "ANALISIS - $value ${value.runtimeType}");
+      Reportes.analisisMedico = value.last['Contexto'];
+      Reportes.analisisAnteriores = value;
     });
   }
 
@@ -6678,15 +6738,14 @@ class Repositorios {
         .then((value) =>
             Terminal.printExpected(message: "SUCCESS - Análisis registrado"))
         .onError((error, stackTrace) =>
-      Terminal.printAlert(message: "ERROR - $error : : $stackTrace")
-    );
+            Terminal.printAlert(message: "ERROR - $error : : $stackTrace"));
   }
 
   static void consultarRegistro() {
     Actividades.consultarAllById(Databases.siteground_database_reghosp,
             Repositorio['consultIdQuery'], Pacientes.ID_Paciente)
         .then((value) {
-          Reportes.analisisAnteriores = value;
+      Reportes.analisisAnteriores = value;
     });
   }
 
@@ -6717,8 +6776,7 @@ class Repositorios {
     "consultPadecimientoQuery":
         "SELECT * FROM pace_hosp_repo WHERE ID_Hosp = ? "
             "AND TipoAnalisis = 'Padecimiento Actual'",
-    "consultAnalisisQuery":
-    "SELECT * FROM pace_hosp_repo WHERE ID_Hosp = ? "
+    "consultAnalisisQuery": "SELECT * FROM pace_hosp_repo WHERE ID_Hosp = ? "
         "AND TipoAnalisis = 'Análisis Médico'",
     "consultIdQuery": "SELECT * FROM pace_hosp_repo WHERE ID_Pace = ?",
     "consultByIdPrimaryQuery": "SELECT * FROM pace_hosp_repo WHERE ID_Hosp = ?",

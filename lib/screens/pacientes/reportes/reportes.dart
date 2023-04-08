@@ -48,8 +48,29 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
     // Llamado a los ultimos registros agregados.
     setState(() {
       Reportes.consultarRegistros();
-      Diagnosticos.consultarRegistro();
+      Diagnosticos.registros();
       Repositorios.consultarAnalisis();
+
+      Archivos.readJsonToMap(
+          filePath: "${Pacientes.localRepositoryPath}patologicos.json").then((value) {
+        Pacientes.Patologicos = value;
+      });
+      Archivos.readJsonToMap(
+          filePath: "${Pacientes.localRepositoryPath}diagnosticos.json").then((value) {
+        Pacientes.Diagnosticos = value;
+      });
+      Archivos.readJsonToMap(
+          filePath: "${Pacientes.localRepositoryPath}diagnosticos.json").then((value) {
+        Pacientes.Diagnosticos = value;
+      });
+      Archivos.readJsonToMap(
+          filePath: "${Pacientes.localRepositoryPath}quirurgicos.json").then((value) {
+        Pacientes.Quirurgicos = value;
+      });
+      Archivos.readJsonToMap(
+          filePath: "${Pacientes.localRepositoryPath}alergicos.json").then((value) {
+        Pacientes.Alergicos = value;
+      });
 
       Terminal.printExpected(message: "Analisis Previos : : ${Reportes.analisisAnteriores}");
     });
@@ -74,6 +95,31 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               ),
               title: Text(Sentences.app_bar_reportes, style: Styles.textSyleGrowth(),),
               actions: <Widget>[
+                IconButton(
+                  icon: const Icon(
+                    Icons.remove_from_queue,
+                  ),
+                  tooltip: 'Refrescar . . . ',
+                  onPressed: () async {
+                    setState(() {});
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.system_update_alt,
+                  ),
+                  tooltip: 'Cargando . . . ',
+                  onPressed: () async {
+                    Pacientes.loadingActivity(context: context).then((value) {
+                      if (value == true) {
+                        Terminal.printAlert(
+                            message:
+                            'Archivo ${Pacientes.localPath} Re-Creado $value');
+                        Navigator.of(context).pop();
+                      }
+                    });
+                  },
+                ),
             IconButton(
               icon: const Icon(
                 Icons.help,

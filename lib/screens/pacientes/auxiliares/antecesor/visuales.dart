@@ -442,8 +442,13 @@ class _VisualPacientesState extends State<VisualPacientes> {
         title: const Text('Reportes y Notas Médicas',
             style: TextStyle(fontSize: Font.fontTileSize, color: Colors.grey)),
         onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ReportesMedicos()));
+          Pacientes.loadingActivity(context: context).then((value) {
+            if (value == true) {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ReportesMedicos()));
+            }
+          });
+
         },
       ),
       ListTile(

@@ -145,8 +145,16 @@ class FormatosReportes {
     //
     // # # # # # # ### # # # # # # ###
     parax.add(paragraphWithTittle(
-        titulo: "Datos generales", subTitulo: "${paraph['Datos_Generales']}"));
+        titulo: "Ficha de Identificación", subTitulo: "${paraph['Datos_Generales']}"));
     // # # # # # # ### # # # # # # ###
+    if (paraph['Antecedentes_Heredofamiliares'] != "") {
+      parax.add(
+        paragraphWithTittleAndSeparated(
+          titulo: "Antecedentes Heredofamiliares",
+          subTitulo: "${paraph['Antecedentes_Heredofamiliares']}",
+        ),
+      );
+    }
     if (paraph['Antecedentes_No_Patologicos'] != "") {
       parax.add(
         paragraphWithTittleAndSeparated(
@@ -155,11 +163,11 @@ class FormatosReportes {
         ),
       );
     }
-    if (paraph['Antecedentes_Patologicos_Otros'] != "") {
+    if (paraph['Antecedentes_Patologicos_Ingreso'] != "") {
       parax.add(
         paragraphWithTittleAndSeparated(
           titulo: "Antecedentes Personales Patológicos",
-          subTitulo: "${paraph['Antecedentes_Patologicos_Otros']}",
+          subTitulo: "${paraph['Antecedentes_Patologicos_Ingreso']}",
         ),
       );
     }

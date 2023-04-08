@@ -91,7 +91,7 @@ class _DiariosState extends State<Diarios> {
                       viajesRecientesTextController.text = '';
                     } else {
                       viajesRecientesTextController.text =
-                          'Sin viajes nacionales o al extranjero en los últimoss 3 meses';
+                          'Sin viajes nacionales o al extranjero en los últimos 3 meses';
                       Valores.viajesRecientesDescripcion =
                           viajesRecientesTextController.text;
                     }
@@ -191,24 +191,24 @@ class _DiariosState extends State<Diarios> {
           children: [
             Expanded(
               child: Switched(
-                tittle: 'Abuso Laboral',
+                tittle: 'Abuso Sexual',
                 onChangeValue: (value) {
                   setState(() {
-                    Valores.abusoLaboral = value;
+                    Valores.abusoSexual = value;
                   });
                 },
-                isSwitched: Valores.abusoLaboral,
+                isSwitched: Valores.abusoSexual,
               ),
             ),
             Expanded(
               child: Switched(
-                tittle: 'Acoso Laboral',
+                tittle: 'Acoso Sexual',
                 onChangeValue: (value) {
                   setState(() {
-                    Valores.acosoLaboral = value;
+                    Valores.acosoSexual = value;
                   });
                 },
-                isSwitched: Valores.acosoLaboral,
+                isSwitched: Valores.acosoSexual,
               ),
             ),
           ],

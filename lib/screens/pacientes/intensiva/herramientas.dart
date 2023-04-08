@@ -233,6 +233,7 @@ class _IntensivaState extends State<Intensiva> {
                     },
                   ),
                   GrandLabel(
+                    iconData: Icons.monitor_heart_outlined,
                     labelButton: 'Análisis Cardiovascular',
                     onPress: () {
                       if (isMobile(context)) {
