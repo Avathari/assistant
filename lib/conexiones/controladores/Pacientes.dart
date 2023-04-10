@@ -5418,6 +5418,7 @@ class Auxiliares {
       String fecha = "($element)";
       String max = "";
 
+
       aux.forEach((element) {
         if (max == "") {
           max =
@@ -6268,23 +6269,23 @@ class Balances {
     Balances.ID_Balances = json['ID_Bala'];
     Valores.fechaRealizacionBalances = json['Pace_bala_Fecha'];
 
-    Valores.viaOralBalances = json['Pace_bala_Oral'];
-    Valores.sondaOrogastricaBalances = json['Pace_bala_Sonda'];
-    Valores.hemoderivadosBalances = json['Pace_bala_Hemo'];
-    Valores.nutricionParenteralBalances = json['Pace_bala_NPT'];
-    Valores.parenteralesBalances = json['Pace_bala_Sol'];
-    Valores.dilucionesBalances = json['Pace_bala_Dil'];
-    Valores.otrosIngresosBalances = json['Pace_bala_ING'];
+    Valores.viaOralBalances = double.parse(json['Pace_bala_Oral'].toString() ?? '0');
+    Valores.sondaOrogastricaBalances = double.parse(json['Pace_bala_Sonda'].toString() ?? '0');
+    Valores.hemoderivadosBalances = double.parse(json['Pace_bala_Hemo'].toString() ?? '0');
+    Valores.nutricionParenteralBalances = double.parse(json['Pace_bala_NPT'].toString() ?? '0');
+    Valores.parenteralesBalances = double.parse(json['Pace_bala_Sol'].toString() ?? '0');
+    Valores.dilucionesBalances = double.parse(json['Pace_bala_Dil'].toString() ?? '0');
+    Valores.otrosIngresosBalances = double.parse(json['Pace_bala_ING'].toString() ?? '0');
 
-    Valores.uresisBalances = json['Pace_bala_Uresis'];
-    Valores.evacuacionesBalances = json['Pace_bala_Evac'];
-    Valores.sangradosBalances = json['Pace_bala_Sangrado'];
-    Valores.succcionBalances = json['Pace_bala_Succion'];
-    Valores.drenesBalances = json['Pace_bala_Drenes'];
-    Valores.otrosEgresosBalances = json['Pace_bala_ENG'];
+    Valores.uresisBalances = double.parse(json['Pace_bala_Uresis'].toString() ?? '0');
+    Valores.evacuacionesBalances = double.parse(json['Pace_bala_Evac'].toString() ?? '0');
+    Valores.sangradosBalances = double.parse(json['Pace_bala_Sangrado'].toString() ?? '0');
+    Valores.succcionBalances = double.parse(json['Pace_bala_Succion'].toString() ?? '0');
+    Valores.drenesBalances = double.parse(json['Pace_bala_Drenes'].toString() ?? '0');
+    Valores.otrosEgresosBalances = double.parse(json['Pace_bala_ENG'].toString() ?? '0');
 
     Valores.horario = json['Pace_bala_HOR'];
-    Valores.uresis = json['Pace_bala_Uresis'];
+    Valores.uresis = double.parse(json['Pace_bala_Uresis'].toString() ?? '0');
 
     // Valores.balanceTotal = Valores.ingresos - Valores.egresos;
     // Valores.diuresis = (Valores.uresis / Valores.pesoCorporalTotal!) / Valores.horario;

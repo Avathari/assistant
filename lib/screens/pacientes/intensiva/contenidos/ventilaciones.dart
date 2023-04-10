@@ -174,7 +174,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
               ? null
               : AppBar(
                   backgroundColor: Theming.primaryColor,
-                  title: Text(appBarTitile),
+                  title: Text(appBarTitile, style: Styles.textSyle,),
                   leading: IconButton(
                     icon: const Icon(
                       Icons.arrow_back,
@@ -243,6 +243,13 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                       numOfLines: 1,
                       labelEditText: 'Fecha de realización',
                       textController: fechaRealizacionTextController,
+                  iconColor: Colors.white,
+                  withShowOption: true,
+                  selection: true,
+                  onSelected: () {
+                    fechaRealizacionTextController.text =
+                        Calendarios.today(format: 'yyyy-MM-dd');
+                  },
                     ),
                   ),
                   Expanded(
@@ -255,7 +262,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                               : isDesktop(context)
                                   ? 250
                                   : isMobile(context)
-                                      ? 200
+                                      ? 250
                                       : 150,
                       tittle: 'M. Ventilatorio',
                       onChangeValue: (value) {
@@ -321,6 +328,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
             ),
             Expanded(
               child: GrandButton(
+                weigth: 300,
                   labelButton: widget._operationButton,
                   onPress: () {
                     operationMethod(context);

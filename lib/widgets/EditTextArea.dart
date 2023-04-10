@@ -2,6 +2,7 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class EditTextArea extends StatefulWidget {
@@ -25,6 +26,8 @@ class EditTextArea extends StatefulWidget {
 
   IconData? iconData = Icons.person;
 
+  int? limitOfChars;
+
   EditTextArea(
       {Key? key,
       this.labelEditText,
@@ -36,6 +39,7 @@ class EditTextArea extends StatefulWidget {
       this.isObscure = false,
       this.fontSize = 12,
       this.numOfLines = 15,
+        this.limitOfChars = 0,
       this.selection = false,
       this.onSelected,
       this.onChange,
@@ -45,7 +49,7 @@ class EditTextArea extends StatefulWidget {
 
       })
       : super(key: key) {
-    inputFormat = MaskTextInputFormatter();
+    // inputFormat = MaskTextInputFormatter();
     // keyBoardType = TextInputType.multiline;
     // obscureText = false;
     // prefixIcon = false;
@@ -66,7 +70,9 @@ class _EditTextAreaState extends State<EditTextArea> {
           Expanded(
             flex: 9,
             child: TextField(
-              inputFormatters: [widget.inputFormat],
+              maxLength: widget.limitOfChars == 0? null : widget.limitOfChars,
+              inputFormatters: [widget.inputFormat,
+              ],
               controller: widget.textController,
               autofocus: false,
               maxLines: widget.numOfLines,

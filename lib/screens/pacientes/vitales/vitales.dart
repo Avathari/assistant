@@ -123,6 +123,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black54,
       appBar: AppBar(
         backgroundColor: Theming.primaryColor,
         title: Text(appBarTitile),
@@ -140,6 +141,21 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
         ),
         actions: isMobile(context)
             ? <Widget>[
+        GrandIcon(
+        iconData: Icons.medical_information_outlined,
+        labelButton: 'Signos Vitales',
+        onPress: () {
+          carouselController.jumpToPage(0);
+        },
+      ),
+      GrandIcon(
+        iconData: Icons.volunteer_activism_outlined,
+        labelButton: 'Medidas Antropométricas',
+        onPress: () {
+          carouselController.jumpToPage(1);
+        },
+      ),
+
                 GrandIcon(
                   iconData: Icons.candlestick_chart,
                   labelButton: 'Análisis de Parámetros',
@@ -151,98 +167,102 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
               ]
             : null,
       ),
-      body: Card(
-        color: const Color.fromARGB(255, 61, 57, 57),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Expanded(
+      body: Container(
+        decoration: ContainerDecoration.roundedDecoration(),
+        padding: const EdgeInsets.all(8.0),
+        margin: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Expanded(
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 4,
+                    child: EditTextArea(
+                      labelEditText: 'Fecha de realización',
+                      keyBoardType: TextInputType.number,
+                      numOfLines: 1,
+                      inputFormat: MaskTextInputFormatter(
+                          mask: '####/##/##',
+                          filter: {"#": RegExp(r'[0-9]')},
+                          type: MaskAutoCompletionType.lazy),
+                      textController: fechaRealizacionTextController,
+                      iconColor: Colors.white,
+                      withShowOption: true,
+                      selection: true,
+                      onSelected: () {
+                        fechaRealizacionTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
+                      },
+                    ),
+                  ),
+                  // Expanded(
+                  //   child: GrandIcon(iconData: Icons.calendar_month,
+                  //     labelButton: "Fecha Actual",
+                  //     onPress: () {
+                  //     setState(() {
+                  //       fechaRealizacionTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
+                  //     });
+                  //   },),
+                  // ),
+                  isMobile(context) ? Container() :
+                  Expanded(
+                    flex: 4,
+                    child: GrandButton(
+                        labelButton: "Signos Vitales",
+                        onPress: () {
+                          setState(() {
+                            carouselController.jumpToPage(0);
+                          });
+                        }),
+                  ),
+                  isMobile(context) ? Container() :
+                  Expanded(
+                    flex: 4,
+                    child: GrandButton(
+                        labelButton: "Medidas Antropométricas",
+                        onPress: () {
+                          setState(() {
+                            carouselController.jumpToPage(1);
+                          });
+                        }),
+                  )
+                ],
+              ),
+            ),
+            // Expanded(
+            //   child: SingleChildScrollView(
+            //     controller: ScrollController(),
+            //     scrollDirection: Axis.horizontal,
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //       children: [
+            //         GrandButton(
+            //             labelButton: "Signos Vitales",
+            //             onPress: () {
+            //               setState(() {
+            //                 carouselController.jumpToPage(0);
+            //               });
+            //             }),
+            //         GrandButton(
+            //             labelButton: "Medidas Antropométricas",
+            //             onPress: () {
+            //               setState(() {
+            //                 carouselController.jumpToPage(1);
+            //               });
+            //             })
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            Expanded(
+              flex: 8,
+              child: Padding(
+                padding: const EdgeInsets.all(2.0),
                 child: Row(
                   children: [
                     Expanded(
-                      flex: 4,
-                      child: EditTextArea(
-                        labelEditText: 'Fecha de realización',
-                        keyBoardType: TextInputType.number,
-                        numOfLines: 1,
-                        inputFormat: MaskTextInputFormatter(
-                            mask: '####/##/##',
-                            filter: {"#": RegExp(r'[0-9]')},
-                            type: MaskAutoCompletionType.lazy),
-                        textController: fechaRealizacionTextController,
-                        iconColor: Colors.white,
-                        withShowOption: true,
-                        selection: true,
-                        onSelected: () {
-                          fechaRealizacionTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
-                        },
-                      ),
-                    ),
-                    // Expanded(
-                    //   child: GrandIcon(iconData: Icons.calendar_month,
-                    //     labelButton: "Fecha Actual",
-                    //     onPress: () {
-                    //     setState(() {
-                    //       fechaRealizacionTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
-                    //     });
-                    //   },),
-                    // ),
-                    Expanded(
-                      flex: 4,
-                      child: GrandButton(
-                          labelButton: "Signos Vitales",
-                          onPress: () {
-                            setState(() {
-                              carouselController.jumpToPage(0);
-                            });
-                          }),
-                    ),
-                    Expanded(
-                      flex: 4,
-                      child: GrandButton(
-                          labelButton: "Medidas Antropométricas",
-                          onPress: () {
-                            setState(() {
-                              carouselController.jumpToPage(1);
-                            });
-                          }),
-                    )
-                  ],
-                ),
-              ),
-              // Expanded(
-              //   child: SingleChildScrollView(
-              //     controller: ScrollController(),
-              //     scrollDirection: Axis.horizontal,
-              //     child: Row(
-              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //       children: [
-              //         GrandButton(
-              //             labelButton: "Signos Vitales",
-              //             onPress: () {
-              //               setState(() {
-              //                 carouselController.jumpToPage(0);
-              //               });
-              //             }),
-              //         GrandButton(
-              //             labelButton: "Medidas Antropométricas",
-              //             onPress: () {
-              //               setState(() {
-              //                 carouselController.jumpToPage(1);
-              //               });
-              //             })
-              //       ],
-              //     ),
-              //   ),
-              // ),
-              Expanded(
-                flex: 8,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Expanded(
+                      child: Container(
+                        decoration: ContainerDecoration.roundedDecoration(),
                         child: CarouselSlider(
                             items: [
                               GridView(
@@ -250,7 +270,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                                 padding: const EdgeInsets.all(8.0),
                                 gridDelegate: GridViewTools.gridDelegate(crossAxisCount:
                                 isMobile(context) || isTablet(context) ? 1 : 2,
-                                mainAxisExtent: 70),
+                                  mainAxisExtent: isMobile(context)  ? 80 : 70,),
                                 children: component(context),
                               ),
                               GridView(
@@ -258,38 +278,38 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                                 padding: const EdgeInsets.all(8.0),
                                 gridDelegate: GridViewTools.gridDelegate(crossAxisCount:
                                 isMobile(context) || isTablet(context) ? 1 : 2,
-                                    mainAxisExtent: 70),
+                                    mainAxisExtent: isMobile(context)  ? 80 : 70,),
                                 children: secondComponent(context),
                               ),
                             ],
                             carouselController: carouselController,
                             options: Carousel.carouselOptions(context: context)),
                       ),
-                      isMobile(context)
-                          ? Container()
-                          : Expanded(
-                              child: Container(
-                                  padding: const EdgeInsets.all(8.0),
-                                  decoration: const BoxDecoration(
-                                      color: Colors.black,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(20))),
-                                  child: const Antropometricos()),
-                            )
-                    ],
-                  ),
+                    ),
+                    isMobile(context)
+                        ? Container()
+                        : Expanded(
+                            child: Container(
+                                padding: const EdgeInsets.all(8.0),
+                                decoration: const BoxDecoration(
+                                    color: Colors.black,
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(20))),
+                                child: const Antropometricos()),
+                          )
+                  ],
                 ),
               ),
-              Expanded(
-                child: GrandButton(
-                  weigth: 2000,
-                    labelButton: widget._operationButton,
-                    onPress: () {
-                      operationMethod(context);
-                    }),
-              )
-            ],
-          ),
+            ),
+            Expanded(
+              child: GrandButton(
+                weigth: 2000,
+                  labelButton: widget._operationButton,
+                  onPress: () {
+                    operationMethod(context);
+                  }),
+            )
+          ],
         ),
       ),
     );
@@ -514,6 +534,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
           cmbTextController,
           false),
       Spinner(
+        isRow: true,
           width: isMobile(context) ? 60 : 40,
           tittle: "Factor de actividad",
           initialValue: factorActividadValue,
@@ -524,7 +545,8 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
             });
           }),
       Spinner(
-          width: 40,
+          isRow: true,
+          width: isMobile(context) ? 60 : 40,
           tittle: "Factor de estrés",
           initialValue: factorEstresValue,
           items: Vitales.factorEstres,

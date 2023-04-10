@@ -17,7 +17,7 @@ class BalanceHidrico extends StatefulWidget {
 
 class _BalanceHidricoState extends State<BalanceHidrico> {
 
-  int ingresos = 0, egresos = 0,balanceTotal = 0, uresis = 0;
+  double ingresos = 0, egresos = 0,balanceTotal = 0, uresis = 0;
   double diuresis = 0;
 
   @override
@@ -42,19 +42,28 @@ class _BalanceHidricoState extends State<BalanceHidrico> {
       Column(
         children: [
           Expanded(
-            child: ValuePanel(
-              firstText: "",
-              secondText: Valores.fechaRealizacionBalances.toString(),
-              thirdText: "",
+            flex: 2,
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 6,
+                  child: ValuePanel(
+                    firstText: "",
+                    secondText: Valores.fechaRealizacionBalances.toString(),
+                    thirdText: "",
+                  ),
+                ),
+                Expanded(
+                  child: GrandIcon(labelButton: "Actualizar",onPress: () {
+                    setState(() {
+
+                    });
+                  },),
+                ),
+              ],
             ),
           ),
-          Expanded(
-            child: GrandIcon(labelButton: "Actualizar",onPress: () {
-              setState(() {
-
-              });
-            },),
-          ),
+          const SizedBox(height: 5,),
           Expanded(
             flex: 6,
             child: GridView(

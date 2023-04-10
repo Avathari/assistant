@@ -331,7 +331,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         numOfLines: 1,
         onChange: (value) {
           setState(() {
-            Valores.viaOralBalances = int.parse(value);
+            Valores.viaOralBalances = double.parse(value);
           });
         },
       ),
@@ -346,11 +346,11 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         numOfLines: 1,
         onChange: (value) {
           setState(() {
-            Valores.sondaOrogastricaBalances = int.parse(value);
+            Valores.sondaOrogastricaBalances = double.parse(value);
           });
         },
       ),
-      CrossLine(),
+      // CrossLine(),
       //
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -363,7 +363,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         numOfLines: 1,
         onChange: (value) {
           setState(() {
-            Valores.hemoderivadosBalances = int.parse(value);
+            Valores.hemoderivadosBalances = double.parse(value);
           });
         },
       ),
@@ -378,7 +378,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         numOfLines: 1,
         onChange: (value) {
           setState(() {
-            Valores.nutricionParenteralBalances = int.parse(value);
+            Valores.nutricionParenteralBalances = double.parse(value);
           });
         },
       ),
@@ -393,7 +393,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         numOfLines: 1,
         onChange: (value) {
           setState(() {
-            Valores.parenteralesBalances = int.parse(value);
+            Valores.parenteralesBalances = double.parse(value);
           });
         },
       ),
@@ -408,7 +408,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         numOfLines: 1,
         onChange: (value) {
           setState(() {
-            Valores.dilucionesBalances = int.parse(value);
+            Valores.dilucionesBalances = double.parse(value);
           });
         },
       ),
@@ -423,7 +423,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         numOfLines: 1,
         onChange: (value) {
           setState(() {
-            Valores.otrosIngresosBalances = int.parse(value);
+            Valores.otrosIngresosBalances = double.parse(value);
           });
         },
       ),
@@ -443,7 +443,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         textController: viaUresisTextController,
         numOfLines: 1,
         onChange: (value) {
-          Valores.uresisBalances = int.parse(value);
+          Valores.uresisBalances = double.parse(value);
           setState(() {
           });
         },
@@ -459,7 +459,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         numOfLines: 1,
         onChange: (value) {
           setState(() {
-            Valores.evacuacionesBalances = int.parse(value);
+            Valores.evacuacionesBalances = double.parse(value);
           });
         },
       ),
@@ -474,7 +474,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         numOfLines: 1,
         onChange: (value) {
           setState(() {
-            Valores.sangradosBalances = int.parse(value);
+            Valores.sangradosBalances = double.parse(value);
           });
         },
       ),
@@ -489,7 +489,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         numOfLines: 1,
         onChange: (value) {
           setState(() {
-            Valores.succcionBalances = int.parse(value);
+            Valores.succcionBalances = double.parse(value);
           });
         },
       ),
@@ -514,7 +514,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         numOfLines: 1,
         onChange: (value) {
           setState(() {
-            Valores.otrosEgresosBalances = int.parse(value);
+            Valores.otrosEgresosBalances = double.parse(value);
           });
         },
       ),
@@ -681,20 +681,20 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
 
   reValue(){
     //
-    Valores.viaOralBalances = int.parse(viaOralTextController.text);
-    Valores.sondaOrogastricaBalances = int.parse(viaOrogasTextController.text);
-    Valores.hemoderivadosBalances = int.parse(viaHemosTextController.text);
-    Valores.nutricionParenteralBalances = int.parse(viaNutrianTextController.text);
-    Valores.parenteralesBalances = int.parse(viaParesTextController.text);
-    Valores.dilucionesBalances = int.parse(viaDilucionesTextController.text);
-    Valores.otrosIngresosBalances = int.parse(viaOtrosIngresosTextController.text);
+    Valores.viaOralBalances = double.parse(viaOralTextController.text);
+    Valores.sondaOrogastricaBalances = double.parse(viaOrogasTextController.text);
+    Valores.hemoderivadosBalances = double.parse(viaHemosTextController.text);
+    Valores.nutricionParenteralBalances = double.parse(viaNutrianTextController.text);
+    Valores.parenteralesBalances = double.parse(viaParesTextController.text);
+    Valores.dilucionesBalances = double.parse(viaDilucionesTextController.text);
+    Valores.otrosIngresosBalances = double.parse(viaOtrosIngresosTextController.text);
 
-    Valores.uresisBalances = int.parse(viaUresisTextController.text);
-    Valores.evacuacionesBalances = int.parse(viaEvacTextController.text);
-    Valores.sangradosBalances = int.parse(viaSangTextController.text);
-    Valores.succcionBalances = int.parse(viaSucciTextController.text);
-    Valores.drenesBalances = int.parse(viaDreneTextController.text);
-    Valores.otrosEgresosBalances = int.parse(viaOtrosEgresosTextController.text);
+    Valores.uresisBalances = double.parse(viaUresisTextController.text);
+    Valores.evacuacionesBalances = double.parse(viaEvacTextController.text);
+    Valores.sangradosBalances = double.parse(viaSangTextController.text);
+    Valores.succcionBalances = double.parse(viaSucciTextController.text);
+    Valores.drenesBalances = double.parse(viaDreneTextController.text);
+    Valores.otrosEgresosBalances = double.parse(viaOtrosEgresosTextController.text);
   }
 }
 

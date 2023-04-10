@@ -301,20 +301,21 @@ class Valores {
   //
   static String? fechaRealizacionBalances = "";
   // static double diuresis = 0;
-  static int? viaOralBalances = 0,
+  static double? viaOralBalances = 0,
       sondaOrogastricaBalances = 0,
       hemoderivadosBalances = 0,
       nutricionParenteralBalances = 0,
       parenteralesBalances = 0,
       dilucionesBalances = 0,
       otrosIngresosBalances = 0;
-  static int? uresisBalances = 0,
+  static double? uresisBalances = 0,
       evacuacionesBalances = 0,
       sangradosBalances = 0,
       succcionBalances = 0,
       drenesBalances = 0,
       otrosEgresosBalances = 0;
-  static int? uresis = 0, horario = 8;
+  static double? uresis = 0;
+  static int? horario = 24;
   //
   static String? fechaBiometria;
   static double? eritrocitos,
@@ -787,7 +788,7 @@ class Valores {
     factorReumatoide = double.parse(json['Factor_Reumatoide'] ?? '0');
     anticuerpoCitrulinado = double.parse(json['Anticuerpo_Citrulinado'] ?? '0');
     //
-    fechaGasometriaArterial = json['Fecha_Registro_Arterial'];
+    fechaGasometriaArterial = json['Fecha_Registro_Arterial'] ?? '';
     pHArteriales = double.parse(json['Ph_Arterial'] ?? '0');
     pcoArteriales = double.parse(json['Pco_Arterial'] ?? '0');
     poArteriales = double.parse(json['Po_Arterial'] ?? '0');
@@ -796,7 +797,7 @@ class Valores {
     fioArteriales = double.parse(json['Fio_Arterial'] ?? '0');
     soArteriales = double.parse(json['So_Arterial'] ?? '0');
     //
-    fechaGasometriaVenosa = json['Fecha_Registro_Venosa'];
+    fechaGasometriaVenosa = json['Fecha_Registro_Venosa'] ?? '';
     pHVenosos = double.parse(json['Ph_Venosa'] ?? '0');
     pcoVenosos = double.parse(json['Pco_Venosa'] ?? '0');
     poVenosos = double.parse(json['Po_Venosa'] ?? '0');
@@ -1662,7 +1663,7 @@ class Valores {
       ((Valores.pesoCorporalTotal!) * constantePerdidasInsensibles) *
       Valores.horario!;
 
-  static int get ingresosBalances {
+  static double get ingresosBalances {
     return Valores.viaOralBalances! +
         Valores.sondaOrogastricaBalances! +
         Valores.hemoderivadosBalances! +
@@ -1672,7 +1673,7 @@ class Valores {
         Valores.otrosIngresosBalances!;
   }
 
-  static int get egresosBalances {
+  static double get egresosBalances {
     return Valores.uresisBalances! +
         Valores.evacuacionesBalances! +
         Valores.sangradosBalances! +
@@ -2220,7 +2221,7 @@ class Valores {
   }
 
   //
-  static int get balanceTotal {
+  static double get balanceTotal {
     if (Valores.ingresosBalances != 0 && Valores.egresosBalances != 0) {
       return (Valores.ingresosBalances - Valores.egresosBalances);
     } else {
@@ -3518,9 +3519,9 @@ class Formatos {
 
   static String get balances {
     return "Balance hídrico (${Valores.fechaRealizacionBalances}) - "
-        "Ingresos ${Valores.ingresosBalances} mL,  "
-        "egresos ${Valores.egresosBalances} mL  "
-        "(balance Total ${Valores.balanceTotal} mL${Valores.horario} mL),  "
+        "Ingresos ${Valores.ingresosBalances.toStringAsFixed(2)} mL,  "
+        "egresos ${Valores.egresosBalances.toStringAsFixed(2)} mL  "
+        "(balance Total ${Valores.balanceTotal.toStringAsFixed(2)} mL${Valores.horario} mL),  "
         "uresis ${Valores.uresis} mL,  "
         "diuresis ${Valores.diuresis.toStringAsFixed(2)} mL/${Valores.horario} mL.  "
         "\n ";

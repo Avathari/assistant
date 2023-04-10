@@ -91,17 +91,17 @@ class _VentilatoriosState extends State<Ventilatorios> {
                       ),
                       ValuePanel(
                         firstText: 'Volumen tidal (6)',
-                        secondText: Valores.volumentTidal6!.toStringAsFixed(0),
+                        secondText: Valores.volumentTidal6.toStringAsFixed(0),
                         thirdText: 'mL',
                       ),
                       ValuePanel(
                         firstText: 'Volumen tidal (7)',
-                        secondText: Valores.volumentTidal7!.toStringAsFixed(0),
+                        secondText: Valores.volumentTidal7.toStringAsFixed(0),
                         thirdText: 'mL',
                       ),
                       ValuePanel(
                         firstText: 'Volumen tidal (8)',
-                        secondText: Valores.volumentTidal8!.toStringAsFixed(0),
+                        secondText: Valores.volumentTidal8.toStringAsFixed(0),
                         thirdText: 'mL',
                       ),
                       ValuePanel(

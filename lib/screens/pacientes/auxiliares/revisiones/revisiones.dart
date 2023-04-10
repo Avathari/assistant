@@ -498,6 +498,7 @@ class _RevisionesState extends State<Revisiones> {
                       },
                     ),
                     GrandIcon(
+                      iconData: Icons.monitor_heart_outlined,
                       labelButton: 'Análisis Cardiovascular',
                       onPress: () {
                         Operadores.openDialog(
@@ -1044,6 +1045,7 @@ class _RevisionesState extends State<Revisiones> {
                       },
                     ),
                     GrandIcon(
+                      iconData: Icons.monitor_heart_outlined,
                       labelButton: 'Análisis Cardiovascular',
                       onPress: () {
                         setState(() {

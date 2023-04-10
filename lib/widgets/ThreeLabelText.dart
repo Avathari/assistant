@@ -37,51 +37,39 @@ class _ThreeLabelTextAlineState extends State<ThreeLabelTextAline> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-            child: Text(widget.firstText!,
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
-                  overflow: TextOverflow.ellipsis,
-                  fontWeight: FontWeight.bold,
-                )),
+          Text(widget.firstText!,
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.grey,
+                overflow: TextOverflow.ellipsis,
+                fontWeight: FontWeight.bold,
+              )),
+          Text(
+            widget.secondText!,
+            style: const TextStyle(
+              fontSize: 12,
+              color: Colors.grey,
+              overflow: TextOverflow.fade,
+              fontWeight: FontWeight.normal,
+            ),
+            textAlign: TextAlign.left,
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-            child: Text(
-              widget.secondText!,
+          Text(widget.thirdText!,
               style: const TextStyle(
                 fontSize: 12,
                 color: Colors.grey,
                 overflow: TextOverflow.ellipsis,
                 fontWeight: FontWeight.normal,
-              ),
-              textAlign: TextAlign.left,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-            child: Text(widget.thirdText!,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey,
-                  overflow: TextOverflow.ellipsis,
-                  fontWeight: FontWeight.normal,
-                )),
-          ),
+              )),
           widget.withEditMessage!
-              ? Padding(
-            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                  child: GrandIcon(
-                    weigth: 10,
-                    heigth: 10,
-                    iconData: Icons.edit_note,
-                    onPress: () {
-                      widget.onEdit!(widget.secondText!);
-                    },
-                  ),
-                )
+              ? GrandIcon(
+                weigth: 10,
+                heigth: 10,
+                iconData: Icons.edit_note,
+                onPress: () {
+                  widget.onEdit!(widget.secondText!);
+                },
+              )
               : Container()
         ],
       ),

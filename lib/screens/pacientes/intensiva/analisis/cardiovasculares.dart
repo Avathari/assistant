@@ -1,12 +1,9 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
-import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
-import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
-import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:carousel_slider/carousel_controller.dart';
@@ -161,8 +158,7 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                             ),
                             ValuePanel(
                               firstText: 'P.A.M.',
-                              secondText: Valores.presionArterialMedia!
-                                  .toStringAsFixed(0),
+                              secondText: Valores.presionArterialMedia.toStringAsFixed(0),
                               thirdText: 'mmHg',
                             ),
                             ValuePanel(
@@ -289,53 +285,53 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                       children: [
                         ValuePanel(
                           firstText: 'PiO2',
-                          secondText: Valores.PIO!.toStringAsFixed(2),
+                          secondText: Valores.PIO.toStringAsFixed(2),
                           thirdText: 'mmHg',
                         ),
                         ValuePanel(
                             firstText: 'PAO2',
-                            secondText: Valores.PAO!.toStringAsFixed(2),
+                            secondText: Valores.PAO.toStringAsFixed(2),
                             thirdText: 'mmHg',
                         ),
                         ValuePanel(
                           firstText: 'GA-a O2',
-                          secondText: Valores.GAA!.toStringAsFixed(2),
+                          secondText: Valores.GAA.toStringAsFixed(2),
                           thirdText: 'mmHg',
                         ),
                         ValuePanel(
                           firstText: 'VO2', // Consumo de Oxígeno
-                          secondText: Valores.CO!.toStringAsFixed(2),
+                          secondText: Valores.CO.toStringAsFixed(2),
                           thirdText: 'mL/min',
                         ),
 
                         ValuePanel(
                           firstText: 'CaO2', // Contenido Arterial de Oxígeno
-                          secondText: Valores.CAO!.toStringAsFixed(2),
+                          secondText: Valores.CAO.toStringAsFixed(2),
                           thirdText: 'mL/O2%',
                         ),
                         ValuePanel(
                           firstText: 'CcO2', // Contenido Capilar de Oxígeno
-                          secondText: Valores.CCO!.toStringAsFixed(2),
+                          secondText: Valores.CCO.toStringAsFixed(2),
                           thirdText: 'mL/O2%',
                         ),
                         ValuePanel(
                           firstText: 'CvO2', // Contenido Arterial de Oxígeno
-                          secondText: Valores.CVO!.toStringAsFixed(2),
+                          secondText: Valores.CVO.toStringAsFixed(2),
                           thirdText: 'mL/O2%',
                         ),
                         ValuePanel(
                           firstText: 'Da-vO2', // Diferencia Arterio-venosa de Oxígeno
-                          secondText: Valores.DAV!.toStringAsFixed(2),
+                          secondText: Valores.DAV.toStringAsFixed(2),
                           thirdText: 'mL',
                         ),
                         ValuePanel(
                           firstText: 'QS/QT', // Shunt Arterio-venoso
-                          secondText: Valores.SF!.toStringAsFixed(2),
+                          secondText: Valores.SF.toStringAsFixed(2),
                           thirdText: '%',
                         ),
                         ValuePanel(
                           firstText: 'I. V/P (Kirby)', // Shunt Arterio-venoso
-                          secondText: Valores.PAFI!.toStringAsFixed(0),
+                          secondText: Valores.PAFI.toStringAsFixed(0),
                         ),
                         ValuePanel(
                           firstText: '% Extracción Oxígeno',

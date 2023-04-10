@@ -667,6 +667,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
               userPresentation(context),
               userForm(context),
               GrandButton(
+                weigth: 300,
                   labelButton: widget._operation_button,
                   onPress: () {
                     operationMethod(context);
@@ -693,8 +694,9 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
       EditTextArea(
         labelEditText: "Número de Afiliación",
         textController: numeroPacienteTextController,
-        keyBoardType: TextInputType.text,
+        keyBoardType: TextInputType.number,
         numOfLines: 1,
+        limitOfChars: 14,
         inputFormat: MaskTextInputFormatter(
             mask: '#### ## #### #',
             filter: {"#": RegExp(r'[0-9]')},
@@ -711,9 +713,9 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           initialValue: hemotipoValue,
           items: Items.Hemotipo,
           width: isMobile(context)
-              ? 65
+              ? 230
               : isTablet(context)
-                  ? 100
+                  ? 170
                   : 200,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -728,6 +730,11 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
       Spinner(
           tittle: "Unidad de Atención",
           initialValue: unidadMedicaValue,
+          width: isMobile(context)
+              ? 230
+              : isTablet(context)
+              ? 170
+              : 200,
           items: Pacientes.Unidades,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -737,6 +744,11 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
       Spinner(
           tittle: "Hospital de Atención",
           initialValue: unidadMedicaValue,
+          width: isMobile(context)
+              ? 230
+              : isTablet(context)
+              ? 170
+              : 200,
           items: Pacientes.Unidades,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -746,6 +758,11 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
       Spinner(
           tittle: "Turno de atención",
           initialValue: turnoValue,
+          width: isMobile(context)
+              ? 230
+              : isTablet(context)
+              ? 170
+              : 200,
           items: Pacientes.Turno,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -756,6 +773,11 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           tittle: "Modo de atención",
           initialValue: atencionValue,
           items: Pacientes.Atencion,
+          width: isMobile(context)
+              ? 230
+              : isTablet(context)
+              ? 170
+              : 200,
           onChangeValue: (String? newValue) {
             setState(() {
               atencionValue = newValue!;
@@ -780,7 +802,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
         isObscure: false,
         numOfLines: 1,
         fontSize: 16,
-        labelEditText: 'Fecha de nacimiento',
+        labelEditText: 'Fecha de Nacimiento',
         textController: nacimientoTextController,
         prefixIcon: false,
         onChange: (value) {
@@ -794,6 +816,11 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
       Spinner(
           tittle: "Sexo",
           initialValue: sessoValue,
+          width: isMobile(context)
+              ? 230
+              : isTablet(context)
+              ? 170
+              : 200,
           items: Pacientes.Sexo,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -817,6 +844,11 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
       Spinner(
           tittle: "¿Vive?",
           initialValue: vivoValue,
+          width: isMobile(context)
+              ? 230
+              : isTablet(context)
+              ? 170
+              : 200,
           items: Pacientes.Vivo,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -827,6 +859,11 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
       Spinner(
           tittle: "Estado civil",
           initialValue: estadoCivilValue,
+          width: isMobile(context)
+              ? 230
+              : isTablet(context)
+              ? 170
+              : 200,
           items: Pacientes.EstadoCivil,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -837,8 +874,13 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
       //
       Spinner(
           tittle: "Escolaridad",
-          width: SpinnersValues.minimunWidth(context: context),
+          width: isMobile(context)
+              ? 230
+              : isTablet(context)
+              ? 170
+              : 200,
           initialValue: escolaridadValue,
+
           items: Pacientes.Escolaridad,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -847,8 +889,12 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           }),
       Spinner(
           tittle: "Escolaridad completud",
-          width: SpinnersValues.minimunWidth(context: context),
           initialValue: escolaridadCompletudValue,
+          width: isMobile(context)
+              ? 230
+              : isTablet(context)
+              ? 160
+              : 200,
           items: Pacientes.EscolaridadCompletud,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -882,6 +928,11 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
       Spinner(
           tittle: "Entidad federativa",
           initialValue: entidadFederativaValue,
+          width: isMobile(context)
+              ? 230
+              : isTablet(context)
+              ? 170
+              : 200,
           items: Pacientes.EntidadesFederativas,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -896,6 +947,11 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
       Spinner(
           tittle: "Indigena (Si/No)",
           initialValue: indigenaValue,
+          width: isMobile(context)
+              ? 230
+              : isTablet(context)
+              ? 170
+              : 200,
           items: Pacientes.Indigena,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -904,8 +960,12 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           }),
       Spinner(
           tittle: "Hablante Indígena",
-          width: SpinnersValues.minimunWidth(context: context),
           initialValue: indigenaHablanteValue,
+          width: isMobile(context)
+              ? 230
+              : isTablet(context)
+              ? 170
+              : 200,
           items: Pacientes.lenguaIndigena,
           onChangeValue: (String? newValue) {
             setState(() {
