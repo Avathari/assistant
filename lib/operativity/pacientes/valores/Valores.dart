@@ -26,8 +26,9 @@ class Valores {
       telefono,
       curp,
       rfc,
-      modoAtencion;
-  static int? edad, numeroCama;
+      modoAtencion,
+      numeroCama;
+  static int? edad;
   static bool? isHospitalizado;
 
   static String folioLicencia = "",
@@ -330,6 +331,7 @@ class Valores {
       neutrofilosTotales,
       monocitosTotales;
   //
+  static String? fechaQuimicas;
   static double? glucosa, urea, creatinina, acidoUrico, nitrogenoUreico;
   //
   static String? fechaHepaticos;
@@ -360,8 +362,10 @@ class Valores {
       fioVenosos,
       soVenosos;
   //
+  static String? fechaElectrolitos;
   static double? sodio, potasio, cloro, fosforo, calcio, magnesio;
   //
+  static String? fechaReactantes;
   static double? procalcitonina,
       lactato,
       velocidadSedimentacionGlobular,
@@ -752,6 +756,7 @@ class Valores {
     linfocitosTotales = double.parse(json['Linfocitos_Totales'] ?? '0');
     monocitosTotales = double.parse(json['Monocitos_Totales'] ?? '0');
     //
+    fechaQuimicas = json['Fecha_Registro_Quimicas'] ?? '';
     glucosa = double.parse(json['Glucosa'] ?? '0');
     urea = double.parse(json['Urea'] ?? '0');
     creatinina = double.parse(json['Creatinina'] ?? '0');
@@ -759,6 +764,7 @@ class Valores {
     nitrogenoUreico = double.parse(json['Nitrogeno_Ureico'] ?? '0');
 
     //
+    fechaElectrolitos = json['Fecha_Registro_Electrolitos'] ?? '';
     sodio = double.parse(json['Sodio'] ?? '0');
     potasio = double.parse(json['Potasio'] ?? '0');
     cloro = double.parse(json['Cloro'] ?? '0');
@@ -766,6 +772,7 @@ class Valores {
     fosforo = double.parse(json['Fosforo'] ?? '0');
     calcio = double.parse(json['Calcio'] ?? '0');
     //
+    fechaHepaticos = json['Fecha_Registro_Hepaticos'] ?? '';
     alaninoaminotrasferasa =
         double.parse(json['Alaninoaminotrasferasa'] ?? '0');
     aspartatoaminotransferasa =
@@ -780,6 +787,7 @@ class Valores {
     albuminaSerica = double.parse(json['Albumina_Serica'] ?? '0');
     proteinasTotales = double.parse(json['Proteinas_Totales'] ?? '0');
     //
+    fechaReactantes = json['Fecha_Registro_Reactantes'] ?? '';
     procalcitonina = double.parse(json['Procalcitonina'] ?? '0');
     lactato = double.parse(json['Acido_Lactico'] ?? '0');
     velocidadSedimentacionGlobular =
@@ -4021,6 +4029,7 @@ class Items {
   static List<String> expectoratorio = ["EXPECTORATORIO", "Si", "No"];
 
   static List<String> dispositivosOxigeno = [
+    '',
     'Ventilador Mecánico Controlado por Presión',
     'Ventilador Mecánico Controlado por Volumen',
     'Ventilador Mecánico Controlado por Presión Modalidad para Bi-Presión Continua de la Via Aérea  (BiPAP: iPAP, ePAP),'
@@ -4218,6 +4227,16 @@ class Items {
     // 'Hemotipo B Grupo Rh Negativo',
     // 'Hemotipo AB Grupo Rh Positivo',
     // 'Hemotipo AB Grupo Rh Negativo',
+  ];
+
+  static List<String> religiones = [
+    'Católica',
+    'Evangelista',
+    'Testigo de Jehova',
+    'Adventista',
+    'Pentecostés',
+    'Hinduista',
+    'Islámica'
   ];
 
   static List ordinales = [

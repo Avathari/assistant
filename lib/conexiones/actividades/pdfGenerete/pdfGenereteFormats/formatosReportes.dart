@@ -2,7 +2,6 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteComponents/PdfApiComponents.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
-import 'package:intl/intl.dart';
 
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
@@ -2099,7 +2098,8 @@ class FormatosReportes {
               children: [
                 textTittleWithLabel(
                     tittle: "No. Cama: ",
-                    label: Valores.numeroCama!.toStringAsFixed(0)),
+                    label: Valores.numeroCama!,
+                )
               ]),
           TableRow(
               verticalAlignment: TableCellVerticalAlignment.middle,
@@ -2507,7 +2507,7 @@ class FormatosReportes {
 
   // Reportes de Censos Hospitalarios *********** ************ ***** ***
   static List<Widget> censoHospitalario(List<dynamic> paraph) {
-    String tipoReporte = "CENSO HOSPITALARIO - MEDICINA INTERNA";
+    // String tipoReporte = "CENSO HOSPITALARIO - MEDICINA INTERNA";
     // Lista de apartados del documento. ***** ****** *********** *********
     List<Widget> parax = [];
 

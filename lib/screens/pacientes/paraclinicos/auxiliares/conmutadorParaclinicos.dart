@@ -39,7 +39,7 @@ class _ConmutadorParaclinicosState extends State<ConmutadorParaclinicos> {
                   textPanel:
                       "Anexión de la ${widget.categoriaEstudio}")),
           Expanded(
-              flex: 10,
+              flex: 9,
               child: Container(
                 padding: const EdgeInsets.all(5.0),
                 margin: const EdgeInsets.all(5.0),

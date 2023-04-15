@@ -162,7 +162,7 @@ class _HospitalizadoState extends State<Hospitalizado> {
               margin: const EdgeInsets.all(8.0),
               decoration: ContainerDecoration.roundedDecoration(),
               child: GridLayout(
-                childAspectRatio: 0.9,
+                childAspectRatio: isDesktop(context) ? 1.0: 0.9,
                 columnCount: 2,
                 // mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -366,13 +366,18 @@ class _HospitalizadoState extends State<Hospitalizado> {
     return [
       ThreeLabelTextAline(
         padding: 2.0,
+        firstText: 'Folio',
+        secondText: Pacientes.ID_Hospitalizacion.toString(),
+      ),
+      ThreeLabelTextAline(
+        padding: 2.0,
         firstText: 'Ingreso Hospitalario',
         secondText: Valores.fechaIngresoHospitalario,
       ),
       ThreeLabelTextAline(
         padding: 2.0,
         firstText: 'Cama Asignada',
-        secondText: Valores.numeroCama.toString(),
+        secondText: Valores.numeroCama, // .toString(),
       ),
       ThreeLabelTextAline(
         padding: 2.0,

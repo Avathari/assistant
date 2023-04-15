@@ -14,6 +14,7 @@ import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
+import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -341,12 +342,14 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                 padding: const EdgeInsets.all(10.0),
                                 margin: const EdgeInsets.all(5.0),
                                 height: 500,
-                                decoration: ContainerDecoration.roundedDecoration(),
+                                decoration:
+                                    ContainerDecoration.roundedDecoration(),
                                 child: SingleChildScrollView(
                                   controller: ScrollController(),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "PA: ${snapshot.data[posicion]['Padecimiento']['Contexto']}",
@@ -371,49 +374,169 @@ class _HospitalizadosState extends State<Hospitalizados> {
                         margin: const EdgeInsets.only(
                             left: 2, right: 2, top: 2, bottom: 2),
                         decoration: ContainerDecoration.roundedDecoration(),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                        child: Row(
                           children: [
                             Expanded(
-                              child: Text(
-                                "Laboratorios",
-                                style: Styles.textSyleGrowth(fontSize: 12),
-                                textAlign: TextAlign.start,
-                              ),
-                            ),
+                                flex: 3,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: ValuePanel(
+                                        secondText: snapshot.data[posicion]
+                                            ['Situaciones']['Disp_Oxigen']?? '',
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 4,
+                                      child: GridView(
+                                        gridDelegate:
+                                            GridViewTools.gridDelegate(
+                                                crossAxisCount: 5,
+                                                mainAxisExtent: 55),
+                                        children: [
+                                          ValuePanel(
+                                            firstText: 'CVP',
+                                            secondText: Dicotomicos.fromInt(
+                                                    snapshot.data[posicion]
+                                                        ['Situaciones']['CVP'] ?? 0)
+                                                .toString(),
+                                          ),
+                                          ValuePanel(
+                                            firstText: 'CVLP',
+                                            secondText: Dicotomicos.fromInt(
+                                                    snapshot.data[posicion]
+                                                        ['Situaciones']['CVLP']?? 0)
+                                                .toString(),
+                                          ),
+                                          ValuePanel(
+                                            firstText: 'CVC',
+                                            secondText: Dicotomicos.fromInt(
+                                                    snapshot.data[posicion]
+                                                        ['Situaciones']['CVC']?? 0)
+                                                .toString(),
+                                          ),
+                                          ValuePanel(
+                                            firstText: 'FOL',
+                                            secondText: Dicotomicos.fromInt(
+                                                    snapshot.data[posicion]
+                                                            ['Situaciones']
+                                                        ['S_Foley']?? 0)
+                                                .toString(),
+                                          ),
+                                          ValuePanel(
+                                            firstText: 'SNG',
+                                            secondText: Dicotomicos.fromInt(
+                                                    snapshot.data[posicion]
+                                                        ['Situaciones']['SNG']?? 0)
+                                                .toString(),
+                                          ),
+                                          ValuePanel(
+                                            firstText: 'SOG',
+                                            secondText: Dicotomicos.fromInt(
+                                                    snapshot.data[posicion]
+                                                        ['Situaciones']['SOG']?? 0)
+                                                .toString(),
+                                          ),
+                                          ValuePanel(
+                                            firstText: 'DRE',
+                                            secondText: Dicotomicos.fromInt(
+                                                    snapshot.data[posicion]
+                                                            ['Situaciones']
+                                                        ['Drenaje']?? 0)
+                                                .toString(),
+                                          ),
+                                          ValuePanel(
+                                            firstText: 'SEP',
+                                            secondText: Dicotomicos.fromInt(
+                                                    snapshot.data[posicion]
+                                                            ['Situaciones']
+                                                        ['Pleuro_Vac']?? 0)
+                                                .toString(),
+                                          ),
+                                          ValuePanel(
+                                            firstText: 'COL',
+                                            secondText: Dicotomicos.fromInt(
+                                                    snapshot.data[posicion]
+                                                            ['Situaciones']
+                                                        ['Colostomia']?? 0)
+                                                .toString(),
+                                          ),
+                                          ValuePanel(
+                                            firstText: 'GAS',
+                                            secondText: Dicotomicos.fromInt(
+                                                    snapshot.data[posicion]
+                                                            ['Situaciones']
+                                                        ['Gastrostomia']?? 0)
+                                                .toString(),
+                                          ),
+                                          ValuePanel(
+                                            firstText: 'TEN',
+                                            secondText: Dicotomicos.fromInt(
+                                                    snapshot.data[posicion]
+                                                            ['Situaciones']
+                                                        ['Dialisis_Peritoneal']?? 0)
+                                                .toString(),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )),
                             Expanded(
-                              flex: 3,
-                              child: GridView.builder(
-                                  padding: const EdgeInsets.all(4),
-                                  gridDelegate: GridViewTools.gridDelegate(
-                                      crossAxisCount: 5, mainAxisExtent: 65),
-                                  itemCount: Listas.listWithoutRepitedValues(
-                                          Listas.listFromMapWithOneKey(snapshot
-                                              .data[posicion]['Auxiliares']))
-                                      .length,
-                                  // snapshot.data[posicion]['Auxiliares'].length,
-                                  itemBuilder: (BuildContext context, index) {
-                                    var list = Listas.listWithoutRepitedValues(
-                                        Listas.listFromMapWithOneKey(snapshot
-                                            .data[posicion]['Auxiliares']));
-                                    return ValuePanel(
-                                      secondText: "${list[index]}", // Resultado
-                                      withEditMessage: true,
-                                      onEdit: (value) {
-                                        Pacientes.Paraclinicos = snapshot
-                                            .data[posicion]['Auxiliares'];
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    flex: 2,
+                                    child: TittlePanel(
+                                      padding: 0,
+                                      textPanel: "Laboratorios",
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 3,
+                                    child: GridView.builder(
+                                        padding: const EdgeInsets.all(4),
+                                        gridDelegate:
+                                            GridViewTools.gridDelegate(
+                                                crossAxisCount: 1,
+                                                mainAxisExtent: 50),
+                                        itemCount: Listas
+                                                .listWithoutRepitedValues(Listas
+                                                    .listFromMapWithOneKey(
+                                                        snapshot.data[posicion]
+                                                            ['Auxiliares']))
+                                            .length,
+                                        // snapshot.data[posicion]['Auxiliares'].length,
+                                        itemBuilder:
+                                            (BuildContext context, index) {
+                                          var list =
+                                              Listas.listWithoutRepitedValues(
+                                                  Listas.listFromMapWithOneKey(
+                                                      snapshot.data[posicion]
+                                                          ['Auxiliares']));
+                                          return ValuePanel(
+                                            secondText:
+                                                "${list[index]}", // Resultado
+                                            withEditMessage: true,
+                                            onEdit: (value) {
+                                              Pacientes.Paraclinicos = snapshot
+                                                  .data[posicion]['Auxiliares'];
 
-                                        Terminal.printExpected(
-                                            message:
-                                                "snapshot.data[posicion]['Auxiliares'] ${snapshot.data[posicion]['Auxiliares']}");
+                                              Terminal.printExpected(
+                                                  message:
+                                                      "snapshot.data[posicion]['Auxiliares'] ${snapshot.data[posicion]['Auxiliares']}");
 
-                                        Datos.portapapeles(
-                                            context: context,
-                                            text: Auxiliares.porFecha(
-                                                fechaActual: value));
-                                      },
-                                    );
-                                  }),
+                                              Datos.portapapeles(
+                                                  context: context,
+                                                  text: Auxiliares.porFecha(
+                                                      fechaActual: value));
+                                            },
+                                          );
+                                        }),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -683,6 +806,12 @@ class _HospitalizadosState extends State<Hospitalizados> {
               Repositorios.repositorio['consultPadecimientoQuery'],
               response[v]['ID_Hosp'],
             ),
+          });
+          response[v].addAll({
+            "Situaciones": await Actividades.consultarId(
+                Databases.siteground_database_reghosp,
+                Situaciones.situacion['consultQuery'],
+                response[v]['ID_Hosp']),
           });
           response[v].addAll({
             "Cronicos": await Actividades.consultarAllById(

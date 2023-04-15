@@ -60,7 +60,7 @@ class _DegenerativosState extends State<Degenerativos> {
                 itemBuilder: ((context, index) {
                   Terminal.printData(message: "${Pacientes.Patologicos}");
                   return ListTile(
-                    onLongPress: () {
+                    onTap: () {
                       Operadores.openWindow(
                           context: context,
                           chyldrim: Container(

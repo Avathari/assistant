@@ -111,6 +111,7 @@ class Pacientes {
   //
   static List? Licencias = [];
   static List? Balances = [];
+  static List? Notas = []; // Registro de Análisis, Notas y Eventualidades.
   static List? Ventilaciones = [];
   //
   static List? Hospitalizaciones = [];
@@ -341,7 +342,7 @@ class Pacientes {
       for (var element in Traumatologicos!) {
         if (Reportes.antecedentesTraumatologicos == "") {
           Reportes.antecedentesTraumatologicos =
-          "${Reportes.antecedentesAlergicos}${element['Pace_APP_ALE']} diagnósticado hace ${element['Pace_APP_ALE_dia']} años. ";
+              "${Reportes.antecedentesAlergicos}${element['Pace_APP_ALE']} diagnósticado hace ${element['Pace_APP_ALE_dia']} años. ";
         }
       }
     } else {
@@ -402,7 +403,6 @@ class Pacientes {
         "";
   }
 
-
   static String antecedentesIngresosPatologicos() {
     return "Antecedentes patológicos: ${Pacientes.patologicos()}\n"
         "Antecedentes quirúrgicos: ${Pacientes.hospitalarios()}.\n"
@@ -429,13 +429,12 @@ class Pacientes {
 
       for (var element in Patologicos!) {
         if (Reportes.personalesPatologicos == "") {
-          Reportes.personalesPatologicos =
-              "${element['Pace_APP_DEG']} "
+          Reportes.personalesPatologicos = "${element['Pace_APP_DEG']} "
               "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
               "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. ";
         } else {
           Reportes.personalesPatologicos =
-          "${Reportes.personalesPatologicos}${element['Pace_APP_DEG']} "
+              "${Reportes.personalesPatologicos}${element['Pace_APP_DEG']} "
               "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
               "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. ";
         }
@@ -981,64 +980,67 @@ class Pacientes {
     if (modoAtencion == 'Hospitalización') {
       modus = 'Consulta Externa';
       //
-      await Actividades.actualizar(
+      final response = await Actividades.actualizar(
           Databases.siteground_database_regpace,
           pacientes['updateHospitalizacionQuery'],
           [modus, Pacientes.ID_Paciente],
           Pacientes.ID_Paciente);
-      return false;
+
+      if (response == 'SUCCESS') {
+        return false;
+      } else {
+        return true;
+      }
     } else if (modoAtencion == 'Consulta Externa') {
       modus = 'Hospitalización';
       //
       await Actividades.actualizar(
-          Databases.siteground_database_regpace,
-          pacientes['updateHospitalizacionQuery'],
-          [modus, Pacientes.ID_Paciente],
-          Pacientes.ID_Paciente);
-      Actividades.registrar(
-          Databases.siteground_database_reghosp,
-          "INSERT INTO pace_hosp (ID_Pace, "
-          "Feca_INI_Hosp, Id_Cama, Dia_Estan, Medi_Trat, Serve_Trat, Serve_Trat_INI, "
-          "Feca_EGE_Hosp, EGE_Motivo) "
-          "VALUES (?,?,?,?,?,?,?,?,?)",
-          [
-            Pacientes.ID_Paciente,
-            Calendarios.today(format: 'yyyy/MM/dd'),
-            0,
-            0,
-            '',
-            Valores.servicioTratante,
-            Valores.servicioTratanteInicial,
-            '0000/00/00',
-            Escalas.motivosEgresos[0],
-          ]).then((value) {
-        Actividades.consultarId(
-                Databases.siteground_database_reghosp,
-                "SELECT * FROM pace_hosp WHERE ID_Pace = ? ORDER BY ID_Hosp ASC",
-                Pacientes.ID_Paciente)
-            .then((value) {
-          // ******************************************** *** *
-          // print("IDDDD HOSP ${value}");
-          Pacientes.ID_Hospitalizacion = value['ID_Hosp'];
-          Pacientes.esHospitalizado = true;
-          Valores.isHospitalizado = true;
-          // print("IDDDD HOSP ${Pacientes.ID_Hospitalizacion}");
-          // ******************************************** *** *
-          Valores.fechaIngresoHospitalario =
-              Calendarios.today(format: 'yyyy/MM/dd');
-          Valores.fechaIngresoHospitalario = '';
-          Valores.numeroCama = 0;
-          Valores.medicoTratante = '';
-          Valores.motivoEgreso = Escalas.motivosEgresos[0];
-
-          // ******************************************** *** *
-          // Registro de Actividades Iniciales de la Hospitalización
-          // ******************************************** *** *
-          Repositorios.registrarRegistro();
-          Situaciones.registrarRegistro();
-          Expedientes.registrarRegistro();
-        });
-      });
+              Databases.siteground_database_regpace,
+              pacientes['updateHospitalizacionQuery'],
+              [modus, Pacientes.ID_Paciente],
+              Pacientes.ID_Paciente)
+          .whenComplete(() => Actividades.registrar(
+                  Databases.siteground_database_reghosp,
+                  "INSERT INTO pace_hosp (ID_Pace, "
+                  "Feca_INI_Hosp, Id_Cama, Dia_Estan, Medi_Trat, Serve_Trat, Serve_Trat_INI, "
+                  "Feca_EGE_Hosp, EGE_Motivo) "
+                  "VALUES (?,?,?,?,?,?,?,?,?)",
+                  [
+                    Pacientes.ID_Paciente,
+                    Calendarios.today(format: 'yyyy/MM/dd'),
+                    'N/A', // No Cama
+                    0,
+                    '',
+                    Valores.servicioTratante,
+                    Valores.servicioTratanteInicial,
+                    '0000/00/00',
+                    Escalas.motivosEgresos[0],
+                  ]).whenComplete(() => Actividades.consultarId(
+                          Databases.siteground_database_reghosp,
+                          "SELECT * FROM pace_hosp WHERE ID_Pace = ? ORDER BY ID_Hosp ASC",
+                          Pacientes.ID_Paciente)
+                      .then((value) {
+                    // ******************************************** *** *
+                    // print("IDDDD HOSP ${value}");
+                    Pacientes.ID_Hospitalizacion = value['ID_Hosp'];
+                    Pacientes.esHospitalizado = true;
+                    Valores.isHospitalizado = true;
+                    // print("IDDDD HOSP ${Pacientes.ID_Hospitalizacion}");
+                    // ******************************************** *** *
+                    Valores.fechaIngresoHospitalario =
+                        Calendarios.today(format: 'yyyy/MM/dd');
+                    Valores.fechaIngresoHospitalario = '';
+                    Valores.numeroCama = 'N/A';
+                    Valores.medicoTratante = '';
+                    Valores.motivoEgreso = Escalas.motivosEgresos[0];
+                  }).whenComplete(() {
+                    // ******************************************** *** *
+                    // Registro de Actividades Iniciales de la Hospitalización
+                    // ******************************************** *** *
+                    Repositorios.registrarRegistro();
+                    Situaciones.registrarRegistro();
+                    Expedientes.registrarRegistro();
+                  })));
 
       // ******************************************** *** *
       return true;
@@ -4161,7 +4163,8 @@ class Quirurgicos {
         .then((value) {
       // Enfermedades de base del paciente, asi como las Hospitalarias.
       Pacientes.Quirurgicos = value;
-      Archivos.createJsonFromMap(value, filePath: '${Pacientes.localRepositoryPath}quirurgicos.json');
+      Archivos.createJsonFromMap(value,
+          filePath: '${Pacientes.localRepositoryPath}quirurgicos.json');
     });
   }
 
@@ -5418,7 +5421,6 @@ class Auxiliares {
       String fecha = "($element)";
       String max = "";
 
-
       aux.forEach((element) {
         if (max == "") {
           max =
@@ -5715,12 +5717,14 @@ class Auxiliares {
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Linfocitos Totales' ORDER BY Fecha_Registro DESC limit 1) as Linfocitos_Totales,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Monocitos Totales' ORDER BY Fecha_Registro DESC limit 1) as Monocitos_Totales,"
         //
+        "(SELECT Fecha_Registro FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Química Sanguínea' ORDER BY Fecha_Registro DESC limit 1) as Fecha_Registro_Quimicas,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Glucosa' ORDER BY Fecha_Registro DESC limit 1) as Glucosa,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Urea' ORDER BY Fecha_Registro DESC limit 1) as Urea,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Creatinina' ORDER BY Fecha_Registro DESC limit 1) as Creatinina,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Acido Úrico' ORDER BY Fecha_Registro DESC limit 1) as Acido_Urico,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Nitrógeno Úrico' ORDER BY Fecha_Registro DESC limit 1) as Nitrogeno_Ureico,"
         //
+    "(SELECT Fecha_Registro FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Electrolitos Séricos' ORDER BY Fecha_Registro DESC limit 1) as Fecha_Registro_Electrolitos,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Sodio' ORDER BY Fecha_Registro DESC limit 1) as Sodio,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Potasio' ORDER BY Fecha_Registro DESC limit 1) as Potasio,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Cloro' ORDER BY Fecha_Registro DESC limit 1) as Cloro,"
@@ -5728,6 +5732,7 @@ class Auxiliares {
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Fósforo' ORDER BY Fecha_Registro DESC limit 1) as Fosforo,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Magnesio' ORDER BY Fecha_Registro DESC limit 1) as Magnesio,"
         //
+    "(SELECT Fecha_Registro FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Reactantes de Fase Aguda' ORDER BY Fecha_Registro DESC limit 1) as Fecha_Registro_Reactantes,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Procalcitonina' ORDER BY Fecha_Registro DESC limit 1) as Procalcitonina,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Ácido Láctico' ORDER BY Fecha_Registro DESC limit 1) as Acido_Lactico,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Velocidad de Sedimentación Globular' ORDER BY Fecha_Registro DESC limit 1) as Velocidad_Sedimentacion,"
@@ -5735,6 +5740,7 @@ class Auxiliares {
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Factor Reumatoide' ORDER BY Fecha_Registro DESC limit 1) as Factor_Reumatoide,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Anticuerpo Antipéptido Citrulinado' ORDER BY Fecha_Registro DESC limit 1) as Anticuerpo_Citrulinado,"
         //
+        "(SELECT Fecha_Registro FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Pruebas de Funcionamiento Hepático' ORDER BY Fecha_Registro DESC limit 1) as Fecha_Registro_Hepaticos,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Alaninoaminotrasferasa' ORDER BY Fecha_Registro DESC limit 1) as Alaninoaminotrasferasa,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Aspartatoaminotransferasa' ORDER BY Fecha_Registro DESC limit 1) as Aspartatoaminotransferasa,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Bilirrubinas Totales' ORDER BY Fecha_Registro DESC limit 1) as Bilirrubinas_Totales,"
@@ -5903,7 +5909,8 @@ class Reportes {
         Pacientes.noPatologicos(), //"Sin información recabada",
     "Antecedetes_No_Patologicos_Analisis": Pacientes.noPatologicosAnalisis(),
     "Antecedentes_Patologicos_Otros": Pacientes.antecedentesPatologicos(),
-    "Antecedentes_Patologicos_Ingreso": Pacientes.antecedentesIngresosPatologicos(),
+    "Antecedentes_Patologicos_Ingreso":
+        Pacientes.antecedentesIngresosPatologicos(),
     "Antecedentes_Heredofamiliares": Pacientes.heredofamiliares(),
     "Antecedentes_Quirurgicos": Pacientes.hospitalarios(),
     "Antecedentes_Patologicos": Pacientes.patologicos(),
@@ -5968,10 +5975,11 @@ class Reportes {
   static String antecedentesHeredofamiliares = "";
   // static String antecedentesHospitalarios = "";
   static String padecimientoActual = "";
-  static String? personalesPatologicos = "Sin antecedentes patológicos de importancia. ",
+  static String? personalesPatologicos =
+          "Sin antecedentes patológicos de importancia. ",
       antecedentesQuirurgicos = "Negados. ",
       antecedentesAlergicos = "Negados. ", // negados
-  antecedentesTraumatologicos = "Negados. ",
+      antecedentesTraumatologicos = "Negados. ",
       antecedentesPerinatales = "",
       antecedentesSexuales = "";
   //
@@ -6069,6 +6077,8 @@ class Reportes {
     Pacientes.Vitales = [];
     Pacientes.Vital = {};
     Patologicos.Degenerativos = {};
+
+    Pacientes.Notas = [];
   }
 
   static String nombreReporte({int? indefOfReport = 0}) {
@@ -6269,20 +6279,33 @@ class Balances {
     Balances.ID_Balances = json['ID_Bala'];
     Valores.fechaRealizacionBalances = json['Pace_bala_Fecha'];
 
-    Valores.viaOralBalances = double.parse(json['Pace_bala_Oral'].toString() ?? '0');
-    Valores.sondaOrogastricaBalances = double.parse(json['Pace_bala_Sonda'].toString() ?? '0');
-    Valores.hemoderivadosBalances = double.parse(json['Pace_bala_Hemo'].toString() ?? '0');
-    Valores.nutricionParenteralBalances = double.parse(json['Pace_bala_NPT'].toString() ?? '0');
-    Valores.parenteralesBalances = double.parse(json['Pace_bala_Sol'].toString() ?? '0');
-    Valores.dilucionesBalances = double.parse(json['Pace_bala_Dil'].toString() ?? '0');
-    Valores.otrosIngresosBalances = double.parse(json['Pace_bala_ING'].toString() ?? '0');
+    Valores.viaOralBalances =
+        double.parse(json['Pace_bala_Oral'].toString() ?? '0');
+    Valores.sondaOrogastricaBalances =
+        double.parse(json['Pace_bala_Sonda'].toString() ?? '0');
+    Valores.hemoderivadosBalances =
+        double.parse(json['Pace_bala_Hemo'].toString() ?? '0');
+    Valores.nutricionParenteralBalances =
+        double.parse(json['Pace_bala_NPT'].toString() ?? '0');
+    Valores.parenteralesBalances =
+        double.parse(json['Pace_bala_Sol'].toString() ?? '0');
+    Valores.dilucionesBalances =
+        double.parse(json['Pace_bala_Dil'].toString() ?? '0');
+    Valores.otrosIngresosBalances =
+        double.parse(json['Pace_bala_ING'].toString() ?? '0');
 
-    Valores.uresisBalances = double.parse(json['Pace_bala_Uresis'].toString() ?? '0');
-    Valores.evacuacionesBalances = double.parse(json['Pace_bala_Evac'].toString() ?? '0');
-    Valores.sangradosBalances = double.parse(json['Pace_bala_Sangrado'].toString() ?? '0');
-    Valores.succcionBalances = double.parse(json['Pace_bala_Succion'].toString() ?? '0');
-    Valores.drenesBalances = double.parse(json['Pace_bala_Drenes'].toString() ?? '0');
-    Valores.otrosEgresosBalances = double.parse(json['Pace_bala_ENG'].toString() ?? '0');
+    Valores.uresisBalances =
+        double.parse(json['Pace_bala_Uresis'].toString() ?? '0');
+    Valores.evacuacionesBalances =
+        double.parse(json['Pace_bala_Evac'].toString() ?? '0');
+    Valores.sangradosBalances =
+        double.parse(json['Pace_bala_Sangrado'].toString() ?? '0');
+    Valores.succcionBalances =
+        double.parse(json['Pace_bala_Succion'].toString() ?? '0');
+    Valores.drenesBalances =
+        double.parse(json['Pace_bala_Drenes'].toString() ?? '0');
+    Valores.otrosEgresosBalances =
+        double.parse(json['Pace_bala_ENG'].toString() ?? '0');
 
     Valores.horario = json['Pace_bala_HOR'];
     Valores.uresis = double.parse(json['Pace_bala_Uresis'].toString() ?? '0');
@@ -6414,7 +6437,7 @@ class Hospitalizaciones {
     Valores.fechaIngresoHospitalario = json['Feca_INI_Hosp'] ?? '';
     Hospitalizaciones.Hospitalizacion['Feca_INI_Hosp'] =
         Valores.fechaIngresoHospitalario;
-    Valores.numeroCama = json['Id_Cama'] == null ? json['Id_Cama'] : 0;
+    Valores.numeroCama = json['Id_Cama'] ?? 'N/A';
     Hospitalizaciones.Hospitalizacion['Id_Cama'] = Valores.numeroCama;
     Valores.medicoTratante = json['Medi_Trat'] ?? '';
     Hospitalizaciones.Hospitalizacion['Medi_Trat'] = Valores.medicoTratante;

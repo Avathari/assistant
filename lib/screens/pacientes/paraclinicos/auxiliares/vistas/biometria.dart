@@ -151,16 +151,8 @@ class _BiometriasState extends State<Biometrias> {
                           labelButton: "Agregar Datos",
                           weigth: 2000,
                           onPress: () {
-                            operationMethod()        .then(
-                                  (value) => Operadores.loadingActivity(
-                                  context: context,
-                                  tittle: "Registrando información . . .",
-                                  message: "Información registrada",
-                                  onCloss: () {
-                                    Navigator.of(context).pop();
-                                    cerrar();
-                                  }),
-                            );
+                            operationMethod();
+
                           }),
                     )
                   ],
@@ -331,40 +323,45 @@ class _BiometriasState extends State<Biometrias> {
   }
 
   operationMethod() async {
+    Operadores.loadingActivity(
+        context: context,
+        tittle: "Registrando información . . .",
+        message: "Información registrada",
+        onCloss: () {
+          // Navigator.of(context).pop();
+          // cerrar();
+        });
     //
-    Future.forEach(listOfValues(), (element) {
+    Future.forEach(listOfValues(), (element) async {
       var aux = element as List<String>;
 
       if (aux[5] != '0' && aux[5] != '' && aux[5] != null) {
-        Actividades.registrar(
+        await Actividades.registrar(
           Databases.siteground_database_reggabo,
           Auxiliares.auxiliares['registerQuery'],
           element as List<String>,
         );
       }
-    })
-        .then(
-      (value) => Operadores.alertActivity(
+    }).whenComplete(() {
+      Navigator.of(context).pop(); // Cierre del LoadActivity
+      Operadores.alertActivity(
           context: context,
           tittle: "Registrando información . . .",
           message: "Información registrada",
           onAcept: () {
             // Se emplean 3 Navigator.of(context).pop(); para cerrar cada una de
             //    las ventanas emergentes y la interfaz inicial.
-            Navigator.of(context).pop(); // Cierre del AlertActivity
-            Navigator.of(context).pop(); // Cierre del LoadActivity
+
             Navigator.of(context).pop(); // Cierre de la Interfaz Inicial
-          }),
-    )
-        .onError((error, stackTrace) {
+            Navigator.of(context).pop(); // Cierre del AlertActivity
+          });
+    }).onError((error, stackTrace) {
       Terminal.printAlert(message: "ERROR - $error : : : $stackTrace");
       Operadores.alertActivity(
-          context: context,
-          tittle: "Registrando información . . .",
-          message: "$error",
+        context: context,
+        tittle: "Registrando información . . .",
+        message: "$error",
       );
     });
   }
 }
-
-

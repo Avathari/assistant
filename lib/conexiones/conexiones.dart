@@ -102,7 +102,7 @@ class Actividades {
         "id": id.toString()
       },
     );
-    // Terminal.printAlert(message: "RESPONSE STATUS (consultarAllById) : : ${response.statusCode} : ${response.body.toString()}");
+    Terminal.printAlert(message: "RESPONSE STATUS (consultarAllById) : : ${response.statusCode} : ${response.body.toString()}");
     return json.decode(response.body).cast<Map<String, dynamic>>();
   }
 
@@ -171,7 +171,7 @@ class Actividades {
         "id": id.toString()
       },
     );
-    // Terminal.printAlert(message: "RESPONSE STATUS (Detalles) : : ${response.statusCode} :: :: Body ${response.body.toString()}");
+    Terminal.printAlert(message: "RESPONSE STATUS (Detalles) : : ${response.statusCode} :: :: Body ${response.body.toString()}");
     return json.decode(response.body) as Map<String, dynamic>;
   }
 

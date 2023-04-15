@@ -107,6 +107,7 @@ class _ValuePanelState extends State<ValuePanel> {
                 )),
             Text(
               widget.secondText!,
+              maxLines: widget.firstText == "" && widget.thirdText == "" ? 3 : 1,
               style: TextStyle(
                 fontSize: widget.firstText == "" && widget.thirdText == "" ? widget.fontSize : widget.fontSize - 2,
                 color: Colors.grey,

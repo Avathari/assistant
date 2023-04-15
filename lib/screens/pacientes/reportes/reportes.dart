@@ -8,6 +8,7 @@ import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/presentaciones/presentaciones.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisiones.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/padecimientoActual.dart';
+import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
 import 'package:assistant/screens/pacientes/intensiva/procedimientos/cateterTenckhoff.dart';
 import 'package:assistant/screens/pacientes/intensiva/procedimientos/cateterVenosoCentral.dart';
 import 'package:assistant/screens/pacientes/intensiva/procedimientos/intubacionEndotraqueal.dart';
@@ -44,7 +45,6 @@ class ReportesMedicos extends StatefulWidget {
 }
 
 class _ReportesMedicosState extends State<ReportesMedicos> {
-
   @override
   void initState() {
     // Llamado a los ultimos registros agregados.
@@ -54,27 +54,49 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       Repositorios.consultarAnalisis();
 
       Archivos.readJsonToMap(
-          filePath: "${Pacientes.localRepositoryPath}patologicos.json").then((value) {
+              filePath: "${Pacientes.localRepositoryPath}patologicos.json")
+          .then((value) {
         Pacientes.Patologicos = value;
       });
       Archivos.readJsonToMap(
-          filePath: "${Pacientes.localRepositoryPath}diagnosticos.json").then((value) {
+              filePath: "${Pacientes.localRepositoryPath}diagnosticos.json")
+          .then((value) {
         Pacientes.Diagnosticos = value;
       });
       Archivos.readJsonToMap(
-          filePath: "${Pacientes.localRepositoryPath}diagnosticos.json").then((value) {
+              filePath: "${Pacientes.localRepositoryPath}diagnosticos.json")
+          .then((value) {
         Pacientes.Diagnosticos = value;
       });
       Archivos.readJsonToMap(
-          filePath: "${Pacientes.localRepositoryPath}quirurgicos.json").then((value) {
+              filePath: "${Pacientes.localRepositoryPath}quirurgicos.json")
+          .then((value) {
         Pacientes.Quirurgicos = value;
       });
       Archivos.readJsonToMap(
-          filePath: "${Pacientes.localRepositoryPath}alergicos.json").then((value) {
+              filePath: "${Pacientes.localRepositoryPath}alergicos.json")
+          .then((value) {
         Pacientes.Alergicos = value;
       });
 
-      Terminal.printExpected(message: "Analisis Previos : : ${Reportes.analisisAnteriores}");
+      Archivos.readJsonToMap(
+              filePath:
+                  "${Pacientes.localRepositoryPath}/reportes/reportes.json")
+          .then((value) {
+        Pacientes.Notas = value;
+
+        Reportes.exploracionFisica = value.last['Exploracion_Fisica'] ?? '';
+        Reportes.signosVitales = value.last['Signos_Vitales'] ?? '';
+
+        Reportes.eventualidadesOcurridas = value.last['Eventualidades'] ?? '';
+        Reportes.terapiasPrevias = value.last['Terapias_Previas'] ?? '';
+        Reportes.analisisMedico = value.last['Analisis_Medico'] ?? '';
+        Reportes.tratamientoPropuesto =
+            value.last['Tratamiento_Propuesto'] ?? '';
+      });
+
+      Terminal.printExpected(
+          message: "Analisis Previos : : ${Reportes.analisisAnteriores}");
     });
     // # # # ############## #### ######## #### ########
     super.initState();
@@ -95,33 +117,47 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   onClose(context);
                 },
               ),
-              title: Text(Sentences.app_bar_reportes, style: Styles.textSyleGrowth(),),
+              title: Text(
+                Sentences.app_bar_reportes,
+                style: Styles.textSyleGrowth(),
+              ),
               actions: <Widget>[
-                IconButton(
-                  icon: const Icon(
-                    Icons.remove_from_queue,
-                  ),
-                  tooltip: 'Refrescar . . . ',
-                  onPressed: () async {
-                    setState(() {});
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(
-                    Icons.system_update_alt,
-                  ),
-                  tooltip: 'Cargando . . . ',
-                  onPressed: () async {
-                    Pacientes.loadingActivity(context: context).then((value) {
-                      if (value == true) {
-                        Terminal.printAlert(
-                            message:
+            IconButton(
+              icon: const Icon(
+                Icons.balance,
+              ),
+              tooltip: 'Concentraciones y Diluciones',
+              onPressed: () async {
+                setState(() {
+                  widget.actualPage = 21;
+                });
+              },
+            ),
+            IconButton(
+              icon: const Icon(
+                Icons.remove_from_queue,
+              ),
+              tooltip: 'Refrescar . . . ',
+              onPressed: () async {
+                setState(() {});
+              },
+            ),
+            IconButton(
+              icon: const Icon(
+                Icons.system_update_alt,
+              ),
+              tooltip: 'Cargando . . . ',
+              onPressed: () async {
+                Pacientes.loadingActivity(context: context).then((value) {
+                  if (value == true) {
+                    Terminal.printAlert(
+                        message:
                             'Archivo ${Pacientes.localPath} Re-Creado $value');
-                        Navigator.of(context).pop();
-                      }
-                    });
-                  },
-                ),
+                    Navigator.of(context).pop();
+                  }
+                });
+              },
+            ),
             IconButton(
               icon: const Icon(
                 Icons.help,
@@ -224,13 +260,14 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                 children: [
                   Expanded(
                     child: GrandButton(
-                        weigth: 2000,
-                        labelButton: "Tipo de Nota Médica",
-                        onPress: () {
-                          setState(() {
-                            widget.actualPage = 19;
-                          });
-                        },),
+                      weigth: 2000,
+                      labelButton: "Tipo de Nota Médica",
+                      onPress: () {
+                        setState(() {
+                          widget.actualPage = 19;
+                        });
+                      },
+                    ),
                     //     child: Container(
                     //   decoration: ContainerDecoration.roundedDecoration(),
                     //   child: TittlePanel(
@@ -265,11 +302,13 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                       : Container(),
           CrossLine(),
           GrandButton(
-              weigth: 2000, labelButton: "Tipo de Nota Médica", onPress: () {
+              weigth: 2000,
+              labelButton: "Tipo de Nota Médica",
+              onPress: () {
                 setState(() {
                   widget.actualPage = 20;
                 });
-          }),
+              }),
           CrossLine(),
           // TittlePanel(textPanel: "Tipo de Nota Médica"),
           Expanded(
@@ -345,7 +384,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   });
                 }),
           ),
-           SizedBox(
+          SizedBox(
             height: 20,
             child: CrossLine(),
           ),
@@ -367,16 +406,19 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               ),
             ),
           ),
-           SizedBox(
+          SizedBox(
             height: 20,
             child: CrossLine(),
           ),
           GrandButton(
               labelButton: "Vista previa",
               onPress: () async {
-                await imprimirDocumento().then((value) => Operadores.alertActivity(context: context, onAcept: (){
-                  Repositorios.registrarAnalisis();
-                }));
+                await imprimirDocumento()
+                    .then((value) => Operadores.alertActivity(
+                        context: context,
+                        onAcept: () {
+                          Repositorios.registrarAnalisis();
+                        }));
               }),
         ],
       );
@@ -397,6 +439,54 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
         paraph: Reportes.reportes,
         name:
             "(IH) - ${Pacientes.nombreCompleto} - (${Calendarios.today()}).pdf");
+
+    // Crear JSON local de Reportes
+    if (Pacientes.Notas!.isNotEmpty) {
+      if (Pacientes.Notas!.last['Fecha_Realizacion'] !=
+          Calendarios.today(format: 'yyyy/MM/dd')) {
+        Pacientes.Notas!.add({
+          'Fecha_Realizacion': Calendarios.today(format: 'yyyy/MM/dd'),
+          'Subjetivo': Reportes.reportes['Subjetivo'],
+          "Signos_Vitales": Reportes.signosVitales,
+          "Exploracion_Fisica": Reportes.exploracionFisica,
+          "Eventualidades": Reportes.eventualidadesOcurridas,
+          "Terapias_Previas": Reportes.terapiasPrevias,
+          "Analisis_Medico": Reportes.analisisMedico,
+          "Tratamiento_Propuesto": Reportes.tratamientoPropuesto,
+          "Pendientes": Reportes.pendientes, // ['Sin pendientes'],
+        });
+      } else {
+var index = Pacientes.Notas!.indexWhere((v) => v['Fecha_Realizacion'] == Calendarios.today(format: 'yyyy/MM/dd'));
+        Terminal.printAlert(message: "index $index");
+
+        Pacientes.Notas![index] = {
+          'Fecha_Realizacion': Calendarios.today(format: 'yyyy/MM/dd'),
+          'Subjetivo': Reportes.reportes['Subjetivo'],
+          "Signos_Vitales": Reportes.signosVitales,
+          "Exploracion_Fisica": Reportes.exploracionFisica,
+          "Eventualidades": Reportes.eventualidadesOcurridas,
+          "Terapias_Previas": Reportes.terapiasPrevias,
+          "Analisis_Medico": Reportes.analisisMedico,
+          "Tratamiento_Propuesto": Reportes.tratamientoPropuesto,
+          "Pendientes": Reportes.pendientes, // ['Sin pendientes'],
+        };
+      }
+    } else if (Pacientes.Notas!.isEmpty) {
+      Pacientes.Notas!.add({
+        'Fecha_Realizacion': Calendarios.today(format: 'yyyy/MM/dd'),
+        'Subjetivo': Reportes.reportes['Subjetivo'],
+        "Signos_Vitales": Reportes.signosVitales,
+        "Exploracion_Fisica": Reportes.exploracionFisica,
+        "Eventualidades": Reportes.eventualidadesOcurridas,
+        "Terapias_Previas": Reportes.terapiasPrevias,
+        "Analisis_Medico": Reportes.analisisMedico,
+        "Tratamiento_Propuesto": Reportes.tratamientoPropuesto,
+        "Pendientes": Reportes.pendientes, // ['Sin pendientes'],
+      });
+    }
+
+    Archivos.createJsonFromMap(Pacientes.Notas!,
+        filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
 
     // ignore: use_build_context_synchronously
     Operadores.listOptionsActivity(
@@ -477,12 +567,12 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       const IntubacionEndotraqueal(), // 13 :
       const SondaEndopleural(), // 14 :
       const CateterTenckhoff(), // 15 :
-      Container(),  // 16 : Punción Lumbar
-      const ReporteTransfusion(),  // 17 : Reporte de Transfusión
+      Container(), // 16 : Punción Lumbar
+      const ReporteTransfusion(), // 17 : Reporte de Transfusión
       const TerapiasItems(), // 18: Evaluación de Terapia
       Revisiones(), // 19 : Revisión
-      Semiologicos(), // 20 : Revisión
-
+      const Semiologicos(), // 20 : Revisión
+      const Concentraciones(), // 21 : Concentraciones
     ];
 
     return list[actualPage];
@@ -698,5 +788,4 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           }),
     ];
   }
-
 }

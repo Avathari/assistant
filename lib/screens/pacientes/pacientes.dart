@@ -577,6 +577,8 @@ class OperacionesPacientes extends StatefulWidget {
 class _OperacionesPacientesState extends State<OperacionesPacientes> {
   @override
   void initState() {
+    Terminal.printExpected(message: "Actividad : : ${widget.operationActivity}");
+    
     switch (widget.operationActivity) {
       case Constantes.Nulo:
         break;
@@ -653,10 +655,24 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: const Color.fromARGB(255, 61, 57, 57),
-      child: SingleChildScrollView(
-        child: Padding(
+    return Scaffold(
+      appBar: widget.operationActivity == Constantes.Register
+          ? AppBar(
+              backgroundColor: Colors.black,
+              leading: IconButton(
+                icon: const Icon(
+                  Icons.arrow_back,
+                ),
+                tooltip: Sentences.regresar,
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const GestionPacientes()));
+                },
+              ))
+          : null,
+      body: Card(
+        color: const Color.fromARGB(255, 61, 57, 57),
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -664,10 +680,16 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
               isMobile(context) || isTablet(context)
                   ? returnOperationUserButton(context)
                   : Container(),
-              userPresentation(context),
-              userForm(context),
+              Container(
+                  margin: const EdgeInsets.all(8.0),
+                  decoration: ContainerDecoration.roundedDecoration(),
+                  child: userPresentation(context)),
+              Container(
+                  margin: const EdgeInsets.all(8.0),
+                  decoration: ContainerDecoration.roundedDecoration(),
+                  child: userForm(context)),
               GrandButton(
-                weigth: 300,
+                  weigth: isMobile(context) ? 200 : 1000,
                   labelButton: widget._operation_button,
                   onPress: () {
                     operationMethod(context);
@@ -703,7 +725,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
             type: MaskAutoCompletionType.lazy),
       ),
       editText(false, 'Agregado médico', agregadoPacienteTextController, false),
-      editText(false, 'Primer nombre del paciente', firstNamePaciente, false),
+      EditTextArea(labelEditText: 'Primer nombre del paciente' , numOfLines: 1,
+          textController: firstNamePaciente, keyBoardType: TextInputType.text, inputFormat: MaskTextInputFormatter()),
       editText(false, 'Segundo nombre del paciente', secondNameTextController,
           false),
       editText(false, 'Apellido Paterno', apellidoPaternoTextController, false),
@@ -715,7 +738,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           width: isMobile(context)
               ? 230
               : isTablet(context)
-                  ? 170
+                  ? 140
                   : 200,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -733,8 +756,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           width: isMobile(context)
               ? 230
               : isTablet(context)
-              ? 170
-              : 200,
+                  ? 170
+                  : 200,
           items: Pacientes.Unidades,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -747,8 +770,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           width: isMobile(context)
               ? 230
               : isTablet(context)
-              ? 170
-              : 200,
+                  ? 170
+                  : 200,
           items: Pacientes.Unidades,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -761,8 +784,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           width: isMobile(context)
               ? 230
               : isTablet(context)
-              ? 170
-              : 200,
+                  ? 170
+                  : 200,
           items: Pacientes.Turno,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -776,8 +799,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           width: isMobile(context)
               ? 230
               : isTablet(context)
-              ? 170
-              : 200,
+                  ? 170
+                  : 200,
           onChangeValue: (String? newValue) {
             setState(() {
               atencionValue = newValue!;
@@ -796,7 +819,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
       EditTextArea(
         keyBoardType: TextInputType.datetime,
         inputFormat: MaskTextInputFormatter(
-            mask: '####/##/##',
+            mask: '####-##-##',
             filter: {"#": RegExp(r'[0-9]')},
             type: MaskAutoCompletionType.lazy),
         isObscure: false,
@@ -819,8 +842,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           width: isMobile(context)
               ? 230
               : isTablet(context)
-              ? 170
-              : 200,
+                  ? 170
+                  : 200,
           items: Pacientes.Sexo,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -847,8 +870,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           width: isMobile(context)
               ? 230
               : isTablet(context)
-              ? 170
-              : 200,
+                  ? 170
+                  : 200,
           items: Pacientes.Vivo,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -862,25 +885,44 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           width: isMobile(context)
               ? 230
               : isTablet(context)
-              ? 170
-              : 200,
+                  ? 170
+                  : 200,
           items: Pacientes.EstadoCivil,
           onChangeValue: (String? newValue) {
             setState(() {
               estadoCivilValue = newValue!;
             });
           }),
-      editText(false, 'Religión', religionTextController, false),
+      EditTextArea(
+        labelEditText: 'Religión',
+        textController: religionTextController,
+        keyBoardType: TextInputType.text,
+        numOfLines: 1,
+        inputFormat: MaskTextInputFormatter(),
+        selection: true,
+        withShowOption: true,
+        onSelected: () {
+          Operadores.selectOptionsActivity(
+              context: context,
+              tittle: '¿Religión?',
+              options: Items.religiones,
+              onClose: (value) {
+                setState(() {
+                  religionTextController.text = value;
+                  Navigator.pop(context);
+                });
+              });
+        },
+      ),
       //
       Spinner(
           tittle: "Escolaridad",
           width: isMobile(context)
               ? 230
               : isTablet(context)
-              ? 170
-              : 200,
+                  ? 170
+                  : 200,
           initialValue: escolaridadValue,
-
           items: Pacientes.Escolaridad,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -893,8 +935,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           width: isMobile(context)
               ? 230
               : isTablet(context)
-              ? 160
-              : 200,
+                  ? 160
+                  : 200,
           items: Pacientes.EscolaridadCompletud,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -931,8 +973,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           width: isMobile(context)
               ? 230
               : isTablet(context)
-              ? 170
-              : 200,
+                  ? 170
+                  : 200,
           items: Pacientes.EntidadesFederativas,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -950,8 +992,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           width: isMobile(context)
               ? 230
               : isTablet(context)
-              ? 170
-              : 200,
+                  ? 170
+                  : 200,
           items: Pacientes.Indigena,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -964,8 +1006,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           width: isMobile(context)
               ? 230
               : isTablet(context)
-              ? 170
-              : 200,
+                  ? 170
+                  : 200,
           items: Pacientes.lenguaIndigena,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -1241,10 +1283,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
             MaterialPageRoute(builder: (context) => const GestionPacientes()));
         break;
       case Constantes.Update:
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const GestionPacientes()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const GestionPacientes()));
         break;
       default:
     }
@@ -1286,7 +1326,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
       listOfValues = [
         idOperation,
         numeroPacienteTextController.text.trim(),
-        agregadoPacienteTextController.text.trim(),
+        agregadoPacienteTextController.text.trim().toUpperCase(),
         Sentences.capitalize(firstNamePaciente.text).trim(),
         Sentences.capitalize(secondNameTextController.text).trim(),
         Sentences.capitalize(apellidoPaternoTextController.text).trim(),
@@ -1336,7 +1376,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           listOfValues!.removeLast();
 
           Actividades.registrar(Databases.siteground_database_regpace,
-                  registerQuery, listOfValues!)
+              registerQuery, listOfValues!)
               .then((value) {
             // Registro de Antecedentes No Patológicos ******** ******** ********
             Eticos.registrarRegistro(); // Si

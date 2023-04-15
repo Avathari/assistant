@@ -37,54 +37,57 @@ class _EstadisticasVitalesState extends State<EstadisticasVitales> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        TittlePanel(
-          textPanel: 'Estadisticas de signos vitales del Paciente',
-        ),
-        ThreeLabelTextAline(
-          padding: 8.0,
-          firstText: 'Total de Registros',
-          secondText: data['Total_Registros'],
-        ),
-        CrossLine(),
-        SingleChildScrollView(
-          controller: ScrollController(),
-          child: Column(
-            children: [
-              ThreeLabelTextAline(
-                padding: 2.0,
-                firstText: Vitales.Categorias[0],
-                secondText:
-                double.parse(data['Promedio_TAS']).toStringAsFixed(0),
-                thirdText: 'mmHg',
-              ),
-              ThreeLabelTextAline(
-                padding: 2.0,
-                firstText: Vitales.Categorias[1],
-                secondText:
-                double.parse(data['Promedio_TAD']).toStringAsFixed(0),
-                thirdText: 'mmHg',
-              ),
-              ThreeLabelTextAline(
-                padding: 2.0,
-                firstText: Vitales.Categorias[2],
-                secondText:
-                double.parse(data['Promedio_FC']).toStringAsFixed(0),
-                thirdText: 'L/min',
-              ),
-              ThreeLabelTextAline(
-                padding: 2.0,
-                firstText: Vitales.Categorias[3],
-                secondText:
-                double.parse(data['Promedio_FR']).toStringAsFixed(0),
-                thirdText: 'Resp/min',
-              ),
-            ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          TittlePanel(
+            textPanel: 'Estadisticas de signos vitales del Paciente',
           ),
-        )
-      ],
+          ThreeLabelTextAline(
+            padding: 8.0,
+            firstText: 'Total de Registros',
+            secondText: data['Total_Registros'],
+          ),
+          CrossLine(),
+          SingleChildScrollView(
+            controller: ScrollController(),
+            child: Column(
+              children: [
+                ThreeLabelTextAline(
+                  padding: 2.0,
+                  firstText: Vitales.Categorias[0],
+                  secondText:
+                  double.parse(data['Promedio_TAS']).toStringAsFixed(0),
+                  thirdText: 'mmHg',
+                ),
+                ThreeLabelTextAline(
+                  padding: 2.0,
+                  firstText: Vitales.Categorias[1],
+                  secondText:
+                  double.parse(data['Promedio_TAD']).toStringAsFixed(0),
+                  thirdText: 'mmHg',
+                ),
+                ThreeLabelTextAline(
+                  padding: 2.0,
+                  firstText: Vitales.Categorias[2],
+                  secondText:
+                  double.parse(data['Promedio_FC']).toStringAsFixed(0),
+                  thirdText: 'L/min',
+                ),
+                ThreeLabelTextAline(
+                  padding: 2.0,
+                  firstText: Vitales.Categorias[3],
+                  secondText:
+                  double.parse(data['Promedio_FR']).toStringAsFixed(0),
+                  thirdText: 'Resp/min',
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }

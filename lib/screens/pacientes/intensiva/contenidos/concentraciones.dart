@@ -293,7 +293,7 @@ class _ConcentracionesState extends State<Concentraciones> {
                               decoration:
                                   ContainerDecoration.roundedDecoration(),
                               child: ShowText(
-                                title: 'Peso Corporal Total',
+                                title: 'P.C.T.',
                                 data: pesoCorporalTotal,
                                 medida: 'Kg',
                               )),
@@ -311,6 +311,7 @@ class _ConcentracionesState extends State<Concentraciones> {
                   ),
                 ),
                 Expanded(
+                  flex: 2,
                   child: Container(
                     margin: const EdgeInsets.all(10),
                     padding: const EdgeInsets.all(10),

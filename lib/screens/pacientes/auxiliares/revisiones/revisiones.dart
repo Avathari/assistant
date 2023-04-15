@@ -1143,7 +1143,7 @@ class _RevisionesState extends State<Revisiones> {
         Expanded(
           child: ValuePanel(
             firstText: "",
-            secondText: Valores.fechaVitales.toString(),
+            secondText: Valores.fechaBiometria.toString(),
             thirdText: "",
           ),
         ),
@@ -1382,7 +1382,7 @@ class _RevisionesState extends State<Revisiones> {
         Expanded(
           child: ValuePanel(
             firstText: "",
-            secondText: Valores.fechaVitales.toString(),
+            secondText: Valores.fechaQuimicas.toString(),
             thirdText: "",
           ),
         ),
@@ -1484,7 +1484,7 @@ class _RevisionesState extends State<Revisiones> {
         Expanded(
           child: ValuePanel(
             firstText: "",
-            secondText: Valores.fechaVitales.toString(),
+            secondText: Valores.fechaElectrolitos.toString(),
             thirdText: "",
           ),
         ),
@@ -1936,7 +1936,7 @@ class _RevisionesState extends State<Revisiones> {
         Expanded(
           child: ValuePanel(
             firstText: "",
-            secondText: Valores.fechaVitales.toString(),
+            secondText: Valores.fechaHepaticos.toString(),
             thirdText: "",
           ),
         ),

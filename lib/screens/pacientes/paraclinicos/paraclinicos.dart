@@ -1,9 +1,7 @@
 import 'package:assistant/screens/pacientes/paraclinicos/operadores/electrocardiograma.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/operadores/imagenologias.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/operadores/laboratorios.dart';
-import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
-import 'package:assistant/widgets/GrandLabel.dart';
 import 'package:assistant/widgets/MenuButton.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';

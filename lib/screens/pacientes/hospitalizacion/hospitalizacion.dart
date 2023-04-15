@@ -108,11 +108,9 @@ class _OperacionesHospitalizacionesState
           fechaRealizacionTextController.text =
               // Valores.fechaIngresoHospitalario!;
               Hospitalizaciones.Hospitalizacion['Feca_INI_Hosp'];
-          isNumCama = Hospitalizaciones.Hospitalizacion['Id_Cama'] ==
-                  0 // Valores.numeroCama
-              ? "N/A" // 1.toString()
-              : // Valores.numeroCama.toString();
-              Hospitalizaciones.Hospitalizacion['Id_Cama'].toString();
+          isNumCama = Hospitalizaciones.Hospitalizacion['Id_Cama'] ?? "N/A" ; // 1.toString()
+              //: // Valores.numeroCama.toString();
+              //Hospitalizaciones.Hospitalizacion['Id_Cama'].toString();
 
           fechaIngresoTextController
                   .text = // Valores.fechaIngresoHospitalario!;
@@ -172,15 +170,12 @@ class _OperacionesHospitalizacionesState
               ),
             ),
             Expanded(
-              child: Container(
-                decoration: ContainerDecoration.roundedDecoration(),
-                child: GrandButton(
-                    weigth: 2000,
-                    labelButton: widget._operationButton,
-                    onPress: () {
-                      operationMethod(context);
-                    }),
-              ),
+              child: GrandButton(
+                  weigth: 2000,
+                  labelButton: widget._operationButton,
+                  onPress: () {
+                    operationMethod(context);
+                  }),
             )
           ],
         ),
@@ -190,18 +185,27 @@ class _OperacionesHospitalizacionesState
 
   List<Widget> component(BuildContext context) {
     return [
-      ThreeLabelTextAline(
-          firstText: 'ID Hospitalización', secondText: idOperation.toString()),
-      Spinner(
-          tittle: "Número de Cama",
-          onChangeValue: (String value) {
-            setState(() {
-              isNumCama = value;
-            });
-          },
-          items: Listas.listOfRange(maxNum: 100),
-          width: isTablet(context) || isMobile(context) ? 120 : 200,
-          initialValue: isNumCama),
+      Row(
+        children: [
+          Expanded(
+            child: ThreeLabelTextAline(
+                firstText: 'ID Hospitalización', secondText: idOperation.toString()),
+          ),
+          Expanded(
+            flex: 2,
+            child: Spinner(
+                tittle: "Número de Cama",
+                onChangeValue: (String value) {
+                  setState(() {
+                    isNumCama = value;
+                  });
+                },
+                items: Listas.listOfRange(maxNum: 100, withNull: true),
+                width: isTablet(context) || isMobile(context) ? 120 : 200,
+                initialValue: isNumCama),
+          ),
+        ],
+      ),
       CrossLine(),
       Row(
         children: [
@@ -371,7 +375,7 @@ class _OperacionesHospitalizacionesState
                     //
                     Valores.fechaIngresoHospitalario =
                         fechaIngresoTextController.text;
-                    Valores.numeroCama = int.parse(isNumCama);
+                    Valores.numeroCama = (isNumCama);
                     // Valores.diasEstancia = int.parse(diasEstanciaTextController.text);
                     Valores.medicoTratante = medicoTratanteTextController.text;
                     Valores.servicioTratante = servicioTratanteValue;

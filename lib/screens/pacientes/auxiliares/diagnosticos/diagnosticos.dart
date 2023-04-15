@@ -61,7 +61,7 @@ class _DiagnosisState extends State<Diagnosis> {
                 itemBuilder: ((context, index) {
                   return ListTile(
                     isThreeLine: false,
-                    onLongPress: () {
+                    onTap: () {
                       Operadores.openWindow(
                           context: context,
                           chyldrim: Container(
