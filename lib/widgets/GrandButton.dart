@@ -6,10 +6,16 @@ class GrandButton extends StatefulWidget {
   String? labelButton;
   double? weigth, height;
   void Function() onPress;
+  final VoidCallback? onLongPress;
 
-  GrandButton(
-      {Key? key, this.labelButton, this.weigth = 0, this.height = 0, required this.onPress})
-      : super(key: key);
+  GrandButton({
+    Key? key,
+    this.labelButton,
+    this.weigth = 0,
+    this.height = 0,
+    this.onLongPress,
+    required this.onPress,
+  }) : super(key: key);
 
   @override
   State<GrandButton> createState() => _GrandButtonState();
@@ -28,24 +34,26 @@ class _GrandButtonState extends State<GrandButton> {
           : const EdgeInsets.all(8.0),
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-              primary: Colors.black54,
-              onPrimary: Colors.grey,
+              foregroundColor: Colors.grey,
+              backgroundColor: Colors.black54,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               minimumSize: Size(
-                  widget.weigth != 0.0
-                      ? widget.weigth!
-                      : isMobile(context) || isTablet(context)
-                          ? 170
-                          : 500,
+                widget.weigth != 0.0
+                    ? widget.weigth!
+                    : isMobile(context) || isTablet(context)
+                        ? 170
+                        : 500,
                 widget.height != 0.0
                     ? widget.height!
                     : isMobile(context) || isTablet(context)
-                    ? 60
-                    : 60,)),
+                        ? 60
+                        : 60,
+              )),
           onPressed: () {
             widget.onPress();
           },
+          onLongPress: widget.onLongPress,
           child: Text(
             widget.labelButton!,
             textAlign: TextAlign.center,

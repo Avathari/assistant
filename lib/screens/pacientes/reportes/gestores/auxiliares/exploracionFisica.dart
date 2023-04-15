@@ -1,5 +1,6 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/semiologicos.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/terapias.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/CrossLine.dart';
@@ -49,13 +50,17 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                   child: GrandButton(
                     labelButton: "Valores",
                     onPress: () {
-                      Operadores.openDialog(context: context, chyldrim: const TerapiasItems(),
-                      onAction: () {
-                        setState(() {
-                          expoTextController.text = Reportes.exploracionFisica;
-                          Reportes.reportes['Exploracion_Fisica'] = Reportes.exploracionFisica;
-                        });
-                      });
+                      Operadores.openDialog(
+                          context: context,
+                          chyldrim: const TerapiasItems(),
+                          onAction: () {
+                            setState(() {
+                              expoTextController.text =
+                                  Reportes.exploracionFisica;
+                              Reportes.reportes['Exploracion_Fisica'] =
+                                  Reportes.exploracionFisica;
+                            });
+                          });
                     },
                   ),
                 )
@@ -70,7 +75,7 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                             textController: vitalTextController,
                             labelEditText: "Signos Vitales",
                             keyBoardType: TextInputType.multiline,
-                            numOfLines: isTablet(context) ? 12: 6,
+                            numOfLines: isTablet(context) ? 12 : 10,
                             onChange: ((value) => setState(() {
                                   Reportes.signosVitales = value;
                                   Reportes.reportes['Signos_Vitales'] = value;
@@ -139,7 +144,11 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                       textController: expoTextController,
                       labelEditText: "Exploración física",
                       keyBoardType: TextInputType.multiline,
-                      numOfLines: widget.isTerapia! ? 60 : isTablet(context) ? 30 : 13,
+                      numOfLines: widget.isTerapia!
+                          ? 60
+                          : isTablet(context)
+                              ? 30
+                              : 20,
                       onChange: ((value) => setState(() {
                             Reportes.exploracionFisica = value;
                             Reportes.reportes['Exploracion_Fisica'] = value;
@@ -159,6 +168,13 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                                 onPress: () {
                                   asignarExploracion(indice: 1);
                                 },
+                                onLongPress: () {
+                                  Operadores.openWindow(context: context, chyldrim: const Semiologicos(), onAction: () {
+                                    setState(() {
+                                      expoTextController.text = "Hola";
+                                    });
+                                  });
+                                },
                               ),
                               GrandButton(
                                 labelButton: "Exploración física extensa",
@@ -169,11 +185,16 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                               GrandButton(
                                 labelButton: "Analisis de terapia intensiva",
                                 onPress: () {
-                                  Operadores.openDialog(context: context, chyldrim: const TerapiasItems(),
+                                  Operadores.openDialog(
+                                      context: context,
+                                      chyldrim: const TerapiasItems(),
                                       onAction: () {
                                         setState(() {
-                                          expoTextController.text = Reportes.exploracionFisica;
-                                          Reportes.reportes['Exploracion_Fisica'] = Reportes.exploracionFisica;
+                                          expoTextController.text =
+                                              Reportes.exploracionFisica;
+                                          Reportes.reportes[
+                                                  'Exploracion_Fisica'] =
+                                              Reportes.exploracionFisica;
                                         });
                                       });
                                   // asignarExploracion(indice: 3);
@@ -214,6 +235,5 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
   }
 }
 
-void showActivity() {
-  
-}
+
+void showActivity() {}

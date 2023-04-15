@@ -45,61 +45,58 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+    return Container(
+      decoration: ContainerDecoration.roundedDecoration(),
       child: Column(children: [
         Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SingleChildScrollView(
-              controller: ScrollController(),
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GrandIcon(
-                    iconData: Icons.person,
-                    labelButton: "Información General",
+          child: SingleChildScrollView(
+            controller: ScrollController(),
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GrandIcon(
+                  iconData: Icons.person,
+                  labelButton: "Información General",
+                  weigth: wieghtRow / index,
+                  onPress: () {
+                    carouselController.jumpToPage(0);
+                  },
+                ),
+                GrandIcon(
+                    iconData: Icons.explicit,
+                    labelButton: "Exploración Física",
                     weigth: wieghtRow / index,
                     onPress: () {
-                      carouselController.jumpToPage(0);
-                    },
-                  ),
-                  GrandIcon(
-                      iconData: Icons.explicit,
-                      labelButton: "Exploración Física",
-                      weigth: wieghtRow / index,
-                      onPress: () {
-                        carouselController.jumpToPage(1);
-                      }),
-                  GrandIcon(
-                      iconData: Icons.medical_information,
-                      labelButton: "Auxiliares Diagnósticos",
-                      weigth: wieghtRow / index,
-                      onPress: () {
-                        carouselController.jumpToPage(2);
-                      }),
-                  GrandIcon(
-                      iconData: Icons.explore,
-                      labelButton: "Análisis y propuestas",
-                      weigth: wieghtRow / index,
-                      onPress: () {
-                        carouselController.jumpToPage(3);
-                      }),
-                  GrandIcon(
-                      iconData: Icons.next_plan,
-                      labelButton: "Diagnósticos y Pronóstico",
-                      weigth: wieghtRow / index,
-                      onPress: () {
-                        carouselController.jumpToPage(4);
-                      }),
-                ],
-              ),
+                      carouselController.jumpToPage(1);
+                    }),
+                GrandIcon(
+                    iconData: Icons.medical_information,
+                    labelButton: "Auxiliares Diagnósticos",
+                    weigth: wieghtRow / index,
+                    onPress: () {
+                      carouselController.jumpToPage(2);
+                    }),
+                GrandIcon(
+                    iconData: Icons.explore,
+                    labelButton: "Análisis y propuestas",
+                    weigth: wieghtRow / index,
+                    onPress: () {
+                      carouselController.jumpToPage(3);
+                    }),
+                GrandIcon(
+                    iconData: Icons.next_plan,
+                    labelButton: "Diagnósticos y Pronóstico",
+                    weigth: wieghtRow / index,
+                    onPress: () {
+                      carouselController.jumpToPage(4);
+                    }),
+              ],
             ),
           ),
         ),
         Expanded(
-          flex: 5,
+          flex: 7,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: CarouselSlider(

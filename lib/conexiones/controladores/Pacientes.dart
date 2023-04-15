@@ -6688,7 +6688,7 @@ class Repositorios {
             Pacientes.ID_Hospitalizacion)
         .then((value) {
       Terminal.printExpected(message: "ANALISIS - $value ${value.runtimeType}");
-      Reportes.analisisMedico = value.last['Contexto'];
+      Reportes.analisisMedico = value.last['Contexto'] ?? '';
       Reportes.analisisAnteriores = value;
     });
   }

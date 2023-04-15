@@ -3,9 +3,12 @@ import 'dart:convert';
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/values/SizingInfo.dart';
+import 'package:assistant/values/WidgetValues.dart';
 
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/ImageDialog.dart';
+import 'package:assistant/widgets/ThreeLabelText.dart';
 import 'package:flutter/material.dart';
 
 class PresentacionPacientes extends StatefulWidget {
@@ -26,9 +29,88 @@ class _PresentacionPacientesState extends State<PresentacionPacientes> {
             onTap: () {
               Operadores.openDialog(
                 context: context,
-                chyldrim: ImageDialog(
-                  tittle: Pacientes.nombreCompleto,
-                  stringImage: Pacientes.imagenPaciente, //Paciente['Pace_FIAT'],
+                chyldrim: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ImageDialog(
+                        tittle: Pacientes.nombreCompleto,
+                        stringImage: Pacientes.imagenPaciente, //Paciente['Pace_FIAT'],
+                      ),
+                      Expanded(
+                        flex: isTablet(context) ? 3 : 1,
+                        child: Container(
+                          padding: const EdgeInsets.all(8.0),
+                          margin: const EdgeInsets.all(8.0),
+                          decoration: ContainerDecoration.roundedDecoration(),
+                          child: SingleChildScrollView(
+                            controller: ScrollController(),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                ThreeLabelTextAline(
+                                  padding: 2.0,
+                                  firstText: 'Nombre C.',
+                                  secondText: Pacientes.nombreCompleto,
+                                ),
+                                ThreeLabelTextAline(
+                                  padding: 2.0,
+                                  firstText: 'Fecha Nacimiento',
+                                  secondText: Pacientes.Paciente['Pace_Nace'],
+                                ),
+                                ThreeLabelTextAline(
+                                  padding: 2.0,
+                                  firstText: 'Edad',
+                                  secondText: '${Pacientes.Paciente['Pace_Eda']} Años',
+                                ),
+                                ThreeLabelTextAline(
+                                  padding: 2.0,
+                                  firstText: 'Sexo',
+                                  secondText: Pacientes.Paciente['Pace_Ses'],
+                                ),
+                                ThreeLabelTextAline(
+                                  padding: 2.0,
+                                  firstText: 'Teléfono',
+                                  secondText: Pacientes.Paciente['Pace_Tele'],
+                                ),
+                                ThreeLabelTextAline(
+                                  padding: 2.0,
+                                  firstText: 'Modo Atención',
+                                  secondText: Pacientes.Paciente['Pace_Hosp'],
+                                ),
+                                ThreeLabelTextAline(
+                                  padding: 2.0,
+                                  firstText: 'Estado Civil',
+                                  secondText: Pacientes.Paciente['Pace_Edo_Civ'],
+                                ),
+                                ThreeLabelTextAline(
+                                  padding: 2.0,
+                                  firstText: 'Ocupación',
+                                  secondText: Pacientes.Paciente['Pace_Ocupa'],
+                                ),
+                                ThreeLabelTextAline(
+                                  padding: 2.0,
+                                  firstText: 'Religión',
+                                  secondText: Pacientes.Paciente['Pace_Reli'],
+                                ),
+                                ThreeLabelTextAline(
+                                  padding: 2.0,
+                                  firstText: 'C.U.R.P.',
+                                  secondText: Pacientes.Paciente['Pace_Curp'],
+                                ),
+                                ThreeLabelTextAline(
+                                  padding: 2.0,
+                                  firstText: 'R.F.C.',
+                                  secondText: Pacientes.Paciente['Pace_RFC'],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               );
             },

@@ -1,6 +1,8 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/CrossLine.dart';
 
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +61,46 @@ class _DiagnosisState extends State<Diagnosis> {
                 itemBuilder: ((context, index) {
                   return ListTile(
                     isThreeLine: false,
+                    onLongPress: () {
+                      Operadores.openWindow(
+                          context: context,
+                          chyldrim: Container(
+                            padding: const EdgeInsets.all(8.0),
+                            margin: const EdgeInsets.all(8.0),
+                            decoration: ContainerDecoration.roundedDecoration(),
+                            child: Column(
+                              children: [
+                                TittlePanel(
+                                    textPanel:
+                                    "${Pacientes.Patologicos![index]['Pace_APP_DEG']}"),
+                                const SizedBox(height: 20,),
+                                Text(
+                                  Pacientes.Patologicos![index]
+                                  ['Pace_APP_DEG_com'],
+                                  style: Styles.textSyleGrowth(fontSize: 16),
+                                ),
+                                Text(
+                                  "Diagnósticado hace ${Pacientes.Patologicos![index]['Pace_APP_DEG_dia']} años",
+                                  style: Styles.textSyleGrowth(fontSize: 14),
+                                ),
+                                CrossLine(height: 20,),
+                                const SizedBox(height: 20,),
+                                Text(
+                                  Pacientes.Patologicos![index]
+                                  ['Pace_APP_DEG_tra'],
+                                  maxLines: 10,
+                                  style: Styles.textSyleGrowth(),
+                                ),
+                                Text(
+                                  Pacientes.Patologicos![index]
+                                  ['Pace_APP_DEG_sus'],
+                                  maxLines: 10,
+                                  style: Styles.textSyleGrowth(),
+                                ),
+                              ],
+                            ),
+                          ));
+                    },
                     title: Text(
                       Pacientes.Diagnosticos![index]['Pace_APP_DEG'],
                       textAlign: TextAlign.right,

@@ -6,6 +6,7 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 
 import 'package:assistant/screens/pacientes/auxiliares/presentaciones/presentaciones.dart';
+import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisiones.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/padecimientoActual.dart';
 import 'package:assistant/screens/pacientes/intensiva/procedimientos/cateterTenckhoff.dart';
 import 'package:assistant/screens/pacientes/intensiva/procedimientos/cateterVenosoCentral.dart';
@@ -16,6 +17,7 @@ import 'package:assistant/screens/pacientes/intensiva/valoraciones/prequirurgico
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/auxiliaresReportes.dart';
 import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteFormats/formatosReportes.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/indicaciones.dart';
+import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/semiologicos.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/terapias.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteConsulta.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteEvolucion.dart';
@@ -127,6 +129,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               tooltip: Sentences.find_usuario,
               onPressed: () {
                 //
+                setState(() {
+                  widget.actualPage = 19;
+                });
               },
             ),
           ]), //: null,
@@ -221,7 +226,11 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                     child: GrandButton(
                         weigth: 2000,
                         labelButton: "Tipo de Nota Médica",
-                        onPress: () {}),
+                        onPress: () {
+                          setState(() {
+                            widget.actualPage = 19;
+                          });
+                        },),
                     //     child: Container(
                     //   decoration: ContainerDecoration.roundedDecoration(),
                     //   child: TittlePanel(
@@ -256,7 +265,11 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                       : Container(),
           CrossLine(),
           GrandButton(
-              weigth: 2000, labelButton: "Tipo de Nota Médica", onPress: () {}),
+              weigth: 2000, labelButton: "Tipo de Nota Médica", onPress: () {
+                setState(() {
+                  widget.actualPage = 20;
+                });
+          }),
           CrossLine(),
           // TittlePanel(textPanel: "Tipo de Nota Médica"),
           Expanded(
@@ -467,6 +480,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       Container(),  // 16 : Punción Lumbar
       const ReporteTransfusion(),  // 17 : Reporte de Transfusión
       const TerapiasItems(), // 18: Evaluación de Terapia
+      Revisiones(), // 19 : Revisión
+      Semiologicos(), // 20 : Revisión
+
     ];
 
     return list[actualPage];

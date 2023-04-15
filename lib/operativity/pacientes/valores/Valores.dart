@@ -3521,7 +3521,7 @@ class Formatos {
     return "Balance hídrico (${Valores.fechaRealizacionBalances}) - "
         "Ingresos ${Valores.ingresosBalances.toStringAsFixed(2)} mL,  "
         "egresos ${Valores.egresosBalances.toStringAsFixed(2)} mL  "
-        "(balance Total ${Valores.balanceTotal.toStringAsFixed(2)} mL${Valores.horario} mL),  "
+        "(balance Total ${Valores.balanceTotal.toStringAsFixed(2)} mL/${Valores.horario} mL),  "
         "uresis ${Valores.uresis} mL,  "
         "diuresis ${Valores.diuresis.toStringAsFixed(2)} mL/${Valores.horario} mL.  "
         "\n ";

@@ -29,6 +29,7 @@ class _DetallesState extends State<Detalles> {
               Expanded(
                 flex: isTablet(context) ? 3 : 1,
                 child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(8.0),
                   controller: ScrollController(),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,

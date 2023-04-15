@@ -368,9 +368,9 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                         ),
                         Spinner(
                           width: isDesktop(context)
-                              ? 600
+                              ? 500
                               : isTablet(context)
-                              ? 300
+                              ? 500
                               : isMobile(context)
                               ? 100
                               : 300,
