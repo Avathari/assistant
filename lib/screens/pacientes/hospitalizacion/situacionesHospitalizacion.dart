@@ -32,7 +32,6 @@ class _SituacionesHospitalizacionState
   // isColostomia = false,
   // isGastrostomia = false,
   // isDialisisPeritoneal = false;
-
   @override
   void initState() {
     dispositivoOxigenoValue = Valores.dispositivoOxigeno!;
@@ -50,6 +49,8 @@ class _SituacionesHospitalizacionState
             Dicotomicos.fromInt(response['CVLP'], toBoolean: true) as bool?;
         Valores.isCateterVenosoCentral =
             Dicotomicos.fromInt(response['CVC'], toBoolean: true) as bool?;
+        Valores.isCateterHemodialisis =
+        Dicotomicos.fromInt(response['MAH'], toBoolean: true) as bool?;
         Valores.isSondaFoley =
             Dicotomicos.fromInt(response['S_Foley'], toBoolean: true) as bool?;
         Valores.isSondaNasogastrica =
@@ -130,6 +131,15 @@ class _SituacionesHospitalizacionState
                 });
               },
               isSwitched: Valores.isCateterVenosoCentral),
+          Switched(
+              tittle: 'Cáteter Hemodiálisis',
+              onChangeValue: (value) {
+                setState(() {
+                  Valores.isCateterHemodialisis = value;
+                  Valores.isCateterHemodialisis = value;
+                });
+              },
+              isSwitched: Valores.isCateterHemodialisis),
           CrossLine(),
           Row(
             children: [
@@ -268,6 +278,15 @@ class _SituacionesHospitalizacionState
                 });
               },
               isSwitched: Valores.isCateterVenosoCentral),
+          Switched(
+              tittle: 'Cáteter Hemodiálisis',
+              onChangeValue: (value) {
+                setState(() {
+                  Valores.isCateterHemodialisis = value;
+                  Valores.isCateterHemodialisis = value;
+                });
+              },
+              isSwitched: Valores.isCateterHemodialisis),
           CrossLine(),
           Switched(
               tittle: 'Sonda Orogástrica',

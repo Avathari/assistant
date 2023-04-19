@@ -44,11 +44,9 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
         children: [
           TittlePanel(textPanel: 'Padecimiento Actual'),
           EditTextArea(
-            keyBoardType: TextInputType.number,
+            keyBoardType: TextInputType.datetime,
             inputFormat: MaskTextInputFormatter(
-                mask: '####/##/##',
-                filter: {"#": RegExp(r'\d')},
-                type: MaskAutoCompletionType.lazy),
+                mask: '####/##/##', filter: {"#": RegExp(r'[0-9]')}),
             labelEditText: 'Fecha de Inicio Padecimiento',
             textController: fechaPadecimientoTextController,
             withShowOption: true,
@@ -60,8 +58,9 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
             numOfLines: 1,
             onChange: (value) {
               setState(() {
-                Valores.fechaPadecimientoActual = value;
+                fechaPadecimientoTextController.text = value;
               });
+
             },
           ),
           EditTextArea(

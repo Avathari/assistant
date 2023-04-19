@@ -96,57 +96,66 @@ class _EticosState extends State<Eticos> {
           },
           isSwitched: Valores.redesApoyo,
         ),
+        TittlePanel(textPanel: 'Redes de Apoyo'),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Switched(
-              tittle: 'Apoyo de Madre',
-              onChangeValue: (value) {
-                setState(
-                  () {
-                    Valores.apoyoMadre = value;
-                  },
-                );
-              },
-              isSwitched: Valores.apoyoMadre,
+            Expanded(
+              child: Switched(
+                tittle: 'Madre',
+                onChangeValue: (value) {
+                  setState(
+                    () {
+                      Valores.apoyoMadre = value;
+                    },
+                  );
+                },
+                isSwitched: Valores.apoyoMadre,
+              ),
             ),
-            Switched(
-              tittle: 'Apoyo de Padre',
-              onChangeValue: (value) {
-                setState(
-                  () {
-                    Valores.apoyoPadre = value;
-                  },
-                );
-              },
-              isSwitched: Valores.apoyoPadre,
+            Expanded(
+              child: Switched(
+                tittle: 'Padre',
+                onChangeValue: (value) {
+                  setState(
+                    () {
+                      Valores.apoyoPadre = value;
+                    },
+                  );
+                },
+                isSwitched: Valores.apoyoPadre,
+              ),
             ),
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Switched(
-              tittle: 'Apoyo de Hermanos',
-              onChangeValue: (value) {
-                setState(
-                  () {
-                    Valores.apoyoHermanos = value;
-                  },
-                );
-              },
-              isSwitched: Valores.apoyoHermanos,
+            Expanded(
+              child: Switched(
+                tittle: 'Hermanos',
+                onChangeValue: (value) {
+                  setState(
+                    () {
+                      Valores.apoyoHermanos = value;
+                    },
+                  );
+                },
+                isSwitched: Valores.apoyoHermanos,
+              ),
             ),
-            Switched(
-              tittle: 'Apoyo de Hijos',
-              onChangeValue: (value) {
-                setState(
-                  () {
-                    Valores.apoyoHijosMayores = value;
-                  },
-                );
-              },
-              isSwitched: Valores.apoyoHijosMayores,
+            Expanded(
+              child: Switched(
+                tittle: 'Hijos',
+                onChangeValue: (value) {
+                  setState(
+                    () {
+                      Valores.apoyoHijosMayores = value;
+                    },
+                  );
+                },
+                isSwitched: Valores.apoyoHijosMayores,
+              ),
             ),
           ],
         ),

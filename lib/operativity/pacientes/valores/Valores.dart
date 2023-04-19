@@ -466,6 +466,7 @@ class Valores {
   static bool? isCateterPeriferico = false,
       isCateterLargoPeriferico = false,
       isCateterVenosoCentral = false,
+      isCateterHemodialisis = false,
       isSondaFoley = false,
       isDrenajePenrose = false,
       isSondaNasogastrica = false,
@@ -876,7 +877,7 @@ class Valores {
     Valores.fechaIngresoHospitalario = json['Feca_INI_Hosp'] ?? '';
     Hospitalizaciones.Hospitalizacion['Feca_INI_Hosp'] =
         Valores.fechaIngresoHospitalario;
-    Valores.numeroCama = json['Id_Cama'] ?? 0;
+    Valores.numeroCama = json['Id_Cama'] ?? 'N/A';
     Hospitalizaciones.Hospitalizacion['Id_Cama'] = Valores.numeroCama;
     Valores.medicoTratante = json['Medi_Trat'] ?? '';
     Hospitalizaciones.Hospitalizacion['Medi_Trat'] = Valores.medicoTratante;

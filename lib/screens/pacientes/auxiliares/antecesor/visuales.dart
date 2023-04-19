@@ -98,6 +98,13 @@ class _VisualPacientesState extends State<VisualPacientes> {
                             'Archivo ${Pacientes.localPath} Re-Creado $value');
                     Navigator.of(context).pop();
                   }
+                }).onError((error, stackTrace) {
+                  Terminal.printAlert(
+                      message: "ERROR - toVisual : : $error");
+                  Operadores.alertActivity(
+                      message: "ERROR - toVisual : : $error",
+                      context: context,
+                      tittle: 'Error al Inicial Visual');
                 });
               },
             ),

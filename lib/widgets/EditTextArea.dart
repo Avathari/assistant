@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class EditTextArea extends StatefulWidget {
-
   String? labelEditText;
   MaskTextInputFormatter inputFormat;
   TextInputType keyBoardType;
@@ -28,27 +27,25 @@ class EditTextArea extends StatefulWidget {
 
   int? limitOfChars;
 
-  EditTextArea(
-      {Key? key,
-      this.labelEditText,
-      required this.textController,
-      required this.keyBoardType,
-      required this.inputFormat,
-      this.obscureText = false,
-      this.prefixIcon = false,
-      this.isObscure = false,
-      this.fontSize = 12,
-      this.numOfLines = 15,
-        this.limitOfChars = 0,
-      this.selection = false,
-      this.onSelected,
-      this.onChange,
-      this.withShowOption = false,
-      this.iconData,
-      this.iconColor = Colors.white,
-
-      })
-      : super(key: key) {
+  EditTextArea({
+    Key? key,
+    this.labelEditText,
+    required this.textController,
+    required this.keyBoardType,
+    required this.inputFormat,
+    this.obscureText = false,
+    this.prefixIcon = false,
+    this.isObscure = false,
+    this.fontSize = 12,
+    this.numOfLines = 15,
+    this.limitOfChars = 0,
+    this.selection = false,
+    this.onSelected,
+    this.onChange,
+    this.withShowOption = false,
+    this.iconData,
+    this.iconColor = Colors.white,
+  }) : super(key: key) {
     // inputFormat = MaskTextInputFormatter();
     // keyBoardType = TextInputType.multiline;
     // obscureText = false;
@@ -70,8 +67,9 @@ class _EditTextAreaState extends State<EditTextArea> {
           Expanded(
             flex: 9,
             child: TextField(
-              maxLength: widget.limitOfChars == 0? null : widget.limitOfChars,
-              inputFormatters: [widget.inputFormat,
+              maxLength: widget.limitOfChars == 0 ? null : widget.limitOfChars,
+              inputFormatters: [
+                widget.inputFormat,
               ],
               controller: widget.textController,
               autofocus: false,

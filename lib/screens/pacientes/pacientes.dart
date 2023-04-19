@@ -173,30 +173,39 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                   padding: const EdgeInsets.all(2.0),
                                   child: GestureDetector(
                                     onTap: () {
-                                      Pacientes.ID_Paciente =
-                                          snapshot.data[posicion]['ID_Pace'];
-                                      Pacientes.Paciente =
-                                          snapshot.data[posicion];
-                                      setState(() {
-                                        Pacientes.fromJson(
-                                            snapshot.data[posicion]);
-                                      });
-                                      Terminal.printNotice(
-                                        message:
-                                            "Nombre conformado ${Pacientes.nombreCompleto}",
-                                      );
-                                      // Consulta de Antecedentes No Patológicos **** ***** ******* ****
-                                      Eticos.consultarRegistro();
-                                      Viviendas.consultarRegistro();
-                                      Higienes.consultarRegistro();
-                                      Diarios.consultarRegistro();
-                                      Alimenticios.consultarRegistro();
-                                      Limitaciones.consultarRegistro();
-                                      Sustancias.consultarRegistro();
+                                      try {
+                                        Pacientes.ID_Paciente =
+                                            snapshot.data[posicion]['ID_Pace'];
+                                        Pacientes.Paciente =
+                                            snapshot.data[posicion];
+                                        setState(() {
+                                          Pacientes.fromJson(
+                                              snapshot.data[posicion]);
+                                        });
+                                        Terminal.printNotice(
+                                          message:
+                                              "Nombre conformado ${Pacientes.nombreCompleto}",
+                                        );
+                                        // Consulta de Antecedentes No Patológicos **** ***** ******* ****
+                                        Eticos.consultarRegistro();
+                                        Viviendas.consultarRegistro();
+                                        Higienes.consultarRegistro();
+                                        Diarios.consultarRegistro();
+                                        Alimenticios.consultarRegistro();
+                                        Limitaciones.consultarRegistro();
+                                        Sustancias.consultarRegistro();
 
-                                      Toxicomanias.consultarRegistro();
+                                        Toxicomanias.consultarRegistro();
 
-                                      toVisual(context, Constantes.Update);
+                                        toVisual(context, Constantes.Update);
+                                      } on Exception catch (e) {
+                                        Terminal.printAlert(
+                                            message: "ERROR - toVisual : : $e");
+                                        Operadores.alertActivity(
+                                            message: "ERROR - toVisual : : $e",
+                                            context: context,
+                                            tittle: 'Error al Inicial Visual');
+                                      }
                                     },
                                     child: Card(
                                       color:
@@ -577,8 +586,9 @@ class OperacionesPacientes extends StatefulWidget {
 class _OperacionesPacientesState extends State<OperacionesPacientes> {
   @override
   void initState() {
-    Terminal.printExpected(message: "Actividad : : ${widget.operationActivity}");
-    
+    Terminal.printExpected(
+        message: "Actividad : : ${widget.operationActivity}");
+
     switch (widget.operationActivity) {
       case Constantes.Nulo:
         break;
@@ -725,8 +735,12 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
             type: MaskAutoCompletionType.lazy),
       ),
       editText(false, 'Agregado médico', agregadoPacienteTextController, false),
-      EditTextArea(labelEditText: 'Primer nombre del paciente' , numOfLines: 1,
-          textController: firstNamePaciente, keyBoardType: TextInputType.text, inputFormat: MaskTextInputFormatter()),
+      EditTextArea(
+          labelEditText: 'Primer nombre del paciente',
+          numOfLines: 1,
+          textController: firstNamePaciente,
+          keyBoardType: TextInputType.text,
+          inputFormat: MaskTextInputFormatter()),
       editText(false, 'Segundo nombre del paciente', secondNameTextController,
           false),
       editText(false, 'Apellido Paterno', apellidoPaternoTextController, false),
@@ -827,7 +841,6 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
         fontSize: 16,
         labelEditText: 'Fecha de Nacimiento',
         textController: nacimientoTextController,
-        prefixIcon: false,
         onChange: (value) {
           setState(() {
             edadTextController.text =
@@ -1323,6 +1336,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
 
   void operationMethod(BuildContext context) {
     try {
+      Operadores.loadingActivity(context: context, tittle: "Registro de información",message: "Registrando datos . . . ");
       listOfValues = [
         idOperation,
         numeroPacienteTextController.text.trim(),
@@ -1376,7 +1390,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           listOfValues!.removeLast();
 
           Actividades.registrar(Databases.siteground_database_regpace,
-              registerQuery, listOfValues!)
+                  registerQuery, listOfValues!)
               .then((value) {
             // Registro de Antecedentes No Patológicos ******** ******** ********
             Eticos.registrarRegistro(); // Si

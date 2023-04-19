@@ -1126,9 +1126,18 @@ class Pacientes {
     );
     //
     Terminal.printWarning(message: 'Iniciando búsqueda en Valores . . . ');
-    var response = await Valores().load(); // print("response $response");
-    //
-    return response;
+    try {
+      var response = await Valores().load();
+      return response;
+    } on Exception catch (error) {
+      Terminal.printAlert(
+          message: "ERROR - Valores : : $error");
+      Operadores.alertActivity(
+          message: "ERROR - Valores : : $error",
+          context: context,
+          tittle: 'Error al Iniciar Valores . . . ');
+    }
+    return false;
   }
 }
 
@@ -6865,6 +6874,7 @@ class Situaciones {
         Dicotomicos.fromBoolean(Valores.isCateterPeriferico!, toInt: true),
         Dicotomicos.fromBoolean(Valores.isCateterLargoPeriferico!, toInt: true),
         Dicotomicos.fromBoolean(Valores.isCateterVenosoCentral!, toInt: true),
+        Dicotomicos.fromBoolean(Valores.isCateterHemodialisis!, toInt: true),
         Dicotomicos.fromBoolean(Valores.isSondaFoley!, toInt: true),
         Dicotomicos.fromBoolean(Valores.isSondaNasogastrica!, toInt: true),
         Dicotomicos.fromBoolean(Valores.isSondaOrogastrica!, toInt: true),
@@ -6890,6 +6900,7 @@ class Situaciones {
         Pacientes.ID_Hospitalizacion,
         'Hosp_Siti',
         Valores.dispositivoOxigeno,
+        false,
         false,
         false,
         false,
@@ -6933,6 +6944,7 @@ class Situaciones {
                     CVP tinyint(1) NOT NULL,
                     CVLP tinyint(1) NOT NULL,
                     CVC tinyint(1) NOT NULL,
+                    MAH tinyint(1) NOT NULL,
                     S_Foley tinyint(1) NOT NULL,
                     SNG tinyint(1) NOT NULL,
                     SOG tinyint(1) NOT NULL,
@@ -6957,14 +6969,14 @@ class Situaciones {
         "SELECT * FROM siti_pace WHERE ID_Pace = ? ORDER BY ID_Hosp DESC",
     "consultByName": "SELECT * FROM siti_pace WHERE Pace_APP_DEG LIKE '%",
     "registerQuery": "INSERT INTO siti_pace (ID_Pace, ID_Hosp, "
-        "Hosp_Siti, Disp_Oxigen, CVP, CVLP, CVC, "
+        "Hosp_Siti, Disp_Oxigen, CVP, CVLP, CVC, MAH, "
         "S_Foley, SNG, SOG, Drenaje, Pleuro_Vac, "
         "Colostomia, Gastrostomia, Dialisis_Peritoneal) "
-        "VALUES (?,?,?,?,?,?,?,?,?,?,"
+        "VALUES (?,?,?,?,?,?,?,?,?,?,?,"
         "?,?,?,?,?)",
     "updateQuery": "UPDATE siti_pace "
         "SET ID_Pace = ?, ID_Hosp = ?, Hosp_Siti = ?, "
-        "Disp_Oxigen = ?, CVP = ?, CVLP = ?, CVC = ?, S_Foley = ?, "
+        "Disp_Oxigen = ?, CVP = ?, CVLP = ?, CVC = ?, MAH = ?, S_Foley = ?, "
         "SNG = ?, SOG = ?, Drenaje = ?, Pleuro_Vac = ?, Colostomia = ?, "
         "Gastrostomia = ?, Dialisis_Peritoneal = ? "
         "WHERE ID_Hosp = ?",
