@@ -45,13 +45,15 @@ class _ThreeLabelTextAlineState extends State<ThreeLabelTextAline> {
                 fontWeight: FontWeight.bold,
               )),
           Text(
-            widget.secondText!,
-            style: const TextStyle(
-              fontSize: 12,
+            widget.firstText == '' ?
+            widget.secondText!.toUpperCase() : widget.secondText!,
+            style: TextStyle(
+              fontSize: widget.firstText == '' ? 13 : 12,
               color: Colors.grey,
               overflow: TextOverflow.fade,
               fontWeight: FontWeight.normal,
             ),
+            overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.left,
           ),
           Text(widget.thirdText!,

@@ -97,7 +97,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                     : isTablet(context)
                                         ? 100
                                         : isMobile(context)
-                                            ? 100
+                                    ? 65
                                             : 300,
                                 tittle: 'R.A.S.S.',
                                 onChangeValue: (value) {
@@ -117,7 +117,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                     : isTablet(context)
                                         ? 100
                                         : isMobile(context)
-                                            ? 100
+                                    ? 65
                                             : 300,
                                 tittle: 'Ramsay',
                                 onChangeValue: (value) {
@@ -138,7 +138,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                               : isTablet(context)
                                   ? 250
                                   : isMobile(context)
-                                      ? 100
+                              ? 216
                                       : 300,
                           tittle: 'Sedo-analgesia',
                           onChangeValue: (value) {
@@ -161,7 +161,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                     : isTablet(context)
                                     ? 100
                                     : isMobile(context)
-                                    ? 100
+                                    ? 65
                                     : 300,
                                 tittle: 'Asworth',
                                 onChangeValue: (value) {
@@ -181,7 +181,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                     : isTablet(context)
                                     ? 100
                                     : isMobile(context)
-                                    ? 100
+                                    ? 65
                                     : 300,
                                 tittle: 'Daniels',
                                 onChangeValue: (value) {
@@ -205,7 +205,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                     : isTablet(context)
                                     ? 100
                                     : isMobile(context)
-                                    ? 100
+                                    ? 65
                                     : 300,
                                 tittle: 'Siedel',
                                 onChangeValue: (value) {
@@ -225,7 +225,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                     : isTablet(context)
                                     ? 100
                                     : isMobile(context)
-                                    ? 100
+                                    ? 65
                                     : 300,
                                 tittle: 'M.R.C.',
                                 onChangeValue: (value) {
@@ -255,7 +255,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                               : isTablet(context)
                               ? 200
                               : isMobile(context)
-                              ? 100
+                              ? 216
                               : 300,
                           tittle: 'Fase ventilatoria',
                           onChangeValue: (value) {
@@ -273,7 +273,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                               : isTablet(context)
                               ? 350
                               : isMobile(context)
-                              ? 100
+                              ? 216
                               : 300,
                           tittle: 'Dispositivo empleado',
                           onChangeValue: (value) {
@@ -291,7 +291,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                               : isTablet(context)
                               ? 200
                               : isMobile(context)
-                              ? 100
+                              ? 216
                               : 300,
                           tittle: 'Tubo Endotraqueal',
                           onChangeValue: (value) {
@@ -309,7 +309,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                               : isTablet(context)
                               ? 200
                               : isMobile(context)
-                              ? 100
+                              ? 216
                               : 300,
                           tittle: 'Distancia a arcada',
                           onChangeValue: (value) {
@@ -336,7 +336,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                               : isTablet(context)
                               ? 200
                               : isMobile(context)
-                              ? 100
+                              ? 216
                               : 300,
                           tittle: 'Riesgo por úlcera',
                           onChangeValue: (value) {
@@ -354,7 +354,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                               : isTablet(context)
                               ? 200
                               : isMobile(context)
-                              ? 100
+                              ? 216
                               : 300,
                           tittle: 'Riesgo por Inmovilidad',
                           onChangeValue: (value) {
@@ -372,7 +372,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                               : isTablet(context)
                               ? 500
                               : isMobile(context)
-                              ? 100
+                              ? 216
                               : 300,
                           tittle: 'Antibioticoterapia',
                           onChangeValue: (value) {
@@ -398,7 +398,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                               : isTablet(context)
                               ? 250
                               : isMobile(context)
-                              ? 100
+                              ? 216
                               : 300,
                           tittle: 'Apoyo Aminérgico',
                           onChangeValue: (value) {
@@ -416,7 +416,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                               : isTablet(context)
                               ? 200
                               : isMobile(context)
-                              ? 100
+                              ? 216
                               : 300,
                           tittle: 'Dieta Establecida',
                           onChangeValue: (value) {
@@ -434,7 +434,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                               : isTablet(context)
                               ? 200
                               : isMobile(context)
-                              ? 100
+                              ? 216
                               : 300,
                           tittle: 'Sonda Oro/Nasogástrica',
                           onChangeValue: (value) {
@@ -452,7 +452,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                               : isTablet(context)
                               ? 200
                               : isMobile(context)
-                              ? 100
+                              ? 216
                               : 300,
                           tittle: 'Sonda Foley',
                           onChangeValue: (value) {

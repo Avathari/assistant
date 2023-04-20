@@ -186,11 +186,17 @@ class _OperacionesHospitalizacionesState
   List<Widget> component(BuildContext context) {
     return [
       Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
-            child: ThreeLabelTextAline(
-                firstText: 'ID Hospitalización', secondText: idOperation.toString()),
-          ),
+              flex: 1,
+              child: CircleAvatar(
+                backgroundColor: Colors.grey,
+                radius: 50,
+                child: Text(
+                    idOperation.toString(),
+                    style: Styles.textSyleGrowth(fontSize: 18)),
+              )),
           Expanded(
             flex: 2,
             child: Spinner(
@@ -278,7 +284,7 @@ class _OperacionesHospitalizacionesState
           width: isTablet(context)
               ? 200
               : isMobile(context)
-                  ? 120
+                  ? 240
                   : 200,
           initialValue: servicioTratanteValue),
       Spinner(
@@ -292,7 +298,7 @@ class _OperacionesHospitalizacionesState
           width: isTablet(context)
               ? 200
               : isMobile(context)
-                  ? 120
+              ? 240
                   : 200,
           initialValue: servicioTratanteInicialValue),
       Spinner(
@@ -306,7 +312,7 @@ class _OperacionesHospitalizacionesState
           width: isTablet(context)
               ? 200
               : isMobile(context)
-                  ? 120
+              ? 240
                   : 200,
           initialValue: motivoEgresoValue),
       CrossLine(),
@@ -573,9 +579,10 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
                       if (snapshot.hasError) print(snapshot.error);
                       return snapshot.hasData
                           ? GridView.builder(
-                              gridDelegate: GridViewTools.gridDelegate(),
+                              gridDelegate: GridViewTools.gridDelegate(crossAxisCount: isMobile(context) ? 1 : 3,
+                               mainAxisExtent: isMobile(context) ? 200 : 250),
                               controller: gestionScrollController,
-                              shrinkWrap: true,
+                              shrinkWrap: false,
                               itemCount: snapshot.data == null
                                   ? 0
                                   : snapshot.data.length,

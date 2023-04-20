@@ -50,12 +50,12 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(2.0),
       child: Column(children: [
         Expanded(
           child: SingleChildScrollView(
             controller: ScrollController(),
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(2.0),
             scrollDirection: Axis.horizontal,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

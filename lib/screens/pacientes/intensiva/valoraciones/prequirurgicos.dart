@@ -1,12 +1,9 @@
-import 'dart:typed_data';
-
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
-import 'package:assistant/widgets/ShowText.dart';
 import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:carousel_slider/carousel_controller.dart';
@@ -107,7 +104,7 @@ class _PrequirurgicosState extends State<Prequirurgicos> {
                 child: Column(
                   children: [
                     Spinner(
-                      width: isDesktop(context) ? 400 : 100,
+                      width: isDesktop(context) ? 400 : isMobile(context) ? 216 : 100,
                       tittle: 'Antecedente de Infarto',
                       onChangeValue: (value) {
                         setState(() {
@@ -119,7 +116,7 @@ class _PrequirurgicosState extends State<Prequirurgicos> {
                       initialValue: Valores.antecedenteInfarto,
                     ),
                     Spinner(
-                      width: isDesktop(context) ? 400 : 100,
+                      width: isDesktop(context) ? 400 : isMobile(context) ? 216 : 100,
                       tittle: 'Ritmo Sinusal',
                       onChangeValue: (value) {
                         setState(() {
@@ -131,7 +128,7 @@ class _PrequirurgicosState extends State<Prequirurgicos> {
                       initialValue: Valores.ritmoSinusal,
                     ),
                     Spinner(
-                      width: isDesktop(context) ? 400 : 100,
+                      width: isDesktop(context) ? 400 : isMobile(context) ? 216 : 100,
                       tittle: 'Extrasistoles Ventriculares',
                       onChangeValue: (value) {
                         setState(() {
@@ -143,7 +140,7 @@ class _PrequirurgicosState extends State<Prequirurgicos> {
                       initialValue: Valores.extrasistolesVentriculares,
                     ),
                     Spinner(
-                      width: isDesktop(context) ? 400 : 100,
+                      width: isDesktop(context) ? 400 : isMobile(context) ? 216 : 100,
                       tittle: 'Ingurgitación Yugular',
                       onChangeValue: (value) {
                         setState(() {
@@ -155,7 +152,7 @@ class _PrequirurgicosState extends State<Prequirurgicos> {
                       initialValue: Valores.ingurgitacionYugular,
                     ),
                     Spinner(
-                      width: isDesktop(context) ? 400 : 100,
+                      width: isDesktop(context) ? 400 : isMobile(context) ? 216 : 100,
                       tittle: 'Estenosis Aórticaa',
                       onChangeValue: (value) {
                         setState(() {
@@ -167,7 +164,7 @@ class _PrequirurgicosState extends State<Prequirurgicos> {
                       initialValue: Valores.estenosisAortica,
                     ),
                     Spinner(
-                      width: isDesktop(context) ? 400 : 100,
+                      width: isDesktop(context) ? 400 : isMobile(context) ? 216 : 100,
                       tittle: 'Cirugía de Urgencia',
                       onChangeValue: (value) {
                         setState(() {
@@ -179,7 +176,7 @@ class _PrequirurgicosState extends State<Prequirurgicos> {
                       initialValue: Valores.cirugiaUrgencia,
                     ),
                     Spinner(
-                      width: isDesktop(context) ? 400 : 100,
+                      width: isDesktop(context) ? 400 : isMobile(context) ? 216 : 100,
                       tittle: 'Cirugía de Abdomen',
                       onChangeValue: (value) {
                         setState(() {
@@ -191,7 +188,7 @@ class _PrequirurgicosState extends State<Prequirurgicos> {
                       initialValue: Valores.cirugiaAbdomen,
                     ),
                     Spinner(
-                      width: isDesktop(context) ? 400 : 100,
+                      width: isDesktop(context) ? 400 : isMobile(context) ? 216 : 100,
                       tittle: 'Mal Estado Orgánico',
                       onChangeValue: (value) {
                         setState(() {
@@ -203,7 +200,7 @@ class _PrequirurgicosState extends State<Prequirurgicos> {
                       initialValue: Valores.malEstadoOrganico,
                     ),
                     Spinner(
-                      width: isDesktop(context) ? 400 : 100,
+                      width: isDesktop(context) ? 400 : isMobile(context) ? 216 : 100,
                       tittle: 'Angina < 3 meses',
                       onChangeValue: (value) {
                         setState(() {
@@ -215,7 +212,7 @@ class _PrequirurgicosState extends State<Prequirurgicos> {
                       initialValue: Valores.anginaEnMeses,
                     ),
                     Spinner(
-                      width: isDesktop(context) ? 400 : 100,
+                      width: isDesktop(context) ? 400 : isMobile(context) ? 216 : 100,
                       tittle: 'Edema Pulmonar < 1 mes',
                       onChangeValue: (value) {
                         setState(() {
@@ -227,7 +224,7 @@ class _PrequirurgicosState extends State<Prequirurgicos> {
                       initialValue: Valores.edemaPulmonar,
                     ),
                     Spinner(
-                      width: isDesktop(context) ? 400 : 100,
+                      width: isDesktop(context) ? 400 : isMobile(context) ? 216 : 100,
                       tittle: 'Edema Pulmonar Pasado',
                       onChangeValue: (value) {
                         setState(() {
@@ -239,7 +236,7 @@ class _PrequirurgicosState extends State<Prequirurgicos> {
                       initialValue: Valores.edemaPulmonarPasado,
                     ),
                     Spinner(
-                      width: isDesktop(context) ? 400 : 100,
+                      width: isDesktop(context) ? 400 : isMobile(context) ? 216 : 100,
                       tittle: 'SpO2 (%) Previa',
                       onChangeValue: (value) {
                         setState(() {
@@ -251,7 +248,7 @@ class _PrequirurgicosState extends State<Prequirurgicos> {
                       initialValue: Valores.saturacionPerifericaOrigeno,
                     ),
                     Spinner(
-                      width: isDesktop(context) ? 400 : 100,
+                      width: isDesktop(context) ? 400 : isMobile(context) ? 216 : 100,
                       tittle: 'Infección Respiratoria Previa',
                       onChangeValue: (value) {
                         setState(() {
@@ -263,7 +260,7 @@ class _PrequirurgicosState extends State<Prequirurgicos> {
                       initialValue: Valores.infeccionRespiratoria,
                     ),
                     Spinner(
-                      width: isDesktop(context) ? 400 : 100,
+                      width: isDesktop(context) ? 400 : isMobile(context) ? 216 : 100,
                       tittle: 'Hemoglobina menor a 10 g/dL',
                       onChangeValue: (value) {
                         setState(() {
@@ -275,7 +272,7 @@ class _PrequirurgicosState extends State<Prequirurgicos> {
                       initialValue: Valores.hemoglobinaInferior,
                     ),
                     Spinner(
-                      width: isDesktop(context) ? 400 : 100,
+                      width: isDesktop(context) ? 400 : isMobile(context) ? 216 : 100,
                       tittle: 'Tipo de Incisión',
                       onChangeValue: (value) {
                         setState(() {
@@ -287,7 +284,7 @@ class _PrequirurgicosState extends State<Prequirurgicos> {
                       initialValue: Valores.incisionTipo,
                     ),
                     Spinner(
-                      width: isDesktop(context) ? 400 : 100,
+                      width: isDesktop(context) ? 400 : isMobile(context) ? 216 : 100,
                       tittle: 'Duración en Horas',
                       onChangeValue: (value) {
                         setState(() {
@@ -306,7 +303,7 @@ class _PrequirurgicosState extends State<Prequirurgicos> {
                 child: Column(
                   children: [
                     Spinner(
-                      width: isDesktop(context) || isTablet(context) ? 400 : 100,
+                      width: isDesktop(context) || isTablet(context) ? 400 : 216,
                       tittle: 'Valoración A.S.A.',
                       onChangeValue: (value) {
                         setState(() {
@@ -343,7 +340,7 @@ class _PrequirurgicosState extends State<Prequirurgicos> {
                     ),
                     CrossLine(),
                     Spinner(
-                      width: isDesktop(context)  || isTablet(context) ? 400 : 100,
+                      width: isDesktop(context) || isTablet(context) ? 400 : 216,
                       tittle: 'Valoración Bromage',
                       onChangeValue: (value) {
                         setState(() {
@@ -354,7 +351,7 @@ class _PrequirurgicosState extends State<Prequirurgicos> {
                       initialValue: Valores.valoracionBromage,
                     ),
                     Spinner(
-                      width: isDesktop(context)  || isTablet(context) ? 400 : 100,
+                      width: isDesktop(context) || isTablet(context) ? 400 : 216,
                       tittle: 'Valoración N.Y.H.A.',
                       onChangeValue: (value) {
                         setState(() {

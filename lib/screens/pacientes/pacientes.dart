@@ -750,7 +750,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           initialValue: hemotipoValue,
           items: Items.Hemotipo,
           width: isMobile(context)
-              ? 230
+              ? 216
               : isTablet(context)
                   ? 140
                   : 200,
@@ -768,7 +768,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           tittle: "Unidad de Atención",
           initialValue: unidadMedicaValue,
           width: isMobile(context)
-              ? 230
+              ? 216
               : isTablet(context)
                   ? 170
                   : 200,
@@ -782,7 +782,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           tittle: "Hospital de Atención",
           initialValue: unidadMedicaValue,
           width: isMobile(context)
-              ? 230
+              ? 216
               : isTablet(context)
                   ? 170
                   : 200,
@@ -796,7 +796,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           tittle: "Turno de atención",
           initialValue: turnoValue,
           width: isMobile(context)
-              ? 230
+              ? 216
               : isTablet(context)
                   ? 170
                   : 200,
@@ -811,7 +811,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           initialValue: atencionValue,
           items: Pacientes.Atencion,
           width: isMobile(context)
-              ? 230
+              ? 216
               : isTablet(context)
                   ? 170
                   : 200,
@@ -853,7 +853,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           tittle: "Sexo",
           initialValue: sessoValue,
           width: isMobile(context)
-              ? 230
+              ? 216
               : isTablet(context)
                   ? 170
                   : 200,
@@ -881,7 +881,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           tittle: "¿Vive?",
           initialValue: vivoValue,
           width: isMobile(context)
-              ? 230
+              ? 216
               : isTablet(context)
                   ? 170
                   : 200,
@@ -896,7 +896,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           tittle: "Estado civil",
           initialValue: estadoCivilValue,
           width: isMobile(context)
-              ? 230
+              ? 216
               : isTablet(context)
                   ? 170
                   : 200,
@@ -931,7 +931,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
       Spinner(
           tittle: "Escolaridad",
           width: isMobile(context)
-              ? 230
+              ? 216
               : isTablet(context)
                   ? 170
                   : 200,
@@ -946,7 +946,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           tittle: "Escolaridad completud",
           initialValue: escolaridadCompletudValue,
           width: isMobile(context)
-              ? 230
+              ? 216
               : isTablet(context)
                   ? 160
                   : 200,
@@ -984,7 +984,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           tittle: "Entidad federativa",
           initialValue: entidadFederativaValue,
           width: isMobile(context)
-              ? 230
+              ? 216
               : isTablet(context)
                   ? 170
                   : 200,
@@ -1003,7 +1003,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           tittle: "Indigena (Si/No)",
           initialValue: indigenaValue,
           width: isMobile(context)
-              ? 230
+              ? 216
               : isTablet(context)
                   ? 170
                   : 200,
@@ -1017,7 +1017,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           tittle: "Hablante Indígena",
           initialValue: indigenaHablanteValue,
           width: isMobile(context)
-              ? 230
+              ? 216
               : isTablet(context)
                   ? 170
                   : 200,

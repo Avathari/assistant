@@ -199,7 +199,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
         Expanded(
             flex: 4,
             child: Container(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(5.0),
+              margin: const EdgeInsets.all(7.0),
               decoration: ContainerDecoration.roundedDecoration(),
               child: pantallasReportesMedicos(widget.actualPage),
             )),
@@ -256,7 +257,37 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                 : Container(),
             Expanded(
               flex: isTablet(context) ? 7 : 2,
-              child: Column(
+              child: isMobile(context) ? Row(
+                children: [
+                  Expanded(
+                    child: GrandButton(
+                      weigth: 2000,
+                      labelButton: "Tipo de Nota Médica",
+                      onPress: () {
+                        setState(() {
+                          widget.actualPage = 19;
+                        });
+                      },
+                    ),
+                    //     child: Container(
+                    //   decoration: ContainerDecoration.roundedDecoration(),
+                    //   child: TittlePanel(
+                    //       padding: isTablet(context) ? 4 : 2,
+                    //       textPanel: "Tipo de Nota Médica"),
+                    // ),
+                  ),
+                  Expanded(
+                      flex: 2,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        controller: ScrollController(),
+                        child: Column(
+                          children: tiposReportes(),
+                        ),
+                      )),
+                ],
+              )
+                  :Column(
                 children: [
                   Expanded(
                     child: GrandButton(
@@ -336,7 +367,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
         child: Row(
           children: [
             Expanded(
-              flex: 3,
+              flex: isMobile(context) ? 2 : 3,
               child: SingleChildScrollView(
                   controller: ScrollController(),
                   scrollDirection: Axis.vertical,

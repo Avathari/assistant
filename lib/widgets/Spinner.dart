@@ -53,30 +53,32 @@ class _SpinnerState extends State<Spinner> {
     );
   }
 
-  Column columnView() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Text("${widget.tittle}:", style: const TextStyle(color: Colors.white)),
-        DropdownButton(
-          value: widget.initialValue,
-          icon: const Icon(Icons.arrow_drop_down),
-          iconSize: 30,
-          elevation: 8,
-          dropdownColor: Colores.backgroundWidget,
-          style: const TextStyle(
-              color: Colors.white, overflow: TextOverflow.ellipsis),
-          onChanged: (String? newValue) {
-            widget.onChangeValue!(newValue);
-          },
-          items: widget.items?.map<DropdownMenuItem<String>>((String val) {
-            return DropdownMenuItem<String>(
-              value: val,
-              child: SizedBox(width: widget.width, child: Text(val)),
-            );
-          }).toList(),
-        ),
-      ],
+  GestureDetector columnView() {
+    return GestureDetector(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Text("${widget.tittle}:", style: const TextStyle(color: Colors.white)),
+          DropdownButton(
+            value: widget.initialValue,
+            icon: const Icon(Icons.arrow_drop_down),
+            iconSize: 30,
+            elevation: 8,
+            dropdownColor: Colores.backgroundWidget,
+            style: const TextStyle(
+                color: Colors.white, overflow: TextOverflow.ellipsis),
+            onChanged: (String? newValue) {
+              widget.onChangeValue!(newValue);
+            },
+            items: widget.items?.map<DropdownMenuItem<String>>((String val) {
+              return DropdownMenuItem<String>(
+                value: val,
+                child: SizedBox(width: widget.width, child: Text(val)),
+              );
+            }).toList(),
+          ),
+        ],
+      ),
     );
   }
 

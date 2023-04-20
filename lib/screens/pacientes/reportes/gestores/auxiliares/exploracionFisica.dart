@@ -6,6 +6,7 @@ import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
+import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
@@ -45,25 +46,42 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
           child: Column(
         children: [
           widget.isTerapia!
-              ? Expanded(
-                  flex: 1,
-                  child: GrandButton(
-                    labelButton: "Valores",
-                    onPress: () {
-                      Operadores.openDialog(
-                          context: context,
-                          chyldrim: const TerapiasItems(),
-                          onAction: () {
+              ? Row(
+                children: [
+                  Expanded(
+                      flex: 1,
+                      child: GrandButton(
+                        labelButton: "Valores",
+                        onPress: () {
+                          if (!isMobile(context)) {
+                            Operadores.openDialog(
+                                context: context,
+                                chyldrim: const TerapiasItems(),
+                                onAction: () {
+                                  setState(() {
+                                    expoTextController.text =
+                                        Reportes.exploracionFisica;
+                                    Reportes.reportes['Exploracion_Fisica'] =
+                                        Reportes.exploracionFisica;
+                                  });
+                                });
+                          } else {
                             setState(() {
                               expoTextController.text =
                                   Reportes.exploracionFisica;
                               Reportes.reportes['Exploracion_Fisica'] =
                                   Reportes.exploracionFisica;
                             });
-                          });
-                    },
-                  ),
-                )
+                          }
+                        },
+                      ),
+                    ),
+                  Expanded(child: GrandIcon(labelButton: 'Ver', iconData: Icons.view_in_ar, onPress: () {
+                    Operadores.notifyActivity(context: context, tittle: "Análisis de Terapia . . . ",
+                        message: expoTextController.text);
+                  },))
+                ],
+              )
               : Expanded(
                   flex: 2,
                   child: Row(
