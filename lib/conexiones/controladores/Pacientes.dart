@@ -1061,6 +1061,10 @@ class Pacientes {
 
   static void close() {
     Pacientes.ID_Paciente = 0;
+    Pacientes.ID_Hospitalizacion = 0;
+    Situaciones.ID_Situaciones = 0;
+    Expedientes.ID_Expedientes = 0;
+
     Pacientes.nombreCompleto = "";
     Pacientes.imagenPaciente = "";
 // ******* *** *******
@@ -6604,7 +6608,7 @@ class Diagnosticos {
     "showColumns": "SHOW columns FROM pace_dia",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_dia'",
-    "createQuery": """
+    "createQuery":  """
     CREATE TABLE `pace_dia` (
                   `ID_PACE_APP_DEG` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
                   `ID_Pace` int(11) NOT NULL,
@@ -6639,7 +6643,7 @@ class Diagnosticos {
         "Pace_APP_DEG_tra_SINO = ?,  Pace_APP_DEG_tra = ?,  Pace_APP_DEG_sus_SINO = ?,  "
         "Pace_APP_DEG_sus = ? "
         "WHERE ID_PACE_APP_DEG = ?",
-    "deleteQuery": "DELETE FROM pace_dia WHERE ID_pace_dia = ?",
+    "deleteQuery": "DELETE FROM pace_dia WHERE ID_PACE_APP_DEG = ?",
     "vitalesColumns": [
       "ID_Pace",
     ],
@@ -6849,6 +6853,8 @@ class Repositorios {
 }
 
 class Situaciones {
+  static int ID_Situaciones = 0;
+
   static Map<String, dynamic> Situacion = {};
 
   static List<String> actualDiagno = Opciones.horarios();
@@ -6859,6 +6865,7 @@ class Situaciones {
         .then((value) {
 // Enfermedades de base del paciente, asi como las Hospitalarias.
       Situacion = value;
+      Situaciones.ID_Situaciones = value['ID_Siti'] ?? 0;
     });
   }
 
@@ -6886,9 +6893,7 @@ class Situaciones {
         Pacientes.ID_Hospitalizacion,
       ],
       Pacientes.ID_Paciente,
-    ).then((value) {
-      // print(value)
-    });
+    ).whenComplete(() => Terminal.printAlert(message: 'Situación Hospitalaria Actualizada . . . '));
   }
 
   static void registrarRegistro() {
@@ -6913,13 +6918,14 @@ class Situaciones {
         false,
         false,
       ],
-    );
+    ).whenComplete(() => Terminal.printAlert(message: 'Situación Hospitalaria Registrada . . . '));
   }
 
   static void consultarRegistro() {
     Actividades.consultarAllById(Databases.siteground_database_reghosp,
             situacion['consultIdQuery'], Pacientes.ID_Paciente)
         .then((value) {
+          Situaciones.ID_Situaciones = value.last['ID_Siti'];
       // Enfermedades de base del paciente, asi como las Hospitalarias.
       // Pacientes.Situaciones = value;
     });
@@ -6966,7 +6972,7 @@ class Situaciones {
     "consultByIdPrimaryQuery": "SELECT * FROM siti_pace WHERE ID_Hosp = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM siti_pace",
     "consultLastQuery":
-        "SELECT * FROM siti_pace WHERE ID_Pace = ? ORDER BY ID_Hosp DESC",
+        "SELECT * FROM siti_pace WHERE ID_Pace = ? ORDER BY ID_Hosp ASC",
     "consultByName": "SELECT * FROM siti_pace WHERE Pace_APP_DEG LIKE '%",
     "registerQuery": "INSERT INTO siti_pace (ID_Pace, ID_Hosp, "
         "Hosp_Siti, Disp_Oxigen, CVP, CVLP, CVC, MAH, "
@@ -7001,16 +7007,19 @@ class Situaciones {
 }
 
 class Expedientes {
+  static int ID_Expedientes = 0;
+
   static Map<String, dynamic> Expediente = {};
 
   static List<String> actualDiagno = Opciones.horarios();
 
   static void ultimoRegistro() {
     Actividades.consultarId(Databases.siteground_database_reghosp,
-            Expediente['consultLastQuery'], Pacientes.ID_Paciente)
+        expedientes['consultLastQuery'], Pacientes.ID_Paciente)
         .then((value) {
 // Enfermedades de base del paciente, asi como las Hospitalarias.
       Expediente = value;
+      Expedientes.ID_Expedientes = value['ID_Expe'] ?? 0;
     });
   }
 
@@ -7051,15 +7060,15 @@ class Expedientes {
         false,
         false,
       ],
-    );
+    ).whenComplete(() => Terminal.printAlert(message: 'Expediente Hospitalario Registrado . . . '));
   }
 
   static void consultarRegistro() {
     Actividades.consultarAllById(Databases.siteground_database_reghosp,
-            expedientes['consultIdQuery'], Pacientes.ID_Paciente)
+            expedientes['consultLastQuery'], Pacientes.ID_Paciente)
         .then((value) {
       // Enfermedades de base del paciente, asi como las Hospitalarias.
-      // Pacientes.Expedientes = value;
+      Expedientes.ID_Expedientes = value.last['ID_Expe'];
     });
   }
 
@@ -7094,7 +7103,7 @@ class Expedientes {
     "consultByIdPrimaryQuery": "SELECT * FROM expe_pace WHERE ID_Hosp = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM expe_pace",
     "consultLastQuery":
-        "SELECT * FROM expe_pace WHERE ID_Pace = ? ORDER BY ID_Hosp DESC",
+        "SELECT * FROM expe_pace WHERE ID_Pace = ? ORDER BY ID_Hosp ASC",
     "consultByName": "SELECT * FROM expe_pace WHERE Pace_APP_DEG LIKE '%",
     "registerQuery": "INSERT INTO expe_pace (ID_Pace, ID_Hosp, "
         "POR, HIS, ING, EVA, VAL, CON, ORD) "

@@ -32,20 +32,23 @@ class _TittlePanelState extends State<TittlePanel> {
           shape: BoxShape.rectangle,
           borderRadius: const BorderRadius.all(Radius.circular(20))),
               // topRight: Radius.circular(20), topLeft: Radius.circular(20))),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // const SizedBox(height: 12.0),
-          Text(
-            widget.textPanel!,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: widget.colorText,
+      child: SingleChildScrollView(
+        controller: ScrollController(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // const SizedBox(height: 12.0),
+            Text(
+              widget.textPanel!,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: widget.colorText,
+              ),
             ),
-          ),
-          // SizedBox(height: widget.padding!),
-           CrossLine()
-        ],
+            // SizedBox(height: widget.padding!),
+             CrossLine()
+          ],
+        ),
       ),
     );
   }

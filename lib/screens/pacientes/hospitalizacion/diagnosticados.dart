@@ -5,11 +5,15 @@ import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/CircleSwitched.dart';
 import 'package:assistant/widgets/CrossLine.dart';
+import 'package:assistant/widgets/DialogSelector.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
+import 'package:assistant/widgets/SelectorArchivos.dart';
 import 'package:assistant/widgets/Spinner.dart';
+import 'package:assistant/widgets/Switched.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -64,6 +68,7 @@ class _OperacionesDiagnosticosState extends State<OperacionesDiagnosticos> {
         break;
       case Constantes.Register:
         widget._operationButton = 'Registrar';
+        ayoDiagoTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
 
         break;
       case Constantes.Update:
@@ -84,6 +89,9 @@ class _OperacionesDiagnosticosState extends State<OperacionesDiagnosticos> {
               Diagnosticos.Diagnostico['Pace_APP_DEG_com'];
           ayoDiagoTextController.text =
               Diagnosticos.Diagnostico['Pace_APP_DEG_dia'].toString();
+          //
+          // isTratamientoDiagoValue =
+          // Dicotomicos.fromBoolean(value) as String;
           //
           isTratamientoDiagoValue = Dicotomicos.fromInt(
                   Diagnosticos.Diagnostico['Pace_APP_DEG_tra_SINO'])
@@ -125,7 +133,7 @@ class _OperacionesDiagnosticosState extends State<OperacionesDiagnosticos> {
         child: Column(
           children: [
             Expanded(
-              flex: 9,
+              flex: 11,
               child: SingleChildScrollView(
                   controller: diagnosticosScroller,
                   padding: const EdgeInsets.all(10),
@@ -137,6 +145,7 @@ class _OperacionesDiagnosticosState extends State<OperacionesDiagnosticos> {
               height: 10,
             ),
             Expanded(
+              flex: 2,
               child: Container(
                 margin: const EdgeInsets.all(10),
                 decoration: ContainerDecoration.roundedDecoration(),
@@ -179,99 +188,143 @@ class _OperacionesDiagnosticosState extends State<OperacionesDiagnosticos> {
   // Actividades de la Intefaz *********************
   List<Widget> component(BuildContext context) {
     return [
-      Spinner(
-          tittle: "¿Diagnóstico actual?",
-          onChangeValue: (String value) {
-            setState(() {
-              isActualDiagoValue = value;
-            });
-          },
-          items: Dicotomicos.dicotomicos(),
-          initialValue: isActualDiagoValue),
       Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
-            flex: 2,
+            flex: isMobile(context) ? 2 : 1,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: CircleSwitched(
+                  tittle: "¿Diagnóstico actual?",
+                  onChangeValue: (value) {
+                    setState(() {
+                      isActualDiagoValue =
+                      Dicotomicos.fromBoolean(value) as String;
+                    });
+                  },
+                  isSwitched: Dicotomicos.fromString(isActualDiagoValue)),
+            ),
+          ),
+          Expanded(
+            flex: 5,
             child: EditTextArea(
               keyBoardType: TextInputType.text,
               inputFormat: MaskTextInputFormatter(),
-              numOfLines: 1,
+              numOfLines: 3,
               labelEditText: 'Diagnóstico (CIE)',
               textController: cieDiagnoTextController,
             ),
           ),
-          GrandIcon(
-            labelButton: "CIE-10",
-            weigth: 5,
-            onPress: () {
-              cieDialog();
-            },
+          Expanded(
+            child: GrandIcon(
+              labelButton: "CIE-10",
+              weigth: 5,
+              onPress: () {
+                Operadores.openDialog(
+                    context: context,
+                    chyldrim: DialogSelector(
+                      onSelected: ((value) {
+                        setState(() {
+                          Diagnosticos.selectedDiagnosis = value;
+                          cieDiagnoTextController.text =
+                              Diagnosticos.selectedDiagnosis;
+                        });
+                      }),
+                    ));
+              },
+            ),
           ),
         ],
       ),
       EditTextArea(
         keyBoardType: TextInputType.text,
         inputFormat: MaskTextInputFormatter(),
-        labelEditText: 'Comentario de diagnóstico',
+        labelEditText: 'Diagnóstico Complementario',
         textController: comenDiagnoTextController,
-        numOfLines: 1,
+        numOfLines: 5,
       ),
-      EditTextArea(
-        keyBoardType: TextInputType.number,
-        inputFormat: MaskTextInputFormatter(
-            mask: '##',
-            filter: {"#": RegExp(r'[0-9]')},
-            type: MaskAutoCompletionType.lazy),
-        labelEditText: 'Años de diagnóstico',
-        textController: ayoDiagoTextController,
-        numOfLines: 1,
+      Row(
+        children: [
+          Expanded(
+            child: EditTextArea(
+              keyBoardType: TextInputType.datetime,
+              inputFormat: MaskTextInputFormatter(
+                  mask: '####-##-##',
+                  filter: {"#": RegExp(r'[0-9]')},
+                  type: MaskAutoCompletionType.lazy),
+              labelEditText: 'Años de diagnóstico',
+              textController: ayoDiagoTextController,
+              numOfLines: 1,
+              withShowOption: true,
+              selection: true,
+              onSelected: (){
+                setState(() {
+                  ayoDiagoTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
+                });
+              },
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: EditTextArea(
+              keyBoardType: TextInputType.text,
+              inputFormat: MaskTextInputFormatter(),
+              labelEditText: 'Comentario del Diagnóstico',
+              textController: suspensionesTextController,
+              numOfLines: 3,
+            ),
+          ),
+        ],
       ),
       CrossLine(),
-      Spinner(
-          tittle: "¿Tratamiento actual?",
-          onChangeValue: (String value) {
-            setState(() {
-              isTratamientoDiagoValue = value;
-              if (value == Dicotomicos.dicotomicos()[0]) {
-                tratamientoTextController.text = "";
-              } else {
-                tratamientoTextController.text = "Sin tratamiento actual";
-              }
-            });
-          },
-          items: Dicotomicos.dicotomicos(),
-          initialValue: isTratamientoDiagoValue),
-      EditTextArea(
-        keyBoardType: TextInputType.text,
-        inputFormat: MaskTextInputFormatter(),
-        labelEditText: 'Comentario del tratamiento',
-        textController: tratamientoTextController,
-        numOfLines: 3,
+      Row(
+        children: [
+          Expanded(
+            flex: isMobile(context) ? 2 : 1,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: CircleSwitched(
+                  tittle: "¿Tratamiento actual?",
+                  onChangeValue: (value) {
+                    setState(() {
+                      print("value $value");
+                      isTratamientoDiagoValue =
+                      Dicotomicos.fromBoolean(value) as String;
+                    });
+                  },
+                  isSwitched: Dicotomicos.fromString(isTratamientoDiagoValue)),
+            ),
+          ),
+          // Expanded(
+          //   child: Switched(
+          //       tittle: "¿Tratamiento actual?",
+          //       onChangeValue: (value) {
+          //         setState(() {
+          //           isTratamientoDiagoValue = Dicotomicos.fromBoolean(value) as String;
+          //           if (isTratamientoDiagoValue == Dicotomicos.dicotomicos()[0]) {
+          //             tratamientoTextController.text = "";
+          //           } else {
+          //             tratamientoTextController.text = "Sin tratamiento actual";
+          //           }
+          //         });
+          //       },
+          //       isSwitched: Dicotomicos.fromString(isTratamientoDiagoValue)),
+          // ),
+          Expanded(
+            flex: 3,
+            child: EditTextArea(
+              keyBoardType: TextInputType.text,
+              inputFormat: MaskTextInputFormatter(),
+              labelEditText: 'Comentario del tratamiento',
+              textController: tratamientoTextController,
+              numOfLines: 3,
+            ),
+          ),
+        ],
       ),
       CrossLine(),
-      Spinner(
-          tittle: "¿Suspensión reciente?",
-          onChangeValue: (String value) {
-            setState(() {
-              isSuspendTratoValue = value;
-              if (value == Dicotomicos.dicotomicos()[0]) {
-                suspensionesTextController.text =
-                    "Con suspensiones en el tratamiento";
-              } else {
-                suspensionesTextController.text =
-                    "Sin suspensiones en el tratamiento";
-              }
-            });
-          },
-          items: Dicotomicos.dicotomicos(),
-          initialValue: isSuspendTratoValue),
-      EditTextArea(
-        keyBoardType: TextInputType.text,
-        inputFormat: MaskTextInputFormatter(),
-        labelEditText: 'Comentario de la suspensión',
-        textController: suspensionesTextController,
-        numOfLines: 3,
-      ),
+      //         isSuspendTratoValue = value;
     ];
   }
 
@@ -374,23 +427,6 @@ class _OperacionesDiagnosticosState extends State<OperacionesDiagnosticos> {
     }
   }
 
-  cieDialog() {
-    showDialog(
-        useSafeArea: true,
-        context: context,
-        builder: (context) {
-          return Dialog(
-              child: CieSelector(
-            keyMapSearch: 'Diagnostico_CIE',
-            onSelected: ((value) {
-              setState(() {
-                Diagnosticos.selectedDiagnosis = value;
-                cieDiagnoTextController.text = Diagnosticos.selectedDiagnosis;
-              });
-            }),
-          ));
-        });
-  }
 }
 
 class GestionDiagnosticos extends StatefulWidget {
@@ -514,10 +550,12 @@ class _GestionDiagnosticosState extends State<GestionDiagnosticos> {
                       if (snapshot.hasError) print(snapshot.error);
                       return snapshot.hasData
                           ? GridView.builder(
-                              gridDelegate: GridViewTools.gridDelegate(crossAxisCount: isMobile(context) ? 1 : 3,
-                              mainAxisExtent:  isMobile(context) ? 150 : 250),
+                              gridDelegate: GridViewTools.gridDelegate(
+                                  crossAxisCount: isMobile(context) ? 1 : 3,
+                                  mainAxisExtent:
+                                      isMobile(context) ? 150 : 250),
                               controller: gestionScrollController,
-                              shrinkWrap: isMobile(context) ? false: true,
+                              shrinkWrap: isMobile(context) ? false : true,
                               itemCount: snapshot.data == null
                                   ? 0
                                   : snapshot.data.length,
@@ -588,15 +626,15 @@ class _GestionDiagnosticosState extends State<GestionDiagnosticos> {
   }
 
   // Operaciones de la Interfaz ***** ******* ********** ****
-  Container itemListView(
+  GestureDetector itemListView(
       AsyncSnapshot snapshot, int posicion, BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10.0),
-      decoration: ContainerDecoration.roundedDecoration(),
-      child: GestureDetector(
-        onTap: () {
-          onSelected(snapshot, posicion, context, Constantes.Update);
-        },
+    return GestureDetector(
+      onTap: () {
+        onSelected(snapshot, posicion, context, Constantes.Update);
+      },
+      child: Container(
+        padding: const EdgeInsets.only(left: 8.0, right: 2.0, top: 8, bottom: 8),
+        decoration: ContainerDecoration.roundedDecoration(),
         child: Column(
           children: [
             Expanded(
@@ -617,7 +655,7 @@ class _GestionDiagnosticosState extends State<GestionDiagnosticos> {
                   Expanded(
                     flex: 4,
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.only(left: 8.0, right: 4.0, top: 8, bottom: 8),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -627,9 +665,10 @@ class _GestionDiagnosticosState extends State<GestionDiagnosticos> {
                             style: Styles.textSyleGrowth(fontSize: 18),
                             maxLines: 3,
                           ),
-                          Text("${snapshot.data[posicion]['Pace_APP_DEG_com']}",
-                              style: Styles.textSyleGrowth(fontSize: 14)),
                           CrossLine(),
+                          Text("${snapshot.data[posicion]['Pace_APP_DEG_com']}",
+                              maxLines: 4,
+                              style: Styles.textSyleGrowth(fontSize: 14)),
                         ],
                       ),
                     ),
@@ -658,20 +697,11 @@ class _GestionDiagnosticosState extends State<GestionDiagnosticos> {
                     color: Colors.grey,
                     icon: const Icon(Icons.delete),
                     onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return alertDialog(
-                              'Eliminar registro',
-                              '¿Esta seguro de querer eliminar el registro?',
-                              () {
-                                closeDialog(context);
-                              },
-                              () {
-                                deleteRegister(snapshot, posicion, context);
-                              },
-                            );
-                          });
+                      Operadores.alertActivity(context: context, tittle: 'Eliminar registro',
+                        message: '¿Esta seguro de querer eliminar el registro?', onAcept: () {
+                          Navigator.of(context).pop();
+                          deleteRegister(snapshot, posicion, context);
+                        },);
                     },
                   )
                 ],
@@ -698,23 +728,27 @@ class _GestionDiagnosticosState extends State<GestionDiagnosticos> {
 
   void deleteRegister(
       AsyncSnapshot<dynamic> snapshot, int posicion, BuildContext context) {
-      Actividades.eliminar(
-          Databases.siteground_database_reghosp,
-          Diagnosticos.diagnosticos['deleteQuery'],
-          snapshot.data[posicion]['ID_PACE_APP_DEG']).then((value) {
-        setState(() {
-          snapshot.data.removeAt(posicion);
-          Archivos.deleteFile(filePath: fileAssocieted).then((value) {
-            Operadores.alertActivity(context: context, tittle: "Eliminación de Registros",
-                message: "Registro eliminado",
-                onAcept: () {
-                  Navigator.of(context).pop();
-                });
-          });
+    Actividades.eliminar(
+            Databases.siteground_database_reghosp,
+            Diagnosticos.diagnosticos['deleteQuery'],
+            snapshot.data[posicion]['ID_PACE_APP_DEG'])
+        .then((value) {
+      setState(() {
+
+        snapshot.data.removeAt(posicion);
+        Archivos.deleteFile(filePath: fileAssocieted).then((value) {
+          Operadores.alertActivity(
+              context: context,
+              tittle: "Eliminación de Registros",
+              message: "Registro eliminado",
+              onAcept: () {
+                Navigator.of(context).pop();
+              });
         });
-      }).onError((error, stackTrace) {
-        Terminal.printAlert(message: "ERROR - Hubo un error : $error");
       });
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(message: "ERROR - Hubo un error : $error");
+    });
   }
 
   void toOperaciones(BuildContext context, String operationActivity) {
@@ -730,13 +764,13 @@ class _GestionDiagnosticosState extends State<GestionDiagnosticos> {
           context,
           PageRouteBuilder(
               pageBuilder: (a, b, c) => GestionDiagnosticos(
-                actualSidePage: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: OperacionesDiagnosticos(
-                    operationActivity: Constantes.operationsActividad,
+                    actualSidePage: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: OperacionesDiagnosticos(
+                        operationActivity: Constantes.operationsActividad,
+                      ),
+                    ),
                   ),
-                ),
-              ),
               transitionDuration: const Duration(seconds: 0)));
     }
   }

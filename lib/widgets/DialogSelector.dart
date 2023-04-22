@@ -76,14 +76,14 @@ class _DialogSelectorState extends State<DialogSelector> {
       if (enteredKeyword.length >= enteredKeyCount) {
         if (widget.typeOfDocument == 'json') {
           results = foundedItems!
-              .where((user) => user["Diagnostico_CIE"].contains(enteredKeyword))
+              .where((user) => user["Diagnostico_CIE"].contains(Sentences.capitalize(enteredKeyword)))
               .toList();
           setState(() {
             foundedItems = results;
           });
         } else {
           results = foundedItems!
-              .where((user) => user.contains(enteredKeyword))
+              .where((user) => user.contains(Sentences.capitalize(enteredKeyword)))
               .toList();
           setState(() {
             foundedItems = results;

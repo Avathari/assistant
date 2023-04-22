@@ -3,6 +3,8 @@ import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
+import 'package:assistant/screens/pacientes/hospitalizacion/expedientes.dart';
+import 'package:assistant/screens/pacientes/hospitalizacion/situacionesHospitalizacion.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
@@ -108,9 +110,10 @@ class _OperacionesHospitalizacionesState
           fechaRealizacionTextController.text =
               // Valores.fechaIngresoHospitalario!;
               Hospitalizaciones.Hospitalizacion['Feca_INI_Hosp'];
-          isNumCama = Hospitalizaciones.Hospitalizacion['Id_Cama'] ?? "N/A" ; // 1.toString()
-              //: // Valores.numeroCama.toString();
-              //Hospitalizaciones.Hospitalizacion['Id_Cama'].toString();
+          isNumCama = Hospitalizaciones.Hospitalizacion['Id_Cama'] ??
+              "N/A"; // 1.toString()
+          //: // Valores.numeroCama.toString();
+          //Hospitalizaciones.Hospitalizacion['Id_Cama'].toString();
 
           fechaIngresoTextController
                   .text = // Valores.fechaIngresoHospitalario!;
@@ -118,7 +121,7 @@ class _OperacionesHospitalizacionesState
           fechaEgresoTextController.text = // Valores.fechaEgresoHospitalario!;
               Hospitalizaciones.Hospitalizacion['Feca_EGE_Hosp'].toString();
           diasEstanciaTextController.text = Valores.diasEstancia.toString();
-              // Hospitalizaciones.Hospitalizacion['Dia_Estan'].toString();
+          // Hospitalizaciones.Hospitalizacion['Dia_Estan'].toString();
           medicoTratanteTextController.text = // Valores.medicoTratante!;
               Hospitalizaciones.Hospitalizacion['Medi_Trat'].toString();
 
@@ -193,8 +196,7 @@ class _OperacionesHospitalizacionesState
               child: CircleAvatar(
                 backgroundColor: Colors.grey,
                 radius: 50,
-                child: Text(
-                    idOperation.toString(),
+                child: Text(idOperation.toString(),
                     style: Styles.textSyleGrowth(fontSize: 18)),
               )),
           Expanded(
@@ -255,15 +257,76 @@ class _OperacionesHospitalizacionesState
       ),
       // CrossLine(),
       //
-      EditTextArea(
-        keyBoardType: TextInputType.number,
-        inputFormat: MaskTextInputFormatter(
-            mask: '####',
-            filter: {"#": RegExp(r'[0-9]')},
-            type: MaskAutoCompletionType.lazy),
-        labelEditText: 'Días de Estancia Intrahospitalaria',
-        textController: diasEstanciaTextController,
-        numOfLines: 1,
+      Row(
+        children: [
+          Expanded(
+            flex: 3,
+            child: EditTextArea(
+              keyBoardType: TextInputType.number,
+              inputFormat: MaskTextInputFormatter(
+                  mask: '####',
+                  filter: {"#": RegExp(r'[0-9]')},
+                  type: MaskAutoCompletionType.lazy),
+              labelEditText: 'Días de Estancia Intrahospitalaria',
+              textController: diasEstanciaTextController,
+              numOfLines: 1,
+            ),
+          ),
+          Expanded(
+              child: GestureDetector(
+            onDoubleTap: () {
+              Operadores.openActivity(
+                  context: context,
+                  chyldrim: const SituacionesHospitalizacion(),
+                  labelButton: 'Actualizar',
+                  onAction: () {
+                    Situaciones.actualizarRegistro();
+                  });
+            },
+            onLongPress: () => Situaciones.ID_Situaciones != 0
+                ? Future(() => Situaciones.registrarRegistro()).whenComplete(
+                    () => Operadores.notifyActivity(context: context))
+                : Operadores.notifyActivity(
+                    context: context,
+                    message: 'El registro ya está creado . . . '),
+            child: CircleAvatar(
+              backgroundColor: Colors.grey,
+              radius: 30,
+              child: Text(Situaciones.ID_Situaciones.toString(),
+                  style: Styles.textSyleGrowth(fontSize: 12)),
+            ),
+          )),
+          Expanded(
+              child: GestureDetector(
+            onTap: () {
+              Expedientes.consultarRegistro();
+              setState(() {});
+            },
+            onDoubleTap: () {
+              Operadores.openActivity(
+                  context: context,
+                  labelButton: 'Actualizar',
+                  chyldrim: const ExpedientesClinicos(),
+                  onAction: () {
+                    setState(() {
+                      Expedientes.actualizarRegistro();
+                    });
+                  });
+            },
+            onLongPress: () => Expedientes.ID_Expedientes != 0
+                ? Future(() => Expedientes.registrarRegistro()).whenComplete(
+                    () => Operadores.notifyActivity(context: context))
+                : Operadores.notifyActivity(
+                    context: context,
+                    message: 'El registro ya está creado . . . '),
+            child: CircleAvatar(
+              backgroundColor: Colors.grey,
+              radius: 30,
+              child: Text(Expedientes.ID_Expedientes.toString(),
+                  style: Styles.textSyleGrowth(fontSize: 12)),
+            ),
+          )),
+        ],
       ),
       EditTextArea(
         keyBoardType: TextInputType.text,
@@ -298,7 +361,7 @@ class _OperacionesHospitalizacionesState
           width: isTablet(context)
               ? 200
               : isMobile(context)
-              ? 240
+                  ? 240
                   : 200,
           initialValue: servicioTratanteInicialValue),
       Spinner(
@@ -312,7 +375,7 @@ class _OperacionesHospitalizacionesState
           width: isTablet(context)
               ? 200
               : isMobile(context)
-              ? 240
+                  ? 240
                   : 200,
           initialValue: motivoEgresoValue),
       CrossLine(),
@@ -366,7 +429,11 @@ class _OperacionesHospitalizacionesState
                     Pacientes.Hospitalizaciones = value;
                     Constantes.reinit(value: value);
                     // ******************************************** *** *
-                  }).then((value) => onClose(context)));
+                  }).then((value) {
+                    Repositorios.registrarRegistro();
+                    Situaciones.registrarRegistro();
+                    Expedientes.registrarRegistro();
+                  }).whenComplete(() => onClose(context)));
           break;
         case Constantes.Update:
           Actividades.actualizar(Databases.siteground_database_reghosp,
@@ -579,8 +646,10 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
                       if (snapshot.hasError) print(snapshot.error);
                       return snapshot.hasData
                           ? GridView.builder(
-                              gridDelegate: GridViewTools.gridDelegate(crossAxisCount: isMobile(context) ? 1 : 3,
-                               mainAxisExtent: isMobile(context) ? 200 : 250),
+                              gridDelegate: GridViewTools.gridDelegate(
+                                  crossAxisCount: isMobile(context) ? 1 : 3,
+                                  mainAxisExtent:
+                                      isMobile(context) ? 200 : 250),
                               controller: gestionScrollController,
                               shrinkWrap: false,
                               itemCount: snapshot.data == null

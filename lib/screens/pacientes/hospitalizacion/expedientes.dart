@@ -46,33 +46,28 @@ class _ExpedientesClinicosState
   }
 
   otherView() {
-    return SingleChildScrollView(
+    return Container(
       padding: const EdgeInsets.all(8.0),
-      controller: ScrollController(),
       child: Column(
         children: [
           TittlePanel(textPanel: 'Cumplimiento del Expediente Clínico'),
           CrossLine(),
-          Row(
-            children: [
-              Switched(
-                  tittle: 'Hoja Frontal',
-                  onChangeValue: (value) {
-                    setState(() {
-                      Valores.isPortada = value;
-                    });
-                  },
-                  isSwitched: Valores.isPortada),
-              Switched(
-                tittle: 'Historia Clínica',
-                onChangeValue: (value) {
-                  setState(() {
-                    Valores.isHistoriaClinica = value;
-                  });
-                },
-                isSwitched: Valores.isHistoriaClinica,
-              ),
-            ],
+          Switched(
+              tittle: 'Hoja Frontal',
+              onChangeValue: (value) {
+                setState(() {
+                  Valores.isPortada = value;
+                });
+              },
+              isSwitched: Valores.isPortada),
+          Switched(
+            tittle: 'Historia Clínica',
+            onChangeValue: (value) {
+              setState(() {
+                Valores.isHistoriaClinica = value;
+              });
+            },
+            isSwitched: Valores.isHistoriaClinica,
           ),
           Switched(
               tittle: 'Nota de Ingreso',
@@ -83,27 +78,23 @@ class _ExpedientesClinicosState
               },
               isSwitched: Valores.isNotaIngreso),
           CrossLine(),
-          Row(
-            children: [
-              Switched(
-                  tittle: 'Consentimientos Informados',
-                  onChangeValue: (value) {
-                    setState(() {
-                      Valores.isConsentimientos = value;
+          Switched(
+              tittle: 'Consentimientos Informados',
+              onChangeValue: (value) {
+                setState(() {
+                  Valores.isConsentimientos = value;
 
-                    });
-                  },
-                  isSwitched: Valores.isConsentimientos),
-              Switched(
-                tittle: 'Valoración Vademecum',
-                onChangeValue: (value) {
-                  setState(() {
-                    Valores.isValoracionVademecum = value;
-                  });
-                },
-                isSwitched: Valores.isValoracionVademecum,
-              ),
-            ],
+                });
+              },
+              isSwitched: Valores.isConsentimientos),
+          Switched(
+            tittle: 'Valoración Vademecum',
+            onChangeValue: (value) {
+              setState(() {
+                Valores.isValoracionVademecum = value;
+              });
+            },
+            isSwitched: Valores.isValoracionVademecum,
           ),
           Switched(
               tittle: 'Evaluación Inicial',
@@ -115,18 +106,14 @@ class _ExpedientesClinicosState
               },
               isSwitched: Valores.isEvaluacionInicial),
           CrossLine(),
-          Row(
-            children: [
-              Switched(
-                  tittle: 'Expediente Ordenado',
-                  onChangeValue: (value) {
-                    setState(() {
-                      Valores.isOrdenado = value;
-                    });
-                  },
-                  isSwitched: Valores.isOrdenado),
-            ],
-          ),
+          Switched(
+              tittle: 'Expediente Ordenado',
+              onChangeValue: (value) {
+                setState(() {
+                  Valores.isOrdenado = value;
+                });
+              },
+              isSwitched: Valores.isOrdenado),
         ],
       ),
     );

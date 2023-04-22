@@ -46,10 +46,10 @@ class _ThreeLabelTextAlineState extends State<ThreeLabelTextAline> {
               )),
           Text(
             widget.firstText == '' ?
-            widget.secondText!.toUpperCase() : widget.secondText!,
+            widget.secondText! : widget.secondText!,
             style: TextStyle(
               fontSize: widget.firstText == '' ? 13 : 12,
-              color: Colors.grey,
+              color: widget.secondText! == '0000-00-00' ? Colors.red: Colors.grey,
               overflow: TextOverflow.fade,
               fontWeight: FontWeight.normal,
             ),

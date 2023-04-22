@@ -1,15 +1,18 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
-import 'package:assistant/screens/operadores/Cie.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
+import 'package:assistant/screens/pacientes/patologicos/auxiliares/antecedentes.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/CircleSwitched.dart';
 import 'package:assistant/widgets/CrossLine.dart';
+import 'package:assistant/widgets/DialogSelector.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/Spinner.dart';
+import 'package:assistant/widgets/Switched.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -29,28 +32,6 @@ class OperacionesPatologicos extends StatefulWidget {
 }
 
 class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
-  String appBarTitile = "Gestión de Patologicos";
-  String? consultIdQuery = Patologicos.patologicos['consultIdQuery'];
-  String? registerQuery = Patologicos.patologicos['registerQuery'];
-  String? updateQuery = Patologicos.patologicos['updateQuery'];
-
-  int idOperation = 0;
-
-  List<dynamic>? listOfValues;
-
-  var isActualDiagoValue = Patologicos.actualDiagno[0];
-  var cieDiagnoTextController = TextEditingController();
-  var comenDiagnoTextController = TextEditingController();
-  var ayoDiagoTextController = TextEditingController();
-  //
-  var isTratamientoDiagoValue = Patologicos.actualTratamiento[0];
-  var tratamientoTextController = TextEditingController();
-  var isSuspendTratoValue = Patologicos.actualSuspendido[0];
-  var suspensionesTextController = TextEditingController();
-
-  //
-  var patologicosScroller = ScrollController();
-
   @override
   void initState() {
     //
@@ -117,8 +98,8 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
                 },
               ))
           : null,
-      body: Card(
-        color: const Color.fromARGB(255, 61, 57, 57),
+      body: Container(
+        decoration: ContainerDecoration.roundedDecoration(),
         child: Column(
           children: [
             Expanded(
@@ -133,6 +114,7 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
               height: 10,
             ),
             GrandButton(
+                weigth: 2000,
                 labelButton: widget._operationButton,
                 onPress: () {
                   operationMethod(context);
@@ -166,33 +148,52 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
 
   List<Widget> component(BuildContext context) {
     return [
-      Spinner(
-          tittle: "¿Diagnóstico actual?",
-          onChangeValue: (String value) {
-            setState(() {
-              isActualDiagoValue = value;
-            });
-          },
-          items: Dicotomicos.dicotomicos(),
-          initialValue: isActualDiagoValue),
       Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
-            flex: 2,
+            flex: isMobile(context) ? 2 : 1,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: CircleSwitched(
+                  tittle: "¿Diagnóstico actual?",
+                  onChangeValue: (value) {
+                    setState(() {
+                      isActualDiagoValue =
+                          Dicotomicos.fromBoolean(value) as String;
+                    });
+                  },
+                  isSwitched: Dicotomicos.fromString(isActualDiagoValue)),
+            ),
+          ),
+          Expanded(
+            flex: 5,
             child: EditTextArea(
               keyBoardType: TextInputType.text,
               inputFormat: MaskTextInputFormatter(),
-              numOfLines: 1,
+              numOfLines: 3,
               labelEditText: 'Diagnóstico (CIE)',
               textController: cieDiagnoTextController,
             ),
           ),
-          GrandIcon(
-            labelButton: "CIE-10",
-            weigth: 5,
-            onPress: () {
-              cieDialog();
-            },
+          Expanded(
+            child: GrandIcon(
+              labelButton: "CIE-10",
+              weigth: 5,
+              onPress: () {
+                Operadores.openDialog(
+                    context: context,
+                    chyldrim: DialogSelector(
+                      onSelected: ((value) {
+                        setState(() {
+                          Diagnosticos.selectedDiagnosis = value;
+                          cieDiagnoTextController.text =
+                              Diagnosticos.selectedDiagnosis;
+                        });
+                      }),
+                    ));
+              },
+            ),
           ),
         ],
       ),
@@ -203,31 +204,40 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
         textController: comenDiagnoTextController,
         numOfLines: 1,
       ),
-      EditTextArea(
-        keyBoardType: TextInputType.number,
-        inputFormat: MaskTextInputFormatter(
-            mask: '##',
-            filter: {"#": RegExp(r'[0-9]')},
-            type: MaskAutoCompletionType.lazy),
-        labelEditText: 'Años de diagnóstico',
-        textController: ayoDiagoTextController,
-        numOfLines: 1,
+      Row(
+        children: [
+          Expanded(
+            child: EditTextArea(
+              keyBoardType: TextInputType.number,
+              inputFormat: MaskTextInputFormatter(
+                  mask: '##',
+                  filter: {"#": RegExp(r'[0-9]')},
+                  type: MaskAutoCompletionType.lazy),
+              labelEditText: 'Años de diagnóstico',
+              textController: ayoDiagoTextController,
+              numOfLines: 1,
+            ),
+          ),
+          Expanded(
+            flex: 4,
+            child: Spinner(
+                tittle: "¿Tratamiento actual?",
+                onChangeValue: (String value) {
+                  setState(() {
+                    isTratamientoDiagoValue = value;
+                    if (value == Dicotomicos.dicotomicos()[0]) {
+                      tratamientoTextController.text = "";
+                    } else {
+                      tratamientoTextController.text = "Sin tratamiento actual";
+                    }
+                  });
+                },
+                items: Dicotomicos.dicotomicos(),
+                initialValue: isTratamientoDiagoValue),
+          ),
+        ],
       ),
       CrossLine(),
-      Spinner(
-          tittle: "¿Tratamiento actual?",
-          onChangeValue: (String value) {
-            setState(() {
-              isTratamientoDiagoValue = value;
-              if (value == Dicotomicos.dicotomicos()[0]) {
-                tratamientoTextController.text = "";
-              } else {
-                tratamientoTextController.text = "Sin tratamiento actual";
-              }
-            });
-          },
-          items: Dicotomicos.dicotomicos(),
-          initialValue: isTratamientoDiagoValue),
       EditTextArea(
         keyBoardType: TextInputType.text,
         inputFormat: MaskTextInputFormatter(),
@@ -236,28 +246,63 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
         numOfLines: 3,
       ),
       CrossLine(),
-      Spinner(
-          tittle: "¿Suspensión reciente?",
-          onChangeValue: (String value) {
-            setState(() {
-              isSuspendTratoValue = value;
-              if (value == Dicotomicos.dicotomicos()[0]) {
-                suspensionesTextController.text =
-                    "Con suspensiones en el tratamiento";
-              } else {
-                suspensionesTextController.text =
-                    "Sin suspensiones en el tratamiento";
-              }
-            });
-          },
-          items: Dicotomicos.dicotomicos(),
-          initialValue: isSuspendTratoValue),
-      EditTextArea(
-        keyBoardType: TextInputType.text,
-        inputFormat: MaskTextInputFormatter(),
-        labelEditText: 'Comentario de la suspensión',
-        textController: suspensionesTextController,
-        numOfLines: 3,
+      Row(
+        children: [
+          Expanded(
+            flex: isMobile(context) ? 2 : 1,
+            child: CircleAvatar(
+              backgroundColor: Colors.grey,
+              radius: 40,
+              child: CircleAvatar(
+                backgroundColor: Colors.black,
+                radius: 30,
+                child: GrandIcon(
+                  onPress: () {
+                    Operadores.openDialog(
+                        context: context,
+                        chyldrim: Container(
+                          decoration: ContainerDecoration.roundedDecoration(),
+                          child: const Antecedentes()
+                        ),
+                        onAction: () {
+                          setState(() {
+                            suspensionesTextController.text = '';
+                          });
+                        });
+                  },
+                ),
+              ),
+            ),
+
+            // child: Spinner(
+            //   width: 20,
+            //     tittle: "¿Suspensión reciente?",
+            //     onChangeValue: (String value) {
+            //       setState(() {
+            //         isSuspendTratoValue = value;
+            //         if (value == Dicotomicos.dicotomicos()[0]) {
+            //           suspensionesTextController.text =
+            //               "Con suspensiones en el tratamiento";
+            //         } else {
+            //           suspensionesTextController.text =
+            //               "Sin suspensiones en el tratamiento";
+            //         }
+            //       });
+            //     },
+            //     items: Dicotomicos.dicotomicos(),
+            //     initialValue: isSuspendTratoValue),
+          ),
+          Expanded(
+            flex: 4,
+            child: EditTextArea(
+              keyBoardType: TextInputType.text,
+              inputFormat: MaskTextInputFormatter(),
+              labelEditText: 'Antecedentes del Diagnóstico',
+              textController: suspensionesTextController,
+              numOfLines: 6,
+            ),
+          ),
+        ],
       ),
     ];
   }
@@ -365,23 +410,28 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
     }
   }
 
-  cieDialog() {
-    showDialog(
-        useSafeArea: true,
-        context: context,
-        builder: (context) {
-          return Dialog(
-              child: CieSelector(
-            keyMapSearch: 'Diagnostico_CIE',
-            onSelected: ((value) {
-              setState(() {
-                Patologicos.selectedDiagnosis = value;
-                cieDiagnoTextController.text = Patologicos.selectedDiagnosis;
-              });
-            }),
-          ));
-        });
-  }
+  // VARIABLES DE LA INTERFAZ ******** ******* * * *  *
+  String appBarTitile = "Gestión de Patologicos";
+  String? consultIdQuery = Patologicos.patologicos['consultIdQuery'];
+  String? registerQuery = Patologicos.patologicos['registerQuery'];
+  String? updateQuery = Patologicos.patologicos['updateQuery'];
+
+  int idOperation = 0;
+
+  List<dynamic>? listOfValues;
+
+  var isActualDiagoValue = Patologicos.actualDiagno[0];
+  var cieDiagnoTextController = TextEditingController();
+  var comenDiagnoTextController = TextEditingController();
+  var ayoDiagoTextController = TextEditingController();
+  //
+  var isTratamientoDiagoValue = Patologicos.actualTratamiento[0];
+  var tratamientoTextController = TextEditingController();
+  var isSuspendTratoValue = Patologicos.actualSuspendido[0];
+  var suspensionesTextController = TextEditingController();
+
+  //
+  var patologicosScroller = ScrollController();
 }
 
 class GestionPatologicos extends StatefulWidget {
@@ -585,87 +635,95 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
         onTap: () {
           onSelected(snapshot, posicion, context, Constantes.Update);
         },
-        child: Card(
-          color: const Color.fromARGB(255, 54, 50, 50),
-          child: Container(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "ID : ${snapshot.data[posicion]['ID_PACE_APP_DEG'].toString()}",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                                fontSize: 12),
-                          ),
-                          Text(
-                            "${snapshot.data[posicion]['Pace_APP_DEG']}",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                                fontSize: 14),
-                          ),
-                          Text(
-                            "${snapshot.data[posicion]['Pace_APP_DEG_com']}",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                                fontSize: 14),
-                          ),
-                        ],
+        child: Container(
+          decoration: ContainerDecoration.roundedDecoration(),
+          padding: const EdgeInsets.only(left: 0, right: 10, bottom: 20, top: 20),
+          margin: const EdgeInsets.all(5.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(flex: 2, child: CircleAvatar(
+                    backgroundColor: Colors.grey,
+                    radius: 40,
+                    child: CircleAvatar(
+                      backgroundColor: Colors.black,
+                      radius: 30,
+                      child: Text(
+                        snapshot.data[posicion]['ID_PACE_APP_DEG'].toString(),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey,
+                            fontSize: 16),
                       ),
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                  ),),
+                  Expanded(
+                    flex: 5,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        IconButton(
-                          color: Colors.grey,
-                          icon: const Icon(Icons.update_rounded),
-                          onPressed: () {
-                            //
-                            onSelected(
-                                snapshot, posicion, context, Constantes.Update);
-                          },
+                        Text(
+                          "${snapshot.data[posicion]['Pace_APP_DEG']}",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey,
+                              fontSize: 14),
                         ),
-                        const SizedBox(
-                          width: 20,
+                        Text(
+                          "${snapshot.data[posicion]['Pace_APP_DEG_com']}",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey,
+                              fontSize: 14),
                         ),
-                        IconButton(
-                          color: Colors.grey,
-                          icon: const Icon(Icons.delete),
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return alertDialog(
-                                    'Eliminar registro',
-                                    '¿Esta seguro de querer eliminar el registro?',
-                                    () {
-                                      closeDialog(context);
-                                    },
-                                    () {
-                                      deleteRegister(
-                                          snapshot, posicion, context);
-                                      Navigator.of(context).pop();
-                                    },
-                                  );
-                                });
-                          },
-                        )
                       ],
-                    )
-                  ],
-                ),
-              ],
-            ),
+                    ),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        color: Colors.grey,
+                        icon: const Icon(Icons.update_rounded),
+                        onPressed: () {
+                          //
+                          onSelected(
+                              snapshot, posicion, context, Constantes.Update);
+                        },
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      IconButton(
+                        color: Colors.grey,
+                        icon: const Icon(Icons.delete),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return alertDialog(
+                                  'Eliminar registro',
+                                  '¿Esta seguro de querer eliminar el registro?',
+                                  () {
+                                    closeDialog(context);
+                                  },
+                                  () {
+                                    deleteRegister(snapshot, posicion, context);
+                                    Navigator.of(context).pop();
+                                  },
+                                );
+                              });
+                        },
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ],
           ),
         ),
       ),
@@ -687,23 +745,26 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
 
   void deleteRegister(
       AsyncSnapshot<dynamic> snapshot, int posicion, BuildContext context) {
-      Actividades.eliminar(
-          Databases.siteground_database_regpace,
-          Patologicos.patologicos['deleteQuery'],
-          snapshot.data[posicion]['ID_PACE_APP_DEG']).then((value) {
-        setState(() {
-          snapshot.data.removeAt(posicion);
-          Archivos.deleteFile(filePath: fileAssocieted).then((value) {
-            Operadores.alertActivity(context: context, tittle: "Eliminación de Registros",
-            message: "Registro eliminado",
-            onAcept: () {
-              Navigator.of(context).pop();
-            });
-          });
+    Actividades.eliminar(
+            Databases.siteground_database_regpace,
+            Patologicos.patologicos['deleteQuery'],
+            snapshot.data[posicion]['ID_PACE_APP_DEG'])
+        .then((value) {
+      setState(() {
+        snapshot.data.removeAt(posicion);
+        Archivos.deleteFile(filePath: fileAssocieted).then((value) {
+          Operadores.alertActivity(
+              context: context,
+              tittle: "Eliminación de Registros",
+              message: "Registro eliminado",
+              onAcept: () {
+                Navigator.of(context).pop();
+              });
         });
-      }).onError((error, stackTrace) {
-        Terminal.printAlert(message: "ERROR - Hubo un error : $error");
       });
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(message: "ERROR - Hubo un error : $error");
+    });
   }
 
   void toOperaciones(BuildContext context, String operationActivity) {
@@ -719,13 +780,13 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
           context,
           PageRouteBuilder(
               pageBuilder: (a, b, c) => GestionPatologicos(
-                actualSidePage: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: OperacionesPatologicos(
-                    operationActivity: Constantes.operationsActividad,
+                    actualSidePage: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: OperacionesPatologicos(
+                        operationActivity: Constantes.operationsActividad,
+                      ),
+                    ),
                   ),
-                ),
-              ),
               transitionDuration: const Duration(seconds: 0)));
     }
   }
