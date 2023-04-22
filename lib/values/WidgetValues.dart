@@ -114,7 +114,7 @@ class TextFormat {
 
 class SpinnersValues {
   static double mediumWidth({required BuildContext context}) {
-    return isTablet(context) ? 250 : isMobile(context) ? 240 : 300;
+    return isTablet(context) ? 250 : isMobile(context) ? 178 : 300;
   }
 
   static double minimunWidth({required BuildContext context}) {

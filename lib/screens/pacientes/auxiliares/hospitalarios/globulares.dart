@@ -1,5 +1,7 @@
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/DialogSelector.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
@@ -27,6 +29,15 @@ class _HemoderivadosState extends State<Hemoderivados> {
   @override
   void initState() {
     setState(() {
+      Archivos.readJsonToMap(filePath: "${Pacientes.localRepositoryPath}transfusiones.json").then((value) {
+        Valores.motivoTransfusion = value['Motivo_Transfusion'];
+        Valores.hemotipoAdmnistrado = value['Caducidad'];
+        Valores.fechaCaducidad = value['Hemotipo_Administrado'];
+        Valores.cantidadUnidades = value['Cantidad_Unidades'];
+        Valores.volumenAdministrado = value['Volumen_Administrado'];
+        Valores.numIdentificacion = value['No_Identificacion'];
+      }).onError((error, stackTrace) => null);
+
       motivoTextController.text = Valores.motivoTransfusion;
       hemotipoAdmnistradoTextController.text = Valores.hemotipoAdmnistrado;
       caducidadTextController.text = Valores.fechaCaducidad;
@@ -136,6 +147,18 @@ class _HemoderivadosState extends State<Hemoderivados> {
                 // Reportes.reportes['Cantidad_Unidades'] = "$value.";
               }),
               inputFormat: MaskTextInputFormatter()),
+          CrossLine(),
+          GrandButton(labelButton: 'Copiar en Portapapeles', onPress: () {
+            Archivos.createJsonFromMap([{
+              'Motivo_Transfusion': motivoTextController.text,
+              'Caducidad': caducidadTextController.text,
+              'Hemotipo_Administrado': hemotipoAdmnistradoTextController.text,
+              'Cantidad_Unidades': cantidadUnidadesTextController.text,
+              'Volumen_Administrado': volumenAdministradoTextController.text,
+              'No_Identificacion': numIdentificacionTextController.text,
+            }],  filePath:  "${Pacientes.localRepositoryPath}transfusiones.json");
+            Datos.portapapeles(context: context, text: Formatos.transfusiones);
+          }),
         ],
       ),
     );

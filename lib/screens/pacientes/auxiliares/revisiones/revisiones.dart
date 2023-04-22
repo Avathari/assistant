@@ -1,6 +1,7 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/globulares.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/antropometricos.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/balancesHidrico.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/cardiovasculares.dart';
@@ -325,7 +326,9 @@ class _RevisionesState extends State<Revisiones> {
                                                                                                 ? const Hidricos()
                                                                                                 : widget.actualView == 20
                                                                                                     ? const Hidricos()
-                                                                                                    : Container(),
+                                                                                                    : widget.actualView == 21
+                                                                                                        ? const Hemoderivados()
+                                                                                                        : Container(),
               )),
           Expanded(
             flex: 2,
@@ -413,6 +416,15 @@ class _RevisionesState extends State<Revisiones> {
                               });
                             },
                           ),
+                          GrandButton(
+                            weigth: 2000,
+                            labelButton: 'Transfusiones',
+                            onPress: () {
+                              setState(() {
+                                widget.actualView = 21;
+                              });
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -427,36 +439,38 @@ class _RevisionesState extends State<Revisiones> {
                   )),
                   Expanded(
                       child: GrandIcon(
-                        iconData: Icons.checklist_rtl,
-                        labelButton: "Laboratorios",
-                        onPress: () {
-                          Operadores.selectOptionsActivity(
-                            context: context,
-                            tittle:
-                            "Elija la fecha de los estudios . . . ",
-                            options: Listas.listWithoutRepitedValues(
-                              Listas.listFromMapWithOneKey(
-                                Pacientes.Paraclinicos!,
-                                keySearched: 'Fecha_Registro',
-                              ),
-                            ),
-                            onClose: (value) {
-                              setState(() {
-                                Datos.portapapeles(context: context, text: Auxiliares.porFecha(fechaActual:value));
-                                Navigator.of(context).pop();
-                              });
-                            },
-                          );
+                    iconData: Icons.checklist_rtl,
+                    labelButton: "Laboratorios",
+                    onPress: () {
+                      Operadores.selectOptionsActivity(
+                        context: context,
+                        tittle: "Elija la fecha de los estudios . . . ",
+                        options: Listas.listWithoutRepitedValues(
+                          Listas.listFromMapWithOneKey(
+                            Pacientes.Paraclinicos!,
+                            keySearched: 'Fecha_Registro',
+                          ),
+                        ),
+                        onClose: (value) {
+                          setState(() {
+                            Datos.portapapeles(
+                                context: context,
+                                text: Auxiliares.porFecha(fechaActual: value));
+                            Navigator.of(context).pop();
+                          });
                         },
-                      )),
+                      );
+                    },
+                  )),
                   Expanded(
                       child: GrandIcon(
-                        iconData: Icons.checklist_sharp,
-                        labelButton: "Laboratorios",
-                        onPress: () {
-                          Datos.portapapeles(context: context, text: Auxiliares.historial());
-                        },
-                      )),
+                    iconData: Icons.checklist_sharp,
+                    labelButton: "Laboratorios",
+                    onPress: () {
+                      Datos.portapapeles(
+                          context: context, text: Auxiliares.historial());
+                    },
+                  )),
                 ],
               ),
             ),
@@ -618,7 +632,8 @@ class _RevisionesState extends State<Revisiones> {
                       children: [
                         ValuePanel(
                           firstText: "T. Sys",
-                          secondText: Valores.tensionArterialSystolica.toString(),
+                          secondText:
+                              Valores.tensionArterialSystolica.toString(),
                           thirdText: "mmHg",
                           withEditMessage: true,
                           onEdit: (value) {
@@ -627,7 +642,8 @@ class _RevisionesState extends State<Revisiones> {
                                 tittle: "Editar . . . ",
                                 message: "¿Tensión sistólica? . . . ",
                                 onAcept: (value) {
-                                  Terminal.printSuccess(message: "recieve $value");
+                                  Terminal.printSuccess(
+                                      message: "recieve $value");
                                   setState(() {
                                     Valores.tensionArterialSystolica =
                                         int.parse(value);
@@ -638,7 +654,8 @@ class _RevisionesState extends State<Revisiones> {
                         ),
                         ValuePanel(
                           firstText: "T. Dyas",
-                          secondText: Valores.tensionArterialDyastolica.toString(),
+                          secondText:
+                              Valores.tensionArterialDyastolica.toString(),
                           thirdText: "mmHg",
                           withEditMessage: true,
                           onEdit: (value) {
@@ -647,7 +664,8 @@ class _RevisionesState extends State<Revisiones> {
                                 tittle: "Editar . . . ",
                                 message: "¿Tensión diastólica? . . . ",
                                 onAcept: (value) {
-                                  Terminal.printSuccess(message: "recieve $value");
+                                  Terminal.printSuccess(
+                                      message: "recieve $value");
                                   setState(() {
                                     Valores.tensionArterialDyastolica =
                                         int.parse(value);
@@ -667,9 +685,11 @@ class _RevisionesState extends State<Revisiones> {
                                 tittle: "Editar . . . ",
                                 message: "¿Frecuencia cardiaca? . . . ",
                                 onAcept: (value) {
-                                  Terminal.printSuccess(message: "recieve $value");
+                                  Terminal.printSuccess(
+                                      message: "recieve $value");
                                   setState(() {
-                                    Valores.frecuenciaCardiaca = int.parse(value);
+                                    Valores.frecuenciaCardiaca =
+                                        int.parse(value);
                                     Navigator.of(context).pop();
                                   });
                                 });
@@ -686,9 +706,11 @@ class _RevisionesState extends State<Revisiones> {
                                 tittle: "Editar . . . ",
                                 message: "¿Frecuencia respiratoria? . . . ",
                                 onAcept: (value) {
-                                  Terminal.printSuccess(message: "recieve $value");
+                                  Terminal.printSuccess(
+                                      message: "recieve $value");
                                   setState(() {
-                                    Valores.frecuenciaRespiratoria = int.parse(value);
+                                    Valores.frecuenciaRespiratoria =
+                                        int.parse(value);
                                     Navigator.of(context).pop();
                                   });
                                 });
@@ -705,9 +727,11 @@ class _RevisionesState extends State<Revisiones> {
                                 tittle: "Editar . . . ",
                                 message: "¿Temperatura corporal? . . . ",
                                 onAcept: (value) {
-                                  Terminal.printSuccess(message: "recieve $value");
+                                  Terminal.printSuccess(
+                                      message: "recieve $value");
                                   setState(() {
-                                    Valores.temperaturCorporal = double.parse(value);
+                                    Valores.temperaturCorporal =
+                                        double.parse(value);
                                     Navigator.of(context).pop();
                                   });
                                 });
@@ -715,16 +739,19 @@ class _RevisionesState extends State<Revisiones> {
                         ),
                         ValuePanel(
                           firstText: "SpO2",
-                          secondText: Valores.saturacionPerifericaOxigeno.toString(),
+                          secondText:
+                              Valores.saturacionPerifericaOxigeno.toString(),
                           thirdText: "Resp/min",
                           withEditMessage: true,
                           onEdit: (value) {
                             Operadores.editActivity(
                                 context: context,
                                 tittle: "Editar . . . ",
-                                message: "¿Saturación periférica de oxígeno? . . . ",
+                                message:
+                                    "¿Saturación periférica de oxígeno? . . . ",
                                 onAcept: (value) {
-                                  Terminal.printSuccess(message: "recieve $value");
+                                  Terminal.printSuccess(
+                                      message: "recieve $value");
                                   setState(() {
                                     Valores.saturacionPerifericaOxigeno =
                                         int.parse(value);
@@ -745,9 +772,11 @@ class _RevisionesState extends State<Revisiones> {
                                 tittle: "Editar . . . ",
                                 message: "¿Peso corporal total? . . . ",
                                 onAcept: (value) {
-                                  Terminal.printSuccess(message: "recieve $value");
+                                  Terminal.printSuccess(
+                                      message: "recieve $value");
                                   setState(() {
-                                    Valores.pesoCorporalTotal = double.parse(value);
+                                    Valores.pesoCorporalTotal =
+                                        double.parse(value);
                                     Navigator.of(context).pop();
                                   });
                                 });
@@ -764,9 +793,11 @@ class _RevisionesState extends State<Revisiones> {
                                 tittle: "Editar . . . ",
                                 message: "¿Altura del paciente? . . . ",
                                 onAcept: (value) {
-                                  Terminal.printSuccess(message: "recieve $value");
+                                  Terminal.printSuccess(
+                                      message: "recieve $value");
                                   setState(() {
-                                    Valores.alturaPaciente = double.parse(value);
+                                    Valores.alturaPaciente =
+                                        double.parse(value);
                                     Navigator.of(context).pop();
                                   });
                                 });
@@ -783,7 +814,8 @@ class _RevisionesState extends State<Revisiones> {
                                 tittle: "Editar . . . ",
                                 message: "¿Glucemia capilar? . . . ",
                                 onAcept: (value) {
-                                  Terminal.printSuccess(message: "recieve $value");
+                                  Terminal.printSuccess(
+                                      message: "recieve $value");
                                   setState(() {
                                     Valores.glucemiaCapilar = int.parse(value);
                                     Navigator.of(context).pop();
@@ -802,7 +834,8 @@ class _RevisionesState extends State<Revisiones> {
                                 tittle: "Editar . . . ",
                                 message: "¿Horas de ayuno? . . . ",
                                 onAcept: (value) {
-                                  Terminal.printSuccess(message: "recieve $value");
+                                  Terminal.printSuccess(
+                                      message: "recieve $value");
                                   setState(() {
                                     Valores.horasAyuno = int.parse(value);
                                     Navigator.of(context).pop();
@@ -868,7 +901,9 @@ class _RevisionesState extends State<Revisiones> {
                                                                                               ? const Hidricos()
                                                                                               : widget.actualView == 20
                                                                                                   ? const Hidricos()
-                                                                                                  : Container(),
+                                                                                                  : widget.actualView == 21
+                                                                                                      ? const Hemoderivados()
+                                                                                                      : Container(),
             ),
           ),
           Expanded(
@@ -958,6 +993,15 @@ class _RevisionesState extends State<Revisiones> {
                               });
                             },
                           ),
+                          GrandIcon(
+                            iconData: Icons.air,
+                            labelButton: 'Trasfusiones',
+                            onPress: () {
+                              setState(() {
+                                widget.actualView = 21;
+                              });
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -972,36 +1016,38 @@ class _RevisionesState extends State<Revisiones> {
                   )),
                   Expanded(
                       child: GrandIcon(
-                        iconData: Icons.checklist_rtl,
-                        labelButton: "Laboratorios",
-                        onPress: () {
-                          Operadores.selectOptionsActivity(
-                            context: context,
-                            tittle:
-                            "Elija la fecha de los estudios . . . ",
-                            options: Listas.listWithoutRepitedValues(
-                              Listas.listFromMapWithOneKey(
-                                Pacientes.Paraclinicos!,
-                                keySearched: 'Fecha_Registro',
-                              ),
-                            ),
-                            onClose: (value) {
-                              setState(() {
-                                Datos.portapapeles(context: context, text: Auxiliares.porFecha(fechaActual:value));
-                                Navigator.of(context).pop();
-                              });
-                            },
-                          );
+                    iconData: Icons.checklist_rtl,
+                    labelButton: "Laboratorios",
+                    onPress: () {
+                      Operadores.selectOptionsActivity(
+                        context: context,
+                        tittle: "Elija la fecha de los estudios . . . ",
+                        options: Listas.listWithoutRepitedValues(
+                          Listas.listFromMapWithOneKey(
+                            Pacientes.Paraclinicos!,
+                            keySearched: 'Fecha_Registro',
+                          ),
+                        ),
+                        onClose: (value) {
+                          setState(() {
+                            Datos.portapapeles(
+                                context: context,
+                                text: Auxiliares.porFecha(fechaActual: value));
+                            Navigator.of(context).pop();
+                          });
                         },
-                      )),
+                      );
+                    },
+                  )),
                   Expanded(
                       child: GrandIcon(
-                        iconData: Icons.checklist_sharp,
-                        labelButton: "Laboratorios",
-                        onPress: () {
-                          Datos.portapapeles(context: context, text: Auxiliares.historial());
-                        },
-                      )),
+                    iconData: Icons.checklist_sharp,
+                    labelButton: "Laboratorios",
+                    onPress: () {
+                      Datos.portapapeles(
+                          context: context, text: Auxiliares.historial());
+                    },
+                  )),
                 ],
               ),
             ),
@@ -1153,7 +1199,8 @@ class _RevisionesState extends State<Revisiones> {
             padding: const EdgeInsets.all(5.0),
             controller: ScrollController(),
             gridDelegate: GridViewTools.gridDelegate(
-                crossAxisCount: isMobile(context) ? 4 : 5, mainAxisExtent: 66), //46
+                crossAxisCount: isMobile(context) ? 4 : 5,
+                mainAxisExtent: 66), //46
             children: [
               ValuePanel(
                 firstText: "Hemoglobina",
@@ -1227,7 +1274,8 @@ class _RevisionesState extends State<Revisiones> {
                       onAcept: (value) {
                         Terminal.printSuccess(message: "recieve $value");
                         setState(() {
-                          Valores.concentracionMediaHemoglobina = double.parse(value);
+                          Valores.concentracionMediaHemoglobina =
+                              double.parse(value);
                           Navigator.of(context).pop();
                         });
                       });
@@ -1247,7 +1295,8 @@ class _RevisionesState extends State<Revisiones> {
                       onAcept: (value) {
                         Terminal.printSuccess(message: "recieve $value");
                         setState(() {
-                          Valores.hemoglobinaCorpuscularMedia = double.parse(value);
+                          Valores.hemoglobinaCorpuscularMedia =
+                              double.parse(value);
                           Navigator.of(context).pop();
                         });
                       });
@@ -1392,7 +1441,8 @@ class _RevisionesState extends State<Revisiones> {
             padding: const EdgeInsets.all(5.0),
             controller: ScrollController(),
             gridDelegate: GridViewTools.gridDelegate(
-                crossAxisCount: isMobile(context) ? 4 : 5, mainAxisExtent: 66), //46
+                crossAxisCount: isMobile(context) ? 4 : 5,
+                mainAxisExtent: 66), //46
             children: [
               ValuePanel(
                 firstText: "Glucosa Sérica",
@@ -1489,12 +1539,13 @@ class _RevisionesState extends State<Revisiones> {
           ),
         ),
         Expanded(
-          flex:8,
+          flex: 8,
           child: GridView(
             padding: const EdgeInsets.all(5.0),
             controller: ScrollController(),
             gridDelegate: GridViewTools.gridDelegate(
-                crossAxisCount: isMobile(context) ? 4 : 5, mainAxisExtent: 66), //46
+                crossAxisCount: isMobile(context) ? 4 : 5,
+                mainAxisExtent: 66), //46
             children: [
               Container(),
               ValuePanel(
@@ -1641,7 +1692,8 @@ class _RevisionesState extends State<Revisiones> {
             padding: const EdgeInsets.all(5.0),
             controller: ScrollController(),
             gridDelegate: GridViewTools.gridDelegate(
-                crossAxisCount: isMobile(context) ? 4 : 5, mainAxisExtent: 66), //46
+                crossAxisCount: isMobile(context) ? 4 : 5,
+                mainAxisExtent: 66), //46
             children: [
               ValuePanel(
                 firstText: "pH Arterial",
@@ -1759,12 +1811,13 @@ class _RevisionesState extends State<Revisiones> {
           ),
         ),
         Expanded(
-          flex:8,
+          flex: 8,
           child: GridView(
             padding: const EdgeInsets.all(5.0),
             controller: ScrollController(),
             gridDelegate: GridViewTools.gridDelegate(
-                crossAxisCount: isMobile(context) ? 4 : 5, mainAxisExtent: 66), //46
+                crossAxisCount: isMobile(context) ? 4 : 5,
+                mainAxisExtent: 66), //46
             children: [
               ValuePanel(
                 firstText: "pH Venoso",
@@ -1887,7 +1940,8 @@ class _RevisionesState extends State<Revisiones> {
             padding: const EdgeInsets.all(5.0),
             controller: ScrollController(),
             gridDelegate: GridViewTools.gridDelegate(
-                crossAxisCount: isMobile(context) ? 4 : 5, mainAxisExtent: 66), //46
+                crossAxisCount: isMobile(context) ? 4 : 5,
+                mainAxisExtent: 66), //46
             children: [
               ValuePanel(
                 secondText: Valores.fechaRealizacionBalances,
@@ -1946,7 +2000,8 @@ class _RevisionesState extends State<Revisiones> {
             padding: const EdgeInsets.all(5.0),
             controller: ScrollController(),
             gridDelegate: GridViewTools.gridDelegate(
-                crossAxisCount: isMobile(context) ? 4 : 4, mainAxisExtent: 66), //46
+                crossAxisCount: isMobile(context) ? 4 : 4,
+                mainAxisExtent: 66), //46
             children: [
               ValuePanel(
                 secondText: Valores.fechaHepaticos ?? '',
@@ -1973,7 +2028,8 @@ class _RevisionesState extends State<Revisiones> {
               ),
               ValuePanel(
                 firstText: "AST / TGO",
-                secondText: Valores.aspartatoaminotransferasa!.toStringAsFixed(0),
+                secondText:
+                    Valores.aspartatoaminotransferasa!.toStringAsFixed(0),
                 thirdText: "UI/L",
               ),
               ValuePanel(
@@ -2030,7 +2086,8 @@ class _RevisionesState extends State<Revisiones> {
             thirdText: "",
           ),
         ),
-        Expanded(child: ValuePanel(
+        Expanded(
+            child: ValuePanel(
           firstText: "",
           secondText: Valores.modalidadVentilatoria.toString(),
           thirdText: "",
@@ -2043,9 +2100,9 @@ class _RevisionesState extends State<Revisiones> {
             padding: const EdgeInsets.all(5.0),
             controller: ScrollController(),
             gridDelegate: GridViewTools.gridDelegate(
-                crossAxisCount: isMobile(context) ? 4 : 5, mainAxisExtent: 66), //46
+                crossAxisCount: isMobile(context) ? 4 : 5,
+                mainAxisExtent: 66), //46
             children: [
-
               ValuePanel(
                 firstText: "Vt",
                 secondText: Valores.volumenTidal.toString(),
@@ -2117,7 +2174,8 @@ class _RevisionesState extends State<Revisiones> {
                       onAcept: (value) {
                         Terminal.printSuccess(message: "recieve $value");
                         setState(() {
-                          Valores.fraccionInspiratoriaVentilatoria = int.parse(value);
+                          Valores.fraccionInspiratoriaVentilatoria =
+                              int.parse(value);
                           Navigator.of(context).pop();
                         });
                       });

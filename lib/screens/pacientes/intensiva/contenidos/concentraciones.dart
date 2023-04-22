@@ -6,6 +6,7 @@ import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
+import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/ShowText.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
@@ -45,7 +46,11 @@ class _ConcentracionesState extends State<Concentraciones> {
       dilucionTextController.text = '100';
       velocidadTextController.text = '10';
       //
-      pesoCorporalTotal = Valores.pesoCorporalTotal;
+      if (Valores.pesoCorporalTotal != null) {
+        pesoCorporalTotal = Valores.pesoCorporalTotal;
+      } else {
+        pesoCorporalTotal = 70;
+      }
 
       operation();
     });
@@ -54,7 +59,7 @@ class _ConcentracionesState extends State<Concentraciones> {
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return Container(
         color: Colors.black,
         child: Column(
           children: [
@@ -63,324 +68,383 @@ class _ConcentracionesState extends State<Concentraciones> {
               textPanel: 'Evaluación de Concentraciones',
             ),
             Expanded(
-              child: isMobile(context)?
-              Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        margin: const EdgeInsets.all(10),
-                        decoration: ContainerDecoration.roundedDecoration(),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: SingleChildScrollView(
-                                controller: ScrollController(),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    EditTextArea(
-                                      keyBoardType: TextInputType.number,
-                                      inputFormat: MaskTextInputFormatter(),
-                                      labelEditText: 'Concentración del Fármaco (mg)',
-                                      textController: concentracionTextController,
-                                      numOfLines: 1,
-                                      onChange: (value) {
-                                        setState(() {
-                                        Terminal.printExpected(message: "Value : $value");
-                                        concentracion = double.parse(value);
-                                        operation();
-                                        });
-                                      },
+              child: isMobile(context)
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                          Expanded(
+                            flex: 2,
+                            child: Container(
+                              margin: const EdgeInsets.all(10),
+                              decoration:
+                                  ContainerDecoration.roundedDecoration(),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: SingleChildScrollView(
+                                      controller: ScrollController(),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          EditTextArea(
+                                            keyBoardType: TextInputType.number,
+                                            inputFormat:
+                                                MaskTextInputFormatter(),
+                                            labelEditText:
+                                                'Concentración del Fármaco (mg)',
+                                            textController:
+                                                concentracionTextController,
+                                            numOfLines: 1,
+                                            onChange: (value) {
+                                              setState(() {
+                                                Terminal.printExpected(
+                                                    message: "Value : $value");
+                                                concentracion =
+                                                    double.parse(value);
+                                                operation();
+                                              });
+                                            },
+                                          ),
+                                          EditTextArea(
+                                            keyBoardType: TextInputType.number,
+                                            inputFormat:
+                                                MaskTextInputFormatter(),
+                                            labelEditText:
+                                                'Dilución del Fármaco (mL)',
+                                            textController:
+                                                dilucionTextController,
+                                            numOfLines: 1,
+                                            onChange: (value) {
+                                              setState(() {
+                                                dilucion = double.parse(value);
+                                                operation();
+                                              });
+                                            },
+                                          ),
+                                          EditTextArea(
+                                            keyBoardType: TextInputType.number,
+                                            inputFormat:
+                                                MaskTextInputFormatter(),
+                                            labelEditText:
+                                                'Velocidad de Infusión (mL/Hr)',
+                                            textController:
+                                                velocidadTextController,
+                                            numOfLines: 1,
+                                            onChange: (value) {
+                                              setState(() {
+                                                velocidad = double.parse(value);
+                                                operation();
+                                              });
+                                            },
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    EditTextArea(
-                                      keyBoardType: TextInputType.number,
-                                      inputFormat: MaskTextInputFormatter(),
-                                      labelEditText: 'Dilución del Fármaco (mL)',
-                                      textController: dilucionTextController,
-                                      numOfLines: 1,
-                                      onChange: (value) {
-                                        setState(() {
-                                          dilucion = double.parse(value);
-                                          operation();
-                                        });
-                                      },
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        ValuePanel(
+                                          firstText: 'P.C.T.',
+                                          secondText: pesoCorporalTotal!
+                                              .toStringAsFixed(2),
+                                          thirdText: 'Kg',
+                                          withEditMessage: true,
+                                          onEdit: (value) {
+                                            Operadores.editActivity(
+                                                context: context,
+                                                tittle: "Editar . . . ",
+                                                message:
+                                                    "¿Peso Corporal Total? . . . ",
+                                                onAcept: (value) {
+                                                  // Terminal.printSuccess(
+                                                  //     message:
+                                                  //         "recieve $value");
+                                                  setState(() {
+                                                    pesoCorporalTotal =
+                                                        double.parse(value);
+                                                    Navigator.of(context).pop();
+                                                  });
+                                                });
+                                          },
+                                        ),
+                                        GrandButton(
+                                          weigth: 2000,
+                                          labelButton: "Copiar en Portapapeles",
+                                          onPress: () {
+                                            Datos.portapapeles(
+                                                context: context,
+                                                text: Formatos.concentraciones);
+                                          },
+                                        ),
+                                      ],
                                     ),
-                                    EditTextArea(
-                                      keyBoardType: TextInputType.number,
-                                      inputFormat: MaskTextInputFormatter(),
-                                      labelEditText: 'Velocidad de Infusión (mL/Hr)',
-                                      textController: velocidadTextController,
-                                      numOfLines: 1,
-                                      onChange: (value) {
-                                        setState(() {
-                                          velocidad = double.parse(value);
-                                          operation();
-                                        });
-                                      },
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
-                            Expanded(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Container(
+                              margin: const EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(10),
+                              decoration:
+                                  ContainerDecoration.roundedDecoration(),
+                              child: GridView(
+                                controller: ScrollController(),
+                                gridDelegate: GridViewTools.gridDelegate(
+                                  crossAxisCount: 2,
+                                  mainAxisExtent: 55,
+                                ),
                                 children: [
                                   ValuePanel(
-                                    firstText: 'P.C.T.',
-                                    secondText: pesoCorporalTotal!.toStringAsFixed(2),
-                                    thirdText: 'Kg',
+                                    firstText: '',
+                                    secondText: mgMl!.toStringAsFixed(2),
+                                    thirdText: 'mg/mL',
                                   ),
+                                  ValuePanel(
+                                    firstText: '',
+                                    secondText: mcgMl!.toStringAsFixed(2),
+                                    thirdText: 'mcg/mL',
+                                  ),
+                                  ValuePanel(
+                                    firstText: '',
+                                    secondText: mgKg!.toStringAsFixed(2),
+                                    thirdText: 'mg/Kg',
+                                  ),
+                                  ValuePanel(
+                                    firstText: '',
+                                    secondText: mcgKg!.toStringAsFixed(2),
+                                    thirdText: 'mcg/Kg',
+                                  ),
+                                  ValuePanel(
+                                    firstText: '',
+                                    secondText: mgHr!.toStringAsFixed(2),
+                                    thirdText: 'mg/Hr',
+                                  ),
+                                  ValuePanel(
+                                    firstText: '',
+                                    secondText: mcgHr!.toStringAsFixed(2),
+                                    thirdText: 'mcg/Hr',
+                                  ),
+                                  ValuePanel(
+                                    firstText: '',
+                                    secondText: mgKgHr!.toStringAsFixed(2),
+                                    thirdText: 'mg/Kg/Hr',
+                                  ),
+                                  ValuePanel(
+                                    firstText: '',
+                                    secondText: mcgKgHr!.toStringAsFixed(2),
+                                    thirdText: 'mcg/Kg/Hr',
+                                  ),
+                                  ValuePanel(
+                                    firstText: '',
+                                    secondText: mgKgMin!.toStringAsFixed(2),
+                                    thirdText: 'mg/Kg/min',
+                                  ),
+                                  ValuePanel(
+                                    firstText: '',
+                                    secondText: mcgKgMin!.toStringAsFixed(2),
+                                    thirdText: 'mcg/Kg/min',
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ])
+                  : Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.all(10),
+                            decoration: ContainerDecoration.roundedDecoration(),
+                            child: SingleChildScrollView(
+                              controller: ScrollController(),
+                              child: Column(
+                                children: [
+                                  EditTextArea(
+                                    keyBoardType: TextInputType.number,
+                                    inputFormat: MaskTextInputFormatter(
+                                        mask: '####',
+                                        filter: {"#": RegExp(r'[0-9]')},
+                                        type: MaskAutoCompletionType.lazy),
+                                    labelEditText:
+                                        'Concentración del Fármaco (mg)',
+                                    textController: concentracionTextController,
+                                    numOfLines: 1,
+                                    onChange: (value) {
+                                      setState(() {
+                                        concentracion = double.parse(value);
+                                        operation();
+                                      });
+                                    },
+                                  ),
+                                  EditTextArea(
+                                    keyBoardType: TextInputType.number,
+                                    inputFormat: MaskTextInputFormatter(
+                                        mask: '####',
+                                        filter: {"#": RegExp(r'[0-9]')},
+                                        type: MaskAutoCompletionType.lazy),
+                                    labelEditText: 'Dilución del Fármaco (mL)',
+                                    textController: dilucionTextController,
+                                    numOfLines: 1,
+                                    onChange: (value) {
+                                      setState(() {
+                                        dilucion = double.parse(value);
+                                        operation();
+                                      });
+                                    },
+                                  ),
+                                  EditTextArea(
+                                    keyBoardType: TextInputType.number,
+                                    inputFormat: MaskTextInputFormatter(
+                                        mask: '####',
+                                        filter: {"#": RegExp(r'[0-9]')},
+                                        type: MaskAutoCompletionType.lazy),
+                                    labelEditText:
+                                        'Velocidad de Infusión (mL/Hr)',
+                                    textController: velocidadTextController,
+                                    numOfLines: 1,
+                                    onChange: (value) {
+                                      setState(() {
+                                        velocidad = double.parse(value);
+                                        operation();
+                                      });
+                                    },
+                                  ),
+                                  CrossLine(),
+                                  Container(
+                                      margin: const EdgeInsets.all(10),
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: ContainerDecoration
+                                          .roundedDecoration(),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            flex: 3,
+                                            child: ShowText(
+                                              title: 'P.C.T.',
+                                              data: pesoCorporalTotal,
+                                              medida: 'Kg',
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: GrandIcon(iconData: Icons.upgrade, onPress: () {
+                                              Operadores.editActivity(
+                                                  context: context,
+                                                  tittle: "Editar . . . ",
+                                                  message:
+                                                  "¿Peso Corporal Total? . . . ",
+                                                  onAcept: (value) {
+                                                    // Terminal.printSuccess(
+                                                    //     message:
+                                                    //         "recieve $value");
+                                                    setState(() {
+                                                      pesoCorporalTotal =
+                                                          double.parse(value);
+                                                      Navigator.of(context).pop();
+                                                    });
+                                                  });
+                                            },),
+                                          )
+                                        ],
+                                      )),
                                   GrandButton(
                                     weigth: 2000,
                                     labelButton: "Copiar en Portapapeles",
                                     onPress: () {
                                       Datos.portapapeles(
-                                          context: context, text: Formatos.concentraciones);
+                                          context: context,
+                                          text: Formatos.concentraciones);
                                     },
                                   ),
                                 ],
                               ),
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: Container(
-                        margin: const EdgeInsets.all(10),
-                        padding: const EdgeInsets.all(10),
-                        decoration:
-                        ContainerDecoration.roundedDecoration(),
-                        child: GridView(
-                          controller: ScrollController(),
-                          gridDelegate: GridViewTools.gridDelegate(
-                            crossAxisCount: 2,
-                            mainAxisExtent: 55,
+                        Expanded(
+                          flex: 2,
+                          child: Container(
+                            margin: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
+                            decoration: ContainerDecoration.roundedDecoration(),
+                            child: GridView(
+                              controller: ScrollController(),
+                              gridDelegate: GridViewTools.gridDelegate(
+                                crossAxisCount: 4,
+                                mainAxisExtent: 75,
+                              ),
+                              children: [
+                                ValuePanel(
+                                  firstText: '',
+                                  secondText: mgMl!.toStringAsFixed(2),
+                                  thirdText: 'mg/mL',
+                                ),
+                                ValuePanel(
+                                  firstText: '',
+                                  secondText: mcgMl!.toStringAsFixed(2),
+                                  thirdText: 'mcg/mL',
+                                ),
+                                ValuePanel(
+                                  firstText: '',
+                                  secondText: mgKg!.toStringAsFixed(2),
+                                  thirdText: 'mg/Kg',
+                                ),
+                                ValuePanel(
+                                  firstText: '',
+                                  secondText: mcgKg!.toStringAsFixed(2),
+                                  thirdText: 'mcg/Kg',
+                                ),
+                                ValuePanel(
+                                  firstText: '',
+                                  secondText: mcgHr!.toStringAsFixed(2),
+                                  thirdText: 'mcg/Hr',
+                                ),
+                                CrossLine(),
+                                CrossLine(),
+                                ValuePanel(
+                                  firstText: '',
+                                  secondText: mgHr!.toStringAsFixed(2),
+                                  thirdText: 'mg/Hr',
+                                ),
+                                ValuePanel(
+                                  firstText: '',
+                                  secondText: mcgKgHr!.toStringAsFixed(2),
+                                  thirdText: 'mcg/Kg/Hr',
+                                ),
+                                CrossLine(),
+                                CrossLine(),
+                                ValuePanel(
+                                  firstText: '',
+                                  secondText: mgKgHr!.toStringAsFixed(2),
+                                  thirdText: 'mg/Kg/Hr',
+                                ),
+                                ValuePanel(
+                                  firstText: '',
+                                  secondText: mcgKgMin!.toStringAsFixed(2),
+                                  thirdText: 'mcg/Kg/min',
+                                ),
+                                CrossLine(),
+                                CrossLine(),
+                                ValuePanel(
+                                  firstText: '',
+                                  secondText: mgKgMin!.toStringAsFixed(2),
+                                  thirdText: 'mg/Kg/min',
+                                ),
+                              ],
+                            ),
                           ),
-                          children: [
-                            ValuePanel(
-                              firstText: '',
-                              secondText: mgMl!.toStringAsFixed(2),
-                              thirdText: 'mg/mL',
-                            ),
-                            ValuePanel(
-                              firstText: '',
-                              secondText: mcgMl!.toStringAsFixed(2),
-                              thirdText: 'mcg/mL',
-                            ),
-                            ValuePanel(
-                              firstText: '',
-                              secondText: mgKg!.toStringAsFixed(2),
-                              thirdText: 'mg/Kg',
-                            ),
-                            ValuePanel(
-                              firstText: '',
-                              secondText: mcgKg!.toStringAsFixed(2),
-                              thirdText: 'mcg/Kg',
-                            ),
-                            ValuePanel(
-                              firstText: '',
-                              secondText: mgHr!.toStringAsFixed(2),
-                              thirdText: 'mg/Hr',
-                            ),
-                            ValuePanel(
-                              firstText: '',
-                              secondText: mcgHr!.toStringAsFixed(2),
-                              thirdText: 'mcg/Hr',
-                            ),
-
-                            ValuePanel(
-                              firstText: '',
-                              secondText: mgKgHr!.toStringAsFixed(2),
-                              thirdText: 'mg/Kg/Hr',
-                            ),
-                            ValuePanel(
-                              firstText: '',
-                              secondText: mcgKgHr!.toStringAsFixed(2),
-                              thirdText: 'mcg/Kg/Hr',
-                            ),
-
-                            ValuePanel(
-                              firstText: '',
-                              secondText: mgKgMin!.toStringAsFixed(2),
-                              thirdText: 'mg/Kg/min',
-                            ),
-                            ValuePanel(
-                              firstText: '',
-                              secondText: mcgKgMin!.toStringAsFixed(2),
-                              thirdText: 'mcg/Kg/min',
-                            ),
-                          ],
                         ),
-                      ),
+                      ],
                     ),
-                  ])
-              :Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.all(10),
-                      decoration: ContainerDecoration.roundedDecoration(),
-                      child: SingleChildScrollView(
-                        controller: ScrollController(),
-                        child: Column(
-                          children: [
-                            EditTextArea(
-                              keyBoardType: TextInputType.number,
-                              inputFormat: MaskTextInputFormatter(
-                                  mask: '####',
-                                  filter: {"#": RegExp(r'[0-9]')},
-                                  type: MaskAutoCompletionType.lazy),
-                              labelEditText: 'Concentración del Fármaco (mg)',
-                              textController: concentracionTextController,
-                              numOfLines: 1,
-                              onChange: (value) {
-                                setState(() {
-                                  concentracion = double.parse(value);
-                                  operation();
-                                });
-                              },
-                            ),
-                            EditTextArea(
-                              keyBoardType: TextInputType.number,
-                              inputFormat: MaskTextInputFormatter(
-                                  mask: '####',
-                                  filter: {"#": RegExp(r'[0-9]')},
-                                  type: MaskAutoCompletionType.lazy),
-                              labelEditText: 'Dilución del Fármaco (mL)',
-                              textController: dilucionTextController,
-                              numOfLines: 1,
-                              onChange: (value) {
-                                setState(() {
-                                  dilucion = double.parse(value);
-                                  operation();
-                                });
-                              },
-                            ),
-                            EditTextArea(
-                              keyBoardType: TextInputType.number,
-                              inputFormat: MaskTextInputFormatter(
-                                  mask: '####',
-                                  filter: {"#": RegExp(r'[0-9]')},
-                                  type: MaskAutoCompletionType.lazy),
-                              labelEditText: 'Velocidad de Infusión (mL/Hr)',
-                              textController: velocidadTextController,
-                              numOfLines: 1,
-                              onChange: (value) {
-                                setState(() {
-                                  velocidad = double.parse(value);
-                                  operation();
-                                });
-                              },
-                            ),
-                            CrossLine(),
-                            Container(
-                                margin: const EdgeInsets.all(10),
-                                padding: const EdgeInsets.all(10),
-                                decoration:
-                                    ContainerDecoration.roundedDecoration(),
-                                child: ShowText(
-                                  title: 'P.C.T.',
-                                  data: pesoCorporalTotal,
-                                  medida: 'Kg',
-                                )),
-                            GrandButton(
-                              weigth: 2000,
-                              labelButton: "Copiar en Portapapeles",
-                              onPress: () {
-                                Datos.portapapeles(
-                                    context: context, text: Formatos.concentraciones);
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                      margin: const EdgeInsets.all(10),
-                      padding: const EdgeInsets.all(10),
-                      decoration:
-                      ContainerDecoration.roundedDecoration(),
-                      child: GridView(
-                        controller: ScrollController(),
-                        gridDelegate: GridViewTools.gridDelegate(
-                          crossAxisCount: 4,
-                          mainAxisExtent: 75,
-                        ),
-                        children: [
-                          ValuePanel(
-                            firstText: '',
-                            secondText: mgMl!.toStringAsFixed(2),
-                            thirdText: 'mg/mL',
-                          ),
-                          ValuePanel(
-                            firstText: '',
-                            secondText: mcgMl!.toStringAsFixed(2),
-                            thirdText: 'mcg/mL',
-                          ),
-                          ValuePanel(
-                            firstText: '',
-                            secondText: mgKg!.toStringAsFixed(2),
-                            thirdText: 'mg/Kg',
-                          ),
-                          ValuePanel(
-                            firstText: '',
-                            secondText: mcgKg!.toStringAsFixed(2),
-                            thirdText: 'mcg/Kg',
-                          ),
-                          ValuePanel(
-                            firstText: '',
-                            secondText: mcgHr!.toStringAsFixed(2),
-                            thirdText: 'mcg/Hr',
-                          ),
-                          CrossLine(),
-                          CrossLine(),
-                          ValuePanel(
-                            firstText: '',
-                            secondText: mgHr!.toStringAsFixed(2),
-                            thirdText: 'mg/Hr',
-                          ),
-
-                          ValuePanel(
-                            firstText: '',
-                            secondText: mcgKgHr!.toStringAsFixed(2),
-                            thirdText: 'mcg/Kg/Hr',
-                          ),
-                          CrossLine(),
-                          CrossLine(),
-                          ValuePanel(
-                            firstText: '',
-                            secondText: mgKgHr!.toStringAsFixed(2),
-                            thirdText: 'mg/Kg/Hr',
-                          ),
-
-                          ValuePanel(
-                            firstText: '',
-                            secondText: mcgKgMin!.toStringAsFixed(2),
-                            thirdText: 'mcg/Kg/min',
-                          ),
-                          CrossLine(),
-                          CrossLine(),
-                          ValuePanel(
-                            firstText: '',
-                            secondText: mgKgMin!.toStringAsFixed(2),
-                            thirdText: 'mg/Kg/min',
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
             ),
           ],
         ));
@@ -388,7 +452,7 @@ class _ConcentracionesState extends State<Concentraciones> {
 
   void operation() {
     mgMl = concentracion! / dilucion!;
-    mgHr = (concentracion!*velocidad!) / dilucion!;
+    mgHr = (concentracion! * velocidad!) / dilucion!;
     mgKg = (concentracion!) / pesoCorporalTotal!;
 
     mcgMl = (concentracion! * 1000) / dilucion!;
@@ -397,8 +461,7 @@ class _ConcentracionesState extends State<Concentraciones> {
     mgKgHr = ((concentracion!) / pesoCorporalTotal!) / velocidad!;
     mcgKgHr = ((concentracion! * 1000) / pesoCorporalTotal!) / velocidad!;
 
-    mgKgMin = ((concentracion! * 1000) / (pesoCorporalTotal! * 60) );
-    mcgKgMin =
-        ((concentracion! * 1000) / (pesoCorporalTotal! * 60) ) / 10;
+    mgKgMin = ((concentracion! * 1000) / (pesoCorporalTotal! * 60));
+    mcgKgMin = ((concentracion! * 1000) / (pesoCorporalTotal! * 60)) / 10;
   }
 }

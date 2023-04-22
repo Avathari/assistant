@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/values/SizingInfo.dart';
 
@@ -15,6 +16,7 @@ class Detalles extends StatefulWidget {
 }
 
 class _DetallesState extends State<Detalles> {
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -110,4 +112,5 @@ class _DetallesState extends State<Detalles> {
           )
         ]);
   }
+
 }

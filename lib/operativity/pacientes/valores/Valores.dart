@@ -606,6 +606,9 @@ class Valores {
         emulated: true);
     valores.addAll(hosp);
 
+    Situaciones.ultimoRegistro();
+    Expedientes.ultimoRegistro();
+
     Valores.fromJson(valores);
     return true;
   }
@@ -877,7 +880,7 @@ class Valores {
     Valores.fechaIngresoHospitalario = json['Feca_INI_Hosp'] ?? '';
     Hospitalizaciones.Hospitalizacion['Feca_INI_Hosp'] =
         Valores.fechaIngresoHospitalario;
-    Valores.numeroCama = json['Id_Cama'] ?? 'N/A';
+    Valores.numeroCama = json['Id_Cama'].toString() ?? 'N/A';
     Hospitalizaciones.Hospitalizacion['Id_Cama'] = Valores.numeroCama;
     Valores.medicoTratante = json['Medi_Trat'] ?? '';
     Hospitalizaciones.Hospitalizacion['Medi_Trat'] = Valores.medicoTratante;
@@ -1735,11 +1738,12 @@ class Valores {
       (((Valores.hemoglobina! * 1.34) * Valores.soVenosos!) +
           (Valores.poVenosos! * 0.031)) /
       (100); // # Concentración Venosa de Oxígeno
-  static double get CCO => ((Valores.hemoglobina! * 1.39) + (Valores.poArteriales! * 0.0031)); // # Concentración Capilar de Oxígeno
-      // (((Valores.hemoglobina! * 1.34) *
-      //         (Valores.soVenosos! - Valores.soArteriales!) +
-      //     ((Valores.poVenosos! - Valores.poArteriales!) * 0.031)) /
-      // (100));
+  static double get CCO => ((Valores.hemoglobina! * 1.39) +
+      (Valores.poArteriales! * 0.0031)); // # Concentración Capilar de Oxígeno
+  // (((Valores.hemoglobina! * 1.34) *
+  //         (Valores.soVenosos! - Valores.soArteriales!) +
+  //     ((Valores.poVenosos! - Valores.poArteriales!) * 0.031)) /
+  // (100));
   static double get DAV => (CAO - CVO); // # Diferencia Arteriovenosa
   static double get capacidadOxigeno =>
       (Valores.hemoglobina! * (1.36)); //  # Capacidad de Oxígeno
@@ -1751,9 +1755,10 @@ class Valores {
       return double.nan;
     }
   }
+
   static double get gastoCardiacoFick {
     if (DAV != 0) {
-      return ((125 * SCE) / (8.5 * DAV));// # Gasto Cardiaco
+      return ((125 * SCE) / (8.5 * DAV)); // # Gasto Cardiaco
       // return (((DAV * 100) / CAO) / (DAV)); // # Gasto Cardiaco
     } else {
       return double.nan;
@@ -2059,8 +2064,8 @@ class Valores {
   static int get PPI =>
       Valores.presionFinalEsiracion! + Valores.presionSoporte!;
   static int get PPE => Valores.presionFinalEsiracion!;
-  static double get CI => (Valores.pcoArteriales!  / DAV);
-      // (Valores.pcoArteriales! * Valores.frecuenciaVentilatoria!) / 40.00;
+  static double get CI => (Valores.pcoArteriales! / DAV);
+  // (Valores.pcoArteriales! * Valores.frecuenciaVentilatoria!) / 40.00;
 
   // # ######################################################
   // # Análisis de pCO2 / pO2
@@ -2105,26 +2110,24 @@ class Valores {
     }
   }
 
-  static double get PIO =>
-      (presionGasSeco / Valores.fioArteriales!);
-  static double get VLS =>
-      ((gastoCardiacoFick * 1000 ) / Valores.frecuenciaCardiaca!); //  # Volumen Latido Sistólico De Litros a mL
-  static double get IVL => (VLS / SCE); //mL/Lat/m2 *IC se multiplica por 1000 para ajustar unidades a mL/min/m2
-      // ((indiceCardiaco * 1000) / Valores.frecuenciaCardiaca!);
+  static double get PIO => (presionGasSeco / Valores.fioArteriales!);
+  static double get VLS => ((gastoCardiacoFick * 1000) /
+      Valores
+          .frecuenciaCardiaca!); //  # Volumen Latido Sistólico De Litros a mL
+  static double get IVL => (VLS /
+      SCE); //mL/Lat/m2 *IC se multiplica por 1000 para ajustar unidades a mL/min/m2
+  // ((indiceCardiaco * 1000) / Valores.frecuenciaCardiaca!);
   static double get DO =>
       ((gastoCardiaco * CAO) * (10)); // # Disponibilidad de Oxígeno
-  static double get iDO =>
-      (DO / SCS); // # Indice de Disponibilidad de Oxígeno
+  static double get iDO => (DO / SCS); // # Indice de Disponibilidad de Oxígeno
   static double get TO =>
       ((capacidadOxigeno * CAO) / (10)); // # Transporte de Oxígeno // CAP_O
   static double get SF =>
       ((CCO - CAO) / (CCO - CVO)) * (100); //  # Shunt Fisiológico
   static double get CO =>
       ((gastoCardiaco * DAV) * (10)); // # Consumo de Oxígeno
-  static double get cAO =>
-      (CAO / DAV); // # Cociente Arterial de Oxígeno
-  static double get cVO =>
-      (CVO / DAV); // # Cociente Venoso de Oxígeno
+  static double get cAO => (CAO / DAV); // # Cociente Arterial de Oxígeno
+  static double get cVO => (CVO / DAV); // # Cociente Venoso de Oxígeno
 
   static double get presionColoidoOsmotica => // PC
       ((Valores.proteinasTotales! - Valores.albuminaSerica!) * 1.4) +
@@ -2137,18 +2140,19 @@ class Valores {
 
   // Paramétros con Catéter Swan-Ganz
   static double get resistenciaVascularPulmonar => // PC
-  ((Valores.proteinasTotales! - Valores.albuminaSerica!) * 1.4) +
+      ((Valores.proteinasTotales! - Valores.albuminaSerica!) * 1.4) +
       (Valores.albuminaSerica! * 5.5); //  # Rest. Vasc. Pulmonar 45 - 255 dinas
   static double get TLVI =>
       VLS *
-          Valores.presionArterialMedia *
-          0.0144; //  # Trabajo Latido Ventricular Izquierdo : : 75 - 115 g/Lat/m2
+      Valores.presionArterialMedia *
+      0.0144; //  # Trabajo Latido Ventricular Izquierdo : : 75 - 115 g/Lat/m2
   static double get iTLVI =>
       TLVI / SCS; //  # Indice Trabajo Latido Ventricular Izquierdo
   static double get TLVD => 00.00; //  # Trabajo Latido Ventricular Derecho
   // # FE = VL / VDF # FE(%)= ((VDF-VSF)*100)/VDF. (porque VL= VDF-VSF). (%)
   static double get presionPerfusionCoronaria => // PC
-  (tensionArterialDyastolica! - presionCunaPulmonar!); //  # Presión Perfusión de la Arteria Coronaria
+      (tensionArterialDyastolica! -
+          presionCunaPulmonar!); //  # Presión Perfusión de la Arteria Coronaria
 
   // Parámetros de Electrocardiogramas
   static double get frecuenciaCardiacaElectrocardiograma {
@@ -4342,6 +4346,25 @@ class Items {
     "Nonagésimo Noveno",
     "Nonagésimo"
   ];
+}
+
+class Exploracion {
+  static String? inspeccionGeneral = 'Alerta';
+  static String? aperturaOcular = '4', respuestaMotora = '6', respuestaVerbal = '5';
+  static String? coloracionTegumentaria = ', sin palidez tegumentaria',
+      coloracionMucosas = ', sin deshidratación';
+  static String? ingurgitacionYugular = '', bocioCervical = '', desviacionTraqueal = '',
+  adenopatiaCervical = '', adenomegaliasCervical = '';
+
+  static String get exploracionGeneral {
+    return '${Exploracion.inspeccionGeneral}, '
+        'glasgow no traumático (E$aperturaOcular, V$respuestaVerbal, M$respuestaMotora)'
+        '$coloracionTegumentaria$coloracionMucosas'
+        '. '
+        'Cuello $ingurgitacionYugular$desviacionTraqueal$bocioCervical$adenopatiaCervical'
+        '$adenomegaliasCervical'
+        '. ';
+}
 }
 
 double toDoubleFromInt(

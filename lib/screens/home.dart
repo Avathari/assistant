@@ -4,6 +4,7 @@ import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/bibiliotecarios/bibliotecas.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizados.dart';
+import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/screens/usuarios/usuarios.dart';
 import 'package:assistant/values/SizingInfo.dart';
@@ -660,6 +661,13 @@ class PacientesPanel extends StatelessWidget {
               labelButton: "Bibliotecario",
               onPress: () {
                 toNextScreen(context: context, screen: GestionBibliotecas());
+              },
+            ),
+            HomeButton(
+              iconData: Icons.balance,
+              labelButton: "Concentraciones",
+              onPress: () {
+                toNextScreen(context: context, screen:  Scaffold(appBar:AppBar(backgroundColor: Colors.black,), body: const Concentraciones()));
               },
             ),
             HomeButton(

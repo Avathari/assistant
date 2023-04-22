@@ -51,7 +51,7 @@ class _EstadisticasPacientesState extends State<EstadisticasPacientes> {
           .then((value) {
         setState(() {
           data = value;
-          Archivos.createJsonFromMap([data], filePath: fileAssocieted);
+          Archivos.createJsonFromMap([data], filePath: 'assets/vault/patientsStats.json');
         });
       });
     });

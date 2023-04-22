@@ -80,7 +80,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
         Expanded(
           flex: 15,
           child: Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: EdgeInsets.all(isMobile(context) ? 5.0 : 12.0),
             child: CarouselSlider(
                 items: [
                   SingleChildScrollView(
@@ -269,7 +269,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                         ),
                         Spinner(
                           width: isDesktop(context)
-                              ? 300
+                              ? 700
                               : isTablet(context)
                               ? 350
                               : isMobile(context)
@@ -368,7 +368,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                         ),
                         Spinner(
                           width: isDesktop(context)
-                              ? 500
+                              ? 700
                               : isTablet(context)
                               ? 500
                               : isMobile(context)

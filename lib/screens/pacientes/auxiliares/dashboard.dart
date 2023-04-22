@@ -62,7 +62,6 @@ class _DashboardState extends State<Dashboard> {
     //
     List list = [];
     widget.dymValues.clear();
-
     if (Pacientes.Vitales!.isNotEmpty) {
       for (var i = 0; i < Pacientes.Vitales!.length; i++) {
         list.clear();
@@ -102,6 +101,7 @@ class _DashboardState extends State<Dashboard> {
         });
       });
     }
+
     super.initState();
   }
 

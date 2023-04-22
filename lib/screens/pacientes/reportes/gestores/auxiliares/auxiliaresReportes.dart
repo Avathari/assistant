@@ -71,210 +71,238 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                 ),
                 Expanded(
                   flex: 1,
-                  child: SingleChildScrollView(
-                    controller: scrollAuxController,
-                    child: Column(
-                      children: [
-                        GrandButton(
-                          labelButton: "Electrocardiograma",
-                          onPress: () {
-                            asignarParaclinico(indice: 20);
-                          },
-                        ),
-                        GrandButton(
-                          labelButton: "Biometría hemática",
-                          onPress: () {
-                            int index = 0;
-                            Operadores.selectOptionsActivity(
-                              context: context,
-                              tittle:
-                                  "Elija la fecha de la biometría hemática . . . ",
-                              options: Listas.listWithoutRepitedValues(
-                                Listas.listFromMapWithOneKey(
-                                  Listas.listFromMap(
-                                      lista: Pacientes.Paraclinicos!,
-                                      keySearched: 'Tipo_Estudio',
-                                      elementSearched:
-                                          Auxiliares.Categorias[index]),
-                                ),
+                  child: Column(
+                    children: [
+                      GrandButton(
+                        labelButton: "Actualizados",
+                        onPress: () {
+                          Operadores.selectOptionsActivity(
+                            context: context,
+                            tittle: "Elija la fecha de los estudios . . . ",
+                            options: Listas.listWithoutRepitedValues(
+                              Listas.listFromMapWithOneKey(
+                                Pacientes.Paraclinicos!,
+                                keySearched: 'Fecha_Registro',
                               ),
-                              onClose: (value) {
-                                setState(() {
-                                  asignarParaclinico(
-                                      indice: index, fechaActual: value);
-                                  Navigator.of(context).pop();
-                                });
-                              },
-                            );
-                          },
-                        ),
-                        GrandButton(
-                          labelButton: "Química sanguínea",
-                          onPress: () {
-                            int index = 1;
-                            Operadores.selectOptionsActivity(
-                              context: context,
-                              tittle:
-                              "Elija la fecha de la química sanguínnea . . . ",
-                              options: Listas.listWithoutRepitedValues(
-                                Listas.listFromMapWithOneKey(
-                                  Listas.listFromMap(
-                                      lista: Pacientes.Paraclinicos!,
-                                      keySearched: 'Tipo_Estudio',
-                                      elementSearched:
-                                      Auxiliares.Categorias[index]),
-                                ),
-                              ),
-                              onClose: (value) {
-                                setState(() {
-                                  asignarParaclinico(
-                                      indice: index, fechaActual: value);
-                                  Navigator.of(context).pop();
-                                });
-                              },
-                            );
-                          },
-                        ),
-                        GrandButton(
-                          labelButton: "Electrolitos séricos",
-                          onPress: () {
-                            int index = 2;
-                            Operadores.selectOptionsActivity(
-                              context: context,
-                              tittle:
-                              "Elija la fecha del estudio de electrolitos. . . ",
-                              options: Listas.listWithoutRepitedValues(
-                                Listas.listFromMapWithOneKey(
-                                  Listas.listFromMap(
-                                      lista: Pacientes.Paraclinicos!,
-                                      keySearched: 'Tipo_Estudio',
-                                      elementSearched:
-                                      Auxiliares.Categorias[index]),
-                                ),
-                              ),
-                              onClose: (value) {
-                                setState(() {
-                                  asignarParaclinico(
-                                      indice: index, fechaActual: value);
-                                  Navigator.of(context).pop();
-                                });
-                              },
-                            );
-                          },
-                        ),
-                        GrandButton(
-                          labelButton: "Perfil hepático",
-                          onPress: () {
-                              int index = 3;
-                              Operadores.selectOptionsActivity(
-                                context: context,
-                                tittle:
-                                "Elija la fecha del perfil hepático . . . ",
-                                options: Listas.listWithoutRepitedValues(
-                                  Listas.listFromMapWithOneKey(
-                                    Listas.listFromMap(
-                                        lista: Pacientes.Paraclinicos!,
-                                        keySearched: 'Tipo_Estudio',
-                                        elementSearched:
-                                        Auxiliares.Categorias[index]),
-                                  ),
-                                ),
-                                onClose: (value) {
-                                  setState(() {
-                                    asignarParaclinico(
-                                        indice: index, fechaActual: value);
-                                    Navigator.of(context).pop();
-                                  });
+                            ),
+                            onClose: (value) {
+                              setState(() {
+                                auxTextController.text = Auxiliares.porFecha(fechaActual: value);
+                                Navigator.of(context).pop();
+                              });
+                            },
+                          );
+                        },
+                      ),
+                      CrossLine(),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          controller: scrollAuxController,
+                          child: Column(
+                            children: [
+                              GrandButton(
+                                labelButton: "Electrocardiograma",
+                                onPress: () {
+                                  asignarParaclinico(indice: 20);
                                 },
-                              );
-
-                          },
-                        ),
-                        GrandButton(
-                          labelButton: "Perfil lipídico",
-                          onPress: () {
-                            int index = 4;
-                            Operadores.selectOptionsActivity(
-                              context: context,
-                              tittle:
-                              "Elija la fecha del perfil lipíco . . . ",
-                              options: Listas.listWithoutRepitedValues(
-                                Listas.listFromMapWithOneKey(
-                                  Listas.listFromMap(
-                                      lista: Pacientes.Paraclinicos!,
-                                      keySearched: 'Tipo_Estudio',
-                                      elementSearched:
-                                      Auxiliares.Categorias[index]),
-                                ),
                               ),
-                              onClose: (value) {
-                                setState(() {
-                                  asignarParaclinico(
-                                      indice: index, fechaActual: value);
-                                  Navigator.of(context).pop();
-                                });
-                              },
-                            );
-                          },
-                        ),
-                        GrandButton(
-                          labelButton: "Perfil tiroideo",
-                          onPress: () {
-                            int index = 5;
-                            Operadores.selectOptionsActivity(
-                              context: context,
-                              tittle:
-                              "Elija la fecha del perfil tiroideo . . . ",
-                              options: Listas.listWithoutRepitedValues(
-                                Listas.listFromMapWithOneKey(
-                                  Listas.listFromMap(
-                                      lista: Pacientes.Paraclinicos!,
-                                      keySearched: 'Tipo_Estudio',
-                                      elementSearched:
-                                      Auxiliares.Categorias[index]),
-                                ),
+                              GrandButton(
+                                labelButton: "Biometría hemática",
+                                onPress: () {
+                                  int index = 0;
+                                  Operadores.selectOptionsActivity(
+                                    context: context,
+                                    tittle:
+                                        "Elija la fecha de la biometría hemática . . . ",
+                                    options: Listas.listWithoutRepitedValues(
+                                      Listas.listFromMapWithOneKey(
+                                        Listas.listFromMap(
+                                            lista: Pacientes.Paraclinicos!,
+                                            keySearched: 'Tipo_Estudio',
+                                            elementSearched:
+                                                Auxiliares.Categorias[index]),
+                                      ),
+                                    ),
+                                    onClose: (value) {
+                                      setState(() {
+                                        asignarParaclinico(
+                                            indice: index, fechaActual: value);
+                                        Navigator.of(context).pop();
+                                      });
+                                    },
+                                  );
+                                },
                               ),
-                              onClose: (value) {
-                                setState(() {
-                                  asignarParaclinico(
-                                      indice: index, fechaActual: value);
-                                  Navigator.of(context).pop();
-                                });
-                              },
-                            );
-
-                          },
-                        ),
-                        GrandButton(
-                          labelButton: "Tiempos de coagulación",
-                          onPress: () {
-                            int index = 6;
-                            Operadores.selectOptionsActivity(
-                              context: context,
-                              tittle:
-                              "Elija la fecha del perfil de coagulación . . . ",
-                              options: Listas.listWithoutRepitedValues(
-                                Listas.listFromMapWithOneKey(
-                                  Listas.listFromMap(
-                                      lista: Pacientes.Paraclinicos!,
-                                      keySearched: 'Tipo_Estudio',
-                                      elementSearched:
-                                      Auxiliares.Categorias[index]),
-                                ),
+                              GrandButton(
+                                labelButton: "Química sanguínea",
+                                onPress: () {
+                                  int index = 1;
+                                  Operadores.selectOptionsActivity(
+                                    context: context,
+                                    tittle:
+                                    "Elija la fecha de la química sanguínnea . . . ",
+                                    options: Listas.listWithoutRepitedValues(
+                                      Listas.listFromMapWithOneKey(
+                                        Listas.listFromMap(
+                                            lista: Pacientes.Paraclinicos!,
+                                            keySearched: 'Tipo_Estudio',
+                                            elementSearched:
+                                            Auxiliares.Categorias[index]),
+                                      ),
+                                    ),
+                                    onClose: (value) {
+                                      setState(() {
+                                        asignarParaclinico(
+                                            indice: index, fechaActual: value);
+                                        Navigator.of(context).pop();
+                                      });
+                                    },
+                                  );
+                                },
                               ),
-                              onClose: (value) {
-                                setState(() {
-                                  asignarParaclinico(
-                                      indice: index, fechaActual: value);
-                                  Navigator.of(context).pop();
-                                });
-                              },
-                            );
+                              GrandButton(
+                                labelButton: "Electrolitos séricos",
+                                onPress: () {
+                                  int index = 2;
+                                  Operadores.selectOptionsActivity(
+                                    context: context,
+                                    tittle:
+                                    "Elija la fecha del estudio de electrolitos. . . ",
+                                    options: Listas.listWithoutRepitedValues(
+                                      Listas.listFromMapWithOneKey(
+                                        Listas.listFromMap(
+                                            lista: Pacientes.Paraclinicos!,
+                                            keySearched: 'Tipo_Estudio',
+                                            elementSearched:
+                                            Auxiliares.Categorias[index]),
+                                      ),
+                                    ),
+                                    onClose: (value) {
+                                      setState(() {
+                                        asignarParaclinico(
+                                            indice: index, fechaActual: value);
+                                        Navigator.of(context).pop();
+                                      });
+                                    },
+                                  );
+                                },
+                              ),
+                              GrandButton(
+                                labelButton: "Perfil hepático",
+                                onPress: () {
+                                    int index = 3;
+                                    Operadores.selectOptionsActivity(
+                                      context: context,
+                                      tittle:
+                                      "Elija la fecha del perfil hepático . . . ",
+                                      options: Listas.listWithoutRepitedValues(
+                                        Listas.listFromMapWithOneKey(
+                                          Listas.listFromMap(
+                                              lista: Pacientes.Paraclinicos!,
+                                              keySearched: 'Tipo_Estudio',
+                                              elementSearched:
+                                              Auxiliares.Categorias[index]),
+                                        ),
+                                      ),
+                                      onClose: (value) {
+                                        setState(() {
+                                          asignarParaclinico(
+                                              indice: index, fechaActual: value);
+                                          Navigator.of(context).pop();
+                                        });
+                                      },
+                                    );
 
-                          },
+                                },
+                              ),
+                              GrandButton(
+                                labelButton: "Perfil lipídico",
+                                onPress: () {
+                                  int index = 4;
+                                  Operadores.selectOptionsActivity(
+                                    context: context,
+                                    tittle:
+                                    "Elija la fecha del perfil lipíco . . . ",
+                                    options: Listas.listWithoutRepitedValues(
+                                      Listas.listFromMapWithOneKey(
+                                        Listas.listFromMap(
+                                            lista: Pacientes.Paraclinicos!,
+                                            keySearched: 'Tipo_Estudio',
+                                            elementSearched:
+                                            Auxiliares.Categorias[index]),
+                                      ),
+                                    ),
+                                    onClose: (value) {
+                                      setState(() {
+                                        asignarParaclinico(
+                                            indice: index, fechaActual: value);
+                                        Navigator.of(context).pop();
+                                      });
+                                    },
+                                  );
+                                },
+                              ),
+                              GrandButton(
+                                labelButton: "Perfil tiroideo",
+                                onPress: () {
+                                  int index = 5;
+                                  Operadores.selectOptionsActivity(
+                                    context: context,
+                                    tittle:
+                                    "Elija la fecha del perfil tiroideo . . . ",
+                                    options: Listas.listWithoutRepitedValues(
+                                      Listas.listFromMapWithOneKey(
+                                        Listas.listFromMap(
+                                            lista: Pacientes.Paraclinicos!,
+                                            keySearched: 'Tipo_Estudio',
+                                            elementSearched:
+                                            Auxiliares.Categorias[index]),
+                                      ),
+                                    ),
+                                    onClose: (value) {
+                                      setState(() {
+                                        asignarParaclinico(
+                                            indice: index, fechaActual: value);
+                                        Navigator.of(context).pop();
+                                      });
+                                    },
+                                  );
+
+                                },
+                              ),
+                              GrandButton(
+                                labelButton: "Tiempos de coagulación",
+                                onPress: () {
+                                  int index = 6;
+                                  Operadores.selectOptionsActivity(
+                                    context: context,
+                                    tittle:
+                                    "Elija la fecha del perfil de coagulación . . . ",
+                                    options: Listas.listWithoutRepitedValues(
+                                      Listas.listFromMapWithOneKey(
+                                        Listas.listFromMap(
+                                            lista: Pacientes.Paraclinicos!,
+                                            keySearched: 'Tipo_Estudio',
+                                            elementSearched:
+                                            Auxiliares.Categorias[index]),
+                                      ),
+                                    ),
+                                    onClose: (value) {
+                                      setState(() {
+                                        asignarParaclinico(
+                                            indice: index, fechaActual: value);
+                                        Navigator.of(context).pop();
+                                      });
+                                    },
+                                  );
+
+                                },
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ],

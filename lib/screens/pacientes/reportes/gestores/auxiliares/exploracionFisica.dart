@@ -1,5 +1,6 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/semiologicos.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/terapias.dart';
 import 'package:assistant/values/SizingInfo.dart';
@@ -187,9 +188,9 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                                   asignarExploracion(indice: 1);
                                 },
                                 onLongPress: () {
-                                  Operadores.openWindow(context: context, chyldrim: const Semiologicos(), onAction: () {
+                                  Operadores.openDialog(context: context, chyldrim: const Semiologicos(), onAction: () {
                                     setState(() {
-                                      expoTextController.text = "Hola";
+                                      expoTextController.text = Exploracion.exploracionGeneral;
                                     });
                                   });
                                 },

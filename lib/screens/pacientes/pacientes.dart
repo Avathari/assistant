@@ -537,7 +537,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
       results = Listas.listFromMap(
           lista: foundedItems!,
           keySearched: 'Pace_Ape_Pat',
-          elementSearched: enteredKeyword);
+          elementSearched: Sentences.capitalize(enteredKeyword));
 
       setState(() {
         foundedItems = results;
@@ -549,6 +549,11 @@ class _GestionPacientesState extends State<GestionPacientes> {
     Terminal.printAlert(
         message: "Iniciando actividad : : \n "
             "Consulta de pacientes hospitalizados . . .");
+    Actividades.detalles(Databases.siteground_database_regpace,
+        Pacientes.pacientes['pacientesStadistics'])
+        .then((value) {
+      Archivos.createJsonFromMap([value], filePath: 'assets/vault/patientsStats.json');
+    });
     Actividades.consultar(Databases.siteground_database_regpace,
             Pacientes.pacientes['consultQuery']!)
         .then((value) {
@@ -563,7 +568,11 @@ class _GestionPacientesState extends State<GestionPacientes> {
             tittle: "Datos Recargados",
             message: "Registro Actualizado",
             onAcept: () {
-              Navigator.of(context).pop();
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => const GestionPacientes(),
+                ),
+              );
             }));
   }
 }

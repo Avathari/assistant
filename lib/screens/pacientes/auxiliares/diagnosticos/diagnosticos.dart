@@ -72,27 +72,27 @@ class _DiagnosisState extends State<Diagnosis> {
                               children: [
                                 TittlePanel(
                                     textPanel:
-                                    "${Pacientes.Patologicos![index]['Pace_APP_DEG']}"),
+                                    "${Pacientes.Diagnosticos![index]['Pace_APP_DEG']}"),
                                 const SizedBox(height: 20,),
                                 Text(
-                                  Pacientes.Patologicos![index]
+                                  Pacientes.Diagnosticos![index]
                                   ['Pace_APP_DEG_com'],
                                   style: Styles.textSyleGrowth(fontSize: 16),
                                 ),
                                 Text(
-                                  "Diagnósticado hace ${Pacientes.Patologicos![index]['Pace_APP_DEG_dia']} años",
+                                  "Diagnósticado hace ${Pacientes.Diagnosticos![index]['Pace_APP_DEG_dia']} años",
                                   style: Styles.textSyleGrowth(fontSize: 14),
                                 ),
                                 CrossLine(height: 20,),
                                 const SizedBox(height: 20,),
                                 Text(
-                                  Pacientes.Patologicos![index]
+                                  Pacientes.Diagnosticos![index]
                                   ['Pace_APP_DEG_tra'],
                                   maxLines: 10,
                                   style: Styles.textSyleGrowth(),
                                 ),
                                 Text(
-                                  Pacientes.Patologicos![index]
+                                  Pacientes.Diagnosticos![index]
                                   ['Pace_APP_DEG_sus'],
                                   maxLines: 10,
                                   style: Styles.textSyleGrowth(),

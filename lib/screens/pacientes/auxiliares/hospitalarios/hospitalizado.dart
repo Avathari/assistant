@@ -339,7 +339,6 @@ class _HospitalizadoState extends State<Hospitalizado> {
                       GrandIcon(
                           iconData: Icons.data_array,
                           labelButton: 'Situación del Expediente Clínico',
-
                           onPress: () {
                             Operadores.openActivity(
                                 context: context,
