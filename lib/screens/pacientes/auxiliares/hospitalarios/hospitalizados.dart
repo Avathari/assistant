@@ -309,31 +309,31 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                      "${snapshot.data[posicion]['Pace_Ape_Pat']} "
-                                      "${snapshot.data[posicion]['Pace_Ape_Mat']} "
+                                      "${snapshot.data[posicion]['Pace_Ape_Pat'] ?? ''} "
+                                      "${snapshot.data[posicion]['Pace_Ape_Mat'] ?? ''} "
                                       "${snapshot.data[posicion]['Pace_Nome_PI']} "
                                       "${snapshot.data[posicion]['Pace_Nome_SE']}",
                                       maxLines: 2,
                                       style:
                                           Styles.textSyleGrowth(fontSize: 14)),
                                   Text(
-                                    "Hemotipo: ${snapshot.data[posicion]['Pace_Hemo']}",
+                                    "Hemotipo: ${snapshot.data[posicion]['Pace_Hemo'] ?? ''}",
                                     maxLines: 2,
                                     style: Styles.textSyleGrowth(fontSize: 10),
                                   ),
                                   Text(
-                                    "Servicio: ${snapshot.data[posicion]['Serve_Trat']}",
+                                    "Servicio: ${snapshot.data[posicion]['Serve_Trat'] ?? ''}",
                                     maxLines: 2,
                                     style: Styles.textSyleGrowth(fontSize: 10),
                                   ),
                                   Text(
-                                    "${snapshot.data[posicion]['Medi_Trat']}",
+                                    "${snapshot.data[posicion]['Medi_Trat'] ?? ''}",
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                     style: Styles.textSyleGrowth(fontSize: 10),
                                   ),
                                   Text(
-                                      "D.E.H.: ${snapshot.data[posicion]['Dia_Estan']}",
+                                      "D.E.H.: ${snapshot.data[posicion]['Dia_Estan'] ?? '0'}",
                                       style:
                                           Styles.textSyleGrowth(fontSize: 12)),
                                 ],
@@ -361,7 +361,8 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                                 context: context,
                                                 chyldrim: Center(
                                                   child: Text(
-                                                    "Padecimiento Actual: \n${snapshot.data[posicion]['Padecimiento']['Contexto']}",
+                                                    snapshot.data[posicion]['Padecimiento'] == null ? 'Sin Padecimiento Actual' :
+                                                    "PA: ${snapshot.data[posicion]['Padecimiento'] ['Contexto'] ?? ''}",
                                                     maxLines: 10,
                                                     softWrap: true,
                                                     style:
@@ -373,7 +374,8 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                                 ));
                                           },
                                           child: Text(
-                                            "PA: ${snapshot.data[posicion]['Padecimiento']['Contexto']}",
+                                            snapshot.data[posicion]['Padecimiento'] == null ? 'Sin Padecimiento Actual' :
+                                            "PA: ${snapshot.data[posicion]['Padecimiento'] ['Contexto'] ?? ''}",
                                             maxLines: 10,
                                             style: Styles.textSyleGrowth(
                                                 fontSize: 10),
@@ -788,7 +790,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        flex: 2,
+                        flex: 3,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -807,23 +809,23 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                       style:
                                           Styles.textSyleGrowth(fontSize: 14)),
                                   Text(
-                                    "Hemotipo: ${snapshot.data[posicion]['Pace_Hemo']}",
+                                    "Hemotipo: ${snapshot.data[posicion]['Pace_Hemo']?? ''}",
                                     maxLines: 2,
                                     style: Styles.textSyleGrowth(fontSize: 10),
                                   ),
                                   Text(
-                                    "Servicio: ${snapshot.data[posicion]['Serve_Trat']}",
+                                    "Servicio: ${snapshot.data[posicion]['Serve_Trat'] ?? ''}",
                                     maxLines: 2,
                                     style: Styles.textSyleGrowth(fontSize: 10),
                                   ),
                                   Text(
-                                    "${snapshot.data[posicion]['Medi_Trat']}",
+                                    "${snapshot.data[posicion]['Medi_Trat'] ?? ''}",
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                     style: Styles.textSyleGrowth(fontSize: 10),
                                   ),
                                   Text(
-                                      "D.E.H.: ${snapshot.data[posicion]['Dia_Estan']}",
+                                      "D.E.H.: ${snapshot.data[posicion]['Dia_Estan'] ?? ''}",
                                       style:
                                           Styles.textSyleGrowth(fontSize: 12)),
                                 ],
@@ -851,7 +853,8 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                                 context: context,
                                                 chyldrim: Center(
                                                   child: Text(
-                                                    "Padecimiento Actual: \n${snapshot.data[posicion]['Padecimiento']['Contexto']}",
+                                                    snapshot.data[posicion]['Padecimiento'] == null ? 'Sin Padecimiento Actual' :
+                                                    "Padecimiento Actual:\n ${snapshot.data[posicion]['Padecimiento'] ['Contexto'] ?? ''}",
                                                     maxLines: 10,
                                                     softWrap: true,
                                                     style:
@@ -863,7 +866,8 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                                 ));
                                           },
                                           child: Text(
-                                            "PA: ${snapshot.data[posicion]['Padecimiento']['Contexto']}",
+                                            snapshot.data[posicion]['Padecimiento'] == null ? 'Sin Padecimiento Actual' :
+                                            "PA: ${snapshot.data[posicion]['Padecimiento'] ['Contexto'] ?? ''}",
                                             maxLines: 10,
                                             style: Styles.textSyleGrowth(
                                                 fontSize: 10),
@@ -1041,7 +1045,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                           gridDelegate:
                                               GridViewTools.gridDelegate(
                                                   crossAxisCount: 1,
-                                                  mainAxisExtent: 50),
+                                                  mainAxisExtent: 55),
                                           itemCount: Listas
                                                   .listWithoutRepitedValues(Listas
                                                       .listFromMapWithOneKey(
@@ -1349,7 +1353,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
               Databases.siteground_database_reghosp,
               Repositorios.repositorio['consultPadecimientoQuery'],
               response[v]['ID_Hosp'],
-            ),
+            ) ,
           });
           response[v].addAll({
             "Situaciones": await Actividades.consultarId(

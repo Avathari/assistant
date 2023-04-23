@@ -75,15 +75,15 @@ class _OperacionesHospitalizacionesState
 
   @override
   void initState() {
-    for (var element in Escalas.serviciosHospitalarios) {
-      auxiliarServicios.add(element.toString());
-    }
+    Future.forEach(Escalas.serviciosHospitalarios,
+            (element) => auxiliarServicios.add(element.toString().trim()))
+        .whenComplete(() {
+      servicioTratanteValue = auxiliarServicios[0].trim();
+      servicioTratanteInicialValue = auxiliarServicios[0].trim();
+      motivoEgresoValue = Escalas.motivosEgresos[0].trim();
+    });
 
-    servicioTratanteValue = auxiliarServicios[0];
-    servicioTratanteInicialValue = auxiliarServicios[0];
-    motivoEgresoValue = Escalas.motivosEgresos[0];
-
-    print("Pacientes.ID_Hospitalizacion ${Pacientes.ID_Hospitalizacion}");
+    // print("Pacientes.ID_Hospitalizacion ${Pacientes.ID_Hospitalizacion}");
     if (Hospitalizaciones.Hospitalizacion['ID_Hosp'] == null ||
         Pacientes.ID_Hospitalizacion == 0) {
       widget.operationActivity = Constantes.Register;
@@ -91,14 +91,27 @@ class _OperacionesHospitalizacionesState
     //
     switch (widget.operationActivity) {
       case Constantes.Nulo:
+        fechaIngresoTextController.text =
+            Calendarios.today(format: 'yyyy-MM-dd');
+
+        servicioTratanteValue = auxiliarServicios[75].trim();
+        servicioTratanteInicialValue = auxiliarServicios[141].trim();
         break;
       case Constantes.Consult:
+        fechaIngresoTextController.text =
+            Calendarios.today(format: 'yyyy-MM-dd');
+
+        servicioTratanteValue = auxiliarServicios[75].trim();
+        servicioTratanteInicialValue = auxiliarServicios[141].trim();
         break;
       case Constantes.Register:
         widget._operationButton = 'Registrar';
 
         fechaIngresoTextController.text =
-            Calendarios.today(format: 'yyyy/MM/dd');
+            Calendarios.today(format: 'yyyy-MM-dd');
+
+        servicioTratanteValue = auxiliarServicios[75];
+        servicioTratanteInicialValue = auxiliarServicios[141];
         break;
       case Constantes.Update:
         setState(() {
@@ -126,9 +139,11 @@ class _OperacionesHospitalizacionesState
               Hospitalizaciones.Hospitalizacion['Medi_Trat'].toString();
 
           servicioTratanteValue = // Valores.servicioTratante!;
-              Hospitalizaciones.Hospitalizacion['Serve_Trat'].toString();
+              Hospitalizaciones.Hospitalizacion['Serve_Trat'].trim().toString();
           servicioTratanteInicialValue = // Valores.servicioTratanteInicial!;
-              Hospitalizaciones.Hospitalizacion['Serve_Trat_INI'].toString();
+              Hospitalizaciones.Hospitalizacion['Serve_Trat_INI']
+                  .trim()
+                  .toString();
           motivoEgresoValue = Valores.motivoEgreso != ''
               ? Hospitalizaciones.Hospitalizacion['EGE_Motivo']
                   .toString() // Valores.motivoEgreso
@@ -221,16 +236,27 @@ class _OperacionesHospitalizacionesState
             child: EditTextArea(
               keyBoardType: TextInputType.number,
               inputFormat: MaskTextInputFormatter(
-                  mask: '####/##/##',
+                  mask: '####-##-##',
                   filter: {"#": RegExp(r'[0-9]')},
                   type: MaskAutoCompletionType.lazy),
               labelEditText: 'Fecha de Ingreso',
               textController: fechaIngresoTextController,
+              onChange: (value) {
+                setState(() {
+                  Valores.fechaIngresoHospitalario = fechaIngresoTextController.text;
+                  diasEstanciaTextController.text = Valores.diasEstancia.toString();
+                });
+              },
               withShowOption: true,
               selection: true,
               onSelected: () {
-                fechaEgresoTextController.text =
-                    Calendarios.today(format: 'yyyy/MM/dd');
+                fechaIngresoTextController.text =
+                    Calendarios.today(format: 'yyyy-MM-dd');
+                setState(() {
+                  Valores.fechaIngresoHospitalario = fechaIngresoTextController.text;
+                  diasEstanciaTextController.text = Valores.diasEstancia.toString();
+                });
+
               },
               numOfLines: 1,
             ),
@@ -239,7 +265,7 @@ class _OperacionesHospitalizacionesState
             child: EditTextArea(
               keyBoardType: TextInputType.number,
               inputFormat: MaskTextInputFormatter(
-                  mask: '####/##/##',
+                  mask: '####-##-##',
                   filter: {"#": RegExp(r'[0-9]')},
                   type: MaskAutoCompletionType.lazy),
               labelEditText: 'Fecha de Egreso',
@@ -249,7 +275,7 @@ class _OperacionesHospitalizacionesState
               selection: true,
               onSelected: () {
                 fechaEgresoTextController.text =
-                    Calendarios.today(format: 'yyyy/MM/dd');
+                    Calendarios.today(format: 'yyyy-MM-dd');
               },
             ),
           ),
@@ -349,7 +375,7 @@ class _OperacionesHospitalizacionesState
               : isMobile(context)
                   ? 240
                   : 200,
-          initialValue: servicioTratanteValue),
+          initialValue: servicioTratanteValue.trim()),
       Spinner(
           tittle: "Servicio Que Inicia Tratamiento",
           onChangeValue: (String value) {
@@ -363,7 +389,7 @@ class _OperacionesHospitalizacionesState
               : isMobile(context)
                   ? 240
                   : 200,
-          initialValue: servicioTratanteInicialValue),
+          initialValue: servicioTratanteInicialValue.trim()),
       Spinner(
           tittle: "Motivo del Egreso",
           onChangeValue: (String value) {
@@ -391,8 +417,8 @@ class _OperacionesHospitalizacionesState
         isNumCama,
         diasEstanciaTextController.text,
         medicoTratanteTextController.text,
-        servicioTratanteValue,
-        servicioTratanteInicialValue,
+        servicioTratanteValue.trim(),
+        servicioTratanteInicialValue.trim(),
         fechaEgresoTextController.text,
         motivoEgresoValue,
         //
@@ -427,9 +453,11 @@ class _OperacionesHospitalizacionesState
                       .then((value) {
                     // ******************************************** *** *
                     Pacientes.Hospitalizaciones = value;
+                    Pacientes.ID_Hospitalizacion = value.last['ID_Hosp'];
+                    Valores.servicioTratante = value.last['Serve_Trat'];
                     Constantes.reinit(value: value);
                     // ******************************************** *** *
-                  }).then((value) {
+                  }).whenComplete(() {
                     Repositorios.registrarRegistro();
                     Situaciones.registrarRegistro();
                     Expedientes.registrarRegistro();

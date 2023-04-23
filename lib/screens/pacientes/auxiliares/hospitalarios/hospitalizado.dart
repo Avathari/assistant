@@ -171,13 +171,21 @@ class _HospitalizadoState extends State<Hospitalizado> {
                     iconData: Icons.upload_file,
                     labelButton: 'Configurar registro de la atención',
                     onPress: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            OperacionesHospitalizaciones(
-                              retornar: true,
-                              operationActivity: Constantes.Update,
-                            ),
-                      ));
+                      if (isDesktop(context)) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              GestionHospitalizaciones(
+                              ),
+                        ));
+                      } else {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              OperacionesHospitalizaciones(
+                                retornar: true,
+                                operationActivity: Constantes.Update,
+                              ),
+                        ));
+                      }
                     },
                   ),
                   GrandIcon(
@@ -270,13 +278,12 @@ class _HospitalizadoState extends State<Hospitalizado> {
                           iconData: Icons.upload_file,
                           labelButton: 'Configurar registro de la atención',
                           onPress: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  OperacionesHospitalizaciones(
-                                    retornar: true,
-                                    operationActivity: Constantes.Update,
-                                  ),
-                            ));
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    GestionHospitalizaciones(
+                                    ),
+                              ));
+
                           },
                         ),
                       ),

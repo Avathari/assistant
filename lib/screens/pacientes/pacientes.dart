@@ -37,14 +37,6 @@ class GestionPacientes extends StatefulWidget {
 }
 
 class _GestionPacientesState extends State<GestionPacientes> {
-  late List? foundedItems = [];
-  var gestionScrollController = ScrollController();
-  var searchTextController = TextEditingController();
-
-  String searchCriteria = "Buscar por Apellido";
-
-  var fileAssocieted = 'assets/vault/pacientesRepository.json';
-
   @override
   void initState() {
     iniciar();
@@ -107,47 +99,80 @@ class _GestionPacientesState extends State<GestionPacientes> {
             children: [
               Expanded(
                 flex: 1,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                      onChanged: (value) {
-                        _runFilterSearch(value);
-                      },
-                      controller: searchTextController,
-                      autofocus: false,
-                      keyboardType: TextInputType.text,
-                      autocorrect: true,
-                      obscureText: false,
-                      style: const TextStyle(
-                        color: Colors.white,
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 8,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextField(
+                            onChanged: (value) {
+                              _runFilterSearch(value);
+                            },
+                            controller: searchTextController,
+                            autofocus: false,
+                            keyboardType: TextInputType.text,
+                            autocorrect: true,
+                            obscureText: false,
+                            style: const TextStyle(
+                              color: Colors.white,
+                            ),
+                            textAlign: TextAlign.center,
+                            decoration: InputDecoration(
+                              helperStyle: const TextStyle(
+                                color: Colors.white,
+                              ),
+                              labelText: searchCriteria,
+                              labelStyle: const TextStyle(
+                                color: Colors.white,
+                              ),
+                              contentPadding: const EdgeInsets.all(20),
+                              enabledBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.white, width: 0.5),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20))),
+                              focusColor: Colors.white,
+                              suffixIcon: IconButton(
+                                icon: const Icon(
+                                  Icons.replay_outlined,
+                                  color: Colors.white,
+                                ),
+                                tooltip: Sentences.reload,
+                                onPressed: () {
+                                  reiniciar(); // _pullListRefresh();
+                                },
+                              ),
+                            )),
                       ),
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                        helperStyle: const TextStyle(
-                          color: Colors.white,
-                        ),
-                        labelText: searchCriteria,
-                        labelStyle: const TextStyle(
-                          color: Colors.white,
-                        ),
-                        contentPadding: const EdgeInsets.all(20),
-                        enabledBorder: const OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.white, width: 0.5),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                        focusColor: Colors.white,
-                        suffixIcon: IconButton(
-                          icon: const Icon(
-                            Icons.replay_outlined,
-                            color: Colors.white,
-                          ),
-                          tooltip: Sentences.reload,
-                          onPressed: () {
-                            reiniciar(); // _pullListRefresh();
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GrandIcon(
+                          labelButton: 'Pacientes en Hospitalización',
+                          iconData: Icons.local_hotel_sharp,
+                          onPress: () {
+                            _pullListRefresh().whenComplete(() =>
+                                _runHospitalizedSearch()); // reiniciar(); //
                           },
                         ),
-                      )),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GrandIcon(
+                          labelButton: 'Pacientes en Consulta Externa',
+                          iconData: Icons.desk_sharp,
+                          onPress: () {
+                            _pullListRefresh().whenComplete(
+                                () => _runConsultaSearch()); // reiniciar(); //
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Expanded(
@@ -162,7 +187,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
                     builder: (context, AsyncSnapshot snapshot) {
                       if (snapshot.hasError) print(snapshot.error);
                       return snapshot.hasData
-                          ? ListView.builder(
+                          ? GridView.builder(
                               controller: gestionScrollController,
                               shrinkWrap: true,
                               itemCount: snapshot.data == null
@@ -389,6 +414,9 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                   ),
                                 );
                               },
+                              gridDelegate: GridViewTools.gridDelegate(
+                                  crossAxisCount: isDesktop(context) ? 2 : 1,
+                                  mainAxisExtent: 200),
                             )
                           : Center(
                               child: Column(
@@ -424,6 +452,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
     );
   }
 
+  // OPERACIONES DE LA INTERFAZ ****************** ******** * * * *
   void iniciar() {
     Terminal.printWarning(
         message: " . . . Iniciando Actividad - Repositorio de Pacientes");
@@ -524,35 +553,15 @@ class _GestionPacientesState extends State<GestionPacientes> {
     ));
   }
 
-  Future<Null> _pullListRefresh() async {
-    iniciar();
-  }
-
-  void _runFilterSearch(String enteredKeyword) {
-    List? results = [];
-
-    if (enteredKeyword.isEmpty) {
-      _pullListRefresh();
-    } else {
-      results = Listas.listFromMap(
-          lista: foundedItems!,
-          keySearched: 'Pace_Ape_Pat',
-          elementSearched: Sentences.capitalize(enteredKeyword));
-
-      setState(() {
-        foundedItems = results;
-      });
-    }
-  }
-
   void reiniciar() {
     Terminal.printAlert(
         message: "Iniciando actividad : : \n "
             "Consulta de pacientes hospitalizados . . .");
     Actividades.detalles(Databases.siteground_database_regpace,
-        Pacientes.pacientes['pacientesStadistics'])
+            Pacientes.pacientes['pacientesStadistics'])
         .then((value) {
-      Archivos.createJsonFromMap([value], filePath: 'assets/vault/patientsStats.json');
+      Archivos.createJsonFromMap([value],
+          filePath: 'assets/vault/patientsStats.json');
     });
     Actividades.consultar(Databases.siteground_database_regpace,
             Pacientes.pacientes['consultQuery']!)
@@ -575,6 +584,95 @@ class _GestionPacientesState extends State<GestionPacientes> {
               );
             }));
   }
+
+  // ACTIVIDADES DE BÚSQUEDA ************ ************ ***** * ** *
+  Future<Null> _pullListRefresh() async {
+    iniciar();
+  }
+
+  void _runFilterSearch(String enteredKeyword) {
+    List? results = [];
+
+    if (enteredKeyword.isEmpty) {
+      _pullListRefresh();
+    } else {
+      results = Listas.listFromMap(
+          lista: foundedItems!,
+          keySearched: 'Pace_Ape_Pat',
+          elementSearched: Sentences.capitalize(enteredKeyword));
+
+      setState(() {
+        foundedItems = results;
+      });
+    }
+  }
+
+  void _runHospitalizedSearch({String enteredKeyword = 'Hospitalización'}) {
+    Terminal.printWarning(
+        message: " . . . Iniciando Actividad - Repositorio de Pacientes");
+    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+      setState(() {
+        foundedItems = value;
+      });
+    }).onError((error, stackTrace) {
+      reiniciar();
+    }).whenComplete(() {
+      Terminal.printWarning(message: " . . . Actividad Iniciada");
+      List? results = [];
+
+      if (enteredKeyword.isEmpty) {
+        _pullListRefresh();
+      } else {
+        results = Listas.listFromMap(
+            lista: foundedItems!,
+            keySearched: 'Pace_Hosp',
+            elementSearched: Sentences.capitalize(enteredKeyword));
+
+        // Terminal.printNotice(message: " . . . ${results.length} Pacientes Encontrados".toUpperCase());
+        setState(() {
+          foundedItems = results;
+        });
+      }
+    });
+  }
+
+  void _runConsultaSearch({String enteredKeyword = 'Consulta Externa'}) {
+    Terminal.printWarning(
+        message: " . . . Iniciando Actividad - Repositorio de Pacientes");
+    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+      setState(() {
+        foundedItems = value;
+      });
+    }).onError((error, stackTrace) {
+      reiniciar();
+    }).whenComplete(() {
+      Terminal.printWarning(message: " . . . Actividad Iniciada");
+      List? results = [];
+
+      if (enteredKeyword.isEmpty) {
+        _pullListRefresh();
+      } else {
+        results = Listas.listFromMap(
+            lista: foundedItems!,
+            keySearched: 'Pace_Hosp',
+            elementSearched: Sentences.capitalize(enteredKeyword));
+
+        // Terminal.printNotice(message: " . . . ${results.length} Pacientes Encontrados".toUpperCase());
+        setState(() {
+          foundedItems = results;
+        });
+      }
+    });
+  }
+
+  // VARIABLES DE LA INTERFAZ ***************** ******* * * * *
+  late List? foundedItems = [];
+  var gestionScrollController = ScrollController();
+  var searchTextController = TextEditingController();
+
+  String searchCriteria = "Buscar por Apellido";
+
+  var fileAssocieted = 'assets/vault/pacientesRepository.json';
 }
 
 class OperacionesPacientes extends StatefulWidget {
@@ -1345,7 +1443,10 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
 
   void operationMethod(BuildContext context) {
     try {
-      Operadores.loadingActivity(context: context, tittle: "Registro de información",message: "Registrando datos . . . ");
+      Operadores.loadingActivity(
+          context: context,
+          tittle: "Registro de información",
+          message: "Registrando datos . . . ");
       listOfValues = [
         idOperation,
         numeroPacienteTextController.text.trim(),

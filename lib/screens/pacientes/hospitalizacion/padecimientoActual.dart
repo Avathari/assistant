@@ -26,63 +26,69 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
             Repositorios.repositorio['consultPadecimientoQuery'],
             Pacientes.ID_Hospitalizacion)
         .then((response) {
-      // print("RESPUESTA $response");
-      setState(() {
-        fechaPadecimientoTextController.text = response['FechaPadecimiento'] ??
-            Calendarios.today(format: 'yyyy/MM/dd');
-        padecimientoActualTextController.text = response['Contexto'];
-      });
+      print("RESPUESTA $response");
+      if (response['Error'] == 'Hubo un error') {
+        Operadores.alertActivity(
+            context: context,
+            tittle: 'Error en la Consulta',
+            message:
+                'ERROR - No se pudo consultar el Padecimiento Actual . . . \n'
+                'Creando nuevo padecimiento actual',
+        onAcept: (){
+              Navigator.of(context).pop();
+              Navigator.of(context).pop();
+        });
+        Repositorios.registrarRegistro();
+      } else {
+        setState(() {
+          fechaPadecimientoTextController.text =
+              response['FechaPadecimiento'] ??
+                  Calendarios.today(format: 'yyyy/MM/dd');
+          padecimientoActualTextController.text = response['Contexto'] ?? '';
+        });
+      }
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      controller: ScrollController(),
-      child: Column(
-        children: [
-          TittlePanel(textPanel: 'Padecimiento Actual'),
-          EditTextArea(
-            keyBoardType: TextInputType.datetime,
-            inputFormat: MaskTextInputFormatter(
-                mask: '####/##/##', filter: {"#": RegExp(r'[0-9]')}),
-            labelEditText: 'Fecha de Inicio Padecimiento',
-            textController: fechaPadecimientoTextController,
-            withShowOption: true,
-            selection: true,
-            onSelected: () {
-              fechaPadecimientoTextController.text =
-                  Calendarios.today(format: 'yyyy/MM/dd');
-            },
-            numOfLines: 1,
-            onChange: (value) {
-              setState(() {
-                fechaPadecimientoTextController.text = value;
-              });
-
-            },
-          ),
-          EditTextArea(
-            keyBoardType: TextInputType.text,
-            inputFormat: MaskTextInputFormatter(),
-            labelEditText: 'Descripción del Padecimiento Actual',
-            textController: padecimientoActualTextController,
-            numOfLines: isTablet(context) ? 35 : 15,
-            onChange: (value) {
-              setState(() {
-                Valores.padecimientoActual = value;
-              });
-            },
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        TittlePanel(textPanel: 'Padecimiento Actual'),
+        EditTextArea(
+          keyBoardType: TextInputType.datetime,
+          inputFormat: MaskTextInputFormatter(
+              mask: '####/##/##', filter: {"#": RegExp(r'[0-9]')}),
+          labelEditText: 'Fecha de Inicio Padecimiento',
+          textController: fechaPadecimientoTextController,
+          withShowOption: true,
+          selection: true,
+          onSelected: () {
+            fechaPadecimientoTextController.text =
+                Calendarios.today(format: 'yyyy/MM/dd');
+          },
+          numOfLines: 1,
+          onChange: (value) {
+            setState(() {
+              fechaPadecimientoTextController.text = value;
+            });
+          },
+        ),
+        EditTextArea(
+          keyBoardType: TextInputType.text,
+          inputFormat: MaskTextInputFormatter(),
+          labelEditText: 'Descripción del Padecimiento Actual',
+          textController: padecimientoActualTextController,
+          numOfLines: isTablet(context) ? 35 : 15,
+          onChange: (value) {
+            setState(() {
+              Valores.padecimientoActual = value;
+            });
+          },
+        ),
+      ],
     );
   }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
 }

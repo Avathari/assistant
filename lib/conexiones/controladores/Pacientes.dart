@@ -945,8 +945,8 @@ class Pacientes {
     "pacientesStadistics": "SELECT "
         "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE Pace_Ses = '${Pacientes.Sexo[0]}') as Total_Mujeres,"
         "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE Pace_Ses = '${Pacientes.Sexo[1]}') as Total_Hombres,"
-        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE Pace_Hosp_Real = '${Pacientes.Atencion[0]}') as Total_Hospitalizacion,"
-        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE Pace_Hosp_Real = '${Pacientes.Atencion[1]}') as Total_Consulta,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE Pace_Hosp = '${Pacientes.Atencion[0]}') as Total_Hospitalizacion,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE Pace_Hosp = '${Pacientes.Atencion[1]}') as Total_Consulta,"
         "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE Pace_Turo = '${Pacientes.Turno[0]}') as Total_Matutino,"
         "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE Pace_Turo = '${Pacientes.Turno[1]}') as Total_Vespertino,"
         "(SELECT IFNULL(count(*), 0) FROM pace_iden_iden WHERE Pace_Stat = '${Pacientes.Vivo[0]}') as Total_Vivos,"
@@ -6511,7 +6511,7 @@ class Hospitalizaciones {
     "truncateQuery": "TRUNCATE pace_hosp",
     "dropQuery": "DROP TABLE pace_hosp",
     "consultQuery": "SELECT * FROM pace_hosp WHERE",
-    "consultIdQuery": "SELECT * FROM pace_hosp WHERE ID_Pace = ?",
+    "consultIdQuery": "SELECT * FROM pace_hosp WHERE ID_Pace = ? ORDER BY ID_Hosp ASC",
     "consultIdLastQuery": "SELECT * FROM pace_hosp WHERE ID_Pace = ? "
         "ORDER BY ID_Hosp DESC",
     "consultByIdPrimaryQuery": "SELECT * FROM pace_hosp WHERE ID_Hosp = ?",
@@ -6616,7 +6616,7 @@ class Diagnosticos {
                   `Pace_APP_DEG_SINO` tinyint(1) NOT NULL,
                   `Pace_APP_DEG` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
                   `Pace_APP_DEG_com` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-                  `Pace_APP_DEG_dia` int(200) NOT NULL,
+                  `Pace_APP_DEG_dia` DATE NOT NULL,
                   `Pace_APP_DEG_tra_SINO` tinyint(1) NOT NULL,
                   `Pace_APP_DEG_tra` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
                   `Pace_APP_DEG_sus_SINO` tinyint(1) NOT NULL,
