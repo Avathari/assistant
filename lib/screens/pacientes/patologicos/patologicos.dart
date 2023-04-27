@@ -199,6 +199,7 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
       ),
       EditTextArea(
         keyBoardType: TextInputType.text,
+        limitOfChars: 700,
         inputFormat: MaskTextInputFormatter(),
         labelEditText: 'Comentario de diagnóstico',
         textController: comenDiagnoTextController,
@@ -240,6 +241,7 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
       CrossLine(),
       EditTextArea(
         keyBoardType: TextInputType.text,
+        limitOfChars: 1000,
         inputFormat: MaskTextInputFormatter(),
         labelEditText: 'Comentario del tratamiento',
         textController: tratamientoTextController,
@@ -295,6 +297,7 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
           Expanded(
             flex: 4,
             child: EditTextArea(
+              limitOfChars: 1000,
               keyBoardType: TextInputType.text,
               inputFormat: MaskTextInputFormatter(),
               labelEditText: 'Antecedentes del Diagnóstico',

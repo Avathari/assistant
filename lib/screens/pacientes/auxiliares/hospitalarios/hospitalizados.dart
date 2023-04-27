@@ -361,8 +361,11 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                                 context: context,
                                                 chyldrim: Center(
                                                   child: Text(
-                                                    snapshot.data[posicion]['Padecimiento'] == null ? 'Sin Padecimiento Actual' :
-                                                    "PA: ${snapshot.data[posicion]['Padecimiento'] ['Contexto'] ?? ''}",
+                                                    snapshot.data[posicion][
+                                                                'Padecimiento'] ==
+                                                            null
+                                                        ? 'Sin Padecimiento Actual'
+                                                        : "PA: ${snapshot.data[posicion]['Padecimiento']['Contexto'] ?? ''}",
                                                     maxLines: 10,
                                                     softWrap: true,
                                                     style:
@@ -374,8 +377,11 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                                 ));
                                           },
                                           child: Text(
-                                            snapshot.data[posicion]['Padecimiento'] == null ? 'Sin Padecimiento Actual' :
-                                            "PA: ${snapshot.data[posicion]['Padecimiento'] ['Contexto'] ?? ''}",
+                                            snapshot.data[posicion]
+                                                        ['Padecimiento'] ==
+                                                    null
+                                                ? 'Sin Padecimiento Actual'
+                                                : "PA: ${snapshot.data[posicion]['Padecimiento']['Contexto'] ?? ''}",
                                             maxLines: 10,
                                             style: Styles.textSyleGrowth(
                                                 fontSize: 10),
@@ -554,7 +560,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                               GridViewTools.gridDelegate(
                                                   crossAxisCount: 1,
                                                   mainAxisSpacing: 5.0,
-                                                  mainAxisExtent:55),
+                                                  mainAxisExtent: 55),
                                           itemCount: Listas
                                                   .listWithoutRepitedValues(Listas
                                                       .listFromMapWithOneKey(
@@ -809,7 +815,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                       style:
                                           Styles.textSyleGrowth(fontSize: 14)),
                                   Text(
-                                    "Hemotipo: ${snapshot.data[posicion]['Pace_Hemo']?? ''}",
+                                    "Hemotipo: ${snapshot.data[posicion]['Pace_Hemo'] ?? ''}",
                                     maxLines: 2,
                                     style: Styles.textSyleGrowth(fontSize: 10),
                                   ),
@@ -853,8 +859,11 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                                 context: context,
                                                 chyldrim: Center(
                                                   child: Text(
-                                                    snapshot.data[posicion]['Padecimiento'] == null ? 'Sin Padecimiento Actual' :
-                                                    "Padecimiento Actual:\n ${snapshot.data[posicion]['Padecimiento'] ['Contexto'] ?? ''}",
+                                                    snapshot.data[posicion][
+                                                                'Padecimiento'] ==
+                                                            null
+                                                        ? 'Sin Padecimiento Actual'
+                                                        : "Padecimiento Actual:\n ${snapshot.data[posicion]['Padecimiento']['Contexto'] ?? ''}",
                                                     maxLines: 10,
                                                     softWrap: true,
                                                     style:
@@ -866,8 +875,11 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                                 ));
                                           },
                                           child: Text(
-                                            snapshot.data[posicion]['Padecimiento'] == null ? 'Sin Padecimiento Actual' :
-                                            "PA: ${snapshot.data[posicion]['Padecimiento'] ['Contexto'] ?? ''}",
+                                            snapshot.data[posicion]
+                                                        ['Padecimiento'] ==
+                                                    null
+                                                ? 'Sin Padecimiento Actual'
+                                                : "PA: ${snapshot.data[posicion]['Padecimiento']['Contexto'] ?? ''}",
                                             maxLines: 10,
                                             style: Styles.textSyleGrowth(
                                                 fontSize: 10),
@@ -899,9 +911,13 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                       Expanded(
                                         child: ValuePanel(
                                           secondText: snapshot.data[posicion]
-                                                      ['Situaciones']
-                                                  ['Disp_Oxigen'] ??
-                                              '',
+                                                      ['Situaciones'] !=
+                                                  null
+                                              ? snapshot.data[posicion]
+                                                          ['Situaciones']
+                                                      ['Disp_Oxigen'] ??
+                                                  ''
+                                              : '',
                                         ),
                                       ),
                                       Expanded(
@@ -914,112 +930,172 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                           children: [
                                             ValuePanel(
                                               firstText: 'CVP',
-                                              secondText: Dicotomicos.fromInt(
-                                                      snapshot.data[posicion][
+                                              secondText: Dicotomicos.fromInt(snapshot
+                                                                      .data[
+                                                                  posicion]
+                                                              ['Situaciones'] !=
+                                                          null
+                                                      ? snapshot.data[posicion][
                                                                   'Situaciones']
                                                               ['CVP'] ??
-                                                          0)
+                                                          0
+                                                      : 0)
                                                   .toString(),
                                             ),
                                             ValuePanel(
                                               firstText: 'CVLP',
-                                              secondText: Dicotomicos.fromInt(
-                                                      snapshot.data[posicion][
+                                              secondText: Dicotomicos.fromInt(snapshot
+                                                                      .data[
+                                                                  posicion]
+                                                              ['Situaciones'] !=
+                                                          null
+                                                      ? snapshot.data[posicion][
                                                                   'Situaciones']
                                                               ['CVLP'] ??
-                                                          0)
+                                                          0
+                                                      : 0)
                                                   .toString(),
                                             ),
                                             ValuePanel(
                                               firstText: 'CVC',
-                                              secondText: Dicotomicos.fromInt(
-                                                      snapshot.data[posicion][
+                                              secondText: Dicotomicos.fromInt(snapshot
+                                                                      .data[
+                                                                  posicion]
+                                                              ['Situaciones'] !=
+                                                          null
+                                                      ? snapshot.data[posicion][
                                                                   'Situaciones']
                                                               ['CVC'] ??
-                                                          0)
+                                                          0
+                                                      : 0)
                                                   .toString(),
                                             ),
                                             ValuePanel(
                                               firstText: 'MAH',
-                                              secondText: Dicotomicos.fromInt(
-                                                      snapshot.data[posicion][
+                                              secondText: Dicotomicos.fromInt(snapshot
+                                                                      .data[
+                                                                  posicion]
+                                                              ['Situaciones'] !=
+                                                          null
+                                                      ? snapshot.data[posicion][
                                                                   'Situaciones']
                                                               ['MAH'] ??
-                                                          0)
+                                                          0
+                                                      : 0)
                                                   .toString(),
                                             ),
                                             ValuePanel(
                                               firstText: 'FOL',
-                                              secondText: Dicotomicos.fromInt(
-                                                      snapshot.data[posicion][
+                                              secondText: Dicotomicos.fromInt(snapshot
+                                                                      .data[
+                                                                  posicion]
+                                                              ['Situaciones'] !=
+                                                          null
+                                                      ? snapshot.data[posicion][
                                                                   'Situaciones']
                                                               ['S_Foley'] ??
-                                                          0)
+                                                          0
+                                                      : 0)
                                                   .toString(),
                                             ),
                                             ValuePanel(
                                               firstText: 'SNG',
-                                              secondText: Dicotomicos.fromInt(
-                                                      snapshot.data[posicion][
+                                              secondText: Dicotomicos.fromInt(snapshot
+                                                                      .data[
+                                                                  posicion]
+                                                              ['Situaciones'] !=
+                                                          null
+                                                      ? snapshot.data[posicion][
                                                                   'Situaciones']
                                                               ['SNG'] ??
-                                                          0)
+                                                          0
+                                                      : 0)
                                                   .toString(),
                                             ),
                                             ValuePanel(
                                               firstText: 'SOG',
-                                              secondText: Dicotomicos.fromInt(
-                                                      snapshot.data[posicion][
+                                              secondText: Dicotomicos.fromInt(snapshot
+                                                                      .data[
+                                                                  posicion]
+                                                              ['Situaciones'] !=
+                                                          null
+                                                      ? snapshot.data[posicion][
                                                                   'Situaciones']
                                                               ['SOG'] ??
-                                                          0)
+                                                          0
+                                                      : 0)
                                                   .toString(),
                                             ),
                                             ValuePanel(
                                               firstText: 'DRE',
-                                              secondText: Dicotomicos.fromInt(
-                                                      snapshot.data[posicion][
+                                              secondText: Dicotomicos.fromInt(snapshot
+                                                                      .data[
+                                                                  posicion]
+                                                              ['Situaciones'] !=
+                                                          null
+                                                      ? snapshot.data[posicion][
                                                                   'Situaciones']
                                                               ['Drenaje'] ??
-                                                          0)
+                                                          0
+                                                      : 0)
                                                   .toString(),
                                             ),
                                             ValuePanel(
                                               firstText: 'SEP',
-                                              secondText: Dicotomicos.fromInt(
-                                                      snapshot.data[posicion][
+                                              secondText: Dicotomicos.fromInt(snapshot
+                                                                      .data[
+                                                                  posicion]
+                                                              ['Situaciones'] !=
+                                                          null
+                                                      ? snapshot.data[posicion][
                                                                   'Situaciones']
                                                               ['Pleuro_Vac'] ??
-                                                          0)
+                                                          0
+                                                      : 0)
                                                   .toString(),
                                             ),
                                             ValuePanel(
                                               firstText: 'COL',
-                                              secondText: Dicotomicos.fromInt(
-                                                      snapshot.data[posicion][
+                                              secondText: Dicotomicos.fromInt(snapshot
+                                                                      .data[
+                                                                  posicion]
+                                                              ['Situaciones'] !=
+                                                          null
+                                                      ? snapshot.data[posicion][
                                                                   'Situaciones']
                                                               ['Colostomia'] ??
-                                                          0)
+                                                          0
+                                                      : 0)
                                                   .toString(),
                                             ),
                                             ValuePanel(
                                               firstText: 'GAS',
-                                              secondText: Dicotomicos.fromInt(
-                                                      snapshot.data[posicion][
+                                              secondText: Dicotomicos.fromInt(snapshot
+                                                                      .data[
+                                                                  posicion]
+                                                              ['Situaciones'] !=
+                                                          null
+                                                      ? snapshot.data[posicion][
                                                                   'Situaciones']
                                                               [
                                                               'Gastrostomia'] ??
-                                                          0)
+                                                          0
+                                                      : 0)
                                                   .toString(),
                                             ),
                                             ValuePanel(
                                               firstText: 'TEN',
-                                              secondText: Dicotomicos.fromInt(
-                                                      snapshot.data[posicion][
+                                              secondText: Dicotomicos.fromInt(snapshot
+                                                                      .data[
+                                                                  posicion]
+                                                              ['Situaciones'] !=
+                                                          null
+                                                      ? snapshot.data[posicion][
                                                                   'Situaciones']
                                                               [
                                                               'Dialisis_Peritoneal'] ??
-                                                          0)
+                                                          0
+                                                      : 0)
                                                   .toString(),
                                             ),
                                           ],
@@ -1040,47 +1116,55 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                     ),
                                     Expanded(
                                       flex: 3,
-                                      child: GridView.builder(
-                                          padding: const EdgeInsets.all(4),
-                                          gridDelegate:
-                                              GridViewTools.gridDelegate(
-                                                  crossAxisCount: 1,
-                                                  mainAxisExtent: 55),
-                                          itemCount: Listas
-                                                  .listWithoutRepitedValues(Listas
-                                                      .listFromMapWithOneKey(
-                                                          snapshot.data[
-                                                                  posicion]
-                                                              ['Auxiliares']))
-                                              .length,
-                                          // snapshot.data[posicion]['Auxiliares'].length,
-                                          itemBuilder:
-                                              (BuildContext context, index) {
-                                            var list = Listas
-                                                .listWithoutRepitedValues(Listas
-                                                    .listFromMapWithOneKey(
+                                      child: snapshot.data[posicion]
+                                                  ['Auxiliares'] !=
+                                              null
+                                          ? GridView.builder(
+                                              padding: const EdgeInsets.all(4),
+                                              gridDelegate:
+                                                  GridViewTools.gridDelegate(
+                                                      crossAxisCount: 1,
+                                                      mainAxisExtent: 55),
+                                              itemCount:
+                                                  Listas.listWithoutRepitedValues(
+                                                          Listas.listFromMapWithOneKey(
+                                                              snapshot.data[
+                                                                      posicion][
+                                                                  'Auxiliares']))
+                                                      .length,
+                                              // snapshot.data[posicion]['Auxiliares'].length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      index) {
+                                                var list = Listas
+                                                    .listWithoutRepitedValues(Listas
+                                                        .listFromMapWithOneKey(
+                                                            snapshot.data[
+                                                                    posicion][
+                                                                'Auxiliares']));
+                                                return ValuePanel(
+                                                  secondText:
+                                                      "${list[index]}", // Resultado
+                                                  withEditMessage: true,
+                                                  onEdit: (value) {
+                                                    Pacientes.Paraclinicos =
                                                         snapshot.data[posicion]
-                                                            ['Auxiliares']));
-                                            return ValuePanel(
-                                              secondText:
-                                                  "${list[index]}", // Resultado
-                                              withEditMessage: true,
-                                              onEdit: (value) {
-                                                Pacientes.Paraclinicos =
-                                                    snapshot.data[posicion]
-                                                        ['Auxiliares'];
+                                                            ['Auxiliares'];
 
-                                                Terminal.printExpected(
-                                                    message:
-                                                        "snapshot.data[posicion]['Auxiliares'] ${snapshot.data[posicion]['Auxiliares']}");
+                                                    Terminal.printExpected(
+                                                        message:
+                                                            "snapshot.data[posicion]['Auxiliares'] ${snapshot.data[posicion]['Auxiliares']}");
 
-                                                Datos.portapapeles(
-                                                    context: context,
-                                                    text: Auxiliares.porFecha(
-                                                        fechaActual: value));
-                                              },
-                                            );
-                                          }),
+                                                    Datos.portapapeles(
+                                                        context: context,
+                                                        text:
+                                                            Auxiliares.porFecha(
+                                                                fechaActual:
+                                                                    value));
+                                                  },
+                                                );
+                                              })
+                                          : Container(),
                                     ),
                                   ],
                                 ),
@@ -1353,7 +1437,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
               Databases.siteground_database_reghosp,
               Repositorios.repositorio['consultPadecimientoQuery'],
               response[v]['ID_Hosp'],
-            ) ,
+            ),
           });
           response[v].addAll({
             "Situaciones": await Actividades.consultarId(

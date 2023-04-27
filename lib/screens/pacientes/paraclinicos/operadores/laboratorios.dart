@@ -235,43 +235,84 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                       children: [
                         Expanded(
                           flex: isMobile(context) ? 1 : 1,
-                          child: EditTextArea(
-                            keyBoardType: TextInputType.number,
-                            inputFormat: MaskTextInputFormatter(
-                                mask: '####/##/##',
-                                filter: {"#": RegExp(r'[0-9]')},
-                                type: MaskAutoCompletionType.lazy),
-                            labelEditText: "Fecha de realización",
-                            textController: textDateController,
-                            numOfLines: 1,
-                            selection: true,
-                            withShowOption: true,
-                            iconData: Icons.calendar_month,
-                            onSelected: () {
-                              iniciar();
-                              Operadores.selectOptionsActivity(
-                                  context: context,
-                                  options: Listas.listWithoutRepitedValues(
-                                    Listas.listFromMapWithOneKey(
-                                      values!,
-                                      keySearched: 'Fecha_Registro',
-                                    ),
-                                  ),
-                                  onClose: (value) {
-                                    setState(() {
-                                      textDateController.text = value;
-                                      _runFilterSearch(value);
-                                      Navigator.of(context).pop();
-                                    });
-                                  });
-                            },
-                            onChange: (value) {
-                              setState(
-                                () {
-                                  _runFilterSearch(value);
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 6,
+                                child: EditTextArea(
+                                  keyBoardType: TextInputType.number,
+                                  inputFormat: MaskTextInputFormatter(
+                                      mask: '####/##/##',
+                                      filter: {"#": RegExp(r'[0-9]')},
+                                      type: MaskAutoCompletionType.lazy),
+                                  labelEditText: "Fecha de realización",
+                                  textController: textDateController,
+                                  numOfLines: 1,
+                                  selection: true,
+                                  withShowOption: true,
+                                  iconData: Icons.calendar_month,
+                                  onSelected: () {
+                                    iniciar();
+                                    Operadores.selectOptionsActivity(
+                                        context: context,
+                                        options:
+                                            Listas.listWithoutRepitedValues(
+                                          Listas.listFromMapWithOneKey(
+                                            values!,
+                                            keySearched: 'Fecha_Registro',
+                                          ),
+                                        ),
+                                        onClose: (value) {
+                                          setState(() {
+                                            textDateController.text = value;
+                                            _runFilterSearch(value);
+                                            Navigator.of(context).pop();
+                                          });
+                                        });
+                                  },
+                                  onChange: (value) {
+                                    setState(
+                                      () {
+                                        _runFilterSearch(value);
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                              Expanded(child: GrandIcon(
+                                iconData: Icons.currency_exchange,
+                                onPress: () {
+                                  Operadores.editActivity(
+                                      context: context,
+                                      tittle: "Editar . . . ",
+                                      message: "¿Nueva fecha? . . . ",
+                                      onAcept: (value) {
+                                        if (textDateController
+                                            .text.isNotEmpty) {
+                                          // Terminal.printSuccess(
+                                          //     message:
+                                          //     "textDateController.text ${textDateController.text}");
+                                          Auxiliares.cambiarFecha(
+                                              fechaPrevia:
+                                              textDateController.text,
+                                              fechaNueva: value)
+                                              .whenComplete(() {
+                                            textDateController.text = value;
+                                            Navigator.of(context).pop();
+                                            reiniciar();
+                                          });
+                                        } else {
+                                          Navigator.of(context).pop();
+                                          Operadores.alertActivity(
+                                              context: context,
+                                              tittle: 'Sin Fecha Asignada',
+                                              message:
+                                              "No se introdujo fecha para el cambio . . . ");
+                                        }
+                                      });
                                 },
-                              );
-                            },
+                              ))
+                            ],
                           ),
                         ),
                         Expanded(
@@ -692,46 +733,46 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                               // *************** *********** **************
                               index = Auxiliares.Categorias.indexOf(newValue);
                               // *************** *********** **************
-                              estudioValue = Auxiliares
-                                  .Laboratorios[Auxiliares.Categorias[index]][0];
-                              unidadMedidaValue =
-                              Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
+                              estudioValue = Auxiliares.Laboratorios[
+                                  Auxiliares.Categorias[index]][0];
+                              unidadMedidaValue = Auxiliares
+                                  .Medidas[Auxiliares.Categorias[index]][0];
                               // *************** *********** **************
                             });
                           }),
                     ),
                     Expanded(
                         child: GrandIcon(
-                          labelButton: "Agregar por Categoría",
-                          iconData: Icons.list_alt,
-                          onPress: () {
-                            Operadores.selectOptionsActivity(
-                                context: context,
-                                tittle: 'Seleccione un Tipo de Estudio',
-                                options: Auxiliares.Categorias,
-                                onClose: (value) {
-                                  setState(() {
-                                    tipoEstudioValue = value;
-                                    // *************** *********** **************
-                                    // Actualización del Indice
-                                    // *************** *********** **************
-                                    index = Auxiliares.Categorias.indexOf(value);
-                                    // *************** *********** **************
-                                    estudioValue = Auxiliares.Laboratorios[
+                      labelButton: "Agregar por Categoría",
+                      iconData: Icons.list_alt,
+                      onPress: () {
+                        Operadores.selectOptionsActivity(
+                            context: context,
+                            tittle: 'Seleccione un Tipo de Estudio',
+                            options: Auxiliares.Categorias,
+                            onClose: (value) {
+                              setState(() {
+                                tipoEstudioValue = value;
+                                // *************** *********** **************
+                                // Actualización del Indice
+                                // *************** *********** **************
+                                index = Auxiliares.Categorias.indexOf(value);
+                                // *************** *********** **************
+                                estudioValue = Auxiliares.Laboratorios[
                                     Auxiliares.Categorias[index]][0];
-                                    unidadMedidaValue = Auxiliares
-                                        .Medidas[Auxiliares.Categorias[index]][0];
-                                    // *************** *********** **************
-                                    Navigator.of(context).pop();
-                                  });
-                                  Operadores.openDialog(
-                                      context: context,
-                                      chyldrim: ConmutadorParaclinicos(
-                                        categoriaEstudio: value,
-                                      ));
-                                });
-                          },
-                        )),
+                                unidadMedidaValue = Auxiliares
+                                    .Medidas[Auxiliares.Categorias[index]][0];
+                                // *************** *********** **************
+                                Navigator.of(context).pop();
+                              });
+                              Operadores.openDialog(
+                                  context: context,
+                                  chyldrim: ConmutadorParaclinicos(
+                                    categoriaEstudio: value,
+                                  ));
+                            });
+                      },
+                    )),
                   ],
                 ),
                 Row(

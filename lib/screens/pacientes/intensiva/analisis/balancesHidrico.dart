@@ -65,7 +65,7 @@ class _BalanceHidricoState extends State<BalanceHidrico> {
           ),
           const SizedBox(height: 5,),
           Expanded(
-            flex: 6,
+            flex: 8,
             child: GridView(
               controller: ScrollController(),
               gridDelegate: GridViewTools.gridDelegate(
@@ -112,6 +112,7 @@ class _BalanceHidricoState extends State<BalanceHidrico> {
             ),
           ),
           Expanded(
+            flex: 2,
             child: GrandButton(
               weigth: 2000,
               labelButton: "Copiar en Portapapeles",

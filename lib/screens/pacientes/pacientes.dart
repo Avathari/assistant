@@ -102,7 +102,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
                 child: Row(
                   children: [
                     Expanded(
-                      flex: 8,
+                      flex: isMobile(context) ? 4 : 8,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextField(
@@ -189,7 +189,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
                       return snapshot.hasData
                           ? GridView.builder(
                               controller: gestionScrollController,
-                              shrinkWrap: true,
+                              shrinkWrap: false,
                               itemCount: snapshot.data == null
                                   ? 0
                                   : snapshot.data.length,
@@ -416,7 +416,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
                               },
                               gridDelegate: GridViewTools.gridDelegate(
                                   crossAxisCount: isDesktop(context) ? 2 : 1,
-                                  mainAxisExtent: 200),
+                                  mainAxisExtent: isMobile(context) ? 180 :200),
                             )
                           : Center(
                               child: Column(

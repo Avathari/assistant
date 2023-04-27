@@ -406,8 +406,8 @@ class Pacientes {
   static String antecedentesIngresosPatologicos() {
     return "Antecedentes patológicos: ${Pacientes.patologicos()}\n"
         "Antecedentes quirúrgicos: ${Pacientes.hospitalarios()}.\n"
-        "Antecedentes alérgicos: ${Pacientes.alergicos()}\n"
-        "Antecedentes traumáticos: ${Pacientes.traumaticos()}\n";
+        "Antecedentes alérgicos: ${Pacientes.alergicos()}\n";
+    // "Antecedentes traumáticos: ${Pacientes.traumaticos()}\n";
   }
 
   static String antecedentesPatologicos() {
@@ -421,7 +421,7 @@ class Pacientes {
     // ************************ ************** ********** **** *** *
     // Reportes.reportes['Antecedentes_Patologicos'] = "";
     // Reportes.personalesPatologicos = "";
-    // print("Patologicos ${Patologicos!.length} $Patologicos \n "
+    // print("Patologicos ${Patologicos!.length} $Patologicos \n ");
     //"Reportes.Antecedentes_Patologicos ${Reportes.personalesPatologicos}");
     // ************************ ************** ********** **** *** *
     if (Patologicos != []) {
@@ -429,14 +429,16 @@ class Pacientes {
 
       for (var element in Patologicos!) {
         if (Reportes.personalesPatologicos == "") {
-          Reportes.personalesPatologicos = "${element['Pace_APP_DEG']} "
+          Reportes.personalesPatologicos = "${element['Pace_APP_DEG_com']} "
               "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
-              "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. ";
+              "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
+              "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
         } else {
           Reportes.personalesPatologicos =
-              "${Reportes.personalesPatologicos}${element['Pace_APP_DEG']} "
+              "${Reportes.personalesPatologicos}\n:${element['Pace_APP_DEG_com']} "
               "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
-              "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. ";
+              "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
+              "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
         }
       }
     } else {
@@ -1134,8 +1136,7 @@ class Pacientes {
       var response = await Valores().load();
       return response;
     } on Exception catch (error) {
-      Terminal.printAlert(
-          message: "ERROR - Valores : : $error");
+      Terminal.printAlert(message: "ERROR - Valores : : $error");
       Operadores.alertActivity(
           message: "ERROR - Valores : : $error",
           context: context,
@@ -5452,6 +5453,20 @@ class Auxiliares {
     return prosa; // """$prosa$max. ";
   }
 
+  static Future<Null> cambiarFecha({required String fechaPrevia, required String fechaNueva}) async {
+    Actividades.actualizar(
+            Databases.siteground_database_reggabo,
+            "UPDATE laboratorios "
+            "SET Fecha_Registro = ? "
+            "WHERE Fecha_Registro = ? AND ID_Pace = ?",
+            [fechaNueva, fechaPrevia, Pacientes.ID_Paciente],
+            Pacientes.ID_Paciente)
+        .then((value) => Terminal.printNotice(message: "Actualizado $value . . ."))
+        .whenComplete(() => Terminal.printNotice(message: "Actualizado . . . "))
+        .onError((error, stackTrace) =>
+            Terminal.printAlert(message: "Error :  : $error :  $stackTrace"));
+  }
+
   static List<String> Categorias = [
     "Biometría Hemática",
     "Química Sanguínea",
@@ -5737,7 +5752,7 @@ class Auxiliares {
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Acido Úrico' ORDER BY Fecha_Registro DESC limit 1) as Acido_Urico,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Nitrógeno Úrico' ORDER BY Fecha_Registro DESC limit 1) as Nitrogeno_Ureico,"
         //
-    "(SELECT Fecha_Registro FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Electrolitos Séricos' ORDER BY Fecha_Registro DESC limit 1) as Fecha_Registro_Electrolitos,"
+        "(SELECT Fecha_Registro FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Electrolitos Séricos' ORDER BY Fecha_Registro DESC limit 1) as Fecha_Registro_Electrolitos,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Sodio' ORDER BY Fecha_Registro DESC limit 1) as Sodio,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Potasio' ORDER BY Fecha_Registro DESC limit 1) as Potasio,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Cloro' ORDER BY Fecha_Registro DESC limit 1) as Cloro,"
@@ -5745,7 +5760,7 @@ class Auxiliares {
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Fósforo' ORDER BY Fecha_Registro DESC limit 1) as Fosforo,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Magnesio' ORDER BY Fecha_Registro DESC limit 1) as Magnesio,"
         //
-    "(SELECT Fecha_Registro FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Reactantes de Fase Aguda' ORDER BY Fecha_Registro DESC limit 1) as Fecha_Registro_Reactantes,"
+        "(SELECT Fecha_Registro FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Reactantes de Fase Aguda' ORDER BY Fecha_Registro DESC limit 1) as Fecha_Registro_Reactantes,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Procalcitonina' ORDER BY Fecha_Registro DESC limit 1) as Procalcitonina,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Ácido Láctico' ORDER BY Fecha_Registro DESC limit 1) as Acido_Lactico,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Velocidad de Sedimentación Globular' ORDER BY Fecha_Registro DESC limit 1) as Velocidad_Sedimentacion,"
@@ -6511,7 +6526,8 @@ class Hospitalizaciones {
     "truncateQuery": "TRUNCATE pace_hosp",
     "dropQuery": "DROP TABLE pace_hosp",
     "consultQuery": "SELECT * FROM pace_hosp WHERE",
-    "consultIdQuery": "SELECT * FROM pace_hosp WHERE ID_Pace = ? ORDER BY ID_Hosp ASC",
+    "consultIdQuery":
+        "SELECT * FROM pace_hosp WHERE ID_Pace = ? ORDER BY ID_Hosp ASC",
     "consultIdLastQuery": "SELECT * FROM pace_hosp WHERE ID_Pace = ? "
         "ORDER BY ID_Hosp DESC",
     "consultByIdPrimaryQuery": "SELECT * FROM pace_hosp WHERE ID_Hosp = ?",
@@ -6608,7 +6624,7 @@ class Diagnosticos {
     "showColumns": "SHOW columns FROM pace_dia",
     "showInformation":
         "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_dia'",
-    "createQuery":  """
+    "createQuery": """
     CREATE TABLE `pace_dia` (
                   `ID_PACE_APP_DEG` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
                   `ID_Pace` int(11) NOT NULL,
@@ -6814,7 +6830,7 @@ class Repositorios {
         "SELECT * FROM pace_hosp_repo WHERE ID_Hosp = ? "
             "AND TipoAnalisis = 'Padecimiento Actual'",
     "consultAnalisisQuery": "SELECT * FROM pace_hosp_repo WHERE ID_Hosp = ? "
-        "AND TipoAnalisis = 'Análisis Médico'",
+        "AND TipoAnalisis = 'Análisis Médico' ORDER BY FechaRealizacion ASC",
     "consultIdQuery": "SELECT * FROM pace_hosp_repo WHERE ID_Pace = ?",
     "consultByIdPrimaryQuery": "SELECT * FROM pace_hosp_repo WHERE ID_Hosp = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_hosp_repo",
@@ -6893,7 +6909,8 @@ class Situaciones {
         Pacientes.ID_Hospitalizacion,
       ],
       Pacientes.ID_Paciente,
-    ).whenComplete(() => Terminal.printAlert(message: 'Situación Hospitalaria Actualizada . . . '));
+    ).whenComplete(() => Terminal.printAlert(
+        message: 'Situación Hospitalaria Actualizada . . . '));
   }
 
   static void registrarRegistro() {
@@ -6918,14 +6935,15 @@ class Situaciones {
         false,
         false,
       ],
-    ).whenComplete(() => Terminal.printAlert(message: 'Situación Hospitalaria Registrada . . . '));
+    ).whenComplete(() => Terminal.printAlert(
+        message: 'Situación Hospitalaria Registrada . . . '));
   }
 
   static void consultarRegistro() {
     Actividades.consultarAllById(Databases.siteground_database_reghosp,
             situacion['consultIdQuery'], Pacientes.ID_Paciente)
         .then((value) {
-          Situaciones.ID_Situaciones = value.last['ID_Siti'];
+      Situaciones.ID_Situaciones = value.last['ID_Siti'];
       // Enfermedades de base del paciente, asi como las Hospitalarias.
       // Pacientes.Situaciones = value;
     });
@@ -7015,7 +7033,7 @@ class Expedientes {
 
   static void ultimoRegistro() {
     Actividades.consultarId(Databases.siteground_database_reghosp,
-        expedientes['consultLastQuery'], Pacientes.ID_Paciente)
+            expedientes['consultLastQuery'], Pacientes.ID_Paciente)
         .then((value) {
 // Enfermedades de base del paciente, asi como las Hospitalarias.
       Expediente = value;
@@ -7060,7 +7078,8 @@ class Expedientes {
         false,
         false,
       ],
-    ).whenComplete(() => Terminal.printAlert(message: 'Expediente Hospitalario Registrado . . . '));
+    ).whenComplete(() => Terminal.printAlert(
+        message: 'Expediente Hospitalario Registrado . . . '));
   }
 
   static void consultarRegistro() {

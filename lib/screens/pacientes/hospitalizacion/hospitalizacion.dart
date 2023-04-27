@@ -11,8 +11,8 @@ import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
+import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/Spinner.dart';
-import 'package:assistant/widgets/ThreeLabelText.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -362,20 +362,37 @@ class _OperacionesHospitalizacionesState
         numOfLines: 1,
       ),
       CrossLine(),
-      Spinner(
-          tittle: "Servicio Tratante",
-          onChangeValue: (String value) {
-            setState(() {
-              servicioTratanteValue = value;
-            });
-          },
-          items: auxiliarServicios,
-          width: isTablet(context)
-              ? 200
-              : isMobile(context)
-                  ? 240
-                  : 200,
-          initialValue: servicioTratanteValue.trim()),
+      Row(
+        children: [
+          Expanded(
+            flex: 5,
+            child: Spinner(
+                tittle: "Servicio Tratante",
+                onChangeValue: (String value) {
+                  setState(() {
+                    servicioTratanteValue = value;
+                  });
+                },
+                items: auxiliarServicios,
+                width: isTablet(context)
+                    ? 200
+                    : isMobile(context)
+                        ? 240
+                        : 200,
+                initialValue: servicioTratanteValue.trim()),
+          ),
+          Expanded(
+            flex: 1,
+            child: GrandIcon(iconData: Icons.account_balance,
+              onPress: () {
+              setState(() {
+                servicioTratanteValue = auxiliarServicios[75].trim();
+                servicioTratanteInicialValue = auxiliarServicios[141].trim();
+              });
+            },),
+          ),
+        ],
+      ),
       Spinner(
           tittle: "Servicio Que Inicia Tratamiento",
           onChangeValue: (String value) {

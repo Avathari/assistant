@@ -57,7 +57,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               filePath: "${Pacientes.localRepositoryPath}patologicos.json")
           .then((value) {
         Pacientes.Patologicos = value;
-      });
+      }).whenComplete(() =>
+              Reportes.reportes["Antecedentes_Patologicos_Ingreso"] =
+                  Pacientes.antecedentesIngresosPatologicos());
       Archivos.readJsonToMap(
               filePath: "${Pacientes.localRepositoryPath}diagnosticos.json")
           .then((value) {
@@ -257,66 +259,67 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                 : Container(),
             Expanded(
               flex: isTablet(context) ? 7 : 2,
-              child: isMobile(context) ? Row(
-                children: [
-                  Expanded(
-                    child: GrandButton(
-                      weigth: 2000,
-                      labelButton: "Tipo de Nota Médica",
-                      onPress: () {
-                        setState(() {
-                          widget.actualPage = 19;
-                        });
-                      },
-                    ),
-                    //     child: Container(
-                    //   decoration: ContainerDecoration.roundedDecoration(),
-                    //   child: TittlePanel(
-                    //       padding: isTablet(context) ? 4 : 2,
-                    //       textPanel: "Tipo de Nota Médica"),
-                    // ),
-                  ),
-                  Expanded(
-                      flex: 2,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        controller: ScrollController(),
-                        child: Column(
-                          children: tiposReportes(),
+              child: isMobile(context)
+                  ? Row(
+                      children: [
+                        Expanded(
+                          child: GrandButton(
+                            weigth: 2000,
+                            labelButton: "Tipo de Nota Médica",
+                            onPress: () {
+                              setState(() {
+                                widget.actualPage = 19;
+                              });
+                            },
+                          ),
+                          //     child: Container(
+                          //   decoration: ContainerDecoration.roundedDecoration(),
+                          //   child: TittlePanel(
+                          //       padding: isTablet(context) ? 4 : 2,
+                          //       textPanel: "Tipo de Nota Médica"),
+                          // ),
                         ),
-                      )),
-                ],
-              )
-                  :Column(
-                children: [
-                  Expanded(
-                    child: GrandButton(
-                      weigth: 2000,
-                      labelButton: "Tipo de Nota Médica",
-                      onPress: () {
-                        setState(() {
-                          widget.actualPage = 19;
-                        });
-                      },
-                    ),
-                    //     child: Container(
-                    //   decoration: ContainerDecoration.roundedDecoration(),
-                    //   child: TittlePanel(
-                    //       padding: isTablet(context) ? 4 : 2,
-                    //       textPanel: "Tipo de Nota Médica"),
-                    // ),
-                  ),
-                  Expanded(
-                      flex: isTablet(context) ? 2 : 1,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        controller: ScrollController(),
-                        child: Column(
-                          children: tiposReportes(),
+                        Expanded(
+                            flex: 2,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.vertical,
+                              controller: ScrollController(),
+                              child: Column(
+                                children: tiposReportes(),
+                              ),
+                            )),
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        Expanded(
+                          child: GrandButton(
+                            weigth: 2000,
+                            labelButton: "Tipo de Nota Médica",
+                            onPress: () {
+                              setState(() {
+                                widget.actualPage = 19;
+                              });
+                            },
+                          ),
+                          //     child: Container(
+                          //   decoration: ContainerDecoration.roundedDecoration(),
+                          //   child: TittlePanel(
+                          //       padding: isTablet(context) ? 4 : 2,
+                          //       textPanel: "Tipo de Nota Médica"),
+                          // ),
                         ),
-                      )),
-                ],
-              ),
+                        Expanded(
+                            flex: isTablet(context) ? 2 : 1,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.vertical,
+                              controller: ScrollController(),
+                              child: Column(
+                                children: tiposReportes(),
+                              ),
+                            )),
+                      ],
+                    ),
             ),
           ],
         ),
@@ -487,7 +490,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           "Pendientes": Reportes.pendientes, // ['Sin pendientes'],
         });
       } else {
-var index = Pacientes.Notas!.indexWhere((v) => v['Fecha_Realizacion'] == Calendarios.today(format: 'yyyy/MM/dd'));
+        var index = Pacientes.Notas!.indexWhere((v) =>
+            v['Fecha_Realizacion'] == Calendarios.today(format: 'yyyy/MM/dd'));
         Terminal.printAlert(message: "index $index");
 
         Pacientes.Notas![index] = {
