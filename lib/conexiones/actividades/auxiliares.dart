@@ -456,7 +456,7 @@ class Operadores {
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20))),
                     content: SizedBox(
-                      height: 500,
+                      height: 700,
                         child: chyldrim),
 
                 );

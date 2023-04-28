@@ -279,7 +279,8 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                                   },
                                 ),
                               ),
-                              Expanded(child: GrandIcon(
+                              Expanded(
+                                  child: GrandIcon(
                                 iconData: Icons.currency_exchange,
                                 onPress: () {
                                   Operadores.editActivity(
@@ -293,9 +294,9 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                                           //     message:
                                           //     "textDateController.text ${textDateController.text}");
                                           Auxiliares.cambiarFecha(
-                                              fechaPrevia:
-                                              textDateController.text,
-                                              fechaNueva: value)
+                                                  fechaPrevia:
+                                                      textDateController.text,
+                                                  fechaNueva: value)
                                               .whenComplete(() {
                                             textDateController.text = value;
                                             Navigator.of(context).pop();
@@ -307,7 +308,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                                               context: context,
                                               tittle: 'Sin Fecha Asignada',
                                               message:
-                                              "No se introdujo fecha para el cambio . . . ");
+                                                  "No se introdujo fecha para el cambio . . . ");
                                         }
                                       });
                                 },
@@ -539,9 +540,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                 });
               },
               inputFormat: MaskTextInputFormatter(
-                  mask: '####/##/##',
-                  filter: {"#": RegExp(r'[0-9]')},
-                  type: MaskAutoCompletionType.lazy),
+                  mask: '####/##/##', filter: {"#": RegExp(r'[0-9]')}),
             ),
             Row(
               children: [
@@ -645,6 +644,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
             Row(
               children: [
                 Expanded(
+                  flex: 2,
                   child: GrandButton(
                       labelButton: operationActivity ? "Nuevo" : "Eliminar",
                       weigth: 100,
@@ -672,6 +672,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                 operationActivity
                     ? Container()
                     : Expanded(
+                  flex: 2,
                         child: GrandButton(
                             labelButton: "Nuevo",
                             weigth: 50,
@@ -680,6 +681,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                             }),
                       ),
                 Expanded(
+                  flex: 2,
                   child: GrandButton(
                       weigth: isTablet(context) ? 200 : 500,
                       labelButton: operationActivity ? "Agregar" : "Actualizar",
@@ -689,8 +691,14 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                             operationActivity: operationActivity);
                       }),
                 ),
+    Expanded(flex: 1, child: GrandIcon(labelButton: "Rutina", iconData: Icons.ad_units, onPress: () {
+    Operadores.openWindow(
+    context: context,
+    chyldrim: ConmutadorParaclinicos(
+    categoriaEstudio: 'Rutina',
+    ));})),
               ],
-            )
+            ),
           ],
         ),
       );
@@ -765,7 +773,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                                 // *************** *********** **************
                                 Navigator.of(context).pop();
                               });
-                              Operadores.openDialog(
+                              Operadores.openWindow(
                                   context: context,
                                   chyldrim: ConmutadorParaclinicos(
                                     categoriaEstudio: value,
@@ -809,6 +817,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
           Row(
             children: [
               Expanded(
+                flex: 2,
                 child: GrandButton(
                     labelButton: operationActivity ? "Nuevo" : "Eliminar",
                     weigth: 100,
@@ -844,6 +853,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                           }),
                     ),
               Expanded(
+                flex: 2,
                 child: GrandButton(
                     weigth: isTablet(context) ? 200 : 500,
                     labelButton: operationActivity ? "Agregar" : "Actualizar",
@@ -891,8 +901,16 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                       }
                     }),
               ),
+              Expanded(flex: 1, child: GrandIcon(labelButton: "Rutina", iconData: Icons.ad_units, onPress: () {
+                Operadores.openWindow(
+                    context: context,
+                    chyldrim: ConmutadorParaclinicos(
+                      categoriaEstudio: 'Rutina',
+                    ));
+              })),
             ],
-          )
+          ),
+
         ],
       );
     }

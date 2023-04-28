@@ -14,6 +14,7 @@ import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart
 import 'package:assistant/screens/pacientes/hospitalizacion/pendientes.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/balances.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/conmutadorParaclinicos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/operadores/laboratorios.dart';
 import 'package:assistant/screens/pacientes/patologicos/epidemiologicos.dart';
 import 'package:assistant/screens/pacientes/patologicos/patologicos.dart';
@@ -167,7 +168,9 @@ class _DashboardState extends State<Dashboard> {
                         child: RoundedPanel(
                       child: Column(
                         children: [
-                          TittlePanel(padding: 5, textPanel: 'Revisorio'),
+                          // TittlePanel(padding: 5, textPanel: 'Revisorio'),
+                          GrandIcon(labelButton: 'Revisorio', iconData: Icons.ac_unit, onPress: () {},),
+                          CrossLine(height: 20),
                           GrandIcon(
                               labelButton: isMobile(context)
                                   ? "Antecedentes Personales Patológicos"
@@ -214,6 +217,16 @@ class _DashboardState extends State<Dashboard> {
                               toNextPage(context, GestionBalances());
                             },
                           ),
+                          GrandIcon(
+                              labelButton: "Rutina",
+                              iconData: Icons.ad_units,
+                              onPress: () {
+                                Operadores.openWindow(
+                                    context: context,
+                                    chyldrim: ConmutadorParaclinicos(
+                                      categoriaEstudio: 'Rutina',
+                                    ));
+                              }),
                         ],
                       ),
                     )),

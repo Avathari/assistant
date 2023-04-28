@@ -9,6 +9,7 @@ import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/lipid
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/pancreaticos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/quimicas.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/reactantes.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/rutina.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/tiroideos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/venosos.dart';
 import 'package:assistant/values/WidgetValues.dart';
@@ -87,7 +88,7 @@ class _ConmutadorParaclinicosState extends State<ConmutadorParaclinicos> {
       case "Marcadores Cárdiacos":
         return const Cardiacos();
       default:
-        return const Biometrias();
+        return const Rutinas();
     }
   }
 }

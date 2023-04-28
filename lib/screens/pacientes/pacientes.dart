@@ -785,7 +785,21 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => const GestionPacientes()));
                 },
-              ))
+              ),
+      actions: isMobile(context) ? [
+        GrandIcon(
+            labelButton: "Datos Personales",
+            iconData: Icons.person,
+            onPress: () {
+              carouselController.jumpToPage(0);
+        }),
+        GrandIcon(
+            labelButton: "Datos Generales",
+            iconData: Icons.data_object,
+            onPress: () {
+              carouselController.jumpToPage(1);
+            }),
+      ] : [],)
           : null,
       body: Card(
         color: const Color.fromARGB(255, 61, 57, 57),
@@ -794,9 +808,9 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              isMobile(context) || isTablet(context)
-                  ? returnOperationUserButton(context)
-                  : Container(),
+              // isMobile(context) || isTablet(context)
+              //     ? returnOperationUserButton(context)
+              //     : Container(),
               Container(
                   margin: const EdgeInsets.all(8.0),
                   decoration: ContainerDecoration.roundedDecoration(),

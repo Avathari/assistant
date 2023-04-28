@@ -450,6 +450,11 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                 await imprimirDocumento()
                     .then((value) => Operadores.alertActivity(
                         context: context,
+                        tittle: 'Petición de Registro de Análisis',
+                        message: '¿Desea registrar el análisis en la base de datos?',
+                        onClose: () {
+                          Navigator.of(context).pop();
+                        },
                         onAcept: () {
                           Repositorios.registrarAnalisis();
                         }));
