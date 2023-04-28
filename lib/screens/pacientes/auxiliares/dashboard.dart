@@ -8,6 +8,7 @@ import 'package:assistant/screens/pacientes/auxiliares/diagnosticos/degenerativo
 import 'package:assistant/screens/pacientes/auxiliares/diagnosticos/diagnosticos.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/actividadesHospitalarias.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizado.dart';
+import 'package:assistant/screens/pacientes/auxiliares/revisiones/generales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisiones.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/diagnosticados.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';
@@ -169,7 +170,12 @@ class _DashboardState extends State<Dashboard> {
                       child: Column(
                         children: [
                           // TittlePanel(padding: 5, textPanel: 'Revisorio'),
-                          GrandIcon(labelButton: 'Revisorio', iconData: Icons.ac_unit, onPress: () {},),
+                          GrandIcon(labelButton: 'Revisorio', iconData: Icons.ac_unit, onPress: () {
+                            Operadores.openWindow(
+                                context: context,
+                                chyldrim: const Generales(
+                                ));
+                          },),
                           CrossLine(height: 20),
                           GrandIcon(
                               labelButton: isMobile(context)

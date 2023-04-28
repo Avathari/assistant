@@ -208,6 +208,7 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
       Row(
         children: [
           Expanded(
+            flex: 2,
             child: EditTextArea(
               keyBoardType: TextInputType.number,
               inputFormat: MaskTextInputFormatter(
@@ -220,7 +221,7 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
             ),
           ),
           Expanded(
-            flex: 4,
+            flex: 3,
             child: Spinner(
                 tittle: "¿Tratamiento actual?",
                 onChangeValue: (String value) {
@@ -647,18 +648,21 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
             children: [
               Row(
                 children: [
-                  Expanded(flex: 2, child: CircleAvatar(
-                    backgroundColor: Colors.grey,
-                    radius: 40,
+                  Expanded(flex: 3, child: Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: CircleAvatar(
-                      backgroundColor: Colors.black,
-                      radius: 30,
-                      child: Text(
-                        snapshot.data[posicion]['ID_PACE_APP_DEG'].toString(),
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey,
-                            fontSize: 16),
+                      backgroundColor: Colors.grey,
+                      radius: 40,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.black,
+                        radius: 30,
+                        child: Text(
+                          snapshot.data[posicion]['ID_PACE_APP_DEG'].toString(),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey,
+                              fontSize: 16),
+                        ),
                       ),
                     ),
                   ),),
@@ -678,7 +682,7 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
                         Text(
                           "${snapshot.data[posicion]['Pace_APP_DEG_com']}",
                           style: const TextStyle(
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.normal,
                               color: Colors.grey,
                               fontSize: 14),
                         ),

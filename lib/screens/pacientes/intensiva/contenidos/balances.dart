@@ -607,20 +607,20 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
   Future<void> reiniciar() async {
     Terminal.printExpected(message: "Reinicio de los valores . . .");
 
-    Pacientes.Patologicos!.clear();
+    Pacientes.Balances!.clear();
     Actividades.consultarAllById(
             Databases.siteground_database_regpace,
-            Patologicos.patologicos['consultByIdPrimaryQuery'],
+            Balances.balance['consultByIdPrimaryQuery'],
             Pacientes.ID_Paciente)
         .then((value) {
       setState(() {
-        Pacientes.Patologicos = value;
+        Pacientes.Balances = value;
         Terminal.printSuccess(
             message:
-                "Actualizando Repositorio de Patologías del Paciente . . . ${Pacientes.Patologicos}");
+                "Actualizando Repositorio de Patologías del Paciente . . . ${Pacientes.Balances}");
 
-        Archivos.createJsonFromMap(Pacientes.Patologicos!,
-            filePath: Patologicos.fileAssocieted);
+        Archivos.createJsonFromMap(Pacientes.Balances!,
+            filePath: Balances.fileAssocieted);
       });
     });
   }
