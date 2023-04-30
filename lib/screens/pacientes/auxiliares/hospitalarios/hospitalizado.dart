@@ -16,6 +16,7 @@ import 'package:assistant/widgets/GridLayout.dart';
 import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/ThreeLabelText.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
+import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
 
 class Hospitalizado extends StatefulWidget {
@@ -330,36 +331,37 @@ class _HospitalizadoState extends State<Hospitalizado> {
                     ],
                   ),
                 ),
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GrandIcon(
-                          iconData: Icons.airline_seat_flat,
-                          labelButton: 'Protocolo Quirúrgico',
-                          onPress: () {}),
-                      GrandIcon(
-                          iconData: Icons.report_problem_outlined,
-                          labelButton:
-                          'Conflictos relacionados a la Hospitalización',
-                          onPress: () {}),
-                      GrandIcon(
-                          iconData: Icons.data_array,
-                          labelButton: 'Situación del Expediente Clínico',
-                          onPress: () {
-                            Operadores.openActivity(
-                                context: context,
-                                labelButton: 'Actualizar',
-                                chyldrim: const ExpedientesClinicos(),
-                                onAction: () {
-                                  setState(() {
-                                    Expedientes.actualizarRegistro();
-                                  });
-                                });
-                          }),
-                    ],
-                  ),
-                ),
+
+              ],
+            ),
+          ),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GrandIcon(
+                    iconData: Icons.airline_seat_flat,
+                    labelButton: 'Protocolo Quirúrgico',
+                    onPress: () {}),
+                GrandIcon(
+                    iconData: Icons.report_problem_outlined,
+                    labelButton:
+                    'Conflictos relacionados a la Hospitalización',
+                    onPress: () {}),
+                GrandIcon(
+                    iconData: Icons.data_array,
+                    labelButton: 'Situación del Expediente Clínico',
+                    onPress: () {
+                      Operadores.openActivity(
+                          context: context,
+                          labelButton: 'Actualizar',
+                          chyldrim: const ExpedientesClinicos(),
+                          onAction: () {
+                            setState(() {
+                              Expedientes.actualizarRegistro();
+                            });
+                          });
+                    }),
               ],
             ),
           ),
@@ -370,56 +372,85 @@ class _HospitalizadoState extends State<Hospitalizado> {
 
   component(BuildContext context) {
     return [
-      ThreeLabelTextAline(
-        padding: 2.0,
-        firstText: 'Folio',
-        secondText: Pacientes.ID_Hospitalizacion.toString(),
+      Row(
+        children: [
+          Expanded(
+            child: ValuePanel(
+              withBorder: false,
+              firstText: 'Folio',
+              secondText: Pacientes.ID_Hospitalizacion.toString(),
+            ),
+          ),
+          Expanded(
+            child: ValuePanel(
+              withBorder: false,
+              firstText: 'Ingreso Hospitalario',
+              secondText: Valores.fechaIngresoHospitalario,
+            ),
+          ),
+        ],
       ),
-      ThreeLabelTextAline(
-        padding: 2.0,
-        firstText: 'Ingreso Hospitalario',
-        secondText: Valores.fechaIngresoHospitalario,
+      Row(
+        children: [
+          Expanded(
+            child: ValuePanel(
+              firstText: 'Cama Asignada',
+              secondText: Valores.numeroCama, // .toString(),
+            ),
+          ),
+          Expanded(
+            child: ValuePanel(
+              firstText: 'D.E.H.',
+              secondText: Valores.diasEstancia.toString(),
+            ),
+          ),
+        ],
       ),
-      ThreeLabelTextAline(
-        padding: 2.0,
-        firstText: 'Cama Asignada',
-        secondText: Valores.numeroCama, // .toString(),
-      ),
-      ThreeLabelTextAline(
-        padding: 2.0,
-        firstText: 'D.E.H.',
-        secondText: Valores.diasEstancia.toString(),
-      ),
-      ThreeLabelTextAline(
-        padding: 2.0,
+      ValuePanel(
+        withBorder: false,
         firstText: 'Médico Tratante',
         secondText: Valores.medicoTratante,
       ),
-      ThreeLabelTextAline(
-        padding: 2.0,
-        firstText: 'Servicio Tratante',
-        secondText: Valores.servicioTratante,
-      ),
-      ThreeLabelTextAline(
-        padding: 2.0,
-        firstText: 'Servicio de Ingreso',
-        secondText: Valores.servicioTratanteInicial,
+      Row(
+        children: [
+          Expanded(
+            child: ValuePanel(
+              padding: 2.0,
+              firstText: 'Servicio Tratante',
+              secondText: Valores.servicioTratante,
+            ),
+          ),
+          Expanded(
+            child: ValuePanel(
+              padding: 2.0,
+              firstText: 'Servicio de Ingreso',
+              secondText: Valores.servicioTratanteInicial,
+            ),
+          ),
+        ],
       ),
       CrossLine(),
-      ThreeLabelTextAline(
-        padding: 2.0,
-        firstText: 'C. Programada',
-        secondText: '', // Valores.servicioTratanteInicial,
-      ),
-      ThreeLabelTextAline(
-        padding: 2.0,
-        firstText: 'E. Prolongada',
-        secondText: Valores.isEstanciaProlongada, // Valores.servicioTratanteInicial,
-      ),
-      ThreeLabelTextAline(
-        padding: 2.0,
-        firstText: 'I. Pendiente',
-        secondText: '', // Valores.servicioTratanteInicial,
+      Row(
+        children: [
+          Expanded(
+            child: ValuePanel(
+              firstText: 'C. Programada',
+              secondText: '', // Valores.servicioTratanteInicial,
+            ),
+          ),
+          Expanded(
+            child: ValuePanel(
+              firstText: 'E. Prolongada',
+              secondText: Valores.isEstanciaProlongada, // Valores.servicioTratanteInicial,
+            ),
+          ),
+          Expanded(
+            child: ValuePanel(
+              firstText: 'I. Pendiente',
+              secondText: '', // Valores.servicioTratanteInicial,
+            ),
+          ),
+        ],
       ),
     ];
   }

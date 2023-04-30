@@ -78,6 +78,7 @@ class _DiagnosisState extends State<Diagnosis> {
                                   Pacientes.Diagnosticos![index]
                                   ['Pace_APP_DEG_com'],
                                   style: Styles.textSyleGrowth(fontSize: 16),
+                                  maxLines: 5,
                                 ),
                                 Text(
                                   "Diagnósticado hace ${Pacientes.Diagnosticos![index]['Pace_APP_DEG_dia']} años",

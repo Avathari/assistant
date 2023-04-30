@@ -141,27 +141,14 @@ class _GeneralesState extends State<Generales> {
                           numOfLines: 1,
                           labelEditText: 'Horas de ayuno',
                           textController: gluAyuTextController),
-                      // Botton ***** ******* ****** * ***
-                      CrossLine(
-                        color: Colors.grey,
-                      ),
-                      Container(
-                        margin: const EdgeInsets.all(5.0),
-                        decoration: ContainerDecoration.roundedDecoration(),
-                        child: GrandButton(
-                            labelButton: "Agregar Datos",
-                            weigth: 2000,
-                            onPress: () {
-                              operationMethod(context);
-                            }),
-                      )
                     ],
                   ),
                 )
-              : SingleChildScrollView(
+              : GridView(
                   controller: ScrollController(),
-                  child: Column(
-                    children: [
+                  gridDelegate: GridViewTools.gridDelegate(crossAxisCount: 2,
+                  mainAxisExtent: 80),
+                  children:  [
                       EditTextArea(
                         labelEditText: "Fecha de realización",
                         numOfLines: 1,
@@ -269,23 +256,11 @@ class _GeneralesState extends State<Generales> {
                               type: MaskAutoCompletionType.lazy),
                           labelEditText: 'Horas de ayuno',
                           textController: gluAyuTextController),
-                      // Botton ***** ******* ****** * ***
-                      CrossLine(
-                        color: Colors.grey,
-                      ),
-                      Container(
-                        margin: const EdgeInsets.all(5.0),
-                        decoration: ContainerDecoration.roundedDecoration(),
-                        child: GrandButton(
-                            labelButton: "Agregar Datos",
-                            weigth: 2000,
-                            onPress: () {
-                              operationMethod(context);
-                            }),
-                      )
+
                     ],
-                  ),
                 ),
+          isMobile(context)
+              ?
           SingleChildScrollView(
             controller: ScrollController(),
             child: Column(
@@ -390,10 +365,117 @@ class _GeneralesState extends State<Generales> {
                 ),
               ],
             ),
+          ): GridView(
+            controller: ScrollController(),
+            gridDelegate: GridViewTools.gridDelegate(crossAxisCount: 2,
+                mainAxisExtent: 80),
+            children: [
+              Spinner(
+                  isRow: false,
+                  tittle: "Intervalo de Horario",
+                  onChangeValue: (String value) {
+                    setState(() {
+                      isHorarioValue = value;
+                      Valores.horario = int.parse(value);
+                    });
+                  },
+                  items: Opciones.horarios(),
+                  width: isTablet(context) ? 40 : 60,
+                  initialValue: isHorarioValue),
+              EditTextArea(
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Via Oral (mL)',
+                textController: viaOralTextController,
+                numOfLines: 1,
+                onChange: (value) {
+                  setState(() {
+                    Valores.viaOralBalances = double.parse(value);
+                  });
+                },
+              ),
+              EditTextArea(
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Vía Sonda Orogástrica (mL)',
+                textController: viaOrogasTextController,
+                numOfLines: 1,
+                onChange: (value) {
+                  setState(() {
+                    Valores.sondaOrogastricaBalances = double.parse(value);
+                  });
+                },
+              ),
+              // CrossLine(),
+              //
+              EditTextArea(
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Vía Hemoderivados (mL)',
+                textController: viaHemosTextController,
+                numOfLines: 1,
+                onChange: (value) {
+                  setState(() {
+                    Valores.hemoderivadosBalances = double.parse(value);
+                  });
+                },
+              ),
+              EditTextArea(
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Vía N.P.T. (mL)',
+                textController: viaNutrianTextController,
+                numOfLines: 1,
+                onChange: (value) {
+                  setState(() {
+                    Valores.nutricionParenteralBalances = double.parse(value);
+                  });
+                },
+              ),
+              EditTextArea(
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Vía Sol. Parenterales (mL)',
+                textController: viaParesTextController,
+                numOfLines: 1,
+                onChange: (value) {
+                  setState(() {
+                    Valores.parenteralesBalances = double.parse(value);
+                  });
+                },
+              ),
+              EditTextArea(
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Vía Diluciones (mL)',
+                textController: viaDilucionesTextController,
+                numOfLines: 1,
+                onChange: (value) {
+                  setState(() {
+                    Valores.dilucionesBalances = double.parse(value);
+                  });
+                },
+              ),
+              EditTextArea(
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Otros Ingresos (mL)',
+                textController: viaOtrosIngresosTextController,
+                numOfLines: 1,
+                onChange: (value) {
+                  setState(() {
+                    Valores.otrosIngresosBalances = double.parse(value);
+                  });
+                },
+              ),
+            ],
           ),
+          isMobile(context)
+              ?
           SingleChildScrollView(
             controller: ScrollController(),
-            child: Column(children: [
+            child: Column(
+              children: [
               EditTextArea(
                 keyBoardType: TextInputType.number,
                 inputFormat: MaskTextInputFormatter(),
@@ -460,8 +542,109 @@ class _GeneralesState extends State<Generales> {
                   });
                 },
               ),
-            ]),
-          )
+                // Botton ***** ******* ****** * ***
+                CrossLine(
+                  color: Colors.grey,
+                ),
+                Container(
+                  margin: const EdgeInsets.all(5.0),
+                  decoration: ContainerDecoration.roundedDecoration(),
+                  child: GrandButton(
+                      labelButton: "Agregar Datos",
+                      weigth: 2000,
+                      onPress: () {
+                        operationMethod(context);
+                      }),
+                )
+            ],
+            ),
+          ): GridView(
+            controller: ScrollController(),
+            gridDelegate: GridViewTools.gridDelegate(crossAxisCount: 2,
+                mainAxisExtent: 80),
+            children: [
+              EditTextArea(
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Vía Uresis (mL)',
+                textController: viaUresisTextController,
+                numOfLines: 1,
+                onChange: (value) {
+                  Valores.uresisBalances = double.parse(value);
+                  setState(() {});
+                },
+              ),
+              EditTextArea(
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Vía Evacuacionees. (mL)',
+                textController: viaEvacTextController,
+                numOfLines: 1,
+                onChange: (value) {
+                  setState(() {
+                    Valores.evacuacionesBalances = double.parse(value);
+                  });
+                },
+              ),
+              EditTextArea(
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Vía Sangrados (mL)',
+                textController: viaSangTextController,
+                numOfLines: 1,
+                onChange: (value) {
+                  setState(() {
+                    Valores.sangradosBalances = double.parse(value);
+                  });
+                },
+              ),
+              EditTextArea(
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Vía Succión (mL)',
+                textController: viaSucciTextController,
+                numOfLines: 1,
+                onChange: (value) {
+                  setState(() {
+                    Valores.succcionBalances = double.parse(value);
+                  });
+                },
+              ),
+              EditTextArea(
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Perdidas Insensibles (mL)',
+                textController: viaPerdidaTextController,
+                numOfLines: 1,
+              ),
+              EditTextArea(
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Otros Egresos (mL)',
+                textController: viaOtrosEgresosTextController,
+                numOfLines: 1,
+                onChange: (value) {
+                  setState(() {
+                    Valores.otrosEgresosBalances = double.parse(value);
+                  });
+                },
+              ),
+              // Botton ***** ******* ****** * ***
+              CrossLine(
+                color: Colors.grey,
+              ),
+              Container(
+                margin: const EdgeInsets.all(5.0),
+                decoration: ContainerDecoration.roundedDecoration(),
+                child: GrandButton(
+                    labelButton: "Agregar Datos",
+                    weigth: 2000,
+                    onPress: () {
+                      operationMethod(context);
+                    }),
+              )
+            ],
+          ),
         ],
         carouselController: carouselController,
         options: Carousel.carouselOptions(context: context));

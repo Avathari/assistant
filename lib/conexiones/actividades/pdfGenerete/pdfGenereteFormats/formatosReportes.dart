@@ -144,7 +144,8 @@ class FormatosReportes {
     //
     // # # # # # # ### # # # # # # ###
     parax.add(paragraphWithTittle(
-        titulo: "Ficha de Identificación", subTitulo: "${paraph['Datos_Generales']}"));
+        titulo: "Ficha de Identificación",
+        subTitulo: "${paraph['Datos_Generales']}"));
     // # # # # # # ### # # # # # # ###
     if (paraph['Antecedentes_Heredofamiliares'] != "") {
       parax.add(
@@ -2097,8 +2098,8 @@ class FormatosReportes {
               verticalAlignment: TableCellVerticalAlignment.middle,
               children: [
                 textTittleWithLabel(
-                    tittle: "No. Cama: ",
-                    label: Valores.numeroCama!,
+                  tittle: "No. Cama: ",
+                  label: Valores.numeroCama!,
                 )
               ]),
           TableRow(
@@ -2761,6 +2762,222 @@ class FormatosReportes {
               "Med. Gral. Romero Pantoja Luis\nCed. Prof. 12210866\nMedicina General"),
     );
     return parax;
+  }
+}
+
+class CopiasReportes {
+  static String reporteIngreso(Map<String, dynamic> paraph) {
+    String tipoReporte = "NOTA DE INGRESO HOSPITALARIO\n";
+    tipoReporte = "${tipoReporte}FICHA DE IDENTIFICACIÓN\n"
+        "${paraph['Datos_Generales']}\n";
+
+    // # # # # # # ### # # # # # # ###
+    if (paraph['Antecedentes_Heredofamiliares'] != "") {
+      tipoReporte = "${tipoReporte}ANTECEDENTES HEREDOFAMILIARES\n"
+          "${paraph['Antecedentes_Heredofamiliares']}\n\n";
+    }
+    if (paraph['Antecedentes_No_Patologicos'] != "") {
+      tipoReporte = "${tipoReporte}ANTECEDENTES PERSONALES NO PATOLÓGICOS\n"
+          "${paraph['Antecedentes_No_Patologicos']}\n";
+    }
+    if (paraph['Antecedentes_Patologicos_Ingreso'] != "") {
+      tipoReporte = "${tipoReporte}ANTECEDENTES PERSONALES PATOLÓGICOS\n"
+          "${paraph['Antecedentes_Patologicos_Ingreso']}\n";
+    }
+
+    tipoReporte = "${tipoReporte}PADECIMIENTO ACTUAL\n"
+        "${paraph['Padecimiento_Actual']}\n\n";
+
+    // # # # # # # ### # # # # # # ###
+    tipoReporte =
+        "${tipoReporte}A la ingreso a hospitalización de medicina interna se encuentra al paciente con: \n"
+        "${paraph['Signos_Vitales']}\n"
+        "${paraph['Exploracion_Fisica']}\n\n";
+
+    if (paraph['Auxiliares_Diagnosticos'] != "") {
+      tipoReporte = "${tipoReporte}AUXILIARES DIAGNÓSTICOS\n"
+          "${paraph['Auxiliares_Diagnosticos']}\n\n";
+    }
+
+    if (paraph['Analisis_Complementarios'] != "") {
+      tipoReporte = "${tipoReporte}ANALISIS COMPLEMENTARIOS\n"
+          "${paraph['Analisis_Complementarios']}\n\n";
+    }
+
+    tipoReporte = "${tipoReporte}IMPRESIONES DIAGNÓSTICAS\n"
+        "${paraph['Impresiones_Diagnosticas']}\n\n";
+
+    tipoReporte = "$tipoReporte"
+        "ANÁLISIS\n"
+        "${paraph['Analisis_Medico']}\n";
+
+    tipoReporte = "$tipoReporte\n"
+        "INDICACIONES MÉDICAS\n"
+        "DIETAS\n"
+        "${Listas.stringFromList(listValues: paraph['Dieta'])}\n"
+        "SOLUCIONES PARENTERALES\n"
+        "${Listas.stringFromList(listValues: paraph['Hidroterapia'])}\n"
+        "MEDICAMENTOS\n"
+        "${Listas.stringFromList(listValues: paraph['Medicamentos'])}\n";
+
+    if (paraph['Hemoterapia'][0] != 'Sin reposicion sanguinea.') {
+      tipoReporte = "$tipoReporte"
+          "HEMOTRANSFUSION\n"
+          "${Listas.stringFromList(listValues: paraph['Hemoterapia'])}\n";
+    }
+
+    if (paraph['Insulinoterapia'][0] != 'Sin terapia insulinica.') {
+      tipoReporte = "$tipoReporte"
+          "INSULINOTERAPIA\n"
+          "${Listas.stringFromList(listValues: paraph['Insulinoterapia'])}\n";
+    }
+    if (paraph['Oxigenoterapia'][0] !=
+        'Sin administración de oxígeno suplementario.') {
+      tipoReporte = "$tipoReporte"
+          "OXIGENOTERAPIA\n"
+          "${Listas.stringFromList(listValues: paraph['Oxigenoterapia'])}\n";
+    }
+
+    tipoReporte = "$tipoReporte"
+        "MEDIDAS GENERALES\n"
+        "${Listas.stringFromList(listValues: paraph['Medidas_Generales'])}\n"
+        "PENDIENTES\n"
+        "${Listas.stringFromList(listValues: paraph['Pendientes'])}\n"
+        "GRACIAS\n";
+
+    if (paraph['Pronostico_Medico'] != "") {
+      tipoReporte = "$tipoReporte\n"
+          "${paraph['Pronostico_Medico']}";
+    }
+
+    tipoReporte = "$tipoReporte\n\n"
+        "Med. Gral. Romero Pantoja Luis Ced. Prof. 12210866 Medicina General";
+
+    return tipoReporte;
+  }
+
+  static String reporteEvolucion(Map<String, dynamic> paraph) {
+    String tipoReporte = "NOTA DE EVOLUCIÓN HOSPITALARIA\n";
+    tipoReporte = "$tipoReporte"
+        "${paraph['Datos_Generales']}";
+
+    tipoReporte = "$tipoReporte"
+        "${paraph['Impresiones_Diagnosticas']}\n\n";
+    // # # # # # # ### # # # # # # ###
+    tipoReporte = "${tipoReporte}A la exploración física con: \n"
+        "${paraph['Signos_Vitales']}\n"
+        "${paraph['Exploracion_Fisica']}\n\n";
+
+    if (paraph['Auxiliares_Diagnosticos'] != "") {
+      tipoReporte = "$tipoReporte"
+          "${paraph['Auxiliares_Diagnosticos']}\n\n";
+    }
+
+    if (paraph['Analisis_Complementarios'] != "") {
+      tipoReporte = "${tipoReporte}ANALISIS COMPLEMENTARIOS\n"
+          "${paraph['Analisis_Complementarios']}\n\n";
+    }
+
+    tipoReporte = "$tipoReporte"
+        "${paraph['Analisis_Medico']}\n";
+
+    if (paraph['Pronostico_Medico'] != "") {
+      tipoReporte = "$tipoReporte\n"
+          "${paraph['Pronostico_Medico']}";
+    }
+
+    tipoReporte = "$tipoReporte\n\n"
+        "Med. Gral. Romero Pantoja Luis Ced. Prof. 12210866 Medicina General";
+
+    return tipoReporte;
+  }
+
+  static String reporteConsulta(Map<String, dynamic> paraph) {
+    String tipoReporte = "NOTA DE CONSULTA EXTERNA\n";
+    tipoReporte = "$tipoReporte"
+        "${paraph['Datos_Generales']}";
+
+    tipoReporte = "$tipoReporte"
+        "Motivo de consulta por ${paraph['Motivo_Consulta']}\n";
+
+    tipoReporte = "$tipoReporte"
+        "Antecedentes heredofamiliares ${paraph['Antecedentes_Heredofamiliares']}\n"
+        "Antecedentes hospitalarios ${paraph['Antecedentes_Hospitalarios']}\n"
+        "Antecedentes alérgicos ${paraph['Antecedentes_Alergicos']}\n"
+        "Antecedentes patológicos ${paraph['Antecedentes_Patologicos']}\n\n";
+
+    // # # # # # # ### # # # # # # ###
+    tipoReporte = "${tipoReporte}A la exploración física con: \n"
+        "${paraph['Signos_Vitales']}\n"
+        "${paraph['Exploracion_Fisica']}\n\n";
+
+    if (paraph['Auxiliares_Diagnosticos'] != "") {
+      tipoReporte = "$tipoReporte"
+          "${paraph['Auxiliares_Diagnosticos']}\n\n";
+    }
+
+    if (paraph['Analisis_Complementarios'] != "") {
+      tipoReporte = "${tipoReporte}ANALISIS COMPLEMENTARIOS\n"
+          "${paraph['Analisis_Complementarios']}\n\n";
+    }
+
+    tipoReporte = "$tipoReporte"
+        "IMPRESIONES DIAGNÓSTICAS\n"
+        "${paraph['Impresiones_Diagnosticas']}\n\n";
+
+    tipoReporte = "$tipoReporte"
+        "${paraph['Analisis_Medico']}\n\n";
+
+    tipoReporte = "$tipoReporte"
+        "INDICACIONES MÉDICAS\n"
+        "MEDICAMENTOS\n"
+        "${Listas.stringFromList(listValues: paraph['Medicamentos'])}\n"
+        "LICENCIA MÉDICA\n"
+        "${Listas.stringFromList(listValues: paraph['Licencia_Medica'])}\n"
+        "PENDIENTES\n"
+        "${Listas.stringFromList(listValues: paraph['Pendientes'])}\n"
+        "CITAS\n"
+        "${Listas.stringFromList(listValues: paraph['Citas'])}\n"
+        "RECOMENDACIONES\n"
+        "${Listas.stringFromList(listValues: paraph['Recomendaciones'])}\n";
+
+    if (paraph['Pronostico_Medico'] != "") {
+      tipoReporte = "$tipoReporte\n"
+          "${paraph['Pronostico_Medico']}";
+    }
+
+    tipoReporte = "$tipoReporte\n\n"
+        "Med. Gral. Romero Pantoja Luis Ced. Prof. 12210866 Medicina General";
+
+    return tipoReporte;
+  }
+
+  static String reporteTerapia(Map<String, dynamic> paraph) {
+    String tipoReporte = "NOTA DE TERAPIA INTENSIVA\n";
+    tipoReporte = "$tipoReporte"
+        "${paraph['Datos_Generales']}";
+
+    tipoReporte = "$tipoReporte"
+        "${paraph['Impresiones_Diagnosticas']}\n\n";
+    tipoReporte = "$tipoReporte"
+        "${paraph['Eventualidades']}\n\n";
+
+    // # # # # # # ### # # # # # # ###
+    tipoReporte = "${tipoReporte}EXPLORACION FÍSICA\n"
+        "${paraph['Exploracion_Fisica']}\n\n";
+
+    tipoReporte = "$tipoReporte"
+        "${paraph['Analisis_Terapia']}\n";
+
+    if (paraph['Pronostico_Medico'] != "") {
+      tipoReporte = "$tipoReporte\n"
+          "${paraph['Pronostico_Medico']}";
+    }
+
+    tipoReporte = "$tipoReporte\n\n"
+        "Med. Gral. Romero Pantoja Luis Ced. Prof. 12210866 Medicina General";
+
+    return tipoReporte;
   }
 }
 

@@ -172,6 +172,19 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                 });
               },
             ),
+            CrossLine(isHorizontal: false, thickness: 4),
+            IconButton(
+              icon: const Icon(
+                Icons.copy_all_sharp,
+              ),
+              tooltip: 'Copiar Esquema del Reporte',
+              onPressed: () {
+                //
+                Datos.portapapeles(
+                    context: context,
+                    text: Reportes.copiarReporte(tipoReporte: getTypeReport()));
+              },
+            ),
           ]), //: null,
       body:
           isMobile(context) || isTablet(context) ? mobileView() : desktopView(),
@@ -447,11 +460,12 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           GrandButton(
               labelButton: "Vista previa",
               onPress: () async {
-                await imprimirDocumento()
-                    .then((value) => Operadores.alertActivity(
+                await imprimirDocumento().then((value) =>
+                    Operadores.alertActivity(
                         context: context,
                         tittle: 'Petición de Registro de Análisis',
-                        message: '¿Desea registrar el análisis en la base de datos?',
+                        message:
+                            '¿Desea registrar el análisis en la base de datos?',
                         onClose: () {
                           Navigator.of(context).pop();
                         },

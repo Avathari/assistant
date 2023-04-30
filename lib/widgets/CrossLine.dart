@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 
 class CrossLine extends StatefulWidget {
   Color? color;
-  double? height;
+  double? height, thickness;
+  bool? isHorizontal;
 
-  CrossLine({super.key, this.color = Colores.backgroundWidget, this.height = 2});
+  CrossLine({super.key, this.color = Colores.backgroundWidget, this.thickness = 2, this.isHorizontal = true, this.height = 2});
 
   @override
   State<CrossLine> createState() => _CrossLineState();
@@ -15,12 +16,22 @@ class CrossLine extends StatefulWidget {
 class _CrossLineState extends State<CrossLine> {
   @override
   Widget build(BuildContext context) {
-    return  Padding(
-        padding: isMobile(context) ? const EdgeInsets.all(4.0) : const EdgeInsets.all(8.0),
-        child: Divider(
-          height: widget.height,
-          thickness: 2,
-          color: widget.color!,
-        ));
+    if (widget.isHorizontal!) {
+      return  Padding(
+          padding: isMobile(context) ? const EdgeInsets.all(4.0) : const EdgeInsets.all(8.0),
+          child: Divider(
+            height: widget.height,
+            thickness: widget.thickness,
+            color: widget.color!,
+          ));
+    } else {
+      return  Padding(
+          padding: isMobile(context) ? const EdgeInsets.all(4.0) : const EdgeInsets.all(8.0),
+          child: VerticalDivider(
+            width: widget.height,
+            thickness: widget.thickness,
+            color: widget.color!,
+          ));
+    }
   }
 }

@@ -88,6 +88,7 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                             onClose: (value) {
                               setState(() {
                                 auxTextController.text = Auxiliares.porFecha(fechaActual: value);
+                                Reportes.reportes['Auxiliares_Diagnosticos'] = value;
                                 Navigator.of(context).pop();
                               });
                             },

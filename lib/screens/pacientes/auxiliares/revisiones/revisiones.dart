@@ -851,7 +851,7 @@ class _RevisionesState extends State<Revisiones> {
             ),
           ),
           Expanded(
-            flex: 8,
+            flex: 11,
             child: Container(
               margin: const EdgeInsets.only(bottom: 12.0, top: 12.0),
               decoration: ContainerDecoration.roundedDecoration(),

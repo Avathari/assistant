@@ -6,6 +6,7 @@ import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
+import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
@@ -31,6 +32,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
         TittlePanel(
             color: Colors.black, textPanel: 'Valoración en Terapia Intensiva'),
         Expanded(
+          flex: isDesktop(context) ? 2 : 1,
           child: SingleChildScrollView(
             controller: ScrollController(),
             scrollDirection: Axis.horizontal,
@@ -269,7 +271,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                         ),
                         Spinner(
                           width: isDesktop(context)
-                              ? 700
+                              ? 500
                               : isTablet(context)
                               ? 350
                               : isMobile(context)
@@ -368,7 +370,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                         ),
                         Spinner(
                           width: isDesktop(context)
-                              ? 700
+                              ? 500
                               : isTablet(context)
                               ? 500
                               : isMobile(context)
@@ -394,7 +396,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                         TittlePanel(textPanel: "Evaluación Complementaria"),
                         Spinner(
                           width: isDesktop(context)
-                              ? 200
+                              ? 500
                               : isTablet(context)
                               ? 250
                               : isMobile(context)
@@ -410,9 +412,37 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           items: Items.aminergico,
                           initialValue: Valores.apoyoAminergico,
                         ),
+                        Container(
+                          padding: const EdgeInsets.all(8.0),
+                          margin: const EdgeInsets.all(8.0),
+                          decoration: ContainerDecoration.roundedDecoration(),
+                          child: Row(children: [
+                            Expanded(
+                              child: ValuePanel(
+                                heigth: 60,
+                                firstText: 'Noradrenalina',
+
+                              ),
+                            ),
+                            Expanded(
+                              child: ValuePanel(
+                                heigth: 60,
+                                firstText: 'Midazolam',
+
+                              ),
+                            ),
+                            Expanded(
+                              child: ValuePanel(
+                                heigth: 60,
+                                firstText: 'Buprenorfina',
+
+                              ),
+                            ),
+                          ],),
+                        ),
                         Spinner(
                           width: isDesktop(context)
-                              ? 200
+                              ? 500
                               : isTablet(context)
                               ? 200
                               : isMobile(context)
@@ -428,41 +458,51 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           items: Items.dieta,
                           initialValue: Valores.alimentacion,
                         ),
-                        Spinner(
-                          width: isDesktop(context)
-                              ? 200
-                              : isTablet(context)
-                              ? 200
-                              : isMobile(context)
-                              ? 216
-                              : 300,
-                          tittle: 'Sonda Oro/Nasogástrica',
-                          onChangeValue: (value) {
-                            setState(() {
-                              Valores.tipoSondaAlimentacion = value;
-                              reInit();
-                            });
-                          },
-                          items: Items.orogastrico,
-                          initialValue: Valores.tipoSondaAlimentacion,
-                        ),
-                        Spinner(
-                          width: isDesktop(context)
-                              ? 200
-                              : isTablet(context)
-                              ? 200
-                              : isMobile(context)
-                              ? 216
-                              : 300,
-                          tittle: 'Sonda Foley',
-                          onChangeValue: (value) {
-                            setState(() {
-                              Valores.tipoSondaVesical = value;
-                              reInit();
-                            });
-                          },
-                          items: Items.foley,
-                          initialValue: Valores.tipoSondaVesical,
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 4,
+                              child: Spinner(
+                                width: isDesktop(context)
+                                    ? 200
+                                    : isTablet(context)
+                                    ? 200
+                                    : isMobile(context)
+                                    ? 216
+                                    : 300,
+                                tittle: 'Sonda Oro/Nasogástrica',
+                                onChangeValue: (value) {
+                                  setState(() {
+                                    Valores.tipoSondaAlimentacion = value;
+                                    reInit();
+                                  });
+                                },
+                                items: Items.orogastrico,
+                                initialValue: Valores.tipoSondaAlimentacion,
+                              ),
+                            ),
+                            Expanded(
+                              flex: 3,
+                              child: Spinner(
+                                width: isDesktop(context)
+                                    ? 170
+                                    : isTablet(context)
+                                    ? 200
+                                    : isMobile(context)
+                                    ? 216
+                                    : 300,
+                                tittle: 'Sonda Foley',
+                                onChangeValue: (value) {
+                                  setState(() {
+                                    Valores.tipoSondaVesical = value;
+                                    reInit();
+                                  });
+                                },
+                                items: Items.foley,
+                                initialValue: Valores.tipoSondaVesical,
+                              ),
+                            ),
+                          ],
                         ),
                          CrossLine(),
                       ],

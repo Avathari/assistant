@@ -288,7 +288,7 @@ class _MetabolicosState extends State<Metabolicos> {
                       ),
                       Spinner(
                         tittle: 'Constante',
-                        width: 70,
+                        width: 60,
                         onChangeValue: (value) {
                           setState(() {
                             Valores.porcentajeCarbohidratos =
@@ -317,7 +317,7 @@ class _MetabolicosState extends State<Metabolicos> {
                       ),
                       Spinner(
                         tittle: 'Constante',
-                        width: 70,
+                        width: 60,
                         onChangeValue: (value) {
                           setState(() {
                             Valores.porcentajeProteinas =
@@ -346,7 +346,7 @@ class _MetabolicosState extends State<Metabolicos> {
                       ),
                       Spinner(
                         tittle: 'Constante',
-                        width: 70,
+                        width: 60,
                         onChangeValue: (value) {
                           setState(() {
                             Valores.porcentajeLipidos =

@@ -99,8 +99,8 @@ class _DetallesState extends State<Detalles> {
                   ? Expanded(
                 flex: isTablet(context) ? 2 : 0,
                 child: CircleAvatar(
-                    backgroundColor: Colors.grey,
-                    radius: 100,
+                    backgroundColor: Colors.black,
+                    radius: 120,
                     child: ClipOval(
                         child: Image.memory(
                           base64Decode(Pacientes.imagenPaciente),

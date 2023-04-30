@@ -295,6 +295,18 @@ class Listas {
     // ******* ************ ******** ********* ***
     return list;
   }
+
+  static String stringFromList({required List listValues}) {
+    String val = '';
+    for (var element in listValues) {
+      if (val == '') {
+        val = "$element";
+      } else {
+        val = "$val\n$element";
+      }
+    }
+    return val;
+  }
 }
 
 class Alertas {
@@ -360,6 +372,7 @@ class Operadores {
   static void openDialog(
       {required BuildContext context,
       required Widget chyldrim,
+        bool? withAction = true,
       Function? onAction}) {
     showDialog(
         useSafeArea: true,
@@ -375,7 +388,7 @@ class Operadores {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(flex: 15, child: chyldrim),
-                    Expanded(
+                withAction == true ?  Expanded(
                       flex: isDesktop(context) ? 2 : 1,
                       child: Container(
                         width: 2000,
@@ -396,9 +409,8 @@ class Operadores {
                               Navigator.of(context).pop();
                             }
                           },
-                        ),
-                      ),
-                    ),
+                        ))) : Container()
+
                   ],
                 ),
               ));

@@ -1,4 +1,5 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteFormats/formatosReportes.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/Strings.dart';
@@ -6150,6 +6151,24 @@ class Reportes {
     // ************** **************** *********** ********** **
     // ************** **************** *********** ********** **
   }
+
+  static copiarReporte({required TypeReportes tipoReporte}) {
+
+    switch (tipoReporte) {
+      case TypeReportes.reporteIngreso:
+        return CopiasReportes.reporteIngreso(Reportes.reportes);
+      case TypeReportes.reporteEvolucion:
+        return CopiasReportes.reporteEvolucion(Reportes.reportes);
+      case TypeReportes.reporteConsulta:
+        return CopiasReportes.reporteConsulta(Reportes.reportes);
+      case TypeReportes.reporteTerapiaIntensiva:
+        return CopiasReportes.reporteTerapia(Reportes.reportes);
+      default:
+        return CopiasReportes.reporteIngreso(Reportes.reportes);
+    }
+  }
+
+
 }
 
 class Balances {
