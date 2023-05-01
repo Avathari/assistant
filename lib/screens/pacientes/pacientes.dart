@@ -416,7 +416,8 @@ class _GestionPacientesState extends State<GestionPacientes> {
                               },
                               gridDelegate: GridViewTools.gridDelegate(
                                   crossAxisCount: isDesktop(context) ? 2 : 1,
-                                  mainAxisExtent: isMobile(context) ? 180 :200),
+                                  mainAxisExtent:
+                                      isMobile(context) ? 180 : 200),
                             )
                           : Center(
                               child: Column(
@@ -532,7 +533,13 @@ class _GestionPacientesState extends State<GestionPacientes> {
       Terminal.printAlert(
           message: 'Archivo ${Pacientes.localPath} No Encontrado');
       Terminal.printWarning(message: 'Iniciando búsqueda en Valores . . . ');
-      var response = await Valores().load(); // print("response $response");
+      var response = await Valores().load().onError((error, stackTrace) {
+        Operadores.alertActivity(
+            context: context,
+            tittle: "Error al Cargar Valores . . . ",
+            message: "ERROR : : $error : $stackTrace");
+        return false;
+      }); // print("response $response");
       //
       if (response == true) {
         Navigator.of(context).push(
@@ -786,20 +793,23 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                       builder: (context) => const GestionPacientes()));
                 },
               ),
-      actions: isMobile(context) ? [
-        GrandIcon(
-            labelButton: "Datos Personales",
-            iconData: Icons.person,
-            onPress: () {
-              carouselController.jumpToPage(0);
-        }),
-        GrandIcon(
-            labelButton: "Datos Generales",
-            iconData: Icons.data_object,
-            onPress: () {
-              carouselController.jumpToPage(1);
-            }),
-      ] : [],)
+              actions: isMobile(context)
+                  ? [
+                      GrandIcon(
+                          labelButton: "Datos Personales",
+                          iconData: Icons.person,
+                          onPress: () {
+                            carouselController.jumpToPage(0);
+                          }),
+                      GrandIcon(
+                          labelButton: "Datos Generales",
+                          iconData: Icons.data_object,
+                          onPress: () {
+                            carouselController.jumpToPage(1);
+                          }),
+                    ]
+                  : [],
+            )
           : null,
       body: Card(
         color: const Color.fromARGB(255, 61, 57, 57),

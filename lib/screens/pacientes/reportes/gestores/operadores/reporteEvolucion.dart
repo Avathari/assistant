@@ -118,7 +118,7 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
                           textController: diagoTextController,
                           labelEditText: "Impresiones diagnósticas",
                           keyBoardType: TextInputType.multiline,
-                          numOfLines: 5,
+                          numOfLines: 10,
                           onChange: ((value) {
                             Reportes.impresionesDiagnosticas = "$value.";
                             Reportes.reportes['Impresiones_Diagnosticas'] =
@@ -175,7 +175,7 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
   // Variables auxiliares de widget.
   // ######################### ### # ### ############################
   num index = 6;
-  int wieghtRow = 50;
+  int wieghtRow = 200;
   // ######################### ### # ### ############################
   // Controladores de widgets tipo valores.
   // ######################### ### # ### ############################

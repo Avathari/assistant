@@ -1,5 +1,7 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
+import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -119,35 +121,37 @@ class _EditTextAreaState extends State<EditTextArea> {
           widget.withShowOption
               ? Expanded(
                   flex: 1,
-                  child: IconButton(
-                    tooltip: "Ver",
-                    icon: Icon(
-                      widget.iconData,
-                      color: widget.iconColor,
-                    ),
-                    onPressed: widget.selection
-                        ? widget.onSelected
-                        : () {
-                            Operadores.openDialog(
-                              context: context,
-                              chyldrim: SingleChildScrollView(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    children: [
-                                      TittlePanel(
-                                          colorText: Colors.grey,
-                                          textPanel: widget.labelEditText!),
-                                      Text(
-                                        widget.textController.text,
-                                        style: const TextStyle(
-                                          color: Colors.grey,
+                  child: Container(
+                    margin: const EdgeInsets.all(8.0),
+                    decoration: ContainerDecoration.roundedDecoration(),
+                    child: GrandIcon(
+                      labelButton: "Ver",
+                      iconData: widget.iconData,
+                      iconColor: widget.iconColor,
+                      onPress: widget.selection
+                          ? widget.onSelected
+                          : () {
+                              Operadores.openDialog(
+                                context: context,
+                                chyldrim: SingleChildScrollView(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        TittlePanel(
+                                            colorText: Colors.grey,
+                                            textPanel: widget.labelEditText!),
+                                        Text(
+                                          widget.textController.text,
+                                          style: const TextStyle(
+                                            color: Colors.grey,
+                                          ),
                                         ),
-                                      ),
-                                      CrossLine(),
-                                    ],
-                                  )),
-                            );
-                          },
+                                        CrossLine(),
+                                      ],
+                                    )),
+                              );
+                            },
+                    ),
                   ),
                 )
               : Container()

@@ -1187,6 +1187,7 @@ class _RevisionesState extends State<Revisiones> {
     return Column(
       children: [
         Expanded(
+          flex: isMobile(context) ? 2 :1,
           child: ValuePanel(
             firstText: "",
             secondText: Valores.fechaBiometria.toString(),
@@ -1429,6 +1430,7 @@ class _RevisionesState extends State<Revisiones> {
     return Column(
       children: [
         Expanded(
+          flex: isMobile(context) ? 2 :1,
           child: ValuePanel(
             firstText: "",
             secondText: Valores.fechaQuimicas.toString(),
@@ -1532,6 +1534,7 @@ class _RevisionesState extends State<Revisiones> {
     return Column(
       children: [
         Expanded(
+          flex: isMobile(context) ? 2 :1,
           child: ValuePanel(
             firstText: "",
             secondText: Valores.fechaElectrolitos.toString(),
@@ -1680,6 +1683,7 @@ class _RevisionesState extends State<Revisiones> {
     return Column(
       children: [
         Expanded(
+          flex: isMobile(context) ? 2 :1,
           child: ValuePanel(
             firstText: "",
             secondText: Valores.fechaGasometriaArterial.toString(),
@@ -1803,7 +1807,7 @@ class _RevisionesState extends State<Revisiones> {
   Column venosos() {
     return Column(
       children: [
-        Expanded(
+        Expanded(flex: isMobile(context) ? 2 :1,
           child: ValuePanel(
             firstText: "",
             secondText: Valores.fechaGasometriaVenosa.toString(),
@@ -1927,7 +1931,7 @@ class _RevisionesState extends State<Revisiones> {
   Column balances() {
     return Column(
       children: [
-        Expanded(
+        Expanded(flex: isMobile(context) ? 2 :1,
           child: ValuePanel(
             firstText: "",
             secondText: Valores.fechaRealizacionBalances.toString(),
@@ -2080,6 +2084,7 @@ class _RevisionesState extends State<Revisiones> {
     return Column(
       children: [
         Expanded(
+          flex: isMobile(context) ? 3 :1,
           child: ValuePanel(
             firstText: "",
             secondText: Valores.fechaVentilaciones.toString(),
@@ -2087,6 +2092,7 @@ class _RevisionesState extends State<Revisiones> {
           ),
         ),
         Expanded(
+            flex: isMobile(context) ? 4 :1,
             child: ValuePanel(
           firstText: "",
           secondText: Valores.modalidadVentilatoria.toString(),

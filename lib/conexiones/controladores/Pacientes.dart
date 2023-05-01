@@ -305,7 +305,7 @@ class Pacientes {
   static String hospitalarios() {
     // Reportes.reportes['Antecedentes_Quirurgicos'] = ""; **** ********** **** ***
     // Reportes.antecedentesQuirurgicos = "";
-    // print("Quirurgicos ${Quirurgicos!.length} $Quirurgicos \n "
+    // // print("Quirurgicos ${Quirurgicos!.length} $Quirurgicos \n "
     //     "Reportes.Antecedentes_Quirurgicos ${Reportes.antecedentesQuirurgicos}"
     //     "isEmpty ${Quirurgicos!.isEmpty}");
     // ************************ ************** ********** **** *** *
@@ -336,7 +336,7 @@ class Pacientes {
     // Reportes.reportes['Antecedentes_Alergicos'] = "";
     // Reportes.antecedentesTraumatologicos = "";
 
-    // print("Traumatologicos ${Traumatologicos!.length} $Traumatologicos \n "
+    // // print("Traumatologicos ${Traumatologicos!.length} $Traumatologicos \n "
     //"Reportes.antecedentesTraumatologicos ${Reportes.antecedentesTraumatologicos}");
     // ************************ ************** ********** **** *** *
     if (Traumatologicos != []) {
@@ -359,7 +359,7 @@ class Pacientes {
     // Reportes.reportes['Antecedentes_Alergicos'] = "";
     // Reportes.antecedentesAlergicos = "";
 
-    // print("Alergicos ${Alergicos!.length} $Alergicos \n "
+    // // print("Alergicos ${Alergicos!.length} $Alergicos \n "
     //"Reportes.Antecedentes_Alergicos ${Reportes.antecedentesAlergicos}");
     // ************************ ************** ********** **** *** *
     if (Alergicos != []) {
@@ -422,7 +422,7 @@ class Pacientes {
     // ************************ ************** ********** **** *** *
     // Reportes.reportes['Antecedentes_Patologicos'] = "";
     // Reportes.personalesPatologicos = "";
-    // print("Patologicos ${Patologicos!.length} $Patologicos \n ");
+    // // print("Patologicos ${Patologicos!.length} $Patologicos \n ");
     //"Reportes.Antecedentes_Patologicos ${Reportes.personalesPatologicos}");
     // ************************ ************** ********** **** *** *
     if (Patologicos != []) {
@@ -446,7 +446,7 @@ class Pacientes {
       Reportes.personalesPatologicos = "negados";
     }
     // ************************ ************** ********** **** *** *
-    // // print("Reportes.impresionesDiagnosticas ${Reportes.impresionesDiagnosticas}");
+    // // // print("Reportes.impresionesDiagnosticas ${Reportes.impresionesDiagnosticas}");
     // Reportes.reportes['Antecedentes_Patologicos'] =
     //     Reportes.personalesPatologicos;
     // ************************ ************** ********** **** *** *
@@ -576,21 +576,22 @@ class Pacientes {
       }
     }
     // ************************ ************** ********** **** *** *
-    print("Diagnosticos $Diagnosticos");
+    // // print("Diagnosticos $Diagnosticos");
     if (Diagnosticos != []) {
       for (var element in Diagnosticos!) {
         if (Reportes.impresionesDiagnosticas != "") {
           Reportes.impresionesDiagnosticas =
               "${Reportes.impresionesDiagnosticas.substring(0, Reportes.impresionesDiagnosticas.length - 1)} \n"
-              "${element['Pace_APP_DEG']} (${element['Pace_APP_DEG_com']}). ";
+              // "${element['Pace_APP_DEG']} (${element['Pace_APP_DEG_com']}). ";
+              "${element['Pace_APP_DEG_com']}. ";
         } else {
-          Reportes.impresionesDiagnosticas =
-              "${element['Pace_APP_DEG']} (${element['Pace_APP_DEG_com']}). ";
+          Reportes.impresionesDiagnosticas = "${element['Pace_APP_DEG_com']}. ";
+          // "${element['Pace_APP_DEG']} (${element['Pace_APP_DEG_com']}). ";
         }
       }
     }
 
-    // print("Reportes.impresionesDiagnosticas ${Reportes.impresionesDiagnosticas}");
+    // // print("Reportes.impresionesDiagnosticas ${Reportes.impresionesDiagnosticas}");
     Reportes.reportes['Impresiones_Diagnosticas'] =
         Reportes.impresionesDiagnosticas;
     // ************************ ************** ********** **** *** *
@@ -614,7 +615,7 @@ class Pacientes {
       }
     }
     // ************************ ************** ********** **** *** *
-    print("Diagnosticos $Diagnosticos");
+    // print("Diagnosticos $Diagnosticos");
     if (Diagnosticos != []) {
       for (var element in Diagnosticos!) {
         if (Reportes.impresionesDiagnosticas != "") {
@@ -627,7 +628,7 @@ class Pacientes {
       }
     }
 
-    // print("Reportes.impresionesDiagnosticas ${Reportes.impresionesDiagnosticas}");
+    // // print("Reportes.impresionesDiagnosticas ${Reportes.impresionesDiagnosticas}");
     Reportes.reportes['Impresiones_Diagnosticas'] =
         Reportes.impresionesDiagnosticas;
     // ************************ ************** ********** **** *** *
@@ -1024,11 +1025,11 @@ class Pacientes {
                           Pacientes.ID_Paciente)
                       .then((value) {
                     // ******************************************** *** *
-                    // print("IDDDD HOSP ${value}");
+                    // // print("IDDDD HOSP ${value}");
                     Pacientes.ID_Hospitalizacion = value['ID_Hosp'];
                     Pacientes.esHospitalizado = true;
                     Valores.isHospitalizado = true;
-                    // print("IDDDD HOSP ${Pacientes.ID_Hospitalizacion}");
+                    // // print("IDDDD HOSP ${Pacientes.ID_Hospitalizacion}");
                     // ******************************************** *** *
                     Valores.fechaIngresoHospitalario =
                         Calendarios.today(format: 'yyyy/MM/dd');
@@ -1056,7 +1057,7 @@ class Pacientes {
     Actividades.consultarId(Databases.siteground_database_regpace,
             pacientes['consultImage'], Pacientes.ID_Paciente)
         .then((value) {
-      // print("consultImage $value");
+      // // print("consultImage $value");
       Pacientes.imagenPaciente = value['Pace_FIAT'];
       Valores.imagenUsuario = value['Pace_FIAT'];
     });
@@ -3256,7 +3257,7 @@ class Toxicomanias {
           Valores.tiposDrogadismoDescripcion = value['Pace_APNP_DRO_tox_TIP'];
           // ********* ******** ******* ********* ***
 
-          // print("Valores de Toxicomanias asignado : : : $value");
+          // // print("Valores de Toxicomanias asignado : : : $value");
           Terminal.printSuccess(
               message: "Valores de Toxicomanias asignado : : : value");
           // Terminal.printData(message: "\t$value");
@@ -3596,7 +3597,7 @@ class Femeninologicos {
           Dicotomicos.fromInt(value['Pace_EYM_REDE_Hi'], toBoolean: true)
               as bool?;
 
-      // print("Valores de Femeninologicos asignado : : : $value");
+      // // print("Valores de Femeninologicos asignado : : : $value");
     });
   }
 
@@ -3769,7 +3770,7 @@ class Masculinologicos {
           Dicotomicos.fromInt(value['Pace_EYM_REDE_Hi'], toBoolean: true)
               as bool?;
 
-      // print("Valores de Masculinologicos asignado : : : $value");
+      // // print("Valores de Masculinologicos asignado : : : $value");
     });
   }
 
@@ -4764,8 +4765,8 @@ class Vitales {
         for (var item in result) {
           if (index <= result.length) {
             var thirdMap = {};
-            // print("${value.length} ${result.length}");
-            // print("${value[index]['ID_Pace_SV']} ${item['ID_Pace_SV']}");
+            // // print("${value.length} ${result.length}");
+            // // print("${value[index]['ID_Pace_SV']} ${item['ID_Pace_SV']}");
             thirdMap.addAll(item);
             thirdMap.addAll(value[index]);
             // Adición a Vitales ********** ************ ************** ********
@@ -5200,7 +5201,7 @@ class Electrocardiogramas {
   ];
 
   // static void fromJson(Map<String, dynamic> json) {
-  //   print("Electrocardiogramas $json");
+  //   // print("Electrocardiogramas $json");
   //   //
   //   Valores.fechaElectrocardiograma = json['Pace_GAB_EC_Feca'] ?? '';
   //   Valores.ritmoCardiaco = json['Pace_EC_rit'] ?? '';
@@ -5454,7 +5455,8 @@ class Auxiliares {
     return prosa; // """$prosa$max. ";
   }
 
-  static Future<Null> cambiarFecha({required String fechaPrevia, required String fechaNueva}) async {
+  static Future<Null> cambiarFecha(
+      {required String fechaPrevia, required String fechaNueva}) async {
     Actividades.actualizar(
             Databases.siteground_database_reggabo,
             "UPDATE laboratorios "
@@ -5462,7 +5464,8 @@ class Auxiliares {
             "WHERE Fecha_Registro = ? AND ID_Pace = ?",
             [fechaNueva, fechaPrevia, Pacientes.ID_Paciente],
             Pacientes.ID_Paciente)
-        .then((value) => Terminal.printNotice(message: "Actualizado $value . . ."))
+        .then((value) =>
+            Terminal.printNotice(message: "Actualizado $value . . ."))
         .whenComplete(() => Terminal.printNotice(message: "Actualizado . . . "))
         .onError((error, stackTrace) =>
             Terminal.printAlert(message: "Error :  : $error :  $stackTrace"));
@@ -6153,7 +6156,6 @@ class Reportes {
   }
 
   static copiarReporte({required TypeReportes tipoReporte}) {
-
     switch (tipoReporte) {
       case TypeReportes.reporteIngreso:
         return CopiasReportes.reporteIngreso(Reportes.reportes);
@@ -6167,8 +6169,6 @@ class Reportes {
         return CopiasReportes.reporteIngreso(Reportes.reportes);
     }
   }
-
-
 }
 
 class Balances {
@@ -7078,7 +7078,7 @@ class Expedientes {
       ],
       Pacientes.ID_Paciente,
     ).then((value) {
-      // print(value)
+      // // print(value)
     });
   }
 
@@ -7218,7 +7218,7 @@ class Licencias {
         .then((value) {
       // Enfermedades de base del paciente, asi como las Hospitalarias.
       Pacientes.Licencias = value;
-      print("Pacientes.Licencias ${Pacientes.Licencias}");
+      // print("Pacientes.Licencias ${Pacientes.Licencias}");
     });
   }
 

@@ -1,4 +1,5 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class ValuePanel extends StatefulWidget {
     this.padding = 2.0,
     this.margin = 2.0,
     this.fontSize = 12,
-    this.heigth = 42,
+    this.heigth = 46,
     this.withEditMessage = false,
     this.withBorder = true, // false,
     this.onEdit,
