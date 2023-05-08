@@ -8,11 +8,14 @@ class GrandButton extends StatefulWidget {
   void Function() onPress;
   final VoidCallback? onLongPress;
 
+  double? fontSize;
+
   GrandButton({
     Key? key,
     this.labelButton,
     this.weigth = 0,
     this.height = 0,
+    this.fontSize = 14.0,
     this.onLongPress,
     required this.onPress,
   }) : super(key: key);
@@ -57,6 +60,7 @@ class _GrandButtonState extends State<GrandButton> {
           child: Text(
             widget.labelButton!,
             textAlign: TextAlign.center,
+            style: TextStyle(fontSize: widget.fontSize),
           )),
     );
   }

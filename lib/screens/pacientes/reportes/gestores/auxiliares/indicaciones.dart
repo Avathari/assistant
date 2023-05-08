@@ -32,6 +32,15 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
 
   //
   var carouselController = CarouselController();
+  //
+  double? inSodio = 0,
+      inPotasio = 0,
+      inCloro = 0,
+      inCloruro = 0,
+      inLactato = 0,
+      inOsmolaridad = 0,
+      inGlucosa = 0,
+      inCalcio = 0;
 
   @override
   void initState() {
@@ -78,7 +87,8 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
                             controller: ScrollController(),
                             gridDelegate: GridViewTools.gridDelegate(
                                 crossAxisCount: isMobile(context) ? 4 : 1,
-                                mainAxisExtent: isDesktop(context) ? 66: 65), //46
+                                mainAxisExtent:
+                                    isDesktop(context) ? 66 : 65), //46
                             children: [
                               ValuePanel(
                                 firstText: 'Gasto Energético Basal',
@@ -194,7 +204,8 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
                                         Reportes.dieta.clear();
                                         dietaTextController.text =
                                             Formatos.dietasAyuno;
-                                        Reportes.dieta.add(Formatos.dietasAyuno);
+                                        Reportes.dieta
+                                            .add(Formatos.dietasAyuno);
                                       },
                                     ),
                                   ),
@@ -216,7 +227,8 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
                                         Reportes.dieta.clear();
                                         dietaTextController.text =
                                             Formatos.dietasCompletas;
-                                        Reportes.dieta.add(Formatos.dietasCompletas);
+                                        Reportes.dieta
+                                            .add(Formatos.dietasCompletas);
                                       },
                                     ),
                                   ),
@@ -251,7 +263,8 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
                             controller: ScrollController(),
                             gridDelegate: GridViewTools.gridDelegate(
                                 crossAxisCount: isMobile(context) ? 4 : 2,
-                                mainAxisExtent: isDesktop(context) ? 66: 65), //46
+                                mainAxisExtent:
+                                    isDesktop(context) ? 66 : 65), //46
                             children: [
                               ValuePanel(
                                 firstText: "Sodio Sérico",
@@ -437,26 +450,10 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
                                   withShowOption: true,
                                   selection: true,
                                   onSelected: () {
-                                    showDialog(
-                                        useSafeArea: true,
-                                        context: context,
-                                        builder: (context) {
-                                          return Dialog(
-                                              child: DialogSelector(
-                                            tittle: 'Hidroterapia',
-                                            pathForFileSource:
-                                                'assets/diccionarios/Farmacos.txt',
-                                            typeOfDocument: 'txt',
-                                            onSelected: ((value) {
-                                              setState(() {
-                                                Reportes.hidroterapia
-                                                    .add(value);
-                                                liquidosTextController.text =
-                                                    "${liquidosTextController.text}$value\n";
-                                              });
-                                            }),
-                                          ));
-                                        });
+                                    Operadores.selectOptionsActivity(
+                                      context: context,
+                                      options: Parenterales.parenterales,
+                                    );
                                   },
                                   onChange: ((value) {
                                     Reportes.hidroterapia = traslate(value);
@@ -464,7 +461,102 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
                                         Reportes.hidroterapia;
                                   }),
                                   inputFormat: MaskTextInputFormatter()),
-                              CrossLine()
+                              CrossLine(),
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: GridView.builder(
+                                          gridDelegate: GridViewTools.gridDelegate(crossAxisSpacing: 0.1,
+                                              childAspectRatio: 0.5,
+                                              mainAxisExtent: 70, crossAxisCount: 2, mainAxisSpacing: 0.1),
+                                          itemCount:
+                                              Parenterales.parenterales.length,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            return GrandButton(
+                                              fontSize: 10,
+                                              labelButton: Parenterales
+                                                  .parenterales[index],
+                                              onPress: () {
+                                                setState(() {
+                                                  inSodio = Parenterales
+                                                      .composiciones[
+                                                  index]['Sodio'];
+                                                  inPotasio = Parenterales
+                                                      .composiciones[
+                                                  index]['Potasio'];
+                                                  inCloro = Parenterales
+                                                      .composiciones[
+                                                  index]['Cloro'];
+                                                  inCloruro = Parenterales
+                                                      .composiciones[
+                                                  index]['Cloruro'];
+                                                  inLactato = Parenterales
+                                                      .composiciones[
+                                                  index]['Lactato'];
+                                                  inOsmolaridad = Parenterales
+                                                      .composiciones[
+                                                  index]['Osmolaridad'];
+                                                  inGlucosa = Parenterales
+                                                      .composiciones[
+                                                  index]['Glucosa'];
+                                                  inCalcio = Parenterales
+                                                      .composiciones[
+                                                  index]['Calcio'];
+                                                });
+                                              },
+                                            );
+                                          }),
+                                    ),
+                                    Expanded(
+                                        child: Container(
+                                      decoration: ContainerDecoration
+                                          .roundedDecoration(),
+                                      child: GridView(
+                                        padding: const EdgeInsets.all(5),
+                                        gridDelegate: GridViewTools.gridDelegate(mainAxisExtent: 70),
+                                        children: [
+                                          ValuePanel(
+                                              firstText: "Sodio",
+                                              secondText: '$inSodio',
+                                              thirdText: 'mEq/L'),
+                                          ValuePanel(
+                                              firstText: "Potasio",
+                                              secondText: '$inPotasio',
+                                              thirdText: 'mEq/L'),
+                                          ValuePanel(
+                                              firstText: "Cloro",
+                                              secondText: '$inCloro',
+                                              thirdText: 'mEq/L'),
+
+                                          ValuePanel(
+                                              firstText: "Cloruro",
+                                              secondText: '$inCloruro',
+                                              thirdText: 'mEq/L'),
+                                          ValuePanel(
+                                              firstText: "Lactato",
+                                              secondText: '$inLactato',
+                                              thirdText: 'mEq/L'),
+                                          ValuePanel(
+                                              firstText: "Osmolaridad",
+                                              secondText: '$inOsmolaridad',
+                                              thirdText: 'mOsm/L'),
+
+                                          ValuePanel(
+                                              firstText: "Glucosa",
+                                              secondText: '$inGlucosa',
+                                              thirdText: 'mg/dL'),
+                                          ValuePanel(
+                                              firstText: "Calcio",
+                                              secondText: '$inCalcio',
+                                              thirdText: 'mEq/L')
+                                        ],
+                                      ),
+                                    )),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),

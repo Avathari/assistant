@@ -4348,13 +4348,102 @@ class Items {
   ];
 }
 
+class Parenterales {
+  static List parenterales = [
+    'Sol. Hartmann',
+    'Sol. NaCl 0.9%',
+    'Sol. Mixta',
+    'Sol. Glucosada 5%',
+    'Sol. Glucosada 10%',
+    'Sol. Glucosada 50%',
+    'Sol. NaCl 17.7%',
+  ];
+  static List composiciones = [
+    {
+      "Sodio": 130.0,
+      "Potasio": 4.0,
+      "Cloro": 2.75,
+      'Cloruro': 109.0,
+      'Lactato': 28.0,
+      'Osmolaridad': 272.0,
+      'Glucosa': 0.0,
+      'Calcio': 3.0
+    }, // Hartmann
+    {
+      "Sodio": 154.0,
+      "Potasio": 0.0,
+      "Cloro": 154.0,
+      'Cloruro': 0.0,
+      'Lactato': 0.0,
+      'Osmolaridad': 308.0,
+      'Glucosa': 0.0,
+      'Calcio': 0.0
+    }, // NaCl 0.9%
+    {
+      "Sodio": 77.0,
+      "Potasio": 0.0,
+      "Cloro": 77.0,
+      'Cloruro': 0.0,
+      'Lactato': 0.0,
+      'Osmolaridad': 292.0,
+      'Glucosa': 0.0,
+      'Calcio': 0.0
+    }, // Mixta
+    {
+      "Sodio": 0.0,
+      "Potasio": 0.0,
+      "Cloro": 0.0,
+      'Cloruro': 0.0,
+      'Lactato': 0.0,
+      'Osmolaridad': 277.0,
+      'Glucosa': 5.0,
+      'Calcio': 0.0
+    }, // Glucosada 5%
+    {
+      "Sodio": 0.0,
+      "Potasio": 0.0,
+      "Cloro": 0.0,
+      'Cloruro': 0.0,
+      'Lactato': 0.0,
+      'Osmolaridad': 555.0,
+      'Glucosa': 50.0,
+      'Calcio': 0.0
+    }, // Glucosada 10%
+    {
+      "Sodio": 0.0,
+      "Potasio": 0.0,
+      "Cloro": 0.0,
+      'Cloruro': 0.0,
+      'Lactato': 0.0,
+      'Osmolaridad': 277.0,
+      'Glucosa': 100.0,
+      'Calcio': 0.0
+    }, // Glucosada 50%
+    {
+      "Sodio": 3028.0,
+      "Potasio": 0.0,
+      "Cloro": 3028.0,
+      'Cloruro': 0.0,
+      'Lactato': 0.0,
+      'Osmolaridad': 6056.0,
+      'Glucosa': 100.0,
+      'Calcio': 0.0
+    }, // Sol NaCl 17.7%
+  ];
+}
+
 class Exploracion {
   static String? inspeccionGeneral = 'Alerta';
-  static String? aperturaOcular = '4', respuestaMotora = '6', respuestaVerbal = '5';
+  static String? aperturaOcular = '4',
+      respuestaMotora = '6',
+      respuestaVerbal = '5';
   static String? coloracionTegumentaria = ', sin palidez tegumentaria',
       coloracionMucosas = ', sin deshidratación';
-  static String? ingurgitacionYugular = '', bocioCervical = '', desviacionTraqueal = '',
-  adenopatiaCervical = '', adenomegaliasCervical = '';
+  static String? ingurgitacionYugular = '',
+      bocioCervical = '',
+      desviacionTraqueal = '',
+      adenopatiaCervical = '',
+      adenomegaliasCervical = '';
 
   static String get exploracionGeneral {
     return '${Exploracion.inspeccionGeneral}, '
@@ -4364,7 +4453,7 @@ class Exploracion {
         'Cuello $ingurgitacionYugular$desviacionTraqueal$bocioCervical$adenopatiaCervical'
         '$adenomegaliasCervical'
         '. ';
-}
+  }
 }
 
 double toDoubleFromInt(

@@ -196,6 +196,7 @@ class GridViewTools {
   static SliverGridDelegateWithFixedCrossAxisCount gridDelegate(
       {int crossAxisCount = 3,
       double mainAxisExtent = 250,
+        childAspectRatio = 1.0,
       crossAxisSpacing = 10.0,
       mainAxisSpacing = 10.0}) {
     return SliverGridDelegateWithFixedCrossAxisCount(
@@ -203,6 +204,7 @@ class GridViewTools {
       mainAxisSpacing: mainAxisSpacing,
       crossAxisSpacing: crossAxisSpacing,
       mainAxisExtent: mainAxisExtent,
+      childAspectRatio: childAspectRatio,
     );
   }
 }
