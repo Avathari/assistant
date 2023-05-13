@@ -223,6 +223,14 @@ class _DashboardState extends State<Dashboard> {
                               toNextPage(context, GestionBalances());
                             },
                           ),
+
+                          GrandIcon(
+                              labelButton: "Paraclinicos",
+                              iconData: Icons.account_tree_outlined,
+                              onPress: () {
+                                Navigator.of(context)
+                                    .push(MaterialPageRoute(builder: ((context) => const LaboratoriosGestion())));
+                              }),
                           GrandIcon(
                               labelButton: "Rutina",
                               iconData: Icons.ad_units,
@@ -364,6 +372,13 @@ class _DashboardState extends State<Dashboard> {
                                       },
                                     ),
                                     GrandIcon(
+                                        labelButton: "Paraclinicos",
+                                        iconData: Icons.account_tree_outlined,
+                                        onPress: () {
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(builder: ((context) => const LaboratoriosGestion())));
+                                        }),
+                                    GrandIcon(
                                         labelButton: "Rutina",
                                         iconData: Icons.ad_units,
                                         onPress: () {
@@ -500,6 +515,13 @@ class _DashboardState extends State<Dashboard> {
                             toNextPage(context, GestionBalances());
                           },
                         ),
+                        GrandIcon(
+                            labelButton: "Paraclinicos",
+                            iconData: Icons.account_tree_outlined,
+                            onPress: () {
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(builder: ((context) => const LaboratoriosGestion())));
+                            }),
                         GrandIcon(
                             labelButton: "Rutina",
                             iconData: Icons.ad_units,

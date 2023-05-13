@@ -307,6 +307,23 @@ class Listas {
     }
     return val;
   }
+
+  static sumFromMap(List<dynamic> data, {String keySearched = 'Monto_Pagado',
+    String conditionalKey = 'Tipo_Recurso',
+    String conceptSearched = 'Ingresos'}) {
+    double totalScores = 0;
+
+    // Terminal.printExpected(message: "$data");
+    for (var item in data) {
+      //getting the key direectly from the name of the key
+      if (item[conditionalKey] == conceptSearched) {
+        Terminal.printExpected(message: "${item[keySearched]}");
+        totalScores += double.parse(item[keySearched]);
+      }
+    }
+
+    return totalScores;
+  }
 }
 
 class Alertas {

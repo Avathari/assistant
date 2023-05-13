@@ -727,7 +727,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
         apellidoPaternoTextController.text = Pacientes.Paciente['Pace_Ape_Pat'];
         apellidoMaternoTextController.text = Pacientes.Paciente['Pace_Ape_Mat'];
 
-        hemotipoValue = Pacientes.Paciente['Pace_Hemo'] ?? '';
+        hemotipoValue = Pacientes.Paciente['Pace_Hemo'] ?? Items.Hemotipo[0];
 
         localidadResidenciaTextController.text =
             Pacientes.Paciente['Pace_Resi_Loca'];
@@ -883,8 +883,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           width: isMobile(context)
               ? 216
               : isTablet(context)
-                  ? 140
-                  : 200,
+              ? 140
+              : 200,
           onChangeValue: (String? newValue) {
             setState(() {
               hemotipoValue = newValue!;
