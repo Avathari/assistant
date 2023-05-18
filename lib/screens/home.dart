@@ -8,6 +8,7 @@ import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitaliza
 import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/screens/usuarios/usuarios.dart';
+import 'package:assistant/screens/vocablos/vocablos.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/FtpAccount.dart';
 import 'package:assistant/widgets/GrandButton.dart';
@@ -669,6 +670,17 @@ class PacientesPanel extends StatelessWidget {
               labelButton: "Concentraciones",
               onPress: () {
                 toNextScreen(context: context, screen:  Scaffold(appBar:AppBar(backgroundColor: Colors.black,), body: const Concentraciones()));
+              },
+            ),
+            HomeButton(
+              iconData: Icons.bar_chart,
+              labelButton: "Vocales",
+              onPress: () {
+                toNextScreen(context: context, screen: GestionLexemas());
+                // Operadores.alertActivity(
+                //     context: context,
+                //     tittle: "Error",
+                //     message: "Interfaz en contrucción");
               },
             ),
             HomeButton(

@@ -149,7 +149,7 @@ class _EstadisticasActivosState extends State<EstadisticasActivos> {
                       //print("data data $data");
                       if (index <= data.length) {
                         return tileStat(Icons.list, Financieros.Categorias[index],
-                            data.values.toList().elementAt(index).toString());
+                            double.parse(data.values.toList().elementAt(index).toString()));
                       } else {
                         return Container();
                       }
@@ -185,7 +185,7 @@ class _EstadisticasActivosState extends State<EstadisticasActivos> {
     return list;
   }
 
-  Padding tileStat(IconData? icon, String tittle, String stat) {
+  Padding tileStat(IconData? icon, String tittle, double stat) {
     return Padding(
       padding: const EdgeInsets.only(right: 8.0, left: 8.0, bottom: 0, top: 0),
       child: ListTile(
@@ -196,7 +196,7 @@ class _EstadisticasActivosState extends State<EstadisticasActivos> {
               fontSize: 12, color: Colors.white, fontWeight: FontWeight.bold),
         ),
         trailing: Text(
-          "$stat",
+          stat.toStringAsFixed(2),
           style: const TextStyle(fontSize: 10, color: Colors.white),
         ),
       ),
