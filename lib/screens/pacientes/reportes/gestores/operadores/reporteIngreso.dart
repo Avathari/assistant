@@ -158,6 +158,14 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
                           labelEditText: "Antecedentes quirúrgicos",
                           keyBoardType: TextInputType.multiline,
                           numOfLines: 5,
+                          selection: true,
+                          withShowOption: true,
+                          onSelected: () {
+                            setState(() {
+                              hospiTextController.text = "";
+                              hospiTextController.text = "Negados. ";
+                            });
+                          },
                           inputFormat: MaskTextInputFormatter()),
                       EditTextArea(
                           textController: patoloTextController,

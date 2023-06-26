@@ -80,13 +80,37 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
           inputFormat: MaskTextInputFormatter(),
           labelEditText: 'Descripción del Padecimiento Actual',
           textController: padecimientoActualTextController,
-          numOfLines: isTablet(context) ? 35 : 15,
+          numOfLines: isTablet(context) ? 10 : 15,
           onChange: (value) {
             setState(() {
               Valores.padecimientoActual = value;
             });
           },
         ),
+        // EditTextArea(
+        //   keyBoardType: TextInputType.text,
+        //   inputFormat: MaskTextInputFormatter(),
+        //   labelEditText: 'Descripción del Padecimiento Actual',
+        //   textController: padecimientoActualTextController,
+        //   numOfLines: isTablet(context) ? 10 : 15,
+        //   onChange: (value) {
+        //     setState(() {
+        //       Valores.padecimientoActual = value;
+        //     });
+        //   },
+        // ),
+        // EditTextArea(
+        //   keyBoardType: TextInputType.text,
+        //   inputFormat: MaskTextInputFormatter(),
+        //   labelEditText: 'Descripción del Padecimiento Actual',
+        //   textController: padecimientoActualTextController,
+        //   numOfLines: isTablet(context) ? 15 : 15,
+        //   onChange: (value) {
+        //     setState(() {
+        //       Valores.padecimientoActual = value;
+        //     });
+        //   },
+        // ),
       ],
     );
   }

@@ -170,12 +170,21 @@ class _DashboardState extends State<Dashboard> {
                       child: Column(
                         children: [
                           // TittlePanel(padding: 5, textPanel: 'Revisorio'),
-                          GrandIcon(labelButton: 'Revisorio', iconData: Icons.ac_unit, onPress: () {
-                            Operadores.openWindow(
-                                context: context,
-                                chyldrim: const Generales(
-                                ));
-                          },),
+                          GrandIcon(
+                            labelButton: 'Revisorio',
+                            iconData: Icons.ac_unit,
+                            onPress: () {
+                              if (isTablet(context)) {
+                                Operadores.openDialog(
+                                    context: context,
+                                    chyldrim: const Generales());
+                              } else {
+                                Operadores.openWindow(
+                                    context: context,
+                                    chyldrim: const Generales());
+                              }
+                            },
+                          ),
                           CrossLine(height: 20),
                           GrandIcon(
                               labelButton: isMobile(context)
@@ -228,8 +237,9 @@ class _DashboardState extends State<Dashboard> {
                               labelButton: "Paraclinicos",
                               iconData: Icons.account_tree_outlined,
                               onPress: () {
-                                Navigator.of(context)
-                                    .push(MaterialPageRoute(builder: ((context) => const LaboratoriosGestion())));
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: ((context) =>
+                                        const LaboratoriosGestion())));
                               }),
                           GrandIcon(
                               labelButton: "Rutina",
@@ -312,87 +322,97 @@ class _DashboardState extends State<Dashboard> {
                     children: [
                       Pacientes.esHospitalizado == true
                           ? const Expanded(flex: 6, child: Hospitalizado())
-                          : const Expanded(flex: 6, child: EstadisticasVitales()),
+                          : const Expanded(
+                              flex: 6, child: EstadisticasVitales()),
                       Expanded(
                           child: RoundedPanel(
-                            child: Container(
-                              decoration: ContainerDecoration.roundedDecoration(),
-                              child: SingleChildScrollView(
-                                controller: ScrollController(),
-                                child: Column(
-                                  children: [
-                                    GrandIcon(labelButton: 'Revisorio', iconData: Icons.ac_unit, onPress: () {
-                                      if (isDesktop(context)) {
-                                        Operadores.openDialog(
-                                            context: context,
-                                            withAction: false,
-                                            chyldrim: const Generales(
-                                            ));
-                                      } else {
-                                        Operadores.openWindow(
-                                            context: context,
-                                            chyldrim: const Generales(
-                                            ));
-                                      }
-                                    },),
-                                    CrossLine(height: 10),
-                                    GrandIcon(
-                                        labelButton: "Revisiones",
-                                        iconData: Icons.account_tree,
-                                        onPress: () {
-                                          toNextPage(context, const LaboratoriosGestion());
-                                        }),
-                                    GrandIcon(
-                                        labelButton: "Antecedentes Personales Patológicos",
-                                        iconData: Icons.medication,
-                                        onPress: () {
-                                          toNextPage(context, const GestionNoPatologicos());
-                                        }),
-                                    GrandIcon(
-                                        labelButton: "Diagnósticos de la Hospitalización",
-                                        iconData: Icons.restore_page_outlined,
-                                        onPress: () {
-                                          toNextPage(context, GestionDiagnosticos());
-                                        }),
-                                    GrandIcon(
-                                      labelButton: "Concentraciones y Diluciones",
-                                      iconData: Icons.balance,
-                                      onPress: () {
-                                        Operadores.openDialog(
+                        child: Container(
+                          decoration: ContainerDecoration.roundedDecoration(),
+                          child: SingleChildScrollView(
+                            controller: ScrollController(),
+                            child: Column(
+                              children: [
+                                GrandIcon(
+                                  labelButton: 'Revisorio',
+                                  iconData: Icons.ac_unit,
+                                  onPress: () {
+                                    if (isDesktop(context)) {
+                                      Operadores.openDialog(
                                           context: context,
-                                          chyldrim: const Concentraciones(),
-                                        );
-                                      },
-                                    ),
-                                    GrandIcon(
-                                      labelButton: "Balances Hidricos",
-                                      iconData: Icons.waterfall_chart,
-                                      onPress: () {
-                                        toNextPage(context, GestionBalances());
-                                      },
-                                    ),
-                                    GrandIcon(
-                                        labelButton: "Paraclinicos",
-                                        iconData: Icons.account_tree_outlined,
-                                        onPress: () {
-                                          Navigator.of(context)
-                                              .push(MaterialPageRoute(builder: ((context) => const LaboratoriosGestion())));
-                                        }),
-                                    GrandIcon(
-                                        labelButton: "Rutina",
-                                        iconData: Icons.ad_units,
-                                        onPress: () {
-                                          Operadores.openWindow(
-                                              context: context,
-                                              chyldrim: ConmutadorParaclinicos(
-                                                categoriaEstudio: 'Rutina',
-                                              ));
-                                        }),
-                                  ],
+                                          withAction: false,
+                                          chyldrim: const Generales());
+                                    } else {
+                                      Operadores.openWindow(
+                                          context: context,
+                                          chyldrim: const Generales());
+                                    }
+                                  },
                                 ),
-                              ),
+                                CrossLine(height: 10),
+                                GrandIcon(
+                                    labelButton: "Revisiones",
+                                    iconData: Icons.account_tree,
+                                    onPress: () {
+                                      toNextPage(
+                                          context, const LaboratoriosGestion());
+                                    }),
+                                GrandIcon(
+                                    labelButton:
+                                        "Antecedentes Personales Patológicos",
+                                    iconData: Icons.medication,
+                                    onPress: () {
+                                      toNextPage(context,
+                                          const GestionNoPatologicos());
+                                    }),
+                                GrandIcon(
+                                    labelButton:
+                                        "Diagnósticos de la Hospitalización",
+                                    iconData: Icons.restore_page_outlined,
+                                    onPress: () {
+                                      toNextPage(
+                                          context, GestionDiagnosticos());
+                                    }),
+                                GrandIcon(
+                                  labelButton: "Concentraciones y Diluciones",
+                                  iconData: Icons.balance,
+                                  onPress: () {
+                                    Operadores.openDialog(
+                                      context: context,
+                                      chyldrim: const Concentraciones(),
+                                    );
+                                  },
+                                ),
+                                GrandIcon(
+                                  labelButton: "Balances Hidricos",
+                                  iconData: Icons.waterfall_chart,
+                                  onPress: () {
+                                    toNextPage(context, GestionBalances());
+                                  },
+                                ),
+                                GrandIcon(
+                                    labelButton: "Paraclinicos",
+                                    iconData: Icons.account_tree_outlined,
+                                    onPress: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: ((context) =>
+                                                  const LaboratoriosGestion())));
+                                    }),
+                                GrandIcon(
+                                    labelButton: "Rutina",
+                                    iconData: Icons.ad_units,
+                                    onPress: () {
+                                      Operadores.openWindow(
+                                          context: context,
+                                          chyldrim: ConmutadorParaclinicos(
+                                            categoriaEstudio: 'Rutina',
+                                          ));
+                                    }),
+                              ],
                             ),
-                          )),
+                          ),
+                        ),
+                      )),
                     ],
                   ),
                 ),
@@ -465,20 +485,22 @@ class _DashboardState extends State<Dashboard> {
                     controller: ScrollController(),
                     child: Column(
                       children: [
-                        GrandIcon(labelButton: 'Revisorio', iconData: Icons.ac_unit, onPress: () {
-                          if (isDesktop(context)) {
-                            Operadores.openDialog(
-                                context: context,
-                                withAction: false,
-                                chyldrim: const Generales(
-                                ));
-                          } else {
-                            Operadores.openWindow(
-                                context: context,
-                                chyldrim: const Generales(
-                                ));
-                          }
-                        },),
+                        GrandIcon(
+                          labelButton: 'Revisorio',
+                          iconData: Icons.ac_unit,
+                          onPress: () {
+                            if (isDesktop(context)) {
+                              Operadores.openDialog(
+                                  context: context,
+                                  withAction: false,
+                                  chyldrim: const Generales());
+                            } else {
+                              Operadores.openWindow(
+                                  context: context,
+                                  chyldrim: const Generales());
+                            }
+                          },
+                        ),
                         CrossLine(height: 10),
                         GrandIcon(
                             labelButton: "Revisiones",
@@ -519,8 +541,9 @@ class _DashboardState extends State<Dashboard> {
                             labelButton: "Paraclinicos",
                             iconData: Icons.account_tree_outlined,
                             onPress: () {
-                              Navigator.of(context)
-                                  .push(MaterialPageRoute(builder: ((context) => const LaboratoriosGestion())));
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: ((context) =>
+                                      const LaboratoriosGestion())));
                             }),
                         GrandIcon(
                             labelButton: "Rutina",
@@ -548,15 +571,14 @@ class _DashboardState extends State<Dashboard> {
                 children: [
                   Expanded(
                       child: RoundedPanel(
-                        child: const Degenerativos(),
-                      )),
+                    child: const Degenerativos(),
+                  )),
                   const SizedBox(width: 6),
                   Expanded(
                       child: RoundedPanel(
                     child: const Diagnosis(),
                   )),
                   const SizedBox(width: 6),
-
                   Expanded(
                       child: RoundedPanel(
                     child: SingleChildScrollView(

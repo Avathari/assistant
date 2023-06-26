@@ -308,9 +308,10 @@ class Listas {
     return val;
   }
 
-  static sumFromMap(List<dynamic> data, {String keySearched = 'Monto_Pagado',
-    String conditionalKey = 'Tipo_Recurso',
-    String conceptSearched = 'Ingresos'}) {
+  static sumFromMap(List<dynamic> data,
+      {String keySearched = 'Monto_Pagado',
+      String conditionalKey = 'Tipo_Recurso',
+      String conceptSearched = 'Ingresos'}) {
     double totalScores = 0;
 
     // Terminal.printExpected(message: "$data");
@@ -385,11 +386,10 @@ class Opciones {
 }
 
 class Operadores {
-
   static void openDialog(
       {required BuildContext context,
       required Widget chyldrim,
-        bool? withAction = true,
+      bool? withAction = true,
       Function? onAction}) {
     showDialog(
         useSafeArea: true,
@@ -405,29 +405,30 @@ class Operadores {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(flex: 15, child: chyldrim),
-                withAction == true ?  Expanded(
-                      flex: isDesktop(context) ? 2 : 1,
-                      child: Container(
-                        width: 2000,
-                        decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(20)),
-                            border: Border.all(
-                              color: Colors.grey,
-                            )),
-                        child: GrandButton(
-                          height: 10,
-                          labelButton: 'Aceptar',
-                          onPress: () {
-                            if (onAction == null || onAction == Null) {
-                              Navigator.of(context).pop();
-                            } else {
-                              onAction();
-                              Navigator.of(context).pop();
-                            }
-                          },
-                        ))) : Container()
-
+                    withAction == true
+                        ? Expanded(
+                            flex: isDesktop(context) ? 2 : 1,
+                            child: Container(
+                                width: 2000,
+                                decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(20)),
+                                    border: Border.all(
+                                      color: Colors.grey,
+                                    )),
+                                child: GrandButton(
+                                  height: 10,
+                                  labelButton: 'Aceptar',
+                                  onPress: () {
+                                    if (onAction == null || onAction == Null) {
+                                      Navigator.of(context).pop();
+                                    } else {
+                                      onAction();
+                                      Navigator.of(context).pop();
+                                    }
+                                  },
+                                )))
+                        : Container()
                   ],
                 ),
               ));
@@ -474,22 +475,34 @@ class Operadores {
 
   static void openWindow(
       {required BuildContext context,
-        required Widget chyldrim,
-        Function? onAction}) {
+      required Widget chyldrim,
+      Function? onAction}) {
     showDialog(
-      useSafeArea: true,
+        useSafeArea: true,
         context: context,
         builder: (context) {
-                return AlertDialog(
-                    backgroundColor: Colors.black,
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
-                    content: SizedBox(
-                      height: 700,
-                        child: chyldrim),
+          if (isTablet(context)) {
+            return Dialog(
+              backgroundColor: Theming.secondaryColor,
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                    height: 700,
+                    child: chyldrim),
+              ),
 
-                );
-              });
+            );
+          } else {
+            return AlertDialog(
+              backgroundColor: Colors.black,
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
+              content: SizedBox(height: 700, child: chyldrim),
+            );
+          }
+        });
   }
 
   static void optionsActivity({
@@ -652,8 +665,7 @@ class Dialogos {
     );
   }
 
-  static AlertDialog notifyDialog(
-      String? tittle, String? msg, onAcept) {
+  static AlertDialog notifyDialog(String? tittle, String? msg, onAcept) {
     return AlertDialog(
       backgroundColor: Theming.secondaryColor,
       title: Text(
@@ -681,9 +693,8 @@ class Dialogos {
     );
   }
 
-
-  static AlertDialog editDialog(TextInputType keyBoardType, String? tittle, String? msg, onCloss,
-      ValueChanged<String>? onAcept) {
+  static AlertDialog editDialog(TextInputType keyBoardType, String? tittle,
+      String? msg, onCloss, ValueChanged<String>? onAcept) {
     var textEditController = TextEditingController();
 
     return AlertDialog(
@@ -905,13 +916,17 @@ class Dialogos {
 }
 
 class Datos {
-
   static double fromInt(int value) {
     return double.parse(value.toString());
   }
 
-  static void portapapeles({required BuildContext context, required String text}) {
-      Clipboard.setData(ClipboardData(text: text)).whenComplete(() => Operadores.notifyActivity(context: context, tittle: "Portapapeles . . . ", message: "Copiado en Portapapeles . . . \n$text"));
+  static void portapapeles(
+      {required BuildContext context, required String text}) {
+    Clipboard.setData(ClipboardData(text: text)).whenComplete(() =>
+        Operadores.notifyActivity(
+            context: context,
+            tittle: "Portapapeles . . . ",
+            message: "Copiado en Portapapeles . . . \n$text"));
   }
 }
 
