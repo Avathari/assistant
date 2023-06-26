@@ -78,81 +78,86 @@ class _OperacionesHospitalizacionesState
     Future.forEach(Escalas.serviciosHospitalarios,
             (element) => auxiliarServicios.add(element.toString().trim()))
         .whenComplete(() {
-      servicioTratanteValue = auxiliarServicios[0].trim();
-      servicioTratanteInicialValue = auxiliarServicios[0].trim();
-      motivoEgresoValue = Escalas.motivosEgresos[0].trim();
+      // ********************************** * * *
+      setState(() {
+        servicioTratanteValue = auxiliarServicios[0].trim();
+        servicioTratanteInicialValue = auxiliarServicios[0].trim();
+        motivoEgresoValue = Escalas.motivosEgresos[0].trim();
+      });
+// ********************************** * * *
+      if (Hospitalizaciones.Hospitalizacion['ID_Hosp'] == null ||
+          Pacientes.ID_Hospitalizacion == 0) {
+        widget.operationActivity = Constantes.Register;
+      }
+      //
+      switch (widget.operationActivity) {
+        case Constantes.Nulo:
+          fechaIngresoTextController.text =
+              Calendarios.today(format: 'yyyy-MM-dd');
+
+          servicioTratanteValue = auxiliarServicios[75].trim();
+          servicioTratanteInicialValue = auxiliarServicios[141].trim();
+          break;
+        case Constantes.Consult:
+          fechaIngresoTextController.text =
+              Calendarios.today(format: 'yyyy-MM-dd');
+
+          servicioTratanteValue = auxiliarServicios[75].trim();
+          servicioTratanteInicialValue = auxiliarServicios[141].trim();
+          break;
+        case Constantes.Register:
+          widget._operationButton = 'Registrar';
+
+          fechaIngresoTextController.text =
+              Calendarios.today(format: 'yyyy-MM-dd');
+
+          servicioTratanteValue = auxiliarServicios[75];
+          servicioTratanteInicialValue = auxiliarServicios[141];
+          break;
+        case Constantes.Update:
+          setState(() {
+            widget._operationButton = 'Actualizar';
+            //
+            idOperation = // Pacientes.ID_Hospitalizacion;
+                Hospitalizaciones.Hospitalizacion[
+                    'ID_Hosp']; // Pacientes.ID_Hospitalizacion;
+            fechaRealizacionTextController.text =
+                // Valores.fechaIngresoHospitalario!;
+                Hospitalizaciones.Hospitalizacion['Feca_INI_Hosp'];
+            isNumCama = Hospitalizaciones.Hospitalizacion['Id_Cama'] ??
+                "N/A"; // 1.toString()
+            //: // Valores.numeroCama.toString();
+            //Hospitalizaciones.Hospitalizacion['Id_Cama'].toString();
+
+            fechaIngresoTextController
+                    .text = // Valores.fechaIngresoHospitalario!;
+                Hospitalizaciones.Hospitalizacion['Feca_INI_Hosp'].toString();
+            fechaEgresoTextController.text =
+                // Valores.fechaEgresoHospitalario!;
+                Hospitalizaciones.Hospitalizacion['Feca_EGE_Hosp'].toString();
+            diasEstanciaTextController.text = Valores.diasEstancia.toString();
+            // Hospitalizaciones.Hospitalizacion['Dia_Estan'].toString();
+            medicoTratanteTextController.text = // Valores.medicoTratante!;
+                Hospitalizaciones.Hospitalizacion['Medi_Trat'].toString();
+
+            servicioTratanteValue = // Valores.servicioTratante!;
+                Hospitalizaciones.Hospitalizacion['Serve_Trat']
+                    .trim()
+                    .toString();
+            servicioTratanteInicialValue = // Valores.servicioTratanteInicial!;
+                Hospitalizaciones.Hospitalizacion['Serve_Trat_INI']
+                    .trim()
+                    .toString();
+            motivoEgresoValue = Valores.motivoEgreso != ''
+                ? Hospitalizaciones.Hospitalizacion['EGE_Motivo']
+                    .toString() // Valores.motivoEgreso
+                : Escalas.motivosEgresos[0];
+          });
+          super.initState();
+          break;
+        default:
+      }
     });
-
-    // print("Pacientes.ID_Hospitalizacion ${Pacientes.ID_Hospitalizacion}");
-    if (Hospitalizaciones.Hospitalizacion['ID_Hosp'] == null ||
-        Pacientes.ID_Hospitalizacion == 0) {
-      widget.operationActivity = Constantes.Register;
-    }
-    //
-    switch (widget.operationActivity) {
-      case Constantes.Nulo:
-        fechaIngresoTextController.text =
-            Calendarios.today(format: 'yyyy-MM-dd');
-
-        servicioTratanteValue = auxiliarServicios[75].trim();
-        servicioTratanteInicialValue = auxiliarServicios[141].trim();
-        break;
-      case Constantes.Consult:
-        fechaIngresoTextController.text =
-            Calendarios.today(format: 'yyyy-MM-dd');
-
-        servicioTratanteValue = auxiliarServicios[75].trim();
-        servicioTratanteInicialValue = auxiliarServicios[141].trim();
-        break;
-      case Constantes.Register:
-        widget._operationButton = 'Registrar';
-
-        fechaIngresoTextController.text =
-            Calendarios.today(format: 'yyyy-MM-dd');
-
-        servicioTratanteValue = auxiliarServicios[75];
-        servicioTratanteInicialValue = auxiliarServicios[141];
-        break;
-      case Constantes.Update:
-        setState(() {
-          widget._operationButton = 'Actualizar';
-          //
-          idOperation = // Pacientes.ID_Hospitalizacion;
-              Hospitalizaciones
-                  .Hospitalizacion['ID_Hosp']; // Pacientes.ID_Hospitalizacion;
-          fechaRealizacionTextController.text =
-              // Valores.fechaIngresoHospitalario!;
-              Hospitalizaciones.Hospitalizacion['Feca_INI_Hosp'];
-          isNumCama = Hospitalizaciones.Hospitalizacion['Id_Cama'] ??
-              "N/A"; // 1.toString()
-          //: // Valores.numeroCama.toString();
-          //Hospitalizaciones.Hospitalizacion['Id_Cama'].toString();
-
-          fechaIngresoTextController
-                  .text = // Valores.fechaIngresoHospitalario!;
-              Hospitalizaciones.Hospitalizacion['Feca_INI_Hosp'].toString();
-          fechaEgresoTextController.text = // Valores.fechaEgresoHospitalario!;
-              Hospitalizaciones.Hospitalizacion['Feca_EGE_Hosp'].toString();
-          diasEstanciaTextController.text = Valores.diasEstancia.toString();
-          // Hospitalizaciones.Hospitalizacion['Dia_Estan'].toString();
-          medicoTratanteTextController.text = // Valores.medicoTratante!;
-              Hospitalizaciones.Hospitalizacion['Medi_Trat'].toString();
-
-          servicioTratanteValue = // Valores.servicioTratante!;
-              Hospitalizaciones.Hospitalizacion['Serve_Trat'].trim().toString();
-          servicioTratanteInicialValue = // Valores.servicioTratanteInicial!;
-              Hospitalizaciones.Hospitalizacion['Serve_Trat_INI']
-                  .trim()
-                  .toString();
-          motivoEgresoValue = Valores.motivoEgreso != ''
-              ? Hospitalizaciones.Hospitalizacion['EGE_Motivo']
-                  .toString() // Valores.motivoEgreso
-              : Escalas.motivosEgresos[0];
-        });
-        super.initState();
-        break;
-      default:
-    }
   }
 
   @override
@@ -243,8 +248,10 @@ class _OperacionesHospitalizacionesState
               textController: fechaIngresoTextController,
               onChange: (value) {
                 setState(() {
-                  Valores.fechaIngresoHospitalario = fechaIngresoTextController.text;
-                  diasEstanciaTextController.text = Valores.diasEstancia.toString();
+                  Valores.fechaIngresoHospitalario =
+                      fechaIngresoTextController.text;
+                  diasEstanciaTextController.text =
+                      Valores.diasEstancia.toString();
                 });
               },
               withShowOption: true,
@@ -253,10 +260,11 @@ class _OperacionesHospitalizacionesState
                 fechaIngresoTextController.text =
                     Calendarios.today(format: 'yyyy-MM-dd');
                 setState(() {
-                  Valores.fechaIngresoHospitalario = fechaIngresoTextController.text;
-                  diasEstanciaTextController.text = Valores.diasEstancia.toString();
+                  Valores.fechaIngresoHospitalario =
+                      fechaIngresoTextController.text;
+                  diasEstanciaTextController.text =
+                      Valores.diasEstancia.toString();
                 });
-
               },
               numOfLines: 1,
             ),
@@ -377,19 +385,21 @@ class _OperacionesHospitalizacionesState
                 width: isTablet(context)
                     ? 200
                     : isMobile(context)
-                        ? 240
+                        ? 190
                         : 200,
                 initialValue: servicioTratanteValue.trim()),
           ),
           Expanded(
             flex: 1,
-            child: GrandIcon(iconData: Icons.account_balance,
+            child: GrandIcon(
+              iconData: Icons.account_balance,
               onPress: () {
-              setState(() {
-                servicioTratanteValue = auxiliarServicios[75].trim();
-                servicioTratanteInicialValue = auxiliarServicios[141].trim();
-              });
-            },),
+                setState(() {
+                  servicioTratanteValue = auxiliarServicios[75].trim();
+                  servicioTratanteInicialValue = auxiliarServicios[141].trim();
+                });
+              },
+            ),
           ),
         ],
       ),
@@ -626,6 +636,7 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
               tooltip: Sentences.add_vitales,
               onPressed: () {
                 toOperaciones(context, Constantes.Register);
+                //
               },
             ),
           ]),

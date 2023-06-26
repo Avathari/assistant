@@ -6,6 +6,7 @@ import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/estadisticas/estadisticas.dart';
+import 'package:assistant/widgets/CrossLine.dart';
 
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
@@ -190,12 +191,16 @@ class _GestionPacientesState extends State<GestionPacientes> {
                           ? GridView.builder(
                               controller: gestionScrollController,
                               shrinkWrap: false,
+                        gridDelegate: GridViewTools.gridDelegate(
+                            crossAxisCount: isDesktop(context) ? 2 : 1,
+                            mainAxisExtent:
+                            isMobile(context) ? 180 : 200),
                               itemCount: snapshot.data == null
                                   ? 0
                                   : snapshot.data.length,
                               itemBuilder: (context, posicion) {
                                 return Container(
-                                  padding: const EdgeInsets.all(2.0),
+                                  padding: const EdgeInsets.only(left: 2.0, top: 2.0, bottom: 2.0, right: 2.0),
                                   child: GestureDetector(
                                     onTap: () {
                                       try {
@@ -236,30 +241,38 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                       color:
                                           const Color.fromARGB(255, 54, 50, 50),
                                       child: Container(
-                                        padding: const EdgeInsets.all(20.0),
+                                        padding: const EdgeInsets.only(left: 15.0, top: 20.0, bottom: 20.0, right: 5.0),
                                         child: Column(
                                           children: [
                                             Row(
                                               children: [
-                                                Column(
-                                                  children: const [
-                                                    CircleAvatar(
-                                                        backgroundColor:
-                                                            Colors.grey,
-                                                        radius: 50,
-                                                        child: Icon(
-                                                          Icons.person,
-                                                          size: 75.0,
-                                                          color: Colors.black,
-                                                        )),
-                                                  ],
-                                                ),
-                                                const SizedBox(
-                                                  width: 10.0,
+                                                CircleAvatar(
+                                                    backgroundColor:
+                                                        Colors.grey,
+                                                    radius: 50,
+                                                    child: snapshot.data[
+                                                                    posicion]
+                                                                [
+                                                                'Pace_FIAT'] !=
+                                                            ''
+                                                        ? const Icon(
+                                                            Icons.person,
+                                                            size: 75.0,
+                                                            color: Colors
+                                                                .black,
+                                                          )
+                                                        : Image.memory(base64Decode(
+                                                            snapshot.data[
+                                                                    posicion]
+                                                                [
+                                                                'Pace_FIAT']))),
+                                                SizedBox(
+                                                  width: isMobile(context) ? 20.0 : 10.0,
                                                 ),
                                                 Column(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Column(
                                                       mainAxisAlignment:
@@ -271,6 +284,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                       children: [
                                                         Text(
                                                           "Número Paciente : ${snapshot.data[posicion]['ID_Pace']}",
+                                                          textAlign: TextAlign.left,
                                                           style:
                                                               const TextStyle(
                                                                   fontWeight:
@@ -319,10 +333,10 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                     Row(
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
-                                                              .center,
+                                                              .start,
                                                       children: [
                                                         const SizedBox(
-                                                          width: 20,
+                                                          width: 1,
                                                         ),
                                                         IconButton(
                                                           color: Colors.grey,
@@ -400,7 +414,56 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                                   );
                                                                 });
                                                           },
-                                                        )
+                                                        ),
+                                                        CrossLine(
+                                                          isHorizontal: false,
+                                                          // color: Colors.grey,
+                                                            thickness: 4
+                                                        ),
+                                                        IconButton(
+                                                          color: Colors.grey,
+                                                          icon: Icon(snapshot.data[
+                                                                          posicion]
+                                                                      [
+                                                                      'Pace_Hosp'] ==
+                                                                  'Hospitalización'
+                                                              ? Icons
+                                                                  .local_hotel_sharp
+                                                              : Icons
+                                                                  .desk_sharp),
+                                                          onPressed: () {
+                                                            String hospen = "";
+                                                            if (snapshot.data[
+                                                                        posicion]
+                                                                    [
+                                                                    'Pace_Hosp'] ==
+                                                                'Consulta Externa') {
+                                                              hospen =
+                                                                  'Hospitalización';
+                                                            } else {
+                                                              hospen =
+                                                                  'Consulta Externa';
+                                                            }
+                                                            Actividades
+                                                                .actualizar(
+                                                                    Databases
+                                                                        .siteground_database_regpace,
+                                                                    "UPDATE pace_iden_iden "
+                                                                    "SET Pace_Hosp = ? "
+                                                                    "WHERE ID_Pace = ?",
+                                                                    [
+                                                                      hospen,
+                                                                      snapshot.data[
+                                                                              posicion]
+                                                                          [
+                                                                          'ID_Pace']
+                                                                    ],
+                                                                    snapshot.data[
+                                                                            posicion]
+                                                                        [
+                                                                        'ID_Pace']).whenComplete(() => reiniciar());
+                                                          },
+                                                        ),
                                                       ],
                                                     )
                                                   ],
@@ -414,10 +477,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                   ),
                                 );
                               },
-                              gridDelegate: GridViewTools.gridDelegate(
-                                  crossAxisCount: isDesktop(context) ? 2 : 1,
-                                  mainAxisExtent:
-                                      isMobile(context) ? 180 : 200),
+
                             )
                           : Center(
                               child: Column(
@@ -465,6 +525,38 @@ class _GestionPacientesState extends State<GestionPacientes> {
       reiniciar();
     });
     Terminal.printWarning(message: " . . . Actividad Iniciada");
+  }
+
+  void reiniciar() {
+    Terminal.printAlert(
+        message: "Iniciando actividad : : \n "
+            "Consulta de pacientes hospitalizados . . .");
+    Actividades.detalles(Databases.siteground_database_regpace,
+            Pacientes.pacientes['pacientesStadistics'])
+        .then((value) {
+      Archivos.createJsonFromMap([value],
+          filePath: 'assets/vault/patientsStats.json');
+    });
+    Actividades.consultar(Databases.siteground_database_regpace,
+            Pacientes.pacientes['consultQuery']!)
+        .then((value) {
+      setState(() {
+        Terminal.printSuccess(
+            message: "Actualizando repositorio de pacientes . . . ");
+        foundedItems = value;
+        Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
+      });
+    }).whenComplete(() => Operadores.alertActivity(
+            context: context,
+            tittle: "Datos Recargados",
+            message: "Registro Actualizado",
+            onAcept: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => const GestionPacientes(),
+                ),
+              );
+            }));
   }
 
   void deleteRegister(
@@ -560,38 +652,6 @@ class _GestionPacientesState extends State<GestionPacientes> {
     ));
   }
 
-  void reiniciar() {
-    Terminal.printAlert(
-        message: "Iniciando actividad : : \n "
-            "Consulta de pacientes hospitalizados . . .");
-    Actividades.detalles(Databases.siteground_database_regpace,
-            Pacientes.pacientes['pacientesStadistics'])
-        .then((value) {
-      Archivos.createJsonFromMap([value],
-          filePath: 'assets/vault/patientsStats.json');
-    });
-    Actividades.consultar(Databases.siteground_database_regpace,
-            Pacientes.pacientes['consultQuery']!)
-        .then((value) {
-      setState(() {
-        Terminal.printSuccess(
-            message: "Actualizando repositorio de pacientes . . . ");
-        foundedItems = value;
-        Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
-      });
-    }).whenComplete(() => Operadores.alertActivity(
-            context: context,
-            tittle: "Datos Recargados",
-            message: "Registro Actualizado",
-            onAcept: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const GestionPacientes(),
-                ),
-              );
-            }));
-  }
-
   // ACTIVIDADES DE BÚSQUEDA ************ ************ ***** * ** *
   Future<Null> _pullListRefresh() async {
     iniciar();
@@ -678,7 +738,6 @@ class _GestionPacientesState extends State<GestionPacientes> {
   var searchTextController = TextEditingController();
 
   String searchCriteria = "Buscar por Apellido";
-
   var fileAssocieted = 'assets/vault/pacientesRepository.json';
 }
 
@@ -883,8 +942,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           width: isMobile(context)
               ? 216
               : isTablet(context)
-              ? 140
-              : 200,
+                  ? 140
+                  : 200,
           onChangeValue: (String? newValue) {
             setState(() {
               hemotipoValue = newValue!;

@@ -196,6 +196,18 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                                 },
                               ),
                               GrandButton(
+                                labelButton: "Exploración corta",
+                                onPress: () {
+                                  asignarExploracion(indice: 4);
+                                },
+                              ),
+                              GrandButton(
+                                labelButton: "Exploración física extensa",
+                                onPress: () {
+                                  asignarExploracion(indice: 2);
+                                },
+                              ),
+                              GrandButton(
                                 labelButton: "Exploración física extensa",
                                 onPress: () {
                                   asignarExploracion(indice: 2);

@@ -100,7 +100,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
                   }
                 }).onError((error, stackTrace) {
                   Terminal.printAlert(
-                      message: "ERROR - toVisual : : $error");
+                      message: "ERROR - toVisual : : $error : : Descripción : $stackTrace");
                   Operadores.alertActivity(
                       message: "ERROR - toVisual : : $error",
                       context: context,

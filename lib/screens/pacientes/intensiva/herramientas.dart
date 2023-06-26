@@ -20,7 +20,6 @@ import 'package:assistant/screens/pacientes/intensiva/valoraciones/prequirurgico
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
-import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandLabel.dart';
 import 'package:assistant/widgets/RoundedPanel.dart';
 import 'package:assistant/widgets/Tittle.dart';
@@ -70,7 +69,7 @@ class _IntensivaState extends State<Intensiva> {
               : Expanded(
                   flex: 9,
                   child: Container(
-                    decoration: ContainerDecoration.roundedDecoration(color: Colors.black,
+                    decoration: ContainerDecoration.roundedDecoration(colorBackground: Colors.black,
                     width: 2.4),
                     padding: const EdgeInsets.all(8.0),
                     margin: const EdgeInsets.all(8.0),

@@ -305,7 +305,7 @@ class Pacientes {
   static String hospitalarios() {
     // Reportes.reportes['Antecedentes_Quirurgicos'] = ""; **** ********** **** ***
     // Reportes.antecedentesQuirurgicos = "";
-    // // print("Quirurgicos ${Quirurgicos!.length} $Quirurgicos \n "
+    // print("Quirurgicos ${Quirurgicos!.length} $Quirurgicos \n "
     //     "Reportes.Antecedentes_Quirurgicos ${Reportes.antecedentesQuirurgicos}"
     //     "isEmpty ${Quirurgicos!.isEmpty}");
     // ************************ ************** ********** **** *** *
@@ -513,7 +513,10 @@ class Pacientes {
       case 3:
         return "Análisis de terapia intensiva";
       case 4:
-        return "";
+        return "Glasgow E4, V5, M6, hidratado, pálidez tegumentaria. "
+            "Precordio rítmico, sin agregados. Murmullo vesicular audible, sin estertores ni sibilancias. "
+            "Abdomen sin alteraciones, normoperistalsis, no doloroso, sin irritación peritoneal. "
+            "Extremidades funcionales, fuerza conservada, reflejos osteotendinosos, no edema, llenado capilar normal. ";
       case 5:
         return "";
       default:

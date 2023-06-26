@@ -51,6 +51,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
     setState(() {
       Reportes.consultarRegistros();
       Diagnosticos.registros();
+      Quirurgicos.consultarRegistro();
       Repositorios.consultarAnalisis();
 
       Archivos.readJsonToMap(
@@ -216,7 +217,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             child: Container(
               padding: const EdgeInsets.all(5.0),
               margin: const EdgeInsets.all(7.0),
-              decoration: ContainerDecoration.roundedDecoration(),
+              decoration: ContainerDecoration.roundedDecoration(colorBackground: Colores.backgroundPanel),
               child: pantallasReportesMedicos(widget.actualPage),
             )),
         Expanded(

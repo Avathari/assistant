@@ -120,7 +120,7 @@ class _EditTextAreaState extends State<EditTextArea> {
           ),
           widget.withShowOption
               ? Expanded(
-                  flex: 1,
+                  flex: 3,
                   child: Container(
                     margin: const EdgeInsets.all(8.0),
                     decoration: ContainerDecoration.roundedDecoration(),

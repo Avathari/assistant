@@ -2,6 +2,7 @@ import 'package:assistant/conexiones/actividades/Compuesto.dart';
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/bibiliotecarios/bibliotecas.dart';
 import 'package:assistant/screens/financieros/finanzas.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizados.dart';
@@ -711,9 +712,13 @@ class PacientesPanel extends StatelessWidget {
     );
   }
 
-  void toNextScreen({required BuildContext context, required screen}) {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (BuildContext context) => screen));
+  Future<void> toNextScreen({required BuildContext context, required screen}) async {
+    Escalas.serviciosHospitalarios = await Archivos.listFromText(
+        path: 'assets/diccionarios/Servicios.txt', splitChar: ',').whenComplete(() => Navigator.push(
+        context, MaterialPageRoute(builder: (BuildContext context) => screen)));
+    //
+    Terminal.printExpected(message: "${Escalas.serviciosHospitalarios}");
+
   }
 }
 

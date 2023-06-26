@@ -124,7 +124,6 @@ class Actividades {
     );
 
     // // Terminal.printAlert(message: "RESPONSE STATUS (CONSULT_ID) : : ${response.statusCode} : ${response.body.toString()}");
-
     if (response.statusCode == 200) {
       if (response.body == '[]') {
         return {'Error': 'Hubo un error'};
@@ -279,7 +278,7 @@ class Databases {
   // # ###############################################################
   static const HOST_SITEGROUND = '35.209.114.34';
   static const siteground_user = "ux1ge4kaeg7w7";
-  static const siteground_password = "3#ff1@Eb}+^e";
+  static const siteground_password = "7zch^ob1@1(~";
   // # ###############################################################
   static const siteground_database_regasca = "dbwpodcchpxgbf";
   static const siteground_database_regusua =

@@ -21,7 +21,7 @@ class _ParaclinicosState extends State<Paraclinicos> {
         Container(
             padding: const EdgeInsets.all(5.0),
             margin: const EdgeInsets.all(5.0),
-            decoration: ContainerDecoration.roundedDecoration(color: Colors.black),
+            decoration: ContainerDecoration.roundedDecoration(colorBackground: Colors.black),
             child: TittlePanel(
               textPanel: 'Repositorio de Auxiliares Diagnósticos',
             )),
@@ -30,7 +30,7 @@ class _ParaclinicosState extends State<Paraclinicos> {
           child: Container(
             padding: const EdgeInsets.all(5.0),
             margin: const EdgeInsets.all(5.0),
-            decoration: ContainerDecoration.roundedDecoration(color: Colors.black),
+            decoration: ContainerDecoration.roundedDecoration(colorBackground: Colors.black),
             child: ListView(
               controller: ScrollController(),
               itemExtent: 150,

@@ -7,12 +7,407 @@ import 'package:dart_numerics/dart_numerics.dart' as numerics;
 import 'package:assistant/conexiones/conexiones.dart';
 
 class Valores {
+
   bool loading = false;
-
   Map<String, dynamic> valores = {};
-
   static double? prueba;
-  //
+// ******* **** ****** ** * * * * * ** ***** **** *
+  Future<bool> load() async {
+    // Otras configuraciones
+    Escalas.serviciosHospitalarios = await Archivos.listFromText(
+        path: 'assets/diccionarios/Servicios.txt', splitChar: ',');
+    //
+    valores.addAll(Pacientes.Paciente);
+    // ********* *********** ********** ******
+    Pacientes.getImage();
+    // ********* *********** ********** ******
+
+    // ********* *********** ********** ******
+    Eticos.consultarRegistro();
+    Viviendas.consultarRegistro();
+    Higienes.consultarRegistro();
+    Diarios.consultarRegistro();
+    Alimenticios.consultarRegistro();
+    Limitaciones.consultarRegistro();
+    Sustancias.consultarRegistro();
+    //
+    Toxicomanias.consultarRegistro();
+    // ********* *********** ********** ******
+    Vitales.registros();
+    // Vitales.ultimoRegistro();
+    Patologicos.registros();
+    Patologicos.consultarRegistro();
+    Diagnosticos.registros();
+    Diagnosticos.consultarRegistro();
+    Alergicos.registros();
+    Alergicos.consultarRegistro();
+    Quirurgicos.registros();
+    Quirurgicos.consultarRegistro();
+    Transfusionales.registros();
+    Transfusionales.consultarRegistro();
+    Traumatologicos.registros();
+    Traumatologicos.consultarRegistro();
+    Vacunales.registros();
+    Vacunales.consultarRegistro();
+    //
+    Balances.consultarRegistro();
+    Auxiliares.registros();
+
+// ********* *********** ********** ******
+//     Electrocardiogramas.ultimoRegistro();
+    // Pacientes.diagnosticos();
+    // Ventilaciones.ultimoRegistro();
+// ********* *********** ********** ******
+    // Llamado a las distintas clases de valores.
+    // final patol = await Actividades.consultarId(
+    //     Databases.siteground_database_regpace,
+    //     Patologicos.patologicos['consultLastQuery'],
+    //     Pacientes.ID_Paciente);
+    // valores.addAll(patol); // Enfermedades de base del paciente, asi como las Hospitalarias.
+    final vital = await Actividades.consultarId(
+        Databases.siteground_database_regpace,
+        Vitales.vitales['consultLastQuery'],
+        Pacientes.ID_Paciente);
+    // Pacientes.Vital = vital;
+    valores.addAll(vital);
+
+    final antro = await Actividades.consultarId(
+        Databases.siteground_database_regpace,
+        Vitales.antropo['consultLastQuery'],
+        Pacientes.ID_Paciente);
+    valores.addAll(antro);
+    Pacientes.Vital.addAll(antro);
+    final aux = await Actividades.detallesById(
+        Databases.siteground_database_reggabo,
+        Auxiliares.auxiliares['auxiliarStadistics'],
+        Pacientes.ID_Paciente,
+        emulated: true);
+    // Terminal.printExpected(message: "Auxiliares ${Auxiliares.auxiliares['auxiliarStadistics']} $aux");
+    valores.addAll(aux);
+    final elect = await Actividades.consultarId(
+        Databases.siteground_database_reggabo,
+        Electrocardiogramas.electrocardiogramas['consultLastQuery'],
+        Pacientes.ID_Paciente,
+        emulated: true);
+    Pacientes.Electrocardiogramas = elect;
+    valores.addAll(elect);
+
+    final vento = await Actividades.consultarId(
+        Databases.siteground_database_reghosp,
+        Ventilaciones.ventilacion['consultLastQuery'],
+        Pacientes.ID_Paciente,
+        emulated: true);
+    valores.addAll(vento);
+
+    final bala = await Actividades.consultarId(
+        Databases.siteground_database_reghosp,
+        Balances.balance['consultLastQuery'],
+        Pacientes.ID_Paciente,
+        emulated: true);
+    valores.addAll(bala);
+
+    final hosp = await Actividades.consultarId(
+        Databases.siteground_database_reghosp,
+        Hospitalizaciones.hospitalizacion['consultLastQuery'],
+        Pacientes.ID_Paciente,
+        emulated: true);
+    valores.addAll(hosp);
+
+    Situaciones.ultimoRegistro();
+    Expedientes.ultimoRegistro();
+
+    Valores.fromJson(valores);
+    return true;
+  }
+
+  Valores.fromJson(Map<String, dynamic> json) {
+    // print("Valors $json");
+
+    numeroPaciente = json['Pace_NSS'];
+    agregadoPaciente = json['Pace_AGRE'];
+    primerNombre = json['Pace_Nome_PI'];
+    segundoNombre = json['Pace_Nome_SE'];
+    apellidoPaterno = json['Pace_Ape_Pat'];
+    apellidoMaterno = json['Pace_Ape_Mat'];
+    hemotipo = Pacientes.Paciente['Pace_Hemo'] ?? '';
+    // imagenUsuario = json['Pace_FIAT'];
+    // Pacientes.imagenPaciente = json['Pace_FIAT'];
+    json.addAll({'Pace_FIAT': ''});
+
+    // Actualización de las Directrices ********** ***********
+    Pacientes.nombreCompleto = Valores.nombreCompleto;
+    Pacientes.localPath = 'assets/vault/'
+        '${Pacientes.nombreCompleto}/'
+        '${Pacientes.nombreCompleto}.json';
+    Pacientes.localRepositoryPath = 'assets/vault/'
+        '${Pacientes.nombreCompleto}/';
+    Pacientes.localReportsPath = 'assets/vault/'
+        '${Pacientes.nombreCompleto}/'
+        'reportes/';
+
+    // Actualización de las Directrices Complementarias ********** ***********
+    Valores.fileAssocieted = "${Pacientes.localRepositoryPath}valores.json";
+    Eticos.fileAssocieted =
+    "${Pacientes.localRepositoryPath}eticos.json"; // Eticos.registrarRegistro(); // Si
+    Viviendas.fileAssocieted =
+    "${Pacientes.localRepositoryPath}viviendas.json"; // Viviendas.registrarRegistro(); // Si
+    Higienes.fileAssocieted =
+    "${Pacientes.localRepositoryPath}higienicos.json"; // Higienes.registrarRegistro(); // Si
+    Diarios.fileAssocieted =
+    "${Pacientes.localRepositoryPath}diarios.json"; // Diarios.registrarRegistro();
+    Alimenticios.fileAssocieted =
+    "${Pacientes.localRepositoryPath}alimenticios.json"; // Alimenticios.registrarRegistro(); // Si
+    Limitaciones.fileAssocieted =
+    "${Pacientes.localRepositoryPath}limitaciones.json"; // Limitaciones.registrarRegistro(); // Si
+    Sustancias.fileAssocieted =
+    "${Pacientes.localRepositoryPath}exposiciones.json"; // Sustancias.registrarRegistro();
+
+    Patologicos.fileAssocieted =
+    '${Pacientes.localRepositoryPath}patologicos.json';
+    Toxicomanias.fileAssocieted =
+    "${Pacientes.localRepositoryPath}toxicomanias.json";
+    Quirurgicos.fileAssocieted =
+    '${Pacientes.localRepositoryPath}quirurgicos.json';
+    Alergicos.fileAssocieted = '${Pacientes.localRepositoryPath}alergicos.json';
+    Transfusionales.fileAssocieted =
+    '${Pacientes.localRepositoryPath}transfusionales.json';
+    Vacunales.fileAssocieted = '${Pacientes.localRepositoryPath}vacunales.json';
+
+    Diagnosticos.fileAssocieted =
+    '${Pacientes.localRepositoryPath}diagnosticos.json';
+    Pendientes.fileAssocieted =
+    '${Pacientes.localRepositoryPath}pendientes.json';
+
+    Vitales.fileAssocieted = '${Pacientes.localRepositoryPath}vitales.json';
+    Auxiliares.fileAssocieted =
+    '${Pacientes.localRepositoryPath}paraclinicos.json';
+    Imagenologias.fileAssocieted =
+    '${Pacientes.localRepositoryPath}imagenologicos.json';
+    Electrocardiogramas.fileAssocieted =
+    '${Pacientes.localRepositoryPath}electrocardiogramas.json';
+    Balances.fileAssocieted = '${Pacientes.localRepositoryPath}balances.json';
+    //
+    edad = json['Pace_Eda']; // int.parse();
+    sexo = json['Pace_Ses'];
+    curp = json['Pace_Curp'];
+    rfc = json['Pace_RFC'];
+    fechaNacimiento = json['Pace_Nace'];
+    telefono = json['Pace_Tele'];
+    //
+    modoAtencion = json['Pace_Hosp'];
+
+    // Comprobar estado de Atención del Paciente.
+    if (modoAtencion == 'Hospitalización') {
+      isHospitalizado = true;
+      Pacientes.esHospitalizado = true;
+    } else if (modoAtencion == 'Consulta Externa') {
+      isHospitalizado = false;
+      Pacientes.esHospitalizado = false;
+    } else {
+      isHospitalizado = false;
+      Pacientes.esHospitalizado = false;
+    }
+    //
+    presionArteriaPulmonarSistolica = double.parse(json['PAPS'] ?? '0');
+    presionArteriaPulmonarDiastolica = double.parse(json['PAPD'] ?? '0');
+    presionMediaArteriaPulmonar = double.parse(json['PMAP'] ?? '0');
+    presionCunaPulmonar = double.parse(json['PoP'] ?? '0');
+    //
+    pesoCorporalTotal = toDoubleFromInt(json: json, keyEntered: 'Pace_SV_pct');
+    // = double.parse(json['Pace_SV_pct'] != null ? json['Pace_SV_pct'].toString() : '0');
+    alturaPaciente = toDoubleFromInt(json: json, keyEntered: 'Pace_SV_est');
+    // json['Pace_SV_est'] ?? 0.0;
+
+    fechaVitales = json['Pace_Feca_SV'] ?? '';
+    tensionArterialSystolica = json['Pace_SV_tas'] ?? 0;
+    tensionArterialDyastolica = json['Pace_SV_tad'] ?? 0;
+    presionVenosaCentral = json['Pace_SV_pcv'] ?? 0;
+    frecuenciaCardiaca = json['Pace_SV_fc'] ?? 0;
+    frecuenciaRespiratoria = json['Pace_SV_fr'] ?? 0;
+    temperaturCorporal = double.parse(
+        json['Pace_SV_tc'] != null ? json['Pace_SV_tc'].toString() : '0');
+    saturacionPerifericaOxigeno = json['Pace_SV_spo'] ?? 0;
+    glucemiaCapilar = json['Pace_SV_glu'] ?? 0;
+    horasAyuno = json['Pace_SV_glu_ayu'] ?? 0;
+
+    circunferenciaCuello = json['Pace_SV_cue'] ?? 0;
+    circunferenciaCintura = json['Pace_SV_cin'] ?? 0;
+    circunferenciaCadera = json['Pace_SV_cad'] ?? 0;
+
+    circunferenciaMesobraquial = json['Pace_SV_cmb'] ?? 0;
+    factorActividad = double.parse(
+        json['Pace_SV_fa'] != null ? json['Pace_SV_fa'].toString() : '0');
+    factorEstres = double.parse(
+        json['Pace_SV_fe'] != null ? json['Pace_SV_fe'].toString() : '0');
+
+    pliegueCutaneoBicipital = json['Pace_SV_pcb'] ?? 0;
+    pliegueCutaneoEscapular = json['Pace_SV_pse'] ?? 0;
+    pliegueCutaneoIliaco = json['Pace_SV_psi'] ?? 0;
+    pliegueCutaneoTricipital = json['Pace_SV_pst'] ?? 0;
+    pliegueCutaneoPectoral = json['Pace_SV_c_pect'] ?? 0;
+
+    circunferenciaFemoralIzquierda = json['Pace_SV_c_fem_izq'] ?? 0;
+    circunferenciaFemoralDerecha = json['Pace_SV_c_fem_der'] ?? 0;
+    circunferenciaSuralIzquierda = json['Pace_SV_c_suro_izq'] ?? 0;
+    circunferenciaSuralDerecha = json['Pace_SV_c_suro_der'] ?? 0;
+    //
+    fechaBiometria = json['Fecha_Registro_Biometria'] ?? '';
+    eritrocitos = double.parse(json['Eritrocitos'] ?? '0');
+    hematocrito = double.parse(json['Hematocrito'] ?? '0');
+    hemoglobina = double.parse(json['Hemoglobina'] ?? '0');
+
+    concentracionMediaHemoglobina = double.parse(json['CMHC'] ?? '0');
+    volumenCorpuscularMedio = double.parse(json['VCM'] ?? '0');
+    hemoglobinaCorpuscularMedia = double.parse(json['HCM'] ?? '0');
+
+    plaquetas = double.parse(json['Plaquetas'] ?? '0');
+
+    leucocitosTotales = double.parse(json['Leucocitos_Totales'] ?? '0');
+    neutrofilosTotales = double.parse(json['Neutrofilos_Totales'] ?? '0');
+    linfocitosTotales = double.parse(json['Linfocitos_Totales'] ?? '0');
+    monocitosTotales = double.parse(json['Monocitos_Totales'] ?? '0');
+    //
+    fechaQuimicas = json['Fecha_Registro_Quimicas'] ?? '';
+    glucosa = double.parse(json['Glucosa'] ?? '0');
+    urea = double.parse(json['Urea'] ?? '0');
+    creatinina = double.parse(json['Creatinina'] ?? '0');
+    acidoUrico = double.parse(json['Acido_Urico'] ?? '0');
+    nitrogenoUreico = double.parse(json['Nitrogeno_Ureico'] ?? '0');
+
+    //
+    fechaElectrolitos = json['Fecha_Registro_Electrolitos'] ?? '';
+    sodio = double.parse(json['Sodio'] ?? '0');
+    potasio = double.parse(json['Potasio'] ?? '0');
+    cloro = double.parse(json['Cloro'] ?? '0');
+    magnesio = double.parse(json['Magnesio'] ?? '0');
+    fosforo = double.parse(json['Fosforo'] ?? '0');
+    calcio = double.parse(json['Calcio'] ?? '0');
+    //
+    fechaHepaticos = json['Fecha_Registro_Hepaticos'] ?? '';
+    alaninoaminotrasferasa =
+        double.parse(json['Alaninoaminotrasferasa'] ?? '0');
+    aspartatoaminotransferasa =
+        double.parse(json['Aspartatoaminotransferasa'] ?? '0');
+    bilirrubinasTotales = double.parse(json['Bilirrubinas_Totales'] ?? '0');
+    bilirrubinaDirecta = double.parse(json['Bilirrubina_Directa'] ?? '0');
+    bilirrubinaIndirecta = double.parse(json['Bilirrubina_Indirecta'] ?? '0');
+    deshidrogenasaLactica = double.parse(json['Glutrailtranspeptidasa'] ?? '0');
+    glutrailtranspeptidasa =
+        double.parse(json['Glutrailtranspeptidasa'] ?? '0');
+    fosfatasaAlcalina = double.parse(json['Fosfatasa_Alcalina'] ?? '0');
+    albuminaSerica = double.parse(json['Albumina_Serica'] ?? '0');
+    proteinasTotales = double.parse(json['Proteinas_Totales'] ?? '0');
+    //
+    fechaReactantes = json['Fecha_Registro_Reactantes'] ?? '';
+    procalcitonina = double.parse(json['Procalcitonina'] ?? '0');
+    lactato = double.parse(json['Acido_Lactico'] ?? '0');
+    velocidadSedimentacionGlobular =
+        double.parse(json['Velocidad_Sedimentacion'] ?? '0');
+    proteinaCreactiva = double.parse(json['Proteina_Reactiva'] ?? '0');
+    factorReumatoide = double.parse(json['Factor_Reumatoide'] ?? '0');
+    anticuerpoCitrulinado = double.parse(json['Anticuerpo_Citrulinado'] ?? '0');
+    //
+    fechaGasometriaArterial = json['Fecha_Registro_Arterial'] ?? '';
+    pHArteriales = double.parse(json['Ph_Arterial'] ?? '0');
+    pcoArteriales = double.parse(json['Pco_Arterial'] ?? '0');
+    poArteriales = double.parse(json['Po_Arterial'] ?? '0');
+    bicarbonatoArteriales = double.parse(json['Hco_Arterial'] ?? '0');
+    excesoBaseArteriales = double.parse(json['Eb_Arterial'] ?? '0');
+    fioArteriales = double.parse(json['Fio_Arterial'] ?? '0');
+    soArteriales = double.parse(json['So_Arterial'] ?? '0');
+    //
+    fechaGasometriaVenosa = json['Fecha_Registro_Venosa'] ?? '';
+    pHVenosos = double.parse(json['Ph_Venosa'] ?? '0');
+    pcoVenosos = double.parse(json['Pco_Venosa'] ?? '0');
+    poVenosos = double.parse(json['Po_Venosa'] ?? '0');
+    bicarbonatoVenosos = double.parse(json['Hco_Venosa'] ?? '0');
+    fioVenosos = double.parse(json['Fio_Venosa'] ?? '0');
+    soVenosos = double.parse(json['So_Venosa'] ?? '0');
+    //
+    fechaElectrocardiograma = json['Pace_GAB_EC_Feca'] ?? '';
+    ritmoCardiaco = json['Pace_EC_rit'] ?? '';
+    intervaloRR = json['Pace_EC_rr'] ?? 0;
+    duracionOndaP = double.parse(
+        json['Pace_EC_dop'] != null ? json['Pace_EC_dop'].toString() : '0');
+
+    alturaOndaP = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_aop');
+    duracionPR = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dpr');
+    duracionQRS = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dqrs');
+    alturaQRS = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_aqrs');
+    QRSi = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_qrsi');
+    QRSa = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_qrsa');
+    //
+    ejeCardiaco = double.parse(json['Pace_QRS'] ?? '0');
+    //
+    segmentoST = json['Pace_EC_st'] ?? '';
+    alturaSegmentoST = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_ast_');
+    duracionQT = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dqt');
+    duracionOndaT = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dot');
+    alturaOndaT = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_aot');
+    //
+    rV1 = json['EC_rV1'] ?? 0;
+    sV6 = json['EC_sV6'] ?? 0;
+    sV1 = json['EC_sV1'] ?? 0;
+    rV6 = json['EC_rV6'] ?? 0;
+    rAvL = json['EC_rAVL'] ?? 0;
+    sV3 = json['EC_sV3'] ?? 0;
+    //
+    patronQRS = json['PatronQRS'] ?? '';
+    deflexionIntrinsecoide =
+        toDoubleFromInt(json: json, keyEntered: 'DeflexionIntrinsecoide');
+
+    rDI = toDoubleFromInt(json: json, keyEntered: 'EC_rDI');
+    sDI = toDoubleFromInt(json: json, keyEntered: 'EC_sDI');
+    rDIII = toDoubleFromInt(json: json, keyEntered: 'EC_rDIII');
+    sDIII = toDoubleFromInt(json: json, keyEntered: 'EC_sDIII');
+    //
+    conclusionElectrocardiograma = json['Pace_EC_CON'] ?? '';
+    //
+    fechaVentilaciones = json['Feca_VEN'] ?? '';
+    modalidadVentilatoria = json['VM_Mod'] ?? '';
+    frecuenciaVentilatoria = json['Pace_Fr'] ?? 0;
+    fraccionInspiratoriaVentilatoria = json['Pace_Fio'] ?? 0;
+    presionFinalEsiracion = json['Pace_Peep'] ?? 0;
+    sensibilidadInspiratoria = json['Pace_Insp'] ?? 0;
+    sensibilidadEspiratoria = json['Pace_Espi'] ?? 0;
+    presionControl = json['Pace_Pc'] ?? 0;
+    presionMaxima = json['Pace_Pm'] ?? 0;
+
+    volumenVentilatorio = json['Pace_V'] ?? 0;
+    flujoVentilatorio = json['Pace_F'] ?? 0;
+    presionSoporte = json['Pace_Ps'] ?? 0;
+    presionInspiratoriaPico = json['Pace_Pip'] ?? 0;
+    presionPlateau = json['Pace_Pmet'] ?? 0;
+    volumenTidal = toDoubleFromInt(json: json, keyEntered: 'Pace_Vt');
+
+    // Datos generales de la última Hospitalización. **** ** *********** ****** * *** *
+    Pacientes.ID_Hospitalizacion = json['ID_Hosp'] ?? 0;
+    Hospitalizaciones.Hospitalizacion['ID_Hosp'] = Pacientes.ID_Hospitalizacion;
+    // ******************************************** *** *
+    Valores.fechaIngresoHospitalario = json['Feca_INI_Hosp'] ?? '';
+    Hospitalizaciones.Hospitalizacion['Feca_INI_Hosp'] =
+        Valores.fechaIngresoHospitalario;
+    Valores.numeroCama = json['Id_Cama'].toString() ?? 'N/A';
+    Hospitalizaciones.Hospitalizacion['Id_Cama'] = Valores.numeroCama;
+    Valores.medicoTratante = json['Medi_Trat'] ?? '';
+    Hospitalizaciones.Hospitalizacion['Medi_Trat'] = Valores.medicoTratante;
+    Valores.servicioTratante = json['Serve_Trat'] ?? '';
+    Hospitalizaciones.Hospitalizacion['Serve_Trat'] = Valores.servicioTratante;
+    Valores.servicioTratanteInicial = json['Serve_Trat_INI'] ?? '';
+    Hospitalizaciones.Hospitalizacion['Serve_Trat_INI'] =
+        Valores.servicioTratanteInicial;
+    Valores.fechaEgresoHospitalario = json['Feca_EGE_Hosp'] ?? '';
+    Hospitalizaciones.Hospitalizacion['Feca_EGE_Hosp'] =
+        Valores.fechaEgresoHospitalario;
+    Valores.motivoEgreso = json['EGE_Motivo'] ?? '';
+    Hospitalizaciones.Hospitalizacion['EGE_Motivo'] = Valores.motivoEgreso;
+
+    json['Pace_FIAT'] = Pacientes.imagenPaciente;
+    //
+    Archivos.createJsonFromMap([json], filePath: Pacientes.localPath);
+  }
+
+  // ******* **** ****** ** * * * * * ** ***** **** *
   static String? numeroPaciente,
       agregadoPaciente,
       primerNombre,
@@ -506,400 +901,6 @@ class Valores {
 
   Valores();
 
-  Future<bool> load() async {
-    // Otras configuraciones
-    Escalas.serviciosHospitalarios = await Archivos.listFromText(
-        path: 'assets/diccionarios/Servicios.txt', splitChar: ',');
-    //
-    valores.addAll(Pacientes.Paciente);
-    // ********* *********** ********** ******
-    Pacientes.getImage();
-    // ********* *********** ********** ******
-
-    // ********* *********** ********** ******
-    Eticos.consultarRegistro();
-    Viviendas.consultarRegistro();
-    Higienes.consultarRegistro();
-    Diarios.consultarRegistro();
-    Alimenticios.consultarRegistro();
-    Limitaciones.consultarRegistro();
-    Sustancias.consultarRegistro();
-    //
-    Toxicomanias.consultarRegistro();
-    // ********* *********** ********** ******
-    Vitales.registros();
-    // Vitales.ultimoRegistro();
-    Patologicos.registros();
-    Patologicos.consultarRegistro();
-    Diagnosticos.registros();
-    Diagnosticos.consultarRegistro();
-    Alergicos.registros();
-    Alergicos.consultarRegistro();
-    Quirurgicos.registros();
-    Quirurgicos.consultarRegistro();
-    Transfusionales.registros();
-    Transfusionales.consultarRegistro();
-    Traumatologicos.registros();
-    Traumatologicos.consultarRegistro();
-    Vacunales.registros();
-    Vacunales.consultarRegistro();
-    //
-    Balances.consultarRegistro();
-    Auxiliares.registros();
-// ********* *********** ********** ******
-//     Electrocardiogramas.ultimoRegistro();
-    // Pacientes.diagnosticos();
-    // Ventilaciones.ultimoRegistro();
-// ********* *********** ********** ******
-    // Llamado a las distintas clases de valores.
-    // final patol = await Actividades.consultarId(
-    //     Databases.siteground_database_regpace,
-    //     Patologicos.patologicos['consultLastQuery'],
-    //     Pacientes.ID_Paciente);
-    // valores.addAll(patol); // Enfermedades de base del paciente, asi como las Hospitalarias.
-    final vital = await Actividades.consultarId(
-        Databases.siteground_database_regpace,
-        Vitales.vitales['consultLastQuery'],
-        Pacientes.ID_Paciente);
-    // Pacientes.Vital = vital;
-    valores.addAll(vital);
-
-    final antro = await Actividades.consultarId(
-        Databases.siteground_database_regpace,
-        Vitales.antropo['consultLastQuery'],
-        Pacientes.ID_Paciente);
-    valores.addAll(antro);
-    Pacientes.Vital.addAll(antro);
-    final aux = await Actividades.detallesById(
-        Databases.siteground_database_reggabo,
-        Auxiliares.auxiliares['auxiliarStadistics'],
-        Pacientes.ID_Paciente,
-        emulated: true);
-    // Terminal.printExpected(message: "Auxiliares ${Auxiliares.auxiliares['auxiliarStadistics']} $aux");
-    valores.addAll(aux);
-    final elect = await Actividades.consultarId(
-        Databases.siteground_database_reggabo,
-        Electrocardiogramas.electrocardiogramas['consultLastQuery'],
-        Pacientes.ID_Paciente,
-        emulated: true);
-    Pacientes.Electrocardiogramas = elect;
-    valores.addAll(elect);
-
-    final vento = await Actividades.consultarId(
-        Databases.siteground_database_reghosp,
-        Ventilaciones.ventilacion['consultLastQuery'],
-        Pacientes.ID_Paciente,
-        emulated: true);
-    valores.addAll(vento);
-
-    final bala = await Actividades.consultarId(
-        Databases.siteground_database_reghosp,
-        Balances.balance['consultLastQuery'],
-        Pacientes.ID_Paciente,
-        emulated: true);
-    valores.addAll(bala);
-
-    final hosp = await Actividades.consultarId(
-        Databases.siteground_database_reghosp,
-        Hospitalizaciones.hospitalizacion['consultLastQuery'],
-        Pacientes.ID_Paciente,
-        emulated: true);
-    valores.addAll(hosp);
-
-    Situaciones.ultimoRegistro();
-    Expedientes.ultimoRegistro();
-
-    Valores.fromJson(valores);
-    return true;
-  }
-
-  Valores.fromJson(Map<String, dynamic> json) {
-    // print("Valors $json");
-
-    numeroPaciente = json['Pace_NSS'];
-    agregadoPaciente = json['Pace_AGRE'];
-    primerNombre = json['Pace_Nome_PI'];
-    segundoNombre = json['Pace_Nome_SE'];
-    apellidoPaterno = json['Pace_Ape_Pat'];
-    apellidoMaterno = json['Pace_Ape_Mat'];
-    hemotipo = Pacientes.Paciente['Pace_Hemo'] ?? '';
-    // imagenUsuario = json['Pace_FIAT'];
-    // Pacientes.imagenPaciente = json['Pace_FIAT'];
-    json.addAll({'Pace_FIAT': ''});
-
-    // Actualización de las Directrices ********** ***********
-    Pacientes.nombreCompleto = Valores.nombreCompleto;
-    Pacientes.localPath = 'assets/vault/'
-        '${Pacientes.nombreCompleto}/'
-        '${Pacientes.nombreCompleto}.json';
-    Pacientes.localRepositoryPath = 'assets/vault/'
-        '${Pacientes.nombreCompleto}/';
-    Pacientes.localReportsPath = 'assets/vault/'
-        '${Pacientes.nombreCompleto}/'
-        'reportes/';
-
-    // Actualización de las Directrices Complementarias ********** ***********
-    Valores.fileAssocieted = "${Pacientes.localRepositoryPath}valores.json";
-    Eticos.fileAssocieted =
-        "${Pacientes.localRepositoryPath}eticos.json"; // Eticos.registrarRegistro(); // Si
-    Viviendas.fileAssocieted =
-        "${Pacientes.localRepositoryPath}viviendas.json"; // Viviendas.registrarRegistro(); // Si
-    Higienes.fileAssocieted =
-        "${Pacientes.localRepositoryPath}higienicos.json"; // Higienes.registrarRegistro(); // Si
-    Diarios.fileAssocieted =
-        "${Pacientes.localRepositoryPath}diarios.json"; // Diarios.registrarRegistro();
-    Alimenticios.fileAssocieted =
-        "${Pacientes.localRepositoryPath}alimenticios.json"; // Alimenticios.registrarRegistro(); // Si
-    Limitaciones.fileAssocieted =
-        "${Pacientes.localRepositoryPath}limitaciones.json"; // Limitaciones.registrarRegistro(); // Si
-    Sustancias.fileAssocieted =
-        "${Pacientes.localRepositoryPath}exposiciones.json"; // Sustancias.registrarRegistro();
-
-    Patologicos.fileAssocieted =
-        '${Pacientes.localRepositoryPath}patologicos.json';
-    Toxicomanias.fileAssocieted =
-        "${Pacientes.localRepositoryPath}toxicomanias.json";
-    Quirurgicos.fileAssocieted =
-        '${Pacientes.localRepositoryPath}quirurgicos.json';
-    Alergicos.fileAssocieted = '${Pacientes.localRepositoryPath}alergicos.json';
-    Transfusionales.fileAssocieted =
-        '${Pacientes.localRepositoryPath}transfusionales.json';
-    Vacunales.fileAssocieted = '${Pacientes.localRepositoryPath}vacunales.json';
-
-    Diagnosticos.fileAssocieted =
-        '${Pacientes.localRepositoryPath}diagnosticos.json';
-    Pendientes.fileAssocieted =
-        '${Pacientes.localRepositoryPath}pendientes.json';
-
-    Vitales.fileAssocieted = '${Pacientes.localRepositoryPath}vitales.json';
-    Auxiliares.fileAssocieted =
-        '${Pacientes.localRepositoryPath}paraclinicos.json';
-    Imagenologias.fileAssocieted =
-        '${Pacientes.localRepositoryPath}imagenologicos.json';
-    Electrocardiogramas.fileAssocieted =
-        '${Pacientes.localRepositoryPath}electrocardiogramas.json';
-    Balances.fileAssocieted = '${Pacientes.localRepositoryPath}balances.json';
-    //
-    edad = json['Pace_Eda']; // int.parse();
-    sexo = json['Pace_Ses'];
-    curp = json['Pace_Curp'];
-    rfc = json['Pace_RFC'];
-    fechaNacimiento = json['Pace_Nace'];
-    telefono = json['Pace_Tele'];
-    //
-    modoAtencion = json['Pace_Hosp'];
-
-    // Comprobar estado de Atención del Paciente.
-    if (modoAtencion == 'Hospitalización') {
-      isHospitalizado = true;
-      Pacientes.esHospitalizado = true;
-    } else if (modoAtencion == 'Consulta Externa') {
-      isHospitalizado = false;
-      Pacientes.esHospitalizado = false;
-    } else {
-      isHospitalizado = false;
-      Pacientes.esHospitalizado = false;
-    }
-    //
-    presionArteriaPulmonarSistolica = double.parse(json['PAPS'] ?? '0');
-    presionArteriaPulmonarDiastolica = double.parse(json['PAPD'] ?? '0');
-    presionMediaArteriaPulmonar = double.parse(json['PMAP'] ?? '0');
-    presionCunaPulmonar = double.parse(json['PoP'] ?? '0');
-    //
-    pesoCorporalTotal = toDoubleFromInt(json: json, keyEntered: 'Pace_SV_pct');
-    // = double.parse(json['Pace_SV_pct'] != null ? json['Pace_SV_pct'].toString() : '0');
-    alturaPaciente = toDoubleFromInt(json: json, keyEntered: 'Pace_SV_est');
-    // json['Pace_SV_est'] ?? 0.0;
-
-    fechaVitales = json['Pace_Feca_SV'] ?? '';
-    tensionArterialSystolica = json['Pace_SV_tas'] ?? 0;
-    tensionArterialDyastolica = json['Pace_SV_tad'] ?? 0;
-    presionVenosaCentral = json['Pace_SV_pcv'] ?? 0;
-    frecuenciaCardiaca = json['Pace_SV_fc'] ?? 0;
-    frecuenciaRespiratoria = json['Pace_SV_fr'] ?? 0;
-    temperaturCorporal = double.parse(
-        json['Pace_SV_tc'] != null ? json['Pace_SV_tc'].toString() : '0');
-    saturacionPerifericaOxigeno = json['Pace_SV_spo'] ?? 0;
-    glucemiaCapilar = json['Pace_SV_glu'] ?? 0;
-    horasAyuno = json['Pace_SV_glu_ayu'] ?? 0;
-
-    circunferenciaCuello = json['Pace_SV_cue'] ?? 0;
-    circunferenciaCintura = json['Pace_SV_cin'] ?? 0;
-    circunferenciaCadera = json['Pace_SV_cad'] ?? 0;
-
-    circunferenciaMesobraquial = json['Pace_SV_cmb'] ?? 0;
-    factorActividad = double.parse(
-        json['Pace_SV_fa'] != null ? json['Pace_SV_fa'].toString() : '0');
-    factorEstres = double.parse(
-        json['Pace_SV_fe'] != null ? json['Pace_SV_fe'].toString() : '0');
-
-    pliegueCutaneoBicipital = json['Pace_SV_pcb'] ?? 0;
-    pliegueCutaneoEscapular = json['Pace_SV_pse'] ?? 0;
-    pliegueCutaneoIliaco = json['Pace_SV_psi'] ?? 0;
-    pliegueCutaneoTricipital = json['Pace_SV_pst'] ?? 0;
-    pliegueCutaneoPectoral = json['Pace_SV_c_pect'] ?? 0;
-
-    circunferenciaFemoralIzquierda = json['Pace_SV_c_fem_izq'] ?? 0;
-    circunferenciaFemoralDerecha = json['Pace_SV_c_fem_der'] ?? 0;
-    circunferenciaSuralIzquierda = json['Pace_SV_c_suro_izq'] ?? 0;
-    circunferenciaSuralDerecha = json['Pace_SV_c_suro_der'] ?? 0;
-    //
-    fechaBiometria = json['Fecha_Registro_Biometria'] ?? '';
-    eritrocitos = double.parse(json['Eritrocitos'] ?? '0');
-    hematocrito = double.parse(json['Hematocrito'] ?? '0');
-    hemoglobina = double.parse(json['Hemoglobina'] ?? '0');
-
-    concentracionMediaHemoglobina = double.parse(json['CMHC'] ?? '0');
-    volumenCorpuscularMedio = double.parse(json['VCM'] ?? '0');
-    hemoglobinaCorpuscularMedia = double.parse(json['HCM'] ?? '0');
-
-    plaquetas = double.parse(json['Plaquetas'] ?? '0');
-
-    leucocitosTotales = double.parse(json['Leucocitos_Totales'] ?? '0');
-    neutrofilosTotales = double.parse(json['Neutrofilos_Totales'] ?? '0');
-    linfocitosTotales = double.parse(json['Linfocitos_Totales'] ?? '0');
-    monocitosTotales = double.parse(json['Monocitos_Totales'] ?? '0');
-    //
-    fechaQuimicas = json['Fecha_Registro_Quimicas'] ?? '';
-    glucosa = double.parse(json['Glucosa'] ?? '0');
-    urea = double.parse(json['Urea'] ?? '0');
-    creatinina = double.parse(json['Creatinina'] ?? '0');
-    acidoUrico = double.parse(json['Acido_Urico'] ?? '0');
-    nitrogenoUreico = double.parse(json['Nitrogeno_Ureico'] ?? '0');
-
-    //
-    fechaElectrolitos = json['Fecha_Registro_Electrolitos'] ?? '';
-    sodio = double.parse(json['Sodio'] ?? '0');
-    potasio = double.parse(json['Potasio'] ?? '0');
-    cloro = double.parse(json['Cloro'] ?? '0');
-    magnesio = double.parse(json['Magnesio'] ?? '0');
-    fosforo = double.parse(json['Fosforo'] ?? '0');
-    calcio = double.parse(json['Calcio'] ?? '0');
-    //
-    fechaHepaticos = json['Fecha_Registro_Hepaticos'] ?? '';
-    alaninoaminotrasferasa =
-        double.parse(json['Alaninoaminotrasferasa'] ?? '0');
-    aspartatoaminotransferasa =
-        double.parse(json['Aspartatoaminotransferasa'] ?? '0');
-    bilirrubinasTotales = double.parse(json['Bilirrubinas_Totales'] ?? '0');
-    bilirrubinaDirecta = double.parse(json['Bilirrubina_Directa'] ?? '0');
-    bilirrubinaIndirecta = double.parse(json['Bilirrubina_Indirecta'] ?? '0');
-    deshidrogenasaLactica = double.parse(json['Glutrailtranspeptidasa'] ?? '0');
-    glutrailtranspeptidasa =
-        double.parse(json['Glutrailtranspeptidasa'] ?? '0');
-    fosfatasaAlcalina = double.parse(json['Fosfatasa_Alcalina'] ?? '0');
-    albuminaSerica = double.parse(json['Albumina_Serica'] ?? '0');
-    proteinasTotales = double.parse(json['Proteinas_Totales'] ?? '0');
-    //
-    fechaReactantes = json['Fecha_Registro_Reactantes'] ?? '';
-    procalcitonina = double.parse(json['Procalcitonina'] ?? '0');
-    lactato = double.parse(json['Acido_Lactico'] ?? '0');
-    velocidadSedimentacionGlobular =
-        double.parse(json['Velocidad_Sedimentacion'] ?? '0');
-    proteinaCreactiva = double.parse(json['Proteina_Reactiva'] ?? '0');
-    factorReumatoide = double.parse(json['Factor_Reumatoide'] ?? '0');
-    anticuerpoCitrulinado = double.parse(json['Anticuerpo_Citrulinado'] ?? '0');
-    //
-    fechaGasometriaArterial = json['Fecha_Registro_Arterial'] ?? '';
-    pHArteriales = double.parse(json['Ph_Arterial'] ?? '0');
-    pcoArteriales = double.parse(json['Pco_Arterial'] ?? '0');
-    poArteriales = double.parse(json['Po_Arterial'] ?? '0');
-    bicarbonatoArteriales = double.parse(json['Hco_Arterial'] ?? '0');
-    excesoBaseArteriales = double.parse(json['Eb_Arterial'] ?? '0');
-    fioArteriales = double.parse(json['Fio_Arterial'] ?? '0');
-    soArteriales = double.parse(json['So_Arterial'] ?? '0');
-    //
-    fechaGasometriaVenosa = json['Fecha_Registro_Venosa'] ?? '';
-    pHVenosos = double.parse(json['Ph_Venosa'] ?? '0');
-    pcoVenosos = double.parse(json['Pco_Venosa'] ?? '0');
-    poVenosos = double.parse(json['Po_Venosa'] ?? '0');
-    bicarbonatoVenosos = double.parse(json['Hco_Venosa'] ?? '0');
-    fioVenosos = double.parse(json['Fio_Venosa'] ?? '0');
-    soVenosos = double.parse(json['So_Venosa'] ?? '0');
-    //
-    fechaElectrocardiograma = json['Pace_GAB_EC_Feca'] ?? '';
-    ritmoCardiaco = json['Pace_EC_rit'] ?? '';
-    intervaloRR = json['Pace_EC_rr'] ?? 0;
-    duracionOndaP = double.parse(
-        json['Pace_EC_dop'] != null ? json['Pace_EC_dop'].toString() : '0');
-
-    alturaOndaP = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_aop');
-    duracionPR = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dpr');
-    duracionQRS = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dqrs');
-    alturaQRS = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_aqrs');
-    QRSi = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_qrsi');
-    QRSa = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_qrsa');
-    //
-    ejeCardiaco = double.parse(json['Pace_QRS'] ?? '0');
-    //
-    segmentoST = json['Pace_EC_st'] ?? '';
-    alturaSegmentoST = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_ast_');
-    duracionQT = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dqt');
-    duracionOndaT = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dot');
-    alturaOndaT = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_aot');
-    //
-    rV1 = json['EC_rV1'] ?? 0;
-    sV6 = json['EC_sV6'] ?? 0;
-    sV1 = json['EC_sV1'] ?? 0;
-    rV6 = json['EC_rV6'] ?? 0;
-    rAvL = json['EC_rAVL'] ?? 0;
-    sV3 = json['EC_sV3'] ?? 0;
-    //
-    patronQRS = json['PatronQRS'] ?? '';
-    deflexionIntrinsecoide =
-        toDoubleFromInt(json: json, keyEntered: 'DeflexionIntrinsecoide');
-
-    rDI = toDoubleFromInt(json: json, keyEntered: 'EC_rDI');
-    sDI = toDoubleFromInt(json: json, keyEntered: 'EC_sDI');
-    rDIII = toDoubleFromInt(json: json, keyEntered: 'EC_rDIII');
-    sDIII = toDoubleFromInt(json: json, keyEntered: 'EC_sDIII');
-    //
-    conclusionElectrocardiograma = json['Pace_EC_CON'] ?? '';
-    //
-    fechaVentilaciones = json['Feca_VEN'] ?? '';
-    modalidadVentilatoria = json['VM_Mod'] ?? '';
-    frecuenciaVentilatoria = json['Pace_Fr'] ?? 0;
-    fraccionInspiratoriaVentilatoria = json['Pace_Fio'] ?? 0;
-    presionFinalEsiracion = json['Pace_Peep'] ?? 0;
-    sensibilidadInspiratoria = json['Pace_Insp'] ?? 0;
-    sensibilidadEspiratoria = json['Pace_Espi'] ?? 0;
-    presionControl = json['Pace_Pc'] ?? 0;
-    presionMaxima = json['Pace_Pm'] ?? 0;
-
-    volumenVentilatorio = json['Pace_V'] ?? 0;
-    flujoVentilatorio = json['Pace_F'] ?? 0;
-    presionSoporte = json['Pace_Ps'] ?? 0;
-    presionInspiratoriaPico = json['Pace_Pip'] ?? 0;
-    presionPlateau = json['Pace_Pmet'] ?? 0;
-    volumenTidal = toDoubleFromInt(json: json, keyEntered: 'Pace_Vt');
-
-    // Datos generales de la última Hospitalización. **** ** *********** ****** * *** *
-    Pacientes.ID_Hospitalizacion = json['ID_Hosp'] ?? 0;
-    Hospitalizaciones.Hospitalizacion['ID_Hosp'] = Pacientes.ID_Hospitalizacion;
-    // ******************************************** *** *
-    Valores.fechaIngresoHospitalario = json['Feca_INI_Hosp'] ?? '';
-    Hospitalizaciones.Hospitalizacion['Feca_INI_Hosp'] =
-        Valores.fechaIngresoHospitalario;
-    Valores.numeroCama = json['Id_Cama'].toString() ?? 'N/A';
-    Hospitalizaciones.Hospitalizacion['Id_Cama'] = Valores.numeroCama;
-    Valores.medicoTratante = json['Medi_Trat'] ?? '';
-    Hospitalizaciones.Hospitalizacion['Medi_Trat'] = Valores.medicoTratante;
-    Valores.servicioTratante = json['Serve_Trat'] ?? '';
-    Hospitalizaciones.Hospitalizacion['Serve_Trat'] = Valores.servicioTratante;
-    Valores.servicioTratanteInicial = json['Serve_Trat_INI'] ?? '';
-    Hospitalizaciones.Hospitalizacion['Serve_Trat_INI'] =
-        Valores.servicioTratanteInicial;
-    Valores.fechaEgresoHospitalario = json['Feca_EGE_Hosp'] ?? '';
-    Hospitalizaciones.Hospitalizacion['Feca_EGE_Hosp'] =
-        Valores.fechaEgresoHospitalario;
-    Valores.motivoEgreso = json['EGE_Motivo'] ?? '';
-    Hospitalizaciones.Hospitalizacion['EGE_Motivo'] = Valores.motivoEgreso;
-
-    json['Pace_FIAT'] = Pacientes.imagenPaciente;
-    //
-    Archivos.createJsonFromMap([json], filePath: Pacientes.localPath);
-  }
-
   static String get nombreCompleto {
     if (Valores.segundoNombre == '' || Valores.segundoNombre == null) {
       return "${Valores.primerNombre} ${Valores.apellidoPaterno} ${Valores.apellidoMaterno}";
@@ -1135,19 +1136,19 @@ class Valores {
             Valores.tasaRenalCKDEPI) /
         3;
     if (tfgPace <= 15) {
-      clasificacion = "Estadio G5 $tfgPace mL/min/1.73 m2)";
+      clasificacion = "Estadio G5 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
     } else if (tfgPace <= 29) {
-      clasificacion = "Estadio G4 $tfgPace mL/min/1.73 m2)";
+      clasificacion = "Estadio G4 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
     } else if (tfgPace <= 44) {
-      clasificacion = "Estadio G3b  $tfgPace mL/min/1.73 m2)";
+      clasificacion = "Estadio G3b  ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
     } else if (tfgPace <= 59) {
-      clasificacion = "Estadio G3a $tfgPace mL/min/1.73 m2)";
+      clasificacion = "Estadio G3a ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
     } else if (tfgPace <= 89) {
-      clasificacion = "Estadio G2 $tfgPace mL/min/1.73 m2)";
+      clasificacion = "Estadio G2 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
     } else if (tfgPace <= 140) {
-      clasificacion = "Estadio G1 $tfgPace mL/min/1.73 m2)";
+      clasificacion = "Estadio G1 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
     } else {
-      clasificacion = "Estadio G1 $tfgPace mL/min/1.73 m2)";
+      clasificacion = "Estadio G1 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
     }
 
     return clasificacion;
@@ -2778,11 +2779,10 @@ class Valorados {
       "delta de potasio ${Valores.deficitSodio.toStringAsFixed(1)} mEq/L: ${Valores.deltaPotasio.toStringAsFixed(1)}";
 
   static String get hepaticos {
-    return "";
-    // "Perfil Hepático - " \
-    // + "Relacion ALT:FA : " + str("%.1f" % Hepaticos.get('Relacion_ALT_FA')) + "; Conclusión: " + Hepaticos.get(
+    return "Pérfil hepático - ";
+    // "Relacion ALT:FA : ${}" + str("%.1f" % Hepaticos.get('Relacion_ALT_FA')) + "; Conclusión: " + Hepaticos.get(
     //     'Patron_ALT_FA') + " (Consideraciones Diagnósticas: " + Hepaticos.get('Diagnosticos_ALT_FA') + ". " \
-    // + "Relacion AST:ALT : " + str(
+    // "Relacion AST:ALT : " + str(
     //     "%.1f" % Hepaticos.get('Relacion_AST_ALT')) + "; Consideraciones Diagnósticas: " + Hepaticos.get('Patron_AST_ALT') + ". " \
     // + "Relacion GGT:FA : " + str(
     //     "%.1f" % Hepaticos.get('Relacion_GGT_FA')) + "; Consideraciones Diagnósticas: " + Hepaticos.get(
@@ -4454,6 +4454,7 @@ class Exploracion {
         '$adenomegaliasCervical'
         '. ';
   }
+
 }
 
 double toDoubleFromInt(

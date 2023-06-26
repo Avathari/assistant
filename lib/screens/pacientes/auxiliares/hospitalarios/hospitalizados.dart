@@ -415,7 +415,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                           secondText: snapshot.data[posicion]
                                                       ['Situaciones']
                                                   ['Disp_Oxigen'] ??
-                                              '',
+                                              ''
                                         ),
                                       ),
                                       Expanded(
@@ -918,6 +918,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                                       ['Disp_Oxigen'] ??
                                                   ''
                                               : '',
+                                          heigth: 50,
                                         ),
                                       ),
                                       Expanded(

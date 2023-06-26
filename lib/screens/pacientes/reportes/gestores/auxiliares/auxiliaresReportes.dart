@@ -357,51 +357,71 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                 ),
                 Expanded(
                   flex: 1,
-                  child: SingleChildScrollView(
-                    controller: scrollCommenController,
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: ContainerDecoration.roundedDecoration(),
                     child: Column(
                       children: [
-                        GrandButton(
-                          labelButton: "Antropométricos",
-                          onPress: () {
-                            asignarAuxAnalisis(indice: 1);
-                          },
-                        ),
-                        GrandButton(
-                          labelButton: "Metabólicos",
-                          onPress: () {
-                            asignarAuxAnalisis(indice: 2);
-                          },
-                        ),
-                        GrandButton(
-                          labelButton: "Cardiovasculares",
-                          onPress: () {
-                            asignarAuxAnalisis(indice: 3);
-                          },
-                        ),
-                        GrandButton(
-                          labelButton: "Hídricos",
-                          onPress: () {
-                            asignarAuxAnalisis(indice: 4);
-                          },
-                        ),
-                        GrandButton(
-                          labelButton: "Hepáticos",
-                          onPress: () {
-                            asignarAuxAnalisis(indice: 5);
-                          },
-                        ),
-                        GrandButton(
-                          labelButton: "Hemáticos",
-                          onPress: () {
-                            asignarAuxAnalisis(indice: 6);
-                          },
-                        ),
-                        GrandButton(
-                          labelButton: "Renales",
-                          onPress: () {
-                            asignarAuxAnalisis(indice: 7);
-                          },
+                        Expanded(child: GrandIcon(
+                          iconData: Icons.cleaning_services,
+                          labelButton: 'Limpiar . . . ',
+                            onPress: () {
+                            setState(() {
+                              commenTextController.text = '';
+                            });
+                            }),),
+                        CrossLine(color: Colors.grey,),
+                        Expanded(
+                          flex: 5,
+                          child: SingleChildScrollView(
+                            controller: scrollCommenController,
+                            child: Column(
+                              children: [
+                                GrandButton(
+                                  labelButton: "Antropométricos",
+                                  onPress: () {
+                                    asignarAuxAnalisis(indice: 1);
+                                  },
+                                ),
+                                GrandButton(
+                                  labelButton: "Metabólicos",
+                                  onPress: () {
+                                    asignarAuxAnalisis(indice: 2);
+                                  },
+                                ),
+                                GrandButton(
+                                  labelButton: "Cardiovasculares",
+                                  onPress: () {
+                                    asignarAuxAnalisis(indice: 3);
+                                  },
+                                ),
+                                GrandButton(
+                                  labelButton: "Hídricos",
+                                  onPress: () {
+                                    asignarAuxAnalisis(indice: 4);
+                                  },
+                                ),
+                                GrandButton(
+                                  labelButton: "Hepáticos",
+                                  onPress: () {
+                                    asignarAuxAnalisis(indice: 5);
+                                  },
+                                ),
+                                GrandButton(
+                                  labelButton: "Hemáticos",
+                                  onPress: () {
+                                    asignarAuxAnalisis(indice: 6);
+                                  },
+                                ),
+                                GrandButton(
+                                  labelButton: "Renales",
+                                  onPress: () {
+                                    asignarAuxAnalisis(indice: 7);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ],
                     ),
