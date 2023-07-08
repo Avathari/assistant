@@ -58,24 +58,21 @@ class _CircleIconState extends State<CircleIcon> {
               );
             });
       },
-      child: Tooltip(
-        message: widget.tittle!,
-        padding: const EdgeInsets.all(8.0),
+      child: CircleAvatar(
+        backgroundColor: Colors.grey,
+        radius: widget.radios!,
         child: CircleAvatar(
-          backgroundColor: Colors.grey,
-          radius: widget.radios!,
-          child: CircleAvatar(
-            backgroundColor: Colors.black,
-            radius: widget.radios! - 10,
-            child: GrandIcon(
-              iconData: widget.iconed!,
-              onPress: () {
-                // setState(() {
-                //   widget.onChangeValue!(!widget.isSwitched!);
-                //   widget.isSwitched = !widget.isSwitched!;
-                // });
-              },
-            ),
+          backgroundColor: Colors.black,
+          radius: widget.radios! - 10,
+          child: GrandIcon(
+            labelButton: widget.tittle!,
+            iconData: widget.iconed!,
+            onPress: () {
+              // setState(() {
+              //   widget.onChangeValue!(!widget.isSwitched!);
+              //   widget.isSwitched = !widget.isSwitched!;
+              // });
+            },
           ),
         ),
       ),

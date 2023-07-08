@@ -144,7 +144,7 @@ class _PresentacionPacientesState extends State<PresentacionPacientes> {
                 ),
               ),
               Text(
-                "${Pacientes.Paciente['Pace_NSS']} ${Pacientes.Paciente['Pace_AGRE']}",
+                "${Pacientes.Paciente['Pace_NSS']}\n${Pacientes.Paciente['Pace_AGRE']}",
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontSize: 12,

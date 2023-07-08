@@ -15,16 +15,20 @@ class Lexemas {
   static var fileStadistics =
       '${Vocablos.localRepositoryPath}lexemaStadistics.json';
   //
-  static String selectedDiagnosis = "";
-  //
-
   static Map<String, dynamic> Lexema = {};
 
-  static var actualDiagno;
+  static var tipoVocal = [
+    'Formas Verbales',
+    'Formas Lexémicas',
+    'Formas Adjetivales',
+    'Formas Epitémicas',
+    'Posposiciones',
+    'Anteposiciones',
+  ];
 
   static void registros() {
     Actividades.consultarAllById(Databases.siteground_database_vocal,
-            Lexemas.lexema['consultByIdPrimaryQuery'], Vocablos.ID_Vocablos)
+            Lexemas.lexemas['consultByIdPrimaryQuery'], Vocablos.ID_Vocablos)
         .then((value) {
       Vocablos.Lexemas = value;
       Archivos.createJsonFromMap(value,
@@ -34,7 +38,7 @@ class Lexemas {
 
   static void ultimoRegistro() {
     Actividades.consultarId(Databases.siteground_database_vocal,
-            Lexemas.lexema['consultLastQuery'], Vocablos.ID_Vocablos)
+            Lexemas.lexemas['consultLastQuery'], Vocablos.ID_Vocablos)
         .then((value) {
       Lexemas.Lexema =
           value; // Enfermedades de base del paciente, asi como las Hospitalarias.
@@ -43,14 +47,14 @@ class Lexemas {
 
   static void consultarRegistro() {
     Actividades.consultarAllById(Databases.siteground_database_vocal,
-            Lexemas.lexema['consultIdQuery'], Vocablos.ID_Vocablos)
+            Lexemas.lexemas['consultIdQuery'], Vocablos.ID_Vocablos)
         .then((value) {
       // Enfermedades de base del paciente, asi como las Hospitalarias.
       Vocablos.Lexemas = value;
     });
   }
 
-  static final Map<String, dynamic> lexema = {
+  static final Map<String, dynamic> lexemas = {
     "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regvocal "
         "DEFAULT CHARACTER SET utf8 "
         "COLLATE utf8_unicode_ci;",
@@ -83,12 +87,13 @@ class Lexemas {
     // "consultAllIdsQuery": "SELECT ID_Usuario FROM lexema",
     "consultLastQuery": "SELECT * FROM voca_iden WHERE ID_Usuario = ?",
     "consultByName": "SELECT * FROM voca_iden WHERE Tipo_Recurso LIKE '?",
-    "registerQuery": "INSERT INTO voca_iden (Tipo_Vocal, Subtipo_Vocal, Categoria_Vocal, Nominacion_Vocal, " 
-    "Trasliteracion, Fonematica) "
-        "VALUES (?,?,?,?,?,?,?)",
+    "registerQuery":
+        "INSERT INTO voca_iden (Tipo_Vocal, Subtipo_Vocal, Categoria_Vocal, Nominacion_Vocal, "
+            "Trasliteracion, Fonematica) "
+            "VALUES (?,?,?,?,?,?,?)",
     "updateQuery": "UPDATE voca_iden "
-        "SET ID_Vocal = ?, Tipo_Vocal = ?, Subtipo_Vocal = ?, Categoria_Vocal = ?, Nominacion_Vocal = " 
-  "?, Trasliteracion = ?, Fonematica = ? WHERE ID_Vocal = ?",
+        "SET ID_Vocal = ?, Tipo_Vocal = ?, Subtipo_Vocal = ?, Categoria_Vocal = ?, Nominacion_Vocal = "
+        "?, Trasliteracion = ?, Fonematica = ? WHERE ID_Vocal = ?",
     "deleteQuery": "DELETE FROM voca_iden WHERE ID_Vocal = ?",
     "lexemaStadistics": "SELECT "
         "(SELECT IFNULL(COUNT(`Tipo_Recurso`), '0') FROM lexema WHERE `ID_Usuario` = 1 AND Tipo_Recurso = 'Ingresos') as Ingresos_Registrados, "
