@@ -1,6 +1,9 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Financieros.dart';
-import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/widgets/CircularChart.dart';
+import 'package:assistant/widgets/CrossLine.dart';
+import 'package:assistant/widgets/TittlePanel.dart';
+import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 
@@ -8,7 +11,6 @@ import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fl_chart/fl_chart.dart';
 
 class EstadisticasActivos extends StatefulWidget {
   const EstadisticasActivos({Key? key}) : super(key: key);
@@ -19,29 +21,58 @@ class EstadisticasActivos extends StatefulWidget {
 
 class _EstadisticasActivosState extends State<EstadisticasActivos> {
   Map<String, dynamic> data = {
+    'Total_Registrados': 0,
     'Ingresos_Registrados': 0,
     'Egresos_Registrados': 0,
     'Ingreso_Global': 0,
     'Egreso_Global': 0,
     'Balance_Global': 0,
+    //
+    'Total_Global': 0,
+    'Ingreso_Anual': 0,
+    'Egreso_Anual': 0,
+    'Total_Anual': 0,
+    'Balance_Anual': 0,
+    //
+    'Ingreso_Anual_Previo': 0,
+    'Egreso_Anual_Previo': 0,
+    'Balance_Previo_Año': 0,
+    //
+    'Ingreso_Mes_Previo': 0,
+    'Egreso_Mes_Previo': 0,
+    'Total_Previo_Mes': 0,
+    //
+    'Balance_Previo_Mes': 0,
+    'Ingreso_Mensual': 0,
+    'Egreso_Mensual': 0,
+    'Total_Mensual': 0,
+    'Balance_Mensual': 0,
+    //
+    'Balance_Actual': 0,
+    //
+    'Total_Registrados': 0,
   };
   var statScrollController = ScrollController();
 
   @override
   void initState() {
-    Terminal.printWarning(message: " . . . Iniciando Actividad - Estádisticas del Repositorio de Pacientes");
+    Terminal.printWarning(
+        message:
+            " . . . Iniciando Actividad - Estádisticas del Repositorio de Pacientes");
     Archivos.readJsonToMap(filePath: Activos.fileStadistics).then((value) {
-      setState(() {          Terminal.printWarning(message: " . . . $value");
+      setState(() {
+        Terminal.printWarning(message: " . . . $value");
         data = value[0];
       });
     }).onError((error, stackTrace) {
       Actividades.detalles(Databases.siteground_database_regfine,
-          Activos.activos['activosStadistics'])
+              Activos.activos['activosStadistics'])
           .then((value) {
         setState(() {
           data = value;
-          Terminal.printWarning(message: " . . . $value");
-          Archivos.createJsonFromMap([data], filePath: 'assets/vault/activosStadistics.json');
+          Terminal.printWarning(message: " . . . $value\n $data");
+          Archivos.createJsonFromMap([data],
+              filePath: 'assets/vault/activosStadistics.json');
         });
       });
     });
@@ -52,137 +83,350 @@ class _EstadisticasActivosState extends State<EstadisticasActivos> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: const Color.fromARGB(255, 58, 55, 55)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(),
-              child: const Text(
-                'Estadisticas de los Activos del Paciente',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold),
+    Terminal.printWarning(message: " . . . Data :  : :  $data");
+    return Container(
+      padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0 , bottom: 5.0),
+      margin: const EdgeInsets.all(8.0),
+      decoration: ContainerDecoration.roundedDecoration(),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+              flex: isMobile(context) ? 2 : 3,
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: TittlePanel(
+                            fontSize: 16,
+                            textPanel: 'Estadisticas de los Activos del Paciente',
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: GridView(
+                            gridDelegate: GridViewTools.gridDelegate(
+                                crossAxisCount: isTablet(context) ? 2 : 3,
+                                crossAxisSpacing: 20.0,
+                                mainAxisSpacing: 20.0,
+                                mainAxisExtent: 90.0),
+                            children: [
+                              if (data['Total_Mensual'] != null &&
+                                  data['Total_Mensual'] != 0)
+                                CircularChart(
+                                  tittle: "Balance del Mes",
+                                  total: double.parse(
+                                      data['Total_Mensual'].toString()),
+                                  values: {
+                                    'Ingresos': double.parse(
+                                        data['Ingreso_Mensual']
+                                            .toString()),
+                                    'Egresos': double.parse(
+                                        data['Egreso_Mensual']
+                                            .toString()),
+                                  },
+                                ),
+                              if (data['Total_Previo_Mes'] != null &&
+                                  data['Total_Previo_Mes'] != 0)
+                                CircularChart(
+                                  tittle: "Balance del Mes Previo",
+                                  total: double.parse(
+                                      data['Total_Previo_Mes'].toString()),
+                                  values: {
+                                    'Ingresos': double.parse(
+                                        data['Ingreso_Mes_Previo']
+                                            .toString()),
+                                    'Egresos': double.parse(
+                                        data['Egreso_Mes_Previo']
+                                            .toString()),
+                                  },
+                                ),
+                              if (data['Balance_Previo_Año'] != null &&
+                                  data['Balance_Previo_Año'] != 0)
+                                CircularChart(
+                                  tittle: "Balance del Año Previo",
+                                  total: double.parse(
+                                      data['Total_Previo_Año'].toString()),
+                                  values: {
+                                    'Ingresos': double.parse(
+                                        data['Ingreso_Anual_Previo']
+                                            .toString()),
+                                    'Egresos': double.parse(
+                                        data['Egreso_Anual_Previo']
+                                            .toString()),
+                                  },
+                                ),
+                              if (data['Total_Anual'] != null &&
+                                  data['Total_Anual'] != 0)
+                                CircularChart(
+                                  tittle: "Balance Anual",
+                                  total: double.parse(
+                                      data['Total_Anual'].toString()),
+                                  values: {
+                                    'Ingresos': double.parse(
+                                        data['Ingreso_Anual']
+                                            .toString()),
+                                    'Egresos': double.parse(
+                                        data['Egreso_Anual']
+                                            .toString()),
+                                  },
+                                ),
+                              if (data['Total_Global'] != null &&
+                                  data['Total_Global'] != 0)
+                                CircularChart(
+                                  tittle: "Balance Global",
+                                  total: double.parse(
+                                      data['Total_Global'].toString()),
+                                  values: {
+                                    'Ingresos': double.parse(
+                                        data['Ingreso_Global']
+                                            .toString()),
+                                    'Egresos': double.parse(
+                                        data['Egreso_Global']
+                                            .toString()),
+                                    'Pasivos': double.parse(
+                                        data['Pasivos_Global']
+                                            .toString()),
+                                  },
+                                ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  isDesktop(context)
+                      ? Expanded(
+                          flex: 2,
+                          child: SingleChildScrollView(
+                            controller: ScrollController(),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                tileStat(
+                                    Icons.upgrade,
+                                    "Ingresos Globales",
+                                    double.parse(data['Ingreso_Global'])),
+                                tileStat(
+                                    Icons.arrow_drop_down,
+                                    "Egresos Globales",
+                                    double.parse(data['Egreso_Global'])),
+                                tileStat(
+                                    Icons.balcony,
+                                    "Balance Parcial",
+                                    data['Balance_Parcial']),
+                                CrossLine(),
+                                tileStat(
+                                    Icons.home_filled,
+                                    "Patrimonio",
+                                    data['Patrimonio']),
+                                tileStat(
+                                    Icons.balance,
+                                    "Balance Total",
+                                    data['Balance_Global']),
+                                CrossLine(),
+                                tileStat(Icons.person, "Total de Registros",
+                                    double.parse(data['Total_Registrados'] ?? '0')),
+                                CrossLine(),
+                                tileStat(
+                                    Icons.person_add_outlined,
+                                    "Total de Ingresos",
+                                    double.parse(data['Ingresos_Registrados'] ?? '0')),
+                                tileStat(
+                                    Icons.person_off_outlined,
+                                    "Total de Egresos",
+                                    double.parse(data['Egresos_Registrados'] ?? '0')),
+                                tileStat(
+                                    Icons.person_add_outlined,
+                                    "Total de Activos",
+                                    double.parse(data['Activos_Registrados'] ?? '0')),
+                                tileStat(
+                                    Icons.person_off_outlined,
+                                    "Total de Pasivos",
+                                    double.parse(data['Pasivos_Registrados'] ?? '0')),
+
+                              ],
+                            ),
+                          ))
+                      : Container(),
+                ],
+              )),
+          const Divider(
+            color: Colors.grey,
+            height: 15,
+          ),
+          if (isTablet(context) || isDesktop(context)) Expanded(
+            child: Container(
+              decoration: ContainerDecoration.roundedDecoration(),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ValuePanel(
+                      heigth: 70,
+                        firstText: "Ingreso Mensual",
+                        secondText: double.parse(
+                            data['Ingreso_Mensual'].toString())
+                            .toStringAsFixed(2)),
+                  ),
+                  Expanded(
+                    child: ValuePanel(
+                        heigth: 70,
+                        firstText: "Egreso Mensual",
+                        secondText:
+                        double.parse(data['Egreso_Mensual'].toString())
+                            .toStringAsFixed(2)),
+                  ),
+                  Expanded(
+                    child: ValuePanel(
+                        heigth: 70,
+                        firstText: "Balance Mensual",
+                        secondText:
+                        double.parse(data['Balance_Mensual'].toString())
+                            .toStringAsFixed(2)),
+                  ),
+                ],
               ),
             ),
-            // Expanded(
-            //   flex: isMobile(context) ? 2 : 1,
-            //   child: isTablet(context) || isMobile(context)
-            //       ? Column(
-            //           children: [
-            //             Flexible(
-            //                 flex: 2,
-            //                 child: data['Total_Pacientes'] != 0
-            //                     ? PieChart(PieChartData(
-            //                         sections: listChartSections(
-            //                             data['Total_Pacientes'])))
-            //                     : Container()),
-            //             Flexible(
-            //                 flex: 3,
-            //                 child: SingleChildScrollView(
-            //                   controller: ScrollController(),
-            //                   child: Column(
-            //                     mainAxisAlignment: MainAxisAlignment.start,
-            //                     children: [
-            //                       tileStat(Icons.person, "Total de Pacientes",
-            //                           data['Total_Pacientes']),
-            //                       tileStat(Icons.person_add_outlined,
-            //                           "Total de Activos", data['Total_Vivos']),
-            //                       tileStat(
-            //                           Icons.person_off_outlined,
-            //                           "Total de Fallecidos",
-            //                           data['Total_Fallecidos'])
-            //                     ],
-            //                   ),
-            //                 ))
-            //           ],
-            //         )
-            //       : Row(
-            //           children: [
-            //             Flexible(
-            //                 flex: 2,
-            //                 child: data['Total_Pacientes'] != 0
-            //                     ? PieChart(PieChartData(
-            //                         sections: listChartSections(
-            //                             data['Total_Pacientes'])))
-            //                     : Container()),
-            //             Flexible(
-            //                 flex: 3,
-            //                 child: SingleChildScrollView(
-            //                   controller: ScrollController(),
-            //                   child: Column(
-            //                     mainAxisAlignment: MainAxisAlignment.start,
-            //                     children: [
-            //                       tileStat(Icons.person, "Total de Pacientes",
-            //                           data['Total_Pacientes']),
-            //                       tileStat(Icons.person_add_outlined,
-            //                           "Total de Activos", data['Total_Vivos']),
-            //                       tileStat(
-            //                           Icons.person_off_outlined,
-            //                           "Total de Fallecidos",
-            //                           data['Total_Fallecidos'])
-            //                     ],
-            //                   ),
-            //                 ))
-            //           ],
-            //         ),
-            // ),
-            const SizedBox(
-              height: 20,
-            ),
-            Flexible(
-                flex: 2,
-                //fit: FlexFit.tight,
-                child: ListView.builder(
-                    //shrinkWrap: true,
-                    controller: statScrollController,
-                    itemCount: Financieros.Categorias.length,
-                    itemBuilder: (BuildContext context, index) {
-                      //print("INDEX BUILDER $index ${Pacientes.Categorias[index]} ${data!.values.toList().elementAt(index).runtimeType}");
-                      //print("data data $data");
-                      if (index <= data.length) {
-                        return tileStat(Icons.list, Financieros.Categorias[index],
-                            double.parse(data.values.toList().elementAt(index).toString()));
-                      } else {
-                        return Container();
-                      }
-                    }))
-          ],
-        ),
+          ),
+          const Divider(
+            color: Colors.grey,
+            height: 15,
+          ),
+          Expanded(
+              flex: 3,
+              child: GridView(
+                gridDelegate: GridViewTools.gridDelegate(
+                    crossAxisCount: isDesktop(context) ? 7: 3, mainAxisExtent: 75.0),
+                children: [
+                  ValuePanel(
+                      firstText: "Ingreso Global",
+                      secondText:
+                          double.parse(data['Ingreso_Global'].toString())
+                              .toStringAsFixed(2)),
+                  ValuePanel(
+                      firstText: "Egreso Global",
+                      secondText:
+                          double.parse(data['Egreso_Global'].toString())
+                              .toStringAsFixed(2)),
+                  ValuePanel(
+                      firstText: "Balance Parcial",
+                      secondText:
+                          double.parse(data['Balance_Parcial'].toString())
+                              .toStringAsFixed(2)),
+                  if (isDesktop(context)) CrossLine(
+                    isHorizontal: false,
+                  ) ,
+                  ValuePanel(
+                      firstText: "Ingreso Anual",
+                      secondText:
+                          double.parse(data['Ingreso_Anual'].toString())
+                              .toStringAsFixed(2)),
+                  ValuePanel(
+                      firstText: "Egreso Anual",
+                      secondText:
+                          double.parse(data['Egreso_Anual'].toString())
+                              .toStringAsFixed(2)),
+                  ValuePanel(
+                      firstText: "Balance Anual",
+                      secondText:
+                          double.parse(data['Balance_Anual'].toString())
+                              .toStringAsFixed(2)),
+// *******************************
+                  ValuePanel(
+                      firstText: "Ingreso Anual Previo",
+                      secondText: double.parse(
+                              data['Ingreso_Anual_Previo'].toString())
+                          .toStringAsFixed(2)),
+                  ValuePanel(
+                      firstText: "Egreso Anual Previo",
+                      secondText:
+                          double.parse(data['Egreso_Anual_Previo'].toString())
+                              .toStringAsFixed(2)),
+                  ValuePanel(
+                      firstText: "Balance Anual Previo",
+                      secondText:
+                          double.parse(data['Balance_Previo_Año'].toString())
+                              .toStringAsFixed(2)),
+                  if (isDesktop(context)) CrossLine(
+                    isHorizontal: false,
+                  ) ,
+                  ValuePanel(
+                      firstText: "Ingreso Mes Previo",
+                      secondText:
+                          double.parse(data['Ingreso_Mes_Previo'].toString())
+                              .toStringAsFixed(2)),
+                  ValuePanel(
+                      firstText: "Egreso Mes Previo",
+                      secondText:
+                          double.parse(data['Egreso_Mes_Previo'].toString())
+                              .toStringAsFixed(2)),
+                  ValuePanel(
+                      firstText: "Balance Mes Previo",
+                      secondText:
+                          double.parse(data['Total_Previo_Mes'].toString())
+                              .toStringAsFixed(2)),
+                  // *******************************
+                  ValuePanel(
+                      firstText: "Ingreso Mensual",
+                      secondText: double.parse(
+                          data['Ingreso_Mensual'].toString())
+                          .toStringAsFixed(2)),
+                  ValuePanel(
+                      firstText: "Egreso Mensual",
+                      secondText:
+                      double.parse(data['Egreso_Mensual'].toString())
+                          .toStringAsFixed(2)),
+                  ValuePanel(
+                      firstText: "Balance Mensual",
+                      secondText:
+                      double.parse(data['Balance_Mensual'].toString())
+                          .toStringAsFixed(2)),
+                  if (isDesktop(context)) CrossLine(
+                    isHorizontal: false,
+                  ) ,
+                ],
+              )),
+          // Expanded(
+          //     flex: 2,
+          //     //fit: FlexFit.tight,
+          //     child: ListView.builder(
+          //         //shrinkWrap: true,
+          //         controller: statScrollController,
+          //         itemCount: Financieros.Categorias.length,
+          //         itemBuilder: (BuildContext context, index) {
+          //           //print("INDEX BUILDER $index ${Pacientes.Categorias[index]} ${data!.values.toList().elementAt(index).runtimeType}");
+          //           //print("data data $data");
+          //           if (index <= data.length) {
+          //             return tileStat(
+          //                 Icons.list,
+          //                 Financieros.Categorias[index],
+          //                 double.parse(data.values
+          //                     .toList()
+          //                     .elementAt(index)
+          //                     .toString()));
+          //           } else {
+          //             return Container();
+          //           }
+          //         }))
+        ],
       ),
     );
   }
 
-  List<PieChartSectionData> listChartSections(int total) {
-    List<PieChartSectionData> list = [];
-    Indices.indice = 0;
-
-    data.forEach((key, value) {
-      // # . . . # # # . . . #
-      //print("total ${value!} $total ${total / value!}");
-      double val = ((value! * 100) / total);
-      // # . . . # # # . . . #
-      list.add(PieChartSectionData(
-        color: Colores.locales[Indices.indice],
-        value: (val),
-        title: "${val.toStringAsFixed(1)} %",
-        radius: 20,
-        titleStyle: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ));
-      Indices.indice++;
+  void reiniciar() {
+    Actividades.detalles(Databases.siteground_database_regfine,
+            Activos.activos['activosStadistics'])
+        .then((value) {
+      setState(() {
+        data = value;
+        Terminal.printWarning(message: " . . . $value\n $data");
+        Archivos.createJsonFromMap([data],
+            filePath: 'assets/vault/activosStadistics.json');
+      });
     });
-    return list;
   }
 
   Padding tileStat(IconData? icon, String tittle, double stat) {
@@ -203,4 +447,3 @@ class _EstadisticasActivosState extends State<EstadisticasActivos> {
     );
   }
 }
-

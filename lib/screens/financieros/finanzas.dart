@@ -9,12 +9,10 @@ import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CircleLabel.dart';
 import 'package:assistant/widgets/CrossLine.dart';
-import 'package:assistant/widgets/DialogSelector.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
-import 'package:assistant/widgets/Spinner.dart';
-import 'package:assistant/widgets/ValuePanel.dart';
+import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -43,26 +41,6 @@ class OperacionesActivos extends StatefulWidget {
 }
 
 class _OperacionesActivosState extends State<OperacionesActivos> {
-  String appBarTitile = "Gestión de Activos";
-  String? consultIdQuery = Activos.activos['consultIdQuery'];
-  String? registerQuery = Activos.activos['registerQuery'];
-  String? updateQuery = Activos.activos['updateQuery'];
-
-  int idOperation = 0;
-
-  List<dynamic>? listOfValues;
-
-  var isActualDiagoValue = Activos.actualDiagno[0];
-  var cieDiagnoTextController = TextEditingController();
-  var comenDiagnoTextController = TextEditingController();
-  var ayoDiagoTextController = TextEditingController();
-  //
-  var isTratamientoDiagoValue = Activos.actualDiagno[0];
-  var tratamientoTextController = TextEditingController();
-
-  //
-  var activosScroller = ScrollController();
-
   @override
   void initState() {
     //
@@ -78,25 +56,52 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
       case Constantes.Update:
         setState(() {
           widget._operationButton = 'Actualizar';
-          idOperation = Activos.activos['ID_Registro'];
+          idOperation = Activos.Activo['ID_Registro'];
 
-          isActualDiagoValue =
-              Dicotomicos.fromInt(Activos.activos['Concepto_Recurso_SINO'])
-                  .toString();
-          if (Activos.selectedDiagnosis == "") {
-            cieDiagnoTextController.text = Activos.activos['Concepto_Recurso'];
-          } else {
-            cieDiagnoTextController.text = Activos.selectedDiagnosis;
-          }
-          comenDiagnoTextController.text = Activos.activos['Tipo_Recurso'];
-          ayoDiagoTextController.text =
-              Activos.activos['Concepto_Recurso_dia'].toString();
-          //
-          isTratamientoDiagoValue =
-              Dicotomicos.fromInt(Activos.activos['Concepto_Recurso_tra_SINO'])
-                  .toString();
-          tratamientoTextController.text =
-              Activos.activos['Concepto_Recurso_tra'];
+          conceptoRecursoTextController.text =
+              Activos.Activo['Concepto_Recurso'];
+          tipoRecursoTextController.text = Activos.Activo['Tipo_Recurso'];
+          cuentaAsignadaTextController.text = Activos.Activo['Cuenta_Asignada'];
+
+          fechaProgramadaTextController.text =
+              Activos.Activo['Fecha_Pago_Programado'];
+          intervaloProgramadoTextController.text =
+              Activos.Activo['Intervalo_Programado'];
+
+          montoProgramadoTextController.text =
+              Activos.Activo['Monto_Programado'].toString();
+
+          montoPagadoTextController.text =
+              Activos.Activo['Monto_Pagado'].toString();
+          interesAcordadoTextController.text =
+              Activos.Activo['Interes_Acordado'].toString();
+          montoRestanteTextController.text =
+              Activos.Activo['Monto_Restante'].toString();
+
+          estadoActualTextController.text = Activos.Activo['Estado_Actual'];
+          fechaProximoTextController.text =
+              Activos.Activo['Fecha_Proximo_Pago'];
+          fechaBajaTextController.text = Activos.Activo['Fecha_Baja'];
+
+          descripcionTextController.text = Activos.Activo['Descripcion'];
+          // ID_Registro int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+          // ID_Usuario int(11) NOT NULL,
+          //  tinyint(1) NOT NULL,
+          //  varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+          //  varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+
+          //  int(200) NOT NULL,
+          //  tinyint(1) NOT NULL,
+
+          //  varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+          //  tinyint(1) NOT NULL,
+          //  varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+          //  varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+
+          //  varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+          //  varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+          //  varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+          //  varchar(1000) COLLATE utf8_unicode_ci NOT NULL
         });
         super.initState();
         break;
@@ -122,23 +127,24 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
                 },
               ))
           : null,
-      body: Card(
-        color: const Color.fromARGB(255, 61, 57, 57),
+      body: Container(
+        padding: const EdgeInsets.all(8.0),
+        margin: const EdgeInsets.all(8.0),
+        decoration: ContainerDecoration.roundedDecoration(),
         child: Column(
           children: [
             Expanded(
               flex: 3,
               child: SingleChildScrollView(
-                  controller: activosScroller,
+                  controller: ScrollController(),
                   child: Column(
                     children: component(context),
                   )),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            CrossLine(),
             GrandButton(
                 labelButton: widget._operationButton,
+                weigth: 1000,
                 onPress: () {
                   operationMethod(context);
                 })
@@ -150,96 +156,251 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
 
   List<Widget> component(BuildContext context) {
     return [
-      Spinner(
-          tittle: "¿Diagnóstico actual?",
-          onChangeValue: (String value) {
-            setState(() {
-              isActualDiagoValue = value;
-            });
-          },
-          items: Dicotomicos.dicotomicos(),
-          initialValue: isActualDiagoValue),
-      Row(
-        children: [
-          Expanded(
-            flex: 2,
-            child: EditTextArea(
-              keyBoardType: TextInputType.text,
-              inputFormat: MaskTextInputFormatter(),
-              numOfLines: 1,
-              labelEditText: 'Antecedente alérgico',
-              textController: cieDiagnoTextController,
-            ),
-          ),
-          GrandIcon(
-            labelButton: "Antecedente alérgico",
-            weigth: 5,
-            onPress: () {
-              cieDialog();
-            },
-          ),
-        ],
-      ),
       EditTextArea(
+        labelEditText: 'Tipo de Recurso',
+        textController: tipoRecursoTextController,
         keyBoardType: TextInputType.text,
-        inputFormat: MaskTextInputFormatter(),
-        labelEditText: 'Comentario de antecedente alérgico',
-        textController: comenDiagnoTextController,
         numOfLines: 1,
+        selection: true,
+        withShowOption: true,
+        inputFormat: MaskTextInputFormatter(),
+        onSelected: () {
+          Operadores.selectOptionsActivity(
+              context: context,
+              options: Activos.tipoRecurso,
+              onClose: (value) {
+                setState(() {
+                  cuentaAsignadaTextController.text = '';
+                  tipoRecursoTextController.text = value;
+                  Navigator.of(context).pop();
+                });
+              });
+        },
       ),
       EditTextArea(
+        labelEditText: 'Concepto de Recurso',
+        textController: conceptoRecursoTextController,
+        keyBoardType: TextInputType.text,
+        numOfLines: 1,
+        selection: true,
+        withShowOption: true,
+        inputFormat: MaskTextInputFormatter(),
+        onSelected: () {
+          Operadores.selectOptionsActivity(
+              context: context,
+              options: tipoRecursoTextController.text == Activos.tipoRecurso[0]
+                  ? Activos.conceptoIngresos
+                  : tipoRecursoTextController.text == Activos.tipoRecurso[1]
+                      ? Activos.conceptoEgresos
+                      : tipoRecursoTextController.text == Activos.tipoRecurso[2]
+                          ? Activos.conceptoActivos
+                          : tipoRecursoTextController.text ==
+                                  Activos.tipoRecurso[3]
+                              ? Activos.conceptoPasivos
+                              : Activos.conceptoPatrimonio,
+              onClose: (value) {
+                setState(() {
+                  conceptoRecursoTextController.text = value;
+                  Navigator.of(context).pop();
+                });
+              });
+        },
+      ),
+      EditTextArea(
+        labelEditText: 'Cuenta Asignada',
+        textController: cuentaAsignadaTextController,
+        keyBoardType: TextInputType.text,
+        numOfLines: 1,
+        selection: true,
+        withShowOption: true,
+        inputFormat: MaskTextInputFormatter(),
+        onSelected: () {
+          Operadores.selectOptionsActivity(
+              context: context,
+              options: tipoRecursoTextController.text == Activos.tipoRecurso[1] ||  tipoRecursoTextController.text == Activos.tipoRecurso[3]
+                  ? Activos.cuentaAsignada
+                  : [],
+              onClose: (value) {
+                setState(() {
+                  cuentaAsignadaTextController.text = value;
+                  Navigator.of(context).pop();
+                });
+              });
+        },
+      ),
+      EditTextArea(
+        labelEditText: 'Fecha de Pago Programada',
+        textController: fechaProgramadaTextController,
+        keyBoardType: TextInputType.text,
+        numOfLines: 1,
+        selection: true,
+        withShowOption: true,
+        inputFormat: MaskTextInputFormatter(),
+        onSelected: () {
+          setState(() {
+            fechaProgramadaTextController.text =
+                Calendarios.today(format: 'yyyy/MM/dd');
+          });
+        },
+      ),
+      EditTextArea(
+        labelEditText: 'Intervalo Programado',
+        textController: intervaloProgramadoTextController,
+        keyBoardType: TextInputType.text,
+        numOfLines: 1,
+        selection: true,
+        withShowOption: true,
+        inputFormat: MaskTextInputFormatter(),
+        onSelected: () {
+          Operadores.selectOptionsActivity(
+              context: context,
+              options: Activos.intervaloProgramado,
+              onClose: (value) {
+                setState(() {
+                  intervaloProgramadoTextController.text = value;
+                  Navigator.of(context).pop();
+                });
+              });
+        },
+      ),
+      //
+      EditTextArea(
+        labelEditText: 'Monto Programado',
+        textController: montoProgramadoTextController,
         keyBoardType: TextInputType.number,
-        inputFormat: MaskTextInputFormatter(
-            mask: '##',
-            filter: {"#": RegExp(r'[0-9]')},
-            type: MaskAutoCompletionType.lazy),
-        labelEditText: 'Años de antecedente alérgico',
-        textController: ayoDiagoTextController,
         numOfLines: 1,
-      ),
-      CrossLine(),
-      Spinner(
-          tittle: "¿Tratamiento actual?",
-          onChangeValue: (String value) {
-            setState(() {
-              isTratamientoDiagoValue = value;
-              if (value == Dicotomicos.dicotomicos()[0]) {
-                tratamientoTextController.text = "";
-              } else {
-                tratamientoTextController.text = "Sin tratamiento actual";
-              }
-            });
-          },
-          items: Dicotomicos.dicotomicos(),
-          initialValue: isTratamientoDiagoValue),
-      EditTextArea(
-        keyBoardType: TextInputType.text,
         inputFormat: MaskTextInputFormatter(),
-        labelEditText: 'Comentario del tratamiento',
-        textController: tratamientoTextController,
-        numOfLines: 3,
       ),
-      CrossLine(),
+
+      EditTextArea(
+        labelEditText: 'Interes Acordado',
+        textController: interesAcordadoTextController,
+        keyBoardType: TextInputType.number,
+        numOfLines: 1,
+        inputFormat: MaskTextInputFormatter(),
+      ),
+      EditTextArea(
+        labelEditText: 'Monto Pagado',
+        textController: montoPagadoTextController,
+        keyBoardType: TextInputType.number,
+        numOfLines: 1,
+        inputFormat: MaskTextInputFormatter(),
+      ),
+      EditTextArea(
+        labelEditText: 'Monto Restante',
+        textController: montoRestanteTextController,
+        keyBoardType: TextInputType.number,
+        numOfLines: 1,
+        inputFormat: MaskTextInputFormatter(),
+      ),
+      //
+      EditTextArea(
+        labelEditText: 'Estado Actual',
+        textController: estadoActualTextController,
+        keyBoardType: TextInputType.text,
+        numOfLines: 1,
+        selection: true,
+        withShowOption: true,
+        inputFormat: MaskTextInputFormatter(),
+        onSelected: () {
+          Operadores.selectOptionsActivity(
+              context: context,
+              options: Activos.estadoActual,
+              onClose: (value) {
+                setState(() {
+                  estadoActualTextController.text = value;
+                  Navigator.of(context).pop();
+                });
+              });
+        },
+      ),
+      EditTextArea(
+        labelEditText: 'Fecha de Proximo Pago',
+        textController: fechaProximoTextController,
+        keyBoardType: TextInputType.text,
+        numOfLines: 1,
+        selection: true,
+        withShowOption: true,
+        inputFormat: MaskTextInputFormatter(),
+        onSelected: () {
+          setState(() {
+            fechaProximoTextController.text =
+                Calendarios.today(format: 'yyyy/MM/dd');
+          });
+        },
+      ),
+      EditTextArea(
+        labelEditText: 'Fecha de Baja',
+        textController: fechaBajaTextController,
+        keyBoardType: TextInputType.text,
+        numOfLines: 1,
+        selection: true,
+        withShowOption: true,
+        inputFormat: MaskTextInputFormatter(),
+        onSelected: () {
+          setState(() {
+            fechaBajaTextController.text =
+                Calendarios.today(format: 'yyyy/MM/dd');
+          });
+        },
+      ),
+      EditTextArea(
+        labelEditText: 'Descripción',
+        textController: descripcionTextController,
+        keyBoardType: TextInputType.text,
+        numOfLines: 1,
+        inputFormat: MaskTextInputFormatter(),
+      ),
     ];
   }
 
+  // OPERACIONES *************** * * * *  ** *********
   void operationMethod(BuildContext context) {
     try {
       listOfValues = [
         idOperation,
         Financieros.ID_Financieros,
-        Dicotomicos.toInt(isActualDiagoValue),
-        cieDiagnoTextController.text,
-        comenDiagnoTextController.text,
-        ayoDiagoTextController.text,
-        Dicotomicos.toInt(isTratamientoDiagoValue),
-        tratamientoTextController.text,
+        conceptoRecursoTextController.text,
+        tipoRecursoTextController.text,
+        cuentaAsignadaTextController.text,
+        //
+        fechaProgramadaTextController.text,
+        intervaloProgramadoTextController.text,
+        //
+        montoProgramadoTextController.text,
+        interesAcordadoTextController.text,
+        montoPagadoTextController.text,
+        montoRestanteTextController.text,
+        //
+        estadoActualTextController.text,
+        fechaProximoTextController.text,
+        fechaBajaTextController.text,
+        //
+        descripcionTextController.text,
         idOperation
+        // ID_Registro int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+        // ID_Usuario int(11) NOT NULL,
+        // Concepto_Recurso tinyint(1) NOT NULL,
+        // Tipo_Recurso varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+        // Cuenta_Asignada varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+
+        // Fecha_Pago_Programado int(200) NOT NULL,
+        // Intervalo_Programado tinyint(1) NOT NULL,
+
+        // Monto_Programado varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+        // Interes_Acordado tinyint(1) NOT NULL,
+        // Monto_Pagado varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+        // Monto_Restante varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+
+        // Estado_Actual varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+        // Fecha_Proximo_Pago varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+        // Fecha_Baja varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+        // Descripcion varchar(1000) COLLATE utf8_unicode_ci NOT NULL
       ];
 
-      print(
-          "${widget.operationActivity} listOfValues $listOfValues ${listOfValues!.length}");
-
+      Terminal.printExpected(
+          message:
+              "${widget.operationActivity} listOfValues $listOfValues ${listOfValues!.length}");
       switch (widget.operationActivity) {
         case Constantes.Nulo:
           // ******************************************** *** *
@@ -272,14 +433,13 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
         case Constantes.Update:
           Actividades.actualizar(Databases.siteground_database_regfine,
                   updateQuery!, listOfValues!, idOperation)
-              .then((value) => Actividades.consultarAllById(
+              .then((value) => Actividades.detalles(
                           Databases.siteground_database_regfine,
-                          consultIdQuery!,
-                          Financieros.ID_Financieros) // idOperation)
+                          Activos.activos['activosStadistics'])
                       .then((value) {
                     // ******************************************** *** *
-                    Financieros.Activos = value;
-                    Constantes.reinit(value: value);
+                    // Financieros.Activos = value;
+                    // Constantes.reinit(value: value);
                     // ******************************************** *** *
                   }).then((value) => onClose(context)));
           break;
@@ -306,44 +466,49 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
                 builder: (context) => GestionActivos()));
         break;
       case false:
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                // maintainState: false,
-                builder: (context) => GestionActivos()));
+        Actividades.detalles(Databases.siteground_database_regfine,
+                Activos.activos['activosStadistics'])
+            .whenComplete(() => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => GestionActivos(
+                          actualSidePage: const EstadisticasActivos(),
+                        ))));
         break;
       default:
     }
   }
 
-  cieDialog() {
-    showDialog(
-        useSafeArea: true,
-        context: context,
-        builder: (context) {
-          return Dialog(
-              child: DialogSelector(
-            tittle: 'Elemento de Activos',
-            searchCriteria: 'Buscar por',
-            typeOfDocument: 'txt',
-            pathForFileSource: 'assets/diccionarios/activos.txt',
-            onSelected: ((value) {
-              setState(() {
-                Activos.selectedDiagnosis = value;
-                cieDiagnoTextController.text = Activos.selectedDiagnosis;
-              });
-            }),
-          ));
-        });
-  }
+  // OPERACIONALES *************** * * * *  ** *********
+  String appBarTitile = "Gestión de Activos";
+  String? consultIdQuery = Activos.activos['consultIdQuery'];
+  String? registerQuery = Activos.activos['registerQuery'];
+  String? updateQuery = Activos.activos['updateQuery'];
+
+  int idOperation = 0;
+
+  List<dynamic>? listOfValues;
+  // VARIABLES *************** * * * *  ** *********
+  var conceptoRecursoTextController = TextEditingController();
+  var tipoRecursoTextController = TextEditingController();
+  var cuentaAsignadaTextController = TextEditingController();
+  var fechaProgramadaTextController = TextEditingController();
+  var intervaloProgramadoTextController = TextEditingController();
+  var montoProgramadoTextController = TextEditingController();
+  var descripcionTextController = TextEditingController();
+  var interesAcordadoTextController = TextEditingController();
+  var montoRestanteTextController = TextEditingController();
+  var montoPagadoTextController = TextEditingController();
+  var estadoActualTextController = TextEditingController();
+  var fechaProximoTextController = TextEditingController();
+  var fechaBajaTextController = TextEditingController();
+  //
+  var activosScroller = ScrollController();
 }
 
 class GestionActivos extends StatefulWidget {
-  Widget? actualSidePage = Container();
+  Widget? actualSidePage;
   // ****************** *** ****** **************
-  var keySearch = "Concepto_Recurso";
-  // ****************** *** ****** **************
-
   GestionActivos({Key? key, this.actualSidePage}) : super(key: key);
 
   @override
@@ -361,7 +526,7 @@ class _GestionActivosState extends State<GestionActivos> {
 
   @override
   void initState() {
-    iniciar();
+    reiniciar();
     super.initState();
   }
 
@@ -386,11 +551,11 @@ class _GestionActivosState extends State<GestionActivos> {
           actions: <Widget>[
             IconButton(
               icon: const Icon(
-                Icons.replay_outlined,
+                Icons.waterfall_chart,
               ),
-              tooltip: Sentences.reload,
+              tooltip: 'Estadísticas de los Activos . . . ',
               onPressed: () {
-                // _pullListRefresh();
+                _pullListRefresh();
               },
             ),
             IconButton(
@@ -409,104 +574,162 @@ class _GestionActivosState extends State<GestionActivos> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                Expanded(
-                  flex: 1,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextField(
-                        onChanged: (value) {
-                          _runFilterSearch(value);
-                        },
-                        controller: searchTextController,
-                        autofocus: false,
-                        keyboardType: TextInputType.text,
-                        autocorrect: true,
-                        obscureText: false,
-                        style: const TextStyle(
-                          color: Colors.white,
-                        ),
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          helperStyle: const TextStyle(
-                            color: Colors.white,
-                          ),
-                          labelText: searchCriteria,
-                          labelStyle: const TextStyle(
-                            color: Colors.white,
-                          ),
-                          contentPadding: const EdgeInsets.all(20),
-                          enabledBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.white, width: 0.5),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20))),
-                          focusColor: Colors.white,
-                          suffixIcon: IconButton(
-                            icon: const Icon(
-                              Icons.replay_outlined,
-                              color: Colors.white,
-                            ),
-                            tooltip: Sentences.reload,
-                            onPressed: () {
-                              _pullListRefresh();
-                            },
-                          ),
+                Row(
+                  children: [
+                    Expanded(
+                        flex: 4,
+                        child: EditTextArea(
+                          labelEditText: 'Buscar por Concepto',
+                          textController: searchTextController,
+                          keyBoardType: TextInputType.text,
+                          numOfLines: 1,
+                          inputFormat: MaskTextInputFormatter(),
+                          onChange: (value) {
+                            _runFilterSearch(value);
+                          },
                         )),
-                  ),
+                    Expanded(
+                        child: GrandIcon(
+                      iconData: Icons.insights,
+                      labelButton: 'Ingresos',
+                      onPress: () {
+                        _runActiveSearch(enteredKeyword: 'Ingresos');
+                      },
+                    )),
+                    Expanded(
+                        child: GrandIcon(
+                      labelButton: 'Egresos',
+                      iconData: Icons.leaderboard_sharp,
+                      onPress: () {
+                        _runActiveSearch(enteredKeyword: 'Egresos');
+                      },
+                    )),
+                    Expanded(
+                        child: GrandIcon(
+                      labelButton: 'Todo',
+                      iconData: Icons.all_out,
+                      onPress: () {
+                        _pullListRefresh();
+                      },
+                    ))
+                  ],
                 ),
                 Expanded(
                   flex: 9,
-                  child: RefreshIndicator(
-                    color: Colors.white,
-                    backgroundColor: Colors.black,
-                    onRefresh: _pullListRefresh,
-                    child: FutureBuilder<List>(
-                      initialData: foundedItems!,
-                      future: Future.value(foundedItems!),
-                      builder: (context, AsyncSnapshot snapshot) {
-                        if (snapshot.hasError) print(snapshot.error);
-                        return snapshot.hasData
-                            ? ListView.builder(
-                                controller: gestionScrollController,
-                                shrinkWrap: true,
-                                itemCount: snapshot.data == null
-                                    ? 0
-                                    : snapshot.data.length,
-                                itemBuilder: (context, posicion) {
-                                  return itemListView(
-                                      snapshot, posicion, context);
-                                },
-                              )
-                            : Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const CircularProgressIndicator(),
-                                    const SizedBox(height: 50),
-                                    Text(
-                                      snapshot.hasError
-                                          ? snapshot.error.toString()
-                                          : snapshot.error.toString(),
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 10),
-                                    ),
-                                  ],
-                                ),
-                              );
-                      },
-                    ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: isDesktop(context) ? 8 : 4,
+                        child: RefreshIndicator(
+                          color: Colors.white,
+                          backgroundColor: Colors.black,
+                          onRefresh: _pullListRefresh,
+                          child: FutureBuilder<List>(
+                            initialData: foundedItems!,
+                            future: Future.value(foundedItems!),
+                            builder: (context, AsyncSnapshot snapshot) {
+                              if (snapshot.hasError) print(snapshot.error);
+                              return snapshot.hasData
+                                  ? ListView.builder(
+                                      controller: gestionScrollController,
+                                      shrinkWrap: true,
+                                      itemCount: snapshot.data == null
+                                          ? 0
+                                          : snapshot.data.length,
+                                      itemBuilder: (context, posicion) {
+                                        return itemListView(
+                                            snapshot, posicion, context);
+                                      },
+                                    )
+                                  : Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const CircularProgressIndicator(),
+                                          const SizedBox(height: 50),
+                                          Text(
+                                            snapshot.hasError
+                                                ? snapshot.error.toString()
+                                                : snapshot.error.toString(),
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 10),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                            },
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                          child: Container(
+                        padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+                        margin: const EdgeInsets.only(left: 8.0),
+                        decoration: ContainerDecoration.roundedDecoration(),
+                        child: Column(
+                          children: [
+                            Expanded(
+                                child: GrandIcon(
+                              iconData: Icons.insights,
+                              labelButton: 'Ingresos',
+                              onPress: () {
+                                _runActiveSearch(enteredKeyword: 'Ingresos');
+                              },
+                            )),
+                            Expanded(
+                                child: GrandIcon(
+                              labelButton: 'Egresos',
+                              iconData: Icons.leaderboard_sharp,
+                              onPress: () {
+                                _runActiveSearch(enteredKeyword: 'Egresos');
+                              },
+                            )),
+                            Expanded(
+                                child: GrandIcon(
+                              labelButton: 'Activos',
+                              iconData: Icons.ac_unit,
+                              onPress: () {
+                                _runActiveSearch(enteredKeyword: 'Activos');
+                              },
+                            )),
+                            Expanded(
+                                child: GrandIcon(
+                              iconData: Icons.pages_sharp,
+                              labelButton: 'Pasivos',
+                              onPress: () {
+                                _runActiveSearch(enteredKeyword: 'Pasivos');
+                              },
+                            )),
+                            Expanded(
+                                child: GrandIcon(
+                              labelButton: 'Patrimonio',
+                              iconData: Icons.hdr_weak_sharp,
+                              onPress: () {
+                                _runActiveSearch(enteredKeyword: 'Patrimonio');
+                              },
+                            )),
+                            Expanded(
+                                child: GrandIcon(
+                              labelButton: 'Todo',
+                              iconData: Icons.all_out,
+                              onPress: () {
+                                _pullListRefresh();
+                              },
+                            )),
+                          ],
+                        ),
+                      ))
+                    ],
                   ),
                 ),
               ],
             ),
           ),
         ),
-        isTablet(context)
-            ? const Expanded(flex: 1, child: EstadisticasActivos())
-            : isDesktop(context)
-            ? const Expanded(flex: 1, child: EstadisticasActivos())
-            : isTabletAndDesktop(context)
-            ? const Expanded(flex: 1, child: EstadisticasActivos())
+        isDesktop(context) || isTablet(context)
+            ? Expanded(flex: 1, child: widget.actualSidePage!)
             : Container()
       ]),
     );
@@ -516,8 +739,9 @@ class _GestionActivosState extends State<GestionActivos> {
   void iniciar() {
     Terminal.printWarning(
         message: " . . . Iniciando Actividad - Repositorio de Pacientes");
-    Archivos.readJsonToMap(filePath:  Activos.fileAssocieted).then((value) {
+    Archivos.readJsonToMap(filePath: Activos.fileAssocieted).then((value) {
       setState(() {
+        Terminal.printWarning(message: " . . . $foundedItems");
         foundedItems = value;
       });
     }).onError((error, stackTrace) {
@@ -531,31 +755,34 @@ class _GestionActivosState extends State<GestionActivos> {
         message: "Iniciando actividad : : \n "
             "Consulta de Activos del Usuario . . .");
     Actividades.detalles(Databases.siteground_database_regfine,
-        Activos.activos['activosStadistics'])
+            Activos.activos['activosStadistics'])
         .then((value) {
-      Archivos.createJsonFromMap([value],
-          filePath: Activos.fileStadistics);
+      Archivos.createJsonFromMap([value], filePath: Activos.fileStadistics);
     });
     Actividades.consultarAllById(Databases.siteground_database_regfine,
-        consultQuery!, Financieros.ID_Financieros)
+            consultQuery!, Financieros.ID_Financieros)
         .then((value) {
       setState(() {
         Terminal.printSuccess(
             message: "Actualizando repositorio de pacientes . . . ");
         foundedItems = value;
-        Archivos.createJsonFromMap(foundedItems!, filePath: Activos.fileAssocieted);
+        Archivos.createJsonFromMap(foundedItems!,
+            filePath: Activos.fileAssocieted);
       });
-    }).whenComplete(() => Operadores.alertActivity(
-        context: context,
-        tittle: "Datos Recargados",
-        message: "Registro Actualizado",
-        onAcept: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (BuildContext context) => GestionActivos(),
-            ),
-          );
-        }));
+    });
+        // .whenComplete(() => Operadores.alertActivity(
+        //     context: context,
+        //     tittle: "Datos Recargados",
+        //     message: "Registro Actualizado",
+        //     onAcept: () {
+        //       Navigator.of(context).push(
+        //         MaterialPageRoute(
+        //           builder: (BuildContext context) => GestionActivos(
+        //             actualSidePage: const EstadisticasActivos(),
+        //           ),
+        //         ),
+        //       );
+        //     }));
   }
 
   void deleteRegister(
@@ -577,12 +804,15 @@ class _GestionActivosState extends State<GestionActivos> {
     if (isMobile(context)) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (BuildContext context) => OperacionesActivos(
-            operationActivity: operationActivity,
-          )));
+                operationActivity: operationActivity,
+              )));
     } else {
-      Constantes.operationsActividad = operationActivity;
-      Constantes.reinit(value: foundedItems!);
-      _pullListRefresh();
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (BuildContext context) => GestionActivos(
+                actualSidePage: OperacionesActivos(
+                  operationActivity: operationActivity,
+                ),
+              )));
     }
   }
 
@@ -601,85 +831,125 @@ class _GestionActivosState extends State<GestionActivos> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CircleLabel(
-                radios: 30,
-                tittle: snapshot.data[posicion]['ID_Registro'].toString(),
+              Expanded(
+                flex: 2,
+                child: Column(
+                  children: [
+                    CircleLabel(
+                      radios: 30,
+                      tittle: snapshot.data[posicion]['ID_Registro'].toString(),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    CircleIcon(
+                        tittle: "${snapshot.data[posicion]['Tipo_Recurso']}",
+                        iconed: snapshot.data[posicion]['Tipo_Recurso'] ==
+                                'Ingresos'
+                            ? Icons.insights
+                            : snapshot.data[posicion]['Tipo_Recurso'] ==
+                                    'Egresos'
+                                ? Icons.leaderboard_sharp
+                                : snapshot.data[posicion]['Tipo_Recurso'] ==
+                                        'Activos'
+                                    ? Icons.ac_unit
+                                    : snapshot.data[posicion]['Tipo_Recurso'] ==
+                                            'Pasivos'
+                                        ? Icons.pages_sharp
+                                        : snapshot.data[posicion]
+                                                    ['Tipo_Recurso'] ==
+                                                'Patrimonio'
+                                            ? Icons.hdr_weak_sharp
+                                            : Icons.all_out),
+                  ],
+                ),
               ),
-              CircleIcon(iconed: snapshot.data[posicion]['Tipo_Recurso'] == 'Ingresos' ?  Icons.insights : Icons.leaderboard_sharp,),
-              Column(
-                children: [
-                  Text(
-                    "${snapshot.data[posicion]['Tipo_Recurso']}",
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey,
-                        fontSize: 14),
-                  ),
-                  Text(
-                    "${snapshot.data[posicion]['Monto_Pagado']}",
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey,
-                        fontSize: 14),
-                  ),
-                ],
+              const SizedBox(width: 20),
+              Expanded(
+                flex: 3,
+                child: Column(
+                  children: [
+                    TittlePanel(
+                      textPanel:
+                          "${snapshot.data[posicion]['Fecha_Pago_Programado']}",
+                    ),
+                    Text(
+                      "${snapshot.data[posicion]['Estado_Actual']}",
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                          fontSize: 14),
+                    ),
+                    Text(
+                      "\u0024 ${double.parse(snapshot.data[posicion]['Monto_Pagado'].toString()).toStringAsFixed(2)}",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: snapshot.data[posicion]['Tipo_Recurso'] ==
+                                  'Ingresos'
+                              ? Colors.green
+                              : snapshot.data[posicion]['Tipo_Recurso'] ==
+                                      'Egresos'
+                                  ? Colors.red
+                                  : snapshot.data[posicion]['Tipo_Recurso'] ==
+                                          'Activos'
+                                      ? Colors.yellow
+                                      : snapshot.data[posicion]
+                                                  ['Tipo_Recurso'] ==
+                                              'Pasivos'
+                                          ? Colors.purple
+                                          : snapshot.data[posicion]
+                                                      ['Tipo_Recurso'] ==
+                                                  'Patrimonio'
+                                              ? Colors.blue
+                                              : Colors.white,
+                          fontSize: 14),
+                    ),
+                    const Divider(
+                      color: Colors.grey,
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        IconButton(
+                          color: Colors.grey,
+                          icon: const Icon(Icons.update_rounded),
+                          onPressed: () {
+                            //
+                            onSelected(
+                                snapshot, posicion, context, Constantes.Update);
+                          },
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        IconButton(
+                          color: Colors.grey,
+                          icon: const Icon(Icons.delete),
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return alertDialog(
+                                    'Eliminar registro',
+                                    '¿Esta seguro de querer eliminar el registro?',
+                                    () {
+                                      closeDialog(context);
+                                    },
+                                    () {
+                                      deleteRegister(
+                                          snapshot, posicion, context);
+                                    },
+                                  );
+                                });
+                          },
+                        )
+                      ],
+                    )
+                  ],
+                ),
               ),
-              Column(
-                children: [
-                  Text(
-                    "${snapshot.data[posicion]['Fecha_Pago_Programado']}",
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey,
-                        fontSize: 14),
-                  ),
-                  Text(
-                    "${snapshot.data[posicion]['Estado_Actual']}",
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey,
-                        fontSize: 14),
-                  ),
-                ],
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  IconButton(
-                    color: Colors.grey,
-                    icon: const Icon(Icons.update_rounded),
-                    onPressed: () {
-                      //
-                      onSelected(
-                          snapshot, posicion, context, Constantes.Update);
-                    },
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  IconButton(
-                    color: Colors.grey,
-                    icon: const Icon(Icons.delete),
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return alertDialog(
-                              'Eliminar registro',
-                              '¿Esta seguro de querer eliminar el registro?',
-                              () {
-                                closeDialog(context);
-                              },
-                              () {
-                                deleteRegister(snapshot, posicion, context);
-                              },
-                            );
-                          });
-                    },
-                  )
-                ],
-              )
             ],
           ),
         ),
@@ -689,8 +959,8 @@ class _GestionActivosState extends State<GestionActivos> {
 
   void onSelected(AsyncSnapshot<dynamic> snapshot, int posicion,
       BuildContext context, String operaciones) {
-    Activos.Degenerativo = snapshot.data[posicion];
-    Activos.selectedDiagnosis = Activos.activos['Concepto_Recurso'];
+    Activos.Activo = snapshot.data[posicion];
+    // Activos.selectedDiagnosis = Activos.activos['Concepto_Recurso'];
     Financieros.Activos = snapshot.data;
     //
     toOperaciones(context, operaciones);
@@ -700,10 +970,9 @@ class _GestionActivosState extends State<GestionActivos> {
     Navigator.of(context).pop();
   }
 
-
   // ACTIVIDADES DE BÚSQUEDA ************ ************ ***** * ** *
   Future<Null> _pullListRefresh() async {
-    iniciar();
+    reiniciar();
   }
 
   void _runFilterSearch(String enteredKeyword) {
@@ -714,7 +983,7 @@ class _GestionActivosState extends State<GestionActivos> {
     } else {
       results = Listas.listFromMap(
           lista: foundedItems!,
-          keySearched: 'Pace_Ape_Pat',
+          keySearched: 'Descripcion',
           elementSearched: Sentences.capitalize(enteredKeyword));
 
       setState(() {
@@ -723,9 +992,9 @@ class _GestionActivosState extends State<GestionActivos> {
     }
   }
 
-  void _runHospitalizedSearch({String enteredKeyword = 'Hospitalización'}) {
+  void _runActiveSearch({required String enteredKeyword}) {
     Terminal.printWarning(
-        message: " . . . Iniciando Actividad - Repositorio de Pacientes");
+        message: " . . . Iniciando Actividad - Activos del Usuario");
     Archivos.readJsonToMap(filePath: Activos.fileAssocieted).then((value) {
       setState(() {
         foundedItems = value;
@@ -741,7 +1010,7 @@ class _GestionActivosState extends State<GestionActivos> {
       } else {
         results = Listas.listFromMap(
             lista: foundedItems!,
-            keySearched: 'Pace_Hosp',
+            keySearched: 'Tipo_Recurso',
             elementSearched: Sentences.capitalize(enteredKeyword));
 
         // Terminal.printNotice(message: " . . . ${results.length} Pacientes Encontrados".toUpperCase());
@@ -751,34 +1020,4 @@ class _GestionActivosState extends State<GestionActivos> {
       }
     });
   }
-
-  void _runConsultaSearch({String enteredKeyword = 'Consulta Externa'}) {
-    Terminal.printWarning(
-        message: " . . . Iniciando Actividad - Repositorio de Pacientes");
-    Archivos.readJsonToMap(filePath: Activos.fileAssocieted).then((value) {
-      setState(() {
-        foundedItems = value;
-      });
-    }).onError((error, stackTrace) {
-      reiniciar();
-    }).whenComplete(() {
-      Terminal.printWarning(message: " . . . Actividad Iniciada");
-      List? results = [];
-
-      if (enteredKeyword.isEmpty) {
-        _pullListRefresh();
-      } else {
-        results = Listas.listFromMap(
-            lista: foundedItems!,
-            keySearched: 'Pace_Hosp',
-            elementSearched: Sentences.capitalize(enteredKeyword));
-
-        // Terminal.printNotice(message: " . . . ${results.length} Pacientes Encontrados".toUpperCase());
-        setState(() {
-          foundedItems = results;
-        });
-      }
-    });
-  }
-
 }

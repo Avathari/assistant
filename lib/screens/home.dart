@@ -4,6 +4,7 @@ import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/bibiliotecarios/bibliotecas.dart';
+import 'package:assistant/screens/financieros/estadisticas.dart';
 import 'package:assistant/screens/financieros/finanzas.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizados.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
@@ -699,7 +700,7 @@ class PacientesPanel extends StatelessWidget {
               iconData: Icons.bar_chart,
               labelButton: "Actividades Financieras",
               onPress: () {
-                toNextScreen(context: context, screen: GestionActivos());
+                toNextScreen(context: context, screen: GestionActivos(actualSidePage: const EstadisticasActivos()));
                 // Operadores.alertActivity(
                 //     context: context,
                 //     tittle: "Error",

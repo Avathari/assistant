@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 
 class TittlePanel extends StatefulWidget {
   String? textPanel;
-  double? padding;
+  double? padding, fontSize;
   Color? color;
   Color colorText;
 
   TittlePanel(
       {Key? key,
       this.padding = 8.0,
+      this.fontSize = 16,
       this.colorText = Colors.white,
       this.color = Colores.backgroundPanel,
       required this.textPanel})
@@ -25,13 +26,16 @@ class _TittlePanelState extends State<TittlePanel> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(
-          left: 8.0, right: 8.0, top: widget.padding! + 3.0, bottom: widget.padding!),
+          left: 8.0,
+          right: 8.0,
+          top: widget.padding! + 3.0,
+          bottom: widget.padding!),
       // margin: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
           color: widget.color!,
           shape: BoxShape.rectangle,
           borderRadius: const BorderRadius.all(Radius.circular(20))),
-              // topRight: Radius.circular(20), topLeft: Radius.circular(20))),
+      // topRight: Radius.circular(20), topLeft: Radius.circular(20))),
       child: SingleChildScrollView(
         controller: ScrollController(),
         child: Column(
@@ -42,11 +46,12 @@ class _TittlePanelState extends State<TittlePanel> {
               widget.textPanel!,
               textAlign: TextAlign.center,
               style: TextStyle(
+                fontSize: widget.fontSize,
                 color: widget.colorText,
               ),
             ),
             // SizedBox(height: widget.padding!),
-             CrossLine()
+            CrossLine()
           ],
         ),
       ),

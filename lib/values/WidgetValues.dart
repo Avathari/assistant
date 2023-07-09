@@ -34,11 +34,11 @@ class Colores {
   static const Color backgroundPanel = Colors.black54;
 
   static const List<Color?> locales = [
-    Color.fromARGB(255, 113, 1, 161),
+    Color.fromARGB(255, 1, 113, 20),
     Color.fromARGB(255, 113, 1, 1),
     Color.fromARGB(255, 211, 29, 19),
     Color.fromARGB(255, 204, 193, 33),
-    Color.fromARGB(255, 1, 113, 20),
+    Color.fromARGB(255, 113, 1, 161),
     Color.fromARGB(255, 211, 19, 157),
     Color.fromARGB(255, 255, 153, 0),
     Color.fromARGB(255, 113, 1, 78),
