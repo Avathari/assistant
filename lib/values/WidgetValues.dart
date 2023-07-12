@@ -162,12 +162,13 @@ class ContainerDecoration {
     );
   }
 
-  static BoxDecoration roundedDecoration({Color colorBackground = Colors.black, double radius = 20.0, double width = 1.0}) {
+  static BoxDecoration roundedDecoration({Color colorBackground = Colors.black,
+    Color borderColor =  Colors.grey, double radius = 20.0, double width = 1.0}) {
     return BoxDecoration(
       color: colorBackground,
       borderRadius: BorderRadius.circular(radius),
       border: Border.all(
-        color:  Colors.grey,
+        color:  borderColor,
         style: BorderStyle.solid,
         width: width,
       ),
