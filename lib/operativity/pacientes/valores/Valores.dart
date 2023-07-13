@@ -7,7 +7,6 @@ import 'package:dart_numerics/dart_numerics.dart' as numerics;
 import 'package:assistant/conexiones/conexiones.dart';
 
 class Valores {
-
   bool loading = false;
   Map<String, dynamic> valores = {};
   static double? prueba;
@@ -148,43 +147,43 @@ class Valores {
     // Actualización de las Directrices Complementarias ********** ***********
     Valores.fileAssocieted = "${Pacientes.localRepositoryPath}valores.json";
     Eticos.fileAssocieted =
-    "${Pacientes.localRepositoryPath}eticos.json"; // Eticos.registrarRegistro(); // Si
+        "${Pacientes.localRepositoryPath}eticos.json"; // Eticos.registrarRegistro(); // Si
     Viviendas.fileAssocieted =
-    "${Pacientes.localRepositoryPath}viviendas.json"; // Viviendas.registrarRegistro(); // Si
+        "${Pacientes.localRepositoryPath}viviendas.json"; // Viviendas.registrarRegistro(); // Si
     Higienes.fileAssocieted =
-    "${Pacientes.localRepositoryPath}higienicos.json"; // Higienes.registrarRegistro(); // Si
+        "${Pacientes.localRepositoryPath}higienicos.json"; // Higienes.registrarRegistro(); // Si
     Diarios.fileAssocieted =
-    "${Pacientes.localRepositoryPath}diarios.json"; // Diarios.registrarRegistro();
+        "${Pacientes.localRepositoryPath}diarios.json"; // Diarios.registrarRegistro();
     Alimenticios.fileAssocieted =
-    "${Pacientes.localRepositoryPath}alimenticios.json"; // Alimenticios.registrarRegistro(); // Si
+        "${Pacientes.localRepositoryPath}alimenticios.json"; // Alimenticios.registrarRegistro(); // Si
     Limitaciones.fileAssocieted =
-    "${Pacientes.localRepositoryPath}limitaciones.json"; // Limitaciones.registrarRegistro(); // Si
+        "${Pacientes.localRepositoryPath}limitaciones.json"; // Limitaciones.registrarRegistro(); // Si
     Sustancias.fileAssocieted =
-    "${Pacientes.localRepositoryPath}exposiciones.json"; // Sustancias.registrarRegistro();
+        "${Pacientes.localRepositoryPath}exposiciones.json"; // Sustancias.registrarRegistro();
 
     Patologicos.fileAssocieted =
-    '${Pacientes.localRepositoryPath}patologicos.json';
+        '${Pacientes.localRepositoryPath}patologicos.json';
     Toxicomanias.fileAssocieted =
-    "${Pacientes.localRepositoryPath}toxicomanias.json";
+        "${Pacientes.localRepositoryPath}toxicomanias.json";
     Quirurgicos.fileAssocieted =
-    '${Pacientes.localRepositoryPath}quirurgicos.json';
+        '${Pacientes.localRepositoryPath}quirurgicos.json';
     Alergicos.fileAssocieted = '${Pacientes.localRepositoryPath}alergicos.json';
     Transfusionales.fileAssocieted =
-    '${Pacientes.localRepositoryPath}transfusionales.json';
+        '${Pacientes.localRepositoryPath}transfusionales.json';
     Vacunales.fileAssocieted = '${Pacientes.localRepositoryPath}vacunales.json';
 
     Diagnosticos.fileAssocieted =
-    '${Pacientes.localRepositoryPath}diagnosticos.json';
+        '${Pacientes.localRepositoryPath}diagnosticos.json';
     Pendientes.fileAssocieted =
-    '${Pacientes.localRepositoryPath}pendientes.json';
+        '${Pacientes.localRepositoryPath}pendientes.json';
 
     Vitales.fileAssocieted = '${Pacientes.localRepositoryPath}vitales.json';
     Auxiliares.fileAssocieted =
-    '${Pacientes.localRepositoryPath}paraclinicos.json';
+        '${Pacientes.localRepositoryPath}paraclinicos.json';
     Imagenologias.fileAssocieted =
-    '${Pacientes.localRepositoryPath}imagenologicos.json';
+        '${Pacientes.localRepositoryPath}imagenologicos.json';
     Electrocardiogramas.fileAssocieted =
-    '${Pacientes.localRepositoryPath}electrocardiogramas.json';
+        '${Pacientes.localRepositoryPath}electrocardiogramas.json';
     Balances.fileAssocieted = '${Pacientes.localRepositoryPath}balances.json';
     //
     edad = json['Pace_Eda']; // int.parse();
@@ -1136,19 +1135,26 @@ class Valores {
             Valores.tasaRenalCKDEPI) /
         3;
     if (tfgPace <= 15) {
-      clasificacion = "Estadio G5 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
+      clasificacion =
+          "Estadio G5 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
     } else if (tfgPace <= 29) {
-      clasificacion = "Estadio G4 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
+      clasificacion =
+          "Estadio G4 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
     } else if (tfgPace <= 44) {
-      clasificacion = "Estadio G3b  ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
+      clasificacion =
+          "Estadio G3b  ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
     } else if (tfgPace <= 59) {
-      clasificacion = "Estadio G3a ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
+      clasificacion =
+          "Estadio G3a ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
     } else if (tfgPace <= 89) {
-      clasificacion = "Estadio G2 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
+      clasificacion =
+          "Estadio G2 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
     } else if (tfgPace <= 140) {
-      clasificacion = "Estadio G1 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
+      clasificacion =
+          "Estadio G1 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
     } else {
-      clasificacion = "Estadio G1 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
+      clasificacion =
+          "Estadio G1 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
     }
 
     return clasificacion;
@@ -1311,9 +1317,9 @@ class Valores {
       (Valores.alturaPaciente! * Valores.alturaPaciente!) * 30;
 
   static double get SC =>
-      (math.pow(Valores.pesoCorporalTotal!, 0.425)) *
-      (math.pow(Valores.alturaPaciente!, 0.725) *
-          (0.007184)); // Dubois y Dubois
+      ((math.pow(Valores.pesoCorporalTotal!, 0.425)) *
+          (math.pow((Valores.alturaPaciente! * 100), 0.725) * (0.7184))) /
+      100; // Dubois y Dubois
 
   static double get SCE {
     if (Valores.edad! <= 1.0) {
@@ -1411,13 +1417,24 @@ class Valores {
     }
   }
 
+  static double get pesoCorporalMagro {
+    if (Valores.sexo == 'Femenino') {
+      return (1.07 * Valores.pesoCorporalTotal!) - (148 * (math.pow(Valores.pesoCorporalTotal!, 2) / math.pow(Valores.alturaPaciente!*100, 2)));
+    }else if (Valores.sexo == 'Masculino') {
+      return (1.10 * Valores.pesoCorporalTotal!) - (128 * (math.pow(Valores.pesoCorporalTotal!, 2) / math.pow(Valores.alturaPaciente!*100, 2)));
+    } else {
+      return double.nan;
+    }
+
+  }
+
   static double get masaMuscularMagra =>
       7.138 + (0.02908 * Valores.creatinina!); // Masa Magra Muscular
   static double get porcentajeCorporalMagro =>
       ((Valores.pesoCorporalTotal! * (100 - grasaCorporalEsencial)) / 100);
 
   static String get claseIMC {
-    if (Valores.edad! <= 18 && Valores.edad! <= 59) {
+    if (Valores.edad! >= 18 && Valores.edad! <= 59) {
       if (Valores.sexo == 'Femenino') {
         // Talla Baja
         if (Valores.alturaPaciente! <= 1.50) {
@@ -1434,7 +1451,7 @@ class Valores {
           }
         }
         // # ################################################
-        else if (Valores.alturaPaciente! > 1.50) {
+        else if (Valores.alturaPaciente! >= 1.50) {
           if (imc == 0.00) {
             return "Clasificaccion de I.M.C. - No Aplica";
           } else if (imc >= 40.00) {
@@ -1443,13 +1460,13 @@ class Valores {
             return "Obesidad Grado II (Quetelet)";
           } else if (imc >= 30.0) {
             return "Obesidad Grado I (Quetelet)";
-          } else if (imc >= 29.99 && imc >= 26.0) {
+          } else if (imc <= 29.99 && imc >= 26.0) {
             return "Sobre - Peso (Quetelet)";
-          } else if (imc >= 25.99 && imc >= 18.0) {
+          } else if (imc <= 25.99 && imc >= 18.0) {
             return "Normal (Quetelet)";
-          } else if (imc >= 17.99 && imc >= 17.0) {
+          } else if (imc <= 17.99 && imc >= 17.0) {
             return "Bajo Peso (Quetelet)";
-          } else if (imc >= 16.99 && imc >= 16.0) {
+          } else if (imc <= 16.99 && imc >= 16.0) {
             return "Desnitricion Moderada (Quetelet)";
           } else if (imc <= 15.99) {
             return "Desnutricion Severa (Quetelet)";
@@ -2739,18 +2756,33 @@ class Valorados {
       "Área Adiposa Mesobraquial ${Valores.areaAdiposaMesobraquial} cm2, "
       "Área Mesobraquial ${Valores.areaMesobraquial} cm2. ";
 
-  static String get antropometricos => "Análisis de Medidas Corporales: "
-      "Peso Corporal Ideal ${Valores.pesoCorporalPredicho.toStringAsFixed(2)} Kg, (${Valores.PCIP.toStringAsFixed(2)} %), "
-      "Peso Corporal Ajustado ${Valores.pesoCorporalAjustado.toStringAsFixed(2)} Kg, "
-      "Exceso de Peso Corporal ${Valores.excesoPesoCorporal.toStringAsFixed(2)} Kg, "
-      "Indice de Masa Corporal ${Valores.imc.toStringAsFixed(2)} Kg/m2. (${Valores.claseIMC}). "
-      "Peso Corporal Blanco ${Valores.PCB_25.toStringAsFixed(2)} Kg, "
-      "Peso Corporal Blanco (I.M.C. 30) ${Valores.PCB_30.toStringAsFixed(2)} Kg. "
-      "Superficie Corporal Total ${Valores.SC.toStringAsFixed(2)} m2 "
-      "Relacion Cintura  Cadera ${Valores.indiceCinturaCadera.toStringAsFixed(2)} cm. " // \n"
-      "Grasa Corporal ${Valores.grasaCorporalEsencial.toStringAsFixed(2)} Kg, "
-      "Grasa Corporal Porcentual ${Valores.grasaCorporalEsencial.toStringAsFixed(2)} %, "
-      "Peso Corporal Magro ${Valores.porcentajeCorporalMagro.toStringAsFixed(2)} Kg. ";
+  static String get antropometricos {
+    String indiceCaderaCintura = '', grasaCorporal = '';
+    if (Valores.circunferenciaCintura! != 0 ||
+        Valores.circunferenciaCadera! != 0) {
+      indiceCaderaCintura =
+          "Relacion Cintura  Cadera ${Valores.indiceCinturaCadera.toStringAsFixed(2)} cm. ";
+    }
+    if (Valores.pliegueCutaneoBicipital! != 0 &&
+        Valores.pliegueCutaneoTricipital! != 0 &&
+        Valores.pliegueCutaneoEscapular! != 0 &&
+        Valores.pliegueCutaneoIliaco != 0) {
+      grasaCorporal =
+          "Grasa Corporal ${Valores.grasaCorporalEsencial.toStringAsFixed(2)} Kg, "
+          "Grasa Corporal Porcentual ${Valores.grasaCorporalEsencial.toStringAsFixed(2)} %, "
+          "Peso Corporal Magro ${Valores.porcentajeCorporalMagro.toStringAsFixed(2)} Kg. ";
+    }
+    return "Análisis de Medidas Corporales: "
+        "Peso Corporal Ideal ${Valores.pesoCorporalPredicho.toStringAsFixed(2)} Kg, (${Valores.PCIP.toStringAsFixed(2)} %), "
+        "Peso Corporal Ajustado ${Valores.pesoCorporalAjustado.toStringAsFixed(2)} Kg, "
+        "Exceso de Peso Corporal ${Valores.excesoPesoCorporal.toStringAsFixed(2)} Kg, "
+        "Indice de Masa Corporal ${Valores.imc.toStringAsFixed(2)} Kg/m2. (${Valores.claseIMC}). "
+        "Peso Corporal Blanco ${Valores.PCB_25.toStringAsFixed(2)} Kg, "
+        "Peso Corporal Blanco (I.M.C. 30) ${Valores.PCB_30.toStringAsFixed(2)} Kg. "
+        "Superficie Corporal Total ${Valores.SC.toStringAsFixed(2)} m2. "
+        "Peso Corporal Magro ${Valores.pesoCorporalMagro.toStringAsFixed(2)} Kg. "
+        "$indiceCaderaCintura";
+  }
 
   static String get metabolometrias =>
       "Análisis Energético: Gasto Energético Basal ${Valores.gastoEnergeticoBasal.toStringAsFixed(2)} kCal/dia "
@@ -2762,21 +2794,21 @@ class Valorados {
       "Fibra total ${Valores.fibraDietaria.toStringAsFixed(2)} gr/Día";
 
   static String get renales => "Tasa de Filtrado Glomerular : "
-      "${Valores.tasaRenalCrockoft_Gault.toStringAsFixed(2)} mL/min/1.73 m2 (Cockcroft : Gault), "
+      "${Valores.tasaRenalCrockoft_Gault.toStringAsFixed(2)} mL/min/1.73 m2 (Cockcroft-Gault), "
       "${Valores.tasaRenalMDRD.toStringAsFixed(2)} mL/min/1.73 m2 (M.D.R.D. 4), "
       "${Valores.tasaRenalCKDEPI.toStringAsFixed(2)} mL/min/1.73 m2 (C.K.D. E.P.I.); "
       "Clasificación (Estadio) ${Valores.claseTasaRenal} (KDOQI / KDIGO).";
 
   static String get hidricos =>
       "Requerimiento hídrico diario: ${Valores.requerimientoHidrico.toStringAsFixed(0)} mL/dia (${Valores.constanteRequerimientos} mL/Kg/dia), "
-      "agua corporal total: ${Valores.aguaCorporalTotal.toStringAsFixed(1)} mL, "
-      "delta H2O: ${Valores.excesoAguaLibre.toStringAsFixed(1)} L, "
-      "deficit de agua corporal: ${Valores.deficitAguaCorporal.toStringAsFixed(1)} L. "
-      "osmolaridad: ${Valores.osmolaridadSerica.toStringAsFixed(1)} mOsm/L, "
+      "agua corporal total ${Valores.aguaCorporalTotal.toStringAsFixed(1)} mL, "
+      "delta H2O ${Valores.excesoAguaLibre.toStringAsFixed(1)} L, "
+      "deficit de agua corporal ${Valores.deficitAguaCorporal.toStringAsFixed(1)} L. "
+      "osmolaridad ${Valores.osmolaridadSerica.toStringAsFixed(1)} mOsm/L, "
       "brecha osmolar ${Valores.brechaOsmolar.toStringAsFixed(1)} mOsm/L. "
       "${Valores.sodioCorregido}"
-      "Requerimiento de potasio ${Valores.requerimientoPotasio.toStringAsFixed(1)} "
-      "delta de potasio ${Valores.deficitSodio.toStringAsFixed(1)} mEq/L: ${Valores.deltaPotasio.toStringAsFixed(1)}";
+      "Requerimiento de potasio ${Valores.requerimientoPotasio.toStringAsFixed(1)}, delta de potasio ${Valores.deltaPotasio.toStringAsFixed(1)} mmol/L; "
+      "delta de sodio ${Valores.deficitSodio.toStringAsFixed(1)} mEq/L. ";
 
   static String get hepaticos {
     return "Pérfil hepático - ";
@@ -4444,6 +4476,12 @@ class Exploracion {
       desviacionTraqueal = '',
       adenopatiaCervical = '',
       adenomegaliasCervical = '';
+  static String? amplexionTorax = '',
+      amplexacionTorax = '',
+      ruidosCardiacos = '',
+      murmulloVesicular = '',
+      estertoresPulmonar = '',
+      sibilanciasPulmonar = '';
 
   static String get exploracionGeneral {
     return '${Exploracion.inspeccionGeneral}, '
@@ -4452,9 +4490,10 @@ class Exploracion {
         '. '
         'Cuello $ingurgitacionYugular$desviacionTraqueal$bocioCervical$adenopatiaCervical'
         '$adenomegaliasCervical'
+        '. '
+    'Tórax $amplexionTorax$amplexacionTorax'
         '. ';
   }
-
 }
 
 double toDoubleFromInt(

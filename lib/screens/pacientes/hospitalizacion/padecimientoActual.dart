@@ -57,7 +57,7 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
       children: [
         TittlePanel(textPanel: 'Padecimiento Actual'),
         EditTextArea(
-          keyBoardType: TextInputType.datetime,
+          keyBoardType: TextInputType.number,
           inputFormat: MaskTextInputFormatter(
               mask: '####/##/##', filter: {"#": RegExp(r'[0-9]')}),
           labelEditText: 'Fecha de Inicio Padecimiento',

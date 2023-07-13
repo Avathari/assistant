@@ -1,9 +1,11 @@
+import 'package:assistant/conexiones/actividades/pdfGenerete/PdfApi.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/auxiliaresReportes.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/exploracionFisica.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -144,9 +146,27 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
                           textController: noPatolTextController,
                           labelEditText: "Antecedentes No Patológicos",
                           keyBoardType: TextInputType.multiline,
-                          numOfLines: 5,
+                          numOfLines: 8,
                           withShowOption: true,
                           inputFormat: MaskTextInputFormatter()),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GrandIcon(
+                            labelButton: 'No Patológicos',
+                            iconData: Icons.account_balance,
+                              onPress: () {
+                            noPatolTextController.text = Pacientes.noPatologicos();
+                          }),
+                          CrossLine(isHorizontal: false, thickness: 4, color:Colors.white, height: 8,),
+                          GrandIcon(
+                            labelButton: 'No Patológicos Simplificado',
+                              iconData: Icons.account_balance_outlined,
+                              onPress: () {
+                              noPatolTextController.text = Pacientes.noPatologicosSimple();
+                          }),
+                        ],
+                      ),
                       EditTextArea(
                           textController: heredoTextController,
                           labelEditText: "Antecedentes heredofamiliares",

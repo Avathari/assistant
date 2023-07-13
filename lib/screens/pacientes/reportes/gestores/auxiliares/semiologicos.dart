@@ -46,12 +46,18 @@ class _SemiologicosState extends State<Semiologicos> {
             child: Row(
               children: [
                 GrandIcon(
+                  labelButton: 'Hábito Externo',
+                  iconData: Icons.brightness_1_outlined,
                   onPress: () => carouselController.jumpToPage(0),
                 ),
                 GrandIcon(
+                  labelButton: 'Cuello',
+                  iconData: Icons.nest_cam_wired_stand,
                   onPress: () => carouselController.jumpToPage(1),
                 ),
                 GrandIcon(
+                  labelButton: '',
+                  iconData: Icons.brightness_1_outlined,
                   onPress: () => carouselController.jumpToPage(2),
                 )
               ],
@@ -510,43 +516,52 @@ class _SemiologicosState extends State<Semiologicos> {
                         Expanded(
                           child: Column(
                             children: [
-                              TittlePanel(textPanel: 'Cuello'),
+                              TittlePanel(textPanel: 'Tórax'),
                               Expanded(
                                   child: GrandButton(
-                                      labelButton: 'Sin Ingurgitación Yugular',
+                                      labelButton: 'Amplexión sin Restricciones',
                                       onPress: () {
-                                        Exploracion.ingurgitacionYugular =
-                                        'sin Ingurgitación Yugular';
+                                        Exploracion.amplexionTorax =
+                                        'amplexión sin restricciones';
                                         expoTextController.text =
                                             Exploracion.exploracionGeneral;
                                       })),
                               Expanded(
                                   child: GrandButton(
-                                      labelButton: 'Ingurgitación Yugular Grado I',
+                                      labelButton: 'Amplexión con Restricción',
                                       onPress: () {
-                                        Exploracion.ingurgitacionYugular =
-                                        'con ingurgitación yugular grado I';
+                                        Exploracion.amplexionTorax =
+                                        'amplexión con restricción';
+                                        expoTextController.text =
+                                            Exploracion.exploracionGeneral;
+                                      })),
+
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            children: [
+                              TittlePanel(textPanel: 'Dificultad Respiratoria'),
+                              Expanded(
+                                  child: GrandButton(
+                                      labelButton: 'Sin Tiraje Intercostal',
+                                      onPress: () {
+                                        Exploracion.amplexacionTorax =
+                                        ', sin tiraje intercostal';
                                         expoTextController.text =
                                             Exploracion.exploracionGeneral;
                                       })),
                               Expanded(
                                   child: GrandButton(
-                                      labelButton: 'Ingurgitación Yugular Grado II',
+                                      labelButton: 'Tiraje Intercostal',
                                       onPress: () {
-                                        Exploracion.ingurgitacionYugular =
-                                        'con ingurgitación yugular grado II';
+                                        Exploracion.amplexacionTorax =
+                                        ', tiraje intercostal';
                                         expoTextController.text =
                                             Exploracion.exploracionGeneral;
                                       })),
-                              Expanded(
-                                  child: GrandButton(
-                                      labelButton: 'Ingurgitación Yugular Grado III',
-                                      onPress: () {
-                                        Exploracion.ingurgitacionYugular =
-                                        'con ingurgitación yugular grado III';
-                                        expoTextController.text =
-                                            Exploracion.exploracionGeneral;
-                                      })),
+
                             ],
                           ),
                         ),

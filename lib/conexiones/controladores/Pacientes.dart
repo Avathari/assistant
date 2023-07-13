@@ -389,6 +389,15 @@ class Pacientes {
         "${Formatos.toxicomanias}\n";
   }
 
+  static String noPatologicosSimple() {
+    return "${Formatos.viviendas}\n"
+        "${Formatos.alimentarios}\n"
+        "${Formatos.diarios}\n"
+        "${Formatos.higienicos}\n"
+        "${Formatos.exposiciones}\n"
+        "${Formatos.toxicomanias}\n";
+  }
+
   static String noPatologicosAnalisis() {
     return "${antecedentesPatologicos()}"
         "${Formatos.limitaciones}\n"

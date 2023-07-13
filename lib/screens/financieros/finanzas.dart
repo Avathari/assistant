@@ -436,7 +436,7 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
                         labelEditText: 'Descripción',
                         textController: descripcionTextController,
                         keyBoardType: TextInputType.text,
-                        numOfLines: 16,
+                        numOfLines: 15,
                         inputFormat: MaskTextInputFormatter(),
                       ),
                     ],

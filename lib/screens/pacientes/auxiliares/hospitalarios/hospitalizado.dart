@@ -148,7 +148,7 @@ class _HospitalizadoState extends State<Hospitalizado> {
           Expanded(
             flex: isTablet(context) || isDesktop(context) ? 3 : 1,
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(2.0),
+              padding: const EdgeInsets.only(left: 5.0, right: 5.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: component(context),
