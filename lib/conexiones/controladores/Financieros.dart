@@ -175,16 +175,16 @@ class Activos {
         "Concepto_Recurso, Tipo_Recurso, Cuenta_Asignada, "
         "Fecha_Pago_Programado, Intervalo_Programado, "
         "Monto_Programado, Interes_Acordado, Monto_Pagado, Monto_Restante, "
-        "Estado_Actual, Fecha_Proximo_Pago, Fecha_Baja, Descripcion) "
+        "Estado_Actual, Fecha_Proximo_Pago, Fecha_Baja, Descripcion, Fine_IMG) "
         "VALUES (?,?,?,?,?,?,?,?,?,?,"
-        "?,?,?,?)",
+        "?,?,?,?, from_base64(?))",
     "updateQuery": "UPDATE activos "
         "SET ID_Registro = ?, ID_Usuario = ?, "
         "Concepto_Recurso = ?, Tipo_Recurso = ?, Cuenta_Asignada = ?, "
         "Fecha_Pago_Programado = ?, Intervalo_Programado = ?, "
         "Monto_Programado = ?, Interes_Acordado = ?, Monto_Pagado = ?, Monto_Restante = ?, "
         "Estado_Actual = ?, Fecha_Proximo_Pago = ?, Fecha_Baja = ?, "
-        "Descripcion = ? "
+        "Descripcion = ?, Fine_IMG = from_base64(?) "
         "WHERE ID_Registro = ?",
     "deleteQuery": "DELETE FROM activos WHERE ID_Activos = ?",
     "activosStadistics": "SELECT "

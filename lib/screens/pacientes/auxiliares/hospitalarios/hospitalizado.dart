@@ -11,6 +11,7 @@ import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 
 import 'package:assistant/widgets/CrossLine.dart';
+import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/GridLayout.dart';
 import 'package:assistant/widgets/Spinner.dart';
@@ -42,11 +43,98 @@ class _HospitalizadoState extends State<Hospitalizado> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TittlePanel(
-              padding: 5, textPanel: 'Datos de hospitalización del paciente'),
-          if (isMobile(context)) mobileView() else isTablet(context)
-              ? tabletView()
-              : tabletView()// deskTopView()
+          if (isMobile(context))
+            GrandButton(
+              weigth: 1000,
+                labelButton: 'Datos de hospitalización del paciente', onPress: () { Operadores.openActivity(
+              context: context,
+              chyldrim: GridLayout(
+                // childAspectRatio: ,
+                columnCount: 2,
+                // mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  // Acciones en la Hospitalización.
+                  GrandIcon(
+                    iconData: Icons.upload_file,
+                    labelButton: 'Configurar registro de la atención',
+                    onPress: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            OperacionesHospitalizaciones(
+                              retornar: true,
+                              operationActivity: Constantes.Update,
+                            ),
+                      ));
+                    },
+                  ),
+                  GrandIcon(
+                      iconData: Icons.medical_information_outlined,
+                      labelButton: 'Padecimiento Actual',
+                      onPress: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                          const PadecimientoActual()
+                        ));
+                        // Operadores.openActivity(
+                        //     context: context,
+                        //     chyldrim: const PadecimientoActual(),
+                        //     onAction: () {
+                        //       Repositorios.actualizarRegistro();
+                        //     });
+                      }),
+                  GrandIcon(
+                      iconData: Icons.medication_sharp,
+                      labelButton: 'Situación de la Hospitalización',
+                      onPress: () {
+                        Operadores.openActivity(
+                            context: context,
+                            chyldrim: const SituacionesHospitalizacion(),
+                            onAction: () {
+                              setState(() {
+                                Situaciones.actualizarRegistro();
+                              });
+                            });
+                      }),
+                  GrandIcon(
+                      iconData: Icons.restore_page_outlined,
+                      labelButton: 'Diagnósticos de la Hospitalización',
+                      onPress: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              GestionDiagnosticos(
+                              ),
+                        ));
+                      }),
+                  GrandIcon(
+                      iconData: Icons.airline_seat_flat,
+                      labelButton: 'Protocolo Quirúrgico',
+                      onPress: () {}),
+                  GrandIcon(
+                      iconData: Icons.report_problem_outlined,
+                      labelButton: 'Conflictos relacionados a la Hospitalización',
+                      onPress: () {}),
+                  GrandIcon(
+                      iconData: Icons.data_array,
+                      labelButton: 'Situación del Expediente Clínico',
+                      onPress: () {
+                        Operadores.openActivity(
+                            context: context,
+                            chyldrim: const ExpedientesClinicos(),
+                            onAction: () {
+                              setState(() {
+                                Expedientes.actualizarRegistro();
+                              });
+                            });
+                      }),
+                ],
+              ),
+            ); },) else
+            TittlePanel(
+                padding: 5, textPanel: 'Datos de hospitalización del paciente'),
+          if (isMobile(context))
+            mobileView()
+          else
+            isTablet(context) ? tabletView() : tabletView() // deskTopView()
         ]);
   }
 
@@ -68,9 +156,9 @@ class _HospitalizadoState extends State<Hospitalizado> {
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (BuildContext context) =>
                         OperacionesHospitalizaciones(
-                          retornar: true,
-                          operationActivity: Constantes.Update,
-                        ),
+                      retornar: true,
+                      operationActivity: Constantes.Update,
+                    ),
                   ));
                 },
               ),
@@ -103,9 +191,7 @@ class _HospitalizadoState extends State<Hospitalizado> {
                   labelButton: 'Diagnósticos de la Hospitalización',
                   onPress: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          GestionDiagnosticos(
-                          ),
+                      builder: (BuildContext context) => GestionDiagnosticos(),
                     ));
                   }),
               GrandIcon(
@@ -155,100 +241,98 @@ class _HospitalizadoState extends State<Hospitalizado> {
               ),
             ),
           ),
-          isTablet(context)|| isDesktop(context)
+          isTablet(context) || isDesktop(context)
               ? Expanded(
-            flex: isTablet(context) || isDesktop(context) ? 1 : 0,
-            child: Container(
-              padding: const EdgeInsets.all(8.0),
-              margin: const EdgeInsets.all(8.0),
-              decoration: ContainerDecoration.roundedDecoration(),
-              child: GridLayout(
-                childAspectRatio: isDesktop(context) ? 1.0: 0.9,
-                columnCount: 2,
-                // mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  // Acciones en la Hospitalización.
-                  GrandIcon(
-                    iconData: Icons.upload_file,
-                    labelButton: 'Configurar registro de la atención',
-                    onPress: () {
-                      if (isDesktop(context)) {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              GestionHospitalizaciones(
-                              ),
-                        ));
-                      } else {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              OperacionesHospitalizaciones(
-                                retornar: true,
-                                operationActivity: Constantes.Update,
-                              ),
-                        ));
-                      }
-                    },
+                  flex: isTablet(context) || isDesktop(context) ? 1 : 0,
+                  child: Container(
+                    padding: const EdgeInsets.all(8.0),
+                    margin: const EdgeInsets.all(8.0),
+                    decoration: ContainerDecoration.roundedDecoration(),
+                    child: GridLayout(
+                      childAspectRatio: isDesktop(context) ? 1.0 : 0.9,
+                      columnCount: 2,
+                      // mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        // Acciones en la Hospitalización.
+                        GrandIcon(
+                          iconData: Icons.upload_file,
+                          labelButton: 'Configurar registro de la atención',
+                          onPress: () {
+                            if (isDesktop(context)) {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    GestionHospitalizaciones(),
+                              ));
+                            } else {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    OperacionesHospitalizaciones(
+                                  retornar: true,
+                                  operationActivity: Constantes.Update,
+                                ),
+                              ));
+                            }
+                          },
+                        ),
+                        GrandIcon(
+                            iconData: Icons.medical_information_outlined,
+                            labelButton: 'Padecimiento Actual',
+                            onPress: () {
+                              Operadores.openActivity(
+                                  context: context,
+                                  chyldrim: const PadecimientoActual(),
+                                  onAction: () {
+                                    Repositorios.actualizarRegistro();
+                                  });
+                            }),
+                        GrandIcon(
+                            iconData: Icons.medication_sharp,
+                            labelButton: 'Situación de la Hospitalización',
+                            onPress: () {
+                              Operadores.openActivity(
+                                  context: context,
+                                  chyldrim: const SituacionesHospitalizacion(),
+                                  onAction: () {
+                                    setState(() {
+                                      Situaciones.actualizarRegistro();
+                                    });
+                                  });
+                            }),
+                        GrandIcon(
+                            iconData: Icons.restore_page_outlined,
+                            labelButton: 'Diagnósticos de la Hospitalización',
+                            onPress: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    GestionDiagnosticos(),
+                              ));
+                            }),
+                        GrandIcon(
+                            iconData: Icons.airline_seat_flat,
+                            labelButton: 'Protocolo Quirúrgico',
+                            onPress: () {}),
+                        GrandIcon(
+                            iconData: Icons.report_problem_outlined,
+                            labelButton:
+                                'Conflictos relacionados a la Hospitalización',
+                            onPress: () {}),
+                        GrandIcon(
+                            iconData: Icons.data_array,
+                            labelButton: 'Situación del Expediente Clínico',
+                            onPress: () {
+                              Operadores.openActivity(
+                                  context: context,
+                                  chyldrim: const ExpedientesClinicos(),
+                                  onAction: () {
+                                    setState(() {
+                                      Expedientes.actualizarRegistro();
+                                    });
+                                  });
+                            }),
+                      ],
+                    ),
                   ),
-                  GrandIcon(
-                      iconData: Icons.medical_information_outlined,
-                      labelButton: 'Padecimiento Actual',
-                      onPress: () {
-                        Operadores.openActivity(
-                            context: context,
-                            chyldrim: const PadecimientoActual(),
-                            onAction: () {
-                              Repositorios.actualizarRegistro();
-                            });
-                      }),
-                  GrandIcon(
-                      iconData: Icons.medication_sharp,
-                      labelButton: 'Situación de la Hospitalización',
-                      onPress: () {
-                        Operadores.openActivity(
-                            context: context,
-                            chyldrim: const SituacionesHospitalizacion(),
-                            onAction: () {
-                              setState(() {
-                                Situaciones.actualizarRegistro();
-                              });
-                            });
-                      }),
-                  GrandIcon(
-                      iconData: Icons.restore_page_outlined,
-                      labelButton: 'Diagnósticos de la Hospitalización',
-                      onPress: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              GestionDiagnosticos(
-                              ),
-                        ));
-                      }),
-                  GrandIcon(
-                      iconData: Icons.airline_seat_flat,
-                      labelButton: 'Protocolo Quirúrgico',
-                      onPress: () {}),
-                  GrandIcon(
-                      iconData: Icons.report_problem_outlined,
-                      labelButton:
-                      'Conflictos relacionados a la Hospitalización',
-                      onPress: () {}),
-                  GrandIcon(
-                      iconData: Icons.data_array,
-                      labelButton: 'Situación del Expediente Clínico',
-                      onPress: () {
-                        Operadores.openActivity(
-                            context: context,
-                            chyldrim: const ExpedientesClinicos(),
-                            onAction: () {
-                              setState(() {
-                                Expedientes.actualizarRegistro();
-                              });
-                            });
-                      }),
-                ],
-              ),
-            ),
-          )
+                )
               : Container()
         ]);
   }
@@ -258,7 +342,11 @@ class _HospitalizadoState extends State<Hospitalizado> {
       child: Column(
         children: [
           Expanded(
-              flex: isTablet(context) ? 3 : isMobile(context) ? 3 : 3,
+              flex: isTablet(context)
+                  ? 3
+                  : isMobile(context)
+                      ? 3
+                      : 3,
               child: SingleChildScrollView(
                   controller: ScrollController(),
                   child: Column(
@@ -279,12 +367,10 @@ class _HospitalizadoState extends State<Hospitalizado> {
                           iconData: Icons.upload_file,
                           labelButton: 'Configurar registro de la atención',
                           onPress: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    GestionHospitalizaciones(
-                                    ),
-                              ));
-
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  GestionHospitalizaciones(),
+                            ));
                           },
                         ),
                       ),
@@ -323,15 +409,13 @@ class _HospitalizadoState extends State<Hospitalizado> {
                             onPress: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                    GestionDiagnosticos(
-                                    ),
+                                    GestionDiagnosticos(),
                               ));
                             }),
                       ),
                     ],
                   ),
                 ),
-
               ],
             ),
           ),
@@ -345,8 +429,7 @@ class _HospitalizadoState extends State<Hospitalizado> {
                     onPress: () {}),
                 GrandIcon(
                     iconData: Icons.report_problem_outlined,
-                    labelButton:
-                    'Conflictos relacionados a la Hospitalización',
+                    labelButton: 'Conflictos relacionados a la Hospitalización',
                     onPress: () {}),
                 GrandIcon(
                     iconData: Icons.data_array,
@@ -441,7 +524,8 @@ class _HospitalizadoState extends State<Hospitalizado> {
           Expanded(
             child: ValuePanel(
               firstText: 'E. Prolongada',
-              secondText: Valores.isEstanciaProlongada, // Valores.servicioTratanteInicial,
+              secondText: Valores
+                  .isEstanciaProlongada, // Valores.servicioTratanteInicial,
             ),
           ),
           Expanded(
@@ -455,7 +539,6 @@ class _HospitalizadoState extends State<Hospitalizado> {
     ];
   }
 }
-
 
 class OpcionesHospitalizacion extends StatefulWidget {
   const OpcionesHospitalizacion({Key? key}) : super(key: key);
@@ -509,8 +592,8 @@ class _OpcionesHospitalizacionState extends State<OpcionesHospitalizacion> {
               width: isTablet(context)
                   ? 200
                   : isMobile(context)
-                  ? 120
-                  : 200,
+                      ? 120
+                      : 200,
               initialValue: servicioTratanteValue),
           Spinner(
               tittle: "Servicio Que Inicia Tratamiento",
@@ -524,8 +607,8 @@ class _OpcionesHospitalizacionState extends State<OpcionesHospitalizacion> {
               width: isTablet(context)
                   ? 200
                   : isMobile(context)
-                  ? 120
-                  : 200,
+                      ? 120
+                      : 200,
               initialValue: servicioTratanteInicialValue),
         ],
       ),

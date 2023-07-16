@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Financieros.dart';
@@ -16,7 +19,9 @@ import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:photo_view/photo_view.dart';
 
 // # Clase .dart para la creación predeterminada de interfaces de registro, consulta y actualización.
 // Contiene un botón que enn _OperacionesActivosState.build que desplega una ventana emergente,
@@ -52,7 +57,7 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
         break;
       case Constantes.Register:
         widget._operationButton = 'Registrar';
-
+        toBaseImage();
         break;
       case Constantes.Update:
         setState(() {
@@ -85,6 +90,7 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
           fechaBajaTextController.text = Activos.Activo['Fecha_Baja'];
 
           descripcionTextController.text = Activos.Activo['Descripcion'];
+          stringImage = Activos.Activo['Fine_IMG'];
           // ID_Registro int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
           // ID_Usuario int(11) NOT NULL,
           //  tinyint(1) NOT NULL,
@@ -107,11 +113,14 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
         super.initState();
         break;
       default:
+        toBaseImage();
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    var _progress;
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: isMobile(context)
@@ -441,6 +450,77 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
                       ),
                     ],
                   ),
+                  Column(
+                    children: [
+                      Expanded(
+                        child: GrandIcon(
+                          iconData: Icons.photo_camera_back_outlined,
+                          labelButton: 'Imagen del Electrocardiograma',
+                          onPress: () {
+                            Operadores.optionsActivity(
+                              context: context,
+                              tittle: 'Cargar imagen del Electrocardiograma',
+                              onClose: () {
+                                Navigator.of(context).pop();
+                              },
+                              textOptionA: 'Cargar desde Dispositivo',
+                              optionA: () async {
+                                var bytes =
+                                    await Directorios.choiseFromDirectory();
+                                setState(() {
+                                  stringImage = base64Encode(bytes);
+                                  Navigator.of(context).pop();
+                                });
+                              },
+                              textOptionB: 'Cargar desde Cámara',
+                              optionB: () async {
+                                var bytes =
+                                    await Directorios.choiseFromCamara();
+                                setState(() {
+                                  stringImage = base64Encode(bytes);
+                                  Navigator.of(context).pop();
+                                });
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        flex: 10,
+                        child: Container(
+                          padding: const EdgeInsets.all(5.0),
+                          margin: const EdgeInsets.all(15.0),
+                          decoration: ContainerDecoration.roundedDecoration(
+                              colorBackground: Colors.grey),
+                          child: PhotoView(
+                            backgroundDecoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(20.0),
+                              border: Border.all(
+                                color: Colors.grey,
+                                style: BorderStyle.solid,
+                                width: 1.0,
+                              ),
+                            ),
+                            imageProvider:
+                                MemoryImage(base64Decode(stringImage!)),
+                            loadingBuilder: (context, progress) => Center(
+                              child: SizedBox(
+                                width: 20.0,
+                                height: 20.0,
+                                child: CircularProgressIndicator(
+                                  value: _progress == null
+                                      ? null
+                                      : _progress.cumulativeBytesLoaded /
+                                          _progress.expectedTotalBytes,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -459,16 +539,22 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
     );
   }
 
-  List<Widget> component(BuildContext context) {
-    return [
-      //
+  Future<void> toBaseImage() async {
+    ByteData bytes = await rootBundle.load('assets/images/person.png');
+    var buffer = bytes.buffer;
 
-      //
-    ];
+    setState(() {
+      stringImage = base64.encode(Uint8List.view(buffer));
+    });
   }
 
   // OPERACIONES *************** * * * *  ** *********
   void operationMethod(BuildContext context) {
+    Dialogos.loadingActivity(
+        tittle: 'Actualizando . . . ',
+        msg: 'Actualizando información . . . ',
+        onCloss: () {});
+    // ********************************** * * * * * * * * *
     try {
       listOfValues = [
         idOperation,
@@ -490,25 +576,8 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
         fechaBajaTextController.text,
         //
         descripcionTextController.text,
+        stringImage!,
         idOperation
-        // ID_Registro int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-        // ID_Usuario int(11) NOT NULL,
-        // Concepto_Recurso tinyint(1) NOT NULL,
-        // Tipo_Recurso varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-        // Cuenta_Asignada varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-
-        // Fecha_Pago_Programado int(200) NOT NULL,
-        // Intervalo_Programado tinyint(1) NOT NULL,
-
-        // Monto_Programado varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-        // Interes_Acordado tinyint(1) NOT NULL,
-        // Monto_Pagado varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-        // Monto_Restante varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-
-        // Estado_Actual varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-        // Fecha_Proximo_Pago varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-        // Fecha_Baja varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-        // Descripcion varchar(1000) COLLATE utf8_unicode_ci NOT NULL
       ];
 
       Terminal.printExpected(
@@ -532,29 +601,31 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
           // ******************************************** *** *
           Actividades.registrar(Databases.siteground_database_regfine,
                   registerQuery!, listOfValues!)
-              .then((value) => Actividades.consultarAllById(
-                          Databases.siteground_database_regfine,
-                          consultIdQuery!,
-                          Financieros.ID_Financieros) // idOperation)
-                      .then((value) {
-                    // ******************************************** *** *
-                    Financieros.Activos = value;
-                    Constantes.reinit(value: value);
-                    // ******************************************** *** *
-                  }).then((value) => onClose(context)));
+              // .then((value) => Actividades.consultarAllById(
+              //             Databases.siteground_database_regfine,
+              //             consultIdQuery!,
+              //             Financieros.ID_Financieros) // idOperation)
+              //         .then((value) {
+              //       // ******************************************** *** *
+              //       Financieros.Activos = value;
+              //       Constantes.reinit(value: value);
+              //       // ******************************************** *** *
+              //     })
+              .then((value) => onClose(context));
           break;
         case Constantes.Update:
           Actividades.actualizar(Databases.siteground_database_regfine,
                   updateQuery!, listOfValues!, idOperation)
-              .then((value) => Actividades.detalles(
-                          Databases.siteground_database_regfine,
-                          Activos.activos['activosStadistics'])
-                      .then((value) {
-                    // ******************************************** *** *
-                    // Financieros.Activos = value;
-                    // Constantes.reinit(value: value);
-                    // ******************************************** *** *
-                  }).then((value) => onClose(context)));
+              // .then((value) => Actividades.detalles(
+              //             Databases.siteground_database_regfine,
+              //             Activos.activos['activosStadistics'])
+              //         .then((value) {
+              //       // ******************************************** *** *
+              //       // Financieros.Activos = value;
+              //       // Constantes.reinit(value: value);
+              //       // ******************************************** *** *
+              //     })
+              .then((value) => onClose(context));
           break;
         default:
       }
@@ -581,7 +652,9 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
       case false:
         Actividades.detalles(Databases.siteground_database_regfine,
                 Activos.activos['activosStadistics'])
-            .whenComplete(() => Navigator.push(
+            .then((value) {
+          Archivos.createJsonFromMap([value], filePath: Activos.fileStadistics);
+        }).whenComplete(() => Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => GestionActivos(
@@ -602,6 +675,7 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
 
   List<dynamic>? listOfValues;
   // VARIABLES *************** * * * *  ** *********
+  String? stringImage = '';
   var conceptoRecursoTextController = TextEditingController();
   var tipoRecursoTextController = TextEditingController();
   var cuentaAsignadaTextController = TextEditingController();
@@ -623,9 +697,10 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
 class GestionActivos extends StatefulWidget {
   Widget? actualSidePage;
 
-  bool? reverse = false;
+  bool? reverse = false, notActualized;
   // ****************** *** ****** **************
-  GestionActivos({Key? key, this.actualSidePage}) : super(key: key);
+  GestionActivos({Key? key, this.actualSidePage, this.notActualized = false})
+      : super(key: key);
 
   @override
   State<GestionActivos> createState() => _GestionActivosState();
@@ -642,7 +717,11 @@ class _GestionActivosState extends State<GestionActivos> {
 
   @override
   void initState() {
-    reiniciar();
+    if (widget.notActualized!) {
+      // iniciar();
+    } else {
+      reiniciar(withStats: true);
+    }
     super.initState();
   }
 
@@ -682,10 +761,16 @@ class _GestionActivosState extends State<GestionActivos> {
               ),
               tooltip: 'Estadísticas de los Activos . . . ',
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (BuildContext context) => GestionActivos(
-                          actualSidePage: const EstadisticasActivos(),
-                        )));
+                if (isMobile(context)) {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          const EstadisticasActivos()));
+                } else {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) => GestionActivos(
+                            actualSidePage: const EstadisticasActivos(),
+                          )));
+                }
               },
             ),
             IconButton(
@@ -886,6 +971,7 @@ class _GestionActivosState extends State<GestionActivos> {
     Archivos.readJsonToMap(filePath: Activos.fileAssocieted).then((value) {
       setState(() {
         Terminal.printWarning(message: " . . . $foundedItems");
+        // _runActiveSearch(enteredKeyword: 'Patrimonio');
         foundedItems = value;
       });
     }).onError((error, stackTrace) {
@@ -894,15 +980,17 @@ class _GestionActivosState extends State<GestionActivos> {
     Terminal.printWarning(message: " . . . Actividad Iniciada");
   }
 
-  void reiniciar() {
+  void reiniciar({bool withStats = false}) {
     Terminal.printAlert(
         message: "Iniciando actividad : : \n "
             "Consulta de Activos del Usuario . . .");
-    Actividades.detalles(Databases.siteground_database_regfine,
-            Activos.activos['activosStadistics'])
-        .then((value) {
-      Archivos.createJsonFromMap([value], filePath: Activos.fileStadistics);
-    });
+    if (withStats) {
+      Actividades.detalles(Databases.siteground_database_regfine,
+              Activos.activos['activosStadistics'])
+          .then((value) {
+        Archivos.createJsonFromMap([value], filePath: Activos.fileStadistics);
+      });
+    }
     Actividades.consultarAllById(Databases.siteground_database_regfine,
             consultQuery!, Financieros.ID_Financieros)
         .then((value) {
@@ -953,6 +1041,7 @@ class _GestionActivosState extends State<GestionActivos> {
     } else {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (BuildContext context) => GestionActivos(
+                notActualized: true,
                 actualSidePage: OperacionesActivos(
                   operationActivity: operationActivity,
                 ),
@@ -1116,7 +1205,7 @@ class _GestionActivosState extends State<GestionActivos> {
 
   // ACTIVIDADES DE BÚSQUEDA ************ ************ ***** * ** *
   Future<Null> _pullListRefresh() async {
-    reiniciar();
+    reiniciar(withStats: true);
   }
 
   void _runFilterSearch(String enteredKeyword) {

@@ -370,11 +370,18 @@ class Directorios {
   }
 
   static choiseFromDirectory() async {
-    final picker = ImagePicker();
-    XFile? xFileImage = await picker.pickImage(source: ImageSource.gallery);
-    if (xFileImage != null) {
-      Uint8List bytes = await xFileImage.readAsBytes();
-      return bytes;
+    try {
+      final picker = ImagePicker();
+      XFile? xFileImage = await picker.pickImage(source: ImageSource.gallery);
+      if (xFileImage != null) {
+        Uint8List bytes = await xFileImage.readAsBytes();
+        return bytes;
+      }
+    } on Exception catch (e) {
+      Terminal.printAlert(message: "ERROR : : No se pudo cargar imagen desde Galeria : $e");
+      Dialogos.notifyDialog("ERROR - Imagenes de Galeria", 'No se pudo cargar imagen desde Galeria : $e', () {
+
+      },);
     }
   }
 }

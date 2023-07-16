@@ -6786,7 +6786,7 @@ class Repositorios {
         Items.tiposAnalisis[0],
       ],
       Pacientes.ID_Paciente,
-    );
+    ).whenComplete(() => Terminal.printExpected(message: "PA : : ${Valores.padecimientoActual}"));
   }
 
   static void registrarRegistro() {
