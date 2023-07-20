@@ -4,6 +4,9 @@ import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/CircleIcon.dart';
+import 'package:assistant/widgets/CircleLabel.dart';
+import 'package:assistant/widgets/CircleSwitched.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/DialogSelector.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
@@ -131,8 +134,9 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
                 },
               ))
           : null,
-      body: Card(
-        color: const Color.fromARGB(255, 61, 57, 57),
+      body: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: ContainerDecoration.roundedDecoration(),
         child: Column(
           children: [
             Expanded(
@@ -159,17 +163,17 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
 
   List<Widget> component(BuildContext context) {
     return [
-      Spinner(
-          tittle: "¿Antecedente quirúrgico?",
-          onChangeValue: (String value) {
-            setState(() {
-              isActualDiagoValue = value;
-            });
-          },
-          items: Dicotomicos.dicotomicos(),
-          initialValue: isActualDiagoValue),
-      Row(
+            Row(
         children: [
+          CircleSwitched(
+              tittle: "¿Diagnóstico actual?",
+              onChangeValue: (value) {
+                setState(() {
+                  isActualDiagoValue =
+                  Dicotomicos.fromBoolean(value) as String;
+                });
+              },
+              isSwitched: Dicotomicos.fromString(isActualDiagoValue)),
           Expanded(
             flex: 2,
             child: EditTextArea(
@@ -189,6 +193,7 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
           ),
         ],
       ),
+      CrossLine(height: 10,),
       EditTextArea(
         keyBoardType: TextInputType.number,
         inputFormat: MaskTextInputFormatter(
@@ -200,27 +205,27 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
         numOfLines: 1,
       ),
       CrossLine(),
-      Spinner(
-          tittle: "¿Complicaciones?",
-          onChangeValue: (String value) {
-            setState(() {
-              isTratamientoDiagoValue = value;
-              if (value == Dicotomicos.dicotomicos()[0]) {
-                tratamientoTextController.text = "";
-              } else {
-                tratamientoTextController.text =
-                    "Sin complicaciones reportadas";
-              }
-            });
-          },
-          items: Dicotomicos.dicotomicos(),
-          initialValue: isTratamientoDiagoValue),
-      EditTextArea(
-        keyBoardType: TextInputType.text,
-        inputFormat: MaskTextInputFormatter(),
-        labelEditText: 'Comentario de la complicación',
-        textController: tratamientoTextController,
-        numOfLines: 3,
+      Row(
+        children: [
+          CircleSwitched(
+              tittle: "¿Complicaciones?",
+              onChangeValue: (value) {
+                setState(() {
+                  isTratamientoDiagoValue =
+                  Dicotomicos.fromBoolean(value) as String;
+                });
+              },
+              isSwitched: Dicotomicos.fromString(isTratamientoDiagoValue)),
+          Expanded(
+            child: EditTextArea(
+              keyBoardType: TextInputType.text,
+              inputFormat: MaskTextInputFormatter(),
+              labelEditText: 'Comentario de la complicación',
+              textController: tratamientoTextController,
+              numOfLines: 3,
+            ),
+          ),
+        ],
       ),
     ];
   }
@@ -541,92 +546,85 @@ class _GestionQuirurgicosState extends State<GestionQuirurgicos> {
       AsyncSnapshot snapshot, int posicion, BuildContext context) {
     if (snapshot.data[0].isNotEmpty) {
       return Container(
-        padding: const EdgeInsets.all(2.0),
+        padding: const EdgeInsets.all(20.0),
+        margin: const EdgeInsets.all(20.0),
+        decoration: ContainerDecoration.roundedDecoration(),
         child: GestureDetector(
           onTap: () {
             onSelected(snapshot, posicion, context, Constantes.Update);
           },
-          child: Card(
-            color: const Color.fromARGB(255, 54, 50, 50),
-            child: Container(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
+          child: Column(
+            children: [
+              Row(
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "ID : ${snapshot.data[posicion][widget.idElementQuery].toString()}",
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey,
-                                  fontSize: 12),
-                            ),
-                            Text(
-                              "${snapshot.data[posicion][widget.keySearch]}",
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey,
-                                  fontSize: 14),
-                            ),
-                            Text(
-                              "${snapshot.data[posicion][widget.complementElementQuery]}",
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey,
-                                  fontSize: 14),
-                            ),
-                          ],
+                  CircleLabel(tittle: snapshot.data[posicion][widget.idElementQuery].toString(),),
+                  Expanded(child: CrossLine(isHorizontal: false, thickness: 2, color:Colors.grey)),
+                  Expanded(
+                    flex: 5,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+
+                        Text(
+                          "${snapshot.data[posicion][widget.keySearch]}",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey,
+                              fontSize: 16),
                         ),
+                        Text(
+                          "${snapshot.data[posicion][widget.complementElementQuery]}",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.normal,
+                              color: Colors.grey,
+                              fontSize: 14),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        color: Colors.grey,
+                        icon: const Icon(Icons.update_rounded),
+                        onPressed: () {
+                          //
+                          onSelected(snapshot, posicion, context,
+                              Constantes.Update);
+                        },
                       ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          IconButton(
-                            color: Colors.grey,
-                            icon: const Icon(Icons.update_rounded),
-                            onPressed: () {
-                              //
-                              onSelected(snapshot, posicion, context,
-                                  Constantes.Update);
-                            },
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          IconButton(
-                            color: Colors.grey,
-                            icon: const Icon(Icons.delete),
-                            onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return alertDialog(
-                                      'Eliminar registro',
-                                      '¿Esta seguro de querer eliminar el registro?',
-                                      () {
-                                        closeDialog(context);
-                                      },
-                                      () {
-                                        deleteRegister(
-                                            snapshot, posicion, context);
-                                      },
-                                    );
-                                  });
-                            },
-                          )
-                        ],
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      IconButton(
+                        color: Colors.grey,
+                        icon: const Icon(Icons.delete),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return alertDialog(
+                                  'Eliminar registro',
+                                  '¿Esta seguro de querer eliminar el registro?',
+                                  () {
+                                    closeDialog(context);
+                                  },
+                                  () {
+                                    deleteRegister(
+                                        snapshot, posicion, context);
+                                  },
+                                );
+                              });
+                        },
                       )
                     ],
-                  ),
+                  )
                 ],
               ),
-            ),
+            ],
           ),
         ),
       );
