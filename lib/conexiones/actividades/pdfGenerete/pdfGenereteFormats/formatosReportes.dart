@@ -2,6 +2,7 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteComponents/PdfApiComponents.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/values/Strings.dart';
 
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
@@ -613,7 +614,7 @@ class FormatosReportes {
                     label: '${Valores.alturaPaciente} Kg'),
               ]),
           TableRow(
-              decoration: BoxDecoration(),
+              decoration: const BoxDecoration(),
               verticalAlignment: TableCellVerticalAlignment.middle,
               children: [
                 textTittleWithLabel(
@@ -857,7 +858,7 @@ class FormatosReportes {
                     label: '${Valores.alturaPaciente} Kg'),
               ]),
           TableRow(
-              decoration: BoxDecoration(),
+              decoration: const BoxDecoration(),
               verticalAlignment: TableCellVerticalAlignment.middle,
               children: [
                 textTittleWithLabel(
@@ -990,7 +991,7 @@ class FormatosReportes {
                 ]),
             TableRow(
                 verticalAlignment: TableCellVerticalAlignment.middle,
-                decoration: BoxDecoration(),
+                decoration: const BoxDecoration(),
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(4.0),
@@ -1832,7 +1833,7 @@ class FormatosReportes {
                     label: '${Valores.alturaPaciente} Kg'),
               ]),
           TableRow(
-              decoration: BoxDecoration(),
+              decoration: const BoxDecoration(),
               verticalAlignment: TableCellVerticalAlignment.middle,
               children: [
                 textTittleWithLabel(
@@ -2183,7 +2184,7 @@ class FormatosReportes {
                     label: '${Valores.alturaPaciente} Kg'),
               ]),
           TableRow(
-              decoration: BoxDecoration(),
+              decoration: const BoxDecoration(),
               verticalAlignment: TableCellVerticalAlignment.middle,
               children: [
                 textTittleWithLabel(
@@ -2640,6 +2641,165 @@ class FormatosReportes {
               "Med. Gral. Romero Pantoja Luis\nCed. Prof. 12210866\nMedicina General"),
     );
     // # # # # # # ### # # # # # # ###
+    return parax;
+  }
+
+  static List<Widget> censoSimpleHospitalario(List<dynamic> paraph) {
+    // String tipoReporte = "CENSO HOSPITALARIO - MEDICINA INTERNA";
+    // Lista de apartados del documento. ***** ****** *********** *********
+    List<Widget> parax = [];
+
+    // Datos de Identificación del Paciente. . ***** ****** *********** *********
+    parax.add(
+      Table(
+        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+        border: const TableBorder(
+          horizontalInside: BorderSide(width: 0.7),
+          left: BorderSide(width: 0.7),
+          right: BorderSide(width: 0.7),
+          top: BorderSide(width: 0.7),
+          bottom: BorderSide(width: 0.7),
+        ), //width: 0.7),
+        children: [
+          TableRow(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              children: [
+                Container(
+                    child: textBoldTittle(
+                        "CENSO HOSPITALARIO - MEDICINA INTERNA")),
+              ]),
+          TableRow(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              children: [
+                Container(
+                  child: textTittle(
+                      "Fecha: ${Calendarios.today(format: 'dd/MM/yyyy')}",
+                      textAlign: TextAlign.right),
+                ),
+              ]),
+        ],
+      ),
+    );
+    // Listado de Celdas. ***** ****** *********** *********
+    List<TableRow> censo = [];
+    censo.add(
+      TableRow(
+        // decoration: BoxDecoration(padding: EdgeInsets.all(4.0)),
+        verticalAlignment: TableCellVerticalAlignment.middle,
+        children: [
+          // textTittle("ID"),
+          textTittle("No Cama"),
+          textTittle("Datos Generales".toUpperCase()),
+          textTittle("Diagnóstico(s)".toUpperCase()),
+          textTittle("Auxiliares Diagnósticos".toUpperCase()),
+          textTittle("Pendientes".toUpperCase()),
+        ],
+      ),
+    );
+    censo.add(
+      TableRow(verticalAlignment: TableCellVerticalAlignment.middle, children: [
+        Padding(padding: const EdgeInsets.all(4.0), child: Container())
+      ]),
+    );
+
+    int index = 1;
+    // Despliegue del listado . ***** ****** *********** *********
+    for (var item in paraph) {
+      print("item $item");
+      String pades = "", penden = "", cronicos = "", diagos = "",  auxiliary = "";
+      for (var i in item['Pendientes']) {
+        penden = "$penden${i['Pace_Desc_PEN']}\n";
+      }
+      for (var i in item['Cronicos']) {
+        cronicos = "$cronicos${i['Pace_APP_DEG']}\n";
+      }
+      for (var i in item['Diagnosticos']) {
+        diagos = "$diagos${i['Pace_APP_DEG']}\n";
+      }
+      // Auxiliares Diagnósticos . ***** ****** *********** *********
+      if (item['Auxiliares'] != [] && item['Auxiliares'] != null) {
+        var fechar = Listas.listWithoutRepitedValues(
+          Listas.listFromMapWithOneKey(
+            item['Auxiliares']!,
+            keySearched: 'Fecha_Registro',
+          ),
+        );
+        // Terminal.printExpected(message: "${item['Auxiliares']} ${item['Auxiliares'].runtimeType}");
+        fechar.forEach((element) {
+          String fecha = "Paraclínicos ($element)", max = "";
+
+          List<dynamic>? alam = item['Auxiliares'];
+          var aux = alam!
+              .where((user) => user["Fecha_Registro"].contains(element))
+              .toList();
+
+          for (var element in aux) {
+            if (max == "") {
+              max =
+              "${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+            } else {
+              max =
+              "$max, ${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+            }
+          }
+          auxiliary = "$auxiliary$fecha: ${Sentences.capitalize(max)}\n";
+        });
+      }
+      // Padecimiento Actual . ***** ****** *********** *********
+      if (item['Padecimiento'] != null) {
+        if (item['Contexto'] != null) {
+          pades = "${item['Contexto']}\n";
+        } else {
+          pades = "No hay padecimiento Descrito\n";
+        }
+      }
+      // Datos Generales . ***** ****** *********** *********
+      String nombre = "${item['Pace_Ape_Pat']} ${item['Pace_Ape_Mat']} ${item['Pace_Nome_PI']} ${item['Pace_Nome_SE']}\n";
+      // Adición al Censo . ***** ****** *********** *********
+      censo.add(
+        TableRow(
+          verticalAlignment: TableCellVerticalAlignment.middle,
+          children: [
+            textLabel("${item['Id_Cama']}"),
+            textLabel("${item['Pace_NSS']} ${item['Pace_AGRE']}\n"
+                "${nombre.toUpperCase()}"
+                "Edad ${item['Pace_Eda']} Años\n"
+                "FN: ${item['Feca_INI_Hosp']} : "
+                "${DateTime.now().difference(DateTime.parse(item['Feca_INI_Hosp'])).inDays} DEH"
+                "\n\n"
+                "$cronicos\n"),
+            textLabel(
+                "$pades"
+                "\n$diagos"),
+            textLabel("$auxiliary"),
+            textLabel("$penden"),
+          ],
+        ),
+      );
+      index++;
+    }
+    // # # # # # # ### # # # # # # ###
+    parax.add(
+      Table(
+        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+        columnWidths: {
+          0: const IntrinsicColumnWidth(flex:1),
+          1: const IntrinsicColumnWidth(flex:3),
+          2: const IntrinsicColumnWidth(flex:5),
+          3: const IntrinsicColumnWidth(flex:10),
+          4: const IntrinsicColumnWidth(flex:2),
+        },
+        border: const TableBorder(
+          horizontalInside: BorderSide(width: 0.7),
+          left: BorderSide(width: 0.7),
+          right: BorderSide(width: 0.7),
+          top: BorderSide(width: 0.7),
+          bottom: BorderSide(width: 0.7),
+        ), //width: 0.7),
+        children: censo,
+      ),
+    );
+
     return parax;
   }
 

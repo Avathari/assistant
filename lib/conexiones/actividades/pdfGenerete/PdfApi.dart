@@ -142,6 +142,8 @@ class PdfParagraphsApi {
         double? rightMargin = 30,
         double? leftMargin = 30,
         double? bottomMargin = 10,
+        bool? withHeader = true,
+        required List<Widget> content,
         String? imageHeader = "assets/images/issste_logo.png",
         required TypeReportes indexOfTypeReport,
         bool withIndicationReport = false,
@@ -149,6 +151,10 @@ class PdfParagraphsApi {
         String? name = "my_example.pdf"}) async {
     final pdf = Document();
 
+    if (content == null) {
+      FormatosReportes.censoHospitalario(
+          paraph);
+    }
     // # # # # # # # ### #  # # # # # # # ### #
     // Carga del logotipo del documento para el Header.
     Uint8List logobytes =
@@ -185,15 +191,14 @@ class PdfParagraphsApi {
             right: rightMargin!,
             left: leftMargin!,
             bottom: bottomMargin!),
-        header: (context) => headerInTable(
-            imageHeader: fileSecond,
-            secondImageHeader: fileShield,
-            titulo:
-            "Instituto de Seguridad y Servicios Sociales\npara los Trabajadores\ndel Estado"
-                .toUpperCase(),
-            subTitulo: "Subdelegación de Quintana Roo\nCAF Bacalar"),
-        build: ((context) => FormatosReportes.censoHospitalario(
-          paraph)),
+        header: (context) => withHeader == true ? Container() : headerInTable(
+    imageHeader: fileSecond,
+    secondImageHeader: fileShield,
+    titulo:
+    "Instituto de Seguridad y Servicios Sociales\npara los Trabajadores\ndel Estado"
+        .toUpperCase(),
+    subTitulo: "Subdelegación de Quintana Roo\nCAF Bacalar"),
+        build: ((context) => content),
         footer: (context) {
           final text = "Pagina ${context.pageNumber} de ${context.pagesCount}";
           return Container(

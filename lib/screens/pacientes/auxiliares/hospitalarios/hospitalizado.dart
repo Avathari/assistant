@@ -166,12 +166,16 @@ class _HospitalizadoState extends State<Hospitalizado> {
                   iconData: Icons.medical_information_outlined,
                   labelButton: 'Padecimiento Actual',
                   onPress: () {
-                    Operadores.openActivity(
-                        context: context,
-                        chyldrim: const PadecimientoActual(),
-                        onAction: () {
-                          Repositorios.actualizarRegistro();
-                        });
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                        const PadecimientoActual()
+                    ));
+                    // Operadores.openActivity(
+                    //     context: context,
+                    //     chyldrim: const PadecimientoActual(),
+                    //     onAction: () {
+                    //       Repositorios.actualizarRegistro();
+                    //     });
                   }),
               GrandIcon(
                   iconData: Icons.medication_sharp,
@@ -278,12 +282,16 @@ class _HospitalizadoState extends State<Hospitalizado> {
                             iconData: Icons.medical_information_outlined,
                             labelButton: 'Padecimiento Actual',
                             onPress: () {
-                              Operadores.openActivity(
-                                  context: context,
-                                  chyldrim: const PadecimientoActual(),
-                                  onAction: () {
-                                    Repositorios.actualizarRegistro();
-                                  });
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                  const PadecimientoActual()
+                              ));
+                              // Operadores.openActivity(
+                              //     context: context,
+                              //     chyldrim: const PadecimientoActual(),
+                              //     onAction: () {
+                              //       Repositorios.actualizarRegistro();
+                              //     });
                             }),
                         GrandIcon(
                             iconData: Icons.medication_sharp,
@@ -379,13 +387,17 @@ class _HospitalizadoState extends State<Hospitalizado> {
                             iconData: Icons.medical_information_outlined,
                             labelButton: 'Padecimiento Actual',
                             onPress: () {
-                              Operadores.openActivity(
-                                  context: context,
-                                  labelButton: 'Actualizar',
-                                  chyldrim: const PadecimientoActual(),
-                                  onAction: () {
-                                    Repositorios.actualizarRegistro();
-                                  });
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                  const PadecimientoActual()
+                              ));
+                              // Operadores.openActivity(
+                              //     context: context,
+                              //     labelButton: 'Actualizar',
+                              //     chyldrim: const PadecimientoActual(),
+                              //     onAction: () {
+                              //       Repositorios.actualizarRegistro();
+                              //     });
                             }),
                       ),
                       Expanded(

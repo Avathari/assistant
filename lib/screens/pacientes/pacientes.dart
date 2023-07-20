@@ -62,15 +62,15 @@ class _GestionPacientesState extends State<GestionPacientes> {
           ),
           title: const Text(Sentences.app_pacientes_tittle),
           actions: <Widget>[
-            isMobile(context)
-                ? GrandIcon(
+            if (isMobile(context))
+                GrandIcon(
                     iconData: Icons.bar_chart,
                     onPress: () {
                       Operadores.openActivity(
                           context: context,
                           chyldrim: const EstadisticasPacientes());
-                    })
-                : Container(),
+                    }),
+            CrossLine(isHorizontal: false, thickness: 3, color: Colors.grey),
             IconButton(
               icon: const Icon(
                 Icons.replay_outlined,
@@ -103,7 +103,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
                 child: Row(
                   children: [
                     Expanded(
-                      flex: isMobile(context) ? 4 : 8,
+                      flex: isMobile(context) ? 3 : 8,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextField(
@@ -155,7 +155,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
                           iconData: Icons.local_hotel_sharp,
                           onPress: () {
                             _pullListRefresh().whenComplete(() =>
-                                _runHospitalizedSearch()); // reiniciar(); //
+                                _runConsultaSearch(enteredKeyword: 'Hospitalización')); // reiniciar(); //
                           },
                         ),
                       ),
@@ -169,6 +169,19 @@ class _GestionPacientesState extends State<GestionPacientes> {
                           onPress: () {
                             _pullListRefresh().whenComplete(
                                 () => _runConsultaSearch()); // reiniciar(); //
+                          },
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GrandIcon(
+                          labelButton: 'Pacientes en Privado',
+                          iconData: Icons.private_connectivity_outlined,
+                          onPress: () {
+                            _pullListRefresh().whenComplete(
+                                    () => _runConsultaSearch(enteredKeyword: 'Privado')); // reiniciar(); //
                           },
                         ),
                       ),
@@ -237,250 +250,248 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                             tittle: 'Error al Inicial Visual');
                                       }
                                     },
-                                    child: Card(
-                                      color:
-                                          const Color.fromARGB(255, 54, 50, 50),
-                                      child: Container(
-                                        padding: const EdgeInsets.only(left: 5.0, top: 20.0, bottom: 20.0, right: 5.0),
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                CircleAvatar(
-                                                    backgroundColor:
-                                                        Colors.grey,
-                                                    radius: 50,
-                                                    child: snapshot.data[
-                                                                    posicion]
-                                                                [
-                                                                'Pace_FIAT'] !=
-                                                            ''
-                                                        ? const Icon(
-                                                            Icons.person,
-                                                            size: 75.0,
-                                                            color: Colors
-                                                                .black,
-                                                          )
-                                                        : Image.memory(base64Decode(
-                                                            snapshot.data[
-                                                                    posicion]
-                                                                [
-                                                                'Pace_FIAT']))),
-                                                SizedBox(
-                                                  width: isMobile(context) ? 20.0 : 15.0,
-                                                ),
-                                                Expanded(
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Text(
-                                                            "Número Paciente : ${snapshot.data[posicion]['ID_Pace']}",
-                                                            textAlign: TextAlign.left,
-                                                            style:
-                                                                const TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    color: Colors
-                                                                        .grey,
-                                                                    fontSize: 12),
-                                                          ),
-                                                          Text(
-                                                            "${snapshot.data[posicion]['Pace_Ape_Pat']} ${snapshot.data[posicion]['Pace_Ape_Mat']} "
-                                                            "\n${snapshot.data[posicion]['Pace_Nome_PI']} ${snapshot.data[posicion]['Pace_Nome_SE']}",
-                                                            style:
-                                                                const TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    color: Colors
-                                                                        .grey,
-                                                                    fontSize: 14),
-                                                          ),
-                                                          Text(
-                                                            "${snapshot.data[posicion]['Pace_NSS']} ${snapshot.data[posicion]['Pace_AGRE']}",
-                                                            style:
-                                                                const TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    color: Colors
-                                                                        .grey,
-                                                                    fontSize: 12),
-                                                          ),
-                                                          Text(
-                                                            "Edad : ${snapshot.data[posicion]['Pace_Eda']}",
-                                                            style:
-                                                                const TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    color: Colors
-                                                                        .grey,
-                                                                    fontSize: 12),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                        children: [
-                                                          const SizedBox(
-                                                            width: 1,
-                                                          ),
-                                                          IconButton(
-                                                            padding: const EdgeInsets.all(2.0),
-                                                            color: Colors.grey,
-                                                            icon: const Icon(
-                                                                Icons.person),
-                                                            onPressed: () {
-                                                              showDialog(
-                                                                  context:
-                                                                      context,
-                                                                  builder:
-                                                                      (BuildContext
-                                                                          context) {
-                                                                    return imageDialog(
-                                                                        "${snapshot.data[posicion]['Pace_Ape_Pat']} "
-                                                                        "${snapshot.data[posicion]['Pace_Ape_Mat']} "
-                                                                        "\n${snapshot.data[posicion]['Pace_Nome_PI']} ${snapshot.data[posicion]['Pace_Nome_PI']}",
-                                                                        snapshot.data[
-                                                                                posicion]
-                                                                            [
-                                                                            'Pace_FIAT'],
-                                                                        () {
+                                    child: Container(
+                                      padding: const EdgeInsets.only(left: 10.0, top: 18.0, bottom: 18.0, right: 5.0),
+                                      margin: const EdgeInsets.all(5.0),
+                                      decoration: ContainerDecoration.roundedDecoration(),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              CircleAvatar(
+                                                  backgroundColor:
+                                                      Colors.grey,
+                                                  radius: 50,
+                                                  child: snapshot.data[
+                                                                  posicion]
+                                                              [
+                                                              'Pace_FIAT'] !=
+                                                          ''
+                                                      ? const Icon(
+                                                          Icons.person,
+                                                          size: 75.0,
+                                                          color: Colors
+                                                              .black,
+                                                        )
+                                                      : Image.memory(base64Decode(
+                                                          snapshot.data[
+                                                                  posicion]
+                                                              [
+                                                              'Pace_FIAT']))),
+                                              SizedBox(
+                                                width: isMobile(context) ? 20.0 : 15.0,
+                                              ),
+                                              Expanded(
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          "Número Paciente : ${snapshot.data[posicion]['ID_Pace']}",
+                                                          textAlign: TextAlign.left,
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color: Colors
+                                                                      .grey,
+                                                                  fontSize: 12),
+                                                        ),
+                                                        Text(
+                                                          "${snapshot.data[posicion]['Pace_Ape_Pat']} ${snapshot.data[posicion]['Pace_Ape_Mat']} "
+                                                          "\n${snapshot.data[posicion]['Pace_Nome_PI']} ${snapshot.data[posicion]['Pace_Nome_SE']}",
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color: Colors
+                                                                      .grey,
+                                                                  fontSize: 14),
+                                                        ),
+                                                        Text(
+                                                          "${snapshot.data[posicion]['Pace_NSS']} ${snapshot.data[posicion]['Pace_AGRE']}",
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color: Colors
+                                                                      .grey,
+                                                                  fontSize: 12),
+                                                        ),
+                                                        Text(
+                                                          "Edad : ${snapshot.data[posicion]['Pace_Eda']}",
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color: Colors
+                                                                      .grey,
+                                                                  fontSize: 12),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      children: [
+                                                        const SizedBox(
+                                                          width: 1,
+                                                        ),
+                                                        IconButton(
+                                                          padding: const EdgeInsets.all(2.0),
+                                                          color: Colors.grey,
+                                                          icon: const Icon(
+                                                              Icons.person),
+                                                          onPressed: () {
+                                                            showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return imageDialog(
+                                                                      "${snapshot.data[posicion]['Pace_Ape_Pat']} "
+                                                                      "${snapshot.data[posicion]['Pace_Ape_Mat']} "
+                                                                      "\n${snapshot.data[posicion]['Pace_Nome_PI']} ${snapshot.data[posicion]['Pace_Nome_PI']}",
+                                                                      snapshot.data[
+                                                                              posicion]
+                                                                          [
+                                                                          'Pace_FIAT'],
+                                                                      () {
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pop();
+                                                                  });
+                                                                });
+                                                          },
+                                                        ),
+                                                        IconButton(
+                                                          padding: const EdgeInsets.all(2.0),
+                                                          color: Colors.grey,
+                                                          icon: const Icon(Icons
+                                                              .update_rounded),
+                                                          onPressed: () {
+                                                            Pacientes
+                                                                    .ID_Paciente =
+                                                                snapshot.data[
+                                                                        posicion]
+                                                                    ['ID_Pace'];
+                                                            Pacientes.Paciente =
+                                                                snapshot.data[
+                                                                    posicion];
+                                                            toOperaciones(
+                                                                context,
+                                                                posicion,
+                                                                snapshot,
+                                                                Constantes
+                                                                    .Update);
+                                                          },
+                                                        ),
+                                                        IconButton(
+                                                          padding: const EdgeInsets.all(2.0),
+                                                          color: Colors.grey,
+                                                          icon: const Icon(
+                                                              Icons.delete),
+                                                          onPressed: () {
+                                                            showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return alertDialog(
+                                                                    'Eliminar registro',
+                                                                    '¿Esta seguro de querer eliminar el registro?',
+                                                                    () {
                                                                       Navigator.of(
                                                                               context)
                                                                           .pop();
-                                                                    });
-                                                                  });
-                                                            },
-                                                          ),
-                                                          IconButton(
-                                                            padding: const EdgeInsets.all(2.0),
+                                                                    },
+                                                                    () {
+                                                                      deleteRegister(
+                                                                          snapshot,
+                                                                          posicion,
+                                                                          context);
+                                                                    },
+                                                                  );
+                                                                });
+                                                          },
+                                                        ),
+                                                        CrossLine(
+                                                          isHorizontal: false,
+                                                          // color: Colors.grey,
+                                                            thickness: 4
+                                                        ),
+                                                        Expanded(
+                                                          child: IconButton(
+                                                            padding: const EdgeInsets.only(right: 20.0),
                                                             color: Colors.grey,
-                                                            icon: const Icon(Icons
-                                                                .update_rounded),
-                                                            onPressed: () {
-                                                              Pacientes
-                                                                      .ID_Paciente =
-                                                                  snapshot.data[
-                                                                          posicion]
-                                                                      ['ID_Pace'];
-                                                              Pacientes.Paciente =
-                                                                  snapshot.data[
-                                                                      posicion];
-                                                              toOperaciones(
-                                                                  context,
-                                                                  posicion,
-                                                                  snapshot,
-                                                                  Constantes
-                                                                      .Update);
-                                                            },
-                                                          ),
-                                                          IconButton(
-                                                            padding: const EdgeInsets.all(2.0),
-                                                            color: Colors.grey,
-                                                            icon: const Icon(
-                                                                Icons.delete),
-                                                            onPressed: () {
-                                                              showDialog(
-                                                                  context:
-                                                                      context,
-                                                                  builder:
-                                                                      (BuildContext
-                                                                          context) {
-                                                                    return alertDialog(
-                                                                      'Eliminar registro',
-                                                                      '¿Esta seguro de querer eliminar el registro?',
-                                                                      () {
-                                                                        Navigator.of(
-                                                                                context)
-                                                                            .pop();
-                                                                      },
-                                                                      () {
-                                                                        deleteRegister(
-                                                                            snapshot,
-                                                                            posicion,
-                                                                            context);
-                                                                      },
-                                                                    );
-                                                                  });
-                                                            },
-                                                          ),
-                                                          CrossLine(
-                                                            isHorizontal: false,
-                                                            // color: Colors.grey,
-                                                              thickness: 4
-                                                          ),
-                                                          Expanded(
-                                                            child: IconButton(
-                                                              padding: const EdgeInsets.only(right: 20.0),
-                                                              color: Colors.grey,
-                                                              icon: Icon(snapshot.data[
-                                                                              posicion]
-                                                                          [
-                                                                          'Pace_Hosp'] ==
-                                                                      'Hospitalización'
-                                                                  ? Icons
-                                                                      .local_hotel_sharp
-                                                                  : Icons
-                                                                      .desk_sharp),
-                                                              onPressed: () {
-                                                                String hospen = "";
-                                                                if (snapshot.data[
+                                                            icon: Icon(snapshot.data[
                                                                             posicion]
                                                                         [
                                                                         'Pace_Hosp'] ==
-                                                                    'Consulta Externa') {
-                                                                  hospen =
-                                                                      'Hospitalización';
-                                                                } else {
-                                                                  hospen =
-                                                                      'Consulta Externa';
-                                                                }
-                                                                Actividades
-                                                                    .actualizar(
-                                                                        Databases
-                                                                            .siteground_database_regpace,
-                                                                        "UPDATE pace_iden_iden "
-                                                                        "SET Pace_Hosp = ? "
-                                                                        "WHERE ID_Pace = ?",
-                                                                        [
-                                                                          hospen,
-                                                                          snapshot.data[
-                                                                                  posicion]
-                                                                              [
-                                                                              'ID_Pace']
-                                                                        ],
+                                                                    'Hospitalización'
+                                                                ? Icons
+                                                                    .local_hotel_sharp
+                                                                : Icons
+                                                                    .desk_sharp),
+                                                            onPressed: () {
+                                                              String hospen = "";
+                                                              if (snapshot.data[
+                                                                          posicion]
+                                                                      [
+                                                                      'Pace_Hosp'] ==
+                                                                  'Consulta Externa') {
+                                                                hospen =
+                                                                    'Hospitalización';
+                                                              } else {
+                                                                hospen =
+                                                                    'Consulta Externa';
+                                                              }
+                                                              Actividades
+                                                                  .actualizar(
+                                                                      Databases
+                                                                          .siteground_database_regpace,
+                                                                      "UPDATE pace_iden_iden "
+                                                                      "SET Pace_Hosp = ? "
+                                                                      "WHERE ID_Pace = ?",
+                                                                      [
+                                                                        hospen,
                                                                         snapshot.data[
                                                                                 posicion]
                                                                             [
-                                                                            'ID_Pace']).whenComplete(() => reiniciar());
-                                                              },
-                                                            ),
+                                                                            'ID_Pace']
+                                                                      ],
+                                                                      snapshot.data[
+                                                                              posicion]
+                                                                          [
+                                                                          'ID_Pace']).whenComplete(() => reiniciar());
+                                                            },
                                                           ),
-                                                        ],
-                                                      )
-                                                    ],
-                                                  ),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
                                                 ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
@@ -681,35 +692,6 @@ class _GestionPacientesState extends State<GestionPacientes> {
         foundedItems = results;
       });
     }
-  }
-
-  void _runHospitalizedSearch({String enteredKeyword = 'Hospitalización'}) {
-    Terminal.printWarning(
-        message: " . . . Iniciando Actividad - Repositorio de Pacientes");
-    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
-      setState(() {
-        foundedItems = value;
-      });
-    }).onError((error, stackTrace) {
-      reiniciar();
-    }).whenComplete(() {
-      Terminal.printWarning(message: " . . . Actividad Iniciada");
-      List? results = [];
-
-      if (enteredKeyword.isEmpty) {
-        _pullListRefresh();
-      } else {
-        results = Listas.listFromMap(
-            lista: foundedItems!,
-            keySearched: 'Pace_Hosp',
-            elementSearched: Sentences.capitalize(enteredKeyword));
-
-        // Terminal.printNotice(message: " . . . ${results.length} Pacientes Encontrados".toUpperCase());
-        setState(() {
-          foundedItems = results;
-        });
-      }
-    });
   }
 
   void _runConsultaSearch({String enteredKeyword = 'Consulta Externa'}) {

@@ -115,9 +115,10 @@ class _HospitalizadosState extends State<Hospitalizados> {
                   withIndicationReport: false,
                   indexOfTypeReport: TypeReportes.censoHospitalario,
                   paraph: foundedItems!,
+                  content:  FormatosReportes.censoSimpleHospitalario(
+                      foundedItems!),
                   name: "(CEN) - (${Calendarios.today()}).pdf",
                 );
-
                 PdfApi.openFile(pdfFile);
               },
             ),

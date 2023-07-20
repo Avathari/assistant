@@ -1,5 +1,6 @@
 Abdominoplastia
 Ablación Quirúrgica
+Ablación Sinusal
 Aborto quirúrgico
 Aborto terapéutico
 Accesos vasculares para hemodiálisis
@@ -71,7 +72,6 @@ Cocigectomía
 Colecistectomía Laparoscópica
 Colecistectomía por Laparotomía Exploratoria
 Colecistectomía
-Colecistectomía
 Colecistostomía
 Colectomía
 Colocación de Catéter Arterial Central
@@ -120,6 +120,7 @@ Exodoncia
 Facetectomía  L
 Faloplastia
 Fasciotomía
+Fibrectomía Mamaria
 Fijación externa
 Fimbrioplastia
 Fistulotomía
@@ -302,7 +303,6 @@ Tendón transferencia
 Tenotomía
 Tenotomía
 Timectomía
-Tiroidectomía
 Tiroidectomía
 Tirotomía
 Toracocentesis

@@ -732,7 +732,7 @@ class Pacientes {
     "C.A.F. Bacalar",
     "Consulta Externa"
   ];
-  static final List<String> Atencion = ['Hospitalización', 'Consulta Externa'];
+  static final List<String> Atencion = ['Hospitalización', 'Consulta Externa', 'Privado'];
   static final List<String> Turno = ["Matutino", "Vespertino"];
   static final List<String> Vivo = [
     'Vivo(a)',

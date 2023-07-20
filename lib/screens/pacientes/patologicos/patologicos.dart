@@ -100,12 +100,16 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
       body: Container(
         decoration: ContainerDecoration.roundedDecoration(),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               flex: 3,
               child: SingleChildScrollView(
                   controller: patologicosScroller,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: component(context),
                   )),
             ),
@@ -147,6 +151,7 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
 
   List<Widget> component(BuildContext context) {
     return [
+      CrossLine(height: 20, color: Colors.black,),
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -196,6 +201,7 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
           ),
         ],
       ),
+      CrossLine(height: 10, color: Colors.black,),
       EditTextArea(
         keyBoardType: TextInputType.text,
         limitOfChars: 700,
@@ -238,7 +244,7 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
           ),
         ],
       ),
-      CrossLine(),
+      CrossLine(height: 5, color: Colors.black,),
       EditTextArea(
         keyBoardType: TextInputType.text,
         limitOfChars: 1000,
