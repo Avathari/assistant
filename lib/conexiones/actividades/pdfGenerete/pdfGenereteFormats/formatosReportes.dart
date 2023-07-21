@@ -2706,7 +2706,7 @@ class FormatosReportes {
     // Despliegue del listado . ***** ****** *********** *********
     for (var item in paraph) {
       print("item $item");
-      String pades = "", penden = "", cronicos = "", diagos = "",  auxiliary = "";
+      String pades = "", penden = "", cronicos = "", diagos = "",  auxiliary = "", estudio = "";
       for (var i in item['Pendientes']) {
         penden = "$penden${i['Pace_Desc_PEN']}\n";
       }
@@ -2734,12 +2734,13 @@ class FormatosReportes {
               .toList();
 
           for (var element in aux) {
+            // ***************************** *****************
             if (max == "") {
               max =
-              "${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+              "${Auxiliares.abreviado(estudio: element['Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
             } else {
               max =
-              "$max, ${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+              "$max, ${Auxiliares.abreviado(estudio: element['Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
             }
           }
           auxiliary = "$auxiliary$fecha: ${Sentences.capitalize(max)}\n";

@@ -63,13 +63,13 @@ class _GestionPacientesState extends State<GestionPacientes> {
           title: const Text(Sentences.app_pacientes_tittle),
           actions: <Widget>[
             if (isMobile(context))
-                GrandIcon(
-                    iconData: Icons.bar_chart,
-                    onPress: () {
-                      Operadores.openActivity(
-                          context: context,
-                          chyldrim: const EstadisticasPacientes());
-                    }),
+              GrandIcon(
+                  iconData: Icons.bar_chart,
+                  onPress: () {
+                    Operadores.openActivity(
+                        context: context,
+                        chyldrim: const EstadisticasPacientes());
+                  }),
             CrossLine(isHorizontal: false, thickness: 3, color: Colors.grey),
             IconButton(
               icon: const Icon(
@@ -103,7 +103,11 @@ class _GestionPacientesState extends State<GestionPacientes> {
                 child: Row(
                   children: [
                     Expanded(
-                      flex: isMobile(context) ? 3 : 8,
+                      flex: isMobile(context)
+                          ? 3
+                          : isTablet(context)
+                              ? 4
+                              : 8,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextField(
@@ -155,7 +159,9 @@ class _GestionPacientesState extends State<GestionPacientes> {
                           iconData: Icons.local_hotel_sharp,
                           onPress: () {
                             _pullListRefresh().whenComplete(() =>
-                                _runConsultaSearch(enteredKeyword: 'Hospitalización')); // reiniciar(); //
+                                _runConsultaSearch(
+                                    enteredKeyword:
+                                        'Hospitalización')); // reiniciar(); //
                           },
                         ),
                       ),
@@ -180,8 +186,10 @@ class _GestionPacientesState extends State<GestionPacientes> {
                           labelButton: 'Pacientes en Privado',
                           iconData: Icons.private_connectivity_outlined,
                           onPress: () {
-                            _pullListRefresh().whenComplete(
-                                    () => _runConsultaSearch(enteredKeyword: 'Privado')); // reiniciar(); //
+                            _pullListRefresh().whenComplete(() =>
+                                _runConsultaSearch(
+                                    enteredKeyword:
+                                        'Privado')); // reiniciar(); //
                           },
                         ),
                       ),
@@ -204,16 +212,20 @@ class _GestionPacientesState extends State<GestionPacientes> {
                           ? GridView.builder(
                               controller: gestionScrollController,
                               shrinkWrap: false,
-                        gridDelegate: GridViewTools.gridDelegate(
-                            crossAxisCount: isDesktop(context) ? 2 : 1,
-                            mainAxisExtent:
-                            isMobile(context) ? 180 : 200),
+                              gridDelegate: GridViewTools.gridDelegate(
+                                  crossAxisCount: isDesktop(context) ? 2 : 1,
+                                  mainAxisExtent:
+                                      isMobile(context) ? 180 : 200),
                               itemCount: snapshot.data == null
                                   ? 0
                                   : snapshot.data.length,
                               itemBuilder: (context, posicion) {
                                 return Container(
-                                  padding: const EdgeInsets.only(left: 2.0, top: 2.0, bottom: 2.0, right: 2.0),
+                                  padding: const EdgeInsets.only(
+                                      left: 2.0,
+                                      top: 2.0,
+                                      bottom: 2.0,
+                                      right: 2.0),
                                   child: GestureDetector(
                                     onTap: () {
                                       try {
@@ -251,41 +263,45 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                       }
                                     },
                                     child: Container(
-                                      padding: const EdgeInsets.only(left: 10.0, top: 18.0, bottom: 18.0, right: 5.0),
+                                      padding: const EdgeInsets.only(
+                                          left: 10.0,
+                                          top: 18.0,
+                                          bottom: 18.0,
+                                          right: 5.0),
                                       margin: const EdgeInsets.all(5.0),
-                                      decoration: ContainerDecoration.roundedDecoration(),
+                                      decoration: ContainerDecoration
+                                          .roundedDecoration(),
                                       child: Column(
                                         children: [
                                           Row(
                                             children: [
                                               CircleAvatar(
-                                                  backgroundColor:
-                                                      Colors.grey,
+                                                  backgroundColor: Colors.grey,
                                                   radius: 50,
-                                                  child: snapshot.data[
-                                                                  posicion]
-                                                              [
-                                                              'Pace_FIAT'] !=
+                                                  child: snapshot.data[posicion]
+                                                              ['Pace_FIAT'] !=
                                                           ''
                                                       ? const Icon(
                                                           Icons.person,
                                                           size: 75.0,
-                                                          color: Colors
-                                                              .black,
+                                                          color: Colors.black,
                                                         )
-                                                      : Image.memory(base64Decode(
-                                                          snapshot.data[
+                                                      : Image.memory(
+                                                          base64Decode(snapshot
+                                                                      .data[
                                                                   posicion]
-                                                              [
-                                                              'Pace_FIAT']))),
+                                                              ['Pace_FIAT']))),
                                               SizedBox(
-                                                width: isMobile(context) ? 20.0 : 15.0,
+                                                width: isMobile(context)
+                                                    ? 20.0
+                                                    : 15.0,
                                               ),
                                               Expanded(
                                                 child: Column(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.start,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
                                                     Column(
                                                       mainAxisAlignment:
@@ -297,7 +313,8 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                       children: [
                                                         Text(
                                                           "Número Paciente : ${snapshot.data[posicion]['ID_Pace']}",
-                                                          textAlign: TextAlign.left,
+                                                          textAlign:
+                                                              TextAlign.left,
                                                           style:
                                                               const TextStyle(
                                                                   fontWeight:
@@ -347,13 +364,17 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
                                                               .start,
-                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
                                                       children: [
                                                         const SizedBox(
                                                           width: 1,
                                                         ),
                                                         IconButton(
-                                                          padding: const EdgeInsets.all(2.0),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(2.0),
                                                           color: Colors.grey,
                                                           icon: const Icon(
                                                               Icons.person),
@@ -381,7 +402,9 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                           },
                                                         ),
                                                         IconButton(
-                                                          padding: const EdgeInsets.all(2.0),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(2.0),
                                                           color: Colors.grey,
                                                           icon: const Icon(Icons
                                                               .update_rounded),
@@ -403,7 +426,9 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                           },
                                                         ),
                                                         IconButton(
-                                                          padding: const EdgeInsets.all(2.0),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(2.0),
                                                           color: Colors.grey,
                                                           icon: const Icon(
                                                               Icons.delete),
@@ -433,13 +458,16 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                           },
                                                         ),
                                                         CrossLine(
-                                                          isHorizontal: false,
-                                                          // color: Colors.grey,
-                                                            thickness: 4
-                                                        ),
+                                                            isHorizontal: false,
+                                                            // color: Colors.grey,
+                                                            thickness: 4),
                                                         Expanded(
                                                           child: IconButton(
-                                                            padding: const EdgeInsets.only(right: 20.0),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    right:
+                                                                        20.0),
                                                             color: Colors.grey,
                                                             icon: Icon(snapshot.data[
                                                                             posicion]
@@ -451,7 +479,8 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                                 : Icons
                                                                     .desk_sharp),
                                                             onPressed: () {
-                                                              String hospen = "";
+                                                              String hospen =
+                                                                  "";
                                                               if (snapshot.data[
                                                                           posicion]
                                                                       [
@@ -464,23 +493,22 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                                     'Consulta Externa';
                                                               }
                                                               Actividades
-                                                                  .actualizar(
-                                                                      Databases
-                                                                          .siteground_database_regpace,
-                                                                      "UPDATE pace_iden_iden "
-                                                                      "SET Pace_Hosp = ? "
-                                                                      "WHERE ID_Pace = ?",
-                                                                      [
-                                                                        hospen,
-                                                                        snapshot.data[
-                                                                                posicion]
-                                                                            [
-                                                                            'ID_Pace']
-                                                                      ],
-                                                                      snapshot.data[
-                                                                              posicion]
+                                                                      .actualizar(
+                                                                          Databases
+                                                                              .siteground_database_regpace,
+                                                                          "UPDATE pace_iden_iden "
+                                                                          "SET Pace_Hosp = ? "
+                                                                          "WHERE ID_Pace = ?",
                                                                           [
-                                                                          'ID_Pace']).whenComplete(() => reiniciar());
+                                                                            hospen,
+                                                                            snapshot.data[posicion]['ID_Pace']
+                                                                          ],
+                                                                          snapshot.data[posicion]
+                                                                              [
+                                                                              'ID_Pace'])
+                                                                  .whenComplete(
+                                                                      () =>
+                                                                          reiniciar());
                                                             },
                                                           ),
                                                         ),
@@ -497,7 +525,6 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                   ),
                                 );
                               },
-
                             )
                           : Center(
                               child: Column(
@@ -542,6 +569,13 @@ class _GestionPacientesState extends State<GestionPacientes> {
         foundedItems = value;
       });
     }).onError((error, stackTrace) {
+      Operadores.alertActivity(
+          context: context,
+          tittle: 'ERROR - Inicio del Repositorio de Pacientes',
+          message: "ERROR - $error : $stackTrace",
+      onAcept: () {
+            Navigator.pop(context);
+      });
       reiniciar();
     });
     Terminal.printWarning(message: " . . . Actividad Iniciada");

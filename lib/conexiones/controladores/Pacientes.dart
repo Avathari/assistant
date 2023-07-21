@@ -732,7 +732,11 @@ class Pacientes {
     "C.A.F. Bacalar",
     "Consulta Externa"
   ];
-  static final List<String> Atencion = ['Hospitalización', 'Consulta Externa', 'Privado'];
+  static final List<String> Atencion = [
+    'Hospitalización',
+    'Consulta Externa',
+    'Privado'
+  ];
   static final List<String> Turno = ["Matutino", "Vespertino"];
   static final List<String> Vivo = [
     'Vivo(a)',
@@ -5483,6 +5487,82 @@ class Auxiliares {
             Terminal.printAlert(message: "Error :  : $error :  $stackTrace"));
   }
 
+  static String abreviado({required String estudio}) {
+    if (estudio == 'Concentración Media de Hemoglobina Corpuscular') {
+      return 'CMHC';
+    } else if (estudio == 'Radio de Distribución Eritrocitaria') {
+      return 'RDW';
+    } else if (estudio == 'Alaninoaminotrasferasa') {
+      return 'ALT';
+    } else if (estudio == 'Aspartatoaminotransferasa') {
+      return 'AST';
+    } else if (estudio == 'Bilirrubinas Totales') {
+      return 'BT';
+    } else if (estudio == 'Bilirrubina Directa') {
+      return 'BD';
+    } else if (estudio == 'Bilirrubina Indirecta') {
+      return 'BI';
+    } else if (estudio == 'Deshidrogenasa Láctica') {
+      return 'DHL';
+    } else if (estudio == 'Glutrailtranspeptidasa') {
+      return 'GGT';
+    } else if (estudio == 'Fosfatasa Alcalina') {
+      return 'FA';
+    } else if (estudio == 'Tiempo de Protrombina') {
+      return 'TP';
+    } else if (estudio == 'Tiempo Parcial de Tromboplastina') {
+      return 'TPT';
+    } else if (estudio == 'Velocidad de Sedimentación Globular') {
+      return 'VSG';
+    } else if (estudio == 'Presión de Dióxido de Carbono') {
+      return 'pCO2';
+    } else if (estudio == 'Presión de Oxígeno') {
+      return 'pO2';
+    } else if (estudio == 'Bicarbonato Sérico') {
+      return 'HCO3-' '';
+    } else if (estudio == 'Fracción Inspiratoria de Oxígeno') {
+      return 'FiO2';
+    } else if (estudio == 'Saturación de Oxígeno') {
+      return 'SO2';
+    } else if (estudio == 'Sodio Urinario') {
+      return 'NaU';
+    } else if (estudio == 'Potasio Urinario') {
+      return 'K+U';
+    } else if (estudio == 'Cloro Urinario') {
+      return 'CL-U';
+    } else if (estudio == 'Calcio Urinario') {
+      return 'CaU';
+    } else if (estudio == 'Fósforo Urinario') {
+      return 'PO3u';
+    } else if (estudio == 'Magnesio Urinario') {
+      return 'MgU';
+    } else if (estudio == 'Creatinina Urinaria') {
+      return 'CrU';
+    } else if (estudio == 'Sodio') {
+      return 'Na+';
+    } else if (estudio == 'Potasio') {
+      return 'K+';
+    } else if (estudio == 'Cloro') {
+      return 'Cl-';
+    } else if (estudio == 'Magnesio') {
+      return 'Mg';
+    } else if (estudio == 'Fósforo') {
+      return 'PO3';
+    } else if (estudio == 'Calcio') {
+      return 'Ca2';
+    } else if (estudio == 'Hemoglobina') {
+      return 'Hb';
+    }  else if (estudio == 'Hematocrito') {
+      return 'Hto';
+    }  else if (estudio == 'Eritrocitos') {
+      return 'Erit';
+    }  else if (estudio == 'Plaquetas') {
+      return 'Plat';
+    } else {
+      return estudio;
+    }
+  }
+
   static List<String> Categorias = [
     "Biometría Hemática",
     "Química Sanguínea",
@@ -6786,7 +6866,8 @@ class Repositorios {
         Items.tiposAnalisis[0],
       ],
       Pacientes.ID_Paciente,
-    ).whenComplete(() => Terminal.printExpected(message: "PA : : ${Valores.padecimientoActual}"));
+    ).whenComplete(() => Terminal.printExpected(
+        message: "PA : : ${Valores.padecimientoActual}"));
   }
 
   static void registrarRegistro() {
