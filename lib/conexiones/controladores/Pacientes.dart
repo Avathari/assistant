@@ -123,6 +123,7 @@ class Pacientes {
   static List? Embarazos = [];
   //
   static List? Paraclinicos = [];
+  static List? Imagenologicos = [];
   static List? Pendiente = [];
 
   static String get diasOrdinalesEstancia {
@@ -734,6 +735,7 @@ class Pacientes {
   ];
   static final List<String> Atencion = [
     'Hospitalización',
+    'Otra Hospitalización',
     'Consulta Externa',
     'Privado'
   ];
@@ -5310,7 +5312,7 @@ class Imagenologias {
         "Pace_GAB_RA_reg = ?, Pace_GAB_RA_hal = ?, "
         "Pace_GAB_RA_con = ?, Pace_GAB_RA_IMG = from_base64(?), Pace_GAB_Tee = ? "
         "WHERE ID_Pace_GAB_RA = ?",
-    "deleteQuery": "DELETE FROM gabo_rae WHERE ID_Pace_GAB_RA = ",
+    "deleteQuery": "DELETE FROM gabo_rae WHERE ID_Pace_GAB_RA = ?",
     "antropoColumns": [
       "ID_Pace",
     ],
@@ -5322,12 +5324,52 @@ class Imagenologias {
         "(SELECT IFNULL(count(*), 0) FROM gabo_rae) as Total_Pacientes;"
   };
 
+  static String historial() {
+    String prosa = "";
+    var fechar = Listas.listWithoutRepitedValues(
+      Listas.listFromMapWithOneKey(
+        Pacientes.Imagenologicos!,
+        keySearched: 'Fecha_Registro',
+      ),
+    );
+
+    fechar.forEach((element) {
+      // Filtro por estudio de los registros de Pacientes.Paraclinicos
+      var aux = Pacientes.Imagenologicos!
+          .where((user) => user["Fecha_Registro"].contains(element))
+          .toList();
+      String fecha = "($element)";
+      String max = "";
+
+      aux.forEach((element) {
+        if (max == "") {
+          max =
+          "${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+        } else {
+          max =
+          "$max, ${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+        }
+      });
+
+      prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+    });
+    // ************** ***************** ***************
+    // Terminal.printExpected(message: "prosa $prosa");
+
+    return prosa; // """$prosa$max. ";
+  }
+
+
   static List<String> regiones = ['Ritmo Sinusal', 'Ritmo no Sinusal'];
   static List<String> typesEstudios = [
     'Radiografías',
     'Ultrasonidos',
     'Tomografías',
-    'Resonancias'
+    'Resonancias',
+    'Ecocardiograma',
+    'Endoscopia',
+    'Colonoscopia',
+
   ];
 }
 
@@ -6931,7 +6973,7 @@ class Repositorios {
               FechaPadecimiento date NOT NULL,
               FechaRealizacion date NOT NULL,
               ServicioMedico varchar(150) COLLATE utf8_unicode_ci NOT NULL,
-              Contexto varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+              Contexto varchar(3000) COLLATE utf8_unicode_ci NOT NULL,
               TipoAnalisis varchar(150) COLLATE utf8_unicode_ci NOT NULL
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla para Almacenar Análisis por Reporte del Paciente.';
             """,
@@ -6947,7 +6989,7 @@ class Repositorios {
     "consultByIdPrimaryQuery": "SELECT * FROM pace_hosp_repo WHERE ID_Hosp = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_hosp_repo",
     "consultarPadecimientoActualQuery":
-        "SELECT TipoAnalisis FROM pace_hosp_repo "
+        "SELECT TipoAnalisis, Contexto FROM pace_hosp_repo "
             "WHERE TipoAnalisis = '${Items.tiposAnalisis[0]}' "
             "AND ID_Hosp = '${Pacientes.ID_Hospitalizacion}' "
             "AND ID_Pace = ? ORDER Y ID_Hosp DESC",

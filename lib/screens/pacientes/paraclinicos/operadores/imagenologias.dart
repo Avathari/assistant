@@ -54,7 +54,8 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
 
   var textDateEstudyController = TextEditingController();
   String? tipoEstudioValue = Imagenologias.typesEstudios[0];
-  String? regionCorporalValue = Imagenologias.regiones[0];
+  // String? regionCorporalValue = Imagenologias.regiones[0];
+  var regionCorporalTextController = TextEditingController();
   var hallazgosEstudioTextController = TextEditingController();
   var conclusionesTextController = TextEditingController();
   //
@@ -78,11 +79,9 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
             message: 'Repositorio Paraclinicos del Pacientes Obtenido');
       });
     }).onError((error, stackTrace) {
-      final f = DateFormat('yyyy-MM-dd');
-      textDateEstudyController.text = f.format(DateTime.now());
-
+      textDateEstudyController.text =
+          Calendarios.today(format: 'yyyy/MM/dd');
       reiniciar();
-
     });
     Terminal.printOther(message: " . . . Actividad Iniciada");
 
@@ -105,16 +104,19 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
           },
         ),
         backgroundColor: Theming.primaryColor,
-        title: Text(tittle, style: Styles.textSyleGrowth(fontSize: 14),),
+        title: Text(
+          tittle,
+          style: Styles.textSyleGrowth(fontSize: 14),
+        ),
         actions: isMobile(context) || isTablet(context)
             ? <Widget>[
-          GrandIcon(
-            iconData: Icons.replay_outlined,
-            labelButton: Sentences.reload,
-            onPress: () {
-              reiniciar();
-            },
-          ),
+                GrandIcon(
+                  iconData: Icons.replay_outlined,
+                  labelButton: Sentences.reload,
+                  onPress: () {
+                    reiniciar();
+                  },
+                ),
                 GrandIcon(
                   iconData: Icons.dataset_linked_outlined,
                   labelButton: "Registro de imagenológicos",
@@ -160,13 +162,13 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                 ),
               ]
             : <Widget>[
-          GrandIcon(
-            iconData: Icons.replay_outlined,
-            labelButton: Sentences.reload,
-            onPress: () {
-              reiniciar();
-            },
-          ),
+                GrandIcon(
+                  iconData: Icons.replay_outlined,
+                  labelButton: Sentences.reload,
+                  onPress: () {
+                    reiniciar();
+                  },
+                ),
                 GrandIcon(
                   iconData: Icons.photo_camera_back_outlined,
                   labelButton: 'Imagen del Electrocardiograma',
@@ -280,15 +282,20 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                                         padding: const EdgeInsets.all(8.0),
                                         gridDelegate:
                                             GridViewTools.gridDelegate(
-                                                crossAxisCount: isMobile(context) ? 1 : 3,
-                                                mainAxisExtent: isMobile(context) ? 170 : 150,
-                                            ),
+                                          crossAxisCount:
+                                              isMobile(context) ? 1 : 3,
+                                          mainAxisExtent:
+                                              isMobile(context) ? 170 : 150,
+                                        ),
                                         shrinkWrap: true,
                                         itemCount: snapshot.data == null
                                             ? 0
                                             : snapshot.data.length,
                                         itemBuilder: (context, posicion) {
-                                          return itemSelected(context:context, data: snapshot.data, index: posicion);
+                                          return itemSelected(
+                                              context: context,
+                                              data: snapshot.data,
+                                              index: posicion);
                                         })
                                     : Container();
                               }),
@@ -324,9 +331,9 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
   Future<void> reiniciar() async {
     Terminal.printExpected(message: "Reinicio de los valores . . .");
     Actividades.consultarAllById(
-        Databases.siteground_database_reggabo,
-        Imagenologias.imagenologias['consultByIdPrimaryQuery'],
-        Pacientes.ID_Paciente)
+            Databases.siteground_database_reggabo,
+            Imagenologias.imagenologias['consultByIdPrimaryQuery'],
+            Pacientes.ID_Paciente)
         .then((value) {
       setState(() {
         Archivos.createJsonFromMap(value, filePath: fileAssocieted);
@@ -341,10 +348,8 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
         tittle: "Eliminación de Registros",
         message: "Registro eliminado",
         onAcept: () {
-          Actividades.eliminar(
-              Databases.siteground_database_reggabo,
-              Imagenologias.imagenologias['deleteQuery'],
-              element[idWidget])
+          Actividades.eliminar(Databases.siteground_database_reggabo,
+                  Imagenologias.imagenologias['deleteQuery'], element[idWidget])
               .then((value) {
             Archivos.deleteFile(filePath: fileAssocieted).then((value) {
               Navigator.of(context).pop();
@@ -364,7 +369,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
       textDateEstudyController.text,
       //
       tipoEstudioValue!,
-      regionCorporalValue!,
+      regionCorporalTextController.text,
       hallazgosEstudioTextController.text,
       conclusionesTextController.text,
       //
@@ -384,7 +389,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
       textDateEstudyController.text = f.format(DateTime.now());
       //
       tipoEstudioValue = Imagenologias.typesEstudios[0];
-      regionCorporalValue = Imagenologias.regiones[0];
+      // regionCorporalValue = Imagenologias.regiones[0];
       hallazgosEstudioTextController.text = "";
       conclusionesTextController.text = "";
       //
@@ -399,7 +404,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
       idOperacion = element[idWidget];
       textDateEstudyController.text = element['Pace_GAB_RA_Feca'];
       tipoEstudioValue = element['Pace_GAB_RA_typ'];
-      regionCorporalValue = element['Pace_GAB_RA_reg'];
+      regionCorporalTextController.text = element['Pace_GAB_RA_reg'];
       hallazgosEstudioTextController.text =
           element['Pace_GAB_RA_hal'].toString();
       conclusionesTextController.text = element['Pace_GAB_RA_con'].toString();
@@ -417,44 +422,36 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
     });
   }
 
-  Widget itemSelected({required BuildContext context, required data, required int index}) {
+  Widget itemSelected(
+      {required BuildContext context, required data, required int index}) {
     return GestureDetector(
       onTap: () {
         operationActivity = false;
         // ***************** ************* *****
-        elementSelected =
-        data[index];
-        Pacientes.Imagenologias =
-        data[index];
+        elementSelected = data[index];
+        Pacientes.Imagenologias = data[index];
         carouselController.jumpToPage(1);
         // ***************** ************* *****
-        updateElement(
-            data[index]);
+        updateElement(data[index]);
       },
       child: Container(
-        decoration: ContainerDecoration
-            .roundedDecoration(),
+        decoration: ContainerDecoration.roundedDecoration(),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
                 flex: 2,
                 child: Container(
-                  margin:
-                  const EdgeInsets.all(4.0),
-                  padding:
-                  const EdgeInsets.all(4.0),
-                  decoration:
-                  ContainerDecoration
-                      .roundedDecoration(),
+                  margin: const EdgeInsets.all(4.0),
+                  padding: const EdgeInsets.all(4.0),
+                  decoration: ContainerDecoration.roundedDecoration(),
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(20.0)),
                     child: Image.memory(
-                      base64Decode(data[
-                      index][
-                      'Pace_GAB_RA_IMG']),
+                      base64Decode(data[index]['Pace_GAB_RA_IMG']),
                       height: 150,
-                      width: 100,),
+                      width: 100,
+                    ),
                   ),
                 )),
             Expanded(
@@ -463,22 +460,16 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    data[index][
-                    'Pace_GAB_RA_Feca'],
-                    style: Styles
-                        .textSyleGrowth(fontSize: 14),
+                    data[index]['Pace_GAB_RA_Feca'],
+                    style: Styles.textSyleGrowth(fontSize: 14),
                   ),
                   Text(
-                    data[index]
-                    ['Pace_GAB_RA_typ'],
-                    style: Styles
-                        .textSyleGrowth(fontSize: 12),
+                    data[index]['Pace_GAB_RA_typ'],
+                    style: Styles.textSyleGrowth(fontSize: 12),
                   ),
                   Text(
-                    data[index]
-                    ['Pace_GAB_RA_reg'],
-                    style: Styles
-                        .textSyleGrowth(fontSize: 10),
+                    data[index]['Pace_GAB_RA_reg'],
+                    style: Styles.textSyleGrowth(fontSize: 10),
                   ),
                   CrossLine(),
                   Row(
@@ -486,33 +477,20 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                     children: [
                       GrandIcon(
                           iconData: Icons.update,
-                          labelButton:
-                          'Actualizar',
+                          labelButton: 'Actualizar',
                           onPress: () {
-                            operationActivity =
-                            false;
-                            elementSelected =
-                            data[
-                            index];
-                            Pacientes
-                                .Imagenologias =
-                            data[
-                            index];
-                            carouselController
-                                .jumpToPage(1);
+                            operationActivity = false;
+                            elementSelected = data[index];
+                            Pacientes.Imagenologias = data[index];
+                            carouselController.jumpToPage(1);
 
-                            updateElement(
-                                data[
-                                index]);
+                            updateElement(data[index]);
                           }),
                       GrandIcon(
                           iconData: Icons.delete,
-                          labelButton:
-                          'Eliminar',
+                          labelButton: 'Eliminar',
                           onPress: () {
-                            deleteDialog(
-                                data[
-                                index]);
+                            deleteDialog(data[index]);
                           }),
                     ],
                   )
@@ -542,16 +520,22 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                   type: MaskAutoCompletionType.lazy),
               numOfLines: 1,
               labelEditText: "Fecha de realización",
+              withShowOption: true,
+              selection: true,
               textController: textDateEstudyController,
+              onSelected: () {
+                textDateEstudyController.text =
+                    Calendarios.today(format: 'yyyy/MM/dd');
+              },
             ),
             Spinner(
                 width: isDesktop(context)
                     ? 400
                     : isTablet(context)
-                    ? 200
-                    : isMobile(context)
-                    ? 230
-                    : 300,
+                        ? 200
+                        : isMobile(context)
+                            ? 230
+                            : 300,
                 tittle: "Tipo de Estudios",
                 initialValue: tipoEstudioValue!,
                 items: Imagenologias.typesEstudios,
@@ -560,22 +544,42 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                     tipoEstudioValue = newValue!;
                   });
                 }),
-            Spinner(
-                width: isDesktop(context)
-                    ? 400
-                    : isTablet(context)
-                    ? 200
-                    : isMobile(context)
-                    ? 230
-                    : 300,
-                tittle: "Región Corporal",
-                initialValue: regionCorporalValue!,
-                items: Imagenologias.regiones,
-                onChangeValue: (String? newValue) {
-                  setState(() {
-                    regionCorporalValue = newValue!;
-                  });
-                }),
+            EditTextArea(
+              keyBoardType: TextInputType.text,
+              inputFormat: MaskTextInputFormatter(),
+              numOfLines: 3,
+              labelEditText: 'Región Estudiada',
+              textController: regionCorporalTextController,
+              selection: true,
+              withShowOption: true,
+              onSelected: () {
+                Operadores.selectOptionsActivity(
+                    context: context,
+                    options: Imagenologias.regiones,
+                    onClose: (value) {
+                      setState(() {
+                        Navigator.pop(context);
+                        regionCorporalTextController.text = value;
+                      });
+                    });
+              },
+            ),
+            // Spinner(
+            //     width: isDesktop(context)
+            //         ? 400
+            //         : isTablet(context)
+            //         ? 200
+            //         : isMobile(context)
+            //         ? 230
+            //         : 300,
+            //     tittle: "Región Corporal",
+            //     initialValue: regionCorporalValue!,
+            //     items: Imagenologias.regiones,
+            //     onChangeValue: (String? newValue) {
+            //       setState(() {
+            //         regionCorporalValue = newValue!;
+            //       });
+            //     }),
             EditTextArea(
               keyBoardType: TextInputType.number,
               inputFormat: MaskTextInputFormatter(),
@@ -594,15 +598,12 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                 textController: conclusionesTextController,
                 prefixIcon: false),
             Row(
-              mainAxisAlignment:
-              MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Expanded(
                   child: GrandButton(
                       weigth: isMobile(context) ? 30 : 100,
-                      labelButton: operationActivity
-                          ? "Nuevo"
-                          : "Eliminar",
+                      labelButton: operationActivity ? "Nuevo" : "Eliminar",
                       onPress: () {
                         if (operationActivity) {
                           initAllElement();
@@ -616,11 +617,8 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                                 context: context,
                                 builder: (context) {
                                   return AlertDialog(
-                                    title: const Text(
-                                        "Eliminados"),
-                                    content: Text(
-                                        listOfValues()
-                                            .toString()),
+                                    title: const Text("Eliminados"),
+                                    content: Text(listOfValues().toString()),
                                   );
                                 });
                           }
@@ -630,25 +628,21 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                 operationActivity
                     ? Container()
                     : Expanded(
-                      child: GrandButton(
-                      labelButton: "Nuevo",
-                      weigth:
-                      isMobile(context) ? 20 : 100,
-                      onPress: () {
-                        initAllElement();
-                      }),
-                    ),
+                        child: GrandButton(
+                            labelButton: "Nuevo",
+                            weigth: isMobile(context) ? 20 : 100,
+                            onPress: () {
+                              initAllElement();
+                            }),
+                      ),
                 Expanded(
                   child: GrandButton(
-                      weigth: isMobile(context) ||
-                          isTablet(context)
-                          ? 30
-                          : 100,
-                      labelButton: operationActivity
-                          ? "Agregar"
-                          : "Actualizar",
+                      weigth: isMobile(context) || isTablet(context) ? 30 : 100,
+                      labelButton: operationActivity ? "Agregar" : "Actualizar",
                       onPress: () {
-                        operationMethod(context: context, operationActivity: operationActivity);
+                        operationMethod(
+                            context: context,
+                            operationActivity: operationActivity);
                       }),
                 ),
               ],
@@ -656,69 +650,80 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
           ],
         ),
       );
-    }
-    else {
+    } else {
       return Row(
         children: [
           Expanded(
             flex: 6,
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  TittlePanel(color: Colores.backgroundWidget, textPanel: tittle),
-                  EditTextArea(
-                    keyBoardType: TextInputType.datetime,
-                    inputFormat: MaskTextInputFormatter(
-                        mask: '####/##/##',
-                        filter: {"#": RegExp(r'[0-9]')},
-                        type: MaskAutoCompletionType.lazy),
-                    numOfLines: 1,
-                    labelEditText: "Fecha de realización",
-                    textController: textDateEstudyController,
-                  ),
-                  Spinner(
-                      width: isDesktop(context)
-                          ? 400
-                          : isTablet(context)
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+              TittlePanel(color: Colores.backgroundWidget, textPanel: tittle),
+              EditTextArea(
+                keyBoardType: TextInputType.datetime,
+                inputFormat: MaskTextInputFormatter(
+                    mask: '####/##/##',
+                    filter: {"#": RegExp(r'[0-9]')},
+                    type: MaskAutoCompletionType.lazy),
+                numOfLines: 1,
+                labelEditText: "Fecha de realización",
+                withShowOption: true,
+                selection: true,
+                textController: textDateEstudyController,
+                onSelected: () {
+                  textDateEstudyController.text =
+                      Calendarios.today(format: 'yyyy/MM/dd');
+                },
+              ),
+              Spinner(
+                  width: isDesktop(context)
+                      ? 400
+                      : isTablet(context)
                           ? 200
                           : isMobile(context)
-                          ? 250
-                          : 300,
-                      tittle: "Tipo de Estudios",
-                      initialValue: tipoEstudioValue!,
-                      items: Imagenologias.typesEstudios,
-                      onChangeValue: (String? newValue) {
+                              ? 250
+                              : 300,
+                  tittle: "Tipo de Estudios",
+                  initialValue: tipoEstudioValue!,
+                  items: Imagenologias.typesEstudios,
+                  onChangeValue: (String? newValue) {
+                    setState(() {
+                      tipoEstudioValue = newValue!;
+                    });
+                  }),
+              CrossLine(
+                height: 20,
+              ),
+              EditTextArea(
+                keyBoardType: TextInputType.text,
+                inputFormat: MaskTextInputFormatter(),
+                numOfLines: 3,
+                labelEditText: 'Región Estudiada',
+                textController: regionCorporalTextController,
+                selection: true,
+                withShowOption: true,
+                onSelected: () {
+                  Operadores.selectOptionsActivity(
+                      context: context,
+                      options: Imagenologias.regiones,
+                      onClose: (value) {
                         setState(() {
-                          tipoEstudioValue = newValue!;
+                          Navigator.pop(context);
+                          regionCorporalTextController.text = value;
                         });
-                      }),
-                  Spinner(
-                      width: isDesktop(context)
-                          ? 400
-                          : isTablet(context)
-                          ? 200
-                          : isMobile(context)
-                          ? 250
-                          : 300,
-                      tittle: "Región Corporal",
-                      initialValue: regionCorporalValue!,
-                      items: Imagenologias.regiones,
-                      onChangeValue: (String? newValue) {
-                        setState(() {
-                          regionCorporalValue = newValue!;
-                        });
-                      }),
-                  EditTextArea(
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: "Hallazgos del Estudio",
-                    textController: hallazgosEstudioTextController,
-                    numOfLines: 7,
-                    onChange: (value) {
-                      setState(() {});
-                    },
-                  ),
-                ]),
+                      });
+                },
+              ),
+              EditTextArea(
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: "Hallazgos del Estudio",
+                textController: hallazgosEstudioTextController,
+                numOfLines: 7,
+                onChange: (value) {
+                  setState(() {});
+                },
+              ),
+            ]),
           ),
           Expanded(
             flex: 6,
@@ -733,14 +738,11 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                     textController: conclusionesTextController,
                     prefixIcon: false),
                 Row(
-                  mainAxisAlignment:
-                  MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     GrandButton(
                         weigth: isMobile(context) ? 30 : 100,
-                        labelButton: operationActivity
-                            ? "Nuevo"
-                            : "Eliminar",
+                        labelButton: operationActivity ? "Nuevo" : "Eliminar",
                         onPress: () {
                           if (operationActivity) {
                             initAllElement();
@@ -754,11 +756,8 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                                   context: context,
                                   builder: (context) {
                                     return AlertDialog(
-                                      title: const Text(
-                                          "Eliminados"),
-                                      content: Text(
-                                          listOfValues()
-                                              .toString()),
+                                      title: const Text("Eliminados"),
+                                      content: Text(listOfValues().toString()),
                                     );
                                   });
                             }
@@ -767,23 +766,20 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                     operationActivity
                         ? Container()
                         : GrandButton(
-                        labelButton: "Nuevo",
-                        weigth:
-                        isMobile(context) ? 20 : 100,
-                        onPress: () {
-                          initAllElement();
-                        }),
+                            labelButton: "Nuevo",
+                            weigth: isMobile(context) ? 20 : 100,
+                            onPress: () {
+                              initAllElement();
+                            }),
                     GrandButton(
-                        weigth: isMobile(context) ||
-                            isTablet(context)
-                            ? 30
-                            : 100,
-                        labelButton: operationActivity
-                            ? "Agregar"
-                            : "Actualizar",
+                        weigth:
+                            isMobile(context) || isTablet(context) ? 30 : 100,
+                        labelButton:
+                            operationActivity ? "Agregar" : "Actualizar",
                         onPress: () {
-                          operationMethod(context: context, operationActivity: operationActivity);
-
+                          operationMethod(
+                              context: context,
+                              operationActivity: operationActivity);
                         }),
                   ],
                 )
@@ -797,48 +793,76 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
 
   void operationMethod(
       {required BuildContext context, required bool operationActivity}) {
+
     if (operationActivity) {
       var aux = listOfValues();
+      aux.removeAt(0);
       aux.removeLast();
-
+      Terminal.printExpected(message: "operationActivity : :  $operationActivity : : method ${Imagenologias.imagenologias['registerQuery']}");
       Actividades.registrar(
-        Databases
-            .siteground_database_reggabo,
-        Imagenologias.imagenologias[
-        'registerQuery'],
+        Databases.siteground_database_reggabo,
+        Imagenologias.imagenologias['registerQuery'],
         aux,
-
       ).then((value) {
         Operadores.alertActivity(
             context: context,
             tittle: "Registro de los Valores",
-            message: 'Los registros fueron agregados');
-        reiniciar().then((value) {
-          setState(() {
-            carouselController.jumpToPage(0);
+            message: 'Los registros fueron agregados',
+        onClose: () {
+              Navigator.pop(context);
+          reiniciar().then((value) {
+            setState(() {
+              carouselController.jumpToPage(0);
+            });
+          });
+        },
+        onAcept: () {
+          Navigator.pop(context);
+          reiniciar().then((value) {
+            setState(() {
+              carouselController.jumpToPage(0);
+            });
           });
         });
-      });
+      })
+    .onError((error, stackTrace) {
+    Terminal.printWarning(message: "ERROR - $error");
+    });
     } else {
       Actividades.actualizar(
-          Databases
-              .siteground_database_reggabo,
-          Imagenologias.imagenologias[
-          'updateQuery'],
-          listOfValues(),
-          idOperacion!)
+              Databases.siteground_database_reggabo,
+              Imagenologias.imagenologias['updateQuery'],
+              listOfValues(),
+              idOperacion!)
           .then((value) {
         Operadores.alertActivity(
             context: context,
             tittle: "Actualizacion de los Valores",
-            message: 'Los registros fueron Actualizados');
+            message: 'Los registros fueron Actualizados',
+            onClose: () {
+          Navigator.pop(context);
+          reiniciar().then((value) {
+            setState(() {
+              carouselController.jumpToPage(0);
+            });
+          });
+        },
+        onAcept: () {
+        Navigator.pop(context);
+        reiniciar().then((value) {
+        setState(() {
+        carouselController.jumpToPage(0);
+        });
+        });
+        });
         reiniciar().then((value) {
           setState(() {
             carouselController.jumpToPage(0);
           });
         });
+      }).onError((error, stackTrace) {
+        Terminal.printWarning(message: "ERROR - $error");
       });
     }
   }
-
 }

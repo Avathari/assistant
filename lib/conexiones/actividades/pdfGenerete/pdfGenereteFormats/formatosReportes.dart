@@ -2688,7 +2688,7 @@ class FormatosReportes {
         verticalAlignment: TableCellVerticalAlignment.middle,
         children: [
           // textTittle("ID"),
-          textTittle("No Cama"),
+          textTittle("Cama"),
           textTittle("Datos Generales".toUpperCase()),
           textTittle("Diagnóstico(s)".toUpperCase()),
           textTittle("Auxiliares Diagnósticos".toUpperCase()),
@@ -2705,16 +2705,35 @@ class FormatosReportes {
     int index = 1;
     // Despliegue del listado . ***** ****** *********** *********
     for (var item in paraph) {
-      print("item $item");
-      String pades = "", penden = "", cronicos = "", diagos = "",  auxiliary = "", estudio = "";
+      // print("item $item");
+      String pades = "No hay padecimiento Descrito\n",
+          penden = "",
+          cronicos = "",
+          diagos = "",
+          auxiliary = "",
+          estudio = "";
       for (var i in item['Pendientes']) {
         penden = "$penden${i['Pace_Desc_PEN']}\n";
       }
-      for (var i in item['Cronicos']) {
-        cronicos = "$cronicos${i['Pace_APP_DEG']}\n";
+      Terminal.printExpected(message: "Cronicos : : ${item['Cronicos']} ${item['Cronicos'].runtimeType}");
+      if (item['Cronicos'] == [] ) {
+        cronicos = 'Sin Antecedentes Crónicos Documentados';
+      } else {
+        for (var i in item['Cronicos']) {
+          if (i['Pace_APP_DEG_com'] != null || i['Pace_APP_DEG_com'] != '') {
+            cronicos = "$cronicos${i['Pace_APP_DEG_com'].toUpperCase()}, "
+                "${i['Pace_APP_DEG_dia']} años, "
+                "${i['Pace_APP_DEG_tra']} "
+                "\n\n";
+          } else {
+            cronicos = 'Sin Antecedentes Crónicos Documentados';
+          }
+        }
       }
+
       for (var i in item['Diagnosticos']) {
-        diagos = "$diagos${i['Pace_APP_DEG']}\n";
+        diagos =
+            "$diagos${i['Pace_APP_DEG'].toUpperCase()} -\n\t${i['Pace_APP_DEG_com']}\n";
       }
       // Auxiliares Diagnósticos . ***** ****** *********** *********
       if (item['Auxiliares'] != [] && item['Auxiliares'] != null) {
@@ -2737,29 +2756,34 @@ class FormatosReportes {
             // ***************************** *****************
             if (max == "") {
               max =
-              "${Auxiliares.abreviado(estudio: element['Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+                  "${Auxiliares.abreviado(estudio: element['Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
             } else {
               max =
-              "$max, ${Auxiliares.abreviado(estudio: element['Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+                  "$max, ${Auxiliares.abreviado(estudio: element['Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
             }
           }
           auxiliary = "$auxiliary$fecha: ${Sentences.capitalize(max)}\n";
         });
       }
       // Padecimiento Actual . ***** ****** *********** *********
+
       if (item['Padecimiento'] != null) {
-        if (item['Contexto'] != null) {
-          pades = "${item['Contexto']}\n";
+        if (item['Padecimiento']['Contexto'] != null &&
+            item['Padecimiento']['Contexto'] != [] &&
+            item['Padecimiento']['Contexto'] != "") {
+          // Terminal.printExpected(message: "Padecimiento : : ${item['Padecimiento']['Contexto']} ${item['Padecimiento']['Contexto'].runtimeType}");
+          pades = "${item['Padecimiento']['Contexto']}\n";
         } else {
           pades = "No hay padecimiento Descrito\n";
         }
       }
       // Datos Generales . ***** ****** *********** *********
-      String nombre = "${item['Pace_Ape_Pat']} ${item['Pace_Ape_Mat']} ${item['Pace_Nome_PI']} ${item['Pace_Nome_SE']}\n";
+      String nombre =
+          "${item['Pace_Ape_Pat']} ${item['Pace_Ape_Mat']} ${item['Pace_Nome_PI']} ${item['Pace_Nome_SE']}\n";
       // Adición al Censo . ***** ****** *********** *********
       censo.add(
         TableRow(
-          verticalAlignment: TableCellVerticalAlignment.middle,
+          verticalAlignment: TableCellVerticalAlignment.top,
           children: [
             textLabel("${item['Id_Cama']}"),
             textLabel("${item['Pace_NSS']} ${item['Pace_AGRE']}\n"
@@ -2769,8 +2793,8 @@ class FormatosReportes {
                 "${DateTime.now().difference(DateTime.parse(item['Feca_INI_Hosp'])).inDays} DEH"
                 "\n\n"
                 "$cronicos\n"),
-            textLabel(
-                "$pades"
+            textLabel("$pades"
+                "___________________________________________\n"
                 "\n$diagos"),
             textLabel("$auxiliary"),
             textLabel("$penden"),
@@ -2784,11 +2808,11 @@ class FormatosReportes {
       Table(
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         columnWidths: {
-          0: const IntrinsicColumnWidth(flex:1),
-          1: const IntrinsicColumnWidth(flex:3),
-          2: const IntrinsicColumnWidth(flex:5),
-          3: const IntrinsicColumnWidth(flex:10),
-          4: const IntrinsicColumnWidth(flex:2),
+          0: const IntrinsicColumnWidth(flex: 1),
+          1: const IntrinsicColumnWidth(flex: 5),
+          2: const IntrinsicColumnWidth(flex: 8),
+          3: const IntrinsicColumnWidth(flex: 15),
+          4: const IntrinsicColumnWidth(flex: 4),
         },
         border: const TableBorder(
           horizontalInside: BorderSide(width: 0.7),

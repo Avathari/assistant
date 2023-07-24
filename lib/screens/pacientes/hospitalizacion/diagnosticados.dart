@@ -237,6 +237,7 @@ class _OperacionesDiagnosticosState extends State<OperacionesDiagnosticos> {
           ),
         ],
       ),
+      CrossLine(height: 20,),
       EditTextArea(
         keyBoardType: TextInputType.text,
         inputFormat: MaskTextInputFormatter(),
@@ -636,6 +637,7 @@ class _GestionDiagnosticosState extends State<GestionDiagnosticos> {
         padding: const EdgeInsets.only(left: 8.0, right: 2.0, top: 8, bottom: 8),
         decoration: ContainerDecoration.roundedDecoration(),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Expanded(
               flex: 3,
@@ -653,9 +655,9 @@ class _GestionDiagnosticosState extends State<GestionDiagnosticos> {
                     ),
                   ),
                   Expanded(
-                    flex: 4,
+                    flex: 6,
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 8.0, right: 4.0, top: 8, bottom: 8),
+                      padding: const EdgeInsets.only(left: 8.0, right: 4.0, top: 6, bottom: 2.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -667,6 +669,7 @@ class _GestionDiagnosticosState extends State<GestionDiagnosticos> {
                           ),
                           CrossLine(),
                           Text("${snapshot.data[posicion]['Pace_APP_DEG_com']}",
+                              overflow: TextOverflow.ellipsis,
                               maxLines: 4,
                               style: Styles.textSyleGrowth(fontSize: 14)),
                         ],

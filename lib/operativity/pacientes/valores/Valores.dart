@@ -336,7 +336,7 @@ class Valores {
     QRSi = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_qrsi');
     QRSa = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_qrsa');
     //
-    ejeCardiaco = double.parse(json['Pace_QRS'] ?? '0');
+    ejeCardiaco = double.parse(json['Pace_QRS'] ?? '0.0');
     //
     segmentoST = json['Pace_EC_st'] ?? '';
     alturaSegmentoST = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_ast_');

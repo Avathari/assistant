@@ -332,7 +332,7 @@ class _ElectrocardiogramasGestionState
       aqrsTextController.text = "";
       qrsiTextController.text = "";
       qrsaTextController.text = "";
-      paceQrsTextController.text = "";
+      paceQrsTextController.text = "0.0";
       //
       segmentoSTValue = Electrocardiogramas.ast[1];
       stTextController.text = "";
