@@ -2688,7 +2688,7 @@ class FormatosReportes {
         verticalAlignment: TableCellVerticalAlignment.middle,
         children: [
           // textTittle("ID"),
-          textTittle("Cama"),
+          textTittle("Cama".toUpperCase()),
           textTittle("Datos Generales".toUpperCase()),
           textTittle("Diagnóstico(s)".toUpperCase()),
           textTittle("Auxiliares Diagnósticos".toUpperCase()),
@@ -2705,17 +2705,57 @@ class FormatosReportes {
     int index = 1;
     // Despliegue del listado . ***** ****** *********** *********
     for (var item in paraph) {
-      // print("item $item");
+      print("item $item");
       String pades = "No hay padecimiento Descrito\n",
           penden = "",
+          previos = "",
           cronicos = "",
           diagos = "",
           auxiliary = "",
-          estudio = "";
+          situaciones = "";
+
+      //Terminal.printExpected(message: "Pendientes : : ${item['Pendientes']} ${item['Pendientes'].runtimeType}");
       for (var i in item['Pendientes']) {
         penden = "$penden${i['Pace_Desc_PEN']}\n";
       }
-      Terminal.printExpected(message: "Cronicos : : ${item['Cronicos']} ${item['Cronicos'].runtimeType}");
+// **************************************
+      if (item['Situaciones']['CVP'] != 0) {
+        situaciones = "$situaciones\nCVP";
+      }
+      if (item['Situaciones']['CVLP'] != 0) {
+        situaciones = "$situaciones\nCVLP";
+      }
+      if (item['Situaciones']['CVC'] != 0) {
+        situaciones = "$situaciones\nCVC";
+      }
+      if (item['Situaciones']['MAH'] != 0) {
+        situaciones = "$situaciones\nMAH";
+      }
+      if (item['Situaciones']['S_Foley'] != 0) {
+        situaciones = "$situaciones\nFOL";
+      }
+      if (item['Situaciones']['SNG'] != 0) {
+        situaciones = "$situaciones\nSNG";
+      }
+      if (item['Situaciones']['SOG'] != 0) {
+        situaciones = "$situaciones\nSOG";
+      }
+      if (item['Situaciones']['Drenaje'] != 0) {
+        situaciones = "$situaciones\nDRE";
+      }
+      if (item['Situaciones']['Pleuro_Vac'] != 0) {
+        situaciones = "$situaciones\nSEP";
+      }
+      if (item['Situaciones']['Colostomia'] != 0) {
+        situaciones = "$situaciones\nCOL";
+      }
+      if (item['Situaciones']['Gastrostomia'] != 0) {
+        situaciones = "$situaciones\nGAS";
+      }
+      if (item['Situaciones']['Dialisis_Peritoneal'] != 0) {
+        situaciones = "$situaciones\nDP";
+      }
+// **************************************
       if (item['Cronicos'] == [] ) {
         cronicos = 'Sin Antecedentes Crónicos Documentados';
       } else {
@@ -2731,6 +2771,12 @@ class FormatosReportes {
         }
       }
 
+      for (var i in item['Cronicos']) {
+        previos =
+        "$previos"
+            // "${i['Pace_APP_DEG'].toUpperCase()} -\n"
+            "\t${i['Pace_APP_DEG_com']}\n";
+      }
       for (var i in item['Diagnosticos']) {
         diagos =
             "$diagos${i['Pace_APP_DEG'].toUpperCase()} -\n\t${i['Pace_APP_DEG_com']}\n";
@@ -2745,7 +2791,7 @@ class FormatosReportes {
         );
         // Terminal.printExpected(message: "${item['Auxiliares']} ${item['Auxiliares'].runtimeType}");
         fechar.forEach((element) {
-          String fecha = "Paraclínicos ($element)", max = "";
+          String fecha = "          Paraclínicos ($element)", max = "";
 
           List<dynamic>? alam = item['Auxiliares'];
           var aux = alam!
@@ -2785,17 +2831,21 @@ class FormatosReportes {
         TableRow(
           verticalAlignment: TableCellVerticalAlignment.top,
           children: [
-            textLabel("${item['Id_Cama']}"),
+            textLabel("${item['Id_Cama']}\n"
+                "_____\n"
+                "$situaciones\n"
+                "_____\n"),
             textLabel("${item['Pace_NSS']} ${item['Pace_AGRE']}\n"
                 "${nombre.toUpperCase()}"
                 "Edad ${item['Pace_Eda']} Años\n"
                 "FN: ${item['Feca_INI_Hosp']} : "
                 "${DateTime.now().difference(DateTime.parse(item['Feca_INI_Hosp'])).inDays} DEH"
-                "\n\n"
+                "\n____________________________\n\n"
                 "$cronicos\n"),
             textLabel("$pades"
                 "___________________________________________\n"
-                "\n$diagos"),
+                "\n$diagos"
+                "$previos"),
             textLabel("$auxiliary"),
             textLabel("$penden"),
           ],
@@ -2808,11 +2858,11 @@ class FormatosReportes {
       Table(
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         columnWidths: {
-          0: const IntrinsicColumnWidth(flex: 1),
-          1: const IntrinsicColumnWidth(flex: 5),
-          2: const IntrinsicColumnWidth(flex: 8),
-          3: const IntrinsicColumnWidth(flex: 15),
-          4: const IntrinsicColumnWidth(flex: 4),
+          0: const IntrinsicColumnWidth(flex: 2),
+          1: const IntrinsicColumnWidth(flex: 8),
+          2: const IntrinsicColumnWidth(flex: 16),
+          3: const IntrinsicColumnWidth(flex: 26),
+          4: const IntrinsicColumnWidth(flex: 8),
         },
         border: const TableBorder(
           horizontalInside: BorderSide(width: 0.7),

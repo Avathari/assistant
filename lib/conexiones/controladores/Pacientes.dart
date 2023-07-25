@@ -5344,10 +5344,10 @@ class Imagenologias {
       aux.forEach((element) {
         if (max == "") {
           max =
-          "${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+              "${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
         } else {
           max =
-          "$max, ${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+              "$max, ${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
         }
       });
 
@@ -5359,7 +5359,6 @@ class Imagenologias {
     return prosa; // """$prosa$max. ";
   }
 
-
   static List<String> regiones = ['Ritmo Sinusal', 'Ritmo no Sinusal'];
   static List<String> typesEstudios = [
     'Radiografías',
@@ -5369,7 +5368,6 @@ class Imagenologias {
     'Ecocardiograma',
     'Endoscopia',
     'Colonoscopia',
-
   ];
 }
 
@@ -5594,12 +5592,20 @@ class Auxiliares {
       return 'Ca2';
     } else if (estudio == 'Hemoglobina') {
       return 'Hb';
-    }  else if (estudio == 'Hematocrito') {
+    } else if (estudio == 'Hematocrito') {
       return 'Hto';
-    }  else if (estudio == 'Eritrocitos') {
+    } else if (estudio == 'Eritrocitos') {
       return 'Erit';
-    }  else if (estudio == 'Plaquetas') {
+    } else if (estudio == 'Plaquetas') {
       return 'Plat';
+    } else if (estudio == 'Albúmina') {
+      return 'Alb';
+    } else if (estudio == 'Urea') {
+      return 'URe';
+    } else if (estudio == 'Creatinina') {
+      return 'Cr';
+    } else if (estudio == 'Glucosa') {
+      return 'GLU';
     } else {
       return estudio;
     }

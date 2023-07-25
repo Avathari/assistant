@@ -309,13 +309,13 @@ class _BiometriasState extends State<Biometrias> {
       Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
   var textNeutrofilosResultController = TextEditingController();
   String? unidadMedidaNeutrofilos =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
+      Auxiliares.Medidas[Auxiliares.Categorias[index]][6];
   var textLinfocitosResultController = TextEditingController();
   String? unidadMedidaLinfocitos =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
+      Auxiliares.Medidas[Auxiliares.Categorias[index]][6];
   var textMonocitosResultController = TextEditingController();
   String? unidadMedidaMonocitos =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
+      Auxiliares.Medidas[Auxiliares.Categorias[index]][6];
 
   // OPERACIONES DE LA INTERFAZ ****************** ********
   void cerrar() {
