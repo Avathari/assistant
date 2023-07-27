@@ -169,15 +169,15 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
 
     Pacientes.Pendiente!.clear();
     Actividades.consultarAllById(
-        Databases.siteground_database_reghosp,
-        Pendientes.pendientes['consultByIdPrimaryQuery'],
-        Pacientes.ID_Paciente)
+            Databases.siteground_database_reghosp,
+            Pendientes.pendientes['consultByIdPrimaryQuery'],
+            Pacientes.ID_Paciente)
         .then((value) {
       setState(() {
         Pacientes.Pendiente = value;
         Terminal.printSuccess(
             message:
-            "Actualizando Repositorio de Pendientes de la Hospitalización . . . ${Pacientes.Pendiente}");
+                "Actualizando Repositorio de Pendientes de la Hospitalización . . . ${Pacientes.Pendiente}");
 
         Archivos.createJsonFromMap(Pacientes.Pendiente!,
             filePath: Pendientes.fileAssocieted);
@@ -206,12 +206,14 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
             flex: isTabletAndDesktop(context) ? 3 : 2,
             child: Spinner(
                 width: isDesktop(context)
-                    ? 200 : isTabletAndDesktop(context) ? 130
-                    : isTablet(context)
-                        ? 200
-                        : isMobile(context)
-                            ? 100
-                            : 200,
+                    ? 200
+                    : isTabletAndDesktop(context)
+                        ? 130
+                        : isTablet(context)
+                            ? 200
+                            : isMobile(context)
+                                ? 100
+                                : 200,
                 tittle: "Tipo de Pendiente",
                 onChangeValue: (String value) {
                   setState(() {
@@ -228,10 +230,7 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
       ),
       EditTextArea(
         keyBoardType: TextInputType.text,
-        inputFormat: MaskTextInputFormatter(
-            mask: '####',
-            filter: {"#": RegExp(r'[0-9]')},
-            type: MaskAutoCompletionType.lazy),
+        inputFormat: MaskTextInputFormatter(),
         labelEditText: 'Descripción del Pendiente',
         textController: descripcionPendienteTextController,
         numOfLines: 7,
@@ -288,8 +287,8 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
                 onAcept: () {
                   onClose(context);
                 }));
-                    // ******************************************** *** *
-                  });
+            // ******************************************** *** *
+          });
           break;
         case Constantes.Update:
           Actividades.actualizar(Databases.siteground_database_reghosp,
@@ -303,8 +302,8 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
                 onAcept: () {
                   onClose(context);
                 }));
-                    // ******************************************** *** *
-                  });
+            // ******************************************** *** *
+          });
           break;
         default:
       }
@@ -356,9 +355,8 @@ class GestionPendiente extends StatefulWidget {
 }
 
 class _GestionPendienteState extends State<GestionPendiente> {
-
   var fileAssocieted = Pendientes.fileAssocieted;
-  
+
   @override
   void initState() {
     iniciar();
@@ -475,10 +473,10 @@ class _GestionPendienteState extends State<GestionPendiente> {
                                 return itemListView(
                                     snapshot, posicion, context);
                               },
-                              gridDelegate:
-                                  GridViewTools.gridDelegate(crossAxisCount: isMobile(context) ? 1 :3,
-                                  mainAxisExtent: isMobile(context) ? 200 :250,
-                                  ),
+                              gridDelegate: GridViewTools.gridDelegate(
+                                crossAxisCount: isMobile(context) ? 1 : 3,
+                                mainAxisExtent: isMobile(context) ? 200 : 250,
+                              ),
                             )
                           : Center(
                               child: Column(
@@ -516,7 +514,7 @@ class _GestionPendienteState extends State<GestionPendiente> {
   void iniciar() {
     Terminal.printWarning(
         message:
-        " . . . Iniciando Actividad - Repositorio de Pendientes de la Hospitalización");
+            " . . . Iniciando Actividad - Repositorio de Pendientes de la Hospitalización");
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       setState(() {
         foundedItems = value;
@@ -532,7 +530,7 @@ class _GestionPendienteState extends State<GestionPendiente> {
   Future<void> reiniciar() async {
     Terminal.printExpected(message: "Reinicio de los valores . . .");
     Actividades.consultarAllById(Databases.siteground_database_reghosp,
-        consultQuery!, Pacientes.ID_Hospitalizacion)
+            consultQuery!, Pacientes.ID_Hospitalizacion)
         .then((value) {
       setState(() {
         foundedItems = value;
@@ -684,30 +682,38 @@ class _GestionPendienteState extends State<GestionPendiente> {
 
   void deleteRegister(
       AsyncSnapshot<dynamic> snapshot, int posicion, BuildContext context) {
-      Actividades.eliminar(
-          Databases.siteground_database_reghosp,
-          Pendientes.pendientes['deleteQuery'],
-          snapshot.data[posicion]['ID_Pace_Pen']).then((value) {
-        setState(() {
-          snapshot.data.removeAt(posicion);
-          Archivos.deleteFile(filePath: fileAssocieted).then((value) {
-            Operadores.alertActivity(context: context, tittle: "Eliminación de Registros",
-                message: "Registro eliminado",
-                onAcept: () {
-                  Navigator.of(context).pop();
-                });
-          });
+    Actividades.eliminar(
+            Databases.siteground_database_reghosp,
+            Pendientes.pendientes['deleteQuery'],
+            snapshot.data[posicion]['ID_Pace_Pen'])
+        .then((value) {
+      setState(() {
+        snapshot.data.removeAt(posicion);
+        Archivos.deleteFile(filePath: fileAssocieted).then((value) {
+          Operadores.alertActivity(
+              context: context,
+              tittle: "Eliminación de Registros",
+              message: "Registro eliminado",
+              onAcept: () {
+                Navigator.of(context).pop();
+              });
         });
-      }).onError((error, stackTrace) {
-        Terminal.printAlert(message: "ERROR - Hubo un error : $error");
       });
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(message: "ERROR - Hubo un error : $error");
+    });
   }
 
   void toOperaciones(BuildContext context, String operationActivity) {
     if (isDesktop(context) || isTabletAndDesktop(context)) {
-      Constantes.operationsActividad = operationActivity;
-      Constantes.reinit(value: foundedItems!);
-      _pullListRefresh();
+      // Constantes.operationsActividad = operationActivity;
+      // Constantes.reinit(value: foundedItems!);
+      // _pullListRefresh();
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (BuildContext context) => GestionPendiente(
+                  actualSidePage: OperacionesPendiente(
+                operationActivity: operationActivity,
+              ))));
     } else {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (BuildContext context) => OperacionesPendiente(
@@ -737,7 +743,7 @@ class _GestionPendienteState extends State<GestionPendiente> {
   Future<Null> _pullListRefresh() async {
     iniciar();
   }
-  
+
   // VARIABLES DE LA INTERFAZ ***** ******* ********** ****
   String appTittle = "Gestion de pendientes del paciente";
   String searchCriteria = "Buscar por Fecha";
@@ -746,5 +752,4 @@ class _GestionPendienteState extends State<GestionPendiente> {
   late List? foundedItems = [];
   var gestionScrollController = ScrollController();
   var searchTextController = TextEditingController();
-
 }

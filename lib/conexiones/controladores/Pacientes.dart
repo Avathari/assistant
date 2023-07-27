@@ -5218,6 +5218,48 @@ class Electrocardiogramas {
     'Patrón Q'
   ];
 
+  static void fromJson(Map<String, dynamic> json) {
+    Terminal.printExpected(message: "Electrocardiograma seleccionados $json");
+    Valores.fechaElectrocardiograma = json['Pace_GAB_EC_Feca'] ?? '';
+    Valores.ritmoCardiaco = json['Pace_EC_rit'] ?? '';
+    Valores.intervaloRR = json['Pace_EC_rr'] ?? 0;
+    Valores.duracionOndaP = double.parse(
+        json['Pace_EC_dop'] != null ? json['Pace_EC_dop'].toString() : '0');
+
+    Valores.alturaOndaP = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_aop');
+    Valores.duracionPR = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dpr');
+    Valores.duracionQRS = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dqrs');
+    Valores.alturaQRS = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_aqrs');
+    Valores.QRSi = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_qrsi');
+    Valores.QRSa = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_qrsa');
+    //
+    Valores.ejeCardiaco = double.parse(json['Pace_QRS'] ?? '0.0');
+    //
+    Valores.segmentoST = json['Pace_EC_st'] ?? '';
+    Valores.alturaSegmentoST = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_ast_');
+    Valores.duracionQT = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dqt');
+    Valores.duracionOndaT = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dot');
+    Valores.alturaOndaT = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_aot');
+    //
+    Valores.rV1 = json['EC_rV1'] ?? 0;
+    Valores.sV6 = json['EC_sV6'] ?? 0;
+    Valores.sV1 = json['EC_sV1'] ?? 0;
+    Valores.rV6 = json['EC_rV6'] ?? 0;
+    Valores.rAvL = json['EC_rAVL'] ?? 0;
+    Valores.sV3 = json['EC_sV3'] ?? 0;
+    //
+    Valores.patronQRS = json['PatronQRS'] ?? '';
+    Valores.deflexionIntrinsecoide =
+        toDoubleFromInt(json: json, keyEntered: 'DeflexionIntrinsecoide');
+
+    Valores.rDI = toDoubleFromInt(json: json, keyEntered: 'EC_rDI');
+    Valores.sDI = toDoubleFromInt(json: json, keyEntered: 'EC_sDI');
+    Valores.rDIII = toDoubleFromInt(json: json, keyEntered: 'EC_rDIII');
+    Valores.sDIII = toDoubleFromInt(json: json, keyEntered: 'EC_sDIII');
+    //
+    Valores.conclusionElectrocardiograma = json['Pace_EC_CON'] ?? '';
+    Valores.fechaElectrocardiograma = json['Pace_GAB_IMG'];
+  }
   // static void fromJson(Map<String, dynamic> json) {
   //   // print("Electrocardiogramas $json");
   //   //
@@ -6519,6 +6561,29 @@ class Ventilaciones {
     'Presión Positiva en Vía Aérea con Presión Soporte (CPAP / PS)',
     'Espontáneo (ESPON)',
   ];
+
+  static String modoVentilatorio ({required String modalidadVentilatoria}){
+    if (modalidadVentilatoria ==
+        'Ventilación Limitada por Presión Ciclada por Tiempo (P-VMC / VCP)') {
+      return 'AC-VCP'; // # 'P-VMC/VCP';
+    } else if (modalidadVentilatoria ==
+        'Ventilación Limitada por Flujo Ciclada por Volumen (V-VMC / VCV)') {
+      return 'AC-VCV'; // # 'V-VMC/VCV';
+    } else if (modalidadVentilatoria ==
+        'Ventilación Mandatoria Intermitente Sincrónizada (SIMV / VCV)') {
+      return 'SIMV/VCV';
+    } else if (modalidadVentilatoria ==
+        'Ventilación Mandatoria Intermitente Sincrónizada (SIMV / VCP)') {
+      return 'SIMV/VCP';
+    } else if (modalidadVentilatoria ==
+        'Presión Positiva en Vía Aérea con Presión Soporte (CPAP / PS)') {
+      return 'CPAP/PS';
+    } else if (modalidadVentilatoria == 'Espontáneo (ESPON)') {
+      return 'ESPON';
+    } else {
+      return ' ';
+    }
+  }
 
   static void ultimoRegistro() {
     Actividades.consultarId(

@@ -1423,6 +1423,9 @@ class _HospitalizadosState extends State<Hospitalizados> {
             "EGE_Motivo": ""
           });
           response[v].addAll({
+            "Ventilaciones": [],
+          });
+          response[v].addAll({
             "Cronicos": [],
           });
           response[v].addAll({
@@ -1448,6 +1451,13 @@ class _HospitalizadosState extends State<Hospitalizados> {
                 response[v]['ID_Hosp']),
           });
           response[v].addAll({
+            "Ventilaciones": await Actividades.consultarId(
+              Databases.siteground_database_reghosp,
+              Ventilaciones.ventilacion['consultLastQuery'],
+              response[v]['ID_Pace'],
+            ),
+          });
+          response[v].addAll({
             "Cronicos": await Actividades.consultarAllById(
               Databases.siteground_database_regpace,
               "SELECT * FROM pace_app_deg WHERE ID_Pace = ? ",
@@ -1467,7 +1477,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
               Databases.siteground_database_reghosp,
               "SELECT * FROM pace_pen WHERE ID_Pace = ? "
               "AND ID_Hosp = '${hospitalizaed[v]['ID_Hosp']}' "
-              "AND Pace_PEN_realized = '1'",
+              "AND Pace_PEN_realized = '0'",
               response[v]['ID_Pace'],
             )
           });
@@ -1476,6 +1486,20 @@ class _HospitalizadosState extends State<Hospitalizados> {
             "Auxiliares": await Actividades.consultarAllById(
               Databases.siteground_database_reggabo,
               Auxiliares.auxiliares['consultByIdPrimaryQuery'],
+              response[v]['ID_Pace'],
+            )
+          });
+          response[v].addAll({
+            "Imagenologicos": await Actividades.consultarAllById(
+              Databases.siteground_database_reggabo,
+              Imagenologias.imagenologias['consultByIdPrimaryQuery'],
+              response[v]['ID_Pace'],
+            )
+          });
+          response[v].addAll({
+            "Electrocardiogramas": await Actividades.consultarAllById(
+              Databases.siteground_database_reggabo,
+              Electrocardiogramas.electrocardiogramas['consultByIdPrimaryQuery'],
               response[v]['ID_Pace'],
             )
           });

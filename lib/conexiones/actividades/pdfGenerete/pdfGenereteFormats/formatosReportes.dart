@@ -2705,18 +2705,41 @@ class FormatosReportes {
     int index = 1;
     // Despliegue del listado . ***** ****** *********** *********
     for (var item in paraph) {
-      print("item $item");
+      // print("item $item");
       String pades = "No hay padecimiento Descrito\n",
           penden = "",
           previos = "",
+          ventilaciones = "No MAVA",
           cronicos = "",
           diagos = "",
           auxiliary = "",
+          imagenologicos = "",
+          electrocardiogramas = "",
           situaciones = "";
 
-      //Terminal.printExpected(message: "Pendientes : : ${item['Pendientes']} ${item['Pendientes'].runtimeType}");
+      // Terminal.printExpected(
+      //     message:
+      //         "Pendientes : : ${item['Pendientes']} ${item['Pendientes'].runtimeType}");
       for (var i in item['Pendientes']) {
-        penden = "$penden${i['Pace_Desc_PEN']}\n";
+        penden = "$penden"
+            "${i['Pace_PEN'].toUpperCase()} - "
+            "${i['Pace_Desc_PEN']} - ${i['Pace_PEN_realized']}"
+            "\n";
+      }
+
+      if (item['Ventilaciones']['Error'] != 'Hubo un error') {
+        ventilaciones = "\n"
+            // "IOT -  \n"
+            "${Ventilaciones.modoVentilatorio(modalidadVentilatoria: item['Ventilaciones']['VM_Mod'].toString())}\n"
+            "Vt ${item['Ventilaciones']['Pace_Vt']} mL - - - - - - "
+            "Fr ${item['Ventilaciones']['Pace_Fr']} mL\n"
+            "FiO2 ${item['Ventilaciones']['Pace_Fio']} mL - - - - - - "
+            "PEEP ${item['Ventilaciones']['Pace_Peep']} mL\n"
+            // "Vt ${item['Ventilaciones']['Pace_Peep']} mL\n"
+            // "Vt ${item['Ventilaciones']['Pace_Peep']} mL\n"
+            "\n";
+      } else {
+        ventilaciones = "";
       }
 // **************************************
       if (item['Situaciones']['CVP'] != 0) {
@@ -2756,7 +2779,7 @@ class FormatosReportes {
         situaciones = "$situaciones\nDP";
       }
 // **************************************
-      if (item['Cronicos'] == [] ) {
+      if (item['Cronicos'] == []) {
         cronicos = 'Sin Antecedentes Crónicos Documentados';
       } else {
         for (var i in item['Cronicos']) {
@@ -2772,8 +2795,7 @@ class FormatosReportes {
       }
 
       for (var i in item['Cronicos']) {
-        previos =
-        "$previos"
+        previos = "$previos"
             // "${i['Pace_APP_DEG'].toUpperCase()} -\n"
             "\t${i['Pace_APP_DEG_com']}\n";
       }
@@ -2811,8 +2833,48 @@ class FormatosReportes {
           auxiliary = "$auxiliary$fecha: ${Sentences.capitalize(max)}\n";
         });
       }
-      // Padecimiento Actual . ***** ****** *********** *********
 
+      // Terminal.printExpected(
+      //     message:
+      //     "Imagenologicos : : ${item['Imagenologicos']} ${item['Imagenologicos'].runtimeType}");
+      if (item['Imagenologicos'] != [] && item['Imagenologicos'] != null) {
+        for (var element in item['Imagenologicos']) {
+          // ***************************** *****************
+          if (imagenologicos == "") {
+            imagenologicos = ""
+            "${ element['Pace_GAB_RA_typ']} del ${element['Pace_GAB_RA_Feca']} de "
+                "${element['Pace_GAB_RA_reg']},  ${element['Pace_GAB_RA_hal']}. "
+                "Conclusiones: "
+                "${element['Pace_GAB_RA_con']}\n";
+          } else {
+            imagenologicos = "$imagenologicos"
+            "${ element['Pace_GAB_RA_typ']} del ${element['Pace_GAB_RA_Feca']} de "
+                "${element['Pace_GAB_RA_reg']},  ${element['Pace_GAB_RA_hal']}. "
+                "Conclusiones: "
+                "${element['Pace_GAB_RA_con']}\n";
+          }
+        }
+      } else {
+        imagenologicos = "Sin Estudios Imagenológicos";
+      }
+      if (item['Electrocardiogramas'] != [] && item['Electrocardiogramas'] != null) {
+        for (var element in item['Electrocardiogramas']) {
+          Terminal.printExpected(
+              message:
+              "Electrocardiogramas : : ${element}");
+          Electrocardiogramas.fromJson(element);
+          // ***************************** *****************
+          if (imagenologicos == "") {
+            electrocardiogramas = "${Auxiliares.electrocardiograma()}\n";
+          } else {
+            electrocardiogramas = "$electrocardiogramas${Auxiliares.electrocardiograma()}\n";
+          }
+        }
+      } else {
+        electrocardiogramas = "Sin Estudios Electrocardiográficos";
+      }
+
+      // Padecimiento Actual . ***** ****** *********** *********
       if (item['Padecimiento'] != null) {
         if (item['Padecimiento']['Contexto'] != null &&
             item['Padecimiento']['Contexto'] != [] &&
@@ -2842,12 +2904,23 @@ class FormatosReportes {
                 "${DateTime.now().difference(DateTime.parse(item['Feca_INI_Hosp'])).inDays} DEH"
                 "\n____________________________\n\n"
                 "$cronicos\n"),
-            textLabel("$pades"
+            textLabel(
+                "$pades"
                 "___________________________________________\n"
                 "\n$diagos"
-                "$previos"),
-            textLabel("$auxiliary"),
-            textLabel("$penden"),
+                "$previos",
+                textAlign: TextAlign.justify),
+            textLabel("$auxiliary"
+                "___________________________________________\n\n"
+                "$imagenologicos"
+                "___________________________________________\n\n"
+                "$electrocardiogramas",
+                textAlign: TextAlign.justify),
+            textLabel(
+                "$ventilaciones"
+                "___________________________\n"
+                "$penden",
+                textAlign: TextAlign.justify),
           ],
         ),
       );

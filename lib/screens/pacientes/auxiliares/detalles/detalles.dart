@@ -44,7 +44,7 @@ class _DetallesState extends State<Detalles> {
                       ThreeLabelTextAline(
                         padding: 2.0,
                         firstText: 'Fecha Nacimiento',
-                        secondText: Pacientes.Paciente['Pace_Nace'],
+                        secondText: Pacientes.Paciente['Pace_Nace'] ?? '',
                       ),
                       ThreeLabelTextAline(
                         padding: 2.0,
@@ -54,42 +54,42 @@ class _DetallesState extends State<Detalles> {
                       ThreeLabelTextAline(
                         padding: 2.0,
                         firstText: 'Sexo',
-                        secondText: Pacientes.Paciente['Pace_Ses'],
+                        secondText: Pacientes.Paciente['Pace_Ses'] ?? '',
                       ),
                       ThreeLabelTextAline(
                         padding: 2.0,
                         firstText: 'Teléfono',
-                        secondText: Pacientes.Paciente['Pace_Tele'],
+                        secondText: Pacientes.Paciente['Pace_Tele'] ?? '',
                       ),
                       ThreeLabelTextAline(
                         padding: 2.0,
                         firstText: 'Modo Atención',
-                        secondText: Pacientes.Paciente['Pace_Hosp'],
+                        secondText: Pacientes.Paciente['Pace_Hosp'] ?? '',
                       ),
                       ThreeLabelTextAline(
                         padding: 2.0,
                         firstText: 'Estado Civil',
-                        secondText: Pacientes.Paciente['Pace_Edo_Civ'],
+                        secondText: Pacientes.Paciente['Pace_Edo_Civ'] ?? '',
                       ),
                       ThreeLabelTextAline(
                         padding: 2.0,
                         firstText: 'Ocupación',
-                        secondText: Pacientes.Paciente['Pace_Ocupa'],
+                        secondText: Pacientes.Paciente['Pace_Ocupa'] ?? '',
                       ),
                       ThreeLabelTextAline(
                         padding: 2.0,
                         firstText: 'Religión',
-                        secondText: Pacientes.Paciente['Pace_Reli'],
+                        secondText: Pacientes.Paciente['Pace_Reli'] ?? '',
                       ),
                       ThreeLabelTextAline(
                         padding: 2.0,
                         firstText: 'C.U.R.P.',
-                        secondText: Pacientes.Paciente['Pace_Curp'],
+                        secondText: Pacientes.Paciente['Pace_Curp'] ?? '',
                       ),
                       ThreeLabelTextAline(
                         padding: 2.0,
                         firstText: 'R.F.C.',
-                        secondText: Pacientes.Paciente['Pace_RFC'],
+                        secondText: Pacientes.Paciente['Pace_RFC'] ?? '',
                       ),
                     ],
                   ),
