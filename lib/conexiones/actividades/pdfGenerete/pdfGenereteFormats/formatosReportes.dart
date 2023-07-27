@@ -2722,8 +2722,8 @@ class FormatosReportes {
       //         "Pendientes : : ${item['Pendientes']} ${item['Pendientes'].runtimeType}");
       for (var i in item['Pendientes']) {
         penden = "$penden"
-            "${i['Pace_PEN'].toUpperCase()} - "
-            "${i['Pace_Desc_PEN']} - ${i['Pace_PEN_realized']}"
+            "${i['Pace_PEN'].toUpperCase()} - \n"
+            "${i['Pace_Desc_PEN']}" //  - ${i['Pace_PEN_realized']}"
             "\n";
       }
 
@@ -2842,13 +2842,13 @@ class FormatosReportes {
           // ***************************** *****************
           if (imagenologicos == "") {
             imagenologicos = ""
-            "${ element['Pace_GAB_RA_typ']} del ${element['Pace_GAB_RA_Feca']} de "
+                "${element['Pace_GAB_RA_typ']} del ${element['Pace_GAB_RA_Feca']} de "
                 "${element['Pace_GAB_RA_reg']},  ${element['Pace_GAB_RA_hal']}. "
                 "Conclusiones: "
                 "${element['Pace_GAB_RA_con']}\n";
           } else {
             imagenologicos = "$imagenologicos"
-            "${ element['Pace_GAB_RA_typ']} del ${element['Pace_GAB_RA_Feca']} de "
+                "${element['Pace_GAB_RA_typ']} del ${element['Pace_GAB_RA_Feca']} de "
                 "${element['Pace_GAB_RA_reg']},  ${element['Pace_GAB_RA_hal']}. "
                 "Conclusiones: "
                 "${element['Pace_GAB_RA_con']}\n";
@@ -2857,18 +2857,19 @@ class FormatosReportes {
       } else {
         imagenologicos = "Sin Estudios Imagenológicos";
       }
-      if (item['Electrocardiogramas'] != [] && item['Electrocardiogramas'] != null) {
+      if (item['Electrocardiogramas'] != [] &&
+          item['Electrocardiogramas'] != null) {
         for (var element in item['Electrocardiogramas']) {
-          Terminal.printExpected(
-              message:
-              "Electrocardiogramas : : ${element}");
           Electrocardiogramas.fromJson(element);
           // ***************************** *****************
-          if (imagenologicos == "") {
-            electrocardiogramas = "${Auxiliares.electrocardiograma()}\n";
+          if (electrocardiogramas == "") {
+            electrocardiogramas = ""
+                "${Auxiliares.electrocardiogramaAbreviado()}\n";
           } else {
-            electrocardiogramas = "$electrocardiogramas${Auxiliares.electrocardiograma()}\n";
+            electrocardiogramas = "$electrocardiogramas"
+                "${Auxiliares.electrocardiogramaAbreviado()}\n";
           }
+          // Terminal.printExpected(message: "Electrocardiograma seleccionados ${Auxiliares.electrocardiograma()}");
         }
       } else {
         electrocardiogramas = "Sin Estudios Electrocardiográficos";
@@ -2910,7 +2911,8 @@ class FormatosReportes {
                 "\n$diagos"
                 "$previos",
                 textAlign: TextAlign.justify),
-            textLabel("$auxiliary"
+            textLabel(
+                "$auxiliary"
                 "___________________________________________\n\n"
                 "$imagenologicos"
                 "___________________________________________\n\n"
@@ -2918,7 +2920,8 @@ class FormatosReportes {
                 textAlign: TextAlign.justify),
             textLabel(
                 "$ventilaciones"
-                "___________________________\n"
+                "___________________________\n\n"
+                "PENDIENTES\n"
                 "$penden",
                 textAlign: TextAlign.justify),
           ],

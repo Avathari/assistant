@@ -5219,46 +5219,52 @@ class Electrocardiogramas {
   ];
 
   static void fromJson(Map<String, dynamic> json) {
-    Terminal.printExpected(message: "Electrocardiograma seleccionados $json");
-    Valores.fechaElectrocardiograma = json['Pace_GAB_EC_Feca'] ?? '';
-    Valores.ritmoCardiaco = json['Pace_EC_rit'] ?? '';
-    Valores.intervaloRR = json['Pace_EC_rr'] ?? 0;
-    Valores.duracionOndaP = double.parse(
-        json['Pace_EC_dop'] != null ? json['Pace_EC_dop'].toString() : '0');
+    try {
 
-    Valores.alturaOndaP = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_aop');
-    Valores.duracionPR = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dpr');
-    Valores.duracionQRS = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dqrs');
-    Valores.alturaQRS = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_aqrs');
-    Valores.QRSi = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_qrsi');
-    Valores.QRSa = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_qrsa');
-    //
-    Valores.ejeCardiaco = double.parse(json['Pace_QRS'] ?? '0.0');
-    //
-    Valores.segmentoST = json['Pace_EC_st'] ?? '';
-    Valores.alturaSegmentoST = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_ast_');
-    Valores.duracionQT = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dqt');
-    Valores.duracionOndaT = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dot');
-    Valores.alturaOndaT = toDoubleFromInt(json: json, keyEntered: 'Pace_EC_aot');
-    //
-    Valores.rV1 = json['EC_rV1'] ?? 0;
-    Valores.sV6 = json['EC_sV6'] ?? 0;
-    Valores.sV1 = json['EC_sV1'] ?? 0;
-    Valores.rV6 = json['EC_rV6'] ?? 0;
-    Valores.rAvL = json['EC_rAVL'] ?? 0;
-    Valores.sV3 = json['EC_sV3'] ?? 0;
-    //
-    Valores.patronQRS = json['PatronQRS'] ?? '';
-    Valores.deflexionIntrinsecoide =
-        toDoubleFromInt(json: json, keyEntered: 'DeflexionIntrinsecoide');
+      Valores.fechaElectrocardiograma = json['Pace_GAB_EC_Feca'] ?? '';
+      Valores.ritmoCardiaco = json['Pace_EC_rit'] ?? '';
+      Valores.intervaloRR = json['Pace_EC_rr'] ?? 0;
+      Valores.duracionOndaP = double.parse(
+          json['Pace_EC_dop'] != null ? json['Pace_EC_dop'].toString() : '0');
 
-    Valores.rDI = toDoubleFromInt(json: json, keyEntered: 'EC_rDI');
-    Valores.sDI = toDoubleFromInt(json: json, keyEntered: 'EC_sDI');
-    Valores.rDIII = toDoubleFromInt(json: json, keyEntered: 'EC_rDIII');
-    Valores.sDIII = toDoubleFromInt(json: json, keyEntered: 'EC_sDIII');
-    //
-    Valores.conclusionElectrocardiograma = json['Pace_EC_CON'] ?? '';
-    Valores.fechaElectrocardiograma = json['Pace_GAB_IMG'];
+      Valores.alturaOndaP = Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_aop');
+      Valores.duracionPR = Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dpr');
+      Valores.duracionQRS = Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dqrs');
+      Valores.alturaQRS = Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_aqrs');
+      Valores.QRSi = Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_qrsi');
+      Valores.QRSa = Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_qrsa');
+      //
+      Valores.ejeCardiaco = double.parse(json['Pace_QRS'] ?? '0.0');
+      //
+      Valores.segmentoST = json['Pace_EC_st'] ?? '';
+      Valores.alturaSegmentoST = Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_ast_');
+      Valores.duracionQT = Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dqt');
+      Valores.duracionOndaT = Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dot');
+      Valores.alturaOndaT = Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_aot');
+      //
+      Valores.rV1 = json['EC_rV1'] ?? 0;
+      Valores.sV6 = json['EC_sV6'] ?? 0;
+      Valores.sV1 = json['EC_sV1'] ?? 0;
+      Valores.rV6 = json['EC_rV6'] ?? 0;
+      Valores.rAvL = json['EC_rAVL'] ?? 0;
+      Valores.sV3 = json['EC_sV3'] ?? 0;
+      //
+      Valores.patronQRS = json['PatronQRS'] ?? '';
+      Valores.deflexionIntrinsecoide =
+          Numeros.toDoubleFromInt(json: json, keyEntered: 'DeflexionIntrinsecoide');
+
+      Valores.rDI = Numeros.toDoubleFromInt(json: json, keyEntered: 'EC_rDI');
+      Valores.sDI = Numeros.toDoubleFromInt(json: json, keyEntered: 'EC_sDI');
+      Valores.rDIII = Numeros.toDoubleFromInt(json: json, keyEntered: 'EC_rDIII');
+      Valores.sDIII = Numeros.toDoubleFromInt(json: json, keyEntered: 'EC_sDIII');
+      //
+      Valores.conclusionElectrocardiograma = json['Pace_EC_CON'] ?? '';
+      // Valores.ima = json['Pace_GAB_IMG'];
+    } on Exception catch (e) {
+      Terminal.printExpected(message: "ERROR - $e");
+    } finally {
+      Terminal.printExpected(message: "Electrocardiograma seleccionados en Finally $json");
+    }
   }
   // static void fromJson(Map<String, dynamic> json) {
   //   // print("Electrocardiogramas $json");
@@ -6007,6 +6013,52 @@ class Auxiliares {
         "Indice Gubner - Ungerleider ${(Valores.indiceGubnerUnderleiger * 0.1).toStringAsFixed(2)} mV, "
         "Indice de Lewis ${(Valores.indiceLewis * 0.1).toStringAsFixed(2)} mV, "
         "Voltaje de Cornell ${(Valores.voltajeCornell * 0.1).toStringAsFixed(2)} mV, "
+        "RaVL ${(Valores.rAvL! * 0.1).toStringAsFixed(2)} mV. ";
+
+    // return "Electrocardiograma (${Pacientes.Electrocardiogramas['Pace_GAB_EC_Feca']}): "
+    //     "${Pacientes.Electrocardiogramas['Pace_EC_rit']} "
+    //     "con Intervalo R-R ${Pacientes.Electrocardiogramas['Pace_EC_rr']} mm, "
+    //     "Frecuencia Cardiaca ${(300 / Pacientes.Electrocardiogramas['Pace_EC_rr']).toStringAsFixed(0)} Lat/min; "
+    //     "Duración de la Onda P ${Pacientes.Electrocardiogramas['Pace_EC_dop'] * 0.04} mSeg, "
+    //     "Altura de la Onda P ${Pacientes.Electrocardiogramas['Pace_EC_aop'] * 0.1} mV, "
+    //     "Duración de Intervalo PR ${Pacientes.Electrocardiogramas['Pace_EC_dpr'] * 0.04} mSeg, "
+    //     "Duración del Complejo QRS ${Pacientes.Electrocardiogramas['Pace_EC_dqrs'] * 0.04} mSeg, "
+    //     "Altura del Complejo QRS ${Pacientes.Electrocardiogramas['Pace_EC_aqrs'] * 0.1} mV. "
+    //     "Complejo QRS en aVF ${Pacientes.Electrocardiogramas['Pace_EC_qrsi'] * 0.1} mV, "
+    //     "Eje Cardiaco ${Pacientes.Electrocardiogramas['Pace_QRS']}° (Tangente DI/aVF). "
+    //     "Altura de la Onda T ${Pacientes.Electrocardiogramas['Pace_EC_aot'] * 0.1} mV, "
+    //     "Duración de la Onda T ${Pacientes.Electrocardiogramas['Pace_EC_dot'] * 0.04} mSeg, "
+    //     "Intervalo ST ${Pacientes.Electrocardiogramas['Pace_EC_ast_']}, "
+    //     // "Duracion del Segmento ST ${Pacientes.Electrocardiogramas['Pace_EC_st'] * 0.04} mSeg, "
+    //     "Duracion del Intervalo QT ${Pacientes.Electrocardiogramas['Pace_EC_dqt'] * 0.04} mSeg, "
+    //     "Deflexión Intrinsecoide ${Pacientes.Electrocardiogramas['DeflexionIntrinsecoide'] * 0.04} mSeg. "
+    //     "Indice Sokolow - Lyon ${(Pacientes.Electrocardiogramas['isl'] * 0.1).toStringAsFixed(0)} mV, "
+    //     "Indice Gubner - Ungerleider ${(Pacientes.Electrocardiogramas['igu'] * 0.1).toStringAsFixed(0)} mV, "
+    //     "Indice de Lewis ${(Pacientes.Electrocardiogramas['il'] * 0.1).toStringAsFixed(0)} mV, "
+    //     "Voltaje de Cornell ${(Pacientes.Electrocardiogramas['vc'] * 0.1).toStringAsFixed(0)} mV, "
+    //     "RaVL ${Pacientes.Electrocardiogramas['EC_rAVL']} mV. ";
+  }
+  static String electrocardiogramaAbreviado() {
+    return "Electrocardiograma (${Valores.fechaElectrocardiograma}): "
+        "${Valores.ritmoCardiaco} "
+        "con Intervalo R-R ${Valores.intervaloRR!.toStringAsFixed(0)} mm, "
+        "F. Card ${(Valores.frecuenciaCardiacaElectrocardiograma).toStringAsFixed(0)} Lat/min; "
+        "Onda P ${(Valores.duracionOndaP! * 0.04).toStringAsFixed(2)} mSeg, "
+        "${(Valores.alturaOndaP! * 0.1).toStringAsFixed(2)} mV, "
+        "PR ${(Valores.duracionPR! * 0.04).toStringAsFixed(2)} mSeg, "
+        "QRS ${(Valores.duracionQRS! * 0.04).toStringAsFixed(2)} mSeg, "
+        "${(Valores.alturaQRS! * 0.1).toStringAsFixed(2)} mV. "
+        "QRS en aVF ${(Valores.QRSa! * 0.1).toStringAsFixed(2)} mV, "
+        "Eje Cardiaco ${Valores.ejeCardiaco!.toStringAsFixed(1)}° (Tangente DI/aVF). "
+        "Onda T ${(Valores.alturaOndaT! * 0.1).toStringAsFixed(2)} mV, "
+        "${(Valores.duracionOndaT! * 0.04).toStringAsFixed(2)} mSeg, "
+        "Intervalo ST ${Valores.segmentoST}, "
+        "QT ${(Valores.duracionQT! * 0.04).toStringAsFixed(2)} mSeg, "
+        "Deflexión Intrinsecoide ${(Valores.deflexionIntrinsecoide! * 0.04).toStringAsFixed(2)} mSeg. "
+        "Sokolow - Lyon ${(Valores.indiceSokolowLyon * 0.1).toStringAsFixed(2)} mV, "
+        "Gubner - Ungerleider ${(Valores.indiceGubnerUnderleiger * 0.1).toStringAsFixed(2)} mV, "
+        "Lewis ${(Valores.indiceLewis * 0.1).toStringAsFixed(2)} mV, "
+        "Cornell ${(Valores.voltajeCornell * 0.1).toStringAsFixed(2)} mV, "
         "RaVL ${(Valores.rAvL! * 0.1).toStringAsFixed(2)} mV. ";
 
     // return "Electrocardiograma (${Pacientes.Electrocardiogramas['Pace_GAB_EC_Feca']}): "

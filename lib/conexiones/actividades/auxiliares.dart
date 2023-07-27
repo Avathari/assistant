@@ -970,3 +970,13 @@ class Terminal {
     print("\x1B[37m$message\x1B[0m"); //White
   }
 }
+
+class Numeros {
+
+  static double toDoubleFromInt(
+      {required Map<String, dynamic> json, required String keyEntered}) {
+    return double.parse(
+        json[keyEntered] != null ? json[keyEntered].toString() : '0');
+  }
+
+}
