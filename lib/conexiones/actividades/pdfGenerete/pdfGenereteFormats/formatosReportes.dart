@@ -2668,15 +2668,15 @@ class FormatosReportes {
                     child: textBoldTittle(
                         "CENSO HOSPITALARIO - MEDICINA INTERNA")),
               ]),
-          TableRow(
-              verticalAlignment: TableCellVerticalAlignment.middle,
-              children: [
-                Container(
-                  child: textTittle(
-                      "Fecha: ${Calendarios.today(format: 'dd/MM/yyyy')}",
-                      textAlign: TextAlign.right),
-                ),
-              ]),
+          // TableRow(
+          //     verticalAlignment: TableCellVerticalAlignment.middle,
+          //     children: [
+          //       Container(
+          //         child: textTittle(
+          //             "Fecha: ${Calendarios.today(format: 'dd/MM/yyyy')}",
+          //             textAlign: TextAlign.right),
+          //       ),
+          //     ]),
         ],
       ),
     );
@@ -2688,11 +2688,11 @@ class FormatosReportes {
         verticalAlignment: TableCellVerticalAlignment.middle,
         children: [
           // textTittle("ID"),
-          textTittle("Cama".toUpperCase()),
-          textTittle("Datos Generales".toUpperCase()),
-          textTittle("Diagnóstico(s)".toUpperCase()),
-          textTittle("Auxiliares Diagnósticos".toUpperCase()),
-          textTittle("Pendientes".toUpperCase()),
+          textTittle("Cama".toUpperCase(), fontSize: 4),
+          textTittle("Datos Generales".toUpperCase(), fontSize: 4),
+          textTittle("Diagnóstico(s)".toUpperCase(), fontSize: 4),
+          textTittle("Auxiliares Diagnósticos".toUpperCase(), fontSize: 4),
+          textTittle("Pendientes".toUpperCase(), fontSize: 4),
         ],
       ),
     );
@@ -2716,7 +2716,6 @@ class FormatosReportes {
           imagenologicos = "",
           electrocardiogramas = "",
           situaciones = "";
-
       // Terminal.printExpected(
       //     message:
       //         "Pendientes : : ${item['Pendientes']} ${item['Pendientes'].runtimeType}");
@@ -2731,10 +2730,10 @@ class FormatosReportes {
         ventilaciones = "\n"
             // "IOT -  \n"
             "${Ventilaciones.modoVentilatorio(modalidadVentilatoria: item['Ventilaciones']['VM_Mod'].toString())}\n"
-            "Vt ${item['Ventilaciones']['Pace_Vt']} mL - - - - - - "
-            "Fr ${item['Ventilaciones']['Pace_Fr']} mL\n"
-            "FiO2 ${item['Ventilaciones']['Pace_Fio']} mL - - - - - - "
-            "PEEP ${item['Ventilaciones']['Pace_Peep']} mL\n"
+            "Vt ${item['Ventilaciones']['Pace_Vt']} mL - - - - "
+            "Fr ${item['Ventilaciones']['Pace_Fr']} Vent/min\n"
+            "FiO2 ${item['Ventilaciones']['Pace_Fio']} % - - - - "
+            "PEEP ${item['Ventilaciones']['Pace_Peep']} cmH20\n"
             // "Vt ${item['Ventilaciones']['Pace_Peep']} mL\n"
             // "Vt ${item['Ventilaciones']['Pace_Peep']} mL\n"
             "\n";
@@ -2793,7 +2792,6 @@ class FormatosReportes {
           }
         }
       }
-
       for (var i in item['Cronicos']) {
         previos = "$previos"
             // "${i['Pace_APP_DEG'].toUpperCase()} -\n"
@@ -2895,9 +2893,9 @@ class FormatosReportes {
           verticalAlignment: TableCellVerticalAlignment.top,
           children: [
             textLabel("${item['Id_Cama']}\n"
-                "_____\n"
+                "___\n"
                 "$situaciones\n"
-                "_____\n"),
+                "___\n"),
             textLabel("${item['Pace_NSS']} ${item['Pace_AGRE']}\n"
                 "${nombre.toUpperCase()}"
                 "Edad ${item['Pace_Eda']} Años\n"
@@ -2913,14 +2911,15 @@ class FormatosReportes {
                 textAlign: TextAlign.justify),
             textLabel(
                 "$auxiliary"
-                "___________________________________________\n\n"
+                "___________________________________________"
+                    "___________________________________________\n\n"
                 "$imagenologicos"
                 "___________________________________________\n\n"
                 "$electrocardiogramas",
                 textAlign: TextAlign.justify),
             textLabel(
                 "$ventilaciones"
-                "___________________________\n\n"
+                "_______________________\n\n"
                 "PENDIENTES\n"
                 "$penden",
                 textAlign: TextAlign.justify),
@@ -2934,11 +2933,11 @@ class FormatosReportes {
       Table(
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         columnWidths: {
-          0: const IntrinsicColumnWidth(flex: 2),
-          1: const IntrinsicColumnWidth(flex: 8),
-          2: const IntrinsicColumnWidth(flex: 16),
-          3: const IntrinsicColumnWidth(flex: 26),
-          4: const IntrinsicColumnWidth(flex: 8),
+          0: const IntrinsicColumnWidth(flex: 2), // 2
+          1: const IntrinsicColumnWidth(flex: 14), // 8
+          2: const IntrinsicColumnWidth(flex: 19), // 16
+          3: const IntrinsicColumnWidth(flex: 26), // 26
+          4: const IntrinsicColumnWidth(flex: 8), //8
         },
         border: const TableBorder(
           horizontalInside: BorderSide(width: 0.7),

@@ -451,12 +451,12 @@ List<Widget> buildBulletPoints(String para) {
   return bullets;
 }
 
-Padding textTittle(String label, {TextAlign textAlign = TextAlign.left}) {
+Padding textTittle(String label, {TextAlign textAlign = TextAlign.left, double fontSize = 6}) {
   return Padding(
     padding: const EdgeInsets.all(4.0),
     child: Text(label,
         textAlign: textAlign,
-        style: TextStyle(fontSize: 6, fontWeight: FontWeight.bold)),
+        style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold)),
   );
 }
 

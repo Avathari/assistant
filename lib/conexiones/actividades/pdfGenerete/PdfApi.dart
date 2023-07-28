@@ -54,6 +54,7 @@ class PdfApi {
     //     context: Contextos.contexto, error: 'Contenido creado $ur');
     await OpenFile.open(ur);
   }
+
 }
 
 class PdfParagraphsApi {
@@ -206,9 +207,12 @@ class PdfParagraphsApi {
               margin: const EdgeInsets.only(top: 1.0 * PdfPageFormat.mm),
               child:
               Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-                Divider(color: PdfColors.black),
-                Text(text,
-                    style: const TextStyle(fontSize: 8, color: PdfColors.black))
+                Divider(height: 3, color: PdfColors.black),
+                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(
+                    "Fecha: ${Calendarios.today(format: 'dd/MM/yyyy')}",
+                    style: const TextStyle(fontSize: 5, color: PdfColors.black)),
+                  Text(text,
+                      style: const TextStyle(fontSize: 5, color: PdfColors.black))])
               ]));
         },
       ));

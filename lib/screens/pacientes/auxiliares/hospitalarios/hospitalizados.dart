@@ -1,6 +1,7 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/actividades/pdfGenerete/PdfApi.dart';
 import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteFormats/formatosReportes.dart';
+import 'package:assistant/conexiones/actividades/wordGenerate/DocApi.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
@@ -103,6 +104,29 @@ class _HospitalizadosState extends State<Hospitalizados> {
                 _pullListRefresh();
               },
             ),
+            CrossLine(thickness: 4, isHorizontal: false,),
+            IconButton(
+              icon: const Icon(
+                Icons.wordpress,
+              ),
+              tooltip: "Imprimir censo hospitalario",
+              onPressed: () async {
+                final pdfFile = await PdfParagraphsApi.generateFromList(
+                  topMargin: 10,
+                  bottomMargin: 5,
+                  rightMargin: 10,
+                  leftMargin: 10,
+                  withIndicationReport: false,
+                  indexOfTypeReport: TypeReportes.censoHospitalario,
+                  paraph: foundedItems!,
+                  content:  FormatosReportes.censoSimpleHospitalario(
+                      foundedItems!),
+                  name: "(CEN) - (${Calendarios.today()}).pdf",
+                );
+                DocApi.openFileInWord(pdfFile);
+                // PdfApi.openFile(pdfFile);
+              },
+            ),
             IconButton(
               icon: const Icon(
                 Icons.list,
@@ -110,6 +134,8 @@ class _HospitalizadosState extends State<Hospitalizados> {
               tooltip: "Imprimir censo hospitalario",
               onPressed: () async {
                 final pdfFile = await PdfParagraphsApi.generateFromList(
+                  topMargin: 10,
+                  bottomMargin: 5,
                   rightMargin: 10,
                   leftMargin: 10,
                   withIndicationReport: false,
