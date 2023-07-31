@@ -2867,7 +2867,6 @@ class FormatosReportes {
             electrocardiogramas = "$electrocardiogramas"
                 "${Auxiliares.electrocardiogramaAbreviado()}\n";
           }
-          // Terminal.printExpected(message: "Electrocardiograma seleccionados ${Auxiliares.electrocardiograma()}");
         }
       } else {
         electrocardiogramas = "Sin Estudios Electrocardiográficos";

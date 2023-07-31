@@ -124,6 +124,7 @@ class Pacientes {
   //
   static List? Paraclinicos = [];
   static List? Imagenologicos = [];
+  static List? Electros = [];
   static List? Pendiente = [];
 
   static String get diasOrdinalesEstancia {
@@ -581,10 +582,13 @@ class Pacientes {
       for (var element in Patologicos!) {
         if (Reportes.impresionesDiagnosticas == "") {
           Reportes.impresionesDiagnosticas =
-              "${element['Pace_APP_DEG']} (${element['Pace_APP_DEG_com']}). ";
+              // "${element['Pace_APP_DEG']} ("
+                  "${element['Pace_APP_DEG_com']}. ";
         } else {
           Reportes.impresionesDiagnosticas =
-              "${Reportes.impresionesDiagnosticas}\n${element['Pace_APP_DEG']} (${element['Pace_APP_DEG_com']}). \n";
+              "${Reportes.impresionesDiagnosticas}\n"
+                  // "${element['Pace_APP_DEG']} ("
+                  "${element['Pace_APP_DEG_com']}. ";
         }
       }
     }
@@ -676,6 +680,7 @@ class Pacientes {
     'Coahuila',
     'Colima',
     'Durango',
+    'Guadalajara',
     'Guanajuato',
     'Guerrero',
     'Hidalgo',
@@ -5220,27 +5225,36 @@ class Electrocardiogramas {
 
   static void fromJson(Map<String, dynamic> json) {
     try {
-
       Valores.fechaElectrocardiograma = json['Pace_GAB_EC_Feca'] ?? '';
       Valores.ritmoCardiaco = json['Pace_EC_rit'] ?? '';
       Valores.intervaloRR = json['Pace_EC_rr'] ?? 0;
       Valores.duracionOndaP = double.parse(
           json['Pace_EC_dop'] != null ? json['Pace_EC_dop'].toString() : '0');
 
-      Valores.alturaOndaP = Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_aop');
-      Valores.duracionPR = Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dpr');
-      Valores.duracionQRS = Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dqrs');
-      Valores.alturaQRS = Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_aqrs');
-      Valores.QRSi = Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_qrsi');
-      Valores.QRSa = Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_qrsa');
+      Valores.alturaOndaP =
+          Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_aop');
+      Valores.duracionPR =
+          Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dpr');
+      Valores.duracionQRS =
+          Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dqrs');
+      Valores.alturaQRS =
+          Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_aqrs');
+      Valores.QRSi =
+          Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_qrsi');
+      Valores.QRSa =
+          Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_qrsa');
       //
       Valores.ejeCardiaco = double.parse(json['Pace_QRS'] ?? '0.0');
       //
       Valores.segmentoST = json['Pace_EC_st'] ?? '';
-      Valores.alturaSegmentoST = Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_ast_');
-      Valores.duracionQT = Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dqt');
-      Valores.duracionOndaT = Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dot');
-      Valores.alturaOndaT = Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_aot');
+      Valores.alturaSegmentoST =
+          Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_ast_');
+      Valores.duracionQT =
+          Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dqt');
+      Valores.duracionOndaT =
+          Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_dot');
+      Valores.alturaOndaT =
+          Numeros.toDoubleFromInt(json: json, keyEntered: 'Pace_EC_aot');
       //
       Valores.rV1 = json['EC_rV1'] ?? 0;
       Valores.sV6 = json['EC_sV6'] ?? 0;
@@ -5250,21 +5264,47 @@ class Electrocardiogramas {
       Valores.sV3 = json['EC_sV3'] ?? 0;
       //
       Valores.patronQRS = json['PatronQRS'] ?? '';
-      Valores.deflexionIntrinsecoide =
-          Numeros.toDoubleFromInt(json: json, keyEntered: 'DeflexionIntrinsecoide');
+      Valores.deflexionIntrinsecoide = Numeros.toDoubleFromInt(
+          json: json, keyEntered: 'DeflexionIntrinsecoide');
 
       Valores.rDI = Numeros.toDoubleFromInt(json: json, keyEntered: 'EC_rDI');
       Valores.sDI = Numeros.toDoubleFromInt(json: json, keyEntered: 'EC_sDI');
-      Valores.rDIII = Numeros.toDoubleFromInt(json: json, keyEntered: 'EC_rDIII');
-      Valores.sDIII = Numeros.toDoubleFromInt(json: json, keyEntered: 'EC_sDIII');
+      Valores.rDIII =
+          Numeros.toDoubleFromInt(json: json, keyEntered: 'EC_rDIII');
+      Valores.sDIII =
+          Numeros.toDoubleFromInt(json: json, keyEntered: 'EC_sDIII');
       //
       Valores.conclusionElectrocardiograma = json['Pace_EC_CON'] ?? '';
       // Valores.ima = json['Pace_GAB_IMG'];
     } on Exception catch (e) {
       Terminal.printExpected(message: "ERROR - $e");
     } finally {
-      Terminal.printExpected(message: "Electrocardiograma seleccionados en Finally $json");
+      // Terminal.printExpected(
+      //     message: "Electrocardiograma seleccionados en Finally $json");
     }
+  }
+
+  static String historial() {
+    String electrocardiogramas = "";
+    if (Pacientes.Electros != [] &&
+        Pacientes.Electros != null) {
+      for (var element in Pacientes.Electros!) {
+        Electrocardiogramas.fromJson(element);
+        // ***************************** *****************
+        if (electrocardiogramas == "") {
+          electrocardiogramas = ""
+              "${Auxiliares.electrocardiogramaAbreviado()}\n";
+        } else {
+          electrocardiogramas = "$electrocardiogramas"
+              "${Auxiliares.electrocardiogramaAbreviado()}\n";
+        }
+        // Terminal.printExpected(message: "Electrocardiograma seleccionados ${Auxiliares.electrocardiograma()}");
+      }
+    } else {
+      electrocardiogramas =  "Sin Estudios Electrocardiográficos";
+    }
+
+    return electrocardiogramas;
   }
   // static void fromJson(Map<String, dynamic> json) {
   //   // print("Electrocardiogramas $json");
@@ -5524,7 +5564,7 @@ class Auxiliares {
     return "$prosa${Sentences.capitalize(max)}. ";
   }
 
-  static String historial() {
+  static String historial({bool esAbreviado = false}) {
     String prosa = "";
     var fechar = Listas.listWithoutRepitedValues(
       Listas.listFromMapWithOneKey(
@@ -5533,26 +5573,49 @@ class Auxiliares {
       ),
     );
 
-    fechar.forEach((element) {
-      // Filtro por estudio de los registros de Pacientes.Paraclinicos
-      var aux = Pacientes.Paraclinicos!
-          .where((user) => user["Fecha_Registro"].contains(element))
-          .toList();
-      String fecha = "($element)";
-      String max = "";
+    if (esAbreviado) {
+      fechar.forEach((element) {
+        String fecha = "          Paraclínicos ($element)", max = "";
 
-      aux.forEach((element) {
-        if (max == "") {
-          max =
-              "${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
-        } else {
-          max =
-              "$max, ${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+        List<dynamic>? alam = Pacientes.Paraclinicos!;
+        var aux = alam!
+            .where((user) => user["Fecha_Registro"].contains(element))
+            .toList();
+
+        for (var element in aux) {
+          // ***************************** *****************
+          if (max == "") {
+            max =
+                "${Auxiliares.abreviado(estudio: element['Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+          } else {
+            max =
+                "$max, ${Auxiliares.abreviado(estudio: element['Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+          }
         }
+        prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
       });
+    } else {
+      fechar.forEach((element) {
+        // Filtro por estudio de los registros de Pacientes.Paraclinicos
+        var aux = Pacientes.Paraclinicos!
+            .where((user) => user["Fecha_Registro"].contains(element))
+            .toList();
+        String fecha = "($element)";
+        String max = "";
 
-      prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
-    });
+        aux.forEach((element) {
+          if (max == "") {
+            max =
+                "${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+          } else {
+            max =
+                "$max, ${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+          }
+        });
+
+        prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+      });
+    }
     // ************** ***************** ***************
     // Terminal.printExpected(message: "prosa $prosa");
 
@@ -5680,7 +5743,8 @@ class Auxiliares {
     "Conteo de Linfocitos T CD4+",
     "Marcadores Cárdiacos",
     "",
-    "",
+    "Panel Viral",
+    "Perfil de Hierro",
     "Electrocardiograma"
   ];
   static Map<String, dynamic> Laboratorios = {
@@ -5806,9 +5870,21 @@ class Auxiliares {
       "Conteo de Linfocitos CD4+",
       "Porcentaje de Linfocitos CD4+"
     ],
+    //
     Categorias[20]: [
-      "Conteo de Linfocitos CD4+",
-      "Porcentaje de Linfocitos CD4+"
+      "Ac Anti HCV",
+      "HIVab",
+      "HbsAg",
+      "HIVAg",
+      "HIVAg-Ag",
+    ],
+    Categorias[21]: [
+      "Hierro Sérico",
+      "Ferritina",
+      "Transferrina",
+      "Saturación de Transferrina",
+      "Captación de Hierro Sérico",
+      "",
     ],
   };
   static Map<String, dynamic> Medidas = {
@@ -5832,7 +5908,11 @@ class Auxiliares {
     Categorias[17]: [""],
     Categorias[18]: ["UI/L", "ng/mL"],
     Categorias[19]: [""],
-    Categorias[20]: [""],
+    Categorias[20]: ["S/CO",
+      "U/mL",
+      "",
+    ],
+    Categorias[21]: ["mcg/dl","ng/mL","µg/dL","%","mg/dL"],
   };
   static final Map<String, dynamic> auxiliares = {
     "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_reglabo "
@@ -6038,6 +6118,7 @@ class Auxiliares {
     //     "Voltaje de Cornell ${(Pacientes.Electrocardiogramas['vc'] * 0.1).toStringAsFixed(0)} mV, "
     //     "RaVL ${Pacientes.Electrocardiogramas['EC_rAVL']} mV. ";
   }
+
   static String electrocardiogramaAbreviado() {
     return "Electrocardiograma (${Valores.fechaElectrocardiograma}): "
         "${Valores.ritmoCardiaco} "
@@ -6151,12 +6232,13 @@ class Pendientes {
 
   static Map<String, dynamic> Pendiente = {};
 
-  static List<String> regiones = ['Ritmo Sinusal', 'Ritmo no Sinusal'];
   static List<String> typesPendientes = [
     'Radiografías',
     'Ultrasonidos',
     'Tomografías',
-    'Resonancias'
+    'Resonancias',
+    'Envios',
+    'Indicaciones',
   ];
 }
 
@@ -6614,7 +6696,7 @@ class Ventilaciones {
     'Espontáneo (ESPON)',
   ];
 
-  static String modoVentilatorio ({required String modalidadVentilatoria}){
+  static String modoVentilatorio({required String modalidadVentilatoria}) {
     if (modalidadVentilatoria ==
         'Ventilación Limitada por Presión Ciclada por Tiempo (P-VMC / VCP)') {
       return 'AC-VCP'; // # 'P-VMC/VCP';

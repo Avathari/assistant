@@ -70,6 +70,7 @@ class _ValuePanelState extends State<ValuePanel> {
                           ),
                           textAlign: TextAlign.left,
                         ),
+                        if (widget.thirdText! != "")
                         Text(widget.thirdText!,
                             style: TextStyle(
                               fontSize: widget.fontSize - 4,
@@ -126,13 +127,15 @@ class _ValuePanelState extends State<ValuePanel> {
                   ? TextAlign.center
                   : TextAlign.left,
             ),
-            Text(widget.thirdText!,
-                style: TextStyle(
-                  fontSize: widget.fontSize - 4,
-                  color: Colors.grey,
-                  overflow: TextOverflow.ellipsis,
-                  fontWeight: FontWeight.normal,
-                )),
+            if (widget.thirdText! != "")
+              Text(widget.thirdText!,
+                  style: TextStyle(
+                    fontSize: widget.fontSize - 4,
+                    color: Colors.grey,
+                    overflow: TextOverflow.ellipsis,
+                    fontWeight: FontWeight.normal,
+                  )),
+
           ],
         ),
       ),

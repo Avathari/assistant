@@ -581,7 +581,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
             //       });
             //     }),
             EditTextArea(
-              keyBoardType: TextInputType.number,
+              keyBoardType: TextInputType.multiline,
               inputFormat: MaskTextInputFormatter(),
               labelEditText: "Hallazgos del Estudio",
               textController: hallazgosEstudioTextController,
@@ -591,7 +591,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
               },
             ),
             EditTextArea(
-                keyBoardType: TextInputType.number,
+                keyBoardType: TextInputType.multiline,
                 inputFormat: MaskTextInputFormatter(),
                 numOfLines: 15,
                 labelEditText: "Conclusiones",

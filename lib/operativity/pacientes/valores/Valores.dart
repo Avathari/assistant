@@ -196,7 +196,7 @@ class Valores {
     modoAtencion = json['Pace_Hosp'];
 
     // Comprobar estado de Atención del Paciente.
-    if (modoAtencion == 'Hospitalización') {
+    if (modoAtencion == 'Hospitalización' || modoAtencion == 'Otra Hospitalización') {
       isHospitalizado = true;
       Pacientes.esHospitalizado = true;
     } else if (modoAtencion == 'Consulta Externa') {

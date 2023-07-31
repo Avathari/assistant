@@ -186,7 +186,7 @@ class Activos {
         "Estado_Actual = ?, Fecha_Proximo_Pago = ?, Fecha_Baja = ?, "
         "Descripcion = ?, Fine_IMG = from_base64(?) "
         "WHERE ID_Registro = ?",
-    "deleteQuery": "DELETE FROM activos WHERE ID_Activos = ?",
+    "deleteQuery": "DELETE FROM activos WHERE ID_Registro = ?",
     "activosStadistics": "SELECT "
         "(SELECT IFNULL(COUNT(`Tipo_Recurso`), '0') FROM activos WHERE `ID_Usuario` = 1) as Total_Registrados, "
         "(SELECT IFNULL(COUNT(`Tipo_Recurso`), '0') FROM activos WHERE `ID_Usuario` = 1 AND Tipo_Recurso = 'Ingresos') as Ingresos_Registrados, "

@@ -1027,6 +1027,17 @@ class _GestionActivosState extends State<GestionActivos> {
       setState(() {
         snapshot.data.removeAt(posicion);
       });
+    } catch (e) {
+      Operadores.alertActivity(
+          context: context,
+          tittle: "Error al Eliminar Registro . . .",
+          message: "ERROR - $e",
+          onClose: () {
+            Navigator.pop(context);
+          },
+          onAcept: () {
+            Navigator.pop(context);
+          });
     } finally {
       Navigator.of(context).pop();
     }

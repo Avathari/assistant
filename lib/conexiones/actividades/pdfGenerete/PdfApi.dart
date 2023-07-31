@@ -54,7 +54,6 @@ class PdfApi {
     //     context: Contextos.contexto, error: 'Contenido creado $ur');
     await OpenFile.open(ur);
   }
-
 }
 
 class PdfParagraphsApi {
@@ -140,49 +139,22 @@ class PdfParagraphsApi {
 
   static Future<File> generateFromList(
       {double? topMargin = 20,
-        double? rightMargin = 30,
-        double? leftMargin = 30,
-        double? bottomMargin = 10,
-        bool? withHeader = true,
-        required List<Widget> content,
-        String? imageHeader = "assets/images/issste_logo.png",
-        required TypeReportes indexOfTypeReport,
-        bool withIndicationReport = false,
-        required List<dynamic> paraph,
-        String? name = "my_example.pdf"}) async {
+      double? rightMargin = 30,
+      double? leftMargin = 30,
+      double? bottomMargin = 10,
+      bool? withHeader = true,
+      required List<Widget> content,
+      String? imageHeader = "assets/images/issste_logo.png",
+      required TypeReportes indexOfTypeReport,
+      bool withIndicationReport = false,
+      required List<dynamic> paraph,
+      String? name = "my_example.pdf"}) async {
     final pdf = Document();
 
     if (content == null) {
-      FormatosReportes.censoHospitalario(
-          paraph);
+      FormatosReportes.censoHospitalario(paraph);
     }
-    // # # # # # # # ### #  # # # # # # # ### #
-    // Carga del logotipo del documento para el Header.
-    Uint8List logobytes =
-    (await rootBundle.load(imageHeader!)).buffer.asUint8List();
-    Uint8List logoSecondbytes =
-    (await rootBundle.load("assets/images/logoIsssteHorizontal.png"))
-        .buffer
-        .asUint8List();
-    Uint8List logoShieldbytes =
-    (await rootBundle.load("assets/images/logoNacional.png"))
-        .buffer
-        .asUint8List();
-
-    final tempDir = await getTemporaryDirectory();
-    // # # # # # # ### # # # # # # ### # # # # # # ###
-    final file = await File('${tempDir.path}/logo_image.png').create();
-    file.writeAsBytesSync(logobytes);
-    // # # # # # # ### # # # # # # ### # # # # # # ###
-    final fileSecond =
-    await File('${tempDir.path}/logoIsssteHorizontal.png').create();
-    fileSecond.writeAsBytesSync(logoSecondbytes);
-    // # # # # # # ### # # # # # # ### # # # # # # ###
-    final fileShield = await File('${tempDir.path}/logoNacional.png').create();
-    fileShield.writeAsBytesSync(logoShieldbytes);
-    // # # # # # # ### # # # # # # ### # # # # # # ###
     // Creación de documento en base al paraph.
-    // # # # # # # ### # # # # # # ### # # # # # # ###
     try {
       print("indexOfTypeReport $indexOfTypeReport");
       pdf.addPage(MultiPage(
@@ -192,13 +164,14 @@ class PdfParagraphsApi {
             right: rightMargin!,
             left: leftMargin!,
             bottom: bottomMargin!),
-        header: (context) => withHeader == true ? Container() : headerInTable(
-    imageHeader: fileSecond,
-    secondImageHeader: fileShield,
-    titulo:
-    "Instituto de Seguridad y Servicios Sociales\npara los Trabajadores\ndel Estado"
-        .toUpperCase(),
-    subTitulo: "Subdelegación de Quintana Roo\nCAF Bacalar"),
+        header: (context) => Container(),
+        // withHeader == true
+        //     ? Container()
+        //     : headerInTable(
+        //         imageHeader: null,
+        //         secondImageHeader: null,
+        //         titulo: "".toUpperCase(),
+        //         subTitulo: ""),
         build: ((context) => content),
         footer: (context) {
           final text = "Pagina ${context.pageNumber} de ${context.pagesCount}";
@@ -206,13 +179,18 @@ class PdfParagraphsApi {
               alignment: Alignment.centerRight,
               margin: const EdgeInsets.only(top: 1.0 * PdfPageFormat.mm),
               child:
-              Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+                  Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
                 Divider(height: 3, color: PdfColors.black),
-                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(
-                    "Fecha: ${Calendarios.today(format: 'dd/MM/yyyy')}",
-                    style: const TextStyle(fontSize: 5, color: PdfColors.black)),
-                  Text(text,
-                      style: const TextStyle(fontSize: 5, color: PdfColors.black))])
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Fecha: ${Calendarios.today(format: 'dd/MM/yyyy')}",
+                          style: const TextStyle(
+                              fontSize: 5, color: PdfColors.black)),
+                      Text(text,
+                          style: const TextStyle(
+                              fontSize: 5, color: PdfColors.black))
+                    ])
               ]));
         },
       ));

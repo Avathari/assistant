@@ -48,6 +48,7 @@ dependencies:
   # csv: ^5.0.1
   # Creación de Documentos PDF
   pdf: ^3.1.0 # Create PDF Document.
+  docx_template: ^0.3.4
   # Access predeterminated directories.
   path_provider: ^2.0.1 # save file
   path: ^1.8.1
@@ -74,7 +75,7 @@ dependencies:
   # View PDF Documents
   syncfusion_flutter_pdfviewer: ^20.4.51
   # Convertir PDF en Word
-  aspose_words_cloud: 22.4.0
+  # aspose_words_cloud: 22.4.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2

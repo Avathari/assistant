@@ -4,6 +4,7 @@ import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/biome
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/cardiacos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/coagulaciones.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/electrolitos.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/ferricos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/hepaticos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/lipidicos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/pancreaticos.dart';
@@ -12,6 +13,7 @@ import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/react
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/rutina.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/tiroideos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/venosos.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/virales.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';
@@ -87,6 +89,11 @@ class _ConmutadorParaclinicosState extends State<ConmutadorParaclinicos> {
 
       case "Marcadores Cárdiacos":
         return const Cardiacos();
+
+      case "Panel Viral":
+        return const Virales();
+      case "Perfil de Hierro":
+        return const Ferricos();
       default:
         return const Rutinas();
     }

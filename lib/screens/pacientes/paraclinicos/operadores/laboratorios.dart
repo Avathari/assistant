@@ -740,6 +740,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                               // Actualización del Indice
                               // *************** *********** **************
                               index = Auxiliares.Categorias.indexOf(newValue);
+                              print("${tipoEstudioValue} : $index");
                               // *************** *********** **************
                               estudioValue = Auxiliares.Laboratorios[
                                   Auxiliares.Categorias[index]][0];
