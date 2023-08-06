@@ -399,6 +399,15 @@ class Pacientes {
         "${Formatos.exposiciones}\n"
         "${Formatos.toxicomanias}\n";
   }
+  static String noPatologicosResumido() {
+    return "${Formatos.viviendas}"
+        "${Formatos.alimentarios}\n"
+        "${Formatos.diarios}\n"
+        "${Formatos.higienicos}\n"
+        "${Formatos.exposiciones}\n"
+        "${Formatos.toxicomanias}\n";
+  }
+
 
   static String noPatologicosAnalisis() {
     return "${antecedentesPatologicos()}"
@@ -495,6 +504,8 @@ class Pacientes {
         return Valorados.asociadosRiesgo;
       case 5:
         return "Antropometría infantil";
+      case 6:
+        return Valorados.vitalesAbreviado;
       default:
         return "Signos vitales registrados";
     }
@@ -527,7 +538,7 @@ class Pacientes {
         return "Glasgow E4, V5, M6, hidratado, pálidez tegumentaria. "
             "Precordio rítmico, sin agregados. Murmullo vesicular audible, sin estertores ni sibilancias. "
             "Abdomen sin alteraciones, normoperistalsis, no doloroso, sin irritación peritoneal. "
-            "Extremidades funcionales, fuerza conservada, reflejos osteotendinosos, no edema, llenado capilar normal. ";
+            "Extremidades funcionales, fuerza conservada, reflejos osteotendinosos, no edema, llenado capilar normal";
       case 5:
         return "";
       default:
@@ -742,7 +753,8 @@ class Pacientes {
     'Hospitalización',
     'Otra Hospitalización',
     'Consulta Externa',
-    'Privado'
+    'Privado',
+    'Defunción'
   ];
   static final List<String> Turno = ["Matutino", "Vespertino"];
   static final List<String> Vivo = [
@@ -5701,6 +5713,14 @@ class Auxiliares {
       return 'PO3';
     } else if (estudio == 'Calcio') {
       return 'Ca2';
+    } else if (estudio == 'Leucocitos Totales') {
+      return 'LEU';
+    } else if (estudio == 'Neutrofilos Totales') {
+      return 'NEU';
+    } else if (estudio == 'Linfocitos Totales') {
+      return 'LYN';
+    }  else if (estudio == 'Monocitos Totales') {
+      return 'MON';
     } else if (estudio == 'Hemoglobina') {
       return 'Hb';
     } else if (estudio == 'Hematocrito') {
@@ -5712,11 +5732,13 @@ class Auxiliares {
     } else if (estudio == 'Albúmina') {
       return 'Alb';
     } else if (estudio == 'Urea') {
-      return 'URe';
+      return 'Ure';
     } else if (estudio == 'Creatinina') {
       return 'Cr';
     } else if (estudio == 'Glucosa') {
       return 'GLU';
+    } else if (estudio == 'Nitrógeno Úrico') {
+      return 'BUN';
     } else {
       return estudio;
     }

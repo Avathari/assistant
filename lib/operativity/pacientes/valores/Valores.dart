@@ -196,7 +196,8 @@ class Valores {
     modoAtencion = json['Pace_Hosp'];
 
     // Comprobar estado de Atención del Paciente.
-    if (modoAtencion == 'Hospitalización' || modoAtencion == 'Otra Hospitalización') {
+    if (modoAtencion == 'Hospitalización' ||
+        modoAtencion == 'Otra Hospitalización') {
       isHospitalizado = true;
       Pacientes.esHospitalizado = true;
     } else if (modoAtencion == 'Consulta Externa') {
@@ -1419,13 +1420,18 @@ class Valores {
 
   static double get pesoCorporalMagro {
     if (Valores.sexo == 'Femenino') {
-      return (1.07 * Valores.pesoCorporalTotal!) - (148 * (math.pow(Valores.pesoCorporalTotal!, 2) / math.pow(Valores.alturaPaciente!*100, 2)));
-    }else if (Valores.sexo == 'Masculino') {
-      return (1.10 * Valores.pesoCorporalTotal!) - (128 * (math.pow(Valores.pesoCorporalTotal!, 2) / math.pow(Valores.alturaPaciente!*100, 2)));
+      return (1.07 * Valores.pesoCorporalTotal!) -
+          (148 *
+              (math.pow(Valores.pesoCorporalTotal!, 2) /
+                  math.pow(Valores.alturaPaciente! * 100, 2)));
+    } else if (Valores.sexo == 'Masculino') {
+      return (1.10 * Valores.pesoCorporalTotal!) -
+          (128 *
+              (math.pow(Valores.pesoCorporalTotal!, 2) /
+                  math.pow(Valores.alturaPaciente! * 100, 2)));
     } else {
       return double.nan;
     }
-
   }
 
   static double get masaMuscularMagra =>
@@ -2719,7 +2725,17 @@ class Valorados {
       "frecuencia respiratoria de ${Valores.frecuenciaRespiratoria} L/min, "
       "temperatura corporal ${Valores.temperaturCorporal}°C, "
       "saturación periférica de oxígeno ${Valores.saturacionPerifericaOxigeno}%, "
+      "peso corporal total ${Valores.pesoCorporalTotal} Kg, "
       "estatura ${Valores.alturaPaciente} mts";
+
+  static String get vitalesAbreviado =>
+      "TA ${Valores.tensionArterialSistemica} mmHg, "
+      "FC ${Valores.frecuenciaCardiaca} L/min, "
+      "FR ${Valores.frecuenciaRespiratoria} L/min, "
+      "Temp ${Valores.temperaturCorporal}°C, "
+      "SpO2 ${Valores.saturacionPerifericaOxigeno}%, "
+      "PCT ${Valores.pesoCorporalTotal} Kg, "
+      "Estatura ${Valores.alturaPaciente} mts";
 
   static String get signosVitales =>
       "Signos vitales con " // fecha de ${Pacientes.Vital['Pace_Feca_SV']} con "
@@ -4491,7 +4507,7 @@ class Exploracion {
         'Cuello $ingurgitacionYugular$desviacionTraqueal$bocioCervical$adenopatiaCervical'
         '$adenomegaliasCervical'
         '. '
-    'Tórax $amplexionTorax$amplexacionTorax'
+        'Tórax $amplexionTorax$amplexacionTorax'
         '. ';
   }
 }

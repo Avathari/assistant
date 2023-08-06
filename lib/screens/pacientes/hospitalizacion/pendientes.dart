@@ -44,23 +44,7 @@ class OperacionesPendiente extends StatefulWidget {
 }
 
 class _OperacionesPendienteState extends State<OperacionesPendiente> {
-  String appBarTitile = "Gestión de Pendientes";
-  String? consultIdQuery = Pendientes.pendientes['consultIdQuery'];
-  String? registerQuery = Pendientes.pendientes['registerQuery'];
-  String? updateQuery = Pendientes.pendientes['updateQuery'];
 
-  int idOperation = 0;
-
-  List<dynamic>? listOfValues;
-
-  var fechaRealizacionTextController = TextEditingController();
-  bool? realized = false;
-  //
-  var pendienteValue = Pendientes.typesPendientes[0];
-  var descripcionPendienteTextController = TextEditingController();
-  //
-  var carouselController = CarouselController();
-  //
 
   @override
   void initState() {
@@ -339,6 +323,25 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
       default:
     }
   }
+
+  // VARIABLES ******************************************7
+  String appBarTitile = "Gestión de Pendientes";
+  String? consultIdQuery = Pendientes.pendientes['consultIdQuery'];
+  String? registerQuery = Pendientes.pendientes['registerQuery'];
+  String? updateQuery = Pendientes.pendientes['updateQuery'];
+
+  int idOperation = 0;
+
+  List<dynamic>? listOfValues;
+
+  var fechaRealizacionTextController = TextEditingController();
+  bool? realized = false;
+  //
+  var pendienteValue = Pendientes.typesPendientes[0];
+  var descripcionPendienteTextController = TextEditingController();
+  //
+  var carouselController = CarouselController();
+//
 }
 
 // ignore: must_be_immutable

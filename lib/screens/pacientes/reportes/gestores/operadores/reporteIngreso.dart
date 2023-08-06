@@ -20,17 +20,17 @@ class ReporteIngreso extends StatefulWidget {
 }
 
 class _ReporteIngresoState extends State<ReporteIngreso> {
-
   @override
   void initState() {
     Actividades.consultarId(
-        Databases.siteground_database_reghosp,
-        Repositorios.repositorio['consultPadecimientoQuery'],
-        Pacientes.ID_Hospitalizacion)
+            Databases.siteground_database_reghosp,
+            Repositorios.repositorio['consultPadecimientoQuery'],
+            Pacientes.ID_Hospitalizacion)
         .then((response) {
       // print("RESPUESTA $response");
       setState(() {
-        Reportes.padecimientoActual = "Inicia padecimiento actual el dia ${response['FechaPadecimiento']}, ${response['Contexto']}";
+        Reportes.padecimientoActual =
+            "Inicia padecimiento actual el dia ${response['FechaPadecimiento']}, ${response['Contexto']}";
         padesTextController.text = Reportes.padecimientoActual;
         Reportes.reportes['Padecimiento_Actual'] = Reportes.padecimientoActual;
       });
@@ -48,16 +48,20 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
       Reportes.reportes['Datos_Generales'] = Pacientes.prosa();
       Reportes.reportes['Padecimiento_Actual'] = Reportes.padecimientoActual;
       //
-      Reportes.reportes['Antecedentes_No_Patologicos'] =Pacientes.noPatologicos(); // .toLowerCase();
+      Reportes.reportes['Antecedentes_No_Patologicos'] =
+          Pacientes.noPatologicos(); // .toLowerCase();
 
       Reportes.reportes['Antecedentes_Heredofamiliares'] =
           Pacientes.heredofamiliares().toLowerCase();
-      Reportes.reportes['Antecedentes_Quirurgicos'] =
-          Pacientes.hospitalarios().toLowerCase(); // Contiene el antecedente de cirugias.
-      Reportes.reportes['Antecedentes_Patologicos'] = Pacientes.patologicos().toLowerCase();
-      Reportes.reportes['Antecedentes_Alergicos'] = Pacientes.alergicos().toLowerCase();
+      Reportes.reportes['Antecedentes_Quirurgicos'] = Pacientes.hospitalarios()
+          .toLowerCase(); // Contiene el antecedente de cirugias.
+      Reportes.reportes['Antecedentes_Patologicos'] =
+          Pacientes.patologicos().toLowerCase();
+      Reportes.reportes['Antecedentes_Alergicos'] =
+          Pacientes.alergicos().toLowerCase();
 
-      Reportes.reportes['Antecedentes_Patologicos_Otros'] =Pacientes.antecedentesPatologicos();
+      Reportes.reportes['Antecedentes_Patologicos_Otros'] =
+          Pacientes.antecedentesPatologicos();
     });
     super.initState();
   }
@@ -90,7 +94,6 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
                     onPress: () {
                       carouselController.jumpToPage(1);
                     }),
-
                 GrandIcon(
                     iconData: Icons.explicit,
                     labelButton: "Exploración Física",
@@ -153,18 +156,47 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           GrandIcon(
-                            labelButton: 'No Patológicos',
-                            iconData: Icons.account_balance,
+                              labelButton: 'No Patológicos',
+                              iconData: Icons.account_balance,
                               onPress: () {
-                            noPatolTextController.text = Pacientes.noPatologicos();
-                          }),
-                          CrossLine(isHorizontal: false, thickness: 4, color:Colors.white, height: 8,),
+                                noPatolTextController.text =
+                                    Pacientes.noPatologicos();
+                                Reportes.reportes[
+                                        'Antecedentes_No_Patologicos'] =
+                                    Pacientes.noPatologicos();
+                              }),
+                          CrossLine(
+                            isHorizontal: false,
+                            thickness: 4,
+                            color: Colors.white,
+                            height: 8,
+                          ),
                           GrandIcon(
-                            labelButton: 'No Patológicos Simplificado',
+                              labelButton: 'No Patológicos Simplificado',
                               iconData: Icons.account_balance_outlined,
                               onPress: () {
-                              noPatolTextController.text = Pacientes.noPatologicosSimple();
-                          }),
+                                noPatolTextController.text =
+                                    Pacientes.noPatologicosSimple();
+                                Reportes.reportes[
+                                        'Antecedentes_No_Patologicos'] =
+                                    Pacientes.noPatologicosSimple();
+                              }),
+                          CrossLine(
+                            isHorizontal: false,
+                            thickness: 4,
+                            color: Colors.white,
+                            height: 8,
+                          ),
+                          GrandIcon(
+                              labelButton: 'No Patológicos Resumido',
+                              iconData: Icons.account_balance_sharp,
+                              onPress: () {
+                                noPatolTextController.text =
+                                    Pacientes.noPatologicosResumido();
+                                Reportes.reportes[
+                                        'Antecedentes_No_Patologicos'] =
+                                    Pacientes.noPatologicosResumido();
+                              }),
                         ],
                       ),
                       EditTextArea(
@@ -184,6 +216,8 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
                             setState(() {
                               hospiTextController.text = "";
                               hospiTextController.text = "Negados. ";
+                              Reportes.reportes['Antecedentes_Quirurgicos'] =
+                                  hospiTextController.text;
                             });
                           },
                           inputFormat: MaskTextInputFormatter()),
@@ -218,7 +252,7 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
                 ),
                 ExploracionFisica(),
                 AuxiliaresExploracion(),
-                 AnalisisMedico(),
+                AnalisisMedico(),
                 DiagnosticosAndPronostico(),
               ],
             ),
@@ -250,5 +284,4 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
 // ######################### ### # ### ############################
 // INICIO DE LAS OPERACIONES STATE() Y BUILD().
 // ######################### ### # ### ############################
-
 }

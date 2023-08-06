@@ -261,10 +261,17 @@ class Listas {
   static List<dynamic> listFromMap(
       {required List<dynamic> lista, // <Map<String, dynamic>>
       required String keySearched,
-      required String elementSearched}) {
-    return lista
-        .where((user) => user[keySearched].contains(elementSearched))
-        .toList();
+      required String elementSearched,
+      bool exactValue = false}) {
+    if (exactValue) {
+      return lista
+          .where((user) => user[keySearched] == elementSearched)
+          .toList();
+    } else {
+      return lista
+          .where((user) => user[keySearched].contains(elementSearched))
+          .toList();
+    }
   }
 
   static List<dynamic> listWithoutRepitedValues(List<dynamic> listado) {
@@ -378,10 +385,13 @@ class Directorios {
         return bytes;
       }
     } on Exception catch (e) {
-      Terminal.printAlert(message: "ERROR : : No se pudo cargar imagen desde Galeria : $e");
-      Dialogos.notifyDialog("ERROR - Imagenes de Galeria", 'No se pudo cargar imagen desde Galeria : $e', () {
-
-      },);
+      Terminal.printAlert(
+          message: "ERROR : : No se pudo cargar imagen desde Galeria : $e");
+      Dialogos.notifyDialog(
+        "ERROR - Imagenes de Galeria",
+        'No se pudo cargar imagen desde Galeria : $e',
+        () {},
+      );
     }
   }
 }
@@ -495,11 +505,8 @@ class Operadores {
                   borderRadius: BorderRadius.all(Radius.circular(20))),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                    height: 700,
-                    child: chyldrim),
+                child: SizedBox(height: 700, child: chyldrim),
               ),
-
             );
           } else {
             return AlertDialog(
@@ -972,11 +979,9 @@ class Terminal {
 }
 
 class Numeros {
-
   static double toDoubleFromInt(
       {required Map<String, dynamic> json, required String keyEntered}) {
     return double.parse(
         json[keyEntered] != null ? json[keyEntered].toString() : '0');
   }
-
 }

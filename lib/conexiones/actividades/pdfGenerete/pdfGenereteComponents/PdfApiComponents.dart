@@ -125,6 +125,15 @@ Column paragraph(
   ]);
 }
 
+Column paragraphAllBold({String? texto}) {
+  return Column(children: [
+      RichText(textAlign: TextAlign.justify, text: TextSpan(text: texto, style: TextStyle(
+          fontSize: 8.0,
+          color: PdfColors.black,
+          fontWeight: FontWeight.bold)),)
+  ]);
+}
+
 Column paragraphFromList({
   List<List>? listado,
 }) {
@@ -451,7 +460,8 @@ List<Widget> buildBulletPoints(String para) {
   return bullets;
 }
 
-Padding textTittle(String label, {TextAlign textAlign = TextAlign.left, double fontSize = 6}) {
+Padding textTittle(String label,
+    {TextAlign textAlign = TextAlign.left, double fontSize = 6}) {
   return Padding(
     padding: const EdgeInsets.all(4.0),
     child: Text(label,

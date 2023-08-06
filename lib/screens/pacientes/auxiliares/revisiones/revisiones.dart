@@ -471,6 +471,15 @@ class _RevisionesState extends State<Revisiones> {
                           context: context, text: Auxiliares.historial());
                     },
                   )),
+                  Expanded(
+                      child: GrandIcon(
+                        iconData: Icons.checklist_sharp,
+                        labelButton: "Laboratorios",
+                        onPress: () {
+                          Datos.portapapeles(
+                              context: context, text: Auxiliares.historial(esAbreviado: true));
+                        },
+                      )),
                 ],
               ),
             ),
@@ -1048,6 +1057,15 @@ class _RevisionesState extends State<Revisiones> {
                           context: context, text: Auxiliares.historial());
                     },
                   )),
+                  Expanded(
+                      child: GrandIcon(
+                        iconData: Icons.checklist_sharp,
+                        labelButton: "Laboratorios",
+                        onPress: () {
+                          Datos.portapapeles(
+                              context: context, text: Auxiliares.historial(esAbreviado: true));
+                        },
+                      )),
                 ],
               ),
             ),

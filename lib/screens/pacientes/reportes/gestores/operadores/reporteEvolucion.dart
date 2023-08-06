@@ -25,10 +25,10 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
     // # # # ############## #### ########
     setState(() {
       initialTextController.text = Pacientes.prosa(isTerapia: true);
-      //
+      // ********************************************
       diagoTextController.text = Pacientes.diagnosticos();
       subjetivoTextController.text = Pacientes.subjetivos();
-      //
+      // ********************************************
       heredoTextController.text = Pacientes.heredofamiliares();
       hospiTextController.text = Pacientes.hospitalarios();
       patoloTextController.text = Pacientes.patologicos();

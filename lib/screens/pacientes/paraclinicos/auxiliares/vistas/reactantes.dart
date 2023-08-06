@@ -119,7 +119,7 @@ class _ReactantesState extends State<Reactantes> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][0],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][3],
         textPCRResultController.text,
         unidadMedidaPCR!
         //0,
@@ -139,7 +139,7 @@ class _ReactantesState extends State<Reactantes> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][1],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][0],
         textProcalcitoninaResultController.text,
         unidadMedidaProcalcitonina!
         //0,
@@ -149,7 +149,7 @@ class _ReactantesState extends State<Reactantes> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
-      Auxiliares.Laboratorios[Auxiliares.Categorias[index]][3],
+      Auxiliares.Laboratorios[Auxiliares.Categorias[index]][1],
         textLactatoResultController.text,
         unidadMedidaLactato!
         //0,

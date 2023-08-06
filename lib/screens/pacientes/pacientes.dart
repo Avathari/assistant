@@ -170,6 +170,21 @@ class _GestionPacientesState extends State<GestionPacientes> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: GrandIcon(
+                          labelButton: 'Hospitalización en Otros Sectores',
+                          iconData: Icons.local_hotel_outlined,
+                          onPress: () {
+                            _pullListRefresh().whenComplete(() =>
+                                _runConsultaSearch(
+                                    enteredKeyword:
+                                    'Otra Hospitalización')); // reiniciar(); //
+                          },
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GrandIcon(
                           labelButton: 'Pacientes en Consulta Externa',
                           iconData: Icons.desk_sharp,
                           onPress: () {
@@ -745,6 +760,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
         _pullListRefresh();
       } else {
         results = Listas.listFromMap(
+          exactValue: true,
             lista: foundedItems!,
             keySearched: 'Pace_Hosp',
             elementSearched: Sentences.capitalize(enteredKeyword));

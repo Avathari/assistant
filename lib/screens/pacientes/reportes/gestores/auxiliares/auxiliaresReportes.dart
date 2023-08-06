@@ -116,6 +116,18 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                 },
                               ),
                             ),
+                            Expanded(
+                              child: GrandIcon(
+                                iconData: Icons.clear_all,
+                                labelButton: "Historial Abreviado",
+                                onPress: () {
+                                  setState(() {
+                                    auxTextController.text = Auxiliares.historial(esAbreviado: true);
+                                    Reportes.reportes['Auxiliares_Diagnosticos'] = Auxiliares.historial(esAbreviado: true);
+                                  });
+                                },
+                              ),
+                            ),
                           ],
                         ),
                         CrossLine(),
@@ -368,6 +380,7 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                             onPress: () {
                             setState(() {
                               commenTextController.text = '';
+                              Reportes.reportes['Analisis_Complementarios'] = "";
                             });
                             }),),
                         CrossLine(color: Colors.grey,),

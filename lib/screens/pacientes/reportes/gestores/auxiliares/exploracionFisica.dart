@@ -143,6 +143,12 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                                   asignarVitales(indice: 5);
                                 },
                               ),
+                              GrandButton(
+                                labelButton: "Vitales Resumido",
+                                onPress: () {
+                                  asignarVitales(indice: 6);
+                                },
+                              ),
                             ],
                           ),
                         ),

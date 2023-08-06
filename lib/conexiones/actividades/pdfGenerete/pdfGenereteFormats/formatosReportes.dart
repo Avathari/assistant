@@ -295,26 +295,30 @@ class FormatosReportes {
         subTitulo: "${paraph['Impresiones_Diagnosticas']}",
       ),
     );
-    // # # # # # # ### # # # # # # ###
-    parax.add(paragraph(texto: paraph['Subjetivo']));
-
-    // # # # # # # ### # # # # # # ###
+    // parax.add(paragraph(texto: paraph['Subjetivo'], withJumpSpace: false)); // # # # # # # ### # # # # # # ###
     parax.add(
       paragraph(
         isBefore: true,
-        anteTexto: "A la exploración física con ",
-        texto: "${paraph['Signos_Vitales']}\n",
+        anteTexto: "${paraph['Subjetivo']}\n",
+        texto: "A la exploración física con  ${paraph['Signos_Vitales']}\n",
         subTexto: "${paraph['Exploracion_Fisica']}",
       ),
     );
     if (paraph['Auxiliares_Diagnosticos'] != "") {
       parax.add(
-        paragraphWithTittleAndSeparated(
-          titulo: "Auxiliares diagnósticos",
-          subTitulo: "${paraph['Auxiliares_Diagnosticos']}",
+        paragraphAllBold(
+          texto: "${paraph['Auxiliares_Diagnosticos']}",
         ),
       );
     }
+    // if (paraph['Auxiliares_Diagnosticos'] != "") {
+    //   parax.add(
+    //     paragraphWithTittleAndSeparated(
+    //       titulo: "Auxiliares diagnósticos",
+    //       subTitulo: "${paraph['Auxiliares_Diagnosticos']}",
+    //     ),
+    //   );
+    // }
 
     if (paraph['Analisis_Complementarios'] != "") {
       parax.add(
@@ -2705,7 +2709,7 @@ class FormatosReportes {
     int index = 1;
     // Despliegue del listado . ***** ****** *********** *********
     for (var item in paraph) {
-      // print("item $item");
+      print("item $item");
       String pades = "No hay padecimiento Descrito\n",
           penden = "",
           previos = "",
@@ -2726,17 +2730,33 @@ class FormatosReportes {
             "\n";
       }
 
-      if (item['Ventilaciones']['Error'] != 'Hubo un error') {
-        ventilaciones = "\n"
-            // "IOT -  \n"
-            "${Ventilaciones.modoVentilatorio(modalidadVentilatoria: item['Ventilaciones']['VM_Mod'].toString())}\n"
-            "Vt ${item['Ventilaciones']['Pace_Vt']} mL - - - - "
-            "Fr ${item['Ventilaciones']['Pace_Fr']} Vent/min\n"
-            "FiO2 ${item['Ventilaciones']['Pace_Fio']} % - - - - "
-            "PEEP ${item['Ventilaciones']['Pace_Peep']} cmH20\n"
-            // "Vt ${item['Ventilaciones']['Pace_Peep']} mL\n"
-            // "Vt ${item['Ventilaciones']['Pace_Peep']} mL\n"
-            "\n";
+      Terminal.printExpected(message: "${item['Ventilaciones'][0]}");
+      if (item['Ventilaciones'] != [] || item['Ventilaciones'].isNotEmpty) {
+        if (item['Ventilaciones']['Error'] != 'Hubo un error') {
+          ventilaciones = "\n"
+              // ***** ** *
+              "${Ventilaciones.modoVentilatorio(modalidadVentilatoria: item['Ventilaciones']['VM_Mod'].toString())}\n"
+              "Vt ${item['Ventilaciones']['Pace_Vt']} mL - - - - "
+              "Fr ${item['Ventilaciones']['Pace_Fr']} Vent/min\n"
+              "FiO2 ${item['Ventilaciones']['Pace_Fio']} % - - - - "
+              "PEEP ${item['Ventilaciones']['Pace_Peep']} cmH20\n"
+              // "Vt ${item['Ventilaciones']['Pace_Peep']} mL\n"
+              // "Vt ${item['Ventilaciones']['Pace_Peep']} mL\n"
+              "\n";
+        } else if (item['Ventilaciones'] != []) {
+          ventilaciones = "\n"
+          // "IOT -  \n"
+              "${Ventilaciones.modoVentilatorio(modalidadVentilatoria: item['Ventilaciones']['VM_Mod'].toString())}\n"
+              "Vt ${item['Ventilaciones']['Pace_Vt']} mL - - - - "
+              "Fr ${item['Ventilaciones']['Pace_Fr']} Vent/min\n"
+              "FiO2 ${item['Ventilaciones']['Pace_Fio']} % - - - - "
+              "PEEP ${item['Ventilaciones']['Pace_Peep']} cmH20\n"
+          // "Vt ${item['Ventilaciones']['Pace_Peep']} mL\n"
+          // "Vt ${item['Ventilaciones']['Pace_Peep']} mL\n"
+              "\n";
+        } else {
+          ventilaciones = "";
+        }
       } else {
         ventilaciones = "";
       }
@@ -3165,17 +3185,27 @@ class CopiasReportes {
     return tipoReporte;
   }
 
-  static String reporteEvolucion(Map<String, dynamic> paraph) {
+  static String reporteEvolucion(Map<String, dynamic> paraph, {bool esAbreviado = false}) {
     String tipoReporte = "NOTA DE EVOLUCIÓN HOSPITALARIA\n";
     tipoReporte = "$tipoReporte"
         "${paraph['Datos_Generales']}";
 
     tipoReporte = "$tipoReporte"
         "${paraph['Impresiones_Diagnosticas']}\n\n";
+
     // # # # # # # ### # # # # # # ###
-    tipoReporte = "${tipoReporte}A la exploración física con: \n"
-        "${paraph['Signos_Vitales']}\n"
-        "${paraph['Exploracion_Fisica']}\n\n";
+    tipoReporte = "$tipoReporte"
+        "${paraph['Subjetivo']}\n";
+    if (esAbreviado) {
+      tipoReporte = "${tipoReporte}"
+          "${paraph['Signos_Vitales']}\n"
+          "${paraph['Exploracion_Fisica']}\n\n";
+    } else {
+      tipoReporte = "${tipoReporte}A la exploración física con: \n"
+          "${paraph['Signos_Vitales']}\n"
+          "${paraph['Exploracion_Fisica']}\n\n";
+    }
+
 
     if (paraph['Auxiliares_Diagnosticos'] != "") {
       tipoReporte = "$tipoReporte"
