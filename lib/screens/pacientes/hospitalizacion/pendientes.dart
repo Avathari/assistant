@@ -6,6 +6,7 @@ import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/CircleSwitched.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
@@ -44,8 +45,6 @@ class OperacionesPendiente extends StatefulWidget {
 }
 
 class _OperacionesPendienteState extends State<OperacionesPendiente> {
-
-
   @override
   void initState() {
     //
@@ -176,7 +175,7 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
         children: [
           Expanded(
             flex: isTabletAndDesktop(context) ? 2 : 1,
-            child: Switched(
+            child: CircleSwitched(
               tittle: "¿Realizado?",
               isSwitched: realized,
               onChangeValue: (value) {
@@ -202,6 +201,7 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
                 onChangeValue: (String value) {
                   setState(() {
                     pendienteValue = value;
+                    descripcionPendienteTextController.text = "";
                   });
                 },
                 items: Pendientes.typesPendientes,
@@ -209,15 +209,34 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
           ),
         ],
       ),
-      const SizedBox(
+      CrossLine(
         height: 10,
       ),
       EditTextArea(
-        keyBoardType: TextInputType.text,
+        keyBoardType: TextInputType.multiline,
         inputFormat: MaskTextInputFormatter(),
         labelEditText: 'Descripción del Pendiente',
         textController: descripcionPendienteTextController,
         numOfLines: 7,
+        iconData: Icons.list_outlined,
+        selection: true,
+        withShowOption: true,
+        onSelected: () {
+          Operadores.selectOptionsActivity(
+              context: context,
+              options: Pendientes.subTypesPendientes[
+                  Pendientes.typesPendientes.indexOf(pendienteValue)],
+            onClose: (String value) {
+              if (descripcionPendienteTextController.text.isEmpty) {
+                descripcionPendienteTextController.text = value;
+              } else {
+                descripcionPendienteTextController.text = "${descripcionPendienteTextController.text }, \n$value";
+              }
+              Navigator.pop(context);
+            }
+          );
+        },
+        onChange: (value) {},
       ),
       CrossLine(),
     ];

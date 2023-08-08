@@ -399,6 +399,7 @@ class Pacientes {
         "${Formatos.exposiciones}\n"
         "${Formatos.toxicomanias}\n";
   }
+
   static String noPatologicosResumido() {
     return "${Formatos.viviendas}"
         "${Formatos.alimentarios}\n"
@@ -407,7 +408,6 @@ class Pacientes {
         "${Formatos.exposiciones}\n"
         "${Formatos.toxicomanias}\n";
   }
-
 
   static String noPatologicosAnalisis() {
     return "${antecedentesPatologicos()}"
@@ -594,12 +594,12 @@ class Pacientes {
         if (Reportes.impresionesDiagnosticas == "") {
           Reportes.impresionesDiagnosticas =
               // "${element['Pace_APP_DEG']} ("
-                  "${element['Pace_APP_DEG_com']}. ";
+              "${element['Pace_APP_DEG_com']}. ";
         } else {
           Reportes.impresionesDiagnosticas =
               "${Reportes.impresionesDiagnosticas}\n"
-                  // "${element['Pace_APP_DEG']} ("
-                  "${element['Pace_APP_DEG_com']}. ";
+              // "${element['Pace_APP_DEG']} ("
+              "${element['Pace_APP_DEG_com']}. ";
         }
       }
     }
@@ -5298,8 +5298,7 @@ class Electrocardiogramas {
 
   static String historial() {
     String electrocardiogramas = "";
-    if (Pacientes.Electros != [] &&
-        Pacientes.Electros != null) {
+    if (Pacientes.Electros != [] && Pacientes.Electros != null) {
       for (var element in Pacientes.Electros!) {
         Electrocardiogramas.fromJson(element);
         // ***************************** *****************
@@ -5313,7 +5312,7 @@ class Electrocardiogramas {
         // Terminal.printExpected(message: "Electrocardiograma seleccionados ${Auxiliares.electrocardiograma()}");
       }
     } else {
-      electrocardiogramas =  "Sin Estudios Electrocardiográficos";
+      electrocardiogramas = "Sin Estudios Electrocardiográficos";
     }
 
     return electrocardiogramas;
@@ -5719,7 +5718,7 @@ class Auxiliares {
       return 'NEU';
     } else if (estudio == 'Linfocitos Totales') {
       return 'LYN';
-    }  else if (estudio == 'Monocitos Totales') {
+    } else if (estudio == 'Monocitos Totales') {
       return 'MON';
     } else if (estudio == 'Hemoglobina') {
       return 'Hb';
@@ -5930,11 +5929,12 @@ class Auxiliares {
     Categorias[17]: [""],
     Categorias[18]: ["UI/L", "ng/mL"],
     Categorias[19]: [""],
-    Categorias[20]: ["S/CO",
+    Categorias[20]: [
+      "S/CO",
       "U/mL",
       "",
     ],
-    Categorias[21]: ["mcg/dl","ng/mL","µg/dL","%","mg/dL"],
+    Categorias[21]: ["mcg/dl", "ng/mL", "µg/dL", "%", "mg/dL"],
   };
   static final Map<String, dynamic> auxiliares = {
     "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_reglabo "
@@ -6255,19 +6255,63 @@ class Pendientes {
   static Map<String, dynamic> Pendiente = {};
 
   static List<String> typesPendientes = [
-    'Radiografías',
-    'Ultrasonidos',
-    'Tomografías',
-    'Resonancias',
+    'Estudios',
+    'Paraclinicos',
+    'Procedimientos',
     'Envios',
     'Indicaciones',
+    'Trámites',
+  ];
+  static List<List<String>> subTypesPendientes = [
+    [
+      'Radiografías',
+      'Ultrasonidos',
+      'Tomografías',
+      'Resonancias',
+      'Endoscopia',
+      'Colonoscopia',
+      'Ecocardiograma',
+      'Electrocardiograma',
+    ], // Estudios
+    Auxiliares.Categorias, //'Paraclinicos',
+    [
+      'Colocación de CVC',
+      'Colocación de Cateter de Hemodialisis',
+      'Colocación de Cateter de Dialisis Peritoneal',
+      'Instalación de Sonda Urinaria',
+      'Colocación de Sonda Endopleural',
+      'Curación de Herida',
+      'Debridación de Herida Infectada',
+      'Toma de Hemocultivos Periféricos',
+      'Toma de Hemocultivos Centrales',
+      'Urocultivo',
+      'Coprocultivo',
+      'Coprológico / Coproparasitoscópico',
+      '',
+    ], //Procedimientos
+    [
+      'Envios',
+      'Interconsultas',
+    ], // Interconsultas
+    [
+      'Impregnación Antbiótica',
+      'Anticoagulación',
+      'Terapia de Compensacón Cardiaca',
+      'Sedación',
+      'Ministración de Vasoactivos',
+      'Historial de Curva Enzimática',
+    ], // Indicaciones
+    [
+      'Trámite de Oxígeno',
+      "Envio a Otra Unidad",
+      "Zonificación",
+      "Certificado de Defunción",
+    ], // Tramites
   ];
 }
 
 class Reportes {
-  //  # # # # ### ### ### # # # # . # # # # ### ### ### # # # #
-  //  Diccionario de Reportes.
-  //  # # # # ### ### ### # # # # . # # # # ### ### ### # # # #
+  //  Diccionario de Reportes. //  # # # # ### ### ### # # # # . # # # # ### ### ### # # # #
   static Map<String, dynamic> reportes = {
     "Motivo_Prequirurgico": Pacientes.motivoPrequirurgico(),
     "Tipo_Interrogatorio": Valores.tipoInterrogatorio,
