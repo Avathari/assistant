@@ -65,9 +65,7 @@ class _EstadisticasPacientesState extends State<EstadisticasPacientes> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: const Color.fromARGB(255, 58, 55, 55)),
+        decoration: ContainerDecoration.roundedDecoration(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

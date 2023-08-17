@@ -2842,10 +2842,10 @@ class FormatosReportes {
             // ***************************** *****************
             if (max == "") {
               max =
-                  "${Auxiliares.abreviado(estudio: element['Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+                  "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio:  element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
             } else {
               max =
-                  "$max, ${Auxiliares.abreviado(estudio: element['Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+                  "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio:  element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
             }
           }
           auxiliary = "$auxiliary$fecha: ${Sentences.capitalize(max)}\n";

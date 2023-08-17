@@ -924,7 +924,8 @@ class Pacientes {
         "IndiIdio_Pace_SiNo = ?, IndiIdio_Pace_Espe = ? "
         "WHERE ID_Pace = ?",
     "deleteQuery": "DELETE FROM pace_iden_iden WHERE ID_Pace = ?",
-    "updateHospitalizacionQuery": "UPDATE pace_iden_iden SET Pace_Hosp = ? WHERE ID_Pace = ?",
+    "updateHospitalizacionQuery":
+        "UPDATE pace_iden_iden SET Pace_Hosp = ? WHERE ID_Pace = ?",
     "pacientesColumns": [
       "ID_Pace",
       "Us_Nome",
@@ -1018,69 +1019,67 @@ class Pacientes {
   ];
 
   static Future<void> hospitalizar({required String modus}) async {
-        // Actualizar la variable en la base de datos.
+    // Actualizar la variable en la base de datos.
     if (modoAtencion == 'Consulta Externa') {
       Actividades.actualizar(
-          Databases.siteground_database_regpace,
-          pacientes['updateHospitalizacionQuery'],
-          [modus, Pacientes.ID_Paciente],
-          Pacientes.ID_Paciente)
-          .whenComplete(() =>
-          Actividades.registrar(
-              Databases.siteground_database_reghosp,
-              "INSERT INTO pace_hosp (ID_Pace, "
+              Databases.siteground_database_regpace,
+              pacientes['updateHospitalizacionQuery'],
+              [modus, Pacientes.ID_Paciente],
+              Pacientes.ID_Paciente)
+          .whenComplete(() => Actividades.registrar(
+                  Databases.siteground_database_reghosp,
+                  "INSERT INTO pace_hosp (ID_Pace, "
                   "Feca_INI_Hosp, Id_Cama, Dia_Estan, Medi_Trat, Serve_Trat, Serve_Trat_INI, "
                   "Feca_EGE_Hosp, EGE_Motivo) "
                   "VALUES (?,?,?,?,?,?,?,?,?)",
-              [
-                Pacientes.ID_Paciente,
-                Calendarios.today(format: 'yyyy/MM/dd'),
-                'N/A', // No Cama
-                0,
-                '',
-                Valores.servicioTratante,
-                Valores.servicioTratanteInicial,
-                '0000/00/00',
-                Escalas.motivosEgresos[0],
-              ]).whenComplete(() =>
-              Actividades.consultarId(
-                  Databases.siteground_database_reghosp,
-                  "SELECT * FROM pace_hosp WHERE ID_Pace = ? ORDER BY ID_Hosp ASC",
-                  Pacientes.ID_Paciente)
-                  .then((value) {
-                // ******************************************** *** *
-                // // print("IDDDD HOSP ${value}");
-                Pacientes.ID_Hospitalizacion = value['ID_Hosp'];
-                Pacientes.esHospitalizado = true;
-                Valores.isHospitalizado = true;
-                // // print("IDDDD HOSP ${Pacientes.ID_Hospitalizacion}");
-                // ******************************************** *** *
-                Valores.fechaIngresoHospitalario =
-                    Calendarios.today(format: 'yyyy/MM/dd');
-                Valores.fechaIngresoHospitalario = '';
-                Valores.numeroCama = 'N/A';
-                Valores.medicoTratante = '';
-                Valores.motivoEgreso = Escalas.motivosEgresos[0];
-              }).whenComplete(() {
-                // ******************************************** *** *
-                // Registro de Actividades Iniciales de la Hospitalización
-                // ******************************************** *** *
-                Repositorios.registrarRegistro();
-                Situaciones.registrarRegistro();
-                Expedientes.registrarRegistro();
-              })));
+                  [
+                    Pacientes.ID_Paciente,
+                    Calendarios.today(format: 'yyyy/MM/dd'),
+                    'N/A', // No Cama
+                    0,
+                    '',
+                    Valores.servicioTratante,
+                    Valores.servicioTratanteInicial,
+                    '0000/00/00',
+                    Escalas.motivosEgresos[0],
+                  ]).whenComplete(() => Actividades.consultarId(
+                          Databases.siteground_database_reghosp,
+                          "SELECT * FROM pace_hosp WHERE ID_Pace = ? ORDER BY ID_Hosp ASC",
+                          Pacientes.ID_Paciente)
+                      .then((value) {
+                    // ******************************************** *** *
+                    // // print("IDDDD HOSP ${value}");
+                    Pacientes.ID_Hospitalizacion = value['ID_Hosp'];
+                    Pacientes.esHospitalizado = true;
+                    Valores.isHospitalizado = true;
+                    // // print("IDDDD HOSP ${Pacientes.ID_Hospitalizacion}");
+                    // ******************************************** *** *
+                    Valores.fechaIngresoHospitalario =
+                        Calendarios.today(format: 'yyyy/MM/dd');
+                    Valores.fechaIngresoHospitalario = '';
+                    Valores.numeroCama = 'N/A';
+                    Valores.medicoTratante = '';
+                    Valores.motivoEgreso = Escalas.motivosEgresos[0];
+                  }).whenComplete(() {
+                    // ******************************************** *** *
+                    // Registro de Actividades Iniciales de la Hospitalización
+                    // ******************************************** *** *
+                    Repositorios.registrarRegistro();
+                    Situaciones.registrarRegistro();
+                    Expedientes.registrarRegistro();
+                  })));
     } else {
       Terminal.printOther(message: "Atencion : : $modus");
       Actividades.actualizar(
-          Databases.siteground_database_regpace,
-          pacientes['updateHospitalizacionQuery'],
-          [modus, Pacientes.ID_Paciente],
-          Pacientes.ID_Paciente).then((value) {
+              Databases.siteground_database_regpace,
+              pacientes['updateHospitalizacionQuery'],
+              [modus, Pacientes.ID_Paciente],
+              Pacientes.ID_Paciente)
+          .then((value) {
         Terminal.printOther(message: "Atencion : : $modus $value");
       });
-      }
     }
-
+  }
 
   static getImage() {
     Actividades.consultarId(Databases.siteground_database_regpace,
@@ -5671,10 +5670,10 @@ class Auxiliares {
           // ***************************** *****************
           if (max == "") {
             max =
-                "${Auxiliares.abreviado(estudio: element['Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+                "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
           } else {
             max =
-                "$max, ${Auxiliares.abreviado(estudio: element['Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+                "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
           }
         }
         prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
@@ -5725,13 +5724,17 @@ class Auxiliares {
           // ***************************** *****************
           if (max == "") {
             max =
-                "${Auxiliares.abreviado(estudio: element['Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+                "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
           } else {
             max =
-                "$max, ${Auxiliares.abreviado(estudio: element['Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+                "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
           }
         }
-        prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+        if (max.startsWith("pH")) {
+          prosa = "$prosa$fecha: ${max}\n";
+        } else {
+          prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+        }
       });
     } else {
       fechar.forEach((element) {
@@ -5752,7 +5755,11 @@ class Auxiliares {
           }
         });
 
-        prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+        if (max.startsWith("pH")) {
+          prosa = "$prosa$fecha: ${max}\n";
+        } else {
+          prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+        }
       });
     }
     // ************** ***************** ***************
@@ -5777,136 +5784,172 @@ class Auxiliares {
             Terminal.printAlert(message: "Error :  : $error :  $stackTrace"));
   }
 
-  static String abreviado({required String estudio}) {
-    if (estudio == 'Concentración Media de Hemoglobina Corpuscular') {
-      return 'CMHC';
-    } else if (estudio == 'Radio de Distribución Eritrocitaria') {
-      return 'RDW';
-    } else if (estudio == 'Alaninoaminotrasferasa') {
-      return 'ALT';
-    } else if (estudio == 'Aspartatoaminotransferasa') {
-      return 'AST';
-    } else if (estudio == 'Bilirrubinas Totales') {
-      return 'BT';
-    } else if (estudio == 'Bilirrubina Directa') {
-      return 'BD';
-    } else if (estudio == 'Bilirrubina Indirecta') {
-      return 'BI';
-    } else if (estudio == 'Deshidrogenasa Láctica') {
-      return 'DHL';
-    } else if (estudio == 'Glutrailtranspeptidasa') {
-      return 'GGT';
-    } else if (estudio == 'Fosfatasa Alcalina') {
-      return 'FA';
-    } else if (estudio == 'Tiempo de Protrombina') {
-      return 'TP';
-    } else if (estudio == 'Tiempo Parcial de Tromboplastina') {
-      return 'TPT';
-    } else if (estudio == 'Velocidad de Sedimentación Globular') {
-      return 'VSG';
-    } else if (estudio == 'Presión de Dióxido de Carbono') {
-      return 'pCO2';
-    } else if (estudio == 'Presión de Oxígeno') {
-      return 'pO2';
-    } else if (estudio == 'Bicarbonato Sérico') {
-      return 'HCO3-' '';
-    } else if (estudio == 'Fracción Inspiratoria de Oxígeno') {
-      return 'FiO2';
-    } else if (estudio == 'Saturación de Oxígeno') {
-      return 'SO2';
-    } else if (estudio == 'Sodio Urinario') {
-      return 'NaU';
-    } else if (estudio == 'Potasio Urinario') {
-      return 'K+U';
-    } else if (estudio == 'Cloro Urinario') {
-      return 'CL-U';
-    } else if (estudio == 'Calcio Urinario') {
-      return 'CaU';
-    } else if (estudio == 'Fósforo Urinario') {
-      return 'PO3u';
-    } else if (estudio == 'Magnesio Urinario') {
-      return 'MgU';
-    } else if (estudio == 'Creatinina Urinaria') {
-      return 'CrU';
-    } else if (estudio == 'Sodio') {
-      return 'Na+';
-    } else if (estudio == 'Potasio') {
-      return 'K+';
-    } else if (estudio == 'Cloro') {
-      return 'Cl-';
-    } else if (estudio == 'Magnesio') {
-      return 'Mg';
-    } else if (estudio == 'Fósforo') {
-      return 'PO3';
-    } else if (estudio == 'Calcio') {
-      return 'Ca2';
-    } else if (estudio == 'Leucocitos Totales') {
-      return 'Leu';
-    } else if (estudio == 'Neutrofilos Totales') {
-      return 'Neu';
-    } else if (estudio == 'Linfocitos Totales') {
-      return 'Lyn';
-    } else if (estudio == 'Monocitos Totales') {
-      return 'Mon';
-    } else if (estudio == 'Hemoglobina') {
-      return 'Hb';
-    } else if (estudio == 'Hematocrito') {
-      return 'Hto';
-    } else if (estudio == 'Eritrocitos') {
-      return 'Erit';
-    } else if (estudio == 'Plaquetas') {
-      return 'Plat';
-    } else if (estudio == 'Albúmina') {
-      return 'Alb';
-    } else if (estudio == 'Urea') {
-      return 'Ure';
-    } else if (estudio == 'Creatinina') {
-      return 'Cr';
-    } else if (estudio == 'Glucosa') {
-      return 'Glu';
-    } else if (estudio == 'Nitrógeno Úrico') {
-      return 'BUN';
-      // ****************************************
-    } else if (estudio == 'P-ANCA') {
-      return "p-ANCA";
-    } else if (estudio == 'C-ANCA') {
-      return "c-ANCA";
-    } else if (estudio == '"U1 ribonucleoproteína (RNP)"') {
-      return 'Ac. Anti-RNP';
-    } else if (estudio == 'Anticoagulante Lúpico (Anti-La)') {
-      return 'BUN';
-    // } else if (estudio == 'Anticoagulante Lúpico (Anti-La)') {
-    //   return 'BUN';
-    } else if (estudio == "Anti-beta2-glicoproteina [GP]") {
-      return 'Anti-B2 Gliicoproteina';
-    } else if (estudio == "Anticuerpos Anticardiolipina [aCL]") {
-      return 'Ac. Anticardiolipina';
-    } else if (estudio == 'Cuantificación de IgM') {
-      return 'IgM';
-    } else if (estudio == 'Cuantificación de IgG') {
-      return 'IgG';
-    } else if (estudio == 'Anticuerpo Anti-Nucleares') {
-      return 'Anti-ANA';
-    } else if (estudio == 'Cuantificación de Complemento C3') {
-      return 'C3';
-    } else if (estudio == 'Cuantificación de Complemento C4') {
-      return 'C4';
-    } else if (estudio == 'Ac. Anti-Smith') {
-      return 'anti-Sm';
-    } else if (estudio == 'Ac. Anti-SSA (Ro/SSA)') {
-      return 'Ac. Anti-Ro/SSA';
-    } else if (estudio == 'Ac. Anti-SSB (La/SSB)') {
-      return 'Ac. Anti-La/SSB';
-    } else if (estudio == 'Ac. Anti-Tiroglobulina') {
-      return 'Ac. Anti-Tiroglobulina';
-    } else if (estudio == 'Ac. Antiperoxidasa Tiroidea') {
-      return 'Ac. Anti-TPO';
-    } else if (estudio == 'Nitrógeno') {
-      return 'BUN';
-    } else if (estudio == 'Nitrógeno') {
-      return 'BUN';
+  static String abreviado(
+      {required String tipoEstudio, required String estudio}) {
+    if (tipoEstudio != 'Gasometría Arterial' &&
+        tipoEstudio != 'Gasometría Venosa') {
+      if (estudio == 'Concentración Media de Hemoglobina Corpuscular') {
+        return 'CMHC';
+      } else if (estudio == 'Radio de Distribución Eritrocitaria') {
+        return 'RDW';
+      } else if (estudio == 'Alaninoaminotrasferasa') {
+        return 'ALT';
+      } else if (estudio == 'Aspartatoaminotransferasa') {
+        return 'AST';
+      } else if (estudio == 'Bilirrubinas Totales') {
+        return 'BT';
+      } else if (estudio == 'Bilirrubina Directa') {
+        return 'BD';
+      } else if (estudio == 'Bilirrubina Indirecta') {
+        return 'BI';
+      } else if (estudio == 'Deshidrogenasa Láctica') {
+        return 'DHL';
+      } else if (estudio == 'Glutrailtranspeptidasa') {
+        return 'GGT';
+      } else if (estudio == 'Fosfatasa Alcalina') {
+        return 'FA';
+      } else if (estudio == 'Tiempo de Protrombina') {
+        return 'TP';
+      } else if (estudio == 'Tiempo Parcial de Tromboplastina') {
+        return 'TPT';
+      } else if (estudio == 'Velocidad de Sedimentación Globular') {
+        return 'VSG';
+      } else if (estudio == 'Presión de Dióxido de Carbono') {
+        return 'pCO2';
+      } else if (estudio == 'Presión de Oxígeno') {
+        return 'pO2';
+      } else if (estudio == 'Bicarbonato Sérico') {
+        return 'HCO3-' '';
+      } else if (estudio == 'Fracción Inspiratoria de Oxígeno') {
+        return 'FiO2';
+      } else if (estudio == 'Saturación de Oxígeno') {
+        return 'SO2';
+      } else if (estudio == 'Sodio Urinario') {
+        return 'NaU';
+      } else if (estudio == 'Potasio Urinario') {
+        return 'K+U';
+      } else if (estudio == 'Cloro Urinario') {
+        return 'CL-U';
+      } else if (estudio == 'Calcio Urinario') {
+        return 'CaU';
+      } else if (estudio == 'Fósforo Urinario') {
+        return 'PO3u';
+      } else if (estudio == 'Magnesio Urinario') {
+        return 'MgU';
+      } else if (estudio == 'Creatinina Urinaria') {
+        return 'CrU';
+      } else if (estudio == 'Sodio') {
+        return 'Na+';
+      } else if (estudio == 'Potasio') {
+        return 'K+';
+      } else if (estudio == 'Cloro') {
+        return 'Cl-';
+      } else if (estudio == 'Magnesio') {
+        return 'Mg';
+      } else if (estudio == 'Fósforo') {
+        return 'PO3';
+      } else if (estudio == 'Calcio') {
+        return 'Ca2';
+      } else if (estudio == 'Leucocitos Totales') {
+        return 'Leu';
+      } else if (estudio == 'Neutrofilos Totales') {
+        return 'Neu';
+      } else if (estudio == 'Linfocitos Totales') {
+        return 'Lyn';
+      } else if (estudio == 'Monocitos Totales') {
+        return 'Mon';
+      } else if (estudio == 'Hemoglobina') {
+        return 'Hb';
+      } else if (estudio == 'Hematocrito') {
+        return 'Hto';
+      } else if (estudio == 'Eritrocitos') {
+        return 'Erit';
+      } else if (estudio == 'Plaquetas') {
+        return 'Plat';
+      } else if (estudio == 'Albúmina') {
+        return 'Alb';
+      } else if (estudio == 'Urea') {
+        return 'Ure';
+      } else if (estudio == 'Creatinina') {
+        return 'Cr';
+      } else if (estudio == 'Glucosa') {
+        return 'Glu';
+      } else if (estudio == 'Nitrógeno Úrico') {
+        return 'BUN';
+        // ****************************************
+      } else if (estudio == 'P-ANCA') {
+        return "p-ANCA";
+      } else if (estudio == 'C-ANCA') {
+        return "c-ANCA";
+      } else if (estudio == '"U1 ribonucleoproteína (RNP)"') {
+        return 'Ac. Anti-RNP';
+      } else if (estudio == 'Anticoagulante Lúpico (Anti-La)') {
+        return 'BUN';
+        // } else if (estudio == 'Anticoagulante Lúpico (Anti-La)') {
+        //   return 'BUN';
+      } else if (estudio == "Anti-beta2-glicoproteina [GP]") {
+        return 'Anti-B2 Gliicoproteina';
+      } else if (estudio == "Anticuerpos Anticardiolipina [aCL]") {
+        return 'Ac. Anticardiolipina';
+      } else if (estudio == 'Cuantificación de IgM') {
+        return 'IgM';
+      } else if (estudio == 'Cuantificación de IgG') {
+        return 'IgG';
+      } else if (estudio == 'Anticuerpo Anti-Nucleares') {
+        return 'Anti-ANA';
+      } else if (estudio == 'Cuantificación de Complemento C3') {
+        return 'C3';
+      } else if (estudio == 'Cuantificación de Complemento C4') {
+        return 'C4';
+      } else if (estudio == 'Ac. Anti-Smith') {
+        return 'anti-Sm';
+      } else if (estudio == 'Ac. Anti-SSA (Ro/SSA)') {
+        return 'Ac. Anti-Ro/SSA';
+      } else if (estudio == 'Ac. Anti-SSB (La/SSB)') {
+        return 'Ac. Anti-La/SSB';
+      } else if (estudio == 'Ac. Anti-Tiroglobulina') {
+        return 'Ac. Anti-Tiroglobulina';
+      } else if (estudio == 'Ac. Antiperoxidasa Tiroidea') {
+        return 'Ac. Anti-TPO';
+      } else if (estudio == 'Nitrógeno') {
+        return 'BUN';
+      } else if (estudio == 'Nitrógeno') {
+        return 'BUN';
+      } else {
+        return estudio;
+      }
     } else {
-      return estudio;
+      if (tipoEstudio == 'Gasometría Arterial') {
+        if (estudio == 'pH') {
+          return 'pHa';
+        } else if (estudio == 'Presión de Dióxido de Carbono') {
+          return 'PaCO2';
+        } else if (estudio == 'Presión de Oxígeno') {
+          return 'PaO2';
+        } else if (estudio == 'Bicarbonato Sérico') {
+          return 'aHCO3-' '';
+        } else if (estudio == 'Saturación de Oxígeno') {
+          return 'SaO2';
+        } else {
+          return estudio;
+        }
+      } else if (tipoEstudio == 'Gasometría Venosa') {
+        if (estudio == 'pH') {
+          return 'pHv';
+        } else if (estudio == 'Presión de Dióxido de Carbono') {
+          return 'PvCO2';
+        } else if (estudio == 'Presión de Oxígeno') {
+          return 'PvO2';
+        } else if (estudio == 'Bicarbonato Sérico') {
+          return 'vHCO3-' '';
+        } else if (estudio == 'Saturación de Oxígeno') {
+          return 'SvO2';
+        } else {
+          return estudio;
+        }
+      } else {
+        return estudio;
+      }
     }
   }
 
@@ -6096,7 +6139,7 @@ class Auxiliares {
       "U1 ribonucleoproteína (RNP)",
       "Anticoagulante Lúpico (Anti-La)",
       "Anticuerpos Anticardiolipina [aCL]",
-            "Cuantificación de IgM",
+      "Cuantificación de IgM",
       "Cuantificación de IgG",
       "Coombs directo",
       "Coombs Indirecto",
