@@ -841,16 +841,16 @@ class _RutinasState extends State<Rutinas> {
 
   var textLeucocitosResultController = TextEditingController();
   String? unidadMedidaLeucocitos =
-      Auxiliares.Medidas[Auxiliares.Categorias[0]][5];
+      Auxiliares.Medidas[Auxiliares.Categorias[0]][6];
   var textNeutrofilosResultController = TextEditingController();
   String? unidadMedidaNeutrofilos =
-      Auxiliares.Medidas[Auxiliares.Categorias[0]][1];
+      Auxiliares.Medidas[Auxiliares.Categorias[0]][6];
   var textLinfocitosResultController = TextEditingController();
   String? unidadMedidaLinfocitos =
-      Auxiliares.Medidas[Auxiliares.Categorias[0]][1];
+      Auxiliares.Medidas[Auxiliares.Categorias[0]][6];
   var textMonocitosResultController = TextEditingController();
   String? unidadMedidaMonocitos =
-      Auxiliares.Medidas[Auxiliares.Categorias[0]][1];
+      Auxiliares.Medidas[Auxiliares.Categorias[0]][6];
   // QUIMICA SANGUINEA  ********* *************** ************* *
   var textUreaResultController = TextEditingController();
   String? unidadMedidaUrea = Auxiliares.Medidas[Auxiliares.Categorias[1]][0];

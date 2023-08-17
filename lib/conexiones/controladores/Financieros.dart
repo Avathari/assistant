@@ -5,8 +5,9 @@ class Financieros {
   static String localRepositoryPath = 'assets/'
       'activos/${ID_Financieros.toString()}/';
   static int ID_Financieros = 1;
+  // **************************************************************************
   static List Activos = [];
-
+// **************************************************************************
   static var Categorias = [
     'Ingresos Registrados',
     'Egresos Registrados',
@@ -22,7 +23,8 @@ class Activos {
   static var fileAssocieted = '${Financieros.localRepositoryPath}activos.json';
   static var fileStadistics =
       '${Financieros.localRepositoryPath}activosStadistics.json';
-  //
+  static String imagenActivo = "";
+  // **************************************************************************
   static List tipoRecurso = [
     'Ingresos',
     'Egresos',
@@ -30,7 +32,7 @@ class Activos {
     'Pasivos',
     'Patrimonio',
   ];
-  // *************** * *                 ** ** * * * *
+  // **************************************************************************
   static List conceptoIngresos = [
     "Aguinaldo",
     "Becas",
@@ -49,7 +51,9 @@ class Activos {
     "Hoteles y viajes",
     "Prestamos no devueltos",
     "Restaurantes y bares",
+    "Mercados, Supermercados y Establecimientos",
     "Vinos y licores",
+    "Gastos varios",
     "Diplomados",
     "Salud",
     "Papeleria, documentación y derivados",
@@ -79,7 +83,7 @@ class Activos {
     'Activos',
     'Activos',
   ];
-  // ************** * ************ * * * * *
+  // **************************************************************************
   static List cuentaAsignada = [
     'Cuenta No 1: Libertad Financiera',
     'Cuenta No 2: Ahorro a Largo Plazo',
@@ -100,20 +104,37 @@ class Activos {
     'Vigente',
   ];
 
-  static var actualDiagno;
-  //
+  // **************************************************************************
   static Map<String, dynamic> Activo = {};
+  static Future<Map<String, dynamic>> getImage() async {
+    return Actividades.consultarId(Databases.siteground_database_regfine,
+        Activos.activos['consultImageByIdQuery'], Activos.ID_Financieros);
+  }
 
-  static void registros() {
+  static Future<void> registros() async {
     Actividades.consultarAllById(
             Databases.siteground_database_regfine,
-            Activos.activos['consultByIdPrimaryQuery'],
+            Activos.activos['consultIdQuery'],
             Financieros.ID_Financieros)
         .then((value) {
+      // **************************************************************************
+      Terminal.printExpected(message: "Response : : : $value");
+      // **************************************************************************
       Financieros.Activos = value;
+      // **************************************************************************
       Archivos.createJsonFromMap(value,
-          filePath: "${Financieros.localRepositoryPath}activos.json");
+          filePath: Activos.fileAssocieted); //activos.json
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(
+          message:
+              "ERROR : : : Error al Conectar con la Base de Datos - $error : : $stackTrace");
+      // **************************************************************************
     });
+  }
+
+  static Future<List> getActivos() {
+    return Actividades.consultarAllById(Databases.siteground_database_regfine,
+        Activos.activos['consultByIdPrimaryQuery'], Financieros.ID_Financieros);
   }
 
   static void ultimoRegistro() {
@@ -166,9 +187,14 @@ class Activos {
     "truncateQuery": "TRUNCATE activos",
     "dropQuery": "DROP TABLE activos",
     "consultQuery": "SELECT * FROM activos",
-    "consultIdQuery": "SELECT * FROM activos WHERE ID_Usuario = ?",
+    "consultIdQuery": "SELECT ID_Registro, Concepto_Recurso, Tipo_Recurso, Cuenta_Asignada, "
+        "Fecha_Pago_Programado, Intervalo_Programado, "
+        "Monto_Programado, Interes_Acordado, Monto_Pagado, Monto_Restante, "
+        "Estado_Actual, Fecha_Proximo_Pago, Fecha_Baja, Descripcion "
+        "FROM activos WHERE ID_Usuario = ?",
+    "consultImageByIdQuery": "SELECT Fine_IMG FROM activos WHERE ID_Registro = ?",
     "consultByIdPrimaryQuery": "SELECT * FROM activos WHERE ID_Usuario = ?",
-    // "consultAllIdsQuery": "SELECT ID_Usuario FROM activos",
+    // "consultAllIdsQuery": "SELECT ID_Registro FROM activos",
     "consultLastQuery": "SELECT * FROM activos WHERE ID_Usuario = ?",
     "consultByName": "SELECT * FROM activos WHERE Tipo_Recurso LIKE '%",
     "registerQuery": "INSERT INTO activos (ID_Usuario, "

@@ -452,73 +452,161 @@ class _OperacionesHospitalizacionesState
         idOperation
       ];
 
-      print(
-          "${widget.operationActivity} listOfValues $listOfValues ${listOfValues!.length}");
-
-      switch (widget.operationActivity) {
-        case Constantes.Nulo:
-          // ******************************************** *** *
-          listOfValues!.removeAt(0);
-          listOfValues!.removeLast();
-          // ******************************************** *** *
-          Actividades.registrar(Databases.siteground_database_reghosp,
-              registerQuery!, listOfValues!.removeLast());
-          break;
-        case Constantes.Consult:
-          break;
-        case Constantes.Register:
-          // ******************************************** *** *
-          listOfValues!.removeAt(0);
-          listOfValues!.removeLast();
-          // ******************************************** *** *
-          Actividades.registrar(Databases.siteground_database_reghosp,
-                  registerQuery!, listOfValues!)
-              .then((value) => Actividades.consultarAllById(
-                          Databases.siteground_database_reghosp,
-                          consultIdQuery!,
-                          Pacientes.ID_Paciente) // idOperation)
-                      .then((value) {
+      if (motivoEgresoValue != Escalas.motivosEgresos[0]) {
+        Operadores.selectOptionsActivity(
+            context: context,
+            tittle: "Paciente Egresado . . . ",
+            message: "Seleccione modo de atención",
+            options: Pacientes.Atencion,
+            onClose: (value) {
+              Pacientes.modoAtencion = value;
+              // DICOTOMIA ******************************************
+              if (value != "") {
+                // Continuar con el Método
+                switch (widget.operationActivity) {
+                  case Constantes.Nulo:
                     // ******************************************** *** *
-                    Pacientes.Hospitalizaciones = value;
-                    Pacientes.ID_Hospitalizacion = value.last['ID_Hosp'];
-                    Valores.servicioTratante = value.last['Serve_Trat'];
-                    Constantes.reinit(value: value);
+                    listOfValues!.removeAt(0);
+                    listOfValues!.removeLast();
                     // ******************************************** *** *
-                  }).whenComplete(() {
-                    Repositorios.registrarRegistro();
-                    Situaciones.registrarRegistro();
-                    Expedientes.registrarRegistro();
-                  }).whenComplete(() => onClose(context)));
-          break;
-        case Constantes.Update:
-          Actividades.actualizar(Databases.siteground_database_reghosp,
-                  updateQuery!, listOfValues!, idOperation)
-              .then((value) => Actividades.consultarAllById(
-                          Databases.siteground_database_reghosp,
-                          consultIdQuery!,
-                          Pacientes.ID_Paciente) // idOperation)
-                      .then((value) {
+                    Actividades.registrar(Databases.siteground_database_reghosp,
+                        registerQuery!, listOfValues!.removeLast());
+                    break;
+                  case Constantes.Consult:
+                    break;
+                  case Constantes.Register:
                     // ******************************************** *** *
-                    Pacientes.Hospitalizaciones = value;
-                    //
-                    Valores.fechaIngresoHospitalario =
-                        fechaIngresoTextController.text;
-                    Valores.numeroCama = (isNumCama);
-                    // Valores.diasEstancia = int.parse(diasEstanciaTextController.text);
-                    Valores.medicoTratante = medicoTratanteTextController.text;
-                    Valores.servicioTratante = servicioTratanteValue;
-                    Valores.servicioTratanteInicial =
-                        servicioTratanteInicialValue;
-                    Valores.fechaEgresoHospitalario =
-                        fechaEgresoTextController.text;
-                    Valores.motivoEgreso = motivoEgresoValue;
-                    //
-                    Constantes.reinit(value: value);
+                    listOfValues!.removeAt(0);
+                    listOfValues!.removeLast();
                     // ******************************************** *** *
-                  }).then((value) => onClose(context)));
-          break;
-        default:
+                    Actividades.registrar(Databases.siteground_database_reghosp,
+                            registerQuery!, listOfValues!)
+                        .then((value) => Actividades.consultarAllById(
+                                    Databases.siteground_database_reghosp,
+                                    consultIdQuery!,
+                                    Pacientes.ID_Paciente) // idOperation)
+                                .then((value) {
+                              // ******************************************** *** *
+                              Pacientes.Hospitalizaciones = value;
+                              Pacientes.ID_Hospitalizacion =
+                                  value.last['ID_Hosp'];
+                              Valores.servicioTratante =
+                                  value.last['Serve_Trat'];
+                              Constantes.reinit(value: value);
+                              // ******************************************** *** *
+                            }).whenComplete(() {
+                              Repositorios.registrarRegistro();
+                              Situaciones.registrarRegistro();
+                              Expedientes.registrarRegistro();
+                            }).whenComplete(() => onClose(context)));
+                    break;
+                  case Constantes.Update:
+                    Actividades.actualizar(
+                            Databases.siteground_database_reghosp,
+                            updateQuery!,
+                            listOfValues!,
+                            idOperation)
+                        .then((value) => Actividades.consultarAllById(
+                                    Databases.siteground_database_reghosp,
+                                    consultIdQuery!,
+                                    Pacientes.ID_Paciente) // idOperation)
+                                .then((value) {
+                              // ******************************************** *** *
+                              Pacientes.Hospitalizaciones = value;
+                              //
+                              Valores.fechaIngresoHospitalario =
+                                  fechaIngresoTextController.text;
+                              Valores.numeroCama = (isNumCama);
+                              // Valores.diasEstancia = int.parse(diasEstanciaTextController.text);
+                              Valores.medicoTratante =
+                                  medicoTratanteTextController.text;
+                              Valores.servicioTratante = servicioTratanteValue;
+                              Valores.servicioTratanteInicial =
+                                  servicioTratanteInicialValue;
+                              Valores.fechaEgresoHospitalario =
+                                  fechaEgresoTextController.text;
+                              Valores.motivoEgreso = motivoEgresoValue;
+                              //
+                              Constantes.reinit(value: value);
+                              // ******************************************** *** *
+                            }).then((value) => onClose(context)))
+                        .whenComplete(() => Pacientes.hospitalizar(
+                            modus: Pacientes.modoAtencion!));
+                    break;
+                  default:
+                }
+              }
+            });
+      } else {
+        // Continuar con el Método
+        switch (widget.operationActivity) {
+          case Constantes.Nulo:
+            // ******************************************** *** *
+            listOfValues!.removeAt(0);
+            listOfValues!.removeLast();
+            // ******************************************** *** *
+            Actividades.registrar(Databases.siteground_database_reghosp,
+                registerQuery!, listOfValues!.removeLast());
+            break;
+          case Constantes.Consult:
+            break;
+          case Constantes.Register:
+            // ******************************************** *** *
+            listOfValues!.removeAt(0);
+            listOfValues!.removeLast();
+            // ******************************************** *** *
+            Actividades.registrar(Databases.siteground_database_reghosp,
+                    registerQuery!, listOfValues!)
+                .then((value) => Actividades.consultarAllById(
+                            Databases.siteground_database_reghosp,
+                            consultIdQuery!,
+                            Pacientes.ID_Paciente) // idOperation)
+                        .then((value) {
+                      // ******************************************** *** *
+                      Pacientes.Hospitalizaciones = value;
+                      Pacientes.ID_Hospitalizacion = value.last['ID_Hosp'];
+                      Valores.servicioTratante = value.last['Serve_Trat'];
+                      Constantes.reinit(value: value);
+                      // ******************************************** *** *
+                    }).whenComplete(() {
+                      Repositorios.registrarRegistro();
+                      Situaciones.registrarRegistro();
+                      Expedientes.registrarRegistro();
+                    }).whenComplete(() => onClose(context)));
+            break;
+          case Constantes.Update:
+            Actividades.actualizar(Databases.siteground_database_reghosp,
+                    updateQuery!, listOfValues!, idOperation)
+                .then((value) => Actividades.consultarAllById(
+                            Databases.siteground_database_reghosp,
+                            consultIdQuery!,
+                            Pacientes.ID_Paciente) // idOperation)
+                        .then((value) {
+                      // ******************************************** *** *
+                      Pacientes.Hospitalizaciones = value;
+                      //
+                      Valores.fechaIngresoHospitalario =
+                          fechaIngresoTextController.text;
+                      Valores.numeroCama = (isNumCama);
+                      // Valores.diasEstancia = int.parse(diasEstanciaTextController.text);
+                      Valores.medicoTratante =
+                          medicoTratanteTextController.text;
+                      Valores.servicioTratante = servicioTratanteValue;
+                      Valores.servicioTratanteInicial =
+                          servicioTratanteInicialValue;
+                      Valores.fechaEgresoHospitalario =
+                          fechaEgresoTextController.text;
+                      Valores.motivoEgreso = motivoEgresoValue;
+                      //
+                      Constantes.reinit(value: value);
+                      // ******************************************** *** *
+                    }).then((value) => onClose(context)));
+            break;
+          default:
+        }
       }
+      // print(
+      //     "${widget.operationActivity} listOfValues $listOfValues ${listOfValues!.length}");
     } catch (ex) {
       showDialog(
           context: context,

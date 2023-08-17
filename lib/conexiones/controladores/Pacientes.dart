@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteFormats/formatosReportes.dart';
 import 'package:assistant/conexiones/conexiones.dart';
@@ -128,6 +130,8 @@ class Pacientes {
   static List? Pendiente = [];
 
   static String get diasOrdinalesEstancia {
+    Terminal.printExpected(
+        message: "diasOrdinalesEstancia ${Valores.diasEstancia}");
     return Items.ordinales[Valores.diasEstancia];
   }
 
@@ -754,7 +758,9 @@ class Pacientes {
     'Otra Hospitalización',
     'Consulta Externa',
     'Privado',
-    'Defunción'
+    'Análisis',
+    'Defunción',
+    'Otros',
   ];
   static final List<String> Turno = ["Matutino", "Vespertino"];
   static final List<String> Vivo = [
@@ -918,9 +924,7 @@ class Pacientes {
         "IndiIdio_Pace_SiNo = ?, IndiIdio_Pace_Espe = ? "
         "WHERE ID_Pace = ?",
     "deleteQuery": "DELETE FROM pace_iden_iden WHERE ID_Pace = ?",
-    "updateHospitalizacionQuery": "UPDATE pace_iden_iden "
-        "SET Pace_Hosp = ? "
-        "WHERE ID_Pace = ?",
+    "updateHospitalizacionQuery": "UPDATE pace_iden_iden SET Pace_Hosp = ? WHERE ID_Pace = ?",
     "pacientesColumns": [
       "ID_Pace",
       "Us_Nome",
@@ -1013,80 +1017,70 @@ class Pacientes {
     "Total de Pacientes registrados"
   ];
 
-  static Future<bool> hospitalizar() async {
-    String modus = '';
-    // Actualizar la variable en la base de datos.
-    if (modoAtencion == 'Hospitalización') {
-      modus = 'Consulta Externa';
-      //
-      final response = await Actividades.actualizar(
+  static Future<void> hospitalizar({required String modus}) async {
+        // Actualizar la variable en la base de datos.
+    if (modoAtencion == 'Consulta Externa') {
+      Actividades.actualizar(
           Databases.siteground_database_regpace,
           pacientes['updateHospitalizacionQuery'],
           [modus, Pacientes.ID_Paciente],
-          Pacientes.ID_Paciente);
-
-      if (response == 'SUCCESS') {
-        return false;
-      } else {
-        return true;
-      }
-    } else if (modoAtencion == 'Consulta Externa') {
-      modus = 'Hospitalización';
-      //
-      await Actividades.actualizar(
-              Databases.siteground_database_regpace,
-              pacientes['updateHospitalizacionQuery'],
-              [modus, Pacientes.ID_Paciente],
-              Pacientes.ID_Paciente)
-          .whenComplete(() => Actividades.registrar(
-                  Databases.siteground_database_reghosp,
-                  "INSERT INTO pace_hosp (ID_Pace, "
+          Pacientes.ID_Paciente)
+          .whenComplete(() =>
+          Actividades.registrar(
+              Databases.siteground_database_reghosp,
+              "INSERT INTO pace_hosp (ID_Pace, "
                   "Feca_INI_Hosp, Id_Cama, Dia_Estan, Medi_Trat, Serve_Trat, Serve_Trat_INI, "
                   "Feca_EGE_Hosp, EGE_Motivo) "
                   "VALUES (?,?,?,?,?,?,?,?,?)",
-                  [
-                    Pacientes.ID_Paciente,
-                    Calendarios.today(format: 'yyyy/MM/dd'),
-                    'N/A', // No Cama
-                    0,
-                    '',
-                    Valores.servicioTratante,
-                    Valores.servicioTratanteInicial,
-                    '0000/00/00',
-                    Escalas.motivosEgresos[0],
-                  ]).whenComplete(() => Actividades.consultarId(
-                          Databases.siteground_database_reghosp,
-                          "SELECT * FROM pace_hosp WHERE ID_Pace = ? ORDER BY ID_Hosp ASC",
-                          Pacientes.ID_Paciente)
-                      .then((value) {
-                    // ******************************************** *** *
-                    // // print("IDDDD HOSP ${value}");
-                    Pacientes.ID_Hospitalizacion = value['ID_Hosp'];
-                    Pacientes.esHospitalizado = true;
-                    Valores.isHospitalizado = true;
-                    // // print("IDDDD HOSP ${Pacientes.ID_Hospitalizacion}");
-                    // ******************************************** *** *
-                    Valores.fechaIngresoHospitalario =
-                        Calendarios.today(format: 'yyyy/MM/dd');
-                    Valores.fechaIngresoHospitalario = '';
-                    Valores.numeroCama = 'N/A';
-                    Valores.medicoTratante = '';
-                    Valores.motivoEgreso = Escalas.motivosEgresos[0];
-                  }).whenComplete(() {
-                    // ******************************************** *** *
-                    // Registro de Actividades Iniciales de la Hospitalización
-                    // ******************************************** *** *
-                    Repositorios.registrarRegistro();
-                    Situaciones.registrarRegistro();
-                    Expedientes.registrarRegistro();
-                  })));
-
-      // ******************************************** *** *
-      return true;
+              [
+                Pacientes.ID_Paciente,
+                Calendarios.today(format: 'yyyy/MM/dd'),
+                'N/A', // No Cama
+                0,
+                '',
+                Valores.servicioTratante,
+                Valores.servicioTratanteInicial,
+                '0000/00/00',
+                Escalas.motivosEgresos[0],
+              ]).whenComplete(() =>
+              Actividades.consultarId(
+                  Databases.siteground_database_reghosp,
+                  "SELECT * FROM pace_hosp WHERE ID_Pace = ? ORDER BY ID_Hosp ASC",
+                  Pacientes.ID_Paciente)
+                  .then((value) {
+                // ******************************************** *** *
+                // // print("IDDDD HOSP ${value}");
+                Pacientes.ID_Hospitalizacion = value['ID_Hosp'];
+                Pacientes.esHospitalizado = true;
+                Valores.isHospitalizado = true;
+                // // print("IDDDD HOSP ${Pacientes.ID_Hospitalizacion}");
+                // ******************************************** *** *
+                Valores.fechaIngresoHospitalario =
+                    Calendarios.today(format: 'yyyy/MM/dd');
+                Valores.fechaIngresoHospitalario = '';
+                Valores.numeroCama = 'N/A';
+                Valores.medicoTratante = '';
+                Valores.motivoEgreso = Escalas.motivosEgresos[0];
+              }).whenComplete(() {
+                // ******************************************** *** *
+                // Registro de Actividades Iniciales de la Hospitalización
+                // ******************************************** *** *
+                Repositorios.registrarRegistro();
+                Situaciones.registrarRegistro();
+                Expedientes.registrarRegistro();
+              })));
     } else {
-      return false;
+      Terminal.printOther(message: "Atencion : : $modus");
+      Actividades.actualizar(
+          Databases.siteground_database_regpace,
+          pacientes['updateHospitalizacionQuery'],
+          [modus, Pacientes.ID_Paciente],
+          Pacientes.ID_Paciente).then((value) {
+        Terminal.printOther(message: "Atencion : : $modus $value");
+      });
+      }
     }
-  }
+
 
   static getImage() {
     Actividades.consultarId(Databases.siteground_database_regpace,
@@ -5474,6 +5468,87 @@ class Auxiliares {
   static var fileAssocieted =
       '${Pacientes.localRepositoryPath}paraclinicos.json';
 
+  static fromJson(Map<String, dynamic> json) {
+    Valores.fechaBiometria = json['Fecha_Registro_Biometria'] ?? '';
+    Valores.eritrocitos = double.parse(json['Eritrocitos'] ?? '0');
+    Valores.hematocrito = double.parse(json['Hematocrito'] ?? '0');
+    Valores.hemoglobina = double.parse(json['Hemoglobina'] ?? '0');
+
+    Valores.concentracionMediaHemoglobina = double.parse(json['CMHC'] ?? '0');
+    Valores.volumenCorpuscularMedio = double.parse(json['VCM'] ?? '0');
+    Valores.hemoglobinaCorpuscularMedia = double.parse(json['HCM'] ?? '0');
+
+    Valores.plaquetas = double.parse(json['Plaquetas'] ?? '0');
+
+    Valores.leucocitosTotales = double.parse(json['Leucocitos_Totales'] ?? '0');
+    Valores.neutrofilosTotales =
+        double.parse(json['Neutrofilos_Totales'] ?? '0');
+    Valores.linfocitosTotales = double.parse(json['Linfocitos_Totales'] ?? '0');
+    Valores.monocitosTotales = double.parse(json['Monocitos_Totales'] ?? '0');
+    //
+    Valores.fechaQuimicas = json['Fecha_Registro_Quimicas'] ?? '';
+    Valores.glucosa = double.parse(json['Glucosa'] ?? '0');
+    Valores.urea = double.parse(json['Urea'] ?? '0');
+    Valores.creatinina = double.parse(json['Creatinina'] ?? '0');
+    Valores.acidoUrico = double.parse(json['Acido_Urico'] ?? '0');
+    Valores.nitrogenoUreico = double.parse(json['Nitrogeno_Ureico'] ?? '0');
+
+    //
+    Valores.fechaElectrolitos = json['Fecha_Registro_Electrolitos'] ?? '';
+    Valores.sodio = double.parse(json['Sodio'] ?? '0');
+    Valores.potasio = double.parse(json['Potasio'] ?? '0');
+    Valores.cloro = double.parse(json['Cloro'] ?? '0');
+    Valores.magnesio = double.parse(json['Magnesio'] ?? '0');
+    Valores.fosforo = double.parse(json['Fosforo'] ?? '0');
+    Valores.calcio = double.parse(json['Calcio'] ?? '0');
+    //
+    Valores.fechaHepaticos = json['Fecha_Registro_Hepaticos'] ?? '';
+    Valores.alaninoaminotrasferasa =
+        double.parse(json['Alaninoaminotrasferasa'] ?? '0');
+    Valores.aspartatoaminotransferasa =
+        double.parse(json['Aspartatoaminotransferasa'] ?? '0');
+    Valores.bilirrubinasTotales =
+        double.parse(json['Bilirrubinas_Totales'] ?? '0');
+    Valores.bilirrubinaDirecta =
+        double.parse(json['Bilirrubina_Directa'] ?? '0');
+    Valores.bilirrubinaIndirecta =
+        double.parse(json['Bilirrubina_Indirecta'] ?? '0');
+    Valores.deshidrogenasaLactica =
+        double.parse(json['Glutrailtranspeptidasa'] ?? '0');
+    Valores.glutrailtranspeptidasa =
+        double.parse(json['Glutrailtranspeptidasa'] ?? '0');
+    Valores.fosfatasaAlcalina = double.parse(json['Fosfatasa_Alcalina'] ?? '0');
+    Valores.albuminaSerica = double.parse(json['Albumina_Serica'] ?? '0');
+    Valores.proteinasTotales = double.parse(json['Proteinas_Totales'] ?? '0');
+    //
+    Valores.fechaReactantes = json['Fecha_Registro_Reactantes'] ?? '';
+    Valores.procalcitonina = double.parse(json['Procalcitonina'] ?? '0');
+    Valores.lactato = double.parse(json['Acido_Lactico'] ?? '0');
+    Valores.velocidadSedimentacionGlobular =
+        double.parse(json['Velocidad_Sedimentacion'] ?? '0');
+    Valores.proteinaCreactiva = double.parse(json['Proteina_Reactiva'] ?? '0');
+    Valores.factorReumatoide = double.parse(json['Factor_Reumatoide'] ?? '0');
+    Valores.anticuerpoCitrulinado =
+        double.parse(json['Anticuerpo_Citrulinado'] ?? '0');
+    //
+    Valores.fechaGasometriaArterial = json['Fecha_Registro_Arterial'] ?? '';
+    Valores.pHArteriales = double.parse(json['Ph_Arterial'] ?? '0');
+    Valores.pcoArteriales = double.parse(json['Pco_Arterial'] ?? '0');
+    Valores.poArteriales = double.parse(json['Po_Arterial'] ?? '0');
+    Valores.bicarbonatoArteriales = double.parse(json['Hco_Arterial'] ?? '0');
+    Valores.excesoBaseArteriales = double.parse(json['Eb_Arterial'] ?? '0');
+    Valores.fioArteriales = double.parse(json['Fio_Arterial'] ?? '0');
+    Valores.soArteriales = double.parse(json['So_Arterial'] ?? '0');
+    //
+    Valores.fechaGasometriaVenosa = json['Fecha_Registro_Venosa'] ?? '';
+    Valores.pHVenosos = double.parse(json['Ph_Venosa'] ?? '0');
+    Valores.pcoVenosos = double.parse(json['Pco_Venosa'] ?? '0');
+    Valores.poVenosos = double.parse(json['Po_Venosa'] ?? '0');
+    Valores.bicarbonatoVenosos = double.parse(json['Hco_Venosa'] ?? '0');
+    Valores.fioVenosos = double.parse(json['Fio_Venosa'] ?? '0');
+    Valores.soVenosos = double.parse(json['So_Venosa'] ?? '0');
+  }
+
   static void ultimoRegistro() {
     Actividades.detallesById(Databases.siteground_database_reggabo,
             Auxiliares.auxiliares['auxiliarStadistics'], Pacientes.ID_Paciente,
@@ -5575,8 +5650,61 @@ class Auxiliares {
     return "$prosa${Sentences.capitalize(max)}. ";
   }
 
+  static String getUltimo({bool esAbreviado = false}) {
+    String prosa = "";
+
+    var fechar = Listas.listWithoutRepitedValues(
+      Listas.listFromMapWithOneKey(
+        Pacientes.Paraclinicos!,
+        keySearched: 'Fecha_Registro',
+      ),
+    );
+    if (fechar.first.isNotEmpty) {
+      if (esAbreviado) {
+        List<dynamic>? alam = Pacientes.Paraclinicos!;
+        var aux = alam!
+            .where((user) => user["Fecha_Registro"].contains(fechar.first))
+            .toList();
+        String fecha = "          Paraclínicos (${fechar.first})", max = "";
+
+        for (var element in aux) {
+          // ***************************** *****************
+          if (max == "") {
+            max =
+                "${Auxiliares.abreviado(estudio: element['Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+          } else {
+            max =
+                "$max, ${Auxiliares.abreviado(estudio: element['Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+          }
+        }
+        prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+      } else {
+        List<dynamic>? alam = Pacientes.Paraclinicos!;
+        var aux = alam!
+            .where((user) => user["Fecha_Registro"].contains(fechar.first))
+            .toList();
+        String fecha = "          Paraclínicos (${fechar.first})", max = "";
+
+        for (var element in aux) {
+          // ***************************** *****************
+          if (max == "") {
+            max =
+                "${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+          } else {
+            max =
+                "$max, ${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+          }
+        }
+        prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+      }
+    }
+    // ************** ***************** ***************
+    return prosa;
+  }
+
   static String historial({bool esAbreviado = false}) {
     String prosa = "";
+
     var fechar = Listas.listWithoutRepitedValues(
       Listas.listFromMapWithOneKey(
         Pacientes.Paraclinicos!,
@@ -5713,13 +5841,13 @@ class Auxiliares {
     } else if (estudio == 'Calcio') {
       return 'Ca2';
     } else if (estudio == 'Leucocitos Totales') {
-      return 'LEU';
+      return 'Leu';
     } else if (estudio == 'Neutrofilos Totales') {
-      return 'NEU';
+      return 'Neu';
     } else if (estudio == 'Linfocitos Totales') {
-      return 'LYN';
+      return 'Lyn';
     } else if (estudio == 'Monocitos Totales') {
-      return 'MON';
+      return 'Mon';
     } else if (estudio == 'Hemoglobina') {
       return 'Hb';
     } else if (estudio == 'Hematocrito') {
@@ -5735,8 +5863,47 @@ class Auxiliares {
     } else if (estudio == 'Creatinina') {
       return 'Cr';
     } else if (estudio == 'Glucosa') {
-      return 'GLU';
+      return 'Glu';
     } else if (estudio == 'Nitrógeno Úrico') {
+      return 'BUN';
+      // ****************************************
+    } else if (estudio == 'P-ANCA') {
+      return "p-ANCA";
+    } else if (estudio == 'C-ANCA') {
+      return "c-ANCA";
+    } else if (estudio == '"U1 ribonucleoproteína (RNP)"') {
+      return 'Ac. Anti-RNP';
+    } else if (estudio == 'Anticoagulante Lúpico (Anti-La)') {
+      return 'BUN';
+    // } else if (estudio == 'Anticoagulante Lúpico (Anti-La)') {
+    //   return 'BUN';
+    } else if (estudio == "Anti-beta2-glicoproteina [GP]") {
+      return 'Anti-B2 Gliicoproteina';
+    } else if (estudio == "Anticuerpos Anticardiolipina [aCL]") {
+      return 'Ac. Anticardiolipina';
+    } else if (estudio == 'Cuantificación de IgM') {
+      return 'IgM';
+    } else if (estudio == 'Cuantificación de IgG') {
+      return 'IgG';
+    } else if (estudio == 'Anticuerpo Anti-Nucleares') {
+      return 'Anti-ANA';
+    } else if (estudio == 'Cuantificación de Complemento C3') {
+      return 'C3';
+    } else if (estudio == 'Cuantificación de Complemento C4') {
+      return 'C4';
+    } else if (estudio == 'Ac. Anti-Smith') {
+      return 'anti-Sm';
+    } else if (estudio == 'Ac. Anti-SSA (Ro/SSA)') {
+      return 'Ac. Anti-Ro/SSA';
+    } else if (estudio == 'Ac. Anti-SSB (La/SSB)') {
+      return 'Ac. Anti-La/SSB';
+    } else if (estudio == 'Ac. Anti-Tiroglobulina') {
+      return 'Ac. Anti-Tiroglobulina';
+    } else if (estudio == 'Ac. Antiperoxidasa Tiroidea') {
+      return 'Ac. Anti-TPO';
+    } else if (estudio == 'Nitrógeno') {
+      return 'BUN';
+    } else if (estudio == 'Nitrógeno') {
       return 'BUN';
     } else {
       return estudio;
@@ -5764,8 +5931,12 @@ class Auxiliares {
     "Conteo de Linfocitos T CD4+",
     "Marcadores Cárdiacos",
     "",
-    "Panel Viral",
+    "Panel Viral", // 20
     "Perfil de Hierro",
+    "Inmunológicos",
+    "Perfil Hormonal",
+    "Cuantificación de Vitaminas",
+    "Otros",
     "Electrocardiograma"
   ];
   static Map<String, dynamic> Laboratorios = {
@@ -5786,6 +5957,9 @@ class Auxiliares {
       "Eosinófilos Totales",
       "Basófilos Totales",
       "Bandas Totales"
+          "Ancho de Distribución Plaquetaria",
+      "Volumen Plaquetar Medio",
+      "",
     ],
     Categorias[1]: [
       "Glucosa",
@@ -5898,6 +6072,13 @@ class Auxiliares {
       "HbsAg",
       "HIVAg",
       "HIVAg-Ag",
+      //
+      "Ac IgG anti Citomegalovirus",
+      "Ac IgM anti Citomegalovirus",
+      "Ac IgG anti Rubeola",
+      "Ac IgM anti Rubeola",
+      "Ac IgG anti Toxoplasma",
+      "Ac IgM anti Toxoplasma",
     ],
     Categorias[21]: [
       "Hierro Sérico",
@@ -5905,6 +6086,80 @@ class Auxiliares {
       "Transferrina",
       "Saturación de Transferrina",
       "Captación de Hierro Sérico",
+      "",
+    ],
+    //
+    Categorias[22]: [
+      "P-ANCA",
+      "C-ANCA",
+      "anti-dsDNA",
+      "U1 ribonucleoproteína (RNP)",
+      "Anticoagulante Lúpico (Anti-La)",
+      "Anticuerpos Anticardiolipina [aCL]",
+            "Cuantificación de IgM",
+      "Cuantificación de IgG",
+      "Coombs directo",
+      "Coombs Indirecto",
+      "Anticuerpo Anti-Nucleares",
+      "Cuantificación de Complemento C3",
+      "Cuantificación de Complemento C4",
+      "Ac. Anti-Smith",
+      "Ac. Anti-SSA (Ro/SSA)",
+      "Ac. Anti-SSB (La/SSB)",
+      "Ac. Anti-Ribonucleoproteinas",
+      "Anti-beta2 Microglobulina",
+      "Anti-beta2-glicoproteina [GP]",
+      "Ac. Anti-Tiroglobulina",
+      "Ac. Antiperoxidasa Tiroidea",
+      "Ac. Anti-",
+      "Ac. Anti-",
+      "Ac. Anti-",
+      "Ac. Anti-",
+      "",
+      "",
+      "",
+      "",
+      "",
+    ],
+    Categorias[23]: [
+      "ACTH",
+      "Cortisol",
+      "Hormona Foliculo-esimulante",
+      "Progesterona",
+      "Estradiol",
+      "Estrona",
+      "Dihidrotestorterona",
+      "Testosterona",
+      "Prolactina",
+      "Hormona antidiurética",
+      "",
+    ],
+    Categorias[24]: [
+      "Cianocobalamina",
+      "Ácido Fólico Endógeno",
+      "Folatos",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+    ],
+    Categorias[25]: [
+      "Hemoglobina Glucosilada",
+      "Antigeno Prostático Específico",
+      "Antigeno Protático Total",
+      "BNP",
+      "NT-pro BNP",
+      "Alfa Fetoproteina",
+      "Antigeno Carcinoembrionario",
+      "CA 19.9",
+      "CA 125",
+      "",
+      "",
+      "",
+      "",
       "",
     ],
   };
@@ -5935,7 +6190,12 @@ class Auxiliares {
       "",
     ],
     Categorias[21]: ["mcg/dl", "ng/mL", "µg/dL", "%", "mg/dL"],
+    Categorias[22]: ["pg/mL", "UI/mL", "", "", ""],
+    Categorias[23]: ["pg/mL", ""],
+    Categorias[24]: [""],
+    Categorias[25]: [""],
   };
+
   static final Map<String, dynamic> auxiliares = {
     "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_reglabo "
         "DEFAULT CHARACTER SET utf8 "
@@ -6278,6 +6538,8 @@ class Pendientes {
       'Colocación de CVC',
       'Colocación de Cateter de Hemodialisis',
       'Colocación de Cateter de Dialisis Peritoneal',
+      'Sesión de Hemodialisis',
+      'Implementación de Dialisis Peritoneal',
       'Instalación de Sonda Urinaria',
       'Colocación de Sonda Endopleural',
       'Curación de Herida',
@@ -6652,7 +6914,8 @@ class Balances {
                   Pace_bala_Drenes double NOT NULL,
                   Pace_bala_PER double NOT NULL,
                   Pace_bala_ENG double NOT NULL,
-                  Pace_bala_HOR int NOT NULL 
+                  Pace_bala_HOR int NOT NULL,
+                  Pace_Foley varchar(75) NOT NULL
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla para Registro de Líquidos en Pacientes Hospitalizados.';
             """,
     "truncateQuery": "TRUNCATE pace_bala",
@@ -6672,15 +6935,16 @@ class Balances {
         "Pace_bala_Dil, Pace_bala_ING, Pace_bala_Uresis, "
         "Pace_bala_Evac, Pace_bala_Sangrado, "
         "Pace_bala_Succion, Pace_bala_Drenes, Pace_bala_PER, "
-        "Pace_bala_ENG, Pace_bala_HOR) "
+        "Pace_bala_ENG, Pace_bala_HOR, Pace_Foley) "
         "VALUES (?,?,?,?,?,?,?,?,?,?,"
-        "?,?,?,?,?,?,?,?)",
+        "?,?,?,?,?,?,?,?,?)",
     "updateQuery": "UPDATE pace_bala "
         "SET ID_Bala = ?, ID_Pace = ?, Pace_bala_Fecha = ?, Pace_bala_Time = ?, "
         "Pace_bala_Oral = ?, Pace_bala_Sonda = ?, Pace_bala_Hemo = ?, Pace_bala_NPT = ?, "
         "Pace_bala_Sol = ?, Pace_bala_Dil = ?, Pace_bala_ING = ?, Pace_bala_Uresis = ?, "
-        "Pace_bala_Evac = ?, Pace_bala_Sangrado = ?, Pace_bala_Succion = ?, Pace_bala_Drenes "
-        "= ?, Pace_bala_PER = ?, Pace_bala_ENG = ?, Pace_bala_HOR = ? "
+        "Pace_bala_Evac = ?, Pace_bala_Sangrado = ?, Pace_bala_Succion = ?, Pace_bala_Drenes = ?, "
+        "Pace_bala_PER = ?, Pace_bala_ENG = ?, Pace_bala_HOR = ?, "
+        "Pace_Foley = ? "
         "WHERE ID_Bala = ?",
     "deleteQuery": "DELETE FROM pace_bala WHERE ID_Bala = ?",
     "balanceColumns": [
@@ -6752,7 +7016,7 @@ class Ventilaciones {
 
   static Map<String, dynamic> Ventilacion = {};
 
-  static List<String> actualDiagno = [
+  static List<String> modalidades = [
     'Ningún modo ventilatorio',
     'Ventilación Limitada por Presión Ciclada por Tiempo (P-VMC / VCP)',
     'Ventilación Limitada por Flujo Ciclada por Volumen (V-VMC / VCV)',
@@ -6762,26 +7026,45 @@ class Ventilaciones {
     'Espontáneo (ESPON)',
   ];
 
-  static String modoVentilatorio({required String modalidadVentilatoria}) {
-    if (modalidadVentilatoria ==
-        'Ventilación Limitada por Presión Ciclada por Tiempo (P-VMC / VCP)') {
-      return 'AC-VCP'; // # 'P-VMC/VCP';
-    } else if (modalidadVentilatoria ==
-        'Ventilación Limitada por Flujo Ciclada por Volumen (V-VMC / VCV)') {
-      return 'AC-VCV'; // # 'V-VMC/VCV';
-    } else if (modalidadVentilatoria ==
-        'Ventilación Mandatoria Intermitente Sincrónizada (SIMV / VCV)') {
-      return 'SIMV/VCV';
-    } else if (modalidadVentilatoria ==
-        'Ventilación Mandatoria Intermitente Sincrónizada (SIMV / VCP)') {
-      return 'SIMV/VCP';
-    } else if (modalidadVentilatoria ==
-        'Presión Positiva en Vía Aérea con Presión Soporte (CPAP / PS)') {
-      return 'CPAP/PS';
-    } else if (modalidadVentilatoria == 'Espontáneo (ESPON)') {
-      return 'ESPON';
+  static String modoVentilatorio(
+      {required String modalidadVentilatoria, bool reverse = false}) {
+    if (reverse) {
+      if (modalidadVentilatoria == 'AC-VCP') {
+        return 'Ventilación Limitada por Presión Ciclada por Tiempo (P-VMC / VCP)';
+      } else if (modalidadVentilatoria == 'AC-VCV') {
+        return 'Ventilación Limitada por Flujo Ciclada por Volumen (V-VMC / VCV)';
+      } else if (modalidadVentilatoria == 'SIMV/VCV') {
+        return 'Ventilación Mandatoria Intermitente Sincrónizada (SIMV / VCV)';
+      } else if (modalidadVentilatoria == 'SIMV/VCP') {
+        return 'Ventilación Mandatoria Intermitente Sincrónizada (SIMV / VCP)';
+      } else if (modalidadVentilatoria == 'CPAP/PS') {
+        return 'Presión Positiva en Vía Aérea con Presión Soporte (CPAP / PS)';
+      } else if (modalidadVentilatoria == 'ESPON') {
+        return 'Espontáneo (ESPON)';
+      } else {
+        return 'Ningún modo ventilatorio';
+      }
     } else {
-      return ' ';
+      if (modalidadVentilatoria ==
+          'Ventilación Limitada por Presión Ciclada por Tiempo (P-VMC / VCP)') {
+        return 'AC-VCP'; // # 'P-VMC/VCP';
+      } else if (modalidadVentilatoria ==
+          'Ventilación Limitada por Flujo Ciclada por Volumen (V-VMC / VCV)') {
+        return 'AC-VCV'; // # 'V-VMC/VCV';
+      } else if (modalidadVentilatoria ==
+          'Ventilación Mandatoria Intermitente Sincrónizada (SIMV / VCV)') {
+        return 'SIMV/VCV';
+      } else if (modalidadVentilatoria ==
+          'Ventilación Mandatoria Intermitente Sincrónizada (SIMV / VCP)') {
+        return 'SIMV/VCP';
+      } else if (modalidadVentilatoria ==
+          'Presión Positiva en Vía Aérea con Presión Soporte (CPAP / PS)') {
+        return 'CPAP/PS';
+      } else if (modalidadVentilatoria == 'Espontáneo (ESPON)') {
+        return 'ESPON';
+      } else {
+        return ' ';
+      }
     }
   }
 
@@ -6847,15 +7130,17 @@ class Ventilaciones {
     "registerQuery": "INSERT INTO pace_vm (ID_Pace, "
         "Feca_VEN, Pace_Vt, Pace_Fr, Pace_Fio, Pace_Peep, Pace_Insp, "
         "Pace_Espi, Pace_Pc, Pace_Pm, Pace_V, Pace_F, Pace_Ps, Pace_Pip, "
-        "Pace_Pmet, VM_Mod) "
+        "Pace_Pmet, VM_Mod, "
+        "Pace_TET, Pace_DAC) "
         "VALUES (?,?,?,?,?,?,?,?,?,?,"
-        "?,?,?,?,?,?)",
+        "?,?,?,?,?,?,?,?)",
     "updateQuery": "UPDATE pace_vm "
         "SET ID_Ventilacion = ?,  ID_Pace = ?,  Feca_VEN = ?,  "
         "Pace_Vt = ?,  Pace_Fr = ?,  Pace_Fio = ?,  Pace_Peep = ?,  "
         "Pace_Insp = ?,  Pace_Espi = ?,  Pace_Pc = ?,  Pace_Pm = ?,  "
         "Pace_V = ?,  Pace_F = ?,  Pace_Ps = ?,  Pace_Pip = ?,  "
-        "Pace_Pmet = ?,  VM_Mod = ? "
+        "Pace_Pmet = ?,  VM_Mod = ?, "
+        "Pace_TET = ?, Pace_DAC = ? "
         "WHERE ID_Ventilacion = ?",
     "deleteQuery": "DELETE FROM pace_vm WHERE ID_Ventilacion = ?",
     "ventilacionColumns": [

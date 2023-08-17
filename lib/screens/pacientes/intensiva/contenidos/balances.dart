@@ -42,37 +42,6 @@ class OperacionesBalances extends StatefulWidget {
 }
 
 class _OperacionesBalancesState extends State<OperacionesBalances> {
-  String appBarTitile = "Gestión de Balances";
-  String? consultIdQuery = Balances.balance['consultIdQuery'];
-  String? registerQuery = Balances.balance['registerQuery'];
-  String? updateQuery = Balances.balance['updateQuery'];
-
-  int idOperation = 0;
-
-  List<dynamic>? listOfValues;
-
-  var fechaRealizacionTextController = TextEditingController();
-  var isHorarioValue = Balances.actualDiagno[6];
-
-  var viaOralTextController = TextEditingController();
-  var viaOrogasTextController = TextEditingController();
-  var viaHemosTextController = TextEditingController();
-  var viaNutrianTextController = TextEditingController();
-  var viaParesTextController = TextEditingController();
-  var viaDilucionesTextController = TextEditingController();
-  var viaOtrosIngresosTextController = TextEditingController();
-  //
-  var viaUresisTextController = TextEditingController();
-  var viaEvacTextController = TextEditingController();
-  var viaSangTextController = TextEditingController();
-  var viaSucciTextController = TextEditingController();
-  var viaDreneTextController = TextEditingController();
-  var viaPerdidaTextController = TextEditingController();
-  var viaOtrosEgresosTextController = TextEditingController();
-  //
-  var carouselController = CarouselController();
-  //
-
   @override
   void initState() {
     //
@@ -86,7 +55,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         fechaRealizacionTextController.text =
             Calendarios.today(format: "yyyy/MM/dd");
         viaPerdidaTextController.text = Valores.perdidasInsensibles.toString();
-
+        Valores.tipoSondaVesical = Items.foley[0];
         break;
       case Constantes.Update:
         setState(() {
@@ -96,7 +65,9 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
           idOperation = Balances.Balance['ID_Bala'];
           fechaRealizacionTextController.text =
               Balances.Balance['Pace_bala_Fecha'];
+//
           isHorarioValue = Balances.Balance['Pace_bala_HOR'].toString();
+          Valores.tipoSondaVesical = Balances.Balance['Pace_Foley'].toString() ?? '';
 
           viaOralTextController.text =
               Balances.Balance['Pace_bala_Oral'].toString();
@@ -212,6 +183,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
                   type: MaskAutoCompletionType.lazy),
             ),
             Expanded(
+              flex: 2,
               child: Container(
                 decoration: ContainerDecoration.roundedDecoration(),
                 child: Row(
@@ -254,7 +226,28 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
               ),
             ),
             Expanded(
-              flex: isTablet(context) ? 4 : 8,
+              flex: 2,
+              child: Spinner(
+                isRow: true,
+                tittle: 'Sonda Vesical',
+                width: isDesktop(context)
+                    ? 300
+                    : isTablet(context)
+                    ? 200
+                    : isMobile(context)
+                    ? 170
+                    : 200,
+                items: Items.foley,
+                initialValue: Valores.tipoSondaVesical,
+                onChangeValue: (value) {
+                  setState(() {
+                    Valores.tipoSondaVesical = value;
+                  });
+                },
+              ),
+            ),
+            Expanded(
+              flex: isTablet(context) ? 4 : 9,
               child: Container(
                 padding: const EdgeInsets.all(10.0),
                 margin: const EdgeInsets.all(10.0),
@@ -310,6 +303,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
     );
   }
 
+  // *************************************************************************
   List<Widget> component(BuildContext context) {
     return [
       Spinner(
@@ -484,6 +478,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
     ];
   }
 
+  // *************************************************************************
   void operationMethod(BuildContext context) {
     try {
       listOfValues = [
@@ -509,6 +504,8 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         viaOtrosEgresosTextController.text,
         //
         isHorarioValue,
+        //
+        Valores.tipoSondaVesical,
         //
         idOperation
       ];
@@ -550,7 +547,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
                           Pacientes.ID_Paciente) // idOperation)
                       .then((value) {
                     // ******************************************** *** *
-                    Pacientes.Alergicos = value;
+                    Pacientes.Balances = value;
                     Constantes.reinit(value: value);
                     // ******************************************** *** *
                   }).then((value) {
@@ -575,7 +572,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
                           Pacientes.ID_Paciente) // idOperation)
                       .then((value) {
                     // ******************************************** *** *
-                    Pacientes.Alergicos = value;
+                    Pacientes.Balances = value;
                     Constantes.reinit(value: value);
                     // ******************************************** *** *
                   }).then((value) {
@@ -608,16 +605,14 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
     Terminal.printExpected(message: "Reinicio de los valores . . .");
 
     Pacientes.Balances!.clear();
-    Actividades.consultarAllById(
-            Databases.siteground_database_regpace,
-            Balances.balance['consultByIdPrimaryQuery'],
-            Pacientes.ID_Paciente)
+    Actividades.consultarAllById(Databases.siteground_database_regpace,
+            Balances.balance['consultIdQuery'], Pacientes.ID_Paciente)
         .then((value) {
       setState(() {
         Pacientes.Balances = value;
         Terminal.printSuccess(
             message:
-                "Actualizando Repositorio de Patologías del Paciente . . . ${Pacientes.Balances}");
+                "Actualizando Repositorio de Balances del Paciente . . . ${Pacientes.Balances}");
 
         Archivos.createJsonFromMap(Pacientes.Balances!,
             filePath: Balances.fileAssocieted);
@@ -666,6 +661,37 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
     Valores.otrosEgresosBalances =
         double.parse(viaOtrosEgresosTextController.text);
   }
+
+  // VARIABLES *************************************************************
+  String appBarTitile = "Gestión de Balances";
+  String? consultIdQuery = Balances.balance['consultIdQuery'];
+  String? registerQuery = Balances.balance['registerQuery'];
+  String? updateQuery = Balances.balance['updateQuery'];
+
+  int idOperation = 0;
+
+  List<dynamic>? listOfValues;
+
+  var fechaRealizacionTextController = TextEditingController();
+  var isHorarioValue = Balances.actualDiagno[6];
+
+  var viaOralTextController = TextEditingController();
+  var viaOrogasTextController = TextEditingController();
+  var viaHemosTextController = TextEditingController();
+  var viaNutrianTextController = TextEditingController();
+  var viaParesTextController = TextEditingController();
+  var viaDilucionesTextController = TextEditingController();
+  var viaOtrosIngresosTextController = TextEditingController();
+  //
+  var viaUresisTextController = TextEditingController();
+  var viaEvacTextController = TextEditingController();
+  var viaSangTextController = TextEditingController();
+  var viaSucciTextController = TextEditingController();
+  var viaDreneTextController = TextEditingController();
+  var viaPerdidaTextController = TextEditingController();
+  var viaOtrosEgresosTextController = TextEditingController();
+  //
+  var carouselController = CarouselController();
 }
 
 class GestionBalances extends StatefulWidget {
@@ -877,87 +903,91 @@ class _GestionBalancesState extends State<GestionBalances> {
         onSelected(snapshot, posicion, context, Constantes.Update);
       },
       child: Container(
-        padding: const EdgeInsets.all(10.0),
-        margin: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.only(
+            top: 5.0, bottom: 5.0, right: 10.0, left: 10.0),
+        margin: const EdgeInsets.only(
+            top: 2.5, bottom: 2.5, right: 10.0, left: 10.0),
         decoration: ContainerDecoration.roundedDecoration(),
         child: Row(
           children: [
             Expanded(
-              flex: 3,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.all(5.0),
-                    decoration: ContainerDecoration.roundedDecoration(),
-                    child: CircleAvatar(
-                      backgroundColor: Colors.black,
-                      child: Text(
-                        snapshot.data[posicion]['ID_Bala'].toString(),
-                        style: Styles.textSyle,
-                      ),
-                    ),
+              flex: 2,
+              child: Container(
+                margin: const EdgeInsets.all(5.0),
+                decoration: ContainerDecoration.roundedDecoration(),
+                child: CircleAvatar(
+                  backgroundColor: Colors.black,
+                  child: Text(
+                    snapshot.data[posicion]['ID_Bala'].toString(),
+                    style: Styles.textSyle,
                   ),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          "${snapshot.data[posicion]['Pace_bala_Fecha']}",
-                          style: Styles.textSyleGrowth(fontSize: 18),
-                        ),
-                        Text(
-                          "${snapshot.data[posicion]['Pace_bala_time']}",
-                          style: Styles.textSyleGrowth(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
             Expanded(
+                flex: 1,
+                child: CrossLine(
+                  isHorizontal: false,
+                  thickness: 3,
+                )),
+            Expanded(
+              flex: 4,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  IconButton(
-                    color: Colors.grey,
-                    icon: const Icon(Icons.update_rounded),
-                    onPressed: () {
-                      //
-                      onSelected(
-                          snapshot, posicion, context, Constantes.Update);
-                    },
+                  Text(
+                    "${snapshot.data[posicion]['Pace_bala_Fecha']}",
+                    style: Styles.textSyleGrowth(fontSize: 18),
                   ),
-                  const SizedBox(
-                    width: 20,
+                  Text(
+                    "${snapshot.data[posicion]['Pace_bala_time']}",
+                    style: Styles.textSyleGrowth(fontSize: 16),
                   ),
-                  IconButton(
-                    color: Colors.grey,
-                    icon: const Icon(Icons.delete),
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return alertDialog(
-                              'Eliminar registro',
-                              '¿Esta seguro de querer eliminar el registro?',
-                              () {
-                                closeDialog(context);
-                              },
-                              () {
-                                deleteRegister(snapshot, posicion, context);
-                              },
-                            );
-                          });
-                    },
+                  CrossLine(
+                    thickness: 2,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        color: Colors.grey,
+                        icon: const Icon(Icons.update_rounded),
+                        onPressed: () {
+                          //
+                          onSelected(
+                              snapshot, posicion, context, Constantes.Update);
+                        },
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      IconButton(
+                        color: Colors.grey,
+                        icon: const Icon(Icons.delete),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return alertDialog(
+                                  'Eliminar registro',
+                                  '¿Esta seguro de querer eliminar el registro?',
+                                  () {
+                                    closeDialog(context);
+                                  },
+                                  () {
+                                    deleteRegister(snapshot, posicion, context);
+                                  },
+                                );
+                              });
+                        },
+                      )
+                    ],
                   )
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

@@ -72,31 +72,31 @@ class _ActividadesHospitalariasState extends State<ActividadesHospitalarias> {
                     //   builder: (BuildContext context) =>
                     //       GestionPendiente(),
                     // ));
-                    final respo = await Pacientes.hospitalizar();
-                    // Actualizar vista.
-                    setState(() {
-                      if (respo) {
-                        Valores.modoAtencion = 'Hospitalización';
-                        Pacientes.modoAtencion = 'Hospitalización';
-                        // Actualizar valores de Hospitalización.
-                        Valores.isHospitalizado = respo;
-                        Pacientes.esHospitalizado = respo;
-
-                        // asyncHospitalizar(context);
-                        Operadores.openActivity(
-                          context: context,
-                          chyldrim: const OpcionesHospitalizacion(),
-                          onAction: () {},
-                        );
-                      } else {
-                        Valores.modoAtencion = 'Consulta Externa';
-                        Pacientes.modoAtencion = 'Consulta Externa';
-                        // Actualizar valores de Hospitalización.
-                        Valores.isHospitalizado = respo;
-                        Pacientes.esHospitalizado = respo;
-                      }
-                    });
+                    // final respo = await Pacientes.hospitalizar();
+                    // // Actualizar vista.
+                    // setState(() {
+                    //   if (respo) {
+                    //     Valores.modoAtencion = 'Hospitalización';
+                    //     Pacientes.modoAtencion = 'Hospitalización';
+                    //     // Actualizar valores de Hospitalización.
+                    //     Valores.isHospitalizado = respo;
+                    //     Pacientes.esHospitalizado = respo;
                     //
+                    //     // asyncHospitalizar(context);
+                    //     Operadores.openActivity(
+                    //       context: context,
+                    //       chyldrim: const OpcionesHospitalizacion(),
+                    //       onAction: () {},
+                    //     );
+                    //   } else {
+                    //     Valores.modoAtencion = 'Consulta Externa';
+                    //     Pacientes.modoAtencion = 'Consulta Externa';
+                    //     // Actualizar valores de Hospitalización.
+                    //     Valores.isHospitalizado = respo;
+                    //     Pacientes.esHospitalizado = respo;
+                    //   }
+                    // });
+                    // //
                   },
                 ),
               ),

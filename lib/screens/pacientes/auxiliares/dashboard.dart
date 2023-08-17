@@ -174,15 +174,8 @@ class _DashboardState extends State<Dashboard> {
                             labelButton: 'Revisorio',
                             iconData: Icons.ac_unit,
                             onPress: () {
-                              if (isTablet(context)) {
-                                Operadores.openDialog(
-                                    context: context,
-                                    chyldrim: const Generales());
-                              } else {
-                                Operadores.openWindow(
-                                    context: context,
-                                    chyldrim: const Generales());
-                              }
+                              Cambios.toNextActivity(context, chyld: const Generales());
+
                             },
                           ),
                           CrossLine(height: 20),
@@ -195,9 +188,9 @@ class _DashboardState extends State<Dashboard> {
                                   : Icons.account_tree,
                               onPress: () {
                                 if (isMobile(context)) {
-                                  toNextPage(context, GestionPatologicos());
+                                  Cambios.toNextPage(context, GestionPatologicos());
                                 } else {
-                                  toNextPage(
+                                  Cambios.toNextPage(
                                       context, const LaboratoriosGestion());
                                 }
                               }),
@@ -206,30 +199,31 @@ class _DashboardState extends State<Dashboard> {
                                   "Antecedentes Personales No Patológicos",
                               iconData: Icons.medication,
                               onPress: () {
-                                toNextPage(
+                                Cambios.toNextPage(
                                     context, const GestionNoPatologicos());
                               }),
                           GrandIcon(
                               labelButton: "Diagnósticos de la Hospitalización",
                               iconData: Icons.restore_page_outlined,
                               onPress: () {
-                                toNextPage(context, GestionDiagnosticos());
+                                Cambios.toNextPage(context, GestionDiagnosticos());
                               }),
                           GrandIcon(
                             labelButton: "Concentraciones y Diluciones",
                             iconData: Icons.balance,
                             onPress: () {
-                              Operadores.openDialog(
-                                context: context,
-                                chyldrim: const Concentraciones(),
-                              );
+                              Cambios.toNextActivity(context, chyld: const Concentraciones());
+                              // Operadores.openDialog(
+                              //   context: context,
+                              //   chyldrim: const Concentraciones(),
+                              // );
                             },
                           ),
                           GrandIcon(
                             labelButton: "Balances Hidricos",
                             iconData: Icons.waterfall_chart,
                             onPress: () {
-                              toNextPage(context, GestionBalances());
+                              Cambios.toNextPage(context, GestionBalances());
                             },
                           ),
 
@@ -245,11 +239,8 @@ class _DashboardState extends State<Dashboard> {
                               labelButton: "Rutina",
                               iconData: Icons.ad_units,
                               onPress: () {
-                                Operadores.openWindow(
-                                    context: context,
-                                    chyldrim: ConmutadorParaclinicos(
-                                      categoriaEstudio: 'Rutina',
-                                    ));
+                                Cambios.toNextActivity(context, chyld: ConmutadorParaclinicos(categoriaEstudio: "Rutina"));
+
                               }),
                         ],
                       ),
@@ -336,16 +327,8 @@ class _DashboardState extends State<Dashboard> {
                                   labelButton: 'Revisorio',
                                   iconData: Icons.ac_unit,
                                   onPress: () {
-                                    if (isDesktop(context)) {
-                                      Operadores.openDialog(
-                                          context: context,
-                                          withAction: false,
-                                          chyldrim: const Generales());
-                                    } else {
-                                      Operadores.openWindow(
-                                          context: context,
-                                          chyldrim: const Generales());
-                                    }
+Cambios.toNextActivity(context, chyld: const Generales());
+
                                   },
                                 ),
                                 CrossLine(height: 10),
@@ -353,7 +336,7 @@ class _DashboardState extends State<Dashboard> {
                                     labelButton: "Revisiones",
                                     iconData: Icons.account_tree,
                                     onPress: () {
-                                      toNextPage(
+                                      Cambios.toNextPage(
                                           context, const LaboratoriosGestion());
                                     }),
                                 GrandIcon(
@@ -361,7 +344,7 @@ class _DashboardState extends State<Dashboard> {
                                         "Antecedentes Personales Patológicos",
                                     iconData: Icons.medication,
                                     onPress: () {
-                                      toNextPage(context,
+                                      Cambios.toNextPage(context,
                                           const GestionNoPatologicos());
                                     }),
                                 GrandIcon(
@@ -369,24 +352,21 @@ class _DashboardState extends State<Dashboard> {
                                         "Diagnósticos de la Hospitalización",
                                     iconData: Icons.restore_page_outlined,
                                     onPress: () {
-                                      toNextPage(
+                                      Cambios.toNextPage(
                                           context, GestionDiagnosticos());
                                     }),
                                 GrandIcon(
                                   labelButton: "Concentraciones y Diluciones",
                                   iconData: Icons.balance,
                                   onPress: () {
-                                    Operadores.openDialog(
-                                      context: context,
-                                      chyldrim: const Concentraciones(),
-                                    );
+                                    Cambios.toNextActivity(context, chyld: const Concentraciones());
                                   },
                                 ),
                                 GrandIcon(
                                   labelButton: "Balances Hidricos",
                                   iconData: Icons.waterfall_chart,
                                   onPress: () {
-                                    toNextPage(context, GestionBalances());
+                                    Cambios.toNextPage(context, GestionBalances());
                                   },
                                 ),
                                 GrandIcon(
@@ -402,11 +382,7 @@ class _DashboardState extends State<Dashboard> {
                                     labelButton: "Rutina",
                                     iconData: Icons.ad_units,
                                     onPress: () {
-                                      Operadores.openWindow(
-                                          context: context,
-                                          chyldrim: ConmutadorParaclinicos(
-                                            categoriaEstudio: 'Rutina',
-                                          ));
+                                      Cambios.toNextActivity(context, chyld: ConmutadorParaclinicos(categoriaEstudio: "Rutina"));
                                     }),
                               ],
                             ),
@@ -489,16 +465,7 @@ class _DashboardState extends State<Dashboard> {
                           labelButton: 'Revisorio',
                           iconData: Icons.ac_unit,
                           onPress: () {
-                            if (isDesktop(context)) {
-                              Operadores.openDialog(
-                                  context: context,
-                                  withAction: false,
-                                  chyldrim: const Generales());
-                            } else {
-                              Operadores.openWindow(
-                                  context: context,
-                                  chyldrim: const Generales());
-                            }
+                            Cambios.toNextActivity(context, chyld: const Generales());
                           },
                         ),
                         CrossLine(height: 10),
@@ -506,35 +473,32 @@ class _DashboardState extends State<Dashboard> {
                             labelButton: "Revisiones",
                             iconData: Icons.account_tree,
                             onPress: () {
-                              toNextPage(context, const LaboratoriosGestion());
+                              Cambios.toNextPage(context, const LaboratoriosGestion());
                             }),
                         GrandIcon(
                             labelButton: "Antecedentes Personales Patológicos",
                             iconData: Icons.medication,
                             onPress: () {
-                              toNextPage(context, const GestionNoPatologicos());
+                              Cambios.toNextPage(context, const GestionNoPatologicos());
                             }),
                         GrandIcon(
                             labelButton: "Diagnósticos de la Hospitalización",
                             iconData: Icons.restore_page_outlined,
                             onPress: () {
-                              toNextPage(context, GestionDiagnosticos());
+                              Cambios.toNextPage(context, GestionDiagnosticos());
                             }),
                         GrandIcon(
                           labelButton: "Concentraciones y Diluciones",
                           iconData: Icons.balance,
                           onPress: () {
-                            Operadores.openDialog(
-                              context: context,
-                              chyldrim: const Concentraciones(),
-                            );
+                            Cambios.toNextActivity(context, chyld: const Concentraciones());
                           },
                         ),
                         GrandIcon(
                           labelButton: "Balances Hidricos",
                           iconData: Icons.waterfall_chart,
                           onPress: () {
-                            toNextPage(context, GestionBalances());
+                            Cambios.toNextPage(context, GestionBalances());
                           },
                         ),
                         GrandIcon(
@@ -549,11 +513,7 @@ class _DashboardState extends State<Dashboard> {
                             labelButton: "Rutina",
                             iconData: Icons.ad_units,
                             onPress: () {
-                              Operadores.openWindow(
-                                  context: context,
-                                  chyldrim: ConmutadorParaclinicos(
-                                    categoriaEstudio: 'Rutina',
-                                  ));
+Cambios.toNextActivity(context, chyld: ConmutadorParaclinicos(categoriaEstudio: "Rutina"));
                             }),
                       ],
                     ),
@@ -606,34 +566,35 @@ class _DashboardState extends State<Dashboard> {
                                 ? 'Egresar paciente'
                                 : 'Hospitalizar paciente',
                             onPress: () async {
+
                               // Navigator.of(context).push(MaterialPageRoute(
                               //   builder: (BuildContext context) =>
                               //       GestionPendiente(),
                               // ));
-                              final respo = await Pacientes.hospitalizar();
-                              // Actualizar vista.
-                              setState(() {
-                                if (respo) {
-                                  Valores.modoAtencion = 'Hospitalización';
-                                  Pacientes.modoAtencion = 'Hospitalización';
-                                  // Actualizar valores de Hospitalización.
-                                  Valores.isHospitalizado = respo;
-                                  Pacientes.esHospitalizado = respo;
-
-                                  // asyncHospitalizar(context);
-                                  Operadores.openActivity(
-                                    context: context,
-                                    chyldrim: const OpcionesHospitalizacion(),
-                                    onAction: () {},
-                                  );
-                                } else {
-                                  Valores.modoAtencion = 'Consulta Externa';
-                                  Pacientes.modoAtencion = 'Consulta Externa';
-                                  // Actualizar valores de Hospitalización.
-                                  Valores.isHospitalizado = respo;
-                                  Pacientes.esHospitalizado = respo;
-                                }
-                              });
+                              // final respo = await Pacientes.hospitalizar();
+                              // // Actualizar vista.
+                              // setState(() {
+                              //   if (respo) {
+                              //     Valores.modoAtencion = 'Hospitalización';
+                              //     Pacientes.modoAtencion = 'Hospitalización';
+                              //     // Actualizar valores de Hospitalización.
+                              //     Valores.isHospitalizado = respo;
+                              //     Pacientes.esHospitalizado = respo;
+                              //
+                              //     // asyncHospitalizar(context);
+                              //     Operadores.openActivity(
+                              //       context: context,
+                              //       chyldrim: const OpcionesHospitalizacion(),
+                              //       onAction: () {},
+                              //     );
+                              //   } else {
+                              //     Valores.modoAtencion = 'Consulta Externa';
+                              //     Pacientes.modoAtencion = 'Consulta Externa';
+                              //     // Actualizar valores de Hospitalización.
+                              //     Valores.isHospitalizado = respo;
+                              //     Pacientes.esHospitalizado = respo;
+                              //   }
+                              // });
                               //
                             },
                           ),
@@ -740,30 +701,30 @@ class _DashboardState extends State<Dashboard> {
                               //   builder: (BuildContext context) =>
                               //       GestionPendiente(),
                               // ));
-                              final respo = await Pacientes.hospitalizar();
-                              // Actualizar vista.
-                              setState(() {
-                                if (respo) {
-                                  Valores.modoAtencion = 'Hospitalización';
-                                  Pacientes.modoAtencion = 'Hospitalización';
-                                  // Actualizar valores de Hospitalización.
-                                  Valores.isHospitalizado = respo;
-                                  Pacientes.esHospitalizado = respo;
-
-                                  // asyncHospitalizar(context);
-                                  Operadores.openActivity(
-                                    context: context,
-                                    chyldrim: const OpcionesHospitalizacion(),
-                                    onAction: () {},
-                                  );
-                                } else {
-                                  Valores.modoAtencion = 'Consulta Externa';
-                                  Pacientes.modoAtencion = 'Consulta Externa';
-                                  // Actualizar valores de Hospitalización.
-                                  Valores.isHospitalizado = respo;
-                                  Pacientes.esHospitalizado = respo;
-                                }
-                              });
+                              // final respo = await Pacientes.hospitalizar();
+                              // // Actualizar vista.
+                              // setState(() {
+                              //   if (respo) {
+                              //     Valores.modoAtencion = 'Hospitalización';
+                              //     Pacientes.modoAtencion = 'Hospitalización';
+                              //     // Actualizar valores de Hospitalización.
+                              //     Valores.isHospitalizado = respo;
+                              //     Pacientes.esHospitalizado = respo;
+                              //
+                              //     // asyncHospitalizar(context);
+                              //     Operadores.openActivity(
+                              //       context: context,
+                              //       chyldrim: const OpcionesHospitalizacion(),
+                              //       onAction: () {},
+                              //     );
+                              //   } else {
+                              //     Valores.modoAtencion = 'Consulta Externa';
+                              //     Pacientes.modoAtencion = 'Consulta Externa';
+                              //     // Actualizar valores de Hospitalización.
+                              //     Valores.isHospitalizado = respo;
+                              //     Pacientes.esHospitalizado = respo;
+                              //   }
+                              // });
                               //
                             },
                           ),
@@ -789,10 +750,6 @@ class _DashboardState extends State<Dashboard> {
       ),
     );
   }
-
   // **************************************
-  void toNextPage(BuildContext context, screen) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: ((context) => screen)));
-  }
+
 }

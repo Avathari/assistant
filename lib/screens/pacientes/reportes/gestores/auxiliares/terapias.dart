@@ -11,7 +11,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 class TerapiasItems extends StatefulWidget {
-  const TerapiasItems({Key? key}) : super(key: key);
+  bool? esCorto;
+
+  TerapiasItems({Key? key, this.esCorto = true}) : super(key: key);
 
   @override
   State<TerapiasItems> createState() => _TerapiasItemsState();
@@ -21,8 +23,13 @@ class _TerapiasItemsState extends State<TerapiasItems> {
   var carouselController = CarouselController();
   //
   void reInit() {
-    Reportes.exploracionFisica = Formatos.exploracionTerapia;
-    Reportes.reportes['Exploracion_Fisica'] = Formatos.exploracionTerapia;
+    if (widget.esCorto!) {
+      Reportes.exploracionFisica = Formatos.exploracionTerapiaCorta;
+      Reportes.reportes['Exploracion_Fisica'] = Formatos.exploracionTerapiaCorta;
+    } else {
+      Reportes.exploracionFisica = Formatos.exploracionTerapia;
+      Reportes.reportes['Exploracion_Fisica'] = Formatos.exploracionTerapia;
+    }
   }
 
   @override

@@ -45,37 +45,6 @@ class OperacionesVentilaciones extends StatefulWidget {
 }
 
 class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
-  String appBarTitile = "Gestión de Ventilaciones";
-  String? consultIdQuery = Ventilaciones.ventilacion['consultIdQuery'];
-  String? registerQuery = Ventilaciones.ventilacion['registerQuery'];
-  String? updateQuery = Ventilaciones.ventilacion['updateQuery'];
-
-  int idOperation = 0;
-
-  List<dynamic>? listOfValues;
-
-  var fechaRealizacionTextController = TextEditingController();
-  String? modoVentilatorioValue = Ventilaciones.actualDiagno[0];
-
-  var volTidalTextController = TextEditingController();
-  var peepTextController = TextEditingController();
-  var respTextController = TextEditingController();
-  var fioTextController = TextEditingController();
-  var sensInspTextController = TextEditingController();
-  var sensEspTextController = TextEditingController();
-  var viaOtrosIngresosTextController = TextEditingController();
-  //
-  var pControlTextController = TextEditingController();
-  var pMaximaTextController = TextEditingController();
-  var pPlatTextController = TextEditingController();
-  var volTidalEspTextController = TextEditingController();
-  var viaDreneTextController = TextEditingController();
-  var flujoTextController = TextEditingController();
-  var pInspirattoriaTextController = TextEditingController();
-  var pSoporteTextController = TextEditingController();
-  //
-  var carouselController = CarouselController();
-  //
 
   @override
   void initState() {
@@ -87,6 +56,14 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         break;
       case Constantes.Register:
         widget._operationButton = 'Registrar';
+        fechaRealizacionTextController.text =
+            Calendarios.today(format: 'yyyy-MM-dd');
+
+        Valores.tuboEndotraqueal = Items.tuboendotraqueal[0];
+        Valores.haciaArcadaDentaria =  Items.arcadaDentaria[0];
+
+        sensInspTextController.text = '1';
+        sensEspTextController.text = '2';
         break;
       case Constantes.Update:
         setState(() {
@@ -99,7 +76,10 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
           //
           modoVentilatorioValue =
               Ventilaciones.Ventilacion['VM_Mod'].toString();
-          Valores.modalidadVentilatoria = modoVentilatorioValue;
+          Valores.modalidadVentilatoria = Ventilaciones.modoVentilatorio(modalidadVentilatoria: modoVentilatorioValue!);
+          //
+          Valores.tuboEndotraqueal = Ventilaciones.Ventilacion['Pace_TET'].toString();
+          Valores.haciaArcadaDentaria = Ventilaciones.Ventilacion['Pace_DAC'].toString();
           //
           //
           volTidalTextController.text =
@@ -206,191 +186,321 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                             ]
                           : null,
                 ),
-      body: Container(
-        color: const Color.fromARGB(255, 61, 57, 57),
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
+      body: isDesktop(context) || isTablet(context) ? DeskTopView() : MobileView()
+    );
+  }
+  // *************************************************************************
+  Container DeskTopView() {
+    return Container(
+      margin: const EdgeInsets.all(8.0),
+      decoration: ContainerDecoration.roundedDecoration(),
+      child: Column(
+        children: [
+          Expanded(child: Row(children: [
             Expanded(
-              flex: isTablet(context)
-                  ? 2
-                  : isDesktop(context)
-                      ? 2
-                      : isMobile(context)
-                          ? 3
-                          : 2,
-              child: GridLayout(
-                childAspectRatio: isDesktop(context)
-                    ? 5.0
-                    : isTablet(context)
-                        ? 8.0
-                        : isMobile(context)
-                            ? 4.0
-                            : 6.0,
-                columnCount: isDesktop(context)
-                    ? 2
-                    : isTablet(context)
-                        ? 1
-                        : isMobile(context)
-                            ? 1
-                            : 2,
-                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: EditTextArea(
-                      keyBoardType: TextInputType.number,
-                      inputFormat: TextFormat.dateFormat,
-                      numOfLines: 1,
-                      labelEditText: 'Fecha de realización',
-                      textController: fechaRealizacionTextController,
-                  iconColor: Colors.white,
-                  withShowOption: true,
-                  selection: true,
-                  onSelected: () {
-                    fechaRealizacionTextController.text =
-                        Calendarios.today(format: 'yyyy-MM-dd');
-                  },
-                    ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Spinner(
-                      width: isTablet(context)
-                          ? 300
-                          : isTabletAndDesktop(context)
-                              ? 200
-                              : isDesktop(context)
-                                  ? 250
-                                  : isMobile(context)
-                                      ? 250
-                                      : 150,
-                      tittle: 'M. Ventilatorio',
-                      onChangeValue: (value) {
-                        setState(() {
-                          modoVentilatorioValue = value;
-                          selectModal();
-                        });
-                      },
-                      items: Ventilaciones.actualDiagno,
-                      initialValue: modoVentilatorioValue,
-                    ),
-                  ),
-                  // GrandButton(
-                  //     weigth: isMobile(context) ? 50 : 150,
-                  //     labelButton: "Parámetros Ventilatorios",
-                  //     onPress: () {
-                  //       setState(() {
-                  //         carouselController.jumpToPage(0);
-                  //       });
-                  //     }),
-                  // GrandButton(
-                  //     weigth: isMobile(context) ? 50 : 120,
-                  //     labelButton: "Otros Parámetros",
-                  //     onPress: () {
-                  //       setState(() {
-                  //         carouselController.jumpToPage(1);
-                  //       });
-                  //     })
-                ],
+              flex: 2,
+              child: EditTextArea(
+                keyBoardType: TextInputType.number,
+                inputFormat: TextFormat.dateFormat,
+                numOfLines: 1,
+                labelEditText: 'Fecha de realización',
+                textController: fechaRealizacionTextController,
+                iconData: Icons.calendar_today,
+                iconColor: Colors.white,
+                withShowOption: true,
+                selection: true,
+                onSelected: () {
+                  fechaRealizacionTextController.text =
+                      Calendarios.today(format: 'yyyy-MM-dd');
+                },
               ),
             ),
             Expanded(
-              flex: isTabletAndDesktop(context)
-                  ? 9
-                  : isDesktop(context)
-                      ? 7
-                      : isTablet(context)
-                          ? 6
-                          : 6,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                        child: SingleChildScrollView(
-                            controller: ScrollController(),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: component(context),
-                            ))),
-                    Expanded(
+              flex: 3,
+              child: Spinner(
+                width: SpinnersValues.maximumWidth(context: context),
+                tittle: 'Fase ventilatoria',
+                onChangeValue: (value) {
+                  setState(() {
+                    Valores.faseVentilatoria = value;
+                  });
+                },
+                items: Items.ventilatorio,
+                initialValue: Valores.faseVentilatoria,
+              ),
+            ),
+
+          ],)),
+          CrossLine(height: 20,thickness: 2,),
+          Expanded(child: Row(children: [
+            Expanded(
+              flex: 3,
+              child: Spinner(
+                width: isTablet(context) || isDesktop(context)
+                    ? 500
+                    : isMobile(context)
+                    ? 250
+                    : 150,
+                tittle: 'M. Ventilatorio',
+                onChangeValue: (value) {
+                  setState(() {
+                    modoVentilatorioValue = value;
+                    Valores.modalidadVentilatoria = Ventilaciones.modoVentilatorio(modalidadVentilatoria: modoVentilatorioValue!);
+                    selectModal();
+                  });
+                },
+                items: Ventilaciones.modalidades,
+                initialValue: modoVentilatorioValue,
+              ),
+            ),
+            // Expanded(
+            //   child: Spinner(
+            //     width: SpinnersValues.maximumWidth(context: context),
+            //     tittle: 'Dispositivo empleado',
+            //     onChangeValue: (value) {
+            //       setState(() {
+            //         Valores.dispositivoEmpleado = value;
+            //       });
+            //     },
+            //     items: Items.dispositivosOxigeno,
+            //     initialValue: Valores.dispositivoEmpleado,
+            //   ),
+            // ),
+          ],)),
+          Expanded(child: Row(children: [
+            Expanded(
+              child: Spinner(
+                width: SpinnersValues.maximumWidth(context: context),
+                tittle: 'Tubo Endotraqueal',
+                onChangeValue: (value) {
+                  setState(() {
+                    Valores.tuboEndotraqueal = value;
+
+                  });
+                },
+                items: Items.tuboendotraqueal,
+                initialValue: Valores.tuboEndotraqueal,
+              ),
+            ),
+            Expanded(
+              child: Spinner(
+                width: SpinnersValues.maximumWidth(context: context),
+                tittle: 'Distancia a arcada',
+                onChangeValue: (value) {
+                  setState(() {
+                    Valores.haciaArcadaDentaria = value;
+
+                  });
+                },
+                items: Items.arcadaDentaria,
+                initialValue: Valores.haciaArcadaDentaria,
+              ),
+            ),
+          ],)),
+          CrossLine(height: 20,thickness: 2,),
+          Expanded(
+            flex: isTabletAndDesktop(context)
+                ? 9
+                : isDesktop(context)
+                ? 7
+                : isTablet(context)
+                ? 6
+                : 6,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                      child: SingleChildScrollView(
+                          controller: ScrollController(),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: component(context),
+                          ))),
+                  Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                        margin: const EdgeInsets.all(8.0),
+                        decoration: ContainerDecoration.roundedDecoration(),
                         child: SingleChildScrollView(
                             controller: ScrollController(),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: getView(widget.actualView),
-                            ))),
-                  ],
-                ),
+                            )),
+                      )),
+                ],
               ),
             ),
-            Expanded(
-              child: GrandButton(
+          ),
+          Expanded(
+            child: GrandButton(
                 weigth: 300,
-                  labelButton: widget._operationButton,
-                  onPress: () {
-                    operationMethod(context);
-                  }),
-            ),
-          ],
-        ),
+                labelButton: widget._operationButton,
+                onPress: () {
+                  operationMethod(context);
+                }),
+          ),
+        ],
       ),
     );
   }
 
-  DeskTopView() {
-    return Container();
-  }
-
-  MobileView() {
+  Container MobileView() {
     return Container(
-      child: CarouselSlider(
-          items: [
-            SingleChildScrollView(
-                controller: ScrollController(),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GridLayout(
-                    childAspectRatio: isMobile(context)
-                        ? 5.0
-                        : isTablet(context)
-                            ? 6.0
-                            : 4.0,
-                    columnCount: isMobile(context)
-                        ? 1
-                        : isTablet(context)
-                            ? 2
-                            : 2,
-                    children: component(context),
-                  ),
-                )),
-            SingleChildScrollView(
-                controller: ScrollController(),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GridLayout(
-                    childAspectRatio: isMobile(context)
-                        ? 5
-                        : isTablet(context)
-                            ? 6.0
-                            : 5.0,
-                    columnCount: isMobile(context)
-                        ? 1
-                        : isTablet(context)
-                            ? 2
-                            : 2,
-                    children: component(context),
-                  ),
-                ))
-          ],
-          carouselController: carouselController,
-          options: CarouselOptions(
-              height: isTablet(context) ? 900 : 500, enableInfiniteScroll: false, viewportFraction: 1.0)),
+      margin: const EdgeInsets.all(8.0),
+      decoration: ContainerDecoration.roundedDecoration(),
+      child: Column(
+        children: [
+          Expanded(flex: 3, child: Column(children: [
+            Expanded(
+              flex: 1,
+              child: EditTextArea(
+                keyBoardType: TextInputType.number,
+                inputFormat: TextFormat.dateFormat,
+                numOfLines: 1,
+                labelEditText: 'Fecha de realización',
+                textController: fechaRealizacionTextController,
+                iconData: Icons.calendar_today,
+                iconColor: Colors.white,
+                withShowOption: true,
+                selection: true,
+                onSelected: () {
+                  fechaRealizacionTextController.text =
+                      Calendarios.today(format: 'yyyy-MM-dd');
+                },
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Spinner(
+                isRow: true,
+                width: SpinnersValues.maximumWidth(context: context),
+                tittle: 'Fase ventilatoria',
+                onChangeValue: (value) {
+                  setState(() {
+                    Valores.faseVentilatoria = value;
+                  });
+                },
+                items: Items.ventilatorio,
+                initialValue: Valores.faseVentilatoria,
+              ),
+            ),
+          ],)),
+          CrossLine(height: 20, thickness: 2,),
+          // *****************************************************
+          Expanded(flex: 4,child: Column(children: [
+            Expanded(
+              child: Spinner(
+                isRow: true,
+                width: isTablet(context) || isDesktop(context)
+                    ? 500
+                    : isMobile(context)
+                    ? 170
+                    : 150,
+                tittle: 'Modo',
+                onChangeValue: (value) {
+                  setState(() {
+                    modoVentilatorioValue = value;
+                    Valores.modalidadVentilatoria = Ventilaciones.modoVentilatorio(modalidadVentilatoria: modoVentilatorioValue!);
+                    selectModal();
+                  });
+                },
+                items: Ventilaciones.modalidades,
+                initialValue: modoVentilatorioValue,
+              ),
+            ),
+            Expanded(
+              child: Spinner(
+                isRow: true,
+                width: isTablet(context) || isDesktop(context)
+                    ? 500
+                    : isMobile(context)
+                    ? 170
+                    : 150,
+                tittle: 'TET',
+                onChangeValue: (value) {
+                  setState(() {
+                    Valores.tuboEndotraqueal = value;
+                  });
+                },
+                items: Items.tuboendotraqueal,
+                initialValue: Valores.tuboEndotraqueal,
+              ),
+            ),
+            Expanded(
+              child: Spinner(
+                isRow: true,
+                width: isTablet(context) || isDesktop(context)
+                    ? 500
+                    : isMobile(context)
+                    ? 170
+                    : 150,
+                tittle: 'Dis.',
+                onChangeValue: (value) {
+                  setState(() {
+                    Valores.haciaArcadaDentaria = value;
+
+                  });
+                },
+                items: Items.arcadaDentaria,
+                initialValue: Valores.haciaArcadaDentaria,
+              ),
+            ),
+          ],)),
+          CrossLine(height: 20,thickness: 2,),
+          Expanded(
+            flex: isTabletAndDesktop(context)
+                ? 9
+                : isDesktop(context)
+                ? 7
+                : isTablet(context)
+                ? 6
+                : 6,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                      child: SingleChildScrollView(
+                          controller: ScrollController(),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: component(context),
+                          ))),
+                  Expanded(
+                      child: Container(
+                        margin: const EdgeInsets.all(8.0),
+                        decoration: ContainerDecoration.roundedDecoration(),
+                        child: SingleChildScrollView(
+                            controller: ScrollController(),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: getView(widget.actualView),
+                            )),
+                      )),
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: GrandButton(
+                weigth: 1000,
+                labelButton: widget._operationButton,
+                onPress: () {
+                  operationMethod(context);
+                }),
+          ),
+        ],
+      ),
     );
   }
-
+// *************************************************************************
   List<Widget> getView(int actualView) {
     List<List<Widget>> list = [
       [const Text('Ninguna modalidad ventilatoria')],
@@ -402,6 +512,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
     return list[actualView];
   }
 
+// *************************************************************************
   List<Widget> component(BuildContext context) {
     return [
       EditTextArea(
@@ -663,6 +774,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
     ];
   }
 
+  // *************************************************************************
   void operationMethod(BuildContext context) {
     try {
       listOfValues = [
@@ -685,6 +797,9 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         pPlatTextController.text,
         //
         modoVentilatorioValue,
+        //
+        Valores.tuboEndotraqueal,
+        Valores.haciaArcadaDentaria,
         //
         idOperation
       ];
@@ -749,7 +864,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
   }
 
   void selectModal() {
-    int index = Ventilaciones.actualDiagno.indexOf(modoVentilatorioValue!);
+    int index = Ventilaciones.modalidades.indexOf(modoVentilatorioValue!);
     // print(index);
     switch (index) {
       case 1:
@@ -796,6 +911,39 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
     }
   }
 
+  // VARIABLES ************************************************************
+  String appBarTitile = "Gestión de Ventilaciones";
+  String? consultIdQuery = Ventilaciones.ventilacion['consultIdQuery'];
+  String? registerQuery = Ventilaciones.ventilacion['registerQuery'];
+  String? updateQuery = Ventilaciones.ventilacion['updateQuery'];
+
+  int idOperation = 0;
+
+  List<dynamic>? listOfValues;
+
+  var fechaRealizacionTextController = TextEditingController();
+  String? modoVentilatorioValue = Ventilaciones.modalidades[0];
+
+  var volTidalTextController = TextEditingController();
+  var peepTextController = TextEditingController();
+  var respTextController = TextEditingController();
+  var fioTextController = TextEditingController();
+  var sensInspTextController = TextEditingController();
+  var sensEspTextController = TextEditingController();
+  var viaOtrosIngresosTextController = TextEditingController();
+  //
+  var pControlTextController = TextEditingController();
+  var pMaximaTextController = TextEditingController();
+  var pPlatTextController = TextEditingController();
+  var volTidalEspTextController = TextEditingController();
+  var viaDreneTextController = TextEditingController();
+  var flujoTextController = TextEditingController();
+  var pInspirattoriaTextController = TextEditingController();
+  var pSoporteTextController = TextEditingController();
+  //
+  var carouselController = CarouselController();
+//
+
 
 }
 
@@ -812,14 +960,6 @@ class GestionVentilaciones extends StatefulWidget {
 }
 
 class _GestionVentilacionesState extends State<GestionVentilaciones> {
-  String appTittle =
-      "Gestion de registros de parámetros ventilatorios del paciente";
-  String searchCriteria = "Buscar por Fecha";
-  String? consultQuery = Ventilaciones.ventilacion['consultIdQuery'];
-
-  late List? foundedItems = [];
-  var gestionScrollController = ScrollController();
-  var searchTextController = TextEditingController();
 
   @override
   void initState() {
@@ -1005,92 +1145,88 @@ class _GestionVentilacionesState extends State<GestionVentilaciones> {
   Container itemListView(
       AsyncSnapshot snapshot, int posicion, BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(2.0),
+      padding: const EdgeInsets.all(20.0),
+      margin: const EdgeInsets.all(10.0),
+      decoration: ContainerDecoration.roundedDecoration(),
       child: GestureDetector(
         onTap: () {
           onSelected(snapshot, posicion, context, Constantes.Update);
         },
-        child: Card(
-          color: const Color.fromARGB(255, 54, 50, 50),
-          child: Container(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
+        child: Column(
+          children: [
+            Row(
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "ID : ${snapshot.data[posicion]['ID_Ventilacion'].toString()}",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                                fontSize: 12),
-                          ),
-                          Text(
-                            "${snapshot.data[posicion]['Feca_VEN']}",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                                fontSize: 14),
-                          ),
-                          Text(
-                            "${snapshot.data[posicion]['VM_Mod']}",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                                fontSize: 14),
-                          ),
-                        ],
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Text(
+                      //   "ID : ${snapshot.data[posicion]['ID_Ventilacion'].toString()}",
+                      //   style: const TextStyle(
+                      //       fontWeight: FontWeight.bold,
+                      //       color: Colors.grey,
+                      //       fontSize: 12),
+                      // ),
+                      Text(
+                        "${snapshot.data[posicion]['Feca_VEN']}",
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey,
+                            fontSize: 14),
                       ),
+                      Text(
+                        "${snapshot.data[posicion]['VM_Mod']}",
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey,
+                            fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    IconButton(
+                      color: Colors.grey,
+                      icon: const Icon(Icons.update_rounded),
+                      onPressed: () {
+                        //
+                        onSelected(
+                            snapshot, posicion, context, Constantes.Update);
+                      },
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        IconButton(
-                          color: Colors.grey,
-                          icon: const Icon(Icons.update_rounded),
-                          onPressed: () {
-                            //
-                            onSelected(
-                                snapshot, posicion, context, Constantes.Update);
-                          },
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        IconButton(
-                          color: Colors.grey,
-                          icon: const Icon(Icons.delete),
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return alertDialog(
-                                    'Eliminar registro',
-                                    '¿Esta seguro de querer eliminar el registro?',
-                                    () {
-                                      closeDialog(context);
-                                    },
-                                    () {
-                                      deleteRegister(
-                                          snapshot, posicion, context);
-                                    },
-                                  );
-                                });
-                          },
-                        )
-                      ],
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    IconButton(
+                      color: Colors.grey,
+                      icon: const Icon(Icons.delete),
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return alertDialog(
+                                'Eliminar registro',
+                                '¿Esta seguro de querer eliminar el registro?',
+                                () {
+                                  closeDialog(context);
+                                },
+                                () {
+                                  deleteRegister(
+                                      snapshot, posicion, context);
+                                },
+                              );
+                            });
+                      },
                     )
                   ],
-                ),
+                )
               ],
             ),
-          ),
+          ],
         ),
       ),
     );
@@ -1172,6 +1308,15 @@ class _GestionVentilacionesState extends State<GestionVentilaciones> {
             transitionDuration: const Duration(seconds: 0)));
   }
 
+  // VARIABLES **********************************************************
+  String appTittle =
+      "Gestion de registros de parámetros ventilatorios del paciente";
+  String searchCriteria = "Buscar por Fecha";
+  String? consultQuery = Ventilaciones.ventilacion['consultIdQuery'];
+
+  late List? foundedItems = [];
+  var gestionScrollController = ScrollController();
+  var searchTextController = TextEditingController();
 }
 
 class AnalisisVentilatorio extends StatefulWidget {

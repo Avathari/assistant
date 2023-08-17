@@ -625,7 +625,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       const CateterTenckhoff(), // 15 :
       Container(), // 16 : Punción Lumbar
       const ReporteTransfusion(), // 17 : Reporte de Transfusión
-      const TerapiasItems(), // 18: Evaluación de Terapia
+      TerapiasItems(esCorto: true,), // 18: Evaluación de Terapia
       Revisiones(), // 19 : Revisión
       const Semiologicos(), // 20 : Revisión
       const Concentraciones(), // 21 : Concentraciones

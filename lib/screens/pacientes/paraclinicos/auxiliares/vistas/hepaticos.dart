@@ -60,6 +60,14 @@ class _HepaticosState extends State<Hepaticos> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Bilirrubinas Totales ($unidadMedidaBT)',
                 numOfLines: 1,
+                onChange: (String value) {
+                  double val = 0.0;
+                  if (textBDResultController.text.isNotEmpty) {
+                    val = double.parse(textBTResultController.text) -
+                        double.parse(textBDResultController.text);
+                    textBIResultController.text = val.toStringAsFixed(2);
+                  } else {}
+                },
               ),
               EditTextArea(
                 textController: textBDResultController,
@@ -67,6 +75,15 @@ class _HepaticosState extends State<Hepaticos> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Bilirrubina Directa ($unidadMedidaBD)',
                 numOfLines: 1,
+                onChange: (String value) {
+                  double val = 0.0;
+                  
+                  if (textBTResultController.text.isNotEmpty) {
+                    val = double.parse(textBTResultController.text) -
+                        double.parse(textBDResultController.text);
+                    textBIResultController.text = val.toStringAsFixed(2);
+                  } else {}
+                },
               ),
               EditTextArea(
                 textController: textBIResultController,
@@ -87,7 +104,8 @@ class _HepaticosState extends State<Hepaticos> {
                 textController: textAspartatoResultController,
                 keyBoardType: TextInputType.number,
                 inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Aspartatoaminotransferasa ($unidadMedidaAspartato)',
+                labelEditText:
+                    'Aspartatoaminotransferasa ($unidadMedidaAspartato)',
                 numOfLines: 1,
               ),
               EditTextArea(
@@ -102,7 +120,8 @@ class _HepaticosState extends State<Hepaticos> {
                 textController: textGlutarilResultController,
                 keyBoardType: TextInputType.number,
                 inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Glutaril transpeptidasa ($unidadMedidaGlutaril)',
+                labelEditText:
+                    'Glutaril transpeptidasa ($unidadMedidaGlutaril)',
                 numOfLines: 1,
               ),
               EditTextArea(
@@ -281,19 +300,17 @@ class _HepaticosState extends State<Hepaticos> {
   var textDateEstudyController = TextEditingController();
   // ********* *************** ************* *
   var textBDResultController = TextEditingController();
-  String? unidadMedidaBD =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][2];
+  String? unidadMedidaBD = Auxiliares.Medidas[Auxiliares.Categorias[index]][2];
   var textBTResultController = TextEditingController();
-  String? unidadMedidaBT =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][2];
+  String? unidadMedidaBT = Auxiliares.Medidas[Auxiliares.Categorias[index]][2];
   var textBIResultController = TextEditingController();
-  String? unidadMedidaBI =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][2];
+  String? unidadMedidaBI = Auxiliares.Medidas[Auxiliares.Categorias[index]][2];
   var textAlaninoResultController = TextEditingController();
   String? unidadMedidaAlanino =
       Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
   var textAspartatoResultController = TextEditingController();
-  String? unidadMedidaAspartato = Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
+  String? unidadMedidaAspartato =
+      Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
   var textDHLResultController = TextEditingController();
   String? unidadMedidaDHL = Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
 
@@ -362,5 +379,3 @@ class _HepaticosState extends State<Hepaticos> {
     });
   }
 }
-
-

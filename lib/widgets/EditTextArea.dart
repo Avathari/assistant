@@ -25,7 +25,7 @@ class EditTextArea extends StatefulWidget {
   void Function()? onSelected;
   final ValueChanged<String>? onChange;
 
-  IconData? iconData = Icons.person;
+  IconData? iconData ;
 
   int? limitOfChars;
 
@@ -45,7 +45,7 @@ class EditTextArea extends StatefulWidget {
     this.onSelected,
     this.onChange,
     this.withShowOption = false,
-    this.iconData,
+    this.iconData= Icons.panorama_fish_eye,
     this.iconColor = Colors.white,
   }) : super(key: key) {
     // inputFormat = MaskTextInputFormatter();

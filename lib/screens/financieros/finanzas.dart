@@ -47,6 +47,7 @@ class OperacionesActivos extends StatefulWidget {
 }
 
 class _OperacionesActivosState extends State<OperacionesActivos> {
+
   @override
   void initState() {
     //
@@ -57,6 +58,10 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
         break;
       case Constantes.Register:
         widget._operationButton = 'Registrar';
+
+        fechaProgramadaTextController.text =
+            Calendarios.today(format: "yyyy/MM/dd");
+        estadoActualTextController.text = Activos.estadoActual[0];
         toBaseImage();
         break;
       case Constantes.Update:
@@ -90,25 +95,8 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
           fechaBajaTextController.text = Activos.Activo['Fecha_Baja'];
 
           descripcionTextController.text = Activos.Activo['Descripcion'];
-          stringImage = Activos.Activo['Fine_IMG'];
-          // ID_Registro int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-          // ID_Usuario int(11) NOT NULL,
-          //  tinyint(1) NOT NULL,
-          //  varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-          //  varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-
-          //  int(200) NOT NULL,
-          //  tinyint(1) NOT NULL,
-
-          //  varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-          //  tinyint(1) NOT NULL,
-          //  varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-          //  varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-
-          //  varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-          //  varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-          //  varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-          //  varchar(1000) COLLATE utf8_unicode_ci NOT NULL
+          stringImage = Activos.imagenActivo;
+          Terminal.printExpected(message: "stringImage $stringImage");
         });
         super.initState();
         break;
@@ -149,219 +137,225 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
                 carouselController: carouselController,
                 options: Carousel.carouselOptions(context: context),
                 items: [
-                  Column(
-                    children: [
-                      TittlePanel(textPanel: 'Características del Registro'),
-                      Container(
-                        padding: const EdgeInsets.all(10.0),
-                        decoration: ContainerDecoration.roundedDecoration(),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: CircleIcon(
-                                iconed: tipoRecursoTextController.text ==
-                                        'Ingresos'
-                                    ? Icons.insights
-                                    : tipoRecursoTextController.text ==
-                                            'Egresos'
-                                        ? Icons.leaderboard_sharp
-                                        : tipoRecursoTextController.text ==
-                                                'Activos'
-                                            ? Icons.ac_unit
-                                            : tipoRecursoTextController.text ==
-                                                    'Pasivos'
-                                                ? Icons.pages_sharp
-                                                : tipoRecursoTextController
-                                                            .text ==
-                                                        'Patrimonio'
-                                                    ? Icons.hdr_weak_sharp
-                                                    : Icons.all_out,
-                              ),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: EditTextArea(
-                                labelEditText: 'Tipo de Recurso',
-                                textController: tipoRecursoTextController,
-                                keyBoardType: TextInputType.text,
-                                numOfLines: 1,
-                                iconData: Icons.account_balance,
-                                selection: true,
-                                withShowOption: true,
-                                inputFormat: MaskTextInputFormatter(),
-                                onSelected: () {
-                                  Operadores.selectOptionsActivity(
-                                      context: context,
-                                      options: Activos.tipoRecurso,
-                                      onClose: (value) {
-                                        setState(() {
-                                          cuentaAsignadaTextController.text =
-                                              '';
-                                          tipoRecursoTextController.text =
-                                              value;
-                                          Navigator.of(context).pop();
-                                        });
-                                      });
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      CrossLine(height: 10),
-                      EditTextArea(
-                        labelEditText: 'Concepto de Recurso',
-                        textController: conceptoRecursoTextController,
-                        keyBoardType: TextInputType.text,
-                        numOfLines: 1,
-                        selection: true,
-                        withShowOption: true,
-                        inputFormat: MaskTextInputFormatter(),
-                        iconData: Icons.account_tree_outlined,
-                        onSelected: () {
-                          Operadores.selectOptionsActivity(
-                              context: context,
-                              options: tipoRecursoTextController.text ==
-                                      Activos.tipoRecurso[0]
-                                  ? Activos.conceptoIngresos
-                                  : tipoRecursoTextController.text ==
-                                          Activos.tipoRecurso[1]
-                                      ? Activos.conceptoEgresos
+                  SingleChildScrollView(
+                    controller: ScrollController(),
+                    child: Column(
+                      children: [
+                        TittlePanel(textPanel: 'Características del Registro'),
+                        Container(
+                          padding: const EdgeInsets.all(10.0),
+                          decoration: ContainerDecoration.roundedDecoration(),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: CircleIcon(
+                                  iconed: tipoRecursoTextController.text ==
+                                          'Ingresos'
+                                      ? Icons.insights
                                       : tipoRecursoTextController.text ==
-                                              Activos.tipoRecurso[2]
-                                          ? Activos.conceptoActivos
+                                              'Egresos'
+                                          ? Icons.leaderboard_sharp
                                           : tipoRecursoTextController.text ==
-                                                  Activos.tipoRecurso[3]
-                                              ? Activos.conceptoPasivos
-                                              : Activos.conceptoPatrimonio,
-                              onClose: (value) {
-                                setState(() {
-                                  conceptoRecursoTextController.text = value;
-                                  Navigator.of(context).pop();
-                                });
-                              });
-                        },
-                      ),
-                      EditTextArea(
-                        labelEditText: 'Cuenta Asignada',
-                        textController: cuentaAsignadaTextController,
-                        keyBoardType: TextInputType.text,
-                        iconData: Icons.line_weight,
-                        numOfLines: 1,
-                        selection: true,
-                        withShowOption: true,
-                        inputFormat: MaskTextInputFormatter(),
-                        onSelected: () {
-                          Operadores.selectOptionsActivity(
-                              context: context,
-                              options: tipoRecursoTextController.text ==
-                                          Activos.tipoRecurso[1] ||
-                                      tipoRecursoTextController.text ==
-                                          Activos.tipoRecurso[3]
-                                  ? Activos.cuentaAsignada
-                                  : [],
-                              onClose: (value) {
-                                setState(() {
-                                  cuentaAsignadaTextController.text = value;
-                                  Navigator.of(context).pop();
-                                });
-                              });
-                        },
-                      ),
-                      EditTextArea(
-                        labelEditText: 'Fecha de Pago Programada',
-                        textController: fechaProgramadaTextController,
-                        keyBoardType: TextInputType.text,
-                        numOfLines: 1,
-                        selection: true,
-                        withShowOption: true,
-                        inputFormat: MaskTextInputFormatter(),
-                        onSelected: () {
-                          setState(() {
-                            fechaProgramadaTextController.text =
-                                Calendarios.today(format: 'yyyy/MM/dd');
-                          });
-                        },
-                      ),
-                      EditTextArea(
-                        labelEditText: 'Intervalo Programado',
-                        textController: intervaloProgramadoTextController,
-                        keyBoardType: TextInputType.text,
-                        iconData: Icons.integration_instructions_outlined,
-                        numOfLines: 1,
-                        selection: true,
-                        withShowOption: true,
-                        inputFormat: MaskTextInputFormatter(),
-                        onSelected: () {
-                          Operadores.selectOptionsActivity(
-                              context: context,
-                              options: Activos.intervaloProgramado,
-                              onClose: (value) {
-                                setState(() {
-                                  intervaloProgramadoTextController.text =
-                                      value;
-                                  Navigator.of(context).pop();
-                                });
-                              });
-                        },
-                      ),
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      TittlePanel(textPanel: 'Montos del Registro'),
-                      EditTextArea(
-                        labelEditText: 'Monto Restante',
-                        textController: montoRestanteTextController,
-                        keyBoardType: TextInputType.number,
-                        numOfLines: 1,
-                        inputFormat: MaskTextInputFormatter(),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(10.0),
-                        decoration: ContainerDecoration.roundedDecoration(),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: EditTextArea(
-                                labelEditText: 'Monto Pagado',
-                                textController: montoPagadoTextController,
-                                keyBoardType: TextInputType.number,
-                                prefixIcon: true,
-                                iconData: Icons.attach_money,
-                                numOfLines: 1,
-                                inputFormat: MaskTextInputFormatter(),
+                                                  'Activos'
+                                              ? Icons.ac_unit
+                                              : tipoRecursoTextController
+                                                          .text ==
+                                                      'Pasivos'
+                                                  ? Icons.pages_sharp
+                                                  : tipoRecursoTextController
+                                                              .text ==
+                                                          'Patrimonio'
+                                                      ? Icons.hdr_weak_sharp
+                                                      : Icons.all_out,
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: CircleIcon(
-                                iconed: tipoRecursoTextController.text ==
-                                        'Ingresos'
-                                    ? Icons.insights
-                                    : tipoRecursoTextController.text ==
-                                            'Egresos'
-                                        ? Icons.leaderboard_sharp
-                                        : tipoRecursoTextController.text ==
-                                                'Activos'
-                                            ? Icons.ac_unit
-                                            : tipoRecursoTextController.text ==
-                                                    'Pasivos'
-                                                ? Icons.pages_sharp
-                                                : tipoRecursoTextController
-                                                            .text ==
-                                                        'Patrimonio'
-                                                    ? Icons.hdr_weak_sharp
-                                                    : Icons.all_out,
+                              Expanded(
+                                flex: 3,
+                                child: EditTextArea(
+                                  labelEditText: 'Tipo de Recurso',
+                                  textController: tipoRecursoTextController,
+                                  keyBoardType: TextInputType.text,
+                                  numOfLines: 1,
+                                  iconData: Icons.account_balance,
+                                  selection: true,
+                                  withShowOption: true,
+                                  inputFormat: MaskTextInputFormatter(),
+                                  onSelected: () {
+                                    Operadores.selectOptionsActivity(
+                                        context: context,
+                                        options: Activos.tipoRecurso,
+                                        onClose: (value) {
+                                          setState(() {
+                                            cuentaAsignadaTextController.text =
+                                                '';
+                                            tipoRecursoTextController.text =
+                                                value;
+                                            Navigator.of(context).pop();
+                                          });
+                                        });
+                                  },
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      CrossLine(height: 10),
-                      Expanded(
-                        child: Container(
+                        CrossLine(height: 10),
+                        EditTextArea(
+                          labelEditText: 'Concepto de Recurso',
+                          textController: conceptoRecursoTextController,
+                          keyBoardType: TextInputType.text,
+                          numOfLines: 1,
+                          selection: true,
+                          withShowOption: true,
+                          inputFormat: MaskTextInputFormatter(),
+                          iconData: Icons.account_tree_outlined,
+                          onSelected: () {
+                            Operadores.selectOptionsActivity(
+                                context: context,
+                                options: tipoRecursoTextController.text ==
+                                        Activos.tipoRecurso[0]
+                                    ? Activos.conceptoIngresos
+                                    : tipoRecursoTextController.text ==
+                                            Activos.tipoRecurso[1]
+                                        ? Activos.conceptoEgresos
+                                        : tipoRecursoTextController.text ==
+                                                Activos.tipoRecurso[2]
+                                            ? Activos.conceptoActivos
+                                            : tipoRecursoTextController.text ==
+                                                    Activos.tipoRecurso[3]
+                                                ? Activos.conceptoPasivos
+                                                : Activos.conceptoPatrimonio,
+                                onClose: (value) {
+                                  setState(() {
+                                    conceptoRecursoTextController.text = value;
+                                    Navigator.of(context).pop();
+                                  });
+                                });
+                          },
+                        ),
+                        EditTextArea(
+                          labelEditText: 'Cuenta Asignada',
+                          textController: cuentaAsignadaTextController,
+                          keyBoardType: TextInputType.text,
+                          iconData: Icons.line_weight,
+                          numOfLines: 1,
+                          selection: true,
+                          withShowOption: true,
+                          inputFormat: MaskTextInputFormatter(),
+                          onSelected: () {
+                            Operadores.selectOptionsActivity(
+                                context: context,
+                                options: tipoRecursoTextController.text ==
+                                            Activos.tipoRecurso[1] ||
+                                        tipoRecursoTextController.text ==
+                                            Activos.tipoRecurso[3]
+                                    ? Activos.cuentaAsignada
+                                    : [],
+                                onClose: (value) {
+                                  setState(() {
+                                    cuentaAsignadaTextController.text = value;
+                                    Navigator.of(context).pop();
+                                  });
+                                });
+                          },
+                        ),
+                        EditTextArea(
+                          labelEditText: 'Fecha de Pago Programada',
+                          textController: fechaProgramadaTextController,
+                          keyBoardType: TextInputType.text,
+                          numOfLines: 1,
+                          selection: true,
+                          withShowOption: true,
+                          inputFormat: MaskTextInputFormatter(),
+                          onSelected: () {
+                            setState(() {
+                              fechaProgramadaTextController.text =
+                                  Calendarios.today(format: 'yyyy/MM/dd');
+                            });
+                          },
+                        ),
+                        EditTextArea(
+                          labelEditText: 'Intervalo Programado',
+                          textController: intervaloProgramadoTextController,
+                          keyBoardType: TextInputType.text,
+                          iconData: Icons.integration_instructions_outlined,
+                          numOfLines: 1,
+                          selection: true,
+                          withShowOption: true,
+                          inputFormat: MaskTextInputFormatter(),
+                          onSelected: () {
+                            Operadores.selectOptionsActivity(
+                                context: context,
+                                options: Activos.intervaloProgramado,
+                                onClose: (value) {
+                                  setState(() {
+                                    intervaloProgramadoTextController.text =
+                                        value;
+                                    Navigator.of(context).pop();
+                                  });
+                                });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  SingleChildScrollView(
+                    controller: ScrollController(),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        TittlePanel(textPanel: 'Montos del Registro'),
+                        EditTextArea(
+                          labelEditText: 'Monto Restante',
+                          textController: montoRestanteTextController,
+                          keyBoardType: TextInputType.number,
+                          numOfLines: 1,
+                          inputFormat: MaskTextInputFormatter(),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(10.0),
+                          decoration: ContainerDecoration.roundedDecoration(),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 2,
+                                child: EditTextArea(
+                                  labelEditText: 'Monto Pagado',
+                                  textController: montoPagadoTextController,
+                                  keyBoardType: TextInputType.number,
+                                  prefixIcon: true,
+                                  iconData: Icons.attach_money,
+                                  numOfLines: 1,
+                                  inputFormat: MaskTextInputFormatter(),
+                                ),
+                              ),
+                              Expanded(
+                                child: CircleIcon(
+                                  iconed: tipoRecursoTextController.text ==
+                                          'Ingresos'
+                                      ? Icons.insights
+                                      : tipoRecursoTextController.text ==
+                                              'Egresos'
+                                          ? Icons.leaderboard_sharp
+                                          : tipoRecursoTextController.text ==
+                                                  'Activos'
+                                              ? Icons.ac_unit
+                                              : tipoRecursoTextController
+                                                          .text ==
+                                                      'Pasivos'
+                                                  ? Icons.pages_sharp
+                                                  : tipoRecursoTextController
+                                                              .text ==
+                                                          'Patrimonio'
+                                                      ? Icons.hdr_weak_sharp
+                                                      : Icons.all_out,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        CrossLine(height: 10),
+                        Container(
                           decoration: ContainerDecoration.roundedDecoration(),
                           padding: const EdgeInsets.only(
                               left: 10.0, right: 10.0, top: 10.0),
@@ -385,104 +379,122 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
                             ],
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                  Column(
-                    children: [
-                      TittlePanel(textPanel: 'Generalidades del Registro'),
-                      EditTextArea(
-                        labelEditText: 'Estado Actual',
-                        textController: estadoActualTextController,
-                        keyBoardType: TextInputType.text,
-                        numOfLines: 1,
-                        selection: true,
-                        withShowOption: true,
-                        inputFormat: MaskTextInputFormatter(),
-                        onSelected: () {
-                          Operadores.selectOptionsActivity(
-                              context: context,
-                              options: Activos.estadoActual,
-                              onClose: (value) {
-                                setState(() {
-                                  estadoActualTextController.text = value;
-                                  Navigator.of(context).pop();
+                  SingleChildScrollView(
+                    controller: ScrollController(),
+                    child: Column(
+                      children: [
+                        TittlePanel(textPanel: 'Generalidades del Registro'),
+                        EditTextArea(
+                          labelEditText: 'Estado Actual',
+                          textController: estadoActualTextController,
+                          keyBoardType: TextInputType.text,
+                          numOfLines: 1,
+                          selection: true,
+                          withShowOption: true,
+                          inputFormat: MaskTextInputFormatter(),
+                          onSelected: () {
+                            Operadores.selectOptionsActivity(
+                                context: context,
+                                options: Activos.estadoActual,
+                                onClose: (value) {
+                                  setState(() {
+                                    estadoActualTextController.text = value;
+                                    Navigator.of(context).pop();
+                                  });
                                 });
-                              });
-                        },
-                      ),
-                      EditTextArea(
-                        labelEditText: 'Fecha de Proximo Pago',
-                        textController: fechaProximoTextController,
-                        keyBoardType: TextInputType.text,
-                        numOfLines: 1,
-                        selection: true,
-                        withShowOption: true,
-                        inputFormat: MaskTextInputFormatter(),
-                        onSelected: () {
-                          setState(() {
-                            fechaProximoTextController.text =
-                                Calendarios.today(format: 'yyyy/MM/dd');
-                          });
-                        },
-                      ),
-                      EditTextArea(
-                        labelEditText: 'Fecha de Baja',
-                        textController: fechaBajaTextController,
-                        keyBoardType: TextInputType.text,
-                        numOfLines: 1,
-                        selection: true,
-                        withShowOption: true,
-                        inputFormat: MaskTextInputFormatter(),
-                        onSelected: () {
-                          setState(() {
-                            fechaBajaTextController.text =
-                                Calendarios.today(format: 'yyyy/MM/dd');
-                          });
-                        },
-                      ),
-                      EditTextArea(
-                        labelEditText: 'Descripción',
-                        textController: descripcionTextController,
-                        keyBoardType: TextInputType.text,
-                        numOfLines: 15,
-                        inputFormat: MaskTextInputFormatter(),
-                      ),
-                    ],
+                          },
+                        ),
+                        EditTextArea(
+                          labelEditText: 'Fecha de Proximo Pago',
+                          textController: fechaProximoTextController,
+                          keyBoardType: TextInputType.text,
+                          numOfLines: 1,
+                          selection: true,
+                          withShowOption: true,
+                          inputFormat: MaskTextInputFormatter(),
+                          onSelected: () {
+                            setState(() {
+                              fechaProximoTextController.text =
+                                  Calendarios.today(format: 'yyyy/MM/dd');
+                            });
+                          },
+                        ),
+                        EditTextArea(
+                          labelEditText: 'Fecha de Baja',
+                          textController: fechaBajaTextController,
+                          keyBoardType: TextInputType.text,
+                          numOfLines: 1,
+                          selection: true,
+                          withShowOption: true,
+                          inputFormat: MaskTextInputFormatter(),
+                          onSelected: () {
+                            setState(() {
+                              fechaBajaTextController.text =
+                                  Calendarios.today(format: 'yyyy/MM/dd');
+                            });
+                          },
+                        ),
+                        EditTextArea(
+                          labelEditText: 'Descripción',
+                          textController: descripcionTextController,
+                          keyBoardType: TextInputType.text,
+                          numOfLines: 15,
+                          inputFormat: MaskTextInputFormatter(),
+                        ),
+                      ],
+                    ),
                   ),
                   Column(
                     children: [
                       Expanded(
-                        child: GrandIcon(
-                          iconData: Icons.photo_camera_back_outlined,
-                          labelButton: 'Imagen del Electrocardiograma',
-                          onPress: () {
-                            Operadores.optionsActivity(
-                              context: context,
-                              tittle: 'Cargar imagen del Electrocardiograma',
-                              onClose: () {
-                                Navigator.of(context).pop();
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GrandIcon(
+                              iconData: Icons.photo_camera_back_outlined,
+                              labelButton: 'Imagen del Activo',
+                              onPress: () {
+                                Operadores.optionsActivity(
+                                  context: context,
+                                  tittle:
+                                      'Cargar imagen del Electrocardiograma',
+                                  onClose: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  textOptionA: 'Cargar desde Dispositivo',
+                                  optionA: () async {
+                                    var bytes =
+                                        await Directorios.choiseFromDirectory();
+                                    setState(() {
+                                      stringImage = base64Encode(bytes);
+                                      Navigator.of(context).pop();
+                                    });
+                                  },
+                                  textOptionB: 'Cargar desde Cámara',
+                                  optionB: () async {
+                                    var bytes =
+                                        await Directorios.choiseFromCamara();
+                                    setState(() {
+                                      stringImage = base64Encode(bytes);
+                                      Navigator.of(context).pop();
+                                    });
+                                  },
+                                );
                               },
-                              textOptionA: 'Cargar desde Dispositivo',
-                              optionA: () async {
-                                var bytes =
-                                    await Directorios.choiseFromDirectory();
+                            ),
+                            GrandIcon(
+                              iconData: Icons.new_releases_outlined,
+                              labelButton: 'Recargar . . . ',
+                              onPress: () {
                                 setState(() {
-                                  stringImage = base64Encode(bytes);
-                                  Navigator.of(context).pop();
+                                  stringImage = Activos.imagenActivo;
                                 });
                               },
-                              textOptionB: 'Cargar desde Cámara',
-                              optionB: () async {
-                                var bytes =
-                                    await Directorios.choiseFromCamara();
-                                setState(() {
-                                  stringImage = base64Encode(bytes);
-                                  Navigator.of(context).pop();
-                                });
-                              },
-                            );
-                          },
+                            ),
+                          ],
                         ),
                       ),
                       Expanded(
@@ -548,12 +560,8 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
     });
   }
 
-  // OPERACIONES *************** * * * *  ** *********
+  // OPERACIONES *******************  *** ** * *****
   void operationMethod(BuildContext context) {
-    Dialogos.loadingActivity(
-        tittle: 'Actualizando . . . ',
-        msg: 'Actualizando información . . . ',
-        onCloss: () {});
     // ********************************** * * * * * * * * *
     try {
       listOfValues = [
@@ -580,9 +588,8 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
         idOperation
       ];
 
-      Terminal.printExpected(
-          message:
-              "${widget.operationActivity} listOfValues $listOfValues ${listOfValues!.length}");
+      Terminal.printExpected(message: "${widget.operationActivity} ");
+      // )listOfValues $listOfValues ${listOfValues!.length}");
       switch (widget.operationActivity) {
         case Constantes.Nulo:
           // ******************************************** *** *
@@ -595,74 +602,78 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
         case Constantes.Consult:
           break;
         case Constantes.Register:
+          Operadores.loadingActivity(
+              context: context,
+              tittle: "Registrado Información",
+              message: "Registrando información . . . ");
           // ******************************************** *** *
           listOfValues!.removeAt(0);
           listOfValues!.removeLast();
           // ******************************************** *** *
           Actividades.registrar(Databases.siteground_database_regfine,
                   registerQuery!, listOfValues!)
-              // .then((value) => Actividades.consultarAllById(
-              //             Databases.siteground_database_regfine,
-              //             consultIdQuery!,
-              //             Financieros.ID_Financieros) // idOperation)
-              //         .then((value) {
-              //       // ******************************************** *** *
-              //       Financieros.Activos = value;
-              //       Constantes.reinit(value: value);
-              //       // ******************************************** *** *
-              //     })
-              .then((value) => onClose(context));
+              .then((value) =>
+                  Terminal.printExpected(message: "Registrado : : $value"))
+              .whenComplete(() => onClose(context))
+              .onError((error, stackTrace) => Operadores.alertActivity(
+                  context: context,
+                  tittle: "Error al Registrar . . .",
+                  message: "ERROR - $error : $stackTrace"));
           break;
         case Constantes.Update:
+          Operadores.loadingActivity(
+              context: context,
+              tittle: "Actualizando Información",
+              message: "Actualizando información . . . ");
           Actividades.actualizar(Databases.siteground_database_regfine,
                   updateQuery!, listOfValues!, idOperation)
-              // .then((value) => Actividades.detalles(
-              //             Databases.siteground_database_regfine,
-              //             Activos.activos['activosStadistics'])
-              //         .then((value) {
-              //       // ******************************************** *** *
-              //       // Financieros.Activos = value;
-              //       // Constantes.reinit(value: value);
-              //       // ******************************************** *** *
-              //     })
-              .then((value) => onClose(context));
+              .then((value) =>
+                  Terminal.printSuccess(message: "Actualizado : : $value"))
+              .whenComplete(() => onClose(context))
+              .onError((error, stackTrace) => Operadores.alertActivity(
+                  context: context,
+                  tittle: "Error al Registrar . . .",
+                  message: "ERROR - $error : $stackTrace"));
           break;
         default:
       }
     } catch (ex) {
-      showDialog(
+      Operadores.alertActivity(
           context: context,
-          builder: (context) {
-            return alertDialog("Error al operar con los valores", "$ex", () {
-              Navigator.of(context).pop();
-            }, () {});
-          });
+          tittle: "Error al operar con los valores",
+          message: "ERROR - $ex",
+          onAcept: () {
+            Navigator.of(context).pop();
+          },
+          onClose: () {});
     }
   }
 
   void onClose(BuildContext context) {
-    switch (isMobile(context)) {
-      case true:
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                // maintainState: false,
-                builder: (context) => GestionActivos()));
-        break;
-      case false:
-        Actividades.detalles(Databases.siteground_database_regfine,
-                Activos.activos['activosStadistics'])
-            .then((value) {
-          Archivos.createJsonFromMap([value], filePath: Activos.fileStadistics);
-        }).whenComplete(() => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => GestionActivos(
-                          actualSidePage: const EstadisticasActivos(),
-                        ))));
-        break;
-      default:
-    }
+    Activos.registros().whenComplete(() {
+      switch (isMobile(context)) {
+        case true:
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      GestionActivos(esActualized: true, reverse: true)));
+          break;
+        case false:
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => GestionActivos(
+                      esActualized: true,
+                      reverse: true,
+                      actualSidePage: const EstadisticasActivos())));
+          break;
+        default:
+      }
+    }).onError((error, stackTrace) => Operadores.alertActivity(
+        context: context,
+        tittle: "Error al en Activos.registros . . .",
+        message: "ERROR - $error : $stackTrace"));
   }
 
   // OPERACIONALES *************** * * * *  ** *********
@@ -697,9 +708,13 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
 class GestionActivos extends StatefulWidget {
   Widget? actualSidePage;
 
-  bool? reverse = false, notActualized;
+  bool? reverse, esActualized;
   // ****************** *** ****** **************
-  GestionActivos({Key? key, this.actualSidePage, this.notActualized = false})
+  GestionActivos(
+      {Key? key,
+      this.reverse = false,
+      this.actualSidePage,
+      this.esActualized = true})
       : super(key: key);
 
   @override
@@ -707,23 +722,48 @@ class GestionActivos extends StatefulWidget {
 }
 
 class _GestionActivosState extends State<GestionActivos> {
-  String appTittle = "Gestion de Activos del Usuario";
-  String searchCriteria = "Buscar por Fecha";
-  String? consultQuery = Activos.activos['consultIdQuery'];
-
-  late List? foundedItems = [];
-  var gestionScrollController = ScrollController();
-  var searchTextController = TextEditingController();
 
   @override
   void initState() {
-    if (widget.notActualized!) {
-      // iniciar();
+    Activos.fileAssocieted = '${Financieros.localRepositoryPath}activos.json';
+    // ****************************************** * *** ******* *** *
+    if (widget.esActualized!) {
+      Actividades.detalles(Databases.siteground_database_regfine,
+              Activos.activos['activosStadistics'])
+          .then((value) {
+        // *************************************** * *** ******* *** *
+        Terminal.printSuccess(
+            message:
+                "Actualizando repositorio de Activos y Estadisticas . . . ");
+        // *************************************** * *** ******* *** *
+        Archivos.createJsonFromMap([value], filePath: Activos.fileStadistics);
+      }).whenComplete(() => iniciar());
     } else {
-      reiniciar(withStats: true);
+      iniciar();
     }
     super.initState();
   }
+  // @override
+  // void initState() {
+  //   if (widget.esActualized!) {
+  //     if (widget.reverse!) {
+  //       reiniciar(withStats: false);
+  //     } else {
+  //       Operadores.loadingActivity(
+  //           context: context,
+  //           tittle: "Registrado Información",
+  //           message: "Registrando información . . . ");
+  //       reiniciar(withStats: true);
+  //     }
+  //   } else {
+  //     if (widget.reverse!) {
+  //       iniciar();
+  //     } else {
+  //       reiniciar(withStats: false);
+  //     }
+  //   }
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -749,6 +789,9 @@ class _GestionActivosState extends State<GestionActivos> {
               iconData: Icons.all_out,
               onPress: () {
                 _pullListRefresh();
+              },
+              onLongPress: () {
+                _pullListRefresh(reload: true);
               },
             ),
             CrossLine(
@@ -793,14 +836,23 @@ class _GestionActivosState extends State<GestionActivos> {
                   children: [
                     Expanded(
                         flex: 4,
-                        child: EditTextArea(
-                          labelEditText: 'Buscar por Concepto',
-                          textController: searchTextController,
-                          keyBoardType: TextInputType.text,
-                          numOfLines: 1,
-                          inputFormat: MaskTextInputFormatter(),
-                          onChange: (value) {
-                            _runFilterSearch(value);
+                        child: GrandButton(
+                          weigth: 1000,
+                          labelButton: "Por Fecha",
+                          onPress: () {
+                            reiniciar(withStats: false);
+                            Operadores.selectOptionsActivity(
+                                context: context,
+                                options: Listas.listWithoutRepitedValues(
+                                    Listas.listFromMapWithOneKey(foundedItems!,
+                                        keySearched: 'Fecha_Pago_Programado')),
+                                onClose: (value) {
+                                  Navigator.of(context).pop();
+                                  Terminal.printSuccess(message: "$value");
+                                  _runFilterSearch(
+                                      enteredKeyword: value,
+                                      keySearched: 'Fecha_Pago_Programado');
+                                });
                           },
                         )),
                     Expanded(
@@ -832,10 +884,14 @@ class _GestionActivosState extends State<GestionActivos> {
                         setState(() {
                           if (widget.reverse == true) {
                             widget.reverse = false;
-                            // gestionScrollController.jumpTo(gestionScrollController.position.minScrollExtent);
+                            gestionScrollController.jumpTo(
+                                gestionScrollController
+                                    .position.minScrollExtent);
                           } else {
                             widget.reverse = true;
-                            // gestionScrollController.jumpTo(gestionScrollController.position.minScrollExtent);
+                            gestionScrollController.jumpTo(
+                                gestionScrollController
+                                    .position.maxScrollExtent);
                           }
                         });
                       },
@@ -901,6 +957,19 @@ class _GestionActivosState extends State<GestionActivos> {
                           children: [
                             Expanded(
                                 child: GrandIcon(
+                              iconData: Icons.move_up_outlined,
+                              labelButton: 'Al principio . . .',
+                              onPress: () {
+                                setState(() {
+                                  gestionScrollController.jumpTo(
+                                      gestionScrollController
+                                          .position.minScrollExtent);
+                                });
+                              },
+                            )),
+                            CrossLine(),
+                            Expanded(
+                                child: GrandIcon(
                               iconData: Icons.insights,
                               labelButton: 'Ingresos',
                               onPress: () {
@@ -947,6 +1016,19 @@ class _GestionActivosState extends State<GestionActivos> {
                                 _pullListRefresh();
                               },
                             )),
+                            CrossLine(),
+                            Expanded(
+                                child: GrandIcon(
+                              iconData: Icons.move_down_outlined,
+                              labelButton: 'Al final . . .',
+                              onPress: () {
+                                setState(() {
+                                  gestionScrollController.jumpTo(
+                                      gestionScrollController
+                                          .position.maxScrollExtent);
+                                });
+                              },
+                            )),
                           ],
                         ),
                       ))
@@ -966,57 +1048,115 @@ class _GestionActivosState extends State<GestionActivos> {
 
   // OPERACIONES DE LA INTERFAZ ****************** ******** * * * *
   void iniciar() {
-    Terminal.printWarning(
-        message: " . . . Iniciando Actividad - Repositorio de Pacientes");
+    Terminal.printAlert(
+        message:
+            "INICIAR : Iniciando Actividad - Repositorio de Activos y Valores  \n"
+            ": : : ${Activos.fileAssocieted}");
     Archivos.readJsonToMap(filePath: Activos.fileAssocieted).then((value) {
       setState(() {
-        Terminal.printWarning(message: " . . . $foundedItems");
-        // _runActiveSearch(enteredKeyword: 'Patrimonio');
         foundedItems = value;
       });
     }).onError((error, stackTrace) {
+      Terminal.printOther(message: "ERROR - $error :  $stackTrace");
       reiniciar();
     });
-    Terminal.printWarning(message: " . . . Actividad Iniciada");
   }
 
   void reiniciar({bool withStats = false}) {
-    Terminal.printAlert(
-        message: "Iniciando actividad : : \n "
-            "Consulta de Activos del Usuario . . .");
-    if (withStats) {
-      Actividades.detalles(Databases.siteground_database_regfine,
-              Activos.activos['activosStadistics'])
-          .then((value) {
-        Archivos.createJsonFromMap([value], filePath: Activos.fileStadistics);
-      });
-    }
-    Actividades.consultarAllById(Databases.siteground_database_regfine,
-            consultQuery!, Financieros.ID_Financieros)
-        .then((value) {
+    Operadores.loadingActivity(
+        context: context,
+        tittle: "Consultando Información",
+        message: "Consultando información . . . ");
+    Terminal.printOther(
+        message: "REINICIAR : Iniciando actividad : : \n "
+            "\tConsulta de Activos del Usuario . . .");
+    // **************************************************************************
+    Activos.registros().whenComplete(() {
       setState(() {
-        Terminal.printSuccess(
-            message: "Actualizando repositorio de pacientes . . . ");
-        foundedItems = value;
-        Archivos.createJsonFromMap(foundedItems!,
-            filePath: Activos.fileAssocieted);
+        Navigator.pop(context);
+        foundedItems = Financieros.Activos;
       });
+    })
+        // **************************************************************************
+        .onError((error, stackTrace) {
+      Terminal.printAlert(
+          message:
+              ": : : Error al Conectar con la Base de Datos - $error : : $stackTrace");
+      // **************************************************************************
+      Operadores.alertActivity(
+        context: context,
+        tittle: "Error al Conectar con la Base de Datos",
+        message: "ERROR - $error : : $stackTrace",
+        onAcept: () {
+          Navigator.pop(context);
+        },
+      );
     });
-    // .whenComplete(() => Operadores.alertActivity(
-    //     context: context,
-    //     tittle: "Datos Recargados",
-    //     message: "Registro Actualizado",
-    //     onAcept: () {
-    //       Navigator.of(context).push(
-    //         MaterialPageRoute(
-    //           builder: (BuildContext context) => GestionActivos(
-    //             actualSidePage: const EstadisticasActivos(),
-    //           ),
-    //         ),
-    //       );
-    //     }));
+    // *****************************************************************
+    // if (withStats) {
+    //   Actividades.detalles(Databases.siteground_database_regfine,
+    //           Activos.activos['activosStadistics'])
+    //       .then((value) {
+    //     Terminal.printSuccess(
+    //         message:
+    //             "Actualizando repositorio de Activos y Estadisticas . . . ");
+    //     Archivos.createJsonFromMap([value], filePath: Activos.fileStadistics);
+    //     //
+    //     if (widget.esActualized!) {
+    //       Actividades.consultarAllById(Databases.siteground_database_regfine,
+    //               consultQuery!, Financieros.ID_Financieros)
+    //           .then((value) {
+    //         Archivos.createJsonFromMap(value, filePath: Activos.fileAssocieted);
+    //         setState(() {
+    //           foundedItems = value;
+    //         });
+    //       }).onError((error, stackTrace) {
+    //         Operadores.alertActivity(
+    //             context: context,
+    //             tittle: "Error al Conectar con la Base de Datos",
+    //             message: "ERROR - $error : : $stackTrace");
+    //       });
+    //     } else {
+    //       setState(() {
+    //         foundedItems = Financieros.Activos;
+    //       });
+    //     }
+    //   });
+    // } else {
+    //   Actividades.consultarAllById(Databases.siteground_database_regfine,
+    //           consultQuery!, Financieros.ID_Financieros)
+    //       .then((value) {
+    //     Terminal.printSuccess(message: "Value : : $value : REINICIAR ");
+    //     Archivos.createJsonFromMap(value, filePath: Activos.fileAssocieted);
+    //     Terminal.printSuccess(
+    //         message: "Actualizando repositorio de Activos . . . ");
+    //     setState(() {
+    //       foundedItems = value;
+    //     });
+    //   }).whenComplete(() {
+    //     iniciar();
+    //   }).onError((error, stackTrace) {
+    //     Operadores.alertActivity(
+    //         context: context,
+    //         tittle: "Error al Conectar con la Base de Datos",
+    //         message: "ERROR - $error : : $stackTrace");
+    //   });
+    // }
   }
 
+  // .whenComplete(() => Operadores.alertActivity(
+  //     context: context,
+  //     tittle: "Datos Recargados",
+  //     message: "Registro Actualizado",
+  //     onAcept: () {
+  //       Navigator.of(context).push(
+  //         MaterialPageRoute(
+  //           builder: (BuildContext context) => GestionActivos(
+  //             actualSidePage: const EstadisticasActivos(),
+  //           ),
+  //         ),
+  //       );
+  //     }));
   void deleteRegister(
       AsyncSnapshot<dynamic> snapshot, int posicion, BuildContext context) {
     try {
@@ -1052,7 +1192,7 @@ class _GestionActivosState extends State<GestionActivos> {
     } else {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (BuildContext context) => GestionActivos(
-                notActualized: true,
+                esActualized: false,
                 actualSidePage: OperacionesActivos(
                   operationActivity: operationActivity,
                 ),
@@ -1060,142 +1200,136 @@ class _GestionActivosState extends State<GestionActivos> {
     }
   }
 
-  Container itemListView(
+  GestureDetector itemListView(
       AsyncSnapshot snapshot, int posicion, BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(2.0),
-      child: GestureDetector(
-        onTap: () {
-          onSelected(snapshot, posicion, context, Constantes.Update);
-        },
-        child: Container(
-          decoration: ContainerDecoration.roundedDecoration(),
-          padding: const EdgeInsets.all(20.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                flex: 2,
-                child: Column(
-                  children: [
-                    CircleLabel(
-                      radios: 30,
-                      tittle: snapshot.data[posicion]['ID_Registro'].toString(),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    CircleIcon(
-                        tittle: "${snapshot.data[posicion]['Tipo_Recurso']}",
-                        iconed: snapshot.data[posicion]['Tipo_Recurso'] ==
+    return GestureDetector(
+      onTap: () {
+        onSelected(snapshot, posicion, context, Constantes.Update);
+      },
+      child: Container(
+        decoration: ContainerDecoration.roundedDecoration(),
+        padding: const EdgeInsets.all(20.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              flex: 2,
+              child: Column(
+                children: [
+                  CircleLabel(
+                    radios: 30,
+                    tittle: snapshot.data[posicion]['ID_Registro'].toString(),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  CircleIcon(
+                      tittle: "${snapshot.data[posicion]['Tipo_Recurso']}",
+                      iconed: snapshot.data[posicion]['Tipo_Recurso'] ==
+                              'Ingresos'
+                          ? Icons.insights
+                          : snapshot.data[posicion]['Tipo_Recurso'] == 'Egresos'
+                              ? Icons.leaderboard_sharp
+                              : snapshot.data[posicion]['Tipo_Recurso'] ==
+                                      'Activos'
+                                  ? Icons.ac_unit
+                                  : snapshot.data[posicion]['Tipo_Recurso'] ==
+                                          'Pasivos'
+                                      ? Icons.pages_sharp
+                                      : snapshot.data[posicion]
+                                                  ['Tipo_Recurso'] ==
+                                              'Patrimonio'
+                                          ? Icons.hdr_weak_sharp
+                                          : Icons.all_out),
+                ],
+              ),
+            ),
+            const SizedBox(width: 20),
+            Expanded(
+              flex: 3,
+              child: Column(
+                children: [
+                  TittlePanel(
+                    textPanel:
+                        "${snapshot.data[posicion]['Fecha_Pago_Programado']}",
+                  ),
+                  Text(
+                    "${snapshot.data[posicion]['Estado_Actual']}",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                        fontSize: 14),
+                  ),
+                  Text(
+                    "\u0024 ${double.parse(snapshot.data[posicion]['Monto_Pagado'].toString()).toStringAsFixed(2)}",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: snapshot.data[posicion]['Tipo_Recurso'] ==
                                 'Ingresos'
-                            ? Icons.insights
+                            ? Colors.green
                             : snapshot.data[posicion]['Tipo_Recurso'] ==
                                     'Egresos'
-                                ? Icons.leaderboard_sharp
+                                ? Colors.red
                                 : snapshot.data[posicion]['Tipo_Recurso'] ==
                                         'Activos'
-                                    ? Icons.ac_unit
+                                    ? Colors.yellow
                                     : snapshot.data[posicion]['Tipo_Recurso'] ==
                                             'Pasivos'
-                                        ? Icons.pages_sharp
+                                        ? Colors.purple
                                         : snapshot.data[posicion]
                                                     ['Tipo_Recurso'] ==
                                                 'Patrimonio'
-                                            ? Icons.hdr_weak_sharp
-                                            : Icons.all_out),
-                  ],
-                ),
+                                            ? Colors.blue
+                                            : Colors.white,
+                        fontSize: 14),
+                  ),
+                  const Divider(
+                    color: Colors.grey,
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        color: Colors.grey,
+                        icon: const Icon(Icons.update_rounded),
+                        onPressed: () {
+                          //
+                          onSelected(
+                              snapshot, posicion, context, Constantes.Update);
+                        },
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      IconButton(
+                        color: Colors.grey,
+                        icon: const Icon(Icons.delete),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return alertDialog(
+                                  'Eliminar registro',
+                                  '¿Esta seguro de querer eliminar el registro?',
+                                  () {
+                                    closeDialog(context);
+                                  },
+                                  () {
+                                    deleteRegister(snapshot, posicion, context);
+                                  },
+                                );
+                              });
+                        },
+                      )
+                    ],
+                  )
+                ],
               ),
-              const SizedBox(width: 20),
-              Expanded(
-                flex: 3,
-                child: Column(
-                  children: [
-                    TittlePanel(
-                      textPanel:
-                          "${snapshot.data[posicion]['Fecha_Pago_Programado']}",
-                    ),
-                    Text(
-                      "${snapshot.data[posicion]['Estado_Actual']}",
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey,
-                          fontSize: 14),
-                    ),
-                    Text(
-                      "\u0024 ${double.parse(snapshot.data[posicion]['Monto_Pagado'].toString()).toStringAsFixed(2)}",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: snapshot.data[posicion]['Tipo_Recurso'] ==
-                                  'Ingresos'
-                              ? Colors.green
-                              : snapshot.data[posicion]['Tipo_Recurso'] ==
-                                      'Egresos'
-                                  ? Colors.red
-                                  : snapshot.data[posicion]['Tipo_Recurso'] ==
-                                          'Activos'
-                                      ? Colors.yellow
-                                      : snapshot.data[posicion]
-                                                  ['Tipo_Recurso'] ==
-                                              'Pasivos'
-                                          ? Colors.purple
-                                          : snapshot.data[posicion]
-                                                      ['Tipo_Recurso'] ==
-                                                  'Patrimonio'
-                                              ? Colors.blue
-                                              : Colors.white,
-                          fontSize: 14),
-                    ),
-                    const Divider(
-                      color: Colors.grey,
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        IconButton(
-                          color: Colors.grey,
-                          icon: const Icon(Icons.update_rounded),
-                          onPressed: () {
-                            //
-                            onSelected(
-                                snapshot, posicion, context, Constantes.Update);
-                          },
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        IconButton(
-                          color: Colors.grey,
-                          icon: const Icon(Icons.delete),
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return alertDialog(
-                                    'Eliminar registro',
-                                    '¿Esta seguro de querer eliminar el registro?',
-                                    () {
-                                      closeDialog(context);
-                                    },
-                                    () {
-                                      deleteRegister(
-                                          snapshot, posicion, context);
-                                    },
-                                  );
-                                });
-                          },
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -1203,23 +1337,63 @@ class _GestionActivosState extends State<GestionActivos> {
 
   void onSelected(AsyncSnapshot<dynamic> snapshot, int posicion,
       BuildContext context, String operaciones) {
+    // **************************************************************
     Activos.Activo = snapshot.data[posicion];
-    // Activos.selectedDiagnosis = Activos.activos['Concepto_Recurso'];
     Financieros.Activos = snapshot.data;
+    // **************************************************************
+    Activos.ID_Financieros = snapshot.data[posicion]['ID_Registro'];
+    // **************************************************************
+    Operadores.loadingActivity(
+        context: context,
+        tittle: "Consultando Información",
+        message:
+            "Consultando información del Registro #${Activos.ID_Financieros} . . . ");
+// **************************************************************
+    Activos.getImage().then((value) {
+      Activos.imagenActivo = value['Fine_IMG'];
+      // **************************************************************
+      Terminal.printSuccess(message: "Imagen :  ${Activos.imagenActivo}");
+      Navigator.pop(context);
+      // **************************************************************
+      toOperaciones(context, operaciones);
+    })
+        // .whenComplete(() => toOperaciones(context, operaciones))
+        .onError((error, stackTrace) {
+      Operadores.notifyActivity(
+          context: context,
+          tittle: "Error - No Se pudo Consultar Imagen",
+          message: "ERROR - $error : $stackTrace",
+          onAcept: () {
+            toOperaciones(context, operaciones);
+          },
+          onClose: () {
+            Navigator.pop(context);
+          });
+
+      Terminal.printAlert(message: "ERROR - $error : $stackTrace");
+    });
     //
-    toOperaciones(context, operaciones);
   }
 
   void closeDialog(BuildContext context) {
     Navigator.of(context).pop();
   }
 
-  // ACTIVIDADES DE BÚSQUEDA ************ ************ ***** * ** *
-  Future<Null> _pullListRefresh() async {
-    reiniciar(withStats: true);
+  // ACTIVIDADES DE BÚSQUEDA ************ ********** ***** * ** *
+  Future<Null> _pullListRefresh({bool reload = false}) async {
+    if (reload) {
+      Operadores.loadingActivity(
+          context: context,
+          tittle: "Registrado Información",
+          message: "Registrando información . . . ");
+      reiniciar(withStats: true);
+    } else {
+      iniciar();
+    }
   }
 
-  void _runFilterSearch(String enteredKeyword) {
+  void _runFilterSearch(
+      {required String enteredKeyword, String keySearched = 'Tipo_Recurso'}) {
     List? results = [];
 
     if (enteredKeyword.isEmpty) {
@@ -1227,8 +1401,8 @@ class _GestionActivosState extends State<GestionActivos> {
     } else {
       results = Listas.listFromMap(
           lista: foundedItems!,
-          keySearched: 'Descripcion',
-          elementSearched: Sentences.capitalize(enteredKeyword));
+          keySearched: keySearched,
+          elementSearched: enteredKeyword);
 
       setState(() {
         foundedItems = results;
@@ -1265,4 +1439,13 @@ class _GestionActivosState extends State<GestionActivos> {
       }
     });
   }
+
+  // VARIABLES ************************************************
+  String appTittle = "Gestion de Activos del Usuario";
+  String searchCriteria = "Buscar por Fecha";
+  String? consultQuery = Activos.activos['consultIdQuery'];
+
+  late List? foundedItems = [];
+  var gestionScrollController = ScrollController();
+  var searchTextController = TextEditingController();
 }

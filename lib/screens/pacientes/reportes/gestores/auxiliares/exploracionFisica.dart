@@ -47,42 +47,7 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
           child: Column(
         children: [
           widget.isTerapia!
-              ? Row(
-                children: [
-                  Expanded(
-                      flex: 1,
-                      child: GrandButton(
-                        labelButton: "Valores",
-                        onPress: () {
-                          if (!isMobile(context)) {
-                            Operadores.openDialog(
-                                context: context,
-                                chyldrim: const TerapiasItems(),
-                                onAction: () {
-                                  setState(() {
-                                    expoTextController.text =
-                                        Reportes.exploracionFisica;
-                                    Reportes.reportes['Exploracion_Fisica'] =
-                                        Reportes.exploracionFisica;
-                                  });
-                                });
-                          } else {
-                            setState(() {
-                              expoTextController.text =
-                                  Reportes.exploracionFisica;
-                              Reportes.reportes['Exploracion_Fisica'] =
-                                  Reportes.exploracionFisica;
-                            });
-                          }
-                        },
-                      ),
-                    ),
-                  Expanded(child: GrandIcon(labelButton: 'Ver', iconData: Icons.view_in_ar, onPress: () {
-                    Operadores.notifyActivity(context: context, tittle: "Análisis de Terapia . . . ",
-                        message: expoTextController.text);
-                  },))
-                ],
-              )
+              ? Container()
               : Expanded(
                   flex: 2,
                   child: Row(
@@ -164,7 +129,7 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  flex: 3,
+                  flex: 7,
                   child: EditTextArea(
                       textController: expoTextController,
                       labelEditText: "Exploración física",
@@ -181,7 +146,73 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                       inputFormat: MaskTextInputFormatter()),
                 ),
                 widget.isTerapia!
-                    ? Container()
+                    ? Expanded(
+                      child: Column(
+                  children: [
+                      Expanded(
+                        flex: 1,
+                        child: GrandButton(
+                          labelButton: "Valores",
+                          onPress: () {
+                            if (!isMobile(context)) {
+                              Operadores.openDialog(
+                                  context: context,
+                                  chyldrim: TerapiasItems(),
+                                  onAction: () {
+                                    setState(() {
+                                      expoTextController.text =
+                                          Reportes.exploracionFisica;
+                                      Reportes.reportes['Exploracion_Fisica'] =
+                                          Reportes.exploracionFisica;
+                                    });
+                                  });
+                            } else {
+                              setState(() {
+                                expoTextController.text =
+                                    Reportes.exploracionFisica;
+                                Reportes.reportes['Exploracion_Fisica'] =
+                                    Reportes.exploracionFisica;
+                              });
+                            }
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: GrandButton(
+                          labelButton: "Analisis Corto",
+                          onPress: () {
+                            if (!isMobile(context)) {
+                              Operadores.openDialog(
+                                  context: context,
+                                  chyldrim: TerapiasItems(esCorto: true,),
+                                  onAction: () {
+                                    setState(() {
+                                      expoTextController.text =
+                                          Reportes.exploracionFisica;
+                                      Reportes.reportes['Exploracion_Fisica'] =
+                                          Reportes.exploracionFisica;
+                                    });
+                                  });
+                            } else {
+                              setState(() {
+                                expoTextController.text =
+                                    Reportes.exploracionFisica;
+                                Reportes.reportes['Exploracion_Fisica'] =
+                                    Reportes.exploracionFisica;
+                              });
+                            }
+                          },
+                        ),
+                      ),
+                      CrossLine(),
+                      Expanded(child: GrandIcon(labelButton: 'Ver', iconData: Icons.view_in_ar, onPress: () {
+                        Operadores.notifyActivity(context: context, tittle: "Análisis de Terapia . . . ",
+                            message: expoTextController.text);
+                      },))
+                  ],
+                ),
+                    )
                     : Expanded(
                         flex: 1,
                         child: SingleChildScrollView(
@@ -224,7 +255,7 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                                 onPress: () {
                                   Operadores.openDialog(
                                       context: context,
-                                      chyldrim: const TerapiasItems(),
+                                      chyldrim: TerapiasItems(),
                                       onAction: () {
                                         setState(() {
                                           expoTextController.text =

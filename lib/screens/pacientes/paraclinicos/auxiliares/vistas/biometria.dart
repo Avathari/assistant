@@ -306,7 +306,7 @@ class _BiometriasState extends State<Biometrias> {
 
   var textLeucocitosResultController = TextEditingController();
   String? unidadMedidaLeucocitos =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
+      Auxiliares.Medidas[Auxiliares.Categorias[index]][6];
   var textNeutrofilosResultController = TextEditingController();
   String? unidadMedidaNeutrofilos =
       Auxiliares.Medidas[Auxiliares.Categorias[index]][6];

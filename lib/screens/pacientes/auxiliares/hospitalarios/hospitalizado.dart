@@ -86,14 +86,15 @@ class _HospitalizadoState extends State<Hospitalizado> {
                       iconData: Icons.medication_sharp,
                       labelButton: 'Situación de la Hospitalización',
                       onPress: () {
-                        Operadores.openActivity(
-                            context: context,
-                            chyldrim: const SituacionesHospitalizacion(),
-                            onAction: () {
-                              setState(() {
-                                Situaciones.actualizarRegistro();
-                              });
-                            });
+                        Cambios.toNextActivity(context, chyld: const SituacionesHospitalizacion());
+                        // Operadores.openActivity(
+                        //     context: context,
+                        //     chyldrim: const SituacionesHospitalizacion(),
+                        //     onAction: () {
+                        //       setState(() {
+                        //         Situaciones.actualizarRegistro();
+                        //       });
+                        //     });
                       }),
                   GrandIcon(
                       iconData: Icons.restore_page_outlined,
@@ -181,14 +182,7 @@ class _HospitalizadoState extends State<Hospitalizado> {
                   iconData: Icons.medication_sharp,
                   labelButton: 'Situación de la Hospitalización',
                   onPress: () {
-                    Operadores.openActivity(
-                        context: context,
-                        chyldrim: const SituacionesHospitalizacion(),
-                        onAction: () {
-                          setState(() {
-                            Situaciones.actualizarRegistro();
-                          });
-                        });
+                    Cambios.toNextActivity(context, chyld: const SituacionesHospitalizacion());
                   }),
               GrandIcon(
                   iconData: Icons.restore_page_outlined,
@@ -297,14 +291,8 @@ class _HospitalizadoState extends State<Hospitalizado> {
                             iconData: Icons.medication_sharp,
                             labelButton: 'Situación de la Hospitalización',
                             onPress: () {
-                              Operadores.openActivity(
-                                  context: context,
-                                  chyldrim: const SituacionesHospitalizacion(),
-                                  onAction: () {
-                                    setState(() {
-                                      Situaciones.actualizarRegistro();
-                                    });
-                                  });
+                              Cambios.toNextActivity(context, chyld: const SituacionesHospitalizacion());
+
                             }),
                         GrandIcon(
                             iconData: Icons.restore_page_outlined,
@@ -405,13 +393,8 @@ class _HospitalizadoState extends State<Hospitalizado> {
                             iconData: Icons.medication_sharp,
                             labelButton: 'Situación de la Hospitalización',
                             onPress: () {
-                              Operadores.openActivity(
-                                  context: context,
-                                  chyldrim: const SituacionesHospitalizacion(),
-                                  labelButton: 'Actualizar',
-                                  onAction: () {
-                                    Situaciones.actualizarRegistro();
-                                  });
+                              Cambios.toNextActivity(context, chyld: const SituacionesHospitalizacion());
+
                             }),
                       ),
                       Expanded(

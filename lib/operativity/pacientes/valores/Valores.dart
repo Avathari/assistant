@@ -10,6 +10,7 @@ class Valores {
   bool loading = false;
   Map<String, dynamic> valores = {};
   static double? prueba;
+
 // ******* **** ****** ** * * * * * ** ***** **** *
   Future<bool> load() async {
     // Otras configuraciones
@@ -380,6 +381,11 @@ class Valores {
     presionPlateau = json['Pace_Pmet'] ?? 0;
     volumenTidal = toDoubleFromInt(json: json, keyEntered: 'Pace_Vt');
 
+    tuboEndotraqueal = json['Pace_TET'] ?? '';
+    haciaArcadaDentaria = json['Pace_DAC'] ?? '';
+
+    // Balances Hídricos ******************************************** * *** *
+    tipoSondaVesical = json['Pace_Foley'] ?? '';
     // Datos generales de la última Hospitalización. **** ** *********** ****** * *** *
     Pacientes.ID_Hospitalizacion = json['ID_Hosp'] ?? 0;
     Hospitalizaciones.Hospitalizacion['ID_Hosp'] = Pacientes.ID_Hospitalizacion;
@@ -437,6 +443,7 @@ class Valores {
       diagnosticoLicencia = "";
 
   static String fileAssocieted = "${Pacientes.localRepositoryPath}valores.json";
+
   //
   static int get edadDesdeNacimiento {
     if (fechaNacimiento != '' && fechaNacimiento != null) {
@@ -644,10 +651,12 @@ class Valores {
       motivoEgreso,
       fechaPadecimientoActual,
       padecimientoActual;
+
   //
   static String motivoCirugia = "",
       tipoCirugia = "",
       tipoInterrogatorio = 'Directo';
+
   //
   static String motivoTransfusion = "",
       hemotipoAdmnistrado = "",
@@ -660,6 +669,7 @@ class Valores {
       estadoFinalTransfusion =
           "Se realiza seguimiento y control a la paciente durante la transfusión. Termina procedimiento sin complicaciones ni evidencia de reacciones adversas asociadas a la transfusión de hemoderivados. ",
       reaccionesPresentadas = "Ninguna manifestada durante la transfusión. ";
+
   //
   static String? fechaVitales;
   static int? tensionArterialSystolica,
@@ -689,13 +699,16 @@ class Valores {
       alturaPaciente,
       factorActividad,
       factorEstres;
+
   //
   static double? presionArteriaPulmonarSistolica,
       presionArteriaPulmonarDiastolica,
       presionMediaArteriaPulmonar,
       presionCunaPulmonar;
+
   //
   static String? fechaRealizacionBalances = "";
+
   // static double diuresis = 0;
   static double? viaOralBalances = 0,
       sondaOrogastricaBalances = 0,
@@ -712,6 +725,7 @@ class Valores {
       otrosEgresosBalances = 0;
   static double? uresis = 0;
   static int? horario = 24;
+
   //
   static String? fechaBiometria;
   static double? eritrocitos,
@@ -725,9 +739,11 @@ class Valores {
       linfocitosTotales,
       neutrofilosTotales,
       monocitosTotales;
+
   //
   static String? fechaQuimicas;
   static double? glucosa, urea, creatinina, acidoUrico, nitrogenoUreico;
+
   //
   static String? fechaHepaticos;
   static double? alaninoaminotrasferasa,
@@ -740,6 +756,7 @@ class Valores {
       fosfatasaAlcalina,
       albuminaSerica,
       proteinasTotales;
+
   //
   static String? fechaGasometriaVenosa, fechaGasometriaArterial;
   static double? pHArteriales,
@@ -756,9 +773,11 @@ class Valores {
       excesoBaseVenosos,
       fioVenosos,
       soVenosos;
+
   //
   static String? fechaElectrolitos;
   static double? sodio, potasio, cloro, fosforo, calcio, magnesio;
+
   //
   static String? fechaReactantes;
   static double? procalcitonina,
@@ -767,6 +786,7 @@ class Valores {
       proteinaCreactiva,
       factorReumatoide,
       anticuerpoCitrulinado;
+
   //
   static String? ritmoCardiaco = '',
       segmentoST = '',
@@ -793,6 +813,7 @@ class Valores {
       sDI,
       rDIII,
       sDIII;
+
   //
   // Parámetros Ventilatorios
   static String? fechaVentilaciones = '', modalidadVentilatoria = '';
@@ -816,6 +837,7 @@ class Valores {
       uresisCantidad = Items.uresisCantidad[0],
       excretasCantidad = Items.excretasCantidad[0],
       referenciasHospitalizacion = "Sin referencias por parte del paciente";
+
   // Variables Estaticas
   static int? constanteRequerimientos = 30;
   static int porcentajeCarbohidratos = 50;
@@ -825,6 +847,7 @@ class Valores {
   static int presionVaporAgua = 47; // mmHg
   static int presionGasSeco = 536; // mmHg
   static double pi = 3.14159265;
+
   // Variables de Procedimientos
   static String? motivoProcedimiento;
   static String? sitiosCateterCentral,
@@ -835,8 +858,10 @@ class Valores {
   static String? complicacionesProcedimiento,
       pendientesProcedimiento,
       anestesiaEmpleada;
+
   // Variables de Valoraciones
   static String? valoracionAsa, valoracionBromage, valoracionNyha;
+
   // Variables de la situación hospitalaria
   static String? dispositivoOxigeno = Items.dispositivosOxigeno[0],
       dispositivoEmpleado = Items.dispositivosOxigeno[0],
@@ -846,7 +871,7 @@ class Valores {
       ashworth = Escalas.ashworth[0],
       daniels = Escalas.daniels[0],
       mrc = Escalas.MRC[0],
-      faseVentilatoria = Items.ventilatorio[0],
+      faseVentilatoria = Items.ventilatorio[3],
       siedel = Escalas.siedel[0],
       tuboEndotraqueal = Items.tuboendotraqueal[0],
       haciaArcadaDentaria = Items.arcadaDentaria[0],
@@ -871,6 +896,7 @@ class Valores {
       isColostomia = false,
       isGastrostomia = false,
       isDialisisPeritoneal = false;
+
   // Variables del Ordenamiento del Expediente Clínico
   static bool? isPortada = false,
       isHistoriaClinica = false,
@@ -879,6 +905,7 @@ class Valores {
       isValoracionVademecum = false,
       isConsentimientos = false,
       isOrdenado = false;
+
   //
   static String? antecedenteInfarto = Dicotomicos.dicotomicos()[1];
   static String? ritmoSinusal = Dicotomicos.dicotomicos()[0];
@@ -897,6 +924,7 @@ class Valores {
   static String? hemoglobinaInferior = Dicotomicos.dicotomicos()[1];
   static String? incisionTipo = Escalas.incisionTipo[0];
   static String? duracionCirugiaHoras = Escalas.duracionCirugiaHoras[0];
+
   //
 
   Valores();
@@ -914,6 +942,7 @@ class Valores {
 
   static String get tensionArterialSistemica =>
       '${Valores.tensionArterialSystolica}/${Valores.tensionArterialDyastolica}';
+
   static double get imc =>
       pesoCorporalTotal! / (alturaPaciente! * alturaPaciente!);
 
@@ -990,11 +1019,15 @@ class Valores {
   static double get SOL => (aguaCorporalTotal * osmolaridadSerica);
 
   static double get LIC => aguaCorporalTotal * 0.666;
+
   static double get LEC => aguaCorporalTotal * 0.333;
+
   static double get LI => aguaCorporalTotal * 0.222;
+
   static double get LIV => aguaCorporalTotal * 0.111;
 
   static double get VP => aguaCorporalTotal * 0.074;
+
   static double get VS => aguaCorporalTotal * 0.037;
 
   static double get deficitSodio {
@@ -1023,6 +1056,7 @@ class Valores {
 
   static double get reposicionSodio =>
       ((140 - Valores.sodio!) / (aguaCorporalTotal + 1.0));
+
   static double get VIF =>
       reposicionSodio + ((140 - Valores.sodio!) / (aguaCorporalTotal + 1.0));
 
@@ -1162,6 +1196,7 @@ class Valores {
   }
 
   static double get ureaCreatinina => Valores.urea! / Valores.creatinina!;
+
   static String get uremia {
     if (Valores.ureaCreatinina >= 20) {
       return 'Azoemia Prerrenal';
@@ -1305,6 +1340,7 @@ class Valores {
   }
 
   static double get PCIM => (PCIB + PCIL + PCIW) / 3;
+
   static double get pesoCorporalAjustado =>
       pesoCorporalPredicho +
       ((Valores.pesoCorporalTotal! - pesoCorporalPredicho) * 0.25);
@@ -1314,6 +1350,7 @@ class Valores {
 
   static double get PCB_25 =>
       (Valores.alturaPaciente! * Valores.alturaPaciente!) * 25;
+
   static double get PCB_30 =>
       (Valores.alturaPaciente! * Valores.alturaPaciente!) * 30;
 
@@ -1544,15 +1581,18 @@ class Valores {
   static double get perimetroMesobraquial =>
       (Valores.circunferenciaMesobraquial! -
           (3.1416 * (Valores.pliegueCutaneoTricipital! / 100)));
+
   static double get areaMesobraquial => (math.pow(
           Valores.circunferenciaMesobraquial! -
               (3.1416 * (Valores.pliegueCutaneoTricipital! / 100)),
           2) /
       (4 * 3.1416));
+
   static double get areaAdiposaMesobraquial =>
       (((perimetroMesobraquial * (Valores.pliegueCutaneoTricipital! / 100)) /
               2) -
           ((3.1416 * (Valores.pliegueCutaneoTricipital! / 100)) / 4));
+
   static double get AM =>
       ((3.1416) * math.pow(((perimetroMesobraquial) / (2 * 3.1416)), 2));
 
@@ -1573,7 +1613,9 @@ class Valores {
   }
 
   static double get metabolismoBasal => 37 - ((Valores.edad! - 20) / 10);
+
   static double get efectoTermicoAlimentos => metabolismoBasal * 0.1;
+
   static double get gastoEnergeticoTotal {
     if (Valores.factorActividad! == 0 && Valores.factorEstres! == 0) {
       return gastoEnergeticoBasal +
@@ -1594,8 +1636,10 @@ class Valores {
 
   static double get glucosaPorcentaje =>
       ((gastoEnergeticoTotal / 100) * (porcentajeCarbohidratos));
+
   static double get lipidosPorcentaje =>
       ((gastoEnergeticoTotal / 100) * (porcentajeLipidos));
+
   static double get proteinasPorcentaje =>
       ((gastoEnergeticoTotal / 100) * (porcentajeProteinas));
 
@@ -1603,19 +1647,29 @@ class Valores {
       (gastoEnergeticoTotal * 1.0) / 1000; // 0.5 - 2.25
 
   static double get glucosaGramos => (glucosaPorcentaje / 4.0);
+
   static double get lipidosGramos => (lipidosPorcentaje / 9.0);
+
   static double get proteinasGramos => (proteinasPorcentaje / 4.0);
 
   static double get proteinasAVM => (pesoCorporalPredicho / 1.5);
+
   static double get sodioDietario => (pesoCorporalPredicho / 2.0);
+
   static double get potasioDietario => (pesoCorporalPredicho / 3.0);
+
   static double get cloroDietario => (pesoCorporalPredicho / 5.0);
+
   static double get magnesioDietario => (pesoCorporalPredicho / 3.5);
+
   static double get calcioDietario => (pesoCorporalPredicho / 14.0);
 
   static double get selenioDietario => (pesoCorporalPredicho / 0.7);
+
   static double get hierroDietario => (pesoCorporalPredicho / 0.14);
+
   static double get fosforoDietario => (pesoCorporalPredicho / 11.42);
+
   static double get cromoDietario => (pesoCorporalPredicho / 0.71);
 
   static int get sumaPorcentualMetabolicos =>
@@ -1864,12 +1918,17 @@ class Valores {
   static double get GAP =>
       (Valores.sodio! + Valores.potasio!) -
       (Valores.cloro! + Valores.bicarbonatoArteriales!);
+
   static double get PAFI =>
       (Valores.poArteriales! / (Valores.fioArteriales! / 100));
+
   static double get PAFI_PB => (PAFI * (presionBarometrica / 760));
+
   static double get PAFI_PO2 => (Valores.poArteriales! * (PAFI / 100));
+
   static double get PAFI_FIO =>
       (Valores.poArteriales! / Valores.fioArteriales!) * 100;
+
   static double get SAFI =>
       (Valores.soArteriales! / (Valores.fioArteriales! / 100));
 
@@ -1892,11 +1951,13 @@ class Valores {
       (Valores.bicarbonatoArteriales! -
           24.8 +
           (1.43 * Valores.hemoglobina! + 7.7) * (Valores.pHArteriales! - 7.4)));
+
   static double get EBecf =>
       (24) -
       ((Valores.bicarbonatoArteriales! + 10.00) *
           (Valores.pHArteriales! - 7.4)); //  # Bicarbonato Standard
   static double get d_GAP => (GAP - 14) / (20 - Valores.bicarbonatoArteriales!);
+
   // Trastorno_DGAP = '';
   static String get trastorno_d_GAP {
     if (d_GAP < 1) {
@@ -1909,6 +1970,7 @@ class Valores {
   }
 
   static double get D_d_GAP => d_GAP - Valores.bicarbonatoArteriales!;
+
   static double get GAPO => ((280) / (Valores.osmolaridadSerica));
 
   static double get DIF =>
@@ -1917,8 +1979,10 @@ class Valores {
           Valores.magnesio! +
           Valores.calcio!) -
       (Valores.cloro! + Valores.lactato!);
+
   // # GAPIonesLibres GIF = SID - (2.46 * 108 * Gasometria.Valores.pcoArteriales! / 10)
   static double get EBvGilFix => (Valores.sodio!) - (Valores.cloro!) - 38;
+
   static double get EBb => (0.25 *
       (42.00 - Valores.albuminaSerica!)); //  # Efecto de Buffers Principales
   static double get DA => (Valores.EB - EBb); // # Diferencia Anionica
@@ -1966,10 +2030,12 @@ class Valores {
   // # Trastorno de Origen Respiratorio.
   static double get HCOR_a =>
       (7.40) + (((40 - Valores.pcoArteriales!) * 0.08) / 10);
+
   // # Primera Regla del Bicarbonato: Por cada 10 mmHg que varía la pCO2 mmHg, el pH se incrementa o reduce 0.08 unidades en forma inversamente proporcional
   // # Se suma el HCOR_a al pH Ideal, que es 7.40 si resulta en una discrepancia entonces el Origen del Trastorno no es respiratorio. No cumple la primera regla.
   // # Trastorno de Origen Metabólico (pH Real)
   static double get HCOR_b => (Valores.pHArteriales! + ((EB * 0.15) / 10));
+
   // # Segunda Regla del Bicarbonato: Por cada 0.15 unidades que se modifican el pH, se incrementa o disminuye el exceso o déficit de base en 10 unidades, que pueden expresarse en mEq/L de bicarbonato
   // # Se suma el HCOR_a al pH Ideal, que es 7.40 si resulta en una discrepancia entonces el Origen del Trastorno no es respiratorio. No cumple la primera regla.
   // # Reposición de Bicarbonato
@@ -1980,6 +2046,7 @@ class Valores {
       return (EB * (Valores.pesoCorporalTotal! * 0.3)) * (1);
     }
   }
+
   // # Tercera Regla del Bicarbonato: Corrección de HCO3- en Acidosis Metabólica
 
   // # ######################################################
@@ -2037,18 +2104,24 @@ class Valores {
 
   // # Cociente Respiratorio
   static double get RI => 0.8;
+
   // # ######################################################
   // # Concentración de Hidrigeniones H+
   // # ######################################################
   static double get H =>
       24 * (Valores.pcoArteriales! / Valores.bicarbonatoArteriales!);
+
   static double get PH =>
       6.1 +
       numerics.log10(
           (Valores.bicarbonatoArteriales! / (0.03 * Valores.pcoArteriales!)));
+
   static double get PaO2_estimado => 103.5 - 0.42 * Valores.edad!;
+
   static double get PaO2_estimado_sedestacion => 104.2 - 0.27 * Valores.edad!;
+
   static double get PaO2_estimado_decubito => 109.0 - 0.43 * Valores.edad!;
+
   // static double get PAO => (Valores.fioArteriales! / 100) * (720 - 47) - (Valores.pcoArteriales! / 0.8)
 
   // # Indice de Volumen Sanguineo
@@ -2059,10 +2132,12 @@ class Valores {
           (128 *
               (math.pow(Valores.pesoCorporalTotal!, 2) /
                   math.pow(Valores.alturaPaciente!, 2))));
+
   static double get indiceCardiaco =>
       (Valores.gastoCardiaco / Valores.SC); // # Indice Cardiaco
   static double get IRVS =>
       (Valores.presionArterialMedia / Valores.indiceCardiaco);
+
   static double get RVS => (((Valores.presionArterialMedia - 12.0) * 80.00) /
       Valores.indiceCardiaco); //  # Resistencias Venosas Sistémicas
   // # (((Valores.presionArterialMedia! - 12.0) / IC) * 79.9)
@@ -2087,8 +2162,11 @@ class Valores {
 
   static int get PPI =>
       Valores.presionFinalEsiracion! + Valores.presionSoporte!;
+
   static int get PPE => Valores.presionFinalEsiracion!;
+
   static double get CI => (Valores.pcoArteriales! / DAV);
+
   // (Valores.pcoArteriales! * Valores.frecuenciaVentilatoria!) / 40.00;
 
   // # ######################################################
@@ -2135,6 +2213,7 @@ class Valores {
   }
 
   static double get PIO => (presionGasSeco / Valores.fioArteriales!);
+
   static double get VLS => ((gastoCardiacoFick * 1000) /
       Valores
           .frecuenciaCardiaca!); //  # Volumen Latido Sistólico De Litros a mL
@@ -2260,7 +2339,8 @@ class Valores {
   //
   static double get balanceTotal {
     if (Valores.ingresosBalances != 0 && Valores.egresosBalances != 0) {
-      return (Valores.ingresosBalances - Valores.egresosBalances);
+      return (Valores.ingresosBalances -
+          (Valores.egresosBalances + Valores.perdidasInsensibles));
     } else {
       return 0;
     }
@@ -2281,8 +2361,11 @@ class Valores {
   // # Volumenes Tidales Vt6, Vt7, Vt8
   // # ######################################################
   static double get volumentTidal6 => (Valores.pesoCorporalPredicho * 6);
+
   static double get volumentTidal7 => (Valores.pesoCorporalPredicho * 7);
+
   static double get volumentTidal8 => (Valores.pesoCorporalPredicho * 8);
+
   // # ######################################################
   static double get presionAlveolarOxigeno {
     if (Valores.volumenTidal != 0 &&
@@ -2464,11 +2547,13 @@ class Valores {
   // else:
   // VA = 00.00
   static double dummy = 0;
+
   // Parámetros de Imagenológicos
   static String? fechaEstudioImagenologico;
   static String? regionCorporalImagenologico;
   static String? hallazgosEstudioImagenologico;
   static String? conclusionesImagenologico;
+
   // # ######################################################
   // # Valoraciones del Riesgo Anestésico
   // # ######################################################
@@ -2657,6 +2742,14 @@ class Valores {
     }
   }
 
+  static String get valoracionPorProcedimiento {
+    if (Datos.isNullValue(value: Valores.edad)) {
+      return '';
+    } else {
+      return '';
+    }
+  }
+
   static String movilidadCervical = Escalas.movilidadCervical[0];
   static String distanciaTiromentoniana = Escalas.distanciaTiromentoniana[0];
   static String distanciaEsternomentoniana =
@@ -2669,54 +2762,36 @@ class Valores {
 }
 
 class Valorados {
-  static String get cardiovasculares => "Análisis cardiovascular";
-
-  // "Parámetros Cardiovasculares - Presión Arterial Media: " + str(
-  // "%.2f" % Cardiovascular.get('Tension_Media_Arterial')) + " mmHg. " \
-  // + "(" + Cardiovascular.get('Clase_Tension_Media') + "); " \
-  // + "Diferencia de Presión Arterial: " + str(
-  // "%.2f" % Cardiovascular.get('Diferencia_Presion_Arterial')) + " mmHg. " \
-  // + "Presión de Pulso: " + str("%.2f" % Cardiovascular.get('Presion_Pulso')) + " mmHg. " \
-  // + "Producto Frecuencia - Presión: " + str(
-  // "%.2f" % Cardiovascular.get('Producto_Frecuencia_Presion')) + " mmHg/Lpm. " \
-  // + "Presión Coloido - Oncótica: " + str("%.2f" % Cardiovascular.get('Presion_Coloido_Oncotica')) + " mmHg. " \
-  // + "Frecuencia Cárdiaca Máxima: " + str(
-  // "%.2f" % Cardiovascular.get('Frecuencia_Cardiaca_Maxima')) + " L/min. " \
-  // + "Frecuencia Cárdiaca Blanco: " + str(
-  // "%.2f" % Cardiovascular.get('Frecuencia_Cardiaca_Blanco')) + " L/min. " \
-  // + "Frecuencia Cárdiaca Intrínseca: " + str(
-  // "%.2f" % Cardiovascular.get('Frecuencia_Cardiaca_Intrinseca')) + " L/min. " \
-  // + "Volemia Aproximada: " + str("%.2f" % Cardiovascular.get('Volemia_Aproximada')) + " mL,  " \
-  // + "Volumen Plasmático Aproximado: " + str(
-  // "%.2f" % Cardiovascular.get('Volumen_Plasmatico_Aproximado')) + " L,  " \
-  // + "Gasto Cárdiaco Aproximado: " + str("%.2f" % Cardiovascular.get('Gasto_Cardiaco_Aproximado')) + " L/min. " \
-  // + "Volumen Látido Aproximado: " + str(
-  // "%.2f" % Cardiovascular.get('Volumen_Latido_Aproximado')) + " mL/min. " + "\n" \
-  // + "Parámetros Hemodinámicos - Concentración Arterial de Oxígeno (CaO2): " + str(
-  // "%.2f" % Cardiovascular.get('Concentracion_Arterial_Oxigeno')) + " mL/dL, " \
-  // + "Concentración Venosa de Oxígeno (CvO2): " + str(
-  // "%.2f" % Cardiovascular.get('Concentracion_Venosa_Oxigeno')) + " mL/dL, " \
-  // + "Diferencia Arterio - Venosa (DavO2): " + str(
-  // "%.2f" % Cardiovascular.get('Diferencia_Arterio_Venosa')) + " mL/dL. " \
-  // + "Capacidad de Oxígeno (CapO2): " + str("%.2f" % Cardiovascular.get('Capacidad_Oxigeno')) + " mL O2/g Hb. " \
-  // + "Indice Cárdicado (I.C.): " + str("%.2f" % Cardiovascular.get('Indice_Cardiaco')) + " L/min/m2, " \
-  // + "Resistencias Venosas Sistémicas (R.V.S.): " + str(
-  // "%.2f" % Cardiovascular.get('Resistencias_Venosas_Sistemicas')) + " Dinas/seg/cm2. " \
-  // + "Indice de Extracción de Oxígeno (I.E.O.): " + str(
-  // "%.2f" % Cardiovascular.get('Indice_Extraccion_Oxigeno')) + " %, " \
-  // + "Disponibilidad de Oxígeno (dO2): " + str(
-  // "%.2f" % Cardiovascular.get('Disponibilidad_Oxigeno')) + " mL/min,  " \
-  // + "Consumo de Oxígeno (cO2): " + str("%.2f" % Cardiovascular.get('Consumo_Oxigeno')) + " mL/min/m2, " \
-  // + "Transporte de Oxígeno (TO2): " + str("%.2f" % Cardiovascular.get('Transporte_Oxigeno')) + " mL/O2/m2. " \
-  // + "Shunt Fisiológico (QS/QT): " + str("%.2f" % Cardiovascular.get('Shunt_Fisiologico')) + " %. " \
-  // + "Gradiente Alveolo - Arterial (G(A-a)): " + str(
-  // "%.2f" % Cardiovascular.get('Gradiente_Alveolo_Arterial')) + " mmHg. " + "\n" \
-  // + "Trabajo Cardiaco - Trabajo Cardiaco: " + str("%.2f" % Cardiovascular.get('Trabajo_Cardiaco')) + " Kg*m. " \
-  // + "Trabajo Látido Ventricular Izquierdo: " + str(
-  // "%.2f" % Cardiovascular.get('Trabajo_Latido_Ventricular_Izquierdo')) + " g*m. " \
-  // + "Trabajo Látido Ventricular Derecho: " + str(
-  // "%.2f" % Cardiovascular.get('Trabajo_Latido_Ventricular_Derecho')) + " g*m. " \
-  // + "" + "\n"
+  static String get cardiovasculares =>
+      "Parámetros Cardiovasculares - Presión Arterial Media: ${Valores.presionArterialMedia} mmHg. "
+      // "(${Valores.clase})
+      "Diferencia de Presión Arterial ${Valores.diferenciaTensionArterial} mmHg. "
+      "Presión de Pulso: ${Valores.presionPulso} mmHg. "
+      "Producto Frecuencia - Presión: ${Valores.productoFrecuenciaPresion} mmHg/Lpm. "
+      "Presión Coloido - Oncótica: ${Valores.presionColoidoOsmotica}  mmHg. "
+      "Frecuencia Cárdiaca Máxima: ${Valores.frecuenciaCardiacaMaxima} L/min. "
+      "Frecuencia Cárdiaca Blanco: ${Valores.frecuenciaCardiacaBlanco} L/min. "
+      "Frecuencia Cárdiaca Intrínseca: ${Valores.frecuenciaCardiacaIntrinseca} L/min. "
+      "Volemia Aproximada: ${Valores.volemiaAproximada} mL,  "
+      "Volumen Plasmático Aproximado: ${Valores.volumenPlasmatico} L,  "
+      "Gasto Cárdiaco Aproximado: ${Valores.gastoCardiacoFick} L/min. "
+      "Volumen Látido Aproximado: ${Valores.indiceVolumenSanguineo} mL/min. \n"
+      "Parámetros Hemodinámicos - "
+      "Concentración Arterial de Oxígeno (CaO2): ${Valores.CAO}  mL/dL, "
+      "Concentración Venosa de Oxígeno (CvO2): ${Valores.CVO}  mL/dL, "
+      "Diferencia Arterio - Venosa (DavO2): ${Valores.DAV}  mL/dL, "
+      "Capacidad de Oxígeno (CapO2): ${Valores.CO}  mL O2/g Hb. "
+      "Indice Cárdicado (I.C.): ${Valores.indiceCardiaco} L/min/m2, "
+      "Resistencias Venosas Sistémicas (R.V.S.): ${Valores.RVS} Dinas/seg/cm2. "
+      "Indice de Extracción de Oxígeno (I.E.O.): ${Valores.IEO} %, "
+      "Disponibilidad de Oxígeno (dO2): ${Valores.DO} mL/min,  "
+      "Consumo de Oxígeno (cO2): ${Valores.CAO} mL/min/m2, "
+      "Transporte de Oxígeno (TO2): ${Valores.TO} mL/O2/m2. "
+      "Shunt Fisiológico (QS/QT): ${Valores.SF} %. "
+      "Gradiente Alveolo - Arterial (G(A-a)): ${Valores.GAA} mmHg. \n"
+      "Trabajo Cardiaco - Trabajo Cardiaco: ${Valores.TC} Kg*m. "
+      "Trabajo Látido Ventricular Izquierdo: ${Valores.TLVI} g*m. "
+      "Trabajo Látido Ventricular Derecho: ${Valores.TLVD} g*m. \n";
 
   static String get vitales =>
       "Signos vitales con " // fecha de ${Pacientes.Vital['Pace_Feca_SV']} con "
@@ -3438,6 +3513,73 @@ class Formatos {
       "cloro: ${Valores.cloro!.toStringAsFixed(0)} mmol/L. \n"
       "${Valorados.hidricos}";
 
+  static String get exploracionTerapiaCorta => ""
+      "${Valorados.vitalesAbreviado}\n"
+      "Durante la Exploración Física, siendo evaluado por Aparatos y Sistemas, es encontrado: \n"
+      "          "
+      "En sedoanalgesia con ${Valores.sedoanalgesia}, "
+      "R.A.S.S. ${Valores.rass}, "
+      "Ramsay ${Valores.ramsay}, sin focalización neurológica. \n"
+      "          "
+      "Apoyo ventilatorio "
+      "mediante ${Valores.tuboEndotraqueal} ${Valores.haciaArcadaDentaria!.toLowerCase()}. "
+      "${Formatos.ventiladorCorto}. "
+      // **************** ************ ********
+      "Última gasometría (${Valores.fechaGasometriaArterial}): "
+      "PCO2 ${Valores.pcoArteriales!.toStringAsFixed(0)} mmHg, "
+      "PO2 ${Valores.poArteriales!.toStringAsFixed(0)} mmHg, "
+      "SO2 ${Valores.soArteriales!.toStringAsFixed(0)} %, "
+      "PaO2/FiO2: ${Valores.PAFI.toStringAsFixed(0)} mmHg. "
+      "Aa-O2 ${Valores.GAA.toStringAsFixed(0)} mmHg. "
+      "Murmullo vesicular audible, sin estertores ni sibilancias. "
+      "\n"
+      "          "
+      "T/A ${Valores.tensionArterialSistemica} mmHg, "
+      "(TAM ${Valores.presionArterialMedia.toStringAsFixed(0)} mmHg), "
+      "${Valores.apoyoAminergico!.toLowerCase()}; "
+      "FC ${Valores.frecuenciaCardiaca!.toStringAsFixed(0)} L/min, "
+      "telemetría a  ritmo sinusal; precordio rítmico, "
+      "llenado capilar 2 segundos, pulsos homócrotos presentes. \n"
+      "          "
+      "Temperatura corporal ${Valores.temperaturCorporal!.toStringAsFixed(1)} °C, con "
+      "${Valores.antibioticoterapia!.toLowerCase()}; última biometría hemática (${Valores.fechaBiometria}): "
+      "Hb ${Valores.hemoglobina} g/dL, "
+      "Hto ${Valores.hematocrito}%, "
+      "Leu ${Valores.leucocitosTotales} K/uL, "
+      "Neu ${(Valores.neutrofilosTotales! / Valores.leucocitosTotales!).toStringAsFixed(2)} K/uL, "
+      "Lyn ${(Valores.linfocitosTotales! / Valores.leucocitosTotales!).toStringAsFixed(2)} K/uL, "
+      "reactantes de fase aguda con "
+      "PCR ${Valores.proteinaCreactiva} mg/dL, "
+      "Procalcitonina ${Valores.procalcitonina} ng/mL. "
+      "No presenta sangrado, sin requerimiento transfusional. \n"
+      "          "
+      "${Valores.tipoSondaAlimentacion}; ${Valores.alimentacion!.toLowerCase()}. "
+      "PCT ${Valores.pesoCorporalTotal!.toStringAsFixed(1)} Kg, "
+      "estatura ${Valores.alturaPaciente} mts, I.M.C ${Valores.imc.toStringAsFixed(0)} Kg/m2, y "
+      "P. Predicho ${Valores.pesoCorporalPredicho.toStringAsFixed(1)} Kg. "
+      "Glucometría ${Valores.glucemiaCapilar} mg/dL, "
+      "glucosa sérica ${Valores.glucosa!.toStringAsFixed(0)} mg/dL, "
+      "albúmina ${Valores.albuminaSerica!.toStringAsFixed(1)} g/dL. "
+      "Abdomen blando, normoperistalsis, depresible, sin irritación peritoneal. \n"
+      "          "
+      "Genitourinario ${Valores.tipoSondaVesical!.toLowerCase()}; "
+      "balance hídrico: "
+      "ingresos ${Valores.ingresosBalances} mL, "
+      "egresos ${Valores.egresosBalances} mL "
+      "(${Valores.balanceTotal} mL/${Valores.horario} Horas), "
+      "P.I. ${Valores.perdidasInsensibles} mL, "
+      "uresis ${Valores.uresis!.toStringAsFixed(0)} mL "
+      "(${Valores.diuresis.toStringAsFixed(2)} mL/${Valores.horario} Horas). "
+      "Creatinina ${Valores.creatinina!.toStringAsFixed(1)} mg/dL, "
+      "urea ${Valores.urea!.toStringAsFixed(1)} mg/dL; "
+      "pH ${Valores.pHArteriales}, "
+      "HCO3- ${Valores.bicarbonatoArteriales!.toStringAsFixed(1)} mmol/L, "
+      "E.B. ${Valores.EB.toStringAsFixed(1)} mmol/L. " // excesoBaseArteriales
+      "Na2+ ${Valores.sodio!.toStringAsFixed(0)} mmol/L, "
+      "K+ ${Valores.potasio!.toStringAsFixed(1)} mmol/L, "
+      "Cl-: ${Valores.cloro!.toStringAsFixed(0)} mmol/L. \n"
+      "${Auxiliares.getUltimo(esAbreviado: true)}";
+
   static String get modoVentilatorio {
     var MOD = ' ';
     if (Valores.modalidadVentilatoria ==
@@ -3511,6 +3653,54 @@ class Formatos {
     }
   }
 
+  static String get ventiladorCorto {
+    if (Formatos.modoVentilatorio == 'ESPON') {
+      return "Ventilación en ${Formatos.modoVentilatorio}, "
+          "F. Resp. ${Valores.frecuenciaVentilatoria} Vent/min, "
+          "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
+          "PEEP ${Valores.presionFinalEsiracion} mmHg, "
+          "Psopp ${Valores.presionControl} mmHg. "
+          "${Formatos.ventilatorios}";
+    } else if (Formatos.modoVentilatorio == 'CPAP/PS') {
+      return "Ventilación en ${Formatos.modoVentilatorio}, "
+          "F. Resp. ${Valores.frecuenciaVentilatoria} Vent/min, "
+          "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
+          "PEEP ${Valores.presionFinalEsiracion} mmHg, "
+          "Psopp ${Valores.presionControl} mmHg. "
+          "${Formatos.ventilatorios}";
+    } else if (Formatos.modoVentilatorio == 'AC-VCV') {
+      return "Ventilación en ${Formatos.modoVentilatorio} con "
+          "F. Resp. ${Valores.frecuenciaVentilatoria} Vent/min, "
+          "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
+          "PEEP ${Valores.presionFinalEsiracion} mmHg, "
+          "Vt ${Valores.volumenTidal} mmHg. "
+          "${Formatos.ventilatorios}";
+    } else if (Formatos.modoVentilatorio == 'AC-VCP') {
+      return "Ventilación en ${Formatos.modoVentilatorio} con "
+          "F. Resp ${Valores.frecuenciaVentilatoria} Vent/min, "
+          "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
+          "PEEP ${Valores.presionFinalEsiracion} mmHg, "
+          "P. control ${Valores.presionControl} mmHg. "
+          "${Formatos.ventilatorios}";
+    } else if (Formatos.modoVentilatorio == 'SIMV/VCV') {
+      return "Ventilación en ${Formatos.modoVentilatorio} con "
+          "F. Resp ${Valores.frecuenciaVentilatoria} Vent/min, "
+          "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
+          "PEEP ${Valores.presionFinalEsiracion} mmHg, "
+          "Vt ${Valores.volumenTidal} mmHg. "
+          "${Formatos.ventilatorios}";
+    } else if (Formatos.modoVentilatorio == 'SIMV/VCP') {
+      return "Ventilación en ${Formatos.modoVentilatorio} con "
+          "F. Resp ${Valores.frecuenciaVentilatoria} Vent/min, "
+          "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
+          "PEEP ${Valores.presionFinalEsiracion} mmHg, "
+          "P. control ${Valores.presionControl} mmHg. "
+          "${Formatos.ventilatorios}";
+    } else {
+      return '';
+    }
+  }
+
   static String get ventilatorios {
     Terminal.printExpected(
         message:
@@ -3521,15 +3711,15 @@ class Formatos {
     if (Formatos.modoVentilatorio == 'ESPON') {
       PS = "Psopp ${Valores.presionSoporte} cmH2O, "
           "P. pulmonar insp. ${Valores.presionInspiratoriaPico} cmH2O, "
-          "P. pulmonar esp. ${Valores.presionFinalEsiracion} cmH2O, ";
+          "P. pulmonar esp. ${Valores.presionFinalEsiracion} cmH2O";
     } else if (Formatos.modoVentilatorio == 'CPAP/PS') {
       PS = "Psopp ${Valores.presionSoporte} cmH2O, "
           "P. pulmonar insp. ${Valores.presionInspiratoriaPico} cmH2O, "
-          "P. pulmonar esp. ${Valores.presionFinalEsiracion} cmH2O, ";
+          "P. pulmonar esp. ${Valores.presionFinalEsiracion} cmH2O";
     } else if (Formatos.modoVentilatorio == 'AC-VCV') {
       PS = "VM ${Valores.volumenMinuto.toStringAsFixed(1)} L/min, "
           "Flujo ${Valores.flujoVentilatorioMedido.toStringAsFixed(2)} L/min, "
-          "VTI ${Valores.volumenTidal} mL, ";
+          "VTI ${Valores.volumenTidal} mL";
     } else if (Formatos.modoVentilatorio == 'AC-VCP') {
       PS = "Pinsp ${Valores.presionControl} cmH2O, "
           "PIP ${Valores.presionMaxima} cmH2O, "
@@ -3543,12 +3733,12 @@ class Formatos {
           "Elast ${Valores.elastanciaPulmonar.toStringAsFixed(2)} cmH2O/mL, "
           "D. Pressure ${Valores.presionDistencion.toStringAsFixed(0)} mmHg, "
           "VM ${Valores.volumenMinuto.toStringAsFixed(1)} L/min, "
-          "Flujo ${Valores.flujoVentilatorioMedido.toStringAsFixed(2)} L/min, ";
+          "Flujo ${Valores.flujoVentilatorioMedido.toStringAsFixed(2)} L/min";
     } else if (Formatos.modoVentilatorio == 'SIMV/VCV') {
       PS = "Psopp ${Valores.presionSoporte} cmH2O, "
           "VM ${Valores.volumenMinuto.toStringAsFixed(1)} L/min, "
           "Flujo ${Valores.flujoVentilatorioMedido.toStringAsFixed(2)} L/min, "
-          "VTI ${Valores.volumenTidal} mL, ";
+          "VTI ${Valores.volumenTidal} mL";
     } else if (Formatos.modoVentilatorio == 'SIMV/VCP') {
       PS = "Psopp ${Valores.presionSoporte} cmH2O, "
           "Pinsp ${Valores.presionControl} cmH2O, "
@@ -3563,7 +3753,7 @@ class Formatos {
           "Elast ${Valores.elastanciaPulmonar.toStringAsFixed(2)} cmH2O/mL, "
           "D. Pressure ${Valores.presionDistencion.toStringAsFixed(0)} mmHg, "
           "VM ${Valores.volumenMinuto.toStringAsFixed(1)} L/min, "
-          "Flujo ${Valores.flujoVentilatorioMedido.toStringAsFixed(2)} L/min, ";
+          "Flujo ${Valores.flujoVentilatorioMedido.toStringAsFixed(2)} L/min";
     } else {
       PS = '';
     }
@@ -3581,7 +3771,8 @@ class Formatos {
   static String get balances {
     return "Balance hídrico (${Valores.fechaRealizacionBalances}) - "
         "Ingresos ${Valores.ingresosBalances.toStringAsFixed(2)} mL,  "
-        "egresos ${Valores.egresosBalances.toStringAsFixed(2)} mL  "
+        "egresos ${Valores.egresosBalances.toStringAsFixed(2)} mL; "
+        "perdidas insensibles ${Valores.perdidasInsensibles.toStringAsFixed(2)} mL  "
         "(balance Total ${Valores.balanceTotal.toStringAsFixed(2)} mL/${Valores.horario} mL),  "
         "uresis ${Valores.uresis} mL,  "
         "diuresis ${Valores.diuresis.toStringAsFixed(2)} mL/${Valores.horario} mL.  "
@@ -3967,7 +4158,8 @@ class Items {
     "Cánula de Traqueostomía Fr. 7.5",
     "Cánula de Traqueostomía Fr. 7.0",
     "Cánula de Traqueostomía Fr. 6.5",
-    "Cánula de Traqueostomía Fr. 6"
+    "Cánula de Traqueostomía Fr. 6",
+    "",
   ];
   static List<String> arcadaDentaria = [
     "a 18 cm de la Arcada Dentaria",
@@ -3982,7 +4174,8 @@ class Items {
     "a 27 cm de la Arcada Dentaria",
     "a 28 cm de la Arcada Dentaria",
     "a 29 cm de la Arcada Dentaria",
-    "a 30 cm de la Arcada Dentaria"
+    "a 30 cm de la Arcada Dentaria",
+    "",
   ];
   static List<String> aminergico = [
     "Sin Apoyo Aminérgico ni Inotrópicos",
@@ -4004,7 +4197,8 @@ class Items {
     "Con Sonda Vesical Fr. 12",
     "Con Sonda Vesical Fr. 14",
     "Con Sonda Vesical Fr. 16",
-    "Con Sonda Vesical Fr. 18"
+    "Con Sonda Vesical Fr. 18",
+    ""
   ];
   static List<String> dieta = [
     "En Ayuno Hasta Nueva Orden",
@@ -4392,7 +4586,26 @@ class Items {
     "Nonagésimo Séptimo",
     "Nonagésimo Octavo",
     "Nonagésimo Noveno",
-    "Nonagésimo"
+    "Centésimo",
+    "Centésimo Primer",
+    "Centésimo Segundo",
+    "Centésimo Tercer",
+    "Centésimo Cuarto",
+    "Centésimo Quinto",
+    "Centésimo Sexto",
+    "Centésimo Séptimo",
+    "Centésimo Octavo",
+    "Centésimo Noveno",
+    "Centésimo",
+    "Centésimo Primer",
+    "Centésimo Segundo",
+    "Centésimo Tercer",
+    "Centésimo Cuarto",
+    "Centésimo Quinto",
+    "Centésimo Sexto",
+    "Centésimo Séptimo",
+    "Centésimo Octavo",
+    "Centésimo Noveno",
   ];
 }
 

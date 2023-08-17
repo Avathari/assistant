@@ -69,6 +69,11 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
         values = value;
         Archivos.createJsonFromMap(values!, filePath: fileAssocieted);
       });
+      Auxiliares.fromJson(value[0]);
+    }).onError((error, stackTrace) {
+      setState(() {
+        Archivos.createJsonFromMap(values!, filePath: fileAssocieted);
+      });
     });
   }
 

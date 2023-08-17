@@ -50,6 +50,7 @@ class _EstadisticasActivosState extends State<EstadisticasActivos> {
     'Balance_Mensual': 0,
     //
     'Balance_Actual': 0,
+    'Balance_Parcial': 0,
     //
     'Total_Registrados': 0,
   };
@@ -60,25 +61,33 @@ class _EstadisticasActivosState extends State<EstadisticasActivos> {
   void initState() {
     Terminal.printWarning(
         message:
-            " . . . Iniciando Actividad - Estádisticas del Repositorio de Pacientes");
+            " INICIAR : Iniciando Actividad - Estádisticas del Repositorio de Pacientes");
     Archivos.readJsonToMap(filePath: Activos.fileStadistics).then((value) {
+      // **************************************************************************
       setState(() {
-        Terminal.printWarning(message: " . . . $value");
+        // Terminal.printWarning(message: " . . . $value");
         data = value[0];
       });
+      // **************************************************************************
     }).onError((error, stackTrace) {
+      Terminal.printAlert(
+          message:
+          "ERROR : $error : $stackTrace");
+      // **************************************************************************
       Actividades.detalles(Databases.siteground_database_regfine,
               Activos.activos['activosStadistics'])
           .then((value) {
+        // **************************************************************************
         setState(() {
           data = value;
+          // **************************************************************************
           Terminal.printWarning(message: " . . . $value\n $data");
+          // **************************************************************************
           Archivos.createJsonFromMap([data],
-              filePath: 'assets/vault/activosStadistics.json');
+              filePath: Activos.fileStadistics);
         });
       });
     });
-    Terminal.printWarning(message: " . . . Actividad Iniciada");
 
     super.initState();
   }
@@ -103,9 +112,9 @@ class _EstadisticasActivosState extends State<EstadisticasActivos> {
         .then((value) {
       setState(() {
         data = value;
-        Terminal.printWarning(message: " . . . $value\n $data");
+        // Terminal.printWarning(message: " . . . $value\n $data");
         Archivos.createJsonFromMap([data],
-            filePath: 'assets/vault/activosStadistics.json');
+            filePath: Activos.fileStadistics);
       });
     });
   }
@@ -254,7 +263,7 @@ class _EstadisticasActivosState extends State<EstadisticasActivos> {
                                 double.parse(
                                     data['Egreso_Global'].toString())),
                             tileStat(Icons.balcony, "Balance Parcial",
-                                data['Balance_Parcial'] ?? 0.0),
+                                double.parse(data['Balance_Parcial'].toString() ?? '0.0')),
                             CrossLine(),
                             tileStat(Icons.home_filled, "Patrimonio",
                                 data['Patrimonio'] ?? 0.0),

@@ -101,6 +101,23 @@ class Dicotomicos {
   }
 }
 
+class Cambios {
+  static void toNextPage(BuildContext context, screen) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: ((context) => screen)));
+  }
+
+  static void toNextActivity(BuildContext context, {required chyld}) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (BuildContext context) => Scaffold(
+            backgroundColor: Colors.black,
+            appBar: AppBar(
+              backgroundColor: Colors.black,
+            ),
+            body: chyld)));
+  }
+}
+
 class Archivos {
   static Future<String> textFormTxt(
       {String path = 'assets/diccionarios/Cirugias.txt'}) async {
@@ -934,6 +951,22 @@ class Datos {
     return double.parse(value.toString());
   }
 
+  static bool isNullValue({required num? value}) {
+    if (value != 0 && value != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static bool isMiddleValue({required num? value, required num? min, required num? max}) {
+    if (value! > min! && value< max!) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   static void portapapeles(
       {required BuildContext context, required String text}) {
     Clipboard.setData(ClipboardData(text: text)).whenComplete(() =>
@@ -983,5 +1016,11 @@ class Numeros {
       {required Map<String, dynamic> json, required String keyEntered}) {
     return double.parse(
         json[keyEntered] != null ? json[keyEntered].toString() : '0');
+  }
+
+  static List<String> get orderOfItems {
+    List<String> list = [];
+    list.addAll(Listas.listOfRange(maxNum: 1000000));
+    return list;
   }
 }

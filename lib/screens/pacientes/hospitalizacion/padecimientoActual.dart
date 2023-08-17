@@ -21,6 +21,7 @@ class PadecimientoActual extends StatefulWidget {
 
 class _PadecimientoActualState extends State<PadecimientoActual> {
   var fechaPadecimientoTextController = TextEditingController();
+  var motivoAtencionTextController = TextEditingController();
   var padecimientoActualTextController = TextEditingController();
   var atencionUrgenciasTextController = TextEditingController();
 
@@ -56,6 +57,7 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
                   Calendarios.today(format: 'yyyy/MM/dd');
           String respuesta = response['Contexto'];
           Terminal.printExpected(message: "PA : : $respuesta");
+          // motivoAtencionTextController.text =respuesta.split('\n')[0] ?? '';
           padecimientoActualTextController.text =
               respuesta.split('\n')[0] ?? '';
           atencionUrgenciasTextController.text = respuesta.split('\n')[1] ?? '';
@@ -64,7 +66,7 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
     }).onError((error, stackTrace) {
       fechaPadecimientoTextController.text =
           Calendarios.today(format: 'yyyy/MM/dd');
-      padecimientoActualTextController.text = "Inicia padecimiento actual ";
+      padecimientoActualTextController.text = "Inicia padecimiento actual ${fechaPadecimientoTextController.text}";
       atencionUrgenciasTextController.text =
           "Es atendido en urgencias reportandose tensión arterial $tensionArterial mmHg, "
               "frecuencia cardiaca $frecuenciaCardiaca Lat/min, frecuencia respiratoria $frecuenciaRespiratoria Resp/min, "
@@ -112,6 +114,7 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
                         mask: '####/##/##', filter: {"#": RegExp(r'[0-9]')}),
                     labelEditText: 'Fecha de Inicio Padecimiento',
                     textController: fechaPadecimientoTextController,
+                    iconData: Icons.calendar_today,
                     withShowOption: true,
                     selection: true,
                     onSelected: () {
@@ -127,11 +130,35 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
                     },
                   ),
                   EditTextArea(
+                    keyBoardType: TextInputType.multiline,
+                    inputFormat: MaskTextInputFormatter(),
+                    labelEditText: 'Motivo de Atención',
+                    textController: motivoAtencionTextController,
+                    numOfLines: isTablet(context) ? 2 : 1,
+                    iconData: Icons.segment,
+                    selection:true,
+                    withShowOption: true,
+                    onSelected: () {
+                      Operadores.selectOptionsActivity(context: context, options: ['Disnea', 'Tos', 'Cianosis'], onClose: (value) {
+                        motivoAtencionTextController.text = "${motivoAtencionTextController.text}.\n $value";
+                        Navigator.pop(context);
+                      }
+                      );
+                    },
+                    onChange: (value) {
+                      setState(() {
+                        Valores.padecimientoActual =
+                        "${Valores.padecimientoActual}. \n$value";
+                      });
+                    },
+                  ),
+                  EditTextArea(
                     keyBoardType: TextInputType.text,
                     inputFormat: MaskTextInputFormatter(),
                     labelEditText: 'Descripción del Padecimiento Actual',
                     textController: padecimientoActualTextController,
                     numOfLines: isTablet(context) ? 10 : 10,
+                    iconData: Icons.segment,
                     selection:true,
                     withShowOption: true,
                     onSelected: () {

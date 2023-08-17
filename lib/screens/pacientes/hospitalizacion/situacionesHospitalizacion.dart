@@ -5,10 +5,13 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
+import 'package:assistant/widgets/EditTextArea.dart';
+import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/Switched.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class SituacionesHospitalizacion extends StatefulWidget {
   const SituacionesHospitalizacion({Key? key}) : super(key: key);
@@ -21,6 +24,9 @@ class SituacionesHospitalizacion extends StatefulWidget {
 class _SituacionesHospitalizacionState
     extends State<SituacionesHospitalizacion> {
   var dispositivoOxigenoValue = Items.dispositivosOxigeno[0];
+
+
+  var fechaCVPTextController = TextEditingController();
 
   @override
   void initState() {
@@ -82,129 +88,531 @@ class _SituacionesHospitalizacionState
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          TittlePanel(textPanel: 'Situación General en la Hospitalización'),
-          Spinner(
-              tittle: 'Dispositivo de Oxígeno',
-              width: isDesktop(context) || isTabletAndDesktop(context)? 400 : isTablet(context) ? 200 : 100,
-              onChangeValue: (value) {
-                setState(() {
-                  dispositivoOxigenoValue = value;
-                  Valores.dispositivoOxigeno = value;
-                });
-              },
-              items: Items.dispositivosOxigeno,
-              initialValue: dispositivoOxigenoValue),
-          CrossLine(),
-          Switched(
-              tittle: 'Cáteter Venoso Periférico',
-              onChangeValue: (value) {
-                setState(() {
-                  Valores.isCateterPeriferico = value;
-                });
-              },
-              isSwitched: Valores.isCateterPeriferico),
-          Switched(
-            tittle: 'Cáteter Largo Periférico',
-            onChangeValue: (value) {
-              setState(() {
-                Valores.isCateterLargoPeriferico = value;
-              });
-            },
-            isSwitched: Valores.isCateterLargoPeriferico,
+          Expanded(
+            child: SingleChildScrollView(
+              controller: ScrollController(),
+              child: Column(
+                children: [
+                  TittlePanel(textPanel: 'Situación General en la Hospitalización'),
+                  Spinner(
+                      tittle: 'Dispositivo de Oxígeno',
+                      width: isDesktop(context) ? 600 : isTablet(context) ? 200 : 100,
+                      onChangeValue: (value) {
+                        setState(() {
+                          dispositivoOxigenoValue = value;
+                          Valores.dispositivoOxigeno = value;
+                        });
+                      },
+                      items: Items.dispositivosOxigeno,
+                      initialValue: dispositivoOxigenoValue),
+                  CrossLine(),
+                  Row(children: [
+                    Expanded(
+                      child: Switched(
+                          tittle: 'Cáteter Venoso Periférico',
+                          onChangeValue: (value) {
+                            setState(() {
+                              Valores.isCateterPeriferico = value;
+                            });
+                          },
+                          isSwitched: Valores.isCateterPeriferico),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        labelEditText: 'Fecha de colocación',
+                        keyBoardType: TextInputType.number,
+                        numOfLines: 1,
+                        inputFormat: MaskTextInputFormatter(
+                            mask: '####/##/##',
+                            filter: {"#": RegExp(r'[0-9]')},
+                            type: MaskAutoCompletionType.lazy),
+                        textController: fechaCVPTextController,
+                        iconColor: Colors.white,
+                        withShowOption: true,
+                        selection: true,
+                        onSelected: () {
+                          fechaCVPTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
+                        },
+                      ),
+                    ),
+                  ],),
+                  Row(children: [
+                    Expanded(
+                      child: Switched(
+                        tittle: 'Cáteter Largo Periférico',
+                        onChangeValue: (value) {
+                          setState(() {
+                            Valores.isCateterLargoPeriferico = value;
+                          });
+                        },
+                        isSwitched: Valores.isCateterLargoPeriferico,
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        labelEditText: 'Fecha de colocación',
+                        keyBoardType: TextInputType.number,
+                        numOfLines: 1,
+                        inputFormat: MaskTextInputFormatter(
+                            mask: '####/##/##',
+                            filter: {"#": RegExp(r'[0-9]')},
+                            type: MaskAutoCompletionType.lazy),
+                        textController: fechaCVPTextController,
+                        iconColor: Colors.white,
+                        withShowOption: true,
+                        selection: true,
+                        onSelected: () {
+                          fechaCVPTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
+                        },
+                      ),
+                    ),
+                  ],),
+                  Row(children: [
+                    Expanded(
+                      child: Switched(
+                          tittle: 'Cáteter Venoso Central',
+                          onChangeValue: (value) {
+                            setState(() {
+                              Valores.isCateterVenosoCentral = value;
+                              Valores.isCateterVenosoCentral = value;
+                            });
+                          },
+                          isSwitched: Valores.isCateterVenosoCentral),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        labelEditText: 'Fecha de colocación',
+                        keyBoardType: TextInputType.number,
+                        numOfLines: 1,
+                        inputFormat: MaskTextInputFormatter(
+                            mask: '####/##/##',
+                            filter: {"#": RegExp(r'[0-9]')},
+                            type: MaskAutoCompletionType.lazy),
+                        textController: fechaCVPTextController,
+                        iconColor: Colors.white,
+                        withShowOption: true,
+                        selection: true,
+                        onSelected: () {
+                          fechaCVPTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
+                        },
+                      ),
+                    ),
+                  ],),
+                  Row(children: [
+                    Expanded(
+                      child: Switched(
+                          tittle: 'Sonda Orogástrica',
+                          onChangeValue: (value) {
+                            setState(() {
+                              Valores.isSondaOrogastrica = value;
+                              Valores.isSondaOrogastrica = value;
+                            });
+                          },
+                          isSwitched: Valores.isSondaOrogastrica),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        labelEditText: 'Fecha de colocación',
+                        keyBoardType: TextInputType.number,
+                        numOfLines: 1,
+                        inputFormat: MaskTextInputFormatter(
+                            mask: '####/##/##',
+                            filter: {"#": RegExp(r'[0-9]')},
+                            type: MaskAutoCompletionType.lazy),
+                        textController: fechaCVPTextController,
+                        iconColor: Colors.white,
+                        withShowOption: true,
+                        selection: true,
+                        onSelected: () {
+                          fechaCVPTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
+                        },
+                      ),
+                    ),
+                  ],),
+                  Row(children: [
+                    Expanded(
+                      child: Switched(
+                        tittle: 'Sonda Nasogástrica',
+                        onChangeValue: (value) {
+                          setState(() {
+                            Valores.isSondaNasogastrica = value;
+                            Valores.isSondaNasogastrica = value;
+                          });
+                        },
+                        isSwitched: Valores.isSondaNasogastrica,
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        labelEditText: 'Fecha de colocación',
+                        keyBoardType: TextInputType.number,
+                        numOfLines: 1,
+                        inputFormat: MaskTextInputFormatter(
+                            mask: '####/##/##',
+                            filter: {"#": RegExp(r'[0-9]')},
+                            type: MaskAutoCompletionType.lazy),
+                        textController: fechaCVPTextController,
+                        iconColor: Colors.white,
+                        withShowOption: true,
+                        selection: true,
+                        onSelected: () {
+                          fechaCVPTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
+                        },
+                      ),
+                    ),
+                  ],),
+                  Row(children: [
+                    Expanded(
+                      child: Switched(
+                          tittle: 'Cáteter Hemodiálisis',
+                          onChangeValue: (value) {
+                            setState(() {
+                              Valores.isCateterHemodialisis = value;
+                              Valores.isCateterHemodialisis = value;
+                            });
+                          },
+                          isSwitched: Valores.isCateterHemodialisis),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        labelEditText: 'Fecha de colocación',
+                        keyBoardType: TextInputType.number,
+                        numOfLines: 1,
+                        inputFormat: MaskTextInputFormatter(
+                            mask: '####/##/##',
+                            filter: {"#": RegExp(r'[0-9]')},
+                            type: MaskAutoCompletionType.lazy),
+                        textController: fechaCVPTextController,
+                        iconColor: Colors.white,
+                        withShowOption: true,
+                        selection: true,
+                        onSelected: () {
+                          fechaCVPTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
+                        },
+                      ),
+                    ),
+                  ],),
+                  Row(children: [
+                    Expanded(
+                      child: Switched(
+                          tittle: 'Sonda Foley',
+                          onChangeValue: (value) {
+                            setState(() {
+                              Valores.isSondaFoley = value;
+                              Valores.isSondaFoley = value;
+                            });
+                          },
+                          isSwitched: Valores.isSondaFoley),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        labelEditText: 'Fecha de colocación',
+                        keyBoardType: TextInputType.number,
+                        numOfLines: 1,
+                        inputFormat: MaskTextInputFormatter(
+                            mask: '####/##/##',
+                            filter: {"#": RegExp(r'[0-9]')},
+                            type: MaskAutoCompletionType.lazy),
+                        textController: fechaCVPTextController,
+                        iconColor: Colors.white,
+                        withShowOption: true,
+                        selection: true,
+                        onSelected: () {
+                          fechaCVPTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
+                        },
+                      ),
+                    ),
+                  ],),
+                  Row(children: [
+                    Expanded(
+                      child: Switched(
+                          tittle: 'Drenaje Penrose',
+                          onChangeValue: (value) {
+                            setState(() {
+                              Valores.isDrenajePenrose = value;
+                              Valores.isDrenajePenros = value;
+                            });
+                          },
+                          isSwitched: Valores.isDrenajePenrose),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        labelEditText: 'Fecha de colocación',
+                        keyBoardType: TextInputType.number,
+                        numOfLines: 1,
+                        inputFormat: MaskTextInputFormatter(
+                            mask: '####/##/##',
+                            filter: {"#": RegExp(r'[0-9]')},
+                            type: MaskAutoCompletionType.lazy),
+                        textController: fechaCVPTextController,
+                        iconColor: Colors.white,
+                        withShowOption: true,
+                        selection: true,
+                        onSelected: () {
+                          fechaCVPTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
+                        },
+                      ),
+                    ),
+                  ],),
+                  Row(children: [
+                    Expanded(
+                      child: Switched(
+                        tittle: 'Sello Pleural',
+                        onChangeValue: (value) {
+                          setState(() {
+                            Valores.isPleuroVac = value;
+                            Valores.isPleuroVac = value;
+                          });
+                        },
+                        isSwitched: Valores.isPleuroVac,
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        labelEditText: 'Fecha de colocación',
+                        keyBoardType: TextInputType.number,
+                        numOfLines: 1,
+                        inputFormat: MaskTextInputFormatter(
+                            mask: '####/##/##',
+                            filter: {"#": RegExp(r'[0-9]')},
+                            type: MaskAutoCompletionType.lazy),
+                        textController: fechaCVPTextController,
+                        iconColor: Colors.white,
+                        withShowOption: true,
+                        selection: true,
+                        onSelected: () {
+                          fechaCVPTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
+                        },
+                      ),
+                    ),
+                  ],),
+                  Row(children: [
+                    Expanded(
+                      child: Switched(
+                          tittle: 'Colostomía',
+                          onChangeValue: (value) {
+                            setState(() {
+                              Valores.isColostomia = value;
+                              Valores.isColostomia = value;
+                            });
+                          },
+                          isSwitched: Valores.isColostomia),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        labelEditText: 'Fecha de colocación',
+                        keyBoardType: TextInputType.number,
+                        numOfLines: 1,
+                        inputFormat: MaskTextInputFormatter(
+                            mask: '####/##/##',
+                            filter: {"#": RegExp(r'[0-9]')},
+                            type: MaskAutoCompletionType.lazy),
+                        textController: fechaCVPTextController,
+                        iconColor: Colors.white,
+                        withShowOption: true,
+                        selection: true,
+                        onSelected: () {
+                          fechaCVPTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
+                        },
+                      ),
+                    ),
+                  ],),
+                  Row(children: [
+                    Expanded(
+                      child: Switched(
+                        tittle: 'Gaastrostomia',
+                        onChangeValue: (value) {
+                          setState(() {
+                            Valores.isGastrostomia = value;
+                          });
+                        },
+                        isSwitched: Valores.isGastrostomia,
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        labelEditText: 'Fecha de colocación',
+                        keyBoardType: TextInputType.number,
+                        numOfLines: 1,
+                        inputFormat: MaskTextInputFormatter(
+                            mask: '####/##/##',
+                            filter: {"#": RegExp(r'[0-9]')},
+                            type: MaskAutoCompletionType.lazy),
+                        textController: fechaCVPTextController,
+                        iconColor: Colors.white,
+                        withShowOption: true,
+                        selection: true,
+                        onSelected: () {
+                          fechaCVPTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
+                        },
+                      ),
+                    ),
+                  ],),
+                  Row(children: [
+                    Expanded(
+                      child: Switched(
+                          tittle: 'Diálisis Peritoneal',
+                          onChangeValue: (value) {
+                            setState(() {
+                              Valores.isDialisisPeritoneal = value;
+                            });
+                          },
+                          isSwitched: Valores.isDialisisPeritoneal),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        labelEditText: 'Fecha de colocación',
+                        keyBoardType: TextInputType.number,
+                        numOfLines: 1,
+                        inputFormat: MaskTextInputFormatter(
+                            mask: '####/##/##',
+                            filter: {"#": RegExp(r'[0-9]')},
+                            type: MaskAutoCompletionType.lazy),
+                        textController: fechaCVPTextController,
+                        iconColor: Colors.white,
+                        withShowOption: true,
+                        selection: true,
+                        onSelected: () {
+                          fechaCVPTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
+                        },
+                      ),
+                    ),
+                  ],),
+
+                  Row(children: [
+                    Expanded(
+                      child: Switched(
+                        tittle: 'Cáteter Largo Periférico',
+                        onChangeValue: (value) {
+                          setState(() {
+                            Valores.isCateterLargoPeriferico = value;
+                          });
+                        },
+                        isSwitched: Valores.isCateterLargoPeriferico,
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        labelEditText: 'Fecha de colocación',
+                        keyBoardType: TextInputType.number,
+                        numOfLines: 1,
+                        inputFormat: MaskTextInputFormatter(
+                            mask: '####/##/##',
+                            filter: {"#": RegExp(r'[0-9]')},
+                            type: MaskAutoCompletionType.lazy),
+                        textController: fechaCVPTextController,
+                        iconColor: Colors.white,
+                        withShowOption: true,
+                        selection: true,
+                        onSelected: () {
+                          fechaCVPTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
+                        },
+                      ),
+                    ),
+                  ],),
+                  Row(children: [
+                    Expanded(
+                      child: Switched(
+                        tittle: 'Cáteter Largo Periférico',
+                        onChangeValue: (value) {
+                          setState(() {
+                            Valores.isCateterLargoPeriferico = value;
+                          });
+                        },
+                        isSwitched: Valores.isCateterLargoPeriferico,
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        labelEditText: 'Fecha de colocación',
+                        keyBoardType: TextInputType.number,
+                        numOfLines: 1,
+                        inputFormat: MaskTextInputFormatter(
+                            mask: '####/##/##',
+                            filter: {"#": RegExp(r'[0-9]')},
+                            type: MaskAutoCompletionType.lazy),
+                        textController: fechaCVPTextController,
+                        iconColor: Colors.white,
+                        withShowOption: true,
+                        selection: true,
+                        onSelected: () {
+                          fechaCVPTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
+                        },
+                      ),
+                    ),
+                  ],),
+                  Row(children: [
+                    Expanded(
+                      child: Switched(
+                        tittle: 'Cáteter Largo Periférico',
+                        onChangeValue: (value) {
+                          setState(() {
+                            Valores.isCateterLargoPeriferico = value;
+                          });
+                        },
+                        isSwitched: Valores.isCateterLargoPeriferico,
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        labelEditText: 'Fecha de colocación',
+                        keyBoardType: TextInputType.number,
+                        numOfLines: 1,
+                        inputFormat: MaskTextInputFormatter(
+                            mask: '####/##/##',
+                            filter: {"#": RegExp(r'[0-9]')},
+                            type: MaskAutoCompletionType.lazy),
+                        textController: fechaCVPTextController,
+                        iconColor: Colors.white,
+                        withShowOption: true,
+                        selection: true,
+                        onSelected: () {
+                          fechaCVPTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
+                        },
+                      ),
+                    ),
+                  ],),
+                  Row(children: [
+                    Expanded(
+                      child: Switched(
+                        tittle: 'Cáteter Largo Periférico',
+                        onChangeValue: (value) {
+                          setState(() {
+                            Valores.isCateterLargoPeriferico = value;
+                          });
+                        },
+                        isSwitched: Valores.isCateterLargoPeriferico,
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        labelEditText: 'Fecha de colocación',
+                        keyBoardType: TextInputType.number,
+                        numOfLines: 1,
+                        inputFormat: MaskTextInputFormatter(
+                            mask: '####/##/##',
+                            filter: {"#": RegExp(r'[0-9]')},
+                            type: MaskAutoCompletionType.lazy),
+                        textController: fechaCVPTextController,
+                        iconColor: Colors.white,
+                        withShowOption: true,
+                        selection: true,
+                        onSelected: () {
+                          fechaCVPTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
+                        },
+                      ),
+                    ),
+                  ],),
+                ],
+              ),
+            ),
           ),
-          Switched(
-              tittle: 'Cáteter Venoso Central',
-              onChangeValue: (value) {
-                setState(() {
-                  Valores.isCateterVenosoCentral = value;
-                  Valores.isCateterVenosoCentral = value;
-                });
-              },
-              isSwitched: Valores.isCateterVenosoCentral),
-          Switched(
-              tittle: 'Cáteter Hemodiálisis',
-              onChangeValue: (value) {
-                setState(() {
-                  Valores.isCateterHemodialisis = value;
-                  Valores.isCateterHemodialisis = value;
-                });
-              },
-              isSwitched: Valores.isCateterHemodialisis),
-          CrossLine(),
-          Switched(
-              tittle: 'Sonda Orogástrica',
-              onChangeValue: (value) {
-                setState(() {
-                  Valores.isSondaOrogastrica = value;
-                  Valores.isSondaOrogastrica = value;
-                });
-              },
-              isSwitched: Valores.isSondaOrogastrica),
-          Switched(
-            tittle: 'Sonda Nasogástrica',
-            onChangeValue: (value) {
-              setState(() {
-                Valores.isSondaNasogastrica = value;
-                Valores.isSondaNasogastrica = value;
-              });
-            },
-            isSwitched: Valores.isSondaNasogastrica,
-          ),
-          Switched(
-              tittle: 'Sonda Foley',
-              onChangeValue: (value) {
-                setState(() {
-                  Valores.isSondaFoley = value;
-                  Valores.isSondaFoley = value;
-                });
-              },
-              isSwitched: Valores.isSondaFoley),
-          CrossLine(),
-          Switched(
-              tittle: 'Drenaje Penrose',
-              onChangeValue: (value) {
-                setState(() {
-                  Valores.isDrenajePenrose = value;
-                  Valores.isDrenajePenros = value;
-                });
-              },
-              isSwitched: Valores.isDrenajePenrose),
-          Switched(
-            tittle: 'Sello Pleural',
-            onChangeValue: (value) {
-              setState(() {
-                Valores.isPleuroVac = value;
-                Valores.isPleuroVac = value;
-              });
-            },
-            isSwitched: Valores.isPleuroVac,
-          ),
-          Switched(
-              tittle: 'Colostomía',
-              onChangeValue: (value) {
-                setState(() {
-                  Valores.isColostomia = value;
-                  Valores.isColostomia = value;
-                });
-              },
-              isSwitched: Valores.isColostomia),
-          Switched(
-            tittle: 'Gaastrostomia',
-            onChangeValue: (value) {
-              setState(() {
-                Valores.isGastrostomia = value;
-              });
-            },
-            isSwitched: Valores.isGastrostomia,
-          ),
-          Switched(
-              tittle: 'Diálisis Peritoneal',
-              onChangeValue: (value) {
-                setState(() {
-                  Valores.isDialisisPeritoneal = value;
-                });
-              },
-              isSwitched: Valores.isDialisisPeritoneal),
+          GrandButton(
+            weigth: 2000,
+            labelButton: "Actualizar",
+            onPress: () {
+              Situaciones.actualizarRegistro();
+            },),
         ],
       ),
     );
@@ -219,7 +627,7 @@ class _SituacionesHospitalizacionState
           TittlePanel(textPanel: 'Situación General en la Hospitalización'),
           Spinner(
               tittle: 'Dispositivo de Oxígeno',
-              width: isTablet(context) ? 200 : 100,
+              width: isTablet(context) ? 200 : 200,
               onChangeValue: (value) {
                 setState(() {
                   dispositivoOxigenoValue = value;
@@ -340,6 +748,12 @@ class _SituacionesHospitalizacionState
                 });
               },
               isSwitched: Valores.isDialisisPeritoneal),
+          CrossLine(),
+          GrandButton(
+            weigth: 2000,
+              labelButton: "Actualizar",onPress: () {
+            Situaciones.actualizarRegistro();
+          })
         ],
       ),
     );

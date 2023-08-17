@@ -226,15 +226,15 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
               context: context,
               options: Pendientes.subTypesPendientes[
                   Pendientes.typesPendientes.indexOf(pendienteValue)],
-            onClose: (String value) {
-              if (descripcionPendienteTextController.text.isEmpty) {
-                descripcionPendienteTextController.text = value;
-              } else {
-                descripcionPendienteTextController.text = "${descripcionPendienteTextController.text }, \n$value";
-              }
-              Navigator.pop(context);
-            }
-          );
+              onClose: (String value) {
+                if (descripcionPendienteTextController.text.isEmpty) {
+                  descripcionPendienteTextController.text = value;
+                } else {
+                  descripcionPendienteTextController.text =
+                      "${descripcionPendienteTextController.text}, \n$value";
+                }
+                Navigator.pop(context);
+              });
         },
         onChange: (value) {},
       ),
@@ -425,105 +425,53 @@ class _GestionPendienteState extends State<GestionPendiente> {
           ]),
       body: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         Expanded(
-          child: Column(
-            children: [
-              Expanded(
-                flex: 1,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                      onChanged: (value) {
-                        _runFilterSearch(value);
-                      },
-                      controller: searchTextController,
-                      autofocus: false,
-                      keyboardType: TextInputType.text,
-                      autocorrect: true,
-                      obscureText: false,
-                      style: const TextStyle(
-                        color: Colors.white,
-                      ),
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                        helperStyle: const TextStyle(
-                          color: Colors.white,
+          flex: 9,
+          child: RefreshIndicator(
+            color: Colors.white,
+            backgroundColor: Colors.black,
+            onRefresh: _pullListRefresh,
+            child: FutureBuilder<List>(
+              initialData: foundedItems!,
+              future: Future.value(foundedItems!),
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.hasError) print(snapshot.error);
+                return snapshot.hasData
+                    ? GridView.builder(
+                  gridDelegate: GridViewTools.gridDelegate(
+                      crossAxisCount: isMobile(context) ? 1 : 3,
+                      mainAxisExtent:
+                      isMobile(context) ? 200 : 250),
+                  controller: gestionScrollController,
+                  shrinkWrap: isMobile(context) ? false : true,
+                  itemCount: snapshot.data == null
+                      ? 0
+                      : snapshot.data.length,
+                  itemBuilder: (context, posicion) {
+                    return itemListView(
+                        snapshot, posicion, context);
+                  },
+                )
+                    : Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const CircularProgressIndicator(),
+                            const SizedBox(height: 50),
+                            Text(
+                              snapshot.hasError
+                                  ? snapshot.error.toString()
+                                  : snapshot.error.toString(),
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 10),
+                            ),
+                          ],
                         ),
-                        labelText: searchCriteria,
-                        labelStyle: const TextStyle(
-                          color: Colors.white,
-                        ),
-                        contentPadding: const EdgeInsets.all(20),
-                        enabledBorder: const OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.white, width: 0.5),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                        focusColor: Colors.white,
-                        suffixIcon: IconButton(
-                          icon: const Icon(
-                            Icons.replay_outlined,
-                            color: Colors.white,
-                          ),
-                          tooltip: Sentences.reload,
-                          onPressed: () {
-                            reiniciar(); // _pullListRefresh();
-                          },
-                        ),
-                      )),
-                ),
-              ),
-              Expanded(
-                flex: 9,
-                child: RefreshIndicator(
-                  color: Colors.white,
-                  backgroundColor: Colors.black,
-                  onRefresh: _pullListRefresh,
-                  child: FutureBuilder<List>(
-                    initialData: foundedItems!,
-                    future: Future.value(foundedItems!),
-                    builder: (context, AsyncSnapshot snapshot) {
-                      if (snapshot.hasError) print(snapshot.error);
-                      return snapshot.hasData
-                          ? GridView.builder(
-                              controller: gestionScrollController,
-                              padding: const EdgeInsets.all(10),
-                              shrinkWrap: true,
-                              itemCount: snapshot.data == null
-                                  ? 0
-                                  : snapshot.data.length,
-                              itemBuilder: (context, posicion) {
-                                return itemListView(
-                                    snapshot, posicion, context);
-                              },
-                              gridDelegate: GridViewTools.gridDelegate(
-                                crossAxisCount: isMobile(context) ? 1 : 3,
-                                mainAxisExtent: isMobile(context) ? 200 : 250,
-                              ),
-                            )
-                          : Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const CircularProgressIndicator(),
-                                  const SizedBox(height: 50),
-                                  Text(
-                                    snapshot.hasError
-                                        ? snapshot.error.toString()
-                                        : snapshot.error.toString(),
-                                    style: const TextStyle(
-                                        color: Colors.white, fontSize: 10),
-                                  ),
-                                ],
-                              ),
-                            );
-                    },
-                  ),
-                ),
-              ),
-            ],
+                      );
+              },
+            ),
           ),
         ),
-        isDesktop(context) || isTabletAndDesktop(context)
+        isDesktop(context) // || isTablet(context)
             ? widget.actualSidePage != null
                 ? Expanded(flex: 1, child: widget.actualSidePage!)
                 : Expanded(flex: 1, child: Container())
@@ -562,15 +510,15 @@ class _GestionPendienteState extends State<GestionPendiente> {
   }
 
   // Operaciones de la Interfaz ***** ******* ********** ****
-  Container itemListView(
+  GestureDetector itemListView(
       AsyncSnapshot snapshot, int posicion, BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(12.0),
-      decoration: ContainerDecoration.roundedDecoration(),
-      child: GestureDetector(
-        onTap: () {
-          onSelected(snapshot, posicion, context, Constantes.Update);
-        },
+    return GestureDetector(
+      onTap: () {
+        onSelected(snapshot, posicion, context, Constantes.Update);
+      },
+      child: Container(
+        padding: const EdgeInsets.all(12.0),
+        decoration: ContainerDecoration.roundedDecoration(),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

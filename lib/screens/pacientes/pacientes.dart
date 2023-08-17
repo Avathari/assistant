@@ -520,7 +520,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                                           ],
                                                                           snapshot.data[posicion]
                                                                               [
-                                                                              'ID_Pace'])
+                                                                              'ID_Pace']).then((value) => null)
                                                                   .whenComplete(
                                                                       () =>
                                                                           reiniciar());
