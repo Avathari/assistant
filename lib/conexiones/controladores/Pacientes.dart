@@ -5980,6 +5980,10 @@ class Auxiliares {
     "Perfil Hormonal",
     "Cuantificación de Vitaminas",
     "Otros",
+    "Citoquímico de Líquido Cefalorraquídeo",
+    "Citológico de Líquido Cefalorraquídeo",
+    "Aspirado de Médula Ósea",
+    "Western Blot HIV-1, HIV-2",
     "Electrocardiograma"
   ];
   static Map<String, dynamic> Laboratorios = {
@@ -6002,6 +6006,7 @@ class Auxiliares {
       "Bandas Totales"
           "Ancho de Distribución Plaquetaria",
       "Volumen Plaquetar Medio",
+      "Reticulocitos",
       "",
     ],
     Categorias[1]: [
@@ -6073,7 +6078,31 @@ class Auxiliares {
       "Saturación de Oxígeno"
     ],
     //
-    Categorias[11]: [""],
+    Categorias[11]: [
+      "Color", // Amarillo
+      "Aspecto", // Claro
+      "pH Urinario", //
+      "Densidad Urinaria", // 1.062
+      "Hemoglobina Urinaria", // 200 Hem/uL
+      "Proteinas Urinarias", //  : : mg/dL
+      "Urobilinógeno Urinario", //  : : mg/dL
+      "Bilirrubinas Urinarias", // Negativo / Positivo
+      "Cetonas Urinarias", // Negativo / Positivo
+      "Glucosa Urinaria", // Negativo / Positivo
+      "Esterasa Leucocitaria", // 500 Leu/uL
+      "Nitritos Urinarios", // Negativo / Positivo
+      "Leucocitos Urinarios", // Negativo / Positivo / Abundantes
+      "Eritrocitos Urinarios", // 6-8 xCmpo
+      "Celulas Epiteliales Urinarias", // -/+/++/+++
+      "Bacterias Urinarias", // -/+/++/+++
+      "Levaduras Urinarias", // -/+/++/+++
+      "Cilindros Urinarios", // -/+/++/+++
+      "Uratos Amorfos", // -/+/++/+++
+      "Fosfatos Amorfos", // -/+/++/+++
+      "Cristales en Orina", // -/+/++/+++
+      "Mucina Urinaria", // -/+/++/+++
+      "Células Renales Urinarias", // -/+/++/+++
+    ],
     Categorias[12]: [""],
     Categorias[13]: [""],
     Categorias[14]: [""],
@@ -6202,6 +6231,62 @@ class Auxiliares {
       "",
       "",
       "",
+      "",
+      "",
+    ],
+    // Analíitica de Líquido Cefalorraquideo
+    Categorias[26]: [
+      // Citoquímico
+      "Glucosa en LCR", // GLU-LCR : mg/dL
+      "Lactato Deshidrogenasa", // LD H-LCR : UI/L
+      "Proteinas Totales en LCR", // Prot-LCR : NA
+      "Tinta China",
+      "Tinción de Wrigth",
+      "Tinción de Gram",
+    ],
+    Categorias[27]: [
+      // Citológico
+      "Aspecto",
+      "Color",
+      "Leucocitos", //
+      "Polimorfonucleares", // %
+      "Mononucleares", // %
+      "Eritrocitos",
+      "Bacterias",
+      "Levaduras",
+      "Otros",
+      "pH",
+      "",
+    ],
+    // Aspirado de Médula Ósea
+    Categorias[28]: [
+      "Neutroblasto",
+      "Proneutroblasto",
+      "Blastos",
+      "Células Granulares", //
+      "Células Plasmáticas", // Cp
+      "Linfocitos Plasmocitoides", // Lp
+      "Granuulocitos Jóvenes",
+      "Granuulocitos Adultos",
+      "Megacariocitos",
+      "Neutrofilos en Banda",
+      "Neutrofilos DM (Segmentados)",
+      "Promielocitos", "Granulocitos", "Reticulocitos",
+    ],
+    // Western Blot HIV-1, HIV-2
+    Categorias[29]: [
+      "Antígeno p24",
+      "Ac. Anti p17 (GAG)",
+      "Ac. Anti p24 (GAG)",
+      "Ac. Anti p31 (POL)",
+      "Ac. Anti P39 (GAG)",
+      "Ac. Anti GP41 (GAG)",
+      "Ac. Anti p51 (POL)",
+      "Ac. Anti p55 (GAG)",
+      "Ac. Anti p66 (POL)",
+      "Ac. Anti gp120 (ENV)",
+      "Ac. Anti gp160 (ENV)",
+      "Ac. Anti gp36 (ENV)",
       "",
       "",
     ],

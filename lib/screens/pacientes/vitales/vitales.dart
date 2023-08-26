@@ -451,7 +451,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
       editFormattedText(
           TextInputType.number,
           MaskTextInputFormatter(
-              mask: '##.##',
+              mask: '###.##',
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
           false,

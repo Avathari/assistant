@@ -130,10 +130,10 @@ class _GestionPacientesState extends State<GestionPacientes> {
                         ),
                         contentPadding: const EdgeInsets.all(20),
                         enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Colors.white, width: 0.5),
+                            borderSide:
+                                BorderSide(color: Colors.white, width: 0.5),
                             borderRadius:
-                            BorderRadius.all(Radius.circular(20))),
+                                BorderRadius.all(Radius.circular(20))),
                         focusColor: Colors.white,
                         suffixIcon: IconButton(
                           icon: const Icon(
@@ -148,13 +148,15 @@ class _GestionPacientesState extends State<GestionPacientes> {
                       )),
                 ),
               ),
-              CrossLine(thickness: 2,),
+              CrossLine(
+                thickness: 2,
+              ),
               Expanded(
                 flex: isTablet(context) ? 28 : 16,
                 child: Row(
                   children: [
                     Expanded(
-                      flex: 9,
+                      flex: isTablet(context) || isMobile(context) ? 9 : 18,
                       child: RefreshIndicator(
                         color: Colors.white,
                         backgroundColor: Colors.black,
@@ -169,7 +171,8 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                     controller: gestionScrollController,
                                     shrinkWrap: false,
                                     gridDelegate: GridViewTools.gridDelegate(
-                                        crossAxisCount: isDesktop(context) ? 2 : 1,
+                                        crossAxisCount:
+                                            isDesktop(context) ? 2 : 1,
                                         mainAxisExtent:
                                             isMobile(context) ? 180 : 200),
                                     itemCount: snapshot.data == null
@@ -185,8 +188,8 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                         child: GestureDetector(
                                           onTap: () {
                                             try {
-                                              Pacientes.ID_Paciente =
-                                                  snapshot.data[posicion]['ID_Pace'];
+                                              Pacientes.ID_Paciente = snapshot
+                                                  .data[posicion]['ID_Pace'];
                                               Pacientes.Paciente =
                                                   snapshot.data[posicion];
                                               setState(() {
@@ -208,14 +211,42 @@ class _GestionPacientesState extends State<GestionPacientes> {
 
                                               Toxicomanias.consultarRegistro();
 
-                                              toVisual(context, Constantes.Update);
-                                            } on Exception catch (e) {
+                                              toVisual(
+                                                  context, Constantes.Update);
+                                            } catch (e, stacktrace) {
                                               Terminal.printAlert(
-                                                  message: "ERROR - toVisual : : $e");
+                                                  message:
+                                                      "ERROR - toVisual : : $e \n\t\t: $stacktrace");
                                               Operadores.alertActivity(
-                                                  message: "ERROR - toVisual : : $e",
                                                   context: context,
-                                                  tittle: 'Error al Inicial Visual');
+                                                  tittle:
+                                                      'Error al Inicial Visual . . . ',
+                                                  message:
+                                                      "ERROR - toVisual : : $e \n\t\t: $stacktrace",
+                                                  onClose: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  onAcept: () {
+                                                    // Consulta de Antecedentes No Patológicos **** ***** ******* ****
+                                                    Eticos.consultarRegistro();
+                                                    Viviendas
+                                                        .consultarRegistro();
+                                                    Higienes
+                                                        .consultarRegistro();
+                                                    Diarios.consultarRegistro();
+                                                    Alimenticios
+                                                        .consultarRegistro();
+                                                    Limitaciones
+                                                        .consultarRegistro();
+                                                    Sustancias
+                                                        .consultarRegistro();
+
+                                                    Toxicomanias
+                                                        .consultarRegistro();
+
+                                                    toVisual(context,
+                                                        Constantes.Update);
+                                                  });
                                             }
                                           },
                                           child: Container(
@@ -232,21 +263,25 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                 Row(
                                                   children: [
                                                     CircleAvatar(
-                                                        backgroundColor: Colors.grey,
+                                                        backgroundColor:
+                                                            Colors.grey,
                                                         radius: 50,
-                                                        child: snapshot.data[posicion]
-                                                                    ['Pace_FIAT'] !=
+                                                        child: snapshot.data[
+                                                                        posicion]
+                                                                    [
+                                                                    'Pace_FIAT'] !=
                                                                 ''
                                                             ? const Icon(
                                                                 Icons.person,
                                                                 size: 75.0,
-                                                                color: Colors.black,
+                                                                color: Colors
+                                                                    .black,
                                                               )
-                                                            : Image.memory(
-                                                                base64Decode(snapshot
-                                                                            .data[
+                                                            : Image.memory(base64Decode(
+                                                                snapshot.data[
                                                                         posicion]
-                                                                    ['Pace_FIAT']))),
+                                                                    [
+                                                                    'Pace_FIAT']))),
                                                     SizedBox(
                                                       width: isMobile(context)
                                                           ? 12.0
@@ -255,9 +290,11 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                     Expanded(
                                                       child: Column(
                                                         mainAxisAlignment:
-                                                            MainAxisAlignment.start,
+                                                            MainAxisAlignment
+                                                                .start,
                                                         crossAxisAlignment:
-                                                            CrossAxisAlignment.start,
+                                                            CrossAxisAlignment
+                                                                .start,
                                                         children: [
                                                           Column(
                                                             mainAxisAlignment:
@@ -270,49 +307,50 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                               Text(
                                                                 "Número Paciente : ${snapshot.data[posicion]['ID_Pace']}",
                                                                 textAlign:
-                                                                    TextAlign.left,
-                                                                style:
-                                                                    const TextStyle(
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .bold,
-                                                                        color: Colors
-                                                                            .grey,
-                                                                        fontSize: 12),
+                                                                    TextAlign
+                                                                        .left,
+                                                                style: const TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: Colors
+                                                                        .grey,
+                                                                    fontSize:
+                                                                        12),
                                                               ),
                                                               Text(
                                                                 "${snapshot.data[posicion]['Pace_Ape_Pat']} ${snapshot.data[posicion]['Pace_Ape_Mat']} "
                                                                 "\n${snapshot.data[posicion]['Pace_Nome_PI']} ${snapshot.data[posicion]['Pace_Nome_SE']}",
-                                                                style:
-                                                                    const TextStyle(
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .bold,
-                                                                        color: Colors
-                                                                            .grey,
-                                                                        fontSize: 14),
+                                                                style: const TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: Colors
+                                                                        .grey,
+                                                                    fontSize:
+                                                                        14),
                                                               ),
                                                               Text(
                                                                 "${snapshot.data[posicion]['Pace_NSS']} ${snapshot.data[posicion]['Pace_AGRE']}",
-                                                                style:
-                                                                    const TextStyle(
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .bold,
-                                                                        color: Colors
-                                                                            .grey,
-                                                                        fontSize: 12),
+                                                                style: const TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: Colors
+                                                                        .grey,
+                                                                    fontSize:
+                                                                        12),
                                                               ),
                                                               Text(
                                                                 "Edad : ${snapshot.data[posicion]['Pace_Eda']}",
-                                                                style:
-                                                                    const TextStyle(
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .bold,
-                                                                        color: Colors
-                                                                            .grey,
-                                                                        fontSize: 12),
+                                                                style: const TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: Colors
+                                                                        .grey,
+                                                                    fontSize:
+                                                                        12),
                                                               ),
                                                             ],
                                                           ),
@@ -328,14 +366,19 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                               //   width: 1,
                                                               // ),
                                                               Expanded(
-                                                                child: IconButton(
+                                                                child:
+                                                                    IconButton(
                                                                   padding:
                                                                       const EdgeInsets
-                                                                          .all(1.0),
-                                                                  color: Colors.grey,
+                                                                              .all(
+                                                                          1.0),
+                                                                  color: Colors
+                                                                      .grey,
                                                                   icon: const Icon(
-                                                                      Icons.person),
-                                                                  onPressed: () {
+                                                                      Icons
+                                                                          .person),
+                                                                  onPressed:
+                                                                      () {
                                                                     showDialog(
                                                                         context:
                                                                             context,
@@ -346,36 +389,37 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                                               "${snapshot.data[posicion]['Pace_Ape_Pat']} "
                                                                               "${snapshot.data[posicion]['Pace_Ape_Mat']} "
                                                                               "\n${snapshot.data[posicion]['Pace_Nome_PI']} ${snapshot.data[posicion]['Pace_Nome_PI']}",
-                                                                              snapshot.data[
-                                                                                      posicion]
-                                                                                  [
-                                                                                  'Pace_FIAT'],
+                                                                              snapshot.data[posicion]['Pace_FIAT'],
                                                                               () {
-                                                                            Navigator.of(
-                                                                                    context)
-                                                                                .pop();
+                                                                            Navigator.of(context).pop();
                                                                           });
                                                                         });
                                                                   },
                                                                 ),
                                                               ),
                                                               Expanded(
-                                                                child: IconButton(
+                                                                child:
+                                                                    IconButton(
                                                                   padding:
                                                                       const EdgeInsets
-                                                                          .all(1.0),
-                                                                  color: Colors.grey,
-                                                                  icon: const Icon(Icons
-                                                                      .update_rounded),
-                                                                  onPressed: () {
+                                                                              .all(
+                                                                          1.0),
+                                                                  color: Colors
+                                                                      .grey,
+                                                                  icon: const Icon(
+                                                                      Icons
+                                                                          .update_rounded),
+                                                                  onPressed:
+                                                                      () {
                                                                     Pacientes
-                                                                            .ID_Paciente =
-                                                                        snapshot.data[
-                                                                                posicion]
-                                                                            ['ID_Pace'];
-                                                                    Pacientes.Paciente =
-                                                                        snapshot.data[
-                                                                            posicion];
+                                                                        .ID_Paciente = snapshot
+                                                                            .data[posicion]
+                                                                        [
+                                                                        'ID_Pace'];
+                                                                    Pacientes
+                                                                        .Paciente = snapshot
+                                                                            .data[
+                                                                        posicion];
                                                                     toOperaciones(
                                                                         context,
                                                                         posicion,
@@ -386,14 +430,19 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                                 ),
                                                               ),
                                                               Expanded(
-                                                                child: IconButton(
+                                                                child:
+                                                                    IconButton(
                                                                   padding:
                                                                       const EdgeInsets
-                                                                          .all(1.0),
-                                                                  color: Colors.grey,
+                                                                              .all(
+                                                                          1.0),
+                                                                  color: Colors
+                                                                      .grey,
                                                                   icon: const Icon(
-                                                                      Icons.delete),
-                                                                  onPressed: () {
+                                                                      Icons
+                                                                          .delete),
+                                                                  onPressed:
+                                                                      () {
                                                                     showDialog(
                                                                         context:
                                                                             context,
@@ -404,15 +453,10 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                                             'Eliminar registro',
                                                                             '¿Esta seguro de querer eliminar el registro?',
                                                                             () {
-                                                                              Navigator.of(
-                                                                                      context)
-                                                                                  .pop();
+                                                                              Navigator.of(context).pop();
                                                                             },
                                                                             () {
-                                                                              deleteRegister(
-                                                                                  snapshot,
-                                                                                  posicion,
-                                                                                  context);
+                                                                              deleteRegister(snapshot, posicion, context);
                                                                             },
                                                                           );
                                                                         });
@@ -424,15 +468,15 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                               //     // color: Colors.grey,
                                                               //     thickness: 4),
                                                               Expanded(
-                                                                child: IconButton(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                              .only(
-                                                                          right:
-                                                                              1.0),
-                                                                  color: Colors.grey,
-                                                                  icon: Icon(snapshot.data[
-                                                                                  posicion]
+                                                                child:
+                                                                    IconButton(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      right:
+                                                                          1.0),
+                                                                  color: Colors
+                                                                      .grey,
+                                                                  icon: Icon(snapshot.data[posicion]
                                                                               [
                                                                               'Pace_Hosp'] ==
                                                                           'Hospitalización'
@@ -440,11 +484,12 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                                           .local_hotel_sharp
                                                                       : Icons
                                                                           .desk_sharp),
-                                                                  onPressed: () {
-                                                                    String hospen =
+                                                                  onPressed:
+                                                                      () {
+                                                                    String
+                                                                        hospen =
                                                                         "";
-                                                                    if (snapshot.data[
-                                                                                posicion]
+                                                                    if (snapshot.data[posicion]
                                                                             [
                                                                             'Pace_Hosp'] ==
                                                                         'Consulta Externa') {
@@ -465,12 +510,12 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                                                   hospen,
                                                                                   snapshot.data[posicion]['ID_Pace']
                                                                                 ],
-                                                                                snapshot.data[posicion]
-                                                                                    [
-                                                                                    'ID_Pace']).then((value) => null)
-                                                                        .whenComplete(
-                                                                            () =>
-                                                                                reiniciar());
+                                                                                snapshot.data[posicion][
+                                                                                    'ID_Pace'])
+                                                                        .then((value) =>
+                                                                            null)
+                                                                        .whenComplete(() =>
+                                                                            reiniciar());
                                                                   },
                                                                 ),
                                                               ),
@@ -490,7 +535,8 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                   )
                                 : Center(
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         const CircularProgressIndicator(),
                                         const SizedBox(height: 50),
@@ -499,7 +545,8 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                               ? snapshot.error.toString()
                                               : snapshot.error.toString(),
                                           style: const TextStyle(
-                                              color: Colors.white, fontSize: 10),
+                                              color: Colors.white,
+                                              fontSize: 10),
                                         ),
                                       ],
                                     ),
@@ -524,19 +571,20 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                   _pullListRefresh().whenComplete(() =>
                                       _runConsultaSearch(
                                           enteredKeyword:
-                                          'Hospitalización')); // reiniciar(); //
+                                              'Hospitalización')); // reiniciar(); //
                                 },
                               ),
                             ),
                             Expanded(
                               child: GrandIcon(
-                                labelButton: 'Hospitalización en Otros Sectores',
+                                labelButton:
+                                    'Hospitalización en Otros Sectores',
                                 iconData: Icons.local_hotel_outlined,
                                 onPress: () {
                                   _pullListRefresh().whenComplete(() =>
                                       _runConsultaSearch(
                                           enteredKeyword:
-                                          'Otra Hospitalización')); // reiniciar(); //
+                                              'Otra Hospitalización')); // reiniciar(); //
                                 },
                               ),
                             ),
@@ -545,8 +593,8 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                 labelButton: 'Pacientes en Consulta Externa',
                                 iconData: Icons.desk_sharp,
                                 onPress: () {
-                                  _pullListRefresh().whenComplete(
-                                          () => _runConsultaSearch()); // reiniciar(); //
+                                  _pullListRefresh().whenComplete(() =>
+                                      _runConsultaSearch()); // reiniciar(); //
                                 },
                               ),
                             ),
@@ -558,7 +606,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                   _pullListRefresh().whenComplete(() =>
                                       _runConsultaSearch(
                                           enteredKeyword:
-                                          'Privado')); // reiniciar(); //
+                                              'Privado')); // reiniciar(); //
                                 },
                               ),
                             ),
@@ -570,7 +618,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                   _pullListRefresh().whenComplete(() =>
                                       _runConsultaSearch(
                                           enteredKeyword:
-                                          'Análisis')); // reiniciar(); //
+                                              'Análisis')); // reiniciar(); //
                                 },
                               ),
                             ),
@@ -582,11 +630,13 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                   _pullListRefresh().whenComplete(() =>
                                       _runConsultaSearch(
                                           enteredKeyword:
-                                          'Defunción')); // reiniciar(); //
+                                              'Defunción')); // reiniciar(); //
                                 },
                               ),
                             ),
-                            Expanded(child: CrossLine(),),
+                            Expanded(
+                              child: CrossLine(),
+                            ),
                             Expanded(
                               child: GrandIcon(
                                 labelButton: 'Todos los Pacientes . . .',
@@ -595,7 +645,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                   _pullListRefresh().whenComplete(() =>
                                       _runConsultaSearch(
                                           enteredKeyword:
-                                          '')); // reiniciar(); //
+                                              '')); // reiniciar(); //
                                 },
                               ),
                             ),
@@ -633,9 +683,9 @@ class _GestionPacientesState extends State<GestionPacientes> {
           context: context,
           tittle: 'ERROR - Inicio del Repositorio de Pacientes',
           message: "ERROR - $error : $stackTrace",
-      onAcept: () {
+          onAcept: () {
             Navigator.pop(context);
-      });
+          });
       reiniciar();
     });
     Terminal.printWarning(message: " . . . Actividad Iniciada");
@@ -805,7 +855,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
         _pullListRefresh();
       } else {
         results = Listas.listFromMap(
-          exactValue: true,
+            exactValue: true,
             lista: foundedItems!,
             keySearched: 'Pace_Hosp',
             elementSearched: Sentences.capitalize(enteredKeyword));
@@ -927,6 +977,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
     return Scaffold(
       appBar: widget.operationActivity == Constantes.Register
           ? AppBar(
+        title: Text('Registro del Paciente', style: Styles.textSyleGrowth(fontSize: 12)),
               backgroundColor: Colors.black,
               leading: IconButton(
                 icon: const Icon(
@@ -956,11 +1007,12 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                   : [],
             )
           : null,
-      body: Card(
+      body:  isDesktop(context) ? desktopView() :Card(
         color: const Color.fromARGB(255, 61, 57, 57),
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
+          child: isTablet(context) || isMobile(context) ?
+          Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               // isMobile(context) || isTablet(context)
@@ -981,12 +1033,58 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                     operationMethod(context);
                   })
             ],
-          ),
+          ) :
+          Column()
         ),
       ),
     );
   }
 
+  Container desktopView() {
+    return Container(
+      decoration: ContainerDecoration.roundedDecoration(),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Container(
+                      margin: const EdgeInsets.all(8.0),
+                      decoration: ContainerDecoration.roundedDecoration(),
+                      child: userPresentation(context)),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        flex: 8,
+                        child: Container(
+                            margin: const EdgeInsets.all(8.0),
+                            decoration: ContainerDecoration.roundedDecoration(),
+                            child: userForm(context)),
+                      ),
+                      Expanded(child: GrandButton(
+                          weigth: isMobile(context) ? 200 : 1000,
+                          labelButton: widget._operation_button,
+                          onPress: () {
+                            operationMethod(context);
+                          }))
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+        ],
+      ),
+    );
+  }
   // Operaciones de Inicio ***** ******* ********** ****
   Future<void> reiniciar() async {
     Archivos.deleteFile(filePath: Pacientes.localPath);
@@ -1463,7 +1561,98 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                 options: CarouselOptions(
                     height: isMobile(context) ? 600 : 500,
                     enableInfiniteScroll: false,
-                    viewportFraction: 1.0))
+                    viewportFraction: 1.0)) :
+        isDesktop(context) ?
+        Column(
+          children: [
+            Expanded(
+              flex: 5,
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 4,
+                    child: CircleAvatar(
+                      backgroundColor: const Color.fromARGB(255, 27, 32, 30),
+                      radius: 150,
+                      // ignore: unnecessary_null_comparison
+                      child: img != ""
+                          ? ClipOval(
+                          child: Image.memory(
+                            base64Decode(img),
+                            width: 250,
+                            height: 250,
+                            fit: BoxFit.cover,
+                          ))
+                          : const ClipOval(child: Icon(Icons.person)),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary: Colores.backgroundWidget,
+                                  onPrimary: Colors.grey,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20)),
+                                  minimumSize: const Size(75, 75)),
+                              onPressed: () {
+                                choiseFromCamara();
+                              },
+                              child: const Icon(Icons.camera)),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary: Colores.backgroundWidget,
+                                  onPrimary: Colors.grey,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50)),
+                                  minimumSize: const Size(50, 50)),
+                              onPressed: () {
+                                toBaseImage();
+                              },
+                              child: const Icon(Icons.person)),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary: Colores.backgroundWidget,
+                                  onPrimary: Colors.grey,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20)),
+                                  minimumSize: const Size(75, 75)),
+                              onPressed: () {
+                                choiseFromDirectory();
+                              },
+                              child: const Icon(Icons.file_open)),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(child: CrossLine()),
+            Expanded(
+              flex: 7,
+              child: SingleChildScrollView(
+                controller: ScrollController(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: component(context),
+                ),
+              ),
+            ),
+          ],
+        )
             : Row(
                 children: [
                   CircleAvatar(

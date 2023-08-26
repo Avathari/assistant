@@ -235,61 +235,111 @@ class _OperacionesHospitalizacionesState
         ],
       ),
       CrossLine(),
-      Row(
-        children: [
-          Expanded(
-            child: EditTextArea(
-              keyBoardType: TextInputType.number,
-              inputFormat: MaskTextInputFormatter(
-                  mask: '####-##-##',
-                  filter: {"#": RegExp(r'[0-9]')},
-                  type: MaskAutoCompletionType.lazy),
-              labelEditText: 'Fecha de Ingreso',
-              textController: fechaIngresoTextController,
-              onChange: (value) {
-                setState(() {
-                  Valores.fechaIngresoHospitalario =
-                      fechaIngresoTextController.text;
-                  diasEstanciaTextController.text =
-                      Valores.diasEstancia.toString();
-                });
-              },
-              withShowOption: true,
-              selection: true,
-              onSelected: () {
-                fechaIngresoTextController.text =
-                    Calendarios.today(format: 'yyyy-MM-dd');
-                setState(() {
-                  Valores.fechaIngresoHospitalario =
-                      fechaIngresoTextController.text;
-                  diasEstanciaTextController.text =
-                      Valores.diasEstancia.toString();
-                });
-              },
-              numOfLines: 1,
+      if (isMobile(context))
+        EditTextArea(
+          keyBoardType: TextInputType.number,
+          inputFormat: MaskTextInputFormatter(
+              mask: '####-##-##',
+              filter: {"#": RegExp(r'[0-9]')},
+              type: MaskAutoCompletionType.lazy),
+          labelEditText: 'Fecha de Ingreso',
+          textController: fechaIngresoTextController,
+          onChange: (value) {
+            setState(() {
+              Valores.fechaIngresoHospitalario =
+                  fechaIngresoTextController.text;
+              diasEstanciaTextController.text = Valores.diasEstancia.toString();
+            });
+          },
+          withShowOption: true,
+          selection: true,
+          onSelected: () {
+            fechaIngresoTextController.text =
+                Calendarios.today(format: 'yyyy-MM-dd');
+            setState(() {
+              Valores.fechaIngresoHospitalario =
+                  fechaIngresoTextController.text;
+              diasEstanciaTextController.text = Valores.diasEstancia.toString();
+            });
+          },
+          numOfLines: 1,
+        ),
+      if (isMobile(context))
+        EditTextArea(
+          keyBoardType: TextInputType.number,
+          inputFormat: MaskTextInputFormatter(
+              mask: '####-##-##',
+              filter: {"#": RegExp(r'[0-9]')},
+              type: MaskAutoCompletionType.lazy),
+          labelEditText: 'Fecha de Egreso',
+          textController: fechaEgresoTextController,
+          numOfLines: 1,
+          withShowOption: true,
+          selection: true,
+          onSelected: () {
+            fechaEgresoTextController.text =
+                Calendarios.today(format: 'yyyy-MM-dd');
+          },
+        ),
+      if (isTablet(context))
+        Row(
+          children: [
+            Expanded(
+              child: EditTextArea(
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(
+                    mask: '####-##-##',
+                    filter: {"#": RegExp(r'[0-9]')},
+                    type: MaskAutoCompletionType.lazy),
+                labelEditText: 'Fecha de Ingreso',
+                textController: fechaIngresoTextController,
+                onChange: (value) {
+                  setState(() {
+                    Valores.fechaIngresoHospitalario =
+                        fechaIngresoTextController.text;
+                    diasEstanciaTextController.text =
+                        Valores.diasEstancia.toString();
+                  });
+                },
+                withShowOption: true,
+                selection: true,
+                onSelected: () {
+                  fechaIngresoTextController.text =
+                      Calendarios.today(format: 'yyyy-MM-dd');
+                  setState(() {
+                    Valores.fechaIngresoHospitalario =
+                        fechaIngresoTextController.text;
+                    diasEstanciaTextController.text =
+                        Valores.diasEstancia.toString();
+                  });
+                },
+                numOfLines: 1,
+              ),
             ),
-          ),
-          Expanded(
-            child: EditTextArea(
-              keyBoardType: TextInputType.number,
-              inputFormat: MaskTextInputFormatter(
-                  mask: '####-##-##',
-                  filter: {"#": RegExp(r'[0-9]')},
-                  type: MaskAutoCompletionType.lazy),
-              labelEditText: 'Fecha de Egreso',
-              textController: fechaEgresoTextController,
-              numOfLines: 1,
-              withShowOption: true,
-              selection: true,
-              onSelected: () {
-                fechaEgresoTextController.text =
-                    Calendarios.today(format: 'yyyy-MM-dd');
-              },
+            Expanded(
+              child: EditTextArea(
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(
+                    mask: '####-##-##',
+                    filter: {"#": RegExp(r'[0-9]')},
+                    type: MaskAutoCompletionType.lazy),
+                labelEditText: 'Fecha de Egreso',
+                textController: fechaEgresoTextController,
+                numOfLines: 1,
+                withShowOption: true,
+                selection: true,
+                onSelected: () {
+                  fechaEgresoTextController.text =
+                      Calendarios.today(format: 'yyyy-MM-dd');
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
+
+      CrossLine(
+        thickness: 4,
       ),
-      // CrossLine(),
       //
       Row(
         children: [
@@ -677,12 +727,19 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
                 consultQuery!, Pacientes.ID_Paciente)
             .then((value) {
           setState(() {
-            print(" . . . Buscando items \n $value");
             foundedItems = value;
+            Operadores.notifyActivity(context: context, message: "$value");
+          });
+        }).onError((error, stackTrace) {
+          Operadores.alertActivity(
+              context: context,
+              tittle: "Error al Consultar los registros",
+              message: "ERROR - $error : : $stackTrace", onAcept: () {
+                Navigator.of(context).pop();
           });
         });
       } else {
-        print(" . . . Hospitalizaciones array iniciado");
+        // print(" . . . Hospitalizaciones array iniciado");
         foundedItems = Constantes.dummyArray;
       }
     }
