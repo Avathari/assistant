@@ -149,7 +149,6 @@ class _PresentacionPacientesState extends State<PresentacionPacientes> {
                 style: const TextStyle(
                   fontSize: 12,
                   color: Colors.white,
-
                 ),
               ),
               Text(
@@ -161,13 +160,13 @@ class _PresentacionPacientesState extends State<PresentacionPacientes> {
                 ),
               ),
                SizedBox(
-                height: 20,
+                height: isMobile(context) ? 12: 20,
                 child: CrossLine(),
               ),
               Text(
                 "Estado actual: ${Pacientes.Paciente['Pace_Stat']}",
                 style: const TextStyle(
-                  fontSize: 10,
+                  fontSize: 8,
                   color: Colors.white,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -175,7 +174,7 @@ class _PresentacionPacientesState extends State<PresentacionPacientes> {
               Text(
                 "Turno de Atención: ${Pacientes.Paciente['Pace_Turo']}",
                 style: const TextStyle(
-                  fontSize: 10,
+                  fontSize: 8,
                   color: Colors.white,
                   overflow: TextOverflow.ellipsis,
                 ),

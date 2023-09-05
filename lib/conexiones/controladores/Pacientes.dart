@@ -6058,7 +6058,9 @@ class Auxiliares {
       "Velocidad de Sedimentación Globular",
       "Proteina C Reactiva",
       "Factor Reumatoide",
-      "Anticuerpo Antipéptido Citrulinado"
+      "Anticuerpo Antipéptido Citrulinado",
+      "Fibrinógeno",
+      "Dímero D",
     ],
     //
     Categorias[9]: [
@@ -6103,7 +6105,14 @@ class Auxiliares {
       "Mucina Urinaria", // -/+/++/+++
       "Células Renales Urinarias", // -/+/++/+++
     ],
-    Categorias[12]: [""],
+    Categorias[12]: ["Volumen de Muestra",
+      "Creatinina en Orina de 24 Horas",
+      "Proteinas en Orina de 24 Horas",
+      "Albúmina en Orina",
+      "Proteínas Totales en Orina",
+      "Creatinina en Orina",
+      "",
+    ],
     Categorias[13]: [""],
     Categorias[14]: [""],
     Categorias[15]: [
@@ -6304,7 +6313,7 @@ class Auxiliares {
     Categorias[9]: ["", "mmHg", "cmH20", "mmol/L", "%"],
     Categorias[10]: ["", "mmHg", "cmH20", "mmol/L", "%"],
     Categorias[11]: [""],
-    Categorias[12]: [""],
+    Categorias[12]: ["mL", "mg/dL","mL/min","mg/24hr","g/dL","NA","","","","","","",],
     Categorias[13]: [""],
     Categorias[14]: [""],
     Categorias[15]: [""],
@@ -6318,8 +6327,8 @@ class Auxiliares {
       "",
     ],
     Categorias[21]: ["mcg/dl", "ng/mL", "µg/dL", "%", "mg/dL"],
-    Categorias[22]: ["pg/mL", "UI/mL", "", "", ""],
-    Categorias[23]: ["pg/mL", ""],
+    Categorias[22]: ["pg/mL", "UI/mL", "IU/mL", "mg/dL", ""],
+    Categorias[23]: ["pg/mL", "ng/dL", ""],
     Categorias[24]: [""],
     Categorias[25]: [""],
   };
@@ -7713,6 +7722,10 @@ class Situaciones {
 
   static List<String> actualDiagno = Opciones.horarios();
 
+  static var dispositivos = [
+
+  ];
+
   static void ultimoRegistro() {
     Actividades.consultarId(Databases.siteground_database_reghosp,
             situacion['consultLastQuery'], Pacientes.ID_Paciente)
@@ -7793,56 +7806,73 @@ class Situaciones {
         "COLLATE utf8_unicode_ci;",
     "showTables": "SHOW tables;",
     "dropDatabase": "DROP DATABASE bd_reghosp",
-    "describeTable": "DESCRIBE siti_pace;",
-    "showColumns": "SHOW columns FROM siti_pace",
+    "describeTable": "DESCRIBE pace_sita;",
+    "showColumns": "SHOW columns FROM pace_sita",
     "showInformation":
-        "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'siti_pace'",
-    "createQuery": """ CREATE TABLE siti_pace (
-                    ID_Siti int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                    ID_Pace int(11) NOT NULL,
-                    ID_Hosp int(11) NOT NULL,
-                    Hosp_Siti varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-                    Disp_Oxigen varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-                    CVP tinyint(1) NOT NULL,
-                    CVLP tinyint(1) NOT NULL,
-                    CVC tinyint(1) NOT NULL,
-                    MAH tinyint(1) NOT NULL,
-                    S_Foley tinyint(1) NOT NULL,
-                    SNG tinyint(1) NOT NULL,
-                    SOG tinyint(1) NOT NULL,
-                    Drenaje tinyint(1) NOT NULL,
-                    Pleuro_Vac tinyint(1) NOT NULL,
-                    Colostomia tinyint(1) NOT NULL,
-                    Gastrostomia tinyint(4) NOT NULL,
-                    Dialisis_Peritoneal tinyint(4) NOT NULL
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 
-                COLLATE=utf8_unicode_ci 
-                COMMENT='Tabla de Registro de Situacion Hospitalaria.';
-            """,
-    "truncateQuery": "TRUNCATE siti_pace",
-    "dropQuery": "DROP TABLE siti_pace",
-    "consultQuery": "SELECT * FROM siti_pace WHERE ID_Hosp = ?",
-    "consultPadecimientoQuery": "SELECT * FROM siti_pace WHERE ID_Hosp = ? "
+        "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_sita'",
+    "createQuery": """
+          CREATE TABLE pace_sita (
+                 ID_Sita INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                  ID_Pace INT NOT NULL,
+                  ID_Hosp INT NOT NULL,
+                  Sita_Disp VARCHAR(100) NOT NULL,
+                  Sita_Fecha DATE NOT NULL,
+                  Sita_Obser VARCHAR(100) NOT NULL,
+                  Sita_Otros VARCHAR(100) NOT NULL,
+                   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de Registro de Situacion Hospitalaria.';
+    """,
+    // "createQuery": """ CREATE TABLE pace_sita (
+    //                 ID_Siti int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    //                 ID_Pace int(11) NOT NULL,
+    //                 ID_Hosp int(11) NOT NULL,
+    //                 Hosp_Siti varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+    //                 Disp_Oxigen varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+    //                 CVP tinyint(1) NOT NULL,
+    //                 CVLP tinyint(1) NOT NULL,
+    //                 CVC tinyint(1) NOT NULL,
+    //                 MAH tinyint(1) NOT NULL,
+    //                 S_Foley tinyint(1) NOT NULL,
+    //                 SNG tinyint(1) NOT NULL,
+    //                 SOG tinyint(1) NOT NULL,
+    //                 Drenaje tinyint(1) NOT NULL,
+    //                 Pleuro_Vac tinyint(1) NOT NULL,
+    //                 Colostomia tinyint(1) NOT NULL,
+    //                 Gastrostomia tinyint(4) NOT NULL,
+    //                 Dialisis_Peritoneal tinyint(4) NOT NULL
+    //             ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+    //             COLLATE=utf8_unicode_ci
+    //             COMMENT='Tabla de Registro de Situacion Hospitalaria.';
+    //         """,
+    "truncateQuery": "TRUNCATE pace_sita",
+    "dropQuery": "DROP TABLE pace_sita",
+    "consultQuery": "SELECT * FROM pace_sita WHERE ID_Hosp = ?",
+    "consultPadecimientoQuery": "SELECT * FROM pace_sita WHERE ID_Hosp = ? "
         "AND TipoAnalisis = 'Padecimiento Actual'",
-    "consultIdQuery": "SELECT * FROM siti_pace WHERE ID_Pace = ?",
-    "consultByIdPrimaryQuery": "SELECT * FROM siti_pace WHERE ID_Hosp = ?",
-    "consultAllIdsQuery": "SELECT ID_Pace FROM siti_pace",
+    "consultIdQuery": "SELECT * FROM pace_sita WHERE ID_Pace = ?",
+    "consultByIdPrimaryQuery": "SELECT * FROM pace_sita WHERE ID_Hosp = ?",
+    "consultAllIdsQuery": "SELECT ID_Pace FROM pace_sita",
     "consultLastQuery":
-        "SELECT * FROM siti_pace WHERE ID_Pace = ? ORDER BY ID_Hosp ASC",
-    "consultByName": "SELECT * FROM siti_pace WHERE Pace_APP_DEG LIKE '%",
-    "registerQuery": "INSERT INTO siti_pace (ID_Pace, ID_Hosp, "
-        "Hosp_Siti, Disp_Oxigen, CVP, CVLP, CVC, MAH, "
-        "S_Foley, SNG, SOG, Drenaje, Pleuro_Vac, "
-        "Colostomia, Gastrostomia, Dialisis_Peritoneal) "
-        "VALUES (?,?,?,?,?,?,?,?,?,?,?,"
-        "?,?,?,?,?)",
-    "updateQuery": "UPDATE siti_pace "
-        "SET ID_Pace = ?, ID_Hosp = ?, Hosp_Siti = ?, "
-        "Disp_Oxigen = ?, CVP = ?, CVLP = ?, CVC = ?, MAH = ?, S_Foley = ?, "
-        "SNG = ?, SOG = ?, Drenaje = ?, Pleuro_Vac = ?, Colostomia = ?, "
-        "Gastrostomia = ?, Dialisis_Peritoneal = ? "
-        "WHERE ID_Hosp = ?",
-    "deleteQuery": "DELETE FROM siti_pace WHERE ID_Hosp = ?",
+        "SELECT * FROM pace_sita WHERE ID_Pace = ? ORDER BY ID_Hosp ASC",
+    "consultByName": "SELECT * FROM pace_sita WHERE Pace_APP_DEG LIKE '%",
+    "registerQuery": "INSERT INTO pace_sita (ID_Sita, ID_Pace, ID_Hosp, "
+  "Sita_Disp, Sita_Fecha, Sita_Obser, Sita_Otros) "
+        "VALUES (?,?,?,?,?,?,?)",
+  // "registerQuery": "INSERT INTO pace_sita (ID_Pace, ID_Hosp, "
+  // "Hosp_Siti, Disp_Oxigen, CVP, CVLP, CVC, MAH, "
+  // "S_Foley, SNG, SOG, Drenaje, Pleuro_Vac, "
+  // "Colostomia, Gastrostomia, Dialisis_Peritoneal) "
+  // "VALUES (?,?,?,?,?,?,?,?,?,?,?,"
+  // "?,?,?,?,?)",
+    "updateQuery": "UPDATE pace_sita SET "
+  "ID_Sita = ?, ID_Pace = ?,  ID_Hosp = ?, "
+    "Sita_Disp = ?, Sita_Fecha = ?, Sita_Obser = ?, Sita_Otros WHERE ID_Hosp = ?", 
+    // "updateQuery": "UPDATE pace_sita "
+    //     "SET ID_Pace = ?, ID_Hosp = ?, Hosp_Siti = ?, "
+    //     "Disp_Oxigen = ?, CVP = ?, CVLP = ?, CVC = ?, MAH = ?, S_Foley = ?, "
+    //     "SNG = ?, SOG = ?, Drenaje = ?, Pleuro_Vac = ?, Colostomia = ?, "
+    //     "Gastrostomia = ?, Dialisis_Peritoneal = ? "
+    //     "WHERE ID_Hosp = ?",
+    "deleteQuery": "DELETE FROM pace_sita WHERE ID_Hosp = ?",
     "situacionColumns": [
       "ID_Pace",
     ],
@@ -7856,9 +7886,9 @@ class Situaciones {
       "Total_Administradores",
     ],
     "situaciontadistics": "SELECT "
-        "(SELECT IFNULL(AVG('Pace_SV_tas'), 0) FROM siti_pace WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAS,"
-        "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM siti_pace WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
-        "(SELECT IFNULL(count(*), 0) FROM siti_pace WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
+        "(SELECT IFNULL(AVG('Pace_SV_tas'), 0) FROM pace_sita WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAS,"
+        "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM pace_sita WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_sita WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
   };
 }
 

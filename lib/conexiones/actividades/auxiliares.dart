@@ -975,6 +975,21 @@ class Datos {
             tittle: "Portapapeles . . . ",
             message: "Copiado en Portapapeles . . . \n$text"));
   }
+
+  static bool isInnerValue({required double value, required int lim}) {
+    if (value< lim) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  static bool isUpperValue({required double value, required int lim}) {
+    if (value>lim) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
 
 class Terminal {

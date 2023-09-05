@@ -49,6 +49,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
           leading: isDesktop(context)
               ? IconButton(
                   icon: const Icon(
+                    color: Colors.white,
                     Icons.arrow_back,
                   ),
                   tooltip: 'Regresar',
@@ -66,6 +67,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
             isMobile(context) ?
             Container() : IconButton(
         icon: const Icon(
+          color: Colors.white,
           Icons.account_tree,
         ),
         tooltip: 'Revisiones . . . ',
@@ -79,6 +81,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
             IconButton(
               icon: const Icon(
                 Icons.remove_from_queue,
+                color: Colors.white,
               ),
               tooltip: 'Refrescar . . . ',
               onPressed: () async {
@@ -88,6 +91,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
             IconButton(
               icon: const Icon(
                 Icons.system_update_alt,
+                color: Colors.white,
               ),
               tooltip: 'Cargando . . . ',
               onPressed: () async {
@@ -141,7 +145,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
             //           }));
             //     }),
             IconButton(
-                icon: const Icon(Icons.person),
+                icon: const Icon(Icons.person,color: Colors.white,),
                 tooltip: '',
                 onPressed: () {
                   showDialog(
@@ -207,24 +211,28 @@ class _VisualPacientesState extends State<VisualPacientes> {
             topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
       ),
       backgroundColor: Colores.backgroundWidget,
-      child: ListView(
-        controller: scrollListController,
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.black),
-              child: PresentacionPacientes()),
-          Container(
-            decoration: const BoxDecoration(color: Theming.terciaryColor),
-            child: SingleChildScrollView(
-              controller: scrollController,
-              child: Column(
-                children: userActivities(context),
+      child: Column(
+        children: [
+          const Expanded(
+            flex: 3,
+            child: DrawerHeader(
+                decoration: BoxDecoration(color: Colors.black),
+                child: PresentacionPacientes()),
+          ),
+          Expanded(
+            flex: 8,
+            child: Container(
+              decoration: const BoxDecoration(color: Theming.terciaryColor),
+              child: SingleChildScrollView(
+                controller: scrollController,
+                child: Column(
+                  children: userActivities(context),
+                ),
               ),
             ),
           ),
         ],
-      ),
+      )
     );
   }
 

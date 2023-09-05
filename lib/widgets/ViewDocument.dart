@@ -53,7 +53,7 @@ class _ViewDocumentState extends State<ViewDocument> {
             backgroundColor: Colors.white,
           ),
           onPressed: () {
-            Clipboard.setData(ClipboardData(text: details.selectedText));
+            // Clipboard.setData(ClipboardData(text: details.selectedText));
             print(
                 'Text copied to clipboard: ' + details.selectedText.toString());
             _pdfViewerController.clearSelection();

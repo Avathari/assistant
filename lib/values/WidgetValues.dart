@@ -16,7 +16,7 @@ class Indices {
 class Theming {
   static const Color primaryColor = Color.fromARGB(255, 0, 0, 0);
   static const Color secondaryColor = Color(0xFF2A2D3E);
-  static const Color terciaryColor = Color.fromARGB(255, 63, 15, 4);
+  static const Color terciaryColor = Color.fromARGB(255, 51, 48, 48);
   static const Color textColor = Colors.grey;
   static const Color bdColor = Color.fromARGB(255, 66, 65, 65);
 }
@@ -127,7 +127,7 @@ class SpinnersValues {
 
   static double maximumWidth({required BuildContext context}) {
     return isDesktop(context)
-        ? 200
+        ? 400
         : isTabletAndDesktop(context)
             ? 140
             : isTablet(context)

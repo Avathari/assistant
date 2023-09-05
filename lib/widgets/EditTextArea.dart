@@ -38,7 +38,7 @@ class EditTextArea extends StatefulWidget {
     this.obscureText = false,
     this.prefixIcon = false,
     this.isObscure = false,
-    this.fontSize = 12,
+    this.fontSize = 8, // 12
     this.numOfLines = 15,
     this.limitOfChars = 0,
     this.selection = false,
@@ -95,6 +95,7 @@ class _EditTextAreaState extends State<EditTextArea> {
                 ),
                 labelText: widget.labelEditText,
                 labelStyle: const TextStyle(
+                  fontSize: 10,
                   color: Colors.white,
                 ),
                 contentPadding: const EdgeInsets.all(20),

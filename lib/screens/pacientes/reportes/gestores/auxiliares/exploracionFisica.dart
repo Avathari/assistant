@@ -66,58 +66,8 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                                 })),
                             inputFormat: MaskTextInputFormatter()),
                       ),
-                      Expanded(
-                        flex: 1,
-                        child: SingleChildScrollView(
-                          controller: scrollSignoController,
-                          child: Column(
-                            children: [
-                              GrandButton(
-                                labelButton: "Vitales",
-                                onPress: () {
-                                  asignarVitales(indice: 0);
-                                },
-                              ),
-                              GrandButton(
-                                labelButton: "Bioconstantes",
-                                onPress: () {
-                                  asignarVitales(indice: 1);
-                                },
-                              ),
-                              GrandButton(
-                                labelButton: "Signos vitales",
-                                onPress: () {
-                                  asignarVitales(indice: 2);
-                                },
-                              ),
-                              GrandButton(
-                                labelButton: "Medidas antropométricas",
-                                onPress: () {
-                                  asignarVitales(indice: 3);
-                                },
-                              ),
-                              GrandButton(
-                                labelButton: "Asociado a Riesgo",
-                                onPress: () {
-                                  asignarVitales(indice: 4);
-                                },
-                              ),
-                              GrandButton(
-                                labelButton: "Antropometría infantil",
-                                onPress: () {
-                                  asignarVitales(indice: 5);
-                                },
-                              ),
-                              GrandButton(
-                                labelButton: "Vitales Resumido",
-                                onPress: () {
-                                  asignarVitales(indice: 6);
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                  isMobile(context) ? mobileSignalOptions() : otherSignalOptions()
+
                     ],
                   ),
                 ),
@@ -213,71 +163,7 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                   ],
                 ),
                     )
-                    : Expanded(
-                        flex: 1,
-                        child: SingleChildScrollView(
-                          controller: scrollExpoController,
-                          child: Column(
-                            children: [
-                              GrandButton(
-                                labelButton: "Exploración física",
-                                onPress: () {
-                                  asignarExploracion(indice: 1);
-                                },
-                                onLongPress: () {
-                                  Operadores.openDialog(context: context, chyldrim: const Semiologicos(), onAction: () {
-                                    setState(() {
-                                      expoTextController.text = Exploracion.exploracionGeneral;
-                                    });
-                                  });
-                                },
-                              ),
-                              GrandButton(
-                                labelButton: "Exploración corta",
-                                onPress: () {
-                                  asignarExploracion(indice: 4);
-                                },
-                              ),
-                              GrandButton(
-                                labelButton: "Exploración física extensa",
-                                onPress: () {
-                                  asignarExploracion(indice: 2);
-                                },
-                              ),
-                              GrandButton(
-                                labelButton: "Exploración física extensa",
-                                onPress: () {
-                                  asignarExploracion(indice: 2);
-                                },
-                              ),
-                              GrandButton(
-                                labelButton: "Analisis de terapia intensiva",
-                                onPress: () {
-                                  Operadores.openDialog(
-                                      context: context,
-                                      chyldrim: TerapiasItems(),
-                                      onAction: () {
-                                        setState(() {
-                                          expoTextController.text =
-                                              Reportes.exploracionFisica;
-                                          Reportes.reportes[
-                                                  'Exploracion_Fisica'] =
-                                              Reportes.exploracionFisica;
-                                        });
-                                      });
-                                  // asignarExploracion(indice: 3);
-                                },
-                              ),
-                              GrandButton(
-                                labelButton: "Sin hallazgos relevantes",
-                                onPress: () {
-                                  asignarExploracion(indice: 0);
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                    : isMobile(context) ? mobileExploreOptions() : otherExploreOptions()
               ],
             ),
           ),
@@ -300,6 +186,264 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
       Reportes.reportes['Exploracion_Fisica'] = "${expoTextController.text}.";
       Reportes.exploracionFisica = expoTextController.text;
     });
+  }
+
+  otherExploreOptions() {
+    return Expanded(
+      flex: 1,
+      child: SingleChildScrollView(
+        controller: scrollExpoController,
+        child: Column(
+          children: [
+            GrandButton(
+              labelButton: "Exploración física",
+              onPress: () {
+                asignarExploracion(indice: 1);
+              },
+              onLongPress: () {
+                Operadores.openDialog(context: context, chyldrim: const Semiologicos(), onAction: () {
+                  setState(() {
+                    expoTextController.text = Exploracion.exploracionGeneral;
+                  });
+                });
+              },
+            ),
+            GrandButton(
+              labelButton: "Exploración corta",
+              onPress: () {
+                asignarExploracion(indice: 4);
+              },
+            ),
+            GrandButton(
+              labelButton: "Exploración física extensa",
+              onPress: () {
+                asignarExploracion(indice: 2);
+              },
+            ),
+            GrandButton(
+              labelButton: "Exploración física extensa",
+              onPress: () {
+                asignarExploracion(indice: 2);
+              },
+            ),
+            GrandButton(
+              labelButton: "Analisis de terapia intensiva",
+              onPress: () {
+                Operadores.openDialog(
+                    context: context,
+                    chyldrim: TerapiasItems(),
+                    onAction: () {
+                      setState(() {
+                        expoTextController.text =
+                            Reportes.exploracionFisica;
+                        Reportes.reportes[
+                        'Exploracion_Fisica'] =
+                            Reportes.exploracionFisica;
+                      });
+                    });
+                // asignarExploracion(indice: 3);
+              },
+            ),
+            GrandButton(
+              labelButton: "Sin hallazgos relevantes",
+              onPress: () {
+                asignarExploracion(indice: 0);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  mobileExploreOptions() {
+    return Expanded(
+      flex: 1,
+      child: SingleChildScrollView(
+        controller: scrollExpoController,
+        child: Column(
+          children: [
+            GrandIcon(
+              iconData: Icons.explore,
+              labelButton: "Exploración física",
+              onPress: () {
+                asignarExploracion(indice: 1);
+              },
+              onLongPress: () {
+                Operadores.openDialog(context: context, chyldrim: const Semiologicos(), onAction: () {
+                  setState(() {
+                    expoTextController.text = Exploracion.exploracionGeneral;
+                  });
+                });
+              },
+            ),
+            GrandIcon(
+              iconData: Icons.data_exploration,
+              labelButton: "Exploración corta",
+              onPress: () {
+                asignarExploracion(indice: 4);
+              },
+            ),
+            GrandIcon(
+              iconData: Icons.explore_outlined,
+              labelButton: "Exploración física extensa",
+              onPress: () {
+                asignarExploracion(indice: 2);
+              },
+            ),
+            GrandIcon(
+              iconData: Icons.travel_explore,
+              labelButton: "Exploración física extensa",
+              onPress: () {
+                asignarExploracion(indice: 2);
+              },
+            ),
+            GrandIcon(
+              iconData: Icons.travel_explore_sharp,
+              labelButton: "Analisis de terapia intensiva",
+              onPress: () {
+                Operadores.openDialog(
+                    context: context,
+                    chyldrim: TerapiasItems(),
+                    onAction: () {
+                      setState(() {
+                        expoTextController.text =
+                            Reportes.exploracionFisica;
+                        Reportes.reportes[
+                        'Exploracion_Fisica'] =
+                            Reportes.exploracionFisica;
+                      });
+                    });
+                // asignarExploracion(indice: 3);
+              },
+            ),
+            GrandIcon(
+              labelButton: "Sin hallazgos relevantes",
+              onPress: () {
+                asignarExploracion(indice: 0);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  otherSignalOptions() {
+    return Expanded(
+      flex: 1,
+      child: SingleChildScrollView(
+        controller: scrollSignoController,
+        child: Column(
+          children: [
+            GrandButton(
+              labelButton: "Vitales",
+              onPress: () {
+                asignarVitales(indice: 0);
+              },
+            ),
+            GrandButton(
+              labelButton: "Bioconstantes",
+              onPress: () {
+                asignarVitales(indice: 1);
+              },
+            ),
+            GrandButton(
+              labelButton: "Signos vitales",
+              onPress: () {
+                asignarVitales(indice: 2);
+              },
+            ),
+            GrandButton(
+              labelButton: "Medidas antropométricas",
+              onPress: () {
+                asignarVitales(indice: 3);
+              },
+            ),
+            GrandButton(
+              labelButton: "Asociado a Riesgo",
+              onPress: () {
+                asignarVitales(indice: 4);
+              },
+            ),
+            GrandButton(
+              labelButton: "Antropometría infantil",
+              onPress: () {
+                asignarVitales(indice: 5);
+              },
+            ),
+            GrandButton(
+              labelButton: "Vitales Resumido",
+              onPress: () {
+                asignarVitales(indice: 6);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  mobileSignalOptions() {
+    return Expanded(
+      flex: 1,
+      child: SingleChildScrollView(
+        controller: scrollSignoController,
+        child: Column(
+          children: [
+            GrandIcon(
+              iconData: Icons.safety_divider,
+              labelButton: "Vitales",
+              onPress: () {
+                asignarVitales(indice: 0);
+              },
+            ),
+            GrandIcon(
+              iconData: Icons.monitor_weight_outlined,
+              labelButton: "Bioconstantes",
+              onPress: () {
+                asignarVitales(indice: 1);
+              },
+            ),
+            GrandIcon(
+              iconData: Icons.monitor_heart_outlined,
+              labelButton: "Signos vitales",
+              onPress: () {
+                asignarVitales(indice: 2);
+              },
+            ),
+            GrandIcon(
+              iconData: Icons.mic_external_on,
+              labelButton: "Medidas antropométricas",
+              onPress: () {
+                asignarVitales(indice: 3);
+              },
+            ),
+            GrandIcon(
+              iconData: Icons.align_horizontal_right_sharp,
+              labelButton: "Asociado a Riesgo",
+              onPress: () {
+                asignarVitales(indice: 4);
+              },
+            ),
+            GrandIcon(
+              iconData: Icons.line_weight,
+              labelButton: "Antropometría infantil",
+              onPress: () {
+                asignarVitales(indice: 5);
+              },
+            ),
+            GrandIcon(
+              iconData: Icons.accessibility,
+              labelButton: "Vitales Resumido",
+              onPress: () {
+                asignarVitales(indice: 6);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

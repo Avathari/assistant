@@ -470,6 +470,10 @@ class _RevisionesState extends State<Revisiones> {
                       Datos.portapapeles(
                           context: context, text: Auxiliares.historial());
                     },
+                        onLongPress: () {
+                          Datos.portapapeles(
+                              context: context, text: Auxiliares.historial(esAbreviado: true));
+                        },
                   )),
                   Expanded(
                       child: GrandIcon(
@@ -477,7 +481,11 @@ class _RevisionesState extends State<Revisiones> {
                         labelButton: "Laboratorios",
                         onPress: () {
                           Datos.portapapeles(
-                              context: context, text: Auxiliares.historial(esAbreviado: true));
+                              context: context, text: Auxiliares.getUltimo());
+                        },
+                        onLongPress: () {
+                          Datos.portapapeles(
+                              context: context, text: Auxiliares.getUltimo(esAbreviado: true));
                         },
                       )),
                 ],

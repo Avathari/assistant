@@ -2762,6 +2762,74 @@ class Valores {
 }
 
 class Valorados {
+  static String get mSOFA {
+    String resultado = "";
+    int resp = 0, plat = 0,hig = 0, card = 0, glasg = 0, ren = 0;
+    // ***************************************************
+    if (Valores.PAFI != null) {
+      if (Datos.isMiddleValue(value: Valores.PAFI, min: 300, max: 400)) {
+        resp = 1;
+      } else if (Datos.isMiddleValue(value: Valores.PAFI, min: 200, max: 300)) {
+        resp = 2;
+      } else if (Datos.isMiddleValue(value: Valores.PAFI, min: 100, max: 200)) {
+        resp = 3;
+      } else if (Datos.isInnerValue(value: Valores.PAFI, lim: 200)) {
+        resp = 2;
+      } else {
+        resp = 0;
+      }
+    } else if (Valores.SAFI != null) {
+      if (Datos.isMiddleValue(value: Valores.SAFI, min: 221, max: 301)) {
+        resp = 1;
+      } else if (Datos.isMiddleValue(value: Valores.SAFI, min: 142, max: 220)) {
+        resp = 2;
+      } else if (Datos.isMiddleValue(value: Valores.SAFI, min: 67, max: 141)) {
+        resp = 3;
+      } else if (Datos.isInnerValue(value: Valores.SAFI, lim: 67)) {
+        resp = 2;
+      } else {
+        resp = 0;
+      }
+    }
+    // ***************************************************
+    if (Datos.isMiddleValue(value: Valores.plaquetas, min: 150, max: 300)) {
+      plat = 1;
+    } else if (Datos.isMiddleValue(value: Valores.plaquetas, min: 100, max: 150)) {
+      plat = 2;
+    } else if (Datos.isMiddleValue(value: Valores.plaquetas, min: 50, max: 100)) {
+      plat = 3;
+    } else if (Datos.isInnerValue(value: Valores.plaquetas!, lim: 20)) {
+      plat = 2;
+    } else {
+      plat = 0;
+    }
+    // ***************************************************
+    if (Datos.isMiddleValue(value: Valores.bilirrubinasTotales, min: 1.2, max: 1.9)) {
+      hig = 1;
+    } else if (Datos.isMiddleValue(value: Valores.bilirrubinasTotales, min: 2.0, max: 5.9)) {
+      hig = 2;
+    } else if (Datos.isMiddleValue(value: Valores.bilirrubinasTotales, min: 6.0, max: 11.9)) {
+      hig = 3;
+    } else if (Datos.isUpperValue(value: Valores.bilirrubinasTotales!, lim: 12)) {
+      hig = 2;
+    } else {
+      hig = 0;
+    }
+    // ***************************************************
+    if (Datos.isMiddleValue(value: Valores.creatinina, min: 1.2, max: 1.9)) {
+      ren = 1;
+    } else if (Datos.isMiddleValue(value: Valores.creatinina, min: 2.0, max: 3.4)) {
+      ren = 2;
+    } else if (Datos.isMiddleValue(value: Valores.creatinina, min: 3.5, max: 4.9)) {
+      ren = 3;
+    } else if (Datos.isUpperValue(value: Valores.creatinina!, lim: 5)) {
+      ren = 2;
+    } else {
+      ren = 0;
+    }
+    return resultado;
+  }
+
   static String get cardiovasculares =>
       "Parámetros Cardiovasculares - Presión Arterial Media: ${Valores.presionArterialMedia} mmHg. "
       // "(${Valores.clase})

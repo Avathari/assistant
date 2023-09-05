@@ -3,6 +3,7 @@ import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/arter
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/biometria.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/cardiacos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/coagulaciones.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/depuraciones.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/electrolitos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/ferricos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/hepaticos.dart';
@@ -89,6 +90,9 @@ class _ConmutadorParaclinicosState extends State<ConmutadorParaclinicos> {
 
       case "Marcadores Cárdiacos":
         return const Cardiacos();
+
+      case "Depuración de Orina de 24 Horas":
+        return const Depuraciones();
 
       case "Panel Viral":
         return const Virales();

@@ -24,14 +24,14 @@ import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:photo_view/photo_view.dart';
 
-class ImagenologiasGestion extends StatefulWidget {
-  const ImagenologiasGestion({super.key});
+class dummyWithTable extends StatefulWidget {
+  const dummyWithTable({super.key});
 
   @override
-  State<ImagenologiasGestion> createState() => _ImagenologiasGestionState();
+  State<dummyWithTable> createState() => _dummyWithTableState();
 }
 
-class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
+class _dummyWithTableState extends State<dummyWithTable> {
   // ############################ ####### ####### #############################
   // Variables de Ejecución
   // ############################ ####### ####### #############################
@@ -485,7 +485,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                                                         .push(MaterialPageRoute(
                                                         builder:
                                                             (context) =>
-                                                        const ImagenologiasGestion()))));
+                                                        const dummyWithTable()))));
                                               } else {
                                                 Actividades.actualizar(
                                                     Databases
@@ -516,7 +516,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                                                         .push(MaterialPageRoute(
                                                         builder:
                                                             (context) =>
-                                                        const ImagenologiasGestion()))));
+                                                        const dummyWithTable()))));
                                               }
                                             }),
                                       ],
@@ -680,7 +680,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                     .then((value) => Navigator.of(context).push(
                         MaterialPageRoute(
                             builder: (context) =>
-                                const ImagenologiasGestion()))));
+                                const dummyWithTable()))));
           });
         });
   }
