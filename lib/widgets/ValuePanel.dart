@@ -20,7 +20,7 @@ class ValuePanel extends StatefulWidget {
     this.thirdText = "",
     this.padding = 2.0,
     this.margin = 2.0,
-    this.fontSize = 12,
+    this.fontSize = 10,
     this.heigth = 46,
     this.withEditMessage = false,
     this.withBorder = true, // false,

@@ -30,8 +30,10 @@ import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporte
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/AppBarText.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandButton.dart';
+import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/ListValue.dart';
 import 'package:flutter/material.dart';
 
@@ -47,8 +49,7 @@ class ReportesMedicos extends StatefulWidget {
 class _ReportesMedicosState extends State<ReportesMedicos> {
   @override
   void initState() {
-
-    // Llamado a los ultimos registros agregados.
+    // Llamado a los ultimos registros agregados. ****************************
     setState(() {
       Reportes.consultarRegistros();
       Diagnosticos.registros();
@@ -63,9 +64,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               Reportes.reportes["Antecedentes_Patologicos_Ingreso"] =
                   Pacientes.antecedentesIngresosPatologicos());
       Archivos.readJsonToMap(
-              filePath: "${Pacientes.localRepositoryPath}diagnosticos.json")
+              filePath: "${Pacientes.localRepositoryPath}vitales.json")
           .then((value) {
-        Pacientes.Diagnosticos = value;
+        Pacientes.Vitales = value;
       });
       Archivos.readJsonToMap(
               filePath: "${Pacientes.localRepositoryPath}diagnosticos.json")
@@ -99,6 +100,12 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             value.last['Tratamiento_Propuesto'] ?? '';
       });
 
+      Archivos.readJsonToMap(
+              filePath: "${Pacientes.localRepositoryPath}/paraclinicos.json")
+          .then((value) {
+        Pacientes.Paraclinicos = value;
+      });
+
       Terminal.printExpected(
           message: "Analisis Previos : : ${Reportes.analisisAnteriores}");
     });
@@ -106,6 +113,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
     super.initState();
   }
 
+// ******************************************************
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,19 +123,20 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               leading: IconButton(
                 icon: const Icon(
                   Icons.arrow_back,
+                  color: Colors.white,
                 ),
                 tooltip: Sentences.regresar,
                 onPressed: () {
                   onClose(context);
                 },
               ),
-              title: Text(
+              title: isMobile(context) ? null : AppBarText(
                 Sentences.app_bar_reportes,
-                style: Styles.textSyleGrowth(),
               ),
               actions: <Widget>[
             IconButton(
               icon: const Icon(
+                color: Colors.white,
                 Icons.balance,
               ),
               tooltip: 'Concentraciones y Diluciones',
@@ -139,6 +148,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             ),
             IconButton(
               icon: const Icon(
+                color: Colors.white,
                 Icons.remove_from_queue,
               ),
               tooltip: 'Refrescar . . . ',
@@ -148,6 +158,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             ),
             IconButton(
               icon: const Icon(
+                color: Colors.white,
                 Icons.system_update_alt,
               ),
               tooltip: 'Cargando . . . ',
@@ -165,6 +176,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             IconButton(
               icon: const Icon(
                 Icons.help,
+                color: Colors.white,
               ),
               tooltip: Sentences.find_usuario,
               onPressed: () {
@@ -178,6 +190,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             IconButton(
               icon: const Icon(
                 Icons.copy_all_sharp,
+                color: Colors.white,
               ),
               tooltip: 'Copiar Esquema del Reporte',
               onPressed: () {
@@ -188,6 +201,39 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               },
             ),
           ]), //: null,
+      floatingActionButton:
+          Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+        FloatingActionButton(
+          backgroundColor: Colors.black87,
+          foregroundColor: Colors.grey,
+          tooltip: 'Indicaciones Médicas',
+          onPressed: () {
+            //...
+            setState(() {
+              widget.actualPage = 9;
+            });
+          },
+          heroTag: null,
+          child: const Icon(
+            Icons.line_weight,
+            color: Colors.grey,
+          ),
+        ),
+        const SizedBox(height: 10),
+        FloatingActionButton(
+          backgroundColor: Colors.black87,
+          foregroundColor: Colors.grey,
+          tooltip: 'Vista Previa',
+          onPressed: () async {
+            await imprimirDocumento();
+          },
+          heroTag: null,
+          child: const Icon(
+            Icons.scale,
+            color: Colors.grey,
+          ),
+        )
+      ]),
       body:
           isMobile(context) || isTablet(context) ? mobileView() : desktopView(),
     );
@@ -200,6 +246,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             )));
   }
 
+  // ******************************************************
   Column mobileView() {
     return Column(
       children: [
@@ -218,12 +265,13 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             child: Container(
               padding: const EdgeInsets.all(5.0),
               margin: const EdgeInsets.all(7.0),
-              decoration: ContainerDecoration.roundedDecoration(colorBackground: Colores.backgroundPanel),
+              decoration: ContainerDecoration.roundedDecoration(
+                  colorBackground: Colores.backgroundPanel),
               child: pantallasReportesMedicos(widget.actualPage),
             )),
         Expanded(
             child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.only(right: 82.0, left: 8.0, top: 8.0, bottom: 8.0),
           child: Container(
             decoration: BoxDecoration(
                 color: Colores.backgroundPanel,
@@ -264,6 +312,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
     );
   }
 
+  // ******************************************************
   Widget sideLeft() {
     if (isMobile(context) || isTablet(context)) {
       return Expanded(
@@ -277,23 +326,49 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               child: isMobile(context)
                   ? Row(
                       children: [
-                        Expanded(
-                          child: GrandButton(
-                            weigth: 2000,
-                            labelButton: "Tipo de Nota Médica",
-                            onPress: () {
-                              setState(() {
-                                widget.actualPage = 19;
-                              });
-                            },
-                          ),
-                          //     child: Container(
-                          //   decoration: ContainerDecoration.roundedDecoration(),
-                          //   child: TittlePanel(
-                          //       padding: isTablet(context) ? 4 : 2,
-                          //       textPanel: "Tipo de Nota Médica"),
-                          // ),
-                        ),
+                        isMobile(context)
+                            ? Expanded(
+                                child: Container(
+                                  height: isMobile(context) ? 100 : 0,
+                                  margin: const EdgeInsets.all(8.0),
+                                  decoration:
+                                      ContainerDecoration.roundedDecoration(
+                                          radius: 50),
+                                  child: GrandIcon(
+                                    iconData: Icons.account_balance_sharp,
+                                    labelButton: "Tipo de Nota Médica",
+                                    onPress: () {
+                                      setState(() {
+                                        widget.actualPage = 19;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                //     child: Container(
+                                //   decoration: ContainerDecoration.roundedDecoration(),
+                                //   child: TittlePanel(
+                                //       padding: isTablet(context) ? 4 : 2,
+                                //       textPanel: "Tipo de Nota Médica"),
+                                // ),
+                              )
+                            : Expanded(
+                                child: GrandButton(
+                                  weigth: 2000,
+                                  fontSize: 10.0,
+                                  labelButton: "Tipo de Nota Médica",
+                                  onPress: () {
+                                    setState(() {
+                                      widget.actualPage = 19;
+                                    });
+                                  },
+                                ),
+                                //     child: Container(
+                                //   decoration: ContainerDecoration.roundedDecoration(),
+                                //   child: TittlePanel(
+                                //       padding: isTablet(context) ? 4 : 2,
+                                //       textPanel: "Tipo de Nota Médica"),
+                                // ),
+                              ),
                         Expanded(
                             flex: 2,
                             child: SingleChildScrollView(
@@ -381,7 +456,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
     if (isMobile(context) || isTablet(context)) {
       return Expanded(
           child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.only(
+            left: 8.0, right: 8.0, top: 8.0, bottom: 8.0),
         child: Row(
           children: [
             Expanded(
@@ -393,30 +469,31 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                     children: actionsReportes(),
                   )),
             ),
-            Expanded(
-              child: Column(
-                children: [
-                  Expanded(
-                    child: GrandButton(
-                        weigth: 200,
-                        labelButton: "Indicaciones Médicas",
-                        onPress: () {
-                          setState(() {
-                            widget.actualPage = 9;
-                          });
-                        }),
-                  ),
-                  Expanded(
-                    child: GrandButton(
-                        weigth: 200,
-                        labelButton: "Vista previa",
-                        onPress: () async {
-                          await imprimirDocumento();
-                        }),
-                  ),
-                ],
-              ),
-            ),
+            // Expanded(child: Container(color: Colors.black,decoration: ContainerDecoration.roundedDecoration(),child: Container,))
+            // Expanded(
+            //   child: Column(
+            //     children: [
+            //       Expanded(
+            //         child: GrandButton(
+            //             weigth: 200,
+            //             labelButton: "Indicaciones Médicas",
+            //             onPress: () {
+            //               setState(() {
+            //                 widget.actualPage = 9;
+            //               });
+            //             }),
+            //       ),
+            //       Expanded(
+            //         child: GrandButton(
+            //             weigth: 200,
+            //             labelButton: "Vista previa",
+            //             onPress: () async {
+            //               await imprimirDocumento();
+            //             }),
+            //       ),
+            //     ],
+            //   ),
+            // ),
           ],
         ),
       ));
@@ -625,7 +702,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       const CateterTenckhoff(), // 15 :
       Container(), // 16 : Punción Lumbar
       const ReporteTransfusion(), // 17 : Reporte de Transfusión
-      TerapiasItems(esCorto: true,), // 18: Evaluación de Terapia
+      TerapiasItems(
+        esCorto: true,
+      ), // 18: Evaluación de Terapia
       Revisiones(), // 19 : Revisión
       const Semiologicos(), // 20 : Revisión
       const Concentraciones(), // 21 : Concentraciones

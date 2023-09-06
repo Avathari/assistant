@@ -136,7 +136,7 @@ class _DepuracionesState extends State<Depuraciones> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][1],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][0],
         textVolMuestraResultController.text,
         unidadMedidaVolMuestra!
         //0,
@@ -146,7 +146,7 @@ class _DepuracionesState extends State<Depuraciones> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][0],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][1],
         textCreat24ResultController.text,
         unidadMedidaCreat24!
         //0,

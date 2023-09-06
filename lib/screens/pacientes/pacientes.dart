@@ -6,6 +6,7 @@ import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/estadisticas/estadisticas.dart';
+import 'package:assistant/widgets/AppBarText.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 
 import 'package:assistant/widgets/EditTextArea.dart';
@@ -61,7 +62,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
                   builder: (BuildContext context) => const Home()));
             },
           ),
-          title:  Text(Sentences.app_pacientes_tittle, style: Styles.textSyleGrowth(fontSize: 14),),
+          title:  AppBarText(Sentences.app_pacientes_tittle,),
           actions: <Widget>[
             if (isMobile(context))
               GrandIcon(
@@ -974,10 +975,11 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
     return Scaffold(
       appBar: widget.operationActivity == Constantes.Register
           ? AppBar(
-        title: Text('Registro del Paciente', style: Styles.textSyleGrowth(fontSize: 12)),
+        title: AppBarText('Registro del Paciente'),
               backgroundColor: Colors.black,
               leading: IconButton(
                 icon: const Icon(
+                  color: Colors.white,
                   Icons.arrow_back,
                 ),
                 tooltip: Sentences.regresar,

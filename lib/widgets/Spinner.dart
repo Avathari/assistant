@@ -9,7 +9,7 @@ class Spinner extends StatefulWidget {
   Function? onChangeValue;
   bool? isRow;
 
-  double? width;
+  double? width, fontSize;
 
   Spinner(
       {Key? key,
@@ -17,6 +17,7 @@ class Spinner extends StatefulWidget {
       required this.items,
       required this.initialValue,
       this.tittle,
+        this.fontSize = 10,
       this.isRow = false,
       this.width = 100})
       : super(key: key);
@@ -58,7 +59,7 @@ class _SpinnerState extends State<Spinner> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Text("${widget.tittle}:", style: const TextStyle(color: Colors.white)),
+          Text("${widget.tittle}:", style:  TextStyle(color: Colors.white, fontSize: widget.fontSize!)),
           DropdownButton(
             value: widget.initialValue,
             icon: const Icon(Icons.arrow_drop_down),
@@ -66,6 +67,7 @@ class _SpinnerState extends State<Spinner> {
             elevation: 8,
             dropdownColor: Colores.backgroundWidget,
             style: const TextStyle(
+              fontSize: 8,
                 color: Colors.white, overflow: TextOverflow.ellipsis),
             onChanged: (String? newValue) {
               widget.onChangeValue!(newValue);

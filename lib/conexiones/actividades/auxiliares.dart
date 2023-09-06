@@ -112,6 +112,7 @@ class Cambios {
         builder: (BuildContext context) => Scaffold(
             backgroundColor: Colors.black,
             appBar: AppBar(
+
               backgroundColor: Colors.black,
             ),
             body: chyld)));
@@ -923,7 +924,7 @@ class Dialogos {
       backgroundColor: Theming.secondaryColor,
       title: Text(
         tittle!,
-        style: const TextStyle(color: Colors.grey),
+        style: const TextStyle(color: Colors.grey, fontSize: 18),
       ),
       content: SingleChildScrollView(
           controller: ScrollController(),
@@ -934,8 +935,9 @@ class Dialogos {
               ),
             ],
           )),
-      actions: [
+      actions:  [
         ElevatedButton(
+          style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll<Color>(Colors.black),),
             onPressed: () {
               onCloss!();
             },

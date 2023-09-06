@@ -68,7 +68,7 @@ class Colores {
 }
 
 class Font {
-  static const double fontTileSize = 12;
+  static const double fontTileSize = 11;
 }
 
 class Styles {
