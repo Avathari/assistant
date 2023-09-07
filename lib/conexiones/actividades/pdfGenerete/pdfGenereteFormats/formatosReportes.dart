@@ -3225,8 +3225,8 @@ class CopiasReportes {
           "${paraph['Pronostico_Medico']}";
     }
 
-    tipoReporte = "$tipoReporte\n\n"
-        "Med. Gral. Romero Pantoja Luis Ced. Prof. 12210866 Medicina General";
+    // tipoReporte = "$tipoReporte\n\n"
+    //     "Med. Gral. Romero Pantoja Luis Ced. Prof. 12210866 Medicina General";
 
     return tipoReporte;
   }

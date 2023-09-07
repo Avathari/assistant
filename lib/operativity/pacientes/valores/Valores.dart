@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math' as math;
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/values/Strings.dart';
 import 'package:dart_numerics/dart_numerics.dart' as numerics;
 
 import 'package:assistant/conexiones/conexiones.dart';
@@ -836,7 +837,9 @@ class Valores {
       viaOral = Items.viaOralAlimentacion[0],
       uresisCantidad = Items.uresisCantidad[0],
       excretasCantidad = Items.excretasCantidad[0],
-      referenciasHospitalizacion = "Sin referencias por parte del paciente";
+      oxigenSuplementario = Items.oxigenSuplementario[0],
+      excretasBristol = Items.excretasBristol[0],
+      referenciasHospitalizacion = "Sin referencias por parte del paciente o el familiar";
 
   // Variables Estaticas
   static int? constanteRequerimientos = 30;
@@ -3049,11 +3052,15 @@ class Formatos {
   }
 
   static String get subjetivos {
-    return "El paciente se refiere ${Valores.estadoGeneral}. "
-        "Via oral a base de ${Valores.viaOral}. "
-        "Uresis con frecuencia ${Valores.uresisCantidad}, "
-        "excretas con frecuencia ${Valores.excretasCantidad}. "
-        "${Valores.referenciasHospitalizacion}. ";
+    return
+      // "El paciente se refiere ${Valores.estadoGeneral}. "
+      "${Valores.referenciasHospitalizacion}. "
+          "${Sentences.capitalize(Valores.estadoGeneral)}, "
+          "${Valores.oxigenSuplementario}. "
+          "${Valores.viaOral}, "
+          "Uresis con frecuencia ${Valores.uresisCantidad}, "
+          "excretas con frecuencia ${Valores.excretasCantidad}. "
+          "bristo ${Valores.excretasBristol}. ";
   }
 
   static String get ideologias {
@@ -4499,6 +4506,23 @@ class Items {
     'Menor a 2 veces',
     'Entre 2 - 4 veces',
     'Mayor a 4 veces'
+  ];
+  static List<String> oxigenSuplementario = [
+    'Sin Oxígeno Suplementario',
+    'oxigeno medicinal entre 1- 3 Lts/min',
+    'oxigeno medicinal entre 3- 5 Lts/min',
+    'oxigeno medicinal entre 5- 8 Lts/min',
+    'oxigeno medicinal entre 8- 10 Lts/min',
+    'oxigeno medicinal entre mayor a 10 Lts/min',
+  ];
+  static List<String> excretasBristol = [
+    'Tipo 1',
+    'Tipo 2',
+    'Tipo 3',
+    'Tipo 4',
+    'Tipo 5',
+    'Tipo 6',
+    'Tipo 7',
   ];
   static List<String> typesLicencias = [
     'Enfermedad General',

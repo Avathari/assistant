@@ -51,7 +51,6 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
   void initState() {
     // Llamado a los ultimos registros agregados. ****************************
     setState(() {
-      Reportes.consultarRegistros();
       Diagnosticos.registros();
       Quirurgicos.consultarRegistro();
       Repositorios.consultarAnalisis();
@@ -89,15 +88,23 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   "${Pacientes.localRepositoryPath}/reportes/reportes.json")
           .then((value) {
         Pacientes.Notas = value;
+        Terminal.printExpected(message: "VALUE - ${value.last}");
 
-        Reportes.exploracionFisica = value.last['Exploracion_Fisica'] ?? '';
-        Reportes.signosVitales = value.last['Signos_Vitales'] ?? '';
+        setState(() {
+          Reportes.exploracionFisica = value.last['Exploracion_Fisica'] ?? '';
+          Reportes.signosVitales = value.last['Signos_Vitales'] ?? '';
 
-        Reportes.eventualidadesOcurridas = value.last['Eventualidades'] ?? '';
-        Reportes.terapiasPrevias = value.last['Terapias_Previas'] ?? '';
-        Reportes.analisisMedico = value.last['Analisis_Medico'] ?? '';
-        Reportes.tratamientoPropuesto =
-            value.last['Tratamiento_Propuesto'] ?? '';
+          Reportes.eventualidadesOcurridas = value.last['Eventualidades'] ?? '';
+          Reportes.terapiasPrevias = value.last['Terapias_Previas'] ?? '';
+          Reportes.analisisMedico = value.last['Analisis_Medico'] ?? '';
+          Reportes.tratamientoPropuesto =
+              value.last['Tratamiento_Propuesto'] ?? '';
+        });
+      }).onError((error, stackTrace) {
+        Terminal.printAlert(
+            message: "ERROR - No fue posible acceder a "
+                "${"${Pacientes.localRepositoryPath}/reportes/reportes.json"} : $error : : $stackTrace");
+        Reportes.consultarRegistros();
       });
 
       Archivos.readJsonToMap(
@@ -130,9 +137,11 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   onClose(context);
                 },
               ),
-              title: isMobile(context) ? null : AppBarText(
-                Sentences.app_bar_reportes,
-              ),
+              title: isMobile(context)
+                  ? null
+                  : AppBarText(
+                      Sentences.app_bar_reportes,
+                    ),
               actions: <Widget>[
             IconButton(
               icon: const Icon(
@@ -225,7 +234,19 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           foregroundColor: Colors.grey,
           tooltip: 'Vista Previa',
           onPressed: () async {
-            await imprimirDocumento();
+            await imprimirDocumento().then((value) =>
+                Operadores.alertActivity(
+                    context: context,
+                    tittle: 'Petición de Registro de Análisis',
+                    message:
+                    '¿Desea registrar el análisis en la base de datos?',
+                    onClose: () {
+                      Navigator.of(context).pop();
+                    },
+                    onAcept: () {
+                      Repositorios.registrarAnalisis();
+                      Navigator.of(context).pop();
+                    }));
           },
           heroTag: null,
           child: const Icon(
@@ -271,7 +292,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             )),
         Expanded(
             child: Padding(
-          padding: const EdgeInsets.only(right: 82.0, left: 8.0, top: 8.0, bottom: 8.0),
+          padding: const EdgeInsets.only(
+              right: 82.0, left: 8.0, top: 8.0, bottom: 8.0),
           child: Container(
             decoration: BoxDecoration(
                 color: Colores.backgroundPanel,
@@ -456,8 +478,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
     if (isMobile(context) || isTablet(context)) {
       return Expanded(
           child: Padding(
-        padding: const EdgeInsets.only(
-            left: 8.0, right: 8.0, top: 8.0, bottom: 8.0),
+        padding:
+            const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0, bottom: 8.0),
         child: Row(
           children: [
             Expanded(

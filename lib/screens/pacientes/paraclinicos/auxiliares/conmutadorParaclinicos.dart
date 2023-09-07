@@ -38,10 +38,10 @@ class _ConmutadorParaclinicosState extends State<ConmutadorParaclinicos> {
       decoration: ContainerDecoration.roundedDecoration(),
       child: Column(
         children: [
-          Expanded(
-              child: TittlePanel(
-                  textPanel:
-                      "Anexión de la ${widget.categoriaEstudio}")),
+          // Expanded(
+          //     child: TittlePanel(
+          //         textPanel:
+          //             "Anexión de la ${widget.categoriaEstudio}")),
           Expanded(
               flex: 9,
               child: Container(

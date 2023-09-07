@@ -5619,7 +5619,7 @@ class Auxiliares {
     return "$prosa$max. ";
   }
 
-  static String porFecha({String fechaActual = ""}) {
+  static String porFecha({String fechaActual = "", bool esAbreviado = false}) {
     // Filtro por estudio de los registros de Pacientes.Paraclinicos
     var aux = Pacientes.Paraclinicos!
         .where((user) => user["Fecha_Registro"].contains(fechaActual))
@@ -5632,14 +5632,28 @@ class Auxiliares {
     String prosa = "($fechaActual): ";
     String max = "";
     // Anexación de los valores correlacionados.
-    for (var element in aux) {
-      if (element['Fecha_Registro'] == fechaActual) {
-        if (max == "") {
-          max =
-              "${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
-        } else {
-          max =
-              "$max, ${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+    if (esAbreviado) {
+      for (var element in aux) {
+        if (element['Fecha_Registro'] == fechaActual) {
+          if (max == "") {
+            max =
+            "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+          } else {
+            max =
+            "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+          }
+        }
+      }
+    } else {
+      for (var element in aux) {
+        if (element['Fecha_Registro'] == fechaActual) {
+          if (max == "") {
+            max =
+                "${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+          } else {
+            max =
+                "$max, ${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+          }
         }
       }
     }
@@ -5930,6 +5944,8 @@ class Auxiliares {
           return 'aHCO3-' '';
         } else if (estudio == 'Saturación de Oxígeno') {
           return 'SaO2';
+        } else if (estudio == 'Fracción Inspiratoria de Oxígeno') {
+          return 'FiO2';
         } else {
           return estudio;
         }
@@ -5944,6 +5960,8 @@ class Auxiliares {
           return 'vHCO3-' '';
         } else if (estudio == 'Saturación de Oxígeno') {
           return 'SvO2';
+        } else if (estudio == 'Fracción Inspiratoria de Oxígeno') {
+          return 'FiO2';
         } else {
           return estudio;
         }
@@ -6105,7 +6123,8 @@ class Auxiliares {
       "Mucina Urinaria", // -/+/++/+++
       "Células Renales Urinarias", // -/+/++/+++
     ],
-    Categorias[12]: ["Volumen de Muestra",
+    Categorias[12]: [
+      "Volumen de Muestra",
       "Creatinina en Orina de 24 Horas",
       "Proteinas en Orina de 24 Horas",
       "Albúmina en Orina",
@@ -6313,7 +6332,20 @@ class Auxiliares {
     Categorias[9]: ["", "mmHg", "cmH20", "mmol/L", "%"],
     Categorias[10]: ["", "mmHg", "cmH20", "mmol/L", "%"],
     Categorias[11]: [""],
-    Categorias[12]: ["mL", "mg/dL","mL/min","mg/24hr","g/dL","NA","","","","","","",],
+    Categorias[12]: [
+      "mL",
+      "mg/dL",
+      "mL/min",
+      "mg/24hr",
+      "g/dL",
+      "NA",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+    ],
     Categorias[13]: [""],
     Categorias[14]: [""],
     Categorias[15]: [""],
@@ -6801,7 +6833,7 @@ class Reportes {
   //
   static String auxiliaresDiagnosticos = "", analisisComplementarios = "";
   //
-  static String eventualidadesOcurridas = "Sin eventualidades reportadas. ",
+  static String eventualidadesOcurridas = "",
       terapiasPrevias = "",
       analisisMedico = "",
       tratamientoPropuesto = "";
@@ -6813,11 +6845,14 @@ class Reportes {
   //
   static String motivoConsulta = "",
       subjetivoHospitalizacion =
-          "El paciente se refiere ${Valores.estadoGeneral}. "
-          "Via oral a base de ${Valores.viaOral}. "
+          // "El paciente se refiere ${Valores.estadoGeneral}. "
+          "${Valores.referenciasHospitalizacion}. "
+          "${Sentences.capitalize(Valores.estadoGeneral)}, "
+          "${Valores.oxigenSuplementario}. "
+          "${Valores.viaOral}, "
           "Uresis con frecuencia ${Valores.uresisCantidad}, "
           "excretas con frecuencia ${Valores.excretasCantidad}. "
-          "${Valores.referenciasHospitalizacion}. ";
+          "bristo ${Valores.excretasBristol}. ";
   // "Sin rerencias particulares del paciente durante la hospitalización";
   //
   static String procedimientoRealizado = "", bibliografias = "";
@@ -7622,23 +7657,29 @@ class Repositorios {
   }
 
   static void registrarAnalisis() {
+    var values = [
+      Pacientes.ID_Paciente,
+      Pacientes.ID_Hospitalizacion,
+      Valores.fechaPadecimientoActual,
+      Calendarios.today(format: 'yyyy/MM/dd'),
+      Valores.servicioTratante,
+      Reportes.analisisMedico, //'', // Valores.padecimientoActual,
+      Items.tiposAnalisis[1],
+    ];
+
     Actividades.registrar(
       Databases.siteground_database_reghosp,
       Repositorios.repositorio['registerQuery'],
-      [
-        Pacientes.ID_Paciente,
-        Pacientes.ID_Hospitalizacion,
-        Valores.fechaPadecimientoActual,
-        Calendarios.today(format: 'yyyy/MM/dd'),
-        Valores.servicioTratante,
-        Reportes.analisisMedico, //'', // Valores.padecimientoActual,
-        Items.tiposAnalisis[1],
-      ],
-    )
-        .then((value) =>
-            Terminal.printExpected(message: "SUCCESS - Análisis registrado"))
-        .onError((error, stackTrace) =>
-            Terminal.printAlert(message: "ERROR - $error : : $stackTrace"));
+      values,
+    ).then((value) {
+      Terminal.printExpected(message: "SUCCESS - Análisis registrado");
+      Pacientes.Notas!.add(values);
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(message: "ERROR - $error : : $stackTrace");
+    }).whenComplete(() {
+      Archivos.createJsonFromMap(Pacientes.Notas!,
+          filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
+    });
   }
 
   static void consultarRegistro() {
@@ -7722,9 +7763,7 @@ class Situaciones {
 
   static List<String> actualDiagno = Opciones.horarios();
 
-  static var dispositivos = [
-
-  ];
+  static var dispositivos = [];
 
   static void ultimoRegistro() {
     Actividades.consultarId(Databases.siteground_database_reghosp,
@@ -7855,17 +7894,17 @@ class Situaciones {
         "SELECT * FROM pace_sita WHERE ID_Pace = ? ORDER BY ID_Hosp ASC",
     "consultByName": "SELECT * FROM pace_sita WHERE Pace_APP_DEG LIKE '%",
     "registerQuery": "INSERT INTO pace_sita (ID_Sita, ID_Pace, ID_Hosp, "
-  "Sita_Disp, Sita_Fecha, Sita_Obser, Sita_Otros) "
+        "Sita_Disp, Sita_Fecha, Sita_Obser, Sita_Otros) "
         "VALUES (?,?,?,?,?,?,?)",
-  // "registerQuery": "INSERT INTO pace_sita (ID_Pace, ID_Hosp, "
-  // "Hosp_Siti, Disp_Oxigen, CVP, CVLP, CVC, MAH, "
-  // "S_Foley, SNG, SOG, Drenaje, Pleuro_Vac, "
-  // "Colostomia, Gastrostomia, Dialisis_Peritoneal) "
-  // "VALUES (?,?,?,?,?,?,?,?,?,?,?,"
-  // "?,?,?,?,?)",
+    // "registerQuery": "INSERT INTO pace_sita (ID_Pace, ID_Hosp, "
+    // "Hosp_Siti, Disp_Oxigen, CVP, CVLP, CVC, MAH, "
+    // "S_Foley, SNG, SOG, Drenaje, Pleuro_Vac, "
+    // "Colostomia, Gastrostomia, Dialisis_Peritoneal) "
+    // "VALUES (?,?,?,?,?,?,?,?,?,?,?,"
+    // "?,?,?,?,?)",
     "updateQuery": "UPDATE pace_sita SET "
-  "ID_Sita = ?, ID_Pace = ?,  ID_Hosp = ?, "
-    "Sita_Disp = ?, Sita_Fecha = ?, Sita_Obser = ?, Sita_Otros WHERE ID_Hosp = ?", 
+        "ID_Sita = ?, ID_Pace = ?,  ID_Hosp = ?, "
+        "Sita_Disp = ?, Sita_Fecha = ?, Sita_Obser = ?, Sita_Otros WHERE ID_Hosp = ?",
     // "updateQuery": "UPDATE pace_sita "
     //     "SET ID_Pace = ?, ID_Hosp = ?, Hosp_Siti = ?, "
     //     "Disp_Oxigen = ?, CVP = ?, CVLP = ?, CVC = ?, MAH = ?, S_Foley = ?, "

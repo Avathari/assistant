@@ -66,7 +66,7 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                                 })),
                             inputFormat: MaskTextInputFormatter()),
                       ),
-                  isMobile(context) ? mobileSignalOptions() : otherSignalOptions()
+                  isMobile(context)  ? mobileSignalOptions() : otherSignalOptions()
 
                     ],
                   ),
@@ -163,7 +163,7 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                   ],
                 ),
                     )
-                    : isMobile(context) ? mobileExploreOptions() : otherExploreOptions()
+                    : isMobile(context) || isTablet(context)? mobileExploreOptions() : otherExploreOptions()
               ],
             ),
           ),
@@ -259,9 +259,86 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
   mobileExploreOptions() {
     return Expanded(
       flex: 1,
-      child: SingleChildScrollView(
+      child: isTablet(context) ? Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            child: GrandIcon(
+              iconData: Icons.explore,
+              labelButton: "Exploración física",
+              onPress: () {
+                asignarExploracion(indice: 1);
+              },
+              onLongPress: () {
+                Operadores.openDialog(context: context, chyldrim: const Semiologicos(), onAction: () {
+                  setState(() {
+                    expoTextController.text = Exploracion.exploracionGeneral;
+                  });
+                });
+              },
+            ),
+          ),
+          Expanded(
+            child: GrandIcon(
+              iconData: Icons.data_exploration,
+              labelButton: "Exploración corta",
+              onPress: () {
+                asignarExploracion(indice: 4);
+              },
+            ),
+          ),
+          Expanded(
+            child: GrandIcon(
+              iconData: Icons.explore_outlined,
+              labelButton: "Exploración física extensa",
+              onPress: () {
+                asignarExploracion(indice: 2);
+              },
+            ),
+          ),
+          Expanded(
+            child: GrandIcon(
+              iconData: Icons.travel_explore,
+              labelButton: "Exploración física extensa",
+              onPress: () {
+                asignarExploracion(indice: 2);
+              },
+            ),
+          ),
+          Expanded(
+            child: GrandIcon(
+              iconData: Icons.travel_explore_sharp,
+              labelButton: "Analisis de terapia intensiva",
+              onPress: () {
+                Operadores.openDialog(
+                    context: context,
+                    chyldrim: TerapiasItems(),
+                    onAction: () {
+                      setState(() {
+                        expoTextController.text =
+                            Reportes.exploracionFisica;
+                        Reportes.reportes[
+                        'Exploracion_Fisica'] =
+                            Reportes.exploracionFisica;
+                      });
+                    });
+                // asignarExploracion(indice: 3);
+              },
+            ),
+          ),
+          Expanded(
+            child: GrandIcon(
+              labelButton: "Sin hallazgos relevantes",
+              onPress: () {
+                asignarExploracion(indice: 0);
+              },
+            ),
+          ),
+        ],
+      ) : SingleChildScrollView(
         controller: scrollExpoController,
         child: Column(
+
           children: [
             GrandIcon(
               iconData: Icons.explore,

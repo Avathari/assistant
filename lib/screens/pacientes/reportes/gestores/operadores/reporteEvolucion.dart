@@ -5,6 +5,7 @@ import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/auxilia
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/exploracionFisica.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -48,119 +49,115 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
     return Container(
       decoration: ContainerDecoration.roundedDecoration(),
       child: Column(children: [
-        Expanded(
-          child: SingleChildScrollView(
-            controller: ScrollController(),
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GrandIcon(
-                  iconData: Icons.person,
-                  labelButton: "Información General",
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              GrandIcon(
+                iconData: Icons.person,
+                labelButton: "Información General",
+                weigth: wieghtRow / index,
+                onPress: () {
+                  carouselController.jumpToPage(0);
+                },
+              ),
+              GrandIcon(
+                  iconData: Icons.explicit,
+                  labelButton: "Exploración Física",
                   weigth: wieghtRow / index,
                   onPress: () {
-                    carouselController.jumpToPage(0);
-                  },
-                ),
-                GrandIcon(
-                    iconData: Icons.explicit,
-                    labelButton: "Exploración Física",
-                    weigth: wieghtRow / index,
-                    onPress: () {
-                      carouselController.jumpToPage(1);
-                    }),
-                GrandIcon(
-                    iconData: Icons.medical_information,
-                    labelButton: "Auxiliares Diagnósticos",
-                    weigth: wieghtRow / index,
-                    onPress: () {
-                      carouselController.jumpToPage(2);
-                    }),
-                GrandIcon(
-                    iconData: Icons.explore,
-                    labelButton: "Análisis y propuestas",
-                    weigth: wieghtRow / index,
-                    onPress: () {
-                      carouselController.jumpToPage(3);
-                    }),
-                GrandIcon(
-                    iconData: Icons.next_plan,
-                    labelButton: "Diagnósticos y Pronóstico",
-                    weigth: wieghtRow / index,
-                    onPress: () {
-                      carouselController.jumpToPage(4);
-                    }),
-              ],
-            ),
+                    carouselController.jumpToPage(1);
+                  }),
+              GrandIcon(
+                  iconData: Icons.medical_information,
+                  labelButton: "Auxiliares Diagnósticos",
+                  weigth: wieghtRow / index,
+                  onPress: () {
+                    carouselController.jumpToPage(2);
+                  }),
+              GrandIcon(
+                  iconData: Icons.explore,
+                  labelButton: "Análisis y propuestas",
+                  weigth: wieghtRow / index,
+                  onPress: () {
+                    carouselController.jumpToPage(3);
+                  }),
+              GrandIcon(
+                  iconData: Icons.next_plan,
+                  labelButton: "Diagnósticos y Pronóstico",
+                  weigth: wieghtRow / index,
+                  onPress: () {
+                    carouselController.jumpToPage(4);
+                  }),
+            ],
           ),
         ),
-        Expanded(
-          flex: 7,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CarouselSlider(
-              carouselController: carouselController,
-              options: Carousel.carouselOptions(context: context),
-              items: [
-                SingleChildScrollView(
-                  controller: ScrollController(),
-                  child: Column(
-                    children: [
-                      EditTextArea(
-                          textController: initialTextController,
-                          labelEditText: "Datos generales",
-                          keyBoardType: TextInputType.multiline,
-                          numOfLines: 5,
-                          withShowOption: true,
-                          inputFormat: MaskTextInputFormatter()),
-                      EditTextArea(
-                          textController: diagoTextController,
-                          labelEditText: "Impresiones diagnósticas",
-                          keyBoardType: TextInputType.multiline,
-                          numOfLines: 10,
-                          onChange: ((value) {
-                            Reportes.impresionesDiagnosticas = "$value.";
-                            Reportes.reportes['Impresiones_Diagnosticas'] =
-                                "$value.";
-                          }),
-                          inputFormat: MaskTextInputFormatter()),
-                      EditTextArea(
-                          textController: subjetivoTextController,
-                          labelEditText: "Referidos del Paciente",
-                          keyBoardType: TextInputType.multiline,
-                          numOfLines: 5,
-                          selection: true,
-                          withShowOption: true,
-                          onSelected: () {
-                            Operadores.openDialog(
-                                context: context,
-                                chyldrim: const Subjetivos(),
-                                onAction: () {
+        CrossLine(height: 7, thickness: 3),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CarouselSlider(
+            carouselController: carouselController,
+            options: Carousel.carouselOptions(context: context, height: isMobile(context) ?  345 : 640),
+            items: [
+              SingleChildScrollView(
+                controller: ScrollController(),
+                child: Column(
+                  children: [
+                    EditTextArea(
+                        textController: initialTextController,
+                        labelEditText: "Datos generales",
+                        keyBoardType: TextInputType.multiline,
+                        numOfLines: 5,
+                        withShowOption: true,
+                        inputFormat: MaskTextInputFormatter()),
+                    EditTextArea(
+                        textController: diagoTextController,
+                        labelEditText: "Impresiones diagnósticas",
+                        keyBoardType: TextInputType.multiline,
+                        numOfLines: 10,
+                        onChange: ((value) {
+                          Reportes.impresionesDiagnosticas = "$value.";
+                          Reportes.reportes['Impresiones_Diagnosticas'] =
+                              "$value.";
+                        }),
+                        inputFormat: MaskTextInputFormatter()),
+                    EditTextArea(
+                        textController: subjetivoTextController,
+                        labelEditText: "Referidos del Paciente",
+                        keyBoardType: TextInputType.multiline,
+                        numOfLines: 5,
+                        selection: true,
+                        withShowOption: true,
+                        onSelected: () {
+                          Cambios.toNextActivity(context, onClose: () {
                                   setState(() {
                                     subjetivoTextController.text =
                                         Reportes.subjetivoHospitalizacion;
                                     Reportes.reportes['Subjetivo'] =
                                         "${subjetivoTextController.text}.";
+                                    // *******************************
+                                    Navigator.pop(context);
                                   });
-                                });
                           },
-                          onChange: ((value) {
-                            Reportes.subjetivoHospitalizacion = "$value.";
-                            Reportes.reportes['Subjetivo'] = "$value.";
-                          }),
-                          inputFormat: MaskTextInputFormatter()),
-                    ],
-                  ),
+                              tittle:  'Subjetivo del paciente',
+                            chyld: const Subjetivos());
+                        },
+                        onChange: ((value) {
+                          Reportes.subjetivoHospitalizacion = "$value.";
+                          Reportes.reportes['Subjetivo'] = "$value.";
+                        }),
+                        inputFormat: MaskTextInputFormatter()),
+                  ],
                 ),
-                ExploracionFisica(),
-                AuxiliaresExploracion(),
-                AnalisisMedico(),
-                DiagnosticosAndPronostico(
-                  isTerapia: true,
-                ),
-              ],
-            ),
+              ),
+              ExploracionFisica(),
+              AuxiliaresExploracion(),
+              AnalisisMedico(),
+              DiagnosticosAndPronostico(
+                isTerapia: true,
+              ),
+            ],
           ),
         ),
       ]),

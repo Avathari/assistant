@@ -239,7 +239,7 @@ class _DashboardState extends State<Dashboard> {
                               labelButton: "Rutina",
                               iconData: Icons.ad_units,
                               onPress: () {
-                                Cambios.toNextActivity(context, chyld: ConmutadorParaclinicos(categoriaEstudio: "Rutina"));
+                                Cambios.toNextActivity(context, tittle: 'Anexión de la Rutina',chyld: ConmutadorParaclinicos(categoriaEstudio: "Rutina"));
 
                               }),
                         ],

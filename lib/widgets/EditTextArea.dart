@@ -1,4 +1,5 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
@@ -15,7 +16,7 @@ class EditTextArea extends StatefulWidget {
   bool obscureText = false;
   bool prefixIcon = false;
   bool isObscure = false;
-  bool withShowOption = false;
+  bool withShowOption = false, withDeleteOption = false;
   bool selection;
   int numOfLines;
   double fontSize;
@@ -45,6 +46,7 @@ class EditTextArea extends StatefulWidget {
     this.onSelected,
     this.onChange,
     this.withShowOption = false,
+    this.withDeleteOption = false,
     this.iconData= Icons.panorama_fish_eye,
     this.iconColor = Colors.white,
   }) : super(key: key) {
@@ -121,41 +123,77 @@ class _EditTextAreaState extends State<EditTextArea> {
           ),
           widget.withShowOption
               ? Expanded(
-                  flex: 3,
+                  flex: isTablet(context) ? 2 : 3,
                   child: Container(
-                    margin: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(4.0),
+                    margin: const EdgeInsets.all(4.0),
                     decoration: ContainerDecoration.roundedDecoration(),
-                    child: GrandIcon(
-                      labelButton: "Ver",
-                      iconData: widget.iconData,
-                      iconColor: widget.iconColor,
-                      onPress: widget.selection
-                          ? widget.onSelected
-                          : () {
-                              Operadores.openDialog(
-                                context: context,
-                                chyldrim: SingleChildScrollView(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      children: [
-                                        TittlePanel(
-                                            colorText: Colors.grey,
-                                            textPanel: widget.labelEditText!),
-                                        Text(
-                                          widget.textController.text,
-                                          style: const TextStyle(
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                        CrossLine(),
-                                      ],
-                                    )),
-                              );
-                            },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        GrandIcon(
+                          labelButton: "Ver",
+                          iconData: widget.iconData,
+                          iconColor: widget.iconColor,
+                          onPress: widget.selection
+                              ? widget.onSelected
+                              : () {
+                                  Operadores.openDialog(
+                                    context: context,
+                                    chyldrim: SingleChildScrollView(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          children: [
+                                            TittlePanel(
+                                                colorText: Colors.grey,
+                                                textPanel: widget.labelEditText!),
+                                            Text(
+                                              widget.textController.text,
+                                              style: const TextStyle(
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                            CrossLine(),
+                                          ],
+                                        )),
+                                  );
+                                },
+                        ),
+                        if (widget.withDeleteOption) CrossLine(),
+                        if (widget.withDeleteOption) GrandIcon(
+                            labelButton: "Ver",
+                            iconData: Icons.cleaning_services,
+                            iconColor: widget.iconColor,
+                            onPress: () {
+                              widget.textController.text = "";
+                            }
+                        )
+                      ],
                     ),
                   ),
                 )
-              : Container()
+              : widget.withDeleteOption
+              ? Expanded(
+            flex: 3,
+            child: Container(
+              padding: const EdgeInsets.all(4.0),
+              margin: const EdgeInsets.all(4.0),
+              decoration: ContainerDecoration.roundedDecoration(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  if (widget.withDeleteOption) GrandIcon(
+                      labelButton: "Ver",
+                      iconData: Icons.cleaning_services,
+                      iconColor: widget.iconColor,
+                      onPress: () {
+                        widget.textController.text = "";
+                      }
+                  )
+                ],
+              ),
+            ),
+          ) : Container()
         ],
       ),
     );

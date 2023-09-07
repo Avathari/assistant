@@ -46,6 +46,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
       drawer:
           isMobile(context) || isTablet(context) ? drawerHome(context) : null,
       appBar: AppBar(
+          foregroundColor: Colors.white,
           leading: isDesktop(context)
               ? IconButton(
                   icon: const Icon(

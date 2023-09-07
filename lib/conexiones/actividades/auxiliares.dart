@@ -5,6 +5,7 @@ import 'package:assistant/conexiones/actividades/pdfGenerete/PdfApi.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/AppBarText.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
@@ -107,12 +108,20 @@ class Cambios {
         .push(MaterialPageRoute(builder: ((context) => screen)));
   }
 
-  static void toNextActivity(BuildContext context, {required chyld}) {
+  static void toNextActivity(BuildContext context, {required chyld, String? tittle = '', void Function()? onClose}) {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (BuildContext context) => Scaffold(
             backgroundColor: Colors.black,
             appBar: AppBar(
-
+              leading: IconButton(onPressed: () {
+                if(onClose == null) {
+                  Navigator.of(context).pop();
+                } else {
+                  onClose();
+                }
+              }, icon: const Icon(Icons.arrow_back_ios)) ,
+              title: AppBarText(tittle!),
+              foregroundColor: Colors.white,
               backgroundColor: Colors.black,
             ),
             body: chyld)));
@@ -605,6 +614,7 @@ class Operadores {
     String? message = "Seleccione una opción . . . ",
     required List<dynamic> options,
     Function(String)? onClose,
+    Function(String)? onLongCloss
   }) {
     showDialog(
         context: context,
@@ -614,6 +624,7 @@ class Operadores {
             msg: message,
             options: options,
             onCloss: onClose,
+              onLongCloss: onLongCloss,
           );
         });
   }
@@ -871,6 +882,7 @@ class Dialogos {
     String? tittle,
     String? msg,
     ValueChanged<String>? onCloss,
+    ValueChanged<String>? onLongCloss,
     required List<dynamic> options,
   }) {
     List<Widget> list = [];
@@ -906,6 +918,9 @@ class Dialogos {
           )),
       actions: [
         ElevatedButton(
+          onLongPress: () {
+            onLongCloss!(selected);
+          },
             onPressed: () {
               onCloss!(selected);
             },

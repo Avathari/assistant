@@ -283,6 +283,7 @@ class _IntensivaState extends State<Intensiva> {
                     },
                   ),
                   GrandLabel(
+                    iconData: Icons.water,
                     labelButton: 'Análisis Renal',
                     onPress: () {
                       setState(() {
