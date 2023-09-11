@@ -931,7 +931,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                 context: context,
                                 chyldrim: const PadecimientoActual(),
                                 onAction: () {
-                                  Repositorios.actualizarRegistro();
+                                  // Repositorios.actualizarRegistro();
                                 });
                           }),
                       GrandIcon(
@@ -994,7 +994,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                   child: const SituacionesHospitalizacion(),
                                 ),
                                 onAction: () {
-                                  Repositorios.actualizarRegistro();
+                                  // Repositorios.actualizarRegistro();
                                 });
                           }),
                     ],
@@ -1725,7 +1725,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                             context: context,
                             chyldrim: const PadecimientoActual(),
                             onAction: () {
-                              Repositorios.actualizarRegistro();
+                              // Repositorios.actualizarRegistro();
                             });
                       }),
                   GrandIcon(
@@ -1788,7 +1788,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                               child: const SituacionesHospitalizacion(),
                             ),
                             onAction: () {
-                              Repositorios.actualizarRegistro();
+                              // Repositorios.actualizarRegistro();
                             });
                       }),
                 ],

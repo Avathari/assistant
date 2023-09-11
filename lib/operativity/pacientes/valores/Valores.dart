@@ -3060,7 +3060,7 @@ class Formatos {
           "${Valores.viaOral}, "
           "Uresis con frecuencia ${Valores.uresisCantidad}, "
           "excretas con frecuencia ${Valores.excretasCantidad}. "
-          "bristo ${Valores.excretasBristol}. ";
+          "bristol ${Valores.excretasBristol}. ";
   }
 
   static String get ideologias {
@@ -4133,8 +4133,10 @@ class Escalas {
 
 class Items {
   static List<String> tiposAnalisis = [
-    'Padecimiento Actual',
-    'Análisis Médico'
+    'Análisis de Ingreso',
+    'Análisis de Evolución',
+    'Análisis de Revisión',
+    'Análisis de Egreso'
   ];
   static List<String> motivosTraslado = [
     "Falla de Respuesta Favorable al Tratamiento",

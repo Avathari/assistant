@@ -8,6 +8,7 @@ import 'package:assistant/screens/pacientes/hospitalizacion/situacionesHospitali
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/AppBarText.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
@@ -167,6 +168,7 @@ class _OperacionesHospitalizacionesState
       appBar: isDesktop(context)
           ? null
           : AppBar(
+        foregroundColor: Colors.white,
               backgroundColor: Theming.primaryColor,
               title: Text(appBarTitile),
               leading: IconButton(
@@ -281,10 +283,11 @@ class _OperacionesHospitalizacionesState
                 Calendarios.today(format: 'yyyy-MM-dd');
           },
         ),
-      if (isTablet(context))
+      if (isTablet(context) || isDesktop(context))
         Row(
           children: [
             Expanded(
+              flex: 2,
               child: EditTextArea(
                 keyBoardType: TextInputType.number,
                 inputFormat: MaskTextInputFormatter(
@@ -317,6 +320,7 @@ class _OperacionesHospitalizacionesState
               ),
             ),
             Expanded(
+              flex: 2,
               child: EditTextArea(
                 keyBoardType: TextInputType.number,
                 inputFormat: MaskTextInputFormatter(
@@ -728,7 +732,7 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
             .then((value) {
           setState(() {
             foundedItems = value;
-            Operadores.notifyActivity(context: context, message: "$value");
+            // Operadores.notifyActivity(context: context, message: "$value");
           });
         }).onError((error, stackTrace) {
           Operadores.alertActivity(
@@ -751,6 +755,7 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+        foregroundColor: Colors.white,
           backgroundColor: Theming.primaryColor,
           leading: IconButton(
             icon: const Icon(
@@ -763,7 +768,7 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
                   builder: (context) => VisualPacientes(actualPage: 0)));
             },
           ),
-          title: Text(appTittle),
+          title: AppBarText(appTittle),
           actions: <Widget>[
             IconButton(
               icon: const Icon(
@@ -926,35 +931,38 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
                       )),
                   Expanded(
                     flex: 4,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                            "Ingreso: \n${snapshot.data[posicion]['Feca_INI_Hosp']}",
-                            style: Styles.textSyleGrowth(fontSize: 16)),
-                        Text(
-                          "Servicio: ${snapshot.data[posicion]['Serve_Trat']}",
-                          maxLines: 2,
-                          style: Styles.textSyleGrowth(fontSize: 12),
-                        ),
-                        Text(
-                          "${snapshot.data[posicion]['Medi_Trat']}",
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: Styles.textSyleGrowth(fontSize: 12),
-                        ),
-                        Text(
-                          "Egreso: ${snapshot.data[posicion]['Feca_EGE_Hosp']}",
-                          style: Styles.textSyleGrowth(fontSize: 12),
-                        ),
-                        Text("D.E.H.: ${snapshot.data[posicion]['Dia_Estan']}",
-                            style: Styles.textSyleGrowth(fontSize: 14)),
-                        Text(
-                          "${snapshot.data[posicion]['EGE_Motivo']}",
-                          style: Styles.textSyleGrowth(fontSize: 12),
-                        ),
-                      ],
+                    child: SingleChildScrollView(
+                      controller: ScrollController(),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                              "Ingreso: \n${snapshot.data[posicion]['Feca_INI_Hosp']}",
+                              style: Styles.textSyleGrowth(fontSize: 16)),
+                          Text(
+                            "Servicio: ${snapshot.data[posicion]['Serve_Trat']}",
+                            maxLines: 2,
+                            style: Styles.textSyleGrowth(fontSize: 12),
+                          ),
+                          Text(
+                            "${snapshot.data[posicion]['Medi_Trat']}",
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: Styles.textSyleGrowth(fontSize: 12),
+                          ),
+                          Text(
+                            "Egreso: ${snapshot.data[posicion]['Feca_EGE_Hosp']}",
+                            style: Styles.textSyleGrowth(fontSize: 12),
+                          ),
+                          Text("D.E.H.: ${snapshot.data[posicion]['Dia_Estan']}",
+                              style: Styles.textSyleGrowth(fontSize: 14)),
+                          Text(
+                            "${snapshot.data[posicion]['EGE_Motivo']}",
+                            style: Styles.textSyleGrowth(fontSize: 12),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

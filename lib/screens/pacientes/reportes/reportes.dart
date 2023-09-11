@@ -53,7 +53,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
     setState(() {
       Diagnosticos.registros();
       Quirurgicos.consultarRegistro();
-      Repositorios.consultarAnalisis();
+      Pendientes.consultarRegistro();
 
       Archivos.readJsonToMap(
               filePath: "${Pacientes.localRepositoryPath}patologicos.json")
@@ -72,40 +72,44 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           .then((value) {
         Pacientes.Diagnosticos = value;
       });
-      Archivos.readJsonToMap(
-              filePath: "${Pacientes.localRepositoryPath}quirurgicos.json")
-          .then((value) {
-        Pacientes.Quirurgicos = value;
-      });
+
       Archivos.readJsonToMap(
               filePath: "${Pacientes.localRepositoryPath}alergicos.json")
           .then((value) {
         Pacientes.Alergicos = value;
       });
 
-      Archivos.readJsonToMap(
-              filePath:
-                  "${Pacientes.localRepositoryPath}/reportes/reportes.json")
-          .then((value) {
-        Pacientes.Notas = value;
-        Terminal.printExpected(message: "VALUE - ${value.last}");
+      if (Pacientes.ID_Hospitalizacion != 0 ||
+          Pacientes.ID_Hospitalizacion != null) {
+        Archivos.readJsonToMap(
+                filePath:
+                    "${Pacientes.localRepositoryPath}/reportes/reportes.json")
+            .then((value) {
+          Pacientes.Notas = value;
+          // VALUE almacenado en Json : : "${Pacientes.localRepositoryPath}/reportes/reportes.json"
+          Terminal.printSuccess(
+              message:
+                  "VALUE - ${value.last} : ${value.runtimeType} : : ${value.last.runtimeType}");
+          // Actualizar . . .
+          setState(() {
+            Reportes.exploracionFisica = value.last['Exploracion_Fisica'] ?? '';
+            Reportes.signosVitales = value.last['Signos_Vitales'] ?? '';
 
-        setState(() {
-          Reportes.exploracionFisica = value.last['Exploracion_Fisica'] ?? '';
-          Reportes.signosVitales = value.last['Signos_Vitales'] ?? '';
-
-          Reportes.eventualidadesOcurridas = value.last['Eventualidades'] ?? '';
-          Reportes.terapiasPrevias = value.last['Terapias_Previas'] ?? '';
-          Reportes.analisisMedico = value.last['Analisis_Medico'] ?? '';
-          Reportes.tratamientoPropuesto =
-              value.last['Tratamiento_Propuesto'] ?? '';
+            Reportes.eventualidadesOcurridas =
+                value.last['Eventualidades'] ?? '';
+            Reportes.terapiasPrevias = value.last['Terapias_Previas'] ?? '';
+            Reportes.analisisMedico = value.last['Analisis_Medico'] ?? '';
+            Reportes.tratamientoPropuesto =
+                value.last['Tratamiento_Propuesto'] ?? '';
+          });
+        }).onError((error, stackTrace) {
+          Terminal.printAlert(
+              message: "ERROR - No fue posible acceder a "
+                  "${"${Pacientes.localRepositoryPath}/reportes/reportes.json"} : $error : : $stackTrace");
+// Consultar Base de Datos : pace_hosp_repo : : Donde están todos los Análisis descritos
+          Repositorios.consultarAnalisis();
         });
-      }).onError((error, stackTrace) {
-        Terminal.printAlert(
-            message: "ERROR - No fue posible acceder a "
-                "${"${Pacientes.localRepositoryPath}/reportes/reportes.json"} : $error : : $stackTrace");
-        Reportes.consultarRegistros();
-      });
+      }
 
       Archivos.readJsonToMap(
               filePath: "${Pacientes.localRepositoryPath}/paraclinicos.json")
@@ -210,51 +214,54 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               },
             ),
           ]), //: null,
-      floatingActionButton:
-          Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-        FloatingActionButton(
-          backgroundColor: Colors.black87,
-          foregroundColor: Colors.grey,
-          tooltip: 'Indicaciones Médicas',
-          onPressed: () {
-            //...
-            setState(() {
-              widget.actualPage = 9;
-            });
-          },
-          heroTag: null,
-          child: const Icon(
-            Icons.line_weight,
-            color: Colors.grey,
-          ),
-        ),
-        const SizedBox(height: 10),
-        FloatingActionButton(
-          backgroundColor: Colors.black87,
-          foregroundColor: Colors.grey,
-          tooltip: 'Vista Previa',
-          onPressed: () async {
-            await imprimirDocumento().then((value) =>
-                Operadores.alertActivity(
-                    context: context,
-                    tittle: 'Petición de Registro de Análisis',
-                    message:
-                    '¿Desea registrar el análisis en la base de datos?',
-                    onClose: () {
-                      Navigator.of(context).pop();
-                    },
-                    onAcept: () {
-                      Repositorios.registrarAnalisis();
-                      Navigator.of(context).pop();
-                    }));
-          },
-          heroTag: null,
-          child: const Icon(
-            Icons.scale,
-            color: Colors.grey,
-          ),
-        )
-      ]),
+      floatingActionButton: isMobile(context)
+          ? Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+              FloatingActionButton(
+                backgroundColor: Colors.black87,
+                foregroundColor: Colors.grey,
+                tooltip: 'Indicaciones Médicas',
+                onPressed: () {
+                  //...
+                  setState(() {
+                    widget.actualPage = 9;
+                  });
+                },
+                heroTag: null,
+                child: const Icon(
+                  Icons.line_weight,
+                  color: Colors.grey,
+                ),
+              ),
+              const SizedBox(height: 10),
+              FloatingActionButton(
+                backgroundColor: Colors.black87,
+                foregroundColor: Colors.grey,
+                tooltip: 'Vista Previa',
+                onPressed: () async {
+                  await imprimirDocumento()
+                      .then((value) => Operadores.alertActivity(
+                          context: context,
+                          tittle: 'Petición de Registro de Análisis',
+                          message:
+                              '¿Desea registrar el análisis en la base de datos?',
+                          onClose: () {
+                            Navigator.of(context).pop();
+                          },
+                          onAcept: () {
+                            Navigator.of(context).pop();
+                            Repositorios.registrarRegistro();
+                          }))
+                      .onError((error, stackTrace) => Terminal.printAlert(
+                          message: "ERROR - $error : : $stackTrace"));
+                },
+                heroTag: null,
+                child: const Icon(
+                  Icons.scale,
+                  color: Colors.grey,
+                ),
+              )
+            ])
+          : Container(),
       body:
           isMobile(context) || isTablet(context) ? mobileView() : desktopView(),
     );
@@ -561,8 +568,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           GrandButton(
               labelButton: "Vista previa",
               onPress: () async {
-                await imprimirDocumento().then((value) =>
-                    Operadores.alertActivity(
+                await imprimirDocumento()
+                    .then((value) => Operadores.alertActivity(
                         context: context,
                         tittle: 'Petición de Registro de Análisis',
                         message:
@@ -571,8 +578,11 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                           Navigator.of(context).pop();
                         },
                         onAcept: () {
-                          Repositorios.registrarAnalisis();
-                        }));
+                          Navigator.of(context).pop();
+                          Repositorios.registrarRegistro();
+                        }))
+                    .onError((error, stackTrace) => Terminal.printAlert(
+                        message: "ERROR - $error : : $stackTrace"));
               }),
         ],
       );
@@ -599,6 +609,12 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       if (Pacientes.Notas!.last['Fecha_Realizacion'] !=
           Calendarios.today(format: 'yyyy/MM/dd')) {
         Pacientes.Notas!.add({
+          'ID_Pace': Pacientes.ID_Paciente,
+          'ID_Hosp': Pacientes.ID_Hospitalizacion,
+          'Fecha_Padecimiento': Valores.fechaPadecimientoActual,
+          'Padecimiento_Actual': Reportes.padecimientoActual,
+          "Servicio_Inicial": Valores.servicioTratanteInicial,
+          "Servicio_Medico": Valores.servicioTratante,
           'Fecha_Realizacion': Calendarios.today(format: 'yyyy/MM/dd'),
           'Subjetivo': Reportes.reportes['Subjetivo'],
           "Signos_Vitales": Reportes.signosVitales,
@@ -607,6 +623,14 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           "Terapias_Previas": Reportes.terapiasPrevias,
           "Analisis_Medico": Reportes.analisisMedico,
           "Tratamiento_Propuesto": Reportes.tratamientoPropuesto,
+          // INDICACIONES MÉDICAS *******************************
+          "Dieta": Reportes.dieta.toString(),
+          "Hidroterapia": Reportes.hidroterapia,
+          "Insulinoterapia": Reportes.insulinoterapia,
+          "Hemoterapia": Reportes.hemoterapia,
+          "Oxigenoterapia": Reportes.oxigenoterapia,
+          "Medicamentos": Reportes.medicamentosIndicados,
+          "Medidas_Generales": Reportes.medidasGenerales,
           "Pendientes": Reportes.pendientes, // ['Sin pendientes'],
         });
       } else {
@@ -615,6 +639,12 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
         Terminal.printAlert(message: "index $index");
 
         Pacientes.Notas![index] = {
+          'ID_Pace': Pacientes.ID_Paciente,
+          'ID_Hosp': Pacientes.ID_Hospitalizacion,
+          'Fecha_Padecimiento': Valores.fechaPadecimientoActual,
+          'Padecimiento_Actual': Reportes.padecimientoActual,
+          "Servicio_Inicial": Valores.servicioTratanteInicial,
+          "Servicio_Medico": Valores.servicioTratante,
           'Fecha_Realizacion': Calendarios.today(format: 'yyyy/MM/dd'),
           'Subjetivo': Reportes.reportes['Subjetivo'],
           "Signos_Vitales": Reportes.signosVitales,
@@ -623,11 +653,25 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           "Terapias_Previas": Reportes.terapiasPrevias,
           "Analisis_Medico": Reportes.analisisMedico,
           "Tratamiento_Propuesto": Reportes.tratamientoPropuesto,
+          // INDICACIONES MÉDICAS *******************************
+          "Dieta": Reportes.dieta.toString(),
+          "Hidroterapia": Reportes.hidroterapia,
+          "Insulinoterapia": Reportes.insulinoterapia,
+          "Hemoterapia": Reportes.hemoterapia,
+          "Oxigenoterapia": Reportes.oxigenoterapia,
+          "Medicamentos": Reportes.medicamentosIndicados,
+          "Medidas_Generales": Reportes.medidasGenerales,
           "Pendientes": Reportes.pendientes, // ['Sin pendientes'],
         };
       }
     } else if (Pacientes.Notas!.isEmpty) {
       Pacientes.Notas!.add({
+        'ID_Pace': Pacientes.ID_Paciente,
+        'ID_Hosp': Pacientes.ID_Hospitalizacion,
+        'Fecha_Padecimiento': Valores.fechaPadecimientoActual,
+        'Padecimiento_Actual': Reportes.padecimientoActual,
+        "Servicio_Inicial": Valores.servicioTratanteInicial,
+        "Servicio_Medico": Valores.servicioTratante,
         'Fecha_Realizacion': Calendarios.today(format: 'yyyy/MM/dd'),
         'Subjetivo': Reportes.reportes['Subjetivo'],
         "Signos_Vitales": Reportes.signosVitales,
@@ -636,13 +680,19 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
         "Terapias_Previas": Reportes.terapiasPrevias,
         "Analisis_Medico": Reportes.analisisMedico,
         "Tratamiento_Propuesto": Reportes.tratamientoPropuesto,
+        // INDICACIONES MÉDICAS *******************************
+        "Dieta": Reportes.dieta.toString(),
+        "Hidroterapia": Reportes.hidroterapia,
+        "Insulinoterapia": Reportes.insulinoterapia,
+        "Hemoterapia": Reportes.hemoterapia,
+        "Oxigenoterapia": Reportes.oxigenoterapia,
+        "Medicamentos": Reportes.medicamentosIndicados,
+        "Medidas_Generales": Reportes.medidasGenerales,
         "Pendientes": Reportes.pendientes, // ['Sin pendientes'],
       });
     }
 
-    Archivos.createJsonFromMap(Pacientes.Notas!,
-        filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
-
+    Repositorios.tipo_Analisis = Repositorios.tipoAnalisis();
     // ignore: use_build_context_synchronously
     Operadores.listOptionsActivity(
         context: context,

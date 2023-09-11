@@ -98,7 +98,8 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
           padding: const EdgeInsets.all(8.0),
           child: CarouselSlider(
             carouselController: carouselController,
-            options: Carousel.carouselOptions(context: context, height: isMobile(context) ?  345 : 640),
+            options: Carousel.carouselOptions(context: context, height: isMobile(context) ?  345 : isDesktop(context) ? 527
+                :640),
             items: [
               SingleChildScrollView(
                 controller: ScrollController(),
@@ -164,25 +165,17 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
     );
   }
 
-  // ######################### ### # ### ############################
-  // Controladores de widgets en general.
-  // ######################### ### # ### ############################
+  // Controladores de widgets en general. ######################### ### # ### ############################
   var carouselController = CarouselController();
-  // ######################### ### # ### ############################
-  // Variables auxiliares de widget.
-  // ######################### ### # ### ############################
+  // Variables auxiliares de widget. ######################### ### # ### ############################
   num index = 6;
   int wieghtRow = 200;
-  // ######################### ### # ### ############################
-  // Controladores de widgets tipo valores.
-  // ######################### ### # ### ############################
+  // Controladores de widgets tipo valores. ######################### ### # ### ###########################
   var initialTextController = TextEditingController();
   var diagoTextController = TextEditingController();
   var subjetivoTextController = TextEditingController();
   var heredoTextController = TextEditingController();
   var hospiTextController = TextEditingController();
   var patoloTextController = TextEditingController();
-// ######################### ### # ### ############################
-// INICIO DE LAS OPERACIONES STATE() Y BUILD().
-// ######################### ### # ### ############################
+// INICIO DE LAS OPERACIONES STATE() Y BUILD(). ######################### ### # ### ###############
 }

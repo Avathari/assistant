@@ -22,19 +22,21 @@ class ReporteIngreso extends StatefulWidget {
 class _ReporteIngresoState extends State<ReporteIngreso> {
   @override
   void initState() {
-    Actividades.consultarId(
-            Databases.siteground_database_reghosp,
-            Repositorios.repositorio['consultPadecimientoQuery'],
-            Pacientes.ID_Hospitalizacion)
-        .then((response) {
-      // print("RESPUESTA $response");
-      setState(() {
-        Reportes.padecimientoActual =
-            "Inicia padecimiento actual el dia ${response['FechaPadecimiento']}, ${response['Contexto']}";
-        padesTextController.text = Reportes.padecimientoActual;
-        Reportes.reportes['Padecimiento_Actual'] = Reportes.padecimientoActual;
-      });
-    });
+    Repositorios.padecimientoActual();
+    // Actividades.consultarId(
+    //         Databases.siteground_database_reghosp,
+    //         Repositorios.repositorio['consultPadecimientoQuery'],
+    //         Pacientes.ID_Hospitalizacion)
+    //     .then((response) {
+    //   // print("RESPUESTA $response");
+    //   setState(() {
+    //     Reportes.padecimientoActual =
+    //         // "Inicia padecimiento actual el dia ${response['FechaPadecimiento']}, "
+    //             "${response['Contexto']}";
+    //     padesTextController.text = Reportes.padecimientoActual;
+    //     Reportes.reportes['Padecimiento_Actual'] = Reportes.padecimientoActual;
+    //   });
+    // });
     // # # # ############## #### ########
     setState(() {
       initialTextController.text = Pacientes.prosa();
@@ -72,10 +74,9 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
       decoration: ContainerDecoration.roundedDecoration(),
       child: Column(children: [
         Expanded(
-          child: SingleChildScrollView(
+          child: Container(
+            margin: const EdgeInsets.all(8.0),
             padding: const EdgeInsets.all(8.0),
-            controller: ScrollController(),
-            scrollDirection: Axis.horizontal,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -126,8 +127,9 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
             ),
           ),
         ),
+        CrossLine(thickness: 3,),
         Expanded(
-          flex: 6,
+          flex: 10,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: CarouselSlider(
@@ -145,63 +147,78 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
                           numOfLines: 3,
                           withShowOption: true,
                           inputFormat: MaskTextInputFormatter()),
-                      EditTextArea(
-                          textController: noPatolTextController,
-                          labelEditText: "Antecedentes No Patológicos",
-                          keyBoardType: TextInputType.multiline,
-                          numOfLines: 8,
-                          withShowOption: true,
-                          inputFormat: MaskTextInputFormatter()),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          GrandIcon(
-                              labelButton: 'No Patológicos',
-                              iconData: Icons.account_balance,
-                              onPress: () {
-                                noPatolTextController.text =
-                                    Pacientes.noPatologicos();
-                                Reportes.reportes[
-                                        'Antecedentes_No_Patologicos'] =
-                                    Pacientes.noPatologicos();
-                              }),
-                          CrossLine(
-                            isHorizontal: false,
-                            thickness: 4,
-                            color: Colors.white,
-                            height: 8,
+                          Expanded(
+                            flex: 10,
+                            child: EditTextArea(
+                                textController: noPatolTextController,
+                                labelEditText: "Antecedentes No Patológicos",
+                                keyBoardType: TextInputType.multiline,
+                                numOfLines: 8,
+                                withShowOption: true,
+                                inputFormat: MaskTextInputFormatter()),
                           ),
-                          GrandIcon(
-                              labelButton: 'No Patológicos Simplificado',
-                              iconData: Icons.account_balance_outlined,
-                              onPress: () {
-                                noPatolTextController.text =
-                                    Pacientes.noPatologicosSimple();
-                                Reportes.reportes[
-                                        'Antecedentes_No_Patologicos'] =
-                                    Pacientes.noPatologicosSimple();
-                              }),
-                          CrossLine(
-                            isHorizontal: false,
-                            thickness: 4,
-                            color: Colors.white,
-                            height: 8,
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                GrandIcon(
+                                    labelButton: 'No Patológicos',
+                                    iconData: Icons.account_balance,
+                                    onPress: () {
+                                      noPatolTextController.text =
+                                          Pacientes.noPatologicos();
+                                      Reportes.reportes[
+                                              'Antecedentes_No_Patologicos'] =
+                                          Pacientes.noPatologicos();
+                                    }),
+                                CrossLine(
+                                  isHorizontal: false,
+                                  thickness: 4,
+                                  color: Colors.white,
+                                  height: 8,
+                                ),
+                                GrandIcon(
+                                    labelButton: 'No Patológicos Simplificado',
+                                    iconData: Icons.account_balance_outlined,
+                                    onPress: () {
+                                      noPatolTextController.text =
+                                          Pacientes.noPatologicosSimple();
+                                      Reportes.reportes[
+                                              'Antecedentes_No_Patologicos'] =
+                                          Pacientes.noPatologicosSimple();
+                                    }),
+                                CrossLine(
+                                  isHorizontal: false,
+                                  thickness: 4,
+                                  color: Colors.white,
+                                  height: 8,
+                                ),
+                                GrandIcon(
+                                    labelButton: 'No Patológicos Resumido',
+                                    iconData: Icons.account_balance_sharp,
+                                    onPress: () {
+                                      noPatolTextController.text =
+                                          Pacientes.noPatologicosResumido();
+                                      Reportes.reportes[
+                                              'Antecedentes_No_Patologicos'] =
+                                          Pacientes.noPatologicosResumido();
+                                    }),
+                              ],
+                            ),
                           ),
-                          GrandIcon(
-                              labelButton: 'No Patológicos Resumido',
-                              iconData: Icons.account_balance_sharp,
-                              onPress: () {
-                                noPatolTextController.text =
-                                    Pacientes.noPatologicosResumido();
-                                Reportes.reportes[
-                                        'Antecedentes_No_Patologicos'] =
-                                    Pacientes.noPatologicosResumido();
-                              }),
                         ],
                       ),
                       EditTextArea(
                           textController: heredoTextController,
                           labelEditText: "Antecedentes heredofamiliares",
+                          keyBoardType: TextInputType.multiline,
+                          numOfLines: 5,
+                          inputFormat: MaskTextInputFormatter()),
+                      EditTextArea(
+                          textController: patoloTextController,
+                          labelEditText: "Antecedentes personales patológicos",
                           keyBoardType: TextInputType.multiline,
                           numOfLines: 5,
                           inputFormat: MaskTextInputFormatter()),
@@ -220,12 +237,6 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
                                   hospiTextController.text;
                             });
                           },
-                          inputFormat: MaskTextInputFormatter()),
-                      EditTextArea(
-                          textController: patoloTextController,
-                          labelEditText: "Antecedentes personales patológicos",
-                          keyBoardType: TextInputType.multiline,
-                          numOfLines: 5,
                           inputFormat: MaskTextInputFormatter()),
                       EditTextArea(
                           textController: alergoTextController,

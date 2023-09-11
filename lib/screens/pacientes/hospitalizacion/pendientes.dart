@@ -6,13 +6,13 @@ import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/AppBarText.dart';
 import 'package:assistant/widgets/CircleSwitched.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/Spinner.dart';
-import 'package:assistant/widgets/Switched.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
@@ -93,10 +93,13 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
       appBar: isDesktop(context) || isTabletAndDesktop(context)
           ? null
           : AppBar(
+        foregroundColor: Colors.white,
               backgroundColor: Theming.primaryColor,
-              title: Text(appBarTitile),
+              title: AppBarText(appBarTitile),
               leading: IconButton(
+                color: Colors.white,
                 icon: const Icon(
+
                   Icons.arrow_back,
                 ),
                 tooltip: Sentences.regresar,
@@ -390,6 +393,7 @@ class _GestionPendienteState extends State<GestionPendiente> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+          foregroundColor: Colors.white,
           backgroundColor: Theming.primaryColor,
           leading: IconButton(
             icon: const Icon(
@@ -402,7 +406,7 @@ class _GestionPendienteState extends State<GestionPendiente> {
                   builder: (context) => VisualPacientes(actualPage: 0)));
             },
           ),
-          title: Text(appTittle),
+          title: AppBarText(appTittle),
           actions: <Widget>[
             IconButton(
               icon: const Icon(
@@ -425,7 +429,7 @@ class _GestionPendienteState extends State<GestionPendiente> {
           ]),
       body: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         Expanded(
-          flex: 9,
+          flex: 6,
           child: RefreshIndicator(
             color: Colors.white,
             backgroundColor: Colors.black,
@@ -473,7 +477,7 @@ class _GestionPendienteState extends State<GestionPendiente> {
         ),
         isDesktop(context) // || isTablet(context)
             ? widget.actualSidePage != null
-                ? Expanded(flex: 1, child: widget.actualSidePage!)
+                ? Expanded(flex: 5, child: widget.actualSidePage!)
                 : Expanded(flex: 1, child: Container())
             : Container()
       ]),

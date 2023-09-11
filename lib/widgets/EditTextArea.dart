@@ -82,7 +82,7 @@ class _EditTextAreaState extends State<EditTextArea> {
               obscureText: widget.obscureText,
               style: TextStyle(
                 color: Colors.white,
-                fontSize: widget.fontSize,
+                fontSize: isMobile(context) || isTablet(context) ? widget.fontSize : widget.fontSize + 2,
               ),
               textAlign: TextAlign.justify,
               decoration: InputDecoration(
@@ -123,7 +123,7 @@ class _EditTextAreaState extends State<EditTextArea> {
           ),
           widget.withShowOption
               ? Expanded(
-                  flex: isTablet(context) ? 2 : 3,
+                  flex: isTablet(context) ? 2 : 1,
                   child: Container(
                     padding: const EdgeInsets.all(4.0),
                     margin: const EdgeInsets.all(4.0),

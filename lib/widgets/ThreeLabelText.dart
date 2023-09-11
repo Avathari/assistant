@@ -7,7 +7,7 @@ class ThreeLabelTextAline extends StatefulWidget {
   String? firstText;
   String? secondText;
   String? thirdText;
-  double padding;
+  double padding, fontSize;
 
   bool? withEditMessage, withBorder;
   final ValueChanged<String>? onEdit;
@@ -18,6 +18,7 @@ class ThreeLabelTextAline extends StatefulWidget {
     this.secondText = "",
     this.thirdText = "",
     this.padding = 2.0,
+    this.fontSize = 11,
     this.withEditMessage = false,
     this.withBorder = false,
     this.onEdit,
@@ -38,8 +39,8 @@ class _ThreeLabelTextAlineState extends State<ThreeLabelTextAline> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(widget.firstText!,
-              style: const TextStyle(
-                fontSize: 14,
+              style: TextStyle(
+                fontSize: widget.fontSize,
                 color: Colors.grey,
                 overflow: TextOverflow.ellipsis,
                 fontWeight: FontWeight.bold,
@@ -48,7 +49,7 @@ class _ThreeLabelTextAlineState extends State<ThreeLabelTextAline> {
             widget.firstText == '' ?
             widget.secondText! : widget.secondText!,
             style: TextStyle(
-              fontSize: widget.firstText == '' ? 13 : 12,
+              fontSize: widget.firstText == '' ? widget.fontSize - 1: widget.fontSize -2,
               color: widget.secondText! == '0000-00-00' ? Colors.red: Colors.grey,
               overflow: TextOverflow.fade,
               fontWeight: FontWeight.normal,
@@ -57,8 +58,8 @@ class _ThreeLabelTextAlineState extends State<ThreeLabelTextAline> {
             textAlign: TextAlign.left,
           ),
           Text(widget.thirdText!,
-              style: const TextStyle(
-                fontSize: 12,
+              style: TextStyle(
+                fontSize: widget.fontSize -2,
                 color: Colors.grey,
                 overflow: TextOverflow.ellipsis,
                 fontWeight: FontWeight.normal,

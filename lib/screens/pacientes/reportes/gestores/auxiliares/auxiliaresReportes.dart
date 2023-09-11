@@ -32,6 +32,8 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
 
   late String? tipoEstudio;
 
+  double mainAxisExtend = 50;
+
   @override
   void initState() {
     Auxiliares.registros();
@@ -76,7 +78,7 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                   child: Container(
                       padding: const EdgeInsets.all(8.0),
                       decoration: ContainerDecoration.roundedDecoration(),
-                      child: isMobile(context)
+                      child: isMobile(context) || isTablet(context)
                           ? Column(
                               children: [
                                 Expanded(
@@ -97,17 +99,17 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                           ),
                                         ),
                                         onLongCloss: (value) {
-                                        setState(() {
-                                          auxTextController.text =
-                                              Auxiliares.porFecha(
-                                                  fechaActual: value,
-                                                  esAbreviado: true);
-                                          Reportes.reportes[
-                                          'Auxiliares_Diagnosticos'] =
-                                              value;
-                                          Navigator.of(context).pop();
-                                        });
-                                      },
+                                          setState(() {
+                                            auxTextController.text =
+                                                Auxiliares.porFecha(
+                                                    fechaActual: value,
+                                                    esAbreviado: true);
+                                            Reportes.reportes[
+                                                    'Auxiliares_Diagnosticos'] =
+                                                value;
+                                            Navigator.of(context).pop();
+                                          });
+                                        },
                                         onClose: (value) {
                                           setState(() {
                                             auxTextController.text =
@@ -418,92 +420,120 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                 ),
                               ],
                             )
-                          : Column(
-                              children: [
-                                Row(
+                          : isDesktop(context)
+                              ? Column(
                                   children: [
-                                    Expanded(
-                                      child: GrandIcon(
-                                        iconData: Icons.attractions_outlined,
-                                        labelButton: "Actualizados",
-                                        onPress: () {
-                                          Operadores.selectOptionsActivity(
-                                            context: context,
-                                            tittle:
-                                                "Elija la fecha de los estudios . . . ",
-                                            options:
-                                                Listas.listWithoutRepitedValues(
-                                              Listas.listFromMapWithOneKey(
-                                                Pacientes.Paraclinicos!,
-                                                keySearched: 'Fecha_Registro',
-                                              ),
-                                            ),
-                                            onClose: (value) {
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 3,
+                                          child: GrandIcon(
+                                            iconData:
+                                                Icons.attractions_outlined,
+                                            labelButton: "Actualizados",
+                                            onPress: () {
+                                              Operadores.selectOptionsActivity(
+                                                context: context,
+                                                tittle:
+                                                    "Elija la fecha de los estudios . . . ",
+                                                options: Listas
+                                                    .listWithoutRepitedValues(
+                                                  Listas.listFromMapWithOneKey(
+                                                    Pacientes.Paraclinicos!,
+                                                    keySearched:
+                                                        'Fecha_Registro',
+                                                  ),
+                                                ),
+                                                onLongCloss: (value) {
+                                                  setState(() {
+                                                    auxTextController.text =
+                                                        Auxiliares.porFecha(
+                                                            fechaActual: value,
+                                                            esAbreviado: true);
+                                                    Reportes.reportes[
+                                                            'Auxiliares_Diagnosticos'] =
+                                                        value;
+                                                    Navigator.of(context).pop();
+                                                  });
+                                                },
+                                                onClose: (value) {
+                                                  setState(() {
+                                                    auxTextController.text =
+                                                        Auxiliares.porFecha(
+                                                            fechaActual: value);
+                                                    Reportes.reportes[
+                                                            'Auxiliares_Diagnosticos'] =
+                                                        value;
+                                                    Navigator.of(context).pop();
+                                                  });
+                                                },
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 3,
+                                          child: GrandIcon(
+                                            iconData: Icons.clear_all,
+                                            labelButton: "Historial",
+                                            onPress: () {
                                               setState(() {
                                                 auxTextController.text =
-                                                    Auxiliares.porFecha(
-                                                        fechaActual: value);
+                                                    Auxiliares.historial();
                                                 Reportes.reportes[
                                                         'Auxiliares_Diagnosticos'] =
-                                                    value;
-                                                Navigator.of(context).pop();
+                                                    Auxiliares.historial();
                                               });
                                             },
-                                          );
-                                        },
-                                      ),
+                                            onLongPress: () {
+                                              setState(() {
+                                                auxTextController.text =
+                                                    Auxiliares.historial(
+                                                        esAbreviado: true);
+                                                Reportes.reportes[
+                                                        'Auxiliares_Diagnosticos'] =
+                                                    Auxiliares.historial(
+                                                        esAbreviado: true);
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    // Expanded(
+                                    //   flex: 2,
+                                    //   child: GrandIcon(
+                                    //     iconData: Icons.list_alt_sharp,
+                                    //     labelButton: "Historial Abreviado",
+                                    //     onPress: () {
+                                    //       setState(() {
+                                    //         auxTextController.text = Auxiliares.historial(esAbreviado: true);
+                                    //         Reportes.reportes['Auxiliares_Diagnosticos'] = Auxiliares.historial(esAbreviado: true);
+                                    //       });
+                                    //     },
+                                    //   ),
+                                    // ),
+                                    CrossLine(
+                                      height: 7,
                                     ),
                                     Expanded(
-                                      child: GrandIcon(
-                                        iconData: Icons.clear_all,
-                                        labelButton: "Historial",
-                                        onPress: () {
-                                          setState(() {
-                                            auxTextController.text =
-                                                Auxiliares.historial();
-                                            Reportes.reportes[
-                                                    'Auxiliares_Diagnosticos'] =
-                                                Auxiliares.historial();
-                                          });
-                                        },
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: GrandIcon(
-                                        iconData: Icons.clear_all,
-                                        labelButton: "Historial Abreviado",
-                                        onPress: () {
-                                          setState(() {
-                                            auxTextController.text =
-                                                Auxiliares.historial(
-                                                    esAbreviado: true);
-                                            Reportes.reportes[
-                                                    'Auxiliares_Diagnosticos'] =
-                                                Auxiliares.historial(
-                                                    esAbreviado: true);
-                                          });
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                CrossLine(),
-                                Expanded(
-                                  child: Container(
-                                    padding: const EdgeInsets.all(8.0),
-                                    decoration:
-                                        ContainerDecoration.roundedDecoration(),
-                                    child: SingleChildScrollView(
-                                      controller: scrollAuxController,
-                                      child: Column(
+                                      flex: 5,
+                                      child: GridView(
+                                        controller: scrollAuxController,
+                                        gridDelegate:
+                                            GridViewTools.gridDelegate(
+                                                mainAxisExtent: mainAxisExtend),
                                         children: [
-                                          GrandButton(
+                                          GrandIcon(
+                                            iconData:
+                                                Icons.monitor_heart_outlined,
                                             labelButton: "Electrocardiograma",
                                             onPress: () {
                                               asignarParaclinico(indice: 20);
                                             },
                                           ),
-                                          GrandButton(
+                                          GrandIcon(
+                                            iconData: Icons.bloodtype,
                                             labelButton: "Biometría hemática",
                                             onPress: () {
                                               int index = 0;
@@ -536,7 +566,9 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                               );
                                             },
                                           ),
-                                          GrandButton(
+                                          GrandIcon(
+                                            iconData:
+                                                Icons.room_preferences_outlined,
                                             labelButton: "Química sanguínea",
                                             onPress: () {
                                               int index = 1;
@@ -569,7 +601,8 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                               );
                                             },
                                           ),
-                                          GrandButton(
+                                          GrandIcon(
+                                            iconData: Icons.electric_bolt,
                                             labelButton: "Electrolitos séricos",
                                             onPress: () {
                                               int index = 2;
@@ -602,7 +635,8 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                               );
                                             },
                                           ),
-                                          GrandButton(
+                                          GrandIcon(
+                                            iconData: Icons.hdr_weak_sharp,
                                             labelButton: "Perfil hepático",
                                             onPress: () {
                                               int index = 3;
@@ -635,7 +669,9 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                               );
                                             },
                                           ),
-                                          GrandButton(
+                                          GrandIcon(
+                                            iconData:
+                                                Icons.wifi_tethering_error,
                                             labelButton: "Perfil lipídico",
                                             onPress: () {
                                               int index = 4;
@@ -668,7 +704,9 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                               );
                                             },
                                           ),
-                                          GrandButton(
+                                          GrandIcon(
+                                            iconData:
+                                                Icons.nest_cam_wired_stand,
                                             labelButton: "Perfil tiroideo",
                                             onPress: () {
                                               int index = 5;
@@ -701,7 +739,8 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                               );
                                             },
                                           ),
-                                          GrandButton(
+                                          GrandIcon(
+                                            iconData: Icons.title,
                                             labelButton:
                                                 "Tiempos de coagulación",
                                             onPress: () {
@@ -738,10 +777,360 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                         ],
                                       ),
                                     ),
-                                  ),
-                                ),
-                              ],
-                            )),
+                                  ],
+                                )
+                              : Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: GrandIcon(
+                                            iconData:
+                                                Icons.attractions_outlined,
+                                            labelButton: "Actualizados",
+                                            onPress: () {
+                                              Operadores.selectOptionsActivity(
+                                                context: context,
+                                                tittle:
+                                                    "Elija la fecha de los estudios . . . ",
+                                                options: Listas
+                                                    .listWithoutRepitedValues(
+                                                  Listas.listFromMapWithOneKey(
+                                                    Pacientes.Paraclinicos!,
+                                                    keySearched:
+                                                        'Fecha_Registro',
+                                                  ),
+                                                ),
+                                                onClose: (value) {
+                                                  setState(() {
+                                                    auxTextController.text =
+                                                        Auxiliares.porFecha(
+                                                            fechaActual: value);
+                                                    Reportes.reportes[
+                                                            'Auxiliares_Diagnosticos'] =
+                                                        value;
+                                                    Navigator.of(context).pop();
+                                                  });
+                                                },
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: GrandIcon(
+                                            iconData: Icons.clear_all,
+                                            labelButton: "Historial",
+                                            onPress: () {
+                                              setState(() {
+                                                auxTextController.text =
+                                                    Auxiliares.historial();
+                                                Reportes.reportes[
+                                                        'Auxiliares_Diagnosticos'] =
+                                                    Auxiliares.historial();
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: GrandIcon(
+                                            iconData: Icons.clear_all,
+                                            labelButton: "Historial Abreviado",
+                                            onPress: () {
+                                              setState(() {
+                                                auxTextController.text =
+                                                    Auxiliares.historial(
+                                                        esAbreviado: true);
+                                                Reportes.reportes[
+                                                        'Auxiliares_Diagnosticos'] =
+                                                    Auxiliares.historial(
+                                                        esAbreviado: true);
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    CrossLine(),
+                                    Expanded(
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8.0),
+                                        decoration: ContainerDecoration
+                                            .roundedDecoration(),
+                                        child: SingleChildScrollView(
+                                          controller: scrollAuxController,
+                                          child: Column(
+                                            children: [
+                                              GrandButton(
+                                                labelButton:
+                                                    "Electrocardiograma",
+                                                onPress: () {
+                                                  asignarParaclinico(
+                                                      indice: 20);
+                                                },
+                                              ),
+                                              GrandButton(
+                                                labelButton:
+                                                    "Biometría hemática",
+                                                onPress: () {
+                                                  int index = 0;
+                                                  Operadores
+                                                      .selectOptionsActivity(
+                                                    context: context,
+                                                    tittle:
+                                                        "Elija la fecha de la biometría hemática . . . ",
+                                                    options: Listas
+                                                        .listWithoutRepitedValues(
+                                                      Listas
+                                                          .listFromMapWithOneKey(
+                                                        Listas.listFromMap(
+                                                            lista: Pacientes
+                                                                .Paraclinicos!,
+                                                            keySearched:
+                                                                'Tipo_Estudio',
+                                                            elementSearched:
+                                                                Auxiliares
+                                                                        .Categorias[
+                                                                    index]),
+                                                      ),
+                                                    ),
+                                                    onClose: (value) {
+                                                      setState(() {
+                                                        asignarParaclinico(
+                                                            indice: index,
+                                                            fechaActual: value);
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      });
+                                                    },
+                                                  );
+                                                },
+                                              ),
+                                              GrandButton(
+                                                labelButton:
+                                                    "Química sanguínea",
+                                                onPress: () {
+                                                  int index = 1;
+                                                  Operadores
+                                                      .selectOptionsActivity(
+                                                    context: context,
+                                                    tittle:
+                                                        "Elija la fecha de la química sanguínnea . . . ",
+                                                    options: Listas
+                                                        .listWithoutRepitedValues(
+                                                      Listas
+                                                          .listFromMapWithOneKey(
+                                                        Listas.listFromMap(
+                                                            lista: Pacientes
+                                                                .Paraclinicos!,
+                                                            keySearched:
+                                                                'Tipo_Estudio',
+                                                            elementSearched:
+                                                                Auxiliares
+                                                                        .Categorias[
+                                                                    index]),
+                                                      ),
+                                                    ),
+                                                    onClose: (value) {
+                                                      setState(() {
+                                                        asignarParaclinico(
+                                                            indice: index,
+                                                            fechaActual: value);
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      });
+                                                    },
+                                                  );
+                                                },
+                                              ),
+                                              GrandButton(
+                                                labelButton:
+                                                    "Electrolitos séricos",
+                                                onPress: () {
+                                                  int index = 2;
+                                                  Operadores
+                                                      .selectOptionsActivity(
+                                                    context: context,
+                                                    tittle:
+                                                        "Elija la fecha del estudio de electrolitos. . . ",
+                                                    options: Listas
+                                                        .listWithoutRepitedValues(
+                                                      Listas
+                                                          .listFromMapWithOneKey(
+                                                        Listas.listFromMap(
+                                                            lista: Pacientes
+                                                                .Paraclinicos!,
+                                                            keySearched:
+                                                                'Tipo_Estudio',
+                                                            elementSearched:
+                                                                Auxiliares
+                                                                        .Categorias[
+                                                                    index]),
+                                                      ),
+                                                    ),
+                                                    onClose: (value) {
+                                                      setState(() {
+                                                        asignarParaclinico(
+                                                            indice: index,
+                                                            fechaActual: value);
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      });
+                                                    },
+                                                  );
+                                                },
+                                              ),
+                                              GrandButton(
+                                                labelButton: "Perfil hepático",
+                                                onPress: () {
+                                                  int index = 3;
+                                                  Operadores
+                                                      .selectOptionsActivity(
+                                                    context: context,
+                                                    tittle:
+                                                        "Elija la fecha del perfil hepático . . . ",
+                                                    options: Listas
+                                                        .listWithoutRepitedValues(
+                                                      Listas
+                                                          .listFromMapWithOneKey(
+                                                        Listas.listFromMap(
+                                                            lista: Pacientes
+                                                                .Paraclinicos!,
+                                                            keySearched:
+                                                                'Tipo_Estudio',
+                                                            elementSearched:
+                                                                Auxiliares
+                                                                        .Categorias[
+                                                                    index]),
+                                                      ),
+                                                    ),
+                                                    onClose: (value) {
+                                                      setState(() {
+                                                        asignarParaclinico(
+                                                            indice: index,
+                                                            fechaActual: value);
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      });
+                                                    },
+                                                  );
+                                                },
+                                              ),
+                                              GrandButton(
+                                                labelButton: "Perfil lipídico",
+                                                onPress: () {
+                                                  int index = 4;
+                                                  Operadores
+                                                      .selectOptionsActivity(
+                                                    context: context,
+                                                    tittle:
+                                                        "Elija la fecha del perfil lipíco . . . ",
+                                                    options: Listas
+                                                        .listWithoutRepitedValues(
+                                                      Listas
+                                                          .listFromMapWithOneKey(
+                                                        Listas.listFromMap(
+                                                            lista: Pacientes
+                                                                .Paraclinicos!,
+                                                            keySearched:
+                                                                'Tipo_Estudio',
+                                                            elementSearched:
+                                                                Auxiliares
+                                                                        .Categorias[
+                                                                    index]),
+                                                      ),
+                                                    ),
+                                                    onClose: (value) {
+                                                      setState(() {
+                                                        asignarParaclinico(
+                                                            indice: index,
+                                                            fechaActual: value);
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      });
+                                                    },
+                                                  );
+                                                },
+                                              ),
+                                              GrandButton(
+                                                labelButton: "Perfil tiroideo",
+                                                onPress: () {
+                                                  int index = 5;
+                                                  Operadores
+                                                      .selectOptionsActivity(
+                                                    context: context,
+                                                    tittle:
+                                                        "Elija la fecha del perfil tiroideo . . . ",
+                                                    options: Listas
+                                                        .listWithoutRepitedValues(
+                                                      Listas
+                                                          .listFromMapWithOneKey(
+                                                        Listas.listFromMap(
+                                                            lista: Pacientes
+                                                                .Paraclinicos!,
+                                                            keySearched:
+                                                                'Tipo_Estudio',
+                                                            elementSearched:
+                                                                Auxiliares
+                                                                        .Categorias[
+                                                                    index]),
+                                                      ),
+                                                    ),
+                                                    onClose: (value) {
+                                                      setState(() {
+                                                        asignarParaclinico(
+                                                            indice: index,
+                                                            fechaActual: value);
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      });
+                                                    },
+                                                  );
+                                                },
+                                              ),
+                                              GrandButton(
+                                                labelButton:
+                                                    "Tiempos de coagulación",
+                                                onPress: () {
+                                                  int index = 6;
+                                                  Operadores
+                                                      .selectOptionsActivity(
+                                                    context: context,
+                                                    tittle:
+                                                        "Elija la fecha del perfil de coagulación . . . ",
+                                                    options: Listas
+                                                        .listWithoutRepitedValues(
+                                                      Listas
+                                                          .listFromMapWithOneKey(
+                                                        Listas.listFromMap(
+                                                            lista: Pacientes
+                                                                .Paraclinicos!,
+                                                            keySearched:
+                                                                'Tipo_Estudio',
+                                                            elementSearched:
+                                                                Auxiliares
+                                                                        .Categorias[
+                                                                    index]),
+                                                      ),
+                                                    ),
+                                                    onClose: (value) {
+                                                      setState(() {
+                                                        asignarParaclinico(
+                                                            indice: index,
+                                                            fechaActual: value);
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      });
+                                                    },
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )),
                 ),
               ],
             ),
@@ -752,7 +1141,7 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Expanded(
-                  flex: 3,
+                  flex: isDesktop(context) ? 5 : 3,
                   child: EditTextArea(
                       textController: commenTextController,
                       labelEditText: "Análisis complementarios",
@@ -772,7 +1161,7 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                     child: Column(
                       children: [
                         Expanded(
-                          flex: 3,
+                          flex: isDesktop(context) ? 1 : 3,
                           child: GrandIcon(
                               iconData: Icons.cleaning_services,
                               labelButton: 'Limpiar . . . ',
@@ -788,112 +1177,173 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                           color: Colors.grey,
                         ),
                         Expanded(
-                          flex: 5,
-                          child: isMobile(context) ? SingleChildScrollView(
-                            controller: scrollCommenController,
-                            child: Column(
-                              children: [
-                                GrandIcon(
-                                  iconData: Icons.horizontal_rule_sharp,
-                                  labelButton: "Antropométricos",
-                                  onPress: () {
-                                    asignarAuxAnalisis(indice: 1);
-                                  },
-                                ),
-                                GrandIcon(
-                                  iconData: Icons.bubble_chart,
-                                  labelButton: "Metabólicos",
-                                  onPress: () {
-                                    asignarAuxAnalisis(indice: 2);
-                                  },
-                                ),
-                                GrandIcon(
-                                  iconData: Icons.monitor_heart_outlined,
-                                  labelButton: "Cardiovasculares",
-                                  onPress: () {
-                                    asignarAuxAnalisis(indice: 3);
-                                  },
-                                ),
-                                GrandIcon(
-                                  iconData: Icons.water_drop,
-                                  labelButton: "Hídricos",
-                                  onPress: () {
-                                    asignarAuxAnalisis(indice: 4);
-                                  },
-                                ),
-                                GrandIcon(
-                                  iconData: Icons.living_sharp,
-                                  labelButton: "Hepáticos",
-                                  onPress: () {
-                                    asignarAuxAnalisis(indice: 5);
-                                  },
-                                ),
-                                GrandIcon(
-                                  iconData: Icons.bloodtype,
-                                  labelButton: "Hemáticos",
-                                  onPress: () {
-                                    asignarAuxAnalisis(indice: 6);
-                                  },
-                                ),
-                                GrandIcon(
-                                  iconData: Icons.water,
-                                  labelButton: "Renales",
-                                  onPress: () {
-                                    asignarAuxAnalisis(indice: 7);
-                                  },
-                                ),
-                              ],
-                            ),
-                          ) : SingleChildScrollView(
-                            controller: scrollCommenController,
-                            child: Column(
-                              children: [
-                                GrandButton(
-                                  labelButton: "Antropométricos",
-                                  onPress: () {
-                                    asignarAuxAnalisis(indice: 1);
-                                  },
-                                ),
-                                GrandButton(
-                                  labelButton: "Metabólicos",
-                                  onPress: () {
-                                    asignarAuxAnalisis(indice: 2);
-                                  },
-                                ),
-                                GrandButton(
-                                  labelButton: "Cardiovasculares",
-                                  onPress: () {
-                                    asignarAuxAnalisis(indice: 3);
-                                  },
-                                ),
-                                GrandButton(
-                                  labelButton: "Hídricos",
-                                  onPress: () {
-                                    asignarAuxAnalisis(indice: 4);
-                                  },
-                                ),
-                                GrandButton(
-                                  labelButton: "Hepáticos",
-                                  onPress: () {
-                                    asignarAuxAnalisis(indice: 5);
-                                  },
-                                ),
-                                GrandButton(
-                                  labelButton: "Hemáticos",
-                                  onPress: () {
-                                    asignarAuxAnalisis(indice: 6);
-                                  },
-                                ),
-                                GrandButton(
-                                  labelButton: "Renales",
-                                  onPress: () {
-                                    asignarAuxAnalisis(indice: 7);
-                                  },
-                                ),
-                              ],
-                            ),
-                          )
-                        ),
+                            flex: 5,
+                            child: isMobile(context)
+                                ? SingleChildScrollView(
+                                    controller: scrollCommenController,
+                                    child: Column(
+                                      children: [
+                                        GrandIcon(
+                                          iconData: Icons.horizontal_rule_sharp,
+                                          labelButton: "Antropométricos",
+                                          onPress: () {
+                                            asignarAuxAnalisis(indice: 1);
+                                          },
+                                        ),
+                                        GrandIcon(
+                                          iconData: Icons.bubble_chart,
+                                          labelButton: "Metabólicos",
+                                          onPress: () {
+                                            asignarAuxAnalisis(indice: 2);
+                                          },
+                                        ),
+                                        GrandIcon(
+                                          iconData:
+                                              Icons.monitor_heart_outlined,
+                                          labelButton: "Cardiovasculares",
+                                          onPress: () {
+                                            asignarAuxAnalisis(indice: 3);
+                                          },
+                                        ),
+                                        GrandIcon(
+                                          iconData: Icons.water_drop,
+                                          labelButton: "Hídricos",
+                                          onPress: () {
+                                            asignarAuxAnalisis(indice: 4);
+                                          },
+                                        ),
+                                        GrandIcon(
+                                          iconData: Icons.living_sharp,
+                                          labelButton: "Hepáticos",
+                                          onPress: () {
+                                            asignarAuxAnalisis(indice: 5);
+                                          },
+                                        ),
+                                        GrandIcon(
+                                          iconData: Icons.bloodtype,
+                                          labelButton: "Hemáticos",
+                                          onPress: () {
+                                            asignarAuxAnalisis(indice: 6);
+                                          },
+                                        ),
+                                        GrandIcon(
+                                          iconData: Icons.water,
+                                          labelButton: "Renales",
+                                          onPress: () {
+                                            asignarAuxAnalisis(indice: 7);
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : isDesktop(context)
+                                    ? GridView(
+                                        gridDelegate:
+                                            GridViewTools.gridDelegate(
+                                                mainAxisExtent: mainAxisExtend),
+                                        children: [
+                                          GrandIcon(
+                                            iconData:
+                                                Icons.horizontal_rule_sharp,
+                                            labelButton: "Antropométricos",
+                                            onPress: () {
+                                              asignarAuxAnalisis(indice: 1);
+                                            },
+                                          ),
+                                          GrandIcon(
+                                            iconData: Icons.bubble_chart,
+                                            labelButton: "Metabólicos",
+                                            onPress: () {
+                                              asignarAuxAnalisis(indice: 2);
+                                            },
+                                          ),
+                                          GrandIcon(
+                                            iconData:
+                                                Icons.monitor_heart_outlined,
+                                            labelButton: "Cardiovasculares",
+                                            onPress: () {
+                                              asignarAuxAnalisis(indice: 3);
+                                            },
+                                          ),
+                                          GrandIcon(
+                                            iconData: Icons.water_drop,
+                                            labelButton: "Hídricos",
+                                            onPress: () {
+                                              asignarAuxAnalisis(indice: 4);
+                                            },
+                                          ),
+                                          GrandIcon(
+                                            iconData: Icons.living_sharp,
+                                            labelButton: "Hepáticos",
+                                            onPress: () {
+                                              asignarAuxAnalisis(indice: 5);
+                                            },
+                                          ),
+                                          GrandIcon(
+                                            iconData: Icons.bloodtype,
+                                            labelButton: "Hemáticos",
+                                            onPress: () {
+                                              asignarAuxAnalisis(indice: 6);
+                                            },
+                                          ),
+                                          GrandIcon(
+                                            iconData: Icons.water,
+                                            labelButton: "Renales",
+                                            onPress: () {
+                                              asignarAuxAnalisis(indice: 7);
+                                            },
+                                          ),
+                                        ],
+                                      )
+                                    : SingleChildScrollView(
+                                        controller: scrollCommenController,
+                                        child: Column(
+                                          children: [
+                                            GrandButton(
+                                              labelButton: "Antropométricos",
+                                              onPress: () {
+                                                asignarAuxAnalisis(indice: 1);
+                                              },
+                                            ),
+                                            GrandButton(
+                                              labelButton: "Metabólicos",
+                                              onPress: () {
+                                                asignarAuxAnalisis(indice: 2);
+                                              },
+                                            ),
+                                            GrandButton(
+                                              labelButton: "Cardiovasculares",
+                                              onPress: () {
+                                                asignarAuxAnalisis(indice: 3);
+                                              },
+                                            ),
+                                            GrandButton(
+                                              labelButton: "Hídricos",
+                                              onPress: () {
+                                                asignarAuxAnalisis(indice: 4);
+                                              },
+                                            ),
+                                            GrandButton(
+                                              labelButton: "Hepáticos",
+                                              onPress: () {
+                                                asignarAuxAnalisis(indice: 5);
+                                              },
+                                            ),
+                                            GrandButton(
+                                              labelButton: "Hemáticos",
+                                              onPress: () {
+                                                asignarAuxAnalisis(indice: 6);
+                                              },
+                                            ),
+                                            GrandButton(
+                                              labelButton: "Renales",
+                                              onPress: () {
+                                                asignarAuxAnalisis(indice: 7);
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      )),
                       ],
                     ),
                   ),
@@ -962,19 +1412,33 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
       analisisTextController.text = "";
       tratamientoTextController.text = Reportes.tratamientoPropuesto;
     } else {
-      eventualidadesTextController.text = Reportes.eventualidadesOcurridas == ""
-          ? Reportes.eventualidadesOcurridas
-          : Pacientes.Notas!.last['Eventualidades'];
-      terapiasTextController.text = Reportes.terapiasPrevias == ""
-          ? Reportes.terapiasPrevias
-          : Pacientes.Notas!.last['Terapias_Previas'];
-      analisisTextController.text = Reportes.analisisMedico == ""
-          ? Reportes.analisisMedico
-          : Pacientes.Notas!.last['Analisis_Medico'];
-      tratamientoTextController.text = Reportes.tratamientoPropuesto == ""
-          ? Reportes.tratamientoPropuesto
-          : Pacientes.Notas!.last['Tratamiento_Propuesto'];
+      eventualidadesTextController.text = Reportes.eventualidadesOcurridas;
+      terapiasTextController.text = Reportes.terapiasPrevias;
+      analisisTextController.text = Reportes.analisisMedico;
+      tratamientoTextController.text = Reportes.tratamientoPropuesto;
 
+      // Se reinicia Reportes.pendientes porque resulta acumulativo * * * * * * * * * * * * * * *
+      Reportes.pendientes.clear();
+      if (Pacientes.Pendiente!.isNotEmpty) {
+        String pendientes = "";
+        Pacientes.Pendiente!.forEach((element) {
+          //Pace_PEN
+          if (pendientes == "") {
+            pendientes = "          ${element['Pace_Desc_PEN'].replaceAll("\n", "")}. \n";
+            // Añadir a Reportes.pendientes para Anexión a Indicaciones : Pendientes * * * * * * * *
+            Reportes.pendientes.add("          ${element['Pace_PEN']} - ${element['Pace_Desc_PEN'].replaceAll("\n", "")}. "); // Sin salto de linea, ya ...
+          } else {
+            pendientes = "$pendientes"
+                "          ${element['Pace_Desc_PEN'].replaceAll("\n", "")}. \n";
+            // Añadir a Reportes.pendientes para Anexión a Indicaciones : Pendientes * * * * * * * *
+            Reportes.pendientes.add("          ${element['Pace_PEN']} - ${element['Pace_Desc_PEN'].replaceAll("\n", "")}. ");
+          }
+        });
+
+        tratamientoTextController.text = "${tratamientoTextController.text}. \nPLAN: \n"
+            "$pendientes";
+
+      }
     }
 
     super.initState();
@@ -1012,10 +1476,12 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                   EditTextArea(
                       textController: eventualidadesTextController,
                       labelEditText: "Eventualidades sucitadas",
-                      keyBoardType: TextInputType.multiline,
-                      numOfLines: isTablet(context) ? 8: 5,
+                      keyBoardType: TextInputType.text,
+                      numOfLines: isTablet(context) ? 8 : 5,
                       withShowOption: true,
                       onChange: ((value) {
+                        eventualidadesTextController.text = value;
+                        // ************ ******* *****************
                         Reportes.eventualidadesOcurridas = "$value.";
                         Reportes.reportes['Eventualidades'] = "$value.";
                         // ************ ******* *****************
@@ -1029,7 +1495,7 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                       textController: terapiasTextController,
                       labelEditText: "Terapias previas",
                       keyBoardType: TextInputType.multiline,
-                      numOfLines: isTablet(context) ? 8: 5,
+                      numOfLines: isTablet(context) ? 8 : 5,
                       withShowOption: true,
                       onChange: ((value) {
                         Reportes.terapiasPrevias = "$value.";
@@ -1043,7 +1509,7 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                       textController: analisisTextController,
                       labelEditText: "Análisis médico",
                       keyBoardType: TextInputType.multiline,
-                      numOfLines: isTablet(context) ? 8: 5,
+                      numOfLines: isTablet(context) ? 8 : 5,
                       withShowOption: true,
                       selection: true,
                       onSelected: () {
@@ -1069,7 +1535,7 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                       textController: tratamientoTextController,
                       labelEditText: "Terapéutica propuesta",
                       keyBoardType: TextInputType.multiline,
-                      numOfLines: isTablet(context) ? 8: 5,
+                      numOfLines: isTablet(context) ? 8 : 5,
                       withShowOption: true,
                       onChange: ((value) {
                         Reportes.tratamientoPropuesto = "$value.";
@@ -1467,6 +1933,7 @@ class _IndicacionesConsultaState extends State<IndicacionesConsulta> {
   }
 }
 
+// ***********************************************************************
 String traduce(List<String> collection) {
   String string = "";
   for (var element in collection) {

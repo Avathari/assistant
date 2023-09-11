@@ -1126,7 +1126,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
               ? 216
               : isTablet(context)
                   ? 140
-                  : 200,
+                  : 180,
           onChangeValue: (String? newValue) {
             setState(() {
               hemotipoValue = newValue!;
@@ -1144,7 +1144,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
               ? 216
               : isTablet(context)
                   ? 170
-                  : 200,
+                  : 180,
           items: Pacientes.Unidades,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -1158,7 +1158,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
               ? 216
               : isTablet(context)
                   ? 170
-                  : 200,
+              : 180,
           items: Pacientes.Unidades,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -1172,7 +1172,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
               ? 216
               : isTablet(context)
                   ? 170
-                  : 200,
+              : 180,
           items: Pacientes.Turno,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -1187,22 +1187,20 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
               ? 216
               : isTablet(context)
                   ? 170
-                  : 200,
+              : 180,
           onChangeValue: (String? newValue) {
             setState(() {
               atencionValue = newValue!;
             });
           }),
-      editFormattedText(
-          TextInputType.phone,
-          MaskTextInputFormatter(
+      EditTextArea(
+          keyBoardType:TextInputType.phone,
+          inputFormat:MaskTextInputFormatter(
               mask: '+## (###) ###-####',
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
-          false,
-          'Teléfono',
-          telefonoTextController,
-          false),
+          labelEditText:           'Teléfono',
+          textController :telefonoTextController),
       EditTextArea(
         keyBoardType: TextInputType.datetime,
         inputFormat: MaskTextInputFormatter(
@@ -1229,27 +1227,25 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
               ? 216
               : isTablet(context)
                   ? 170
-                  : 200,
+                  : 180,
           items: Pacientes.Sexo,
           onChangeValue: (String? newValue) {
             setState(() {
               sessoValue = newValue!;
             });
           }),
-      editFormattedText(
-          TextInputType.number,
-          MaskTextInputFormatter(
+      EditTextArea(
+          keyBoardType:TextInputType.number,
+          inputFormat:MaskTextInputFormatter(
               mask: '###',
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
-          false,
-          'Edad',
-          edadTextController,
-          false),
-      editText(false, 'CURP', curpTextController, false),
-      editText(false, 'RFC', rfcTextController, false),
+          labelEditText: 'Edad',
+          textController :edadTextController
+          ),
+      EditTextArea(labelEditText:'CURP', textController: curpTextController, keyBoardType: TextInputType.text, inputFormat: MaskTextInputFormatter(),),
+      EditTextArea(labelEditText:'RFC', textController: rfcTextController, keyBoardType: TextInputType.text, inputFormat: MaskTextInputFormatter(),),
       //
-
       Spinner(
           tittle: "¿Vive?",
           initialValue: vivoValue,
@@ -1257,14 +1253,14 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
               ? 216
               : isTablet(context)
                   ? 170
-                  : 200,
+                  : 180,
           items: Pacientes.Vivo,
           onChangeValue: (String? newValue) {
             setState(() {
               vivoValue = newValue!;
             });
           }),
-      editText(false, 'Ocupación', ocupacionTextController, false),
+      EditTextArea(labelEditText:'Ocupación', textController: ocupacionTextController, keyBoardType: TextInputType.text, inputFormat: MaskTextInputFormatter(),),
       Spinner(
           tittle: "Estado civil",
           initialValue: estadoCivilValue,
@@ -1272,7 +1268,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
               ? 216
               : isTablet(context)
                   ? 170
-                  : 200,
+                  : 180,
           items: Pacientes.EstadoCivil,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -1307,7 +1303,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
               ? 216
               : isTablet(context)
                   ? 170
-                  : 200,
+                  : 180,
           initialValue: escolaridadValue,
           items: Pacientes.Escolaridad,
           onChangeValue: (String? newValue) {
@@ -1322,7 +1318,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
               ? 216
               : isTablet(context)
                   ? 160
-                  : 200,
+                  : 180,
           items: Pacientes.EscolaridadCompletud,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -1336,8 +1332,9 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
               }
             });
           }),
-      editText(false, 'Especificar escolaridad',
-          escolaridadEspecificacionTextController, false),
+      EditTextArea(
+          labelEditText:'Especificar escolaridad', textController:
+          escolaridadEspecificacionTextController, keyBoardType: TextInputType.text, inputFormat: MaskTextInputFormatter(),),
       // spinner(tittle: "Estado actual", statusValue, Pacientes.Status,
       //     (String? newValue) {
       //   setState(() {
@@ -1360,7 +1357,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
               ? 216
               : isTablet(context)
                   ? 170
-                  : 200,
+                  : 180,
           items: Pacientes.EntidadesFederativas,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -1379,7 +1376,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
               ? 216
               : isTablet(context)
                   ? 170
-                  : 200,
+                  : 180,
           items: Pacientes.Indigena,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -1393,7 +1390,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
               ? 216
               : isTablet(context)
                   ? 170
-                  : 200,
+                  : 180,
           items: Pacientes.lenguaIndigena,
           onChangeValue: (String? newValue) {
             setState(() {

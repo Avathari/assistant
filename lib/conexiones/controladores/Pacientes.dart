@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteFormats/formatosReportes.dart';
@@ -4202,6 +4203,16 @@ class Quirurgicos {
   }
 
   static void consultarRegistro() {
+    Archivos.readJsonToMap(
+            filePath: "${Pacientes.localRepositoryPath}quirurgicos.json")
+        .then((value) {
+      Pacientes.Quirurgicos = value;
+    }).onError((error, stackTrace) {
+      consultarBaseDatos();
+    });
+  }
+
+  static void consultarBaseDatos() {
     Actividades.consultarAllById(Databases.siteground_database_regpace,
             Quirurgicos.cirugias['consultIdQuery'], Pacientes.ID_Paciente)
         .then((value) {
@@ -5637,10 +5648,10 @@ class Auxiliares {
         if (element['Fecha_Registro'] == fechaActual) {
           if (max == "") {
             max =
-            "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+                "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
           } else {
             max =
-            "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+                "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
           }
         }
       }
@@ -5675,7 +5686,7 @@ class Auxiliares {
     if (fechar.first.isNotEmpty) {
       if (esAbreviado) {
         List<dynamic>? alam = Pacientes.Paraclinicos!;
-        var aux = alam!
+        var aux = alam
             .where((user) => user["Fecha_Registro"].contains(fechar.first))
             .toList();
         String fecha = "          Paraclínicos (${fechar.first})", max = "";
@@ -5693,7 +5704,7 @@ class Auxiliares {
         prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
       } else {
         List<dynamic>? alam = Pacientes.Paraclinicos!;
-        var aux = alam!
+        var aux = alam
             .where((user) => user["Fecha_Registro"].contains(fechar.first))
             .toList();
         String fecha = "          Paraclínicos (${fechar.first})", max = "";
@@ -5730,7 +5741,7 @@ class Auxiliares {
         String fecha = "          Paraclínicos ($element)", max = "";
 
         List<dynamic>? alam = Pacientes.Paraclinicos!;
-        var aux = alam!
+        var aux = alam
             .where((user) => user["Fecha_Registro"].contains(element))
             .toList();
 
@@ -6739,6 +6750,29 @@ class Pendientes {
       "Certificado de Defunción",
     ], // Tramites
   ];
+
+  static void consultar() {
+    Actividades.consultarAllById(Databases.siteground_database_reghosp,
+            pendientes['consultIdQuery']!, Pacientes.ID_Hospitalizacion)
+        .then((value) {
+      Pacientes.Pendiente = value;
+      // Crear JSON *************************************
+      Archivos.createJsonFromMap(Pacientes.Pendiente!,
+          filePath: fileAssocieted);
+    });
+  }
+
+  static void consultarRegistro() {
+    Archivos.readJsonToMap(
+            filePath: "${Pacientes.localRepositoryPath}pendientes.json")
+        .then((value) {
+      if (value == []) {
+        consultar();
+      } else {
+        Pacientes.Pendiente = value;
+      }
+    });
+  }
 }
 
 class Reportes {
@@ -6762,17 +6796,17 @@ class Reportes {
     "Antecedentes_Perinatales": Pacientes.perinatales(),
     "Antecedentes_Sexuales": Pacientes.sexuales(),
     "Antecedentes_Alergicos": Pacientes.alergicos(),
-    //
+    // MOTIVOS DE ATENCIÓN **********************************
     "Motivo_Consulta": Reportes.motivoConsulta,
     "Subjetivo": Reportes.subjetivoHospitalizacion,
     "Padecimiento_Actual": Reportes.padecimientoActual,
-    //
+    // EXPLORACIÓN FÍSICA ************************************
     "Signos_Vitales": Reportes.signosVitales,
     "Exploracion_Fisica": Reportes.exploracionFisica,
-    //
+    // ANALISIS AUXILIAR **************************************
     "Auxiliares_Diagnosticos": Reportes.auxiliaresDiagnosticos,
     "Analisis_Complementarios": Reportes.analisisComplementarios,
-    //
+    // ANALISIS  **********************************************
     "Eventualidades": Reportes.eventualidadesOcurridas,
     "Analisis_Terapia":
         "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}",
@@ -6780,19 +6814,21 @@ class Reportes {
         "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}",
     "Recomendaciones_Generales": Reportes.tratamientoPropuesto,
     "Impresiones_Diagnosticas": Reportes.impresionesDiagnosticas,
-    // ***************************************
+    // INDICACIONES ***************************************
     "Dieta": Reportes.dieta,
     "Hidroterapia": Reportes.hidroterapia,
     "Insulinoterapia": Reportes.insulinoterapia,
     "Hemoterapia": Reportes.hemoterapia,
     "Oxigenoterapia": Reportes.oxigenoterapia,
     "Medicamentos": Reportes.medicamentosIndicados,
-    // ***************************************
+    "Medidas_Generales": Reportes.medidasGenerales,
+    "Pendientes": Reportes.pendientes, // ['Sin pendientes'],
+    // PROCEDIMIENTOS ***************************************
     "Motivo_Procedimiento": Valores.motivoProcedimiento,
     "Procedimiento_Realizado": Reportes.procedimientoRealizado,
     "Complicaciones_Procedimiento": Valores.complicacionesProcedimiento,
     "Pendientes_Procedimiento": Valores.pendientesProcedimiento,
-    // ***************************************
+    // HEMODERIVADOS ***************************************
     "Motivo_Transfusion": "",
     "Hemotipo_Admnistrado": "",
     "Cantidad_Unidades": "",
@@ -6805,9 +6841,7 @@ class Reportes {
         "Se realiza seguimiento y control a la paciente durante la transfusión. Termina procedimiento sin complicaciones ni evidencia de reacciones adversas asociadas a la transfusión de hemoderivados. ",
     "Reacciones_Presentadas": "Ninguna manifestada durante la transfusión. ",
     // ***************************************
-    "Medidas_Generales": Reportes.medidasGenerales,
     "Licencia_Medica": Reportes.licenciasMedicas, // ['Sin licencia médica'],
-    "Pendientes": Reportes.pendientes, // ['Sin pendientes'],
     "Recomendaciones":
         Reportes.recomendacionesGenerales, // ['Sin recomendaciones'],
     "Citas": Reportes.citasMedicas, //  ['Cita de acuerdo a agenda'],
@@ -7598,84 +7632,174 @@ class Diagnosticos {
 }
 
 class Repositorios {
-  static Map<String, dynamic> Repositorio = {};
+  // String to List : json.decode(listInString).cast<String>().toList();
+  // "${Pacientes.localRepositoryPath}/reportes/reportes.json"
 
+  static Map<String, dynamic> Repositorio = {};
+//
   static List<String> actualDiagno = Opciones.horarios();
 
-  static void padecimientoActual() {
-    Actividades.consultarId(
-            Databases.siteground_database_reghosp,
-            Repositorios.repositorio['consultarPadecimientoActualQuery'],
-            Pacientes.ID_Paciente)
-        .then((value) {
-// Enfermedades de base del paciente, asi como las Hospitalarias.
-      Reportes.padecimientoActual = "${value['TipoAnalisis']}. ";
-      Repositorio = value;
-    });
-  }
+  static void padecimientoActual() {}
 
   static void consultarAnalisis() {
     Actividades.consultarAllById(
             Databases.siteground_database_reghosp,
-            Repositorios.repositorio['consultAnalisisQuery'],
+            Repositorios.repositorio['consultByIdPrimaryQuery'],
             Pacientes.ID_Hospitalizacion)
         .then((value) {
-      Terminal.printExpected(message: "ANALISIS - $value ${value.runtimeType}");
-      Reportes.analisisMedico = value.last['Contexto'] ?? '';
-      Reportes.analisisAnteriores = value;
+      Pacientes.Notas =
+          value; // Se Asigna a la Estructura Pacientes.Notas ***************************
+      Terminal.printExpected(
+          message: "VALUE - Consultar Repositorio : $value : : ");
+      // Del Padecimiento **************************************************
+      Reportes.padecimientoActual = value.last['Padecimiento_Actual'] ?? '';
+      Valores.fechaPadecimientoActual = value.last['FechaPadecimiento'] ?? '';
+      // Primeras Variables **************************************************
+      Reportes.exploracionFisica = value.last['Exploracion_Fisica'] ?? '';
+      Reportes.signosVitales = value.last['Signos_Vitales'] ?? '';
+      // Segundas Variables **************************************************
+      Reportes.eventualidadesOcurridas = value.last['Eventualidades'] ?? '';
+      Reportes.terapiasPrevias = value.last['Terapias_Previas'] ?? '';
+      Reportes.analisisMedico = value.last['Analisis_Medico'] ?? '';
+      Reportes.tratamientoPropuesto = value.last['Tratamiento_Propuesto'] ?? '';
+      // Listados desde String  ************************************************
+      // Reportes.dieta = ;
+
+      // String aux = "";
+      // aux.replaceAll(", ", ",");
+      // print(""
+      //     // "Opción A - ${jsonDecode(value.last['Dietoterapia'])} - ${jsonDecode(value.last['Dietoterapia']).runtimeType}"
+      //     //"Opcion B - ${json.decode(value.last['Medidas_Generales']).cast<List<dynamic>>()}"
+      //     "Opcion C - ${Listas.listFromString(value.last['Medidas_Generales'].replaceAll(", ", ","))} : ${value.last['Medidas_Generales'].runtimeType}");
+
+      // Reportes.dieta = json
+      //     .decode(value.last['Dietoterapia'].toString())
+      //     .cast<String>();
+      //     .toList();
+      // Reportes.hidroterapia = json
+      //     .decode(value.last['Hidroterapia'].toString())
+      //     .cast<String>()
+      //     .toList();
+      // Reportes.insulinoterapia = json
+      //     .decode(value.last['Insulinoterapia'].toString())
+      //     .cast<String>()
+      //     .toList();
+      // Reportes.hemoterapia = json
+      //     .decode(value.last['Hemoterapia'].toString())
+      //     .cast<String>()
+      //     .toList();
+      // Reportes.oxigenoterapia = json
+      //     .decode(value.last['Oxigenoterapia'].toString())
+      //     .cast<String>()
+      //     .toList();
+      // Reportes.medicamentosIndicados = json
+      //     .decode(value.last['Medicamentos'].toString())
+      //     .cast<String>()
+      //     .toList();
+      // Reportes.medidasGenerales = json
+      //     .decode(value.last['Medidas_Generales'].toString())
+      //     .cast<String>()
+      //     .toList();
+      // Reportes.pendientes = json
+      //     .decode(value.last['Pendientes'].toString())
+      //     .cast<String>()
+      //     .toList();
+      // Crear Json desde Pacientes.Notas ***************************************
+      Archivos.createJsonFromMap(value,
+          filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(
+          message: "ERROR al Consultar Repositorio - "
+              "${Pacientes.ID_Hospitalizacion}"
+              "- $error : : $stackTrace");
     });
   }
 
-  static void actualizarRegistro() {
+  static void actualizarPadecimientoRegistro() {
     Actividades.actualizar(
       Databases.siteground_database_reghosp,
-      Repositorios.repositorio['updateQuery'],
+      Repositorios.repositorio['updatePadecimientoQuery'],
       [
+        Valores.fechaPadecimientoActual,
         Valores.padecimientoActual,
+        //
         Pacientes.ID_Hospitalizacion,
         Items.tiposAnalisis[0],
+        Pacientes.ID_Paciente,
       ],
       Pacientes.ID_Paciente,
-    ).whenComplete(() => Terminal.printExpected(
-        message: "PA : : ${Valores.padecimientoActual}"));
+    ).then((value) {
+      Terminal.printExpected(
+          message:
+              "VALUE del actualizar : Padecimiento - $value : : ${Valores.padecimientoActual}");
+    }).whenComplete(() {
+      Terminal.printExpected(message: "PA : : ${Valores.padecimientoActual}");
+    });
   }
 
   static void registrarRegistro() {
+    var Values = [
+      Pacientes.ID_Paciente,
+      Pacientes.ID_Hospitalizacion,
+      Valores.fechaPadecimientoActual ??
+          Calendarios.today(format: 'yyyy/MM/dd'),
+      Reportes.padecimientoActual ?? '',
+      // Valores.servicioTratanteInicial,
+      Valores.servicioTratante,
+      Calendarios.today(format: 'yyyy/MM/dd'),
+      Reportes.reportes['Subjetivo'],
+      Reportes.signosVitales,
+      Reportes.exploracionFisica,
+      Reportes.eventualidadesOcurridas,
+      Reportes.terapiasPrevias,
+      Reportes.analisisMedico,
+      Reportes.tratamientoPropuesto,
+      // INDICACIONES MÉDICAS *******************************
+      Reportes.dieta.toString(),
+      Reportes.hidroterapia.toString(),
+      Reportes.insulinoterapia.toString(),
+      Reportes.hemoterapia.toString(),
+      Reportes.oxigenoterapia.toString(),
+      Reportes.medicamentosIndicados.toString(),
+      Reportes.medidasGenerales.toString(),
+      Reportes.pendientes.toString(),
+      Repositorios.tipoAnalisis()
+    ];
     Actividades.registrar(
       Databases.siteground_database_reghosp,
       Repositorios.repositorio['registerQuery'],
-      [
-        Pacientes.ID_Paciente,
-        Pacientes.ID_Hospitalizacion,
-        Calendarios.today(format: 'yyyy/MM/dd'),
-        Calendarios.today(format: 'yyyy/MM/dd'),
-        Valores.servicioTratante,
-        '', // Valores.padecimientoActual,
-        Items.tiposAnalisis[0],
-      ],
-    );
+      Values,
+    ).then((value) {
+      Terminal.printExpected(message: "VALUE - $value : $Values");
+    }).whenComplete(() {
+      Archivos.createJsonFromMap(Pacientes.Notas!,
+          filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(message: "ERROR - $error : $stackTrace");
+    });
   }
 
   static void registrarAnalisis() {
-    var values = [
-      Pacientes.ID_Paciente,
-      Pacientes.ID_Hospitalizacion,
-      Valores.fechaPadecimientoActual,
-      Calendarios.today(format: 'yyyy/MM/dd'),
-      Valores.servicioTratante,
-      Reportes.analisisMedico, //'', // Valores.padecimientoActual,
-      Items.tiposAnalisis[1],
-    ];
+    var mapValues = {
+      "ID_Pace": Pacientes.ID_Paciente,
+      "ID_Hosp": Pacientes.ID_Hospitalizacion,
+      "FechaPadecimiento": Valores.fechaPadecimientoActual,
+      "FechaRealizacion": Calendarios.today(format: 'yyyy/MM/dd'),
+      "ServicioMedico": Valores.servicioTratante,
+      "Contexto": Reportes.analisisMedico, //'', // Valores.padecimientoActual,
+      "TipoAnalisis": Items.tiposAnalisis[1],
+    };
 
     Actividades.registrar(
       Databases.siteground_database_reghosp,
       Repositorios.repositorio['registerQuery'],
-      values,
+      mapValues.values as List,
     ).then((value) {
       Terminal.printExpected(message: "SUCCESS - Análisis registrado");
-      Pacientes.Notas!.add(values);
+      Pacientes.Notas!.add(mapValues);
     }).onError((error, stackTrace) {
-      Terminal.printAlert(message: "ERROR - $error : : $stackTrace");
+      Terminal.printAlert(
+          message: "ERROR al Registrar Analisis - $error : : $stackTrace");
     }).whenComplete(() {
       Archivos.createJsonFromMap(Pacientes.Notas!,
           filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
@@ -7705,38 +7829,75 @@ class Repositorios {
               ID_Pace int(11) NOT NULL,
               ID_Hosp int(11) NOT NULL,
               FechaPadecimiento date NOT NULL,
+              Padecimiento_Actual VARCHAR(3000) COLLATE utf8_unicode_ci NOT NULL,
+              ServicioMedico VARCHAR(150) COLLATE utf8_unicode_ci NOT NULL,
               FechaRealizacion date NOT NULL,
-              ServicioMedico varchar(150) COLLATE utf8_unicode_ci NOT NULL,
-              Contexto varchar(3000) COLLATE utf8_unicode_ci NOT NULL,
-              TipoAnalisis varchar(150) COLLATE utf8_unicode_ci NOT NULL
+              
+              Subjetivo VARCHAR(1500) COLLATE utf8_unicode_ci NOT NULL,
+              Signos_Vitales VARCHAR(250) COLLATE utf8_unicode_ci NOT NULL,
+              Exploracion_Fisica VARCHAR(250) COLLATE utf8_unicode_ci NOT NULL,
+              Eventualidades VARCHAR(250) COLLATE utf8_unicode_ci NOT NULL,
+              Terapias_Previas VARCHAR(250) COLLATE utf8_unicode_ci NOT NULL,
+              Analisis_Medico VARCHAR(250) COLLATE utf8_unicode_ci NOT NULL,
+              Tratamiento_Propuesto VARCHAR(500) COLLATE utf8_unicode_ci NOT NULL,
+              
+              Dietoterapia VARCHAR(500) COLLATE utf8_unicode_ci NOT NULL,
+              Hidroterapia VARCHAR(500) COLLATE utf8_unicode_ci NOT NULL,
+              Insulinoterapia VARCHAR(500) COLLATE utf8_unicode_ci NOT NULL,
+              Hemoterapia VARCHAR(500) COLLATE utf8_unicode_ci NOT NULL,
+              Oxigenoterapia VARCHAR(500) COLLATE utf8_unicode_ci NOT NULL,
+              Medicamentos VARCHAR(500) COLLATE utf8_unicode_ci NOT NULL,
+              Medidas_Generales VARCHAR(500) COLLATE utf8_unicode_ci NOT NULL,
+              
+              Pendientes VARCHAR(500) COLLATE utf8_unicode_ci NOT NULL
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla para Almacenar Análisis por Reporte del Paciente.';
             """,
     "truncateQuery": "TRUNCATE pace_hosp_repo",
     "dropQuery": "DROP TABLE pace_hosp_repo",
-    "consultQuery": "SELECT * FROM pace_hosp_repo WHERE",
-    "consultPadecimientoQuery":
-        "SELECT * FROM pace_hosp_repo WHERE ID_Hosp = ? "
-            "AND TipoAnalisis = 'Padecimiento Actual'",
+    "consultQuery": "SELECT * FROM pace_hosp_repo WHERE ID_Hosp = ?",
+    //
     "consultAnalisisQuery": "SELECT * FROM pace_hosp_repo WHERE ID_Hosp = ? "
         "AND TipoAnalisis = 'Análisis Médico' ORDER BY FechaRealizacion ASC",
     "consultIdQuery": "SELECT * FROM pace_hosp_repo WHERE ID_Pace = ?",
     "consultByIdPrimaryQuery": "SELECT * FROM pace_hosp_repo WHERE ID_Hosp = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_hosp_repo",
     "consultarPadecimientoActualQuery":
-        "SELECT TipoAnalisis, Contexto FROM pace_hosp_repo "
+        "SELECT TipoAnalisis, Padecimiento_Actual FROM pace_hosp_repo "
             "WHERE TipoAnalisis = '${Items.tiposAnalisis[0]}' "
             "AND ID_Hosp = '${Pacientes.ID_Hospitalizacion}' "
             "AND ID_Pace = ? ORDER Y ID_Hosp DESC",
     "consultLastQuery":
         "SELECT * FROM pace_hosp_repo WHERE ID_Pace = ? ORDER BY ID_Hosp DESC",
     "consultByName": "SELECT * FROM pace_hosp_repo WHERE Pace_APP_DEG LIKE '%",
-    "registerQuery":
-        "INSERT INTO pace_hosp_repo (ID_Pace, ID_Hosp, FechaPadecimiento, FechaRealizacion, "
-            "ServicioMedico, Contexto, TipoAnalisis) "
-            "VALUES (?,?,?,?,?,?,?)",
-    "updateQuery":
-        "UPDATE pace_hosp_repo SET Contexto = ? WHERE ID_Hosp = ? AND TipoAnalisis = ?",
+    "registerQuery": "INSERT INTO pace_hosp_repo ("
+        "ID_Pace, ID_Hosp, "
+        "FechaPadecimiento, Padecimiento_Actual, "
+        "ServicioMedico, FechaRealizacion, "
+        "Subjetivo, Signos_Vitales, Exploracion_Fisica, "
+        "Eventualidades, Terapias_Previas, Analisis_Medico, Tratamiento_Propuesto, "
+        "Dietoterapia, Hidroterapia, Insulinoterapia, Hemoterapia, Oxigenoterapia, Medicamentos, Medidas_Generales, Pendientes, "
+        "Tipo_Analisis) "
+        "VALUES (?,?,?,?,?,?,?,?,?,?,"
+        "?,?,?,?,?,?,?,?,?,?,"
+        "?,?)",
+    "updateQuery": "UPDATE pace_hosp_repo SET "
+        "ID_Compendio = ?, ID_Pace = ?, ID_Hosp = ?, "
+        "FechaPadecimiento = ?, Padecimiento_Actual = ?, "
+        "ServicioMedico = ?, FechaRealizacion = ?, "
+        "Subjetivo = ?, Signos_Vitales = ?, Exploracion_Fisica = ?, "
+        "Eventualidades = ?, Terapias_Previas = ?, Analisis_Medico = ?, Tratamiento_Propuesto = ?, "
+        "Dietoterapia = ?, Hidroterapia = ?, Insulinoterapia = ?, Hemoterapia = ?, Oxigenoterapia = ?, Medicamentos = ?, Medidas_Generales = ?, Pendientes = ?, "
+        "Tipo_Analisis =  ? "
+        "WHERE ID_Hosp = ?",
     "deleteQuery": "DELETE FROM pace_hosp_repo WHERE ID_Compendio = ?",
+    //
+    "consultPadecimientoQuery":
+        "SELECT FechaPadecimiento, Padecimiento_Actual FROM pace_hosp_repo "
+            "WHERE ID_Hosp = ? AND Tipo_Analisis = 'Análisis de Ingreso' AND ID_Pace = ?",
+    "updatePadecimientoQuery": "UPDATE pace_hosp_repo "
+        "SET FechaPadecimiento = ?, Padecimiento_Actual = ? "
+        "WHERE ID_Hosp = ? AND Tipo_Analisis = ? AND ID_Pace = ?",
+    //
     "RepositorioColumns": [
       "ID_Pace",
     ],
@@ -7754,6 +7915,22 @@ class Repositorios {
         "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM pace_hosp_repo WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
         "(SELECT IFNULL(count(*), 0) FROM pace_hosp_repo WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
   };
+
+  static String tipo_Analisis = TypeReportes.reporteIngreso.toString();
+  // **********************************************
+  static String tipoAnalisis() {
+    if (tipo_Analisis == TypeReportes.reporteIngreso) {
+      return Items.tiposAnalisis[0];
+    } else if (tipo_Analisis == TypeReportes.reporteEvolucion) {
+      return Items.tiposAnalisis[1];
+    } else if (tipo_Analisis == TypeReportes.reporteRevision) {
+      return Items.tiposAnalisis[2];
+    } else if (tipo_Analisis == TypeReportes.reporteEgreso) {
+      return Items.tiposAnalisis[3];
+    } else {
+      return Items.tiposAnalisis[0];
+    }
+  }
 }
 
 class Situaciones {
@@ -7885,8 +8062,6 @@ class Situaciones {
     "truncateQuery": "TRUNCATE pace_sita",
     "dropQuery": "DROP TABLE pace_sita",
     "consultQuery": "SELECT * FROM pace_sita WHERE ID_Hosp = ?",
-    "consultPadecimientoQuery": "SELECT * FROM pace_sita WHERE ID_Hosp = ? "
-        "AND TipoAnalisis = 'Padecimiento Actual'",
     "consultIdQuery": "SELECT * FROM pace_sita WHERE ID_Pace = ?",
     "consultByIdPrimaryQuery": "SELECT * FROM pace_sita WHERE ID_Hosp = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_sita",

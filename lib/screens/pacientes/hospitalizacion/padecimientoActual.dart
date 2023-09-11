@@ -5,9 +5,9 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/AppBarText.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
-import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -52,6 +52,7 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
         Repositorios.registrarRegistro();
       } else {
         setState(() {
+          Valores.fechaPadecimientoActual = response['FechaPadecimiento'];
           fechaPadecimientoTextController.text =
               response['FechaPadecimiento'] ??
                   Calendarios.today(format: 'yyyy/MM/dd');
@@ -64,13 +65,15 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
         });
       }
     }).onError((error, stackTrace) {
+      Valores.fechaPadecimientoActual = Calendarios.today(format: 'yyyy/MM/dd');
       fechaPadecimientoTextController.text =
           Calendarios.today(format: 'yyyy/MM/dd');
-      padecimientoActualTextController.text = "Inicia padecimiento actual ${fechaPadecimientoTextController.text}";
+      padecimientoActualTextController.text =
+          "Inicia padecimiento actual ${fechaPadecimientoTextController.text}";
       atencionUrgenciasTextController.text =
           "Es atendido en urgencias reportandose tensión arterial $tensionArterial mmHg, "
-              "frecuencia cardiaca $frecuenciaCardiaca Lat/min, frecuencia respiratoria $frecuenciaRespiratoria Resp/min, "
-              "temperatura corporal $temperaturaCorporal, ";
+          "frecuencia cardiaca $frecuenciaCardiaca Lat/min, frecuencia respiratoria $frecuenciaRespiratoria Resp/min, "
+          "temperatura corporal $temperaturaCorporal, ";
     });
     super.initState();
   }
@@ -80,11 +83,9 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+        foregroundColor: Colors.white,
         backgroundColor: Colors.black,
-        title: const Text(
-          'Padecimiento Actual',
-          style: Styles.textSyle,
-        ),
+        title: AppBarText('Padecimiento Actual'),
         actions: [
           IconButton(
             icon: const Icon(
@@ -120,7 +121,8 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
                     onSelected: () {
                       fechaPadecimientoTextController.text =
                           Calendarios.today(format: 'yyyy/MM/dd');
-                      padecimientoActualTextController.text = "Inicia padecimiento actual el ${fechaPadecimientoTextController.text}";
+                      padecimientoActualTextController.text =
+                          "Inicia padecimiento actual el ${fechaPadecimientoTextController.text}";
                     },
                     numOfLines: 1,
                     onChange: (value) {
@@ -136,19 +138,22 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
                     textController: motivoAtencionTextController,
                     numOfLines: isTablet(context) ? 2 : 1,
                     iconData: Icons.segment,
-                    selection:true,
+                    selection: true,
                     withShowOption: true,
                     onSelected: () {
-                      Operadores.selectOptionsActivity(context: context, options: ['Disnea', 'Tos', 'Cianosis'], onClose: (value) {
-                        motivoAtencionTextController.text = "${motivoAtencionTextController.text}.\n $value";
-                        Navigator.pop(context);
-                      }
-                      );
+                      Operadores.selectOptionsActivity(
+                          context: context,
+                          options: ['Disnea', 'Tos', 'Cianosis'],
+                          onClose: (value) {
+                            motivoAtencionTextController.text =
+                                "${motivoAtencionTextController.text}.\n $value";
+                            Navigator.pop(context);
+                          });
                     },
                     onChange: (value) {
                       setState(() {
                         Valores.padecimientoActual =
-                        "${Valores.padecimientoActual}. \n$value";
+                            "${Valores.padecimientoActual}. \n$value";
                       });
                     },
                   ),
@@ -159,14 +164,17 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
                     textController: padecimientoActualTextController,
                     numOfLines: isTablet(context) ? 10 : 10,
                     iconData: Icons.segment,
-                    selection:true,
+                    selection: true,
                     withShowOption: true,
                     onSelected: () {
-                      Operadores.selectOptionsActivity(context: context, options: ['Disnea', 'Tos', 'Cianosis'], onClose: (value) {
-                        padecimientoActualTextController.text = "${padecimientoActualTextController.text} $value";
-                        Navigator.pop(context);
-                      }
-                        );
+                      Operadores.selectOptionsActivity(
+                          context: context,
+                          options: ['Disnea', 'Tos', 'Cianosis'],
+                          onClose: (value) {
+                            padecimientoActualTextController.text =
+                                "${padecimientoActualTextController.text} $value";
+                            Navigator.pop(context);
+                          });
                     },
                     onChange: (value) {
                       setState(() {
@@ -194,7 +202,7 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
                                   setState(() {
                                     tensionArterial = value;
                                     atencionUrgenciasTextController.text =
-                                    "Es atendido en urgencias reportandose tensión arterial $tensionArterial mmHg, ";
+                                        "Es atendido en urgencias reportandose tensión arterial $tensionArterial mmHg, ";
                                     Navigator.of(context).pop();
                                   });
                                 });
@@ -219,8 +227,8 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
                                   setState(() {
                                     frecuenciaCardiaca = value;
                                     atencionUrgenciasTextController.text =
-                                    "Es atendido en urgencias reportandose tensión arterial $tensionArterial mmHg, "
-                                        "frecuencia cardiaca $frecuenciaCardiaca Lat/min, " ;
+                                        "Es atendido en urgencias reportandose tensión arterial $tensionArterial mmHg, "
+                                        "frecuencia cardiaca $frecuenciaCardiaca Lat/min, ";
                                     Navigator.of(context).pop();
                                   });
                                 });
@@ -245,7 +253,7 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
                                   setState(() {
                                     frecuenciaRespiratoria = value;
                                     atencionUrgenciasTextController.text =
-                                    "Es atendido en urgencias reportandose tensión arterial $tensionArterial mmHg, "
+                                        "Es atendido en urgencias reportandose tensión arterial $tensionArterial mmHg, "
                                         "frecuencia cardiaca $frecuenciaCardiaca Lat/min, "
                                         "frecuencia respiratoria $frecuenciaRespiratoria Resp/min, ";
                                     Navigator.of(context).pop();
@@ -272,7 +280,7 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
                                   setState(() {
                                     temperaturaCorporal = value;
                                     atencionUrgenciasTextController.text =
-                                    "Es atendido en urgencias reportandose tensión arterial $tensionArterial mmHg, "
+                                        "Es atendido en urgencias reportandose tensión arterial $tensionArterial mmHg, "
                                         "frecuencia cardiaca $frecuenciaCardiaca Lat/min, frecuencia respiratoria $frecuenciaRespiratoria Resp/min, "
                                         "temperatura corporal $temperaturaCorporal, ";
                                     Navigator.of(context).pop();
@@ -297,16 +305,17 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
                     },
                   ),
                   GrandButton(
-                    weigth: 1000,
+                      weigth: 1000,
                       labelButton: "Actualizar Padecimiento Actual",
                       onPress: () {
                         Valores.padecimientoActual =
                             "${padecimientoActualTextController.text}. \n${atencionUrgenciasTextController.text}";
                         Future(() =>
-                        Repositorios.actualizarRegistro()).whenComplete(() => Navigator.of(context).push(MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                            VisualPacientes(actualPage: 0)
-                        )));
+                                Repositorios.actualizarPadecimientoRegistro())
+                            .whenComplete(() => Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        VisualPacientes(actualPage: 0))));
                       }),
                 ],
               ),
