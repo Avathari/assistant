@@ -10,6 +10,7 @@ import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/conmutadorPa
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/AppBarText.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
@@ -90,10 +91,10 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                 builder: ((context) => VisualPacientes(actualPage: 5))));
           },
         ),
+        foregroundColor: Colors.white,
         backgroundColor: Theming.primaryColor,
-        title: Text(
-          tittle,
-          style: Styles.textSyleGrowth(fontSize: 14),
+        title: AppBarText(
+          tittle
         ),
         actions: isMobile(context) || isTablet(context)
             ? <Widget>[
@@ -601,11 +602,14 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                             // *************** *********** **************
                             Navigator.of(context).pop();
                           });
-                          Operadores.openDialog(
-                              context: context,
-                              chyldrim: ConmutadorParaclinicos(
-                                categoriaEstudio: value,
-                              ));
+                          // Operadores.openDialog(
+                          //     context: context,
+                          //     chyldrim: ConmutadorParaclinicos(
+                          //       categoriaEstudio: value,
+                          //     ));
+                          Cambios.toNextActivity(context, tittle: '$value', chyld: ConmutadorParaclinicos(
+                            categoriaEstudio: value,
+                          ));
                         });
                   },
                 )),
@@ -697,11 +701,15 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                       }),
                 ),
     Expanded(flex: 1, child: GrandIcon(labelButton: "Rutina", iconData: Icons.ad_units, onPress: () {
-    Operadores.openWindow(
-    context: context,
-    chyldrim: ConmutadorParaclinicos(
-    categoriaEstudio: 'Rutina',
-    ));})),
+    // Operadores.openWindow(
+    // context: context,
+    // chyldrim: ConmutadorParaclinicos(
+    // categoriaEstudio: 'Rutina',
+    // ));
+      Cambios.toNextActivity(context, tittle: 'Rutina', chyld: ConmutadorParaclinicos(
+        categoriaEstudio: 'Rutina',
+      ));
+      })),
               ],
             ),
           ],
@@ -779,11 +787,14 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                                 // *************** *********** **************
                                 Navigator.of(context).pop();
                               });
-                              Operadores.openWindow(
-                                  context: context,
-                                  chyldrim: ConmutadorParaclinicos(
-                                    categoriaEstudio: value,
-                                  ));
+                              Cambios.toNextActivity(context, tittle: '$value', chyld: ConmutadorParaclinicos(
+                                categoriaEstudio: value,
+                              ));
+                              // Operadores.openWindow(
+                              //     context: context,
+                              //     chyldrim: ConmutadorParaclinicos(
+                              //       categoriaEstudio: value,
+                              //     ));
                             });
                       },
                     )),

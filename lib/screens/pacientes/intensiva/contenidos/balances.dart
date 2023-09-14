@@ -6,6 +6,7 @@ import 'package:assistant/screens/pacientes/intensiva/analisis/balancesHidrico.d
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/AppBarText.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
@@ -112,8 +113,9 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
       appBar: isDesktop(context)
           ? null
           : AppBar(
+        foregroundColor: Colors.white,
               backgroundColor: Theming.primaryColor,
-              title: Text(appBarTitile),
+              title: AppBarText(appBarTitile),
               leading: IconButton(
                 icon: const Icon(
                   Icons.arrow_back,
@@ -727,6 +729,7 @@ class _GestionBalancesState extends State<GestionBalances> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+        foregroundColor: Colors.white,
           backgroundColor: Theming.primaryColor,
           leading: IconButton(
             icon: const Icon(
@@ -739,7 +742,7 @@ class _GestionBalancesState extends State<GestionBalances> {
                   builder: (context) => VisualPacientes(actualPage: 6)));
             },
           ),
-          title: Text(appTittle),
+          title: AppBarText(appTittle),
           actions: <Widget>[
             IconButton(
               icon: const Icon(

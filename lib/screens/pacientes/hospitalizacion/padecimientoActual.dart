@@ -32,6 +32,8 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
 
   @override
   void initState() {
+    Terminal.printNotice(message: "${Repositorios.repositorio['consultPadecimientoQuery']}");
+    //
     Actividades.consultarId(
             Databases.siteground_database_reghosp,
             Repositorios.repositorio['consultPadecimientoQuery'],
@@ -56,9 +58,9 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
           fechaPadecimientoTextController.text =
               response['FechaPadecimiento'] ??
                   Calendarios.today(format: 'yyyy/MM/dd');
-          String respuesta = response['Contexto'];
+          String respuesta = response['Padecimiento_Actual']; // response['Contexto'];
           Terminal.printExpected(message: "PA : : $respuesta");
-          // motivoAtencionTextController.text =respuesta.split('\n')[0] ?? '';
+          // Asignación del Padecimiento Actual *******************************************
           padecimientoActualTextController.text =
               respuesta.split('\n')[0] ?? '';
           atencionUrgenciasTextController.text = respuesta.split('\n')[1] ?? '';

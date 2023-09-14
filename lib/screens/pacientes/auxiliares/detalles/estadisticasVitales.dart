@@ -1,5 +1,6 @@
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/ThreeLabelText.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
@@ -37,8 +38,9 @@ class _EstadisticasVitalesState extends State<EstadisticasVitales> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.all(8.0),
+      // decoration: ContainerDecoration.roundedDecoration(),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [

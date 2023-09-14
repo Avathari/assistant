@@ -9,6 +9,8 @@ import 'package:assistant/screens/pacientes/intensiva/analisis/antropometricos.d
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/AppBarText.dart';
+import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
@@ -125,8 +127,9 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
     return Scaffold(
       backgroundColor: Colors.black54,
       appBar: AppBar(
+        foregroundColor: Colors.white,
         backgroundColor: Theming.primaryColor,
-        title: Text(appBarTitile),
+        title: AppBarText(appBarTitile),
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back,
@@ -653,7 +656,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
   List<dynamic>? listOfFirstValues, listOfSecondValues;
 
   String appBarTitile = "Gestión de Vitales";
-
+// CONTROLADORES *****************************************
   var fechaRealizacionTextController = TextEditingController();
   var tasTextController = TextEditingController();
   var tadTextController = TextEditingController();
@@ -830,9 +833,10 @@ class _GestionVitalesState extends State<GestionVitales> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Theming.bdColor,
       appBar: isMobile(context) || isTablet(context)
           ? AppBar(
+        foregroundColor: Colors.white,
               backgroundColor: Theming.primaryColor,
               leading: isMobile(context) || isTablet(context)
                   ? IconButton(
@@ -847,7 +851,7 @@ class _GestionVitalesState extends State<GestionVitales> {
                       },
                     )
                   : null,
-              title: Text(appBarSentence),
+              title: AppBarText(appBarSentence),
               actions: [
                 GrandIcon(
                   iconData: Icons.replay,

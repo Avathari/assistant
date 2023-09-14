@@ -8,11 +8,11 @@ import 'package:assistant/screens/pacientes/intensiva/analisis/ventilatorios.dar
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/AppBarText.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
-import 'package:assistant/widgets/GridLayout.dart';
 import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -270,7 +270,12 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
           Expanded(child: Row(children: [
             Expanded(
               child: Spinner(
-                width: SpinnersValues.maximumWidth(context: context),
+                width: isTablet(context) ? 500
+                    :  isDesktop(context)
+                    ? 315
+                    : isMobile(context)
+                    ? 250
+                    : 150,
                 tittle: 'Tubo Endotraqueal',
                 onChangeValue: (value) {
                   setState(() {
@@ -284,7 +289,12 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
             ),
             Expanded(
               child: Spinner(
-                width: SpinnersValues.maximumWidth(context: context),
+                width: isTablet(context) ? 500
+                    :  isDesktop(context)
+                    ? 315
+                    : isMobile(context)
+                    ? 250
+                    : 150,
                 tittle: 'Distancia a arcada',
                 onChangeValue: (value) {
                   setState(() {
@@ -804,8 +814,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         idOperation
       ];
 
-      print(
-          "${widget.operationActivity} listOfValues $listOfValues ${listOfValues!.length}");
+      //print("${widget.operationActivity} listOfValues $listOfValues ${listOfValues!.length}");
 
       switch (widget.operationActivity) {
         case Constantes.Nulo:
@@ -865,7 +874,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
 
   void selectModal() {
     int index = Ventilaciones.modalidades.indexOf(modoVentilatorioValue!);
-    // print(index);
+    // //print(index);
     switch (index) {
       case 1:
         widget.actualView = 1;
@@ -963,19 +972,18 @@ class _GestionVentilacionesState extends State<GestionVentilaciones> {
 
   @override
   void initState() {
-    print(" . . . Iniciando array ");
     if (Constantes.dummyArray!.isNotEmpty) {
       if (Constantes.dummyArray![0] == "Vacio") {
         Actividades.consultarAllById(Databases.siteground_database_reghosp,
                 consultQuery!, Pacientes.ID_Paciente)
             .then((value) {
           setState(() {
-            print(" . . . Buscando items \n $value");
+            //print(" . . . Buscando items \n $value");
             foundedItems = value;
           });
         });
       } else {
-        print(" . . . Ventilaciones array iniciado");
+        //print(" . . . Ventilaciones array iniciado");
         foundedItems = Constantes.dummyArray;
       }
     }
@@ -987,6 +995,7 @@ class _GestionVentilacionesState extends State<GestionVentilaciones> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+        foregroundColor: Colors.white,
           backgroundColor: Theming.primaryColor,
           leading: IconButton(
             icon: const Icon(
@@ -999,7 +1008,7 @@ class _GestionVentilacionesState extends State<GestionVentilaciones> {
                   builder: (context) => VisualPacientes(actualPage: 6)));
             },
           ),
-          title: Text(appTittle),
+          title: AppBarText(appTittle),
           actions: <Widget>[
             isTabletAndDesktop(context) ? GrandIcon(
               iconData: Icons.candlestick_chart,

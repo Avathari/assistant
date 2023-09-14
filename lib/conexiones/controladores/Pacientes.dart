@@ -7402,6 +7402,7 @@ class Hospitalizaciones {
         .then((value) {
 // Enfermedades de base del paciente, asi como las Hospitalarias.
       Hospitalizacion = value;
+      fromJson(value);
     });
   }
 
@@ -7411,6 +7412,8 @@ class Hospitalizaciones {
         .then((value) {
       // Enfermedades de base del paciente, asi como las Hospitalarias.
       Pacientes.Hospitalizaciones = value;
+      // Crear Json del Registro ******************************
+      // Archivos.createJsonFromMap(value, filePath: "");
     });
   }
 
@@ -7650,7 +7653,7 @@ class Repositorios {
       Pacientes.Notas =
           value; // Se Asigna a la Estructura Pacientes.Notas ***************************
       Terminal.printExpected(
-          message: "VALUE - Consultar Repositorio : $value : : ");
+          message: "VALUE - Consultar Repositorio : ${value.last} : : ");
       // Del Padecimiento **************************************************
       Reportes.padecimientoActual = value.last['Padecimiento_Actual'] ?? '';
       Valores.fechaPadecimientoActual = value.last['FechaPadecimiento'] ?? '';
@@ -7733,7 +7736,32 @@ class Repositorios {
           message:
               "VALUE del actualizar : Padecimiento - $value : : ${Valores.padecimientoActual}");
     }).whenComplete(() {
+      actualizarOtrosPadecimientoRegistro();
       Terminal.printExpected(message: "PA : : ${Valores.padecimientoActual}");
+    });
+  }
+
+  static void actualizarOtrosPadecimientoRegistro() {
+    Actividades.actualizar(
+      Databases.siteground_database_reghosp,
+      Repositorios.repositorio['updateOtrosPadecimientoQuery'],
+      [
+        Valores.fechaPadecimientoActual,
+        Valores.padecimientoActual,
+        //
+        Pacientes.ID_Hospitalizacion,
+        Pacientes.ID_Paciente,
+      ],
+      Pacientes.ID_Paciente,
+    ).then((value) {
+      Terminal.printExpected(
+          message:
+          "VALUE del actualizar : "
+              "Otros Padecimientos del ID_Hosp ${Pacientes.ID_Hospitalizacion}"
+              " - $value : : "
+              "${Valores.padecimientoActual}");
+    }).whenComplete(() {
+      // Terminal.printExpected(message: "PA : : ${Valores.padecimientoActual}");
     });
   }
 
@@ -7743,7 +7771,7 @@ class Repositorios {
       Pacientes.ID_Hospitalizacion,
       Valores.fechaPadecimientoActual ??
           Calendarios.today(format: 'yyyy/MM/dd'),
-      Reportes.padecimientoActual ?? '',
+      Reportes.padecimientoActual,
       // Valores.servicioTratanteInicial,
       Valores.servicioTratante,
       Calendarios.today(format: 'yyyy/MM/dd'),
@@ -7890,13 +7918,19 @@ class Repositorios {
         "Tipo_Analisis =  ? "
         "WHERE ID_Hosp = ?",
     "deleteQuery": "DELETE FROM pace_hosp_repo WHERE ID_Compendio = ?",
-    //
+    // Operaciones con el Padecimiento Actual *****************************************************
     "consultPadecimientoQuery":
         "SELECT FechaPadecimiento, Padecimiento_Actual FROM pace_hosp_repo "
-            "WHERE ID_Hosp = ? AND Tipo_Analisis = 'Análisis de Ingreso' AND ID_Pace = ?",
+            "WHERE ID_Pace = ${Pacientes.ID_Paciente} "
+            "AND Tipo_Analisis = 'Análisis de Ingreso' "
+            "AND ID_Hosp = ?",
     "updatePadecimientoQuery": "UPDATE pace_hosp_repo "
         "SET FechaPadecimiento = ?, Padecimiento_Actual = ? "
         "WHERE ID_Hosp = ? AND Tipo_Analisis = ? AND ID_Pace = ?",
+    "updateOtrosPadecimientoQuery": "UPDATE pace_hosp_repo "
+        "SET FechaPadecimiento = ?, Padecimiento_Actual = ? "
+        "WHERE ID_Hosp = ? "
+        "AND ID_Pace = ?",
     //
     "RepositorioColumns": [
       "ID_Pace",
@@ -7919,13 +7953,13 @@ class Repositorios {
   static String tipo_Analisis = TypeReportes.reporteIngreso.toString();
   // **********************************************
   static String tipoAnalisis() {
-    if (tipo_Analisis == TypeReportes.reporteIngreso) {
+    if (tipo_Analisis == "Nota de Ingreso") {
       return Items.tiposAnalisis[0];
-    } else if (tipo_Analisis == TypeReportes.reporteEvolucion) {
+    } else if (tipo_Analisis == "Nota de Evolución") {
       return Items.tiposAnalisis[1];
-    } else if (tipo_Analisis == TypeReportes.reporteRevision) {
+    } else if (tipo_Analisis == "Nota deRevisión") {
       return Items.tiposAnalisis[2];
-    } else if (tipo_Analisis == TypeReportes.reporteEgreso) {
+    } else if (tipo_Analisis == "Nota de Egreso") {
       return Items.tiposAnalisis[3];
     } else {
       return Items.tiposAnalisis[0];

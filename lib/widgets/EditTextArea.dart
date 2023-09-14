@@ -65,7 +65,7 @@ class _EditTextAreaState extends State<EditTextArea> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 8.0, left: 8.0, top: 4.0, bottom: 4.0),
+      padding: const EdgeInsets.only(right: 8.0, left: 8.0, top: 4.0, bottom: 1.0),
       child: Row(
         children: [
           Expanded(
@@ -123,9 +123,9 @@ class _EditTextAreaState extends State<EditTextArea> {
           ),
           widget.withShowOption
               ? Expanded(
-                  flex: isTablet(context) ? 2 : 1,
+                  flex: isTablet(context) ? 2 : 2,
                   child: Container(
-                    padding: const EdgeInsets.all(4.0),
+                    padding: const EdgeInsets.all(2.0),
                     margin: const EdgeInsets.all(4.0),
                     decoration: ContainerDecoration.roundedDecoration(),
                     child: Column(

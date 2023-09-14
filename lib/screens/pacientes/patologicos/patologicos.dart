@@ -5,6 +5,7 @@ import 'package:assistant/screens/pacientes/patologicos/auxiliares/antecedentes.
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/AppBarText.dart';
 import 'package:assistant/widgets/CircleSwitched.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/DialogSelector.dart';
@@ -85,8 +86,9 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
       backgroundColor: Colors.black,
       appBar: isMobile(context) || isTablet(context)
           ? AppBar(
+        foregroundColor: Colors.white,
               backgroundColor: Theming.primaryColor,
-              title: Text(appBarTitile),
+              title: AppBarText(appBarTitile),
               leading: IconButton(
                 icon: const Icon(
                   Icons.arrow_back,
@@ -499,6 +501,7 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+          foregroundColor: Colors.white,
           backgroundColor: Theming.primaryColor,
           leading: IconButton(
             icon: const Icon(
@@ -511,7 +514,7 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
                   builder: (context) => VisualPacientes(actualPage: 2)));
             },
           ),
-          title: Text(appTittle),
+          title: AppBarText(appTittle),
           actions: <Widget>[
             IconButton(
               icon: const Icon(

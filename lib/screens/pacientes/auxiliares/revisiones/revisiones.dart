@@ -22,7 +22,9 @@ import 'package:flutter/material.dart';
 class Revisiones extends StatefulWidget {
   var actualView = 0;
 
-  Revisiones({Key? key}) : super(key: key);
+  bool? withTitle;
+
+  Revisiones({Key? key, this.withTitle = true}) : super(key: key);
 
   @override
   State<Revisiones> createState() => _RevisionesState();
@@ -64,7 +66,7 @@ class _RevisionesState extends State<Revisiones> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Expanded(
+         if (widget.withTitle!) Expanded(
             flex: 2,
             child: TittlePanel(textPanel: 'Revisión General'),
           ),

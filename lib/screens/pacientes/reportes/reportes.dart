@@ -78,9 +78,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           .then((value) {
         Pacientes.Alergicos = value;
       });
-
-      if (Pacientes.ID_Hospitalizacion != 0 ||
-          Pacientes.ID_Hospitalizacion != null) {
+// *********************************************
+      if (Pacientes.ID_Hospitalizacion != 0) {
         Archivos.readJsonToMap(
                 filePath:
                     "${Pacientes.localRepositoryPath}/reportes/reportes.json")
@@ -89,18 +88,65 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           // VALUE almacenado en Json : : "${Pacientes.localRepositoryPath}/reportes/reportes.json"
           Terminal.printSuccess(
               message:
-                  "VALUE - ${value.last} : ${value.runtimeType} : : ${value.last.runtimeType}");
+                  "VALUE - ${value.last} "
+                      ": ${value.runtimeType} "
+                      ": : ${value.last.runtimeType}");
           // Actualizar . . .
           setState(() {
+            // Del Padecimiento **************************************************
+            Reportes.padecimientoActual = value.last['Padecimiento_Actual'] ?? '';
+            Valores.fechaPadecimientoActual = value.last['Fecha_Padecimiento'] ?? '';
+            // Primeras Variables **************************************************
             Reportes.exploracionFisica = value.last['Exploracion_Fisica'] ?? '';
             Reportes.signosVitales = value.last['Signos_Vitales'] ?? '';
-
-            Reportes.eventualidadesOcurridas =
-                value.last['Eventualidades'] ?? '';
+            // Segundas Variables **************************************************
+            Reportes.eventualidadesOcurridas = value.last['Eventualidades'] ?? '';
             Reportes.terapiasPrevias = value.last['Terapias_Previas'] ?? '';
             Reportes.analisisMedico = value.last['Analisis_Medico'] ?? '';
-            Reportes.tratamientoPropuesto =
-                value.last['Tratamiento_Propuesto'] ?? '';
+            Reportes.tratamientoPropuesto = value.last['Tratamiento_Propuesto'] ?? '';
+            // Listados desde String  ************************************************
+            // Reportes.dieta = ;
+
+            // String aux = "";
+            // aux.replaceAll(", ", ",");
+            // print(""
+            //     // "Opción A - ${jsonDecode(value.last['Dietoterapia'])} - ${jsonDecode(value.last['Dietoterapia']).runtimeType}"
+            //     //"Opcion B - ${json.decode(value.last['Medidas_Generales']).cast<List<dynamic>>()}"
+            //     "Opcion C - ${Listas.listFromString(value.last['Medidas_Generales'].replaceAll(", ", ","))} : ${value.last['Medidas_Generales'].runtimeType}");
+
+            // Reportes.dieta = json
+            //     .decode(value.last['Dietoterapia'].toString())
+            //     .cast<String>();
+            //     .toList();
+            // Reportes.hidroterapia = json
+            //     .decode(value.last['Hidroterapia'].toString())
+            //     .cast<String>()
+            //     .toList();
+            // Reportes.insulinoterapia = json
+            //     .decode(value.last['Insulinoterapia'].toString())
+            //     .cast<String>()
+            //     .toList();
+            // Reportes.hemoterapia = json
+            //     .decode(value.last['Hemoterapia'].toString())
+            //     .cast<String>()
+            //     .toList();
+            // Reportes.oxigenoterapia = json
+            //     .decode(value.last['Oxigenoterapia'].toString())
+            //     .cast<String>()
+            //     .toList();
+            // Reportes.medicamentosIndicados = json
+            //     .decode(value.last['Medicamentos'].toString())
+            //     .cast<String>()
+            //     .toList();
+            // Reportes.medidasGenerales = json
+            //     .decode(value.last['Medidas_Generales'].toString())
+            //     .cast<String>()
+            //     .toList();
+            // Reportes.pendientes = json
+            //     .decode(value.last['Pendientes'].toString())
+            //     .cast<String>()
+            //     .toList();
+            // Crear Json desde Pacientes.Notas ***************************************
           });
         }).onError((error, stackTrace) {
           Terminal.printAlert(
@@ -110,7 +156,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           Repositorios.consultarAnalisis();
         });
       }
-
+// *********************************************
       Archivos.readJsonToMap(
               filePath: "${Pacientes.localRepositoryPath}/paraclinicos.json")
           .then((value) {
@@ -367,9 +413,10 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                                     iconData: Icons.account_balance_sharp,
                                     labelButton: "Tipo de Nota Médica",
                                     onPress: () {
-                                      setState(() {
-                                        widget.actualPage = 19;
-                                      });
+                                      Cambios.toNextActivity(context, tittle: 'Revisión de Valores', chyld: Revisiones(withTitle: false));
+                                      // setState(() {
+                                      //   widget.actualPage = 19;
+                                      // });
                                     },
                                   ),
                                 ),
@@ -711,8 +758,10 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
   TypeReportes getTypeReport() {
     switch (widget.actualPage) {
       case 0:
+        Repositorios.tipo_Analisis = "Nota de Ingreso";
         return TypeReportes.reporteIngreso;
       case 1:
+        Repositorios.tipo_Analisis = "Nota de Evolución";
         return TypeReportes
             .reporteEvolucion; // return TypeReportes.reporteIngreso;
       case 2:
@@ -724,8 +773,10 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       case 5:
         return TypeReportes.reportePreanestesica;
       case 6:
+        Repositorios.tipo_Analisis = "Nota de Egreso";
         return TypeReportes.reporteEgreso;
       case 7:
+        Repositorios.tipo_Analisis = "Nota de Revisión";
         return TypeReportes.reporteRevision;
       case 8:
         return TypeReportes.reporteTraslado;

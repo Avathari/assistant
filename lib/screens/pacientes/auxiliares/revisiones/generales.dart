@@ -266,7 +266,7 @@ class _GeneralesState extends State<Generales> {
             child: Column(
               children: [
                 Spinner(
-                    isRow: false,
+                    isRow: true,
                     tittle: "Intervalo de Horario",
                     onChangeValue: (String value) {
                       setState(() {
@@ -275,8 +275,32 @@ class _GeneralesState extends State<Generales> {
                       });
                     },
                     items: Opciones.horarios(),
-                    width: isTablet(context) ? 40 : 60,
+                    width: isDesktop(context)
+                        ? 300
+                        : isTablet(context)
+                        ? 200
+                        : isMobile(context)
+                        ? 170
+                        : 200,
                     initialValue: isHorarioValue),
+                Spinner(
+                  isRow: true,
+                  tittle: 'Sonda Vesical',
+                  width: isDesktop(context)
+                      ? 300
+                      : isTablet(context)
+                      ? 200
+                      : isMobile(context)
+                      ? 170
+                      : 200,
+                  items: Items.foley,
+                  initialValue: Valores.tipoSondaVesical,
+                  onChangeValue: (value) {
+                    setState(() {
+                      Valores.tipoSondaVesical = value;
+                    });
+                  },
+                ),
                 EditTextArea(
                   keyBoardType: TextInputType.number,
                   inputFormat: MaskTextInputFormatter(),
@@ -753,6 +777,8 @@ class _GeneralesState extends State<Generales> {
         viaOtrosEgresosTextController.text,
         //
         isHorarioValue,
+        //
+        Valores.tipoSondaVesical,
         //
         idOperation
       ];

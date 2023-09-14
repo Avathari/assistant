@@ -201,6 +201,8 @@ class Valores {
     if (modoAtencion == 'Hospitalización' ||
         modoAtencion == 'Otra Hospitalización') {
       isHospitalizado = true;
+      // Consultar Último Registro de Hospitalización **************************************
+      Hospitalizaciones.ultimoRegistro();
       Pacientes.esHospitalizado = true;
     } else if (modoAtencion == 'Consulta Externa') {
       isHospitalizado = false;

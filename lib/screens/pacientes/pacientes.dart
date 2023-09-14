@@ -891,6 +891,7 @@ class OperacionesPacientes extends StatefulWidget {
 }
 
 class _OperacionesPacientesState extends State<OperacionesPacientes> {
+
   @override
   void initState() {
     Terminal.printExpected(
@@ -1200,6 +1201,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
           labelEditText:           'Teléfono',
+          numOfLines: 1,
           textController :telefonoTextController),
       EditTextArea(
         keyBoardType: TextInputType.datetime,
@@ -1209,7 +1211,6 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
             type: MaskAutoCompletionType.lazy),
         isObscure: false,
         numOfLines: 1,
-        fontSize: 16,
         labelEditText: 'Fecha de Nacimiento',
         textController: nacimientoTextController,
         onChange: (value) {
@@ -1240,11 +1241,12 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
               mask: '###',
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
+          numOfLines: 1,
           labelEditText: 'Edad',
           textController :edadTextController
           ),
-      EditTextArea(labelEditText:'CURP', textController: curpTextController, keyBoardType: TextInputType.text, inputFormat: MaskTextInputFormatter(),),
-      EditTextArea(labelEditText:'RFC', textController: rfcTextController, keyBoardType: TextInputType.text, inputFormat: MaskTextInputFormatter(),),
+      EditTextArea(labelEditText:'CURP', numOfLines: 1,textController: curpTextController, keyBoardType: TextInputType.text, inputFormat: MaskTextInputFormatter(),),
+      EditTextArea(labelEditText:'RFC', numOfLines: 1,textController: rfcTextController, keyBoardType: TextInputType.text, inputFormat: MaskTextInputFormatter(),),
       //
       Spinner(
           tittle: "¿Vive?",
@@ -1260,7 +1262,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
               vivoValue = newValue!;
             });
           }),
-      EditTextArea(labelEditText:'Ocupación', textController: ocupacionTextController, keyBoardType: TextInputType.text, inputFormat: MaskTextInputFormatter(),),
+      EditTextArea(labelEditText:'Ocupación', numOfLines: 1,textController: ocupacionTextController, keyBoardType: TextInputType.text, inputFormat: MaskTextInputFormatter(),),
       Spinner(
           tittle: "Estado civil",
           initialValue: estadoCivilValue,
@@ -1333,6 +1335,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
             });
           }),
       EditTextArea(
+        numOfLines: 1,
           labelEditText:'Especificar escolaridad', textController:
           escolaridadEspecificacionTextController, keyBoardType: TextInputType.text, inputFormat: MaskTextInputFormatter(),),
       // spinner(tittle: "Estado actual", statusValue, Pacientes.Status,
@@ -1342,8 +1345,10 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
       //   });
       // }),
       //
-
-      editText(false, 'Municipio residencial', municipioTextController, false),
+      EditTextArea(
+        numOfLines: 1,
+        labelEditText:'Municipio residencial de Origen', textController:
+      municipioTextController, keyBoardType: TextInputType.text, inputFormat: MaskTextInputFormatter(),),
       // spinner(tittle: "Municipio residencial", municipioValue,
       //     Pacientes.Municipios, (String? newValue) {
       //   setState(() {
@@ -1351,13 +1356,13 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
       //   });
       // }),
       Spinner(
-          tittle: "Entidad federativa",
+          tittle: "Entidad federativa de Origen",
           initialValue: entidadFederativaValue,
           width: isMobile(context)
               ? 216
               : isTablet(context)
                   ? 170
-                  : 180,
+                  : 140,
           items: Pacientes.EntidadesFederativas,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -1365,9 +1370,18 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
             });
           }),
 
-      editText(false, 'Localidad', localidadResidenciaTextController, false),
-      editText(false, 'Duración', duracionResidenciaTextController, false),
-      editText(false, 'Domicilio', domicilioTextController, false),
+      EditTextArea(
+        numOfLines: 1,
+        labelEditText:'Localidad', textController:
+      localidadResidenciaTextController, keyBoardType: TextInputType.text, inputFormat: MaskTextInputFormatter(),),
+      EditTextArea(
+        numOfLines: 1,
+        labelEditText:'Duración', textController:
+      duracionResidenciaTextController, keyBoardType: TextInputType.text, inputFormat: MaskTextInputFormatter(),),
+      EditTextArea(
+        numOfLines: 1,
+        labelEditText:'Domicilio', textController:
+      domicilioTextController, keyBoardType: TextInputType.text, inputFormat: MaskTextInputFormatter(),),
       //
       Spinner(
           tittle: "Indigena (Si/No)",
@@ -1404,8 +1418,10 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
               }
             });
           }),
-      editText(false, 'Especificar lenguaje',
-          indigenaHablanteEspecificacioTextController, false),
+      EditTextArea(
+        numOfLines: 1,
+        labelEditText:'Especificar lenguaje', textController:
+      indigenaHablanteEspecificacioTextController, keyBoardType: TextInputType.text, inputFormat: MaskTextInputFormatter(),),
     ];
   }
 

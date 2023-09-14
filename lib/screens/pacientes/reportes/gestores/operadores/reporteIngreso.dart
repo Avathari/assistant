@@ -257,6 +257,9 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
                           keyBoardType: TextInputType.multiline,
                           numOfLines: 20,
                           withShowOption: true,
+                          onChange: (value) {
+                            Reportes.padecimientoActual = value;
+                          },
                           inputFormat: MaskTextInputFormatter()),
                     ],
                   ),

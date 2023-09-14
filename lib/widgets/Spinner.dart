@@ -17,7 +17,7 @@ class Spinner extends StatefulWidget {
       required this.items,
       required this.initialValue,
       this.tittle,
-        this.fontSize = 10,
+      this.fontSize = 10,
       this.isRow = false,
       this.width = 100})
       : super(key: key);
@@ -59,23 +59,31 @@ class _SpinnerState extends State<Spinner> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Text("${widget.tittle}:", style:  TextStyle(color: Colors.white, fontSize: widget.fontSize!)),
+          Text("${widget.tittle}:",
+              style:
+                  TextStyle(color: Colors.white, fontSize: widget.fontSize!)),
           DropdownButton(
             value: widget.initialValue,
             icon: const Icon(Icons.arrow_drop_down),
             iconSize: 30,
             elevation: 8,
             dropdownColor: Colores.backgroundWidget,
-            style: const TextStyle(
-              fontSize: 8,
-                color: Colors.white, overflow: TextOverflow.ellipsis),
+            style: TextStyle(
+                fontSize: widget.fontSize,
+                color: Colors.white,
+                overflow: TextOverflow.ellipsis),
             onChanged: (String? newValue) {
               widget.onChangeValue!(newValue);
             },
             items: widget.items?.map<DropdownMenuItem<String>>((String val) {
               return DropdownMenuItem<String>(
                 value: val,
-                child: SizedBox(width: widget.width, child: Text(val)),
+                child: SizedBox(
+                    width: widget.width,
+                    child: Text(
+                      val,
+                      style: TextStyle(fontSize: widget.fontSize! - 2),
+                    )),
               );
             }).toList(),
           ),
@@ -89,7 +97,10 @@ class _SpinnerState extends State<Spinner> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text("${widget.tittle}:",
-            style: const TextStyle(color: Colors.white, fontSize: 10)),
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: widget.fontSize,
+            )),
         DropdownButton(
           value: widget.initialValue,
           icon: const Icon(Icons.arrow_drop_down),
@@ -104,7 +115,13 @@ class _SpinnerState extends State<Spinner> {
           items: widget.items?.map<DropdownMenuItem<String>>((String val) {
             return DropdownMenuItem<String>(
               value: val,
-              child: SizedBox(width: widget.width, child: Text(val, overflow: TextOverflow.ellipsis,)),
+              child: SizedBox(
+                  width: widget.width,
+                  child: Text(
+                    val,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: widget.fontSize! - 2),
+                  )),
             );
           }).toList(),
         ),
