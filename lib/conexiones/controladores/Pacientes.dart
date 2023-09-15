@@ -5748,8 +5748,13 @@ class Auxiliares {
         for (var element in aux) {
           // ***************************** *****************
           if (max == "") {
-            max =
-                "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+            if (element['Tipo_Estudio'] == Auxiliares.Categorias[13]) {
+              max =
+                  "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+            } else {
+              max =
+              "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+            }
           } else {
             max =
                 "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
@@ -5996,11 +6001,11 @@ class Auxiliares {
     "Gasometría Venosa",
     "Examen General de Orina",
     "Depuración de Orina de 24 Horas",
-    "Citoquimico",
+    "Líquido de Diálisis Peritoneal", // 13
     "Citológico",
     "Iones Urinarios",
     "Carga Viral",
-    "Conteo de Linfocitos T CD4+",
+    "Conteo de Linfocitos T CD4+", // 17
     "Marcadores Cárdiacos",
     "",
     "Panel Viral", // 20
@@ -6143,7 +6148,7 @@ class Auxiliares {
       "Creatinina en Orina",
       "",
     ],
-    Categorias[13]: [""],
+    Categorias[13]: ["Aspecto", "Color", "Leucocitos", "Polimorfonucleares", "Mononucleares", "Eritrocitos", "Bacterias", "Levaduras", "Otros", "pH", ],
     Categorias[14]: [""],
     Categorias[15]: [
       "Sodio Urinario",
@@ -6162,7 +6167,14 @@ class Auxiliares {
     ],
     Categorias[17]: [
       "Conteo de Linfocitos CD4+",
-      "Porcentaje de Linfocitos CD4+"
+      "Porcentaje de Linfocitos CD4+",
+      "Linfocitos T (VA)", // cell/uL || LynT(VA)
+      "Linfocitos T (%)", // % || LynT(%)
+      "Linfocitos TCD4 (VA)", // cell/uL || LynT-CD4(VA)
+      "Linfocitos TCD4 (%)", // % || LynT-CD4(%)
+      "Linfocitos TCD8 (VA)", // cell/uL || LynT-CD8(VA)
+      "Linfocitos TCD8 (%)", // % || LynT-CD8(%)
+      "Ratio 4/8",
     ],
     Categorias[18]: [
       "CK Total",
@@ -6184,12 +6196,12 @@ class Auxiliares {
       "HIVAg",
       "HIVAg-Ag",
       //
+      "Ac IgM anti Citomegalovirus", // 5
       "Ac IgG anti Citomegalovirus",
-      "Ac IgM anti Citomegalovirus",
-      "Ac IgG anti Rubeola",
       "Ac IgM anti Rubeola",
-      "Ac IgG anti Toxoplasma",
+      "Ac IgG anti Rubeola",
       "Ac IgM anti Toxoplasma",
+      "Ac IgG anti Toxoplasma",
     ],
     Categorias[21]: [
       "Hierro Sérico",
@@ -6357,11 +6369,11 @@ class Auxiliares {
       "",
       "",
     ],
-    Categorias[13]: [""],
+    Categorias[13]: ["", "mm3", "%", ],
     Categorias[14]: [""],
     Categorias[15]: [""],
     Categorias[16]: [""],
-    Categorias[17]: [""],
+    Categorias[17]: ["cell/mm3", "%", ""],
     Categorias[18]: ["UI/L", "ng/mL"],
     Categorias[19]: [""],
     Categorias[20]: [
@@ -7791,13 +7803,14 @@ class Repositorios {
       Reportes.medicamentosIndicados.toString(),
       Reportes.medidasGenerales.toString(),
       Reportes.pendientes.toString(),
-      Repositorios.tipoAnalisis()
+      tipo_Analisis // Repositorios.tipoAnalisis()
     ];
     Actividades.registrar(
       Databases.siteground_database_reghosp,
       Repositorios.repositorio['registerQuery'],
       Values,
     ).then((value) {
+      Archivos.deleteFile(filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
       Terminal.printExpected(message: "VALUE - $value : $Values");
     }).whenComplete(() {
       Archivos.createJsonFromMap(Pacientes.Notas!,
@@ -7839,6 +7852,7 @@ class Repositorios {
             Repositorio['consultIdQuery'], Pacientes.ID_Paciente)
         .then((value) {
       Reportes.analisisAnteriores = value;
+      Archivos.createJsonFromMap(value, filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
     });
   }
 
@@ -7886,7 +7900,9 @@ class Repositorios {
     //
     "consultAnalisisQuery": "SELECT * FROM pace_hosp_repo WHERE ID_Hosp = ? "
         "AND TipoAnalisis = 'Análisis Médico' ORDER BY FechaRealizacion ASC",
-    "consultIdQuery": "SELECT * FROM pace_hosp_repo WHERE ID_Pace = ?",
+    "consultIdQuery": "SELECT * FROM pace_hosp_repo "
+        "WHERE ID_Hosp = ${Pacientes.ID_Hospitalizacion} "
+        "AND ID_Pace = ?",
     "consultByIdPrimaryQuery": "SELECT * FROM pace_hosp_repo WHERE ID_Hosp = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_hosp_repo",
     "consultarPadecimientoActualQuery":
@@ -7950,20 +7966,22 @@ class Repositorios {
         "(SELECT IFNULL(count(*), 0) FROM pace_hosp_repo WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
   };
 
-  static String tipo_Analisis = TypeReportes.reporteIngreso.toString();
+  static String tipo_Analisis = "Nota de Ingreso";
   // **********************************************
-  static String tipoAnalisis() {
-    if (tipo_Analisis == "Nota de Ingreso") {
-      return Items.tiposAnalisis[0];
-    } else if (tipo_Analisis == "Nota de Evolución") {
-      return Items.tiposAnalisis[1];
-    } else if (tipo_Analisis == "Nota deRevisión") {
-      return Items.tiposAnalisis[2];
-    } else if (tipo_Analisis == "Nota de Egreso") {
-      return Items.tiposAnalisis[3];
-    } else {
-      return Items.tiposAnalisis[0];
-    }
+  static String tipoAnalisis({required int widgetPage}) {
+    tipo_Analisis=Items.tiposAnalisis[widgetPage];
+    return Items.tiposAnalisis[widgetPage];
+    // if (tipo_Analisis == "Nota de Ingreso") {
+    //   return Items.tiposAnalisis[0];
+    // } else if (tipo_Analisis == "Nota de Evolución") {
+    //   return Items.tiposAnalisis[1];
+    // } else if (tipo_Analisis == "Nota deRevisión") {
+    //   return Items.tiposAnalisis[2];
+    // } else if (tipo_Analisis == "Nota de Egreso") {
+    //   return Items.tiposAnalisis[3];
+    // } else {
+    //   return Items.tiposAnalisis[0];
+    // }
   }
 }
 

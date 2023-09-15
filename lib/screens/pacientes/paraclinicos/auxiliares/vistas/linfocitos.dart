@@ -11,26 +11,20 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-class Virales extends StatefulWidget {
-  const Virales({Key? key}) : super(key: key);
+class Linfocitos extends StatefulWidget {
+  const Linfocitos({Key? key}) : super(key: key);
 
   @override
-  State<Virales> createState() => _ViralesState();
+  State<Linfocitos> createState() => _LinfocitosState();
 }
 
-class _ViralesState extends State<Virales> {
-  static var index = 20; // Virales
+class _LinfocitosState extends State<Linfocitos> {
+  static var index = 17; // Linfocitos
 
   @override
   void initState() {
     final f = DateFormat('yyyy-MM-dd');
     textDateEstudyController.text = f.format(DateTime.now());
-    // *************************************
-    textAcAntiHCVResultController.text = "0.03";
-    textHIVabResultController.text = "0.3";
-    textHbsAgResultController.text = "<0.030";
-    textHIVaGResultController.text = "0.22";
-    textHIVAgAgResultController.text = "No Reactivo";
     // *************************************
     super.initState();
   }
@@ -64,81 +58,63 @@ class _ViralesState extends State<Virales> {
           child: Column(
             children: [
               EditTextArea(
-                textController: textAcAntiHCVResultController,
+                textController: textLynTvaResultController,
                 keyBoardType: TextInputType.number,
                 inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'AcAntiHCV ($unidadMedidaAcAntiHCV)',
+                labelEditText: 'Linfocitos T (VA) ($unidadMedidaLynTva)',
                 numOfLines: 1,
               ),
               EditTextArea(
-                textController: textHIVabResultController,
+                textController: textLynTporResultController,
                 keyBoardType: TextInputType.number,
                 inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'HIVab ($unidadMedidaHIVab)',
+                labelEditText: 'Linfocitos T ($unidadMedidaLynTpor)',
+                numOfLines: 1,
+              ),
+
+              EditTextArea(
+                textController: textLynTcd4vaResultController,
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Linfocitos T CD4 ($unidadMedidaLynTcd4va)',
                 numOfLines: 1,
               ),
               EditTextArea(
-                textController: textHbsAgResultController,
+                textController: textLynTcd4porResultController,
                 keyBoardType: TextInputType.number,
                 inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'HbsAg ($unidadMedidaHbsAg)',
+                labelEditText: 'Linfocitos T CD4 ($unidadMedidaLynTcd4por)',
                 numOfLines: 1,
               ),
+
               EditTextArea(
-                textController: textHIVaGResultController,
+                textController: textLynTcd8vaResultController,
                 keyBoardType: TextInputType.number,
                 inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'HIVaG ($unidadMedidaHIVaG)',
+                labelEditText: 'Linfocitos T CD8 ($unidadMedidaLynTcd8va)',
                 numOfLines: 1,
+                onChange: (String value) {
+                  double val = 0.0;
+                  if (textLynTcd8vaResultController.text.isNotEmpty) {
+                    val = double.parse(textLynTcd4vaResultController.text) /
+                        double.parse(textLynTcd8vaResultController.text);
+                    textRatio48ResultController.text = val.toStringAsFixed(2);
+                  } else {}
+                },
               ),
               EditTextArea(
-                textController: textHIVAgAgResultController,
+                textController: textLynTcd8porResultController,
                 keyBoardType: TextInputType.number,
                 inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'HIVAg-Ag ($unidadMedidaHIVAgAg)',
+                labelEditText: 'Linfocitos T CD8 ($unidadMedidaLynTcd8por)',
                 numOfLines: 1,
               ),
-              // Perfil TORCH * *********** * ***
+
               EditTextArea(
-                textController: textIgMCytoResultController,
+                textController: textRatio48ResultController,
                 keyBoardType: TextInputType.number,
                 inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Ac IgM Cyto ($unidadMedidaIgMCyto)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textIgGCytoResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Ac IgG Cyto ($unidadMedidaIgGCyto)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textIgMRubeResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Ac IgM Rube ($unidadMedidaIgMRube)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textIgGRubeResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Ac IgG Rube ($unidadMedidaIgGRube)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textIgMToxoResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Ac IgM Toxo ($unidadMedidaIgMToxo)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textIgGToxoResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Ac IgG Toxo ($unidadMedidaIgGToxo)',
+                labelEditText: 'Ratio 4/8  ($unidadMedidaRatio48)',
                 numOfLines: 1,
               ),
               // Botton ***** ******* ****** * ***
@@ -178,8 +154,8 @@ class _ViralesState extends State<Virales> {
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
         Auxiliares.Laboratorios[Auxiliares.Categorias[index]][1],
-        textAcAntiHCVResultController.text,
-        unidadMedidaAcAntiHCV!
+        textLynTporResultController.text,
+        unidadMedidaLynTpor!
         //0,
       ],
       [
@@ -188,8 +164,8 @@ class _ViralesState extends State<Virales> {
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
         Auxiliares.Laboratorios[Auxiliares.Categorias[index]][0],
-        textHIVabResultController.text,
-        unidadMedidaHIVab!
+        textLynTvaResultController.text,
+        unidadMedidaLynTva!
         //0,
       ],
       [
@@ -198,8 +174,8 @@ class _ViralesState extends State<Virales> {
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
         Auxiliares.Laboratorios[Auxiliares.Categorias[index]][2],
-        textHbsAgResultController.text,
-        unidadMedidaHbsAg!
+        textLynTcd4vaResultController.text,
+        unidadMedidaLynTcd4va!
         //0,
       ],
       [
@@ -208,8 +184,8 @@ class _ViralesState extends State<Virales> {
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
         Auxiliares.Laboratorios[Auxiliares.Categorias[index]][3],
-        textHIVaGResultController.text,
-        unidadMedidaHIVaG!
+        textLynTcd4porResultController.text,
+        unidadMedidaLynTcd4por!
         //0,
       ],
       [
@@ -218,29 +194,8 @@ class _ViralesState extends State<Virales> {
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
         Auxiliares.Laboratorios[Auxiliares.Categorias[index]][4],
-        textHIVAgAgResultController.text,
-        unidadMedidaHIVAgAg!
-        //0,
-      ],
-      // TORCH *************************
-      [
-        "0",
-        Pacientes.ID_Paciente.toString(),
-        textDateEstudyController.text,
-        Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][5],
-        textIgMCytoResultController.text,
-        unidadMedidaIgMCyto!
-        //0,
-      ],
-      [
-        "0",
-        Pacientes.ID_Paciente.toString(),
-        textDateEstudyController.text,
-        Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][6],
-        textIgGCytoResultController.text,
-        unidadMedidaIgGCyto!
+        textLynTcd8vaResultController.text,
+        unidadMedidaLynTcd8va!
         //0,
       ],
       [
@@ -249,8 +204,8 @@ class _ViralesState extends State<Virales> {
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
         Auxiliares.Laboratorios[Auxiliares.Categorias[index]][5],
-        textIgMRubeResultController.text,
-        unidadMedidaIgMRube!
+        textLynTcd8porResultController.text,
+        unidadMedidaLynTcd8por!
         //0,
       ],
       [
@@ -259,28 +214,8 @@ class _ViralesState extends State<Virales> {
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
         Auxiliares.Laboratorios[Auxiliares.Categorias[index]][6],
-        textIgGRubeResultController.text,
-        unidadMedidaIgGRube!
-        //0,
-      ],
-      [
-        "0",
-        Pacientes.ID_Paciente.toString(),
-        textDateEstudyController.text,
-        Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][5],
-        textIgMToxoResultController.text,
-        unidadMedidaIgMToxo!
-        //0,
-      ],
-      [
-        "0",
-        Pacientes.ID_Paciente.toString(),
-        textDateEstudyController.text,
-        Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][6],
-        textIgGToxoResultController.text,
-        unidadMedidaIgGToxo!
+        textRatio48ResultController.text,
+        unidadMedidaRatio48!
         //0,
       ],
     ];
@@ -289,35 +224,25 @@ class _ViralesState extends State<Virales> {
   // VARIABLES DE LA INTERFAZ ****************** ********
   var textDateEstudyController = TextEditingController();
   // ********* *************** ************* *
-  var textHIVabResultController = TextEditingController();
-  String? unidadMedidaHIVab =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][2];
-  var textAcAntiHCVResultController = TextEditingController();
-  String? unidadMedidaAcAntiHCV =
+  var textLynTvaResultController = TextEditingController();
+  String? unidadMedidaLynTva =
       Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
-  var textHbsAgResultController = TextEditingController();
-  String? unidadMedidaHbsAg =
+  var textLynTporResultController = TextEditingController();
+  String? unidadMedidaLynTpor =
       Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
-  var textHIVaGResultController = TextEditingController();
-  String? unidadMedidaHIVaG =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][2];
-  var textHIVAgAgResultController = TextEditingController();
-  String? unidadMedidaHIVAgAg = Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
-// TORCH
-  var textIgMCytoResultController = TextEditingController();
-  String? unidadMedidaIgMCyto = Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
-  var textIgGCytoResultController = TextEditingController();
-  String? unidadMedidaIgGCyto = Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
-
-  var textIgMRubeResultController = TextEditingController();
-  String? unidadMedidaIgMRube = Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
-  var textIgGRubeResultController = TextEditingController();
-  String? unidadMedidaIgGRube = Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
-
-  var textIgMToxoResultController = TextEditingController();
-  String? unidadMedidaIgMToxo = Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
-  var textIgGToxoResultController = TextEditingController();
-  String? unidadMedidaIgGToxo = Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
+  var textLynTcd4vaResultController = TextEditingController();
+  String? unidadMedidaLynTcd4va =
+      Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
+  var textLynTcd4porResultController = TextEditingController();
+  String? unidadMedidaLynTcd4por =
+      Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
+  var textLynTcd8vaResultController = TextEditingController();
+  String? unidadMedidaLynTcd8va = Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
+  var textLynTcd8porResultController = TextEditingController();
+  String? unidadMedidaLynTcd8por = Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
+  //
+  var textRatio48ResultController = TextEditingController();
+  String? unidadMedidaRatio48 = Auxiliares.Medidas[Auxiliares.Categorias[index]][2];
 
   // OPERACIONES DE LA INTERFAZ ****************** ********
   void cerrar() {

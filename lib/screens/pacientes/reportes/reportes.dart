@@ -80,6 +80,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       });
 // *********************************************
       if (Pacientes.ID_Hospitalizacion != 0) {
+        // Repositorios.consultarRegistro();
         Archivos.readJsonToMap(
                 filePath:
                     "${Pacientes.localRepositoryPath}/reportes/reportes.json")
@@ -739,7 +740,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       });
     }
 
-    Repositorios.tipo_Analisis = Repositorios.tipoAnalisis();
+    Repositorios.tipo_Analisis = Repositorios.tipoAnalisis(widgetPage: widget.actualPage);
     // ignore: use_build_context_synchronously
     Operadores.listOptionsActivity(
         context: context,

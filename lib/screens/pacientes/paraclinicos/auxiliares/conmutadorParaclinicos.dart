@@ -7,7 +7,9 @@ import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/depur
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/electrolitos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/ferricos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/hepaticos.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/linfocitos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/lipidicos.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/liquidoDialisis.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/pancreaticos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/quimicas.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/reactantes.dart';
@@ -88,8 +90,13 @@ class _ConmutadorParaclinicosState extends State<ConmutadorParaclinicos> {
       case "Gasometría Venosa":
         return const Venosos();
 
+      case "Conteo de Linfocitos T CD4+":
+        return const Linfocitos();
       case "Marcadores Cárdiacos":
         return const Cardiacos();
+
+      case "Líquido de Diálisis Peritoneal":
+        return const LiquidoDialisis();
 
       case "Depuración de Orina de 24 Horas":
         return const Depuraciones();
