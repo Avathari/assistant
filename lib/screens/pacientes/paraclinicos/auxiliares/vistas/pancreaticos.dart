@@ -113,7 +113,7 @@ class _PancreaticosState extends State<Pancreaticos> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][1],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][0],
         textLipasaResultController.text,
         unidadMedidaLipasa!
         //0,
@@ -126,7 +126,7 @@ class _PancreaticosState extends State<Pancreaticos> {
   // ********* *************** ************* *
   var textLipasaResultController = TextEditingController();
   String? unidadMedidaLipasa =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][2];
+      Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
   var textAmilasaResultController = TextEditingController();
   String? unidadMedidaAmilasa =
       Auxiliares.Medidas[Auxiliares.Categorias[index]][0];

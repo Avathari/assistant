@@ -5753,7 +5753,7 @@ class Auxiliares {
                   "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
             } else {
               max =
-              "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+                  "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
             }
           } else {
             max =
@@ -5810,6 +5810,34 @@ class Auxiliares {
         .then((value) =>
             Terminal.printNotice(message: "Actualizado $value . . ."))
         .whenComplete(() => Terminal.printNotice(message: "Actualizado . . . "))
+        .onError((error, stackTrace) =>
+            Terminal.printAlert(message: "Error :  : $error :  $stackTrace"));
+  }
+
+  static Future<Null> eliminaRegistros() async {
+    Actividades.eliminar(
+        Databases.siteground_database_reggabo,
+        "DELETE FROM laboratorios WHERE ID_Pace = ?",
+        Pacientes.ID_Paciente)
+        .then(
+            (value) => Terminal.printNotice(message: "Eliminados $value . . ."))
+        .whenComplete(() =>
+        Terminal.printNotice(message: "Eliminiar Registros Completado . . . "))
+        .onError((error, stackTrace) =>
+        Terminal.printAlert(message: "Error :  : $error :  $stackTrace"));
+  }
+
+  static Future<Null> eliminarPorFecha({required String fechaPrevia}) async {
+    Actividades.eliminar(
+            Databases.siteground_database_reggabo,
+            "DELETE FROM laboratorios "
+            "WHERE Fecha_Registro = '$fechaPrevia' AND ID_Pace = ?",
+            // [fechaNueva, fechaPrevia, Pacientes.ID_Paciente],
+            Pacientes.ID_Paciente)
+        .then(
+            (value) => Terminal.printNotice(message: "Eliminados $value . . ."))
+        .whenComplete(() =>
+            registros()) // Terminal.printNotice(message: "Actualizado . . . "))
         .onError((error, stackTrace) =>
             Terminal.printAlert(message: "Error :  : $error :  $stackTrace"));
   }
@@ -6148,7 +6176,18 @@ class Auxiliares {
       "Creatinina en Orina",
       "",
     ],
-    Categorias[13]: ["Aspecto", "Color", "Leucocitos", "Polimorfonucleares", "Mononucleares", "Eritrocitos", "Bacterias", "Levaduras", "Otros", "pH", ],
+    Categorias[13]: [
+      "Aspecto de Diálisis Peritoneal",
+      "Color de Diálisis Peritoneal",
+      "Leucocitos en Diálisis Peritoneal",
+      "Polimorfonucleares en Diálisis Peritoneal",
+      "Mononucleares en Diálisis Peritoneal",
+      "Eritrocitos en Diálisis Peritoneal",
+      "Bacterias en Diálisis Peritoneal",
+      "Levaduras en Diálisis Peritoneal",
+      "Otros en Diálisis Peritoneal",
+      "pH de Diálisis Peritoneal",
+    ],
     Categorias[14]: [""],
     Categorias[15]: [
       "Sodio Urinario",
@@ -6348,7 +6387,7 @@ class Auxiliares {
     Categorias[2]: ["mEq/L", "mmol/L", "mg/dL"],
     Categorias[3]: ["UI/L", "g/dL", "mg/dL"],
     Categorias[4]: ["mUI/L", "pg/mL", "ng/dL", ""],
-    Categorias[5]: [""],
+    Categorias[5]: ["UI/L"],
     Categorias[6]: ["mg/dL"],
     Categorias[7]: ["", "seg"],
     Categorias[8]: ["ng/dL", "mm/Hr", "mg/dL", "ng/mL"],
@@ -6369,7 +6408,11 @@ class Auxiliares {
       "",
       "",
     ],
-    Categorias[13]: ["", "mm3", "%", ],
+    Categorias[13]: [
+      "",
+      "mm3",
+      "%",
+    ],
     Categorias[14]: [""],
     Categorias[15]: [""],
     Categorias[16]: [""],
@@ -6416,7 +6459,8 @@ class Auxiliares {
     "consultQuery": "SELECT * FROM laboratorios",
     "consultIdQuery": "SELECT * FROM laboratorios WHERE ID_Laboratorio = ?",
     "consultByIdPrimaryQuery":
-        "SELECT ID_Laboratorio, Fecha_Registro, Tipo_Estudio, Estudio, Resultado, Unidad_Medida FROM laboratorios WHERE ID_Pace = ?",
+        "SELECT ID_Laboratorio, Fecha_Registro, Tipo_Estudio, Estudio, Resultado, Unidad_Medida "
+            "FROM laboratorios WHERE ID_Pace = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM laboratorios",
     "consultLastQuery": "SELECT * FROM laboratorios ORDER BY Pace_Feca_SV DESC",
     "consultByName": "SELECT * FROM laboratorios WHERE Pace_Feca_SV LIKE '%",
@@ -7767,8 +7811,7 @@ class Repositorios {
       Pacientes.ID_Paciente,
     ).then((value) {
       Terminal.printExpected(
-          message:
-          "VALUE del actualizar : "
+          message: "VALUE del actualizar : "
               "Otros Padecimientos del ID_Hosp ${Pacientes.ID_Hospitalizacion}"
               " - $value : : "
               "${Valores.padecimientoActual}");
@@ -7810,7 +7853,8 @@ class Repositorios {
       Repositorios.repositorio['registerQuery'],
       Values,
     ).then((value) {
-      Archivos.deleteFile(filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
+      Archivos.deleteFile(
+          filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
       Terminal.printExpected(message: "VALUE - $value : $Values");
     }).whenComplete(() {
       Archivos.createJsonFromMap(Pacientes.Notas!,
@@ -7852,7 +7896,17 @@ class Repositorios {
             Repositorio['consultIdQuery'], Pacientes.ID_Paciente)
         .then((value) {
       Reportes.analisisAnteriores = value;
-      Archivos.createJsonFromMap(value, filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
+      Archivos.createJsonFromMap(value,
+          filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
+    });
+  }
+
+  static void eliminarRegistros() {
+    Actividades.detalles(
+      Databases.siteground_database_reghosp,
+        "DELETE FROM pace_hosp_repo WHERE Tipo_Analisis = 'Nota de Ingreso'"
+    ).then((value) {
+      Terminal.printExpected(message: "SUCCESS - $value");
     });
   }
 
@@ -7966,22 +8020,12 @@ class Repositorios {
         "(SELECT IFNULL(count(*), 0) FROM pace_hosp_repo WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
   };
 
-  static String tipo_Analisis = "Nota de Ingreso";
+  static String tipo_Analisis = Items.tiposAnalisis[0];
   // **********************************************
   static String tipoAnalisis({required int widgetPage}) {
-    tipo_Analisis=Items.tiposAnalisis[widgetPage];
+    tipo_Analisis = Items.tiposAnalisis[widgetPage];
     return Items.tiposAnalisis[widgetPage];
-    // if (tipo_Analisis == "Nota de Ingreso") {
-    //   return Items.tiposAnalisis[0];
-    // } else if (tipo_Analisis == "Nota de Evolución") {
-    //   return Items.tiposAnalisis[1];
-    // } else if (tipo_Analisis == "Nota deRevisión") {
-    //   return Items.tiposAnalisis[2];
-    // } else if (tipo_Analisis == "Nota de Egreso") {
-    //   return Items.tiposAnalisis[3];
-    // } else {
-    //   return Items.tiposAnalisis[0];
-    // }
+
   }
 }
 

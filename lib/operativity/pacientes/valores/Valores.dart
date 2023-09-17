@@ -256,6 +256,7 @@ class Valores {
     circunferenciaSuralDerecha = json['Pace_SV_c_suro_der'] ?? 0;
     //
     fechaBiometria = json['Fecha_Registro_Biometria'] ?? '';
+
     eritrocitos = double.parse(json['Eritrocitos'] ?? '0');
     hematocrito = double.parse(json['Hematocrito'] ?? '0');
     hemoglobina = double.parse(json['Hemoglobina'] ?? '0');
@@ -4140,6 +4141,8 @@ class Items {
     'Análisis de Revisión',
     'Análisis de Egreso'
   ];
+
+
   static List<String> motivosTraslado = [
     "Falla de Respuesta Favorable al Tratamiento",
     "Presencia de Complicaciones",
@@ -4576,6 +4579,7 @@ class Items {
     'Católica',
     'Evangelista',
     'Testigo de Jehova',
+    'Cristiana',
     'Adventista',
     'Pentecostés',
     'Hinduista',

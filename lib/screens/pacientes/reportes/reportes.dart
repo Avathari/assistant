@@ -740,7 +740,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       });
     }
 
-    Repositorios.tipo_Analisis = Repositorios.tipoAnalisis(widgetPage: widget.actualPage);
+    // Repositorios.tipo_Analisis = Repositorios.tipoAnalisis(widgetPage: widget.actualPage);
     // ignore: use_build_context_synchronously
     Operadores.listOptionsActivity(
         context: context,
@@ -759,25 +759,26 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
   TypeReportes getTypeReport() {
     switch (widget.actualPage) {
       case 0:
-        Repositorios.tipo_Analisis = "Nota de Ingreso";
+        Repositorios.tipo_Analisis = Items.tiposAnalisis[0];
         return TypeReportes.reporteIngreso;
       case 1:
-        Repositorios.tipo_Analisis = "Nota de Evolución";
+        Repositorios.tipo_Analisis = Items.tiposAnalisis[1];
         return TypeReportes
             .reporteEvolucion; // return TypeReportes.reporteIngreso;
       case 2:
         return TypeReportes.reporteConsulta;
       case 3:
+        // Repositorios.tipo_Analisis = Items.tiposAnalisis[1];
         return TypeReportes.reporteTerapiaIntensiva;
       case 4:
         return TypeReportes.reportePrequirurgica;
       case 5:
         return TypeReportes.reportePreanestesica;
       case 6:
-        Repositorios.tipo_Analisis = "Nota de Egreso";
+        Repositorios.tipo_Analisis = Items.tiposAnalisis[4];
         return TypeReportes.reporteEgreso;
       case 7:
-        Repositorios.tipo_Analisis = "Nota de Revisión";
+        Repositorios.tipo_Analisis = Items.tiposAnalisis[3];
         return TypeReportes.reporteRevision;
       case 8:
         return TypeReportes.reporteTraslado;

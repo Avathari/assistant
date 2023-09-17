@@ -39,7 +39,7 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
             Repositorios.repositorio['consultPadecimientoQuery'],
             Pacientes.ID_Hospitalizacion)
         .then((response) {
-      print("RESPUESTA $response");
+      // print("RESPUESTA $response"); **************************************************
       if (response['Error'] == 'Hubo un error') {
         Operadores.alertActivity(
             context: context,
@@ -47,19 +47,26 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
             message:
                 'ERROR - No se pudo consultar el Padecimiento Actual . . . \n'
                 'Creando nuevo padecimiento actual',
+            onClose: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).pop();
+            },
             onAcept: () {
+              Repositorios.registrarRegistro();
               Navigator.of(context).pop();
               Navigator.of(context).pop();
             });
-        Repositorios.registrarRegistro();
+
       } else {
+        // Terminal.printExpected(message: "PA : : $respuesta");
         setState(() {
           Valores.fechaPadecimientoActual = response['FechaPadecimiento'];
+          Valores.padecimientoActual = response['Padecimiento_Actual'];
+          // ************************************
           fechaPadecimientoTextController.text =
               response['FechaPadecimiento'] ??
                   Calendarios.today(format: 'yyyy/MM/dd');
           String respuesta = response['Padecimiento_Actual']; // response['Contexto'];
-          Terminal.printExpected(message: "PA : : $respuesta");
           // Asignación del Padecimiento Actual *******************************************
           padecimientoActualTextController.text =
               respuesta.split('\n')[0] ?? '';
@@ -72,6 +79,7 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
           Calendarios.today(format: 'yyyy/MM/dd');
       padecimientoActualTextController.text =
           "Inicia padecimiento actual ${fechaPadecimientoTextController.text}";
+      Valores.padecimientoActual = "Inicia padecimiento actual ${fechaPadecimientoTextController.text}";
       atencionUrgenciasTextController.text =
           "Es atendido en urgencias reportandose tensión arterial $tensionArterial mmHg, "
           "frecuencia cardiaca $frecuenciaCardiaca Lat/min, frecuencia respiratoria $frecuenciaRespiratoria Resp/min, "

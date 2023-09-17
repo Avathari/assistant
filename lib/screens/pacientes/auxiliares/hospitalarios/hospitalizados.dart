@@ -13,6 +13,7 @@ import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/AppBarText.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
@@ -71,6 +72,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+        foregroundColor: Colors.white,
           backgroundColor: Theming.primaryColor,
           leading: IconButton(
             icon: const Icon(
@@ -86,7 +88,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
               );
             },
           ),
-          title: Text(appTittle),
+          title: AppBarText(appTittle),
           actions: <Widget>[
             IconButton(
               icon: const Icon(
@@ -261,6 +263,8 @@ class _HospitalizadosState extends State<Hospitalizados> {
   GestureDetector itemListView(
       AsyncSnapshot snapshot, int posicion, BuildContext context) {
     if (isMobile(context)) {
+      Terminal.printWhite(message: snapshot.data[
+      posicion].keys.toString());
       return GestureDetector(
         onTap: () {
           // Terminal.printExpected(
@@ -424,7 +428,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                                                       'Padecimiento'] ==
                                                                   null
                                                               ? 'Sin Padecimiento Actual'
-                                                              : "PA: ${snapshot.data[posicion]['Padecimiento']['Contexto'] ?? ''}",
+                                                              : "PA: ${snapshot.data[posicion]['Padecimiento']['Padecimiento_Actual'] ?? ''}",
                                                           maxLines: 10,
                                                           softWrap: true,
                                                           style:
@@ -440,7 +444,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                                               ['Padecimiento'] ==
                                                           null
                                                       ? 'Sin Padecimiento Actual'
-                                                      : "PA: ${snapshot.data[posicion]['Padecimiento']['Contexto'] ?? ''}",
+                                                      : "PA: ${snapshot.data[posicion]['Padecimiento']['Padecimiento_Actual'] ?? ''}",
                                                   maxLines: 10,
                                                   style: Styles.textSyleGrowth(
                                                       fontSize: 10),
@@ -455,150 +459,150 @@ class _HospitalizadosState extends State<Hospitalizados> {
                               ),
                             ),
                             CrossLine(),
-                            Expanded(
-                              flex: 14,
-                              child: Container(
-                                padding: const EdgeInsets.only(
-                                    left: 2, right: 2, top: 2, bottom: 2),
-                                margin: const EdgeInsets.only(
-                                    left: 2, right: 2, top: 2, bottom: 2),
-                                decoration: ContainerDecoration.roundedDecoration(),
-                                child: Column(
-                                  children: [
-                                    Expanded(
-                                      flex: 3,
-                                      child: ValuePanel(
-                                          secondText: snapshot.data[posicion]
-                                                      ['Situaciones']
-                                                  ['Disp_Oxigen'] ??
-                                              ''),
-                                    ),
-                                    Expanded(
-                                      flex: 4,
-                                      child: GridView(
-                                        gridDelegate:
-                                            GridViewTools.gridDelegate(
-                                                crossAxisCount: 3,
-                                                crossAxisSpacing: 5.0,
-                                                mainAxisExtent: 65),
-                                        children: [
-                                          ValuePanel(
-                                            firstText: 'CVP',
-                                            secondText: Dicotomicos.fromInt(
-                                                    snapshot.data[posicion][
-                                                                'Situaciones']
-                                                            ['CVP'] ??
-                                                        0)
-                                                .toString(),
-                                          ),
-                                          ValuePanel(
-                                            firstText: 'CVLP',
-                                            secondText: Dicotomicos.fromInt(
-                                                    snapshot.data[posicion][
-                                                                'Situaciones']
-                                                            ['CVLP'] ??
-                                                        0)
-                                                .toString(),
-                                          ),
-                                          ValuePanel(
-                                            firstText: 'CVC',
-                                            secondText: Dicotomicos.fromInt(
-                                                    snapshot.data[posicion][
-                                                                'Situaciones']
-                                                            ['CVC'] ??
-                                                        0)
-                                                .toString(),
-                                          ),
-                                          ValuePanel(
-                                            firstText: 'MAH',
-                                            secondText: Dicotomicos.fromInt(
-                                                    snapshot.data[posicion][
-                                                                'Situaciones']
-                                                            ['MAH'] ??
-                                                        0)
-                                                .toString(),
-                                          ),
-                                          ValuePanel(
-                                            firstText: 'FOL',
-                                            secondText: Dicotomicos.fromInt(
-                                                    snapshot.data[posicion][
-                                                                'Situaciones']
-                                                            ['S_Foley'] ??
-                                                        0)
-                                                .toString(),
-                                          ),
-                                          ValuePanel(
-                                            firstText: 'SNG',
-                                            secondText: Dicotomicos.fromInt(
-                                                    snapshot.data[posicion][
-                                                                'Situaciones']
-                                                            ['SNG'] ??
-                                                        0)
-                                                .toString(),
-                                          ),
-                                          ValuePanel(
-                                            firstText: 'SOG',
-                                            secondText: Dicotomicos.fromInt(
-                                                    snapshot.data[posicion][
-                                                                'Situaciones']
-                                                            ['SOG'] ??
-                                                        0)
-                                                .toString(),
-                                          ),
-                                          ValuePanel(
-                                            firstText: 'DRE',
-                                            secondText: Dicotomicos.fromInt(
-                                                    snapshot.data[posicion][
-                                                                'Situaciones']
-                                                            ['Drenaje'] ??
-                                                        0)
-                                                .toString(),
-                                          ),
-                                          ValuePanel(
-                                            firstText: 'SEP',
-                                            secondText: Dicotomicos.fromInt(
-                                                    snapshot.data[posicion][
-                                                                'Situaciones']
-                                                            ['Pleuro_Vac'] ??
-                                                        0)
-                                                .toString(),
-                                          ),
-                                          ValuePanel(
-                                            firstText: 'COL',
-                                            secondText: Dicotomicos.fromInt(
-                                                    snapshot.data[posicion][
-                                                                'Situaciones']
-                                                            ['Colostomia'] ??
-                                                        0)
-                                                .toString(),
-                                          ),
-                                          ValuePanel(
-                                            firstText: 'GAS',
-                                            secondText: Dicotomicos.fromInt(
-                                                    snapshot.data[posicion][
-                                                                'Situaciones']
-                                                            [
-                                                            'Gastrostomia'] ??
-                                                        0)
-                                                .toString(),
-                                          ),
-                                          ValuePanel(
-                                            firstText: 'TEN',
-                                            secondText: Dicotomicos.fromInt(
-                                                    snapshot.data[posicion][
-                                                                'Situaciones']
-                                                            [
-                                                            'Dialisis_Peritoneal'] ??
-                                                        0)
-                                                .toString(),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                            // Expanded(
+                            //   flex: 14,
+                            //   child: Container(
+                            //     padding: const EdgeInsets.only(
+                            //         left: 2, right: 2, top: 2, bottom: 2),
+                            //     margin: const EdgeInsets.only(
+                            //         left: 2, right: 2, top: 2, bottom: 2),
+                            //     decoration: ContainerDecoration.roundedDecoration(),
+                            //     child: Column(
+                            //       children: [
+                            //         Expanded(
+                            //           flex: 3,
+                            //           child: ValuePanel(
+                            //               secondText: snapshot.data[posicion]
+                            //                           ['Situaciones']
+                            //                       ['Disp_Oxigen'] ??
+                            //                   ''),
+                            //         ),
+                            //         Expanded(
+                            //           flex: 4,
+                            //           child: GridView(
+                            //             gridDelegate:
+                            //                 GridViewTools.gridDelegate(
+                            //                     crossAxisCount: 3,
+                            //                     crossAxisSpacing: 5.0,
+                            //                     mainAxisExtent: 65),
+                            //             children: [
+                            //               ValuePanel(
+                            //                 firstText: 'CVP',
+                            //                 secondText: Dicotomicos.fromInt(
+                            //                         snapshot.data[posicion][
+                            //                                     'Situaciones']
+                            //                                 ['CVP'] ??
+                            //                             0)
+                            //                     .toString(),
+                            //               ),
+                            //               ValuePanel(
+                            //                 firstText: 'CVLP',
+                            //                 secondText: Dicotomicos.fromInt(
+                            //                         snapshot.data[posicion][
+                            //                                     'Situaciones']
+                            //                                 ['CVLP'] ??
+                            //                             0)
+                            //                     .toString(),
+                            //               ),
+                            //               ValuePanel(
+                            //                 firstText: 'CVC',
+                            //                 secondText: Dicotomicos.fromInt(
+                            //                         snapshot.data[posicion][
+                            //                                     'Situaciones']
+                            //                                 ['CVC'] ??
+                            //                             0)
+                            //                     .toString(),
+                            //               ),
+                            //               ValuePanel(
+                            //                 firstText: 'MAH',
+                            //                 secondText: Dicotomicos.fromInt(
+                            //                         snapshot.data[posicion][
+                            //                                     'Situaciones']
+                            //                                 ['MAH'] ??
+                            //                             0)
+                            //                     .toString(),
+                            //               ),
+                            //               ValuePanel(
+                            //                 firstText: 'FOL',
+                            //                 secondText: Dicotomicos.fromInt(
+                            //                         snapshot.data[posicion][
+                            //                                     'Situaciones']
+                            //                                 ['S_Foley'] ??
+                            //                             0)
+                            //                     .toString(),
+                            //               ),
+                            //               ValuePanel(
+                            //                 firstText: 'SNG',
+                            //                 secondText: Dicotomicos.fromInt(
+                            //                         snapshot.data[posicion][
+                            //                                     'Situaciones']
+                            //                                 ['SNG'] ??
+                            //                             0)
+                            //                     .toString(),
+                            //               ),
+                            //               ValuePanel(
+                            //                 firstText: 'SOG',
+                            //                 secondText: Dicotomicos.fromInt(
+                            //                         snapshot.data[posicion][
+                            //                                     'Situaciones']
+                            //                                 ['SOG'] ??
+                            //                             0)
+                            //                     .toString(),
+                            //               ),
+                            //               ValuePanel(
+                            //                 firstText: 'DRE',
+                            //                 secondText: Dicotomicos.fromInt(
+                            //                         snapshot.data[posicion][
+                            //                                     'Situaciones']
+                            //                                 ['Drenaje'] ??
+                            //                             0)
+                            //                     .toString(),
+                            //               ),
+                            //               ValuePanel(
+                            //                 firstText: 'SEP',
+                            //                 secondText: Dicotomicos.fromInt(
+                            //                         snapshot.data[posicion][
+                            //                                     'Situaciones']
+                            //                                 ['Pleuro_Vac'] ??
+                            //                             0)
+                            //                     .toString(),
+                            //               ),
+                            //               ValuePanel(
+                            //                 firstText: 'COL',
+                            //                 secondText: Dicotomicos.fromInt(
+                            //                         snapshot.data[posicion][
+                            //                                     'Situaciones']
+                            //                                 ['Colostomia'] ??
+                            //                             0)
+                            //                     .toString(),
+                            //               ),
+                            //               ValuePanel(
+                            //                 firstText: 'GAS',
+                            //                 secondText: Dicotomicos.fromInt(
+                            //                         snapshot.data[posicion][
+                            //                                     'Situaciones']
+                            //                                 [
+                            //                                 'Gastrostomia'] ??
+                            //                             0)
+                            //                     .toString(),
+                            //               ),
+                            //               ValuePanel(
+                            //                 firstText: 'TEN',
+                            //                 secondText: Dicotomicos.fromInt(
+                            //                         snapshot.data[posicion][
+                            //                                     'Situaciones']
+                            //                                 [
+                            //                                 'Dialisis_Peritoneal'] ??
+                            //                             0)
+                            //                     .toString(),
+                            //               ),
+                            //             ],
+                            //           ),
+                            //         ),
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),

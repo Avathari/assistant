@@ -69,7 +69,7 @@ class _EstadisticasPacientesState extends State<EstadisticasPacientes> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
+            if (!isMobile(context)) Container(
               padding: const EdgeInsets.all(20.0),
               decoration: const BoxDecoration(),
               child: const Text(
@@ -80,7 +80,8 @@ class _EstadisticasPacientesState extends State<EstadisticasPacientes> {
                     fontWeight: FontWeight.bold),
               ),
             ),
-            Expanded(
+            if (isMobile(context)) const SizedBox(height: 20),
+              Expanded(
               flex: isMobile(context) ? 2 : 1,
               child: isTablet(context) || isMobile(context)
                   ? Column(
@@ -201,11 +202,11 @@ class _EstadisticasPacientesState extends State<EstadisticasPacientes> {
         title: Text(
           tittle,
           style: const TextStyle(
-              fontSize: 12, color: Colors.white, fontWeight: FontWeight.bold),
+              fontSize: 10, color: Colors.white, fontWeight: FontWeight.bold),
         ),
         trailing: Text(
           "$stat Pacientes",
-          style: const TextStyle(fontSize: 10, color: Colors.white),
+          style: const TextStyle(fontSize: 9, color: Colors.white),
         ),
       ),
     );

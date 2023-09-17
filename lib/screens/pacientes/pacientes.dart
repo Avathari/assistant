@@ -68,9 +68,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
               GrandIcon(
                   iconData: Icons.bar_chart,
                   onPress: () {
-                    Operadores.openActivity(
-                        context: context,
-                        chyldrim: const EstadisticasPacientes());
+                    Cambios.toNextActivity(context, tittle: 'Estadisticas de los Pacientes',chyld: const EstadisticasPacientes());
                   }),
             CrossLine(isHorizontal: false, thickness: 3, color: Colors.grey),
             IconButton(
