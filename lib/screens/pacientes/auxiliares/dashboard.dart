@@ -1,7 +1,6 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
-import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/detalles/detalles.dart';
 import 'package:assistant/screens/pacientes/auxiliares/detalles/estadisticasVitales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/diagnosticos/degenerativos.dart';
@@ -10,6 +9,7 @@ import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/actividades
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizado.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/generales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisiones.dart';
+import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisorios.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/diagnosticados.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/pendientes.dart';
@@ -250,7 +250,7 @@ class _DashboardState extends State<Dashboard> {
                 const SizedBox(height: 6),
                 RoundedPanel(
                   child: Pacientes.esHospitalizado == true
-                      ? const Hospitalizado()
+                      ? Hospitalizado()
                       : const EstadisticasVitales(),
                 ),
                 const SizedBox(height: 6),
@@ -312,7 +312,7 @@ class _DashboardState extends State<Dashboard> {
                   child: Row(
                     children: [
                       Pacientes.esHospitalizado == true
-                          ? const Expanded(flex: 6, child: Hospitalizado())
+                          ? Expanded(flex: 6, child: Hospitalizado())
                           : const Expanded(
                               flex: 6, child: EstadisticasVitales()),
                       Expanded(
@@ -449,7 +449,7 @@ Cambios.toNextActivity(context, chyld: const Generales());
                   child: RoundedPanel(
                     padding: 2,
                     child: Pacientes.esHospitalizado == true
-                        ? const Hospitalizado()
+                        ?  Hospitalizado()
                         : const EstadisticasVitales(),
                   )),
               const SizedBox(width: 6),
@@ -457,66 +457,77 @@ Cambios.toNextActivity(context, chyld: const Generales());
                   child: RoundedPanel(
                 child: Container(
                   decoration: ContainerDecoration.roundedDecoration(),
-                  child: SingleChildScrollView(
-                    controller: ScrollController(),
-                    child: Column(
-                      children: [
-                        GrandIcon(
-                          labelButton: 'Revisorio',
-                          iconData: Icons.ac_unit,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GrandIcon(
+                        labelButton: 'Revisorio',
+                        iconData: Icons.ac_unit,
+                        onPress: () {
+                          Cambios.toNextActivity(context, chyld: const Generales());
+                        },
+                      ),
+                      CrossLine(height: 5),
+                      GrandIcon(
+                        heigth: 10,
+                          labelButton: "Revisiones",
+                          iconData: Icons.account_tree,
                           onPress: () {
-                            Cambios.toNextActivity(context, chyld: const Generales());
-                          },
-                        ),
-                        CrossLine(height: 10),
-                        GrandIcon(
-                            labelButton: "Revisiones",
-                            iconData: Icons.account_tree,
-                            onPress: () {
-                              Cambios.toNextPage(context, const LaboratoriosGestion());
-                            }),
-                        GrandIcon(
-                            labelButton: "Antecedentes Personales Patológicos",
-                            iconData: Icons.medication,
-                            onPress: () {
-                              Cambios.toNextPage(context, const GestionNoPatologicos());
-                            }),
-                        GrandIcon(
-                            labelButton: "Diagnósticos de la Hospitalización",
-                            iconData: Icons.restore_page_outlined,
-                            onPress: () {
-                              Cambios.toNextPage(context, GestionDiagnosticos());
-                            }),
-                        GrandIcon(
-                          labelButton: "Concentraciones y Diluciones",
-                          iconData: Icons.balance,
+                            Cambios.toNextPage(context, const LaboratoriosGestion());
+                          }),
+                      GrandIcon(
+                          heigth: 10,
+                          labelButton: "Antecedentes Personales Patológicos",
+                          iconData: Icons.medication,
                           onPress: () {
-                            Cambios.toNextActivity(context, chyld: const Concentraciones());
-                          },
-                        ),
-                        GrandIcon(
-                          labelButton: "Balances Hidricos",
-                          iconData: Icons.waterfall_chart,
+                            Cambios.toNextPage(context, const GestionNoPatologicos());
+                          }),
+                      GrandIcon(
+                          heigth: 10,
+                          labelButton: "Diagnósticos de la Hospitalización",
+                          iconData: Icons.restore_page_outlined,
                           onPress: () {
-                            Cambios.toNextPage(context, GestionBalances());
-                          },
-                        ),
-                        GrandIcon(
-                            labelButton: "Paraclinicos",
-                            iconData: Icons.account_tree_outlined,
-                            onPress: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: ((context) =>
-                                      const LaboratoriosGestion())));
-                            }),
-                        GrandIcon(
-                            labelButton: "Rutina",
-                            iconData: Icons.ad_units,
-                            onPress: () {
+                            Cambios.toNextPage(context, GestionDiagnosticos());
+                          }),
+                      GrandIcon(
+                        heigth: 10,
+                        labelButton: "Concentraciones y Diluciones",
+                        iconData: Icons.balance,
+                        onPress: () {
+                          Cambios.toNextActivity(context, chyld: const Concentraciones());
+                        },
+                      ),
+                      GrandIcon(
+                        labelButton: "Balances Hidricos",
+                        iconData: Icons.waterfall_chart,
+                        onPress: () {
+                          Cambios.toNextPage(context, GestionBalances());
+                        },
+                      ),
+                      GrandIcon(
+                          labelButton: "Paraclinicos",
+                          iconData: Icons.account_tree_outlined,
+                          onPress: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: ((context) =>
+                                    const LaboratoriosGestion())));
+                          }),
+                      GrandIcon(
+                          labelButton: "Rutina",
+                          iconData: Icons.ad_units,
+                          onPress: () {
 Cambios.toNextActivity(context, chyld: ConmutadorParaclinicos(categoriaEstudio: "Rutina"));
-                            }),
-                      ],
-                    ),
+                          }),
+                      CrossLine(height: 5),
+                      GrandIcon(
+                        labelButton: 'Revisorio',
+                        iconData: Icons.ac_unit,
+                        onPress: () {
+                          Cambios.toNextPage(context,  GestionRevisorios());
+                        },
+                      ),
+
+                    ],
                   ),
                 ),
               )),
@@ -661,7 +672,7 @@ Cambios.toNextActivity(context, chyld: ConmutadorParaclinicos(categoriaEstudio: 
                       child: RoundedPanel(
                     padding: 2,
                     child: Pacientes.esHospitalizado == true
-                        ? const Hospitalizado()
+                        ?  Hospitalizado()
                         : const EstadisticasVitales(),
                   )),
                   const SizedBox(width: 6),

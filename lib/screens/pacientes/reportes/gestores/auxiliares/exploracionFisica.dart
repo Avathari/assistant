@@ -157,8 +157,9 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                       ),
                       CrossLine(),
                       Expanded(child: GrandIcon(labelButton: 'Ver', iconData: Icons.view_in_ar, onPress: () {
-                        Operadores.notifyActivity(context: context, tittle: "Análisis de Terapia . . . ",
-                            message: expoTextController.text);
+                        Datos.portapapeles(context: context, text: expoTextController.text);
+                        // Operadores.notifyActivity(context: context, tittle: "Análisis de Terapia . . . ",
+                        //     message: expoTextController.text);
                       },))
                   ],
                 ),

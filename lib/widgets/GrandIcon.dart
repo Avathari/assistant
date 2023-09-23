@@ -35,7 +35,7 @@ class _GrandIconState extends State<GrandIcon> {
           widget.onPress();
         },
         child: Padding(
-          padding: const EdgeInsets.all(4.0),
+          padding: const EdgeInsets.all(2.0),
           child: Icon(widget.iconData, color: widget.iconColor),
         ),
       ),

@@ -826,11 +826,11 @@ class _GestionBalancesState extends State<GestionBalances> {
                       return snapshot.hasData
                           ? GridView.builder(
                               controller: ScrollController(),
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(4.0),
                               gridDelegate: GridViewTools.gridDelegate(
                                   crossAxisCount: isMobile(context) ? 1 : 3,
                                   mainAxisExtent:
-                                      isMobile(context) ? 150 : 150),
+                                      isMobile(context) ? 150 : 160),
                               shrinkWrap: false,
                               itemCount: snapshot.data == null
                                   ? 0
@@ -874,6 +874,8 @@ class _GestionBalancesState extends State<GestionBalances> {
             message: 'Repositorio Balances del Pacientes Obtenido');
       });
     }).onError((error, stackTrace) {
+      Terminal.printAlert(
+          message: 'ERROR : No se abrio repositorio local - $error : : $stackTrace');
       reiniciar();
     });
     Terminal.printOther(message: " . . . Actividad Iniciada");
@@ -887,6 +889,15 @@ class _GestionBalancesState extends State<GestionBalances> {
       setState(() {
         foundedItems = value;
         Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
+      });
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(
+          message: 'ERROR : No se realizó conexión con base de datos - $error : : $stackTrace');
+      Operadores.alertActivity(context: context, tittle: "Error al Consultar Información",
+
+      message: 'ERROR :  $error : : $stackTrace',
+      onAcept: () {
+        Navigator.of(context).pop();
       });
     });
   }
@@ -907,9 +918,9 @@ class _GestionBalancesState extends State<GestionBalances> {
       },
       child: Container(
         padding: const EdgeInsets.only(
-            top: 5.0, bottom: 5.0, right: 10.0, left: 10.0),
+            top: 5.0, bottom: 5.0, right: 2.0, left: 2.0),
         margin: const EdgeInsets.only(
-            top: 2.5, bottom: 2.5, right: 10.0, left: 10.0),
+            top: 2.5, bottom: 2.5, right: 2.0, left: 2.0),
         decoration: ContainerDecoration.roundedDecoration(),
         child: Row(
           children: [

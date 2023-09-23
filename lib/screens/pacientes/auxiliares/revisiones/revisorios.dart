@@ -8,39 +8,39 @@ import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/AppBarText.dart';
 import 'package:assistant/widgets/CircleSwitched.dart';
 import 'package:assistant/widgets/CrossLine.dart';
-import 'package:assistant/widgets/DialogSelector.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
-import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 // # Clase .dart para la creación predeterminada de interfaces de registro, consulta y actualización.
-// Contiene un botón que enn _OperacionesDummyState.build que desplega una ventana emergente,
+// Contiene un botón que enn _OperacionesRevisoriosState.build que desplega una ventana emergente,
 // de la cual es posible elegir desde un catálogo de opciones.
 // # # INSTRUCCIONES DE USO
-// # # # Reemplazar .Dummy por el valor
+// # # # Reemplazar .Revisorios por el valor
 // # # # Reemplazar Alergicos. por la clase que contiene el mapa .alergias con las claves
 // # # # # consultIdQuery
 // # # # # registerQuery
 // # # # # updateQuery
 // # # # Reemplazar .alergias por el nombre del Map() correspondiente.
 //
-class OperacionesDummy extends StatefulWidget {
+class OperacionesRevisorios extends StatefulWidget {
   String? operationActivity;
 
   String _operationButton = 'Nulo';
 
-  OperacionesDummy({Key? key, this.operationActivity = Constantes.Nulo})
+  OperacionesRevisorios({Key? key, this.operationActivity = Constantes.Nulo})
       : super(key: key);
 
   @override
-  State<OperacionesDummy> createState() => _OperacionesDummyState();
+  State<OperacionesRevisorios> createState() => _OperacionesRevisoriosState();
 }
 
-class _OperacionesDummyState extends State<OperacionesDummy> {
+class _OperacionesRevisoriosState extends State<OperacionesRevisorios> {
+
+
   @override
   void initState() {
     //
@@ -52,36 +52,24 @@ class _OperacionesDummyState extends State<OperacionesDummy> {
       case Constantes.Register:
         widget._operationButton = 'Registrar';
 
+        fechaEventoTextController.text = Calendarios.today(format: 'yyyy/MM/dd');
         break;
       case Constantes.Update:
         setState(() {
+          Terminal.printSuccess(message: 'Situaciones :  ${Situaciones.Situacion}');
           widget._operationButton = 'Actualizar';
-          idOperation = Patologicos.Degenerativos['ID_PACE_APP_DEG'];
-
-          isActualDiagoValue = Dicotomicos.fromInt(
-                  Patologicos.Degenerativos['Pace_APP_DEG_SINO'])
-              .toString();
-          if (Patologicos.selectedDiagnosis == "") {
-            cieDiagnoTextController.text =
-                Patologicos.Degenerativos['Pace_APP_DEG'];
-          } else {
-            cieDiagnoTextController.text = Patologicos.selectedDiagnosis;
-          }
-          comenDiagnoTextController.text =
-              Patologicos.Degenerativos['Pace_APP_DEG_com'];
-          ayoDiagoTextController.text =
-              Patologicos.Degenerativos['Pace_APP_DEG_dia'].toString();
-          //
-          isTratamientoDiagoValue = Dicotomicos.fromInt(
-                  Patologicos.Degenerativos['Pace_APP_DEG_tra_SINO'])
-              .toString();
-          tratamientoTextController.text =
-              Patologicos.Degenerativos['Pace_APP_DEG_tra'];
-          isSuspendTratoValue = Dicotomicos.fromInt(
-                  Patologicos.Degenerativos['Pace_APP_DEG_sus_SINO'])
-              .toString();
-          suspensionesTextController.text =
-              Patologicos.Degenerativos['Pace_APP_DEG_sus'];
+          idOperation = Situaciones.Situacion['ID_Sita'] ?? 0;
+// *******************************************
+          tipoIncidenciaTextController.text =
+          Situaciones.Situacion['Sita_Tipo_Evento'] ?? '';
+          eventualidadTextController.text =
+              Situaciones.Situacion['Sita_Evento'] ?? '';
+          fechaEventoTextController.text =
+              Situaciones.Situacion['Sita_Fecha'].toString() ?? '';
+          observacionesEventoTextController.text =
+          Situaciones.Situacion['Sita_Obser'].toString() ?? '';
+          otrosEventoTextController.text =
+              Situaciones.Situacion['Sita_Otros'].toString() ?? '';
         });
         super.initState();
         break;
@@ -142,20 +130,20 @@ class _OperacionesDummyState extends State<OperacionesDummy> {
   Future<void> reiniciar() async {
     Terminal.printExpected(message: "Reinicio de los valores . . .");
 
-    Pacientes.Patologicos!.clear();
+    Pacientes.Situacionario!.clear();
     Actividades.consultarAllById(
-            Databases.siteground_database_regpace,
-            Patologicos.patologicos['consultByIdPrimaryQuery'],
+            databaseQuery,
+            consultAllIdQuery,
             Pacientes.ID_Paciente)
         .then((value) {
       setState(() {
-        Pacientes.Patologicos = value;
+        Pacientes.Situacionario = value;
         Terminal.printSuccess(
             message:
-                "Actualizando Repositorio de Patologías del Paciente . . . ${Pacientes.Patologicos}");
+                "Actualizando Situacionario del Paciente . . . ${Pacientes.Situacionario}");
 
-        Archivos.createJsonFromMap(Pacientes.Patologicos!,
-            filePath: Patologicos.fileAssocieted);
+        Archivos.createJsonFromMap(Pacientes.Situacionario!,
+            filePath: Situaciones.fileAssocieted);
       });
     });
   }
@@ -179,7 +167,7 @@ class _OperacionesDummyState extends State<OperacionesDummy> {
                   onChangeValue: (value) {
                     setState(() {
                       isActualDiagoValue =
-                      Dicotomicos.fromBoolean(value) as String;
+                          Dicotomicos.fromBoolean(value) as String;
                     });
                   },
                   isSwitched: Dicotomicos.fromString(isActualDiagoValue)),
@@ -190,27 +178,68 @@ class _OperacionesDummyState extends State<OperacionesDummy> {
             child: EditTextArea(
               keyBoardType: TextInputType.text,
               inputFormat: MaskTextInputFormatter(),
-              numOfLines: 3,
-              labelEditText: 'Diagnóstico (CIE)',
-              textController: cieDiagnoTextController,
+              numOfLines: 1,
+              labelEditText: 'Tipo de Incidencias',
+              textController: tipoIncidenciaTextController,
             ),
           ),
           Expanded(
             child: GrandIcon(
-              labelButton: "CIE-10",
+                labelButton: "Tipos de Incidencias",
+                weigth: 5,
+                onPress: () {
+                  Operadores.selectOptionsActivity(
+                    context: context,
+                    options: Situaciones.Incidencias,
+                    onClose: (String newValue) {
+                      setState(() {
+                        tipoEstudioValue = newValue;
+                        // Actualización del Indice *************** *********** **************
+                        index = Situaciones.Incidencias.indexOf(newValue);
+                        // *************** *********** **************
+                        tipoIncidenciaTextController.text = newValue;
+                        // *************** *********** **************
+                        Navigator.of(context).pop();
+                      });
+                    },
+                  );
+                }),
+          ),
+        ],
+      ),
+      CrossLine(
+        height: 8,
+        color: Colors.black,
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            flex: 5,
+            child: EditTextArea(
+              keyBoardType: TextInputType.text,
+              inputFormat: MaskTextInputFormatter(),
+              numOfLines: 1,
+              labelEditText: 'Eventualidad',
+              textController: eventualidadTextController,
+            ),
+          ),
+          Expanded(
+            child: GrandIcon(
+              labelButton: "Eventualidades",
               weigth: 5,
               onPress: () {
-                Operadores.openDialog(
+                Operadores.selectOptionsActivity(
                     context: context,
-                    chyldrim: DialogSelector(
-                      onSelected: ((value) {
-                        setState(() {
-                          Diagnosticos.selectedDiagnosis = value;
-                          cieDiagnoTextController.text =
-                              Diagnosticos.selectedDiagnosis;
-                        });
-                      }),
-                    ));
+                    options: Situaciones
+                        .Eventualidades[Situaciones.Incidencias[index]],
+                    onClose: (String value) {
+                      setState(() {
+                        eventualidadTextController.text = value;
+                        // *************** *********** **************
+                        Navigator.of(context).pop();
+                      });
+                    });
               },
             ),
           ),
@@ -221,46 +250,19 @@ class _OperacionesDummyState extends State<OperacionesDummy> {
         color: Colors.black,
       ),
       EditTextArea(
-        keyBoardType: TextInputType.text,
-        limitOfChars: 700,
-        inputFormat: MaskTextInputFormatter(),
-        labelEditText: 'Comentario de diagnóstico',
-        textController: comenDiagnoTextController,
+        keyBoardType: TextInputType.datetime,
+        inputFormat: MaskTextInputFormatter(
+            mask: '####/##/##',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Fecha del Evento',
+        textController: fechaEventoTextController,
         numOfLines: 1,
-      ),
-      Row(
-        children: [
-          Expanded(
-            flex: 2,
-            child: EditTextArea(
-              keyBoardType: TextInputType.number,
-              inputFormat: MaskTextInputFormatter(
-                  mask: '##',
-                  filter: {"#": RegExp(r'[0-9]')},
-                  type: MaskAutoCompletionType.lazy),
-              labelEditText: 'Años de diagnóstico',
-              textController: ayoDiagoTextController,
-              numOfLines: 1,
-            ),
-          ),
-          Expanded(
-            flex: 3,
-            child: Spinner(
-                tittle: "¿Tratamiento actual?",
-                onChangeValue: (String value) {
-                  setState(() {
-                    isTratamientoDiagoValue = value;
-                    if (value == Dicotomicos.dicotomicos()[0]) {
-                      tratamientoTextController.text = "";
-                    } else {
-                      tratamientoTextController.text = "Sin tratamiento actual";
-                    }
-                  });
-                },
-                items: Dicotomicos.dicotomicos(),
-                initialValue: isTratamientoDiagoValue),
-          ),
-        ],
+        selection: true,
+        withShowOption: true,
+        onSelected: () {
+          fechaEventoTextController.text = Calendarios.today(format: 'yyyy/MM/dd');
+        },
       ),
       CrossLine(
         height: 5,
@@ -270,110 +272,61 @@ class _OperacionesDummyState extends State<OperacionesDummy> {
         keyBoardType: TextInputType.text,
         limitOfChars: 1000,
         inputFormat: MaskTextInputFormatter(),
-        labelEditText: 'Comentario del tratamiento',
-        textController: tratamientoTextController,
+        labelEditText: 'Observaciones de la Incidencia',
+        textController: observacionesEventoTextController,
+        numOfLines: 3,
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.text,
+        limitOfChars: 1000,
+        inputFormat: MaskTextInputFormatter(),
+        labelEditText: 'Otros Comentarios de la Incidencia',
+        textController: otrosEventoTextController,
         numOfLines: 3,
       ),
       CrossLine(),
-      Row(
-        children: [
-          Expanded(
-            flex: isMobile(context) ? 2 : 1,
-            child: CircleAvatar(
-              backgroundColor: Colors.grey,
-              radius: 40,
-              child: CircleAvatar(
-                backgroundColor: Colors.black,
-                radius: 30,
-                child: GrandIcon(
-                  onPress: () {
-                    Operadores.openDialog(
-                        context: context,
-                        chyldrim: Container(
-                            decoration: ContainerDecoration.roundedDecoration(),
-                            child: const AnalisisDummy()),
-                        onAction: () {
-                          setState(() {
-                            suspensionesTextController.text = '';
-                          });
-                        });
-                  },
-                ),
-              ),
-            ),
-
-            // child: Spinner(
-            //   width: 20,
-            //     tittle: "¿Suspensión reciente?",
-            //     onChangeValue: (String value) {
-            //       setState(() {
-            //         isSuspendTratoValue = value;
-            //         if (value == Dicotomicos.dicotomicos()[0]) {
-            //           suspensionesTextController.text =
-            //               "Con suspensiones en el tratamiento";
-            //         } else {
-            //           suspensionesTextController.text =
-            //               "Sin suspensiones en el tratamiento";
-            //         }
-            //       });
-            //     },
-            //     items: Dicotomicos.dicotomicos(),
-            //     initialValue: isSuspendTratoValue),
-          ),
-          Expanded(
-            flex: 4,
-            child: EditTextArea(
-              limitOfChars: 1000,
-              keyBoardType: TextInputType.text,
-              inputFormat: MaskTextInputFormatter(),
-              labelEditText: 'Antecedentes del Diagnóstico',
-              textController: suspensionesTextController,
-              numOfLines: 6,
-            ),
-          ),
-        ],
-      ),
     ];
   }
 
   // Operación del Método ***********************************
   void operationMethod(BuildContext context) {
     try {
+      // Dicotomicos.toInt(isActualDiagoValue),
       listOfValues = [
         idOperation,
         Pacientes.ID_Paciente,
-        Dicotomicos.toInt(isActualDiagoValue),
-        cieDiagnoTextController.text,
-        comenDiagnoTextController.text,
-        ayoDiagoTextController.text,
-        Dicotomicos.toInt(isTratamientoDiagoValue),
-        tratamientoTextController.text,
-        Dicotomicos.toInt(isSuspendTratoValue),
-        suspensionesTextController.text,
+        Pacientes.ID_Hospitalizacion,
+
+        tipoIncidenciaTextController.text,
+        eventualidadTextController.text,
+        fechaEventoTextController.text,
+        observacionesEventoTextController.text,
+        otrosEventoTextController.text,
         idOperation
       ];
 
       print(
-          "${widget.operationActivity} listOfValues $listOfValues ${listOfValues!.length}");
+          "${widget.operationActivity} "
+              "listOfValues $listOfValues ${listOfValues!.length}");
 
       switch (widget.operationActivity) {
         case Constantes.Nulo:
-        // ******************************************** *** *
+          // ******************************************** *** *
           listOfValues!.removeAt(0);
           listOfValues!.removeLast();
           // ******************************************** *** *
-          Actividades.registrar(Databases.siteground_database_regpace,
+          Actividades.registrar(databaseQuery,
               registerQuery!, listOfValues!.removeLast());
           break;
         case Constantes.Consult:
           break;
         case Constantes.Register:
-        // ******************************************** *** *
+          // ******************************************** *** *
           listOfValues!.removeAt(0);
           listOfValues!.removeLast();
           // ******************************************** *** *
-          Actividades.registrar(Databases.siteground_database_regpace,
-              registerQuery!, listOfValues!)
+          Actividades.registrar(databaseQuery,
+                  registerQuery!, listOfValues!)
               .then((value) {
             Archivos.deleteFile(filePath: Patologicos.fileAssocieted);
             reiniciar().then((value) => Operadores.alertActivity(
@@ -390,10 +343,11 @@ class _OperacionesDummyState extends State<OperacionesDummy> {
           });
           break;
         case Constantes.Update:
-          Actividades.actualizar(Databases.siteground_database_regpace,
-              updateQuery!, listOfValues!, idOperation)
+          Actividades.actualizar(databaseQuery,
+                  updateQuery!, listOfValues!, idOperation)
               .then((value) {
-            Archivos.deleteFile(filePath: Patologicos.fileAssocieted);
+                Terminal.printSuccess(message: value);
+            Archivos.deleteFile(filePath: Situaciones.fileAssocieted);
             reiniciar().then((value) => Operadores.alertActivity(
                 context: context,
                 tittle: "Actualización de registros",
@@ -427,57 +381,59 @@ class _OperacionesDummyState extends State<OperacionesDummy> {
         Navigator.push(
             context,
             MaterialPageRoute(
-              // maintainState: false,
-                builder: (context) => GestionDummy()));
+                // maintainState: false,
+                builder: (context) => GestionRevisorios()));
         break;
       case false:
         Navigator.push(
             context,
             MaterialPageRoute(
-              // maintainState: false,
-                builder: (context) => GestionDummy()));
+                // maintainState: false,
+                builder: (context) => GestionRevisorios()));
         break;
       default:
     }
   }
-  
+
   // VARIABLES DE LA INTERFAZ ******** ******* * * *  *
   String appBarTitile = "Gestión de Patologicos";
-  String? consultIdQuery = Patologicos.patologicos['consultIdQuery'];
-  String? registerQuery = Patologicos.patologicos['registerQuery'];
-  String? updateQuery = Patologicos.patologicos['updateQuery'];
-
+  String? consultIdQuery = Situaciones.situacion['consultIdQuery'];
+  String consultAllIdQuery = Situaciones.situacion['consultIdQuery'];
+  String? registerQuery = Situaciones.situacion['registerQuery'];
+  String? updateQuery = Situaciones.situacion['updateQuery'];
+  // **************************************************** 
+  String databaseQuery = Databases.siteground_database_reghosp;
+// ****************************************************
   int idOperation = 0;
-
   List<dynamic>? listOfValues;
 
+  // Variables de Operación *********************************
   var isActualDiagoValue = Patologicos.actualDiagno[0];
-  var cieDiagnoTextController = TextEditingController();
-  var comenDiagnoTextController = TextEditingController();
-  var ayoDiagoTextController = TextEditingController();
-  //
-  var isTratamientoDiagoValue = Patologicos.actualTratamiento[0];
-  var tratamientoTextController = TextEditingController();
-  var isSuspendTratoValue = Patologicos.actualSuspendido[0];
-  var suspensionesTextController = TextEditingController();
-
+  var tipoIncidenciaTextController = TextEditingController();
+  var eventualidadTextController = TextEditingController();
+  var fechaEventoTextController = TextEditingController();
+  var observacionesEventoTextController = TextEditingController();
+  var otrosEventoTextController = TextEditingController();
   //
   var patologicosScroller = ScrollController();
+  // Auxiliares *******************************************
+  int index = 0;
+  String? tipoEstudioValue;
 }
 
-class GestionDummy extends StatefulWidget {
+class GestionRevisorios extends StatefulWidget {
   Widget? actualSidePage = Container();
   // ****************** *** ****** **************
   var keySearch = "Pace_APP_ALE";
   // ****************** *** ****** **************
 
-  GestionDummy({Key? key, this.actualSidePage}) : super(key: key);
+  GestionRevisorios({Key? key, this.actualSidePage}) : super(key: key);
 
   @override
-  State<GestionDummy> createState() => _GestionDummyState();
+  State<GestionRevisorios> createState() => _GestionRevisoriosState();
 }
 
-class _GestionDummyState extends State<GestionDummy> {
+class _GestionRevisoriosState extends State<GestionRevisorios> {
   @override
   void initState() {
     iniciar();
@@ -499,7 +455,7 @@ class _GestionDummyState extends State<GestionDummy> {
             onPressed: () {
               Constantes.reinit();
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => VisualPacientes(actualPage: 6)));
+                  builder: (context) => VisualPacientes(actualPage: 0)));
             },
           ),
           title: AppBarText(appTittle),
@@ -596,13 +552,13 @@ class _GestionDummyState extends State<GestionDummy> {
   void iniciar() {
     Terminal.printWarning(
         message:
-            " . . . Iniciando Actividad - Repositorio Dummy del Pacientes");
+            " . . . Iniciando Actividad - Repositorio Revisorios del Pacientes");
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       setState(() {
         foundedItems = value;
-        Pacientes.Balances = value;
+        Pacientes.Situacionario = value;
         Terminal.printSuccess(
-            message: 'Repositorio Dummy del Pacientes Obtenido');
+            message: 'Repositorio Revisorios del Pacientes Obtenido');
       });
     }).onError((error, stackTrace) {
       Terminal.printAlert(
@@ -643,12 +599,12 @@ class _GestionDummyState extends State<GestionDummy> {
       {required AsyncSnapshot snapshot,
       required int posicion,
       required BuildContext context}) {
-    // print("posicion ${snapshot.data}");
+     // print("posicion ${snapshot.data}");
     return GestureDetector(
       onTap: () {
-        Balances.fromJson(snapshot.data[posicion]);
+        Situaciones.fromJson(snapshot.data[posicion]);
         Operadores.openDialog(
-            context: context, chyldrim: const AnalisisDummy());
+            context: context, chyldrim: const AnalisisRevisorios());
       },
       onDoubleTap: () {
         onSelected(snapshot, posicion, context, Constantes.Update);
@@ -666,10 +622,10 @@ class _GestionDummyState extends State<GestionDummy> {
               child: Container(
                 margin: const EdgeInsets.all(5.0),
                 decoration: ContainerDecoration.roundedDecoration(),
-                child: const CircleAvatar(
+                child:  CircleAvatar(
                   backgroundColor: Colors.black,
                   child: Text(
-                    'ID no Asignado', // snapshot.data[posicion][idKey].toString(),
+                    snapshot.data[posicion][idKey].toString(),
                     style: Styles.textSyle,
                   ),
                 ),
@@ -687,6 +643,13 @@ class _GestionDummyState extends State<GestionDummy> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Column(
+                    children: [
+                      Text(snapshot.data[posicion]['Sita_Fecha'], style: Styles.textSyleGrowth(),),
+                      Text(snapshot.data[posicion]['Sita_Tipo_Evento'], style: Styles.textSyleGrowth(),),
+                      Text(snapshot.data[posicion]['Sita_Evento'], style: Styles.textSyleGrowth(),),
+                    ],
+                  ),
                   CrossLine(
                     thickness: 2,
                   ),
@@ -739,11 +702,11 @@ class _GestionDummyState extends State<GestionDummy> {
 
   void onSelected(AsyncSnapshot<dynamic> snapshot, int posicion,
       BuildContext context, String operaciones) {
-    Balances.Balance = snapshot.data[posicion];
-    // Balances.selectedDiagnosis = Balances.balance['Pace_APP_ALE'];
-    Pacientes.Balances = snapshot.data;
+    Situaciones.Situacion = snapshot.data[posicion];
     //
-    Balances.fromJson(Balances.Balance);
+    Pacientes.Situacionario = snapshot.data;
+    //
+    Situaciones.fromJson(Situaciones.Situacion);
     // ************** ********** ************
     toOperaciones(context, operaciones);
   }
@@ -775,7 +738,7 @@ class _GestionDummyState extends State<GestionDummy> {
       _pullListRefresh();
     } else {
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (BuildContext context) => OperacionesDummy(
+          builder: (BuildContext context) => OperacionesRevisorios(
                 operationActivity: operationActivity,
               )));
     }
@@ -804,10 +767,10 @@ class _GestionDummyState extends State<GestionDummy> {
     Navigator.pushReplacement(
         context,
         PageRouteBuilder(
-            pageBuilder: (a, b, c) => GestionDummy(
+            pageBuilder: (a, b, c) => GestionRevisorios(
                   actualSidePage: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: OperacionesDummy(
+                    child: OperacionesRevisorios(
                       operationActivity: Constantes.operationsActividad,
                     ),
                   ),
@@ -821,9 +784,9 @@ class _GestionDummyState extends State<GestionDummy> {
   }
 
   // VARIABLES *************************************************
-  String appTittle = "Gestion del Dummy";
+  String appTittle = "Gestion del Revisorios";
   String searchCriteria = "Buscar por Fecha";
-  String idKey = 'ID_Bala';
+  String idKey = 'ID_Sita';
 
   late List? foundedItems = [];
   var gestionScrollController = ScrollController();
@@ -832,21 +795,21 @@ class _GestionDummyState extends State<GestionDummy> {
   // Variables de Conexión ******************************************
   String databaseQuery = Databases.siteground_database_reghosp;
   // ************************************************************
-  String consultQuery = Balances.balance['consultIdQuery'];
-  String deleteQuery = Balances.balance['deleteQuery'];
-  String consultAllQuery = Balances.balance['consultByIdPrimaryQuery'];
- // Archivo Asociado **********************************************
-  var fileAssocieted = Balances.fileAssocieted;
+  String consultQuery = Situaciones.situacion['consultIdQuery'];
+  String deleteQuery = Situaciones.situacion['deleteQuery'];
+  String consultAllQuery = Situaciones.situacion['consultByIdPrimaryQuery'];
+  // Archivo Asociado **********************************************
+  var fileAssocieted = Situaciones.fileAssocieted;
 }
 
-class AnalisisDummy extends StatefulWidget {
-  const AnalisisDummy({Key? key}) : super(key: key);
+class AnalisisRevisorios extends StatefulWidget {
+  const AnalisisRevisorios({Key? key}) : super(key: key);
 
   @override
-  State<AnalisisDummy> createState() => _AnalisisDummyState();
+  State<AnalisisRevisorios> createState() => _AnalisisRevisoriosState();
 }
 
-class _AnalisisDummyState extends State<AnalisisDummy> {
+class _AnalisisRevisoriosState extends State<AnalisisRevisorios> {
   @override
   Widget build(BuildContext context) {
     return const Placeholder();

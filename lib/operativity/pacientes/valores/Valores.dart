@@ -389,7 +389,40 @@ class Valores {
     haciaArcadaDentaria = json['Pace_DAC'] ?? '';
 
     // Balances Hídricos ******************************************** * *** *
-    tipoSondaVesical = json['Pace_Foley'] ?? '';
+    // Balances.ID_Balances = json['ID_Bala'];
+    // Valores.fechaRealizacionBalances = json['Pace_bala_Fecha'];
+    //
+    // Valores.viaOralBalances =
+    //     double.parse(json['Pace_bala_Oral'].toString() ?? '0');
+    // Valores.sondaOrogastricaBalances =
+    //     double.parse(json['Pace_bala_Sonda'].toString() ?? '0');
+    // Valores.hemoderivadosBalances =
+    //     double.parse(json['Pace_bala_Hemo'].toString() ?? '0');
+    // Valores.nutricionParenteralBalances =
+    //     double.parse(json['Pace_bala_NPT'].toString() ?? '0');
+    // Valores.parenteralesBalances =
+    //     double.parse(json['Pace_bala_Sol'].toString() ?? '0');
+    // Valores.dilucionesBalances =
+    //     double.parse(json['Pace_bala_Dil'].toString() ?? '0');
+    // Valores.otrosIngresosBalances =
+    //     double.parse(json['Pace_bala_ING'].toString() ?? '0');
+    //
+    // Valores.uresisBalances =
+    //     double.parse(json['Pace_bala_Uresis'].toString() ?? '0');
+    // Valores.evacuacionesBalances =
+    //     double.parse(json['Pace_bala_Evac'].toString() ?? '0');
+    // Valores.sangradosBalances =
+    //     double.parse(json['Pace_bala_Sangrado'].toString() ?? '0');
+    // Valores.succcionBalances =
+    //     double.parse(json['Pace_bala_Succion'].toString() ?? '0');
+    // Valores.drenesBalances =
+    //     double.parse(json['Pace_bala_Drenes'].toString() ?? '0');
+    // Valores.otrosEgresosBalances =
+    //     double.parse(json['Pace_bala_ENG'].toString() ?? '0');
+    // Valores.tipoSondaVesical = json['Pace_Foley'] ?? '';
+    //
+    // Valores.horario = json['Pace_bala_HOR'];
+    // Valores.uresis = double.parse(json['Pace_bala_Uresis'].toString() ?? '0');
     // Datos generales de la última Hospitalización. **** ** *********** ****** * *** *
     Pacientes.ID_Hospitalizacion = json['ID_Hosp'] ?? 0;
     Hospitalizaciones.Hospitalizacion['ID_Hosp'] = Pacientes.ID_Hospitalizacion;
@@ -3597,17 +3630,18 @@ class Formatos {
       "          "
       "En sedoanalgesia con ${Valores.sedoanalgesia}, "
       "R.A.S.S. ${Valores.rass}, "
-      "Ramsay ${Valores.ramsay}, sin focalización neurológica. \n"
+      // "Ramsay ${Valores.ramsay}, "
+      "sin focalización neurológica. \n"
       "          "
       "Apoyo ventilatorio "
       "mediante ${Valores.tuboEndotraqueal} ${Valores.haciaArcadaDentaria!.toLowerCase()}. "
       "${Formatos.ventiladorCorto}. "
       // **************** ************ ********
       "Última gasometría (${Valores.fechaGasometriaArterial}): "
-      "PCO2 ${Valores.pcoArteriales!.toStringAsFixed(0)} mmHg, "
-      "PO2 ${Valores.poArteriales!.toStringAsFixed(0)} mmHg, "
-      "SO2 ${Valores.soArteriales!.toStringAsFixed(0)} %, "
-      "PaO2/FiO2: ${Valores.PAFI.toStringAsFixed(0)} mmHg. "
+      "PaCO2 ${Valores.pcoArteriales!.toStringAsFixed(0)} mmHg, "
+      "PaO2 ${Valores.poArteriales!.toStringAsFixed(0)} mmHg, "
+      "SaO2 ${Valores.soArteriales!.toStringAsFixed(0)} %, "
+      "PaO2/FiO2 ${Valores.PAFI.toStringAsFixed(0)} mmHg. "
       "Aa-O2 ${Valores.GAA.toStringAsFixed(0)} mmHg. "
       "Murmullo vesicular audible, sin estertores ni sibilancias. "
       "\n"
@@ -3634,7 +3668,7 @@ class Formatos {
       "${Valores.tipoSondaAlimentacion}; ${Valores.alimentacion!.toLowerCase()}. "
       "PCT ${Valores.pesoCorporalTotal!.toStringAsFixed(1)} Kg, "
       "estatura ${Valores.alturaPaciente} mts, I.M.C ${Valores.imc.toStringAsFixed(0)} Kg/m2, y "
-      "P. Predicho ${Valores.pesoCorporalPredicho.toStringAsFixed(1)} Kg. "
+      "PP ${Valores.pesoCorporalPredicho.toStringAsFixed(1)} Kg. "
       "Glucometría ${Valores.glucemiaCapilar} mg/dL, "
       "glucosa sérica ${Valores.glucosa!.toStringAsFixed(0)} mg/dL, "
       "albúmina ${Valores.albuminaSerica!.toStringAsFixed(1)} g/dL. "
@@ -3655,7 +3689,7 @@ class Formatos {
       "E.B. ${Valores.EB.toStringAsFixed(1)} mmol/L. " // excesoBaseArteriales
       "Na2+ ${Valores.sodio!.toStringAsFixed(0)} mmol/L, "
       "K+ ${Valores.potasio!.toStringAsFixed(1)} mmol/L, "
-      "Cl-: ${Valores.cloro!.toStringAsFixed(0)} mmol/L. \n"
+      "Cl- ${Valores.cloro!.toStringAsFixed(0)} mmol/L. \n"
       "${Auxiliares.getUltimo(esAbreviado: true)}";
 
   static String get modoVentilatorio {
@@ -4708,6 +4742,8 @@ class Items {
     "Centésimo Noveno",
   ];
 }
+
+
 
 class Parenterales {
   static List parenterales = [

@@ -24,7 +24,7 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
     // Llamado a ultimo registro agregado por fecha de bd_regpace.pace_sv, pace_antropo.
     // Asignación de la consulta en Vitales.Vital.
     // # # # ############## #### ########
-    Vitales.ultimoRegistro();
+    // Vitales.ultimoRegistro();
     // # # # ############## #### ########
     setState(() {
       initialTextController.text = Pacientes.prosa(isTerapia: true);
@@ -53,10 +53,8 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
       padding: const EdgeInsets.all(2.0),
       child: Column(children: [
         Expanded(
-          child: SingleChildScrollView(
-            controller: ScrollController(),
-            padding: const EdgeInsets.all(2.0),
-            scrollDirection: Axis.horizontal,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 8.0, left: 8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -75,13 +73,6 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
                     onPress: () {
                       carouselController.jumpToPage(1);
                     }),
-                // GrandIcon(
-                //     iconData: Icons.medical_information,
-                //     labelButton: "Auxiliares Diagnósticos",
-                //     weigth: wieghtRow / index,
-                //     onPress: () {
-                //       carouselController.jumpToPage(2);
-                //     }),
                 GrandIcon(
                     iconData: Icons.explore,
                     labelButton: "Análisis y propuestas",
@@ -123,44 +114,13 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
                           textController: diagoTextController,
                           labelEditText: "Impresiones diagnósticas",
                           keyBoardType: TextInputType.multiline,
-                          numOfLines: 10,
+                          numOfLines: !isMobile(context) ? 10 : 16,
                           onChange: ((value) {
                             Reportes.impresionesDiagnosticas = "$value.";
                             Reportes.reportes['Impresiones_Diagnosticas'] =
                                 "$value.";
                           }),
                           inputFormat: MaskTextInputFormatter()),
-
-                      // EditTextArea(
-                      //     textController: consultaTextController,
-                      //     labelEditText: "Motivo de Consulta",
-                      //     keyBoardType: TextInputType.multiline,
-                      //     numOfLines: 5,
-                      //     onChange: (value) {
-                      //       setState(() {
-                      //         Reportes.motivoConsulta = "$value.";
-                      //         Reportes.reportes['Motivo_Consulta'] = "$value.";
-                      //       });
-                      //     },
-                      //     inputFormat: MaskTextInputFormatter()),
-                      // EditTextArea(
-                      //     textController: heredoTextController,
-                      //     labelEditText: "Antecedentes heredofamiliares",
-                      //     keyBoardType: TextInputType.multiline,
-                      //     numOfLines: 5,
-                      //     inputFormat: MaskTextInputFormatter()),
-                      // EditTextArea(
-                      //     textController: hospiTextController,
-                      //     labelEditText: "Antecedentes hospitalarios",
-                      //     keyBoardType: TextInputType.multiline,
-                      //     numOfLines: 5,
-                      //     inputFormat: MaskTextInputFormatter()),
-                      // EditTextArea(
-                      //     textController: patoloTextController,
-                      //     labelEditText: "Antecedentes personales patológicos",
-                      //     keyBoardType: TextInputType.multiline,
-                      //     numOfLines: 5,
-                      //     inputFormat: MaskTextInputFormatter()),
                     ],
                   ),
                 ),
@@ -180,18 +140,12 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
     );
   }
 
-  // ######################### ### # ### ############################
-  // Controladores de widgets en general.
-  // ######################### ### # ### ############################
+  // Controladores de widgets en general. ******************************
   var carouselController = CarouselController();
-  // ######################### ### # ### ############################
-  // Variables auxiliares de widget.
-  // ######################### ### # ### ############################
+  // Variables auxiliares de widget. ***********************************
   num index = 6;
   int wieghtRow = 50;
-  // ######################### ### # ### ############################
-  // Controladores de widgets tipo valores.
-  // ######################### ### # ### ############################
+  // Controladores de widgets tipo valores. *****************************
   var initialTextController = TextEditingController();
   var diagoTextController = TextEditingController();
   var consultaTextController = TextEditingController();

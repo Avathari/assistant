@@ -117,6 +117,8 @@ class Pacientes {
   static List? Balances = [];
   static List? Notas = []; // Registro de Análisis, Notas y Eventualidades.
   static List? Ventilaciones = [];
+//
+static List? Situacionario = [];
   //
   static List? Hospitalizaciones = [];
   static List? Diagnosticos = [];
@@ -5575,7 +5577,7 @@ class Auxiliares {
             Pacientes.ID_Paciente)
         .then((value) {
       Pacientes.Paraclinicos = value;
-      // Archivos.createJsonFromMap(value, filePath: fileAssocieted);
+      Archivos.createJsonFromMap(value, filePath: fileAssocieted);
     });
     Actividades.consultarId(
             Databases.siteground_database_reggabo,
@@ -7089,27 +7091,28 @@ class Balances {
   // *********** *********** ********* ****
 
   static void consultarRegistro() {
-    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+    Actividades.consultarAllById(
+        Databases.siteground_database_reghosp,
+        Balances.balance['consultByIdPrimaryQuery'],
+        Pacientes.ID_Paciente)
+        .then((value) {
       // Asignación de Valores ********* ******** ******* ********* ***
-      Balances.Balance = value;
-      Balances.fromJson(value);
-      // *********************************
-    }).onError((error, stackTrace) {
-      Actividades.consultarAllById(
-              Databases.siteground_database_reghosp,
-              Balances.balance['consultByIdPrimaryQuery'],
-              Pacientes.ID_Paciente)
-          .then((value) {
-        // Asignación de Valores ********* ******** ******* ********* ***
-        Balances.Balance = value[value.length - 1];
-        Balances.fromJson(value[value.length - 1]);
+      Balances.Balance = value[value.length - 1];
+      Balances.fromJson(value[value.length - 1]);
 
-        Terminal.printSuccess(
-            message: "Valores de Balances Hídricos asignado : : : value");
-        // Terminal.printData(message: "\t$value");
-        Archivos.createJsonFromMap([value], filePath: fileAssocieted);
-      });
+      Terminal.printSuccess(
+          message: "Valores de Balances Hídricos asignado : : : value");
+      // Terminal.printData(message: "\t$value");
+      Archivos.createJsonFromMap([value], filePath: fileAssocieted);
     });
+    // Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+    //   // Asignación de Valores ********* ******** ******* ********* ***
+    //   Balances.Balance = value;
+    //   Balances.fromJson(value);
+    //   // *********************************
+    // }).onError((error, stackTrace) {
+    //
+    // });
   }
 
   static void ultimoRegistro() {
@@ -7261,6 +7264,8 @@ class Balances {
         double.parse(json['Pace_bala_Drenes'].toString() ?? '0');
     Valores.otrosEgresosBalances =
         double.parse(json['Pace_bala_ENG'].toString() ?? '0');
+
+    Valores.tipoSondaVesical = json['Pace_Foley'] ?? '';
 
     Valores.horario = json['Pace_bala_HOR'];
     Valores.uresis = double.parse(json['Pace_bala_Uresis'].toString() ?? '0');
@@ -8031,12 +8036,37 @@ class Repositorios {
 
 class Situaciones {
   static int ID_Situaciones = 0;
+  static var fileAssocieted = '${Pacientes.localRepositoryPath}situaciones.json';
 
   static Map<String, dynamic> Situacion = {};
 
-  static List<String> actualDiagno = Opciones.horarios();
-
-  static var dispositivos = [];
+  static List<String> Incidencias = [
+    "Previos",
+    "Dispositivos",
+    "Procedimientos",
+  ];
+  static Map<String, dynamic> Eventualidades = {
+    Incidencias[0]: [
+      "Manejo Avanzado de la Vía Aérea", // MAVA
+      "Intubación Orotraqueal", // IOT
+      "Extubación", // EXT
+      "",
+      "",
+    ],
+    Incidencias[1]: [
+      "Colocación de Cateter Venoso Central", // CVC
+      "Colocación de Cateter de Hemodialisis", // MAHA
+      "Colocación de Sonda Endopleural", // SEP
+      "Colocación de Gastrostomía", // GAS
+      "Colocación de Dialisis Peritoneal", // TNK
+      "",
+    ],
+    Incidencias[2]: [
+      "Hemodíalisis", // HEMO
+      "Procedimiento Quirúrgico", //
+      "",
+    ],
+  };
 
   static void ultimoRegistro() {
     Actividades.consultarId(Databases.siteground_database_reghosp,
@@ -8121,13 +8151,15 @@ class Situaciones {
     "describeTable": "DESCRIBE pace_sita;",
     "showColumns": "SHOW columns FROM pace_sita",
     "showInformation":
-        "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_sita'",
+        "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns "
+            "WHERE table_name = 'pace_sita'",
     "createQuery": """
           CREATE TABLE pace_sita (
                  ID_Sita INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
                   ID_Pace INT NOT NULL,
                   ID_Hosp INT NOT NULL,
-                  Sita_Disp VARCHAR(100) NOT NULL,
+                  Sita_Tipo_Evento VARCHAR(200) NOT NULL,
+                  Sita_Evento VARCHAR(200) NOT NULL,
                   Sita_Fecha DATE NOT NULL,
                   Sita_Obser VARCHAR(100) NOT NULL,
                   Sita_Otros VARCHAR(100) NOT NULL,
@@ -8164,8 +8196,9 @@ class Situaciones {
     "consultLastQuery":
         "SELECT * FROM pace_sita WHERE ID_Pace = ? ORDER BY ID_Hosp ASC",
     "consultByName": "SELECT * FROM pace_sita WHERE Pace_APP_DEG LIKE '%",
-    "registerQuery": "INSERT INTO pace_sita (ID_Sita, ID_Pace, ID_Hosp, "
-        "Sita_Disp, Sita_Fecha, Sita_Obser, Sita_Otros) "
+    "registerQuery": "INSERT INTO pace_sita (ID_Pace, ID_Hosp, "
+        "Sita_Tipo_Evento, Sita_Evento, Sita_Fecha, "
+        "Sita_Obser, Sita_Otros) "
         "VALUES (?,?,?,?,?,?,?)",
     // "registerQuery": "INSERT INTO pace_sita (ID_Pace, ID_Hosp, "
     // "Hosp_Siti, Disp_Oxigen, CVP, CVLP, CVC, MAH, "
@@ -8175,14 +8208,16 @@ class Situaciones {
     // "?,?,?,?,?)",
     "updateQuery": "UPDATE pace_sita SET "
         "ID_Sita = ?, ID_Pace = ?,  ID_Hosp = ?, "
-        "Sita_Disp = ?, Sita_Fecha = ?, Sita_Obser = ?, Sita_Otros WHERE ID_Hosp = ?",
+        "Sita_Tipo_Evento = ?, Sita_Evento = ?, "
+        "Sita_Fecha = ?, Sita_Obser = ?, Sita_Otros = ? "
+        "WHERE ID_Sita = ?",
     // "updateQuery": "UPDATE pace_sita "
     //     "SET ID_Pace = ?, ID_Hosp = ?, Hosp_Siti = ?, "
     //     "Disp_Oxigen = ?, CVP = ?, CVLP = ?, CVC = ?, MAH = ?, S_Foley = ?, "
     //     "SNG = ?, SOG = ?, Drenaje = ?, Pleuro_Vac = ?, Colostomia = ?, "
     //     "Gastrostomia = ?, Dialisis_Peritoneal = ? "
     //     "WHERE ID_Hosp = ?",
-    "deleteQuery": "DELETE FROM pace_sita WHERE ID_Hosp = ?",
+    "deleteQuery": "DELETE FROM pace_sita WHERE ID_Sita = ?",
     "situacionColumns": [
       "ID_Pace",
     ],
@@ -8200,6 +8235,10 @@ class Situaciones {
         "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM pace_sita WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
         "(SELECT IFNULL(count(*), 0) FROM pace_sita WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
   };
+
+  static void fromJson(Map<String, dynamic> situacion) {
+
+  }
 }
 
 class Expedientes {

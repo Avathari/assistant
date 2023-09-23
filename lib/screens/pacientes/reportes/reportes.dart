@@ -47,13 +47,15 @@ class ReportesMedicos extends StatefulWidget {
 }
 
 class _ReportesMedicosState extends State<ReportesMedicos> {
+
   @override
   void initState() {
     // Llamado a los ultimos registros agregados. ****************************
     setState(() {
       Diagnosticos.registros();
       Quirurgicos.consultarRegistro();
-      Pendientes.consultarRegistro();
+      //Pendientes.consultarRegistro();
+      Balances.consultarRegistro();
 
       Archivos.readJsonToMap(
               filePath: "${Pacientes.localRepositoryPath}patologicos.json")
@@ -78,6 +80,14 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           .then((value) {
         Pacientes.Alergicos = value;
       });
+
+      // Archivos.readJsonToMap(
+      //     filePath: "${Pacientes.localRepositoryPath}balances.json")
+      //     .then((value) {
+      //   Pacientes.Balances = value;
+      //   Terminal.printExpected(message: "Balances seleccionados ${value[0].last}");
+      //   Balances.fromJson(value.last);
+      // });
 // *********************************************
       if (Pacientes.ID_Hospitalizacion != 0) {
         // Repositorios.consultarRegistro();
@@ -162,6 +172,17 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               filePath: "${Pacientes.localRepositoryPath}/paraclinicos.json")
           .then((value) {
         Pacientes.Paraclinicos = value;
+      });
+
+      // Valores del Paciente ****************************************
+      Archivos.readJsonToMap(
+          filePath: Pacientes.localPath)
+          .then((value) {
+         Valores.fromJson(value[0]);
+      }).onError((error, stackTrace) {
+        Terminal.printAlert(message: "ERROR al Abrir ${Pacientes.localPath}"
+            " - $error : : $stackTrace");
+        Pacientes.loadingActivity(context: context);
       });
 
       Terminal.printExpected(
@@ -261,7 +282,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               },
             ),
           ]), //: null,
-      floatingActionButton: isMobile(context)
+      floatingActionButton: isMobile(context) || isTablet(context)
           ? Column(mainAxisAlignment: MainAxisAlignment.end, children: [
               FloatingActionButton(
                 backgroundColor: Colors.black87,

@@ -40,9 +40,8 @@ class _TerapiasItemsState extends State<TerapiasItems> {
             color: Colors.black, textPanel: 'Valoración en Terapia Intensiva'),
         Expanded(
           flex: isDesktop(context) ? 2 : 1,
-          child: SingleChildScrollView(
-            controller: ScrollController(),
-            scrollDirection: Axis.horizontal,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 8.0, left: 8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

@@ -1590,8 +1590,8 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
       // vidaValue = Pacientes.pronosticoVida;
       // tiempoValue = Pacientes.pronosticoTiempo;
       // estadoValue = Pacientes.pronosticoEstado;
-      diagoTextController.text = "";
-      pronosTextController.text = "";
+      // diagoTextController.text = "";
+      // pronosTextController.text = "";
       //
       diagoTextController.text = Pacientes.diagnosticos();
       pronosTextController.text = Pacientes.pronosticoMedico();

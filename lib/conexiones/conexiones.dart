@@ -287,7 +287,7 @@ class Databases {
       "dbji9hkjtrf1hg"; // "bd_regpace"; //
   static const siteground_database_reggabo =
       "dbxg9atlfmttlp"; // "bd_reglabo"; //
-  static const siteground_database_reghosp = "dbpuqlawq9wmpr";
+  static const siteground_database_reghosp = "dbpuqlawq9wmpr"; // bd_reghosp
   static const siteground_database_cie = "db0wn9tets9si4";
   static const siteground_database_regepi = "dbqzcdqcuq5gi7";
   static const siteground_database_regfarma = "dbz7jeytfabs8a";
