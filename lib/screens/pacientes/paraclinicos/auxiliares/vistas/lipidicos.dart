@@ -171,8 +171,6 @@ class _LipidicosState extends State<Lipidicos> {
         unidadMedidaVLDL!
         //0,
       ],
-
-
     ];
   }
 

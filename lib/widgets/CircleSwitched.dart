@@ -4,6 +4,7 @@ import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CircleSwitched extends StatefulWidget {
   String? tittle;
@@ -31,6 +32,8 @@ class _CircleSwitchedState extends State<CircleSwitched> {
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
         onDoubleTap: () {
+          SystemSound.play(SystemSoundType.click);
+          SystemSound.play(SystemSoundType.click);
           showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -74,6 +77,7 @@ class _CircleSwitchedState extends State<CircleSwitched> {
                   ? Icons.check
                   : Icons.not_interested,
               onPress: () {
+                SystemSound.play(SystemSoundType.click);
                 setState(() {
                   widget.onChangeValue!(!widget.isSwitched!);
                   widget.isSwitched = !widget.isSwitched!;

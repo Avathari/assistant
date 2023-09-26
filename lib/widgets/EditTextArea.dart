@@ -123,10 +123,10 @@ class _EditTextAreaState extends State<EditTextArea> {
           ),
           widget.withShowOption
               ? Expanded(
-                  flex: isTablet(context) ? 2 : 2,
+                  flex: isTablet(context) ? 2 : 3,
                   child: Container(
-                    padding: const EdgeInsets.all(2.0),
-                    margin: const EdgeInsets.all(4.0),
+                    padding: const EdgeInsets.all(1.0),
+                    margin: const EdgeInsets.all(2.0),
                     decoration: ContainerDecoration.roundedDecoration(),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

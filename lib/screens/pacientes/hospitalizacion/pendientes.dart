@@ -192,7 +192,7 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
             flex: isTabletAndDesktop(context) ? 3 : 2,
             child: Spinner(
                 width: isDesktop(context)
-                    ? 200
+                    ? 150
                     : isTabletAndDesktop(context)
                         ? 130
                         : isTablet(context)

@@ -309,31 +309,37 @@ class _HospitalizadoState extends State<Hospitalizado> {
             ),
             Expanded(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  GrandIcon(
-                      iconData: Icons.airline_seat_flat,
-                      labelButton: 'Protocolo Quirúrgico',
-                      onPress: () {}),
-                  GrandIcon(
-                      iconData: Icons.report_problem_outlined,
-                      labelButton:
-                      'Conflictos relacionados a la Hospitalización',
-                      onPress: () {}),
-                  GrandIcon(
-                      iconData: Icons.data_array,
-                      labelButton: 'Situación del Expediente Clínico',
-                      onPress: () {
-                        Operadores.openActivity(
-                            context: context,
-                            labelButton: 'Actualizar',
-                            chyldrim: const ExpedientesClinicos(),
-                            onAction: () {
-                              setState(() {
-                                Expedientes.actualizarRegistro();
+                  Expanded(
+                    child: GrandIcon(
+                        iconData: Icons.airline_seat_flat,
+                        labelButton: 'Protocolo Quirúrgico',
+                        onPress: () {}),
+                  ),
+                  Expanded(
+                    child: GrandIcon(
+                        iconData: Icons.report_problem_outlined,
+                        labelButton:
+                        'Conflictos relacionados a la Hospitalización',
+                        onPress: () {}),
+                  ),
+                  Expanded(
+                    child: GrandIcon(
+                        iconData: Icons.data_array,
+                        labelButton: 'Situación del Expediente Clínico',
+                        onPress: () {
+                          Operadores.openActivity(
+                              context: context,
+                              labelButton: 'Actualizar',
+                              chyldrim: const ExpedientesClinicos(),
+                              onAction: () {
+                                setState(() {
+                                  Expedientes.actualizarRegistro();
+                                });
                               });
-                            });
-                      }),
+                        }),
+                  ),
                 ],
               ),
             ),

@@ -242,6 +242,15 @@ class _DashboardState extends State<Dashboard> {
                                 Cambios.toNextActivity(context, tittle: 'Anexión de la Rutina',chyld: ConmutadorParaclinicos(categoriaEstudio: "Rutina"));
 
                               }),
+                          CrossLine(height: 5),
+                          GrandIcon(
+                            labelButton: 'Revisorio',
+                            iconData: Icons.ac_unit,
+                            onPress: () {
+                              Cambios.toNextPage(context,  GestionRevisorios());
+                            },
+                          ),
+
                         ],
                       ),
                     )),

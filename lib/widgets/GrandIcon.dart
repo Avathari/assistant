@@ -1,5 +1,6 @@
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class GrandIcon extends StatefulWidget {
   String? labelButton;
@@ -30,8 +31,11 @@ class _GrandIconState extends State<GrandIcon> {
     return Tooltip(
       message: widget.labelButton!,
       child: GestureDetector(
-        onLongPress: widget.onLongPress ?? () {},
+        onLongPress: widget.onLongPress ?? () {
+          SystemSound.play(SystemSoundType.alert);
+        },
         onTap:  () {
+          SystemSound.play(SystemSoundType.click);
           widget.onPress();
         },
         child: Padding(

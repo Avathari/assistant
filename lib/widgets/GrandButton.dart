@@ -1,6 +1,7 @@
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class GrandButton extends StatefulWidget {
   String? labelButton;
@@ -54,6 +55,7 @@ class _GrandButtonState extends State<GrandButton> {
                         : 60,
               )),
           onPressed: () {
+            SystemSound.play(SystemSoundType.click);
             widget.onPress();
           },
           onLongPress: widget.onLongPress,

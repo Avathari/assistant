@@ -226,6 +226,7 @@ class _OperacionesRevisoriosState extends State<OperacionesRevisorios> {
           ),
           Expanded(
             child: GrandIcon(
+              iconData: Icons.list,
               labelButton: "Eventualidades",
               weigth: 5,
               onPress: () {
@@ -250,6 +251,7 @@ class _OperacionesRevisoriosState extends State<OperacionesRevisorios> {
         color: Colors.black,
       ),
       EditTextArea(
+        iconData: Icons.line_style,
         keyBoardType: TextInputType.datetime,
         inputFormat: MaskTextInputFormatter(
             mask: '####/##/##',
@@ -602,12 +604,12 @@ class _GestionRevisoriosState extends State<GestionRevisorios> {
      // print("posicion ${snapshot.data}");
     return GestureDetector(
       onTap: () {
+        onSelected(snapshot, posicion, context, Constantes.Update);
+      },
+      onDoubleTap: () {
         Situaciones.fromJson(snapshot.data[posicion]);
         Operadores.openDialog(
             context: context, chyldrim: const AnalisisRevisorios());
-      },
-      onDoubleTap: () {
-        onSelected(snapshot, posicion, context, Constantes.Update);
       },
       child: Container(
         padding:

@@ -153,6 +153,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
           : isTabletAndDesktop(context)
               ? null
               : AppBar(
+        foregroundColor: Colors.white,
                   backgroundColor: Theming.primaryColor,
                   title: Text(appBarTitile, style: Styles.textSyle,),
                   leading: IconButton(
@@ -364,9 +365,9 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
       decoration: ContainerDecoration.roundedDecoration(),
       child: Column(
         children: [
-          Expanded(flex: 3, child: Column(children: [
+          Expanded(flex: Keyboard.isDesktopOpen(context) ? 8 : 4, child: Column(children: [
             Expanded(
-              flex: 1,
+              flex: Keyboard.isDesktopOpen(context) ? 2:1,
               child: EditTextArea(
                 keyBoardType: TextInputType.number,
                 inputFormat: TextFormat.dateFormat,
@@ -384,7 +385,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
               ),
             ),
             Expanded(
-              flex: 1,
+              flex: Keyboard.isDesktopOpen(context) ? 3:1,
               child: Spinner(
                 isRow: true,
                 width: SpinnersValues.maximumWidth(context: context),
@@ -399,9 +400,10 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
               ),
             ),
           ],)),
-          CrossLine(height: 20, thickness: 2,),
+          CrossLine(height: Keyboard.isDesktopOpen(context) ? 5 : 20, thickness: 2,),
           // *****************************************************
-          Expanded(flex: 4,child: Column(children: [
+          Expanded(flex: Keyboard.isDesktopOpen(context) ? 10 :6,
+              child: Column(children: [
             Expanded(
               child: Spinner(
                 isRow: true,
@@ -460,7 +462,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
               ),
             ),
           ],)),
-          CrossLine(height: 20,thickness: 2,),
+          CrossLine(height:Keyboard.isDesktopOpen(context) ? 5 : 20,thickness: 2,),
           Expanded(
             flex: isTabletAndDesktop(context)
                 ? 9
@@ -468,9 +470,9 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                 ? 7
                 : isTablet(context)
                 ? 6
-                : 6,
+                : 8,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(4.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -484,7 +486,8 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                           ))),
                   Expanded(
                       child: Container(
-                        margin: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(2.0),
+                        margin: const EdgeInsets.all(2.0),
                         decoration: ContainerDecoration.roundedDecoration(),
                         child: SingleChildScrollView(
                             controller: ScrollController(),

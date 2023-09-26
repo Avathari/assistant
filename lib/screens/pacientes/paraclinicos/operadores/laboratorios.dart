@@ -1025,11 +1025,9 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                     }),
               ),
               Expanded(flex: 1, child: GrandIcon(labelButton: "Rutina", iconData: Icons.ad_units, onPress: () {
-                Operadores.openWindow(
-                    context: context,
-                    chyldrim: ConmutadorParaclinicos(
-                      categoriaEstudio: 'Rutina',
-                    ));
+                Cambios.toNextActivity(context, tittle: 'Rutina', chyld: ConmutadorParaclinicos(
+                  categoriaEstudio: 'Rutina',
+                ));
               })),
             ],
           ),
