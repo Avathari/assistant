@@ -346,9 +346,9 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
           Terminal.printSuccess(
               message:
                   "Actualizando Repositorio de Signos Vitales del Paciente . . . ${Pacientes.Vitales}");
-          Pacientes.Vitales!;
+          // Pacientes.Vitales!;
           Archivos.createJsonFromMap(Pacientes.Vitales!,
-              filePath: Vitales.fileAssocieted);
+              filePath: Vitales.fileAssocieted); // Creacion de Vitales.json **********************
         });
       });
     });
@@ -674,8 +674,8 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
   var cadTextController = TextEditingController();
   var cmbTextController = TextEditingController();
 
-  String factorActividadValue = Vitales.factorActividad[0];
-  String factorEstresValue = Vitales.factorEstres[0];
+  String? factorActividadValue = Vitales.factorActividad[0];
+  String? factorEstresValue = Vitales.factorEstres[0];
 
   var pectTextController = TextEditingController();
   var pcbTextController = TextEditingController();
@@ -833,7 +833,7 @@ class _GestionVitalesState extends State<GestionVitales> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theming.bdColor,
+      backgroundColor: Colors.black,
       appBar: isMobile(context) || isTablet(context)
           ? AppBar(
         foregroundColor: Colors.white,

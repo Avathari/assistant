@@ -2,6 +2,7 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/dashboard.dart';
+import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizados.dart';
 import 'package:assistant/screens/pacientes/auxiliares/presentaciones/antecedentesPersonales.dart';
 
 import 'package:assistant/screens/pacientes/auxiliares/presentaciones/presentaciones.dart';
@@ -26,6 +27,7 @@ import 'package:flutter/material.dart';
 // ignore: must_be_immutable
 class VisualPacientes extends StatefulWidget {
   int actualPage = 6;
+
 
   VisualPacientes({Key? key, required this.actualPage}) : super(key: key);
 
@@ -201,8 +203,13 @@ class _VisualPacientesState extends State<VisualPacientes> {
     Pacientes.close();
     Reportes.close();
 
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const GestionPacientes()));
+    if (Directrices.coordenada!) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => Hospitalizados()));
+    } else {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const GestionPacientes()));
+    }
   }
 
   Drawer drawerHome(BuildContext context) {

@@ -470,7 +470,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                               flex: 4,
                               child: Spinner(
                                 width: isDesktop(context)
-                                    ? 200
+                                    ? 170
                                     : isTablet(context)
                                     ? 200
                                     : isMobile(context)
@@ -491,7 +491,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                               flex: 3,
                               child: Spinner(
                                 width: isDesktop(context)
-                                    ? 170
+                                    ? 110
                                     : isTablet(context)
                                     ? 200
                                     : isMobile(context)

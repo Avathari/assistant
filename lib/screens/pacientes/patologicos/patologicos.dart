@@ -14,6 +14,7 @@ import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
@@ -449,9 +450,10 @@ class GestionPatologicos extends StatefulWidget {
   Widget? actualSidePage = Container();
   // ****************** *** ****** **************
   var keySearch = "Pace_APP_DEG";
+  bool? actualized;
   // ****************** *** ****** **************
 
-  GestionPatologicos({Key? key, this.actualSidePage}) : super(key: key);
+  GestionPatologicos({Key? key, this.actualSidePage, this.actualized = false}) : super(key: key);
 
   @override
   State<GestionPatologicos> createState() => _GestionPatologicosState();
@@ -462,7 +464,12 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
 
   @override
   void initState() {
-    iniciar();
+    if (widget.actualized!) {
+      reiniciar();
+    } else {
+      iniciar();
+    }
+
     super.initState();
   }
 
@@ -516,6 +523,13 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
           ),
           title: AppBarText(appTittle),
           actions: <Widget>[
+            GrandIcon(
+                labelButton: 'Agregar Listado de Patologías . . . ',
+                iconData: Icons.line_style,
+                onPress: () {
+                  Cambios.toNextActivity(context, chyld: VariasPatologias());
+                }),
+ CrossLine(isHorizontal: false, thickness: 3,),
             IconButton(
               icon: const Icon(
                 Icons.replay_outlined,
@@ -836,3 +850,1114 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
   var gestionScrollController = ScrollController();
   var searchTextController = TextEditingController();
 }
+
+class VariasPatologias extends StatefulWidget {
+  const VariasPatologias({super.key});
+
+  @override
+  State<VariasPatologias> createState() => _VariasPatologiasState();
+}
+
+class _VariasPatologiasState extends State<VariasPatologias> {
+
+  var carouselController = CarouselController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (isMobile(context) || isTablet(context)) {
+      return mobileView();
+    } else {
+      return desktopView();
+
+    }
+  }
+
+  List<List<dynamic>> listOfValues() {
+    return [
+    [
+      Pacientes.ID_Paciente,
+      Dicotomicos.toInt(isActualDiagoAValue),
+      cieDiagnoATextController.text,
+      comenDiagnoATextController.text,
+      ayoDiagoATextController.text,
+      Dicotomicos.toInt(isTratamientoDiagoAValue),
+      tratamientoATextController.text,
+      Dicotomicos.toInt(isSuspendTratoAValue),
+      suspensionesATextController.text,
+    ],
+      [
+        Pacientes.ID_Paciente,
+        Dicotomicos.toInt(isActualDiagoBValue),
+        cieDiagnoBTextController.text,
+        comenDiagnoBTextController.text,
+        ayoDiagoBTextController.text,
+        Dicotomicos.toInt(isTratamientoDiagoBValue),
+        tratamientoBTextController.text,
+        Dicotomicos.toInt(isSuspendTratoBValue),
+        suspensionesBTextController.text,
+      ],
+      [
+        Pacientes.ID_Paciente,
+        Dicotomicos.toInt(isActualDiagoCValue),
+        cieDiagnoCTextController.text,
+        comenDiagnoCTextController.text,
+        ayoDiagoCTextController.text,
+        Dicotomicos.toInt(isTratamientoDiagoCValue),
+        tratamientoCTextController.text,
+        Dicotomicos.toInt(isSuspendTratoCValue),
+        suspensionesCTextController.text,
+      ],
+    ];
+  }
+
+  // OPERACIONES DE LA INTERFAZ ****************** ********
+  void cerrar() {
+    Navigator.of(context).pop();
+  }
+
+  operationMethod() async {
+    Operadores.loadingActivity(
+        context: context,
+        tittle: "Registrando información . . .",
+        message: "Información registrada",
+        onCloss: () {
+          // Navigator.of(context).pop();
+          // cerrar();
+        });
+    //
+    Future.forEach(listOfValues(), (element) async {
+      var aux = element as List<dynamic>;
+
+      if (aux[2] != '' && aux[2] != '' && aux[2] != null
+          ) {
+        await Actividades.registrar(
+          Databases.siteground_database_regpace,
+          registerQuery!,
+          element,
+        );
+      }
+    }).whenComplete(() {
+      Navigator.of(context).pop(); // Cierre del LoadActivity
+      Operadores.alertActivity(
+          context: context,
+          tittle: "Registrando información . . .",
+          message: "Información registrada",
+          onAcept: () {
+            // Se emplean 3 Navigator.of(context).pop(); para cerrar cada una de
+            //    las ventanas emergentes y la interfaz inicial.
+
+            Navigator.of(context).pop(); // Cierre de la Interfaz Inicial
+            Navigator.of(context).pop(); // Cierre del AlertActivity
+          });
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(message: "ERROR - $error : : : $stackTrace");
+      Operadores.alertActivity(
+        context: context,
+        tittle: "Registrando información . . .",
+        message: "$error",
+        onAcept: () {
+          Cambios.toNextPage(context, GestionPatologicos(actualized: true));
+        }
+      );
+    });
+  }
+
+  // VISTAS DE LA INTERFAZ *********************************
+  desktopView() {
+    return Column(
+      children: [
+        Expanded(
+          flex: 8,
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    CrossLine(height: 20, color: Colors.black,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          flex: isMobile(context) ? 2 : 1,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: CircleSwitched(
+                                tittle: "¿Diagnóstico actual?",
+                                onChangeValue: (value) {
+                                  setState(() {
+                                    isActualDiagoAValue =
+                                    Dicotomicos.fromBoolean(value) as String;
+                                  });
+                                },
+                                isSwitched: Dicotomicos.fromString(isActualDiagoAValue)),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child: EditTextArea(
+                            keyBoardType: TextInputType.text,
+                            inputFormat: MaskTextInputFormatter(),
+                            numOfLines: 3,
+                            labelEditText: 'Diagnóstico (CIE)',
+                            textController: cieDiagnoATextController,
+                          ),
+                        ),
+                        Expanded(
+                          child: GrandIcon(
+                            labelButton: "CIE-10",
+                            weigth: 5,
+                            onPress: () {
+                              Operadores.openDialog(
+                                  context: context,
+                                  chyldrim: DialogSelector(
+                                    onSelected: ((value) {
+                                      setState(() {
+                                        Diagnosticos.selectedDiagnosis = value;
+                                        cieDiagnoATextController.text =
+                                            Diagnosticos.selectedDiagnosis;
+                                      });
+                                    }),
+                                  ));
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    CrossLine(height: 10, color: Colors.black,),
+                    EditTextArea(
+                      keyBoardType: TextInputType.text,
+                      limitOfChars: 700,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Comentario de diagnóstico',
+                      textController: comenDiagnoATextController,
+                      numOfLines: 1,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: EditTextArea(
+                            keyBoardType: TextInputType.number,
+                            inputFormat: MaskTextInputFormatter(
+                                mask: '##',
+                                filter: {"#": RegExp(r'[0-9]')},
+                                type: MaskAutoCompletionType.lazy),
+                            labelEditText: 'Años de diagnóstico',
+                            textController: ayoDiagoATextController,
+                            numOfLines: 1,
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Spinner(
+                              tittle: "¿Tratamiento actual?",
+                              onChangeValue: (String value) {
+                                setState(() {
+                                  isTratamientoDiagoAValue = value;
+                                  if (value == Dicotomicos.dicotomicos()[0]) {
+                                    tratamientoATextController.text = "";
+                                  } else {
+                                    tratamientoATextController.text = "Sin tratamiento actual";
+                                  }
+                                });
+                              },
+                              items: Dicotomicos.dicotomicos(),
+                              initialValue: isTratamientoDiagoAValue),
+                        ),
+                      ],
+                    ),
+                    CrossLine(height: 5, color: Colors.black,),
+                    EditTextArea(
+                      keyBoardType: TextInputType.text,
+                      limitOfChars: 1000,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Comentario del tratamiento',
+                      textController: tratamientoATextController,
+                      numOfLines: 3,
+                    ),
+                    CrossLine(),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: isMobile(context) ? 2 : 1,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.grey,
+                            radius: 40,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.black,
+                              radius: 30,
+                              child: GrandIcon(
+                                onPress: () {
+                                  Operadores.openDialog(
+                                      context: context,
+                                      chyldrim: Container(
+                                          decoration: ContainerDecoration.roundedDecoration(),
+                                          child: const Antecedentes()
+                                      ),
+                                      onAction: () {
+                                        setState(() {
+                                          suspensionesATextController.text = '';
+                                        });
+                                      });
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 4,
+                          child: EditTextArea(
+                            limitOfChars: 1000,
+                            keyBoardType: TextInputType.text,
+                            inputFormat: MaskTextInputFormatter(),
+                            labelEditText: 'Antecedentes del Diagnóstico',
+                            textController: suspensionesATextController,
+                            numOfLines: 6,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ]
+                ),
+              ),
+              Expanded(
+                child: Column(
+                    children: [
+                      CrossLine(height: 20, color: Colors.black,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            flex: isMobile(context) ? 2 : 1,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: CircleSwitched(
+                                  tittle: "¿Diagnóstico actual?",
+                                  onChangeValue: (value) {
+                                    setState(() {
+                                      isActualDiagoBValue =
+                                      Dicotomicos.fromBoolean(value) as String;
+                                    });
+                                  },
+                                  isSwitched: Dicotomicos.fromString(isActualDiagoBValue)),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 5,
+                            child: EditTextArea(
+                              keyBoardType: TextInputType.text,
+                              inputFormat: MaskTextInputFormatter(),
+                              numOfLines: 3,
+                              labelEditText: 'Diagnóstico (CIE)',
+                              textController: cieDiagnoBTextController,
+                            ),
+                          ),
+                          Expanded(
+                            child: GrandIcon(
+                              labelButton: "CIE-10",
+                              weigth: 5,
+                              onPress: () {
+                                Operadores.openDialog(
+                                    context: context,
+                                    chyldrim: DialogSelector(
+                                      onSelected: ((value) {
+                                        setState(() {
+                                          Diagnosticos.selectedDiagnosis = value;
+                                          cieDiagnoBTextController.text =
+                                              Diagnosticos.selectedDiagnosis;
+                                        });
+                                      }),
+                                    ));
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      CrossLine(height: 10, color: Colors.black,),
+                      EditTextArea(
+                        keyBoardType: TextInputType.text,
+                        limitOfChars: 700,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'Comentario de diagnóstico',
+                        textController: comenDiagnoBTextController,
+                        numOfLines: 1,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: EditTextArea(
+                              keyBoardType: TextInputType.number,
+                              inputFormat: MaskTextInputFormatter(
+                                  mask: '##',
+                                  filter: {"#": RegExp(r'[0-9]')},
+                                  type: MaskAutoCompletionType.lazy),
+                              labelEditText: 'Años de diagnóstico',
+                              textController: ayoDiagoBTextController,
+                              numOfLines: 1,
+                            ),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Spinner(
+                                tittle: "¿Tratamiento actual?",
+                                onChangeValue: (String value) {
+                                  setState(() {
+                                    isTratamientoDiagoBValue = value;
+                                    if (value == Dicotomicos.dicotomicos()[0]) {
+                                      tratamientoBTextController.text = "";
+                                    } else {
+                                      tratamientoBTextController.text = "Sin tratamiento actual";
+                                    }
+                                  });
+                                },
+                                items: Dicotomicos.dicotomicos(),
+                                initialValue: isTratamientoDiagoBValue),
+                          ),
+                        ],
+                      ),
+                      CrossLine(height: 5, color: Colors.black,),
+                      EditTextArea(
+                        keyBoardType: TextInputType.text,
+                        limitOfChars: 1000,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'Comentario del tratamiento',
+                        textController: tratamientoBTextController,
+                        numOfLines: 3,
+                      ),
+                      CrossLine(),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: isMobile(context) ? 2 : 1,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.grey,
+                              radius: 40,
+                              child: CircleAvatar(
+                                backgroundColor: Colors.black,
+                                radius: 30,
+                                child: GrandIcon(
+                                  onPress: () {
+                                    Operadores.openDialog(
+                                        context: context,
+                                        chyldrim: Container(
+                                            decoration: ContainerDecoration.roundedDecoration(),
+                                            child: const Antecedentes()
+                                        ),
+                                        onAction: () {
+                                          setState(() {
+                                            suspensionesBTextController.text = '';
+                                          });
+                                        });
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 4,
+                            child: EditTextArea(
+                              limitOfChars: 1000,
+                              keyBoardType: TextInputType.text,
+                              inputFormat: MaskTextInputFormatter(),
+                              labelEditText: 'Antecedentes del Diagnóstico',
+                              textController: suspensionesBTextController,
+                              numOfLines: 6,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ]
+                ),
+              ),
+              Expanded(
+                child: Column(
+                    children: [
+                      CrossLine(height: 20, color: Colors.black,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            flex: isMobile(context) ? 2 : 1,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: CircleSwitched(
+                                  tittle: "¿Diagnóstico actual?",
+                                  onChangeValue: (value) {
+                                    setState(() {
+                                      isActualDiagoCValue =
+                                      Dicotomicos.fromBoolean(value) as String;
+                                    });
+                                  },
+                                  isSwitched: Dicotomicos.fromString(isActualDiagoCValue)),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 5,
+                            child: EditTextArea(
+                              keyBoardType: TextInputType.text,
+                              inputFormat: MaskTextInputFormatter(),
+                              numOfLines: 3,
+                              labelEditText: 'Diagnóstico (CIE)',
+                              textController: cieDiagnoCTextController,
+                            ),
+                          ),
+                          Expanded(
+                            child: GrandIcon(
+                              labelButton: "CIE-10",
+                              weigth: 5,
+                              onPress: () {
+                                Operadores.openDialog(
+                                    context: context,
+                                    chyldrim: DialogSelector(
+                                      onSelected: ((value) {
+                                        setState(() {
+                                          Diagnosticos.selectedDiagnosis = value;
+                                          cieDiagnoCTextController.text =
+                                              Diagnosticos.selectedDiagnosis;
+                                        });
+                                      }),
+                                    ));
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      CrossLine(height: 10, color: Colors.black,),
+                      EditTextArea(
+                        keyBoardType: TextInputType.text,
+                        limitOfChars: 700,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'Comentario de diagnóstico',
+                        textController: comenDiagnoCTextController,
+                        numOfLines: 1,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: EditTextArea(
+                              keyBoardType: TextInputType.number,
+                              inputFormat: MaskTextInputFormatter(
+                                  mask: '##',
+                                  filter: {"#": RegExp(r'[0-9]')},
+                                  type: MaskAutoCompletionType.lazy),
+                              labelEditText: 'Años de diagnóstico',
+                              textController: ayoDiagoCTextController,
+                              numOfLines: 1,
+                            ),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Spinner(
+                                tittle: "¿Tratamiento actual?",
+                                onChangeValue: (String value) {
+                                  setState(() {
+                                    isTratamientoDiagoCValue = value;
+                                    if (value == Dicotomicos.dicotomicos()[0]) {
+                                      tratamientoCTextController.text = "";
+                                    } else {
+                                      tratamientoCTextController.text = "Sin tratamiento actual";
+                                    }
+                                  });
+                                },
+                                items: Dicotomicos.dicotomicos(),
+                                initialValue: isTratamientoDiagoCValue),
+                          ),
+                        ],
+                      ),
+                      CrossLine(height: 5, color: Colors.black,),
+                      EditTextArea(
+                        keyBoardType: TextInputType.text,
+                        limitOfChars: 1000,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'Comentario del tratamiento',
+                        textController: tratamientoCTextController,
+                        numOfLines: 3,
+                      ),
+                      CrossLine(),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: isMobile(context) ? 2 : 1,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.grey,
+                              radius: 40,
+                              child: CircleAvatar(
+                                backgroundColor: Colors.black,
+                                radius: 30,
+                                child: GrandIcon(
+                                  onPress: () {
+                                    Operadores.openDialog(
+                                        context: context,
+                                        chyldrim: Container(
+                                            decoration: ContainerDecoration.roundedDecoration(),
+                                            child: const Antecedentes()
+                                        ),
+                                        onAction: () {
+                                          setState(() {
+                                            suspensionesCTextController.text = '';
+                                          });
+                                        });
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 4,
+                            child: EditTextArea(
+                              limitOfChars: 1000,
+                              keyBoardType: TextInputType.text,
+                              inputFormat: MaskTextInputFormatter(),
+                              labelEditText: 'Antecedentes del Diagnóstico',
+                              textController: suspensionesCTextController,
+                              numOfLines: 6,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ]
+                ),
+              ),
+            ],
+          ),
+        ),
+        GrandButton(
+          labelButton: 'Agregar Listado de Patologías . . . ',
+            onPress: () {
+          operationMethod();
+        })
+      ],
+    );
+  }
+
+  mobileView() {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            GrandIcon(
+              iconData: Icons.skip_previous,
+              onPress: () {
+              carouselController.jumpToPage(0);
+            },),
+            GrandIcon(
+              iconData: Icons.stop_circle,
+              onPress: () {
+                carouselController.jumpToPage(1);
+              },),
+            GrandIcon(
+              iconData: Icons.skip_next,
+              onPress: () {
+                carouselController.jumpToPage(2);
+              },),
+          ]
+        ),
+        CrossLine(height: 10,),
+        Expanded(
+          flex: 8,
+          child: CarouselSlider(
+            carouselController: carouselController, options: Carousel.carouselOptions(context: context), items: [
+            SingleChildScrollView(
+              controller: ScrollController(),
+              child: Column(
+                  children: [
+                    CrossLine(height: 20, color: Colors.black,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          flex: isMobile(context) ? 2 : 1,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: CircleSwitched(
+                                tittle: "¿Diagnóstico actual?",
+                                onChangeValue: (value) {
+                                  setState(() {
+                                    isActualDiagoAValue =
+                                    Dicotomicos.fromBoolean(value) as String;
+                                  });
+                                },
+                                isSwitched: Dicotomicos.fromString(isActualDiagoAValue)),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child: EditTextArea(
+                            keyBoardType: TextInputType.text,
+                            inputFormat: MaskTextInputFormatter(),
+                            numOfLines: 3,
+                            labelEditText: 'Diagnóstico (CIE)',
+                            textController: cieDiagnoATextController,
+                          ),
+                        ),
+                        Expanded(
+                          child: GrandIcon(
+                            labelButton: "CIE-10",
+                            weigth: 5,
+                            onPress: () {
+                              Operadores.openDialog(
+                                  context: context,
+                                  chyldrim: DialogSelector(
+                                    onSelected: ((value) {
+                                      setState(() {
+                                        Diagnosticos.selectedDiagnosis = value;
+                                        cieDiagnoATextController.text =
+                                            Diagnosticos.selectedDiagnosis;
+                                      });
+                                    }),
+                                  ));
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    CrossLine(height: 10, color: Colors.black,),
+                    EditTextArea(
+                      keyBoardType: TextInputType.text,
+                      limitOfChars: 700,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Comentario de diagnóstico',
+                      textController: comenDiagnoATextController,
+                      numOfLines: 1,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: EditTextArea(
+                            keyBoardType: TextInputType.number,
+                            inputFormat: MaskTextInputFormatter(
+                                mask: '##',
+                                filter: {"#": RegExp(r'[0-9]')},
+                                type: MaskAutoCompletionType.lazy),
+                            labelEditText: 'Años de diagnóstico',
+                            textController: ayoDiagoATextController,
+                            numOfLines: 1,
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Spinner(
+                              width: 30,
+                              tittle: "¿Tratamiento actual?",
+                              onChangeValue: (String value) {
+                                setState(() {
+                                  isTratamientoDiagoAValue = value;
+                                  if (value == Dicotomicos.dicotomicos()[0]) {
+                                    tratamientoATextController.text = "";
+                                  } else {
+                                    tratamientoATextController.text = "Sin tratamiento actual";
+                                  }
+                                });
+                              },
+                              items: Dicotomicos.dicotomicos(),
+                              initialValue: isTratamientoDiagoAValue),
+                        ),
+                      ],
+                    ),
+                    CrossLine(height: 5, color: Colors.black,),
+                    EditTextArea(
+                      keyBoardType: TextInputType.text,
+                      limitOfChars: 1000,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Comentario del tratamiento',
+                      textController: tratamientoATextController,
+                      numOfLines: 3,
+                    ),
+                    CrossLine(),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: isMobile(context) ? 2 : 1,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.grey,
+                            radius: 40,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.black,
+                              radius: 30,
+                              child: GrandIcon(
+                                onPress: () {
+                                  Operadores.openDialog(
+                                      context: context,
+                                      chyldrim: Container(
+                                          decoration: ContainerDecoration.roundedDecoration(),
+                                          child: const Antecedentes()
+                                      ),
+                                      onAction: () {
+                                        setState(() {
+                                          suspensionesATextController.text = '';
+                                        });
+                                      });
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 4,
+                          child: EditTextArea(
+                            limitOfChars: 1000,
+                            keyBoardType: TextInputType.text,
+                            inputFormat: MaskTextInputFormatter(),
+                            labelEditText: 'Antecedentes del Diagnóstico',
+                            textController: suspensionesATextController,
+                            numOfLines: 6,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ]
+              ),
+            ),
+            SingleChildScrollView(
+              controller: ScrollController(),
+              child: Column(
+                  children: [
+                    CrossLine(height: 20, color: Colors.black,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          flex: isMobile(context) ? 2 : 1,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: CircleSwitched(
+                                tittle: "¿Diagnóstico actual?",
+                                onChangeValue: (value) {
+                                  setState(() {
+                                    isActualDiagoBValue =
+                                    Dicotomicos.fromBoolean(value) as String;
+                                  });
+                                },
+                                isSwitched: Dicotomicos.fromString(isActualDiagoBValue)),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child: EditTextArea(
+                            keyBoardType: TextInputType.text,
+                            inputFormat: MaskTextInputFormatter(),
+                            numOfLines: 3,
+                            labelEditText: 'Diagnóstico (CIE)',
+                            textController: cieDiagnoBTextController,
+                          ),
+                        ),
+                        Expanded(
+                          child: GrandIcon(
+                            labelButton: "CIE-10",
+                            weigth: 5,
+                            onPress: () {
+                              Operadores.openDialog(
+                                  context: context,
+                                  chyldrim: DialogSelector(
+                                    onSelected: ((value) {
+                                      setState(() {
+                                        Diagnosticos.selectedDiagnosis = value;
+                                        cieDiagnoBTextController.text =
+                                            Diagnosticos.selectedDiagnosis;
+                                      });
+                                    }),
+                                  ));
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    CrossLine(height: 10, color: Colors.black,),
+                    EditTextArea(
+                      keyBoardType: TextInputType.text,
+                      limitOfChars: 700,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Comentario de diagnóstico',
+                      textController: comenDiagnoBTextController,
+                      numOfLines: 1,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: EditTextArea(
+                            keyBoardType: TextInputType.number,
+                            inputFormat: MaskTextInputFormatter(
+                                mask: '##',
+                                filter: {"#": RegExp(r'[0-9]')},
+                                type: MaskAutoCompletionType.lazy),
+                            labelEditText: 'Años de diagnóstico',
+                            textController: ayoDiagoBTextController,
+                            numOfLines: 1,
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Spinner(
+                            width: 30,
+                              tittle: "¿Tratamiento actual?",
+                              onChangeValue: (String value) {
+                                setState(() {
+                                  isTratamientoDiagoBValue = value;
+                                  if (value == Dicotomicos.dicotomicos()[0]) {
+                                    tratamientoBTextController.text = "";
+                                  } else {
+                                    tratamientoBTextController.text = "Sin tratamiento actual";
+                                  }
+                                });
+                              },
+                              items: Dicotomicos.dicotomicos(),
+                              initialValue: isTratamientoDiagoBValue),
+                        ),
+                      ],
+                    ),
+                    CrossLine(height: 5, color: Colors.black,),
+                    EditTextArea(
+                      keyBoardType: TextInputType.text,
+                      limitOfChars: 1000,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Comentario del tratamiento',
+                      textController: tratamientoBTextController,
+                      numOfLines: 3,
+                    ),
+                    CrossLine(),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: isMobile(context) ? 2 : 1,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.grey,
+                            radius: 40,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.black,
+                              radius: 30,
+                              child: GrandIcon(
+                                onPress: () {
+                                  Operadores.openDialog(
+                                      context: context,
+                                      chyldrim: Container(
+                                          decoration: ContainerDecoration.roundedDecoration(),
+                                          child: const Antecedentes()
+                                      ),
+                                      onAction: () {
+                                        setState(() {
+                                          suspensionesBTextController.text = '';
+                                        });
+                                      });
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 4,
+                          child: EditTextArea(
+                            limitOfChars: 1000,
+                            keyBoardType: TextInputType.text,
+                            inputFormat: MaskTextInputFormatter(),
+                            labelEditText: 'Antecedentes del Diagnóstico',
+                            textController: suspensionesBTextController,
+                            numOfLines: 6,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ]
+              ),
+            ),
+            SingleChildScrollView(
+              controller: ScrollController(),
+              child: Column(
+                  children: [
+                    CrossLine(height: 20, color: Colors.black,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          flex: isMobile(context) ? 2 : 1,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: CircleSwitched(
+                                tittle: "¿Diagnóstico actual?",
+                                onChangeValue: (value) {
+                                  setState(() {
+                                    isActualDiagoCValue =
+                                    Dicotomicos.fromBoolean(value) as String;
+                                  });
+                                },
+                                isSwitched: Dicotomicos.fromString(isActualDiagoCValue)),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child: EditTextArea(
+                            keyBoardType: TextInputType.text,
+                            inputFormat: MaskTextInputFormatter(),
+                            numOfLines: 3,
+                            labelEditText: 'Diagnóstico (CIE)',
+                            textController: cieDiagnoCTextController,
+                          ),
+                        ),
+                        Expanded(
+                          child: GrandIcon(
+                            labelButton: "CIE-10",
+                            weigth: 5,
+                            onPress: () {
+                              Operadores.openDialog(
+                                  context: context,
+                                  chyldrim: DialogSelector(
+                                    onSelected: ((value) {
+                                      setState(() {
+                                        Diagnosticos.selectedDiagnosis = value;
+                                        cieDiagnoCTextController.text =
+                                            Diagnosticos.selectedDiagnosis;
+                                      });
+                                    }),
+                                  ));
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    CrossLine(height: 10, color: Colors.black,),
+                    EditTextArea(
+                      keyBoardType: TextInputType.text,
+                      limitOfChars: 700,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Comentario de diagnóstico',
+                      textController: comenDiagnoCTextController,
+                      numOfLines: 1,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: EditTextArea(
+                            keyBoardType: TextInputType.number,
+                            inputFormat: MaskTextInputFormatter(
+                                mask: '##',
+                                filter: {"#": RegExp(r'[0-9]')},
+                                type: MaskAutoCompletionType.lazy),
+                            labelEditText: 'Años de diagnóstico',
+                            textController: ayoDiagoCTextController,
+                            numOfLines: 1,
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Spinner(
+                              width: 30,
+                              tittle: "¿Tratamiento actual?",
+                              onChangeValue: (String value) {
+                                setState(() {
+                                  isTratamientoDiagoCValue = value;
+                                  if (value == Dicotomicos.dicotomicos()[0]) {
+                                    tratamientoCTextController.text = "";
+                                  } else {
+                                    tratamientoCTextController.text = "Sin tratamiento actual";
+                                  }
+                                });
+                              },
+                              items: Dicotomicos.dicotomicos(),
+                              initialValue: isTratamientoDiagoCValue),
+                        ),
+                      ],
+                    ),
+                    CrossLine(height: 5, color: Colors.black,),
+                    EditTextArea(
+                      keyBoardType: TextInputType.text,
+                      limitOfChars: 1000,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Comentario del tratamiento',
+                      textController: tratamientoCTextController,
+                      numOfLines: 3,
+                    ),
+                    CrossLine(),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: isMobile(context) ? 2 : 1,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.grey,
+                            radius: 40,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.black,
+                              radius: 30,
+                              child: GrandIcon(
+                                onPress: () {
+                                  Operadores.openDialog(
+                                      context: context,
+                                      chyldrim: Container(
+                                          decoration: ContainerDecoration.roundedDecoration(),
+                                          child: const Antecedentes()
+                                      ),
+                                      onAction: () {
+                                        setState(() {
+                                          suspensionesCTextController.text = '';
+                                        });
+                                      });
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 4,
+                          child: EditTextArea(
+                            limitOfChars: 1000,
+                            keyBoardType: TextInputType.text,
+                            inputFormat: MaskTextInputFormatter(),
+                            labelEditText: 'Antecedentes del Diagnóstico',
+                            textController: suspensionesCTextController,
+                            numOfLines: 6,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ]
+              ),
+            ),
+          ],
+          ),
+        ),
+        GrandButton(
+          weigth: 1000,
+            labelButton: 'Agregar Listado de Patologías . . . ',
+            onPress: () {
+              operationMethod();
+            })
+      ],
+    );
+  }
+
+  // VARIABLES DE LA INTERFAZ ******** ******* * * *  *
+  String appBarTitile = "Gestión de Patologicos";
+  String? consultIdQuery = Patologicos.patologicos['consultIdQuery'];
+  String? registerQuery = Patologicos.patologicos['registerQuery'];
+  String? updateQuery = Patologicos.patologicos['updateQuery'];
+
+  // VARIABLES DE OPERACIÓN  ******** ******* * * *  *
+  var cieDiagnoATextController =  TextEditingController(), comenDiagnoATextController =  TextEditingController(), ayoDiagoATextController =  TextEditingController(), 
+      tratamientoATextController =  TextEditingController(), suspensionesATextController =  TextEditingController();
+  var isActualDiagoAValue = Patologicos.actualDiagno[0], 
+      isTratamientoDiagoAValue = Patologicos.actualTratamiento[0], 
+      isSuspendTratoAValue = Patologicos.actualSuspendido[0];
+// ******************************************
+  var cieDiagnoBTextController =  TextEditingController(),  comenDiagnoBTextController =  TextEditingController(),  ayoDiagoBTextController =  TextEditingController(), 
+      tratamientoBTextController =  TextEditingController(),  suspensionesBTextController =  TextEditingController();
+  var isActualDiagoBValue = Patologicos.actualDiagno[0],
+      isTratamientoDiagoBValue = Patologicos.actualTratamiento[0],
+      isSuspendTratoBValue = Patologicos.actualSuspendido[0];
+// ******************************************
+  var cieDiagnoCTextController =  TextEditingController(),  comenDiagnoCTextController =  TextEditingController(),  ayoDiagoCTextController =  TextEditingController(), 
+      tratamientoCTextController =  TextEditingController(),  suspensionesCTextController =  TextEditingController();
+  var isActualDiagoCValue = Patologicos.actualDiagno[0],
+      isTratamientoDiagoCValue = Patologicos.actualTratamiento[0],
+      isSuspendTratoCValue = Patologicos.actualSuspendido[0];
+// ******************************************
+}
+

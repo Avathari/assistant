@@ -37,20 +37,20 @@ class Valores {
     Vitales.registros();
     // Vitales.ultimoRegistro();
     Patologicos.registros();
-    Patologicos.consultarRegistro();
+    // Patologicos.consultarRegistro();
     Diagnosticos.registros();
-    Diagnosticos.consultarRegistro();
+    // Diagnosticos.consultarRegistro();
     Alergicos.registros();
-    Alergicos.consultarRegistro();
+    // Alergicos.consultarRegistro();
     Quirurgicos.registros();
-    Quirurgicos.consultarRegistro();
+    // Quirurgicos.consultarRegistro();
     Transfusionales.registros();
-    Transfusionales.consultarRegistro();
+    // Transfusionales.consultarRegistro();
     Traumatologicos.registros();
-    Traumatologicos.consultarRegistro();
+    // Traumatologicos.consultarRegistro();
     Vacunales.registros();
-    Vacunales.consultarRegistro();
-    //
+    // Vacunales.consultarRegistro();
+
     Balances.consultarRegistro();
     Auxiliares.registros();
 
@@ -1248,6 +1248,12 @@ class Valores {
     }
   }
 
+  static double get indiceChoque => Valores.frecuenciaCardiaca! / Valores.tensionArterialSystolica!;
+ // Si Mayor a 1.0, alta probabiilidad de Choque ; 0.5 - 0.7
+
+  static double get indiceChoqueModificado => Valores.frecuenciaCardiaca! / Valores.presionArterialMedia!;
+  // 0.7 - 1.3
+
   // # ######################################################
   // # Ajustes de Potasio [K+]
   // # ######################################################
@@ -1845,8 +1851,25 @@ class Valores {
     }
   }
 
-  // # Parametros Hemodinamicos
-  // # Concentración Arterial de Oxígeno
+  static double get aniNASH {
+    // ANI = -58,5 + 0,637 (MCV) + 3,91 (AST/ALT) – 0,406 (IMC) + 6,35 para hombres
+    if (Valores.sexo == 'Masculino') {
+      return (-58.5 + (0.637 * Valores.volumenCorpuscularMedio!)) + (3.91
+          * (Valores.aspartatoaminotransferasa! /
+              Valores.alaninoaminotrasferasa!)) -
+          ((0.406 * Valores.imc) + 6.35); //  para hombres
+    }       else if (Valores.sexo == 'Femenino') {
+        return (-58.5 + (0.637 * Valores.volumenCorpuscularMedio!)) + (3.91
+            * (Valores.aspartatoaminotransferasa! / Valores.alaninoaminotrasferasa!)) -
+            ((0.406 * Valores.imc) + 6.35); //  para hombres
+
+      } else {
+      return double.nan;
+    }
+  }
+
+
+  // # Parametros Hemodinamicos ******************************************
   static double get CAO =>
       (((Valores.hemoglobina! * 1.34) * Valores.soArteriales!) +
           (Valores.poArteriales! * 0.031)) /
@@ -1882,10 +1905,7 @@ class Valores {
     }
   }
 
-  // # ############## ######### #######
-  // # ############## ######### #######
-  // # Parámetros Gasométricos
-  // # ############## ######### #######
+  // # Parámetros Gasométricos *******************************************
   static String get trastornoPrimario {
     if (Valores.pHArteriales! < 7.34) {
       return 'Acidemia';
@@ -1896,9 +1916,7 @@ class Valores {
     }
   }
 
-  // # ############## ######### #######
   // Comparación entre el PCO2 y el HCO3-
-  // # ############## ######### #######
   static String get trastornoSecundario {
     if (Valores.pcoArteriales! < 35 || Valores.pcoArteriales! > 45) {
       return 'Alteración Respiratoria';
@@ -1910,7 +1928,6 @@ class Valores {
     }
   }
 
-  //
   // # ############## ######### #######
   static String get alteracionRespiratoria {
     if (Valores.pcoArteriales! < 35) {
@@ -1952,7 +1969,6 @@ class Valores {
       return 'Normal';
     }
   }
-
   //
   static double get GAP =>
       (Valores.sodio! + Valores.potasio!) -
@@ -2789,6 +2805,7 @@ class Valores {
     }
   }
 
+  static String glasgow = '15';
   static String movilidadCervical = Escalas.movilidadCervical[0];
   static String distanciaTiromentoniana = Escalas.distanciaTiromentoniana[0];
   static String distanciaEsternomentoniana =
@@ -2866,6 +2883,40 @@ class Valorados {
     } else {
       ren = 0;
     }
+    // Glasgow ***************************************************
+    if (Datos.isMiddleValue(value: double.parse(Valores.glasgow), min: 6.0, max: 9.0)) {
+      glasg = 3;
+    } else if (Datos.isMiddleValue(value: double.parse(Valores.glasgow), min: 10.0, max: 12.0)) {
+      glasg = 2;
+    } else if (Datos.isMiddleValue(value: double.parse(Valores.glasgow), min: 13, max: 14.0)) {
+      glasg = 1;
+    } else if (Datos.isUpperValue(value: double.parse(Valores.glasgow), lim: 15)) {
+      glasg = 0;
+    } else {
+      glasg = 4;
+    }
+
+    // SUMATORIA ***************************************************
+    double aux = resp.toDouble() + plat.toDouble() + hig.toDouble() + card.toDouble() +glasg.toDouble() + ren.toDouble();
+    // RESULTADOS ***************************************************
+    if (Datos.isMiddleValue(value: aux, min: 0.0, max: 6.0)) {
+      resultado = 'menor al 10% de Mortalidad estimada durante la Hospitalización';
+    } else if (Datos.isMiddleValue(value: aux, min: 6.0, max: 9.0)) {
+      resultado = '15-20% de Mortalidad estimada durante la Hospitalización';
+    } else if (Datos.isMiddleValue(value: aux, min: 9.0, max: 12.0)) {
+      resultado = '40-50% de Mortalidad estimada durante la Hospitalización';
+    }else if (Datos.isMiddleValue(value: aux, min: 12.0, max: 14.0)) {
+      resultado = '50-60% de Mortalidad estimada durante la Hospitalización';
+    } else if (Datos.isMiddleValue(value: aux, min: 14.0, max: 15.0)) {
+      resultado = '60-80% de Mortalidad estimada durante la Hospitalización';
+    } else if (Datos.isUpperValue(value: aux, lim: 15)) {
+      resultado = '90% de Mortalidad estimada durante la Hospitalización';
+    } else {
+      resultado = 'no concordante. ';
+    }
+
+    Terminal.printSuccess(message: "mSOFA $resultado : : "
+        "$hig . $ren . $glasg . $resp . $card : ($aux)");
     return resultado;
   }
 
@@ -2918,6 +2969,17 @@ class Valorados {
       "SpO2 ${Valores.saturacionPerifericaOxigeno}%, "
       "PCT ${Valores.pesoCorporalTotal} Kg, "
       "Estatura ${Valores.alturaPaciente} mts";
+
+  static String get vitalesTerapiaAbreviado =>
+      "TA ${Valores.tensionArterialSistemica} mmHg, "
+          "FC ${Valores.frecuenciaCardiaca} L/min, "
+          "FR ${Valores.frecuenciaRespiratoria} L/min, "
+          "Temp ${Valores.temperaturCorporal}°C, "
+          "SpO2 ${Valores.saturacionPerifericaOxigeno}%, "
+          "PCT ${Valores.pesoCorporalTotal} Kg, "
+          "Estatura ${Valores.alturaPaciente} mts, "
+          "IMC ${Valores.imc.toStringAsFixed(2)} Kg/m2, "
+          "PCI ${Valores.pesoCorporalPredicho.toStringAsFixed(2)} Kg";
 
   static String get signosVitales =>
       "Signos vitales con " // fecha de ${Pacientes.Vital['Pace_Feca_SV']} con "
@@ -3557,6 +3619,7 @@ class Formatos {
         "Se realiza el envió de las muestras al laboratorio. ";
   }
 
+  // TERAPIAS ************* ********** ************** ***
   static String get exploracionTerapia => ""
       "Durante la Exploración Física, siendo evaluado por Aparatos y Sistemas, es encontrado: \n"
       "NEUROLOGICO: "
@@ -3692,6 +3755,42 @@ class Formatos {
       "Cl- ${Valores.cloro!.toStringAsFixed(0)} mmol/L. \n"
       "${Auxiliares.getUltimo(esAbreviado: true)}";
 
+  static String get exploracionTerapiaBreve => ""
+      "${Valorados.vitalesTerapiaAbreviado}\n"
+      "Durante la Exploración Física, siendo evaluado por Aparatos y Sistemas, es encontrado: \n"
+      "          "
+      "En sedoanalgesia con ${Valores.sedoanalgesia}, "
+      "R.A.S.S. ${Valores.rass}, sin focalización neurológica. \n"
+      "          "
+      "Apoyo ventilatorio mediante ${Valores.tuboEndotraqueal} ${Valores.haciaArcadaDentaria!.toLowerCase()}. "
+      "${Formatos.ventiladorCorto}. "
+      "Murmullo vesicular audible, sin estertores ni sibilancias. "
+      "\n"
+      "          "
+      "T/A ${Valores.tensionArterialSistemica} (${Valores.presionArterialMedia.toStringAsFixed(0)}) mmHg, "
+      "${Valores.apoyoAminergico!.toLowerCase()}; "
+      "FC ${Valores.frecuenciaCardiaca!.toStringAsFixed(0)} L/min, "
+      "telemetría a  ritmo sinusal; precordio rítmico, "
+      "llenado capilar 2 segundos, pulsos homócrotos presentes. \n"
+      "          "
+      "Temperatura corporal ${Valores.temperaturCorporal!.toStringAsFixed(1)} °C, "
+      "${Valores.antibioticoterapia!.toLowerCase()}. "
+      "No presenta sangrado, sin requerimiento transfusional. \n"
+      "          "
+      "${Valores.tipoSondaAlimentacion}; ${Valores.alimentacion!.toLowerCase()}. "
+      "Abdomen blando, normoperistalsis, depresible, sin irritación peritoneal. \n"
+      "          "
+      "Genitourinario ${Valores.tipoSondaVesical!.toLowerCase()}; "
+      "balance hídrico: "
+      "ingresos ${Valores.ingresosBalances} mL, "
+      "egresos ${Valores.egresosBalances} mL "
+      "(${Valores.balanceTotal} mL/${Valores.horario} Horas), "
+      "P.I. ${Valores.perdidasInsensibles} mL, "
+      "uresis ${Valores.uresis!.toStringAsFixed(0)} mL "
+      "(${Valores.diuresis.toStringAsFixed(2)} mL/${Valores.horario} Horas). \n"
+      "${Auxiliares.getUltimo(esAbreviado: true)}";
+
+  // VENTILATORIOS ************* ********** ************** ***
   static String get modoVentilatorio {
     var MOD = ' ';
     if (Valores.modalidadVentilatoria ==
@@ -3873,6 +3972,7 @@ class Formatos {
     return PS;
   }
 
+  // OTROS ************* ********** ************** ***
   static String get licenciaMedica {
     return "Licencia médica otorgada con folio ${Valores.folioLicencia}, "
         "con ${Valores.diasOtorgadosLicencia} dias otorgados desde la "

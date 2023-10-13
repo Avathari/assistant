@@ -44,14 +44,14 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
 
   @override
   void initState() {
-    dietaTextController.text = traduce(Reportes.dieta);
-    liquidosTextController.text = traduce(Reportes.hidroterapia);
-    medicamentosTextController.text = traduce(Reportes.medicamentosIndicados);
-    medidasTextController.text = traduce(Reportes.medidasGenerales);
-    insulinoterapiaTextController.text = traduce(Reportes.insulinoterapia);
-    oxigenoterapiaTextController.text = traduce(Reportes.oxigenoterapia);
-    hemoterapiaTextController.text = traduce(Reportes.hemoterapia);
-    pendientesTextController.text = traduce(Reportes.pendientes);
+    dietaTextController.text = Listas.traduceToString(Reportes.dieta);
+    liquidosTextController.text = Listas.traduceToString(Reportes.hidroterapia);
+    medicamentosTextController.text = Listas.traduceToString(Reportes.medicamentosIndicados);
+    medidasTextController.text = Listas.traduceToString(Reportes.medidasGenerales);
+    insulinoterapiaTextController.text = Listas.traduceToString(Reportes.insulinoterapia);
+    oxigenoterapiaTextController.text = Listas.traduceToString(Reportes.oxigenoterapia);
+    hemoterapiaTextController.text = Listas.traduceToString(Reportes.hemoterapia);
+    pendientesTextController.text = Listas.traduceToString(Reportes.pendientes);
     super.initState();
   }
 
@@ -187,7 +187,7 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
                                   Expanded(
                                     child: ValuePanel(
                                       firstText: 'Peso Predicho',
-                                      secondText: Valores.pesoCorporalPredicho!
+                                      secondText: Valores.pesoCorporalPredicho
                                           .toStringAsFixed(2),
                                       thirdText: 'Kg',
                                     ),
@@ -456,7 +456,7 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
                                     );
                                   },
                                   onChange: ((value) {
-                                    Reportes.hidroterapia = traslate(value);
+                                    Reportes.hidroterapia = Listas.traslateFromString(value);
                                     Reportes.reportes['Hidroterapia'] =
                                         Reportes.hidroterapia;
                                   }),
@@ -599,7 +599,7 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
                                 ));
                           },
                           onChange: ((value) {
-                            Reportes.medicamentosIndicados = traslate(value);
+                            Reportes.medicamentosIndicados = Listas.traslateFromString(value);
                             Reportes.reportes['Medicamentos'] =
                                 Reportes.medicamentosIndicados;
                           }),
@@ -641,7 +641,7 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
                                 });
                           },
                           onChange: ((value) {
-                            Reportes.medidasGenerales = traslate(value);
+                            Reportes.medidasGenerales = Listas.traslateFromString(value);
                             Reportes.reportes['Medidas_Generales'] =
                                 Reportes.medidasGenerales;
                           }),
@@ -662,7 +662,7 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
                           selection: true,
                           onSelected: () {},
                           onChange: ((value) {
-                            Reportes.oxigenoterapia = traslate(value);
+                            Reportes.oxigenoterapia = Listas.traslateFromString(value);
                             Reportes.reportes['Oxígenoterapia'] =
                                 Reportes.oxigenoterapia;
                           }),
@@ -683,7 +683,7 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
                           selection: true,
                           onSelected: () {},
                           onChange: ((value) {
-                            Reportes.insulinoterapia = traslate(value);
+                            Reportes.insulinoterapia = Listas.traslateFromString(value);
                             Reportes.reportes['Insulinoterapia'] =
                                 Reportes.insulinoterapia;
                           }),
@@ -704,7 +704,7 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
                           selection: true,
                           onSelected: () {},
                           onChange: ((value) {
-                            Reportes.hemoterapia = traslate(value);
+                            Reportes.hemoterapia = Listas.traslateFromString(value);
                             Reportes.reportes['Hemoterapia'] =
                                 Reportes.hemoterapia;
                           }),
@@ -745,7 +745,7 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
                               });
                         },
                         onChange: ((value) {
-                          Reportes.pendientes = traslate(value);
+                          Reportes.pendientes = Listas.traslateFromString(value);
                           Reportes.reportes['Pendientes'] = Reportes.pendientes;
                         }),
                         inputFormat: MaskTextInputFormatter()),
@@ -760,19 +760,197 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
   }
 }
 
-String traduce(List<String> collection) {
-  String string = "";
-  for (var element in collection) {
-    // print('element $element');
-    if (string == "") {
-      string = "$element\n";
-    } else {
-      string = "$string$element\n";
-    }
-  }
-  return string;
+
+class IndicacionesConsulta extends StatefulWidget {
+  const IndicacionesConsulta({super.key});
+
+  @override
+  State<IndicacionesConsulta> createState() => _IndicacionesConsultaState();
 }
 
-List<String> traslate(String value) {
-  return value.split('\n');
+class _IndicacionesConsultaState extends State<IndicacionesConsulta> {
+  var medicamentosTextController = TextEditingController();
+  var licenciasTextController = TextEditingController();
+  var pendientesTextController = TextEditingController();
+  var citasTextController = TextEditingController();
+  var recomendacionesTextController = TextEditingController();
+
+  @override
+  void initState() {
+    medicamentosTextController.text = Listas.traduceToString(Reportes.medicamentosIndicados);
+    licenciasTextController.text = Listas.traduceToString(Reportes.licenciasMedicas);
+    pendientesTextController.text = Listas.traduceToString(Reportes.pendientes);
+    citasTextController.text = Listas.traduceToString(Reportes.citasMedicas);
+    recomendacionesTextController.text =
+        Listas.traduceToString(Reportes.recomendacionesGenerales);
+    // tratamientoTextController.text = Reportes.tratamientoPropuesto;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      color: Colors.black,
+      child: Column(
+        children: [
+          TittlePanel(textPanel: 'Indicaciones'),
+          Expanded(
+              child: SingleChildScrollView(
+                controller: ScrollController(),
+                child: Column(children: [
+                  EditTextArea(
+                      textController: medicamentosTextController,
+                      labelEditText: "Medicamentos",
+                      keyBoardType: TextInputType.multiline,
+                      numOfLines: 5,
+                      withShowOption: true,
+                      selection: true,
+                      onSelected: () {
+                        showDialog(
+                            useSafeArea: true,
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                  child: DialogSelector(
+                                    tittle: 'Medicamentos',
+                                    pathForFileSource:
+                                    'assets/diccionarios/Farmacos.txt',
+                                    typeOfDocument: 'txt',
+                                    onSelected: ((value) {
+                                      setState(() {
+                                        Reportes.medicamentosIndicados.add(value);
+                                        medicamentosTextController.text =
+                                        "${medicamentosTextController.text}$value\n";
+                                      });
+                                    }),
+                                  ));
+                            });
+                      },
+                      onChange: ((value) {
+                        Reportes.medicamentosIndicados = Listas.traslateFromString(value);
+                        Reportes.reportes['Medicamentos'] =
+                            Reportes.medicamentosIndicados;
+                      }),
+                      inputFormat: MaskTextInputFormatter()),
+                  EditTextArea(
+                      textController: licenciasTextController,
+                      labelEditText: "Licencias médicas",
+                      keyBoardType: TextInputType.multiline,
+                      numOfLines: 5,
+                      withShowOption: true,
+                      selection: true,
+                      onSelected: () {
+                        showDialog(
+                            useSafeArea: true,
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                  child: DialogSelector(
+                                    tittle: 'Licencias Médicas Otorgadas',
+                                    pathForFileSource:
+                                    'assets/diccionarios/Farmacos.txt',
+                                    typeOfDocument: 'txt',
+                                    onSelected: ((value) {
+                                      setState(() {
+                                        Reportes.licenciasMedicas.add(value);
+                                        licenciasTextController.text =
+                                        "${licenciasTextController.text}$value\n";
+                                      });
+                                    }),
+                                  ));
+                            });
+                      },
+                      onChange: ((value) {
+                        Reportes.licenciasMedicas = Listas.traslateFromString(value);
+                        Reportes.reportes['Licencia_Medica'] =
+                            Reportes.licenciasMedicas;
+                      }),
+                      inputFormat: MaskTextInputFormatter()),
+                  EditTextArea(
+                      textController: pendientesTextController,
+                      labelEditText: "Pendientes",
+                      keyBoardType: TextInputType.multiline,
+                      numOfLines: 5,
+                      withShowOption: true,
+                      selection: true,
+                      onSelected: () {
+                        showDialog(
+                            useSafeArea: true,
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                  child: DialogSelector(
+                                    tittle: 'Pendientes en la Atención',
+                                    pathForFileSource:
+                                    'assets/diccionarios/Pendientes.txt',
+                                    typeOfDocument: 'txt',
+                                    onSelected: ((value) {
+                                      setState(() {
+                                        Reportes.pendientes.add(value);
+                                        pendientesTextController.text =
+                                        "${pendientesTextController.text}$value\n";
+                                      });
+                                    }),
+                                  ));
+                            });
+                      },
+                      onChange: ((value) {
+                        Reportes.pendientes = Listas.traslateFromString(value);
+                        Reportes.reportes['Pendientes'] = Reportes.pendientes;
+                      }),
+                      inputFormat: MaskTextInputFormatter()),
+                  EditTextArea(
+                      textController: citasTextController,
+                      labelEditText: "Citas médicas",
+                      keyBoardType: TextInputType.multiline,
+                      numOfLines: 5,
+                      withShowOption: true,
+                      onChange: ((value) {
+                        Reportes.citasMedicas = Listas.traslateFromString(value);
+                        Reportes.reportes['Citas'] = Reportes.citasMedicas;
+                      }),
+                      inputFormat: MaskTextInputFormatter()),
+                  EditTextArea(
+                      textController: recomendacionesTextController,
+                      labelEditText: "Recomendaciones generales",
+                      keyBoardType: TextInputType.multiline,
+                      numOfLines: 5,
+                      withShowOption: true,
+                      selection: true,
+                      onSelected: () {
+                        showDialog(
+                            useSafeArea: true,
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                  child: DialogSelector(
+                                    tittle: 'Recomendaciones Generales',
+                                    pathForFileSource:
+                                    'assets/diccionarios/Recomendaciones.txt',
+                                    typeOfDocument: 'txt',
+                                    onSelected: ((value) {
+                                      setState(() {
+                                        Reportes.recomendacionesGenerales.add(value);
+                                        recomendacionesTextController.text =
+                                        "${recomendacionesTextController.text}$value\n";
+                                      });
+                                    }),
+                                  ));
+                            });
+                      },
+                      onChange: ((value) {
+                        Reportes.recomendacionesGenerales = Listas.traslateFromString(value);
+                        Reportes.reportes['Recomendaciones'] =
+                            Reportes.recomendacionesGenerales;
+                      }),
+                      inputFormat: MaskTextInputFormatter()),
+                ]),
+              ))
+        ],
+      ),
+    );
+  }
 }
+
+

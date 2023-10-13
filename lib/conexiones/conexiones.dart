@@ -247,6 +247,7 @@ class Constantes {
 
   static void reinit({List<dynamic>? value}) {
     Constantes.dummyArray = ["Vacio"];
+    Directrices.coordenada = false; // Variable Global para VisualPacientes NO devuelva a Hospitalizados.dart
     // *********************************************
     // print("Constantes reinit value $value ");
     // *********************************************

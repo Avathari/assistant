@@ -56,7 +56,15 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       Quirurgicos.consultarRegistro();
       //Pendientes.consultarRegistro();
       Balances.consultarRegistro();
-
+      // Patologicos del Paciente *************************************
+      Archivos.readJsonToMap(
+          filePath: "${Pacientes.localRepositoryPath}patologicos.json")
+          .then((value) {
+        Pacientes.Patologicos = value;
+      }).whenComplete(() =>
+      Reportes.reportes["Antecedentes_Patologicos_Ingreso"] =
+          Pacientes.antecedentesIngresosPatologicos());
+// Patologicos del Paciente *************************************
       Archivos.readJsonToMap(
               filePath: "${Pacientes.localRepositoryPath}patologicos.json")
           .then((value) {
@@ -64,6 +72,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       }).whenComplete(() =>
               Reportes.reportes["Antecedentes_Patologicos_Ingreso"] =
                   Pacientes.antecedentesIngresosPatologicos());
+// Vitales del Paciente ****************************************
       Archivos.readJsonToMap(
               filePath: "${Pacientes.localRepositoryPath}vitales.json")
           .then((value) {
@@ -73,6 +82,12 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               filePath: "${Pacientes.localRepositoryPath}diagnosticos.json")
           .then((value) {
         Pacientes.Diagnosticos = value;
+      });
+
+      Archivos.readJsonToMap(
+          filePath: "${Pacientes.localRepositoryPath}ventilaciones.json")
+          .then((value) {
+        Pacientes.Ventilaciones = value;
       });
 
       Archivos.readJsonToMap(
@@ -167,7 +182,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           Repositorios.consultarAnalisis();
         });
       }
-// *********************************************
+      // Paraclinicos del Paciente *************************************
       Archivos.readJsonToMap(
               filePath: "${Pacientes.localRepositoryPath}/paraclinicos.json")
           .then((value) {
@@ -182,6 +197,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       }).onError((error, stackTrace) {
         Terminal.printAlert(message: "ERROR al Abrir ${Pacientes.localPath}"
             " - $error : : $stackTrace");
+        Operadores.alertActivity(context: context, tittle: "Error al Abrir ${Pacientes.localPath}",
+        message: " ERROR - $error : : $stackTrace\n"
+            "Reiniciando Loading Activity . . . ");
         Pacientes.loadingActivity(context: context);
       });
 

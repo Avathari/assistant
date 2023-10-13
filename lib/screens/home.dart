@@ -652,7 +652,9 @@ class PacientesPanel extends StatelessWidget {
             HomeButton(
               iconData: Icons.airline_seat_individual_suite_outlined,
               labelButton: "Pacientes Hospitalizados",
-              onPress: () {
+              onPress: () async {
+                Escalas.serviciosHospitalarios = await Archivos.listFromText(
+                    path: 'assets/diccionarios/Servicios.txt', splitChar: ',');
                 toNextScreen(context: context, screen: Hospitalizados());
                 // Operadores.alertActivity(
                 //     context: context,

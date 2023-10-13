@@ -676,7 +676,8 @@ static List? Situacionario = [];
 
   static String pronosticoMedico() {
     return "Estado actual: ${Pacientes.pronosticoEstado}. \n"
-        "Pronóstico Médico: ${Pacientes.pronosticoFuncion}, ${Pacientes.pronosticoVida}, ${Pacientes.pronosticoTiempo}";
+        "Pronóstico Médico: ${Pacientes.pronosticoFuncion}, ${Pacientes.pronosticoVida}, ${Pacientes.pronosticoTiempo}. \n"
+        "Escalas pronósticas: mSOFA ${Valorados.mSOFA}";
   }
 
   static final List<String> Municipios = [
@@ -3955,6 +3956,8 @@ class Patologicos {
         .then((value) {
       // Enfermedades de base del paciente, asi como las Hospitalarias.
       Pacientes.Patologicos = value;
+      Archivos.createJsonFromMap(value,
+          filePath: "${Pacientes.localRepositoryPath}patologicos.json");
     });
   }
 
@@ -4201,7 +4204,10 @@ class Quirurgicos {
             Databases.siteground_database_regpace,
             Quirurgicos.cirugias['consultByIdPrimaryQuery'],
             Pacientes.ID_Paciente)
-        .then((value) => Pacientes.Quirurgicos = value);
+        .then((value) {Pacientes.Quirurgicos = value;
+    Archivos.createJsonFromMap(value,
+        filePath: "${Pacientes.localRepositoryPath}quirurgicos.json");
+        });
   }
 
   static void consultarRegistro() {
@@ -4311,7 +4317,11 @@ class Transfusionales {
             Databases.siteground_database_regpace,
             Transfusionales.transfusiones['consultByIdPrimaryQuery'],
             Pacientes.ID_Paciente)
-        .then((value) => Pacientes.Transfusionales = value);
+        .then((value) {
+          Pacientes.Transfusionales = value;
+        Archivos.createJsonFromMap(value,
+        filePath: "${Pacientes.localRepositoryPath}transfusionales.json");
+  });
   }
 
   static void consultarRegistro() {
@@ -4410,7 +4420,11 @@ class Traumatologicos {
             Databases.siteground_database_regpace,
             Traumatologicos.traumaticos['consultByIdPrimaryQuery'],
             Pacientes.ID_Paciente)
-        .then((value) => Pacientes.Traumatologicos = value);
+        .then((value) {
+      Pacientes.Traumatologicos = value;
+      Archivos.createJsonFromMap(value,
+          filePath: "${Pacientes.localRepositoryPath}traumatologicos.json");
+    });
   }
 
   static void consultarRegistro() {
@@ -5063,8 +5077,8 @@ class Vitales {
         "(SELECT IFNULL(count(*), 0) FROM pace_antropo) as Total_Pacientes;"
   };
 
-  static final List<String> factorActividad = ["0.9", "1", "1.2", "3", "5"];
-  static final List<String> factorEstres = ["0.9", "1", "1.2", "3", "5"];
+  static final List<String> factorActividad = ["0.9", "1.0", "1.2", "3.0", "5.0"];
+  static final List<String> factorEstres = ["0.9", "1.0", "1.2", "3.0", "5.0"];
 
   static List<String> Categorias = [
     'Promedio de TAS',
@@ -5585,19 +5599,6 @@ class Auxiliares {
             Pacientes.ID_Paciente)
         .then((value) {
       Pacientes.Electrocardiogramas = value;
-      // Calculos adicionales
-      // Pacientes.Electrocardiogramas.addAll({
-      //   "isl": (Pacientes.Electrocardiogramas['EC_sV1'] +
-      //       Pacientes.Electrocardiogramas['EC_rV6']),
-      //   "igu": (Pacientes.Electrocardiogramas['EC_rDI'] +
-      //       Pacientes.Electrocardiogramas['EC_sDIII']),
-      //   "il": (Pacientes.Electrocardiogramas['EC_rDI'] +
-      //           Pacientes.Electrocardiogramas['EC_sDIII']) -
-      //       (Pacientes.Electrocardiogramas['EC_rDIII'] +
-      //           Pacientes.Electrocardiogramas['EC_sDI']),
-      //   "vc": (Pacientes.Electrocardiogramas['EC_rAVL'] +
-      //       Pacientes.Electrocardiogramas['EC_sV3'])
-      // });
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "ERROR - $error : : $stackTrace");
     });

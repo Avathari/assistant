@@ -27,6 +27,10 @@ Future<String> imageToBase(String pathFile) async {
   return base64.encode(Uint8List.view(buffer));
 }
 
+class Directrices {
+  static bool? coordenada = false;
+}
+
 class Calendarios {
   static String today({String format = "yyyy.MM.dd"}) {
     return DateFormat(format).format(DateTime.now());
@@ -359,6 +363,23 @@ class Listas {
 
     return totalScores;
   }
+
+  static String traduceToString(List<String> collection) {
+    String string = "";
+    for (var element in collection) {
+      // print('element $element');
+      if (string == "") {
+        string = "$element\n";
+      } else {
+        string = "$string$element\n";
+      }
+    }
+    return string;
+  }
+
+  static List<String> traslateFromString(String value, {String charSplit = '\n'}) {
+    return value.split(charSplit);
+  }
 }
 
 class Alertas {
@@ -596,7 +617,7 @@ class Operadores {
     String? message,
     Function? onCloss,
   }) {
-    Terminal.printWarning(message: '$message');
+
     showDialog(
         context: context,
         builder: (context) {
@@ -935,6 +956,10 @@ class Dialogos {
     String? msg,
     Function? onCloss,
   }) {
+    Terminal.printAlert(
+        message: "$tittle : : \n "
+            "$msg . . .");
+
     return AlertDialog(
       backgroundColor: Theming.secondaryColor,
       title: Text(
