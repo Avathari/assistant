@@ -15,6 +15,7 @@ import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/quimi
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/reactantes.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/rutina.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/tiroideos.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/uroanalisis.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/venosos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/virales.dart';
 import 'package:assistant/values/WidgetValues.dart';
@@ -89,7 +90,8 @@ class _ConmutadorParaclinicosState extends State<ConmutadorParaclinicos> {
         return const Arteriales();
       case "Gasometría Venosa":
         return const Venosos();
-
+      case "Examen General de Orina":
+        return const Uroanalisis();
       case "Conteo de Linfocitos T CD4+":
         return const Linfocitos();
       case "Marcadores Cárdiacos":

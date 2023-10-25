@@ -180,17 +180,17 @@ class _VisualPacientesState extends State<VisualPacientes> {
   Row desktopView() {
     return Row(children: [
       Expanded(
-        flex: 2,
+        flex: isLargeDesktop(context) ? 3: 2,
         child: isTablet(context)
             ? sideBarTablet(context)
             : sideBarDesktop(context),
       ),
-      Expanded(flex: 7, child: pantallasAuxiliares(widget.actualPage)),
+      Expanded(flex: isLargeDesktop(context) ? 14: 7, child: pantallasAuxiliares(widget.actualPage)),
     ]);
   }
 
   void toNextScreen({context, int? index, screen}) {
-    if (isMobile(context) || isTablet(context)) {
+    if (isMobile(context) || isTablet(context) ) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => screen));
     } else {
       setState(() {

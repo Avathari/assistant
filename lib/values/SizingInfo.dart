@@ -21,7 +21,15 @@ bool isTabletAndDesktop(BuildContext context) {
 }
 
 bool isDesktop(BuildContext context) {
-  return MediaQuery.of(context).size.width > desktopSmall; // desktopNormal
+  return MediaQuery.of(context).size.width > desktopSmall // desktopNormal
+      &&
+      MediaQuery.of(context).size.width <= desktopNormal;
+}
+
+bool isLargeDesktop(BuildContext context) {
+  return MediaQuery.of(context).size.width > desktopNormal // desktopNormal
+      &&
+      MediaQuery.of(context).size.width <= desktopExtraLarge;
 }
 
 // print("MediaQuery.of(context).size.width  ${MediaQuery.of(context).size.width}");

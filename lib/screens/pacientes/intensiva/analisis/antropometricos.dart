@@ -1,11 +1,9 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
-import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/ShowText.dart';
-import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/ThreeLabelText.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:carousel_slider/carousel_controller.dart';
@@ -29,9 +27,8 @@ class _AntropometricosState extends State<Antropometricos> {
       children: [
         TittlePanel(color: Colors.black, textPanel: 'Análisis Antropométrico'),
         Expanded(
-          child: SingleChildScrollView(
-            controller: ScrollController(),
-            scrollDirection: Axis.horizontal,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 8.0, left: 8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -304,7 +301,7 @@ class _AntropometricosState extends State<Antropometricos> {
             labelButton: "Copiar en Portapapeles",
             onPress: () {
               Datos.portapapeles(
-                  context: context, text: Valorados.antropometricos);
+                  context: context, text: Valorados.antropometricos(isAbreviado: false));
             },
           ),
         ),

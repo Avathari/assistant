@@ -50,10 +50,11 @@ class _GestionPacientesState extends State<GestionPacientes> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+          foregroundColor: Colors.white,
           backgroundColor: Theming.primaryColor,
           leading: IconButton(
             icon: const Icon(
-              color:Colors.white,
+              color: Colors.white,
               Icons.arrow_back,
             ),
             tooltip: Sentences.regresar,
@@ -62,13 +63,30 @@ class _GestionPacientesState extends State<GestionPacientes> {
                   builder: (BuildContext context) => const Home()));
             },
           ),
-          title:  AppBarText(Sentences.app_pacientes_tittle,),
+          title: AppBarText(
+            Sentences.app_pacientes_tittle,
+          ),
           actions: <Widget>[
+            GrandIcon(
+                labelButton: 'Sin Hospitalizados . . . ',
+                iconData: Icons.bedroom_child_outlined,
+                onPress: () {
+                  _notHospitalizedOther(query: "Hospitalización");
+                }),
+            const SizedBox(width: 10),
+            GrandIcon(
+                labelButton: 'Sin Otras Hospitalizaciones . . . ',
+                iconData: Icons.recent_actors_outlined,
+                onPress: () {
+                  _notHospitalizedOther();
+                }),
             if (isMobile(context))
               GrandIcon(
                   iconData: Icons.bar_chart,
                   onPress: () {
-                    Cambios.toNextActivity(context, tittle: 'Estadisticas de los Pacientes',chyld: const EstadisticasPacientes());
+                    Cambios.toNextActivity(context,
+                        tittle: 'Estadisticas de los Pacientes',
+                        chyld: const EstadisticasPacientes());
                   }),
             CrossLine(isHorizontal: false, thickness: 3, color: Colors.grey),
             IconButton(
@@ -100,11 +118,6 @@ class _GestionPacientesState extends State<GestionPacientes> {
             children: [
               Expanded(
                 flex: 2,
-                // flex: isMobile(context)
-                //     ? 3
-                //     : isTablet(context)
-                //     ? 4
-                //     : 8,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
@@ -196,10 +209,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                 Pacientes.fromJson(
                                                     snapshot.data[posicion]);
                                               });
-                                              Terminal.printNotice(
-                                                message:
-                                                    "Nombre conformado ${Pacientes.nombreCompleto}",
-                                              );
+                                              // Terminal.printNotice(message: "Nombre conformado ${Pacientes.nombreCompleto}",);
                                               // Consulta de Antecedentes No Patológicos **** ***** ******* ****
                                               Eticos.consultarRegistro();
                                               Viviendas.consultarRegistro();
@@ -266,19 +276,17 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                     radius: 50,
                                                     child: snapshot.data[
                                                                     posicion]
-                                                                [
-                                                                'Pace_FIAT'] !=
+                                                                ['Pace_FIAT'] !=
                                                             ''
                                                         ? const Icon(
                                                             Icons.person,
                                                             size: 75.0,
-                                                            color: Colors
-                                                                .black,
+                                                            color: Colors.black,
                                                           )
-                                                        : Image.memory(base64Decode(
-                                                            snapshot.data[
-                                                                    posicion]
-                                                                [
+                                                        : Image.memory(
+                                                            base64Decode(snapshot
+                                                                        .data[
+                                                                    posicion][
                                                                 'Pace_FIAT']))),
                                                 SizedBox(
                                                   width: isMobile(context)
@@ -288,8 +296,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                 Expanded(
                                                   child: Column(
                                                     mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .start,
+                                                        MainAxisAlignment.start,
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
                                                             .start,
@@ -305,16 +312,14 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                           Text(
                                                             "Número Paciente : ${snapshot.data[posicion]['ID_Pace']}",
                                                             textAlign:
-                                                                TextAlign
-                                                                    .left,
+                                                                TextAlign.left,
                                                             style: const TextStyle(
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold,
-                                                                color: Colors
-                                                                    .grey,
-                                                                fontSize:
-                                                                    10),
+                                                                color:
+                                                                    Colors.grey,
+                                                                fontSize: 10),
                                                           ),
                                                           Text(
                                                             "${snapshot.data[posicion]['Pace_Ape_Pat']} ${snapshot.data[posicion]['Pace_Ape_Mat']} "
@@ -323,10 +328,9 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold,
-                                                                color: Colors
-                                                                    .grey,
-                                                                fontSize:
-                                                                    12),
+                                                                color:
+                                                                    Colors.grey,
+                                                                fontSize: 12),
                                                           ),
                                                           Text(
                                                             "${snapshot.data[posicion]['Pace_NSS']} ${snapshot.data[posicion]['Pace_AGRE']}",
@@ -334,10 +338,9 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold,
-                                                                color: Colors
-                                                                    .grey,
-                                                                fontSize:
-                                                                    10),
+                                                                color:
+                                                                    Colors.grey,
+                                                                fontSize: 10),
                                                           ),
                                                           Text(
                                                             "Edad : ${snapshot.data[posicion]['Pace_Eda']}",
@@ -345,10 +348,9 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold,
-                                                                color: Colors
-                                                                    .grey,
-                                                                fontSize:
-                                                                    10),
+                                                                color:
+                                                                    Colors.grey,
+                                                                fontSize: 10),
                                                           ),
                                                         ],
                                                       ),
@@ -364,19 +366,15 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                           //   width: 1,
                                                           // ),
                                                           Expanded(
-                                                            child:
-                                                                IconButton(
+                                                            child: IconButton(
                                                               padding:
                                                                   const EdgeInsets
-                                                                          .all(
-                                                                      1.0),
-                                                              color: Colors
-                                                                  .grey,
+                                                                      .all(1.0),
+                                                              color:
+                                                                  Colors.grey,
                                                               icon: const Icon(
-                                                                  Icons
-                                                                      .person),
-                                                              onPressed:
-                                                                  () {
+                                                                  Icons.person),
+                                                              onPressed: () {
                                                                 showDialog(
                                                                     context:
                                                                         context,
@@ -387,37 +385,36 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                                           "${snapshot.data[posicion]['Pace_Ape_Pat']} "
                                                                           "${snapshot.data[posicion]['Pace_Ape_Mat']} "
                                                                           "\n${snapshot.data[posicion]['Pace_Nome_PI']} ${snapshot.data[posicion]['Pace_Nome_PI']}",
-                                                                          snapshot.data[posicion]['Pace_FIAT'],
+                                                                          snapshot.data[posicion]
+                                                                              [
+                                                                              'Pace_FIAT'],
                                                                           () {
-                                                                        Navigator.of(context).pop();
+                                                                        Navigator.of(context)
+                                                                            .pop();
                                                                       });
                                                                     });
                                                               },
                                                             ),
                                                           ),
                                                           Expanded(
-                                                            child:
-                                                                IconButton(
+                                                            child: IconButton(
                                                               padding:
                                                                   const EdgeInsets
-                                                                          .all(
-                                                                      1.0),
-                                                              color: Colors
-                                                                  .grey,
-                                                              icon: const Icon(
-                                                                  Icons
-                                                                      .update_rounded),
-                                                              onPressed:
-                                                                  () {
+                                                                      .all(1.0),
+                                                              color:
+                                                                  Colors.grey,
+                                                              icon: const Icon(Icons
+                                                                  .update_rounded),
+                                                              onPressed: () {
                                                                 Pacientes
                                                                     .ID_Paciente = snapshot
-                                                                        .data[posicion]
-                                                                    [
-                                                                    'ID_Pace'];
+                                                                            .data[
+                                                                        posicion]
+                                                                    ['ID_Pace'];
                                                                 Pacientes
-                                                                    .Paciente = snapshot
-                                                                        .data[
-                                                                    posicion];
+                                                                        .Paciente =
+                                                                    snapshot.data[
+                                                                        posicion];
                                                                 toOperaciones(
                                                                     context,
                                                                     posicion,
@@ -428,19 +425,15 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                             ),
                                                           ),
                                                           Expanded(
-                                                            child:
-                                                                IconButton(
+                                                            child: IconButton(
                                                               padding:
                                                                   const EdgeInsets
-                                                                          .all(
-                                                                      1.0),
-                                                              color: Colors
-                                                                  .grey,
+                                                                      .all(1.0),
+                                                              color:
+                                                                  Colors.grey,
                                                               icon: const Icon(
-                                                                  Icons
-                                                                      .delete),
-                                                              onPressed:
-                                                                  () {
+                                                                  Icons.delete),
+                                                              onPressed: () {
                                                                 showDialog(
                                                                     context:
                                                                         context,
@@ -451,10 +444,14 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                                         'Eliminar registro',
                                                                         '¿Esta seguro de querer eliminar el registro?',
                                                                         () {
-                                                                          Navigator.of(context).pop();
+                                                                          Navigator.of(context)
+                                                                              .pop();
                                                                         },
                                                                         () {
-                                                                          deleteRegister(snapshot, posicion, context);
+                                                                          deleteRegister(
+                                                                              snapshot,
+                                                                              posicion,
+                                                                              context);
                                                                         },
                                                                       );
                                                                     });
@@ -466,15 +463,16 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                           //     // color: Colors.grey,
                                                           //     thickness: 4),
                                                           Expanded(
-                                                            child:
-                                                                IconButton(
-                                                              padding: const EdgeInsets
+                                                            child: IconButton(
+                                                              padding:
+                                                                  const EdgeInsets
                                                                       .only(
-                                                                  right:
-                                                                      1.0),
-                                                              color: Colors
-                                                                  .grey,
-                                                              icon: Icon(snapshot.data[posicion]
+                                                                      right:
+                                                                          1.0),
+                                                              color:
+                                                                  Colors.grey,
+                                                              icon: Icon(snapshot
+                                                                              .data[posicion]
                                                                           [
                                                                           'Pace_Hosp'] ==
                                                                       'Hospitalización'
@@ -482,12 +480,11 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                                       .local_hotel_sharp
                                                                   : Icons
                                                                       .desk_sharp),
-                                                              onPressed:
-                                                                  () {
-                                                                String
-                                                                    hospen =
+                                                              onPressed: () {
+                                                                String hospen =
                                                                     "";
-                                                                if (snapshot.data[posicion]
+                                                                if (snapshot.data[
+                                                                            posicion]
                                                                         [
                                                                         'Pace_Hosp'] ==
                                                                     'Consulta Externa') {
@@ -510,10 +507,12 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                                             ],
                                                                             snapshot.data[posicion][
                                                                                 'ID_Pace'])
-                                                                    .then((value) =>
-                                                                        null)
-                                                                    .whenComplete(() =>
-                                                                        reiniciar());
+                                                                    .then(
+                                                                        (value) =>
+                                                                            null)
+                                                                    .whenComplete(
+                                                                        () =>
+                                                                            reiniciar());
                                                               },
                                                             ),
                                                           ),
@@ -706,17 +705,18 @@ class _GestionPacientesState extends State<GestionPacientes> {
         foundedItems = value;
         Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
       });
-    }).whenComplete(() => Operadores.alertActivity(
-            context: context,
-            tittle: "Datos Recargados",
-            message: "Registro Actualizado",
-            onAcept: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const GestionPacientes(),
-                ),
-              );
-            }));
+    });
+    // .whenComplete(() => Operadores.alertActivity(
+    //         context: context,
+    //         tittle: "Datos Recargados",
+    //         message: "Registro Actualizado",
+    //         onAcept: () {
+    //           Navigator.of(context).push(
+    //             MaterialPageRoute(
+    //               builder: (BuildContext context) => const GestionPacientes(),
+    //             ),
+    //           );
+    //         }));
   }
 
   void deleteRegister(
@@ -864,6 +864,29 @@ class _GestionPacientesState extends State<GestionPacientes> {
     });
   }
 
+  Future<void> _notHospitalizedOther({String query = "Otra Hospitalización"}) async {
+    List listOfIDs = [];
+    //
+    listOfIDs = await Actividades.consultar(
+        Databases.siteground_database_regpace,
+        "SELECT ID_Pace FROM pace_iden_iden WHERE Pace_Hosp = '$query'");
+    listOfIDs.forEach((element) {
+      // Terminal.printExpected(message: "$element");
+      Actividades.actualizar(
+              Databases.siteground_database_regpace,
+              "UPDATE pace_iden_iden "
+              "SET Pace_Hosp = ? "
+              "WHERE ID_Pace = ?",
+              ["Consulta Externa", element['ID_Pace']],
+              element['ID_Pace'])
+          .then((value) => null)
+          .whenComplete(() => reiniciar())
+          .onError((error, stackTrace) {
+        Terminal.printExpected(message: "ERRNO - $error : : $stackTrace");
+      });
+    });
+  }
+
   // VARIABLES DE LA INTERFAZ ***************** ******* * * * *
   late List? foundedItems = [];
   var gestionScrollController = ScrollController();
@@ -889,11 +912,9 @@ class OperacionesPacientes extends StatefulWidget {
 }
 
 class _OperacionesPacientesState extends State<OperacionesPacientes> {
-
   @override
   void initState() {
-    Terminal.printExpected(
-        message: "Actividad : : ${widget.operationActivity}");
+    // Terminal.printExpected(message: "Actividad : : ${widget.operationActivity}");
 
     switch (widget.operationActivity) {
       case Constantes.Nulo:
@@ -902,7 +923,22 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
         break;
       case Constantes.Register:
         widget._operation_button = 'Registrar';
-
+//
+        turnoValue = Pacientes.Turno[0];
+        sessoValue = Pacientes.Sexo[0];
+        unidadMedicaValue = Pacientes.Unidades[0];
+        hemotipoValue = Items.Hemotipo[0];
+        atencionValue = Pacientes.Atencion[1];
+        statusValue = Pacientes.Status[0];
+        estadoCivilValue = Pacientes.EstadoCivil[0];
+        vivoValue = Pacientes.Vivo[0];
+        escolaridadValue = Pacientes.Escolaridad[0];
+        escolaridadCompletudValue = Pacientes.EscolaridadCompletud[0];
+        //
+        indigenaValue = Pacientes.Indigena[0];
+        indigenaHablanteValue = Pacientes.lenguaIndigena[0];
+        entidadFederativaValue = Pacientes.EntidadesFederativas[0];
+        //
         toBaseImage();
 
         break;
@@ -974,7 +1010,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
     return Scaffold(
       appBar: widget.operationActivity == Constantes.Register
           ? AppBar(
-        title: AppBarText('Registro del Paciente'),
+              title: AppBarText('Registro del Paciente'),
               backgroundColor: Colors.black,
               leading: IconButton(
                 icon: const Icon(
@@ -1005,36 +1041,39 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                   : [],
             )
           : null,
-      body:  isDesktop(context) ? desktopView() :Card(
-        color: const Color.fromARGB(255, 61, 57, 57),
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(8.0),
-          child: isTablet(context) || isMobile(context) ?
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // isMobile(context) || isTablet(context)
-              //     ? returnOperationUserButton(context)
-              //     : Container(),
-              Container(
-                  margin: const EdgeInsets.all(8.0),
-                  decoration: ContainerDecoration.roundedDecoration(),
-                  child: userPresentation(context)),
-              Container(
-                  margin: const EdgeInsets.all(8.0),
-                  decoration: ContainerDecoration.roundedDecoration(),
-                  child: userForm(context)),
-              GrandButton(
-                  weigth: isMobile(context) ? 200 : 1000,
-                  labelButton: widget._operation_button,
-                  onPress: () {
-                    operationMethod(context);
-                  })
-            ],
-          ) :
-          Column()
-        ),
-      ),
+      body: isDesktop(context) || isLargeDesktop(context)
+          ? desktopView()
+          : Card(
+              color: const Color.fromARGB(255, 61, 57, 57),
+              child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(8.0),
+                  child: isTablet(context) || isMobile(context)
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // isMobile(context) || isTablet(context)
+                            //     ? returnOperationUserButton(context)
+                            //     : Container(),
+                            Container(
+                                margin: const EdgeInsets.all(8.0),
+                                decoration:
+                                    ContainerDecoration.roundedDecoration(),
+                                child: userPresentation(context)),
+                            Container(
+                                margin: const EdgeInsets.all(8.0),
+                                decoration:
+                                    ContainerDecoration.roundedDecoration(),
+                                child: userForm(context)),
+                            GrandButton(
+                                weigth: isMobile(context) ? 200 : 1000,
+                                labelButton: widget._operation_button,
+                                onPress: () {
+                                  operationMethod(context);
+                                })
+                          ],
+                        )
+                      : const Column()),
+            ),
     );
   }
 
@@ -1066,23 +1105,24 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                             decoration: ContainerDecoration.roundedDecoration(),
                             child: userForm(context)),
                       ),
-                      Expanded(child: GrandButton(
-                          weigth: isMobile(context) ? 200 : 1000,
-                          labelButton: widget._operation_button,
-                          onPress: () {
-                            operationMethod(context);
-                          }))
+                      Expanded(
+                          child: GrandButton(
+                              weigth: isMobile(context) ? 200 : 1000,
+                              labelButton: widget._operation_button,
+                              onPress: () {
+                                operationMethod(context);
+                              }))
                     ],
                   ),
                 ),
               ],
             ),
           ),
-
         ],
       ),
     );
   }
+
   // Operaciones de Inicio ***** ******* ********** ****
   Future<void> reiniciar() async {
     Archivos.deleteFile(filePath: Pacientes.localPath);
@@ -1157,7 +1197,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
               ? 216
               : isTablet(context)
                   ? 170
-              : 180,
+                  : 180,
           items: Pacientes.Unidades,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -1171,7 +1211,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
               ? 216
               : isTablet(context)
                   ? 170
-              : 180,
+                  : 180,
           items: Pacientes.Turno,
           onChangeValue: (String? newValue) {
             setState(() {
@@ -1186,21 +1226,21 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
               ? 216
               : isTablet(context)
                   ? 170
-              : 180,
+                  : 180,
           onChangeValue: (String? newValue) {
             setState(() {
               atencionValue = newValue!;
             });
           }),
       EditTextArea(
-          keyBoardType:TextInputType.phone,
-          inputFormat:MaskTextInputFormatter(
+          keyBoardType: TextInputType.phone,
+          inputFormat: MaskTextInputFormatter(
               mask: '+## (###) ###-####',
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
-          labelEditText:           'Teléfono',
+          labelEditText: 'Teléfono',
           numOfLines: 1,
-          textController :telefonoTextController),
+          textController: telefonoTextController),
       EditTextArea(
         keyBoardType: TextInputType.datetime,
         inputFormat: MaskTextInputFormatter(
@@ -1234,17 +1274,28 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
             });
           }),
       EditTextArea(
-          keyBoardType:TextInputType.number,
-          inputFormat:MaskTextInputFormatter(
+          keyBoardType: TextInputType.number,
+          inputFormat: MaskTextInputFormatter(
               mask: '###',
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
           numOfLines: 1,
           labelEditText: 'Edad',
-          textController :edadTextController
-          ),
-      EditTextArea(labelEditText:'CURP', numOfLines: 1,textController: curpTextController, keyBoardType: TextInputType.text, inputFormat: MaskTextInputFormatter(),),
-      EditTextArea(labelEditText:'RFC', numOfLines: 1,textController: rfcTextController, keyBoardType: TextInputType.text, inputFormat: MaskTextInputFormatter(),),
+          textController: edadTextController),
+      EditTextArea(
+        labelEditText: 'CURP',
+        numOfLines: 1,
+        textController: curpTextController,
+        keyBoardType: TextInputType.text,
+        inputFormat: MaskTextInputFormatter(),
+      ),
+      EditTextArea(
+        labelEditText: 'RFC',
+        numOfLines: 1,
+        textController: rfcTextController,
+        keyBoardType: TextInputType.text,
+        inputFormat: MaskTextInputFormatter(),
+      ),
       //
       Spinner(
           tittle: "¿Vive?",
@@ -1260,7 +1311,13 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
               vivoValue = newValue!;
             });
           }),
-      EditTextArea(labelEditText:'Ocupación', numOfLines: 1,textController: ocupacionTextController, keyBoardType: TextInputType.text, inputFormat: MaskTextInputFormatter(),),
+      EditTextArea(
+        labelEditText: 'Ocupación',
+        numOfLines: 1,
+        textController: ocupacionTextController,
+        keyBoardType: TextInputType.text,
+        inputFormat: MaskTextInputFormatter(),
+      ),
       Spinner(
           tittle: "Estado civil",
           initialValue: estadoCivilValue,
@@ -1334,8 +1391,11 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           }),
       EditTextArea(
         numOfLines: 1,
-          labelEditText:'Especificar escolaridad', textController:
-          escolaridadEspecificacionTextController, keyBoardType: TextInputType.text, inputFormat: MaskTextInputFormatter(),),
+        labelEditText: 'Especificar escolaridad',
+        textController: escolaridadEspecificacionTextController,
+        keyBoardType: TextInputType.text,
+        inputFormat: MaskTextInputFormatter(),
+      ),
       // spinner(tittle: "Estado actual", statusValue, Pacientes.Status,
       //     (String? newValue) {
       //   setState(() {
@@ -1345,8 +1405,11 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
       //
       EditTextArea(
         numOfLines: 1,
-        labelEditText:'Municipio residencial de Origen', textController:
-      municipioTextController, keyBoardType: TextInputType.text, inputFormat: MaskTextInputFormatter(),),
+        labelEditText: 'Municipio residencial de Origen',
+        textController: municipioTextController,
+        keyBoardType: TextInputType.text,
+        inputFormat: MaskTextInputFormatter(),
+      ),
       // spinner(tittle: "Municipio residencial", municipioValue,
       //     Pacientes.Municipios, (String? newValue) {
       //   setState(() {
@@ -1370,16 +1433,25 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
 
       EditTextArea(
         numOfLines: 1,
-        labelEditText:'Localidad', textController:
-      localidadResidenciaTextController, keyBoardType: TextInputType.text, inputFormat: MaskTextInputFormatter(),),
+        labelEditText: 'Localidad',
+        textController: localidadResidenciaTextController,
+        keyBoardType: TextInputType.text,
+        inputFormat: MaskTextInputFormatter(),
+      ),
       EditTextArea(
         numOfLines: 1,
-        labelEditText:'Duración', textController:
-      duracionResidenciaTextController, keyBoardType: TextInputType.text, inputFormat: MaskTextInputFormatter(),),
+        labelEditText: 'Duración',
+        textController: duracionResidenciaTextController,
+        keyBoardType: TextInputType.text,
+        inputFormat: MaskTextInputFormatter(),
+      ),
       EditTextArea(
         numOfLines: 1,
-        labelEditText:'Domicilio', textController:
-      domicilioTextController, keyBoardType: TextInputType.text, inputFormat: MaskTextInputFormatter(),),
+        labelEditText: 'Domicilio',
+        textController: domicilioTextController,
+        keyBoardType: TextInputType.text,
+        inputFormat: MaskTextInputFormatter(),
+      ),
       //
       Spinner(
           tittle: "Indigena (Si/No)",
@@ -1418,8 +1490,11 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           }),
       EditTextArea(
         numOfLines: 1,
-        labelEditText:'Especificar lenguaje', textController:
-      indigenaHablanteEspecificacioTextController, keyBoardType: TextInputType.text, inputFormat: MaskTextInputFormatter(),),
+        labelEditText: 'Especificar lenguaje',
+        textController: indigenaHablanteEspecificacioTextController,
+        keyBoardType: TextInputType.text,
+        inputFormat: MaskTextInputFormatter(),
+      ),
     ];
   }
 
@@ -1571,175 +1646,187 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                 options: CarouselOptions(
                     height: isMobile(context) ? 600 : 500,
                     enableInfiniteScroll: false,
-                    viewportFraction: 1.0)) :
-        isDesktop(context) ?
-        Column(
-          children: [
-            Expanded(
-              flex: 5,
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 4,
-                    child: CircleAvatar(
-                      backgroundColor: const Color.fromARGB(255, 27, 32, 30),
-                      radius: 150,
-                      // ignore: unnecessary_null_comparison
-                      child: img != ""
-                          ? ClipOval(
-                          child: Image.memory(
-                            base64Decode(img),
-                            width: 250,
-                            height: 250,
-                            fit: BoxFit.cover,
-                          ))
-                          : const ClipOval(child: Icon(Icons.person)),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colores.backgroundWidget,
-                                  onPrimary: Colors.grey,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)),
-                                  minimumSize: const Size(75, 75)),
-                              onPressed: () {
-                                choiseFromCamara();
-                              },
-                              child: const Icon(Icons.camera)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colores.backgroundWidget,
-                                  onPrimary: Colors.grey,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(50)),
-                                  minimumSize: const Size(50, 50)),
-                              onPressed: () {
-                                toBaseImage();
-                              },
-                              child: const Icon(Icons.person)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colores.backgroundWidget,
-                                  onPrimary: Colors.grey,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)),
-                                  minimumSize: const Size(75, 75)),
-                              onPressed: () {
-                                choiseFromDirectory();
-                              },
-                              child: const Icon(Icons.file_open)),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(child: CrossLine()),
-            Expanded(
-              flex: 7,
-              child: SingleChildScrollView(
-                controller: ScrollController(),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: component(context),
-                ),
-              ),
-            ),
-          ],
-        )
-            : Row(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: const Color.fromARGB(255, 27, 32, 30),
-                    radius: 150,
-                    // ignore: unnecessary_null_comparison
-                    child: img != ""
-                        ? ClipOval(
-                            child: Image.memory(
-                            base64Decode(img),
-                            width: 250,
-                            height: 250,
-                            fit: BoxFit.cover,
-                          ))
-                        : const ClipOval(child: Icon(Icons.person)),
-                  ),
-                  const SizedBox(
-                    width: 30,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    viewportFraction: 1.0))
+            : isDesktop(context) || isLargeDesktop(context)
+                ? Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                primary: Colores.backgroundWidget,
-                                onPrimary: Colors.grey,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20)),
-                                minimumSize: const Size(75, 75)),
-                            onPressed: () {
-                              choiseFromCamara();
-                            },
-                            child: const Icon(Icons.camera)),
+                      Expanded(
+                        flex: 5,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 4,
+                              child: CircleAvatar(
+                                backgroundColor:
+                                    const Color.fromARGB(255, 27, 32, 30),
+                                radius: 150,
+                                // ignore: unnecessary_null_comparison
+                                child: img != ""
+                                    ? ClipOval(
+                                        child: Image.memory(
+                                        base64Decode(img),
+                                        width: 250,
+                                        height: 250,
+                                        fit: BoxFit.cover,
+                                      ))
+                                    : const ClipOval(child: Icon(Icons.person)),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 2.0,
+                                        left: 2.0,
+                                        top: 2.0,
+                                        bottom: 2.0),
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            primary: Colores.backgroundWidget,
+                                            onPrimary: Colors.grey,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            minimumSize: const Size(75, 75)),
+                                        onPressed: () {
+                                          choiseFromCamara();
+                                        },
+                                        child: const Icon(Icons.camera)),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            primary: Colores.backgroundWidget,
+                                            onPrimary: Colors.grey,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(50)),
+                                            minimumSize: const Size(50, 50)),
+                                        onPressed: () {
+                                          toBaseImage();
+                                        },
+                                        child: const Icon(Icons.person)),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            primary: Colores.backgroundWidget,
+                                            onPrimary: Colors.grey,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            minimumSize: const Size(75, 75)),
+                                        onPressed: () {
+                                          choiseFromDirectory();
+                                        },
+                                        child: const Icon(Icons.file_open)),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                primary: Colores.backgroundWidget,
-                                onPrimary: Colors.grey,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50)),
-                                minimumSize: const Size(50, 50)),
-                            onPressed: () {
-                              toBaseImage();
-                            },
-                            child: const Icon(Icons.person)),
+                      Expanded(child: CrossLine()),
+                      Expanded(
+                        flex: 7,
+                        child: SingleChildScrollView(
+                          controller: ScrollController(),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: component(context),
+                          ),
+                        ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                primary: Colores.backgroundWidget,
-                                onPrimary: Colors.grey,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20)),
-                                minimumSize: const Size(75, 75)),
-                            onPressed: () {
-                              choiseFromDirectory();
-                            },
-                            child: const Icon(Icons.file_open)),
+                    ],
+                  )
+                : Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: const Color.fromARGB(255, 27, 32, 30),
+                        radius: 150,
+                        // ignore: unnecessary_null_comparison
+                        child: img != ""
+                            ? ClipOval(
+                                child: Image.memory(
+                                base64Decode(img),
+                                width: 250,
+                                height: 250,
+                                fit: BoxFit.cover,
+                              ))
+                            : const ClipOval(child: Icon(Icons.person)),
+                      ),
+                      const SizedBox(
+                        width: 30,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: Colores.backgroundWidget,
+                                    onPrimary: Colors.grey,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    minimumSize: const Size(75, 75)),
+                                onPressed: () {
+                                  choiseFromCamara();
+                                },
+                                child: const Icon(Icons.camera)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: Colores.backgroundWidget,
+                                    onPrimary: Colors.grey,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(50)),
+                                    minimumSize: const Size(50, 50)),
+                                onPressed: () {
+                                  toBaseImage();
+                                },
+                                child: const Icon(Icons.person)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: Colores.backgroundWidget,
+                                    onPrimary: Colors.grey,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    minimumSize: const Size(75, 75)),
+                                onPressed: () {
+                                  choiseFromDirectory();
+                                },
+                                child: const Icon(Icons.file_open)),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: component(context),
+                        ),
                       )
                     ],
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: component(context),
-                    ),
-                  )
-                ],
-              ));
+                  ));
   }
 
   userForm(BuildContext context) {

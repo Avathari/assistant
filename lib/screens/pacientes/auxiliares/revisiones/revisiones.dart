@@ -1,5 +1,6 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/hepatometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/globulares.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/antropometricos.dart';
@@ -2087,17 +2088,17 @@ class _RevisionesState extends State<Revisiones> {
               CrossLine(),
               ValuePanel(
                 firstText: "AST/ALT",
-                secondText: Valores.relacionASTALT.toStringAsFixed(2),
+                secondText:  Hepatometrias.relacionASTALT.toStringAsFixed(2),
                 thirdText: "",
               ),
               ValuePanel(
                 firstText: "ALT/FA",
-                secondText: Valores.relacionALTFA.toStringAsFixed(2),
+                secondText: Hepatometrias.relacionALTFA.toStringAsFixed(2),
                 thirdText: "",
               ),
               ValuePanel(
                 firstText: "Factor R",
-                secondText: Valores.factorR.toStringAsFixed(2),
+                secondText: Hepatometrias.factorR.toStringAsFixed(2),
                 thirdText: "",
               ),
             ],

@@ -28,9 +28,8 @@ class _GasometricosState extends State<Gasometricos> {
       children: [
         TittlePanel(color: Colors.black, textPanel: 'Análisis Gasométrico'),
         Expanded(
-          child: SingleChildScrollView(
-            controller: ScrollController(),
-            scrollDirection: Axis.horizontal,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 8.0, left: 8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

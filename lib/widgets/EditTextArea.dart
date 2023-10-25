@@ -69,7 +69,7 @@ class _EditTextAreaState extends State<EditTextArea> {
       child: Row(
         children: [
           Expanded(
-            flex: 9,
+            flex: isDesktop(context) ? 14: 9,
             child: TextField(
               maxLength: widget.limitOfChars == 0 ? null : widget.limitOfChars,
               inputFormatters: [widget.inputFormat],
@@ -123,7 +123,7 @@ class _EditTextAreaState extends State<EditTextArea> {
           ),
           widget.withShowOption
               ? Expanded(
-                  flex: isTablet(context) ? 2 : 3,
+                  flex: isTablet(context) ? 2 : isMobile(context) ? 3  : 2,
                   child: Container(
                     padding: const EdgeInsets.all(1.0),
                     margin: const EdgeInsets.all(2.0),

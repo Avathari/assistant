@@ -29,9 +29,8 @@ class _HidricosState extends State<Hidricos> {
       children: [
         TittlePanel(color: Colors.black, textPanel: 'Análisis Hídrico'),
         Expanded(
-          child: SingleChildScrollView(
-            controller: ScrollController(),
-            scrollDirection: Axis.horizontal,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 8.0, left: 8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

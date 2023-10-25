@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math' as math;
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/renometrias.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:dart_numerics/dart_numerics.dart' as numerics;
 
@@ -264,6 +265,7 @@ class Valores {
     concentracionMediaHemoglobina = double.parse(json['CMHC'] ?? '0');
     volumenCorpuscularMedio = double.parse(json['VCM'] ?? '0');
     hemoglobinaCorpuscularMedia = double.parse(json['HCM'] ?? '0');
+    anchoDistribucionEritrocitaria = double.parse(json['RDW'] ?? '0');
 
     plaquetas = double.parse(json['Plaquetas'] ?? '0');
 
@@ -279,6 +281,10 @@ class Valores {
     acidoUrico = double.parse(json['Acido_Urico'] ?? '0');
     nitrogenoUreico = double.parse(json['Nitrogeno_Ureico'] ?? '0');
 
+    //
+    tiempoProtrombina = double.parse(json['Tiempo_Protrombina'] ?? '0');
+    tiempoTromboplastina = double.parse(json['TP_Tromboplastina'] ?? '0');
+    INR = double.parse(json['Normalized_Ratio'] ?? '0');
     //
     fechaElectrolitos = json['Fecha_Registro_Electrolitos'] ?? '';
     sodio = double.parse(json['Sodio'] ?? '0');
@@ -771,12 +777,15 @@ class Valores {
       concentracionMediaHemoglobina,
       volumenCorpuscularMedio,
       hemoglobinaCorpuscularMedia,
+  anchoDistribucionEritrocitaria,
       plaquetas,
       leucocitosTotales,
       linfocitosTotales,
       neutrofilosTotales,
       monocitosTotales;
 
+  // PANEL FERRICO
+  static double? ferritinaSerica, transferrinaSerica, hierroSerico;
   //
   static String? fechaQuimicas;
   static double? glucosa, urea, creatinina, acidoUrico, nitrogenoUreico;
@@ -794,6 +803,8 @@ class Valores {
       albuminaSerica,
       proteinasTotales;
 
+  //
+  static double? tiempoProtrombina, tiempoTromboplastina, INR;
   //
   static String? fechaGasometriaVenosa, fechaGasometriaArterial;
   static double? pHArteriales,
@@ -824,7 +835,7 @@ class Valores {
       factorReumatoide,
       anticuerpoCitrulinado;
 
-  //
+  // PARAMETROS ELECTROCARDIOGRAMA
   static String? ritmoCardiaco = '',
       segmentoST = '',
       patronQRS = '',
@@ -851,8 +862,7 @@ class Valores {
       rDIII,
       sDIII;
 
-  //
-  // Parámetros Ventilatorios
+  // PARÁMETROS VENTILATORIO
   static String? fechaVentilaciones = '', modalidadVentilatoria = '';
   static int? frecuenciaVentilatoria = 0,
       fraccionInspiratoriaVentilatoria = 0,
@@ -1158,105 +1168,14 @@ class Valores {
     }
   }
 
-  static double get tasaRenalCrockoft_Gault {
-    if (Valores.creatinina! != 0) {
-      return ((140 - Valores.edad!) *
-          Valores.pesoCorporalTotal! /
-          (72 * Valores.creatinina!));
-    } else {
-      return 0.0;
-    }
-  }
-
-  static double get tasaRenalMDRD {
-    if (Valores.sexo! == 'Masculino') {
-      return ((186.3 *
-          ((math.pow(Valores.creatinina!, -1.154) *
-              (math.pow(Valores.edad!, -0.203) * (1.0) * (1.0))))));
-    } else if (Valores.sexo! == 'Femenino') {
-      return ((186.3 *
-          ((math.pow(Valores.creatinina!, -1.154) *
-              (math.pow(Valores.edad!, -0.203) * (1.018) * (1.0))))));
-    } else {
-      return 0.0;
-    }
-  }
-
-  static double get tasaRenalCKDEPI {
-    if (Valores.sexo! == 'Masculino') {
-      return ((141 *
-          (math.pow((Valores.creatinina! / 0.9), -0.411)) *
-          (math.pow((Valores.creatinina! / 0.9), -1.209)) *
-          (math.pow(0.993, Valores.edad!)) *
-          (1.0) *
-          (1.0)));
-    } else if (Valores.sexo! == 'Femenino') {
-      return ((141 *
-          (math.pow((Valores.creatinina! / 0.9), -0.411)) *
-          (math.pow((Valores.creatinina! / 0.9), -1.209)) *
-          (math.pow(0.993, Valores.edad!)) *
-          (1.018) *
-          (1.0)));
-    } else {
-      return 0.0;
-    }
-  }
-
-  static String get claseTasaRenal {
-    String clasificacion = '';
-    double tfgPace = (Valores.tasaRenalCrockoft_Gault +
-            Valores.tasaRenalMDRD +
-            Valores.tasaRenalCKDEPI) /
-        3;
-    if (tfgPace <= 15) {
-      clasificacion =
-          "Estadio G5 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
-    } else if (tfgPace <= 29) {
-      clasificacion =
-          "Estadio G4 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
-    } else if (tfgPace <= 44) {
-      clasificacion =
-          "Estadio G3b  ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
-    } else if (tfgPace <= 59) {
-      clasificacion =
-          "Estadio G3a ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
-    } else if (tfgPace <= 89) {
-      clasificacion =
-          "Estadio G2 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
-    } else if (tfgPace <= 140) {
-      clasificacion =
-          "Estadio G1 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
-    } else {
-      clasificacion =
-          "Estadio G1 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2)";
-    }
-
-    return clasificacion;
-  }
-
-  static double get ureaCreatinina => Valores.urea! / Valores.creatinina!;
-
-  static String get uremia {
-    if (Valores.ureaCreatinina >= 20) {
-      return 'Azoemia Prerrenal';
-    } else if (Valores.ureaCreatinina > 10 && Valores.ureaCreatinina > 15) {
-      return 'Azoemia Posrrenal';
-    } else if (Valores.ureaCreatinina <= 10) {
-      return 'Azoemia Renal';
-    } else {
-      return 'Normal';
-    }
-  }
-
+  // CALCULOS CHOQUE
   static double get indiceChoque => Valores.frecuenciaCardiaca! / Valores.tensionArterialSystolica!;
  // Si Mayor a 1.0, alta probabiilidad de Choque ; 0.5 - 0.7
 
   static double get indiceChoqueModificado => Valores.frecuenciaCardiaca! / Valores.presionArterialMedia!;
   // 0.7 - 1.3
 
-  // # ######################################################
-  // # Ajustes de Potasio [K+]
-  // # ######################################################
+  // CALCULOS POTASIO
   static double get deltaPotasio {
     if (Valores.pesoCorporalTotal != 0 &&
         Valores.pesoCorporalTotal != null &&
@@ -1332,10 +1251,7 @@ class Valores {
     }
   }
 
-  // # ######################################################
-  // # Antropométricos
-  // # ######################################################
-
+  // CALCULOS ANTROPOMETRICOS
   static double get pesoCorporalPredicho {
     print("Valores.sexo ${Valores.sexo}");
     if (Valores.sexo == "Masculino") {
@@ -1641,6 +1557,7 @@ class Valores {
   static double get AM =>
       ((3.1416) * math.pow(((perimetroMesobraquial) / (2 * 3.1416)), 2));
 
+  // CALCULOS ENERGÉTICOS
   static double get gastoEnergeticoBasal {
     if (Valores.sexo == "Masculino") {
       return 655 +
@@ -1738,6 +1655,7 @@ class Valores {
 
   // static double get SC => (math.pow(Valores.pesoCorporalTotal!, 0.425)) * (math.pow(Valores.alturaPaciente!, 0.725) * 0.007184);
 
+  // CALCULOS HEMODINAMICOS
   static double get presionArterialMedia =>
       (Valores.tensionArterialSystolica! +
           (2 * Valores.tensionArterialDyastolica!)) /
@@ -1821,52 +1739,6 @@ class Valores {
     return 0.5;
   }
 
-  // Analisis de los Parámetros Hepáticos *******************
-  static double get relacionASTALT {
-    if (Valores.alaninoaminotrasferasa! != 0 &&
-        Valores.aspartatoaminotransferasa! != 0) {
-      return (Valores.alaninoaminotrasferasa! /
-          Valores.aspartatoaminotransferasa!);
-    } else {
-      return double.nan;
-    }
-  }
-
-  static double get factorR {
-    if (Valores.aspartatoaminotransferasa! != 0 &&
-        Valores.fosfatasaAlcalina! != 0) {
-      return (Valores.aspartatoaminotransferasa! / 40) /
-          (Valores.fosfatasaAlcalina! / 104);
-    } else {
-      return double.nan;
-    }
-  }
-
-  static double get relacionALTFA {
-    if (Valores.alaninoaminotrasferasa! != 0 &&
-        Valores.fosfatasaAlcalina! != 0) {
-      return (Valores.alaninoaminotrasferasa! / Valores.fosfatasaAlcalina!);
-    } else {
-      return double.nan;
-    }
-  }
-
-  static double get aniNASH {
-    // ANI = -58,5 + 0,637 (MCV) + 3,91 (AST/ALT) – 0,406 (IMC) + 6,35 para hombres
-    if (Valores.sexo == 'Masculino') {
-      return (-58.5 + (0.637 * Valores.volumenCorpuscularMedio!)) + (3.91
-          * (Valores.aspartatoaminotransferasa! /
-              Valores.alaninoaminotrasferasa!)) -
-          ((0.406 * Valores.imc) + 6.35); //  para hombres
-    }       else if (Valores.sexo == 'Femenino') {
-        return (-58.5 + (0.637 * Valores.volumenCorpuscularMedio!)) + (3.91
-            * (Valores.aspartatoaminotransferasa! / Valores.alaninoaminotrasferasa!)) -
-            ((0.406 * Valores.imc) + 6.35); //  para hombres
-
-      } else {
-      return double.nan;
-    }
-  }
 
 
   // # Parametros Hemodinamicos ******************************************
@@ -1905,7 +1777,7 @@ class Valores {
     }
   }
 
-  // # Parámetros Gasométricos *******************************************
+  // CALCULOS GASOMETRICOS
   static String get trastornoPrimario {
     if (Valores.pHArteriales! < 7.34) {
       return 'Acidemia';
@@ -1928,7 +1800,6 @@ class Valores {
     }
   }
 
-  // # ############## ######### #######
   static String get alteracionRespiratoria {
     if (Valores.pcoArteriales! < 35) {
       return 'Hipocapnia';
@@ -2160,9 +2031,7 @@ class Valores {
   // # Cociente Respiratorio
   static double get RI => 0.8;
 
-  // # ######################################################
   // # Concentración de Hidrigeniones H+
-  // # ######################################################
   static double get H =>
       24 * (Valores.pcoArteriales! / Valores.bicarbonatoArteriales!);
 
@@ -3016,7 +2885,7 @@ class Valorados {
       "Área Adiposa Mesobraquial ${Valores.areaAdiposaMesobraquial} cm2, "
       "Área Mesobraquial ${Valores.areaMesobraquial} cm2. ";
 
-  static String get antropometricos {
+  static String antropometricos({bool isAbreviado = true}) {
     String indiceCaderaCintura = '', grasaCorporal = '';
     if (Valores.circunferenciaCintura! != 0 ||
         Valores.circunferenciaCadera! != 0) {
@@ -3032,16 +2901,23 @@ class Valorados {
           "Grasa Corporal Porcentual ${Valores.grasaCorporalEsencial.toStringAsFixed(2)} %, "
           "Peso Corporal Magro ${Valores.porcentajeCorporalMagro.toStringAsFixed(2)} Kg. ";
     }
-    return "Análisis de Medidas Corporales: "
-        "Peso Corporal Ideal ${Valores.pesoCorporalPredicho.toStringAsFixed(2)} Kg, (${Valores.PCIP.toStringAsFixed(2)} %), "
-        "Peso Corporal Ajustado ${Valores.pesoCorporalAjustado.toStringAsFixed(2)} Kg, "
-        "Exceso de Peso Corporal ${Valores.excesoPesoCorporal.toStringAsFixed(2)} Kg, "
-        "Indice de Masa Corporal ${Valores.imc.toStringAsFixed(2)} Kg/m2. (${Valores.claseIMC}). "
-        "Peso Corporal Blanco ${Valores.PCB_25.toStringAsFixed(2)} Kg, "
-        "Peso Corporal Blanco (I.M.C. 30) ${Valores.PCB_30.toStringAsFixed(2)} Kg. "
-        "Superficie Corporal Total ${Valores.SC.toStringAsFixed(2)} m2. "
-        "Peso Corporal Magro ${Valores.pesoCorporalMagro.toStringAsFixed(2)} Kg. "
-        "$indiceCaderaCintura";
+    if (isAbreviado) {
+      return "Análisis de Medidas Corporales: "
+          "Peso Corporal Ideal ${Valores.pesoCorporalPredicho.toStringAsFixed(2)} Kg, "
+          "Indice de Masa Corporal ${Valores.imc.toStringAsFixed(2)} Kg/m2. (${Valores.claseIMC}). "
+          "Superficie Corporal Total ${Valores.SC.toStringAsFixed(2)} m2. ";
+    }else {
+      return "Análisis de Medidas Corporales: "
+          "Peso Corporal Ideal ${Valores.pesoCorporalPredicho.toStringAsFixed(2)} Kg, (${Valores.PCIP.toStringAsFixed(2)} %), "
+          "Peso Corporal Ajustado ${Valores.pesoCorporalAjustado.toStringAsFixed(2)} Kg, "
+          "Exceso de Peso Corporal ${Valores.excesoPesoCorporal.toStringAsFixed(2)} Kg, "
+          "Indice de Masa Corporal ${Valores.imc.toStringAsFixed(2)} Kg/m2. (${Valores.claseIMC}). "
+          "Peso Corporal Blanco ${Valores.PCB_25.toStringAsFixed(2)} Kg, "
+          "Peso Corporal Blanco (I.M.C. 30) ${Valores.PCB_30.toStringAsFixed(2)} Kg. "
+          "Superficie Corporal Total ${Valores.SC.toStringAsFixed(2)} m2. "
+          "Peso Corporal Magro ${Valores.pesoCorporalMagro.toStringAsFixed(2)} Kg. "
+          "$indiceCaderaCintura";
+    }
   }
 
   static String get metabolometrias =>
@@ -3053,11 +2929,7 @@ class Valorados {
       "Gasto Energético Total ${Valores.gastoEnergeticoTotal.toStringAsFixed(2)} kCal/dia. "
       "Fibra total ${Valores.fibraDietaria.toStringAsFixed(2)} gr/Día";
 
-  static String get renales => "Tasa de Filtrado Glomerular : "
-      "${Valores.tasaRenalCrockoft_Gault.toStringAsFixed(2)} mL/min/1.73 m2 (Cockcroft-Gault), "
-      "${Valores.tasaRenalMDRD.toStringAsFixed(2)} mL/min/1.73 m2 (M.D.R.D. 4), "
-      "${Valores.tasaRenalCKDEPI.toStringAsFixed(2)} mL/min/1.73 m2 (C.K.D. E.P.I.); "
-      "Clasificación (Estadio) ${Valores.claseTasaRenal} (KDOQI / KDIGO).";
+
 
   static String get hidricos =>
       "Requerimiento hídrico diario: ${Valores.requerimientoHidrico.toStringAsFixed(0)} mL/dia (${Valores.constanteRequerimientos} mL/Kg/dia), "
@@ -3095,7 +2967,7 @@ class Valorados {
 }
 
 class Formatos {
-  static String get dietasAyuno {
+    static String get dietasAyuno {
     return 'Ayuno hasta nueva orden';
   }
 
@@ -3306,6 +3178,67 @@ class Formatos {
         "$compania";
   }
 
+    static String get viviendasSimplificado {
+      // Variables ******** **** ********* ******** **********
+      String formacion = "",
+          comodidades = "",
+          servicios = "",
+          conformacion = "";
+
+      // Formación ******** **** ********* ******** **********
+      if (Valores.viviendaSala) {
+        formacion = "$formacion con sala";
+      }
+      if (Valores.viviendaComedor) {
+        formacion = "$formacion, comedor";
+      }
+      if (Valores.viviendaBano) {
+        formacion = "$formacion, baño";
+      }
+      if (Valores.viviendaHabitacionesSeparadas) {
+        formacion = "$formacion, habitaciones separadas";
+      }
+      // Servicios ******** **** ********* ******** **********
+      if (Valores.viviendaAguaPotable) {
+        servicios = "$servicios con agua potable";
+      }
+      if (Valores.viviendaDrenaje) {
+        servicios = "$servicios, drenaje";
+      }
+      if (Valores.viviendaAlcantarillado) {
+        servicios = "$servicios, alcantarillado";
+      }
+      if (Valores.viviendaElectricidad) {
+        servicios = "$servicios, electricidad";
+      }
+      // Comodidades ******** **** ********* ******** **********
+      if (Valores.viviendaTelevision) {
+        comodidades = "$comodidades con televisión";
+      }
+      if (Valores.viviendaEstufa) {
+        comodidades = "$comodidades, estufa";
+      }
+      if (Valores.viviendaHornoLena) {
+        comodidades = "$comodidades, leña";
+      }
+      // Conformación ******** **** ********* ******** **********
+      if (Valores.viviendaPatioDelantero) {
+        conformacion = "$conformacion con patio delantero";
+      } else {
+        conformacion = "$conformacion sin patio delantero";
+      }
+      if (Valores.viviendaPatioTrasero) {
+        conformacion = "$conformacion, con patio trasero";
+      } else {
+        conformacion = "$conformacion, sin patio trasero";
+      }
+      // ******** **** ********* ******** **********
+      return "Vivienda: Propiedad ${Valores.propiedadVivienda}. "
+          "Conformación interna de la vivienda con separación habitacional$formacion. "
+          "Servicios públicos habitacionales$servicios. "
+          "Servicios domiciliarios$comodidades. "
+          "Conformación externa de la vivienda$conformacion. \n";
+    }
   static String get alimentarios {
     return "Hábitos alimenticios: "
         "${Valores.alimentacionDiariaDescripcion}. "
@@ -3500,13 +3433,13 @@ class Formatos {
         suspension = "";
       }
       // ***** // ******************** // ************
-      drogadismo = "Drogadismo iniciado a los ${Valores.edadInicioDrogadismo}, "
+      drogadismo = "Toxicomania iniciado a los ${Valores.edadInicioDrogadismo}, "
           "con duración aproximada de  ${Valores.duracionAnosDrogadismo} años, "
           "a razón de  ${Valores.periodicidadDrogadismo} cada  ${Valores.intervaloDrogadismo}. "
           "$suspension"
           "Tipo de drogas usadas ( ${Valores.tiposDrogadismoDescripcion}). ";
     } else {
-      drogadismo = 'Drogadismo negado. ';
+      drogadismo = 'Toxicomanias negadas. ';
     }
     // ************* ********** ************** ***
 
@@ -3678,7 +3611,7 @@ class Formatos {
       "Respecto a la función renal  con "
       "creatinina ${Valores.creatinina!.toStringAsFixed(1)} mg/dL, "
       "urea ${Valores.urea!.toStringAsFixed(1)} mg/dL; "
-      "tasa de filtrado glomerular ${Valores.tasaRenalCrockoft_Gault.toStringAsFixed(0)} mL/min/1.73 m2 (Cockcroft - Gault). \n"
+      "tasa de filtrado glomerular ${Renometrias.tasaRenalCrockoft_Gault.toStringAsFixed(0)} mL/min/1.73 m2 (Cockcroft - Gault). \n"
       "pH ${Valores.pHArteriales}, "
       "HCO3- ${Valores.bicarbonatoArteriales!.toStringAsFixed(1)} mmol/L, "
       "E.B. ${Valores.EB.toStringAsFixed(1)} mmol/L. " // excesoBaseArteriales
@@ -4842,7 +4775,6 @@ class Items {
     "Centésimo Noveno",
   ];
 }
-
 
 
 class Parenterales {

@@ -1,12 +1,12 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
-import 'package:assistant/values/SizingInfo.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/citometrias.dart';
+import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
-import 'package:assistant/widgets/Spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -62,13 +62,27 @@ class _BiometriasState extends State<Biometrias> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Hemoglobina ($unidadMedidaHemoglobina)',
                 numOfLines: 1,
+                onChange: (String value) {
+                  if (textHemoglobinaResultController.text.isNotEmpty)
+                    Valores.hemoglobina =
+                        double.parse(textHemoglobinaResultController.text);
+                },
               ),
               EditTextArea(
                 textController: textEritrocitosResultController,
                 keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
+                inputFormat:
+                MaskTextInputFormatter(
+                    mask: '#.##',
+                    filter: {"#": RegExp(r'[0-9]')},
+                    type: MaskAutoCompletionType.lazy),
                 labelEditText: 'Eritrocitos ($unidadMedidaEritrocitos)',
                 numOfLines: 1,
+                onChange: (String value) {
+                  if (textEritrocitosResultController.text.isNotEmpty)
+                    Valores.eritrocitos =
+                        double.parse(textEritrocitosResultController.text);
+                },
               ),
               EditTextArea(
                 textController: textHematocritoResultController,
@@ -76,6 +90,32 @@ class _BiometriasState extends State<Biometrias> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Hematocrito ($unidadMedidaHematocrito)',
                 numOfLines: 1,
+                onChange: (String value) {
+                  if (textHematocritoResultController.text.isNotEmpty) {
+                    Valores.hematocrito =
+                        double.parse(textHematocritoResultController.text);
+                    //
+                    setState(() {
+                      textCMHCResultController.text =
+                          Citometrias.CMHC.toStringAsFixed(2);
+                      textVCMResultController.text = Citometrias.VCM.toStringAsFixed(2);
+                      textHCMResultController.text = Citometrias.HCM.toStringAsFixed(2);
+                    });
+                  }
+                },
+              ),
+              EditTextArea(
+                textController: textADEResultController,
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'RWD / ADE ($unidadMedidaADE)',
+                numOfLines: 1,
+                onChange: (String value) {
+                  if (textADEResultController.text.isNotEmpty) {
+                    Valores.anchoDistribucionEritrocitaria =
+                        double.parse(textADEResultController.text);
+                  }
+                },
               ),
 
               EditTextArea(
@@ -152,7 +192,6 @@ class _BiometriasState extends State<Biometrias> {
                           weigth: 2000,
                           onPress: () {
                             operationMethod();
-
                           }),
                     )
                   ],
@@ -300,6 +339,10 @@ class _BiometriasState extends State<Biometrias> {
   var textHCMResultController = TextEditingController();
   String? unidadMedidaHCM = Auxiliares.Medidas[Auxiliares.Categorias[index]][3];
 
+  var textADEResultController = TextEditingController();
+  String? unidadMedidaADE =
+  Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
+  
   var textPlaquetasResultController = TextEditingController();
   String? unidadMedidaPlaquetas =
       Auxiliares.Medidas[Auxiliares.Categorias[index]][4];

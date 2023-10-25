@@ -1,5 +1,3 @@
-import 'package:assistant/conexiones/actividades/pdfGenerete/PdfApi.dart';
-import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/analisisMedico.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/auxiliaresReportes.dart';
@@ -25,25 +23,13 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
   @override
   void initState() {
     Repositorios.padecimientoActual();
-    // Actividades.consultarId(
-    //         Databases.siteground_database_reghosp,
-    //         Repositorios.repositorio['consultPadecimientoQuery'],
-    //         Pacientes.ID_Hospitalizacion)
-    //     .then((response) {
-    //   // print("RESPUESTA $response");
-    //   setState(() {
-    //     Reportes.padecimientoActual =
-    //         // "Inicia padecimiento actual el dia ${response['FechaPadecimiento']}, "
-    //             "${response['Contexto']}";
-    //     padesTextController.text = Reportes.padecimientoActual;
-    //     Reportes.reportes['Padecimiento_Actual'] = Reportes.padecimientoActual;
-    //   });
-    // });
-    // # # # ############## #### ########
+    Vitales.ultimoRegistro();
+
+    // INICIAR . . .
     setState(() {
       initialTextController.text = Pacientes.prosa();
       padesTextController.text = Reportes.padecimientoActual;
-      noPatolTextController.text = Pacientes.noPatologicos();
+      noPatolTextController.text = Pacientes.noPatologicosSimplificado();
       heredoTextController.text = Pacientes.heredofamiliares();
       hospiTextController.text = Pacientes.hospitalarios();
       patoloTextController.text = Pacientes.patologicos();
@@ -52,9 +38,8 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
       Reportes.reportes['Datos_Generales'] = Pacientes.prosa();
       Reportes.reportes['Padecimiento_Actual'] = Reportes.padecimientoActual;
       //
-      Reportes.reportes['Antecedentes_No_Patologicos'] =
-          Pacientes.noPatologicos(); // .toLowerCase();
-
+      Reportes.reportes['Antecedentes_No_Patologicos'] =noPatolTextController.text;
+      //
       Reportes.reportes['Antecedentes_Heredofamiliares'] =
           Pacientes.heredofamiliares().toLowerCase();
       Reportes.reportes['Antecedentes_Quirurgicos'] = Pacientes.hospitalarios()
@@ -76,6 +61,7 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
       decoration: ContainerDecoration.roundedDecoration(),
       child: Column(children: [
         Expanded(
+          flex: 2,
           child: Container(
             margin: const EdgeInsets.all(8.0),
             padding: const EdgeInsets.all(8.0),
@@ -129,9 +115,9 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
             ),
           ),
         ),
-        CrossLine(thickness: 3,),
+        CrossLine(thickness: 3),
         Expanded(
-          flex: 10,
+          flex: isDesktop(context) ? 16 : 11,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: CarouselSlider(
@@ -207,6 +193,22 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
                                               'Antecedentes_No_Patologicos'] =
                                           Pacientes.noPatologicosResumido();
                                     }),
+                                CrossLine(
+                                  isHorizontal: false,
+                                  thickness: 4,
+                                  color: Colors.white,
+                                  height: 8,
+                                ),
+                                GrandIcon(
+                                    labelButton: 'No Patológicos Simplificado',
+                                    iconData: Icons.account_balance_sharp,
+                                    onPress: () {
+                                      noPatolTextController.text =
+                                          Pacientes.noPatologicosSimplificado();
+                                      Reportes.reportes[
+                                      'Antecedentes_No_Patologicos'] =
+                                          Pacientes.noPatologicosSimplificado();
+                                    }),
                               ],
                             ),
                           ),
@@ -267,7 +269,7 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
                   ),
                 ),
                 ExploracionFisica(),
-                AuxiliaresExploracion(),
+                AuxiliaresExploracion(isIngreso: true),
                 AnalisisMedico(),
                 DiagnosticosAndPronostico(),
               ],

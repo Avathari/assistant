@@ -1,6 +1,8 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/citometrias.dart';
+import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
@@ -347,6 +349,7 @@ class _RutinasState extends State<Rutinas> {
 
   List<List<String>> listOfValues() {
     return [
+      // BIOMETRIAS
       [
         "0",
         Pacientes.ID_Paciente.toString(),
@@ -365,6 +368,16 @@ class _RutinasState extends State<Rutinas> {
         Auxiliares.Laboratorios[Auxiliares.Categorias[0]][0],
         textEritrocitosResultController.text,
         unidadMedidaEritrocitos!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[0],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[0]][7],
+        textADEResultController.text,
+        unidadMedidaADE!
         //0,
       ],
       [
@@ -824,6 +837,27 @@ class _RutinasState extends State<Rutinas> {
         unidadMedidaLactato!
         //0,
       ],
+      // CARDIACOS
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[18],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[18]][0],
+        textCKResultController.text,
+        unidadMedidaCK!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[18],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[18]][1],
+        textCKMBResultController.text,
+        unidadMedidaCKMB!
+        //0,
+      ],
       // ARTERIALES
       [
         "0",
@@ -883,6 +917,17 @@ class _RutinasState extends State<Rutinas> {
         Auxiliares.Laboratorios[Auxiliares.Categorias[9]][5],
         textSOResultController.text,
         unidadMedidaSO!
+        //0,
+      ],
+      // OTROS
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[25],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[25]][0],
+        textHbAcResultController.text,
+        unidadMedidaHbAc!
         //0,
       ],
       // VIRALES
@@ -945,6 +990,11 @@ class _RutinasState extends State<Rutinas> {
   var textEritrocitosResultController = TextEditingController();
   String? unidadMedidaEritrocitos =
       Auxiliares.Medidas[Auxiliares.Categorias[0]][4];
+  var textADEResultController = TextEditingController();
+  String? unidadMedidaADE =
+  Auxiliares.Medidas[Auxiliares.Categorias[0]][1];
+
+
   var textHemoglobinaResultController = TextEditingController();
   String? unidadMedidaHemoglobina =
       Auxiliares.Medidas[Auxiliares.Categorias[0]][0];
@@ -1112,6 +1162,17 @@ class _RutinasState extends State<Rutinas> {
   var textLactatoResultController = TextEditingController();
   String? unidadMedidaLactato =
   Auxiliares.Medidas[Auxiliares.Categorias[8]][2];
+// CARDIACOS ********* *************** ************* *
+  var textCKResultController = TextEditingController();
+  String? unidadMedidaCK =
+  Auxiliares.Medidas[Auxiliares.Categorias[18]][0];
+  var textCKMBResultController = TextEditingController();
+  String? unidadMedidaCKMB =
+  Auxiliares.Medidas[Auxiliares.Categorias[18]][0];
+  // OTROS  ********* *************** ************* *
+  var textHbAcResultController = TextEditingController();
+  String? unidadMedidaHbAc =
+  Auxiliares.Medidas[Auxiliares.Categorias[25]][0];
 
   // OPERACIONES DE LA INTERFAZ ****************** ********
   void cerrar() {
@@ -1181,16 +1242,31 @@ class _RutinasState extends State<Rutinas> {
                     labelEditText:
                     'Hemoglobina ($unidadMedidaHemoglobina)',
                     numOfLines: 1,
+                    onChange: (String value) {
+                      if (textHemoglobinaResultController.text.isNotEmpty)
+                        Valores.hemoglobina =
+                            double.parse(textHemoglobinaResultController.text);
+                    },
                   ),
                 ),
                 Expanded(
                   child: EditTextArea(
                     textController: textEritrocitosResultController,
                     keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
+                    inputFormat:
+                    MaskTextInputFormatter(
+                        mask: '#.##',
+                        filter: {"#": RegExp(r'[0-9]')},
+                        type: MaskAutoCompletionType.lazy),
                     labelEditText:
                     'Eritrocitos ($unidadMedidaEritrocitos)',
                     numOfLines: 1,
+
+                    onChange: (String value) {
+                      if (textEritrocitosResultController.text.isNotEmpty)
+                        Valores.eritrocitos =
+                            double.parse(textEritrocitosResultController.text);
+                    },
                   ),
                 ),
 
@@ -1206,15 +1282,34 @@ class _RutinasState extends State<Rutinas> {
                     labelEditText:
                     'Hematocrito ($unidadMedidaHematocrito)',
                     numOfLines: 1,
+                    onChange: (String value) {
+                      if (textHematocritoResultController.text.isNotEmpty) {
+                        Valores.hematocrito =
+                            double.parse(textHematocritoResultController.text);
+                        //
+                        setState(() {
+                          textCMHCResultController.text =
+                              Citometrias.CMHC.toStringAsFixed(2);
+                          textVCMResultController.text = Citometrias.VCM.toStringAsFixed(2);
+                          textHCMResultController.text = Citometrias.HCM.toStringAsFixed(2);
+                        });
+                      }
+                    },
                   ),
                 ),
                 Expanded(
                   child: EditTextArea(
-                    textController: textCMHCResultController,
+                    textController: textADEResultController,
                     keyBoardType: TextInputType.number,
                     inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'CMHC ($unidadMedidaCMHC)',
+                    labelEditText: 'RWD / ADE ($unidadMedidaADE)',
                     numOfLines: 1,
+                    onChange: (String value) {
+                      if (textADEResultController.text.isNotEmpty) {
+                        Valores.anchoDistribucionEritrocitaria =
+                            double.parse(textADEResultController.text);
+                      }
+                    },
                   ),
                 ),
               ],
@@ -1227,6 +1322,15 @@ class _RutinasState extends State<Rutinas> {
                     keyBoardType: TextInputType.number,
                     inputFormat: MaskTextInputFormatter(),
                     labelEditText: 'VCM ($unidadMedidaVCM)',
+                    numOfLines: 1,
+                  ),
+                ),
+                Expanded(
+                  child: EditTextArea(
+                    textController: textCMHCResultController,
+                    keyBoardType: TextInputType.number,
+                    inputFormat: MaskTextInputFormatter(),
+                    labelEditText: 'CMHC ($unidadMedidaCMHC)',
                     numOfLines: 1,
                   ),
                 ),
@@ -1692,6 +1796,23 @@ class _RutinasState extends State<Rutinas> {
               labelEditText: 'Ácido Láctico ($unidadMedidaLactato)',
               numOfLines: 1,
             ),
+            CrossLine(
+              color: Colors.grey,
+            ),
+            EditTextArea(
+              textController: textCKResultController,
+              keyBoardType: TextInputType.number,
+              inputFormat: MaskTextInputFormatter(),
+              labelEditText: 'CK ($unidadMedidaCK)',
+              numOfLines: 1,
+            ),
+            EditTextArea(
+              textController: textCKMBResultController,
+              keyBoardType: TextInputType.number,
+              inputFormat: MaskTextInputFormatter(),
+              labelEditText: 'CK-Mb ($unidadMedidaCKMB)',
+              numOfLines: 1,
+            ),
             Container(
               margin: const EdgeInsets.all(5.0),
               decoration: ContainerDecoration.roundedDecoration(),
@@ -1813,6 +1934,16 @@ class _RutinasState extends State<Rutinas> {
               labelEditText: 'SO ($unidadMedidaSO)',
               numOfLines: 1,
             ),
+            CrossLine(
+              color: Colors.grey,
+            ),
+            EditTextArea(
+              textController: textHbAcResultController,
+              keyBoardType: TextInputType.number,
+              inputFormat: MaskTextInputFormatter(),
+              labelEditText: 'HbAc ($unidadMedidaHbAc)',
+              numOfLines: 1,
+            ),
             // Botton ***** ******* ****** * ***
             CrossLine(
               color: Colors.grey,
@@ -1865,16 +1996,30 @@ class _RutinasState extends State<Rutinas> {
                           labelEditText:
                           'Hemoglobina ($unidadMedidaHemoglobina)',
                           numOfLines: 1,
+                          onChange: (String value) {
+                            if (textHemoglobinaResultController.text.isNotEmpty)
+                              Valores.hemoglobina =
+                                  double.parse(textHemoglobinaResultController.text);
+                          },
                         ),
                       ),
                       Expanded(
                         child: EditTextArea(
                           textController: textEritrocitosResultController,
                           keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(),
+                          inputFormat:
+                          MaskTextInputFormatter(
+                              mask: '#.##',
+                              filter: {"#": RegExp(r'[0-9]')},
+                              type: MaskAutoCompletionType.lazy),
                           labelEditText:
                           'Eritrocitos ($unidadMedidaEritrocitos)',
                           numOfLines: 1,
+                          onChange: (String value) {
+                            if (textEritrocitosResultController.text.isNotEmpty)
+                              Valores.eritrocitos =
+                                  double.parse(textEritrocitosResultController.text);
+                          },
                         ),
                       ),
 
@@ -1890,17 +2035,37 @@ class _RutinasState extends State<Rutinas> {
                           labelEditText:
                           'Hematocrito ($unidadMedidaHematocrito)',
                           numOfLines: 1,
+                          onChange: (String value) {
+                            if (textHematocritoResultController.text.isNotEmpty) {
+                              Valores.hematocrito =
+                                  double.parse(textHematocritoResultController.text);
+                              //
+                              setState(() {
+                                textCMHCResultController.text =
+                                    Citometrias.CMHC.toStringAsFixed(2);
+                                textVCMResultController.text = Citometrias.VCM.toStringAsFixed(2);
+                                textHCMResultController.text = Citometrias.HCM.toStringAsFixed(2);
+                              });
+                            }
+                          },
                         ),
                       ),
                       Expanded(
                         child: EditTextArea(
-                          textController: textCMHCResultController,
+                          textController: textADEResultController,
                           keyBoardType: TextInputType.number,
                           inputFormat: MaskTextInputFormatter(),
-                          labelEditText: 'CMHC ($unidadMedidaCMHC)',
+                          labelEditText: 'RWD / ADE ($unidadMedidaADE)',
                           numOfLines: 1,
+                          onChange: (String value) {
+                            if (textADEResultController.text.isNotEmpty) {
+                              Valores.anchoDistribucionEritrocitaria =
+                                  double.parse(textADEResultController.text);
+                            }
+                          },
                         ),
                       ),
+                      
                     ],
                   ),
                   Row(
@@ -1911,6 +2076,15 @@ class _RutinasState extends State<Rutinas> {
                           keyBoardType: TextInputType.number,
                           inputFormat: MaskTextInputFormatter(),
                           labelEditText: 'VCM ($unidadMedidaVCM)',
+                          numOfLines: 1,
+                        ),
+                      ),
+                      Expanded(
+                        child: EditTextArea(
+                          textController: textCMHCResultController,
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          labelEditText: 'CMHC ($unidadMedidaCMHC)',
                           numOfLines: 1,
                         ),
                       ),
@@ -2104,7 +2278,6 @@ class _RutinasState extends State<Rutinas> {
                   CrossLine(
                     color: Colors.grey,
                   ),
-
                 ],
               ),
             ),
@@ -2383,6 +2556,23 @@ class _RutinasState extends State<Rutinas> {
                   CrossLine(
                     color: Colors.grey,
                   ),
+                  EditTextArea(
+                    textController: textCKResultController,
+                    keyBoardType: TextInputType.number,
+                    inputFormat: MaskTextInputFormatter(),
+                    labelEditText: 'CK ($unidadMedidaCK)',
+                    numOfLines: 1,
+                  ),
+                  EditTextArea(
+                    textController: textCKMBResultController,
+                    keyBoardType: TextInputType.number,
+                    inputFormat: MaskTextInputFormatter(),
+                    labelEditText: 'CK-Mb ($unidadMedidaCKMB)',
+                    numOfLines: 1,
+                  ),
+                  CrossLine(
+                    color: Colors.grey,
+                  ),
                 ],
               ),
             ),
@@ -2487,6 +2677,17 @@ class _RutinasState extends State<Rutinas> {
                     keyBoardType: TextInputType.number,
                     inputFormat: MaskTextInputFormatter(),
                     labelEditText: 'SO ($unidadMedidaSO)',
+                    numOfLines: 1,
+                  ),
+                  // Botton ***** ******* ****** * ***
+                  CrossLine(
+                    color: Colors.grey,
+                  ),
+                  EditTextArea(
+                    textController: textHbAcResultController,
+                    keyBoardType: TextInputType.number,
+                    inputFormat: MaskTextInputFormatter(),
+                    labelEditText: 'HbAc ($unidadMedidaHbAc)',
                     numOfLines: 1,
                   ),
                   // Botton ***** ******* ****** * ***

@@ -181,13 +181,10 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
               numOfLines: 3,
               labelEditText: 'Diagnóstico (CIE)',
               textController: cieDiagnoTextController,
-            ),
-          ),
-          Expanded(
-            child: GrandIcon(
-              labelButton: "CIE-10",
-              weigth: 5,
-              onPress: () {
+              selection: true,
+              withShowOption: true,
+              iconData: Icons.line_style,
+              onSelected: () {
                 Operadores.openDialog(
                     context: context,
                     chyldrim: DialogSelector(
@@ -199,9 +196,28 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
                         });
                       }),
                     ));
-              },
+              }
             ),
           ),
+          // Expanded(
+          //   child: GrandIcon(
+          //     labelButton: "CIE-10",
+          //     weigth: 5,
+          //     onPress: () {
+          //       Operadores.openDialog(
+          //           context: context,
+          //           chyldrim: DialogSelector(
+          //             onSelected: ((value) {
+          //               setState(() {
+          //                 Diagnosticos.selectedDiagnosis = value;
+          //                 cieDiagnoTextController.text =
+          //                     Diagnosticos.selectedDiagnosis;
+          //               });
+          //             }),
+          //           ));
+          //     },
+          //   ),
+          // ),
         ],
       ),
       CrossLine(height: 10, color: Colors.black,),
@@ -212,6 +228,14 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
         labelEditText: 'Comentario de diagnóstico',
         textController: comenDiagnoTextController,
         numOfLines: 1,
+          selection: true,
+          withShowOption: true,
+          iconData: Icons.compress_outlined,
+          onSelected: () {
+            setState(() {
+              comenDiagnoTextController.text = cieDiagnoTextController.text;
+            });
+          }
       ),
       Row(
         children: [
@@ -851,6 +875,7 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
   var searchTextController = TextEditingController();
 }
 
+// **************************************************************
 class VariasPatologias extends StatefulWidget {
   const VariasPatologias({super.key});
 

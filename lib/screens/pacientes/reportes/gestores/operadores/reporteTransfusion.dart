@@ -8,6 +8,7 @@ import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/explora
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/seguimientoVitales.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/transfusion.dart';
 import 'package:assistant/values/SizingInfo.dart';
+import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -43,47 +44,44 @@ class _ReporteTransfusionState extends State<ReporteTransfusion> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+    return Container(
+      decoration: ContainerDecoration.roundedDecoration(),
       child: Column(children: [
         Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SingleChildScrollView(
-              controller: ScrollController(),
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GrandIcon(
-                    iconData: Icons.person,
-                    labelButton: "Información General",
+          flex: 2,
+          child: Container(
+            padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GrandIcon(
+                  iconData: Icons.person,
+                  labelButton: "Información General",
+                  weigth: wieghtRow / index,
+                  onPress: () {
+                    carouselController.jumpToPage(0);
+                  },
+                ),
+                GrandIcon(
+                    iconData: Icons.bloodtype,
+                    labelButton: "Datos Generales de la Transfusión",
                     weigth: wieghtRow / index,
                     onPress: () {
-                      carouselController.jumpToPage(0);
-                    },
-                  ),
-                  GrandIcon(
-                      iconData: Icons.bloodtype,
-                      labelButton: "Datos Generales de la Transfusión",
-                      weigth: wieghtRow / index,
-                      onPress: () {
-                        carouselController.jumpToPage(1);
-                      }),
-                  GrandIcon(
-                      iconData: Icons.blur_linear_sharp,
-                      labelButton: "Seguimiento de Signos Vitales",
-                      weigth: wieghtRow / index,
-                      onPress: () {
-                        carouselController.jumpToPage(2);
-                      }),
-                ],
-              ),
+                      carouselController.jumpToPage(1);
+                    }),
+                GrandIcon(
+                    iconData: Icons.blur_linear_sharp,
+                    labelButton: "Seguimiento de Signos Vitales",
+                    weigth: wieghtRow / index,
+                    onPress: () {
+                      carouselController.jumpToPage(2);
+                    }),
+              ],
             ),
           ),
         ),
         Expanded(
-          flex: 5,
+          flex: isDesktop(context) ? 16 : 9,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: CarouselSlider(

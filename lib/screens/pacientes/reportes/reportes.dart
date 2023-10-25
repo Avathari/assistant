@@ -31,6 +31,8 @@ import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/AppBarText.dart';
+import 'package:assistant/widgets/CircleIcon.dart';
+import 'package:assistant/widgets/CircleLabel.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
@@ -47,7 +49,6 @@ class ReportesMedicos extends StatefulWidget {
 }
 
 class _ReportesMedicosState extends State<ReportesMedicos> {
-
   @override
   void initState() {
     // Llamado a los ultimos registros agregados. ****************************
@@ -58,12 +59,12 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       Balances.consultarRegistro();
       // Patologicos del Paciente *************************************
       Archivos.readJsonToMap(
-          filePath: "${Pacientes.localRepositoryPath}patologicos.json")
+              filePath: "${Pacientes.localRepositoryPath}patologicos.json")
           .then((value) {
         Pacientes.Patologicos = value;
       }).whenComplete(() =>
-      Reportes.reportes["Antecedentes_Patologicos_Ingreso"] =
-          Pacientes.antecedentesIngresosPatologicos());
+              Reportes.reportes["Antecedentes_Patologicos_Ingreso"] =
+                  Pacientes.antecedentesIngresosPatologicos());
 // Patologicos del Paciente *************************************
       Archivos.readJsonToMap(
               filePath: "${Pacientes.localRepositoryPath}patologicos.json")
@@ -85,7 +86,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       });
 
       Archivos.readJsonToMap(
-          filePath: "${Pacientes.localRepositoryPath}ventilaciones.json")
+              filePath: "${Pacientes.localRepositoryPath}ventilaciones.json")
           .then((value) {
         Pacientes.Ventilaciones = value;
       });
@@ -113,23 +114,26 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           Pacientes.Notas = value;
           // VALUE almacenado en Json : : "${Pacientes.localRepositoryPath}/reportes/reportes.json"
           Terminal.printSuccess(
-              message:
-                  "VALUE - ${value.last} "
-                      ": ${value.runtimeType} "
-                      ": : ${value.last.runtimeType}");
+              message: "VALUE - ${value.last} "
+                  ": ${value.runtimeType} "
+                  ": : ${value.last.runtimeType}");
           // Actualizar . . .
           setState(() {
             // Del Padecimiento **************************************************
-            Reportes.padecimientoActual = value.last['Padecimiento_Actual'] ?? '';
-            Valores.fechaPadecimientoActual = value.last['Fecha_Padecimiento'] ?? '';
+            Reportes.padecimientoActual =
+                value.last['Padecimiento_Actual'] ?? '';
+            Valores.fechaPadecimientoActual =
+                value.last['Fecha_Padecimiento'] ?? '';
             // Primeras Variables **************************************************
             Reportes.exploracionFisica = value.last['Exploracion_Fisica'] ?? '';
             Reportes.signosVitales = value.last['Signos_Vitales'] ?? '';
             // Segundas Variables **************************************************
-            Reportes.eventualidadesOcurridas = value.last['Eventualidades'] ?? '';
+            Reportes.eventualidadesOcurridas =
+                value.last['Eventualidades'] ?? '';
             Reportes.terapiasPrevias = value.last['Terapias_Previas'] ?? '';
             Reportes.analisisMedico = value.last['Analisis_Medico'] ?? '';
-            Reportes.tratamientoPropuesto = value.last['Tratamiento_Propuesto'] ?? '';
+            Reportes.tratamientoPropuesto =
+                value.last['Tratamiento_Propuesto'] ?? '';
             // Listados desde String  ************************************************
             // Reportes.dieta = ;
 
@@ -190,16 +194,17 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       });
 
       // Valores del Paciente ****************************************
-      Archivos.readJsonToMap(
-          filePath: Pacientes.localPath)
-          .then((value) {
-         Valores.fromJson(value[0]);
+      Archivos.readJsonToMap(filePath: Pacientes.localPath).then((value) {
+        Valores.fromJson(value[0]);
       }).onError((error, stackTrace) {
-        Terminal.printAlert(message: "ERROR al Abrir ${Pacientes.localPath}"
-            " - $error : : $stackTrace");
-        Operadores.alertActivity(context: context, tittle: "Error al Abrir ${Pacientes.localPath}",
-        message: " ERROR - $error : : $stackTrace\n"
-            "Reiniciando Loading Activity . . . ");
+        Terminal.printAlert(
+            message: "ERROR al Abrir ${Pacientes.localPath}"
+                " - $error : : $stackTrace");
+        Operadores.alertActivity(
+            context: context,
+            tittle: "Error al Abrir ${Pacientes.localPath}",
+            message: " ERROR - $error : : $stackTrace\n"
+                "Reiniciando Loading Activity . . . ");
         Pacientes.loadingActivity(context: context);
       });
 
@@ -213,6 +218,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
 // ******************************************************
   @override
   Widget build(BuildContext context) {
+    print(
+        "MediaQuery.of(context).size.width  ${MediaQuery.of(context).size.width}");
     return Scaffold(
       appBar: //isMobile(context)
           AppBar(
@@ -402,14 +409,15 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
     return Row(
       children: [
         Expanded(
+            flex: 2,
             child: Container(
-          padding: const EdgeInsets.all(8.0),
-          margin: const EdgeInsets.all(8.0),
-          decoration: ContainerDecoration.containerDecoration(),
-          child: sideLeft(),
-        )),
+              padding: const EdgeInsets.all(8.0),
+              margin: const EdgeInsets.all(8.0),
+              decoration: ContainerDecoration.containerDecoration(),
+              child: sideLeft(),
+            )),
         Expanded(
-            flex: 3,
+            flex: 8,
             child: Container(
               padding: const EdgeInsets.all(15.0),
               margin: const EdgeInsets.all(8.0),
@@ -417,12 +425,13 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               child: pantallasReportesMedicos(widget.actualPage),
             )),
         Expanded(
+            flex: 1,
             child: Container(
-          padding: const EdgeInsets.all(8.0),
-          margin: const EdgeInsets.all(8.0),
-          decoration: ContainerDecoration.containerDecoration(),
-          child: sideRight(),
-        )),
+              padding: const EdgeInsets.all(8.0),
+              margin: const EdgeInsets.all(8.0),
+              decoration: ContainerDecoration.containerDecoration(),
+              child: sideRight(),
+            )),
       ],
     );
   }
@@ -453,7 +462,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                                     iconData: Icons.account_balance_sharp,
                                     labelButton: "Tipo de Nota Médica",
                                     onPress: () {
-                                      Cambios.toNextActivity(context, tittle: 'Revisión de Valores', chyld: Revisiones(withTitle: false));
+                                      Cambios.toNextActivity(context,
+                                          tittle: 'Revisión de Valores',
+                                          chyld: Revisiones(withTitle: false));
                                       // setState(() {
                                       //   widget.actualPage = 19;
                                       // });
@@ -533,13 +544,15 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
     } else {
       return Column(
         children: [
-          isMobile(context)
+          isMobile(context) || isTablet(context)
               ? const PresentacionPacientesSimple()
               : isTabletAndDesktop(context)
                   ? const PresentacionPacientesSimple()
                   : isDesktop(context)
-                      ? const PresentacionPacientes()
-                      : Container(),
+                      ? const PresentacionPacientesSimple()
+                      : isLargeDesktop(context)
+                          ? const PresentacionPacientes()
+                          : Container(),
           CrossLine(),
           GrandButton(
               weigth: 2000,
@@ -577,11 +590,12 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
         child: Row(
           children: [
             Expanded(
-              flex: isMobile(context) ? 2 : 3,
+              flex: isMobile(context) ? 2 : 6,
               child: SingleChildScrollView(
                   controller: ScrollController(),
                   scrollDirection: Axis.vertical,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: actionsReportes(),
                   )),
             ),
@@ -618,33 +632,27 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
         children: [
           SizedBox(
             height: 80,
-            child: GrandButton(
-                labelButton: "Indicaciones Médicas",
-                onPress: () {
-                  setState(() {
-                    widget.actualPage = 9;
-                  });
-                }),
+            child: CircleIcon(
+              tittle: "Prescripciones",
+              iconed: Icons.line_weight_sharp,
+              onChangeValue: () {
+                setState(() {
+                  widget.actualPage = 9;
+                });
+              },
+            ),
           ),
           SizedBox(
             height: 20,
             child: CrossLine(),
           ),
           Expanded(
-            flex: 3,
+            flex: 6,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SingleChildScrollView(
-                  controller: ScrollController(),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: actionsReportes(),
-                    ),
-                  ),
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: actionsReportes(),
               ),
             ),
           ),
@@ -652,25 +660,52 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             height: 20,
             child: CrossLine(),
           ),
-          GrandButton(
-              labelButton: "Vista previa",
-              onPress: () async {
+          if (isLargeDesktop(context)) Expanded(
+            child: GrandButton(
+                labelButton: "Vista previa",
+                onPress: () async {
+                  await imprimirDocumento()
+                      .then((value) => Operadores.alertActivity(
+                      context: context,
+                      tittle: 'Petición de Registro de Análisis',
+                      message:
+                      '¿Desea registrar el análisis en la base de datos?',
+                      onClose: () {
+                        Navigator.of(context).pop();
+                      },
+                      onAcept: () {
+                        Navigator.of(context).pop();
+                        Repositorios.registrarRegistro();
+                      }))
+                      .onError((error, stackTrace) => Terminal.printAlert(
+                      message: "ERROR - $error : : $stackTrace"));
+                }),
+          ),
+          if (isDesktop(context)) SizedBox(
+            height: 80,
+            child: CircleIcon(
+              tittle: "Vista Previa . . . ",
+              radios: 30,
+              iconed: Icons.signal_wifi_statusbar_null_sharp,
+              onChangeValue: () async {
                 await imprimirDocumento()
                     .then((value) => Operadores.alertActivity(
-                        context: context,
-                        tittle: 'Petición de Registro de Análisis',
-                        message:
-                            '¿Desea registrar el análisis en la base de datos?',
-                        onClose: () {
-                          Navigator.of(context).pop();
-                        },
-                        onAcept: () {
-                          Navigator.of(context).pop();
-                          Repositorios.registrarRegistro();
-                        }))
+                    context: context,
+                    tittle: 'Petición de Registro de Análisis',
+                    message:
+                    '¿Desea registrar el análisis en la base de datos?',
+                    onClose: () {
+                      Navigator.of(context).pop();
+                    },
+                    onAcept: () {
+                      Navigator.of(context).pop();
+                      Repositorios.registrarRegistro();
+                    }))
                     .onError((error, stackTrace) => Terminal.printAlert(
-                        message: "ERROR - $error : : $stackTrace"));
-              }),
+                    message: "ERROR - $error : : $stackTrace"));
+              },
+            ),
+          ),
         ],
       );
     }
@@ -965,14 +1000,16 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
 
   List<Widget> actionsReportes() {
     return [
-      GrandButton(
+      GrandIcon(
+          iconData: Icons.medical_information_outlined,
           weigth: 2000,
           labelButton: "Padecimiento Actual",
           onPress: () {
             Operadores.openDialog(
                 context: context, chyldrim: const PadecimientoActual());
           }),
-      GrandButton(
+      GrandIcon(
+          iconData: Icons.subtitles_rounded,
           weigth: 2000,
           labelButton: "Valoración Prequirúrgica",
           onPress: () {
@@ -980,7 +1017,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               widget.actualPage = 10;
             });
           }),
-      GrandButton(
+      GrandIcon(
+          iconData: Icons.medication_outlined,
           weigth: 2000,
           labelButton: "Valoración de Terapia",
           onPress: () {
@@ -988,7 +1026,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               widget.actualPage = 18;
             });
           }),
-      GrandButton(
+      GrandIcon(
+          iconData: Icons.bedroom_child_outlined,
           weigth: 2000,
           labelButton: "Valoración de la Vía Aerea",
           onPress: () {
@@ -996,7 +1035,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               widget.actualPage = 11;
             });
           }),
-      GrandButton(
+      CrossLine(),
+      GrandIcon(
+          iconData: Icons.vaccines,
           weigth: 2000,
           labelButton: "Catéter Venoso Central",
           onPress: () {
@@ -1004,7 +1045,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               widget.actualPage = 12;
             });
           }),
-      GrandButton(
+      GrandIcon(
           weigth: 2000,
           labelButton: "Intubación Endotraqueal",
           onPress: () {
@@ -1012,7 +1053,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               widget.actualPage = 13;
             });
           }),
-      GrandButton(
+      GrandIcon(
           weigth: 2000,
           labelButton: "Sonda Endopleural",
           onPress: () {
@@ -1020,7 +1061,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               widget.actualPage = 14;
             });
           }),
-      GrandButton(
+      GrandIcon(
           weigth: 2000,
           labelButton: "Catéter Tenckhoff",
           onPress: () {
@@ -1028,7 +1069,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               widget.actualPage = 15;
             });
           }),
-      GrandButton(
+      GrandIcon(
           weigth: 2000,
           labelButton: "Punción Lumbar",
           onPress: () {
@@ -1036,7 +1077,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               widget.actualPage = 16;
             });
           }),
-      GrandButton(
+      CrossLine(),
+      GrandIcon(
+          iconData: Icons.local_police,
           weigth: 2000,
           labelButton: "Licencia médica",
           onPress: () {

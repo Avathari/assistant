@@ -68,17 +68,45 @@ class _LiquidoDialisisState extends State<LiquidoDialisis> {
             children: [
               EditTextArea(
                 textController: textAspectoResultController,
-                keyBoardType: TextInputType.number,
+                keyBoardType: TextInputType.text,
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Aspecto ($unidadMedidaAspecto)',
                 numOfLines: 1,
+                selection: true,
+                withShowOption: true,
+                onSelected: () {
+                  Operadores.selectOptionsActivity(
+                      context: context,
+                      options:
+                      Auxiliares.aspectoLiquidos,
+                      onClose: (value) {
+                        setState(() {
+                          textAspectoResultController.text = value;
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
               ),
               EditTextArea(
                 textController: textColorResultController,
-                keyBoardType: TextInputType.number,
+                keyBoardType: TextInputType.text,
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Color ($unidadMedidaColor)',
                 numOfLines: 1,
+                selection: true,
+                withShowOption: true,
+                onSelected: () {
+                  Operadores.selectOptionsActivity(
+                      context: context,
+                      options:
+                      Auxiliares.colorLiquidos,
+                      onClose: (value) {
+                        setState(() {
+                          textColorResultController.text = value;
+                          Navigator.of(context).pop();
+                        });
+                      });
+                },
               ),
               EditTextArea(
                 textController: textLeucocitosResultController,
@@ -113,21 +141,21 @@ class _LiquidoDialisisState extends State<LiquidoDialisis> {
 
               EditTextArea(
                 textController: textBacteriasResultController,
-                keyBoardType: TextInputType.number,
+                keyBoardType: TextInputType.text,
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Bacterias ($unidadMedidaBacterias)',
                 numOfLines: 1,
               ),
               EditTextArea(
                 textController: textLevadurasResultController,
-                keyBoardType: TextInputType.number,
+                keyBoardType: TextInputType.text,
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Levaduras ($unidadMedidaLevaduras)',
                 numOfLines: 1,
               ),
               EditTextArea(
                 textController: textOtrosResultController,
-                keyBoardType: TextInputType.number,
+                keyBoardType: TextInputType.text,
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Otros ($unidadMedidaOtros)',
                 numOfLines: 1,
@@ -357,3 +385,20 @@ class _LiquidoDialisisState extends State<LiquidoDialisis> {
     });
   }
 }
+
+
+// selection: true,
+// withShowOption: true,
+// onSelected: () {
+// Operadores.selectOptionsActivity(
+// context: context,
+// options:
+// Auxiliares.aspectoLiquidos,
+// onClose: (value) {
+// setState(() {
+// textAspectoResultController.text = value;
+// Navigator.of(context).pop();
+// });
+// });
+// },
+

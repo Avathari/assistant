@@ -1,9 +1,12 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteFormats/formatosReportes.dart';
 import 'package:assistant/conexiones/conexiones.dart';
+
+import 'package:assistant/operativity/pacientes/valores/Valorados/citometrias.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/hepatometrias.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/renometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:flutter/material.dart';
@@ -118,7 +121,7 @@ class Pacientes {
   static List? Notas = []; // Registro de Análisis, Notas y Eventualidades.
   static List? Ventilaciones = [];
 //
-static List? Situacionario = [];
+  static List? Situacionario = [];
   //
   static List? Hospitalizaciones = [];
   static List? Diagnosticos = [];
@@ -312,11 +315,6 @@ static List? Situacionario = [];
   }
 
   static String hospitalarios() {
-    // Reportes.reportes['Antecedentes_Quirurgicos'] = ""; **** ********** **** ***
-    // Reportes.antecedentesQuirurgicos = "";
-    // print("Quirurgicos ${Quirurgicos!.length} $Quirurgicos \n "
-    //     "Reportes.Antecedentes_Quirurgicos ${Reportes.antecedentesQuirurgicos}"
-    //     "isEmpty ${Quirurgicos!.isEmpty}");
     // ************************ ************** ********** **** *** *
     if (Quirurgicos != []) {
       // || Quirurgicos!.isNotEmpty
@@ -337,7 +335,6 @@ static List? Situacionario = [];
     }
     // ************************ ************** ********** **** *** *
     return Reportes.antecedentesQuirurgicos!;
-    // return "negados";
   }
 
   static String traumaticos() {
@@ -352,7 +349,7 @@ static List? Situacionario = [];
       for (var element in Traumatologicos!) {
         if (Reportes.antecedentesTraumatologicos == "") {
           Reportes.antecedentesTraumatologicos =
-              "${Reportes.antecedentesAlergicos}${element['Pace_APP_ALE']} diagnósticado hace ${element['Pace_APP_ALE_dia']} años. ";
+              "${Reportes.antecedentesAlergicos}${element['Pace_APP_ALE']} diagnosticado hace ${element['Pace_APP_ALE_dia']} años. ";
         }
       }
     } else {
@@ -416,6 +413,13 @@ static List? Situacionario = [];
         "${Formatos.toxicomanias}\n";
   }
 
+  static String noPatologicosSimplificado() {
+    return "${Formatos.viviendasSimplificado}"
+        "${Formatos.alimentarios}\n"
+        "${Formatos.exposiciones}\n"
+        "${Formatos.toxicomanias}\n";
+  }
+
   static String noPatologicosAnalisis() {
     return "${antecedentesPatologicos()}"
         "${Formatos.limitaciones}\n"
@@ -432,8 +436,8 @@ static List? Situacionario = [];
   }
 
   static String antecedentesIngresosPatologicos() {
-    return "Antecedentes patológicos: ${Pacientes.patologicos()}\n"
-        "Antecedentes quirúrgicos: ${Pacientes.hospitalarios()}.\n"
+    return "${Pacientes.patologicos()}\n"
+        "Antecedentes quirúrgicos: ${Pacientes.hospitalarios()}."
         "Antecedentes alérgicos: ${Pacientes.alergicos()}\n";
     // "Antecedentes traumáticos: ${Pacientes.traumaticos()}\n";
   }
@@ -445,37 +449,52 @@ static List? Situacionario = [];
         "Antecedentes patológicos: ${Pacientes.patologicos()}\n";
   }
 
-  static String patologicos() {
+  static String patologicos({bool resaltado = true}) {
     // ************************ ************** ********** **** *** *
     // Reportes.reportes['Antecedentes_Patologicos'] = "";
     // Reportes.personalesPatologicos = "";
     // // print("Patologicos ${Patologicos!.length} $Patologicos \n ");
     //"Reportes.Antecedentes_Patologicos ${Reportes.personalesPatologicos}");
     // ************************ ************** ********** **** *** *
+    String prefix = "          ";
     if (Patologicos != []) {
       Reportes.personalesPatologicos = "";
 
-      for (var element in Patologicos!) {
-        if (Reportes.personalesPatologicos == "") {
-          Reportes.personalesPatologicos = "${element['Pace_APP_DEG_com']} "
-              "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
-              "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
-              "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
-        } else {
-          Reportes.personalesPatologicos =
-              "${Reportes.personalesPatologicos}\n:${element['Pace_APP_DEG_com']} "
-              "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
-              "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
-              "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
+      if (resaltado) {
+        for (var element in Patologicos!) {
+          if (Reportes.personalesPatologicos == "") {
+            Reportes.personalesPatologicos = "$prefix${element['Pace_APP_DEG_com'].toUpperCase()} "
+                "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+                "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
+                "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
+          } else {
+            Reportes.personalesPatologicos =
+                "${Reportes.personalesPatologicos}. \n$prefix${element['Pace_APP_DEG_com'].toUpperCase()} "
+                "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+                "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
+                "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
+          }
+        }
+      }
+      else {
+        for (var element in Patologicos!) {
+          if (Reportes.personalesPatologicos == "") {
+            Reportes.personalesPatologicos = "$prefix${element['Pace_APP_DEG_com']} "
+                "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+                "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
+                "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
+          } else {
+            Reportes.personalesPatologicos =
+            "${Reportes.personalesPatologicos}. \n$prefix${element['Pace_APP_DEG_com']} "
+                "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+                "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
+                "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
+          }
         }
       }
     } else {
       Reportes.personalesPatologicos = "negados";
     }
-    // ************************ ************** ********** **** *** *
-    // // // print("Reportes.impresionesDiagnosticas ${Reportes.impresionesDiagnosticas}");
-    // Reportes.reportes['Antecedentes_Patologicos'] =
-    //     Reportes.personalesPatologicos;
     // ************************ ************** ********** **** *** *
     return Reportes.personalesPatologicos!;
   }
@@ -505,7 +524,7 @@ static List? Situacionario = [];
       case 2:
         return Valorados.bioconstantes;
       case 3:
-        return Valorados.antropometricos;
+        return Valorados.antropometricos();
       case 4:
         // return "Asociados a riesgo";
         return Valorados.asociadosRiesgo;
@@ -556,7 +575,7 @@ static List? Situacionario = [];
   static String analisisComplementarios({int? indice = 0}) {
     switch (indice) {
       case 1:
-        return Valorados.antropometricos; // Antropométricos
+        return Valorados.antropometricos(); // Antropométricos
       case 2:
         return Valorados.metabolometrias; // Metabólicos
       case 3:
@@ -564,11 +583,13 @@ static List? Situacionario = [];
       case 4:
         return Valorados.hidricos; // Hídricos
       case 5:
-        return "Análisis $indice"; // Hepáticos
+        return Hepatometrias.hepaticos();
+        // return "Análisis $indice"; // Hepáticos
       case 6:
-        return "Análisis $indice"; // Hemáticos
+        return Citometrias.hematicos();
+          // "Análisis $indice"; // Hemáticos
       case 7:
-        return Valorados.renales; // Renales
+        return Renometrias.renales(); // Renales
       case 8:
         return "Análisis $indice";
       case 9:
@@ -675,9 +696,13 @@ static List? Situacionario = [];
   }
 
   static String pronosticoMedico() {
-    return "Estado actual: ${Pacientes.pronosticoEstado}. \n"
-        "Pronóstico Médico: ${Pacientes.pronosticoFuncion}, ${Pacientes.pronosticoVida}, ${Pacientes.pronosticoTiempo}. \n"
-        "Escalas pronósticas: mSOFA ${Valorados.mSOFA}";
+    return "ESTADO CLÍNICO: ${Pacientes.pronosticoEstado}. "
+        "PRONÓSTICO MÉDICO: ${Pacientes.pronosticoFuncion}, ${Pacientes.pronosticoVida}, ${Pacientes.pronosticoTiempo}. \n"
+        "ESCALAS PRONÓSICAS: mSOFA ${Valorados.mSOFA}";
+
+    //return "Estado actual: ${Pacientes.pronosticoEstado}. "
+    //         "Pronóstico Médico: ${Pacientes.pronosticoFuncion}, ${Pacientes.pronosticoVida}, ${Pacientes.pronosticoTiempo}. \n"
+    //         "Escalas pronósticas: mSOFA ${Valorados.mSOFA}";
   }
 
   static final List<String> Municipios = [
@@ -4204,10 +4229,11 @@ class Quirurgicos {
             Databases.siteground_database_regpace,
             Quirurgicos.cirugias['consultByIdPrimaryQuery'],
             Pacientes.ID_Paciente)
-        .then((value) {Pacientes.Quirurgicos = value;
-    Archivos.createJsonFromMap(value,
-        filePath: "${Pacientes.localRepositoryPath}quirurgicos.json");
-        });
+        .then((value) {
+      Pacientes.Quirurgicos = value;
+      Archivos.createJsonFromMap(value,
+          filePath: "${Pacientes.localRepositoryPath}quirurgicos.json");
+    });
   }
 
   static void consultarRegistro() {
@@ -4318,10 +4344,10 @@ class Transfusionales {
             Transfusionales.transfusiones['consultByIdPrimaryQuery'],
             Pacientes.ID_Paciente)
         .then((value) {
-          Pacientes.Transfusionales = value;
-        Archivos.createJsonFromMap(value,
-        filePath: "${Pacientes.localRepositoryPath}transfusionales.json");
-  });
+      Pacientes.Transfusionales = value;
+      Archivos.createJsonFromMap(value,
+          filePath: "${Pacientes.localRepositoryPath}transfusionales.json");
+    });
   }
 
   static void consultarRegistro() {
@@ -4795,16 +4821,23 @@ class Vitales {
   static var fileAssocieted = '${Pacientes.localRepositoryPath}vitales.json';
 
   static void ultimoRegistro() {
-    Actividades.consultarId(Databases.siteground_database_regpace,
-            Vitales.vitales['consultLastQuery'], Pacientes.ID_Paciente)
-        .then((value) {
-      Pacientes.Vital = value;
+    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+      Vitales.fromJson(value);
+    }).onError((error, stackTrace) {
       Actividades.consultarId(Databases.siteground_database_regpace,
-              Vitales.antropo['consultLastQuery'], Pacientes.ID_Paciente)
+          Vitales.vitales['consultLastQuery'], Pacientes.ID_Paciente)
           .then((value) {
-        Pacientes.Vital.addAll(value);
+        Pacientes.Vital = value;
+        Actividades.consultarId(Databases.siteground_database_regpace,
+            Vitales.antropo['consultLastQuery'], Pacientes.ID_Paciente)
+            .then((value) {
+          Pacientes.Vital.addAll(value);
+          //
+          Vitales.fromJson(Pacientes.Vital[Pacientes.Vital.length-1]);
+        });
       });
     });
+
   }
 
   static void registros() {
@@ -5077,7 +5110,13 @@ class Vitales {
         "(SELECT IFNULL(count(*), 0) FROM pace_antropo) as Total_Pacientes;"
   };
 
-  static final List<String> factorActividad = ["0.9", "1.0", "1.2", "3.0", "5.0"];
+  static final List<String> factorActividad = [
+    "0.9",
+    "1.0",
+    "1.2",
+    "3.0",
+    "5.0"
+  ];
   static final List<String> factorEstres = ["0.9", "1.0", "1.2", "3.0", "5.0"];
 
   static List<String> Categorias = [
@@ -5494,6 +5533,23 @@ class Auxiliares {
   static var fileAssocieted =
       '${Pacientes.localRepositoryPath}paraclinicos.json';
 
+  static List aspectoLiquidos = [
+    'Muy Turbio',
+    'Turbio',
+    'Claro',
+    'Rojizo',
+  ];
+
+  static List colorLiquidos = [
+    'Incoloro',
+    'Amarillo claro',
+    'Amarillo oscuro',
+    'Verduzco',
+    'Parduzco',
+    'Rojizo',
+    'Ligeramente Rojizo',
+  ];
+
   static fromJson(Map<String, dynamic> json) {
     Valores.fechaBiometria = json['Fecha_Registro_Biometria'] ?? '';
     Valores.eritrocitos = double.parse(json['Eritrocitos'] ?? '0');
@@ -5818,16 +5874,14 @@ class Auxiliares {
   }
 
   static Future<Null> eliminaRegistros() async {
-    Actividades.eliminar(
-        Databases.siteground_database_reggabo,
-        "DELETE FROM laboratorios WHERE ID_Pace = ?",
-        Pacientes.ID_Paciente)
+    Actividades.eliminar(Databases.siteground_database_reggabo,
+            "DELETE FROM laboratorios WHERE ID_Pace = ?", Pacientes.ID_Paciente)
         .then(
             (value) => Terminal.printNotice(message: "Eliminados $value . . ."))
-        .whenComplete(() =>
-        Terminal.printNotice(message: "Eliminiar Registros Completado . . . "))
+        .whenComplete(() => Terminal.printNotice(
+            message: "Eliminiar Registros Completado . . . "))
         .onError((error, stackTrace) =>
-        Terminal.printAlert(message: "Error :  : $error :  $stackTrace"));
+            Terminal.printAlert(message: "Error :  : $error :  $stackTrace"));
   }
 
   static Future<Null> eliminarPorFecha({required String fechaPrevia}) async {
@@ -5851,7 +5905,7 @@ class Auxiliares {
         tipoEstudio != 'Gasometría Venosa') {
       if (estudio == 'Concentración Media de Hemoglobina Corpuscular') {
         return 'CMHC';
-      } else if (estudio == 'Radio de Distribución Eritrocitaria') {
+      } else if (estudio == 'Ancho de Distribución Eritrocitaria') {
         return 'RDW';
       } else if (estudio == 'Alaninoaminotrasferasa') {
         return 'ALT';
@@ -6030,8 +6084,8 @@ class Auxiliares {
     "Reactantes de Fase Aguda",
     "Gasometría Arterial",
     "Gasometría Venosa",
-    "Examen General de Orina",
-    "Depuración de Orina de 24 Horas",
+    "Examen General de Orina", // 11
+    "Depuración de Orina de 24 Horas", // 12
     "Líquido de Diálisis Peritoneal", // 13
     "Citológico",
     "Iones Urinarios",
@@ -6044,7 +6098,7 @@ class Auxiliares {
     "Inmunológicos",
     "Perfil Hormonal",
     "Cuantificación de Vitaminas",
-    "Otros",
+    "Otros", // 25
     "Citoquímico de Líquido Cefalorraquídeo",
     "Citológico de Líquido Cefalorraquídeo",
     "Aspirado de Médula Ósea",
@@ -6060,7 +6114,7 @@ class Auxiliares {
       "VCM", // "Volumen Corpuscular Medio",
       "HCM", //"Hemoglobina Corpuscular Media",
       "CH", //"Concentración de Hemoglobina",
-      "Radio de Distribución Eritrocitaria",
+      "Ancho de Distribución Eritrocitaria", // 7
       "Plaquetas",
       "Leucocitos Totales",
       "Neutrofilos Totales",
@@ -6069,8 +6123,8 @@ class Auxiliares {
       "Eosinófilos Totales",
       "Basófilos Totales",
       "Bandas Totales"
-          "Ancho de Distribución Plaquetaria",
       "Volumen Plaquetar Medio",
+      "Ancho de Distribución Plaquetaria", // 17
       "Reticulocitos",
       "",
     ],
@@ -6106,7 +6160,7 @@ class Auxiliares {
     Categorias[5]: ["Lipasa", "Amilasa"],
     Categorias[6]: [
       "Colesterol Total",
-      "Trigiliceridos",
+      "Triglicéridos",
       "c-HDL",
       "c-LDL",
       "c-VLDL"
@@ -6121,7 +6175,10 @@ class Auxiliares {
       "Procalcitonina",
       "Ácido Láctico",
       "Velocidad de Sedimentación Globular",
-      "Proteina C Reactiva",
+      "Proteina C Reactiva", // mg/dL : 0.00 - 4.00
+      // 1 - 5 mg/dL : : Inflamación Leve
+      // 5 - 10 mg/dL : : Inflamación Moderada
+      // más 10 mg/dL : : Inflamación Grave
       "Factor Reumatoide",
       "Anticuerpo Antipéptido Citrulinado",
       "Fibrinógeno",
@@ -6152,7 +6209,7 @@ class Auxiliares {
       "Densidad Urinaria", // 1.062
       "Hemoglobina Urinaria", // 200 Hem/uL
       "Proteinas Urinarias", //  : : mg/dL
-      "Urobilinógeno Urinario", //  : : mg/dL
+      "Urobilinógeno Urinario", //  : : mg/dL // 6
       "Bilirrubinas Urinarias", // Negativo / Positivo
       "Cetonas Urinarias", // Negativo / Positivo
       "Glucosa Urinaria", // Negativo / Positivo
@@ -6246,11 +6303,18 @@ class Auxiliares {
       "Ac IgG anti Toxoplasma",
     ],
     Categorias[21]: [
-      "Hierro Sérico",
+      "Hierro Sérico", // 33 - 193 : : ug/dL
+      // 0 - 1a : 19.5 - 153.6
+      // 2 - 5a : 9.5 - 150.8
+      // 6 - 10a : 6.7 - 148.0
+      // 11 - 14a : 19.0 - 156.3
+      // 15 - 20a : 14.5 - 155.8
+      // más 21a : 33.0 - 193.0
       "Ferritina",
       "Transferrina",
       "Saturación de Transferrina",
       "Captación de Hierro Sérico",
+      "Capacidad de Fijaión de Hierro", // TIBC : 261 - 478 : : ug/dL
       "",
     ],
     //
@@ -6317,11 +6381,11 @@ class Auxiliares {
       "Antigeno Protático Total",
       "BNP",
       "NT-pro BNP",
-      "Alfa Fetoproteina",
-      "Antigeno Carcinoembrionario",
-      "CA 19.9",
-      "CA 125",
-      "",
+      "Alfa Fetoproteina", // ng/mL : 0.00 - 4.00
+      "Antigeno Carcinoembrionario", // ng/mL : 0.00 - 5.00
+      "CA 19.9", // U/mL : 0.00 - 37.00
+      "CA 125", // U/mL : 0.00 - 35.00
+      "CA 53.4",
       "",
       "",
       "",
@@ -6396,7 +6460,7 @@ class Auxiliares {
     Categorias[8]: ["ng/dL", "mm/Hr", "mg/dL", "ng/mL"],
     Categorias[9]: ["", "mmHg", "cmH20", "mmol/L", "%"],
     Categorias[10]: ["", "mmHg", "cmH20", "mmol/L", "%"],
-    Categorias[11]: [""],
+    Categorias[11]: ["", "Hem/uL", "mg/dL", "Leu/uL", "cel/Campo"],
     Categorias[12]: [
       "mL",
       "mg/dL",
@@ -6431,7 +6495,7 @@ class Auxiliares {
     Categorias[22]: ["pg/mL", "UI/mL", "IU/mL", "mg/dL", ""],
     Categorias[23]: ["pg/mL", "ng/dL", ""],
     Categorias[24]: [""],
-    Categorias[25]: [""],
+    Categorias[25]: ["%", "", ""],
   };
 
   static final Map<String, dynamic> auxiliares = {
@@ -6532,12 +6596,18 @@ class Auxiliares {
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Concentración Media de Hemoglobina Corpuscular' ORDER BY Fecha_Registro DESC limit 1) as CHCM,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'VCM' ORDER BY Fecha_Registro DESC limit 1) as VCM,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'HCM' ORDER BY Fecha_Registro DESC limit 1) as HCM,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Ancho de Distribución Eritrocitaria' ORDER BY Fecha_Registro DESC limit 1) as RDW,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Plaquetas' ORDER BY Fecha_Registro DESC limit 1) as Plaquetas,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Leucocitos Totales' ORDER BY Fecha_Registro DESC limit 1) as Leucocitos_Totales,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Neutrofilos Totales' ORDER BY Fecha_Registro DESC limit 1) as Neutrofilos_Totales,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Linfocitos Totales' ORDER BY Fecha_Registro DESC limit 1) as Linfocitos_Totales,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Monocitos Totales' ORDER BY Fecha_Registro DESC limit 1) as Monocitos_Totales,"
         //
+        "(SELECT Fecha_Registro FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Tiempos de Coagulación' ORDER BY Fecha_Registro DESC limit 1) as Fecha_Registro_Coagulacion,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Tiempo de Protrombina' ORDER BY Fecha_Registro DESC limit 1) as Tiempo_Protrombina,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Tiempo Parcial de Tromboplastina' ORDER BY Fecha_Registro DESC limit 1) as TP_Tromboplastina,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'INR' ORDER BY Fecha_Registro DESC limit 1) as Normalized_Ratio,"
+    //
         "(SELECT Fecha_Registro FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Química Sanguínea' ORDER BY Fecha_Registro DESC limit 1) as Fecha_Registro_Quimicas,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Glucosa' ORDER BY Fecha_Registro DESC limit 1) as Glucosa,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Urea' ORDER BY Fecha_Registro DESC limit 1) as Urea,"
@@ -7092,10 +7162,8 @@ class Balances {
   // *********** *********** ********* ****
 
   static void consultarRegistro() {
-    Actividades.consultarAllById(
-        Databases.siteground_database_reghosp,
-        Balances.balance['consultByIdPrimaryQuery'],
-        Pacientes.ID_Paciente)
+    Actividades.consultarAllById(Databases.siteground_database_reghosp,
+            Balances.balance['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
         .then((value) {
       // Asignación de Valores ********* ******** ******* ********* ***
       Balances.Balance = value[value.length - 1];
@@ -7908,10 +7976,9 @@ class Repositorios {
   }
 
   static void eliminarRegistros() {
-    Actividades.detalles(
-      Databases.siteground_database_reghosp,
-        "DELETE FROM pace_hosp_repo WHERE Tipo_Analisis = 'Nota de Ingreso'"
-    ).then((value) {
+    Actividades.detalles(Databases.siteground_database_reghosp,
+            "DELETE FROM pace_hosp_repo WHERE Tipo_Analisis = 'Nota de Ingreso'")
+        .then((value) {
       Terminal.printExpected(message: "SUCCESS - $value");
     });
   }
@@ -8031,13 +8098,13 @@ class Repositorios {
   static String tipoAnalisis({required int widgetPage}) {
     tipo_Analisis = Items.tiposAnalisis[widgetPage];
     return Items.tiposAnalisis[widgetPage];
-
   }
 }
 
 class Situaciones {
   static int ID_Situaciones = 0;
-  static var fileAssocieted = '${Pacientes.localRepositoryPath}situaciones.json';
+  static var fileAssocieted =
+      '${Pacientes.localRepositoryPath}situaciones.json';
 
   static Map<String, dynamic> Situacion = {};
 
@@ -8237,9 +8304,7 @@ class Situaciones {
         "(SELECT IFNULL(count(*), 0) FROM pace_sita WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
   };
 
-  static void fromJson(Map<String, dynamic> situacion) {
-
-  }
+  static void fromJson(Map<String, dynamic> situacion) {}
 }
 
 class Expedientes {

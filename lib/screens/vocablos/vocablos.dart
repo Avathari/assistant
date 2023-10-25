@@ -696,7 +696,7 @@ class _GestionLexemasState extends State<GestionLexemas> {
                                   : snapshot.data[posicion]['Tipo_Vocal'] ==
                                           'Formas Verbales'
                                       ? Icons.attractions
-                                      : Icons.add,
+                                      : Icons.add, onChangeValue: () {  },
                     ),
                   ],
                 ),

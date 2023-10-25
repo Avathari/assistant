@@ -1,5 +1,6 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/renometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
@@ -11,21 +12,18 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class AuxiliaresExploracion extends StatefulWidget {
-  bool? isPrequirurgico;
+  bool? isPrequirurgico, isIngreso;
 
-  AuxiliaresExploracion({super.key, this.isPrequirurgico = false});
+  AuxiliaresExploracion({super.key, this.isPrequirurgico = false,this.isIngreso = false});
 
   @override
   State<AuxiliaresExploracion> createState() => _AuxiliaresExploracionState();
 }
 
 class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
-  var auxTextController = TextEditingController();
-  var commenTextController = TextEditingController();
 
-  var scrollAuxController = ScrollController();
-  var scrollCommenController = ScrollController();
-
+  var auxTextController = TextEditingController(), commenTextController = TextEditingController();
+  var scrollAuxController = ScrollController(), scrollCommenController = ScrollController();
   late String? tipoEstudio;
 
   double mainAxisExtend = 50;
@@ -34,10 +32,15 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
   void initState() {
     Auxiliares.registros();
     setState(() {
-      if (widget.isPrequirurgico! == true) {
-        Reportes.analisisComplementarios = Valorados.prequirurgicos;
-      }
+      if (widget.isPrequirurgico! == true) Reportes.analisisComplementarios = Valorados.prequirurgicos;
+      if (widget.isIngreso! == true) Reportes.reportes['Auxiliares_Diagnosticos'] = Reportes.auxiliaresDiagnosticos = Auxiliares.historial(esAbreviado: true);
 
+      if (widget.isIngreso! == true) Reportes.reportes['Analisis_Complementarios'] = Reportes.analisisComplementarios = Valorados.antropometricos();
+      if (widget.isIngreso! == true) Reportes.reportes['Analisis_Complementarios'] = Reportes.analisisComplementarios + Valorados.metabolometrias;
+      if (widget.isIngreso! == true) Reportes.reportes['Analisis_Complementarios'] = Reportes.analisisComplementarios + Renometrias.renales();
+      if (widget.isIngreso! == true) Reportes.reportes['Analisis_Complementarios'] = Reportes.analisisComplementarios + Renometrias.renales();
+
+      //
       auxTextController.text = Reportes.auxiliaresDiagnosticos;
       commenTextController.text = Reportes.analisisComplementarios;
     });

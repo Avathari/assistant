@@ -166,7 +166,7 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
                                                               .text ==
                                                           'Patrimonio'
                                                       ? Icons.hdr_weak_sharp
-                                                      : Icons.all_out,
+                                                      : Icons.all_out, onChangeValue: () {  },
                                 ),
                               ),
                               Expanded(
@@ -348,7 +348,7 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
                                                               .text ==
                                                           'Patrimonio'
                                                       ? Icons.hdr_weak_sharp
-                                                      : Icons.all_out,
+                                                      : Icons.all_out, onChangeValue: () {  },
                                 ),
                               ),
                             ],
@@ -1241,7 +1241,7 @@ class _GestionActivosState extends State<GestionActivos> {
                                                   ['Tipo_Recurso'] ==
                                               'Patrimonio'
                                           ? Icons.hdr_weak_sharp
-                                          : Icons.all_out),
+                                          : Icons.all_out, onChangeValue: () {  },),
                 ],
               ),
             ),

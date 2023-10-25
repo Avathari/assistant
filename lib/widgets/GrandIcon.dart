@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 
 class GrandIcon extends StatefulWidget {
   String? labelButton;
-  double? weigth, heigth;
+  double? weigth, heigth, size;
   var onPress;
   void Function()? onLongPress;
   IconData? iconData;
@@ -13,8 +13,9 @@ class GrandIcon extends StatefulWidget {
   GrandIcon(
       {Key? key,
       this.labelButton = "message",
-      this.weigth = 6,
-      this.heigth = 6,
+      this.weigth = 10,
+      this.heigth = 10,
+        this.size = 28,
       this.iconColor = Colors.grey,
       this.iconData = Icons.wallet,
       this.onLongPress,
@@ -38,10 +39,7 @@ class _GrandIconState extends State<GrandIcon> {
           SystemSound.play(SystemSoundType.click);
           widget.onPress();
         },
-        child: Padding(
-          padding: const EdgeInsets.all(2.0),
-          child: Icon(widget.iconData, color: widget.iconColor),
-        ),
+        child: Icon(size: widget.size!, widget.iconData, color: widget.iconColor),
       ),
     );
     ;

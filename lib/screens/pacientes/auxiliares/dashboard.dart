@@ -80,7 +80,7 @@ class _DashboardState extends State<Dashboard> {
       }
     } else {
       Archivos.readJsonToMap(filePath: Vitales.fileAssocieted).then((value) {
-        Terminal.printData(message: "Value $value");
+        // // Terminal.printData(message: "Value $value");
         Pacientes.Vitales = value;
         for (var i = 0; i < Pacientes.Vitales!.length; i++) {
           list.clear();
@@ -96,7 +96,7 @@ class _DashboardState extends State<Dashboard> {
           ]);
         }
       }).onError((error, stackTrace) {
-        Terminal.printAlert(message: "ERROR - $error : : $stackTrace");
+        // Terminal.printAlert(message: "ERROR - $error : : $stackTrace");
       }).whenComplete(() {
         setState(() {
           widget.dymValues;
@@ -118,29 +118,25 @@ class _DashboardState extends State<Dashboard> {
   }
 
   void iniciar() {
-    Terminal.printWarning(
-        message: " . . . Iniciando Actividad - Repositorio de Pacientes");
+    // Terminal.printWarning(message: " . . . Iniciando Actividad - Repositorio de Pacientes");
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       setState(() {
         Pacientes.Vitales = value;
       });
     }).onError((error, stackTrace) {
-      Terminal.printAlert(
-          message: "Iniciando actividad : : \n "
-              "Consulta de pacientes hospitalizados . . .");
+      // Terminal.printAlert(message: "Iniciando actividad : : \n "Consulta de pacientes hospitalizados . . .");
       Actividades.consultarAllById(Databases.siteground_database_regpace,
               Vitales.vitales['consultIdQuery'], Pacientes.ID_Paciente)
           .then((value) {
         setState(() {
-          Terminal.printSuccess(
-              message: "Actualizando repositorio de pacientes . . . ");
+          // Terminal.printSuccess(message: "Actualizando repositorio de pacientes . . . ");
           Pacientes.Vitales = value;
           Archivos.createJsonFromMap(Pacientes.Vitales!,
               filePath: fileAssocieted);
         });
       });
     });
-    Terminal.printWarning(message: " . . . Actividad Iniciada");
+    // Terminal.printWarning(message: " . . . Actividad Iniciada");
   }
 
   // Visores ******** ****** ******* ***** ** *
