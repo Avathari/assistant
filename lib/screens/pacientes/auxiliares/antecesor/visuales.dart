@@ -164,6 +164,9 @@ class _VisualPacientesState extends State<VisualPacientes> {
           ]),
       body:
           isMobile(context) || isTablet(context) ? mobileView() : desktopView(),
+      floatingActionButton: isDesktop(context)|| isLargeDesktop(context)
+          ? Column(mainAxisAlignment: MainAxisAlignment.end, children: floatingWidgets(context))
+          : Container(),
     );
   }
 
@@ -577,4 +580,44 @@ class _VisualPacientesState extends State<VisualPacientes> {
   //     apellidoMaternoPaciente,
   //     edadPaciente;
   // late String imgPaciente = "";
+}
+
+floatingWidgets(BuildContext context) {
+  return [
+    FloatingActionButton(
+      backgroundColor: Colors.black87,
+      foregroundColor: Colors.grey,
+      tooltip: 'Indicaciones Médicas',
+      onPressed: () {
+        //...
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: const Text('Yay! A SnackBar!'),
+            action: SnackBarAction(
+              label: 'Undo',
+              onPressed: () {
+                // Some code to undo the change.
+              },
+            )));
+      },
+      heroTag: null,
+      child: const Icon(
+        Icons.line_weight,
+        color: Colors.grey,
+      ),
+    ),
+    const SizedBox(height: 10),
+    FloatingActionButton(
+      backgroundColor: Colors.black87,
+      foregroundColor: Colors.grey,
+      tooltip: 'Vista Previa',
+      onPressed: () async {
+
+      },
+      heroTag: null,
+      child: const Icon(
+        Icons.scale,
+        color: Colors.grey,
+      ),
+    )
+  ];
 }

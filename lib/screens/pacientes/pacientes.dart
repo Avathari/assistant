@@ -185,7 +185,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                     shrinkWrap: false,
                                     gridDelegate: GridViewTools.gridDelegate(
                                         crossAxisCount:
-                                            isDesktop(context) ? 2 : 1,
+                                            isDesktop(context) || isLargeDesktop(context)? 2 : 1,
                                         mainAxisExtent:
                                             isMobile(context) ? 180 : 200),
                                     itemCount: snapshot.data == null
@@ -656,7 +656,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
         ),
         isTablet(context)
             ? const Expanded(flex: 1, child: EstadisticasPacientes())
-            : isDesktop(context)
+            : isDesktop(context) || isLargeDesktop(context)
                 ? const Expanded(flex: 1, child: EstadisticasPacientes())
                 : isTabletAndDesktop(context)
                     ? const Expanded(flex: 1, child: EstadisticasPacientes())

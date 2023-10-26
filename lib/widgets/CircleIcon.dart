@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class CircleIcon extends StatefulWidget {
   String? tittle;
   IconData? iconed;
-  double? radios;
+  double? radios, difRadios;
   var onChangeValue;
 
   CircleIcon(
@@ -14,7 +14,9 @@ class CircleIcon extends StatefulWidget {
       this.tittle = '',
       this.iconed = Icons.cable_rounded,
       required this.onChangeValue,
-      this.radios = 40})
+      this.radios = 40,
+      this.difRadios = 10,
+      })
       : super(key: key);
 
   @override
@@ -65,8 +67,9 @@ class _CircleIconState extends State<CircleIcon> {
         radius: widget.radios!,
         child: CircleAvatar(
           backgroundColor: Colors.black,
-          radius: widget.radios! - 10,
+          radius: widget.radios! - widget.difRadios!,
           child: GrandIcon(
+            size: 30 - widget.difRadios!,
             labelButton: widget.tittle!,
             iconData: widget.iconed!,
             onPress: () {

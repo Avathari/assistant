@@ -9,13 +9,14 @@ import 'package:flutter/services.dart';
 class CircleSwitched extends StatefulWidget {
   String? tittle;
   bool? isSwitched;
-  double? radios;
+  double? radios, difRadios;
   Function? onChangeValue;
 
   CircleSwitched(
       {Key? key,
       this.tittle,
       this.radios = 40,
+        this.difRadios = 10,
       this.isSwitched = false,
       required this.onChangeValue})
       : super(key: key);
@@ -70,8 +71,9 @@ class _CircleSwitchedState extends State<CircleSwitched> {
           radius: widget.radios!,
           child: CircleAvatar(
             backgroundColor: Colors.black,
-            radius: widget.radios! - 10,
+            radius: widget.radios! - widget.difRadios!,
             child: GrandIcon(
+              size: 30 - widget.difRadios!,
               labelButton:  widget.tittle!,
               iconData: widget.isSwitched == true
                   ? Icons.check
@@ -79,8 +81,8 @@ class _CircleSwitchedState extends State<CircleSwitched> {
               onPress: () {
                 SystemSound.play(SystemSoundType.click);
                 setState(() {
-                  widget.onChangeValue!(!widget.isSwitched!);
-                  widget.isSwitched = !widget.isSwitched!;
+                  widget.onChangeValue!();
+                  // widget.isSwitched = !widget.isSwitched!;
                 });
               },
             ),

@@ -61,7 +61,7 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
       decoration: ContainerDecoration.roundedDecoration(),
       child: Column(children: [
         Expanded(
-          flex: 2,
+          flex: isDesktop(context) ? 2 : 1,
           child: Container(
             margin: const EdgeInsets.all(8.0),
             padding: const EdgeInsets.all(8.0),
