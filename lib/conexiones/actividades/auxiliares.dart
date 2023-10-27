@@ -40,6 +40,17 @@ class Calendarios {
     return DateFormat(DateFormat.YEAR_ABBR_MONTH_WEEKDAY_DAY)
         .format(DateTime.now());
   }
+
+  static int differenceInDaysToNow (String fechaAnterior) {
+    return DateTime.now()
+        .difference(DateTime.parse(fechaAnterior))
+        .inDays;
+  }
+  static int differenceBetweenInDays (String fechaActual, String fechaAnterior) {
+    return DateTime.parse(fechaActual)
+        .difference(DateTime.parse(fechaAnterior))
+        .inDays;
+  }
 }
 
 class Dicotomicos {

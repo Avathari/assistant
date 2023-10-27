@@ -348,17 +348,30 @@ class _SemiologicosState extends State<Semiologicos> {
                 ),
               )),
           // ****************************** **** *** **    *
-          Expanded(
-              child:
-                  infoSemiologias.infograma(context, clusterCuello(context))),
-          Expanded(
-              child:
-                  infoSemiologias.infograma(context, clusterTraquea(context))),
-          Expanded(
-              child: infoSemiologias.infograma(context, clusterBocio(context))),
-          Expanded(
-              child:
-                  infoSemiologias.infograma(context, clusterAdenos(context))),
+          if (numActivity == 0)
+            Expanded(
+                child:
+                    infoSemiologias.infograma(context, clusterCuello(context)))
+          else
+            Container(),
+          if (numActivity == 0)
+            Expanded(
+                child:
+                    infoSemiologias.infograma(context, clusterTraquea(context)))
+          else
+            Container(),
+          if (numActivity == 0)
+            Expanded(
+                child:
+                    infoSemiologias.infograma(context, clusterBocio(context)))
+          else
+            Container(),
+          if (numActivity == 0)
+            Expanded(
+                child:
+                    infoSemiologias.infograma(context, clusterAdenos(context)))
+          else
+            Container(),
         ],
       ),
     );
