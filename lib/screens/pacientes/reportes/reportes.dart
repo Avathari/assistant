@@ -216,145 +216,16 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
   }
 
 // ******************************************************
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   @override
   Widget build(BuildContext context) {
-    print(
-        "MediaQuery.of(context).size.width  ${MediaQuery.of(context).size.width}");
     return Scaffold(
-      appBar: //isMobile(context)
-          AppBar(
-              backgroundColor: Theming.primaryColor,
-              leading: IconButton(
-                icon: const Icon(
-                  Icons.arrow_back,
-                  color: Colors.white,
-                ),
-                tooltip: Sentences.regresar,
-                onPressed: () {
-                  onClose(context);
-                },
-              ),
-              title: isMobile(context)
-                  ? null
-                  : AppBarText(
-                      Sentences.app_bar_reportes,
-                    ),
-              actions: <Widget>[
-            IconButton(
-              icon: const Icon(
-                color: Colors.white,
-                Icons.balance,
-              ),
-              tooltip: 'Concentraciones y Diluciones',
-              onPressed: () async {
-                setState(() {
-                  widget.actualPage = 21;
-                });
-              },
-            ),
-            IconButton(
-              icon: const Icon(
-                color: Colors.white,
-                Icons.remove_from_queue,
-              ),
-              tooltip: 'Refrescar . . . ',
-              onPressed: () async {
-                setState(() {});
-              },
-            ),
-            IconButton(
-              icon: const Icon(
-                color: Colors.white,
-                Icons.system_update_alt,
-              ),
-              tooltip: 'Cargando . . . ',
-              onPressed: () async {
-                Pacientes.loadingActivity(context: context).then((value) {
-                  if (value == true) {
-                    Terminal.printAlert(
-                        message:
-                            'Archivo ${Pacientes.localPath} Re-Creado $value');
-                    Navigator.of(context).pop();
-                  }
-                });
-              },
-            ),
-            IconButton(
-              icon: const Icon(
-                Icons.help,
-                color: Colors.white,
-              ),
-              tooltip: Sentences.find_usuario,
-              onPressed: () {
-                //
-                setState(() {
-                  widget.actualPage = 19;
-                });
-              },
-            ),
-            CrossLine(isHorizontal: false, thickness: 4),
-            IconButton(
-              icon: const Icon(
-                Icons.copy_all_sharp,
-                color: Colors.white,
-              ),
-              tooltip: 'Copiar Esquema del Reporte',
-              onPressed: () {
-                //
-                Datos.portapapeles(
-                    context: context,
-                    text: Reportes.copiarReporte(tipoReporte: getTypeReport()));
-              },
-            ),
-          ]), //: null,
-      floatingActionButton: isMobile(context) || isTablet(context)
-          ? Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-              FloatingActionButton(
-                backgroundColor: Colors.black87,
-                foregroundColor: Colors.grey,
-                tooltip: 'Indicaciones Médicas',
-                onPressed: () {
-                  //...
-                  setState(() {
-                    widget.actualPage = 9;
-                  });
-                },
-                heroTag: null,
-                child: const Icon(
-                  Icons.line_weight,
-                  color: Colors.grey,
-                ),
-              ),
-              const SizedBox(height: 10),
-              FloatingActionButton(
-                backgroundColor: Colors.black87,
-                foregroundColor: Colors.grey,
-                tooltip: 'Vista Previa',
-                onPressed: () async {
-                  await imprimirDocumento()
-                      .then((value) => Operadores.alertActivity(
-                          context: context,
-                          tittle: 'Petición de Registro de Análisis',
-                          message:
-                              '¿Desea registrar el análisis en la base de datos?',
-                          onClose: () {
-                            Navigator.of(context).pop();
-                          },
-                          onAcept: () {
-                            Navigator.of(context).pop();
-                            Repositorios.registrarRegistro();
-                          }))
-                      .onError((error, stackTrace) => Terminal.printAlert(
-                          message: "ERROR - $error : : $stackTrace"));
-                },
-                heroTag: null,
-                child: const Icon(
-                  Icons.scale,
-                  color: Colors.grey,
-                ),
-              )
-            ])
-          : Container(),
+      key: _key,
+      endDrawer: drawerForm(context),
+      appBar: appBar(context),
+      floatingActionButton: floattingActionButton(context),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: bottomNavigationBar(context),
       body:
           isMobile(context) || isTablet(context) ? mobileView() : desktopView(),
     );
@@ -371,16 +242,14 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
   Column mobileView() {
     return Column(
       children: [
-        Expanded(
-            child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            decoration: BoxDecoration(
-                color: Colores.backgroundPanel,
-                borderRadius: BorderRadius.circular(20)),
-            child: sideLeft(),
-          ),
-        )),
+        // Expanded(
+        //     child: Container(
+        //       padding: const EdgeInsets.all(8.0),
+        //       decoration: BoxDecoration(
+        //           color: Colores.backgroundPanel,
+        //           borderRadius: BorderRadius.circular(20)),
+        //       child: sideLeft(),
+        //     )),
         Expanded(
             flex: 4,
             child: Container(
@@ -390,17 +259,18 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   colorBackground: Colores.backgroundPanel),
               child: pantallasReportesMedicos(widget.actualPage),
             )),
-        Expanded(
-            child: Padding(
-          padding: const EdgeInsets.only(
-              right: 82.0, left: 8.0, top: 8.0, bottom: 8.0),
-          child: Container(
-            decoration: BoxDecoration(
-                color: Colores.backgroundPanel,
-                borderRadius: BorderRadius.circular(20)),
-            child: sideRight(),
-          ),
-        )),
+        if (isTablet(context))
+          Expanded(
+              child: Padding(
+            padding: const EdgeInsets.only(
+                right: 82.0, left: 8.0, top: 8.0, bottom: 8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colores.backgroundPanel,
+                  borderRadius: BorderRadius.circular(20)),
+              child: sideRight(),
+            ),
+          )),
       ],
     );
   }
@@ -471,12 +341,6 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                                     },
                                   ),
                                 ),
-                                //     child: Container(
-                                //   decoration: ContainerDecoration.roundedDecoration(),
-                                //   child: TittlePanel(
-                                //       padding: isTablet(context) ? 4 : 2,
-                                //       textPanel: "Tipo de Nota Médica"),
-                                // ),
                               )
                             : Expanded(
                                 child: GrandButton(
@@ -484,6 +348,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                                   fontSize: 10.0,
                                   labelButton: "Tipo de Nota Médica",
                                   onPress: () {
+                                    if (isMobile(context))
+                                      Navigator.of(context).pop();
                                     setState(() {
                                       widget.actualPage = 19;
                                     });
@@ -514,6 +380,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                             weigth: 2000,
                             labelButton: "Tipo de Nota Médica",
                             onPress: () {
+                              if (isMobile(context))
+                                Navigator.of(context).pop();
                               setState(() {
                                 widget.actualPage = 19;
                               });
@@ -582,7 +450,14 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
   }
 
   Widget sideRight() {
-    if (isMobile(context) || isTablet(context)) {
+    if (isMobile(context)) {
+      return SingleChildScrollView(
+        controller: ScrollController(),
+        child: Column(
+          children: actionsReportes(),
+        ),
+      );
+    } else if (isTablet(context)) {
       return Expanded(
           child: Padding(
         padding:
@@ -660,52 +535,54 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             height: 20,
             child: CrossLine(),
           ),
-          if (isLargeDesktop(context)) Expanded(
-            child: GrandButton(
-                labelButton: "Vista previa",
-                onPress: () async {
+          if (isLargeDesktop(context))
+            Expanded(
+              child: GrandButton(
+                  labelButton: "Vista previa",
+                  onPress: () async {
+                    await imprimirDocumento()
+                        .then((value) => Operadores.alertActivity(
+                            context: context,
+                            tittle: 'Petición de Registro de Análisis',
+                            message:
+                                '¿Desea registrar el análisis en la base de datos?',
+                            onClose: () {
+                              Navigator.of(context).pop();
+                            },
+                            onAcept: () {
+                              Navigator.of(context).pop();
+                              Repositorios.registrarRegistro();
+                            }))
+                        .onError((error, stackTrace) => Terminal.printAlert(
+                            message: "ERROR - $error : : $stackTrace"));
+                  }),
+            ),
+          if (isDesktop(context))
+            SizedBox(
+              height: 80,
+              child: CircleIcon(
+                tittle: "Vista Previa . . . ",
+                radios: 30,
+                iconed: Icons.signal_wifi_statusbar_null_sharp,
+                onChangeValue: () async {
                   await imprimirDocumento()
                       .then((value) => Operadores.alertActivity(
-                      context: context,
-                      tittle: 'Petición de Registro de Análisis',
-                      message:
-                      '¿Desea registrar el análisis en la base de datos?',
-                      onClose: () {
-                        Navigator.of(context).pop();
-                      },
-                      onAcept: () {
-                        Navigator.of(context).pop();
-                        Repositorios.registrarRegistro();
-                      }))
+                          context: context,
+                          tittle: 'Petición de Registro de Análisis',
+                          message:
+                              '¿Desea registrar el análisis en la base de datos?',
+                          onClose: () {
+                            Navigator.of(context).pop();
+                          },
+                          onAcept: () {
+                            Navigator.of(context).pop();
+                            Repositorios.registrarRegistro();
+                          }))
                       .onError((error, stackTrace) => Terminal.printAlert(
-                      message: "ERROR - $error : : $stackTrace"));
-                }),
-          ),
-          if (isDesktop(context)) SizedBox(
-            height: 80,
-            child: CircleIcon(
-              tittle: "Vista Previa . . . ",
-              radios: 30,
-              iconed: Icons.signal_wifi_statusbar_null_sharp,
-              onChangeValue: () async {
-                await imprimirDocumento()
-                    .then((value) => Operadores.alertActivity(
-                    context: context,
-                    tittle: 'Petición de Registro de Análisis',
-                    message:
-                    '¿Desea registrar el análisis en la base de datos?',
-                    onClose: () {
-                      Navigator.of(context).pop();
-                    },
-                    onAcept: () {
-                      Navigator.of(context).pop();
-                      Repositorios.registrarRegistro();
-                    }))
-                    .onError((error, stackTrace) => Terminal.printAlert(
-                    message: "ERROR - $error : : $stackTrace"));
-              },
+                          message: "ERROR - $error : : $stackTrace"));
+                },
+              ),
             ),
-          ),
         ],
       );
     }
@@ -917,6 +794,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       ListValue(
         title: "Nota de Ingreso Hospitalario",
         onPress: () {
+          if (isMobile(context)) Navigator.of(context).pop();
           setState(() {
             widget.actualPage = 0;
           });
@@ -925,6 +803,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       ListValue(
         title: "Nota de Evolución",
         onPress: () {
+          if (isMobile(context)) Navigator.of(context).pop();
           setState(() {
             widget.actualPage = 1;
           });
@@ -933,7 +812,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       ListValue(
         title: "Nota de Consulta",
         onPress: () {
-          Licencias.consultarRegistro();
+          if (isMobile(context)) Navigator.of(context).pop();
           setState(() {
             widget.actualPage = 2;
           });
@@ -942,6 +821,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       ListValue(
         title: "Nota de Terapia Intensiva",
         onPress: () {
+          if (isMobile(context)) Navigator.of(context).pop();
           setState(() {
             widget.actualPage = 3;
           });
@@ -950,6 +830,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       ListValue(
         title: "Nota de Valoración Prequirúrgica",
         onPress: () {
+          if (isMobile(context)) Navigator.of(context).pop();
           setState(() {
             widget.actualPage = 4;
           });
@@ -958,6 +839,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       ListValue(
         title: "Nota de Valoración Preanestésica",
         onPress: () {
+          if (isMobile(context)) Navigator.of(context).pop();
           setState(() {
             widget.actualPage = 5;
           });
@@ -966,6 +848,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       ListValue(
         title: "Nota de Egreso",
         onPress: () {
+          if (isMobile(context)) Navigator.of(context).pop();
           setState(() {
             widget.actualPage = 6;
           });
@@ -974,6 +857,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       ListValue(
         title: "Nota de Revisión",
         onPress: () {
+          if (isMobile(context)) Navigator.of(context).pop();
           setState(() {
             widget.actualPage = 7;
           });
@@ -982,6 +866,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       ListValue(
         title: "Nota de Traslado",
         onPress: () {
+          if (isMobile(context)) Navigator.of(context).pop();
           setState(() {
             widget.actualPage = 8;
           });
@@ -990,6 +875,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       ListValue(
         title: "Nota de Transfusión",
         onPress: () {
+          if (isMobile(context)) Navigator.of(context).pop();
           setState(() {
             widget.actualPage = 17;
           });
@@ -1130,4 +1016,267 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           }),
     ];
   }
+
+  // COMPONENTES ****************************************************
+  drawerForm(BuildContext context) => Drawer(
+        width: 100,
+        backgroundColor: Theming.cuaternaryColor,
+        child: Container(
+          decoration: const BoxDecoration(
+            border: Border(
+                top: BorderSide(color: Colors.grey),
+                bottom: BorderSide(color: Colors.grey),
+                left: BorderSide(color: Colors.grey)),
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(16), topLeft: Radius.circular(16)),
+          ),
+          child: Column(
+            children: [
+              Expanded(
+                flex: 6,
+                child: DrawerHeader(
+                    child: CircleIcon(
+                  difRadios: 15,
+                  iconed: Icons.line_weight_sharp,
+                  onChangeValue: () {},
+                )),
+              ),
+              Expanded(
+                flex: 16,
+                child: GridView(
+                    controller: ScrollController(),
+                    gridDelegate: GridViewTools.gridDelegate(
+                        crossAxisCount: 1, mainAxisExtent: 20.0),
+                    children: actionsReportes()),
+              ),
+              CrossLine(thickness: 3, color: Colors.grey),
+              Expanded(
+                flex: 4,
+                child: GridView(
+                  controller: ScrollController(),
+                  gridDelegate: GridViewTools.gridDelegate(
+                      mainAxisSpacing: 25.0,
+                      crossAxisSpacing: 10.0,
+                      crossAxisCount: 2,
+                      mainAxisExtent: 20.0),
+                  children: [
+                    IconButton(
+                      icon: const Icon(
+                        color: Colors.white,
+                        Icons.balance,
+                      ),
+                      tooltip: 'Concentraciones y Diluciones',
+                      onPressed: () async {
+                        setState(() {
+                          widget.actualPage = 21;
+                          _key.currentState!.closeEndDrawer();
+                        });
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(
+                        color: Colors.white,
+                        Icons.remove_from_queue,
+                      ),
+                      tooltip: 'Refrescar . . . ',
+                      onPressed: () async {
+                        setState(() {
+                          _key.currentState!.closeEndDrawer();
+                        });
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(
+                        color: Colors.white,
+                        Icons.system_update_alt,
+                      ),
+                      tooltip: 'Cargando . . . ',
+                      onPressed: () async {
+                        Pacientes.loadingActivity(context: context)
+                            .then((value) {
+                          if (value == true) {
+                            Terminal.printAlert(
+                                message:
+                                    'Archivo ${Pacientes.localPath} Re-Creado $value');
+                            Navigator.of(context).pop();
+                          }
+                        });
+                        _key.currentState!.closeEndDrawer();
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(
+                        Icons.help,
+                        color: Colors.white,
+                      ),
+                      tooltip: Sentences.find_usuario,
+                      onPressed: () {
+                        //
+                        setState(() {
+                          widget.actualPage = 19;
+                          _key.currentState!.closeEndDrawer();
+                        });
+                      },
+                    ),
+                    // CrossLine(isHorizontal: false, thickness: 4),
+                  ],
+                ),
+              ),
+              CrossLine(thickness: 3, height: 20, color: Colors.grey),
+              Expanded(
+                flex: 3,
+                child: CircleIcon(
+                  radios: 30,
+                  difRadios: 5,
+                  tittle: 'Copiar Esquema del Reporte',
+                  iconed: Icons.copy_all_sharp,
+                  onChangeValue: () {
+                    Datos.portapapeles(
+                        context: context,
+                        text: Reportes.copiarReporte(
+                            tipoReporte: getTypeReport()));
+                    _key.currentState!.closeEndDrawer();
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+
+  bottomNavigationBar(BuildContext context) => BottomAppBar(
+        color: Colors.black,
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 10,
+        height: 60,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton(
+                splashColor: Theming.terciaryColor,
+                icon: const Icon(Icons.line_weight, color: Colors.grey),
+                tooltip: "Indicaciones Médicas",
+                onPressed: () => setState(() {
+                      widget.actualPage = 9;
+                    })),
+            IconButton(
+                splashColor: Theming.terciaryColor,
+                icon: const Icon(Icons.bed, color: Colors.grey),
+                tooltip: "Semiologías",
+                onPressed: () => setState(() {
+                      widget.actualPage = 20;
+                    })),
+            const SizedBox(width: 25),
+            IconButton(
+                splashColor: Theming.terciaryColor,
+                icon: const Icon(Icons.medication_outlined, color: Colors.grey),
+                tooltip: "Terapia Intensiva",
+                onPressed: () => setState(() {
+                      widget.actualPage = 18;
+                    })),
+            IconButton(
+                icon: const Icon(Icons.scale, color: Colors.grey),
+                tooltip: 'Vista Previa',
+                onPressed: () async => await imprimirDocumento()
+                        .then((value) => Operadores.alertActivity(
+                            context: context,
+                            tittle: 'Petición de Registro de Análisis',
+                            message:
+                                '¿Desea registrar el análisis en la base de datos?',
+                            onClose: () {
+                              Navigator.of(context).pop();
+                            },
+                            onAcept: () {
+                              Navigator.of(context).pop();
+                              Repositorios.registrarRegistro();
+                            }))
+                        .onError((error, stackTrace) {
+                      Terminal.printAlert(
+                          message: "ERROR - $error : : $stackTrace");
+                      showModalBottomSheet(
+                          context: context,
+                          backgroundColor: Theming.cuaternaryColor,
+                          builder: (BuildContext context) {
+                            return ListView(
+                              padding: const EdgeInsets.all(10.0),
+                              children: [
+                                Text(
+                                  "ERROR: $error",
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      color: Colors.grey, fontSize: 12),
+                                ),
+                                CrossLine(thickness: 3, height: 25),
+                                Text(
+                                  "ERROR:  $error : $stackTrace",
+                                  style: const TextStyle(
+                                      color: Colors.grey, fontSize: 10),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: const Text(
+                                    "Cerrar . . . ",
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 12),
+                                  ),
+                                )
+                              ],
+                            );
+                          });
+                    })),
+          ],
+        ),
+      );
+
+  floattingActionButton(BuildContext context) => FloatingActionButton(
+        backgroundColor: Colors.black,
+        onPressed: () => showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) {
+              return Container(
+                padding: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                    color: Theming.cuaternaryColor,
+                    borderRadius: BorderRadius.circular(20)),
+                child: sideLeft(),
+              );
+            }),
+        shape: RoundedRectangleBorder(
+            side: const BorderSide(width: 1, color: Colors.grey),
+            borderRadius: BorderRadius.circular(100)),
+        child: const Icon(
+          Icons.hdr_strong,
+          color: Colors.grey,
+        ),
+      );
+
+  appBar(BuildContext context) => AppBar(
+          backgroundColor: Theming.primaryColor,
+          leading: GrandIcon(
+              labelButton: Sentences.regresar,
+              iconData: Icons.arrow_back,
+              iconColor: Colors.white,
+              onPress: () => onClose(context)),
+          centerTitle: true,
+          toolbarHeight: 80,
+          shape: const ContinuousRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(90.0),
+              bottomRight: Radius.circular(90.0),
+            ),
+          ),
+          title: CircleIcon(
+            iconed: Icons.lens_blur,
+            radios: 30,
+            onChangeValue: () {},
+          ),
+          // title: AppBarText(Sentences.app_bar_reportes),
+          actions: <Widget>[
+            GrandIcon(
+                labelButton: 'Copiar Esquema del Reporte',
+                iconData: Icons.menu_open_sharp,
+                iconColor: Colors.white,
+                onPress: () => _key.currentState!.openEndDrawer()),
+            const SizedBox(width: 20)
+          ]);
 }

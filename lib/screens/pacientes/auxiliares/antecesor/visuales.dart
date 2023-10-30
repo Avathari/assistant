@@ -6,6 +6,7 @@ import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitaliza
 import 'package:assistant/screens/pacientes/auxiliares/presentaciones/antecedentesPersonales.dart';
 
 import 'package:assistant/screens/pacientes/auxiliares/presentaciones/presentaciones.dart';
+import 'package:assistant/screens/pacientes/auxiliares/revisiones/generales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisiones.dart';
 import 'package:assistant/screens/pacientes/epidemiologicos/licencias.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';
@@ -15,6 +16,11 @@ import 'package:assistant/screens/pacientes/paraclinicos/paraclinicos.dart';
 import 'package:assistant/screens/pacientes/reportes/reportes.dart';
 
 import 'package:assistant/screens/pacientes/vitales/vitales.dart';
+import 'package:assistant/widgets/AppBarText.dart';
+import 'package:assistant/widgets/CircleIcon.dart';
+import 'package:assistant/widgets/CrossLine.dart';
+import 'package:assistant/widgets/GrandIcon.dart';
+import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 
 import 'package:assistant/conexiones/conexiones.dart';
@@ -23,11 +29,18 @@ import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:flutter/material.dart';
+import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisorios.dart';
+import 'package:assistant/screens/pacientes/hospitalizacion/diagnosticados.dart';
+import 'package:assistant/screens/pacientes/intensiva/contenidos/balances.dart';
+import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/conmutadorParaclinicos.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/operadores/laboratorios.dart';
+import 'package:assistant/screens/pacientes/patologicos/epidemiologicos.dart';
+import 'package:assistant/screens/pacientes/patologicos/patologicos.dart';
 
 // ignore: must_be_immutable
 class VisualPacientes extends StatefulWidget {
   int actualPage = 6;
-
 
   VisualPacientes({Key? key, required this.actualPage}) : super(key: key);
 
@@ -49,6 +62,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
           isMobile(context) || isTablet(context) ? drawerHome(context) : null,
       appBar: AppBar(
           foregroundColor: Colors.white,
+          //shape: CircularShapeBorder(),
           leading: isDesktop(context)
               ? IconButton(
                   icon: const Icon(
@@ -62,59 +76,29 @@ class _VisualPacientesState extends State<VisualPacientes> {
                 )
               : null,
           backgroundColor: Colors.black,
-          title: Text(
-            Sentences.app_bar_usuarios,
-            style: Styles.textSyleGrowth(),
-          ),
+          centerTitle: true,
+          toolbarHeight: 80.0,
+          elevation: 0,
+          title: CircleIcon(
+              iconed: Icons.person,
+              tittle: Sentences.app_bar_usuarios,
+              onChangeValue: () {}),
           actions: <Widget>[
-            isMobile(context) ?
-            Container() : IconButton(
-        icon: const Icon(
-          color: Colors.white,
-          Icons.account_tree,
-        ),
-        tooltip: 'Revisiones . . . ',
-        onPressed: () {
-          setState(() {
-            widget.actualPage = 11;
-          });
-        },
-      ),
+            isMobile(context)
+                ? Container()
+                : IconButton(
+                    icon: const Icon(
+                      color: Colors.white,
+                      Icons.account_tree,
+                    ),
+                    tooltip: 'Revisiones . . . ',
+                    onPressed: () {
+                      setState(() {
+                        widget.actualPage = 11;
+                      });
+                    },
+                  ),
             //
-            IconButton(
-              icon: const Icon(
-                Icons.remove_from_queue,
-                color: Colors.white,
-              ),
-              tooltip: 'Refrescar . . . ',
-              onPressed: () async {
-                setState(() {});
-              },
-            ),
-            IconButton(
-              icon: const Icon(
-                Icons.system_update_alt,
-                color: Colors.white,
-              ),
-              tooltip: 'Cargando . . . ',
-              onPressed: () async {
-                Pacientes.loadingActivity(context: context).then((value) {
-                  if (value == true) {
-                    Terminal.printAlert(
-                        message:
-                            'Archivo ${Pacientes.localPath} Re-Creado $value');
-                    Navigator.of(context).pop();
-                  }
-                }).onError((error, stackTrace) {
-                  Terminal.printAlert(
-                      message: "ERROR - toVisual : : $error : : Descripción : $stackTrace");
-                  Operadores.alertActivity(
-                      message: "ERROR - toVisual : : $error",
-                      context: context,
-                      tittle: 'Error al Inicial Visual');
-                });
-              },
-            ),
             // IconButton(
             //   icon: const Icon(
             //     Icons.question_answer,
@@ -148,7 +132,10 @@ class _VisualPacientesState extends State<VisualPacientes> {
             //           }));
             //     }),
             IconButton(
-                icon: const Icon(Icons.person,color: Colors.white,),
+                icon: const Icon(
+                  Icons.image_outlined,
+                  color: Colors.white,
+                ),
                 tooltip: '',
                 onPressed: () {
                   showDialog(
@@ -164,9 +151,23 @@ class _VisualPacientesState extends State<VisualPacientes> {
           ]),
       body:
           isMobile(context) || isTablet(context) ? mobileView() : desktopView(),
-      floatingActionButton: isDesktop(context)|| isLargeDesktop(context)
-          ? Column(mainAxisAlignment: MainAxisAlignment.end, children: floatingWidgets(context))
-          : Container(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButton: isDesktop(context) || isLargeDesktop(context)
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: floatingWidgets(context))
+          : FloatingActionButton(
+              backgroundColor: Theming.terciaryColor,
+              child: const Icon(Icons.filter_list, color: Colors.grey),
+              onPressed: () {
+                showModalBottomSheet(
+                    context: context,
+                    backgroundColor: Theming.cuaternaryColor,
+                    builder: (BuildContext context) {
+                      return modalBottomPanel(context);
+                    });
+              },
+            ),
     );
   }
 
@@ -183,17 +184,19 @@ class _VisualPacientesState extends State<VisualPacientes> {
   Row desktopView() {
     return Row(children: [
       Expanded(
-        flex: isLargeDesktop(context) ? 3: 2,
+        flex: isLargeDesktop(context) ? 3 : 2,
         child: isTablet(context)
             ? sideBarTablet(context)
             : sideBarDesktop(context),
       ),
-      Expanded(flex: isLargeDesktop(context) ? 14: 7, child: pantallasAuxiliares(widget.actualPage)),
+      Expanded(
+          flex: isLargeDesktop(context) ? 14 : 7,
+          child: pantallasAuxiliares(widget.actualPage)),
     ]);
   }
 
   void toNextScreen({context, int? index, screen}) {
-    if (isMobile(context) || isTablet(context) ) {
+    if (isMobile(context) || isTablet(context)) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => screen));
     } else {
       setState(() {
@@ -207,8 +210,8 @@ class _VisualPacientesState extends State<VisualPacientes> {
     Reportes.close();
 
     if (Directrices.coordenada!) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => Hospitalizados()));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Hospitalizados()));
     } else {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const GestionPacientes()));
@@ -217,34 +220,33 @@ class _VisualPacientesState extends State<VisualPacientes> {
 
   Drawer drawerHome(BuildContext context) {
     return Drawer(
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-            topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
-      ),
-      backgroundColor: Colores.backgroundWidget,
-      child: Column(
-        children: [
-          const Expanded(
-            flex: 3,
-            child: DrawerHeader(
-                decoration: BoxDecoration(color: Colors.black),
-                child: PresentacionPacientes()),
-          ),
-          Expanded(
-            flex: 8,
-            child: Container(
-              decoration: const BoxDecoration(color: Theming.terciaryColor),
-              child: SingleChildScrollView(
-                controller: scrollController,
-                child: Column(
-                  children: userActivities(context),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
+        ),
+        backgroundColor: Colores.backgroundWidget,
+        child: Column(
+          children: [
+            const Expanded(
+              flex: 3,
+              child: DrawerHeader(
+                  decoration: BoxDecoration(color: Colors.black),
+                  child: PresentacionPacientes()),
+            ),
+            Expanded(
+              flex: 8,
+              child: Container(
+                decoration: const BoxDecoration(color: Theming.terciaryColor),
+                child: SingleChildScrollView(
+                  controller: scrollController,
+                  child: Column(
+                    children: userActivities(context),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
-      )
-    );
+          ],
+        ));
   }
 
   Column sideBarDesktop(BuildContext context) {
@@ -326,9 +328,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
       ),
       GestionHospitalizaciones(),
       GestionLicencia(),
-      Container(
-        margin: const EdgeInsets.all(10),
-          child: Revisiones()),
+      Container(margin: const EdgeInsets.all(10), child: Revisiones()),
       const Center(
         child: Text('Body 10'),
       )
@@ -476,7 +476,6 @@ class _VisualPacientesState extends State<VisualPacientes> {
           //         MaterialPageRoute(builder: (context) => ReportesMedicos()));
           //   }
           // });
-
         },
       ),
       ListTile(
@@ -570,6 +569,218 @@ class _VisualPacientesState extends State<VisualPacientes> {
 
     super.dispose();
   }
+
+  Widget modalBottomPanel(BuildContext context) => ListView(
+        padding: const EdgeInsets.all(10),
+        children: [
+          TittlePanel(
+              textPanel: "Opciones . . . ", color: Theming.cuaternaryColor),
+          GrandIcon(
+              labelButton: isMobile(context)
+                  ? "Antecedentes Personales Patológicos"
+                  : "Revisiones",
+              iconData: isMobile(context)
+                  ? Icons.medical_services_outlined
+                  : Icons.account_tree,
+              onPress: () {
+                if (isMobile(context)) {
+                  Cambios.toNextPage(context, GestionPatologicos());
+                } else {
+                  Cambios.toNextPage(context, const LaboratoriosGestion());
+                }
+              }),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              CircleIcon(
+                tittle: 'Revisorio',
+                iconed: Icons.ac_unit,
+                onChangeValue: () {
+                  Cambios.toNextActivity(context, chyld: const Generales());
+                },
+              ),
+              CrossLine(height: 20),
+              Expanded(
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GrandIcon(
+                            labelButton:
+                                "Antecedentes Personales No Patológicos",
+                            iconData: Icons.medication,
+                            onPress: () {
+                              Cambios.toNextPage(
+                                  context, const GestionNoPatologicos());
+                            }),
+                        GrandIcon(
+                            labelButton: "Diagnósticos de la Hospitalización",
+                            iconData: Icons.restore_page_outlined,
+                            onPress: () {
+                              Cambios.toNextPage(
+                                  context, GestionDiagnosticos());
+                            }),
+                        GrandIcon(
+                          labelButton: "Concentraciones y Diluciones",
+                          iconData: Icons.balance,
+                          onPress: () {
+                            Cambios.toNextActivity(context,
+                                chyld: const Concentraciones());
+                          },
+                        ),
+                      ],
+                    ),
+                    CrossLine(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GrandIcon(
+                          labelButton: "Balances Hidricos",
+                          iconData: Icons.waterfall_chart,
+                          onPress: () {
+                            Cambios.toNextPage(context, GestionBalances());
+                          },
+                        ),
+                        GrandIcon(
+                            labelButton: "Paraclinicos",
+                            iconData: Icons.account_tree_outlined,
+                            onPress: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: ((context) =>
+                                      const LaboratoriosGestion())));
+                            }),
+                        GrandIcon(
+                            labelButton: "Rutina",
+                            iconData: Icons.ad_units,
+                            onPress: () {
+                              Cambios.toNextActivity(context,
+                                  tittle: 'Anexión de la Rutina',
+                                  chyld: ConmutadorParaclinicos(
+                                      categoriaEstudio: "Rutina"));
+                            }),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              CrossLine(height: 5),
+              CircleIcon(
+                tittle: 'Revisorio',
+                iconed: Icons.ac_unit,
+                onChangeValue: () {
+                  Cambios.toNextPage(context, GestionRevisorios());
+                },
+              ),
+            ],
+          ),
+          CrossLine(height: 20, thickness: 3),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GrandIcon(
+                iconData: Icons.checklist_rtl,
+                labelButton: "Laboratorios",
+                onPress: () {
+                  Operadores.selectOptionsActivity(
+                    context: context,
+                    tittle: "Elija la fecha de los estudios . . . ",
+                    options: Listas.listWithoutRepitedValues(
+                      Listas.listFromMapWithOneKey(
+                        Pacientes.Paraclinicos!,
+                        keySearched: 'Fecha_Registro',
+                      ),
+                    ),
+                    onClose: (value) {
+                      setState(() {
+                        Datos.portapapeles(
+                            context: context,
+                            text: Auxiliares.porFecha(fechaActual: value));
+                        Navigator.of(context).pop();
+                      });
+                    },
+                  );
+                },
+              ),
+              GrandIcon(
+                iconData: Icons.list_alt_sharp,
+                labelButton: "Laboratorios",
+                onPress: () {
+                  Datos.portapapeles(
+                      context: context, text: Auxiliares.historial());
+                },
+                onLongPress: () {
+                  Datos.portapapeles(
+                      context: context,
+                      text: Auxiliares.historial(esAbreviado: true));
+                },
+              ),
+              GrandIcon(
+                iconData: Icons.line_style,
+                labelButton: "Laboratorios",
+                onPress: () {
+                  Datos.portapapeles(
+                      context: context, text: Auxiliares.getUltimo());
+                },
+                onLongPress: () {
+                  Datos.portapapeles(
+                      context: context,
+                      text: Auxiliares.getUltimo(esAbreviado: true));
+                },
+              ),
+            ],
+          ),
+          CrossLine(height: 20, thickness: 3),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                icon: const Icon(
+                  Icons.remove_from_queue,
+                  color: Colors.white,
+                ),
+                tooltip: 'Refrescar . . . ',
+                onPressed: () async {
+                  setState(() {});
+                },
+              ),
+              IconButton(
+                icon: const Icon(
+                  Icons.system_update_alt,
+                  color: Colors.white,
+                ),
+                tooltip: 'Cargando . . . ',
+                onPressed: () async {
+                  Pacientes.loadingActivity(context: context).then((value) {
+                    if (value == true) {
+                      Terminal.printAlert(
+                          message:
+                              'Archivo ${Pacientes.localPath} Re-Creado $value');
+                      Navigator.of(context).pop();
+                    }
+                  }).onError((error, stackTrace) {
+                    Terminal.printAlert(
+                        message:
+                            "ERROR - toVisual : : $error : : Descripción : $stackTrace");
+                    Operadores.alertActivity(
+                        message: "ERROR - toVisual : : $error",
+                        context: context,
+                        tittle: 'Error al Inicial Visual');
+                  });
+                },
+              ),
+            ],
+          ),
+          CrossLine(height: 20, thickness: 3),
+          ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text(
+                "Cerrar",
+                style: TextStyle(fontSize: 12, color: Colors.grey),
+              )),
+        ],
+      );
   // String? turnoPaciente,
   //     statusPaciente,
   //     numeroPaciente,
@@ -610,9 +821,7 @@ floatingWidgets(BuildContext context) {
       backgroundColor: Colors.black87,
       foregroundColor: Colors.grey,
       tooltip: 'Vista Previa',
-      onPressed: () async {
-
-      },
+      onPressed: () async {},
       heroTag: null,
       child: const Icon(
         Icons.scale,
@@ -620,4 +829,52 @@ floatingWidgets(BuildContext context) {
       ),
     )
   ];
+}
+
+class CircularShapeBorder extends ContinuousRectangleBorder {
+  @override
+  Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
+
+    const double innerCircleRadius = 50.0;
+    const int constant = 10;
+    
+    final double height = rect.height - 10;
+
+    Path path = Path();
+
+    path.lineTo(0, height);
+    path.quadraticBezierTo(rect.width / 2 - (innerCircleRadius / 2) - 15, rect.height, rect.width / 2 - 75, rect.height + 10);
+    path.cubicTo(
+        rect.width / 2 - constant, height + innerCircleRadius - constant,
+        rect.width / 2 + constant, height + innerCircleRadius - constant,
+        rect.width / 2 + 75, height + 20
+    );
+    path.quadraticBezierTo(rect.width / 2 + (innerCircleRadius / 2) + 15, rect.height, rect.width, rect.height);
+    path.lineTo(rect.width, 0.0);
+    path.close();
+
+    return path;
+  }
+}
+
+class CustomShapeBorder extends ContinuousRectangleBorder {
+  @override
+  Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
+
+    const double innerCircleRadius = 150.0;
+
+    Path path = Path();
+    path.lineTo(0, rect.height);
+    path.quadraticBezierTo(rect.width / 2 - (innerCircleRadius / 2) - 30, rect.height + 15, rect.width / 2 - 75, rect.height + 50);
+    path.cubicTo(
+        rect.width / 2 - 40, rect.height + innerCircleRadius - 40,
+        rect.width / 2 + 40, rect.height + innerCircleRadius - 40,
+        rect.width / 2 + 75, rect.height + 50
+    );
+    path.quadraticBezierTo(rect.width / 2 + (innerCircleRadius / 2) + 30, rect.height + 15, rect.width, rect.height);
+    path.lineTo(rect.width, 0.0);
+    path.close();
+
+    return path;
+  }
 }

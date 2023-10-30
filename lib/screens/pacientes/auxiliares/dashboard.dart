@@ -160,96 +160,95 @@ class _DashboardState extends State<Dashboard> {
                         child: const Detalles(),
                       ),
                     ),
-                    const SizedBox(width: 6),
-                    Expanded(
-                        child: RoundedPanel(
-                      child: Column(
-                        children: [
-                          // TittlePanel(padding: 5, textPanel: 'Revisorio'),
-                          GrandIcon(
-                            labelButton: 'Revisorio',
-                            iconData: Icons.ac_unit,
-                            onPress: () {
-                              Cambios.toNextActivity(context, chyld: const Generales());
-
-                            },
-                          ),
-                          CrossLine(height: 20),
-                          GrandIcon(
-                              labelButton: isMobile(context)
-                                  ? "Antecedentes Personales Patológicos"
-                                  : "Revisiones",
-                              iconData: isMobile(context)
-                                  ? Icons.medical_services_outlined
-                                  : Icons.account_tree,
-                              onPress: () {
-                                if (isMobile(context)) {
-                                  Cambios.toNextPage(context, GestionPatologicos());
-                                } else {
-                                  Cambios.toNextPage(
-                                      context, const LaboratoriosGestion());
-                                }
-                              }),
-                          GrandIcon(
-                              labelButton:
-                                  "Antecedentes Personales No Patológicos",
-                              iconData: Icons.medication,
-                              onPress: () {
-                                Cambios.toNextPage(
-                                    context, const GestionNoPatologicos());
-                              }),
-                          GrandIcon(
-                              labelButton: "Diagnósticos de la Hospitalización",
-                              iconData: Icons.restore_page_outlined,
-                              onPress: () {
-                                Cambios.toNextPage(context, GestionDiagnosticos());
-                              }),
-                          GrandIcon(
-                            labelButton: "Concentraciones y Diluciones",
-                            iconData: Icons.balance,
-                            onPress: () {
-                              Cambios.toNextActivity(context, chyld: const Concentraciones());
-                              // Operadores.openDialog(
-                              //   context: context,
-                              //   chyldrim: const Concentraciones(),
-                              // );
-                            },
-                          ),
-                          GrandIcon(
-                            labelButton: "Balances Hidricos",
-                            iconData: Icons.waterfall_chart,
-                            onPress: () {
-                              Cambios.toNextPage(context, GestionBalances());
-                            },
-                          ),
-
-                          GrandIcon(
-                              labelButton: "Paraclinicos",
-                              iconData: Icons.account_tree_outlined,
-                              onPress: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: ((context) =>
-                                        const LaboratoriosGestion())));
-                              }),
-                          GrandIcon(
-                              labelButton: "Rutina",
-                              iconData: Icons.ad_units,
-                              onPress: () {
-                                Cambios.toNextActivity(context, tittle: 'Anexión de la Rutina',chyld: ConmutadorParaclinicos(categoriaEstudio: "Rutina"));
-
-                              }),
-                          CrossLine(height: 5),
-                          GrandIcon(
-                            labelButton: 'Revisorio',
-                            iconData: Icons.ac_unit,
-                            onPress: () {
-                              Cambios.toNextPage(context,  GestionRevisorios());
-                            },
-                          ),
-
-                        ],
-                      ),
-                    )),
+                    // const SizedBox(width: 6),
+                    // Expanded(
+                    //     child: RoundedPanel(
+                    //   child: Column(
+                    //     children: [
+                    //       // TittlePanel(padding: 5, textPanel: 'Revisorio'),
+                    //       GrandIcon(
+                    //         labelButton: 'Revisorio',
+                    //         iconData: Icons.ac_unit,
+                    //         onPress: () {
+                    //           Cambios.toNextActivity(context, chyld: const Generales());
+                    //
+                    //         },
+                    //       ),
+                    //       CrossLine(height: 20),
+                    //       GrandIcon(
+                    //           labelButton: isMobile(context)
+                    //               ? "Antecedentes Personales Patológicos"
+                    //               : "Revisiones",
+                    //           iconData: isMobile(context)
+                    //               ? Icons.medical_services_outlined
+                    //               : Icons.account_tree,
+                    //           onPress: () {
+                    //             if (isMobile(context)) {
+                    //               Cambios.toNextPage(context, GestionPatologicos());
+                    //             } else {
+                    //               Cambios.toNextPage(
+                    //                   context, const LaboratoriosGestion());
+                    //             }
+                    //           }),
+                    //       GrandIcon(
+                    //           labelButton:
+                    //               "Antecedentes Personales No Patológicos",
+                    //           iconData: Icons.medication,
+                    //           onPress: () {
+                    //             Cambios.toNextPage(
+                    //                 context, const GestionNoPatologicos());
+                    //           }),
+                    //       GrandIcon(
+                    //           labelButton: "Diagnósticos de la Hospitalización",
+                    //           iconData: Icons.restore_page_outlined,
+                    //           onPress: () {
+                    //             Cambios.toNextPage(context, GestionDiagnosticos());
+                    //           }),
+                    //       GrandIcon(
+                    //         labelButton: "Concentraciones y Diluciones",
+                    //         iconData: Icons.balance,
+                    //         onPress: () {
+                    //           Cambios.toNextActivity(context, chyld: const Concentraciones());
+                    //           // Operadores.openDialog(
+                    //           //   context: context,
+                    //           //   chyldrim: const Concentraciones(),
+                    //           // );
+                    //         },
+                    //       ),
+                    //       GrandIcon(
+                    //         labelButton: "Balances Hidricos",
+                    //         iconData: Icons.waterfall_chart,
+                    //         onPress: () {
+                    //           Cambios.toNextPage(context, GestionBalances());
+                    //         },
+                    //       ),
+                    //       GrandIcon(
+                    //           labelButton: "Paraclinicos",
+                    //           iconData: Icons.account_tree_outlined,
+                    //           onPress: () {
+                    //             Navigator.of(context).push(MaterialPageRoute(
+                    //                 builder: ((context) =>
+                    //                     const LaboratoriosGestion())));
+                    //           }),
+                    //       GrandIcon(
+                    //           labelButton: "Rutina",
+                    //           iconData: Icons.ad_units,
+                    //           onPress: () {
+                    //             Cambios.toNextActivity(context, tittle: 'Anexión de la Rutina',chyld: ConmutadorParaclinicos(categoriaEstudio: "Rutina"));
+                    //
+                    //           }),
+                    //       CrossLine(height: 5),
+                    //       GrandIcon(
+                    //         labelButton: 'Revisorio',
+                    //         iconData: Icons.ac_unit,
+                    //         onPress: () {
+                    //           Cambios.toNextPage(context,  GestionRevisorios());
+                    //         },
+                    //       ),
+                    //
+                    //     ],
+                    //   ),
+                    // )),
                   ],
                 ),
                 const SizedBox(height: 6),

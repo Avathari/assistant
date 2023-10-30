@@ -12,6 +12,7 @@ import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/screens/usuarios/usuarios.dart';
 import 'package:assistant/screens/vocablos/vocablos.dart';
 import 'package:assistant/values/SizingInfo.dart';
+import 'package:assistant/widgets/CircularFloattingButton.dart';
 import 'package:assistant/widgets/FtpAccount.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/HomeButton.dart';
@@ -100,15 +101,7 @@ class _HomeState extends State<Home> {
                     : 7,
             child: screens[_actual_page])
       ]),
-      floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.black,
-          onPressed: () {
-            // Navigator.push(context, MaterialPageRoute(builder: (_) {
-            // return const Home();
-            // return Create();
-            //}));
-          },
-          child: const Icon(Icons.add)),
+      // floatingActionButton: VerticalFloattingButton()
     );
   }
 
@@ -125,22 +118,22 @@ class _HomeState extends State<Home> {
                 // ignore: prefer_const_literals_to_create_immutables
                 children: [
                   isTablet(context)
-                      ? Column(
+                      ? const Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            const CircleAvatar(
+                            CircleAvatar(
                               backgroundImage:
                                   AssetImage('assets/images/Luis.jpg'),
                               backgroundColor: Colors.grey,
                               radius: 60,
                             ),
-                            const SizedBox(
+                            SizedBox(
                               height: 10,
                             ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const <Widget>[
+                              children: <Widget>[
                                 Text(
                                   "Luis Romero Pantoja",
                                   style: TextStyle(
@@ -174,22 +167,22 @@ class _HomeState extends State<Home> {
                           ],
                         )
                       : isDesktop(context)
-                          ? Column(
+                          ? const Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
-                                const CircleAvatar(
+                                CircleAvatar(
                                   backgroundImage:
                                       AssetImage('assets/images/Luis.jpg'),
                                   backgroundColor: Colors.grey,
                                   radius: 60,
                                 ),
-                                const SizedBox(
+                                SizedBox(
                                   height: 10,
                                 ),
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const <Widget>[
+                                  children: <Widget>[
                                     Text(
                                       "Luis Romero Pantoja",
                                       style: TextStyle(
@@ -224,16 +217,16 @@ class _HomeState extends State<Home> {
                             )
                           : isMobile(context)
                               ? Container()
-                              : Column(
+                              : const Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
-                                    const CircleAvatar(
+                                    CircleAvatar(
                                       backgroundImage:
                                           AssetImage('assets/images/Luis.jpg'),
                                       backgroundColor: Colors.grey,
                                       radius: 60,
                                     ),
-                                    const SizedBox(
+                                    SizedBox(
                                       height: 10,
                                     ),
                                     Column(
@@ -241,7 +234,7 @@ class _HomeState extends State<Home> {
                                           MainAxisAlignment.start,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      children: const <Widget>[
+                                      children: <Widget>[
                                         Text(
                                           "Luis Romero Pantoja",
                                           style: TextStyle(
@@ -379,8 +372,8 @@ class _HomeState extends State<Home> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          DrawerHeader(
-            decoration: const BoxDecoration(color: Colors.black),
+          const DrawerHeader(
+            decoration: BoxDecoration(color: Colors.black),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 // ignore: prefer_const_literals_to_create_immutables
@@ -388,19 +381,19 @@ class _HomeState extends State<Home> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      const CircleAvatar(
+                      CircleAvatar(
                         backgroundImage: AssetImage('assets/images/Luis.jpg'),
                         backgroundColor: Colors.grey,
                         radius: 60,
                       ),
-                      const SizedBox(
+                      SizedBox(
                         height: 20,
                         width: 20,
                       ),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const <Widget>[
+                        children: <Widget>[
                           Text(
                             "Luis Romero Pantoja",
                             style: TextStyle(fontSize: 14, color: Colors.white),
@@ -555,9 +548,9 @@ class UsuariosPanel extends StatelessWidget {
                   onPressed: () {
                     toUsuarios(context);
                   },
-                  child: Column(
+                  child: const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
+                      children: [
                         Icon(
                           Icons.person,
                           size: 70,
@@ -592,9 +585,9 @@ class UsuariosPanel extends StatelessWidget {
                     //       ));
                     //     });
                   },
-                  child: Column(
+                  child: const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
+                      children: [
                         Icon(
                           Icons.medical_services,
                           size: 70,
@@ -759,6 +752,12 @@ class OthersPanel extends StatelessWidget {
                   toFtpConnect(context);
                 },
               ),
+              GrandButton(
+                labelButton: 'CircularFloattingButton . . . ',
+                onPress: () {
+                  Cambios.toNextPage(context, const Scaffold(floatingActionButton: CircularFloattingButton(),));
+                },
+              ),
             ],
           ),
         ),
@@ -779,4 +778,5 @@ class OthersPanel extends StatelessWidget {
         MaterialPageRoute(
             builder: (BuildContext context) => const FtpAccount()));
   }
+
 }

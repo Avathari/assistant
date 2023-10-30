@@ -28,6 +28,7 @@ class _ReporteConsultaState extends State<ReporteConsulta> {
     // Llamado a ultimo registro agregado por fecha de bd_regpace.pace_sv, pace_antropo.
     // Asignación de la consulta en Vitales.Vital.
     // # # # ############## #### ########
+    Licencias.consultarRegistro();
     Vitales.ultimoRegistro();
     // # # # ############## #### ########
     setState(() {

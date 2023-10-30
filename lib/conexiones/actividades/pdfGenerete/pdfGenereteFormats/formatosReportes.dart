@@ -2672,15 +2672,6 @@ class FormatosReportes {
                     child: textBoldTittle(
                         "CENSO HOSPITALARIO - MEDICINA INTERNA")),
               ]),
-          // TableRow(
-          //     verticalAlignment: TableCellVerticalAlignment.middle,
-          //     children: [
-          //       Container(
-          //         child: textTittle(
-          //             "Fecha: ${Calendarios.today(format: 'dd/MM/yyyy')}",
-          //             textAlign: TextAlign.right),
-          //       ),
-          //     ]),
         ],
       ),
     );
@@ -2723,85 +2714,85 @@ class FormatosReportes {
       // Terminal.printExpected(
       //     message:
       //         "Pendientes : : ${item['Pendientes']} ${item['Pendientes'].runtimeType}");
-      for (var i in item['Pendientes']) {
+      for (var i in item.pendientes) {
         penden = "$penden"
             "${i['Pace_PEN'].toUpperCase()} - \n"
             "${i['Pace_Desc_PEN']}" //  - ${i['Pace_PEN_realized']}"
             "\n";
       }
-
-      Terminal.printExpected(message: "${item['Ventilaciones'][0]}");
-      if (item['Ventilaciones'] != [] || item['Ventilaciones'].isNotEmpty) {
-        if (item['Ventilaciones']['Error'] != 'Hubo un error') {
-          ventilaciones = "\n"
-              // ***** ** *
-              "${Ventilaciones.modoVentilatorio(modalidadVentilatoria: item['Ventilaciones']['VM_Mod'].toString())}\n"
-              "Vt ${item['Ventilaciones']['Pace_Vt']} mL - - - - "
-              "Fr ${item['Ventilaciones']['Pace_Fr']} Vent/min\n"
-              "FiO2 ${item['Ventilaciones']['Pace_Fio']} % - - - - "
-              "PEEP ${item['Ventilaciones']['Pace_Peep']} cmH20\n"
-              // "Vt ${item['Ventilaciones']['Pace_Peep']} mL\n"
-              // "Vt ${item['Ventilaciones']['Pace_Peep']} mL\n"
-              "\n";
-        } else if (item['Ventilaciones'] != []) {
-          ventilaciones = "\n"
-          // "IOT -  \n"
-              "${Ventilaciones.modoVentilatorio(modalidadVentilatoria: item['Ventilaciones']['VM_Mod'].toString())}\n"
-              "Vt ${item['Ventilaciones']['Pace_Vt']} mL - - - - "
-              "Fr ${item['Ventilaciones']['Pace_Fr']} Vent/min\n"
-              "FiO2 ${item['Ventilaciones']['Pace_Fio']} % - - - - "
-              "PEEP ${item['Ventilaciones']['Pace_Peep']} cmH20\n"
-          // "Vt ${item['Ventilaciones']['Pace_Peep']} mL\n"
-          // "Vt ${item['Ventilaciones']['Pace_Peep']} mL\n"
-              "\n";
-        } else {
-          ventilaciones = "";
-        }
-      } else {
-        ventilaciones = "";
-      }
+//
+//       Terminal.printExpected(message: "${item['Ventilaciones'][0]}");
+//       if (item['Ventilaciones'] != [] || item['Ventilaciones'].isNotEmpty) {
+//         if (item['Ventilaciones']['Error'] != 'Hubo un error') {
+//           ventilaciones = "\n"
+//               // ***** ** *
+//               "${Ventilaciones.modoVentilatorio(modalidadVentilatoria: item['Ventilaciones']['VM_Mod'].toString())}\n"
+//               "Vt ${item['Ventilaciones']['Pace_Vt']} mL - - - - "
+//               "Fr ${item['Ventilaciones']['Pace_Fr']} Vent/min\n"
+//               "FiO2 ${item['Ventilaciones']['Pace_Fio']} % - - - - "
+//               "PEEP ${item['Ventilaciones']['Pace_Peep']} cmH20\n"
+//               // "Vt ${item['Ventilaciones']['Pace_Peep']} mL\n"
+//               // "Vt ${item['Ventilaciones']['Pace_Peep']} mL\n"
+//               "\n";
+//         } else if (item['Ventilaciones'] != []) {
+//           ventilaciones = "\n"
+//           // "IOT -  \n"
+//               "${Ventilaciones.modoVentilatorio(modalidadVentilatoria: item['Ventilaciones']['VM_Mod'].toString())}\n"
+//               "Vt ${item['Ventilaciones']['Pace_Vt']} mL - - - - "
+//               "Fr ${item['Ventilaciones']['Pace_Fr']} Vent/min\n"
+//               "FiO2 ${item['Ventilaciones']['Pace_Fio']} % - - - - "
+//               "PEEP ${item['Ventilaciones']['Pace_Peep']} cmH20\n"
+//           // "Vt ${item['Ventilaciones']['Pace_Peep']} mL\n"
+//           // "Vt ${item['Ventilaciones']['Pace_Peep']} mL\n"
+//               "\n";
+//         } else {
+//           ventilaciones = "";
+//         }
+//       } else {
+//         ventilaciones = "";
+//       }
+// // **************************************
+//       if (item['Situaciones']['CVP'] != 0) {
+//         situaciones = "$situaciones\nCVP";
+//       }
+//       if (item['Situaciones']['CVLP'] != 0) {
+//         situaciones = "$situaciones\nCVLP";
+//       }
+//       if (item['Situaciones']['CVC'] != 0) {
+//         situaciones = "$situaciones\nCVC";
+//       }
+//       if (item['Situaciones']['MAH'] != 0) {
+//         situaciones = "$situaciones\nMAH";
+//       }
+//       if (item['Situaciones']['S_Foley'] != 0) {
+//         situaciones = "$situaciones\nFOL";
+//       }
+//       if (item['Situaciones']['SNG'] != 0) {
+//         situaciones = "$situaciones\nSNG";
+//       }
+//       if (item['Situaciones']['SOG'] != 0) {
+//         situaciones = "$situaciones\nSOG";
+//       }
+//       if (item['Situaciones']['Drenaje'] != 0) {
+//         situaciones = "$situaciones\nDRE";
+//       }
+//       if (item['Situaciones']['Pleuro_Vac'] != 0) {
+//         situaciones = "$situaciones\nSEP";
+//       }
+//       if (item['Situaciones']['Colostomia'] != 0) {
+//         situaciones = "$situaciones\nCOL";
+//       }
+//       if (item['Situaciones']['Gastrostomia'] != 0) {
+//         situaciones = "$situaciones\nGAS";
+//       }
+//       if (item['Situaciones']['Dialisis_Peritoneal'] != 0) {
+//         situaciones = "$situaciones\nDP";
+//       }
 // **************************************
-      if (item['Situaciones']['CVP'] != 0) {
-        situaciones = "$situaciones\nCVP";
-      }
-      if (item['Situaciones']['CVLP'] != 0) {
-        situaciones = "$situaciones\nCVLP";
-      }
-      if (item['Situaciones']['CVC'] != 0) {
-        situaciones = "$situaciones\nCVC";
-      }
-      if (item['Situaciones']['MAH'] != 0) {
-        situaciones = "$situaciones\nMAH";
-      }
-      if (item['Situaciones']['S_Foley'] != 0) {
-        situaciones = "$situaciones\nFOL";
-      }
-      if (item['Situaciones']['SNG'] != 0) {
-        situaciones = "$situaciones\nSNG";
-      }
-      if (item['Situaciones']['SOG'] != 0) {
-        situaciones = "$situaciones\nSOG";
-      }
-      if (item['Situaciones']['Drenaje'] != 0) {
-        situaciones = "$situaciones\nDRE";
-      }
-      if (item['Situaciones']['Pleuro_Vac'] != 0) {
-        situaciones = "$situaciones\nSEP";
-      }
-      if (item['Situaciones']['Colostomia'] != 0) {
-        situaciones = "$situaciones\nCOL";
-      }
-      if (item['Situaciones']['Gastrostomia'] != 0) {
-        situaciones = "$situaciones\nGAS";
-      }
-      if (item['Situaciones']['Dialisis_Peritoneal'] != 0) {
-        situaciones = "$situaciones\nDP";
-      }
-// **************************************
-      if (item['Cronicos'] == []) {
+      if (item.patologicos == []) {
         cronicos = 'Sin Antecedentes Crónicos Documentados';
       } else {
-        for (var i in item['Cronicos']) {
+        for (var i in item.patologicos) {
           if (i['Pace_APP_DEG_com'] != null || i['Pace_APP_DEG_com'] != '') {
             cronicos = "$cronicos${i['Pace_APP_DEG_com'].toUpperCase()}, "
                 "${i['Pace_APP_DEG_dia']} años, "
@@ -2812,20 +2803,20 @@ class FormatosReportes {
           }
         }
       }
-      for (var i in item['Cronicos']) {
+      for (var i in item.patologicos) {
         previos = "$previos"
             // "${i['Pace_APP_DEG'].toUpperCase()} -\n"
             "\t${i['Pace_APP_DEG_com']}\n";
       }
-      for (var i in item['Diagnosticos']) {
+      for (var i in item.diagnosticos) {
         diagos =
             "$diagos${i['Pace_APP_DEG'].toUpperCase()} -\n\t${i['Pace_APP_DEG_com']}\n";
       }
       // Auxiliares Diagnósticos . ***** ****** *********** *********
-      if (item['Auxiliares'] != [] && item['Auxiliares'] != null) {
+      if (item.paraclinicos != [] && item.paraclinicos != null) {
         var fechar = Listas.listWithoutRepitedValues(
           Listas.listFromMapWithOneKey(
-            item['Auxiliares']!,
+            item.paraclinicos!,
             keySearched: 'Fecha_Registro',
           ),
         );
@@ -2833,7 +2824,7 @@ class FormatosReportes {
         fechar.forEach((element) {
           String fecha = "          Paraclínicos ($element)", max = "";
 
-          List<dynamic>? alam = item['Auxiliares'];
+          List<dynamic>? alam = item.paraclinicos;
           var aux = alam!
               .where((user) => user["Fecha_Registro"].contains(element))
               .toList();
@@ -2854,72 +2845,73 @@ class FormatosReportes {
 
       // Terminal.printExpected(
       //     message:
-      //     "Imagenologicos : : ${item['Imagenologicos']} ${item['Imagenologicos'].runtimeType}");
-      if (item['Imagenologicos'] != [] && item['Imagenologicos'] != null) {
-        for (var element in item['Imagenologicos']) {
-          // ***************************** *****************
-          if (imagenologicos == "") {
-            imagenologicos = ""
-                "${element['Pace_GAB_RA_typ']} del ${element['Pace_GAB_RA_Feca']} de "
-                "${element['Pace_GAB_RA_reg']},  ${element['Pace_GAB_RA_hal']}. "
-                "Conclusiones: "
-                "${element['Pace_GAB_RA_con']}\n";
-          } else {
-            imagenologicos = "$imagenologicos"
-                "${element['Pace_GAB_RA_typ']} del ${element['Pace_GAB_RA_Feca']} de "
-                "${element['Pace_GAB_RA_reg']},  ${element['Pace_GAB_RA_hal']}. "
-                "Conclusiones: "
-                "${element['Pace_GAB_RA_con']}\n";
-          }
-        }
-      } else {
-        imagenologicos = "Sin Estudios Imagenológicos";
-      }
-      if (item['Electrocardiogramas'] != [] &&
-          item['Electrocardiogramas'] != null) {
-        for (var element in item['Electrocardiogramas']) {
-          Electrocardiogramas.fromJson(element);
-          // ***************************** *****************
-          if (electrocardiogramas == "") {
-            electrocardiogramas = ""
-                "${Auxiliares.electrocardiogramaAbreviado()}\n";
-          } else {
-            electrocardiogramas = "$electrocardiogramas"
-                "${Auxiliares.electrocardiogramaAbreviado()}\n";
-          }
-        }
-      } else {
-        electrocardiogramas = "Sin Estudios Electrocardiográficos";
-      }
+      //     "Imagenologicos : : ${item.imagenologicos} ${item.imagenologicos.runtimeType}");
+      // if (item.imagenologicos != [] && item.imagenologicos != null) {
+      //   for (var element in item.imagenologicos) {
+      //     // ***************************** *****************
+      //     if (imagenologicos == "") {
+      //       imagenologicos = ""
+      //           "${element['Pace_GAB_RA_typ']} del ${element['Pace_GAB_RA_Feca']} de "
+      //           "${element['Pace_GAB_RA_reg']},  ${element['Pace_GAB_RA_hal']}. "
+      //           "Conclusiones: "
+      //           "${element['Pace_GAB_RA_con']}\n";
+      //     } else {
+      //       imagenologicos = "$imagenologicos"
+      //           "${element['Pace_GAB_RA_typ']} del ${element['Pace_GAB_RA_Feca']} de "
+      //           "${element['Pace_GAB_RA_reg']},  ${element['Pace_GAB_RA_hal']}. "
+      //           "Conclusiones: "
+      //           "${element['Pace_GAB_RA_con']}\n";
+      //     }
+      //   }
+      // } else {
+      //   imagenologicos = "Sin Estudios Imagenológicos";
+      // }
+      // if (item.electrocardiogramas != [] &&
+      //     item.electrocardiogramas != null) {
+      //   for (var element in item.electrocardiogramas) {
+      //     Electrocardiogramas.fromJson(element);
+      //     // ***************************** *****************
+      //     if (electrocardiogramas == "") {
+      //       electrocardiogramas = ""
+      //           "${Auxiliares.electrocardiogramaAbreviado()}\n";
+      //     } else {
+      //       electrocardiogramas = "$electrocardiogramas"
+      //           "${Auxiliares.electrocardiogramaAbreviado()}\n";
+      //     }
+      //   }
+      // } else {
+      //   electrocardiogramas = "Sin Estudios Electrocardiográficos";
+      // }
 
       // Padecimiento Actual . ***** ****** *********** *********
-      if (item['Padecimiento'] != null) {
-        if (item['Padecimiento']['Contexto'] != null &&
-            item['Padecimiento']['Contexto'] != [] &&
-            item['Padecimiento']['Contexto'] != "") {
-          // Terminal.printExpected(message: "Padecimiento : : ${item['Padecimiento']['Contexto']} ${item['Padecimiento']['Contexto'].runtimeType}");
-          pades = "${item['Padecimiento']['Contexto']}\n";
+      if (item.padecimientoActual != null) {
+        if (item.padecimientoActual['Contexto'] != null &&
+            item.padecimientoActual['Contexto'] != [] &&
+            item.padecimientoActual['Contexto'] != "") {
+          // Terminal.printExpected(message: "Padecimiento : : ${item..padecimientoActual['Contexto']} ${item..padecimientoActual['Contexto'].runtimeType}");
+          pades = "${item..padecimientoActual['Contexto']}\n";
         } else {
           pades = "No hay padecimiento Descrito\n";
         }
       }
       // Datos Generales . ***** ****** *********** *********
       String nombre =
-          "${item['Pace_Ape_Pat']} ${item['Pace_Ape_Mat']} ${item['Pace_Nome_PI']} ${item['Pace_Nome_SE']}\n";
+          "${item.generales['Pace_Ape_Pat']} ${item.generales['Pace_Ape_Mat']} "
+          "${item.generales['Pace_Nome_PI']} ${item.generales['Pace_Nome_SE']}\n";
       // Adición al Censo . ***** ****** *********** *********
       censo.add(
         TableRow(
           verticalAlignment: TableCellVerticalAlignment.top,
           children: [
-            textLabel("${item['Id_Cama']}\n"
+            textLabel("${item.hospitalizedData['Id_Cama']}\n"
                 "___\n"
                 "$situaciones\n"
                 "___\n"),
-            textLabel("${item['Pace_NSS']} ${item['Pace_AGRE']}\n"
+            textLabel("${item.generales['Pace_NSS']} ${item.generales['Pace_AGRE']}\n"
                 "${nombre.toUpperCase()}"
-                "Edad ${item['Pace_Eda']} Años\n"
-                "FN: ${item['Feca_INI_Hosp']} : "
-                "${DateTime.now().difference(DateTime.parse(item['Feca_INI_Hosp'])).inDays} DEH"
+                "Edad ${item.generales['Pace_Eda']} Años\n"
+                "FN: ${item.hospitalizedData['Feca_INI_Hosp']} : "
+                "${DateTime.now().difference(DateTime.parse(item.hospitalizedData['Feca_INI_Hosp'])).inDays} DEH"
                 "\n____________________________\n\n"
                 "$cronicos\n"),
             textLabel(

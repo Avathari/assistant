@@ -22,6 +22,9 @@ class App extends StatelessWidget {
           minThumbLength: 100,
         ),
         scaffoldBackgroundColor: Theming.bdColor,
+        iconTheme: const IconThemeData(color: Colors.white),
+        primaryIconTheme: const IconThemeData(color: Colors.white),
+
       ),
       // darkTheme: ThemeData(primarySwatch: Colors.grey),
       // color: Colors.grey,

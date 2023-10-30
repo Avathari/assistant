@@ -8,11 +8,19 @@ class Internado {
   late String localRepositoryPath,
       vitalesRepositoryPath,
       patologicosRepositoryPath,
-      paraclinicosRepositoryPath;
+      diagnosticosRepositoryPath,
+      pendientesRepositoryPath,
+      paraclinicosRepositoryPath,
+      imagenologicosRepositoryPath,
+      electrocardiogramasRepositoryPath;
   //
   late List vitales = [],
       patologicos = [],
+      diagnosticos = [],
       paraclinicos = [],
+      pendientes = [],
+      imagenologicos = [],
+      electrocardiogramas = [],
       ventilaciones = [];
   late Map<String, dynamic> generales, hospitalizedData, padecimientoActual;
 
@@ -33,8 +41,13 @@ class Internado {
         '$nombreCompleto/';
     //
     vitalesRepositoryPath = "${localRepositoryPath}vitales.json";
-    paraclinicosRepositoryPath = "${localRepositoryPath}paraclinicos.json";
     patologicosRepositoryPath = "${localRepositoryPath}patologicos.json";
+    diagnosticosRepositoryPath = "${localRepositoryPath}diagnosticos.json";
+    pendientesRepositoryPath = "${localRepositoryPath}pendientes.json";
+
+    imagenologicosRepositoryPath = "${localRepositoryPath}imagenologias.json";
+    electrocardiogramasRepositoryPath = "${localRepositoryPath}electrocardiogramas.json";
+    paraclinicosRepositoryPath = "${localRepositoryPath}paraclinicos.json";
     //
     Terminal.printExpected(
         message: "localRepositoryPath : : $localRepositoryPath");
@@ -103,6 +116,57 @@ class Internado {
     return patologicos;
   }
 
+  Future<List> getDiagnosticosHistorial() async {
+    //
+    await Archivos.readJsonToMap(filePath: diagnosticosRepositoryPath)
+        .then((value) {
+      Terminal.printNotice(
+          message:
+              " : : OBTENIDO DE ARCHIVO . . . $diagnosticosRepositoryPath");
+      //
+      return diagnosticos = value;
+    }).onError((error, stackTrace) async {
+      await Actividades.consultarAllById(
+        Databases.siteground_database_reghosp,
+        "SELECT * FROM pace_dia WHERE ID_Pace = ? "
+        "AND ID_Hosp = '$idHospitalizado'",
+        idPaciente,
+      ).then((value) async {
+        Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . ");
+        //
+        return diagnosticos = value;
+      }).whenComplete(() => Archivos.createJsonFromMap(diagnosticos,
+          filePath: diagnosticosRepositoryPath));
+    });
+    return diagnosticos;
+  }
+
+  Future<List> getPendientesHistorial() async {
+    //
+    await Archivos.readJsonToMap(filePath: pendientesRepositoryPath)
+        .then((value) {
+      Terminal.printNotice(
+          message: " : : OBTENIDO DE ARCHIVO . . . $pendientesRepositoryPath");
+      //
+      return pendientes = value;
+    }).onError((error, stackTrace) async {
+      await Actividades.consultarAllById(
+        Databases.siteground_database_reghosp,
+        "SELECT * FROM pace_pen WHERE ID_Pace = ? "
+        "AND ID_Hosp = '${idHospitalizado}' "
+        "AND Pace_PEN_realized = '0'",
+        idPaciente,
+      ).then((value) async {
+        Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . ");
+        //
+        return pendientes = value;
+      }).whenComplete(() => Archivos.createJsonFromMap(pendientes,
+          filePath: pendientesRepositoryPath));
+    });
+    return pendientes;
+  }
+
+  //
   Future<List> getParaclinicosHistorial() async {
     //
     await Archivos.readJsonToMap(filePath: paraclinicosRepositoryPath)
@@ -123,5 +187,53 @@ class Internado {
               filePath: paraclinicosRepositoryPath));
     });
     return paraclinicos;
+  }
+
+  Future<List> getImagenologicosHistorial() async {
+    //
+    await Archivos.readJsonToMap(filePath: imagenologicosRepositoryPath)
+        .then((value) {
+      Terminal.printNotice(
+          message:
+              " : : OBTENIDO DE ARCHIVO . . . $imagenologicosRepositoryPath");
+      //
+      return imagenologicos = value;
+    }).onError((error, stackTrace) async {
+      await Actividades.consultarAllById(
+        Databases.siteground_database_reggabo,
+        Imagenologias.imagenologias["consultByIdPrimaryQuery"],
+        idPaciente,
+      ).then((value) async {
+        Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . ");
+        //
+        return imagenologicos = value;
+      }).whenComplete(() => Archivos.createJsonFromMap(imagenologicos,
+          filePath: imagenologicosRepositoryPath));
+    });
+    return imagenologicos;
+  }
+
+  Future<List> getElectrocardiogramasHistorial() async {
+    //
+    await Archivos.readJsonToMap(filePath: electrocardiogramasRepositoryPath)
+        .then((value) {
+      Terminal.printNotice(
+          message:
+              " : : OBTENIDO DE ARCHIVO . . . $electrocardiogramasRepositoryPath");
+      //
+      return electrocardiogramas = value;
+    }).onError((error, stackTrace) async {
+      await Actividades.consultarAllById(
+        Databases.siteground_database_reggabo,
+        Electrocardiogramas.electrocardiogramas["consultByIdPrimaryQuery"],
+        idPaciente,
+      ).then((value) async {
+        Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . ");
+        //
+        return electrocardiogramas = value;
+      }).whenComplete(() => Archivos.createJsonFromMap(electrocardiogramas,
+          filePath: electrocardiogramasRepositoryPath));
+    });
+    return electrocardiogramas;
   }
 }

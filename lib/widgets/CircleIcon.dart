@@ -63,7 +63,7 @@ class _CircleIconState extends State<CircleIcon> {
       //       });
       // },
       child: CircleAvatar(
-        backgroundColor: Colors.grey,
+        backgroundColor: Theming.bdColor,
         radius: widget.radios!,
         child: CircleAvatar(
           backgroundColor: Colors.black,

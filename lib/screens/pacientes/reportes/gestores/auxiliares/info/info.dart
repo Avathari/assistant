@@ -64,16 +64,6 @@ class infoSemiologias {
           : Row(
               children: [
                 SizedBox(
-                  width: 40,
-                  child: CircleIcon(
-                    radios: 30,
-                    difRadios: 5,
-                    tittle: tittle,
-                    iconed: iconTittle,
-                    onChangeValue: () {},
-                  ),
-                ),
-                SizedBox(
                   width: 5,
                   child: CrossLine(isHorizontal: false)
                 ),
@@ -81,26 +71,23 @@ class infoSemiologias {
                   flex: 5,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: componentes,
+                    child: Column(
+                      children: [
+                        Text(tittle, style: TextStyle(fontSize: 10, color: Colors.grey),),
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: componentes,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                // SizedBox(
-                //   width: 5,
-                //   child: CrossLine(isHorizontal: false)
-                // ),
-                // SizedBox(
-                //   width: 40,
-                //   child: CircleIcon(
-                //     tittle: subTittle,
-                //     radios: 20,
-                //     difRadios: 5,
-                //     iconed: iconSubTittle,
-                //     onChangeValue: () async {},
-                //   ),
-                // ),
+                SizedBox(
+                    width: 5,
+                    child: CrossLine(isHorizontal: false)
+                ),
               ],
             ),
     );

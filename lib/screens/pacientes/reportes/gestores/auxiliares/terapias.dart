@@ -2,6 +2,7 @@ import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/CircularFloattingButton.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/Spinner.dart';
@@ -141,7 +142,8 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           ],
                         ),
                         Spinner(
-                          width: isDesktop(context)
+                          width: isLargeDesktop(context) ?700
+                              :  isDesktop(context)
                               ? 300
                               : isTablet(context)
                                   ? 250

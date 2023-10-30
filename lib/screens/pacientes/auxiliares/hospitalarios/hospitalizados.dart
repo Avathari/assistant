@@ -536,14 +536,24 @@ class _HospitalizadosState extends State<Hospitalizados> {
       hospitalized.insert(i,
           Internado(int.parse(response[i]["ID_Pace"].toString()), response[i]));
       //
+      await hospitalized[i].getCronicosHistorial();
       await hospitalized[i].getHospitalizationRegister();
       await hospitalized[i].getPadecimientoActual();
+      await hospitalized[i].getDiagnosticosHistorial();
+      await hospitalized[i].getPendientesHistorial();
+
       await hospitalized[i].getParaclinicosHistorial();
+      await hospitalized[i].getImagenologicosHistorial();
+      await hospitalized[i].getElectrocardiogramasHistorial();
+      Terminal.printExpected(
+          message:
+              "     :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::     ");
       //
     }
     // ********** ************** ***********
+    firstFounded = hospitalized;
     foundedItems = hospitalized;
-    Terminal.printSuccess(message: "      $foundedItems");
+//
     setState(() {
       Terminal.printSuccess(
           message: "Actualizando pacientes hospitalizados . . . ");
@@ -632,10 +642,8 @@ class _HospitalizadosState extends State<Hospitalizados> {
                     color: Colors.grey,
                     icon: const Icon(Icons.update_rounded),
                     onPressed: () {
-                      Pacientes.ID_Paciente =
-                          foundedItems![index].idPaciente;
-                      Pacientes.Paciente =
-                          foundedItems![index].generales;
+                      Pacientes.ID_Paciente = foundedItems![index].idPaciente;
+                      Pacientes.Paciente = foundedItems![index].generales;
 
                       Pacientes.fromJson(foundedItems![index].generales);
 
@@ -683,13 +691,9 @@ class _HospitalizadosState extends State<Hospitalizados> {
                 ),
               ),
             ),
-            Expanded(flex: 1, child: auxiliarPanel(snapshot, index)),
-            Expanded(
-                flex: 5,
-                child: Container()), // cronicosPanel(snapshot, index)),
-            Expanded(
-                flex: 2,
-                child: Container()), // pendientesPanel(snapshot, index)),
+            Expanded(flex: isDesktop(context) ? 2 : isTablet(context) ? 2:1, child: auxiliarPanel(snapshot, index)),
+            Expanded(flex: 5, child: cronicosPanel(snapshot, index)),
+            Expanded(flex: 2, child: pendientesPanel(snapshot, index)),
             Expanded(
                 flex: 1,
                 child: Column(
@@ -704,12 +708,12 @@ class _HospitalizadosState extends State<Hospitalizados> {
                           String cronicos = "";
 
                           if (foundedItems![index]
-                                  .hospitalizedData['Cronicos'] ==
+                              .patologicos ==
                               []) {
                             cronicos = 'Sin Antecedentes Crónicos Documentados';
                           } else {
                             for (var i in foundedItems![index]
-                                .hospitalizedData['Cronicos']) {
+                                .patologicos) {
                               if (i['Pace_APP_DEG_com'] != null ||
                                   i['Pace_APP_DEG_com'] != '') {
                                 cronicos =
@@ -726,9 +730,9 @@ class _HospitalizadosState extends State<Hospitalizados> {
                           Datos.portapapeles(
                               context: context,
                               text:
-                                  "${foundedItems![index].hospitalizedData['Pace_NSS']} ${foundedItems![index].hospitalizedData['Pace_AGRE']}\n"
-                                  "${"${foundedItems![index].hospitalizedData['Pace_Ape_Pat']} ${foundedItems![index].hospitalizedData['Pace_Ape_Mat']} ${foundedItems![index].hospitalizedData['Pace_Nome_PI']} ${foundedItems![index].hospitalizedData['Pace_Nome_SE']}\n".toUpperCase()}"
-                                  "Edad ${foundedItems![index].hospitalizedData['Pace_Eda']} Años\n"
+                                  "${foundedItems![index].generales['Pace_NSS']} ${foundedItems![index].generales['Pace_AGRE']}\n"
+                                  "${"${foundedItems![index].generales['Pace_Ape_Pat']} ${foundedItems![index].generales['Pace_Ape_Mat']} ${foundedItems![index].generales['Pace_Nome_PI']} ${foundedItems![index].generales['Pace_Nome_SE']}\n".toUpperCase()}"
+                                  "Edad ${foundedItems![index].generales['Pace_Eda']} Años\n"
                                   "FN: ${foundedItems![index].hospitalizedData['Feca_INI_Hosp']} : "
                                   "${DateTime.now().difference(DateTime.parse(foundedItems![index].hospitalizedData['Feca_INI_Hosp'])).inDays} DEH"
                                   "\n____________________________\n\n"
@@ -761,12 +765,12 @@ class _HospitalizadosState extends State<Hospitalizados> {
                             }
                           }
                           for (var i in foundedItems![index]
-                              .hospitalizedData['Diagnosticos']) {
+                              .diagnosticos) {
                             diagos =
                                 "$diagos${i['Pace_APP_DEG'].toUpperCase()} -\n\t${i['Pace_APP_DEG_com']}\n";
                           }
                           for (var i in foundedItems![index]
-                              .hospitalizedData['Cronicos']) {
+                              .patologicos) {
                             previos = "$previos"
                                 // "${i['Pace_APP_DEG'].toUpperCase()} -\n"
                                 "\t${i['Pace_APP_DEG_com']}\n";
@@ -794,7 +798,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                         iconData: Icons.recent_actors_outlined,
                         onPress: () {
                           Pacientes.Imagenologicos = foundedItems![index]
-                              .hospitalizedData['Imagenologicos'];
+                              .imagenologicos;
                           // ***************************************************
                           Datos.portapapeles(
                               context: context,
@@ -816,7 +820,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                         iconData: Icons.list_alt,
                         onPress: () {
                           Pacientes.Pendiente = foundedItems![index]
-                              .hospitalizedData['Pendientes'];
+                              .pendientes;
 // *********************************
                           String penden = "";
                           // *********************************
@@ -931,10 +935,8 @@ class _HospitalizadosState extends State<Hospitalizados> {
       //   //     message: "${foundedItems![index].hospitalizedData['Pendientes']}");
       // },
       onDoubleTap: () {
-        Pacientes.ID_Paciente =
-            foundedItems![index].idPaciente;
-        Pacientes.Paciente =
-            foundedItems![index].generales;
+        Pacientes.ID_Paciente = foundedItems![index].idPaciente;
+        Pacientes.Paciente = foundedItems![index].generales;
 
         Pacientes.fromJson(foundedItems![index].generales);
 
@@ -1354,13 +1356,13 @@ class _HospitalizadosState extends State<Hospitalizados> {
                             String cronicos = "";
 
                             if (foundedItems![index]
-                                    .hospitalizedData['Cronicos'] ==
+                                .patologicos ==
                                 []) {
                               cronicos =
                                   'Sin Antecedentes Crónicos Documentados';
                             } else {
                               for (var i in foundedItems![index]
-                                  .hospitalizedData['Cronicos']) {
+                                  .patologicos) {
                                 if (i['Pace_APP_DEG_com'] != null ||
                                     i['Pace_APP_DEG_com'] != '') {
                                   cronicos =
@@ -1377,9 +1379,9 @@ class _HospitalizadosState extends State<Hospitalizados> {
                             Datos.portapapeles(
                                 context: context,
                                 text:
-                                    "${foundedItems![index].hospitalizedData['Pace_NSS']} ${foundedItems![index].hospitalizedData['Pace_AGRE']}\n"
-                                    "${"${foundedItems![index].hospitalizedData['Pace_Ape_Pat']} ${foundedItems![index].hospitalizedData['Pace_Ape_Mat']} ${foundedItems![index].hospitalizedData['Pace_Nome_PI']} ${foundedItems![index].hospitalizedData['Pace_Nome_SE']}\n".toUpperCase()}"
-                                    "Edad ${foundedItems![index].hospitalizedData['Pace_Eda']} Años\n"
+                                    "${foundedItems![index].generales['Pace_NSS']} ${foundedItems![index].generales['Pace_AGRE']}\n"
+                                    "${"${foundedItems![index].generales['Pace_Ape_Pat']} ${foundedItems![index].generales['Pace_Ape_Mat']} ${foundedItems![index].generales['Pace_Nome_PI']} ${foundedItems![index].generales['Pace_Nome_SE']}\n".toUpperCase()}"
+                                    "Edad ${foundedItems![index].generales['Pace_Eda']} Años\n"
                                     "FN: ${foundedItems![index].hospitalizedData['Feca_INI_Hosp']} : "
                                     "${DateTime.now().difference(DateTime.parse(foundedItems![index].hospitalizedData['Feca_INI_Hosp'])).inDays} DEH"
                                     "\n____________________________\n\n"
@@ -1413,12 +1415,12 @@ class _HospitalizadosState extends State<Hospitalizados> {
                               }
                             }
                             for (var i in foundedItems![index]
-                                .hospitalizedData['Diagnosticos']) {
+                                .diagnosticos) {
                               diagos =
                                   "$diagos${i['Pace_APP_DEG'].toUpperCase()} -\n\t${i['Pace_APP_DEG_com']}\n";
                             }
                             for (var i in foundedItems![index]
-                                .hospitalizedData['Cronicos']) {
+                                .patologicos) {
                               previos = "$previos"
                                   // "${i['Pace_APP_DEG'].toUpperCase()} -\n"
                                   "\t${i['Pace_APP_DEG_com']}\n";
@@ -1446,7 +1448,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                           iconData: Icons.recent_actors_outlined,
                           onPress: () {
                             Pacientes.Imagenologicos = foundedItems![index]
-                                .hospitalizedData['Imagenologicos'];
+                                .imagenologicos;
                             // ***************************************************
                             Datos.portapapeles(
                                 context: context,
@@ -1468,7 +1470,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                           iconData: Icons.list_alt,
                           onPress: () {
                             Pacientes.Pendiente = foundedItems![index]
-                                .hospitalizedData['Pendientes'];
+                                .pendientes;
 // *********************************
                             String penden = "";
                             // *********************************
@@ -1713,12 +1715,10 @@ class _HospitalizadosState extends State<Hospitalizados> {
           CrossLine(),
           Expanded(
             child: ListView.builder(
-                itemCount:
-                    foundedItems![index].hospitalizedData['Cronicos'].length,
+                itemCount: foundedItems![index].patologicos.length,
                 itemBuilder: (BuildContext context, ind) {
                   return Text(
-                    foundedItems![index].hospitalizedData['Cronicos'][ind]
-                        ['Pace_APP_DEG'],
+                    foundedItems![index].patologicos[ind]['Pace_APP_DEG'],
                     style: Styles.textSyleGrowth(fontSize: 9),
                   );
                 }),
@@ -1731,31 +1731,10 @@ class _HospitalizadosState extends State<Hospitalizados> {
           CrossLine(),
           Expanded(
             child: ListView.builder(
-                itemCount: foundedItems![index]
-                    .hospitalizedData['Diagnosticos']
-                    .length,
+                itemCount: foundedItems![index].diagnosticos.length,
                 itemBuilder: (BuildContext context, ind) {
                   return Text(
-                    foundedItems![index].hospitalizedData['Diagnosticos'][ind]
-                        ['Pace_APP_DEG'],
-                    style: Styles.textSyleGrowth(fontSize: 9),
-                  );
-                }),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            "Pendientes(s) ",
-            style: Styles.textSyleGrowth(fontSize: 12),
-          ),
-          CrossLine(),
-          Expanded(
-            child: ListView.builder(
-                itemCount:
-                    foundedItems![index].hospitalizedData['Pendientes'].length,
-                itemBuilder: (BuildContext context, ind) {
-                  return Text(
-                    foundedItems![index].hospitalizedData['Pendientes'][ind]
-                        ['Pace_Desc_PEN'],
+                    foundedItems![index].diagnosticos[ind]['Pace_APP_DEG'],
                     style: Styles.textSyleGrowth(fontSize: 9),
                   );
                 }),
@@ -1780,12 +1759,10 @@ class _HospitalizadosState extends State<Hospitalizados> {
           CrossLine(),
           Expanded(
             child: ListView.builder(
-                itemCount:
-                    foundedItems![index].hospitalizedData['Pendientes'].length,
-                itemBuilder: (BuildContext context, ind) {
+                itemCount: foundedItems![index].pendientes.length,
+                itemBuilder: (BuildContext context, int ind) {
                   return Text(
-                    foundedItems![index].hospitalizedData['Pendientes'][ind]
-                        ['Pace_Desc_PEN'],
+                    foundedItems![index].pendientes[ind]['Pace_Desc_PEN'],
                     style: Styles.textSyleGrowth(fontSize: 9),
                   );
                 }),

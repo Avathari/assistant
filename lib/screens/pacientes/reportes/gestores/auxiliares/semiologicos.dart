@@ -2,6 +2,7 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/info/info.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
+import 'package:assistant/widgets/CircleLabel.dart';
 import 'package:assistant/widgets/CircleSwitched.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
@@ -22,7 +23,7 @@ class Semiologicos extends StatefulWidget {
 }
 
 class _SemiologicosState extends State<Semiologicos> {
-  int? numActivity = 1;
+  int? numActivity = 0;
 
   @override
   void initState() {
@@ -33,14 +34,12 @@ class _SemiologicosState extends State<Semiologicos> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: ContainerDecoration.roundedDecoration(),
+      decoration: ContainerDecoration.roundedDecoration(colorBackground: Theming.cuaternaryColor),
       child: Row(
         children: [
           if (numActivity == 0)
-            Expanded(
-                child: infoSemiologias.infograma(
-                    context, clusterInpeccion(context),
-                    tittle: "Inspección General"))
+            infoSemiologias.infograma(context, clusterInpeccion(context),
+                tittle: "Inspección General")
           else
             Container(),
           if (numActivity == 0)
@@ -120,6 +119,34 @@ class _SemiologicosState extends State<Semiologicos> {
                             carouselController: carouselController,
                             options: Carousel.carouselOptions(context: context),
                             items: [
+                              Column(
+                                children: [
+                                  Expanded(
+                                    child: infoSemiologias.infograma(
+                                        context, clusterTegumentario(context),
+                                        tittle: "Apariencia Tegumentaria",
+                                        isVertical: false),
+                                  ),
+                                  Expanded(
+                                    child: infoSemiologias.infograma(
+                                        context, clusterTegumentario(context),
+                                        tittle: "Apariencia Tegumentaria",
+                                        isVertical: false),
+                                  ),
+                                  Expanded(
+                                    child: infoSemiologias.infograma(
+                                        context, clusterTegumentario(context),
+                                        tittle: "Apariencia Tegumentaria",
+                                        isVertical: false),
+                                  ),
+                                  Expanded(
+                                    child: infoSemiologias.infograma(
+                                        context, clusterTegumentario(context),
+                                        tittle: "Apariencia Tegumentaria",
+                                        isVertical: false),
+                                  ),
+                                ],
+                              ),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -773,6 +800,20 @@ class _SemiologicosState extends State<Semiologicos> {
   List<Widget> clusterBocio(BuildContext context) {
     return [];
   }
+
+  //************************** **** *** **    *
+  List<Widget> clusterRass(BuildContext context) {
+    List<Widget> list = [];
+
+    Escalas.RASS.forEach((element) {
+      list.add(CircleLabel(
+          tittle: element,
+          radios: 25,
+          ));
+    });
+    return list;
+  }
+
 
   // VARIABLES ***********************************
   var expoTextController = TextEditingController();

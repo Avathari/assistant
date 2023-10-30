@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +19,10 @@ class Theming {
   static const Color primaryColor = Color.fromARGB(255, 0, 0, 0);
   static const Color secondaryColor = Color(0xFF2A2D3E);
   static const Color terciaryColor = Color.fromARGB(255, 51, 48, 48);
+  static const Color cuaternaryColor = Color.fromARGB(255, 36, 43, 54);
   static const Color textColor = Colors.grey;
   static const Color bdColor = Color.fromARGB(255, 66, 65, 65);
+  static const Color quincuaryColor = Color.fromARGB(255, 40, 37, 37);
 }
 
 class Padd {
@@ -114,7 +118,11 @@ class TextFormat {
 
 class SpinnersValues {
   static double mediumWidth({required BuildContext context}) {
-    return isTablet(context) ? 250 : isMobile(context) ? 178 : 300;
+    return isTablet(context)
+        ? 250
+        : isMobile(context)
+            ? 178
+            : 300;
   }
 
   static double minimunWidth({required BuildContext context}) {
@@ -162,13 +170,16 @@ class ContainerDecoration {
     );
   }
 
-  static BoxDecoration roundedDecoration({Color colorBackground = Colors.black,
-    Color borderColor =  Colors.grey, double radius = 20.0, double width = 1.0}) {
+  static BoxDecoration roundedDecoration(
+      {Color colorBackground = Colors.black,
+      Color borderColor = Colors.grey,
+      double radius = 20.0,
+      double width = 1.0}) {
     return BoxDecoration(
       color: colorBackground,
       borderRadius: BorderRadius.circular(radius),
       border: Border.all(
-        color:  borderColor,
+        color: borderColor,
         style: BorderStyle.solid,
         width: width,
       ),
@@ -198,7 +209,7 @@ class GridViewTools {
   static SliverGridDelegateWithFixedCrossAxisCount gridDelegate(
       {int crossAxisCount = 3,
       double mainAxisExtent = 250,
-        childAspectRatio = 1.0,
+      childAspectRatio = 1.0,
       crossAxisSpacing = 10.0,
       mainAxisSpacing = 10.0}) {
     return SliverGridDelegateWithFixedCrossAxisCount(
@@ -209,4 +220,83 @@ class GridViewTools {
       childAspectRatio: childAspectRatio,
     );
   }
+}
+
+class FlowMenuDelegate extends FlowDelegate {
+  final AnimationController animationController;
+
+
+  FlowMenuDelegate({required this.animationController})
+      : super(repaint: animationController);
+
+  @override
+  void paintChildren(FlowPaintingContext context) {
+    final xPosition = context.size.width - 75;
+    final yPosition = context.size.height - 75;
+    final iconCount = context.childCount;
+
+    for (int i = 0; i < iconCount; i++) {
+      final isLastIcon = i == context.childCount - 1;
+      final radius = 180 * animationController.value;
+      final tetha = i * pi * 0.5 / (iconCount - 2);
+      final x = xPosition - (isLastIcon ? 0.0 : (radius * cos(tetha)));
+      final y = yPosition - (isLastIcon ? 0.0 : (radius * sin(tetha)));
+
+      context.paintChild(i,
+          transform: Matrix4.identity()
+            ..translate(x, y, 0)
+            ..translate(-75 / 2, -75 / 21)
+            ..rotateZ(isLastIcon
+                ? 0.0
+                : 180 * (1 - animationController.value) * pi / 180)
+            ..scale(isLastIcon
+                ? 1.0
+                : max(
+                    animationController.value,
+                    0.5,
+                  ))
+            ..translate(-75 / 2, -75 / 2));
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant FlowDelegate oldDelegate) => false;
+}
+
+class FlowVerticalDelegate extends FlowDelegate {
+  final AnimationController animationController;
+  var toogle;
+
+  FlowVerticalDelegate({required this.animationController, this.toogle})
+      : super(repaint: animationController);
+
+  @override
+  void paintChildren(FlowPaintingContext context) {
+    const buttonSize = 46;
+    const buttonRadius = buttonSize / 2;
+    const buttonMargin = 10;
+
+    final xPosition = context.size.width - buttonSize;
+    final yPosition = context.size.height - buttonSize;
+
+    final lastFabIndex = context.childCount - 1;
+
+    for (int i = lastFabIndex; i >= 0; i--) {
+      final y = yPosition -
+          ((buttonSize + buttonMargin) * i * animationController.value);
+      final size = (i != 0) ? animationController.value : 1.0;
+
+      context.paintChild(i,
+          transform: Matrix4.translationValues(xPosition, y, 0.0)
+            ..translate(buttonRadius, buttonRadius)
+            ..scale(size)
+            ..translate(-buttonRadius, -buttonRadius),
+      ); // Hacia Arriba . . .
+      // context.paintChild(i,
+      //     transform: Matrix4.translationValues(x, yPosition, 0.0)); // Hacia la Izquierda
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant FlowDelegate oldDelegate) => false;
 }

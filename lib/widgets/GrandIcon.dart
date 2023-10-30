@@ -13,8 +13,8 @@ class GrandIcon extends StatefulWidget {
   GrandIcon(
       {Key? key,
       this.labelButton = "message",
-      this.weigth = 10,
-      this.heigth = 10,
+      this.weigth = 15,
+      this.heigth = 15,
         this.size = 28,
       this.iconColor = Colors.grey,
       this.iconData = Icons.wallet,
