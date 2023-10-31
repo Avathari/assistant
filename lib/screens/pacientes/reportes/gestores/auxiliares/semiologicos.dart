@@ -424,6 +424,7 @@ class _SemiologicosState extends State<Semiologicos> {
           radios: 25,
           difRadios: 5,
           onChangeValue: () {
+
             Exploracion.inspeccionGeneral = 'Aturdido';
             expoTextController.text = Exploracion.exploracionGeneral;
             print(Exploracion.inspeccionGeneral);

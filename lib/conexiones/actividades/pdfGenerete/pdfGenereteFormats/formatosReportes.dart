@@ -1,6 +1,7 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteComponents/PdfApiComponents.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/Strings.dart';
 
@@ -631,7 +632,7 @@ class FormatosReportes {
                 textTittleWithLabel(tittle: " ", label: ''),
                 textTittleWithLabel(
                     tittle: "I.M.C.: ",
-                    label: '${Valores.imc.toStringAsFixed(2)} Kg/m2'),
+                    label: '${Antropometrias.imc.toStringAsFixed(2)} Kg/m2'),
               ]),
         ]));
     // # # # # # # ### # # # # # # ###
@@ -875,7 +876,7 @@ class FormatosReportes {
                 textTittleWithLabel(tittle: " ", label: ''),
                 textTittleWithLabel(
                     tittle: "I.M.C.: ",
-                    label: '${Valores.imc.toStringAsFixed(2)} Kg/m2'),
+                    label: '${Antropometrias.imc.toStringAsFixed(2)} Kg/m2'),
               ]),
         ]));
     // # # # # # # ### # # # # # # ###
@@ -1850,7 +1851,7 @@ class FormatosReportes {
                 textTittleWithLabel(tittle: " ", label: ''),
                 textTittleWithLabel(
                     tittle: "I.M.C.: ",
-                    label: '${Valores.imc.toStringAsFixed(2)} Kg/m2'),
+                    label: '${Antropometrias.imc.toStringAsFixed(2)} Kg/m2'),
               ]),
         ]));
     // # # # # # # ### # # # # # # ###
@@ -2200,7 +2201,7 @@ class FormatosReportes {
               children: [
                 textTittleWithLabel(
                     tittle: "I.M.C.: ",
-                    label: '${Valores.imc.toStringAsFixed(2)} Kg/m2'),
+                    label: '${Antropometrias.imc.toStringAsFixed(2)} Kg/m2'),
               ]),
           TableRow(
               verticalAlignment: TableCellVerticalAlignment.middle,

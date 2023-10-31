@@ -1,4 +1,5 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/metabolometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
@@ -144,12 +145,12 @@ class _MetabolicosState extends State<Metabolicos> {
                         children: [
                           ValuePanel(
                             firstText: 'Gasto Energético Basal',
-                            secondText: Valores.gastoEnergeticoBasal.toStringAsFixed(2),
+                            secondText: Metabolometrias.gastoEnergeticoBasal.toStringAsFixed(2),
                             thirdText: 'kCal/Día',
                           ),
                           ValuePanel(
                             firstText: 'Metabolismo Basal',
-                            secondText: Valores.metabolismoBasal.toStringAsFixed(2),
+                            secondText: Metabolometrias.metabolismoBasal.toStringAsFixed(2),
                             thirdText: 'kCal/Día',
                           ),
                         ],
@@ -162,12 +163,12 @@ class _MetabolicosState extends State<Metabolicos> {
                         children: [
                           ValuePanel(
                             firstText: 'Efecto Térmico de los Alimentos',
-                            secondText: Valores.efectoTermicoAlimentos.toStringAsFixed(2),
+                            secondText: Metabolometrias.efectoTermicoAlimentos.toStringAsFixed(2),
                             thirdText: 'kCal/Día',
                           ),
                           ValuePanel(
                             firstText: 'Gasto Energético Total',
-                            secondText: Valores.gastoEnergeticoTotal.toStringAsFixed(2),
+                            secondText: Metabolometrias.gastoEnergeticoTotal.toStringAsFixed(2),
                             thirdText: 'kCal/Día',
                           ),
                           // CrossLine(),
@@ -185,26 +186,27 @@ class _MetabolicosState extends State<Metabolicos> {
                     children: [
                       ShowText(
                         title: 'Glucosa',
-                        data: Valores.glucosaPorcentaje,
+                        data: Metabolometrias.glucosaPorcentaje,
                         medida: 'kCal/Día',
                       ),
                       ShowText(
                         title: '',
-                        data: Valores.glucosaGramos,
+                        data: Metabolometrias.glucosaGramos,
                         medida: 'gr/Día',
                       ),
-                      Spinner(
-                        tittle: 'Constante',
-                        onChangeValue: (value) {
+                      Slider(
+                        value: Metabolometrias
+                            .porcentajeCarbohidratos.toDouble(),
+                        max: 100,
+                        divisions: 100,
+                        label: Metabolometrias
+                            .porcentajeCarbohidratos.round().toString(),
+                        onChanged: (double value) {
                           setState(() {
-                            Valores.porcentajeCarbohidratos =
-                                int.parse(value);
+                            Metabolometrias
+                                .porcentajeCarbohidratos = value.toInt();
                           });
                         },
-                        items: List<String>.generate(
-                            100, (i) => (i + 1).toString()),
-                        initialValue:
-                        Valores.porcentajeCarbohidratos.toString(),
                       ),
                     ],
                   ),
@@ -213,26 +215,27 @@ class _MetabolicosState extends State<Metabolicos> {
                     children: [
                       ShowText(
                         title: 'Proteinas',
-                        data: Valores.proteinasPorcentaje,
+                        data: Metabolometrias.proteinasPorcentaje,
                         medida: 'kCal/Día',
                       ),
                       ShowText(
                         title: '',
-                        data: Valores.proteinasGramos,
+                        data: Metabolometrias.proteinasGramos,
                         medida: 'gr/Día',
                       ),
-                      Spinner(
-                        tittle: 'Constante',
-                        onChangeValue: (value) {
+                      Slider(
+                        value: Metabolometrias
+                            .porcentajeProteinas.toDouble(),
+                        max: 100,
+                        divisions: 100,
+                        label: Metabolometrias
+                            .porcentajeProteinas.round().toString(),
+                        onChanged: (double value) {
                           setState(() {
-                            Valores.porcentajeProteinas =
-                                int.parse(value);
+                            Metabolometrias
+                                .porcentajeProteinas = value.toInt();
                           });
                         },
-                        items: List<String>.generate(
-                            100, (i) => (i + 1).toString()),
-                        initialValue:
-                        Valores.porcentajeProteinas.toString(),
                       ),
                     ],
                   ),
@@ -241,34 +244,34 @@ class _MetabolicosState extends State<Metabolicos> {
                     children: [
                       ShowText(
                         title: 'Lipidos',
-                        data: Valores.lipidosPorcentaje,
+                        data: Metabolometrias.lipidosPorcentaje,
                         medida: 'kCal/Día',
                       ),
                       ShowText(
                         title: '',
-                        data: Valores.lipidosGramos,
+                        data: Metabolometrias.lipidosGramos,
                         medida: 'gr/Día',
                       ),
-                      Spinner(
-                        tittle: 'Constante',
-
-                        onChangeValue: (value) {
+                      Slider(
+                        value: Metabolometrias
+                            .porcentajeLipidos.toDouble(),
+                        max: 100,
+                        divisions: 100,
+                        label: Metabolometrias
+                            .porcentajeLipidos.round().toString(),
+                        onChanged: (double value) {
                           setState(() {
-                            Valores.porcentajeLipidos =
-                                int.parse(value);
+                            Metabolometrias
+                                .porcentajeLipidos = value.toInt();
                           });
                         },
-                        items: List<String>.generate(
-                            100, (i) => (i + 1).toString()),
-                        initialValue:
-                        Valores.porcentajeLipidos.toString(),
                       ),
                     ],
                   ),
                   CrossLine(),
                   ShowText(
                     title: '% Porcentual',
-                    data: double.parse(Valores.sumaPorcentualMetabolicos.toString()),
+                    data: double.parse(Metabolometrias.sumaPorcentualMetabolicos.toString()),
                     medida: '%',
                   ),
                 ],) : Column(children: [
@@ -277,28 +280,31 @@ class _MetabolicosState extends State<Metabolicos> {
                     children: [
                       ShowText(
                         title: 'Glucosa',
-                        data: Valores.glucosaPorcentaje,
-                        medida: 'kCal/Día',
+                        data: Metabolometrias.glucosaPorcentaje,
+                        medida: ' kCal/Día',
                       ),
                       ShowText(
                         title: '',
-                        data: Valores.glucosaGramos,
-                        medida: 'gr/Día',
+                        data: Metabolometrias.glucosaGramos,
+                        medida: ' gr/Día',
                       ),
-                      Spinner(
-                        tittle: 'Constante',
-                        width: 60,
-                        onChangeValue: (value) {
-                          setState(() {
-                            Valores.porcentajeCarbohidratos =
-                                int.parse(value);
-                          });
-                        },
-                        items: List<String>.generate(
-                            100, (i) => (i + 1).toString()),
-                        initialValue:
-                        Valores.porcentajeCarbohidratos.toString(),
+                      Expanded(
+                        child: Slider(
+                          value: Metabolometrias
+                              .porcentajeCarbohidratos.toDouble(),
+                          max: 100,
+                          divisions: 100,
+                          label: Metabolometrias
+                              .porcentajeCarbohidratos.round().toString(),
+                          onChanged: (double value) {
+                            setState(() {
+                              Metabolometrias
+                                  .porcentajeCarbohidratos = value.toInt();
+                            });
+                          },
+                        ),
                       ),
+
                     ],
                   ),
                   Row(
@@ -306,27 +312,29 @@ class _MetabolicosState extends State<Metabolicos> {
                     children: [
                       ShowText(
                         title: 'Proteinas',
-                        data: Valores.proteinasPorcentaje,
-                        medida: 'kCal/Día',
+                        data: Metabolometrias.proteinasPorcentaje,
+                        medida: ' kCal/Día',
                       ),
                       ShowText(
                         title: '',
-                        data: Valores.proteinasGramos,
-                        medida: 'gr/Día',
+                        data: Metabolometrias.proteinasGramos,
+                        medida: ' gr/Día',
                       ),
-                      Spinner(
-                        tittle: 'Constante',
-                        width: 60,
-                        onChangeValue: (value) {
-                          setState(() {
-                            Valores.porcentajeProteinas =
-                                int.parse(value);
-                          });
-                        },
-                        items: List<String>.generate(
-                            100, (i) => (i + 1).toString()),
-                        initialValue:
-                        Valores.porcentajeProteinas.toString(),
+                      Expanded(
+                        child: Slider(
+                          value: Metabolometrias
+                              .porcentajeProteinas.toDouble(),
+                          max: 100,
+                          divisions: 100,
+                          label: Metabolometrias
+                              .porcentajeProteinas.round().toString(),
+                          onChanged: (double value) {
+                            setState(() {
+                              Metabolometrias
+                                  .porcentajeProteinas = value.toInt();
+                            });
+                          },
+                        ),
                       ),
                     ],
                   ),
@@ -335,34 +343,36 @@ class _MetabolicosState extends State<Metabolicos> {
                     children: [
                       ShowText(
                         title: 'Lipidos',
-                        data: Valores.lipidosPorcentaje,
-                        medida: 'kCal/Día',
+                        data: Metabolometrias.lipidosPorcentaje,
+                        medida: ' kCal/Día',
                       ),
                       ShowText(
                         title: '',
-                        data: Valores.lipidosGramos,
-                        medida: 'gr/Día',
+                        data: Metabolometrias.lipidosGramos,
+                        medida: ' gr/Día',
                       ),
-                      Spinner(
-                        tittle: 'Constante',
-                        width: 60,
-                        onChangeValue: (value) {
-                          setState(() {
-                            Valores.porcentajeLipidos =
-                                int.parse(value);
-                          });
-                        },
-                        items: List<String>.generate(
-                            100, (i) => (i + 1).toString()),
-                        initialValue:
-                        Valores.porcentajeLipidos.toString(),
+                      Expanded(
+                        child: Slider(
+                          value: Metabolometrias
+                              .porcentajeLipidos.toDouble(),
+                          max: 100,
+                          divisions: 100,
+                          label: Metabolometrias
+                              .porcentajeLipidos.round().toString(),
+                          onChanged: (double value) {
+                            setState(() {
+                              Metabolometrias
+                                  .porcentajeLipidos = value.toInt();
+                            });
+                          },
+                        ),
                       ),
                     ],
                   ),
                   CrossLine(),
                   ShowText(
                     title: '% Porcentual',
-                    data: double.parse(Valores.sumaPorcentualMetabolicos.toString()),
+                    data: double.parse(Metabolometrias.sumaPorcentualMetabolicos.toString()),
                     medida: '%',
                   ),
                 ]),
@@ -372,7 +382,7 @@ class _MetabolicosState extends State<Metabolicos> {
                 child: Column(children: [
                   ShowText(
                     title: 'Edad Metabólica',
-                    data: Valores.edadMetabolica,
+                    data: Metabolometrias.edadMetabolica,
                     medida: 'Años',
                   ),
                 ]),
@@ -388,7 +398,7 @@ class _MetabolicosState extends State<Metabolicos> {
             labelButton: "Copiar en Portapapeles",
             onPress: () {
               Datos.portapapeles(
-                  context: context, text: Valorados.metabolometrias);
+                  context: context, text: Metabolometrias.metabolometrias);
             },
           ),
         ),

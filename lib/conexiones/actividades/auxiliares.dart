@@ -320,7 +320,7 @@ class Listas {
     var seen = <dynamic>{};
     List uniquelist = listado.where((country) => seen.add(country)).toList();
     return (uniquelist..sort()).reversed.toList();
-    return (uniquelist..sort()).reversed.toList();
+
     // uniquelist..sort() Ordenar de menor a mayor
     //(uniquelist..sort()).reversed.toList() Ordenar de mayor a menor
   }

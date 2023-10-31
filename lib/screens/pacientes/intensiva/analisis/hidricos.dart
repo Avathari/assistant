@@ -1,4 +1,5 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/hidrometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
@@ -162,22 +163,22 @@ class _HidricosState extends State<Hidricos> {
                                 children: [
                                   ShowText(
                                     title: 'Requerimiento Hídrico',
-                                    data: Valores.requerimientoHidrico,
+                                    data: Hidrometrias.requerimientoHidrico,
                                     medida: 'mL',
                                   ),
-                                  Spinner(
-                                    tittle: 'Constante',
-                                    onChangeValue: (value) {
+                                  Slider(
+                                    value: Hidrometrias
+                                        .constanteRequerimientos,
+                                    max: 65,
+                                    divisions: 65,
+                                    label: Hidrometrias
+                                        .constanteRequerimientos.round().toString(),
+                                    onChanged: (double value) {
                                       setState(() {
-                                        Valores.constanteRequerimientos =
-                                            int.parse(value);
+                                        Hidrometrias
+                                            .constanteRequerimientos = value;
                                       });
                                     },
-                                    items: List<String>.generate(
-                                        65, (i) => (i + 1).toString()),
-                                    initialValue: Valores
-                                        .constanteRequerimientos
-                                        .toString(),
                                   ),
                                 ],
                               )
@@ -185,50 +186,55 @@ class _HidricosState extends State<Hidricos> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  ShowText(
-                                    title: 'Requerimiento Hídrico',
-                                    data: Valores.requerimientoHidrico,
-                                    medida: 'mL',
+                                  Expanded(
+                                    child: ShowText(
+                                      title: 'Requerimiento Hídrico',
+                                      data: Hidrometrias.requerimientoHidrico,
+                                      medida: 'mL',
+                                    ),
                                   ),
-                                  Spinner(
-                                    tittle: 'Constante',
-                                    onChangeValue: (value) {
-                                      setState(() {
-                                        Valores.constanteRequerimientos =
-                                            int.parse(value);
-                                      });
-                                    },
-                                    items: List<String>.generate(
-                                        65, (i) => (i + 1).toString()),
-                                    initialValue: Valores
-                                        .constanteRequerimientos
-                                        .toString(),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Slider(
+                                      value: Hidrometrias
+                                          .constanteRequerimientos,
+                                      max: 65,
+                                      divisions: 65,
+                                      label: Hidrometrias
+                                          .constanteRequerimientos.round().toString(),
+                                      onChanged: (double value) {
+                                        setState(() {
+                                          Hidrometrias
+                                              .constanteRequerimientos = value;
+                                        });
+                                      },
+                                    ),
                                   ),
                                 ],
                               ),
                         ShowText(
                           title: 'Agua Corporal Total',
-                          data: Valores.aguaCorporalTotal,
+                          data: Hidrometrias.aguaCorporalTotal,
                           medida: 'L',
                         ),
                         ShowText(
                           title: 'Déficit de Agua Corporal',
-                          data: Valores.deficitAguaCorporal,
+                          data: Hidrometrias.deficitAguaCorporal,
                           medida: 'mL',
                         ),
                         ShowText(
                           title: 'Exceso de Agua Libre',
-                          data: Valores.excesoAguaLibre,
+                          data: Hidrometrias.excesoAguaLibre,
                           medida: 'mL',
                         ),
                         ShowText(
                           title: 'Delta Sodio',
-                          data: Valores.deficitSodio,
+                          data: Hidrometrias.deficitSodio,
                           medida: 'mEq/L',
                         ),
                         ShowText(
                           title: 'Sodio Corregido',
-                          data: Valores.sodioCorregidoGlucosa,
+                          data: Hidrometrias.sodioCorregidoGlucosa,
                           medida: 'mEq/L',
                         ),
                       ],
@@ -239,17 +245,17 @@ class _HidricosState extends State<Hidricos> {
                     child: Column(children: [
                       ShowText(
                         title: 'Sodio Corregido',
-                        data: Valores.sodioCorregidoGlucosa,
+                        data: Hidrometrias.sodioCorregidoGlucosa,
                         medida: 'mEq/L',
                       ),
                       ShowText(
                         title: 'Calcio Corregido',
-                        data: Valores.calcioCorregidoAlbumina,
+                        data: Hidrometrias.calcioCorregidoAlbumina,
                         medida: 'mEql/L',
                       ),
                       ShowText(
                         title: 'Volumen Plasmático',
-                        data: Valores.volumenPlasmatico,
+                        data: Hidrometrias.volumenPlasmatico,
                         medida: 'L',
                       ),
                       ShowText(
@@ -259,7 +265,7 @@ class _HidricosState extends State<Hidricos> {
                       ),
                       ShowText(
                         title: 'Solutos Corporales',
-                        data: Valores.SOL,
+                        data: Hidrometrias.SOL,
                         medida: 'mOsm',
                       ),
                     ]),
@@ -269,12 +275,12 @@ class _HidricosState extends State<Hidricos> {
                     child: Column(children: [
                       ShowText(
                         title: 'Osmolaridad Sérica',
-                        data: Valores.osmolaridadSerica,
+                        data: Hidrometrias.osmolaridadSerica,
                         medida: 'Osm/mL',
                       ),
                       ShowText(
                         title: 'Brecha Osmolar',
-                        data: Valores.brechaOsmolar,
+                        data: Hidrometrias.brechaOsmolar,
                         medida: 'Osm/mL',
                       ),
                     ]),
@@ -284,40 +290,40 @@ class _HidricosState extends State<Hidricos> {
                     child: Column(children: [
                       ShowText(
                         title: 'Déficit de Sodio',
-                        data: Valores.deficitSodio,
+                        data: Hidrometrias.deficitSodio,
                         medida: 'mEq/L',
                       ),
                       ShowText(
                         title: 'Reposición de Sodio',
-                        data: Valores.reposicionSodio,
+                        data: Hidrometrias.reposicionSodio,
                         medida: 'mEq/L',
                       ),
                       ShowText(
                         title: 'Requerimiento Basal Potasio',
-                        data: Valores.requerimientoBasalPotasio,
+                        data: Hidrometrias.requerimientoBasalPotasio,
                         medida: 'mEq/L',
                       ),
                       ShowText(
                         title: 'Requerimiento Potasio',
-                        data: Valores.requerimientoPotasio,
+                        data: Hidrometrias.requerimientoPotasio,
                         medida: 'mEq/L',
                       ),
                       ShowText(
                         title: 'Reposición Potasio',
-                        data: Valores.reposicionPotasio,
+                        data: Hidrometrias.reposicionPotasio,
                         medida: 'mEq/L',
                       ),
                       ShowText(
                         title: 'Delta Potasio',
-                        data: Valores.deltaPotasio,
+                        data: Hidrometrias.deltaPotasio,
                         medida: 'mEq/L',
                       ),
                       ShowText(
                         title: 'pH / Potasio',
-                        data: Valores.pHKalemia,
+                        data: Hidrometrias.pHKalemia,
                         medida: 'mEq/L',
                       ),
-                      TittlePanel(textPanel: Valores.kalemia),
+                      TittlePanel(textPanel: Hidrometrias.kalemia),
                     ]),
                   ),
                   SingleChildScrollView(
@@ -325,22 +331,22 @@ class _HidricosState extends State<Hidricos> {
                     child: Column(children: [
                       ShowText(
                         title: 'Líquido Intracelular',
-                        data: Valores.LI,
+                        data: Hidrometrias.LI,
                         medida: 'L',
                       ),
                       ShowText(
                         title: 'Líquido Extracelular',
-                        data: Valores.LEC,
+                        data: Hidrometrias.LEC,
                         medida: 'L',
                       ),
                       ShowText(
                         title: 'Líquido Intersticial',
-                        data: Valores.LIC,
+                        data: Hidrometrias.LIC,
                         medida: 'L',
                       ),
                       ShowText(
                         title: 'Líquido Intravascular',
-                        data: Valores.LIV,
+                        data: Hidrometrias.LIV,
                         medida: 'L',
                       ),
                     ]),
@@ -356,7 +362,7 @@ class _HidricosState extends State<Hidricos> {
             labelButton: "Copiar en Portapapeles",
             onPress: () {
               Datos.portapapeles(
-                  context: context, text: Valorados.hidricos);
+                  context: context, text: Hidrometrias.hidricos);
             },
           ),
         ),

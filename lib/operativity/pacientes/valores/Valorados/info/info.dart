@@ -59,3 +59,12 @@ class infoFerritina {
       "";
  //
 }
+
+class infoHepatometrias {
+  static String get clusterDiagnosticos_ALT_FA => "";
+  static String get clusterDiagnosticos_AST_ALT => "";
+  static String get clusterDiagnosticos_GGT_FA => "";
+
+  static String get clusterDiagnosticos_BD_BT => "";
+  static String get clusterDiagnosticos_BD_BI => "";
+}

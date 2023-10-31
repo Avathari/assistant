@@ -25,7 +25,7 @@ class _SubjetivosState extends State<Subjetivos> {
   @override
   void initState() {
     setState(() {
-      referidosTextController.text = Valores.referenciasHospitalizacion;
+      referidosTextController.text = Exploracion.referenciasHospitalizacion;
     });
     super.initState();
   }
@@ -50,35 +50,35 @@ class _SubjetivosState extends State<Subjetivos> {
                 tittle: 'Estado General',
                 onChangeValue: (value) {
                   setState(() {
-                    Valores.estadoGeneral = value;
+                    Exploracion.estadoGeneral = value;
                     reInit();
                   });
                 },
                 items: Items.estadoGeneral,
-                initialValue: Valores.estadoGeneral),
+                initialValue: Exploracion.estadoGeneral),
             Spinner(
                 tittle: 'Oxigeno suplementario',
                 width: SpinnersValues.mediumWidth(context: context),
                 onChangeValue: (value) {
                   setState(() {
-                    Valores.oxigenSuplementario = value;
+                    Exploracion.oxigenSuplementario = value;
                     reInit();
                   });
                 },
                 items: Items.oxigenSuplementario,
-                initialValue: Valores.oxigenSuplementario),
+                initialValue: Exploracion.oxigenSuplementario),
             CrossLine(height: 20),
             Spinner(
                 tittle: 'Alimentación',
                 width: SpinnersValues.mediumWidth(context: context),
                 onChangeValue: (value) {
                   setState(() {
-                    Valores.viaOral = value;
+                    Exploracion.viaOral = value;
                     reInit();
                   });
                 },
                 items: Items.viaOralAlimentacion,
-                initialValue: Valores.viaOral),
+                initialValue: Exploracion.viaOral),
             Row(
               children: [
                 Expanded(
@@ -87,12 +87,12 @@ class _SubjetivosState extends State<Subjetivos> {
                       width: SpinnersValues.minimunWidth(context: context),
                       onChangeValue: (value) {
                         setState(() {
-                          Valores.uresisCantidad = value;
+                          Exploracion.uresisCantidad = value;
                           reInit();
                         });
                       },
                       items: Items.uresisCantidad,
-                      initialValue: Valores.uresisCantidad),
+                      initialValue: Exploracion.uresisCantidad),
                 ),
                 Expanded(
                   child: Spinner(
@@ -100,12 +100,12 @@ class _SubjetivosState extends State<Subjetivos> {
                       width: SpinnersValues.minimunWidth(context: context),
                       onChangeValue: (value) {
                         setState(() {
-                          Valores.excretasCantidad = value;
+                          Exploracion.excretasCantidad = value;
                           reInit();
                         });
                       },
                       items: Items.excretasCantidad,
-                      initialValue: Valores.excretasCantidad),
+                      initialValue: Exploracion.excretasCantidad),
                 ),
               ],
             ),
@@ -114,12 +114,12 @@ class _SubjetivosState extends State<Subjetivos> {
                 width: SpinnersValues.mediumWidth(context: context),
                 onChangeValue: (value) {
                   setState(() {
-                    Valores.excretasBristol = value;
+                    Exploracion.excretasBristol = value;
                     reInit();
                   });
                 },
                 items: Items.excretasBristol,
-                initialValue: Valores.excretasBristol),
+                initialValue: Exploracion.excretasBristol),
             CrossLine(height: 20),
             Row(
               children: [
@@ -136,7 +136,7 @@ class _SubjetivosState extends State<Subjetivos> {
                               "Sin referencias por parte del paciente";
                         }
                         switched = value;
-                        Valores.referenciasHospitalizacion =
+                        Exploracion.referenciasHospitalizacion =
                             referidosTextController.text;
                         reInit();
                       });
@@ -153,7 +153,7 @@ class _SubjetivosState extends State<Subjetivos> {
                     numOfLines: 5,
                     onChange: (value) {
                       setState(() {
-                        Valores.referenciasHospitalizacion = value;
+                        Exploracion.referenciasHospitalizacion = value;
                         reInit();
                       });
                     },

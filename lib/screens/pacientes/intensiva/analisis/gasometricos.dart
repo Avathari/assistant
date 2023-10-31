@@ -1,4 +1,6 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/hidrometrias.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart' as Gas;
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
@@ -140,7 +142,7 @@ class _GasometricosState extends State<Gasometricos> {
                       ),
                       ValuePanel(
                         firstText: "EB",
-                        secondText: Valores.EB
+                        secondText: Gas.Gasometricos.EB
                             .toStringAsFixed(2), // excesoBaseArteriales
                         thirdText: "mmol/L",
                       ),
@@ -174,10 +176,10 @@ class _GasometricosState extends State<Gasometricos> {
                       children: [
                         TittlePanel(
                             textPanel:
-                                "Trastorno Primario \n${Valores.trastornoPrimario} (pH ${Valores.pHArteriales})"),
+                                "Trastorno Primario \n${Gas.Gasometricos.trastornoPrimario} (pH ${Valores.pHArteriales})"),
                         TittlePanel(
                             textPanel:
-                                "Trastorno Secundario \n${Valores.trastornoSecundario} (PCO2 ${Valores.pcoArteriales!.toStringAsFixed(0)})"),
+                                "Trastorno Secundario \n${Gas.Gasometricos.trastornoSecundario} (PCO2 ${Valores.pcoArteriales!.toStringAsFixed(0)})"),
                       ],
                     ),
                   ),
@@ -190,16 +192,16 @@ class _GasometricosState extends State<Gasometricos> {
                       children: [
                         TittlePanel(
                             textPanel:
-                                "Alteración del Oxígeno \n${Valores.trastornoTerciario} (pO2 ${Valores.poArteriales!.toStringAsFixed(0)})"),
+                                "Alteración del Oxígeno \n${Gas.Gasometricos.trastornoTerciario} (pO2 ${Valores.poArteriales!.toStringAsFixed(0)})"),
                         TittlePanel(
                             textPanel:
-                                "Alteración del CO2 \n${Valores.alteracionRespiratoria} (HCO3- ${Valores.pcoArteriales})"),
+                                "Alteración del CO2 \n${Gas.Gasometricos.alteracionRespiratoria} (HCO3- ${Valores.pcoArteriales})"),
                         TittlePanel(
                             textPanel:
-                                "Alteración por Bases \n${Valores.trastornoBases} (EB ${Valores.EB.toStringAsFixed(2)})"),
+                                "Alteración por Bases \n${Gas.Gasometricos.trastornoBases} (EB ${Gas.Gasometricos.EB.toStringAsFixed(2)})"),
                         TittlePanel(
                             textPanel:
-                                "Alteración del Anion Gap \n${Valores.trastornoGap} (GAP ${Valores.GAP.toStringAsFixed(0)})"),
+                                "Alteración del Anion Gap \n${Gas.Gasometricos.trastornoGap} (GAP ${Gas.Gasometricos.GAP.toStringAsFixed(0)})"),
                       ]),
                   GridView(
                       padding: const EdgeInsets.all(5.0),
@@ -210,32 +212,32 @@ class _GasometricosState extends State<Gasometricos> {
                       children: [
                         ValuePanel(
                           firstText: "EB Esperado",
-                          secondText: Valores.EBb.toStringAsFixed(2),
+                          secondText: Gas.Gasometricos.EBb.toStringAsFixed(2),
                           thirdText: "mmol/L",
                         ),
                         ValuePanel(
                           firstText: "PCO2 Esperado",
-                          secondText: Valores.PCO2C.toStringAsFixed(2),
+                          secondText: Gas.Gasometricos.PCO2C.toStringAsFixed(2),
                           thirdText: "mmHg",
                         ),
                         ValuePanel(
                           firstText: "TCO2",
-                          secondText: Valores.TCO.toStringAsFixed(2),
+                          secondText: Gas.Gasometricos.TCO.toStringAsFixed(2),
                           thirdText: "mmHg",
                         ),
                         ValuePanel(
                           firstText: "PCO2 Corregido",
-                          secondText: Valores.PCO2C.toStringAsFixed(2),
+                          secondText: Gas.Gasometricos.PCO2C.toStringAsFixed(2),
                           thirdText: "mmHg",
                         ),
                         ValuePanel(
                           firstText: "EB Corregido",
-                          secondText: Valores.EBecf.toStringAsFixed(2),
+                          secondText: Gas.Gasometricos.EBecf.toStringAsFixed(2),
                           thirdText: "mmol/L",
                         ),
                         ValuePanel(
                           firstText: "EB Estándar",
-                          secondText: Valores.EB.toStringAsFixed(2),
+                          secondText: Gas.Gasometricos.EB.toStringAsFixed(2),
                           thirdText: 'mmol/L',
                         ),
                       ]),
@@ -248,32 +250,32 @@ class _GasometricosState extends State<Gasometricos> {
                       children: [
                         ValuePanel(
                           firstText: "Indice PAFI",
-                          secondText: Valores.PAFI.toStringAsFixed(0),
+                          secondText: Gas.Gasometricos.PAFI.toStringAsFixed(0),
                           thirdText: "",
                         ),
                         ValuePanel(
                           firstText: "Indice SAFI",
-                          secondText: Valores.SAFI.toStringAsFixed(2),
+                          secondText: Gas.Gasometricos.SAFI.toStringAsFixed(2),
                           thirdText: "",
                         ),
                         ValuePanel(
                           firstText: "PAO2",
-                          secondText: Valores.PAO.toStringAsFixed(2),
+                          secondText: Gas.Gasometricos.PAO.toStringAsFixed(2),
                           thirdText: "mmHg",
                         ),
                         ValuePanel(
                           firstText: "Aa-O2",
-                          secondText: Valores.GAA.toStringAsFixed(2),
+                          secondText: Gas.Gasometricos.GAA.toStringAsFixed(2),
                           thirdText: "mmHg",
                         ),
                         ValuePanel(
                           firstText: "Dif. Aa-O2",
-                          secondText: Valores.DAA.toStringAsFixed(2),
+                          secondText: Gas.Gasometricos.DAA.toStringAsFixed(2),
                           thirdText: "mmHg",
                         ),
                         ValuePanel(
                           firstText: "Relación PaO2/PAO2",
-                          secondText: Valores.PaO2PAO2.toStringAsFixed(2),
+                          secondText: Gas.Gasometricos.PaO2PAO2.toStringAsFixed(2),
                           thirdText: "mmHg",
                         ),
                       ]),
@@ -287,60 +289,60 @@ class _GasometricosState extends State<Gasometricos> {
                       ValuePanel(
                         firstText: "Osm",
                         secondText:
-                            Valores.osmolaridadSerica.toStringAsFixed(0),
+                            Hidrometrias.osmolaridadSerica.toStringAsFixed(0),
                         thirdText: "mOsm//L",
                       ),
                       ValuePanel(
                         firstText: "Osm Gap",
-                        secondText: Valores.GAPO.toStringAsFixed(0),
+                        secondText: Gas.Gasometricos.GAPO.toStringAsFixed(0),
                         thirdText: "mOsm/L",
                       ),
                       ValuePanel(
                         firstText: "a-GAP",
-                        secondText: Valores.GAP.toStringAsFixed(0),
+                        secondText: Gas.Gasometricos.GAP.toStringAsFixed(0),
                         thirdText: "",
                       ),
                       ValuePanel(
                         firstText: "Delta GAP",
-                        secondText: Valores.d_GAP.toStringAsFixed(2),
+                        secondText: Gas.Gasometricos.d_GAP.toStringAsFixed(2),
                         thirdText: "",
                       ),
                       CrossLine(),
                       ValuePanel(
                         firstText: "Delta-Delta GAP",
-                        secondText: Valores.D_d_GAP.toStringAsFixed(2),
+                        secondText: Gas.Gasometricos.D_d_GAP.toStringAsFixed(2),
                         thirdText: "",
                       ),
                       ValuePanel(
                         firstText: "Dif. Aniones Libres",
-                        secondText: Valores.DIF.toStringAsFixed(2),
+                        secondText: Gas.Gasometricos.DIF.toStringAsFixed(2),
                         thirdText: "",
                       ),
                       CrossLine(),
                       ValuePanel(
                         firstText: "Efecto Buffer",
-                        secondText: Valores.EBvGilFix.toStringAsFixed(2),
+                        secondText: Gas.Gasometricos.EBvGilFix.toStringAsFixed(2),
                         thirdText: "",
                       ),
                       ValuePanel(
                         firstText: "Dif. Anionica",
-                        secondText: Valores.DA.toStringAsFixed(2),
+                        secondText: Gas.Gasometricos.DA.toStringAsFixed(2),
                         thirdText: "",
                       ),
                       ValuePanel(
                         firstText: "Verdaero Déf Base",
-                        secondText: Valores.VDb.toStringAsFixed(2),
+                        secondText: Gas.Gasometricos.VDb.toStringAsFixed(2),
                         thirdText: "",
                       ),
                       ValuePanel(
                         firstText: "[H+]",
-                        secondText: Valores.H.toStringAsFixed(2),
+                        secondText: Gas.Gasometricos.H.toStringAsFixed(2),
                         thirdText: "",
                       ),
                       CrossLine(),
                       ValuePanel(
                         firstText: "pH[]",
-                        secondText: Valores.PH.toStringAsFixed(2),
+                        secondText: Gas.Gasometricos.PH.toStringAsFixed(2),
                         thirdText: "",
                       ),
                       CrossLine(),
@@ -355,17 +357,17 @@ class _GasometricosState extends State<Gasometricos> {
                     children: [
                       ValuePanel(
                         firstText: "1ra HCO3-",
-                        secondText: Valores.HCOR_a.toString(),
+                        secondText: Gas.Gasometricos.HCOR_a.toString(),
                         thirdText: "",
                       ),
                       ValuePanel(
                         firstText: "2da HCO3-",
-                        secondText: Valores.HCOR_b.toStringAsFixed(2),
+                        secondText: Gas.Gasometricos.HCOR_b.toStringAsFixed(2),
                         thirdText: "",
                       ),
                       ValuePanel(
                         firstText: "3ra HCO3-",
-                        secondText: Valores.HCOR_c.toStringAsFixed(2),
+                        secondText: Gas.Gasometricos.HCOR_c.toStringAsFixed(2),
                         thirdText: "mEq/L",
                       ),
                       CrossLine(),
@@ -374,24 +376,24 @@ class _GasometricosState extends State<Gasometricos> {
                       ValuePanel(
                         firstText: "Def. HCO3-",
                         secondText:
-                            Valores.deficitBicarbonato.toStringAsFixed(2),
+                        Gas.Gasometricos.deficitBicarbonato.toStringAsFixed(2),
                         thirdText: "mEq/L",
                       ),
                       CrossLine(),
                       ValuePanel(
                         firstText: "Def. HCO3- (Astrup)",
-                        secondText: Valores.HCOAM.toStringAsFixed(2),
+                        secondText: Gas.Gasometricos.HCOAM.toStringAsFixed(2),
                         thirdText: "mEq/L",
                       ),
                       ValuePanel(
                         firstText: "Rep. HCO3-",
-                        secondText: Valores.VHCOAM.toStringAsFixed(2),
+                        secondText: Gas.Gasometricos.VHCOAM.toStringAsFixed(2),
                         thirdText: "mEq/L",
                       ),
                       CrossLine(),
                       ValuePanel(
                         firstText: "No. Amp. HCO3-",
-                        secondText: Valores.NOAMP.toStringAsFixed(0),
+                        secondText: Gas.Gasometricos.NOAMP.toStringAsFixed(0),
                         thirdText: "amp al 7.5%",
                       ),
                     ],
@@ -407,7 +409,7 @@ class _GasometricosState extends State<Gasometricos> {
             labelButton: "Copiar en Portapapeles",
             onPress: () {
               Datos.portapapeles(
-                  context: context, text: Formatos.gasometricos);
+                  context: context, text: Gas.Gasometricos.gasometricos);
             },
           ),
         ),

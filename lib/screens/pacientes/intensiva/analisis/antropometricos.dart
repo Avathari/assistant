@@ -1,4 +1,5 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandButton.dart';
@@ -154,11 +155,11 @@ class _AntropometricosState extends State<Antropometricos> {
                       children: [
                         ShowText(
                           title: 'I.M.C.',
-                          data: Valores.imc,
+                          data: Antropometrias.imc,
                           medida: 'Kg/m2',
                         ),
                         TittlePanel(
-                            textPanel: "Clase I.M.C. ${(Valores.claseIMC)}"),
+                            textPanel: "Clase I.M.C. ${(Antropometrias.claseIMC)}"),
                       ],
                     ),
                   ),
@@ -167,27 +168,27 @@ class _AntropometricosState extends State<Antropometricos> {
                     child: Column(children: [
                       ShowText(
                         title: 'Peso Predicho',
-                        data: Valores.pesoCorporalPredicho,
+                        data: Antropometrias.pesoCorporalPredicho,
                         medida: 'Kg',
                       ),
                       ShowText(
                         title: 'P.C.I. (Máximo)',
-                        data: Valores.PCIM,
+                        data: Antropometrias.PCIM,
                         medida: 'Kg',
                       ),
                       ShowText(
                         title: 'P.C.I. (Broca)',
-                        data: Valores.PCIB,
+                        data: Antropometrias.PCIB,
                         medida: 'Kg',
                       ),
                       ShowText(
                         title: 'P.C.I. (Lorentz)',
-                        data: Valores.PCIL,
+                        data: Antropometrias.PCIL,
                         medida: 'Kg',
                       ),
                       ShowText(
                         title: 'P.C.I. (West)',
-                        data: Valores.PCIW,
+                        data: Antropometrias.PCIW,
                         medida: 'Kg',
                       ),
                     ]),
@@ -197,22 +198,22 @@ class _AntropometricosState extends State<Antropometricos> {
                     child: Column(children: [
                       ShowText(
                         title: 'Sup. Corporal',
-                        data: Valores.SC,
+                        data: Antropometrias.SC,
                         medida: 'm2',
                       ),
                       ShowText(
                         title: 'Sup. Corporal Simp.',
-                        data: Valores.SCS,
+                        data: Antropometrias.SCS,
                         medida: 'm2',
                       ),
                       ShowText(
                         title: 'Sup. Corporal para Edad',
-                        data: Valores.SCE,
+                        data: Antropometrias.SCE,
                         medida: 'm2',
                       ),
                       ShowText(
                         title: 'Sup. Corporal (Haycock)',
-                        data: Valores.SCH,
+                        data: Antropometrias.SCH,
                         medida: 'm2',
                       ),
                     ]),
@@ -222,22 +223,22 @@ class _AntropometricosState extends State<Antropometricos> {
                     child: Column(children: [
                       ShowText(
                         title: 'Exceso Peso Corporal',
-                        data: Valores.excesoPesoCorporal,
+                        data: Antropometrias.excesoPesoCorporal,
                         medida: 'Kg',
                       ),
                       ShowText(
                         title: 'Peso Corporal Ajustado',
-                        data: Valores.pesoCorporalAjustado,
+                        data: Antropometrias.pesoCorporalAjustado,
                         medida: 'Kg',
                       ),
                       ShowText(
                         title: 'P.C.A. (IMC 25)',
-                        data: Valores.PCB_25,
+                        data: Antropometrias.PCB_25,
                         medida: 'Kg',
                       ),
                       ShowText(
                         title: 'P.C.A. (IMC 30)',
-                        data: Valores.PCB_30,
+                        data: Antropometrias.PCB_30,
                         medida: 'Kg',
                       ),
                     ]),
@@ -247,22 +248,22 @@ class _AntropometricosState extends State<Antropometricos> {
                     child: Column(children: [
                       ShowText(
                         title: 'Grasa Corporal',
-                        data: Valores.grasaCorporalEsencial,
+                        data: Antropometrias.grasaCorporalEsencial,
                         medida: '%',
                       ),
                       ShowText(
                         title: 'Grasa Corporal Esencial',
-                        data: Valores.grasaCorporalEsencial,
+                        data: Antropometrias.grasaCorporalEsencial,
                         medida: '%',
                       ),
                       ShowText(
                         title: 'Peso Magro',
-                        data: Valores.masaMuscularMagra,
+                        data: Antropometrias.masaMuscularMagra,
                         medida: 'Kg',
                       ),
                       ShowText(
                         title: 'Indice Cintura - Cadera',
-                        data: Valores.indiceCinturaCadera,
+                        data: Antropometrias.indiceCinturaCadera,
                         medida: '',
                       ),
                     ]),
@@ -272,17 +273,17 @@ class _AntropometricosState extends State<Antropometricos> {
                     child: Column(children: [
                       ShowText(
                         title: 'P. Muscular Mesobraquial',
-                        data: Valores.perimetroMesobraquial,
+                        data: Antropometrias.perimetroMesobraquial,
                         medida: 'cm',
                       ),
                       ShowText(
                         title: 'A. Muscular Mesobraquial',
-                        data: Valores.areaMesobraquial,
+                        data: Antropometrias.areaMesobraquial,
                         medida: 'cm2',
                       ),
                       ShowText(
                         title: 'A. Adiposa Mesobraquial',
-                        data: Valores.areaAdiposaMesobraquial,
+                        data: Antropometrias.areaAdiposaMesobraquial,
                         medida: 'cm2',
                       ),
                     ]),
@@ -301,7 +302,7 @@ class _AntropometricosState extends State<Antropometricos> {
             labelButton: "Copiar en Portapapeles",
             onPress: () {
               Datos.portapapeles(
-                  context: context, text: Valorados.antropometricos(isAbreviado: false));
+                  context: context, text: Antropometrias.antropometricos(isAbreviado: false));
             },
           ),
         ),

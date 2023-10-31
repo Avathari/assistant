@@ -313,7 +313,7 @@ class _SituacionesHospitalizacionState
               onChangeValue: (value) {
                 setState(() {
                   dispositivoOxigenoValue = value;
-                  Valores.dispositivoOxigeno = value;
+                  Exploracion.dispositivoOxigeno = value;
                 });
               },
               items: Items.dispositivosOxigeno,
@@ -326,10 +326,10 @@ class _SituacionesHospitalizacionState
                     tittle: 'Cáteter Venoso Periférico',
                     onChangeValue: (value) {
                       setState(() {
-                        Valores.isCateterPeriferico = value;
+                        Exploracion.isCateterPeriferico = value;
                       });
                     },
-                    isSwitched: Valores.isCateterPeriferico),
+                    isSwitched: Exploracion.isCateterPeriferico),
               ),
               Expanded(
                 child: EditTextArea(
@@ -359,10 +359,10 @@ class _SituacionesHospitalizacionState
                   tittle: 'Cáteter Largo Periférico',
                   onChangeValue: (value) {
                     setState(() {
-                      Valores.isCateterLargoPeriferico = value;
+                      Exploracion.isCateterLargoPeriferico = value;
                     });
                   },
-                  isSwitched: Valores.isCateterLargoPeriferico,
+                  isSwitched: Exploracion.isCateterLargoPeriferico,
                 ),
               ),
               Expanded(
@@ -393,11 +393,11 @@ class _SituacionesHospitalizacionState
                     tittle: 'Cáteter Venoso Central',
                     onChangeValue: (value) {
                       setState(() {
-                        Valores.isCateterVenosoCentral = value;
-                        Valores.isCateterVenosoCentral = value;
+                        Exploracion.isCateterVenosoCentral = value;
+                        Exploracion.isCateterVenosoCentral = value;
                       });
                     },
-                    isSwitched: Valores.isCateterVenosoCentral),
+                    isSwitched: Exploracion.isCateterVenosoCentral),
               ),
               Expanded(
                 child: EditTextArea(
@@ -427,11 +427,11 @@ class _SituacionesHospitalizacionState
                     tittle: 'Sonda Orogástrica',
                     onChangeValue: (value) {
                       setState(() {
-                        Valores.isSondaOrogastrica = value;
-                        Valores.isSondaOrogastrica = value;
+                        Exploracion.isSondaOrogastrica = value;
+                        Exploracion.isSondaOrogastrica = value;
                       });
                     },
-                    isSwitched: Valores.isSondaOrogastrica),
+                    isSwitched: Exploracion.isSondaOrogastrica),
               ),
               Expanded(
                 child: EditTextArea(
@@ -461,11 +461,11 @@ class _SituacionesHospitalizacionState
                   tittle: 'Sonda Nasogástrica',
                   onChangeValue: (value) {
                     setState(() {
-                      Valores.isSondaNasogastrica = value;
-                      Valores.isSondaNasogastrica = value;
+                      Exploracion.isSondaNasogastrica = value;
+                      Exploracion.isSondaNasogastrica = value;
                     });
                   },
-                  isSwitched: Valores.isSondaNasogastrica,
+                  isSwitched: Exploracion.isSondaNasogastrica,
                 ),
               ),
               Expanded(
@@ -496,11 +496,11 @@ class _SituacionesHospitalizacionState
                     tittle: 'Cáteter Hemodiálisis',
                     onChangeValue: (value) {
                       setState(() {
-                        Valores.isCateterHemodialisis = value;
-                        Valores.isCateterHemodialisis = value;
+                        Exploracion.isCateterHemodialisis = value;
+                        Exploracion.isCateterHemodialisis = value;
                       });
                     },
-                    isSwitched: Valores.isCateterHemodialisis),
+                    isSwitched: Exploracion.isCateterHemodialisis),
               ),
               Expanded(
                 child: EditTextArea(
@@ -530,11 +530,11 @@ class _SituacionesHospitalizacionState
                     tittle: 'Sonda Foley',
                     onChangeValue: (value) {
                       setState(() {
-                        Valores.isSondaFoley = value;
-                        Valores.isSondaFoley = value;
+                        Exploracion.isSondaFoley = value;
+                        Exploracion.isSondaFoley = value;
                       });
                     },
-                    isSwitched: Valores.isSondaFoley),
+                    isSwitched: Exploracion.isSondaFoley),
               ),
               Expanded(
                 child: EditTextArea(
@@ -564,11 +564,11 @@ class _SituacionesHospitalizacionState
                     tittle: 'Drenaje Penrose',
                     onChangeValue: (value) {
                       setState(() {
-                        Valores.isDrenajePenrose = value;
-                        Valores.isDrenajePenros = value;
+                        Exploracion.isDrenajePenrose = value;
+                        Exploracion.isDrenajePenros = value;
                       });
                     },
-                    isSwitched: Valores.isDrenajePenrose),
+                    isSwitched: Exploracion.isDrenajePenrose),
               ),
               Expanded(
                 child: EditTextArea(
@@ -598,11 +598,11 @@ class _SituacionesHospitalizacionState
                   tittle: 'Sello Pleural',
                   onChangeValue: (value) {
                     setState(() {
-                      Valores.isPleuroVac = value;
-                      Valores.isPleuroVac = value;
+                      Exploracion.isPleuroVac = value;
+                      Exploracion.isPleuroVac = value;
                     });
                   },
-                  isSwitched: Valores.isPleuroVac,
+                  isSwitched: Exploracion.isPleuroVac,
                 ),
               ),
               Expanded(
@@ -633,11 +633,11 @@ class _SituacionesHospitalizacionState
                     tittle: 'Colostomía',
                     onChangeValue: (value) {
                       setState(() {
-                        Valores.isColostomia = value;
-                        Valores.isColostomia = value;
+                        Exploracion.isColostomia = value;
+                        Exploracion.isColostomia = value;
                       });
                     },
-                    isSwitched: Valores.isColostomia),
+                    isSwitched: Exploracion.isColostomia),
               ),
               Expanded(
                 child: EditTextArea(
@@ -667,10 +667,10 @@ class _SituacionesHospitalizacionState
                   tittle: 'Gaastrostomia',
                   onChangeValue: (value) {
                     setState(() {
-                      Valores.isGastrostomia = value;
+                      Exploracion.isGastrostomia = value;
                     });
                   },
-                  isSwitched: Valores.isGastrostomia,
+                  isSwitched: Exploracion.isGastrostomia,
                 ),
               ),
               Expanded(
@@ -701,10 +701,10 @@ class _SituacionesHospitalizacionState
                     tittle: 'Diálisis Peritoneal',
                     onChangeValue: (value) {
                       setState(() {
-                        Valores.isDialisisPeritoneal = value;
+                        Exploracion.isDialisisPeritoneal = value;
                       });
                     },
-                    isSwitched: Valores.isDialisisPeritoneal),
+                    isSwitched: Exploracion.isDialisisPeritoneal),
               ),
               Expanded(
                 child: EditTextArea(
@@ -734,44 +734,10 @@ class _SituacionesHospitalizacionState
                   tittle: 'Cáteter Largo Periférico',
                   onChangeValue: (value) {
                     setState(() {
-                      Valores.isCateterLargoPeriferico = value;
+                      Exploracion.isCateterLargoPeriferico = value;
                     });
                   },
-                  isSwitched: Valores.isCateterLargoPeriferico,
-                ),
-              ),
-              Expanded(
-                child: EditTextArea(
-                  labelEditText: 'Fecha de colocación',
-                  keyBoardType: TextInputType.number,
-                  numOfLines: 1,
-                  inputFormat: MaskTextInputFormatter(
-                      mask: '####/##/##',
-                      filter: {"#": RegExp(r'[0-9]')},
-                      type: MaskAutoCompletionType.lazy),
-                  textController: fechaCVPTextController,
-                  iconColor: Colors.white,
-                  withShowOption: true,
-                  selection: true,
-                  onSelected: () {
-                    fechaCVPTextController.text =
-                        Calendarios.today(format: 'yyyy-MM-dd');
-                  },
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Switched(
-                  tittle: 'Cáteter Largo Periférico',
-                  onChangeValue: (value) {
-                    setState(() {
-                      Valores.isCateterLargoPeriferico = value;
-                    });
-                  },
-                  isSwitched: Valores.isCateterLargoPeriferico,
+                  isSwitched: Exploracion.isCateterLargoPeriferico,
                 ),
               ),
               Expanded(
@@ -802,10 +768,10 @@ class _SituacionesHospitalizacionState
                   tittle: 'Cáteter Largo Periférico',
                   onChangeValue: (value) {
                     setState(() {
-                      Valores.isCateterLargoPeriferico = value;
+                      Exploracion.isCateterLargoPeriferico = value;
                     });
                   },
-                  isSwitched: Valores.isCateterLargoPeriferico,
+                  isSwitched: Exploracion.isCateterLargoPeriferico,
                 ),
               ),
               Expanded(
@@ -836,10 +802,44 @@ class _SituacionesHospitalizacionState
                   tittle: 'Cáteter Largo Periférico',
                   onChangeValue: (value) {
                     setState(() {
-                      Valores.isCateterLargoPeriferico = value;
+                      Exploracion.isCateterLargoPeriferico = value;
                     });
                   },
-                  isSwitched: Valores.isCateterLargoPeriferico,
+                  isSwitched: Exploracion.isCateterLargoPeriferico,
+                ),
+              ),
+              Expanded(
+                child: EditTextArea(
+                  labelEditText: 'Fecha de colocación',
+                  keyBoardType: TextInputType.number,
+                  numOfLines: 1,
+                  inputFormat: MaskTextInputFormatter(
+                      mask: '####/##/##',
+                      filter: {"#": RegExp(r'[0-9]')},
+                      type: MaskAutoCompletionType.lazy),
+                  textController: fechaCVPTextController,
+                  iconColor: Colors.white,
+                  withShowOption: true,
+                  selection: true,
+                  onSelected: () {
+                    fechaCVPTextController.text =
+                        Calendarios.today(format: 'yyyy-MM-dd');
+                  },
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Switched(
+                  tittle: 'Cáteter Largo Periférico',
+                  onChangeValue: (value) {
+                    setState(() {
+                      Exploracion.isCateterLargoPeriferico = value;
+                    });
+                  },
+                  isSwitched: Exploracion.isCateterLargoPeriferico,
                 ),
               ),
               Expanded(

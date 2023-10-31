@@ -1,5 +1,8 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/hidrometrias.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/metabolometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
@@ -92,25 +95,25 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
                             children: [
                               ValuePanel(
                                 firstText: 'Gasto Energético Basal',
-                                secondText: Valores.gastoEnergeticoBasal
+                                secondText: Metabolometrias.gastoEnergeticoBasal
                                     .toStringAsFixed(2),
                                 thirdText: 'kCal/Día',
                               ),
                               ValuePanel(
                                 firstText: 'Metabolismo Basal',
                                 secondText:
-                                    Valores.metabolismoBasal.toStringAsFixed(2),
+                                Metabolometrias.metabolismoBasal.toStringAsFixed(2),
                                 thirdText: 'kCal/Día',
                               ),
                               ValuePanel(
                                 firstText: 'E.T.A.',
-                                secondText: Valores.efectoTermicoAlimentos
+                                secondText: Metabolometrias.efectoTermicoAlimentos
                                     .toStringAsFixed(2),
                                 thirdText: 'kCal/Día',
                               ),
                               ValuePanel(
                                 firstText: 'Gasto Energético Total',
-                                secondText: Valores.gastoEnergeticoTotal
+                                secondText: Metabolometrias.gastoEnergeticoTotal
                                     .toStringAsFixed(2),
                                 thirdText: 'kCal/Día',
                               ),
@@ -118,7 +121,7 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
                               ValuePanel(
                                 firstText: 'Fibra Total',
                                 secondText:
-                                    Valores.fibraDietaria.toStringAsFixed(2),
+                                Metabolometrias.fibraDietaria.toStringAsFixed(2),
                                 thirdText: 'gr/Día',
                               ),
                             ],
@@ -161,7 +164,7 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
                                   Expanded(
                                     child: ValuePanel(
                                       firstText: 'Requerimiento Hídrico',
-                                      secondText: Valores.requerimientoHidrico
+                                      secondText: Hidrometrias.requerimientoHidrico
                                           .toStringAsFixed(0),
                                       thirdText: 'mL',
                                       withEditMessage: true,
@@ -176,8 +179,8 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
                                               Terminal.printSuccess(
                                                   message: "recieve $value");
                                               setState(() {
-                                                Valores.constanteRequerimientos =
-                                                    int.parse(value);
+                                                Hidrometrias.constanteRequerimientos =
+                                                    double.parse(value);
                                                 Navigator.of(context).pop();
                                               });
                                             });
@@ -187,7 +190,7 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
                                   Expanded(
                                     child: ValuePanel(
                                       firstText: 'Peso Predicho',
-                                      secondText: Valores.pesoCorporalPredicho
+                                      secondText: Antropometrias.pesoCorporalPredicho
                                           .toStringAsFixed(2),
                                       thirdText: 'Kg',
                                     ),
@@ -391,43 +394,43 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
                               ValuePanel(
                                 firstText: 'Déficit de Sodio',
                                 secondText:
-                                    Valores.deficitSodio.toStringAsFixed(0),
+                                Hidrometrias.deficitSodio.toStringAsFixed(0),
                                 thirdText: 'mEq/L',
                               ),
                               ValuePanel(
                                 firstText: 'Reposición de Sodio',
                                 secondText:
-                                    Valores.reposicionSodio.toStringAsFixed(0),
+                                Hidrometrias.reposicionSodio.toStringAsFixed(0),
                                 thirdText: 'mEq/L',
                               ),
                               ValuePanel(
                                 firstText: 'Requerimiento Basal Potasio',
-                                secondText: Valores.requerimientoBasalPotasio
+                                secondText: Hidrometrias.requerimientoBasalPotasio
                                     .toStringAsFixed(0),
                                 thirdText: 'mEq/L',
                               ),
                               ValuePanel(
                                 firstText: 'Requerimiento Potasio',
-                                secondText: Valores.requerimientoPotasio
+                                secondText: Hidrometrias.requerimientoPotasio
                                     .toStringAsFixed(0),
                                 thirdText: 'mEq/L',
                               ),
                               ValuePanel(
                                 firstText: 'Reposición Potasio',
-                                secondText: Valores.reposicionPotasio
+                                secondText: Hidrometrias.reposicionPotasio
                                     .toStringAsFixed(0),
                                 thirdText: 'mEq/L',
                               ),
                               ValuePanel(
                                 firstText: 'Delta Potasio',
                                 secondText:
-                                    Valores.deltaPotasio.toStringAsFixed(0),
+                                Hidrometrias.deltaPotasio.toStringAsFixed(0),
                                 thirdText: 'mEq/L',
                               ),
                               ValuePanel(
                                 firstText: 'pH / Potasio',
                                 secondText:
-                                    Valores.pHKalemia.toStringAsFixed(0),
+                                Hidrometrias.pHKalemia.toStringAsFixed(0),
                                 thirdText: 'mEq/L',
                               )
                             ],

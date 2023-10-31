@@ -1,4 +1,5 @@
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 
@@ -86,7 +87,7 @@ class _DetallesVitalesState extends State<DetallesVitales> {
             ThreeLabelTextAline(
               padding: 2.0,
               firstText: 'I.M.C.',
-              secondText: '${Valores.imc.toStringAsFixed(2)} Kg/m2',
+              secondText: '${Antropometrias.imc.toStringAsFixed(2)} Kg/m2',
             ),
             ThreeLabelTextAline(
               padding: 2.0,
@@ -198,7 +199,7 @@ class _DetallesVitalesState extends State<DetallesVitales> {
         ThreeLabelTextAline(
           padding: 2.0,
           firstText: 'I.M.C.',
-          secondText: '${Valores.imc.toStringAsFixed(2)} Kg/m2',
+          secondText: '${Antropometrias.imc.toStringAsFixed(2)} Kg/m2',
         ),
         ThreeLabelTextAline(
           padding: 2.0,

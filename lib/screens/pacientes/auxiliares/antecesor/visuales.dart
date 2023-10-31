@@ -570,6 +570,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
     super.dispose();
   }
 
+  // COMPONENTES ************************************
   Widget modalBottomPanel(BuildContext context) => ListView(
         padding: const EdgeInsets.all(10),
         children: [
@@ -781,16 +782,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
               )),
         ],
       );
-  // String? turnoPaciente,
-  //     statusPaciente,
-  //     numeroPaciente,
-  //     agregadoPaciente,
-  //     primerNombrePaciente,
-  //     segundoNombrePaciente,
-  //     apellidoPaternoPaciente,
-  //     apellidoMaternoPaciente,
-  //     edadPaciente;
-  // late String imgPaciente = "";
+
 }
 
 floatingWidgets(BuildContext context) {

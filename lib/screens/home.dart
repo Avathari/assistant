@@ -3,6 +3,7 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/operativity/pacientes/valores/semiologia/semiotica.dart';
 import 'package:assistant/screens/bibiliotecarios/bibliotecas.dart';
 import 'package:assistant/screens/financieros/estadisticas.dart';
 import 'package:assistant/screens/financieros/finanzas.dart';
@@ -684,11 +685,11 @@ class PacientesPanel extends StatelessWidget {
               iconData: Icons.warning_amber,
               labelButton: "",
               onPress: () {
-                // toNextScreen(context: context, screen: const GestionPacientes());
-                Operadores.alertActivity(
-                    context: context,
-                    tittle: "Error",
-                    message: "Interfaz en contrucción");
+                toNextScreen(context: context, screen: Semiotica());
+                // Operadores.alertActivity(
+                //     context: context,
+                //     tittle: "Error",
+                //     message: "Interfaz en contrucción");
               },
             ),
             HomeButton(

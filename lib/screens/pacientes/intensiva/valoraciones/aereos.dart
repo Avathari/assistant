@@ -69,12 +69,12 @@ class _AereasState extends State<Aereas> {
                           tittle: 'Movilidad Cervical',
                           onChangeValue: (value) {
                             setState(() {
-                              Valores.movilidadCervical = value;
+                              Exploracion.movilidadCervical = value;
                               reInit();
                             });
                           },
                           items: Escalas.movilidadCervical,
-                          initialValue: Valores.movilidadCervical,
+                          initialValue: Exploracion.movilidadCervical,
                         ),
                         Spinner(
                           width: isDesktop(context)
@@ -87,12 +87,12 @@ class _AereasState extends State<Aereas> {
                           tittle: 'Distancia Tiromentoniana',
                           onChangeValue: (value) {
                             setState(() {
-                              Valores.distanciaTiromentoniana = value;
+                              Exploracion.distanciaTiromentoniana = value;
                               reInit();
                             });
                           },
                           items: Escalas.distanciaTiromentoniana,
-                          initialValue: Valores.distanciaTiromentoniana,
+                          initialValue: Exploracion.distanciaTiromentoniana,
                         ),
                         Spinner(
                           width: isDesktop(context)
@@ -105,12 +105,12 @@ class _AereasState extends State<Aereas> {
                           tittle: 'Distancia Esternomentoniana',
                           onChangeValue: (value) {
                             setState(() {
-                              Valores.distanciaEsternomentoniana = value;
+                              Exploracion.distanciaEsternomentoniana = value;
                               reInit();
                             });
                           },
                           items: Escalas.distanciaEsternomentoniana,
-                          initialValue: Valores.distanciaEsternomentoniana,
+                          initialValue: Exploracion.distanciaEsternomentoniana,
                         ),
                         Spinner(
                           width: isDesktop(context)
@@ -123,12 +123,12 @@ class _AereasState extends State<Aereas> {
                           tittle: 'Apertura Mandibular',
                           onChangeValue: (value) {
                             setState(() {
-                              Valores.aperturaMandibular = value;
+                              Exploracion.aperturaMandibular = value;
                               reInit();
                             });
                           },
                           items: Escalas.aperturaMandibular,
-                          initialValue: Valores.aperturaMandibular,
+                          initialValue: Exploracion.aperturaMandibular,
                         ),
                         Spinner(
                           width: isDesktop(context)
@@ -141,12 +141,12 @@ class _AereasState extends State<Aereas> {
                           tittle: 'Protusión Mandibular',
                           onChangeValue: (value) {
                             setState(() {
-                              Valores.movilidadTemporoMandibular = value;
+                              Exploracion.movilidadTemporoMandibular = value;
                               reInit();
                             });
                           },
                           items: Escalas.movilidadTemporoMandibular,
-                          initialValue: Valores.movilidadTemporoMandibular,
+                          initialValue: Exploracion.movilidadTemporoMandibular,
                         ),
                         Spinner(
                           width: isDesktop(context)
@@ -159,12 +159,12 @@ class _AereasState extends State<Aereas> {
                           tittle: 'Valoración por Mallampati',
                           onChangeValue: (value) {
                             setState(() {
-                              Valores.escalaMallampati = value;
+                              Exploracion.escalaMallampati = value;
                               reInit();
                             });
                           },
                           items: Escalas.escalaMallampati,
-                          initialValue: Valores.escalaMallampati,
+                          initialValue: Exploracion.escalaMallampati,
                         ),
                         Spinner(
                           width: isDesktop(context)
@@ -177,12 +177,12 @@ class _AereasState extends State<Aereas> {
                           tittle: 'Cormack-Lahane',
                           onChangeValue: (value) {
                             setState(() {
-                              Valores.escalaCormackLahane = value;
+                              Exploracion.escalaCormackLahane = value;
                               reInit();
                             });
                           },
                           items: Escalas.escalaCormackLahane,
-                          initialValue: Valores.escalaCormackLahane,
+                          initialValue: Exploracion.escalaCormackLahane,
                         ),
                       ],
                     ),

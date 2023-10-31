@@ -255,10 +255,10 @@ class _GeneralesState extends State<Generales> {
                                   ? 170
                                   : 200,
                       items: Items.foley,
-                      initialValue: Valores.tipoSondaVesical,
+                      initialValue: Exploracion.tipoSondaVesical,
                       onChangeValue: (value) {
                         setState(() {
-                          Valores.tipoSondaVesical = value;
+                          Exploracion.tipoSondaVesical = value;
                         });
                       },
                     ),
@@ -604,7 +604,7 @@ class _GeneralesState extends State<Generales> {
         //
         isHorarioValue,
         //
-        Valores.tipoSondaVesical,
+        Exploracion.tipoSondaVesical,
         //
         idOperation
       ];
@@ -1037,10 +1037,10 @@ class _GeneralesState extends State<Generales> {
                             ? 170
                             : 200,
                 items: Items.foley,
-                initialValue: Valores.tipoSondaVesical,
+                initialValue: Exploracion.tipoSondaVesical,
                 onChangeValue: (value) {
                   setState(() {
-                    Valores.tipoSondaVesical = value;
+                    Exploracion.tipoSondaVesical = value;
                   });
                 },
               ),

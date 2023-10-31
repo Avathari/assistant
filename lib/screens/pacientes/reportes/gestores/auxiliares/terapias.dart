@@ -2,7 +2,6 @@ import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
-import 'package:assistant/widgets/CircularFloattingButton.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/Spinner.dart';
@@ -111,12 +110,12 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                 tittle: 'R.A.S.S.',
                                 onChangeValue: (value) {
                                   setState(() {
-                                    Valores.rass = value;
+                                    Exploracion.rass = value;
                                     reInit();
                                   });
                                 },
                                 items: Escalas.RASS,
-                                initialValue: Valores.rass,
+                                initialValue: Exploracion.rass,
                               ),
                             ),
                             Expanded(
@@ -131,12 +130,12 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                 tittle: 'Ramsay',
                                 onChangeValue: (value) {
                                   setState(() {
-                                    Valores.ramsay = value;
+                                    Exploracion.ramsay = value;
                                     reInit();
                                   });
                                 },
                                 items: Escalas.ramsay,
-                                initialValue: Valores.ramsay,
+                                initialValue: Exploracion.ramsay,
                               ),
                             ),
                           ],
@@ -153,12 +152,12 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           tittle: 'Sedo-analgesia',
                           onChangeValue: (value) {
                             setState(() {
-                              Valores.sedoanalgesia = value;
+                              Exploracion.sedoanalgesia = value;
                               reInit();
                             });
                           },
                           items: Items.sedacion,
-                          initialValue: Valores.sedoanalgesia,
+                          initialValue: Exploracion.sedoanalgesia,
                         ),
                         CrossLine(),
                         TittlePanel(textPanel: "Evaluación Neuromuscular"),
@@ -176,12 +175,12 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                 tittle: 'Asworth',
                                 onChangeValue: (value) {
                                   setState(() {
-                                    Valores.ashworth = value;
+                                    Exploracion.ashworth = value;
                                     reInit();
                                   });
                                 },
                                 items: Escalas.ashworth,
-                                initialValue: Valores.ashworth,
+                                initialValue: Exploracion.ashworth,
                               ),
                             ),
                             Expanded(
@@ -196,12 +195,12 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                 tittle: 'Daniels',
                                 onChangeValue: (value) {
                                   setState(() {
-                                    Valores.daniels = value;
+                                    Exploracion.daniels = value;
                                     reInit();
                                   });
                                 },
                                 items: Escalas.daniels,
-                                initialValue: Valores.daniels,
+                                initialValue: Exploracion.daniels,
                               ),
                             ),
                           ],
@@ -220,12 +219,12 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                 tittle: 'Siedel',
                                 onChangeValue: (value) {
                                   setState(() {
-                                    Valores.siedel = value;
+                                    Exploracion.siedel = value;
                                     reInit();
                                   });
                                 },
                                 items: Escalas.siedel,
-                                initialValue: Valores.siedel,
+                                initialValue: Exploracion.siedel,
                               ),
                             ),
                             Expanded(
@@ -240,12 +239,12 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                 tittle: 'M.R.C.',
                                 onChangeValue: (value) {
                                   setState(() {
-                                    Valores.mrc = value;
+                                    Exploracion.mrc = value;
                                     reInit();
                                   });
                                 },
                                 items: Escalas.MRC,
-                                initialValue: Valores.mrc,
+                                initialValue: Exploracion.mrc,
                               ),
                             ),
                           ],
@@ -270,12 +269,12 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           tittle: 'Fase ventilatoria',
                           onChangeValue: (value) {
                             setState(() {
-                              Valores.faseVentilatoria = value;
+                              Exploracion.faseVentilatoria = value;
                               reInit();
                             });
                           },
                           items: Items.ventilatorio,
-                          initialValue: Valores.faseVentilatoria,
+                          initialValue: Exploracion.faseVentilatoria,
                         ),
                         Spinner(
                           width: isDesktop(context)
@@ -288,12 +287,12 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           tittle: 'Dispositivo empleado',
                           onChangeValue: (value) {
                             setState(() {
-                              Valores.dispositivoEmpleado = value;
+                              Exploracion.dispositivoEmpleado = value;
                               reInit();
                             });
                           },
                           items: Items.dispositivosOxigeno,
-                          initialValue: Valores.dispositivoEmpleado,
+                          initialValue: Exploracion.dispositivoEmpleado,
                         ),
                         Spinner(
                           width: isDesktop(context)
@@ -306,12 +305,12 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           tittle: 'Tubo Endotraqueal',
                           onChangeValue: (value) {
                             setState(() {
-                              Valores.tuboEndotraqueal = value;
+                              Exploracion.tuboEndotraqueal = value;
                               reInit();
                             });
                           },
                           items: Items.tuboendotraqueal,
-                          initialValue: Valores.tuboEndotraqueal,
+                          initialValue: Exploracion.tuboEndotraqueal,
                         ),
                         Spinner(
                           width: isDesktop(context)
@@ -324,12 +323,12 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           tittle: 'Distancia a arcada',
                           onChangeValue: (value) {
                             setState(() {
-                              Valores.haciaArcadaDentaria = value;
+                              Exploracion.haciaArcadaDentaria = value;
                               reInit();
                             });
                           },
                           items: Items.arcadaDentaria,
-                          initialValue: Valores.haciaArcadaDentaria,
+                          initialValue: Exploracion.haciaArcadaDentaria,
                         ),
                          CrossLine(),
                       ],
@@ -351,12 +350,12 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           tittle: 'Riesgo por úlcera',
                           onChangeValue: (value) {
                             setState(() {
-                              Valores.evaluacionBraden = value;
+                              Exploracion.evaluacionBraden = value;
                               reInit();
                             });
                           },
                           items: Escalas.braden,
-                          initialValue: Valores.evaluacionBraden,
+                          initialValue: Exploracion.evaluacionBraden,
                         ),
                         Spinner(
                           width: isDesktop(context)
@@ -369,12 +368,12 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           tittle: 'Riesgo por Inmovilidad',
                           onChangeValue: (value) {
                             setState(() {
-                              Valores.evaluacionNorton = value;
+                              Exploracion.evaluacionNorton = value;
                               reInit();
                             });
                           },
                           items: Escalas.norton,
-                          initialValue: Valores.evaluacionNorton,
+                          initialValue: Exploracion.evaluacionNorton,
                         ),
                         Spinner(
                           width: isDesktop(context)
@@ -387,12 +386,12 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           tittle: 'Antibioticoterapia',
                           onChangeValue: (value) {
                             setState(() {
-                              Valores.antibioticoterapia = value;
+                              Exploracion.antibioticoterapia = value;
                               reInit();
                             });
                           },
                           items: Items.antibioticoterapia,
-                          initialValue: Valores.antibioticoterapia,
+                          initialValue: Exploracion.antibioticoterapia,
                         ),
                       ],
                     ),
@@ -413,12 +412,12 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           tittle: 'Apoyo Aminérgico',
                           onChangeValue: (value) {
                             setState(() {
-                              Valores.apoyoAminergico = value;
+                              Exploracion.apoyoAminergico = value;
                               reInit();
                             });
                           },
                           items: Items.aminergico,
-                          initialValue: Valores.apoyoAminergico,
+                          initialValue: Exploracion.apoyoAminergico,
                         ),
                         Container(
                           padding: const EdgeInsets.all(8.0),
@@ -459,12 +458,12 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           tittle: 'Dieta Establecida',
                           onChangeValue: (value) {
                             setState(() {
-                              Valores.alimentacion = value;
+                              Exploracion.alimentacion = value;
                               reInit();
                             });
                           },
                           items: Items.dieta,
-                          initialValue: Valores.alimentacion,
+                          initialValue: Exploracion.alimentacion,
                         ),
                         Row(
                           children: [
@@ -481,12 +480,12 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                 tittle: 'Sonda Oro/Nasogástrica',
                                 onChangeValue: (value) {
                                   setState(() {
-                                    Valores.tipoSondaAlimentacion = value;
+                                    Exploracion.tipoSondaAlimentacion = value;
                                     reInit();
                                   });
                                 },
                                 items: Items.orogastrico,
-                                initialValue: Valores.tipoSondaAlimentacion,
+                                initialValue: Exploracion.tipoSondaAlimentacion,
                               ),
                             ),
                             Expanded(
@@ -502,12 +501,12 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                 tittle: 'Sonda Foley',
                                 onChangeValue: (value) {
                                   setState(() {
-                                    Valores.tipoSondaVesical = value;
+                                    Exploracion.tipoSondaVesical = value;
                                     reInit();
                                   });
                                 },
                                 items: Items.foley,
-                                initialValue: Valores.tipoSondaVesical,
+                                initialValue: Exploracion.tipoSondaVesical,
                               ),
                             ),
                           ],

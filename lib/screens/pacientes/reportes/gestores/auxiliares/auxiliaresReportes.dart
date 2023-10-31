@@ -1,5 +1,7 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/metabolometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/renometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
@@ -35,8 +37,8 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
       if (widget.isPrequirurgico! == true) Reportes.analisisComplementarios = Valorados.prequirurgicos;
       if (widget.isIngreso! == true) Reportes.reportes['Auxiliares_Diagnosticos'] = Reportes.auxiliaresDiagnosticos = Auxiliares.historial(esAbreviado: true);
 
-      if (widget.isIngreso! == true) Reportes.reportes['Analisis_Complementarios'] = Reportes.analisisComplementarios = Valorados.antropometricos();
-      if (widget.isIngreso! == true) Reportes.reportes['Analisis_Complementarios'] = Reportes.analisisComplementarios + Valorados.metabolometrias;
+      if (widget.isIngreso! == true) Reportes.reportes['Analisis_Complementarios'] = Reportes.analisisComplementarios = Antropometrias.antropometricos();
+      if (widget.isIngreso! == true) Reportes.reportes['Analisis_Complementarios'] = Reportes.analisisComplementarios + Metabolometrias.metabolometrias;
       if (widget.isIngreso! == true) Reportes.reportes['Analisis_Complementarios'] = Reportes.analisisComplementarios + Renometrias.renales();
       if (widget.isIngreso! == true) Reportes.reportes['Analisis_Complementarios'] = Reportes.analisisComplementarios + Renometrias.renales();
 

@@ -56,7 +56,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         fechaRealizacionTextController.text =
             Calendarios.today(format: "yyyy/MM/dd");
         viaPerdidaTextController.text = Valores.perdidasInsensibles.toString();
-        Valores.tipoSondaVesical = Items.foley[0];
+        Exploracion.tipoSondaVesical = Items.foley[0];
         break;
       case Constantes.Update:
         setState(() {
@@ -68,7 +68,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
               Balances.Balance['Pace_bala_Fecha'];
 //
           isHorarioValue = Balances.Balance['Pace_bala_HOR'].toString();
-          Valores.tipoSondaVesical = Balances.Balance['Pace_Foley'].toString() ?? '';
+          Exploracion.tipoSondaVesical = Balances.Balance['Pace_Foley'].toString() ?? '';
 
           viaOralTextController.text =
               Balances.Balance['Pace_bala_Oral'].toString();
@@ -240,10 +240,10 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
                     ? 170
                     : 200,
                 items: Items.foley,
-                initialValue: Valores.tipoSondaVesical,
+                initialValue: Exploracion.tipoSondaVesical,
                 onChangeValue: (value) {
                   setState(() {
-                    Valores.tipoSondaVesical = value;
+                    Exploracion.tipoSondaVesical = value;
                   });
                 },
               ),
@@ -507,7 +507,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         //
         isHorarioValue,
         //
-        Valores.tipoSondaVesical,
+        Exploracion.tipoSondaVesical,
         //
         idOperation
       ];

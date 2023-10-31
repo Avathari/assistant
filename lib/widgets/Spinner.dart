@@ -31,7 +31,7 @@ class _SpinnerState extends State<Spinner> {
   Widget build(BuildContext context) {
     return Stack(children: [
       Container(
-        width: double.infinity,
+        width: double.infinity, // widget.width,
         height: 50,
         margin: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
         padding: const EdgeInsets.only(left: 10, right: 8, top: 2),

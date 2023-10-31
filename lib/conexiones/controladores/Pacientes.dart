@@ -3,9 +3,13 @@ import 'dart:async';
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteFormats/formatosReportes.dart';
 import 'package:assistant/conexiones/conexiones.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/cardiometrias.dart';
 
 import 'package:assistant/operativity/pacientes/valores/Valorados/citometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/hepatometrias.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/hidrometrias.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/metabolometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/renometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/Strings.dart';
@@ -463,7 +467,8 @@ class Pacientes {
       if (resaltado) {
         for (var element in Patologicos!) {
           if (Reportes.personalesPatologicos == "") {
-            Reportes.personalesPatologicos = "$prefix${element['Pace_APP_DEG_com'].toUpperCase()} "
+            Reportes.personalesPatologicos =
+                "$prefix${element['Pace_APP_DEG_com'].toUpperCase()} "
                 "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
                 "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
                 "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
@@ -475,17 +480,17 @@ class Pacientes {
                 "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
           }
         }
-      }
-      else {
+      } else {
         for (var element in Patologicos!) {
           if (Reportes.personalesPatologicos == "") {
-            Reportes.personalesPatologicos = "$prefix${element['Pace_APP_DEG_com']} "
+            Reportes.personalesPatologicos =
+                "$prefix${element['Pace_APP_DEG_com']} "
                 "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
                 "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
                 "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
           } else {
             Reportes.personalesPatologicos =
-            "${Reportes.personalesPatologicos}. \n$prefix${element['Pace_APP_DEG_com']} "
+                "${Reportes.personalesPatologicos}. \n$prefix${element['Pace_APP_DEG_com']} "
                 "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
                 "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
                 "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
@@ -518,20 +523,20 @@ class Pacientes {
   static String signosVitales({int? indice = 0}) {
     switch (indice) {
       case 0:
-        return Valorados.vitales;
+        return Antropometrias.vitales;
       case 1:
-        return Valorados.signosVitales;
+        return Antropometrias.signosVitales;
       case 2:
-        return Valorados.bioconstantes;
+        return Antropometrias.bioconstantes;
       case 3:
-        return Valorados.antropometricos();
+        return Antropometrias.antropometricos();
       case 4:
         // return "Asociados a riesgo";
-        return Valorados.asociadosRiesgo;
+        return Antropometrias.asociadosRiesgo;
       case 5:
         return "Antropometría infantil";
       case 6:
-        return Valorados.vitalesAbreviado;
+        return Antropometrias.vitalesAbreviado;
       default:
         return "Signos vitales registrados";
     }
@@ -575,19 +580,19 @@ class Pacientes {
   static String analisisComplementarios({int? indice = 0}) {
     switch (indice) {
       case 1:
-        return Valorados.antropometricos(); // Antropométricos
+        return Antropometrias.antropometricos(); // Antropométricos
       case 2:
-        return Valorados.metabolometrias; // Metabólicos
+        return Metabolometrias.metabolometrias; // Metabólicos
       case 3:
-        return Valorados.cardiovasculares; // Cardiovasculares
+        return Cardiometrias.cardiovasculares; // Cardiovasculares
       case 4:
-        return Valorados.hidricos; // Hídricos
+        return Hidrometrias.hidricos; // Hídricos
       case 5:
         return Hepatometrias.hepaticos();
-        // return "Análisis $indice"; // Hepáticos
+      // return "Análisis $indice"; // Hepáticos
       case 6:
         return Citometrias.hematicos();
-          // "Análisis $indice"; // Hemáticos
+      // "Análisis $indice"; // Hemáticos
       case 7:
         return Renometrias.renales(); // Renales
       case 8:
@@ -4825,19 +4830,18 @@ class Vitales {
       Vitales.fromJson(value);
     }).onError((error, stackTrace) {
       Actividades.consultarId(Databases.siteground_database_regpace,
-          Vitales.vitales['consultLastQuery'], Pacientes.ID_Paciente)
+              Vitales.vitales['consultLastQuery'], Pacientes.ID_Paciente)
           .then((value) {
         Pacientes.Vital = value;
         Actividades.consultarId(Databases.siteground_database_regpace,
-            Vitales.antropo['consultLastQuery'], Pacientes.ID_Paciente)
+                Vitales.antropo['consultLastQuery'], Pacientes.ID_Paciente)
             .then((value) {
           Pacientes.Vital.addAll(value);
           //
-          Vitales.fromJson(Pacientes.Vital[Pacientes.Vital.length-1]);
+          Vitales.fromJson(Pacientes.Vital[Pacientes.Vital.length - 1]);
         });
       });
     });
-
   }
 
   static void registros() {
@@ -6123,7 +6127,7 @@ class Auxiliares {
       "Eosinófilos Totales",
       "Basófilos Totales",
       "Bandas Totales"
-      "Volumen Plaquetar Medio",
+          "Volumen Plaquetar Medio",
       "Ancho de Distribución Plaquetaria", // 17
       "Reticulocitos",
       "",
@@ -6607,7 +6611,7 @@ class Auxiliares {
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Tiempo de Protrombina' ORDER BY Fecha_Registro DESC limit 1) as Tiempo_Protrombina,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Tiempo Parcial de Tromboplastina' ORDER BY Fecha_Registro DESC limit 1) as TP_Tromboplastina,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'INR' ORDER BY Fecha_Registro DESC limit 1) as Normalized_Ratio,"
-    //
+        //
         "(SELECT Fecha_Registro FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Química Sanguínea' ORDER BY Fecha_Registro DESC limit 1) as Fecha_Registro_Quimicas,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Glucosa' ORDER BY Fecha_Registro DESC limit 1) as Glucosa,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Urea' ORDER BY Fecha_Registro DESC limit 1) as Urea,"
@@ -7009,13 +7013,13 @@ class Reportes {
   static String motivoConsulta = "",
       subjetivoHospitalizacion =
           // "El paciente se refiere ${Valores.estadoGeneral}. "
-          "${Valores.referenciasHospitalizacion}. "
-          "${Sentences.capitalize(Valores.estadoGeneral)}, "
-          "${Valores.oxigenSuplementario}. "
-          "${Valores.viaOral}, "
-          "Uresis con frecuencia ${Valores.uresisCantidad}, "
-          "excretas con frecuencia ${Valores.excretasCantidad}. "
-          "bristo ${Valores.excretasBristol}. ";
+          "${Exploracion.referenciasHospitalizacion}. "
+          "${Sentences.capitalize(Exploracion.estadoGeneral)}, "
+          "${Exploracion.oxigenSuplementario}. "
+          "${Exploracion.viaOral}, "
+          "Uresis con frecuencia ${Exploracion.uresisCantidad}, "
+          "excretas con frecuencia ${Exploracion.excretasCantidad}. "
+          "bristol ${Exploracion.excretasBristol}. ";
   // "Sin rerencias particulares del paciente durante la hospitalización";
   //
   static String procedimientoRealizado = "", bibliografias = "";
@@ -7334,7 +7338,7 @@ class Balances {
     Valores.otrosEgresosBalances =
         double.parse(json['Pace_bala_ENG'].toString() ?? '0');
 
-    Valores.tipoSondaVesical = json['Pace_Foley'] ?? '';
+    Exploracion.tipoSondaVesical = json['Pace_Foley'] ?? '';
 
     Valores.horario = json['Pace_bala_HOR'];
     Valores.uresis = double.parse(json['Pace_bala_Uresis'].toString() ?? '0');
@@ -8154,19 +8158,19 @@ class Situaciones {
         Pacientes.ID_Paciente,
         Pacientes.ID_Hospitalizacion,
         'Hosp_Siti',
-        Valores.dispositivoOxigeno,
-        Dicotomicos.fromBoolean(Valores.isCateterPeriferico!, toInt: true),
-        Dicotomicos.fromBoolean(Valores.isCateterLargoPeriferico!, toInt: true),
-        Dicotomicos.fromBoolean(Valores.isCateterVenosoCentral!, toInt: true),
-        Dicotomicos.fromBoolean(Valores.isCateterHemodialisis!, toInt: true),
-        Dicotomicos.fromBoolean(Valores.isSondaFoley!, toInt: true),
-        Dicotomicos.fromBoolean(Valores.isSondaNasogastrica!, toInt: true),
-        Dicotomicos.fromBoolean(Valores.isSondaOrogastrica!, toInt: true),
-        Dicotomicos.fromBoolean(Valores.isDrenajePenrose!, toInt: true),
-        Dicotomicos.fromBoolean(Valores.isPleuroVac!, toInt: true),
-        Dicotomicos.fromBoolean(Valores.isColostomia!, toInt: true),
-        Dicotomicos.fromBoolean(Valores.isGastrostomia!, toInt: true),
-        Dicotomicos.fromBoolean(Valores.isDialisisPeritoneal!, toInt: true),
+        Exploracion.dispositivoOxigeno,
+        Dicotomicos.fromBoolean(Exploracion.isCateterPeriferico!, toInt: true),
+        Dicotomicos.fromBoolean(Exploracion.isCateterLargoPeriferico!, toInt: true),
+        Dicotomicos.fromBoolean(Exploracion.isCateterVenosoCentral!, toInt: true),
+        Dicotomicos.fromBoolean(Exploracion.isCateterHemodialisis!, toInt: true),
+        Dicotomicos.fromBoolean(Exploracion.isSondaFoley!, toInt: true),
+        Dicotomicos.fromBoolean(Exploracion.isSondaNasogastrica!, toInt: true),
+        Dicotomicos.fromBoolean(Exploracion.isSondaOrogastrica!, toInt: true),
+        Dicotomicos.fromBoolean(Exploracion.isDrenajePenrose!, toInt: true),
+        Dicotomicos.fromBoolean(Exploracion.isPleuroVac!, toInt: true),
+        Dicotomicos.fromBoolean(Exploracion.isColostomia!, toInt: true),
+        Dicotomicos.fromBoolean(Exploracion.isGastrostomia!, toInt: true),
+        Dicotomicos.fromBoolean(Exploracion.isDialisisPeritoneal!, toInt: true),
         Pacientes.ID_Hospitalizacion,
       ],
       Pacientes.ID_Paciente,
@@ -8182,7 +8186,7 @@ class Situaciones {
         Pacientes.ID_Paciente,
         Pacientes.ID_Hospitalizacion,
         'Hosp_Siti',
-        Valores.dispositivoOxigeno,
+        Exploracion.dispositivoOxigeno,
         false,
         false,
         false,

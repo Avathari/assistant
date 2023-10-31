@@ -307,11 +307,11 @@ class _PrequirurgicosState extends State<Prequirurgicos> {
                       tittle: 'Valoración A.S.A.',
                       onChangeValue: (value) {
                         setState(() {
-                          Valores.valoracionAsa = value;
+                          Exploracion.valoracionAsa = value;
                         });
                       },
                       items: Escalas.asa,
-                      initialValue: Valores.valoracionAsa,
+                      initialValue: Exploracion.valoracionAsa,
                     ),
                     CrossLine(),
                     EditTextArea(
@@ -344,22 +344,22 @@ class _PrequirurgicosState extends State<Prequirurgicos> {
                       tittle: 'Valoración Bromage',
                       onChangeValue: (value) {
                         setState(() {
-                          Valores.valoracionBromage = value;
+                          Exploracion.valoracionBromage = value;
                         });
                       },
                       items: Escalas.bromage,
-                      initialValue: Valores.valoracionBromage,
+                      initialValue: Exploracion.valoracionBromage,
                     ),
                     Spinner(
                       width: isDesktop(context) || isTablet(context) ? 400 : 216,
                       tittle: 'Valoración N.Y.H.A.',
                       onChangeValue: (value) {
                         setState(() {
-                          Valores.valoracionNyha = value;
+                          Exploracion.valoracionNyha = value;
                         });
                       },
                       items: Escalas.nyha,
-                      initialValue: Valores.valoracionNyha,
+                      initialValue: Exploracion.valoracionNyha,
                     ),
                   ],
                 ),

@@ -1,11 +1,14 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/cardiometrias.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
-import 'package:assistant/widgets/ValuePanel.dart';
+
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -140,7 +143,7 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                             ),
                             ValuePanel(
                               firstText: "Superficie Corporal",
-                              secondText: Valores.SCE.toStringAsFixed(2),
+                              secondText: Antropometrias.SCE.toStringAsFixed(2),
                               thirdText: "m2",
                             ),
                             ValuePanel(
@@ -157,7 +160,7 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                             ),
                             ValuePanel(
                               firstText: 'P.A.M.',
-                              secondText: Valores.presionArterialMedia.toStringAsFixed(0),
+                              secondText: Cardiometrias.presionArterialMedia.toStringAsFixed(0),
                               thirdText: 'mmHg',
                             ),
                             ValuePanel(
@@ -284,17 +287,17 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                       children: [
                         ValuePanel(
                           firstText: 'PiO2',
-                          secondText: Valores.PIO.toStringAsFixed(2),
+                          secondText: Gasometricos.PIO.toStringAsFixed(2),
                           thirdText: 'mmHg',
                         ),
                         ValuePanel(
                             firstText: 'PAO2',
-                            secondText: Valores.PAO.toStringAsFixed(2),
+                            secondText: Gasometricos.PAO.toStringAsFixed(2),
                             thirdText: 'mmHg',
                         ),
                         ValuePanel(
                           firstText: 'GA-a O2',
-                          secondText: Valores.GAA.toStringAsFixed(2),
+                          secondText: Gasometricos.GAA.toStringAsFixed(2),
                           thirdText: 'mmHg',
                         ),
                         ValuePanel(
@@ -330,7 +333,7 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                         ),
                         ValuePanel(
                           firstText: 'I. V/P (Kirby)', // Shunt Arterio-venoso
-                          secondText: Valores.PAFI.toStringAsFixed(0),
+                          secondText: Gasometricos.PAFI.toStringAsFixed(0),
                         ),
                         ValuePanel(
                           firstText: '% Extracción Oxígeno',
@@ -355,7 +358,7 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                       children: [
                         ValuePanel(
                           firstText: 'Gasto Cardiaco (Fick)',
-                          secondText: Valores.gastoCardiacoFick.toStringAsFixed(2),
+                          secondText: Cardiometrias.gastoCardiacoFick.toStringAsFixed(2),
                           thirdText: 'Lt/min',
                         ),
                         ValuePanel(
@@ -386,12 +389,12 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                         ),
                         ValuePanel(
                           firstText: 'TLVI',
-                          secondText: Valores.TLVI.toStringAsFixed(2),
+                          secondText: Cardiometrias.TLVI.toStringAsFixed(2),
                           thirdText: 'g/Lat/m2',
                         ),
                         ValuePanel(
                           firstText: 'I. TLVI',
-                          secondText: Valores.iTLVI.toStringAsFixed(2),
+                          secondText: Cardiometrias.iTLVI.toStringAsFixed(2),
                           thirdText: 'g/Lat/m2',
                         ),
 
@@ -414,7 +417,7 @@ class _CardiovascularesState extends State<Cardiovasculares> {
 
                         ValuePanel(
                           firstText: 'P. Fcard-TA',
-                          secondText: Valores.productoFrecuenciaPresion
+                          secondText: Cardiometrias.productoFrecuenciaPresion
                               .toStringAsFixed(2),
                           thirdText: 'mmHg',
                         ),
@@ -534,7 +537,7 @@ class _CardiovascularesState extends State<Cardiovasculares> {
             labelButton: "Copiar en Portapapeles",
             onPress: () {
               Datos.portapapeles(
-                  context: context, text: Valorados.cardiovasculares);
+                  context: context, text: Cardiometrias.cardiovasculares);
             },
           ),
         ),

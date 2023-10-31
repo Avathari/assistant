@@ -59,8 +59,8 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         fechaRealizacionTextController.text =
             Calendarios.today(format: 'yyyy-MM-dd');
 
-        Valores.tuboEndotraqueal = Items.tuboendotraqueal[0];
-        Valores.haciaArcadaDentaria =  Items.arcadaDentaria[0];
+        Exploracion.tuboEndotraqueal = Items.tuboendotraqueal[0];
+        Exploracion.haciaArcadaDentaria =  Items.arcadaDentaria[0];
 
         sensInspTextController.text = '1';
         sensEspTextController.text = '2';
@@ -78,8 +78,8 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
               Ventilaciones.Ventilacion['VM_Mod'].toString();
           Valores.modalidadVentilatoria = Ventilaciones.modoVentilatorio(modalidadVentilatoria: modoVentilatorioValue!);
           //
-          Valores.tuboEndotraqueal = Ventilaciones.Ventilacion['Pace_TET'].toString();
-          Valores.haciaArcadaDentaria = Ventilaciones.Ventilacion['Pace_DAC'].toString();
+          Exploracion.tuboEndotraqueal = Ventilaciones.Ventilacion['Pace_TET'].toString();
+          Exploracion.haciaArcadaDentaria = Ventilaciones.Ventilacion['Pace_DAC'].toString();
           //
           //
           volTidalTextController.text =
@@ -223,11 +223,11 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                 tittle: 'Fase ventilatoria',
                 onChangeValue: (value) {
                   setState(() {
-                    Valores.faseVentilatoria = value;
+                    Exploracion.faseVentilatoria = value;
                   });
                 },
                 items: Items.ventilatorio,
-                initialValue: Valores.faseVentilatoria,
+                initialValue: Exploracion.faseVentilatoria,
               ),
             ),
 
@@ -280,12 +280,12 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                 tittle: 'Tubo Endotraqueal',
                 onChangeValue: (value) {
                   setState(() {
-                    Valores.tuboEndotraqueal = value;
+                    Exploracion.tuboEndotraqueal = value;
 
                   });
                 },
                 items: Items.tuboendotraqueal,
-                initialValue: Valores.tuboEndotraqueal,
+                initialValue: Exploracion.tuboEndotraqueal,
               ),
             ),
             Expanded(
@@ -299,12 +299,12 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                 tittle: 'Distancia a arcada',
                 onChangeValue: (value) {
                   setState(() {
-                    Valores.haciaArcadaDentaria = value;
+                    Exploracion.haciaArcadaDentaria = value;
 
                   });
                 },
                 items: Items.arcadaDentaria,
-                initialValue: Valores.haciaArcadaDentaria,
+                initialValue: Exploracion.haciaArcadaDentaria,
               ),
             ),
           ],)),
@@ -392,11 +392,11 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                 tittle: 'Fase ventilatoria',
                 onChangeValue: (value) {
                   setState(() {
-                    Valores.faseVentilatoria = value;
+                    Exploracion.faseVentilatoria = value;
                   });
                 },
                 items: Items.ventilatorio,
-                initialValue: Valores.faseVentilatoria,
+                initialValue: Exploracion.faseVentilatoria,
               ),
             ),
           ],)),
@@ -435,11 +435,11 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                 tittle: 'TET',
                 onChangeValue: (value) {
                   setState(() {
-                    Valores.tuboEndotraqueal = value;
+                    Exploracion.tuboEndotraqueal = value;
                   });
                 },
                 items: Items.tuboendotraqueal,
-                initialValue: Valores.tuboEndotraqueal,
+                initialValue: Exploracion.tuboEndotraqueal,
               ),
             ),
             Expanded(
@@ -453,12 +453,12 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                 tittle: 'Dis.',
                 onChangeValue: (value) {
                   setState(() {
-                    Valores.haciaArcadaDentaria = value;
+                    Exploracion.haciaArcadaDentaria = value;
 
                   });
                 },
                 items: Items.arcadaDentaria,
-                initialValue: Valores.haciaArcadaDentaria,
+                initialValue: Exploracion.haciaArcadaDentaria,
               ),
             ),
           ],)),
@@ -811,8 +811,8 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         //
         modoVentilatorioValue,
         //
-        Valores.tuboEndotraqueal,
-        Valores.haciaArcadaDentaria,
+        Exploracion.tuboEndotraqueal,
+        Exploracion.haciaArcadaDentaria,
         //
         idOperation
       ];

@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/info/info.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 
 class Hepatometrias {
@@ -11,6 +13,12 @@ class Hepatometrias {
         "TPt ${Valores.tiempoTromboplastina} seg, \n"
         "INR ${Valores.INR} seg, \n"
         "BT ${Valores.bilirrubinasTotales} mg/dL, \n"
+        "- - -  \n"
+        "Relacion BD:BT ${Hepatometrias.relacionBDBT}, considerar : ${infoHepatometrias.clusterDiagnosticos_BD_BT}"
+        "Relacion BD:BI ${Hepatometrias.relacionBDBI}, considerar : ${infoHepatometrias.clusterDiagnosticos_BD_BI}"
+        "Relacion ALT:FA ${Hepatometrias.relacionALTFA}, considerar : ${infoHepatometrias.clusterDiagnosticos_ALT_FA}"
+        "Relacion AST:ALT ${Hepatometrias.relacionASTALT}, considerar : ${infoHepatometrias.clusterDiagnosticos_AST_ALT}"
+        "Relacion GGT:FA ${Hepatometrias.relacionGGTFA}, considerar : ${infoHepatometrias.clusterDiagnosticos_GGT_FA}"
         "- - -  \n"
         "APRi ${APRI.toStringAsFixed(2)}; "
         "Fib4 ${Fib4.toStringAsFixed(2)}; "
@@ -54,6 +62,15 @@ class Hepatometrias {
     }
   }
 
+  static double get relacionGGTFA {
+    if (Valores.glutrailtranspeptidasa! != 0 &&
+        Valores.fosfatasaAlcalina! != 0) {
+      return (Valores.glutrailtranspeptidasa! / Valores.fosfatasaAlcalina!);
+    } else {
+      return double.nan;
+    }
+  }
+
   static double get factorR {
     if (Valores.aspartatoaminotransferasa! != 0 &&
         Valores.fosfatasaAlcalina! != 0) {
@@ -73,20 +90,37 @@ class Hepatometrias {
     }
   }
 
+  static double get relacionBDBT {
+    if (Valores.bilirrubinaDirecta! != 0 && Valores.bilirrubinasTotales! != 0) {
+      return (Valores.bilirrubinaDirecta! / Valores.bilirrubinasTotales!);
+    } else {
+      return double.nan;
+    }
+  }
+
+  static double get relacionBDBI {
+    if (Valores.bilirrubinaDirecta! != 0 &&
+        Valores.bilirrubinaIndirecta! != 0) {
+      return (Valores.bilirrubinaDirecta! / Valores.bilirrubinaIndirecta!);
+    } else {
+      return double.nan;
+    }
+  }
+
   static double get aniNASH {
-    // ANI = -58,5 + 0,637 (MCV) + 3,91 (AST/ALT) – 0,406 (IMC) + 6,35 para hombres
+    // ANI = -58,5 + 0,637 (MCV) + 3,91 (AST/BD) – 0,406 (IMC) + 6,35 para hombres
     if (Valores.sexo == 'Masculino') {
       return (-58.5 + (0.637 * Valores.volumenCorpuscularMedio!)) +
           (3.91 *
               (Valores.aspartatoaminotransferasa! /
                   Valores.alaninoaminotrasferasa!)) -
-          ((0.406 * Valores.imc) + 6.35); //  para hombres
+          ((0.406 * Antropometrias.imc) + 6.35); //  para hombres
     } else if (Valores.sexo == 'Femenino') {
       return (-58.5 + (0.637 * Valores.volumenCorpuscularMedio!)) +
           (3.91 *
               (Valores.aspartatoaminotransferasa! /
                   Valores.alaninoaminotrasferasa!)) -
-          ((0.406 * Valores.imc) + 6.35); //  para hombres
+          ((0.406 * Antropometrias.imc) + 6.35); //  para hombres
     } else {
       return double.nan;
     }
