@@ -12,6 +12,7 @@ import 'package:assistant/operativity/pacientes/valores/Valorados/hidrometrias.d
 import 'package:assistant/operativity/pacientes/valores/Valorados/metabolometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/renometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/operativity/pacientes/valores/semiologia/semiotica.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:flutter/material.dart';
 

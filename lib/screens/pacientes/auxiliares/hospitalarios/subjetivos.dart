@@ -1,5 +1,6 @@
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/operativity/pacientes/valores/semiologia/semiotica.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CircleSwitched.dart';
 import 'package:assistant/widgets/CrossLine.dart';
@@ -31,7 +32,7 @@ class _SubjetivosState extends State<Subjetivos> {
   }
 
   void reInit() {
-     Reportes.subjetivoHospitalizacion = Formatos.subjetivos;
+     Reportes.subjetivoHospitalizacion = Exploracion.subjetivos;
     Reportes.reportes['Subjetivo'] = Reportes.subjetivoHospitalizacion;
   }
 

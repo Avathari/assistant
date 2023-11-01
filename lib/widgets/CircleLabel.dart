@@ -9,13 +9,14 @@ class CircleLabel extends StatefulWidget {
   String? tittle;
   bool? isSwitched;
   double? radios;
-  Function? onChangeValue;
+  void Function()? onChangeValue;
 
   CircleLabel(
       {Key? key,
       this.tittle,
       this.radios = 40,
-      this.isSwitched = false})
+      this.isSwitched = false,
+      this.onChangeValue})
       : super(key: key);
 
   @override
@@ -26,6 +27,7 @@ class _CircleLabelState extends State<CircleLabel> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: () => widget.onChangeValue!(),
       onDoubleTap: () {
         showDialog(
             context: context,
@@ -68,11 +70,12 @@ class _CircleLabelState extends State<CircleLabel> {
             backgroundColor: Colors.black,
             radius: widget.radios! - 10,
             child: Text(
-              widget.tittle!,
-              style: const TextStyle(
+              widget.tittle!.length <= 3 ? widget.tittle! : "",
+              textAlign: TextAlign.center,
+              style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.grey,
-                  fontSize: 16),
+                  fontSize: widget.tittle!.length <= 3 ? 16 : 9),
             ),
           ),
         ),

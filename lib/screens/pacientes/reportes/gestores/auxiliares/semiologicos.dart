@@ -1,5 +1,10 @@
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/operativity/pacientes/valores/semiologia/semiotica.dart';
+import 'package:assistant/screens/pacientes/auxiliares/revisiones/generales.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/info/info.dart';
+import 'package:assistant/values/SizingInfo.dart';
+import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CircleLabel.dart';
@@ -16,807 +21,314 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Semiologicos extends StatefulWidget {
-  const Semiologicos({Key? key}) : super(key: key);
+  const Semiologicos({super.key});
 
   @override
   State<Semiologicos> createState() => _SemiologicosState();
 }
 
 class _SemiologicosState extends State<Semiologicos> {
-  int? numActivity = 0;
-
-  @override
-  void initState() {
-    expoTextController.text = Exploracion.exploracionGeneral;
-    super.initState();
-  }
-
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: ContainerDecoration.roundedDecoration(colorBackground: Theming.cuaternaryColor),
-      child: Row(
-        children: [
-          if (numActivity == 0)
-            infoSemiologias.infograma(context, clusterInpeccion(context),
-                tittle: "Inspección General")
-          else
-            Container(),
-          if (numActivity == 0)
+    return Scaffold(
+      key: _key,
+      endDrawer: _drawerForm(context),
+      appBar: _appBar(context),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 25.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             Expanded(
-                child: infoSemiologias.infograma(
-                    context, clusterGlasgowEye(context),
-                    tittle: "Apertura Ocular"))
-          else
-            Container(),
-          if (numActivity == 0)
+              child: SingleChildScrollView(
+                  controller: ScrollController(),
+                  child: Column(
+                    children: _getComponents(entries: Exploracion.semiotica),
+                  )),
+            ),
             Expanded(
-                child: infoSemiologias.infograma(
-                    context, clusterGlasgowVerbal(context),
-                    tittle: "Respuesta Verbal"))
-          else
-            Container(),
-          if (numActivity == 0)
+              child: SingleChildScrollView(
+                  controller: ScrollController(),
+                  child: Column(
+                    children: _getComponents(entries: Exploracion.cervical),
+                  )),
+            ),
+            _centralPanel(context),
             Expanded(
-                child: infoSemiologias.infograma(
-                    context, clusterGlasgowMotora(context),
-                    tittle: "Respuesta Motora"))
-          else
-            Container(),
-          // ****************************** **** *** **    *
-          Expanded(
-              flex: 8,
-              child: Container(
-                margin: const EdgeInsets.all(5.0),
-                padding: const EdgeInsets.all(5.0),
-                decoration: ContainerDecoration.roundedDecoration(),
-                child: Column(
-                  children: [
-                    TittlePanel(
-                      textPanel: 'Exploración Física',
-                    ),
-                    Expanded(
-                        child: Padding(
-                      padding: const EdgeInsets.only(right: 8.0, left: 8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          GrandIcon(
-                            labelButton: 'Hábito Externo',
-                            iconData: Icons.brightness_1_outlined,
-                            onPress: () {
-                              setState(() {
-                                numActivity = 0;
-                              });
-                            }, // carouselController.jumpToPage(0),
-                          ),
-                          GrandIcon(
-                            labelButton: 'Cuello',
-                            iconData: Icons.nest_cam_wired_stand,
-                            onPress: () => carouselController.jumpToPage(1),
-                          ),
-                          GrandIcon(
-                            labelButton: '',
-                            iconData: Icons.brightness_1_outlined,
-                            onPress: () => carouselController.jumpToPage(2),
-                          )
-                        ],
-                      ),
-                    )),
-                    EditTextArea(
-                        textController: expoTextController,
-                        labelEditText: "Exploración física",
-                        keyBoardType: TextInputType.multiline,
-                        numOfLines: 7,
-                        inputFormat: MaskTextInputFormatter()),
-                    // ************************** **** *** **    *
-                    Expanded(
-                      flex: 10,
-                      child: Container(
-                        margin: const EdgeInsets.all(8),
-                        decoration: ContainerDecoration.roundedDecoration(),
-                        child: CarouselSlider(
-                            carouselController: carouselController,
-                            options: Carousel.carouselOptions(context: context),
-                            items: [
-                              Column(
-                                children: [
-                                  Expanded(
-                                    child: infoSemiologias.infograma(
-                                        context, clusterTegumentario(context),
-                                        tittle: "Apariencia Tegumentaria",
-                                        isVertical: false),
-                                  ),
-                                  Expanded(
-                                    child: infoSemiologias.infograma(
-                                        context, clusterTegumentario(context),
-                                        tittle: "Apariencia Tegumentaria",
-                                        isVertical: false),
-                                  ),
-                                  Expanded(
-                                    child: infoSemiologias.infograma(
-                                        context, clusterTegumentario(context),
-                                        tittle: "Apariencia Tegumentaria",
-                                        isVertical: false),
-                                  ),
-                                  Expanded(
-                                    child: infoSemiologias.infograma(
-                                        context, clusterTegumentario(context),
-                                        tittle: "Apariencia Tegumentaria",
-                                        isVertical: false),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        TittlePanel(
-                                            textPanel: 'Inspección General',
-                                            fontSize: 11,
-                                            padding: 5.0),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 15,
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        TittlePanel(
-                                            textPanel: 'Apertura Ocular',
-                                            fontSize: 11,
-                                            padding: 5.0),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        TittlePanel(
-                                            textPanel: 'Respuesta Verbal',
-                                            fontSize: 11,
-                                            padding: 5.0),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        TittlePanel(
-                                            textPanel: 'Respuesta Motora',
-                                            fontSize: 11,
-                                            padding: 5.0),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 7,
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        TittlePanel(
-                                            textPanel:
-                                                'Apariencia Tegumentaria',
-                                            fontSize: 11,
-                                            padding: 5.0),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        TittlePanel(
-                                            textPanel: 'Apariencia Mucosas',
-                                            fontSize: 11,
-                                            padding: 5.0),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        TittlePanel(
-                                            textPanel: 'Cuello',
-                                            fontSize: 11,
-                                            padding: 5.0),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        TittlePanel(
-                                            textPanel: 'Tráquea',
-                                            fontSize: 11,
-                                            padding: 5.0),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        TittlePanel(
-                                            textPanel: 'Presencia de Bocio',
-                                            fontSize: 11,
-                                            padding: 5.0),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        TittlePanel(
-                                            textPanel: 'Adenopatías',
-                                            fontSize: 11,
-                                            padding: 5.0),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        TittlePanel(
-                                            textPanel: 'Adenomegalias',
-                                            fontSize: 11,
-                                            padding: 5.0),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        TittlePanel(
-                                            textPanel: 'Tórax',
-                                            fontSize: 11,
-                                            padding: 5.0),
-                                        Expanded(
-                                            child: CircleSwitched(
-                                                tittle:
-                                                    'Amplexión sin Restricciones',
-                                                radios: 25,
-                                                difRadios: 5,
-                                                onChangeValue: () {
-                                                  Exploracion.amplexionTorax =
-                                                      'amplexión sin restricciones';
-                                                  expoTextController.text =
-                                                      Exploracion
-                                                          .exploracionGeneral;
-                                                })),
-                                        Expanded(
-                                            child: CircleSwitched(
-                                                tittle:
-                                                    'Amplexión con Restricción',
-                                                radios: 25,
-                                                difRadios: 5,
-                                                onChangeValue: () {
-                                                  Exploracion.amplexionTorax =
-                                                      'amplexión con restricción';
-                                                  expoTextController.text =
-                                                      Exploracion
-                                                          .exploracionGeneral;
-                                                })),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        TittlePanel(
-                                            textPanel:
-                                                'Dificultad Respiratoria',
-                                            fontSize: 11,
-                                            padding: 5.0),
-                                        Expanded(
-                                            child: CircleSwitched(
-                                                tittle:
-                                                    'Sin Tiraje Intercostal',
-                                                radios: 25,
-                                                difRadios: 5,
-                                                onChangeValue: () {
-                                                  Exploracion.amplexacionTorax =
-                                                      ', sin tiraje intercostal';
-                                                  expoTextController.text =
-                                                      Exploracion
-                                                          .exploracionGeneral;
-                                                })),
-                                        Expanded(
-                                            child: CircleSwitched(
-                                                tittle: 'Tiraje Intercostal',
-                                                radios: 25,
-                                                difRadios: 5,
-                                                onChangeValue: () {
-                                                  Exploracion.amplexacionTorax =
-                                                      ', tiraje intercostal';
-                                                  expoTextController.text =
-                                                      Exploracion
-                                                          .exploracionGeneral;
-                                                })),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ]),
-                      ),
-                    ),
-                    Expanded(
-                        flex: 2,
-                        child: Row(
-                          children: [
-                            Expanded(
-                                child: infoSemiologias.infograma(
-                                    context, clusterTegumentario(context),
-                                    tittle: "Apariencia Tegumentaria",
-                                    isVertical: false)),
-                            Expanded(
-                                child: infoSemiologias.infograma(
-                                    context, clusterHidratacion(context),
-                                    tittle: "Estado de Hidratación",
-                                    isVertical: false)),
-                          ],
-                        )),
-                  ],
-                ),
-              )),
-          // ****************************** **** *** **    *
-          if (numActivity == 0)
+              child: SingleChildScrollView(
+                  controller: ScrollController(),
+                  child: Column(
+                    children: _getComponents(entries: Exploracion.torax),
+                  )),
+            ),
             Expanded(
-                child:
-                    infoSemiologias.infograma(context, clusterCuello(context)))
-          else
-            Container(),
-          if (numActivity == 0)
-            Expanded(
-                child:
-                    infoSemiologias.infograma(context, clusterTraquea(context)))
-          else
-            Container(),
-          if (numActivity == 0)
-            Expanded(
-                child:
-                    infoSemiologias.infograma(context, clusterBocio(context)))
-          else
-            Container(),
-          if (numActivity == 0)
-            Expanded(
-                child:
-                    infoSemiologias.infograma(context, clusterAdenos(context)))
-          else
-            Container(),
-        ],
+              child: SingleChildScrollView(
+                  controller: ScrollController(),
+                  child: Column(
+                    children: _getComponents(entries: Exploracion.abdomen),
+                  )),
+            ),
+          ],
+        ),
       ),
+      floatingActionButton: _floattingActionButton(context),
     );
   }
 
-  // CLUSTERS ************************** **** *** **    *
-  List<Widget> clusterInpeccion(
-    BuildContext context,
-  ) {
-    return [
-      CircleSwitched(
-        tittle: "Alerta",
-        radios: 25,
-        difRadios: 5,
-        onChangeValue: () {
-          Exploracion.inspeccionGeneral = 'Alerta';
-          expoTextController.text = Exploracion.exploracionGeneral;
-          print(Exploracion.inspeccionGeneral);
-        },
-      ),
-      CircleSwitched(
-          tittle: 'Aturdido',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-
-            Exploracion.inspeccionGeneral = 'Aturdido';
-            expoTextController.text = Exploracion.exploracionGeneral;
-            print(Exploracion.inspeccionGeneral);
-          }),
-      CircleSwitched(
-          tittle: 'Desorientado',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.inspeccionGeneral = 'Desorientado';
-            expoTextController.text = Exploracion.exploracionGeneral;
-            print(Exploracion.inspeccionGeneral);
-          }),
-      CircleSwitched(
-          tittle: 'Irritable',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.inspeccionGeneral = 'Irritable';
-            expoTextController.text = Exploracion.exploracionGeneral;
-            print(Exploracion.inspeccionGeneral);
-          }),
-      CircleSwitched(
-          tittle: 'Obnubilado',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.inspeccionGeneral = 'Obnubilado';
-            expoTextController.text = Exploracion.exploracionGeneral;
-            print(Exploracion.inspeccionGeneral);
-          }),
-    ];
-  }
-
-  List<Widget> clusterGlasgowEye(BuildContext context) {
-    return [
-      CircleSwitched(
-          tittle: 'Espontánea',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.aperturaOcular = '4';
-            expoTextController.text = Exploracion.exploracionGeneral;
-          }),
-      CircleSwitched(
-          tittle: 'Al Estimulo Verbal',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.aperturaOcular = '3';
-            expoTextController.text = Exploracion.exploracionGeneral;
-          }),
-      CircleSwitched(
-          tittle: 'Al Dolor',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.aperturaOcular = '2';
-            expoTextController.text = Exploracion.exploracionGeneral;
-          }),
-      CircleSwitched(
-          tittle: 'No Hay Respuesta Ocular',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.aperturaOcular = '1';
-            expoTextController.text = Exploracion.exploracionGeneral;
-          }),
-    ];
-  }
-
-  List<Widget> clusterGlasgowVerbal(
-    BuildContext context,
-  ) {
-    return [
-      CircleSwitched(
-          tittle: 'Orientada',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.respuestaVerbal = '5';
-            expoTextController.text = Exploracion.exploracionGeneral;
-            print(Exploracion.respuestaVerbal);
-          }),
-      CircleSwitched(
-          tittle: 'Desorientada',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.respuestaVerbal = '4';
-            expoTextController.text = Exploracion.exploracionGeneral;
-            print(Exploracion.respuestaVerbal);
-          }),
-      CircleSwitched(
-          tittle: 'Palabras Inapropiadas',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.respuestaVerbal = '3';
-            expoTextController.text = Exploracion.exploracionGeneral;
-            print(Exploracion.respuestaVerbal);
-          }),
-      CircleSwitched(
-          tittle: 'Sonidos Incomprensibles',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.respuestaVerbal = '2';
-            expoTextController.text = Exploracion.exploracionGeneral;
-            print(Exploracion.respuestaVerbal);
-          }),
-      CircleSwitched(
-          tittle: 'No hay Respuesta Verbal',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.respuestaVerbal = '1';
-            expoTextController.text = Exploracion.exploracionGeneral;
-            print(Exploracion.respuestaVerbal);
-          }),
-    ];
-  }
-
-  List<Widget> clusterGlasgowMotora(BuildContext context) {
-    return [
-      CircleSwitched(
-          tittle: 'Obedece Ordenes',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.respuestaMotora = '6';
-            expoTextController.text = Exploracion.exploracionGeneral;
-            print(Exploracion.respuestaMotora);
-          }),
-      CircleSwitched(
-          tittle: 'Localiza Dolor',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.respuestaMotora = '5';
-            expoTextController.text = Exploracion.exploracionGeneral;
-            print(Exploracion.respuestaMotora);
-          }),
-      CircleSwitched(
-          tittle: 'Flexión Normal',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.respuestaMotora = '4';
-            expoTextController.text = Exploracion.exploracionGeneral;
-            print(Exploracion.respuestaMotora);
-          }),
-      CircleSwitched(
-          tittle: 'Flexión Anormal',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.respuestaMotora = '3';
-            expoTextController.text = Exploracion.exploracionGeneral;
-            print(Exploracion.respuestaMotora);
-          }),
-      CircleSwitched(
-          tittle: 'Extensión',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.respuestaMotora = '2';
-            expoTextController.text = Exploracion.exploracionGeneral;
-            print(Exploracion.respuestaMotora);
-          }),
-      CircleSwitched(
-          tittle: 'No Hay Respuesta',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.respuestaMotora = '1';
-            expoTextController.text = Exploracion.exploracionGeneral;
-            print(Exploracion.respuestaMotora);
-          }),
-    ];
-  }
-
-  //************************** **** *** **    *
-  List<Widget> clusterTegumentario(BuildContext context) {
-    return [
-      CircleSwitched(
-          tittle: 'Sin Palidez Tegumentaria',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.coloracionTegumentaria = ', sin palidez tegumentaria';
-            expoTextController.text = Exploracion.exploracionGeneral;
-          }),
-      CircleSwitched(
-          tittle: 'Con Palidez Tegumentaria',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.coloracionTegumentaria = ', con palidez tegumentaria';
-            expoTextController.text = Exploracion.exploracionGeneral;
-          }),
-    ];
-  }
-
-  List<Widget> clusterHidratacion(BuildContext context) {
-    return [
-      CircleSwitched(
-          tittle: 'Sin Mucosas Deshidratación',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.coloracionMucosas = ', sin deshidratación en mucosas';
-            expoTextController.text = Exploracion.exploracionGeneral;
-          }),
-      CircleSwitched(
-          tittle: 'Con Mucosas Deshidratadas',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.coloracionMucosas = ', con deshidratación en mucosas';
-            expoTextController.text = Exploracion.exploracionGeneral;
-          }),
-    ];
-  }
-
-  //************************** **** *** **    *
-  List<Widget> clusterCuello(BuildContext context) {
-    return [
-      CircleSwitched(
-          tittle: 'Sin Ingurgitación Yugular',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.ingurgitacionYugular = 'sin Ingurgitación Yugular';
-            expoTextController.text = Exploracion.exploracionGeneral;
-          }),
-      CircleSwitched(
-          tittle: 'Ingurgitación Yugular Grado I',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.ingurgitacionYugular =
-                'con ingurgitación yugular grado I';
-            expoTextController.text = Exploracion.exploracionGeneral;
-          }),
-      CircleSwitched(
-          tittle: 'Ingurgitación Yugular Grado II',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.ingurgitacionYugular =
-                'con ingurgitación yugular grado II';
-            expoTextController.text = Exploracion.exploracionGeneral;
-          }),
-      CircleSwitched(
-          tittle: 'Ingurgitación Yugular Grado III',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.ingurgitacionYugular =
-                'con ingurgitación yugular grado III';
-            expoTextController.text = Exploracion.exploracionGeneral;
-          }),
-      CrossLine(),
-      CircleSwitched(
-          tittle: 'Sin Presencia de Bocio',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.bocioCervical = ', sin presencia de bocio';
-            expoTextController.text = Exploracion.exploracionGeneral;
-          }),
-      CircleSwitched(
-          tittle: 'Con Presencia de Bocio',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.bocioCervical = ', con presencia de bocio';
-            expoTextController.text = Exploracion.exploracionGeneral;
-          }),
-    ];
-  }
-
-  List<Widget> clusterTraquea(BuildContext context) {
-    return [
-      CircleSwitched(
-          tittle: 'Sin Desviación Traqueal',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.desviacionTraqueal = ', tráquea central';
-            expoTextController.text = Exploracion.exploracionGeneral;
-          }),
-      CircleSwitched(
-          tittle: 'Tráquea desviada hacia la Izquierda',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.desviacionTraqueal =
-                ', tráquea desviada hacia la izquierda';
-            expoTextController.text = Exploracion.exploracionGeneral;
-          }),
-      CircleSwitched(
-          tittle: 'Tráquea desviada hacia la Derecha',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.desviacionTraqueal =
-                ', tráquea desviada hacia la derecha';
-            expoTextController.text = Exploracion.exploracionGeneral;
-          }),
-      CrossLine(),
-    ];
-  }
-
-  List<Widget> clusterAdenos(BuildContext context) {
-    return [
-      CircleSwitched(
-          tittle: 'Sin Adenopatías',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.adenopatiaCervical = ', sin adenopatías';
-            expoTextController.text = Exploracion.exploracionGeneral;
-          }),
-      CircleSwitched(
-          tittle: 'Adenopatía en Región Lateral Izquierda',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.adenopatiaCervical =
-                ', adenopatía en región lateral izquierda';
-            expoTextController.text = Exploracion.exploracionGeneral;
-          }),
-      CircleSwitched(
-          tittle: 'Adenopatía en Región Lateral Derecha',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.adenopatiaCervical =
-                ', adenopatía en región lateral derecha';
-            expoTextController.text = Exploracion.exploracionGeneral;
-          }),
-      CrossLine(),
-      CircleSwitched(
-          tittle: 'Sin Adenomegalias',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.adenomegaliasCervical = ', sin adenomegalias';
-            expoTextController.text = Exploracion.exploracionGeneral;
-          }),
-      CircleSwitched(
-          tittle: 'Adenopatía en Región Lateral Izquierda',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.adenomegaliasCervical =
-                ', adenopatía en región lateral izquierda';
-            expoTextController.text = Exploracion.exploracionGeneral;
-          }),
-      CircleSwitched(
-          tittle: 'Adenopatía en Región Lateral Derecha',
-          radios: 25,
-          difRadios: 5,
-          onChangeValue: () {
-            Exploracion.adenomegaliasCervical =
-                ', adenopatía en región lateral derecha';
-            expoTextController.text = Exploracion.exploracionGeneral;
-          }),
-    ];
-  }
-
-  List<Widget> clusterBocio(BuildContext context) {
-    return [];
-  }
-
-  //************************** **** *** **    *
-  List<Widget> clusterRass(BuildContext context) {
+  List<Widget> _getComponents(
+      {required Map<String, dynamic> entries, bool isSpinner = false}) {
     List<Widget> list = [];
 
-    Escalas.RASS.forEach((element) {
-      list.add(CircleLabel(
-          tittle: element,
-          radios: 25,
-          ));
-    });
+    for (int index = 0; index < entries.length; index++) {
+      // Exploracion.initialValue=entries.values.elementAt(index).first;
+
+      list.add(Stack(
+        children: [
+          Container(
+              width: double.infinity, // widget.width,
+              height: entries.values.elementAt(index).length > 5 ? 110 : 75,
+              margin: const EdgeInsets.all(12.0),
+              padding:
+                  const EdgeInsets.only(left: 10, right: 8, top: 7, bottom: 5),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey, width: 1),
+                borderRadius: BorderRadius.circular(20),
+                shape: BoxShape.rectangle,
+              ),
+              child: entries.values.elementAt(index).length > 4
+                  // ? isSpinner == false || entries.values.elementAt(index).length <= 10
+                  ? GridView(
+                      shrinkWrap: true,
+                      controller: ScrollController(),
+                      gridDelegate: GridViewTools.gridDelegate(
+                          crossAxisCount: isMobile(context) ? 3 : 5,
+                          mainAxisExtent: isMobile(context) ||
+                                  isTablet(context) ||
+                                  isDesktop(context)
+                              ? 45
+                              : 45,
+                          childAspectRatio: isMobile(context) ||
+                                  isTablet(context) ||
+                                  isDesktop(context)
+                              ? 2.0
+                              : 1.0,
+                          crossAxisSpacing: 1.0,
+                          mainAxisSpacing: 1.0),
+                      children: entries.values
+                          .elementAt(index)
+                          .map<Widget>((title) => CircleLabel(
+                                tittle: title,
+                                onChangeValue: () {
+                                  // Handle button press here
+                                  Exploracion.toJson(
+                                      entries.keys.elementAt(index), title);
+                                  //
+                                  expoTextController.text =
+                                      Exploracion.exploracionGeneral;
+                                },
+                              ))
+                          .toList())
+                  // : Spinner(
+                  //     initialValue: '${Exploracion.initialValue}',
+                  //     items: List<String>.from(entries.values.elementAt(index)),
+                  //     onChangeValue: (String value) {
+                  //       Exploracion.toJson(
+                  //           entries.keys.elementAt(index), value);
+                  //       //
+                  //       setState(() {
+                  //         Exploracion.initialValue = value;
+                  //       });
+                  //       //
+                  //       expoTextController.text =
+                  //           Exploracion.exploracionGeneral;
+                  //     },
+                  //   )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: entries.values
+                          .elementAt(index)
+                          .map<Widget>((title) => Expanded(
+                                child: CircleLabel(
+                                  tittle: title,
+                                  onChangeValue: () {
+                                    // Handle button press here
+                                    Exploracion.toJson(
+                                        entries.keys.elementAt(index), title);
+                                    //
+                                    expoTextController.text =
+                                        Exploracion.exploracionGeneral;
+                                  },
+                                ),
+                              ))
+                          .toList())),
+          Positioned(
+            left: 5,
+            top: 0,
+            child: Container(
+              color: Theming.bdColor,
+              margin: const EdgeInsets.only(left: 20, right: 10, top: 2),
+              padding: const EdgeInsets.only(left: 20, right: 10, top: 0),
+              child: Text(descompose(entries.keys.elementAt(index)),
+                  style: const TextStyle(color: Colors.white, fontSize: 10)),
+            ),
+          ),
+        ],
+      ));
+    }
+
     return list;
   }
 
+  descompose(String value) {
+    return value.contains(RegExp(r'[A-Z]'))
+        ? Sentences.capitalize(value.replaceRange(
+            value.indexOf(RegExp(r'[A-Z]')),
+            value.indexOf(RegExp(r'[A-Z]')) + 1,
+            " ${RegExp(r'[A-Z]').stringMatch(value).toString()}"))
+        : value;
+  }
 
-  // VARIABLES ***********************************
+  // VARIABLES
   var expoTextController = TextEditingController();
-  var carouselController = CarouselController();
+
+  // COMPONENTES ****************************************************
+  _drawerForm(BuildContext context) => Drawer(
+        width: 100,
+        backgroundColor: Theming.cuaternaryColor,
+        child: Container(
+          decoration: const BoxDecoration(
+            border: Border(
+                top: BorderSide(color: Colors.grey),
+                bottom: BorderSide(color: Colors.grey),
+                left: BorderSide(color: Colors.grey)),
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(16), topLeft: Radius.circular(16)),
+          ),
+          child: Column(
+            children: [
+              Expanded(
+                flex: 3,
+                child: DrawerHeader(
+                    child: CircleIcon(
+                  difRadios: 15,
+                  iconed: Icons.line_weight_sharp,
+                  onChangeValue: () {},
+                )),
+              ),
+              Expanded(flex: 10, child: Column(children: sidePanel(context),)),
+              CrossLine(thickness: 3, height: 20, color: Colors.grey),
+              Expanded(
+                flex: 2,
+                child: CircleIcon(
+                  radios: 30,
+                  difRadios: 5,
+                  tittle: 'Copiar Esquema del Reporte',
+                  iconed: Icons.copy_all_sharp,
+                  onChangeValue: () {
+                    // Datos.portapapeles(
+                    //     context: context,
+                    //     text: Reportes.copiarReporte(
+                    //         tipoReporte: getTypeReport()));
+                    _key.currentState!.closeEndDrawer();
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+
+  _centralPanel(BuildContext context) {
+    return Expanded(
+        flex: 2,
+        child: Container(
+          margin: const EdgeInsets.all(5.0),
+          padding: const EdgeInsets.only(top: 75.0, bottom: 10.0),
+          decoration: ContainerDecoration.roundedDecoration(
+              colorBackground: Theming.bdColor),
+          child: Column(
+            children: [
+              CrossLine(thickness: 1, color: Colors.grey),
+              EditTextArea(
+                  textController: expoTextController,
+                  labelEditText: "Exploración física",
+                  keyBoardType: TextInputType.multiline,
+                  numOfLines: 7,
+                  inputFormat: MaskTextInputFormatter()),
+              // ************************** **** *** **    *
+              CrossLine(thickness: 2, color: Colors.grey),
+              Expanded(
+                child: SingleChildScrollView(
+                  controller: ScrollController(),
+                  child: Column(
+                    children: _getComponents(entries: Exploracion.aspectuales),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ));
+  }
+
+  _appBar(BuildContext context) => AppBar(
+        foregroundColor: Colors.white,
+        shape: CustomShapeBorder(),
+        backgroundColor: Colors.black,
+        centerTitle: true,
+        toolbarHeight: 50.0,
+        elevation: 0,
+        // title: CircleIcon(
+        //     iconed: Icons.person,
+        //     tittle: Sentences.app_bar_usuarios,
+        //     onChangeValue: () {}),
+        actions: [
+          GrandIcon(
+              iconData: Icons.receipt,
+              labelButton: "Generales . . . ",
+              onPress: () => Cambios.toNextActivity(context,
+                  tittle: 'Generales diarios del Paciente . . . ',
+                  chyld: const Generales())),
+          CrossLine(height: 15, isHorizontal: false, thickness: 2),
+          GrandIcon(
+              iconData: Icons.drag_indicator_sharp,
+              labelButton: "Menu",
+              onPress: () => _key.currentState!.openEndDrawer()),
+          CrossLine(height: 15, isHorizontal: false, thickness: 0),
+        ],
+      );
+
+  _floattingActionButton(BuildContext context) => FloatingActionButton(
+      backgroundColor: Colors.black,
+      onPressed: () => showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return Container(
+              padding: const EdgeInsets.all(8.0),
+              decoration: const BoxDecoration(
+                color: Theming.cuaternaryColor,
+                border: Border(
+                    top: BorderSide(color: Colors.grey),
+                    right: BorderSide(color: Colors.grey),
+                    left: BorderSide(color: Colors.grey)),
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(16),
+                    topLeft: Radius.circular(16)),
+              ),
+              child: downPanel(context),
+            );
+          }));
+
+  downPanel(BuildContext context) {
+    return Column(
+      children: [
+        GrandLabel(
+            labelButton: 'Copiar en Portapapeles . . . ',
+            onPress: () => Datos.portapapeles(
+                context: context, text: Exploracion.exploracionGeneral)),
+      ],
+    );
+  }
+
+  sidePanel(BuildContext context) =><Widget>[];
 }

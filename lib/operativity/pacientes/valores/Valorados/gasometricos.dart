@@ -38,7 +38,8 @@ class Gasometricos {
   }
 
   static String get gasometricosNombrado {
-    return "${Valores.nombreCompleto} - "
+    return "${Valores.nombreCompleto} "
+        "(${Valores.fechaGasometriaArterial}) - "
         "pH ${Valores.pHArteriales}, "
         "PCO2 ${Valores.pcoArteriales} mmHg, "
         "PO2 ${Valores.poArteriales} mmHg, "

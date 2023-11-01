@@ -1,15 +1,13 @@
 import 'package:assistant/conexiones/actividades/Compuesto.dart';
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
-import 'package:assistant/conexiones/conexiones.dart';
-import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
-import 'package:assistant/operativity/pacientes/valores/semiologia/semiotica.dart';
 import 'package:assistant/screens/bibiliotecarios/bibliotecas.dart';
 import 'package:assistant/screens/financieros/estadisticas.dart';
 import 'package:assistant/screens/financieros/finanzas.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizados.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
+import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/semiologicos.dart';
 import 'package:assistant/screens/usuarios/usuarios.dart';
 import 'package:assistant/screens/vocablos/vocablos.dart';
 import 'package:assistant/values/SizingInfo.dart';
@@ -685,7 +683,7 @@ class PacientesPanel extends StatelessWidget {
               iconData: Icons.warning_amber,
               labelButton: "",
               onPress: () {
-                toNextScreen(context: context, screen: Semiotica());
+                toNextScreen(context: context, screen: Semiologicos());
                 // Operadores.alertActivity(
                 //     context: context,
                 //     tittle: "Error",

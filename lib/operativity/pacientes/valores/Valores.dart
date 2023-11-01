@@ -9,7 +9,7 @@ import 'package:assistant/operativity/pacientes/valores/Valorados/hidrometrias.d
 import 'package:assistant/operativity/pacientes/valores/Valorados/metabolometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/renometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/ventometr%C3%ADas.dart';
-import 'package:assistant/values/Strings.dart';
+import 'package:assistant/operativity/pacientes/valores/semiologia/semiotica.dart';
 
 import 'package:assistant/conexiones/conexiones.dart';
 
@@ -1508,13 +1508,13 @@ class Valorados {
       ren = 0;
     }
     // Glasgow ***************************************************
-    if (Datos.isMiddleValue(value: double.parse(Exploracion.glasgow), min: 6.0, max: 9.0)) {
+    if (Datos.isMiddleValue(value: double.parse(Exploracion.glasgow!), min: 6.0, max: 9.0)) {
       glasg = 3;
-    } else if (Datos.isMiddleValue(value: double.parse(Exploracion.glasgow), min: 10.0, max: 12.0)) {
+    } else if (Datos.isMiddleValue(value: double.parse(Exploracion.glasgow!), min: 10.0, max: 12.0)) {
       glasg = 2;
-    } else if (Datos.isMiddleValue(value: double.parse(Exploracion.glasgow), min: 13, max: 14.0)) {
+    } else if (Datos.isMiddleValue(value: double.parse(Exploracion.glasgow!), min: 13, max: 14.0)) {
       glasg = 1;
-    } else if (Datos.isUpperValue(value: double.parse(Exploracion.glasgow), lim: 15)) {
+    } else if (Datos.isUpperValue(value: double.parse(Exploracion.glasgow!), lim: 15)) {
       glasg = 0;
     } else {
       glasg = 4;
@@ -1615,17 +1615,7 @@ class Formatos {
         "verificando previamente fecha de caducidad (Día ${Valores.fechaCaducidad}, de acuerdo a registro).  Serología No Reactiva.";
   }
 
-  static String get subjetivos {
-    return
-      // "El paciente se refiere ${Valores.estadoGeneral}. "
-      "${Exploracion.referenciasHospitalizacion}. "
-          "${Sentences.capitalize(Exploracion.estadoGeneral)}, "
-          "${Exploracion.oxigenSuplementario}. "
-          "${Exploracion.viaOral}, "
-          "Uresis con frecuencia ${Exploracion.uresisCantidad}, "
-          "excretas con frecuencia ${Exploracion.excretasCantidad}. "
-          "bristol ${Exploracion.excretasBristol}. ";
-  }
+
 
   static String get ideologias {
     String prejuicios = "", creencias = "", valores = "", costumbres = "";
@@ -2495,6 +2485,59 @@ class Escalas {
   static List<String> regionCorporalImagenologico = [
     'Región craneal',
   ];
+
+  // TORAX
+  static List<String> amplexionTorax = [
+    'Grado I: Mayor a 6.5 cm',
+    'Grado II: Entre 6 a 6.5 cm',
+    'Grado III: Menor a 6 cm',
+  ];
+  static List<String> amplexacionTorax = [
+    'Grado I: Mayor a 6.5 cm',
+    'Grado II: Entre 6 a 6.5 cm',
+    'Grado III: Menor a 6 cm',
+  ];
+  static List<String> ruidosCardiacos = [
+    'Grado I: Mayor a 6.5 cm',
+    'Grado II: Entre 6 a 6.5 cm',
+    'Grado III: Menor a 6 cm',
+  ];
+  static List<String> murmulloVesicular = [
+    'Grado I: Mayor a 6.5 cm',
+    'Grado II: Entre 6 a 6.5 cm',
+    'Grado III: Menor a 6 cm',
+  ];
+  static List<String> estertoresPulmonar = [
+    'Grado I: Mayor a 6.5 cm',
+    'Grado II: Entre 6 a 6.5 cm',
+    'Grado III: Menor a 6 cm',
+  ];
+  static List<String> sibilanciasPulmonar = [
+    'Grado I: Mayor a 6.5 cm',
+    'Grado II: Entre 6 a 6.5 cm',
+    'Grado III: Menor a 6 cm',
+  ];
+
+  // ABDOMEN
+  static List<String> aspectoAbdomen = [
+    'Blando', 'Globoso'
+    'En Batea',
+    'En batracio',
+  ];
+  static List<String> peristalisisAbdomen = [
+    'Peristalsis disminuida', 'Normo-peristalsis', 'Peristalsis Aumentada',
+  ];
+  static List<String> dolorosoAbdomen = [
+    'No doloroso', 'Doloroso a la palpación superficial',
+    'Doloroso a la palpación media'
+    ,'Doloroso a la palpación profunda',
+        'Doloroso a la palpación media y profunda'
+  ];
+  static List<String> irritacionPeritoneal = [
+    "Sin irritación peritoneal",
+    "Con irritación peritoneal",
+  ];
+
 }
 
 class Items {
@@ -3155,104 +3198,6 @@ class Parenterales {
       'Calcio': 0.0
     }, // Sol NaCl 17.7%
   ];
-}
-
-class Exploracion {
-// Variables de Valoraciones
-  static String? valoracionAsa, valoracionBromage, valoracionNyha;
-
-  // Referencias del paciente
-  static String estadoGeneral = Items.estadoGeneral[0],
-      viaOral = Items.viaOralAlimentacion[0],
-      uresisCantidad = Items.uresisCantidad[0],
-      excretasCantidad = Items.excretasCantidad[0],
-      oxigenSuplementario = Items.oxigenSuplementario[0],
-      excretasBristol = Items.excretasBristol[0],
-      referenciasHospitalizacion = "Sin referencias por parte del paciente o el familiar";
-
-  // Evaluación de Responsividad
-  /// Variable Glasgow, por defecto es String cuyo valor es, de hecho, un entero, el cual es comprobado por Valorados.mSOFA para su puntaje.
-  static String glasgow = '15';
-  static String? inspeccionGeneral = 'Alerta';
-  static String? aperturaOcular = '4',
-      respuestaMotora = '6',
-      respuestaVerbal = '5';
-  static String? coloracionTegumentaria = ', sin palidez tegumentaria',
-      coloracionMucosas = ', sin deshidratación';
-
-  // Valoración Motil de Cuello
-  static String movilidadTemporoMandibular =
-  Escalas.movilidadTemporoMandibular[0];
-  static String movilidadCervical = Escalas.movilidadCervical[0];
-  //
-  static String? ingurgitacionYugular = '',
-      bocioCervical = '',
-      desviacionTraqueal = '',
-      adenopatiaCervical = '',
-      adenomegaliasCervical = '';
-  // Indices de Medidas Mandibulares
-  static String aperturaMandibular = Escalas.aperturaMandibular[0];
-  static String escalaMallampati = Escalas.escalaMallampati[0];
-  static String escalaCormackLahane = Escalas.escalaCormackLahane[0];
-  // Indices de Medidas Cervicales
-  static String distanciaTiromentoniana = Escalas.distanciaTiromentoniana[0];
-  static String distanciaEsternomentoniana =
-  Escalas.distanciaEsternomentoniana[0];
-
-  // Variables de la situación hospitalaria
-  static String? dispositivoOxigeno = Items.dispositivosOxigeno[0],
-      dispositivoEmpleado = Items.dispositivosOxigeno[0],
-      auxiliarVentilacion = Items.dispositivosOxigeno[0],
-      rass = Escalas.RASS[0],
-      ramsay = Escalas.ramsay[0],
-      ashworth = Escalas.ashworth[0],
-      daniels = Escalas.daniels[0],
-      mrc = Escalas.MRC[0],
-      faseVentilatoria = Items.ventilatorio[3],
-      siedel = Escalas.siedel[0],
-      tuboEndotraqueal = Items.tuboendotraqueal[0],
-      haciaArcadaDentaria = Items.arcadaDentaria[0],
-      antibioticoterapia = Items.antibioticoterapia[0],
-      evaluacionNorton = Escalas.norton[0],
-      evaluacionBraden = Escalas.braden[0],
-      apoyoAminergico = Items.aminergico[0],
-      alimentacion = Items.dieta[0],
-      tipoSondaAlimentacion = Items.orogastrico[0],
-      tipoSondaVesical = Items.foley[0],
-      sedoanalgesia = Items.sedacion[0];
-
-  static bool? isCateterPeriferico = false,
-      isCateterLargoPeriferico = false,
-      isCateterVenosoCentral = false,
-      isCateterHemodialisis = false,
-      isSondaFoley = false,
-      isDrenajePenrose = false,
-      isSondaNasogastrica = false,
-      isSondaOrogastrica = false,
-      isDrenajePenros = false,
-      isPleuroVac = false,
-      isColostomia = false,
-      isGastrostomia = false,
-      isDialisisPeritoneal = false;
-
-  static String? amplexionTorax = '',
-      amplexacionTorax = '',
-      ruidosCardiacos = '',
-      murmulloVesicular = '',
-      estertoresPulmonar = '',
-      sibilanciasPulmonar = '';
-
-  static String get exploracionGeneral {
-    return '${Exploracion.inspeccionGeneral}, '
-        'glasgow (E$aperturaOcular, V$respuestaVerbal, M$respuestaMotora)'
-        '$coloracionTegumentaria$coloracionMucosas'
-        '. '
-        'Cuello $ingurgitacionYugular$desviacionTraqueal$bocioCervical$adenopatiaCervical'
-        '$adenomegaliasCervical'
-        '. '
-        'Tórax $amplexionTorax$amplexacionTorax'
-        '. ';
-  }
 }
 
 double toDoubleFromInt(

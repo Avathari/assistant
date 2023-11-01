@@ -1,5 +1,7 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/dashboard.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizados.dart';
@@ -13,6 +15,7 @@ import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart
 import 'package:assistant/screens/pacientes/intensiva/herramientas.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/paraclinicos.dart';
+import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/semiologicos.dart';
 import 'package:assistant/screens/pacientes/reportes/reportes.dart';
 
 import 'package:assistant/screens/pacientes/vitales/vitales.dart';
@@ -54,12 +57,15 @@ class _VisualPacientesState extends State<VisualPacientes> {
     super.initState();
   }
 
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _key,
       resizeToAvoidBottomInset: true,
       drawer:
           isMobile(context) || isTablet(context) ? drawerHome(context) : null,
+      endDrawer: _drawerForm(context),
       appBar: AppBar(
           foregroundColor: Colors.white,
           //shape: CircularShapeBorder(),
@@ -84,70 +90,14 @@ class _VisualPacientesState extends State<VisualPacientes> {
               tittle: Sentences.app_bar_usuarios,
               onChangeValue: () {}),
           actions: <Widget>[
-            isMobile(context)
-                ? Container()
-                : IconButton(
-                    icon: const Icon(
-                      color: Colors.white,
-                      Icons.account_tree,
-                    ),
-                    tooltip: 'Revisiones . . . ',
-                    onPressed: () {
-                      setState(() {
-                        widget.actualPage = 11;
-                      });
-                    },
-                  ),
-            //
-            // IconButton(
-            //   icon: const Icon(
-            //     Icons.question_answer,
-            //   ),
-            //   tooltip: 'Mensajería',
-            //   onPressed: () {
-            //     showDialog(
-            //         context: context,
-            //         builder: (context) {
-            //           return alertDialog("Manejo de registro",
-            //               "El registro ha sido actualizado / creado", () {
-            //                 Navigator.of(context).pop();
-            //               }, () {});
-            //         });
-            //   },
-            // ),
-            // IconButton(
-            //     icon: const Icon(
-            //       Icons.safety_check,
-            //     ),
-            //     tooltip: '',
-            //     onPressed: () {
-            //       showDialog(
-            //           context: context,
-            //           builder: ((context) {
-            //             return emergentDialog(
-            //                 context, Phrases.demoTittle, Phrases.demoPhrase,
-            //                     () {
-            //                   Navigator.of(context).pop();
-            //                 });
-            //           }));
-            //     }),
-            IconButton(
-                icon: const Icon(
-                  Icons.image_outlined,
-                  color: Colors.white,
-                ),
-                tooltip: '',
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return imageDialog(
-                            Pacientes.nombreCompleto, Pacientes.imagenPaciente,
-                            () {
-                          Navigator.of(context).pop();
-                        });
-                      });
-                }),
+            GrandIcon(
+                iconData: Icons.menu_open_outlined,
+                onPress: () => _key.currentState!.openEndDrawer()),
+            CrossLine(
+              height: 15,
+              thickness: 1,
+              isHorizontal: false,
+            ),
           ]),
       body:
           isMobile(context) || isTablet(context) ? mobileView() : desktopView(),
@@ -736,6 +686,48 @@ class _VisualPacientesState extends State<VisualPacientes> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              GrandIcon(
+                iconData: Icons.g_mobiledata,
+                labelButton: "Gasometricos",
+                onPress: () =>
+                    Datos.portapapeles(
+                        context: context, text: Gasometricos.gasometricos)
+              ),
+              GrandIcon(
+                iconData: Icons.gesture,
+                labelButton: "Gasometricos Completo",
+                onPress: () =>
+                    Datos.portapapeles(
+                        context: context, text: Gasometricos.gasometricosCompleto)
+              ),
+              GrandIcon(
+                  iconData: Icons.grain_sharp,
+                  labelButton: "Gasometricos Medial",
+                  onPress: () =>
+                      Datos.portapapeles(
+                          context: context, text: Gasometricos.gasometricosMedial)
+              ),
+              GrandIcon(
+                  iconData: Icons.blinds_closed,
+                  labelButton: "Reposición de Bicarbonato",
+                  onPress: () =>
+                      Datos.portapapeles(
+                          context: context, text: Gasometricos.gasometricosBicarbonato)
+              ),
+
+              GrandIcon(
+                iconData: Icons.nest_cam_wired_stand_outlined,
+                  labelButton: "Gasometricos Nombrado",
+                onPress: () =>
+                    Datos.portapapeles(
+                        context: context, text: Gasometricos.gasometricosNombrado)
+              ),
+            ],
+          ),
+          CrossLine(height: 20, thickness: 3),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
               IconButton(
                 icon: const Icon(
                   Icons.remove_from_queue,
@@ -783,65 +775,206 @@ class _VisualPacientesState extends State<VisualPacientes> {
         ],
       );
 
+  _drawerForm(BuildContext context) => Drawer(
+        width: 100,
+        backgroundColor: Theming.terciaryColor,
+        child: Container(
+          decoration: const BoxDecoration(
+            border: Border(
+                top: BorderSide(color: Colors.grey),
+                bottom: BorderSide(color: Colors.grey),
+                left: BorderSide(color: Colors.grey)),
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(16), topLeft: Radius.circular(16)),
+          ),
+          child: Column(
+            children: [
+              Expanded(
+                flex: 3,
+                child: DrawerHeader(
+                  child: CircleIcon(
+                      difRadios: 15,
+                      iconed: Icons.line_weight_sharp,
+                      onChangeValue: () => showDialog(
+                          context: context,
+                          builder: (context) {
+                            return imageDialog(Pacientes.nombreCompleto,
+                                Pacientes.imagenPaciente, () {
+                              Navigator.of(context).pop();
+                            });
+                          })),
+                ),
+              ),
+              Expanded(flex: 10, child: Column(children: sidePanel(context))),
+              CrossLine(thickness: 3, height: 20, color: Colors.grey),
+              Expanded(
+                  flex: 1,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          icon: const Icon(
+                            Icons.question_answer,
+                          ),
+                          tooltip: 'Mensajería',
+                          onPressed: () {
+                            _key.currentState!.closeEndDrawer();
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return alertDialog("Manejo de registro",
+                                      "El registro ha sido actualizado / creado",
+                                      () {
+                                    Navigator.of(context).pop();
+                                  }, () {});
+                                });
+                          },
+                        ),
+                        IconButton(
+                            icon: const Icon(
+                              Icons.safety_check,
+                            ),
+                            tooltip: '',
+                            onPressed: () {
+                              _key.currentState!.closeEndDrawer();
+                              showDialog(
+                                  context: context,
+                                  builder: ((context) {
+                                    return emergentDialog(
+                                        context,
+                                        Phrases.demoTittle,
+                                        Phrases.demoPhrase, () {
+                                      Navigator.of(context).pop();
+                                    });
+                                  }));
+                            }),
+                      ])),
+              CrossLine(thickness: 3, height: 20, color: Colors.grey),
+              Expanded(
+                flex: 2,
+                child: CircleIcon(
+                  iconed: Icons.query_stats,
+                  radios: 30,
+                  difRadios: 5,
+                  tittle: "Exploraciones y Analisis . . . ",
+                  onChangeValue: () {
+                    _key.currentState!.closeEndDrawer();
+                    Cambios.toNextPage(context,  const Semiologicos());
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+
+  sidePanel(BuildContext context) => <Widget>[
+        IconButton(
+          icon: const Icon(
+            color: Colors.white,
+            Icons.account_tree,
+          ),
+          tooltip: 'Revisiones . . . ',
+          onPressed: () {
+            _key.currentState!.closeEndDrawer();
+            setState(() {
+              widget.actualPage = 11;
+            });
+          },
+        ),
+    CrossLine(thickness: 1),
+    GrandIcon(
+      iconData: Icons.medical_information,
+      labelButton: "Vitales abreviado . . . ",
+        onPress: () {
+        _key.currentState!.closeEndDrawer();
+        Datos.portapapeles(context: context, text: Antropometrias.vitalesAbreviado);
+        }),
+    CrossLine(thickness: 1, height: 15),
+      ];
+
+  downPanel(BuildContext context) {}
+
+  floatingWidgets(BuildContext context) {
+    return [
+      FloatingActionButton(
+        backgroundColor: Colors.black87,
+        foregroundColor: Colors.grey,
+        tooltip: 'Vista Previa',
+        onPressed: () => showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) {
+              return Container(
+                padding: const EdgeInsets.all(8.0),
+                decoration: const BoxDecoration(
+                  color: Theming.cuaternaryColor,
+                  border: Border(
+                      top: BorderSide(color: Colors.grey),
+                      right: BorderSide(color: Colors.grey),
+                      left: BorderSide(color: Colors.grey)),
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(16),
+                      topLeft: Radius.circular(16)),
+                ),
+                child: modalBottomPanel(context),
+              );
+            }),
+        heroTag: null,
+        child: const Icon(
+          Icons.scale,
+          color: Colors.grey,
+        ),
+      ),
+      const SizedBox(height: 10),
+      FloatingActionButton(
+        backgroundColor: Colors.black87,
+        foregroundColor: Colors.grey,
+        tooltip: 'Indicaciones Médicas',
+        onPressed: () {
+          //...
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: const Text('Yay! A SnackBar!'),
+              action: SnackBarAction(
+                label: 'Undo',
+                onPressed: () {
+                  // Some code to undo the change.
+                },
+              )));
+        },
+        heroTag: null,
+        child: const Icon(
+          Icons.line_weight,
+          color: Colors.grey,
+        ),
+      ),
+    ];
+  }
 }
 
-floatingWidgets(BuildContext context) {
-  return [
-    FloatingActionButton(
-      backgroundColor: Colors.black87,
-      foregroundColor: Colors.grey,
-      tooltip: 'Indicaciones Médicas',
-      onPressed: () {
-        //...
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: const Text('Yay! A SnackBar!'),
-            action: SnackBarAction(
-              label: 'Undo',
-              onPressed: () {
-                // Some code to undo the change.
-              },
-            )));
-      },
-      heroTag: null,
-      child: const Icon(
-        Icons.line_weight,
-        color: Colors.grey,
-      ),
-    ),
-    const SizedBox(height: 10),
-    FloatingActionButton(
-      backgroundColor: Colors.black87,
-      foregroundColor: Colors.grey,
-      tooltip: 'Vista Previa',
-      onPressed: () async {},
-      heroTag: null,
-      child: const Icon(
-        Icons.scale,
-        color: Colors.grey,
-      ),
-    )
-  ];
-}
+
 
 class CircularShapeBorder extends ContinuousRectangleBorder {
   @override
   Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
-
     const double innerCircleRadius = 50.0;
     const int constant = 10;
-    
+
     final double height = rect.height - 10;
 
     Path path = Path();
 
     path.lineTo(0, height);
-    path.quadraticBezierTo(rect.width / 2 - (innerCircleRadius / 2) - 15, rect.height, rect.width / 2 - 75, rect.height + 10);
+    path.quadraticBezierTo(rect.width / 2 - (innerCircleRadius / 2) - 15,
+        rect.height, rect.width / 2 - 75, rect.height + 10);
     path.cubicTo(
-        rect.width / 2 - constant, height + innerCircleRadius - constant,
-        rect.width / 2 + constant, height + innerCircleRadius - constant,
-        rect.width / 2 + 75, height + 20
-    );
-    path.quadraticBezierTo(rect.width / 2 + (innerCircleRadius / 2) + 15, rect.height, rect.width, rect.height);
+        rect.width / 2 - constant,
+        height + innerCircleRadius - constant,
+        rect.width / 2 + constant,
+        height + innerCircleRadius - constant,
+        rect.width / 2 + 75,
+        height + 20);
+    path.quadraticBezierTo(rect.width / 2 + (innerCircleRadius / 2) + 15,
+        rect.height, rect.width, rect.height);
     path.lineTo(rect.width, 0.0);
     path.close();
 
@@ -852,18 +985,21 @@ class CircularShapeBorder extends ContinuousRectangleBorder {
 class CustomShapeBorder extends ContinuousRectangleBorder {
   @override
   Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
-
     const double innerCircleRadius = 150.0;
 
     Path path = Path();
     path.lineTo(0, rect.height);
-    path.quadraticBezierTo(rect.width / 2 - (innerCircleRadius / 2) - 30, rect.height + 15, rect.width / 2 - 75, rect.height + 50);
+    path.quadraticBezierTo(rect.width / 2 - (innerCircleRadius / 2) - 30,
+        rect.height + 15, rect.width / 2 - 75, rect.height + 50);
     path.cubicTo(
-        rect.width / 2 - 40, rect.height + innerCircleRadius - 40,
-        rect.width / 2 + 40, rect.height + innerCircleRadius - 40,
-        rect.width / 2 + 75, rect.height + 50
-    );
-    path.quadraticBezierTo(rect.width / 2 + (innerCircleRadius / 2) + 30, rect.height + 15, rect.width, rect.height);
+        rect.width / 2 - 40,
+        rect.height + innerCircleRadius - 40,
+        rect.width / 2 + 40,
+        rect.height + innerCircleRadius - 40,
+        rect.width / 2 + 75,
+        rect.height + 50);
+    path.quadraticBezierTo(rect.width / 2 + (innerCircleRadius / 2) + 30,
+        rect.height + 15, rect.width, rect.height);
     path.lineTo(rect.width, 0.0);
     path.close();
 

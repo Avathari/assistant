@@ -1235,9 +1235,16 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             builder: (BuildContext context) {
               return Container(
                 padding: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                    color: Theming.cuaternaryColor,
-                    borderRadius: BorderRadius.circular(20)),
+                decoration: const BoxDecoration(
+                  color: Theming.cuaternaryColor,
+                  border: Border(
+                      top: BorderSide(color: Colors.grey),
+                      right: BorderSide(color: Colors.grey),
+                      left: BorderSide(color: Colors.grey)),
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(16),
+                      topLeft: Radius.circular(16)),
+                ),
                 child: sideLeft(),
               );
             }),
