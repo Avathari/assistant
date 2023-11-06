@@ -9,8 +9,8 @@ class Exploracion {
       aperturaOcular = '4',
       respuestaMotora = '6',
       respuestaVerbal = '5';
-  static String? coloracionTegumentaria = 'sin palidez tegumentaria',
-      coloracionMucosas = 'sin deshidratación';
+  static String? coloracionTegumentaria = Items.coloracionTegumentaria[0],
+      coloracionMucosas = Items.coloracionMucosas[0];
 
   // Variables de la situación hospitalaria
   static String? dispositivoOxigeno = Items.dispositivosOxigeno[0],
@@ -36,17 +36,14 @@ class Exploracion {
 
   static final Map<String, dynamic> semiotica = {
     // "Glasgow": Listas.listOfRange(maxNum: 15, withNull: false),
-    "inspeccionGeneral": ['Alerta', 'Obnubilado', 'Somnoliento', 'Estuporoso'],
+    "inspeccionGeneral": Items.inspeccionGeneral,
     "aperturaOcular": Listas.listOfRange(maxNum: 4, withNull: false),
     "respuestaVerbal": Listas.listOfRange(maxNum: 5, withNull: false),
     "respuestaMotora": Listas.listOfRange(maxNum: 6, withNull: false),
   };
   static final Map<String, dynamic> aspectuales = {
-    "coloracionTegumentaria": [
-      'Sin palidez tegumentaria',
-      'Con palidez tegumentaria'
-    ],
-    "coloracionMucosas": ['Deshidratado', 'Hidratado'],
+    "coloracionTegumentaria": Items.coloracionTegumentaria,
+    "coloracionMucosas":  Items.coloracionMucosas,
     "RASS": Escalas.RASS,
     "Ramsay": Escalas.ramsay,
   };
@@ -232,6 +229,20 @@ class Exploracion {
           "Sin referencias por parte del paciente o el familiar";
 // Variables de Valoraciones
   static String? valoracionAsa, valoracionBromage, valoracionNyha;
+}
+
+class Vasoactivos{
+  /// Variables básicas
+  double? concentracion = 100, dilucion = 100, velocidad = 10;
+  double? pesoCorporalTotal = 0;
+
+  /// Principales Infusiones
+  static double? noradrenalina = 0.0;
+
+  /// Concentración de Noradrenalina suponiendo Concentración de 8 mg:100 mL
+  static getNoradrenalina() {
+    return ((noradrenalina! * 1000) / (Valores.pesoCorporalTotal! * 60)) / 10;
+  }
 }
 
 //child: GridView(

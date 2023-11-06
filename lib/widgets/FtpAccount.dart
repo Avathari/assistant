@@ -24,8 +24,9 @@ class _FtpAccountState extends State<FtpAccount> {
       user: "compuesto@luisr107.sg-host.com",
       pass: "SeRakin263",
       port: 21,
-      debug: true,
-      isSecured: false);
+      // debug: true,
+      // isSecured: false
+      );
   late List foundedItems = [];
 
   @override

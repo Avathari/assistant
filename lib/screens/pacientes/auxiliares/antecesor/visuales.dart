@@ -1,9 +1,13 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
-import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart'
+    as Gas;
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/dashboard.dart';
+import 'package:assistant/screens/pacientes/auxiliares/detalles/detalles.dart';
+import 'package:assistant/screens/pacientes/auxiliares/detalles/estadisticasVitales.dart';
+import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizado.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizados.dart';
 import 'package:assistant/screens/pacientes/auxiliares/presentaciones/antecedentesPersonales.dart';
 
@@ -40,6 +44,13 @@ import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/conmutadorPa
 import 'package:assistant/screens/pacientes/paraclinicos/operadores/laboratorios.dart';
 import 'package:assistant/screens/pacientes/patologicos/epidemiologicos.dart';
 import 'package:assistant/screens/pacientes/patologicos/patologicos.dart';
+import 'package:flutter/services.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/antropometricos.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/cardiovasculares.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/gasometricos.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/hidricos.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/metabolometrias.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/ventilatorios.dart';
 
 // ignore: must_be_immutable
 class VisualPacientes extends StatefulWidget {
@@ -60,6 +71,12 @@ class _VisualPacientesState extends State<VisualPacientes> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   @override
   Widget build(BuildContext context) {
+    /// ENFORCE DEVICE ORIENTATION PORTRAIT ONLY
+    if (isMobile(context)) {
+      SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    }
+
     return Scaffold(
       key: _key,
       resizeToAvoidBottomInset: true,
@@ -68,7 +85,6 @@ class _VisualPacientesState extends State<VisualPacientes> {
       endDrawer: _drawerForm(context),
       appBar: AppBar(
           foregroundColor: Colors.white,
-          //shape: CircularShapeBorder(),
           leading: isDesktop(context)
               ? IconButton(
                   icon: const Icon(
@@ -83,12 +99,16 @@ class _VisualPacientesState extends State<VisualPacientes> {
               : null,
           backgroundColor: Colors.black,
           centerTitle: true,
-          toolbarHeight: 80.0,
+          toolbarHeight: isLargeDesktop(context) ? 60.0 : 80.0,
           elevation: 0,
-          title: CircleIcon(
-              iconed: Icons.person,
-              tittle: Sentences.app_bar_usuarios,
-              onChangeValue: () {}),
+          title: isLargeDesktop(context)
+              ? AppBarText(Sentences.app_bar_usuarios)
+              : CircleIcon(
+                  iconed: Icons.person,
+                  tittle: Sentences.app_bar_usuarios,
+                  onChangeValue: () => ScaffoldMessenger.of(context)
+                      .showMaterialBanner(_presentacionPaciente(context)),
+                ),
           actions: <Widget>[
             GrandIcon(
                 iconData: Icons.menu_open_outlined,
@@ -121,6 +141,22 @@ class _VisualPacientesState extends State<VisualPacientes> {
     );
   }
 
+  @override
+  void dispose() {
+    scrollController.dispose();
+    scrollListController.dispose();
+
+    /// ENFORCE DEVICE ORIENTATION PORTRAIT ONLY
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+    super.dispose();
+  }
+
+  // ****************************************************
   Row mobileView() {
     return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Expanded(
@@ -145,6 +181,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
     ]);
   }
 
+  //
   void toNextScreen({context, int? index, screen}) {
     if (isMobile(context) || isTablet(context)) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => screen));
@@ -158,6 +195,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
   void cerrarCasoPaciente() {
     Pacientes.close();
     Reportes.close();
+    dispose();
 
     if (Directrices.coordenada!) {
       Navigator.push(
@@ -168,6 +206,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
     }
   }
 
+  // PANELES ************************************************
   Drawer drawerHome(BuildContext context) {
     return Drawer(
         shape: const RoundedRectangleBorder(
@@ -512,14 +551,6 @@ class _VisualPacientesState extends State<VisualPacientes> {
   var scrollController = ScrollController();
   var scrollListController = ScrollController();
 
-  @override
-  void dispose() {
-    scrollController.dispose();
-    scrollListController.dispose();
-
-    super.dispose();
-  }
-
   // COMPONENTES ************************************
   Widget modalBottomPanel(BuildContext context) => ListView(
         padding: const EdgeInsets.all(10),
@@ -631,6 +662,121 @@ class _VisualPacientesState extends State<VisualPacientes> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GrandIcon(
+                iconData: Icons.water_drop,
+                labelButton: 'Análisis Hidrico',
+                onPress: () {
+                  Operadores.openDialog(
+                      context: context, chyldrim: const Hidricos());
+                },
+              ),
+              GrandIcon(
+                iconData: Icons.bubble_chart,
+                labelButton: 'Análisis Metabólico',
+                onPress: () {
+                  Operadores.openDialog(
+                      context: context, chyldrim: const Metabolicos());
+                },
+              ),
+              GrandIcon(
+                iconData: Icons.horizontal_rule_sharp,
+                labelButton: 'Análisis Antropométrico',
+                onPress: () {
+                  Operadores.openDialog(
+                      context: context, chyldrim: const Antropometricos());
+                },
+              ),
+              GrandIcon(
+                iconData: Icons.monitor_heart_outlined,
+                labelButton: 'Análisis Cardiovascular',
+                onPress: () {
+                  Operadores.openDialog(
+                      context: context, chyldrim: const Cardiovasculares());
+                },
+              ),
+              GrandIcon(
+                iconData: Icons.all_inclusive_rounded,
+                labelButton: 'Análisis Ventilatorio',
+                onPress: () {
+                  Operadores.openDialog(
+                      context: context, chyldrim: const Ventilatorios());
+                },
+              ),
+              GrandIcon(
+                iconData: Icons.g_mobiledata,
+                labelButton: 'Análisis Gasométrico',
+                onPress: () {
+                  Operadores.openDialog(
+                      context: context, chyldrim: const Gasometricos());
+                },
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GrandIcon(
+                labelButton: 'Análisis Cerebrovascular',
+                onPress: () {
+                  Operadores.alertActivity(
+                      context: context,
+                      tittle: "¡Disculpas!",
+                      message: "Actividad en construcción");
+                  // Operadores.openDialog(
+                  //     context: context, chyldrim: const Hidricos());
+                },
+              ),
+              GrandIcon(
+                labelButton: 'Análisis Renal',
+                onPress: () {
+                  Operadores.alertActivity(
+                      context: context,
+                      tittle: "¡Disculpas!",
+                      message: "Actividad en construcción");
+                  // Operadores.openDialog(
+                  //     context: context, chyldrim: const Hidricos());
+                },
+              ),
+              GrandIcon(
+                labelButton: 'Análisis Sanguíneo Circulante',
+                onPress: () {
+                  Operadores.alertActivity(
+                      context: context,
+                      tittle: "¡Disculpas!",
+                      message: "Actividad en construcción");
+                  // Operadores.openDialog(
+                  //     context: context, chyldrim: const Hidricos());
+                },
+              ),
+              GrandIcon(
+                labelButton: 'Análisis Pulmonar',
+                onPress: () {
+                  Operadores.alertActivity(
+                      context: context,
+                      tittle: "¡Disculpas!",
+                      message: "Actividad en construcción");
+                  // Operadores.openDialog(
+                  //     context: context, chyldrim: const Hidricos());
+                },
+              ),
+              GrandIcon(
+                labelButton: 'Edad Corregida',
+                onPress: () {
+                  Operadores.alertActivity(
+                      context: context,
+                      tittle: "¡Disculpas!",
+                      message: "Actividad en construcción");
+                  // Operadores.openDialog(
+                  //     context: context, chyldrim: const Hidricos());
+                },
+              ),
+            ],
+          ),
+          CrossLine(height: 20, thickness: 3),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GrandIcon(
                 iconData: Icons.checklist_rtl,
                 labelButton: "Laboratorios",
                 onPress: () {
@@ -687,41 +833,34 @@ class _VisualPacientesState extends State<VisualPacientes> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GrandIcon(
-                iconData: Icons.g_mobiledata,
-                labelButton: "Gasometricos",
-                onPress: () =>
-                    Datos.portapapeles(
-                        context: context, text: Gasometricos.gasometricos)
-              ),
+                  iconData: Icons.g_mobiledata,
+                  labelButton: "Gasometricos",
+                  onPress: () => Datos.portapapeles(
+                      context: context, text: Gas.Gasometricos.gasometricos)),
               GrandIcon(
-                iconData: Icons.gesture,
-                labelButton: "Gasometricos Completo",
-                onPress: () =>
-                    Datos.portapapeles(
-                        context: context, text: Gasometricos.gasometricosCompleto)
-              ),
+                  iconData: Icons.gesture,
+                  labelButton: "Gasometricos Completo",
+                  onPress: () => Datos.portapapeles(
+                      context: context,
+                      text: Gas.Gasometricos.gasometricosCompleto)),
               GrandIcon(
                   iconData: Icons.grain_sharp,
                   labelButton: "Gasometricos Medial",
-                  onPress: () =>
-                      Datos.portapapeles(
-                          context: context, text: Gasometricos.gasometricosMedial)
-              ),
+                  onPress: () => Datos.portapapeles(
+                      context: context,
+                      text: Gas.Gasometricos.gasometricosMedial)),
               GrandIcon(
                   iconData: Icons.blinds_closed,
                   labelButton: "Reposición de Bicarbonato",
-                  onPress: () =>
-                      Datos.portapapeles(
-                          context: context, text: Gasometricos.gasometricosBicarbonato)
-              ),
-
+                  onPress: () => Datos.portapapeles(
+                      context: context,
+                      text: Gas.Gasometricos.gasometricosBicarbonato)),
               GrandIcon(
-                iconData: Icons.nest_cam_wired_stand_outlined,
+                  iconData: Icons.nest_cam_wired_stand_outlined,
                   labelButton: "Gasometricos Nombrado",
-                onPress: () =>
-                    Datos.portapapeles(
-                        context: context, text: Gasometricos.gasometricosNombrado)
-              ),
+                  onPress: () => Datos.portapapeles(
+                      context: context,
+                      text: Gas.Gasometricos.gasometricosNombrado)),
             ],
           ),
           CrossLine(height: 20, thickness: 3),
@@ -795,14 +934,11 @@ class _VisualPacientesState extends State<VisualPacientes> {
                   child: CircleIcon(
                       difRadios: 15,
                       iconed: Icons.line_weight_sharp,
-                      onChangeValue: () => showDialog(
-                          context: context,
-                          builder: (context) {
-                            return imageDialog(Pacientes.nombreCompleto,
-                                Pacientes.imagenPaciente, () {
-                              Navigator.of(context).pop();
-                            });
-                          })),
+                      onChangeValue: () {
+                        _key.currentState!.closeEndDrawer();
+                        ScaffoldMessenger.of(context)
+                            .showMaterialBanner(_presentacionPaciente(context));
+                      }),
                 ),
               ),
               Expanded(flex: 10, child: Column(children: sidePanel(context))),
@@ -859,7 +995,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
                   tittle: "Exploraciones y Analisis . . . ",
                   onChangeValue: () {
                     _key.currentState!.closeEndDrawer();
-                    Cambios.toNextPage(context,  const Semiologicos());
+                    Cambios.toNextPage(context, Semiologicos());
                   },
                 ),
               ),
@@ -882,15 +1018,25 @@ class _VisualPacientesState extends State<VisualPacientes> {
             });
           },
         ),
-    CrossLine(thickness: 1),
-    GrandIcon(
-      iconData: Icons.medical_information,
-      labelButton: "Vitales abreviado . . . ",
-        onPress: () {
-        _key.currentState!.closeEndDrawer();
-        Datos.portapapeles(context: context, text: Antropometrias.vitalesAbreviado);
-        }),
-    CrossLine(thickness: 1, height: 15),
+        CrossLine(thickness: 1),
+        GrandIcon(
+            iconData: Icons.medical_services_outlined,
+            labelButton: "Hospitalizaciones",
+            onPress: () {
+              _key.currentState!.closeEndDrawer();
+              ScaffoldMessenger.of(context)
+                  .showMaterialBanner(_hospitalizacion(context));
+            }),
+        CrossLine(thickness: 1),
+        GrandIcon(
+            iconData: Icons.medical_information,
+            labelButton: "Vitales abreviado . . . ",
+            onPress: () {
+              _key.currentState!.closeEndDrawer();
+              Datos.portapapeles(
+                  context: context, text: Antropometrias.vitalesAbreviado);
+            }),
+        CrossLine(thickness: 1, height: 15),
       ];
 
   downPanel(BuildContext context) {}
@@ -949,60 +1095,43 @@ class _VisualPacientesState extends State<VisualPacientes> {
       ),
     ];
   }
-}
 
+  MaterialBanner _presentacionPaciente(BuildContext context) => MaterialBanner(
+        padding: const EdgeInsets.all(5.0),
+        content: Detalles(withImage: isMobile(context) ? false : true),
+        backgroundColor: Colors.black,
+        forceActionsBelow: true,
+        overflowAlignment: OverflowBarAlignment.center,
+        actions: <Widget>[
+          TextButton(
+            onPressed: () =>
+                ScaffoldMessenger.of(context).clearMaterialBanners(),
+            child: const Text('Cerrar . . . '),
+          ),
+        ],
+      );
 
+  MaterialBanner _hospitalizacion(BuildContext context) => MaterialBanner(
+        padding: const EdgeInsets.all(5.0),
+        content: Pacientes.esHospitalizado == true
+            ? Hospitalizado()
+            : const EstadisticasVitales(),
+        backgroundColor: Colors.black,
+        forceActionsBelow: true,
+        overflowAlignment: OverflowBarAlignment.center,
+        actions: <Widget>[
+          TextButton(
+            onPressed: () =>
+                ScaffoldMessenger.of(context).clearMaterialBanners(),
+            child: const Text('Cerrar . . . '),
+          ),
+        ],
+      );
 
-class CircularShapeBorder extends ContinuousRectangleBorder {
-  @override
-  Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
-    const double innerCircleRadius = 50.0;
-    const int constant = 10;
-
-    final double height = rect.height - 10;
-
-    Path path = Path();
-
-    path.lineTo(0, height);
-    path.quadraticBezierTo(rect.width / 2 - (innerCircleRadius / 2) - 15,
-        rect.height, rect.width / 2 - 75, rect.height + 10);
-    path.cubicTo(
-        rect.width / 2 - constant,
-        height + innerCircleRadius - constant,
-        rect.width / 2 + constant,
-        height + innerCircleRadius - constant,
-        rect.width / 2 + 75,
-        height + 20);
-    path.quadraticBezierTo(rect.width / 2 + (innerCircleRadius / 2) + 15,
-        rect.height, rect.width, rect.height);
-    path.lineTo(rect.width, 0.0);
-    path.close();
-
-    return path;
-  }
-}
-
-class CustomShapeBorder extends ContinuousRectangleBorder {
-  @override
-  Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
-    const double innerCircleRadius = 150.0;
-
-    Path path = Path();
-    path.lineTo(0, rect.height);
-    path.quadraticBezierTo(rect.width / 2 - (innerCircleRadius / 2) - 30,
-        rect.height + 15, rect.width / 2 - 75, rect.height + 50);
-    path.cubicTo(
-        rect.width / 2 - 40,
-        rect.height + innerCircleRadius - 40,
-        rect.width / 2 + 40,
-        rect.height + innerCircleRadius - 40,
-        rect.width / 2 + 75,
-        rect.height + 50);
-    path.quadraticBezierTo(rect.width / 2 + (innerCircleRadius / 2) + 30,
-        rect.height + 15, rect.width, rect.height);
-    path.lineTo(rect.width, 0.0);
-    path.close();
-
-    return path;
-  }
+// onChangeValue: () => showModalBottomSheet(
+//     context: context,
+//     backgroundColor: Colors.black,
+//     builder: (BuildContext context) {
+//       return const Center(child: Detalles());
+//     })
 }

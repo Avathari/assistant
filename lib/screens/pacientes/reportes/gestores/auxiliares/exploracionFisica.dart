@@ -192,7 +192,7 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                 asignarExploracion(indice: 1);
               },
               onLongPress: () {
-                Operadores.openDialog(context: context, chyldrim: const Semiologicos(), onAction: () {
+                Operadores.openDialog(context: context, chyldrim: Semiologicos(), onAction: () {
                   setState(() {
                     expoTextController.text = Exploracion.exploracionGeneral;
                   });
@@ -261,7 +261,7 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                 asignarExploracion(indice: 1);
               },
               onLongPress: () {
-                Operadores.openDialog(context: context, chyldrim: const Semiologicos(), onAction: () {
+                Operadores.openDialog(context: context, chyldrim: Semiologicos(), onAction: () {
                   setState(() {
                     expoTextController.text = Exploracion.exploracionGeneral;
                   });
@@ -338,7 +338,7 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                 asignarExploracion(indice: 1);
               },
               onLongPress: () {
-                Operadores.openDialog(context: context, chyldrim: const Semiologicos(), onAction: () {
+                Operadores.openDialog(context: context, chyldrim: Semiologicos(), onAction: () {
                   setState(() {
                     expoTextController.text = Exploracion.exploracionGeneral;
                   });

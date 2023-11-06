@@ -276,7 +276,7 @@ class FlowVerticalDelegate extends FlowDelegate {
   void paintChildren(FlowPaintingContext context) {
     const buttonSize = 46;
     const buttonRadius = buttonSize / 2;
-    const buttonMargin = 10;
+    const buttonMargin = 20;
 
     final xPosition = context.size.width - buttonSize;
     final yPosition = context.size.height - buttonSize;

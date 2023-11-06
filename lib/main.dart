@@ -26,6 +26,11 @@ class App extends StatelessWidget {
         primaryIconTheme: const IconThemeData(color: Colors.white),
         colorSchemeSeed: const Color(0xff6750a4),
         useMaterial3: true,
+        buttonTheme: const ButtonThemeData(
+          buttonColor: Colors.blueAccent,
+          shape: RoundedRectangleBorder(),
+          textTheme: ButtonTextTheme.accent,
+        ),
       ),
       // darkTheme: ThemeData(primarySwatch: Colors.grey),
       // color: Colors.grey,

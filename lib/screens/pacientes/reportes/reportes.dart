@@ -15,7 +15,6 @@ import 'package:assistant/screens/pacientes/intensiva/procedimientos/intubacionE
 import 'package:assistant/screens/pacientes/intensiva/procedimientos/sondaEndopleural.dart';
 import 'package:assistant/screens/pacientes/intensiva/valoraciones/aereos.dart';
 import 'package:assistant/screens/pacientes/intensiva/valoraciones/prequirurgicos.dart';
-import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/auxiliaresReportes.dart';
 import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteFormats/formatosReportes.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/indicaciones.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/semiologicos.dart';
@@ -30,9 +29,7 @@ import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporte
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
-import 'package:assistant/widgets/AppBarText.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
-import 'package:assistant/widgets/CircleLabel.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
@@ -226,12 +223,17 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       floatingActionButton: floattingActionButton(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: bottomNavigationBar(context),
-      body:
-          isMobile(context) || isTablet(context) ? mobileView() : desktopView(),
+      body: isMobile(context) || isTablet(context)
+          ? _mobileView()
+          : isDesktop(context)
+              ? _desktopView()
+              : _largeDesktopView(),
     );
   }
 
   void onClose(BuildContext context) {
+    dispose();
+    //
     Navigator.of(context).push(MaterialPageRoute(
         builder: (BuildContext context) => VisualPacientes(
               actualPage: 0,
@@ -239,7 +241,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
   }
 
   // ******************************************************
-  Column mobileView() {
+  Column _mobileView() {
     return Column(
       children: [
         // Expanded(
@@ -275,17 +277,26 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
     );
   }
 
-  Row desktopView() {
+  Container _desktopView() {
+    return Container(
+      padding: const EdgeInsets.all(15.0),
+      margin: const EdgeInsets.all(8.0),
+      decoration: ContainerDecoration.containerDecoration(),
+      child: pantallasReportesMedicos(widget.actualPage),
+    );
+  }
+
+  Row _largeDesktopView() {
     return Row(
       children: [
-        Expanded(
-            flex: 2,
-            child: Container(
-              padding: const EdgeInsets.all(8.0),
-              margin: const EdgeInsets.all(8.0),
-              decoration: ContainerDecoration.containerDecoration(),
-              child: sideLeft(),
-            )),
+        // Expanded(
+        //     flex: 2,
+        //     child: Container(
+        //       padding: const EdgeInsets.all(8.0),
+        //       margin: const EdgeInsets.all(8.0),
+        //       decoration: ContainerDecoration.containerDecoration(),
+        //       child: sideLeft(),
+        //     )),
         Expanded(
             flex: 8,
             child: Container(
@@ -294,14 +305,14 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               decoration: ContainerDecoration.containerDecoration(),
               child: pantallasReportesMedicos(widget.actualPage),
             )),
-        Expanded(
-            flex: 1,
-            child: Container(
-              padding: const EdgeInsets.all(8.0),
-              margin: const EdgeInsets.all(8.0),
-              decoration: ContainerDecoration.containerDecoration(),
-              child: sideRight(),
-            )),
+        // Expanded(
+        //     flex: 1,
+        //     child: Container(
+        //       padding: const EdgeInsets.all(8.0),
+        //       margin: const EdgeInsets.all(8.0),
+        //       decoration: ContainerDecoration.containerDecoration(),
+        //       child: sideRight(),
+        //     )),
       ],
     );
   }
@@ -778,11 +789,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       const CateterTenckhoff(), // 15 :
       Container(), // 16 : Punción Lumbar
       const ReporteTransfusion(), // 17 : Reporte de Transfusión
-      TerapiasItems(
-        esCorto: true,
-      ), // 18: Evaluación de Terapia
+      TerapiasItems(esCorto: true), // 18: Evaluación de Terapia
       Revisiones(), // 19 : Revisión
-      const Semiologicos(), // 20 : Revisión
+      Semiologicos(withoutAppBar: true), // 20 : Revisión
       const Concentraciones(), // 21 : Concentraciones
     ];
 

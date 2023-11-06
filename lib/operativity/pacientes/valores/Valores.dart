@@ -2952,6 +2952,15 @@ class Items {
     'Retroactiva'
   ];
 
+  static List<String> coloracionTegumentaria = [
+    'Sin palidez tegumentaria',
+    'Con palidez tegumentaria'
+  ];
+
+  static List<String> coloracionMucosas = ['Deshidratado', 'Hidratado'];
+
+  static List<String> inspeccionGeneral = ['Alerta', 'Obnubilado', 'Somnoliento', 'Estuporoso'];
+
   static List<String> get orderOfCamas {
     List<String> list = [];
     list.add('N/A');

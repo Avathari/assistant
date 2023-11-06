@@ -31,10 +31,10 @@ class _GrandButtonState extends State<GrandButton> {
     return Container(
       decoration: ContainerDecoration.roundedDecoration(),
       padding: isMobile(context)
-          ? const EdgeInsets.all(4.0)
+          ? const EdgeInsets.all(2.0)
           : const EdgeInsets.all(8.0),
       margin: isMobile(context)
-          ? const EdgeInsets.all(4.0)
+          ? const EdgeInsets.all(2.0)
           : const EdgeInsets.all(8.0),
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(

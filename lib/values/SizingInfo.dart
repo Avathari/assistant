@@ -27,9 +27,9 @@ bool isDesktop(BuildContext context) {
 }
 
 bool isLargeDesktop(BuildContext context) {
-  return MediaQuery.of(context).size.width > desktopNormal // desktopNormal
-      &&
-      MediaQuery.of(context).size.width <= desktopExtraLarge;
+  return MediaQuery.of(context).size.width > desktopNormal; // desktopNormal
+      //&&
+      //MediaQuery.of(context).size.width <= desktopExtraLarge;
 }
 
 // print("MediaQuery.of(context).size.width  ${MediaQuery.of(context).size.width}");
