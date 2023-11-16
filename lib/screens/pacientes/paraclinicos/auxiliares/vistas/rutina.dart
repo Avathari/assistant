@@ -1200,6 +1200,8 @@ class _RutinasState extends State<Rutinas> {
         );
       }
     }).whenComplete(() {
+      Pacientes.getParaclinicosHistorial(reload: true);
+      //
       Navigator.of(context).pop(); // Cierre del LoadActivity
       Operadores.alertActivity(
           context: context,
@@ -1213,6 +1215,8 @@ class _RutinasState extends State<Rutinas> {
             Navigator.of(context).pop(); // Cierre del AlertActivity
           });
     }).onError((error, stackTrace) {
+      Pacientes.getParaclinicosHistorial(reload: true);
+      //
       Terminal.printAlert(message: "ERROR - $error : : : $stackTrace");
       Operadores.alertActivity(
         context: context,

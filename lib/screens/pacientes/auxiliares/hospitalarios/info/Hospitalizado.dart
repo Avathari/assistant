@@ -46,12 +46,34 @@ class Internado {
     pendientesRepositoryPath = "${localRepositoryPath}pendientes.json";
 
     imagenologicosRepositoryPath = "${localRepositoryPath}imagenologias.json";
-    electrocardiogramasRepositoryPath = "${localRepositoryPath}electrocardiogramas.json";
+    electrocardiogramasRepositoryPath =
+        "${localRepositoryPath}electrocardiogramas.json";
     paraclinicosRepositoryPath = "${localRepositoryPath}paraclinicos.json";
     //
     Terminal.printExpected(
         message: "localRepositoryPath : : $localRepositoryPath");
     Terminal.printExpected(message: "nombreCompleto : : $nombreCompleto");
+  }
+
+  // OPERABLES *******************************************
+  Map<String, dynamic> toJson() {
+    return {
+      "generales": generales,
+      "hospitalizedData": hospitalizedData,
+      "padecimientoActual": padecimientoActual,
+      "vitales": vitales,
+      "patologicos": patologicos,
+      "diagnosticos": diagnosticos,
+      "paraclinicos": paraclinicos,
+      "pendientes": pendientes,
+      "imagenologicos": imagenologicos,
+      "electrocardiogramas": electrocardiogramas,
+      "ventilaciones": ventilaciones,
+    };
+  }
+
+  void fromJson(Map<String, dynamic> json) {
+
   }
 
   // FUNCTIONS *******************************************
@@ -70,7 +92,7 @@ class Internado {
         "ORDER BY ID_Hosp ASC",
         idPaciente,
       ).then((value) {
-        idHospitalizado = value['ID_Hosp'];
+        idHospitalizado = value['ID_Hosp'] ?? 0;
         return hospitalizedData = value;
       });
 

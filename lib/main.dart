@@ -26,6 +26,7 @@ class App extends StatelessWidget {
         primaryIconTheme: const IconThemeData(color: Colors.white),
         colorSchemeSeed: const Color(0xff6750a4),
         useMaterial3: true,
+        cardColor: Theming.bdColor,
         buttonTheme: const ButtonThemeData(
           buttonColor: Colors.blueAccent,
           shape: RoundedRectangleBorder(),

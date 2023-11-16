@@ -37,7 +37,7 @@ class _TittleContainerState extends State<TittleContainer> {
         left: widget.centered == true ? 100 : 5,
         top: 0,
         child: Container(
-          color: widget.color!,
+          color: widget.color! != Theming.bdColor ? widget.color! : Theme.of(context).cardColor,// widget.color!,
           margin: const EdgeInsets.only(left: 10, right: 10, top: 2),
           padding: const EdgeInsets.only(left: 10, right: 10, top: 0),
           child: Text(widget.tittle!,

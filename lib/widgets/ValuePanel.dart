@@ -1,7 +1,5 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
-import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
-import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:flutter/material.dart';
 
 class ValuePanel extends StatefulWidget {
@@ -36,6 +34,12 @@ class _ValuePanelState extends State<ValuePanel> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        Datos.portapapeles(context: context, text: "${widget.firstText!} ${widget.secondText!} ${widget.thirdText!}");
+      },
+      onDoubleTap: () {
+        widget.onEdit!(widget.secondText!);
+      },
+      onLongPress: () {
         showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -83,10 +87,8 @@ class _ValuePanelState extends State<ValuePanel> {
                   ),
                 ),
               );
+
             });
-      },
-      onDoubleTap: () {
-        widget.onEdit!(widget.secondText!);
       },
       child: Container(
         width: 2000,
@@ -96,9 +98,11 @@ class _ValuePanelState extends State<ValuePanel> {
             : null,
         padding: EdgeInsets.all(widget.padding),
         margin: EdgeInsets.all(widget.margin),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
+          alignment: WrapAlignment.center,
+          runAlignment: WrapAlignment.center,
+          direction: Axis.vertical,
           children: [
             Text(widget.firstText!,
                 maxLines: 2,

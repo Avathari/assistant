@@ -125,11 +125,12 @@ class _EditTextAreaState extends State<EditTextArea> {
               ? Expanded(
                   flex: isTablet(context) ? 2 : isMobile(context) ? 3  : 2,
                   child: Container(
-                    padding: const EdgeInsets.all(1.0),
-                    margin: const EdgeInsets.all(2.0),
+                    padding: const EdgeInsets.all(0.5),
+                    margin: const EdgeInsets.all(1.0),
                     decoration: ContainerDecoration.roundedDecoration(),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    child: Wrap(
+                      alignment: WrapAlignment.center,
+                      crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
                         GrandIcon(
                           labelButton: "Ver",

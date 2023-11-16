@@ -1,6 +1,9 @@
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 
 class Hidrometrias {
+  static double get deltaSodio =>
+      (sodioInfundido! - Valores.sodio!) / (aguaCorporalTotal + 1);
+
   // CALCULOS HIDRICOS ****************************************
   static double get requerimientoHidrico {
     if (Valores.pesoCorporalTotal != 0 && Valores.pesoCorporalTotal != null) {
@@ -42,6 +45,7 @@ class Hidrometrias {
     }
   }
 
+  // CALCULOS POTASIO ****************************************
   static double get SOL => (aguaCorporalTotal * osmolaridadSerica);
 
   static double get LIC => aguaCorporalTotal * 0.666;
@@ -56,14 +60,18 @@ class Hidrometrias {
 
   static double get VS => aguaCorporalTotal * 0.037;
 
+  static double get kalemiaPorPeriferico =>
+      0.25 * Valores.pesoCorporalTotal!; // 0.2 - 0.3 mEq/Kg/Hr [ 40 mEq/L]
+  static double get kalemiaPorCentral =>
+      0.75 * Valores.pesoCorporalTotal!; // 0.5 - 1.0 mEq/Kg/Hr [ 80 mEq/L]
+
+  // CALCULOS POTASIO ****************************************
   static double get deficitSodio {
     if (Valores.sodio != 0 && Valores.sodio != null) {
-      if (Valores.sodio! < 120) {
-        return 120 - Valores.sodio!;
-      } else if (Valores.sodio! > 120 && Valores.sodio! < 120) {
-        return (130 - Valores.sodio!) * aguaCorporalTotal;
-      } else if (Valores.sodio! > 130) {
-        return 120 - Valores.sodio!;
+      if (Valores.sodio! < 130) {
+        return (130 - Valores.sodio!) * (aguaCorporalTotal);
+      } else if (Valores.sodio! >= 130) {
+        return 130 - Valores.sodio!;
       } else {
         return 0.0;
       }
@@ -214,16 +222,40 @@ class Hidrometrias {
   }
 
   // CONCLUSIONES
+  static String get hidricosGeneral =>
+      "Requerimiento hídrico diario: ${requerimientoHidrico.toStringAsFixed(0)} mL/dia (${constanteRequerimientos.toStringAsFixed(0)} mL/Kg/dia), "
+      "agua corporal total ${aguaCorporalTotal.toStringAsFixed(1)} mL, "
+      "delta H2O ${excesoAguaLibre.toStringAsFixed(1)} L, "
+      "deficit de agua corporal ${deficitAguaCorporal.toStringAsFixed(1)} L. "
+      "osmolaridad ${osmolaridadSerica.toStringAsFixed(1)} mOsm/L, "
+      "brecha osmolar ${brechaOsmolar.toStringAsFixed(1)} mOsm/L. "
+      "$sodioCorregido"
+      "Requerimiento de potasio ${requerimientoPotasio.toStringAsFixed(1)}, delta de potasio ${deltaPotasio.toStringAsFixed(1)} mmol/L; "
+      "delta de sodio ${deficitSodio.toStringAsFixed(1)} mEq/L. ";
+
   static String get hidricos =>
-      "Requerimiento hídrico diario: ${requerimientoHidrico.toStringAsFixed(0)} mL/dia ($constanteRequerimientos mL/Kg/dia), "
-          "agua corporal total ${aguaCorporalTotal.toStringAsFixed(1)} mL, "
-          "delta H2O ${excesoAguaLibre.toStringAsFixed(1)} L, "
-          "deficit de agua corporal ${deficitAguaCorporal.toStringAsFixed(1)} L. "
-          "osmolaridad ${osmolaridadSerica.toStringAsFixed(1)} mOsm/L, "
-          "brecha osmolar ${brechaOsmolar.toStringAsFixed(1)} mOsm/L. "
-          "$sodioCorregido"
-          "Requerimiento de potasio ${requerimientoPotasio.toStringAsFixed(1)}, delta de potasio ${deltaPotasio.toStringAsFixed(1)} mmol/L; "
-          "delta de sodio ${deficitSodio.toStringAsFixed(1)} mEq/L. ";
+      "Requerimiento hídrico diario: ${requerimientoHidrico.toStringAsFixed(0)} mL/dia (${constanteRequerimientos.toStringAsFixed(0)} mL/Kg/dia), "
+      "agua corporal total ${aguaCorporalTotal.toStringAsFixed(1)} mL, "
+      "delta H2O ${excesoAguaLibre.toStringAsFixed(1)} L, "
+      "osmolaridad sérica ${osmolaridadSerica.toStringAsFixed(0)} mOsm/L, "
+      "";
+
+  static String get sodios => "$sodioCorregido"
+      "Reposición de sodio ${reposicionSodio.toStringAsFixed(1)} mEq/L, "
+      "déficit de sodio ${deficitSodio.toStringAsFixed(1)} mEq/L, "
+      "delta de sodio ${deltaSodio.toStringAsFixed(1)} mEq/L, "
+      "";
+
+  static String get potasios =>
+      "Requerimiento basal de potasio ${requerimientoBasalPotasio.toStringAsFixed(1)} mEq/L, "
+      "Requerimiento de potasio ${reposicionPotasio.toStringAsFixed(1)} mEq/L ("
+      "${((reposicionPotasio / 3) * 1).toStringAsFixed(2)} mEq/L : ${((reposicionPotasio / 3) * 2).toStringAsFixed(2)} mEq/L), "
+      "velocidad de infusión "
+      "${kalemiaPorPeriferico.toStringAsFixed(2)} mEq/Hr (Periférico), "
+      "${kalemiaPorCentral.toStringAsFixed(2)} mEq/Hr (Central), "
+      "delta de potasio ${deltaPotasio.toStringAsFixed(1)} mEq/L, "
+      "potasio ajustado a pH ${pHKalemia.toStringAsFixed(1)} mEq/L, "
+      "";
 
   static String get sodioCorregido {
     if (Valores.glucosa! > 200) {
@@ -232,13 +264,15 @@ class Hidrometrias {
       return "";
     }
   }
-  // FÓRMULAS
+
+  // Variables
   static int? constante = 00;
+  static int? sodioInfundido = 00;
 
   // CONSTANTES
   static double constanteRequerimientos = 30;
 
- // RELACIONES
+  // RELACIONES
   static double get osmolaridadSerica {
     if (Valores.sodio != 0 &&
         Valores.sodio != null &&
@@ -257,5 +291,4 @@ class Hidrometrias {
   }
 
   static double get brechaOsmolar => (290.00 - (osmolaridadSerica));
-
 }

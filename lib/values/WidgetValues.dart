@@ -201,7 +201,7 @@ class Carousel {
                     ? 1600
                     : isDesktop(context)
                         ? 800
-                        : 450,
+                        : 1000,
         enableInfiniteScroll: false,
         viewportFraction: 1.0);
   }

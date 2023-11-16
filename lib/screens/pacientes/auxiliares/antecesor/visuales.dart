@@ -16,6 +16,7 @@ import 'package:assistant/screens/pacientes/auxiliares/revisiones/generales.dart
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisiones.dart';
 import 'package:assistant/screens/pacientes/epidemiologicos/licencias.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/hematinicos.dart';
 import 'package:assistant/screens/pacientes/intensiva/herramientas.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/paraclinicos.dart';
@@ -65,6 +66,9 @@ class VisualPacientes extends StatefulWidget {
 class _VisualPacientesState extends State<VisualPacientes> {
   @override
   void initState() {
+    Pacientes.getValores();
+    Pacientes.getParaclinicosHistorial();
+    //
     super.initState();
   }
 
@@ -130,6 +134,9 @@ class _VisualPacientesState extends State<VisualPacientes> {
               backgroundColor: Theming.terciaryColor,
               child: const Icon(Icons.filter_list, color: Colors.grey),
               onPressed: () {
+                Pacientes.getValores();
+                Pacientes.getParaclinicosHistorial();
+                //
                 showModalBottomSheet(
                     context: context,
                     backgroundColor: Theming.cuaternaryColor,
@@ -176,7 +183,11 @@ class _VisualPacientesState extends State<VisualPacientes> {
             : sideBarDesktop(context),
       ),
       Expanded(
-          flex: isLargeDesktop(context) ? 14 : 7,
+          flex: isLargeDesktop(context)
+              ? 14
+              : isDesktop(context)
+                  ? 8
+                  : 7,
           child: pantallasAuxiliares(widget.actualPage)),
     ]);
   }
@@ -665,8 +676,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
                 iconData: Icons.water_drop,
                 labelButton: 'Análisis Hidrico',
                 onPress: () {
-                  Operadores.openDialog(
-                      context: context, chyldrim: const Hidricos());
+                  Cambios.toNextActivity(context, chyld: const Hidricos());
                 },
               ),
               GrandIcon(
@@ -716,14 +726,10 @@ class _VisualPacientesState extends State<VisualPacientes> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GrandIcon(
-                labelButton: 'Análisis Cerebrovascular',
+                iconData: Icons.accessibility,
+                labelButton: 'Análisis de Hemáticos',
                 onPress: () {
-                  Operadores.alertActivity(
-                      context: context,
-                      tittle: "¡Disculpas!",
-                      message: "Actividad en construcción");
-                  // Operadores.openDialog(
-                  //     context: context, chyldrim: const Hidricos());
+                  Cambios.toNextActivity(context, chyld: const Hematinicos());
                 },
               ),
               GrandIcon(
@@ -826,6 +832,20 @@ class _VisualPacientesState extends State<VisualPacientes> {
                       text: Auxiliares.getUltimo(esAbreviado: true));
                 },
               ),
+              GrandIcon(
+                iconData: Icons.linear_scale_rounded,
+                labelButton: "Actual e Historial",
+                onPress: () {
+                  Datos.portapapeles(
+                      context: context,
+                      text: Auxiliares.getUltimo(withoutInsighs: true));
+                },
+                onLongPress: () {
+                  Datos.portapapeles(
+                      context: context,
+                      text: Auxiliares.historial(withoutInsighs: true));
+                },
+              ),
             ],
           ),
           CrossLine(height: 20, thickness: 3),
@@ -906,6 +926,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
           ),
           CrossLine(height: 20, thickness: 3),
           ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
               onPressed: () => Navigator.of(context).pop(),
               child: const Text(
                 "Cerrar",

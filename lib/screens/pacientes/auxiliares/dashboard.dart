@@ -220,111 +220,29 @@ class _DashboardState extends State<Dashboard> {
   Padding desktopView() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Row(
         children: [
           Expanded(
-              child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-
-            ],
-          )),
-          const SizedBox(height: 6),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                    child: RoundedPanel(
+                      child: const Degenerativos(),
+                    )),
+                const SizedBox(height: 6),
+                Expanded(
+                    child: RoundedPanel(
+                      child: const Diagnosis(),
+                    )),
+                const SizedBox(height: 6),
+              ],
+            ),
+          ),
+          const SizedBox(width: 6),
           Expanded(
-              flex: 1,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                      child: RoundedPanel(
-                    child: const Degenerativos(),
-                  )),
-                  const SizedBox(width: 6),
-                  Expanded(
-                      child: RoundedPanel(
-                    child: const Diagnosis(),
-                  )),
-                  const SizedBox(width: 6),
-                  Expanded(
-                      child: RoundedPanel(
-                    child: SingleChildScrollView(
-                      controller: ScrollController(),
-                      child: Column(
-                        children: [
-                          GrandLabel(
-                            iconData: Icons.padding,
-                            fontSized: 14,
-                            labelButton: 'Pendientes de la Atención',
-                            onPress: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    GestionPendiente(),
-                              ));
-                            },
-                          ),
-                          TittlePanel(
-                            textPanel: Pacientes.modoAtencion,
-                          ),
-                          GrandLabel(
-                            iconData: Icons.local_hospital,
-                            fontSized: 14,
-                            labelButton: Pacientes.esHospitalizado == true
-                                ? 'Egresar paciente'
-                                : 'Hospitalizar paciente',
-                            onPress: () async {
-
-                              // Navigator.of(context).push(MaterialPageRoute(
-                              //   builder: (BuildContext context) =>
-                              //       GestionPendiente(),
-                              // ));
-                              // final respo = await Pacientes.hospitalizar();
-                              // // Actualizar vista.
-                              // setState(() {
-                              //   if (respo) {
-                              //     Valores.modoAtencion = 'Hospitalización';
-                              //     Pacientes.modoAtencion = 'Hospitalización';
-                              //     // Actualizar valores de Hospitalización.
-                              //     Valores.isHospitalizado = respo;
-                              //     Pacientes.esHospitalizado = respo;
-                              //
-                              //     // asyncHospitalizar(context);
-                              //     Operadores.openActivity(
-                              //       context: context,
-                              //       chyldrim: const OpcionesHospitalizacion(),
-                              //       onAction: () {},
-                              //     );
-                              //   } else {
-                              //     Valores.modoAtencion = 'Consulta Externa';
-                              //     Pacientes.modoAtencion = 'Consulta Externa';
-                              //     // Actualizar valores de Hospitalización.
-                              //     Valores.isHospitalizado = respo;
-                              //     Pacientes.esHospitalizado = respo;
-                              //   }
-                              // });
-                              //
-                            },
-                          ),
-                          CrossLine(),
-                          GrandLabel(
-                            iconData: Icons.padding,
-                            fontSized: 14,
-                            labelButton: 'Registro de Hospitalizaciones',
-                            onPress: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    GestionHospitalizaciones(),
-                              ));
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  )),
-                ],
-              ))
+            flex: 3,
+            child: Revisiones()),
         ],
       ),
     );

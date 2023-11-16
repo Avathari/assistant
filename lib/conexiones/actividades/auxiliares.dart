@@ -206,33 +206,33 @@ class Archivos {
   }
 
   static createJsonFromMap(List<dynamic> map, {String filePath = ''}) async {
-    Terminal.printWarning(message: 'Creando archivo JSON en $filePath');
+    // Terminal.printWarning(message: 'Creando archivo JSON en $filePath');
     if (Platform.isAndroid) {
       final directory = await getTemporaryDirectory();
       final File file = File("${directory.path}/$filePath");
       if (await file.exists()) {
         file.writeAsStringSync(json.encode(map));
-        Terminal.printExpected(
-            message: "Obtenido desde ${directory.path}/$filePath");
+/*        Terminal.printExpected(
+            message: "Obtenido desde ${directory.path}/$filePath");*/
       } else {
         file.create(recursive: true).then((value) {
           file.writeAsStringSync(json.encode(map));
-          Terminal.printExpected(
-              message: "Obtenido desde ${directory.path}/$filePath");
+          // Terminal.printExpected(
+          //     message: "Obtenido desde ${directory.path}/$filePath");
         }).onError((error, stackTrace) {
-          Terminal.printAlert(
-              message: "Error: $error desde ${directory.path}/$filePath");
+          /*Terminal.printAlert(
+              message: "Error: $error desde ${directory.path}/$filePath");*/
         });
       }
     } else {
       final File file = File(filePath);
       if (await file.exists()) {
         file.writeAsStringSync(json.encode(map));
-        Terminal.printExpected(message: "Obtenido desde $filePath");
+        // Terminal.printExpected(message: "Obtenido desde $filePath");
       } else {
         file.create(recursive: true).then((value) {
           file.writeAsStringSync(json.encode(map));
-          Terminal.printExpected(message: "Obtenido desde $filePath");
+          // Terminal.printExpected(message: "Obtenido desde $filePath");
         }).onError((error, stackTrace) {
           Terminal.printAlert(message: "Error: $error desde $filePath");
         });

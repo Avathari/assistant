@@ -3,16 +3,21 @@ import 'package:assistant/operativity/pacientes/valores/Valorados/hidrometrias.d
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CrossLine.dart';
+import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
-import 'package:assistant/widgets/ShowText.dart';
+import 'package:assistant/widgets/TittleContainer.dart';
+import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
+import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Hidricos extends StatefulWidget {
   const Hidricos({Key? key}) : super(key: key);
@@ -24,349 +29,635 @@ class Hidricos extends StatefulWidget {
 class _HidricosState extends State<Hidricos> {
   var carouselController = CarouselController();
 
+  var sodioInfundidoTextController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TittlePanel(color: Colors.black, textPanel: 'Análisis Hídrico'),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+    return TittleContainer(
+      centered: true,
+      color: Colors.black,
+      tittle: "Análisis Hídrico",
+      child: Column(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Wrap(
+                spacing: 18.0,
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GrandIcon(
+                    iconData: Icons.fiber_manual_record_sharp,
+                    labelButton: 'Datos Iniciales',
+                    onPress: () {
+                      setState(() {
+                        carouselController.jumpToPage(0);
+                      });
+                    },
+                  ),
+                  GrandIcon(
+                    iconData: Icons.add_chart,
+                    labelButton: 'Análisis Hídrico',
+                    onPress: () {
+                      setState(() {
+                        carouselController.jumpToPage(1);
+                      });
+                    },
+                  ),
+                  GrandIcon(
+                    iconData: Icons.settings_backup_restore,
+                    labelButton: 'Correciones',
+                    onPress: () {
+                      setState(() {
+                        carouselController.jumpToPage(2);
+                      });
+                    },
+                  ),
+                  GrandIcon(
+                    iconData: Icons.compress_outlined,
+                    labelButton: 'Osmolaridad',
+                    onPress: () {
+                      setState(() {
+                        carouselController.jumpToPage(3);
+                      });
+                    },
+                  ),
+                  GrandIcon(
+                    iconData: Icons.change_circle_outlined,
+                    labelButton: 'Reposiciones',
+                    onPress: () {
+                      setState(() {
+                        carouselController.jumpToPage(4);
+                      });
+                    },
+                  ),
+                  GrandIcon(
+                    iconData: Icons.water_drop_outlined,
+                    labelButton: 'Líquidos Corporales',
+                    onPress: () {
+                      setState(() {
+                        carouselController.jumpToPage(5);
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 9,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                GrandIcon(
-                  iconData: Icons.dataset,
-                  labelButton: 'Datos Iniciales',
-                  onPress: () {
-                    setState(() {
-                      carouselController.jumpToPage(0);
-                    });
-                  },
-                ),
-                GrandIcon(
-                  iconData: Icons.add_chart,
-                  labelButton: 'Análisis Hídrico',
-                  onPress: () {
-                    setState(() {
-                      carouselController.jumpToPage(1);
-                    });
-                  },
-                ),
-                GrandIcon(
-                  iconData: Icons.settings_backup_restore,
-                  labelButton: 'Correciones',
-                  onPress: () {
-                    setState(() {
-                      carouselController.jumpToPage(2);
-                    });
-                  },
-                ),
-                GrandIcon(
-                  iconData: Icons.compress_outlined,
-                  labelButton: 'Osmolaridad',
-                  onPress: () {
-                    setState(() {
-                      carouselController.jumpToPage(3);
-                    });
-                  },
-                ),
-                GrandIcon(
-                  iconData: Icons.change_circle_outlined,
-                  labelButton: 'Reposiciones',
-                  onPress: () {
-                    setState(() {
-                      carouselController.jumpToPage(4);
-                    });
-                  },
-                ),
-                GrandIcon(
-                  iconData: Icons.water_drop_outlined,
-                  labelButton: 'Líquidos Corporales',
-                  onPress: () {
-                    setState(() {
-                      carouselController.jumpToPage(5);
-                    });
-                  },
+                Expanded(
+                    flex: isTablet(context) || isMobile(context) ? 2 : 1,
+                    child: valoresIniciales(context)),
+                Expanded(
+                  flex: isTablet(context) ? 5 : 3,
+                  child: CarouselSlider(
+                      items: [
+                        SingleChildScrollView(
+                          controller: ScrollController(),
+                          child: TittleContainer(
+                            color: Colors.black,
+                            tittle: "Análisis Hídrico",
+                            child: Column(
+                              children: [
+                                isMobile(context) || isTablet(context)
+                                    ? Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          ValuePanel(
+                                            firstText: 'Req. Hídrico',
+                                            secondText: Hidrometrias
+                                                .requerimientoHidrico
+                                                .toStringAsFixed(0),
+                                            thirdText: 'mL',
+                                          ),
+                                          Slider(
+                                            value: Hidrometrias
+                                                .constanteRequerimientos,
+                                            max: 65,
+                                            divisions: 65,
+                                            label: Hidrometrias
+                                                .constanteRequerimientos
+                                                .round()
+                                                .toString(),
+                                            onChanged: (double value) {
+                                              setState(() {
+                                                Hidrometrias
+                                                        .constanteRequerimientos =
+                                                    value;
+                                              });
+                                            },
+                                          ),
+                                        ],
+                                      )
+                                    : Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: ValuePanel(
+                                              firstText: 'Req. Hídrico',
+                                              secondText: Hidrometrias
+                                                  .requerimientoHidrico
+                                                  .toString(),
+                                              thirdText: 'mL',
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 2,
+                                            child: Slider(
+                                              value: Hidrometrias
+                                                  .constanteRequerimientos,
+                                              max: 65,
+                                              divisions: 65,
+                                              label: Hidrometrias
+                                                  .constanteRequerimientos
+                                                  .round()
+                                                  .toString(),
+                                              onChanged: (double value) {
+                                                setState(() {
+                                                  Hidrometrias
+                                                          .constanteRequerimientos =
+                                                      value;
+                                                });
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                CrossLine(height: 10),
+                                ValuePanel(
+                                  firstText: 'Agua Corporal Total',
+                                  secondText: Hidrometrias.aguaCorporalTotal
+                                      .toStringAsFixed(2),
+                                  thirdText: 'L',
+                                ),
+                                ValuePanel(
+                                  firstText: 'Déf. H2O',
+                                  secondText: Hidrometrias.deficitAguaCorporal
+                                      .toStringAsFixed(2),
+                                  thirdText: 'mL',
+                                ),
+                                ValuePanel(
+                                  firstText: 'Exceso de Agua Libre',
+                                  secondText: Hidrometrias.excesoAguaLibre
+                                      .toStringAsFixed(2),
+                                  thirdText: 'mL',
+                                ),
+                                CrossLine(height: 10),
+                                isMobile(context) || isTablet(context)
+                                    ? Column(
+                                        children: [
+                                          ValuePanel(
+                                            firstText: 'Osmolaridad Sérica',
+                                            secondText: Hidrometrias
+                                                .osmolaridadSerica
+                                                .toStringAsFixed(2),
+                                            thirdText: 'Osm/mL',
+                                          ),
+                                          ValuePanel(
+                                            firstText: 'Brecha Osmolar',
+                                            secondText: Hidrometrias
+                                                .brechaOsmolar
+                                                .toStringAsFixed(2),
+                                            thirdText: 'Osm/mL',
+                                          ),
+                                        ],
+                                      )
+                                    : Row(
+                                        children: [
+                                          Expanded(
+                                            child: ValuePanel(
+                                              firstText: 'Osmolaridad Sérica',
+                                              secondText: Hidrometrias
+                                                  .osmolaridadSerica
+                                                  .toStringAsFixed(2),
+                                              thirdText: 'Osm/mL',
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: ValuePanel(
+                                              firstText: 'Brecha Osmolar',
+                                              secondText: Hidrometrias
+                                                  .brechaOsmolar
+                                                  .toStringAsFixed(2),
+                                              thirdText: 'Osm/mL',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                CrossLine(height: 10),
+                                CircleIcon(
+                                  radios: 30,
+                                  tittle:
+                                      'Copiar Análisis Hídrico en Portapapeles',
+                                  iconed: Icons.copy_rounded,
+                                  onChangeValue: () => Datos.portapapeles(
+                                      context: context,
+                                      text: Hidrometrias.hidricos),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SingleChildScrollView(
+                          controller: ScrollController(),
+                          child: TittleContainer(
+                            color: Colors.black,
+                            tittle: 'Análisis de Sodio',
+                            child: Column(children: [
+                              ValuePanel(
+                                firstText: 'Sodio Corregido',
+                                secondText: Hidrometrias.sodioCorregidoGlucosa
+                                    .toStringAsFixed(2),
+                                thirdText: 'mEq/L',
+                              ),
+                              CrossLine(),
+                              ValuePanel(
+                                firstText: 'Reposición de Sodio',
+                                secondText: Hidrometrias.reposicionSodio
+                                    .toStringAsFixed(2),
+                                thirdText: 'mEq/L',
+                              ),
+                              ValuePanel(
+                                firstText: 'Delta Sodio',
+                                secondText: Hidrometrias.deficitSodio
+                                    .toStringAsFixed(2),
+                                thirdText: 'mEq/L',
+                              ),
+                              CrossLine(),
+                              isMobile(context) || isTablet(context)
+                                  ? Column(
+                                      children: [
+                                        EditTextArea(
+                                          labelEditText: 'Sodio Infundido',
+                                          numOfLines: 1,
+                                          textController:
+                                              sodioInfundidoTextController,
+                                          keyBoardType: TextInputType.number,
+                                          inputFormat: MaskTextInputFormatter(
+                                            mask: '####',
+                                            filter: {"#": RegExp(r'[0-9]')},
+                                            type: MaskAutoCompletionType.lazy,
+                                          ),
+                                          onChange: (String value) {
+                                            setState(() {
+                                              Hidrometrias.sodioInfundido =
+                                                  int.parse(value);
+                                            });
+                                          },
+                                          selection: true,
+                                          withShowOption: true,
+                                          onSelected: () {},
+                                        ),
+                                        ValuePanel(
+                                          firstText: 'Delta Sodio',
+                                          secondText: Hidrometrias.deltaSodio
+                                              .toStringAsFixed(2),
+                                          thirdText: 'mEq/L',
+                                        ),
+                                      ],
+                                    )
+                                  : Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 2,
+                                          child: EditTextArea(
+                                            labelEditText: 'Sodio Infundido',
+                                            numOfLines: 1,
+                                            textController:
+                                                sodioInfundidoTextController,
+                                            keyBoardType: TextInputType.number,
+                                            inputFormat: MaskTextInputFormatter(
+                                              mask: '####',
+                                              filter: {"#": RegExp(r'[0-9]')},
+                                              type: MaskAutoCompletionType.lazy,
+                                            ),
+                                            onChange: (String value) {
+                                              setState(() {
+                                                Hidrometrias.sodioInfundido =
+                                                    int.parse(value);
+                                              });
+                                            },
+                                            selection: true,
+                                            withShowOption: true,
+                                            onSelected: () {},
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: ValuePanel(
+                                            firstText: 'Delta Sodio',
+                                            secondText: Hidrometrias.deltaSodio
+                                                .toStringAsFixed(2),
+                                            thirdText: 'mEq/L',
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                              CrossLine(),
+                              CircleIcon(
+                                radios: 30,
+                                tittle:
+                                    'Copiar Análisis Hídrico en Portapapeles',
+                                iconed: Icons.copy_rounded,
+                                onChangeValue: () => Datos.portapapeles(
+                                    context: context,
+                                    text: Hidrometrias.sodios),
+                              ),
+                            ]),
+                          ),
+                        ),
+                        SingleChildScrollView(
+                          controller: ScrollController(),
+                          child: TittleContainer(
+                            tittle: 'Análisis de Potasio',
+                            color: Colors.black,
+                            child: Column(children: [
+                              isMobile(context) || isTablet(context)
+                                  ? Column(
+                                      children: [
+                                        ValuePanel(
+                                          firstText: 'Req. Basal Potasio',
+                                          secondText: Hidrometrias
+                                              .requerimientoBasalPotasio
+                                              .toStringAsFixed(2),
+                                          thirdText: 'mEq/L',
+                                        ),
+                                        ValuePanel(
+                                          firstText: 'Req. Potasio',
+                                          secondText: Hidrometrias
+                                              .requerimientoPotasio
+                                              .toStringAsFixed(2),
+                                          thirdText: 'mEq/L',
+                                        ),
+                                      ],
+                                    )
+                                  : Row(
+                                      children: [
+                                        Expanded(
+                                          child: ValuePanel(
+                                            firstText: 'Req. Basal Potasio',
+                                            secondText: Hidrometrias
+                                                .requerimientoBasalPotasio
+                                                .toStringAsFixed(2),
+                                            thirdText: 'mEq/L',
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: ValuePanel(
+                                            firstText: 'Req. Potasio',
+                                            secondText: Hidrometrias
+                                                .requerimientoPotasio
+                                                .toStringAsFixed(2),
+                                            thirdText: 'mEq/L',
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                              CrossLine(),
+                              ValuePanel(
+                                firstText: 'Reposición Potasio',
+                                secondText: Hidrometrias.reposicionPotasio
+                                    .toStringAsFixed(2),
+                                thirdText: 'mEq/L',
+                              ),
+                              isMobile(context) || isTablet(context)
+                                  ? Column(
+                                      children: [
+                                        ValuePanel(
+                                          firstText: 'Rep. K+ 1/3',
+                                          secondText:
+                                              ((Hidrometrias.reposicionPotasio /
+                                                          3) *
+                                                      1)
+                                                  .toStringAsFixed(2),
+                                          thirdText: 'mEq/L',
+                                        ),
+                                        ValuePanel(
+                                          firstText: 'Rep. K+ 2/3',
+                                          secondText:
+                                              ((Hidrometrias.reposicionPotasio /
+                                                          3) *
+                                                      2)
+                                                  .toStringAsFixed(2),
+                                          thirdText: 'mEq/L',
+                                        ),
+                                      ],
+                                    )
+                                  : Row(
+                                      children: [
+                                        Expanded(
+                                          child: ValuePanel(
+                                            firstText: 'Rep. K+ 1/3',
+                                            secondText: ((Hidrometrias
+                                                            .reposicionPotasio /
+                                                        3) *
+                                                    1)
+                                                .toStringAsFixed(2),
+                                            thirdText: 'mEq/L',
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: ValuePanel(
+                                            firstText: 'Rep. K+ 2/3',
+                                            secondText: ((Hidrometrias
+                                                            .reposicionPotasio /
+                                                        3) *
+                                                    2)
+                                                .toStringAsFixed(2),
+                                            thirdText: 'mEq/L',
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                              CrossLine(),
+                              ValuePanel(
+                                firstText: 'Repo. Periférica',
+                                secondText: Hidrometrias.kalemiaPorPeriferico
+                                    .toStringAsFixed(2),
+                                thirdText: 'mEq/Hr',
+                              ),
+                              ValuePanel(
+                                firstText: 'Repo. Central',
+                                secondText: Hidrometrias.kalemiaPorCentral
+                                    .toStringAsFixed(2),
+                                thirdText: 'mEq/Hr',
+                              ),
+                              CrossLine(),
+                              ValuePanel(
+                                firstText: 'Delta Potasio',
+                                secondText: Hidrometrias.deltaPotasio
+                                    .toStringAsFixed(2),
+                                thirdText: 'mEq/L',
+                              ),
+                              ValuePanel(
+                                firstText: 'pH / Potasio',
+                                secondText:
+                                    Hidrometrias.pHKalemia.toStringAsFixed(2),
+                                thirdText: 'mEq/L',
+                              ),
+                              CrossLine(),
+                              TittlePanel(
+                                  textPanel: Hidrometrias.kalemia,
+                                  fontSize: 11),
+                              CrossLine(height: 10),
+                              CircleIcon(
+                                radios: 30,
+                                tittle:
+                                    'Copiar Análisis Hídrico en Portapapeles',
+                                iconed: Icons.copy_rounded,
+                                onChangeValue: () => Datos.portapapeles(
+                                    context: context,
+                                    text: Hidrometrias.potasios),
+                              ),
+                            ]),
+                          ),
+                        ),
+                        SingleChildScrollView(
+                          controller: ScrollController(),
+                          child: TittleContainer(
+                            tittle: 'Análisis de Calcio',
+                            color: Colors.black,
+                            child: Column(children: [
+                              ValuePanel(
+                                firstText: 'Calcio Corregido',
+                                secondText: Hidrometrias.calcioCorregidoAlbumina
+                                    .toStringAsFixed(2),
+                                thirdText: 'mEql/L',
+                              ),
+                            ]),
+                          ),
+                        ),
+                        SingleChildScrollView(
+                          controller: ScrollController(),
+                          child: Column(children: [
+                            ValuePanel(
+                              firstText: 'Líquido Intracelular',
+                              secondText: Hidrometrias.LI.toStringAsFixed(2),
+                              thirdText: 'L',
+                            ),
+                            ValuePanel(
+                              firstText: 'Líquido Extracelular',
+                              secondText: Hidrometrias.LEC.toStringAsFixed(2),
+                              thirdText: 'L',
+                            ),
+                            ValuePanel(
+                              firstText: 'Líquido Intersticial',
+                              secondText: Hidrometrias.LIC.toStringAsFixed(2),
+                              thirdText: 'L',
+                            ),
+                            ValuePanel(
+                              firstText: 'Líquido Intravascular',
+                              secondText: Hidrometrias.LIV.toStringAsFixed(2),
+                              thirdText: 'L',
+                            ),
+                            ValuePanel(
+                              firstText: 'Volumen Plasmático',
+                              secondText: Hidrometrias.volumenPlasmatico
+                                  .toStringAsFixed(2),
+                              thirdText: 'L',
+                            ),
+                            CrossLine(),
+                            ValuePanel(
+                              firstText: 'Volumen Sanguíneo',
+                              secondText:
+                                  Valores.volemiaAproximada.toStringAsFixed(2),
+                              thirdText: 'L',
+                            ),
+                            ValuePanel(
+                              firstText: 'Solutos Corporales',
+                              secondText: Hidrometrias.SOL.toStringAsFixed(2),
+                              thirdText: 'mOsm',
+                            ),
+                          ]),
+                        ),
+                        //
+                        SingleChildScrollView(
+                          controller: ScrollController(),
+                          child: Column(children: []),
+                        ),
+                      ],
+                      carouselController: carouselController,
+                      options: Carousel.carouselOptions(context: context)),
                 ),
               ],
             ),
           ),
-        ),
-        Expanded(
-          flex: 7,
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: CarouselSlider(
-                items: [
-                  SingleChildScrollView(
-                    controller: ScrollController(),
-                    child: Column(
-                      children: [
-                        ShowText(
-                          title: 'Peso Corporal Total',
-                          data: Valores.pesoCorporalTotal,
-                          medida: 'Kg',
-                        ),
-                        ShowText(
-                          title: 'Sodio',
-                          data: Valores.sodio,
-                          medida: 'mEq/L',
-                        ),
-                        ShowText(
-                          title: 'Potasio',
-                          data: Valores.potasio,
-                          medida: 'mEq/L',
-                        ),
-                        ShowText(
-                          title: 'Cloro',
-                          data: Valores.cloro,
-                          medida: 'mg/dL',
-                        ),
-                        ShowText(
-                          title: 'Fósforo',
-                          data: Valores.fosforo,
-                          medida: 'mg/dL',
-                        ),
-                        ShowText(
-                          title: 'Magnesio',
-                          data: Valores.magnesio,
-                          medida: 'mg/dL',
-                        ),
-                        ShowText(
-                          title: 'Calcio',
-                          data: Valores.calcio,
-                          medida: 'mg/dL',
-                        ),
-                        CrossLine(),
-                        ShowText(
-                          title: 'Glucosa',
-                          data: Valores.glucosa,
-                          medida: 'mg/dL',
-                        ),
-                        ShowText(
-                          title: 'Urea',
-                          data: Valores.urea,
-                          medida: 'mg/dL',
-                        ),
-                      ],
-                    ),
-                  ),
-                  SingleChildScrollView(
-                    controller: ScrollController(),
-                    child: Column(
-                      children: [
-                        isMobile(context) || isTablet(context)
-                            ? Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  ShowText(
-                                    title: 'Requerimiento Hídrico',
-                                    data: Hidrometrias.requerimientoHidrico,
-                                    medida: 'mL',
-                                  ),
-                                  Slider(
-                                    value: Hidrometrias
-                                        .constanteRequerimientos,
-                                    max: 65,
-                                    divisions: 65,
-                                    label: Hidrometrias
-                                        .constanteRequerimientos.round().toString(),
-                                    onChanged: (double value) {
-                                      setState(() {
-                                        Hidrometrias
-                                            .constanteRequerimientos = value;
-                                      });
-                                    },
-                                  ),
-                                ],
-                              )
-                            : Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: ShowText(
-                                      title: 'Requerimiento Hídrico',
-                                      data: Hidrometrias.requerimientoHidrico,
-                                      medida: 'mL',
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 2,
-                                    child: Slider(
-                                      value: Hidrometrias
-                                          .constanteRequerimientos,
-                                      max: 65,
-                                      divisions: 65,
-                                      label: Hidrometrias
-                                          .constanteRequerimientos.round().toString(),
-                                      onChanged: (double value) {
-                                        setState(() {
-                                          Hidrometrias
-                                              .constanteRequerimientos = value;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                        ShowText(
-                          title: 'Agua Corporal Total',
-                          data: Hidrometrias.aguaCorporalTotal,
-                          medida: 'L',
-                        ),
-                        ShowText(
-                          title: 'Déficit de Agua Corporal',
-                          data: Hidrometrias.deficitAguaCorporal,
-                          medida: 'mL',
-                        ),
-                        ShowText(
-                          title: 'Exceso de Agua Libre',
-                          data: Hidrometrias.excesoAguaLibre,
-                          medida: 'mL',
-                        ),
-                        ShowText(
-                          title: 'Delta Sodio',
-                          data: Hidrometrias.deficitSodio,
-                          medida: 'mEq/L',
-                        ),
-                        ShowText(
-                          title: 'Sodio Corregido',
-                          data: Hidrometrias.sodioCorregidoGlucosa,
-                          medida: 'mEq/L',
-                        ),
-                      ],
-                    ),
-                  ),
-                  SingleChildScrollView(
-                    controller: ScrollController(),
-                    child: Column(children: [
-                      ShowText(
-                        title: 'Sodio Corregido',
-                        data: Hidrometrias.sodioCorregidoGlucosa,
-                        medida: 'mEq/L',
-                      ),
-                      ShowText(
-                        title: 'Calcio Corregido',
-                        data: Hidrometrias.calcioCorregidoAlbumina,
-                        medida: 'mEql/L',
-                      ),
-                      ShowText(
-                        title: 'Volumen Plasmático',
-                        data: Hidrometrias.volumenPlasmatico,
-                        medida: 'L',
-                      ),
-                      ShowText(
-                        title: 'Volumen Sanguíneo',
-                        data: Valores.volemiaAproximada,
-                        medida: 'L',
-                      ),
-                      ShowText(
-                        title: 'Solutos Corporales',
-                        data: Hidrometrias.SOL,
-                        medida: 'mOsm',
-                      ),
-                    ]),
-                  ),
-                  SingleChildScrollView(
-                    controller: ScrollController(),
-                    child: Column(children: [
-                      ShowText(
-                        title: 'Osmolaridad Sérica',
-                        data: Hidrometrias.osmolaridadSerica,
-                        medida: 'Osm/mL',
-                      ),
-                      ShowText(
-                        title: 'Brecha Osmolar',
-                        data: Hidrometrias.brechaOsmolar,
-                        medida: 'Osm/mL',
-                      ),
-                    ]),
-                  ),
-                  SingleChildScrollView(
-                    controller: ScrollController(),
-                    child: Column(children: [
-                      ShowText(
-                        title: 'Déficit de Sodio',
-                        data: Hidrometrias.deficitSodio,
-                        medida: 'mEq/L',
-                      ),
-                      ShowText(
-                        title: 'Reposición de Sodio',
-                        data: Hidrometrias.reposicionSodio,
-                        medida: 'mEq/L',
-                      ),
-                      ShowText(
-                        title: 'Requerimiento Basal Potasio',
-                        data: Hidrometrias.requerimientoBasalPotasio,
-                        medida: 'mEq/L',
-                      ),
-                      ShowText(
-                        title: 'Requerimiento Potasio',
-                        data: Hidrometrias.requerimientoPotasio,
-                        medida: 'mEq/L',
-                      ),
-                      ShowText(
-                        title: 'Reposición Potasio',
-                        data: Hidrometrias.reposicionPotasio,
-                        medida: 'mEq/L',
-                      ),
-                      ShowText(
-                        title: 'Delta Potasio',
-                        data: Hidrometrias.deltaPotasio,
-                        medida: 'mEq/L',
-                      ),
-                      ShowText(
-                        title: 'pH / Potasio',
-                        data: Hidrometrias.pHKalemia,
-                        medida: 'mEq/L',
-                      ),
-                      TittlePanel(textPanel: Hidrometrias.kalemia),
-                    ]),
-                  ),
-                  SingleChildScrollView(
-                    controller: ScrollController(),
-                    child: Column(children: [
-                      ShowText(
-                        title: 'Líquido Intracelular',
-                        data: Hidrometrias.LI,
-                        medida: 'L',
-                      ),
-                      ShowText(
-                        title: 'Líquido Extracelular',
-                        data: Hidrometrias.LEC,
-                        medida: 'L',
-                      ),
-                      ShowText(
-                        title: 'Líquido Intersticial',
-                        data: Hidrometrias.LIC,
-                        medida: 'L',
-                      ),
-                      ShowText(
-                        title: 'Líquido Intravascular',
-                        data: Hidrometrias.LIV,
-                        medida: 'L',
-                      ),
-                    ]),
-                  ),
-                ],
-                carouselController: carouselController,
-                options: Carousel.carouselOptions(context: context)),
+          Expanded(
+            child: GrandButton(
+              weigth: 2000,
+              labelButton: "Copiar en Portapapeles",
+              onPress: () {
+                Datos.portapapeles(
+                    context: context, text: Hidrometrias.hidricos);
+              },
+            ),
           ),
-        ),
-        Expanded(
-          child: GrandButton(
-            weigth: 2000,
-            labelButton: "Copiar en Portapapeles",
-            onPress: () {
-              Datos.portapapeles(
-                  context: context, text: Hidrometrias.hidricos);
-            },
+        ],
+      ),
+    );
+  }
+
+  TittleContainer valoresIniciales(BuildContext context) {
+    return TittleContainer(
+      color: Colors.black,
+      tittle: "Valores Iniciales",
+      child: SingleChildScrollView(
+        controller: ScrollController(),
+        child: Wrap(children: [
+          ValuePanel(
+            firstText: 'PCT',
+            secondText: Valores.pesoCorporalTotal.toString(),
+            thirdText: 'Kg',
           ),
-        ),
-      ],
+          CrossLine(),
+          ValuePanel(
+            firstText: 'Sodio',
+            secondText: Valores.sodio.toString(),
+            thirdText: 'mEq/L',
+          ),
+          ValuePanel(
+            firstText: 'Potasio',
+            secondText: Valores.potasio.toString(),
+            thirdText: 'mEq/L',
+          ),
+          ValuePanel(
+            firstText: 'Cloro',
+            secondText: Valores.cloro.toString(),
+            thirdText: 'mg/dL',
+          ),
+          ValuePanel(
+            firstText: 'Fósforo',
+            secondText: Valores.fosforo.toString(),
+            thirdText: 'mg/dL',
+          ),
+          ValuePanel(
+            firstText: 'Magnesio',
+            secondText: Valores.magnesio.toString(),
+            thirdText: 'mg/dL',
+          ),
+          ValuePanel(
+            firstText: 'Calcio',
+            secondText: Valores.calcio.toString(),
+            thirdText: 'mg/dL',
+          ),
+          CrossLine(),
+          ValuePanel(
+            firstText: 'Glucosa',
+            secondText: Valores.glucosa.toString(),
+            thirdText: 'mg/dL',
+          ),
+          ValuePanel(
+            firstText: 'Urea',
+            secondText: Valores.urea.toString(),
+            thirdText: 'mg/dL',
+          ),
+        ]),
+      ),
     );
   }
 }

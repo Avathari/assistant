@@ -1,5 +1,6 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/citometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/hepatometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/globulares.dart';
@@ -39,22 +40,25 @@ class _RevisionesState extends State<Revisiones> {
   void initState() {
     Terminal.printWarning(
         message:
-            " . . . Iniciando Actividad - Repositorio Paraclinicos del Pacientes");
-    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
-      setState(() {
-        Valores.fromJson(value[0]);
-        Terminal.printSuccess(
-            message: 'Repositorio de Valores obtenido . . . '); // ${value[0]}
-      });
-    }).onError((error, stackTrace) {
-      Terminal.printAlert(
-          message: " . . . Actividad no iniciada : $error \n: : $stackTrace");
-    }).whenComplete(() {
-      setState(() {
-        Auxiliares.registros();
-        Terminal.printOther(message: " . . . Actividad Iniciada");
-      });
-    });
+            " . . . Iniciando Actividad - Repositorio Paraclinicos del Pacientes : : $fileAssocieted");
+    Pacientes.getValores();
+    Pacientes.getParaclinicosHistorial(reload: true);
+    // Pacientes.getParaclinicosHistorial();
+    // Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+    //   setState(() {
+    //     Valores.fromJson(value[0]);
+    //     Terminal.printSuccess(
+    //         message: 'Repositorio de Valores obtenido . . . '); // ${value[0]}
+    //   });
+    // }).onError((error, stackTrace) {
+    //   Terminal.printAlert(
+    //       message: " . . . Actividad no iniciada : $error \n: : $stackTrace");
+    // }).whenComplete(() {
+    //   setState(() {
+    //     Auxiliares.registros();
+    //     Terminal.printOther(message: " . . . Actividad Iniciada");
+    //   });
+    // });
     super.initState();
   }
 
@@ -315,7 +319,7 @@ class _RevisionesState extends State<Revisiones> {
                               decoration:
                                   ContainerDecoration.roundedDecoration(),
                               child: widget.actualView == 0
-                                  ? Container()
+                                  ? principal(context)
                                   : widget.actualView == 1
                                       ? biometrias()
                                       : widget.actualView == 2
@@ -918,7 +922,7 @@ class _RevisionesState extends State<Revisiones> {
               margin: const EdgeInsets.only(bottom: 12.0, top: 12.0),
               decoration: ContainerDecoration.roundedDecoration(),
               child: widget.actualView == 0
-                  ? Container()
+                  ? principal(context)
                   : widget.actualView == 1
                       ? biometrias()
                       : widget.actualView == 2
@@ -973,13 +977,15 @@ class _RevisionesState extends State<Revisiones> {
             child: Container(
               decoration: ContainerDecoration.roundedDecoration(),
               margin: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(top: 16.0),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Expanded(
                     flex: 10,
                     child: Wrap(
                       direction: Axis.vertical,
-                      alignment: WrapAlignment.center,
+                      alignment: WrapAlignment.start,
                       crossAxisAlignment: WrapCrossAlignment.center,
                       spacing: 8.0,
                       runSpacing: 8.0,
@@ -1128,7 +1134,6 @@ class _RevisionesState extends State<Revisiones> {
             flex: 2,
             child: Container(
               decoration: ContainerDecoration.roundedDecoration(),
-              margin: const EdgeInsets.all(8.0),
               child: Center(
                 child: Wrap(
                   direction: Axis.vertical,
@@ -1259,17 +1264,15 @@ class _RevisionesState extends State<Revisiones> {
   // **** ********** ********* *****************
   Column biometrias() {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Expanded(
-          flex: isMobile(context) ? 1 : 1,
-          child: ValuePanel(
-            firstText: "",
-            secondText: Valores.fechaBiometria.toString(),
-            thirdText: "",
-          ),
+        ValuePanel(
+          firstText: "",
+          secondText: Valores.fechaBiometria.toString(),
+          thirdText: "",
         ),
         Expanded(
-          flex: 8,
+          flex: 1,
           child: GridView(
             padding: const EdgeInsets.all(5.0),
             controller: ScrollController(),
@@ -1498,6 +1501,30 @@ class _RevisionesState extends State<Revisiones> {
             ],
           ),
         ),
+        Wrap(
+          children: [
+            ValuePanel(
+              firstText: "",
+              secondText: Citometrias.esAnemia(),
+              thirdText: "",
+            ),
+            ValuePanel(
+              firstText: "",
+              secondText: Citometrias.aspectoEritrocitario(),
+              thirdText: "",
+            ),
+            ValuePanel(
+              firstText: "",
+              secondText: Citometrias.tamanoEritrocitario(),
+              thirdText: "",
+            ),
+            ValuePanel(
+              firstText: "Indice Metzner",
+              secondText: Citometrias.indiceMetzner.toStringAsFixed(2),
+              thirdText: "",
+            ),
+          ],
+        )
       ],
     );
   }
@@ -2079,12 +2106,10 @@ class _RevisionesState extends State<Revisiones> {
   Column hepaticos() {
     return Column(
       children: [
-        Expanded(
-          child: ValuePanel(
-            firstText: "",
-            secondText: Valores.fechaHepaticos.toString(),
-            thirdText: "",
-          ),
+        ValuePanel(
+          firstText: "",
+          secondText: Valores.fechaHepaticos.toString(),
+          thirdText: "",
         ),
         Expanded(
           flex: 8,
@@ -2147,24 +2172,29 @@ class _RevisionesState extends State<Revisiones> {
                 thirdText: "g/dL",
               ),
               CrossLine(),
-              ValuePanel(
-                firstText: "AST/ALT",
-                secondText: Hepatometrias.relacionASTALT.toStringAsFixed(2),
-                thirdText: "",
-              ),
-              ValuePanel(
-                firstText: "ALT/FA",
-                secondText: Hepatometrias.relacionALTFA.toStringAsFixed(2),
-                thirdText: "",
-              ),
-              ValuePanel(
-                firstText: "Factor R",
-                secondText: Hepatometrias.factorR.toStringAsFixed(2),
-                thirdText: "",
-              ),
+
             ],
           ),
         ),
+        Wrap(
+          children: [
+            ValuePanel(
+              firstText: "AST/ALT",
+              secondText: Hepatometrias.relacionASTALT.toStringAsFixed(2),
+              thirdText: "",
+            ),
+            ValuePanel(
+              firstText: "ALT/FA",
+              secondText: Hepatometrias.relacionALTFA.toStringAsFixed(2),
+              thirdText: "",
+            ),
+            ValuePanel(
+              firstText: "Factor R",
+              secondText: Hepatometrias.factorR.toStringAsFixed(2),
+              thirdText: "",
+            ),
+          ],
+        )
       ],
     );
   }
@@ -2487,5 +2517,10 @@ class _RevisionesState extends State<Revisiones> {
         // ),
       ],
     );
+  }
+
+  // **** ********** ********* *****************
+  Widget? principal(BuildContext context) {
+    return Container();
   }
 }

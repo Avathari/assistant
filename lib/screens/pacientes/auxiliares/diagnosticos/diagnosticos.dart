@@ -1,6 +1,7 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 
@@ -20,26 +21,26 @@ class _DiagnosisState extends State<Diagnosis> {
 
   @override
   void initState() {
-    Terminal.printWarning(
-        message: " . . . Iniciando Actividad - Antecedentes Degenerativos");
+/*    Terminal.printWarning(
+        message: " . . . Iniciando Actividad - Antecedentes Degenerativos");*/
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       setState(() {
         Pacientes.Diagnosticos = value;
-        Terminal.printSuccess(
-            message: "Diagnósticos de la hospitalizacion del paciente . . . ");
+        // Terminal.printSuccess(
+        //     message: "Diagnósticos de la hospitalizacion del paciente . . . ");
       });
     }).onError((error, stackTrace) {
-      Terminal.printAlert(
-          message: "Iniciando actividad : : \n "
-              "Consulta de Antecedentes Degenerativos . . .");
+      // Terminal.printAlert(
+      //     message: "Iniciando actividad : : \n "
+      //         "Consulta de Antecedentes Degenerativos . . .");
       Actividades.consultarAllById(
           Databases.siteground_database_reghosp,
           Diagnosticos.diagnosticos['consultByIdPrimaryQuery'],
           Pacientes.ID_Paciente)
           .then((value) {
         setState(() {
-          Terminal.printSuccess(
-              message: "Actualizando Diagnósticos de la hospitalizacion del paciente . . . ");
+          // Terminal.printSuccess(
+          //     message: "Actualizando Diagnósticos de la hospitalizacion del paciente . . . ");
           Pacientes.Diagnosticos = value;
           Archivos.createJsonFromMap(Pacientes.Diagnosticos!, filePath: fileAssocieted);
         });
@@ -53,7 +54,7 @@ class _DiagnosisState extends State<Diagnosis> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TittlePanel(padding: 5, textPanel: 'Diagnóstico(s) en la Hospitalización'),
+        TittlePanel(padding: 5, textPanel: 'Diagnóstico(s) en la Hospitalización', fontSize: 11),
         Expanded(
             flex: 3,
             child: ListView.separated(
@@ -77,7 +78,7 @@ class _DiagnosisState extends State<Diagnosis> {
                                 Text(
                                   Pacientes.Diagnosticos![index]
                                   ['Pace_APP_DEG_com'],
-                                  style: Styles.textSyleGrowth(fontSize: 16),
+                                  style: Styles.textSyleGrowth(fontSize: isDesktop(context) ? 10: 16),
                                   maxLines: 5,
                                 ),
                                 Text(
@@ -90,7 +91,7 @@ class _DiagnosisState extends State<Diagnosis> {
                                   Pacientes.Diagnosticos![index]
                                   ['Pace_APP_DEG_tra'],
                                   maxLines: 10,
-                                  style: Styles.textSyleGrowth(),
+                                  style: Styles.textSyleGrowth(fontSize: isDesktop(context) ? 8: 14),
                                 ),
                                 Text(
                                   Pacientes.Diagnosticos![index]
@@ -105,24 +106,24 @@ class _DiagnosisState extends State<Diagnosis> {
                     title: Text(
                       Pacientes.Diagnosticos![index]['Pace_APP_DEG'],
                       textAlign: TextAlign.right,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.grey,
-                        fontSize: 14,
+                        fontSize: isDesktop(context) ? 10: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     subtitle: Text(
                       Pacientes.Diagnosticos![index]['Pace_APP_DEG_com'],
                       textAlign: TextAlign.right,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.grey,
-                        fontSize: 12,
+                        fontSize: isDesktop(context) ? 8: 12,
                       ),
                     ),
                   );
                 }),
                 separatorBuilder: (context, index) => const SizedBox(
-                  height: 0,
+                  height: 0
                 ),
                 itemCount: Pacientes.Diagnosticos!.length))
       ],
