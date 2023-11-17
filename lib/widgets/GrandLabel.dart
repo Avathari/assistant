@@ -54,7 +54,7 @@ class _GrandLabelState extends State<GrandLabel> {
           onPressed: () {
             widget.onPress();
           },
-          child: Row(
+          child: Wrap(
             children: [
               Icon(widget.iconData),
               const SizedBox(

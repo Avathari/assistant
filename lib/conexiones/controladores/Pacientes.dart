@@ -1189,6 +1189,8 @@ class Pacientes {
     Reportes.close();
   }
 
+  //
+
   static Future<bool> loadingActivity({required BuildContext context}) async {
     Operadores.loadingActivity(
       context: context,
@@ -1216,6 +1218,7 @@ class Pacientes {
     return false;
   }
 
+  //
   static void getValores({bool reload = false}) async {
       //
       if (reload) {
@@ -8149,9 +8152,9 @@ class Repositorios {
     "consultByIdPrimaryQuery": "SELECT * FROM pace_hosp_repo WHERE ID_Hosp = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_hosp_repo",
     "consultarPadecimientoActualQuery":
-        "SELECT TipoAnalisis, Padecimiento_Actual FROM pace_hosp_repo "
+        "SELECT FechaPadecimiento, Padecimiento_Actual FROM pace_hosp_repo "
             "WHERE TipoAnalisis = '${Items.tiposAnalisis[0]}' "
-            "AND ID_Hosp = '${Pacientes.ID_Hospitalizacion}' "
+            "AND ID_Hosp = ${Pacientes.ID_Hospitalizacion} "
             "AND ID_Pace = ? ORDER Y ID_Hosp DESC",
     "consultLastQuery":
         "SELECT * FROM pace_hosp_repo WHERE ID_Pace = ? ORDER BY ID_Hosp DESC",
@@ -8180,9 +8183,7 @@ class Repositorios {
     // Operaciones con el Padecimiento Actual *****************************************************
     "consultPadecimientoQuery":
         "SELECT FechaPadecimiento, Padecimiento_Actual FROM pace_hosp_repo "
-            "WHERE ID_Pace = ${Pacientes.ID_Paciente} "
-            "AND Tipo_Analisis = 'Análisis de Ingreso' "
-            "AND ID_Hosp = ?",
+            "WHERE Tipo_Analisis = 'Análisis de Ingreso' AND ID_Hosp = ? ORDER BY ID_Compendio ASC",
     "updatePadecimientoQuery": "UPDATE pace_hosp_repo "
         "SET FechaPadecimiento = ?, Padecimiento_Actual = ? "
         "WHERE ID_Hosp = ? AND Tipo_Analisis = ? AND ID_Pace = ?",

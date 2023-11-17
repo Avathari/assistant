@@ -1026,33 +1026,46 @@ class _VisualPacientesState extends State<VisualPacientes> {
       );
 
   sidePanel(BuildContext context) => <Widget>[
-        IconButton(
-          icon: const Icon(
-            color: Colors.white,
-            Icons.account_tree,
-          ),
-          tooltip: 'Revisiones . . . ',
-          onPressed: () {
+        CrossLine(
+          thickness: 0,
+          height: 7,
+        ),
+        GrandIcon(
+          iconData: Icons.account_tree,
+          labelButton: 'Revisiones . . . ',
+          onPress: () {
             _key.currentState!.closeEndDrawer();
             setState(() {
               widget.actualPage = 11;
             });
           },
         ),
-        CrossLine(thickness: 1),
-        GrandIcon(
-            iconData: Icons.medical_services_outlined,
-            labelButton: "Hospitalizaciones",
-            onPress: () {
+        CrossLine(
+          thickness: 4,
+          height: 30,
+        ),
+        CrossLine(
+          thickness: 2,
+          height: 7,
+        ),
+        CircleIcon(
+            iconed: Icons.medical_services_outlined,
+            tittle: "Hospitalizaciones",
+            onChangeValue: () {
               _key.currentState!.closeEndDrawer();
               ScaffoldMessenger.of(context)
                   .showMaterialBanner(_hospitalizacion(context));
             }),
-        CrossLine(thickness: 1),
-        GrandIcon(
-            iconData: Icons.medical_information,
-            labelButton: "Vitales abreviado . . . ",
-            onPress: () {
+        CrossLine(
+          thickness: 1,
+          height: 30,
+        ),
+        CircleIcon(
+            radios: 30,
+            difRadios: 8,
+            iconed: Icons.medical_information,
+            tittle: "Vitales abreviado . . . ",
+            onChangeValue: () {
               _key.currentState!.closeEndDrawer();
               Datos.portapapeles(
                   context: context, text: Antropometrias.vitalesAbreviado);

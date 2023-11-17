@@ -10,6 +10,7 @@ import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/LoadingScreen.dart';
+import 'package:assistant/widgets/TittleContainer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
@@ -709,6 +710,24 @@ class Operadores {
           }, onAcept);
         });
   }
+
+  static void editTwoValuesDialog({
+    required BuildContext context,
+    TextInputType keyBoardType = TextInputType.number,
+    String? tittle = "Manejo de registro",
+    String? message = "El registro ha sido actualizado / creado",
+    onClose,
+    Function(String)? onAcept,
+  }) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialogos.editTwoValuesDialog(keyBoardType, tittle, message, () {
+            Navigator.of(context).pop();
+          }, onAcept);
+        });
+  }
+
 }
 
 class Dialogos {
@@ -732,6 +751,7 @@ class Dialogos {
             child:
                 const Text("Cancelar", style: TextStyle(color: Colors.white))),
         ElevatedButton(
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
             onPressed: () {
               onAcept();
             },
@@ -809,6 +829,75 @@ class Dialogos {
         ElevatedButton(
             onPressed: () {
               onAcept!(textEditController.text);
+            },
+            child: const Text("Aceptar", style: TextStyle(color: Colors.white)))
+      ],
+    );
+  }
+
+  static AlertDialog editTwoValuesDialog(TextInputType keyBoardType, String? tittle,
+      String? msg, onCloss, ValueChanged<String>? onAcept) {
+    var textAEditController = TextEditingController();
+    var textBEditController = TextEditingController();
+    var textCEditController = TextEditingController();
+
+    return AlertDialog(
+      backgroundColor: Theming.secondaryColor,
+      title: Text(
+        tittle!,
+        style: const TextStyle(color: Colors.grey),
+      ),
+      content: SizedBox(
+        height: 250,
+        child: TittleContainer(
+          tittle: msg!,
+          child: Column(
+            children: [
+              Expanded(
+                child: EditTextArea(
+                  labelEditText: 'Primer Valor',
+                  numOfLines: 1,
+                  keyBoardType: keyBoardType, // TextInputType.text,
+                  inputFormat: MaskTextInputFormatter(),
+                  textController: textAEditController,
+                ),
+              ),
+              Expanded(
+                child: EditTextArea(
+                  labelEditText: 'Segundo Valor',
+                  numOfLines: 1,
+                  keyBoardType: keyBoardType, // TextInputType.text,
+                  inputFormat: MaskTextInputFormatter(),
+                  textController: textBEditController,
+                ),
+              ),
+              Expanded(
+                child: EditTextArea(
+                  labelEditText: 'Tercer Valor',
+                  numOfLines: 1,
+                  keyBoardType: keyBoardType, // TextInputType.text,
+                  inputFormat: MaskTextInputFormatter(),
+                  textController: textCEditController,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      actions: [
+        OutlinedButton(
+            onPressed: () {
+              onCloss();
+            },
+            child:
+            const Text("Cancelar", style: TextStyle(color: Colors.white))),
+        ElevatedButton(
+            onPressed: () {
+              double auxyl = 0.0;
+              //
+              auxyl = double.parse(textAEditController.text) + double.parse(textBEditController.text) + double.parse(textCEditController.text);
+              //
+              onAcept!(auxyl.toStringAsFixed(0));
             },
             child: const Text("Aceptar", style: TextStyle(color: Colors.white)))
       ],

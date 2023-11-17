@@ -1176,7 +1176,7 @@ class _RutinasState extends State<Rutinas> {
 
   // OPERACIONES DE LA INTERFAZ ****************** ********
   void cerrar() {
-    Navigator.of(context).pop();
+
   }
 
   operationMethod() async {
@@ -1200,29 +1200,32 @@ class _RutinasState extends State<Rutinas> {
         );
       }
     }).whenComplete(() {
-      Pacientes.getParaclinicosHistorial(reload: true);
-      //
-      Navigator.of(context).pop(); // Cierre del LoadActivity
-      Operadores.alertActivity(
-          context: context,
-          tittle: "Registrando información . . .",
-          message: "Información registrada",
-          onAcept: () {
-            // Se emplean 3 Navigator.of(context).pop(); para cerrar cada una de
-            //    las ventanas emergentes y la interfaz inicial.
+      Pacientes.getParaclinicosHistorial(reload: true).whenComplete(() {
+        //
+        Navigator.of(context).pop(); // Cierre del LoadActivity
+        Operadores.alertActivity(
+            context: context,
+            tittle: "Registrando información . . .",
+            message: "Información registrada",
+            onAcept: () {
+              // Se emplean 3 Navigator.of(context).pop(); para cerrar cada una de
+              //    las ventanas emergentes y la interfaz inicial.
 
-            Navigator.of(context).pop(); // Cierre de la Interfaz Inicial
-            Navigator.of(context).pop(); // Cierre del AlertActivity
-          });
-    }).onError((error, stackTrace) {
-      Pacientes.getParaclinicosHistorial(reload: true);
+              Navigator.of(context).pop(); // Cierre de la Interfaz Inicial
+              Navigator.of(context).pop(); // Cierre del AlertActivity
+            });
+      });
       //
-      Terminal.printAlert(message: "ERROR - $error : : : $stackTrace");
-      Operadores.alertActivity(
-        context: context,
-        tittle: "Registrando información . . .",
-        message: "$error",
-      );
+    }).onError((error, stackTrace) {
+      Pacientes.getParaclinicosHistorial(reload: true).whenComplete(() {
+        Terminal.printAlert(message: "ERROR - $error : : : $stackTrace");
+        Operadores.alertActivity(
+          context: context,
+          tittle: "$error . . .",
+          message: "$stackTrace",
+        );
+      });
+      //
     });
   }
 

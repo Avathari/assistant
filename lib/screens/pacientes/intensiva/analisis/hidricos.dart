@@ -1,4 +1,5 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/hidrometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
@@ -30,6 +31,14 @@ class _HidricosState extends State<Hidricos> {
   var carouselController = CarouselController();
 
   var sodioInfundidoTextController = TextEditingController();
+
+  @override
+  void initState() {
+    Pacientes.getValores();
+    Pacientes.getParaclinicosHistorial();
+    //
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

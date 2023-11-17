@@ -32,13 +32,15 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
 
   @override
   void initState() {
-    Terminal.printNotice(message: "${Repositorios.repositorio['consultPadecimientoQuery']}");
+
     //
     Actividades.consultarId(
             Databases.siteground_database_reghosp,
             Repositorios.repositorio['consultPadecimientoQuery'],
             Pacientes.ID_Hospitalizacion)
         .then((response) {
+      Terminal.printWarning(message: "${Repositorios.repositorio['consultPadecimientoQuery']}");
+      Terminal.printWarning(message: "response $response");
       // print("RESPUESTA $response"); **************************************************
       if (response['Error'] == 'Hubo un error') {
         Operadores.alertActivity(

@@ -43,6 +43,11 @@ class _DetallesState extends State<Detalles> {
                 children: [
                   ThreeLabelTextAline(
                     padding: 2.0,
+                    firstText: 'ID',
+                    secondText: Pacientes.Paciente['ID_Pace'].toString() ?? '',
+                  ),
+                  ThreeLabelTextAline(
+                    padding: 2.0,
 //                         firstText: 'Nombre C.',
                     secondText: Pacientes.nombreCompleto,
                   ),

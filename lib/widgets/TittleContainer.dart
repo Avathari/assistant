@@ -25,7 +25,7 @@ class _TittleContainerState extends State<TittleContainer> {
       Container(
           width: double.infinity,
           // height: double.infinity,
-          margin: const EdgeInsets.all(12.0),
+          margin: const EdgeInsets.all(10.0),
           padding: const EdgeInsets.only(left: 10, right: 8, top: 7, bottom: 5),
           decoration: BoxDecoration(
             border: Border.all(color: Colors.grey, width: 1),

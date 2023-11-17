@@ -43,6 +43,7 @@ class _HospitalizadoState extends State<Hospitalizado> {
   @override
   Widget build(BuildContext context) {
     return TittleContainer(
+      color: Colors.black,
         tittle: "Datos de hospitalización del paciente", child: _generalView());
   }
 
@@ -52,7 +53,7 @@ class _HospitalizadoState extends State<Hospitalizado> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Expanded(
-            flex: 3,
+            flex: isMobile(context) ? 6 : 3,
             child: SingleChildScrollView(
               padding: const EdgeInsets.only(left: 5.0, right: 5.0),
               child: Column(
@@ -96,6 +97,8 @@ class _HospitalizadoState extends State<Hospitalizado> {
                       iconData: Icons.medical_information_outlined,
                       labelButton: 'Padecimiento Actual',
                       onPress: () {
+                        // ScaffoldMessenger.of(context).clearMaterialBanners();
+                        //
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (BuildContext context) =>
                                 const PadecimientoActual()));
@@ -150,75 +153,73 @@ class _HospitalizadoState extends State<Hospitalizado> {
           ),
           Expanded(
             flex: 2,
-            child: SingleChildScrollView(
-              controller: ScrollController(),
-              child: Column(
-                children: [
-                  GrandLabel(
-                    iconData: Icons.padding,
-                    fontSized: 10,
-                    labelButton: 'Pendientes de la Atención',
-                    onPress: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => GestionPendiente(),
-                      ));
-                    },
-                  ),
-                  TittlePanel(
-                    textPanel: Pacientes.modoAtencion,
-                  ),
-                  GrandLabel(
-                    iconData: Icons.local_hospital,
-                    fontSized: 10,
-                    labelButton: Pacientes.esHospitalizado == true
-                        ? 'Egresar paciente'
-                        : 'Hospitalizar paciente',
-                    onPress: () async {
-                      // Navigator.of(context).push(MaterialPageRoute(
-                      //   builder: (BuildContext context) =>
-                      //       GestionPendiente(),
-                      // ));
-                      // final respo = await Pacientes.hospitalizar();
-                      // // Actualizar vista.
-                      // setState(() {
-                      //   if (respo) {
-                      //     Valores.modoAtencion = 'Hospitalización';
-                      //     Pacientes.modoAtencion = 'Hospitalización';
-                      //     // Actualizar valores de Hospitalización.
-                      //     Valores.isHospitalizado = respo;
-                      //     Pacientes.esHospitalizado = respo;
-                      //
-                      //     // asyncHospitalizar(context);
-                      //     Operadores.openActivity(
-                      //       context: context,
-                      //       chyldrim: const OpcionesHospitalizacion(),
-                      //       onAction: () {},
-                      //     );
-                      //   } else {
-                      //     Valores.modoAtencion = 'Consulta Externa';
-                      //     Pacientes.modoAtencion = 'Consulta Externa';
-                      //     // Actualizar valores de Hospitalización.
-                      //     Valores.isHospitalizado = respo;
-                      //     Pacientes.esHospitalizado = respo;
-                      //   }
-                      // });
-                      //
-                    },
-                  ),
-                  // CrossLine(),
-                  GrandLabel(
-                    iconData: Icons.padding,
-                    fontSized: 10,
-                    labelButton: 'Registro de Hospitalizaciones',
-                    onPress: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            GestionHospitalizaciones(),
-                      ));
-                    },
-                  ),
-                ],
-              ),
+            child: Wrap(
+              children: [
+                GrandLabel(
+                  iconData: Icons.padding,
+                  fontSized: 10,
+                  labelButton: 'Pendientes de la Atención',
+                  onPress: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) => GestionPendiente(),
+                    ));
+                  },
+                ),
+                TittlePanel(
+                  fontSize: 8,
+                  textPanel: Pacientes.modoAtencion,
+                ),
+                GrandLabel(
+                  iconData: Icons.local_hospital,
+                  fontSized: 10,
+                  labelButton: Pacientes.esHospitalizado == true
+                      ? 'Egresar paciente'
+                      : 'Hospitalizar paciente',
+                  onPress: () async {
+                    // Navigator.of(context).push(MaterialPageRoute(
+                    //   builder: (BuildContext context) =>
+                    //       GestionPendiente(),
+                    // ));
+                    // final respo = await Pacientes.hospitalizar();
+                    // // Actualizar vista.
+                    // setState(() {
+                    //   if (respo) {
+                    //     Valores.modoAtencion = 'Hospitalización';
+                    //     Pacientes.modoAtencion = 'Hospitalización';
+                    //     // Actualizar valores de Hospitalización.
+                    //     Valores.isHospitalizado = respo;
+                    //     Pacientes.esHospitalizado = respo;
+                    //
+                    //     // asyncHospitalizar(context);
+                    //     Operadores.openActivity(
+                    //       context: context,
+                    //       chyldrim: const OpcionesHospitalizacion(),
+                    //       onAction: () {},
+                    //     );
+                    //   } else {
+                    //     Valores.modoAtencion = 'Consulta Externa';
+                    //     Pacientes.modoAtencion = 'Consulta Externa';
+                    //     // Actualizar valores de Hospitalización.
+                    //     Valores.isHospitalizado = respo;
+                    //     Pacientes.esHospitalizado = respo;
+                    //   }
+                    // });
+                    //
+                  },
+                ),
+                // CrossLine(),
+                GrandLabel(
+                  iconData: Icons.padding,
+                  fontSized: 10,
+                  labelButton: 'Registro de Hospitalizaciones',
+                  onPress: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          GestionHospitalizaciones(),
+                    ));
+                  },
+                ),
+              ],
             ),
           )
         ]);
@@ -328,6 +329,8 @@ class _HospitalizadoState extends State<Hospitalizado> {
     ];
   }
 }
+
+// **************************************************************** * * *
 
 class OpcionesHospitalizacion extends StatefulWidget {
   const OpcionesHospitalizacion({Key? key}) : super(key: key);

@@ -70,6 +70,7 @@ class _RevisionesState extends State<Revisiones> {
   mobileView() {
     return RoundedPanel(
       child: TittleContainer(
+        color: Colors.black,
         centered: true,
         tittle: 'Revisión General',
         child: Column(
