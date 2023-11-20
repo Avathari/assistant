@@ -10,6 +10,7 @@ class Internado {
       patologicosRepositoryPath,
       diagnosticosRepositoryPath,
       pendientesRepositoryPath,
+      ventilacionesRepositoryPath,
       paraclinicosRepositoryPath,
       imagenologicosRepositoryPath,
       electrocardiogramasRepositoryPath;
@@ -45,6 +46,8 @@ class Internado {
     diagnosticosRepositoryPath = "${localRepositoryPath}diagnosticos.json";
     pendientesRepositoryPath = "${localRepositoryPath}pendientes.json";
 
+    ventilacionesRepositoryPath = "${localRepositoryPath}ventilaciones.json";
+
     imagenologicosRepositoryPath = "${localRepositoryPath}imagenologias.json";
     electrocardiogramasRepositoryPath =
         "${localRepositoryPath}electrocardiogramas.json";
@@ -72,9 +75,7 @@ class Internado {
     };
   }
 
-  void fromJson(Map<String, dynamic> json) {
-
-  }
+  void fromJson(Map<String, dynamic> json) {}
 
   // FUNCTIONS *******************************************
   /// Padecimiento Actual registrados segun el idHospitalizado Actual, obtenido de un Orden Descendente del Registro.
@@ -186,6 +187,28 @@ class Internado {
           filePath: pendientesRepositoryPath));
     });
     return pendientes;
+  }
+
+  Future<List> getVentilacionnesHistorial() async {
+    //
+    await Archivos.readJsonToMap(filePath: ventilacionesRepositoryPath)
+        .then((value) {
+      Terminal.printNotice(
+          message:
+              " : : OBTENIDO DE ARCHIVO . . . $ventilacionesRepositoryPath");
+      //
+      return ventilaciones = value;
+    }).onError((error, stackTrace) async {
+      await Actividades.consultarAllById(Databases.siteground_database_reghosp,
+              Ventilaciones.ventilacion['consultIdQuery'], idPaciente)
+          .then((value) async {
+        Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . ");
+        //
+        return ventilaciones = value;
+      }).whenComplete(() => Archivos.createJsonFromMap(ventilaciones,
+              filePath: ventilacionesRepositoryPath));
+    });
+    return ventilaciones;
   }
 
   //

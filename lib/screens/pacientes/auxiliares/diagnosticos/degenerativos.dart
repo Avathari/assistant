@@ -77,11 +77,11 @@ class _DegenerativosState extends State<Degenerativos> {
                                 Text(
                                   Pacientes.Patologicos![index]
                                       ['Pace_APP_DEG_com'],
-                                  style: Styles.textSyleGrowth(fontSize: 16),
+                                  style: Styles.textSyleGrowth(fontSize: 14),
                                 ),
                                 Text(
                                   "Diagnósticado hace ${Pacientes.Patologicos![index]['Pace_APP_DEG_dia']} años",
-                                  style: Styles.textSyleGrowth(fontSize: 14),
+                                  style: Styles.textSyleGrowth(fontSize: 12),
                                 ),
                                 CrossLine(height: 20,),
                                 const SizedBox(height: 20,),
@@ -107,7 +107,7 @@ class _DegenerativosState extends State<Degenerativos> {
                       textAlign: TextAlign.right,
                       style: TextStyle(
                         color: Colors.grey,
-                        fontSize: isDesktop(context) ? 10: 14,
+                        fontSize: isDesktop(context) || isMobile(context) ? 10 : 12,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -116,7 +116,7 @@ class _DegenerativosState extends State<Degenerativos> {
                       textAlign: TextAlign.right,
                       style: TextStyle(
                         color: Colors.grey,
-                        fontSize: isDesktop(context) ? 8: 14,
+                        fontSize: isDesktop(context) || isMobile(context) ? 8 : 12,
                       ),
                     ),
                   );

@@ -29,6 +29,7 @@ class Pacientes {
       'reportes/';
 
   static String? modoAtencion = Valores.modoAtencion, nombreCompleto;
+  static String? numeroAfiliacion, numeroPaciente, agregadoPaciente;
   static bool? esHospitalizado = Valores.isHospitalizado;
   static String imagenPaciente = "";
 
@@ -207,8 +208,8 @@ class Pacientes {
   }
 
   static fromJson(Map<String, dynamic> json) {
-    // numeroPaciente = json['Pace_NSS'];
-    // agregadoPaciente = json['Pace_AGRE'];
+    numeroPaciente = json['Pace_NSS'];
+    agregadoPaciente = json['Pace_AGRE'];
 
     ID_Paciente = json['ID_Pace'];
     Paciente = json;
@@ -220,6 +221,8 @@ class Pacientes {
       nombreCompleto =
           "${json['Pace_Nome_PI']} ${json['Pace_Nome_SE']} ${json['Pace_Ape_Pat']} ${json['Pace_Ape_Mat']}";
     }
+
+    numeroAfiliacion = "${json['Pace_NSS']} ${json['Pace_AGRE']}";
 
     localPath = 'assets/vault/'
         '$nombreCompleto/'
@@ -1220,57 +1223,59 @@ class Pacientes {
 
   //
   static void getValores({bool reload = false}) async {
-      //
-      if (reload) {
-          Valores vala = Valores();
-          vala.load();
-      } else {
-        await Archivos.readJsonToMap(filePath:  Pacientes.localPath)
-            .then((value) {
-          Terminal.printNotice(
-              message: " : : OBTENIDO DE ARCHIVO . . . ${Pacientes.localPath}");
-          Valores.fromJson(value[0]);
-          /*Terminal.printAlert(message: " : : DATA OBTENIDA. . . $list");*/
-        }).onError((error, stackTrace) async {
-          Terminal.printAlert(message: " ERROR $error: : $stackTrace");
-          Valores vala = Valores();
-          vala.load();
-        });
-      }
-      }
+    //
+    if (reload) {
+      Valores vala = Valores();
+      vala.load();
+    } else {
+      await Archivos.readJsonToMap(filePath: Pacientes.localPath).then((value) {
+        Terminal.printNotice(
+            message: " : : OBTENIDO DE ARCHIVO . . . ${Pacientes.localPath}");
+        Valores.fromJson(value[0]);
+        /*Terminal.printAlert(message: " : : DATA OBTENIDA. . . $list");*/
+      }).onError((error, stackTrace) async {
+        Terminal.printAlert(message: " ERROR $error: : $stackTrace");
+        Valores vala = Valores();
+        vala.load();
+      });
+    }
+  }
 
   static Future<List> getParaclinicosHistorial({bool reload = false}) async {
     //
     if (reload) {
-      await Actividades.consultarAllById(Databases.siteground_database_reggabo,
-          Auxiliares.auxiliares['consultByIdPrimaryQuery'],
-          Pacientes.ID_Paciente)
+      await Actividades.consultarAllById(
+              Databases.siteground_database_reggabo,
+              Auxiliares.auxiliares['consultByIdPrimaryQuery'],
+              Pacientes.ID_Paciente)
           .then((value) async {
         Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . ");
         //
         return Pacientes.Paraclinicos = value;
-      }).whenComplete(() =>
-          Archivos.createJsonFromMap(Pacientes.Paraclinicos!,
+      }).whenComplete(() => Archivos.createJsonFromMap(Pacientes.Paraclinicos!,
               filePath: "${Pacientes.localRepositoryPath}paraclinicos.json"));
     } else {
-      await Archivos.readJsonToMap(filePath: '${Pacientes.localRepositoryPath}paraclinicos.json')
+      await Archivos.readJsonToMap(
+              filePath: '${Pacientes.localRepositoryPath}paraclinicos.json')
           .then((value) {
         Terminal.printNotice(
             message:
-            " : : OBTENIDO DE ARCHIVO . . . ${Pacientes.localRepositoryPath}paraclinicos.json");
+                " : : OBTENIDO DE ARCHIVO . . . ${Pacientes.localRepositoryPath}paraclinicos.json");
         //
         return Pacientes.Paraclinicos = value;
       }).onError((error, stackTrace) async {
-        await Actividades.consultarAllById(Databases.siteground_database_reggabo,
-            Auxiliares.auxiliares['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
+        await Actividades.consultarAllById(
+                Databases.siteground_database_reggabo,
+                Auxiliares.auxiliares['consultByIdPrimaryQuery'],
+                Pacientes.ID_Paciente)
             .then((value) async {
           Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . ");
           //
           return Pacientes.Paraclinicos = value;
-        }).whenComplete(() => Archivos.createJsonFromMap(Pacientes.Paraclinicos!,
-            filePath: "${Pacientes.localRepositoryPath}paraclinicos.json"));
+        }).whenComplete(() => Archivos.createJsonFromMap(
+                Pacientes.Paraclinicos!,
+                filePath: "${Pacientes.localRepositoryPath}paraclinicos.json"));
       });
-
     }
     return Pacientes.Paraclinicos!;
   }
@@ -5803,7 +5808,8 @@ class Auxiliares {
     return "$prosa${Sentences.capitalize(max)}. ";
   }
 
-  static String getUltimo({bool esAbreviado = false, bool withoutInsighs = false}) {
+  static String getUltimo(
+      {bool esAbreviado = false, bool withoutInsighs = false}) {
     String prosa = "";
 
     var fechar = Listas.listWithoutRepitedValues(
@@ -5831,8 +5837,7 @@ class Auxiliares {
           }
         }
         prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
-      }
-      else if (withoutInsighs) {
+      } else if (withoutInsighs) {
         List<dynamic>? alam = Pacientes.Paraclinicos!;
         var aux = alam
             .where((user) => user["Fecha_Registro"].contains(fechar.first))
@@ -5843,10 +5848,10 @@ class Auxiliares {
           // ***************************** *****************
           if (max == "") {
             max =
-            "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
+                "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
           } else {
             max =
-            "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
+                "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
           }
         }
         prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
@@ -5874,7 +5879,8 @@ class Auxiliares {
     return prosa;
   }
 
-  static String historial({bool esAbreviado = false, bool withoutInsighs = false}) {
+  static String historial(
+      {bool esAbreviado = false, bool withoutInsighs = false}) {
     String prosa = "";
 
     var fechar = Listas.listWithoutRepitedValues(
@@ -5914,8 +5920,7 @@ class Auxiliares {
           prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
         }
       });
-    }
-    else if (withoutInsighs) {
+    } else if (withoutInsighs) {
       fechar.forEach((element) {
         String fecha = "          Paraclínicos ($element)", max = "";
 
@@ -5929,14 +5934,14 @@ class Auxiliares {
           if (max == "") {
             if (element['Tipo_Estudio'] == Auxiliares.Categorias[13]) {
               max =
-              "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
+                  "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
             } else {
               max =
-              "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
+                  "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
             }
           } else {
             max =
-            "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
+                "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
           }
         }
         if (max.startsWith("pH")) {
@@ -6150,6 +6155,12 @@ class Auxiliares {
         return 'BUN';
       } else if (estudio == 'Nitrógeno') {
         return 'BUN';
+      } else if (estudio == 'Hemoglobina Glucosilada') {
+        return 'HbA1c';
+      } else if (estudio == 'Antigeno Prostático Específico') {
+        return 'APE';
+      } else if (estudio == 'Antigeno Protático Total') {
+        return 'APEt';
       } else {
         return estudio;
       }
@@ -6495,6 +6506,7 @@ class Auxiliares {
       "",
       "",
     ],
+    // Otros
     Categorias[25]: [
       "Hemoglobina Glucosilada",
       "Antigeno Prostático Específico",
@@ -7523,6 +7535,7 @@ class Ventilaciones {
     }
   }
 
+  //
   static void ultimoRegistro() {
     Actividades.consultarId(
             Databases.siteground_database_reghosp,
@@ -7543,6 +7556,7 @@ class Ventilaciones {
     });
   }
 
+  //
   static final Map<String, dynamic> ventilacion = {
     "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regpace "
         "DEFAULT CHARACTER SET utf8 "
@@ -7615,6 +7629,26 @@ class Ventilaciones {
         "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM pace_vm WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
         "(SELECT IFNULL(count(*), 0) FROM pace_vm WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
   };
+
+  static void fromJson(Map<String, dynamic> json) {
+    Valores.fechaVentilaciones = json['Feca_VEN'] ?? '';
+    Valores.modalidadVentilatoria = json['VM_Mod'] ?? '';
+    Valores.frecuenciaVentilatoria = json['Pace_Fr'] ?? 0;
+    Valores.fraccionInspiratoriaVentilatoria = json['Pace_Fio'] ?? 0;
+    Valores.presionFinalEsiracion = json['Pace_Peep'] ?? 0;
+    Valores.sensibilidadInspiratoria = json['Pace_Insp'] ?? 0;
+    Valores.sensibilidadEspiratoria = json['Pace_Espi'] ?? 0;
+    Valores.presionControl = json['Pace_Pc'] ?? 0;
+    Valores.presionMaxima = json['Pace_Pm'] ?? 0;
+
+    Valores.volumenVentilatorio = json['Pace_V'] ?? 0;
+    Valores.flujoVentilatorio = json['Pace_F'] ?? 0;
+    Valores.presionSoporte = json['Pace_Ps'] ?? 0;
+    Valores.presionInspiratoriaPico = json['Pace_Pip'] ?? 0;
+    Valores.presionPlateau = json['Pace_Pmet'] ?? 0;
+    Valores.volumenTidal = toDoubleFromInt(json: json, keyEntered: 'Pace_Vt');
+
+  }
 }
 
 class Hospitalizaciones {
@@ -8273,9 +8307,12 @@ class Situaciones {
         'Hosp_Siti',
         Exploracion.dispositivoOxigeno,
         Dicotomicos.fromBoolean(Exploracion.isCateterPeriferico!, toInt: true),
-        Dicotomicos.fromBoolean(Exploracion.isCateterLargoPeriferico!, toInt: true),
-        Dicotomicos.fromBoolean(Exploracion.isCateterVenosoCentral!, toInt: true),
-        Dicotomicos.fromBoolean(Exploracion.isCateterHemodialisis!, toInt: true),
+        Dicotomicos.fromBoolean(Exploracion.isCateterLargoPeriferico!,
+            toInt: true),
+        Dicotomicos.fromBoolean(Exploracion.isCateterVenosoCentral!,
+            toInt: true),
+        Dicotomicos.fromBoolean(Exploracion.isCateterHemodialisis!,
+            toInt: true),
         Dicotomicos.fromBoolean(Exploracion.isSondaFoley!, toInt: true),
         Dicotomicos.fromBoolean(Exploracion.isSondaNasogastrica!, toInt: true),
         Dicotomicos.fromBoolean(Exploracion.isSondaOrogastrica!, toInt: true),

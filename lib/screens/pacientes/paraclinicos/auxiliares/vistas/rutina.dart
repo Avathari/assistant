@@ -598,7 +598,7 @@ class _RutinasState extends State<Rutinas> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[6],
-        "Trigiliceridos",
+        "Triglicéridos",
         textTrigliceridosResultController.text,
         unidadMedidaTrigliceridos!
         //0,

@@ -9,15 +9,14 @@ class CircleIcon extends StatefulWidget {
   double? radios, difRadios;
   var onChangeValue;
 
-  CircleIcon(
-      {Key? key,
-      this.tittle = '',
-      this.iconed = Icons.cable_rounded,
-      required this.onChangeValue,
-      this.radios = 40,
-      this.difRadios = 10,
-      })
-      : super(key: key);
+  CircleIcon({
+    Key? key,
+    this.tittle = '',
+    this.iconed = Icons.cable_rounded,
+    required this.onChangeValue,
+    this.radios = 40,
+    this.difRadios = 10,
+  }) : super(key: key);
 
   @override
   State<CircleIcon> createState() => _CircleIconState();
@@ -27,9 +26,7 @@ class _CircleIconState extends State<CircleIcon> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        widget.onChangeValue();
-      },
+      onTap: () => widget.onChangeValue(),
       // onDoubleTap: () {
       //   showDialog(
       //       context: context,
@@ -72,9 +69,7 @@ class _CircleIconState extends State<CircleIcon> {
             size: 30 - widget.difRadios!,
             labelButton: widget.tittle!,
             iconData: widget.iconed!,
-            onPress: () {
-              widget.onChangeValue();
-            },
+            onPress: () => widget.onChangeValue(),
           ),
         ),
       ),

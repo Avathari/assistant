@@ -96,10 +96,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
                     Icons.arrow_back,
                   ),
                   tooltip: 'Regresar',
-                  onPressed: () {
-                    cerrarCasoPaciente();
-                  },
-                )
+                  onPressed: () => cerrarCasoPaciente())
               : null,
           backgroundColor: Colors.black,
           centerTitle: true,
@@ -130,20 +127,39 @@ class _VisualPacientesState extends State<VisualPacientes> {
           ? Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: floatingWidgets(context))
-          : FloatingActionButton(
-              backgroundColor: Theming.terciaryColor,
-              child: const Icon(Icons.filter_list, color: Colors.grey),
-              onPressed: () {
-                Pacientes.getValores();
-                Pacientes.getParaclinicosHistorial();
-                //
-                showModalBottomSheet(
-                    context: context,
-                    backgroundColor: Theming.cuaternaryColor,
-                    builder: (BuildContext context) {
-                      return modalBottomPanel(context);
-                    });
-              },
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                FloatingActionButton(
+                  backgroundColor: Theming.terciaryColor,
+                  child:
+                      const Icon(Icons.menu_open_outlined, color: Colors.grey),
+                  onPressed: () => _key.currentState!.openEndDrawer(),
+                ),
+                const SizedBox(height: 10),
+                FloatingActionButton(
+                  backgroundColor: Theming.terciaryColor,
+                  child: const Icon(Icons.list_alt_sharp, color: Colors.grey),
+                  onPressed: () => _key.currentState!.openDrawer(),
+                ),
+                const SizedBox(height: 10),
+                FloatingActionButton(
+                  backgroundColor: Theming.terciaryColor,
+                  child: const Icon(Icons.filter_list, color: Colors.grey),
+                  onPressed: () {
+                    Pacientes.getValores();
+                    Pacientes.getParaclinicosHistorial();
+                    //
+                    showModalBottomSheet(
+                        context: context,
+                        backgroundColor: Theming.cuaternaryColor,
+                        builder: (BuildContext context) {
+                          return modalBottomPanel(context);
+                        });
+                  },
+                ),
+                const SizedBox(height: 10),
+              ],
             ),
     );
   }
@@ -715,8 +731,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
                 iconData: Icons.g_mobiledata,
                 labelButton: 'Análisis Gasométrico',
                 onPress: () {
-                  Operadores.openDialog(
-                      context: context, chyldrim: const Gasometricos());
+                  Cambios.toNextActivity(context, chyld: const Gasometricos());
                 },
               ),
             ],
@@ -924,6 +939,24 @@ class _VisualPacientesState extends State<VisualPacientes> {
               ),
             ],
           ),
+          Stack(
+            alignment: AlignmentDirectional.center,
+            children: [
+              CrossLine(height: 20, thickness: 6),
+              // CERRAR
+              Positioned(
+                child: CircleIcon(
+                  tittle: 'Revisorio',
+                  iconed: Icons.close_sharp,
+                  onChangeValue: () {
+                    cerrarCasoPaciente();
+                    dispose();
+                    //
+                  },
+                ),
+              ),
+            ],
+          ),
           CrossLine(height: 20, thickness: 3),
           ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
@@ -1044,10 +1077,6 @@ class _VisualPacientesState extends State<VisualPacientes> {
           thickness: 4,
           height: 30,
         ),
-        CrossLine(
-          thickness: 2,
-          height: 7,
-        ),
         CircleIcon(
             iconed: Icons.medical_services_outlined,
             tittle: "Hospitalizaciones",
@@ -1056,20 +1085,59 @@ class _VisualPacientesState extends State<VisualPacientes> {
               ScaffoldMessenger.of(context)
                   .showMaterialBanner(_hospitalizacion(context));
             }),
+    //
         CrossLine(
           thickness: 1,
-          height: 30,
+          height: 15,
         ),
-        CircleIcon(
-            radios: 30,
-            difRadios: 8,
-            iconed: Icons.medical_information,
-            tittle: "Vitales abreviado . . . ",
-            onChangeValue: () {
-              _key.currentState!.closeEndDrawer();
-              Datos.portapapeles(
-                  context: context, text: Antropometrias.vitalesAbreviado);
-            }),
+        Expanded(
+          flex: 2,
+          child: Wrap(
+            runSpacing: 10,
+            children: [
+              CircleIcon(
+                  radios: 30,
+                  difRadios: 8,
+                  iconed: Icons.medical_information,
+                  tittle: "Datos Generales . . . ",
+                  onChangeValue: () {
+                    _key.currentState!.closeEndDrawer();
+                    Datos.portapapeles(
+                        context: context, text: Pacientes.nombreCompleto!);
+                  }),
+              CircleIcon(
+                  radios: 30,
+                  difRadios: 8,
+                  iconed: Icons.numbers,
+                  tittle: "Número de Seguro Social . . . ",
+                  onChangeValue: () {
+                    _key.currentState!.closeEndDrawer();
+                    Datos.portapapeles(
+                        context: context, text: Pacientes.numeroAfiliacion!);
+                  }),
+              CircleIcon(
+                  radios: 30,
+                  difRadios: 8,
+                  iconed: Icons.nat,
+                  tittle: "Número de Seguro Social . . . ",
+                  onChangeValue: () {
+                    _key.currentState!.closeEndDrawer();
+                    Datos.portapapeles(
+                        context: context, text: Pacientes.numeroPaciente!);
+                  }),
+              CircleIcon(
+                  radios: 30,
+                  difRadios: 8,
+                  iconed: Icons.medical_information,
+                  tittle: "Vitales abreviado . . . ",
+                  onChangeValue: () {
+                    _key.currentState!.closeEndDrawer();
+                    Datos.portapapeles(
+                        context: context, text: Antropometrias.vitalesAbreviado);
+                  }),
+            ],
+          ),
+        ),
         CrossLine(thickness: 1, height: 15),
       ];
 

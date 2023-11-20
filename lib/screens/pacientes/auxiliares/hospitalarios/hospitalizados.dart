@@ -4,17 +4,22 @@ import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteFormats/
 import 'package:assistant/conexiones/actividades/wordGenerate/DocApi.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/ventometr%C3%ADas.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/home.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/info/Hospitalizado.dart';
+import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/subjetivos.dart';
+import 'package:assistant/screens/pacientes/auxiliares/revisiones/generales.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/padecimientoActual.dart';
+import 'package:assistant/screens/pacientes/hospitalizacion/pendientes.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/situacionesHospitalizacion.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/AppBarText.dart';
+import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
@@ -22,6 +27,7 @@ import 'package:assistant/widgets/TittleContainer.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Hospitalizados extends StatefulWidget {
@@ -95,6 +101,12 @@ class _HospitalizadosState extends State<Hospitalizados> {
   @override
   Widget build(BuildContext context) {
     Contextos.contexto = context;
+
+    /// ENFORCE DEVICE ORIENTATION PORTRAIT ONLY
+    if (isMobile(context)) {
+      SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    }
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -116,29 +128,6 @@ class _HospitalizadosState extends State<Hospitalizados> {
           ),
           title: AppBarText(appTittle),
           actions: <Widget>[
-            GrandIcon(
-                labelButton: "Reiniciar . . . ",
-                iconData: Icons.replay,
-                onPress: () => _pullListRefresh().onError((error, stackTrace) {
-                      showModalBottomSheet(
-                          context: context,
-                          backgroundColor: Theming.cuaternaryColor,
-                          builder: (BuildContext context) {
-                            return errorLoggerSnackBar(context,
-                                error: error, stackTrace: stackTrace);
-                          });
-                    })),
-            const SizedBox(width: 5),
-            GrandIcon(
-                labelButton: "Primeros Encontrados",
-                iconData: Icons.file_present,
-                onPress: () => _reiniciar()),
-            const SizedBox(width: 5),
-            GrandIcon(
-                iconData: Icons.account_balance_wallet_outlined,
-                onPress: () => null
-                // _ListRefresh();
-                ),
             CrossLine(
               thickness: 4,
               isHorizontal: false,
@@ -189,50 +178,50 @@ class _HospitalizadosState extends State<Hospitalizados> {
           ]),
       body: Column(
         children: [
-          Row(
-            children: [
-              Expanded(
-                flex: 7,
-                child: EditTextArea(
-                  labelEditText: 'Buscar por Servicio',
-                  textController: searchTextController,
-                  keyBoardType: TextInputType.text,
-                  inputFormat: MaskTextInputFormatter(),
-                  iconColor: Colors.grey,
-                  numOfLines: 1,
-                  selection: true,
-                  withShowOption: true,
-                  onSelected: () {
-                    Operadores.selectOptionsActivity(
-                        context: context,
-                        options: Listas.listWithoutRepitedValues(
-                          Listas.listFromMapWithOneKey(foundedItems!,
-                              keySearched: 'Serve_Trat'),
-                        ),
-                        onClose: (value) {
-                          List results = [];
-                          results = Listas.listFromMap(
-                              lista: foundedItems!,
-                              keySearched: 'Serve_Trat',
-                              elementSearched: value);
-                          setState(() {
-                            foundedItems = results;
-                          });
-                          Navigator.of(context).pop();
-                        });
-                  },
-                ),
-              ),
-              Expanded(
-                  child: GrandIcon(
-                iconData: Icons.dataset,
-                labelButton: "Primeros Encontrados",
-                onPress: () {
-                  _reiniciar();
-                },
-              ))
-            ],
-          ),
+          // Row(
+          //   children: [
+          //     Expanded(
+          //       flex: 7,
+          //       child: EditTextArea(
+          //         labelEditText: 'Buscar por Servicio',
+          //         textController: searchTextController,
+          //         keyBoardType: TextInputType.text,
+          //         inputFormat: MaskTextInputFormatter(),
+          //         iconColor: Colors.grey,
+          //         numOfLines: 1,
+          //         selection: true,
+          //         withShowOption: true,
+          //         onSelected: () {
+          //           Operadores.selectOptionsActivity(
+          //               context: context,
+          //               options: Listas.listWithoutRepitedValues(
+          //                 Listas.listFromMapWithOneKey(foundedItems!,
+          //                     keySearched: 'Serve_Trat'),
+          //               ),
+          //               onClose: (value) {
+          //                 List results = [];
+          //                 results = Listas.listFromMap(
+          //                     lista: foundedItems!,
+          //                     keySearched: 'Serve_Trat',
+          //                     elementSearched: value);
+          //                 setState(() {
+          //                   foundedItems = results;
+          //                 });
+          //                 Navigator.of(context).pop();
+          //               });
+          //         },
+          //       ),
+          //     ),
+          //     Expanded(
+          //         child: GrandIcon(
+          //       iconData: Icons.dataset,
+          //       labelButton: "Primeros Encontrados",
+          //       onPress: () {
+          //         _reiniciar();
+          //       },
+          //     ))
+          //   ],
+          // ),
           Expanded(
             flex: isTablet(context)
                 ? 18
@@ -253,7 +242,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                       padding: const EdgeInsets.all(10.0),
                       gridDelegate: GridViewTools.gridDelegate(
                         crossAxisCount: isMobile(context) ? 1 : 1,
-                        mainAxisExtent: isMobile(context) ? 600 : 290,
+                        mainAxisExtent: isMobile(context) ? 625 : 290,
                       ),
                       controller: ScrollController(),
                       shrinkWrap: false,
@@ -287,14 +276,30 @@ class _HospitalizadosState extends State<Hospitalizados> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Terminal.printWarning(
-              message:
-                  "Hospitalizados : :  ${foundedItems![5].hospitalizedData}");
-        },
+      floatingActionButtonLocation: isMobile(context)
+          ? FloatingActionButtonLocation.centerDocked
+          : FloatingActionButtonLocation.endDocked,
+      bottomNavigationBar:
+          isMobile(context) ? bottomNavigationBar(context) : null,
+      floatingActionButton: GrandIcon(
+        iconData: Icons.refresh,
+        iconColor: Colors.grey,
+        size: 50,
+        onPress: _pullListRefresh,
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    /// ENFORCE DEVICE ORIENTATION PORTRAIT ONLY
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+    super.dispose();
   }
 
   // Operadores de Interfaz ********* ************ ******** *
@@ -551,64 +556,6 @@ class _HospitalizadosState extends State<Hospitalizados> {
   //   });
   // }
 
-  Future<Null> _pullListRefresh() async {
-    Terminal.printAlert(
-        message: "Iniciando actividad : : \n "
-            "Consulta de pacientes hospitalizados . . . NUEVA FUNCION");
-    //
-    Operadores.loadingActivity(
-        context: context,
-        tittle: 'Actualizando Valores . . . ',
-        message: 'Actualizando . . . ',
-        onCloss: () {
-          Navigator.of(context).pop();
-        });
-    // CONSULTA DE VALORES ****************************************
-    List hospitalized = []; // Lista de Pacientes Hospitalizados * * *
-
-    var response = await Actividades.consultar(
-      Databases.siteground_database_regpace,
-      Pacientes.pacientes['consultHospitalized'],
-    );
-    //
-    for (int i = 0; i < response.length; i++) {
-      hospitalized.insert(i,
-          Internado(int.parse(response[i]["ID_Pace"].toString()), response[i]));
-      //
-      await hospitalized[i].getHospitalizationRegister();
-      await hospitalized[i].getPadecimientoActual();
-      // await hospitalized[i].getCronicosHistorial();
-      // await hospitalized[i].getDiagnosticosHistorial();
-      // await hospitalized[i].getPendientesHistorial();
-      //
-      // await hospitalized[i].getParaclinicosHistorial();
-      // await hospitalized[i].getImagenologicosHistorial();
-      // await hospitalized[i].getElectrocardiogramasHistorial();
-      Terminal.printExpected(
-          message:
-              "     :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::     ");
-      //
-    }
-    // ********** ************** ***********
-    firstFounded = foundedItems = hospitalized;
-    // ESCRIBIR EN JSON ***********************************************
-    List listado = [];
-    for (int i = 0; i < hospitalized.length; i++) {
-      listado.addAll([hospitalized[i]!.toJson()]);
-    }
-    Archivos.createJsonFromMap(listado, filePath: fileAssocieted);
-    //
-    setState(() {
-      // ACTUALIZAR . . .
-      Terminal.printSuccess(
-          message: "Actualizando pacientes hospitalizados . . . ");
-      // Ordenar por No Cama || ***************** foundedItems!!.sort((a, b) => a["Id_Cama"].compareTo(b["Id_Cama"]));
-      orderByCamas(foundedItems!);
-      // Cerrar Operaciones.loadingActivity . . .
-      Navigator.of(context).pop();
-    });
-  }
-
   // VISTAS *******************************************************
   GestureDetector desktopView(AsyncSnapshot snapshot, int index) {
     return GestureDetector(
@@ -734,14 +681,70 @@ class _HospitalizadosState extends State<Hospitalizados> {
               ),
             ),
             Expanded(
-                flex: isDesktop(context)
-                    ? 2
-                    : isTablet(context)
-                        ? 2
-                        : 1,
-                child: auxiliarPanel(snapshot, index)),
-            Expanded(flex: 5, child: cronicosPanel(snapshot, index)),
-            Expanded(flex: 2, child: pendientesPanel(snapshot, index)),
+              flex: isDesktop(context)
+                  ? 2
+                  : isTablet(context)
+                      ? 2
+                      : 1,
+              child: Column(
+                children: [
+                  Expanded(
+                      flex: isDesktop(context)
+                          ? 5
+                          : isTablet(context)
+                              ? 3
+                              : 1,
+                      child: TittleContainer(
+                          tittle: 'Laboratorio(s)',
+                          color: Colors.black,
+                          child: auxiliarPanel(snapshot, index))),
+                  Expanded(
+                    child: ValuePanel(
+                      onLongPress: () => Datos.portapapeles(
+                          context: context,
+                          text:
+                              vitalesString(foundedItems![index].vitales.last)),
+                      firstText: foundedItems![index].vitales.isNotEmpty
+                          ? foundedItems![index]
+                              .vitales
+                              .last['Pace_Feca_SV']
+                              .toString()
+                          : 'Sin Signos Vitales',
+                    ),
+                  ),
+                  Expanded(
+                      child: ValuePanel(
+                    onLongPress: () => Datos.portapapeles(
+                        context: context,
+                        text: ventilacionesString(
+                            foundedItems![index].ventilaciones.last)),
+                    firstText: foundedItems![index].ventilaciones.isNotEmpty
+                        ? foundedItems![index]
+                            .ventilaciones
+                            .last['Feca_VEN']
+                            .toString()
+                        : 'Sin VMi',
+                  )),
+                ],
+              ),
+            ),
+            Expanded(
+              flex: 5,
+              child: Column(
+                children: [
+                  Expanded(flex: 5, child: cronicosPanel(snapshot, index)),
+                  Expanded(flex: 5, child: diagnosticosPanel(snapshot, index)),
+                ],
+              ),
+            ),
+            Expanded(
+                flex: 2,
+                child: Column(
+                  children: [
+                    Expanded(flex: 2, child: pendientesPanel(snapshot, index)),
+                    Expanded(flex: 2, child: opcionesPanel(context, index)),
+                  ],
+                )),
             Expanded(
                 flex: 1,
                 child: Column(
@@ -1029,21 +1032,18 @@ class _HospitalizadosState extends State<Hospitalizados> {
                       flex: 1,
                       child: CircleAvatar(
                         backgroundColor: Colors.grey,
-                        radius: 10,
-                        child: Text(
-                            foundedItems![index]
-                                .hospitalizedData['Id_Cama']
-                                .toString(),
+                        radius: 20,
+                        child: Text(foundedItems![index].idPaciente.toString(),
                             style: Styles.textSyleGrowth(fontSize: 10)),
                       )),
                   Expanded(
                       flex: 1,
                       child: CircleAvatar(
                         backgroundColor: Colors.grey,
-                        radius: 10,
+                        radius: 20,
                         child: Text(
                             foundedItems![index]
-                                .hospitalizedData['Id_Cama']
+                                .hospitalizedData['ID_Hosp']
                                 .toString(),
                             style: Styles.textSyleGrowth(fontSize: 10)),
                       )),
@@ -1079,9 +1079,9 @@ class _HospitalizadosState extends State<Hospitalizados> {
               child: Container(
                 decoration: ContainerDecoration.roundedDecoration(),
                 padding: const EdgeInsets.only(
-                    left: 10.0, right: 10.0, top: 6, bottom: 8),
+                    left: 5.0, right: 5.0, top: 6, bottom: 8),
                 margin: const EdgeInsets.only(
-                    left: 10.0, right: 10.0, top: 6, bottom: 2),
+                    left: 7.0, right: 5.0, top: 6, bottom: 2),
                 child: Row(
                   children: [
                     Expanded(
@@ -1091,206 +1091,79 @@ class _HospitalizadosState extends State<Hospitalizados> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
-                            flex: 17,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              flex: 5,
+                              child: fichaIdentificacion(snapshot, index)),
+                          Expanded(
+                              flex: 6,
+                              child: Container(
+                                padding: const EdgeInsets.all(10.0),
+                                margin: const EdgeInsets.all(5.0),
+                                decoration:
+                                    ContainerDecoration.roundedDecoration(),
+                                child: padesView(snapshot, index),
+                              )),
+                          CrossLine(),
+                          Expanded(
+                            flex: 2,
+                            child: Row(
                               children: [
                                 Expanded(
-                                    flex: 5,
-                                    child:
-                                        fichaIdentificacion(snapshot, index)),
+                                  child: ValuePanel(
+                                    onLongPress: () => Datos.portapapeles(
+                                        context: context,
+                                        text: vitalesString(
+                                            foundedItems![index].vitales.last)),
+                                    firstText:
+                                        foundedItems![index].vitales.isNotEmpty
+                                            ? foundedItems![index]
+                                                .vitales
+                                                .last['Pace_Feca_SV']
+                                                .toString()
+                                            : 'Sin Signos Vitales',
+                                  ),
+                                ),
                                 Expanded(
-                                    flex: 6,
-                                    child: Container(
-                                      padding: const EdgeInsets.all(10.0),
-                                      margin: const EdgeInsets.all(5.0),
-                                      decoration: ContainerDecoration
-                                          .roundedDecoration(),
-                                      child: padesView(snapshot, index),
-                                    )),
+                                  child: ValuePanel(
+                                    onLongPress: () => Datos.portapapeles(
+                                        context: context,
+                                        text: ventilacionesString(
+                                            foundedItems![index]
+                                                .ventilaciones
+                                                .last)),
+                                    firstText: foundedItems![index]
+                                            .ventilaciones
+                                            .isNotEmpty
+                                        ? foundedItems![index]
+                                            .ventilaciones
+                                            .last['Feca_VEN']
+                                            .toString()
+                                        : 'Sin VMi',
+                                  ),
+                                ),
                               ],
                             ),
                           ),
-                          CrossLine(),
-                          // Expanded(
-                          //   flex: 14,
-                          //   child: Container(
-                          //     padding: const EdgeInsets.only(
-                          //         left: 2, right: 2, top: 2, bottom: 2),
-                          //     margin: const EdgeInsets.only(
-                          //         left: 2, right: 2, top: 2, bottom: 2),
-                          //     decoration: ContainerDecoration.roundedDecoration(),
-                          //     child: Column(
-                          //       children: [
-                          //         Expanded(
-                          //           flex: 3,
-                          //           child: ValuePanel(
-                          //               secondText: foundedItems![index].hospitalizedData
-                          //                           ['Situaciones']
-                          //                       ['Disp_Oxigen'] ??
-                          //                   ''),
-                          //         ),
-                          //         Expanded(
-                          //           flex: 4,
-                          //           child: GridView(
-                          //             gridDelegate:
-                          //                 GridViewTools.gridDelegate(
-                          //                     crossAxisCount: 3,
-                          //                     crossAxisSpacing: 5.0,
-                          //                     mainAxisExtent: 65),
-                          //             children: [
-                          //               ValuePanel(
-                          //                 firstText: 'CVP',
-                          //                 secondText: Dicotomicos.fromInt(
-                          //                         foundedItems![index].hospitalizedData[
-                          //                                     'Situaciones']
-                          //                                 ['CVP'] ??
-                          //                             0)
-                          //                     .toString(),
-                          //               ),
-                          //               ValuePanel(
-                          //                 firstText: 'CVLP',
-                          //                 secondText: Dicotomicos.fromInt(
-                          //                         foundedItems![index].hospitalizedData[
-                          //                                     'Situaciones']
-                          //                                 ['CVLP'] ??
-                          //                             0)
-                          //                     .toString(),
-                          //               ),
-                          //               ValuePanel(
-                          //                 firstText: 'CVC',
-                          //                 secondText: Dicotomicos.fromInt(
-                          //                         foundedItems![index].hospitalizedData[
-                          //                                     'Situaciones']
-                          //                                 ['CVC'] ??
-                          //                             0)
-                          //                     .toString(),
-                          //               ),
-                          //               ValuePanel(
-                          //                 firstText: 'MAH',
-                          //                 secondText: Dicotomicos.fromInt(
-                          //                         foundedItems![index].hospitalizedData[
-                          //                                     'Situaciones']
-                          //                                 ['MAH'] ??
-                          //                             0)
-                          //                     .toString(),
-                          //               ),
-                          //               ValuePanel(
-                          //                 firstText: 'FOL',
-                          //                 secondText: Dicotomicos.fromInt(
-                          //                         foundedItems![index].hospitalizedData[
-                          //                                     'Situaciones']
-                          //                                 ['S_Foley'] ??
-                          //                             0)
-                          //                     .toString(),
-                          //               ),
-                          //               ValuePanel(
-                          //                 firstText: 'SNG',
-                          //                 secondText: Dicotomicos.fromInt(
-                          //                         foundedItems![index].hospitalizedData[
-                          //                                     'Situaciones']
-                          //                                 ['SNG'] ??
-                          //                             0)
-                          //                     .toString(),
-                          //               ),
-                          //               ValuePanel(
-                          //                 firstText: 'SOG',
-                          //                 secondText: Dicotomicos.fromInt(
-                          //                         foundedItems![index].hospitalizedData[
-                          //                                     'Situaciones']
-                          //                                 ['SOG'] ??
-                          //                             0)
-                          //                     .toString(),
-                          //               ),
-                          //               ValuePanel(
-                          //                 firstText: 'DRE',
-                          //                 secondText: Dicotomicos.fromInt(
-                          //                         foundedItems![index].hospitalizedData[
-                          //                                     'Situaciones']
-                          //                                 ['Drenaje'] ??
-                          //                             0)
-                          //                     .toString(),
-                          //               ),
-                          //               ValuePanel(
-                          //                 firstText: 'SEP',
-                          //                 secondText: Dicotomicos.fromInt(
-                          //                         foundedItems![index].hospitalizedData[
-                          //                                     'Situaciones']
-                          //                                 ['Pleuro_Vac'] ??
-                          //                             0)
-                          //                     .toString(),
-                          //               ),
-                          //               ValuePanel(
-                          //                 firstText: 'COL',
-                          //                 secondText: Dicotomicos.fromInt(
-                          //                         foundedItems![index].hospitalizedData[
-                          //                                     'Situaciones']
-                          //                                 ['Colostomia'] ??
-                          //                             0)
-                          //                     .toString(),
-                          //               ),
-                          //               ValuePanel(
-                          //                 firstText: 'GAS',
-                          //                 secondText: Dicotomicos.fromInt(
-                          //                         foundedItems![index].hospitalizedData[
-                          //                                     'Situaciones']
-                          //                                 [
-                          //                                 'Gastrostomia'] ??
-                          //                             0)
-                          //                     .toString(),
-                          //               ),
-                          //               ValuePanel(
-                          //                 firstText: 'TEN',
-                          //                 secondText: Dicotomicos.fromInt(
-                          //                         foundedItems![index].hospitalizedData[
-                          //                                     'Situaciones']
-                          //                                 [
-                          //                                 'Dialisis_Peritoneal'] ??
-                          //                             0)
-                          //                     .toString(),
-                          //               ),
-                          //             ],
-                          //           ),
-                          //         ),
-                          //       ],
-                          //     ),
-                          //   ),
-                          // ),
                         ],
                       ),
                     ),
                     Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: TittlePanel(
-                              padding: 0,
-                              textPanel: "LAB's",
-                            ),
-                          ),
-                          Expanded(
-                            flex: 10,
-                            child: GridView.builder(
-                                padding: const EdgeInsets.all(2),
-                                gridDelegate: GridViewTools.gridDelegate(
-                                    crossAxisCount: 1,
-                                    mainAxisSpacing: 5.0,
-                                    mainAxisExtent: 55),
+                        child: TittleContainer(
+                            centered: true,
+                            tittle: 'Lab',
+                            child: ListView.builder(
+                                padding: const EdgeInsets.all(0.0),
                                 itemCount: Listas.listWithoutRepitedValues(
                                         Listas.listFromMapWithOneKey(
                                             snapshot.data[index].paraclinicos))
                                     .length,
-                                // foundedItems![index].paraclinicos.length,
-                                itemBuilder:
-                                    (BuildContext context, int possit) {
+                                itemBuilder: (BuildContext context, ind) {
                                   var list = Listas.listWithoutRepitedValues(
                                       Listas.listFromMapWithOneKey(
                                           snapshot.data[index].paraclinicos));
+
                                   return ValuePanel(
                                     fontSize: 8,
-                                    secondText: "${list[possit]}", // Resultado
+                                    secondText: "${list[ind]}", // Resultado
                                     withEditMessage: true,
                                     onEdit: (value) {
                                       Pacientes.Paraclinicos =
@@ -1306,57 +1179,32 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                               fechaActual: value));
                                     },
                                   );
-                                }),
-                          ),
-                        ],
-                      ),
-                    ),
+                                })))
                   ],
                 ),
               ),
             ),
             Expanded(
-                flex: 5,
-                child: Container(
-                  margin: const EdgeInsets.all(5.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                          child: Container() // cronicosPanel(snapshot, index)
-                          ),
-                      const SizedBox(height: 4),
-                      Expanded(
-                        child: Container(),
-                        // Column(
-                        //   children: [
-                        //     Text(
-                        //       "Diagnóstico(s) ",
-                        //       style: Styles.textSyleGrowth(fontSize: 12),
-                        //     ),
-                        //     CrossLine(),
-                        //     Expanded(
-                        //       flex: 2,
-                        //       child: ListView.builder(
-                        //           itemCount: snapshot
-                        //               .data[index]['Diagnosticos'].length,
-                        //           itemBuilder: (BuildContext context, ind) {
-                        //             return Text(
-                        //               foundedItems![index]
-                        //                       .hospitalizedData['Diagnosticos']
-                        //                   [ind]['Pace_APP_DEG'],
-                        //               style: Styles.textSyleGrowth(fontSize: 9),
-                        //             );
-                        //           }),
-                        //     ),
-                        //   ],
-                        // ),
-                      ),
-                    ],
+              flex: 10,
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 4,
+                    child: Column(
+                      children: [
+                        Expanded(
+                            flex: 5, child: cronicosPanel(snapshot, index)),
+                        Expanded(
+                            flex: 5, child: diagnosticosPanel(snapshot, index)),
+                      ],
+                    ),
                   ),
-                )),
-            Expanded(flex: 2, child: Container()),
+                  // Expanded(flex: 2, child: pendientesPanel(snapshot, index)),
+                  Expanded(flex: 2, child: opcionesPanel(context, index)),
+                ],
+              ),
+            ),
+            // Expanded(flex: 2, child: Container()),
             // Container(
             //   margin: const EdgeInsets.all(5.0),
             //   child: Row(
@@ -1399,6 +1247,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
             //     ],
             //   ),
             // )),
+            CrossLine(height: 15, thickness: 4),
             Expanded(
                 flex: 2,
                 child: SingleChildScrollView(
@@ -1655,7 +1504,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
   }
 
   // PANELES  *****************************************************
-  padesView(AsyncSnapshot snapshot, int index) {
+  Widget padesView(AsyncSnapshot snapshot, int index) {
     if (foundedItems![index].padecimientoActual.isEmpty) {
       return GestureDetector(
           onDoubleTap: () {
@@ -1676,7 +1525,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
           child: Text(
             "PA: Sin padecimiento actual registrado . . . ",
             maxLines: 10,
-            style: Styles.textSyleGrowth(fontSize: 10),
+            style: Styles.textSyleGrowth(fontSize: 8),
             textAlign: TextAlign.start,
           ));
     } else {
@@ -1699,7 +1548,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
         child: Text(
           "PA: ${foundedItems![index].padecimientoActual['Padecimiento_Actual'] ?? 'Sin padecimiento actual registrado . . . '}",
           maxLines: 25,
-          style: Styles.textSyleGrowth(fontSize: 10),
+          style: Styles.textSyleGrowth(fontSize: 8),
           textAlign: TextAlign.start,
         ),
       );
@@ -1707,39 +1556,42 @@ class _HospitalizadosState extends State<Hospitalizados> {
   }
 
   Widget fichaIdentificacion(AsyncSnapshot snapshot, int index) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-            "${snapshot.data[index].generales['Pace_Ape_Pat']} "
-            "${snapshot.data[index].generales['Pace_Ape_Mat']} "
-            "${snapshot.data[index].generales['Pace_Nome_PI']} "
-            "${snapshot.data[index].generales['Pace_Nome_SE']}",
-            maxLines: 2,
-            style: Styles.textSyleGrowth(fontSize: 14)),
-        // Text(
-        //   "Hemotipo: ${snapshot.data[index].hospitalizedData['Pace_Hemo'] ?? ''}",
-        //   maxLines: 2,
-        //   style: Styles.textSyleGrowth(fontSize: 10),
-        // ),
-        Text(
-          "Servicio: ${snapshot.data[index].hospitalizedData['Serve_Trat'] ?? ''}",
-          maxLines: 2,
-          style: Styles.textSyleGrowth(fontSize: 10),
-        ),
-        Text(
-          "${snapshot.data[index].hospitalizedData['Medi_Trat'] ?? ''}",
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          style: Styles.textSyleGrowth(fontSize: 10),
-        ),
-        Text(
-            "NG.: ${snapshot.data[index].hospitalizedData['Feca_INI_Hosp'] ?? ''} - "
-            "D.E.H.: ${Calendarios.differenceInDaysToNow(snapshot.data[index].hospitalizedData['Feca_INI_Hosp'] ?? DateTime.now().toString())}",
-            style: Styles.textSyleGrowth(fontSize: 12)),
-        CrossLine()
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+              "${snapshot.data[index].generales['Pace_Ape_Pat']} "
+              "${snapshot.data[index].generales['Pace_Ape_Mat']} "
+              "${snapshot.data[index].generales['Pace_Nome_PI']} "
+              "${snapshot.data[index].generales['Pace_Nome_SE']}",
+              maxLines: 2,
+              style: Styles.textSyleGrowth(fontSize: 14)),
+          // Text(
+          //   "Hemotipo: ${snapshot.data[index].hospitalizedData['Pace_Hemo'] ?? ''}",
+          //   maxLines: 2,
+          //   style: Styles.textSyleGrowth(fontSize: 10),
+          // ),
+          // Text(
+          //   "Servicio: ${snapshot.data[index].hospitalizedData['Serve_Trat'] ?? ''}",
+          //   maxLines: 2,
+          //   style: Styles.textSyleGrowth(fontSize: 10),
+          // ),
+          // Text(
+          //   "${snapshot.data[index].hospitalizedData['Medi_Trat'] ?? ''}",
+          //   maxLines: 2,
+          //   overflow: TextOverflow.ellipsis,
+          //   style: Styles.textSyleGrowth(fontSize: 10),
+          // ),
+          Text(
+              "NG.: ${snapshot.data[index].hospitalizedData['Feca_INI_Hosp'] ?? ''} - "
+              "D.E.H.: ${Calendarios.differenceInDaysToNow(snapshot.data[index].hospitalizedData['Feca_INI_Hosp'] ?? DateTime.now().toString())}",
+              style: Styles.textSyleGrowth(fontSize: 12)),
+          CrossLine()
+        ],
+      ),
     );
   }
 
@@ -1772,90 +1624,122 @@ class _HospitalizadosState extends State<Hospitalizados> {
         });
   }
 
+  //
   cronicosPanel(AsyncSnapshot snapshot, int index) {
-    return Container(
-      margin: const EdgeInsets.all(5.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Crónico(s) ",
-            style: Styles.textSyleGrowth(fontSize: 12),
-          ),
-          CrossLine(),
-          Expanded(
-            child: ListView.builder(
-                itemCount: foundedItems![index].patologicos.length,
-                itemBuilder: (BuildContext context, ind) {
-                  return Text(
-                    foundedItems![index].patologicos[ind]['Pace_APP_DEG'],
-                    style: Styles.textSyleGrowth(fontSize: 9),
-                  );
-                }),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            "Diagnóstico(s) ",
-            style: Styles.textSyleGrowth(fontSize: 12),
-          ),
-          CrossLine(),
-          Expanded(
-            child: ListView.builder(
-                itemCount: foundedItems![index].diagnosticos.length,
-                itemBuilder: (BuildContext context, ind) {
-                  return Text(
-                    foundedItems![index].diagnosticos[ind]['Pace_APP_DEG'],
-                    style: Styles.textSyleGrowth(fontSize: 9),
-                  );
-                }),
-          ),
-          const SizedBox(height: 4),
-        ],
-      ),
+    return TittleContainer(
+        color: Colors.black,
+        tittle: "Crónico(s) ",
+        child: ListView.builder(
+            itemCount: foundedItems![index].patologicos.length,
+            itemBuilder: (BuildContext context, ind) {
+              return Text(
+                foundedItems![index].patologicos[ind]['Pace_APP_DEG'],
+                style: Styles.textSyleGrowth(fontSize: 9),
+              );
+            }));
+  }
+
+  diagnosticosPanel(AsyncSnapshot snapshot, int index) {
+    return TittleContainer(
+        color: Colors.black,
+        tittle: "Diagnóstico(s) ",
+        child: ListView.builder(
+            itemCount: foundedItems![index].diagnosticos.length,
+            itemBuilder: (BuildContext context, ind) {
+              return Text(
+                foundedItems![index].diagnosticos[ind]['Pace_APP_DEG'],
+                style: Styles.textSyleGrowth(fontSize: 9),
+              );
+            }));
+  }
+
+  //
+  pendientesPanel(AsyncSnapshot snapshot, int index) {
+    return TittleContainer(
+      tittle: 'Pendiente(s)',
+      color: Colors.black,
+      child: Expanded(
+          flex: 5,
+          child: ListView.builder(
+              itemCount: foundedItems![index].pendientes.length,
+              itemBuilder: (BuildContext context, int ind) {
+                return Text(
+                  foundedItems![index].pendientes[ind]['Pace_Desc_PEN'],
+                  style: Styles.textSyleGrowth(fontSize: 9),
+                );
+              })),
     );
   }
 
-  pendientesPanel(AsyncSnapshot snapshot, int index) {
-    return Container(
-      margin: const EdgeInsets.all(5.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Pendientes(s) ",
-            style: Styles.textSyleGrowth(fontSize: 12),
-          ),
-          CrossLine(),
-          Expanded(
-            child: ListView.builder(
-                itemCount: foundedItems![index].pendientes.length,
-                itemBuilder: (BuildContext context, int ind) {
-                  return Text(
-                    foundedItems![index].pendientes[ind]['Pace_Desc_PEN'],
-                    style: Styles.textSyleGrowth(fontSize: 9),
-                  );
-                }),
-          ),
-          const SizedBox(height: 4),
-          // Text(
-          //   "Diagnóstico(s) ",
-          //   style: Styles.textSyleGrowth(fontSize: 12),
-          // ),
-          // CrossLine(),
-          // Expanded(
-          //   child: ListView.builder(
-          //       itemCount: foundedItems![index].hospitalizedData['Diagnosticos'].length,
-          //       itemBuilder: (BuildContext context, ind) {
-          //         return Text(foundedItems![index].hospitalizedData['Diagnosticos'][ind]
-          //         ['Pace_APP_DEG'], style: Styles.textSyleGrowth(fontSize: 9),);
-          //       }),
-          // ),
-        ],
-      ),
-    );
-  }
+  signosVitales(AsyncSnapshot snapshot, int index) => TittleContainer(
+      color: Colors.black,
+      tittle: 'Signos Vitales . . . ',
+      child: foundedItems![index].vitales.isNotEmpty
+          ? Wrap(
+              children: [
+                ValuePanel(
+                  firstText: foundedItems![index]
+                      .vitales
+                      .last['Pace_SV_tas']
+                      .toString(),
+                ),
+                ValuePanel(
+                  firstText: foundedItems![index]
+                      .vitales
+                      .last['Pace_SV_tad']
+                      .toString(),
+                ),
+                ValuePanel(
+                  firstText: foundedItems![index]
+                      .vitales
+                      .last['Pace_SV_fc']
+                      .toString(),
+                ),
+                ValuePanel(
+                  firstText: foundedItems![index]
+                      .vitales
+                      .last['Pace_SV_fr']
+                      .toString(),
+                ),
+                ValuePanel(
+                  firstText: foundedItems![index]
+                      .vitales
+                      .last['Pace_SV_tc']
+                      .toString(),
+                ),
+                ValuePanel(
+                  firstText: foundedItems![index]
+                      .vitales
+                      .last['Pace_SV_spo']
+                      .toString(),
+                ),
+                ValuePanel(
+                  firstText: foundedItems![index]
+                      .vitales
+                      .last['Pace_SV_est']
+                      .toString(),
+                ),
+                ValuePanel(
+                  firstText: foundedItems![index]
+                      .vitales
+                      .last['Pace_SV_pct']
+                      .toString(),
+                ),
+                ValuePanel(
+                  firstText: foundedItems![index]
+                      .vitales
+                      .last['Pace_SV_glu']
+                      .toString(),
+                ),
+                ValuePanel(
+                  firstText: foundedItems![index]
+                      .vitales
+                      .last['Pace_SV_glu_ayu']
+                      .toString(),
+                ),
+              ],
+            )
+          : Container());
 
   // AUXILIARES
   errorLoggerSnackBar(BuildContext context,
@@ -1888,14 +1772,201 @@ class _HospitalizadosState extends State<Hospitalizados> {
         ),
       );
 
+  bottomNavigationBar(BuildContext context) => BottomAppBar(
+        color: Colors.black87,
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 10,
+        height: 50,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            GrandIcon(
+                labelButton: "Reiniciar . . . ",
+                iconData: Icons.replay,
+                onPress: () => _pullListRefresh().onError((error, stackTrace) {
+                      showModalBottomSheet(
+                          context: context,
+                          backgroundColor: Theming.cuaternaryColor,
+                          builder: (BuildContext context) {
+                            return errorLoggerSnackBar(context,
+                                error: error, stackTrace: stackTrace);
+                          });
+                    })),
+            GrandIcon(
+                labelButton: "Primeros Encontrados",
+                iconData: Icons.file_present,
+                onPress: () => _reiniciar()),
+            const SizedBox(width: 25),
+            GrandIcon(onPress: () => null),
+            GrandIcon(
+              labelButton: "Imprimir censo hospitalario",
+              iconData: Icons.list,
+              onPress: () async {
+                final pdfFile = await PdfParagraphsApi.generateFromList(
+                  topMargin: 10,
+                  bottomMargin: 5,
+                  rightMargin: 10,
+                  leftMargin: 10,
+                  withIndicationReport: false,
+                  indexOfTypeReport: TypeReportes.censoHospitalario,
+                  paraph: foundedItems!,
+                  content:
+                      FormatosReportes.censoSimpleHospitalario(foundedItems!),
+                  name: "(CEN) - (${Calendarios.today()}).pdf",
+                );
+                PdfApi.openFile(pdfFile);
+              },
+            ),
+          ],
+        ),
+      );
 
+  //
+  Future<Null> _pullListRefresh() async {
+    Terminal.printAlert(
+        message: "Iniciando actividad : : \n "
+            "Consulta de pacientes hospitalizados . . . NUEVA FUNCION");
+    //
+    Operadores.loadingActivity(
+        context: context,
+        tittle: 'Actualizando Valores . . . ',
+        message: 'Actualizando . . . ',
+        onCloss: () {
+          Navigator.of(context).pop();
+        });
+    // CONSULTA DE VALORES ****************************************
+    List hospitalized = []; // Lista de Pacientes Hospitalizados * * *
+
+    var response = await Actividades.consultar(
+      Databases.siteground_database_regpace,
+      Pacientes.pacientes['consultHospitalized'],
+    );
+    //
+    for (int i = 0; i < response.length; i++) {
+      hospitalized.insert(i,
+          Internado(int.parse(response[i]["ID_Pace"].toString()), response[i]));
+      //
+      await hospitalized[i].getHospitalizationRegister();
+      await hospitalized[i].getPadecimientoActual();
+      await hospitalized[i].getCronicosHistorial();
+      await hospitalized[i].getDiagnosticosHistorial();
+      await hospitalized[i].getVitalesHistorial();
+      //
+      await hospitalized[i].getVentilacionnesHistorial();
+      //
+      // await hospitalized[i].getPendientesHistorial();
+      //
+      // await hospitalized[i].getParaclinicosHistorial();
+      // await hospitalized[i].getImagenologicosHistorial();
+      // await hospitalized[i].getElectrocardiogramasHistorial();
+      Terminal.printExpected(
+          message:
+              "     :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::     ");
+      //
+    }
+    // ********** ************** ***********
+    firstFounded = foundedItems = hospitalized;
+    // ESCRIBIR EN JSON ***********************************************
+    List listado = [];
+    for (int i = 0; i < hospitalized.length; i++) {
+      listado.addAll([hospitalized[i]!.toJson()]);
+    }
+    Archivos.createJsonFromMap(listado, filePath: fileAssocieted);
+    //
+    setState(() {
+      // ACTUALIZAR . . .
+      Terminal.printSuccess(
+          message: "Actualizando pacientes hospitalizados . . . ");
+      // Ordenar por No Cama || ***************** foundedItems!!.sort((a, b) => a["Id_Cama"].compareTo(b["Id_Cama"]));
+      orderByCamas(foundedItems!);
+      // Cerrar Operaciones.loadingActivity . . .
+      Navigator.of(context).pop();
+    });
+  }
+
+  vitalesString(last) {
+    return "${last['Pace_Feca_SV']} : "
+        "${last['Pace_SV_tas']}/"
+        "${last['Pace_SV_tad']} mmHg, "
+        "${last['Pace_SV_fc']} Lat/min, "
+        "${last['Pace_SV_fr']} Resp/min, "
+        "${last['Pace_SV_tc']}°C, "
+        "${last['Pace_SV_spo']}%, "
+        "${last['Pace_SV_pct']} Kg, "
+        "${last['Pace_SV_est']} mts, "
+        "${last['Pace_SV_glu']} mg/dL, "
+        "${last['Pace_SV_glu_ayu']} Horas";
+  }
+
+  ventilacionesString(last) {
+    Terminal.printAlert(message: "${last.runtimeType}");
+    Ventilaciones.fromJson(last);
+    return Ventometrias.ventiladorCorto;
+  }
+
+  opcionesPanel(BuildContext context, int index) {
+    return Wrap(
+      alignment: WrapAlignment.center,
+      runSpacing: 10,
+      spacing: 5,
+      children: [
+        CircleIcon(
+            radios: 30,
+            difRadios: 5,
+            iconed: Icons.medical_services_outlined,
+            onChangeValue: () {
+              Pacientes.ID_Paciente = foundedItems![index].idPaciente;
+              Terminal.printWarning(message: "ID : ${Pacientes.ID_Paciente}");
+              //
+              if (foundedItems![index].vitales.isNotEmpty) {
+                Valores.alturaPaciente =
+                    foundedItems![index].vitales.last['Pace_SV_est'];
+                Valores.pesoCorporalTotal = double.parse(foundedItems![index]
+                    .vitales
+                    .last['Pace_SV_pct']
+                    .toString());
+              } else {
+                Valores.alturaPaciente = 0;
+                Valores.pesoCorporalTotal = 0;
+              }
+
+              //
+              Cambios.toNextActivity(context, chyld: const Generales());
+            }),
+        CircleIcon(
+            radios: 25,
+            difRadios: 5,
+            iconed: Icons.list_alt_sharp,
+            onChangeValue: () {
+              Pacientes.ID_Paciente = foundedItems![index].idPaciente;
+              Pacientes.ID_Hospitalizacion =
+                  foundedItems![index].idHospitalizado =
+                      foundedItems![index].hospitalizedData['ID_Hosp'];
+              //
+              Cambios.toNextActivity(context,
+                  chyld: OperacionesPendiente(
+                      operationActivity: Constantes.Register));
+            }),
+        CircleIcon(
+            radios: 25,
+            difRadios: 5,
+            onChangeValue: () {
+              Pacientes.ID_Paciente = foundedItems![index].idPaciente;
+              Pacientes.ID_Hospitalizacion =
+                  foundedItems![index].idHospitalizado;
+              //
+              Cambios.toNextActivity(context, chyld: Subjetivos());
+            }),
+      ],
+    );
+  }
 }
 
 //
 void orderByCamas(List? foundedItems) {
   foundedItems!.sort((alfa, betta) {
     return Items.orderOfCamas
-        .indexOf(alfa.hospitalizedData['Id_Cama'].toString()) -
+            .indexOf(alfa.hospitalizedData['Id_Cama'].toString()) -
         Items.orderOfCamas
             .indexOf(betta.hospitalizedData['Id_Cama'].toString());
   });
@@ -1907,11 +1978,11 @@ List? descompose(value) {
     Terminal.printWarning(message: " . . . Value ${value[i].keys}");
     //
     Internado atreidys =
-    Internado(value[i]['generales']['ID_Pace'], value[i]['generales']);
+        Internado(value[i]['generales']['ID_Pace'], value[i]['generales']);
     atreidys.hospitalizedData =
-    value[i]['hospitalizedData']['Error'] == 'Hubo un error'
-        ? Hospitalizados.dummy(value[i]['generales']['ID_Pace'])
-        : value[i]['hospitalizedData'];
+        value[i]['hospitalizedData']['Error'] == 'Hubo un error'
+            ? Hospitalizados.dummy(value[i]['generales']['ID_Pace'])
+            : value[i]['hospitalizedData'];
     atreidys.padecimientoActual = value[i]['padecimientoActual'];
     //
     atreidys.vitales = value[i]['vitales'];
@@ -1929,3 +2000,4 @@ List? descompose(value) {
   return auxiliar;
 }
 
+//

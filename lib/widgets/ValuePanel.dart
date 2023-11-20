@@ -10,6 +10,7 @@ class ValuePanel extends StatefulWidget {
 
   bool? withEditMessage, withBorder;
   final ValueChanged<String>? onEdit;
+  void Function()? onLongPress;
 
   ValuePanel({
     Key? key,
@@ -22,6 +23,7 @@ class ValuePanel extends StatefulWidget {
     this.heigth = 46,
     this.withEditMessage = false,
     this.withBorder = true, // false,
+    this.onLongPress,
     this.onEdit,
   }) : super(key: key);
 
@@ -33,9 +35,10 @@ class _ValuePanelState extends State<ValuePanel> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Datos.portapapeles(context: context, text: "${widget.firstText!} ${widget.secondText!} ${widget.thirdText!}");
-      },
+      onTap:
+        widget.onLongPress ?? () {
+      Datos.portapapeles(context: context, text: "${widget.firstText!} ${widget.secondText!} ${widget.thirdText!}");
+        },
       onDoubleTap: () {
         widget.onEdit!(widget.secondText!);
       },

@@ -378,7 +378,7 @@ class Valores {
     sDIII = toDoubleFromInt(json: json, keyEntered: 'EC_sDIII');
     //
     conclusionElectrocardiograma = json['Pace_EC_CON'] ?? '';
-    //
+    // VENTILACIONES
     fechaVentilaciones = json['Feca_VEN'] ?? '';
     modalidadVentilatoria = json['VM_Mod'] ?? '';
     frecuenciaVentilatoria = json['Pace_Fr'] ?? 0;
