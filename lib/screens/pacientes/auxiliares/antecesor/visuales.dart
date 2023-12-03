@@ -66,8 +66,8 @@ class VisualPacientes extends StatefulWidget {
 class _VisualPacientesState extends State<VisualPacientes> {
   @override
   void initState() {
-    Pacientes.getValores();
-    Pacientes.getParaclinicosHistorial();
+    // Pacientes.getValores();
+    // Pacientes.getParaclinicosHistorial();
     //
     super.initState();
   }
@@ -147,8 +147,8 @@ class _VisualPacientesState extends State<VisualPacientes> {
                   backgroundColor: Theming.terciaryColor,
                   child: const Icon(Icons.filter_list, color: Colors.grey),
                   onPressed: () {
-                    Pacientes.getValores();
-                    Pacientes.getParaclinicosHistorial();
+                    // Pacientes.getValores();
+                    // Pacientes.getParaclinicosHistorial();
                     //
                     showModalBottomSheet(
                         context: context,
@@ -219,12 +219,11 @@ class _VisualPacientesState extends State<VisualPacientes> {
     }
   }
 
-  void cerrarCasoPaciente() {
+  void cerrarCasoPaciente({bool toHospitized = false}) {
     Pacientes.close();
-    Reportes.close();
     dispose();
 
-    if (Directrices.coordenada!) {
+    if (toHospitized) {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => Hospitalizados()));
     } else {
@@ -946,6 +945,26 @@ class _VisualPacientesState extends State<VisualPacientes> {
               // CERRAR
               Positioned(
                 child: CircleIcon(
+                  tittle: 'Hospitalizados . . . ',
+                  iconed: Icons.bed_sharp,
+                  onChangeValue: () {
+                    cerrarCasoPaciente(toHospitized: true);
+                    dispose();
+                    //
+                  },
+                ),
+              ),
+            ],
+          ),
+const SizedBox(height: 5),
+          Stack(
+            alignment: AlignmentDirectional.center,
+            children: [
+              CrossLine(height: 20, thickness: 6),
+              // CERRAR
+              Positioned(
+                child: CircleIcon(
+                  radios: 35,
                   tittle: 'Revisorio',
                   iconed: Icons.close_sharp,
                   onChangeValue: () {

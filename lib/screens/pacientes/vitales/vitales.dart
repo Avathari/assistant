@@ -10,11 +10,9 @@ import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/AppBarText.dart';
-import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
-import 'package:assistant/widgets/GridLayout.dart';
 import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 
@@ -49,7 +47,8 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
       case Constantes.Register:
         widget._operationButton = 'Registrar';
 
-        fechaRealizacionTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
+        fechaRealizacionTextController.text =
+            Calendarios.today(format: 'yyyy-MM-dd');
         // estTextController.text = Pacientes.Vital['Pace_SV_est'].toString();
         // pctTextController.text = Pacientes.Vital['Pace_SV_pct'].toString();
         estTextController.text = Valores.alturaPaciente!.toString();
@@ -144,21 +143,20 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
         ),
         actions: isMobile(context)
             ? <Widget>[
-        GrandIcon(
-        iconData: Icons.medical_information_outlined,
-        labelButton: 'Signos Vitales',
-        onPress: () {
-          carouselController.jumpToPage(0);
-        },
-      ),
-      GrandIcon(
-        iconData: Icons.volunteer_activism_outlined,
-        labelButton: 'Medidas Antropométricas',
-        onPress: () {
-          carouselController.jumpToPage(1);
-        },
-      ),
-
+                GrandIcon(
+                  iconData: Icons.medical_information_outlined,
+                  labelButton: 'Signos Vitales',
+                  onPress: () {
+                    carouselController.jumpToPage(0);
+                  },
+                ),
+                GrandIcon(
+                  iconData: Icons.volunteer_activism_outlined,
+                  labelButton: 'Medidas Antropométricas',
+                  onPress: () {
+                    carouselController.jumpToPage(1);
+                  },
+                ),
                 GrandIcon(
                   iconData: Icons.candlestick_chart,
                   labelButton: 'Análisis de Parámetros',
@@ -194,7 +192,8 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                       withShowOption: true,
                       selection: true,
                       onSelected: () {
-                        fechaRealizacionTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
+                        fechaRealizacionTextController.text =
+                            Calendarios.today(format: 'yyyy-MM-dd');
                       },
                     ),
                   ),
@@ -207,28 +206,30 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                   //     });
                   //   },),
                   // ),
-                  isMobile(context) ? Container() :
-                  Expanded(
-                    flex: 4,
-                    child: GrandButton(
-                        labelButton: "Signos Vitales",
-                        onPress: () {
-                          setState(() {
-                            carouselController.jumpToPage(0);
-                          });
-                        }),
-                  ),
-                  isMobile(context) ? Container() :
-                  Expanded(
-                    flex: 4,
-                    child: GrandButton(
-                        labelButton: "Medidas Antropométricas",
-                        onPress: () {
-                          setState(() {
-                            carouselController.jumpToPage(1);
-                          });
-                        }),
-                  )
+                  isMobile(context)
+                      ? Container()
+                      : Expanded(
+                          flex: 4,
+                          child: GrandButton(
+                              labelButton: "Signos Vitales",
+                              onPress: () {
+                                setState(() {
+                                  carouselController.jumpToPage(0);
+                                });
+                              }),
+                        ),
+                  isMobile(context)
+                      ? Container()
+                      : Expanded(
+                          flex: 4,
+                          child: GrandButton(
+                              labelButton: "Medidas Antropométricas",
+                              onPress: () {
+                                setState(() {
+                                  carouselController.jumpToPage(1);
+                                });
+                              }),
+                        )
                 ],
               ),
             ),
@@ -271,22 +272,31 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                               GridView(
                                 controller: ScrollController(),
                                 padding: const EdgeInsets.all(8.0),
-                                gridDelegate: GridViewTools.gridDelegate(crossAxisCount:
-                                isMobile(context) || isTablet(context) ? 1 : 2,
-                                  mainAxisExtent: isMobile(context)  ? 80 : 70,),
+                                gridDelegate: GridViewTools.gridDelegate(
+                                  crossAxisCount:
+                                      isMobile(context) || isTablet(context)
+                                          ? 1
+                                          : 2,
+                                  mainAxisExtent: isMobile(context) ? 80 : 70,
+                                ),
                                 children: component(context),
                               ),
                               GridView(
                                 controller: ScrollController(),
                                 padding: const EdgeInsets.all(8.0),
-                                gridDelegate: GridViewTools.gridDelegate(crossAxisCount:
-                                isMobile(context) || isTablet(context) ? 1 : 2,
-                                    mainAxisExtent: isMobile(context)  ? 80 : 70,),
+                                gridDelegate: GridViewTools.gridDelegate(
+                                  crossAxisCount:
+                                      isMobile(context) || isTablet(context)
+                                          ? 1
+                                          : 2,
+                                  mainAxisExtent: isMobile(context) ? 80 : 70,
+                                ),
                                 children: secondComponent(context),
                               ),
                             ],
                             carouselController: carouselController,
-                            options: Carousel.carouselOptions(context: context)),
+                            options:
+                                Carousel.carouselOptions(context: context)),
                       ),
                     ),
                     isMobile(context)
@@ -296,8 +306,8 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                                 padding: const EdgeInsets.all(8.0),
                                 decoration: const BoxDecoration(
                                     color: Colors.black,
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(20))),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20))),
                                 child: const Antropometricos()),
                           )
                   ],
@@ -306,7 +316,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
             ),
             Expanded(
               child: GrandButton(
-                weigth: 2000,
+                  weigth: 2000,
                   labelButton: widget._operationButton,
                   onPress: () {
                     operationMethod(context);
@@ -348,7 +358,8 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                   "Actualizando Repositorio de Signos Vitales del Paciente . . . ${Pacientes.Vitales}");
           // Pacientes.Vitales!;
           Archivos.createJsonFromMap(Pacientes.Vitales!,
-              filePath: Vitales.fileAssocieted); // Creacion de Vitales.json **********************
+              filePath: Vitales
+                  .fileAssocieted); // Creacion de Vitales.json **********************
         });
       });
     });
@@ -537,7 +548,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
           cmbTextController,
           false),
       Spinner(
-        isRow: true,
+          isRow: true,
           width: isMobile(context) ? 60 : 40,
           tittle: "Factor de actividad",
           initialValue: factorActividadValue,
@@ -733,10 +744,42 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
         suroDerTextController.text,
         idOperation
       ];
-
-      Terminal.printExpected(
-          message:
-              "${widget.operationActivity} listOfValues $listOfFirstValues ${listOfFirstValues!.length}");
+      //
+      // //
+      // Vitales.fromJson({
+      //   "ID_Pace_SV": idOperation,
+      //   "Pace_Feca_SV": fechaRealizacionTextController.text,
+      //   "Pace_SV_tas": tasTextController.text,
+      //   "Pace_SV_tad": tadTextController.text,
+      //   "Pace_SV_fc": fcTextController.text,
+      //   "Pace_SV_fr": frTextController.text,
+      //   "Pace_SV_tc": tcTextController.text,
+      //   "Pace_SV_spo": spoTextController.text,
+      //   "Pace_SV_est": estTextController.text,
+      //   "Pace_SV_pct": pctTextController.text,
+      //   "Pace_SV_glu": gluTextController.text,
+      //   "Pace_SV_glu_ayu": gluAyuTextController.text,
+      //   "Pace_SV_cue": cueTextController.text,
+      //   "Pace_SV_cin": cinTextController.text,
+      //   "Pace_SV_cad": cadTextController.text,
+      //   "Pace_SV_cmb": cmbTextController.text,
+      //   //
+      //   "Pace_SV_fa": factorActividadValue,
+      //   "Pace_SV_fe": factorEstresValue,
+      //   "Pace_SV_c_pect": pectTextController.text,
+      //   "Pace_SV_pcb": 0, // pcbTextController.text,
+      //   "Pace_SV_pse": pseTextController.text,
+      //   "Pace_SV_psi": psiTextController.text,
+      //   "Pace_SV_pst": pstTextController.text,
+      //   "Pace_SV_c_fem_izq": femIzqTextController.text,
+      //   "Pace_SV_c_fem_der": femDerTextController.text,
+      //   "Pace_SV_c_suro_izq": suroIzqTextController.text,
+      //   "Pace_SV_c_suro_der": suroDerTextController.text,
+      // });
+      // //
+      // Terminal.printExpected(
+      //     message:
+      //         "${widget.operationActivity} listOfValues $listOfFirstValues ${listOfFirstValues!.length}");
 
       switch (widget.operationActivity) {
         case Constantes.Nulo:
@@ -796,20 +839,21 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                   message: "Registros Actualizados",
                   onAcept: () {
                     returnGestion(context);
-                  }));
+                  })).onError((error, stackTrace) => null);
             }); // );
           });
           break;
         default:
       }
-    } catch (ex) {
+    } catch (ex, sta) {
       showDialog(
           context: context,
           builder: (context) {
-            return alertDialog("Error al operar con los valores", "$ex", () {
+            return alertDialog("Error al operar con los valores : ", "$ex : $sta", () {
               Navigator.of(context).pop();
             }, () {});
           });
+      Terminal.printAlert(message: "Error al operar con los valores : $ex : $sta");
     }
   }
 }
@@ -836,7 +880,7 @@ class _GestionVitalesState extends State<GestionVitales> {
       backgroundColor: Colors.black,
       appBar: isMobile(context) || isTablet(context)
           ? AppBar(
-        foregroundColor: Colors.white,
+              foregroundColor: Colors.white,
               backgroundColor: Theming.primaryColor,
               leading: isMobile(context) || isTablet(context)
                   ? IconButton(
@@ -995,6 +1039,9 @@ class _GestionVitalesState extends State<GestionVitales> {
       setState(() {
         foundedItems = value;
         Pacientes.Vitales = value;
+        //
+        // Vitales.fromJson(Pacientes.Vitales!.last);
+        //
         Terminal.printSuccess(
             message: "Repositorio de Signos Vitales del Paciente . . . ");
       });

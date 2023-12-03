@@ -232,6 +232,8 @@ class Pacientes {
     localReportsPath = 'assets/vault/'
         '$nombreCompleto/'
         'reportes/';
+
+
   }
 
   // Prosas y apartados literales en la formación de las Actividades.
@@ -514,6 +516,80 @@ class Pacientes {
 
   static String sexuales() {
     return "Antecedentes sexuales no informados";
+  }
+  
+  //
+  static String getAuxiliaryStats (int idPaciente) {
+    return "SELECT "
+        "(SELECT Fecha_Registro FROM laboratorios WHERE ID_Pace = $idPaciente AND Tipo_Estudio = 'Biometría Hemática' ORDER BY Fecha_Registro DESC limit 1) as Fecha_Registro_Biometria,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Eritrocitos' ORDER BY Fecha_Registro DESC limit 1) as Eritrocitos,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Hemoglobina' ORDER BY Fecha_Registro DESC limit 1) as Hemoglobina,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Hematocrito' ORDER BY Fecha_Registro DESC limit 1) as Hematocrito,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Concentración Media de Hemoglobina Corpuscular' ORDER BY Fecha_Registro DESC limit 1) as CHCM,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'VCM' ORDER BY Fecha_Registro DESC limit 1) as VCM,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'HCM' ORDER BY Fecha_Registro DESC limit 1) as HCM,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Ancho de Distribución Eritrocitaria' ORDER BY Fecha_Registro DESC limit 1) as RDW,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Plaquetas' ORDER BY Fecha_Registro DESC limit 1) as Plaquetas,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Leucocitos Totales' ORDER BY Fecha_Registro DESC limit 1) as Leucocitos_Totales,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Neutrofilos Totales' ORDER BY Fecha_Registro DESC limit 1) as Neutrofilos_Totales,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Linfocitos Totales' ORDER BY Fecha_Registro DESC limit 1) as Linfocitos_Totales,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Monocitos Totales' ORDER BY Fecha_Registro DESC limit 1) as Monocitos_Totales,"
+    //
+        "(SELECT Fecha_Registro FROM laboratorios WHERE ID_Pace = $idPaciente AND Tipo_Estudio = 'Tiempos de Coagulación' ORDER BY Fecha_Registro DESC limit 1) as Fecha_Registro_Coagulacion,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Tiempo de Protrombina' ORDER BY Fecha_Registro DESC limit 1) as Tiempo_Protrombina,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Tiempo Parcial de Tromboplastina' ORDER BY Fecha_Registro DESC limit 1) as TP_Tromboplastina,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'INR' ORDER BY Fecha_Registro DESC limit 1) as Normalized_Ratio,"
+    //
+        "(SELECT Fecha_Registro FROM laboratorios WHERE ID_Pace = $idPaciente AND Tipo_Estudio = 'Química Sanguínea' ORDER BY Fecha_Registro DESC limit 1) as Fecha_Registro_Quimicas,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Glucosa' ORDER BY Fecha_Registro DESC limit 1) as Glucosa,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Urea' ORDER BY Fecha_Registro DESC limit 1) as Urea,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Creatinina' ORDER BY Fecha_Registro DESC limit 1) as Creatinina,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Acido Úrico' ORDER BY Fecha_Registro DESC limit 1) as Acido_Urico,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Nitrógeno Úrico' ORDER BY Fecha_Registro DESC limit 1) as Nitrogeno_Ureico,"
+    //
+        "(SELECT Fecha_Registro FROM laboratorios WHERE ID_Pace = $idPaciente AND Tipo_Estudio = 'Electrolitos Séricos' ORDER BY Fecha_Registro DESC limit 1) as Fecha_Registro_Electrolitos,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Sodio' ORDER BY Fecha_Registro DESC limit 1) as Sodio,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Potasio' ORDER BY Fecha_Registro DESC limit 1) as Potasio,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Cloro' ORDER BY Fecha_Registro DESC limit 1) as Cloro,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Calcio' ORDER BY Fecha_Registro DESC limit 1) as Calcio,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Fósforo' ORDER BY Fecha_Registro DESC limit 1) as Fosforo,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Magnesio' ORDER BY Fecha_Registro DESC limit 1) as Magnesio,"
+    //
+        "(SELECT Fecha_Registro FROM laboratorios WHERE ID_Pace = $idPaciente AND Tipo_Estudio = 'Reactantes de Fase Aguda' ORDER BY Fecha_Registro DESC limit 1) as Fecha_Registro_Reactantes,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Procalcitonina' ORDER BY Fecha_Registro DESC limit 1) as Procalcitonina,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Ácido Láctico' ORDER BY Fecha_Registro DESC limit 1) as Acido_Lactico,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Velocidad de Sedimentación Globular' ORDER BY Fecha_Registro DESC limit 1) as Velocidad_Sedimentacion,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Proteina C Reactiva' ORDER BY Fecha_Registro DESC limit 1) as Proteina_Reactiva,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Factor Reumatoide' ORDER BY Fecha_Registro DESC limit 1) as Factor_Reumatoide,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Anticuerpo Antipéptido Citrulinado' ORDER BY Fecha_Registro DESC limit 1) as Anticuerpo_Citrulinado,"
+    //
+        "(SELECT Fecha_Registro FROM laboratorios WHERE ID_Pace = $idPaciente AND Tipo_Estudio = 'Pruebas de Funcionamiento Hepático' ORDER BY Fecha_Registro DESC limit 1) as Fecha_Registro_Hepaticos,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Alaninoaminotrasferasa' ORDER BY Fecha_Registro DESC limit 1) as Alaninoaminotrasferasa,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Aspartatoaminotransferasa' ORDER BY Fecha_Registro DESC limit 1) as Aspartatoaminotransferasa,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Bilirrubinas Totales' ORDER BY Fecha_Registro DESC limit 1) as Bilirrubinas_Totales,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Bilirrubina Directa' ORDER BY Fecha_Registro DESC limit 1) as Bilirrubina_Directa,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Bilirrubina Indirecta' ORDER BY Fecha_Registro DESC limit 1) as Bilirrubina_Indirecta,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Deshidrogenasa Láctica' ORDER BY Fecha_Registro DESC limit 1) as Deshidrogenasa_Lactica,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Glutrailtranspeptidasa' ORDER BY Fecha_Registro DESC limit 1) as Glutrailtranspeptidasa,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Fosfatasa Alcalina' ORDER BY Fecha_Registro DESC limit 1) as Fosfatasa_Alcalina,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Albúmina' ORDER BY Fecha_Registro DESC limit 1) as Albumina_Serica,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Estudio = 'Proteínas Totales' ORDER BY Fecha_Registro DESC limit 1) as Proteinas_Totales,"
+    // Gasometría Arterial
+        "(SELECT Fecha_Registro FROM laboratorios WHERE ID_Pace = $idPaciente AND Tipo_Estudio = 'Gasometría Arterial' ORDER BY Fecha_Registro DESC limit 1) as Fecha_Registro_Arterial,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Tipo_Estudio = 'Gasometría Arterial' AND Estudio = 'pH' ORDER BY Fecha_Registro DESC limit 1) as Ph_Arterial,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Tipo_Estudio = 'Gasometría Arterial' AND Estudio = 'Presión de Dióxido de Carbono' ORDER BY Fecha_Registro DESC limit 1) as Pco_Arterial,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Tipo_Estudio = 'Gasometría Arterial' AND Estudio = 'Presión de Oxígeno' ORDER BY Fecha_Registro DESC limit 1) as Po_Arterial,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Tipo_Estudio = 'Gasometría Arterial' AND Estudio = 'Bicarbonato Sérico' ORDER BY Fecha_Registro DESC limit 1) as Hco_Arterial,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Tipo_Estudio = 'Gasometría Arterial' AND Estudio = 'Fracción Inspiratoria de Oxígeno' ORDER BY Fecha_Registro DESC limit 1) as Fio_Arterial,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Tipo_Estudio = 'Gasometría Arterial' AND Estudio = 'Saturación de Oxígeno' ORDER BY Fecha_Registro DESC limit 1) as So_Arterial, "
+//
+        "(SELECT Fecha_Registro FROM laboratorios WHERE ID_Pace = $idPaciente AND Tipo_Estudio = 'Gasometría Venosa' ORDER BY Fecha_Registro DESC limit 1) as Fecha_Registro_Venosa,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Tipo_Estudio = 'Gasometría Venosa' AND Estudio = 'pH' ORDER BY Fecha_Registro DESC limit 1) as Ph_Venosa,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Tipo_Estudio = 'Gasometría Venosa' AND Estudio = 'Presión de Dióxido de Carbono' ORDER BY Fecha_Registro DESC limit 1) as Pco_Venosa,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Tipo_Estudio = 'Gasometría Venosa' AND Estudio = 'Presión de Oxígeno' ORDER BY Fecha_Registro DESC limit 1) as Po_Venosa,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Tipo_Estudio = 'Gasometría Venosa' AND Estudio = 'Bicarbonato Sérico' ORDER BY Fecha_Registro DESC limit 1) as Hco_Venosa,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Tipo_Estudio = 'Gasometría Venosa' AND Estudio = 'Fracción Inspiratoria de Oxígeno' ORDER BY Fecha_Registro DESC limit 1) as Fio_Venosa,"
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = $idPaciente AND Tipo_Estudio = 'Gasometría Venosa' AND Estudio = 'Saturación de Oxígeno' ORDER BY Fecha_Registro DESC limit 1) as So_Venosa;";
   }
 
   // static void ultimosVitales() {
@@ -1222,17 +1298,22 @@ class Pacientes {
   }
 
   //
-  static void getValores({bool reload = false}) async {
+  static Future<void> getValores( {bool reload = false}) async {
+    Terminal.printNotice(
+        message: " : : INICIANDO ACTIVIDAD . . . "
+            "GET VALORES : ${Pacientes.ID_Paciente}");
     //
     if (reload) {
       Valores vala = Valores();
       vala.load();
     } else {
-      await Archivos.readJsonToMap(filePath: Pacientes.localPath).then((value) {
+      await Archivos.readJsonToMap(filePath:
+      Pacientes.localPath
+      ).then((value) {
         Terminal.printNotice(
             message: " : : OBTENIDO DE ARCHIVO . . . ${Pacientes.localPath}");
-        Valores.fromJson(value[0]);
-        /*Terminal.printAlert(message: " : : DATA OBTENIDA. . . $list");*/
+        Terminal.printAlert(message: " : : DATA OBTENIDA. . . ${value.last}");
+        Valores.fromJson(value[value.length -1]);
       }).onError((error, stackTrace) async {
         Terminal.printAlert(message: " ERROR $error: : $stackTrace");
         Valores vala = Valores();
@@ -1249,7 +1330,7 @@ class Pacientes {
               Auxiliares.auxiliares['consultByIdPrimaryQuery'],
               Pacientes.ID_Paciente)
           .then((value) async {
-        Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . ");
+        // Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . ");
         //
         return Pacientes.Paraclinicos = value;
       }).whenComplete(() => Archivos.createJsonFromMap(Pacientes.Paraclinicos!,
@@ -1278,6 +1359,16 @@ class Pacientes {
       });
     }
     return Pacientes.Paraclinicos!;
+  }
+
+  static Future<Map<String, dynamic>> getLastParaclinicos({bool reload = false}) async {
+    Map<String, dynamic> last = await Actividades.detallesById(
+        Databases.siteground_database_reggabo,
+        Pacientes.getAuxiliaryStats(Pacientes.ID_Paciente),
+        Pacientes.ID_Paciente,
+        emulated: true);
+    print(last);
+    return last;
   }
 }
 
@@ -5251,7 +5342,7 @@ class Vitales {
     // Circunferencias y Pliegues ************ ****************** *************
     Valores.circunferenciaPectoral =
         int.parse(json['Pace_SV_c_pect'].toString());
-    Valores.pliegueCutaneoBicipital = int.parse(json['Pace_SV_pcb'].toString());
+    Valores.pliegueCutaneoBicipital = int.parse(json['Pace_SV_pcb'].toString() ?? '0');
     Valores.pliegueCutaneoEscapular = int.parse(json['Pace_SV_pse'].toString());
     Valores.pliegueCutaneoIliaco = int.parse(json['Pace_SV_psi'].toString());
     Valores.pliegueCutaneoTricipital =
@@ -5264,6 +5355,8 @@ class Vitales {
         int.parse(json['Pace_SV_c_suro_izq'].toString());
     Valores.circunferenciaSuralDerecha =
         int.parse(json['Pace_SV_c_suro_der'].toString());
+    //
+    Terminal.printExpected(message: "$json");
   }
 }
 
@@ -5626,6 +5719,9 @@ class Auxiliares {
   ];
 
   static fromJson(Map<String, dynamic> json) {
+    json.forEach((key, value) => Terminal.printExpected(message: "           $key : $value"));
+
+    //
     Valores.fechaBiometria = json['Fecha_Registro_Biometria'] ?? '';
     Valores.eritrocitos = double.parse(json['Eritrocitos'] ?? '0');
     Valores.hematocrito = double.parse(json['Hematocrito'] ?? '0');
@@ -5706,13 +5802,11 @@ class Auxiliares {
     Valores.soVenosos = double.parse(json['So_Venosa'] ?? '0');
   }
 
-  static void ultimoRegistro() {
-    Actividades.detallesById(Databases.siteground_database_reggabo,
-            Auxiliares.auxiliares['auxiliarStadistics'], Pacientes.ID_Paciente,
-            emulated: true)
-        .then((value) {
-      Pacientes.Auxiliar = value;
-    });
+  static Future<Map<String, dynamic>> ultimoRegistro() async {
+    // Terminal.printNotice(message: "${Auxiliares.auxiliares['auxiliarStadistics']}");
+    return await Actividades.detallesById(Databases.siteground_database_reggabo,
+            Pacientes.getAuxiliaryStats(Pacientes.ID_Paciente), Pacientes.ID_Paciente,
+            emulated: true);
   }
 
   static void registros({String? tipoEstudio}) {
@@ -7298,12 +7392,16 @@ class Balances {
             Balances.balance['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
         .then((value) {
       // Asignación de Valores ********* ******** ******* ********* ***
-      Balances.fromJson(value[value.length - 1]);
-      Balances.Balance = value[value.length - 1];
-      Terminal.printSuccess(
-          message: "Valores de Balances Hídricos asignado : : : value");
-      // Terminal.printData(message: "\t$value");
-      Archivos.createJsonFromMap([value], filePath: fileAssocieted);
+      if (value.isNotEmpty) {
+        // Terminal.printAlert(message: "Balances value : $value");
+        Balances.fromJson(value[value.length - 1]);
+        Balances.Balance = value[value.length - 1];
+        // Terminal.printSuccess(
+        //     message: "Valores de Balances Hídricos asignado : : : value");
+        // Terminal.printData(message: "\t$value");
+        Archivos.createJsonFromMap([value], filePath: fileAssocieted);
+      }
+
     });
     // Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
     //   // Asignación de Valores ********* ******** ******* ********* ***
@@ -7432,7 +7530,7 @@ class Balances {
 
   // *********** *********** ********* ****
   static void fromJson(Map<String, dynamic> json) {
-    Terminal.printExpected(message: "Balances seleccionados $json");
+    // Terminal.printExpected(message: "Balances seleccionados $json");
 
     Balances.ID_Balances = json['ID_Bala'];
     Valores.fechaRealizacionBalances = json['Pace_bala_Fecha'];

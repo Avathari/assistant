@@ -11,6 +11,7 @@ class Internado {
       diagnosticosRepositoryPath,
       pendientesRepositoryPath,
       ventilacionesRepositoryPath,
+      balancesRepositoryPath,
       paraclinicosRepositoryPath,
       imagenologicosRepositoryPath,
       electrocardiogramasRepositoryPath;
@@ -20,6 +21,7 @@ class Internado {
       diagnosticos = [],
       paraclinicos = [],
       pendientes = [],
+      balances = [],
       imagenologicos = [],
       electrocardiogramas = [],
       ventilaciones = [];
@@ -48,6 +50,8 @@ class Internado {
 
     ventilacionesRepositoryPath = "${localRepositoryPath}ventilaciones.json";
 
+    balancesRepositoryPath = "${localRepositoryPath}balances.json";
+
     imagenologicosRepositoryPath = "${localRepositoryPath}imagenologias.json";
     electrocardiogramasRepositoryPath =
         "${localRepositoryPath}electrocardiogramas.json";
@@ -68,6 +72,7 @@ class Internado {
       "patologicos": patologicos,
       "diagnosticos": diagnosticos,
       "paraclinicos": paraclinicos,
+      "balances": balances,
       "pendientes": pendientes,
       "imagenologicos": imagenologicos,
       "electrocardiogramas": electrocardiogramas,
@@ -211,6 +216,29 @@ class Internado {
     return ventilaciones;
   }
 
+  //
+  Future<List> getBalancesHistorial() async {
+    //
+    await Archivos.readJsonToMap(filePath: balancesRepositoryPath)
+        .then((value) {
+      Terminal.printNotice(
+          message:
+          " : : OBTENIDO DE ARCHIVO . . . $balancesRepositoryPath"
+              "$value");
+      //
+      return balances = value;
+    }).onError((error, stackTrace) async {
+      await Actividades.consultarAllById(Databases.siteground_database_reghosp,
+          Balances.balance['consultIdQuery'], idPaciente)
+          .then((value) async {
+        Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . ");
+        //
+        return balances = value;
+      }).whenComplete(() => Archivos.createJsonFromMap(balances,
+          filePath: balancesRepositoryPath));
+    });
+    return balances;
+  }
   //
   Future<List> getParaclinicosHistorial() async {
     //

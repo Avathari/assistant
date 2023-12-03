@@ -8,6 +8,7 @@ import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/AppBarText.dart';
+import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
@@ -69,7 +70,8 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
               Balances.Balance['Pace_bala_Fecha'];
 //
           isHorarioValue = Balances.Balance['Pace_bala_HOR'].toString();
-          Exploracion.tipoSondaVesical = Balances.Balance['Pace_Foley'].toString() ?? '';
+          Exploracion.tipoSondaVesical =
+              Balances.Balance['Pace_Foley'].toString() ?? '';
 
           viaOralTextController.text =
               Balances.Balance['Pace_bala_Oral'].toString();
@@ -114,7 +116,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
       appBar: isDesktop(context)
           ? null
           : AppBar(
-        foregroundColor: Colors.white,
+              foregroundColor: Colors.white,
               backgroundColor: Theming.primaryColor,
               title: AppBarText(appBarTitile),
               leading: IconButton(
@@ -236,10 +238,10 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
                 width: isDesktop(context)
                     ? 300
                     : isTablet(context)
-                    ? 200
-                    : isMobile(context)
-                    ? 170
-                    : 200,
+                        ? 200
+                        : isMobile(context)
+                            ? 170
+                            : 200,
                 items: Items.foley,
                 initialValue: Exploracion.tipoSondaVesical,
                 onChangeValue: (value) {
@@ -465,6 +467,76 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         labelEditText: 'Perdidas Insensibles (mL)',
         textController: viaPerdidaTextController,
         numOfLines: 1,
+      ),
+      Wrap(
+        alignment: WrapAlignment.center,
+        spacing: 8,
+        children: [
+          CircleIcon(
+              radios: 20,
+              tittle: '0.4',
+              onChangeValue: () {
+                Valores.constantePerdidasInsensibles = 0.2;
+                viaPerdidaTextController.text =
+                    Valores.perdidasInsensibles.toStringAsFixed(2);
+              }),
+          CircleIcon(
+              radios: 20,
+              tittle: '0.5',
+              onChangeValue: () {
+                Valores.constantePerdidasInsensibles = 0.2;
+                viaPerdidaTextController.text =
+                    Valores.perdidasInsensibles.toStringAsFixed(2);
+              }),
+          CircleIcon(
+              radios: 20,
+              tittle: '0.6',
+              onChangeValue: () {
+                Valores.constantePerdidasInsensibles = 0.6;
+                viaPerdidaTextController.text =
+                    Valores.perdidasInsensibles.toStringAsFixed(2);
+              }),
+          CircleIcon(
+              radios: 20,
+              tittle: '0.5',
+              onChangeValue: () {
+                Valores.constantePerdidasInsensibles = 0.7;
+                viaPerdidaTextController.text =
+                    Valores.perdidasInsensibles.toStringAsFixed(2);
+              }),
+          CircleIcon(
+              radios: 20,
+              tittle: '0.8',
+              onChangeValue: () {
+                Valores.constantePerdidasInsensibles = 0.8;
+                viaPerdidaTextController.text =
+                    Valores.perdidasInsensibles.toStringAsFixed(2);
+              }),
+          CircleIcon(
+              radios: 20,
+              tittle: '0.9',
+              onChangeValue: () {
+                Valores.constantePerdidasInsensibles = 0.9;
+                viaPerdidaTextController.text =
+                    Valores.perdidasInsensibles.toStringAsFixed(2);
+              }),
+          CircleIcon(
+              radios: 20,
+              tittle: '1.1',
+              onChangeValue: () {
+                Valores.constantePerdidasInsensibles = 1.1;
+                viaPerdidaTextController.text =
+                    Valores.perdidasInsensibles.toStringAsFixed(2);
+              }),
+          CircleIcon(
+              radios: 20,
+              tittle: '1.2',
+              onChangeValue: () {
+                Valores.constantePerdidasInsensibles = 1.2;
+                viaPerdidaTextController.text =
+                    Valores.perdidasInsensibles.toStringAsFixed(2);
+              }),
+        ],
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
@@ -730,7 +802,7 @@ class _GestionBalancesState extends State<GestionBalances> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        foregroundColor: Colors.white,
+          foregroundColor: Colors.white,
           backgroundColor: Theming.primaryColor,
           leading: IconButton(
             icon: const Icon(
@@ -876,7 +948,8 @@ class _GestionBalancesState extends State<GestionBalances> {
       });
     }).onError((error, stackTrace) {
       Terminal.printAlert(
-          message: 'ERROR : No se abrio repositorio local - $error : : $stackTrace');
+          message:
+              'ERROR : No se abrio repositorio local - $error : : $stackTrace');
       reiniciar();
     });
     Terminal.printOther(message: " . . . Actividad Iniciada");
@@ -893,13 +966,15 @@ class _GestionBalancesState extends State<GestionBalances> {
       });
     }).onError((error, stackTrace) {
       Terminal.printAlert(
-          message: 'ERROR : No se realizó conexión con base de datos - $error : : $stackTrace');
-      Operadores.alertActivity(context: context, tittle: "Error al Consultar Información",
-
-      message: 'ERROR :  $error : : $stackTrace',
-      onAcept: () {
-        Navigator.of(context).pop();
-      });
+          message:
+              'ERROR : No se realizó conexión con base de datos - $error : : $stackTrace');
+      Operadores.alertActivity(
+          context: context,
+          tittle: "Error al Consultar Información",
+          message: 'ERROR :  $error : : $stackTrace',
+          onAcept: () {
+            Navigator.of(context).pop();
+          });
     });
   }
 
@@ -918,10 +993,10 @@ class _GestionBalancesState extends State<GestionBalances> {
         onSelected(snapshot, posicion, context, Constantes.Update);
       },
       child: Container(
-        padding: const EdgeInsets.only(
-            top: 5.0, bottom: 5.0, right: 2.0, left: 2.0),
-        margin: const EdgeInsets.only(
-            top: 2.5, bottom: 2.5, right: 2.0, left: 2.0),
+        padding:
+            const EdgeInsets.only(top: 5.0, bottom: 5.0, right: 2.0, left: 2.0),
+        margin:
+            const EdgeInsets.only(top: 2.5, bottom: 2.5, right: 2.0, left: 2.0),
         decoration: ContainerDecoration.roundedDecoration(),
         child: Row(
           children: [

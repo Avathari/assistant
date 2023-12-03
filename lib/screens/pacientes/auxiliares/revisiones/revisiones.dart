@@ -35,14 +35,41 @@ class Revisiones extends StatefulWidget {
 
 class _RevisionesState extends State<Revisiones> {
   String fileAssocieted = Pacientes.localPath;
+  bool reload = true;
 
   @override
   void initState() {
     Terminal.printWarning(
         message:
-            " . . . Iniciando Actividad - Repositorio Paraclinicos del Pacientes : : $fileAssocieted");
-    Pacientes.getValores();
-    Pacientes.getParaclinicosHistorial(reload: true);
+            " . . . Iniciando Actividad - Repositorio Paraclinicos del Pacientes : : $fileAssocieted : : \n"
+                "Pacientes.localPath ${Pacientes.localPath} : . . . \n"
+                "${Pacientes.ID_Paciente}");
+    //
+    Auxiliares.ultimoRegistro()
+        .then((value) => Auxiliares.fromJson(value))
+        .whenComplete(() => setState(() {}))
+        .onError((error, stackTrace) =>
+        Terminal.printAlert(message: "ERROR : : $error : $stackTrace"));
+    //
+    // Archivos.readJsonToMap(filePath:
+    // Pacientes.localPath
+    // ).then((value) {
+    //   Terminal.printAlert(message: " : : DATA OBTENIDA. . . ${value.last}");
+    //   Valores.fromJson(value[value.length -1]);
+    // }).whenComplete(() => setState(() {})).onError((error, stackTrace) async {
+    //   Terminal.printAlert(message: " ERROR $error: : $stackTrace");
+    //   Valores vala = Valores();
+    //   vala.load();
+    // });
+    //
+    // Pacientes.getValores( reload: reload).then((value) => null);
+        //.whenComplete(() => setState((){}));
+    // Pacientes.getParaclinicosHistorial(reload: true).then((value) {
+    //   setState(() {
+    //     reload = false;
+    //     // Terminal.printWarning(message: "fechaVitales : : ${Valores.fechaVitales} : : $reload");
+    //   });
+    // });
     // Pacientes.getParaclinicosHistorial();
     // Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
     //   setState(() {
@@ -90,6 +117,12 @@ class _RevisionesState extends State<Revisiones> {
                           crossAxisSpacing: 2.0,
                           mainAxisExtent: 60), //46
                       children: [
+                        ValuePanel(
+                          firstText: "",
+                          secondText:
+                          Valores.fechaVitales.toString(),
+                          thirdText: "",
+                        ),
                         ValuePanel(
                           firstText: "T. Sys",
                           secondText:

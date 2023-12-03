@@ -54,12 +54,9 @@ class _HospitalizadoState extends State<Hospitalizado> {
         children: [
           Expanded(
             flex: isMobile(context) ? 6 : 3,
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.only(left: 5.0, right: 5.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: component(context),
-              ),
+            child: Wrap(
+              // mainAxisAlignment: MainAxisAlignment.start,
+              children: component(context),
             ),
           ),
           Expanded(
@@ -154,10 +151,13 @@ class _HospitalizadoState extends State<Hospitalizado> {
           Expanded(
             flex: 2,
             child: Wrap(
+              runAlignment: WrapAlignment.center,
+              alignment: WrapAlignment.center,
+              spacing: 30.0,
+              direction: Axis.vertical,
               children: [
-                GrandLabel(
+                GrandIcon(
                   iconData: Icons.padding,
-                  fontSized: 10,
                   labelButton: 'Pendientes de la Atención',
                   onPress: () {
                     Navigator.of(context).push(MaterialPageRoute(
@@ -165,13 +165,8 @@ class _HospitalizadoState extends State<Hospitalizado> {
                     ));
                   },
                 ),
-                TittlePanel(
-                  fontSize: 8,
-                  textPanel: Pacientes.modoAtencion,
-                ),
-                GrandLabel(
+                GrandIcon(
                   iconData: Icons.local_hospital,
-                  fontSized: 10,
                   labelButton: Pacientes.esHospitalizado == true
                       ? 'Egresar paciente'
                       : 'Hospitalizar paciente',
@@ -207,10 +202,8 @@ class _HospitalizadoState extends State<Hospitalizado> {
                     //
                   },
                 ),
-                // CrossLine(),
-                GrandLabel(
+                GrandIcon(
                   iconData: Icons.padding,
-                  fontSized: 10,
                   labelButton: 'Registro de Hospitalizaciones',
                   onPress: () {
                     Navigator.of(context).push(MaterialPageRoute(

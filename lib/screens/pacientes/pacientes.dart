@@ -67,19 +67,6 @@ class _GestionPacientesState extends State<GestionPacientes> {
             Sentences.app_pacientes_tittle,
           ),
           actions: <Widget>[
-            GrandIcon(
-                labelButton: 'Sin Hospitalizados . . . ',
-                iconData: Icons.bedroom_child_outlined,
-                onPress: () {
-                  _notHospitalizedOther(query: "Hospitalización");
-                }),
-            const SizedBox(width: 10),
-            GrandIcon(
-                labelButton: 'Sin Otras Hospitalizaciones . . . ',
-                iconData: Icons.recent_actors_outlined,
-                onPress: () {
-                  _notHospitalizedOther();
-                }),
             if (isMobile(context))
               GrandIcon(
                   iconData: Icons.bar_chart,
@@ -184,8 +171,10 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                     controller: gestionScrollController,
                                     shrinkWrap: false,
                                     gridDelegate: GridViewTools.gridDelegate(
-                                        crossAxisCount:
-                                            isDesktop(context) || isLargeDesktop(context)? 2 : 1,
+                                        crossAxisCount: isDesktop(context) ||
+                                                isLargeDesktop(context)
+                                            ? 2
+                                            : 1,
                                         mainAxisExtent:
                                             isMobile(context) ? 180 : 200),
                                     itemCount: snapshot.data == null
@@ -629,9 +618,26 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                 },
                               ),
                             ),
+                            Expanded(child: CrossLine()),
                             Expanded(
-                              child: CrossLine(),
+                              child: GrandIcon(
+                                  labelButton: 'Sin Hospitalizados . . . ',
+                                  iconData: Icons.bedroom_child_outlined,
+                                  onPress: () {
+                                    _notHospitalizedOther(
+                                        query: "Hospitalización");
+                                  }),
                             ),
+                            Expanded(
+                              child: GrandIcon(
+                                  labelButton:
+                                      'Sin Otras Hospitalizaciones . . . ',
+                                  iconData: Icons.recent_actors_outlined,
+                                  onPress: () {
+                                    _notHospitalizedOther();
+                                  }),
+                            ),
+                            Expanded(child: CrossLine()),
                             Expanded(
                               child: GrandIcon(
                                 labelButton: 'Todos los Pacientes . . .',
@@ -864,7 +870,8 @@ class _GestionPacientesState extends State<GestionPacientes> {
     });
   }
 
-  Future<void> _notHospitalizedOther({String query = "Otra Hospitalización"}) async {
+  Future<void> _notHospitalizedOther(
+      {String query = "Otra Hospitalización"}) async {
     List listOfIDs = [];
     //
     listOfIDs = await Actividades.consultar(
@@ -923,11 +930,12 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
         break;
       case Constantes.Register:
         widget._operation_button = 'Registrar';
-//
+        //
         turnoValue = Pacientes.Turno[0];
         sessoValue = Pacientes.Sexo[0];
         unidadMedicaValue = Pacientes.Unidades[0];
-        hemotipoValue = Items.Hemotipo[0];
+        hemotipoValue = Items.Hemotipo[1];
+
         atencionValue = Pacientes.Atencion[1];
         statusValue = Pacientes.Status[0];
         estadoCivilValue = Pacientes.EstadoCivil[0];
@@ -935,9 +943,12 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
         escolaridadValue = Pacientes.Escolaridad[0];
         escolaridadCompletudValue = Pacientes.EscolaridadCompletud[0];
         //
-        indigenaValue = Pacientes.Indigena[0];
+        indigenaValue = Pacientes.Indigena[1];
         indigenaHablanteValue = Pacientes.lenguaIndigena[0];
         entidadFederativaValue = Pacientes.EntidadesFederativas[0];
+        //
+        indigenaHablanteEspecificacioTextController.text =
+        "Niega hablar alguna Lengua Indigena";
         //
         toBaseImage();
 
@@ -1146,7 +1157,15 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
             filter: {"#": RegExp(r'[0-9]')},
             type: MaskAutoCompletionType.lazy),
       ),
-      editText(false, 'Agregado médico', agregadoPacienteTextController, false),
+      EditTextArea(
+        labelEditText: "Agregado médico",
+        textController: agregadoPacienteTextController,
+        keyBoardType: TextInputType.text,
+        numOfLines: 1,
+        limitOfChars: 7,
+        inputFormat: MaskTextInputFormatter(),
+      ),
+
       EditTextArea(
           labelEditText: 'Primer nombre del paciente',
           numOfLines: 1,
@@ -2010,6 +2029,12 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                     // Navigator.of(context).pop();
                   });
             });
+          }).onError((error, stackTrace) {
+            Operadores.alertActivity(
+                context: context,
+                tittle: 'Error al Registrar paciente',
+                message: "ERROR - $error : : $stackTrace",
+                onAcept: () => Navigator.of(context).pop());
           });
           break;
         case Constantes.Update:
@@ -2026,6 +2051,12 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                     // Navigator.of(context).pop();
                   });
             });
+          }).onError((error, stackTrace) {
+            Operadores.alertActivity(
+                context: context,
+                tittle: 'Error al Actualizar paciente',
+                message: "ERROR - $error : : $stackTrace",
+                onAcept: () => Navigator.of(context).pop());
           });
           // .then((value) => Actividades.consultarId(
           //             Databases.siteground_database_regpace,

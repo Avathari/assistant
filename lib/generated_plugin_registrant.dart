@@ -7,7 +7,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:file_picker/_internal/file_picker_web.dart';
-import 'package:fluttertoast/fluttertoast_web.dart';
+// import 'package:fluttertoast/fluttertoast_web.dart';
 import 'package:image_picker_for_web/image_picker_for_web.dart';
 import 'package:video_player_web/video_player_web.dart';
 
@@ -16,7 +16,7 @@ import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 // ignore: public_member_api_docs
 void registerPlugins(Registrar registrar) {
   FilePickerWeb.registerWith(registrar);
-  FluttertoastWebPlugin.registerWith(registrar);
+  // FluttertoastWebPlugin.registerWith(registrar);
   ImagePickerPlugin.registerWith(registrar);
   VideoPlayerPlugin.registerWith(registrar);
   registrar.registerMessageHandler();

@@ -46,7 +46,7 @@ class _DiagnosisState extends State<Diagnosis> {
         });
       });
     });
-    Terminal.printWarning(message: " . . . Actividad Iniciada");
+    // Terminal.printWarning(message: " . . . Actividad Iniciada");
     super.initState();
   }
 

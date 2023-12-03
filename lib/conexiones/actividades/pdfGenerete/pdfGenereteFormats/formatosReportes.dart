@@ -2678,6 +2678,7 @@ class FormatosReportes {
     );
     // Listado de Celdas. ***** ****** *********** *********
     List<TableRow> censo = [];
+    //
     censo.add(
       TableRow(
         // decoration: BoxDecoration(padding: EdgeInsets.all(4.0)),
@@ -2692,6 +2693,7 @@ class FormatosReportes {
         ],
       ),
     );
+    // Salto de Línea
     censo.add(
       TableRow(verticalAlignment: TableCellVerticalAlignment.middle, children: [
         Padding(padding: const EdgeInsets.all(4.0), child: Container())
@@ -2701,7 +2703,7 @@ class FormatosReportes {
     int index = 1;
     // Despliegue del listado . ***** ****** *********** *********
     for (var item in paraph) {
-      print("item $item");
+      //
       String pades = "No hay padecimiento Descrito\n",
           penden = "",
           previos = "",
@@ -2709,50 +2711,68 @@ class FormatosReportes {
           cronicos = "",
           diagos = "",
           auxiliary = "",
+          balances = "",
           imagenologicos = "",
           electrocardiogramas = "",
           situaciones = "";
       // Terminal.printExpected(
       //     message:
       //         "Pendientes : : ${item['Pendientes']} ${item['Pendientes'].runtimeType}");
-      for (var i in item.pendientes) {
+      for (var item in item.pendientes) {
         penden = "$penden"
-            "${i['Pace_PEN'].toUpperCase()} - \n"
-            "${i['Pace_Desc_PEN']}" //  - ${i['Pace_PEN_realized']}"
+            "${item['Pace_PEN'].toUpperCase()} - \n"
+            "${item['Pace_Desc_PEN']}" //  - ${i['Pace_PEN_realized']}"
             "\n";
       }
-//
-//       Terminal.printExpected(message: "${item['Ventilaciones'][0]}");
-//       if (item['Ventilaciones'] != [] || item['Ventilaciones'].isNotEmpty) {
-//         if (item['Ventilaciones']['Error'] != 'Hubo un error') {
-//           ventilaciones = "\n"
-//               // ***** ** *
-//               "${Ventilaciones.modoVentilatorio(modalidadVentilatoria: item['Ventilaciones']['VM_Mod'].toString())}\n"
-//               "Vt ${item['Ventilaciones']['Pace_Vt']} mL - - - - "
-//               "Fr ${item['Ventilaciones']['Pace_Fr']} Vent/min\n"
-//               "FiO2 ${item['Ventilaciones']['Pace_Fio']} % - - - - "
-//               "PEEP ${item['Ventilaciones']['Pace_Peep']} cmH20\n"
-//               // "Vt ${item['Ventilaciones']['Pace_Peep']} mL\n"
-//               // "Vt ${item['Ventilaciones']['Pace_Peep']} mL\n"
-//               "\n";
-//         } else if (item['Ventilaciones'] != []) {
-//           ventilaciones = "\n"
-//           // "IOT -  \n"
-//               "${Ventilaciones.modoVentilatorio(modalidadVentilatoria: item['Ventilaciones']['VM_Mod'].toString())}\n"
-//               "Vt ${item['Ventilaciones']['Pace_Vt']} mL - - - - "
-//               "Fr ${item['Ventilaciones']['Pace_Fr']} Vent/min\n"
-//               "FiO2 ${item['Ventilaciones']['Pace_Fio']} % - - - - "
-//               "PEEP ${item['Ventilaciones']['Pace_Peep']} cmH20\n"
-//           // "Vt ${item['Ventilaciones']['Pace_Peep']} mL\n"
-//           // "Vt ${item['Ventilaciones']['Pace_Peep']} mL\n"
-//               "\n";
-//         } else {
-//           ventilaciones = "";
-//         }
-//       } else {
-//         ventilaciones = "";
-//       }
-// // **************************************
+// Ventilaciones de los Pacientes Hospitalizados ************************************* * * * * *
+      if (item.ventilaciones.isNotEmpty) {
+        ventilaciones = "\n"
+            "IOT ${item.ventilaciones.last['Feca_VEN']}  : : :  . . . \n"
+            "      ${Ventilaciones.modoVentilatorio(modalidadVentilatoria: item.ventilaciones.last['VM_Mod'].toString())} : : . . . \n"
+            "            Vt ${item.ventilaciones.last['Pace_Vt']} mL\n"
+            "            Fr ${item.ventilaciones.last['Pace_Fr']} Vent/min\n"
+            "            FiO2 ${item.ventilaciones.last['Pace_Fio']} %\n"
+            "            PEEP ${item.ventilaciones.last['Pace_Peep']} cmH2O [ . . . ] "
+            // "Vt ${item.ventilaciones.last['Pace_Peep']} mL\n"
+            // "Vt ${item.ventilaciones.last['Pace_Peep']} mL\n"
+            "\n";
+      } else {
+        ventilaciones = "";
+      }
+      // Balances de los Pacientes Hospitalizados ************************************* * * * * *
+      if (item.balances.isNotEmpty) {
+        int horario = item.balances.last['Pace_bala_HOR'];
+        double ingresos = item.balances.last['Pace_bala_Oral'].toDouble() +
+            item.balances.last['Pace_bala_Sonda'].toDouble() +
+            item.balances.last['Pace_bala_Hemo'].toDouble() +
+            item.balances.last['Pace_bala_NPT'].toDouble() +
+            item.balances.last['Pace_bala_Sol'] +
+            item.balances.last['Pace_bala_Dil'].toDouble();
+        double egresos = item.balances.last['Pace_bala_Uresis'] +
+            item.balances.last['Pace_bala_Evac'] +
+            item.balances.last['Pace_bala_Hemo'] +
+            item.balances.last['Pace_bala_Sangrado'] +
+            item.balances.last['Pace_bala_Succion'] +
+            item.balances.last['Pace_bala_Drenes'] +
+            item.balances.last['Pace_bala_PER'].toDouble();
+        int perdidasInsensibles = item.balances.last['Pace_bala_PER'];
+        double diuresis = item.balances.last['Pace_bala_Uresis'] /
+            item.vitales.last['Pace_SV_pct'] /
+            horario;
+        int uresis = item.balances.last['Pace_bala_Uresis'];
+
+        balances = "\n"
+            "BALLA ${item.balances.last['Pace_bala_Fecha']}  : : :  . . . \n"
+            "     ING $ingresos mL \n"
+            "     ENG $egresos mL \n"
+            "DIU $uresis mL/$horario (${diuresis.toStringAsFixed(2)} mL/$horario Hrs)\n"
+            "     PINS $perdidasInsensibles mL [ . . . ] "
+            "\n";
+      } else {
+        balances = "";
+      }
+// **************************************
+      Terminal.printExpected(message: "BALLA : : ${item.balances}");
 //       if (item['Situaciones']['CVP'] != 0) {
 //         situaciones = "$situaciones\nCVP";
 //       }
@@ -2834,10 +2854,10 @@ class FormatosReportes {
             // ***************************** *****************
             if (max == "") {
               max =
-                  "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio:  element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+                  "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
             } else {
               max =
-                  "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio:  element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+                  "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
             }
           }
           auxiliary = "$auxiliary$fecha: ${Sentences.capitalize(max)}\n";
@@ -2886,11 +2906,11 @@ class FormatosReportes {
 
       // Padecimiento Actual . ***** ****** *********** *********
       if (item.padecimientoActual != null) {
-        if (item.padecimientoActual['Contexto'] != null &&
-            item.padecimientoActual['Contexto'] != [] &&
-            item.padecimientoActual['Contexto'] != "") {
-          // Terminal.printExpected(message: "Padecimiento : : ${item..padecimientoActual['Contexto']} ${item..padecimientoActual['Contexto'].runtimeType}");
-          pades = "${item..padecimientoActual['Contexto']}\n";
+        if (item.padecimientoActual['Padecimiento_Actual'] != null &&
+            item.padecimientoActual['Padecimiento_Actual'] != [] &&
+            item.padecimientoActual['Padecimiento_Actual'] != "") {
+          // Terminal.printExpected(message: "Padecimiento : : ${item..padecimientoActual['Padecimiento_Actual']} ${item..padecimientoActual['Padecimiento_Actual'].runtimeType}");
+          pades = "${item.padecimientoActual['Padecimiento_Actual']}\n";
         } else {
           pades = "No hay padecimiento Descrito\n";
         }
@@ -2908,7 +2928,8 @@ class FormatosReportes {
                 "___\n"
                 "$situaciones\n"
                 "___\n"),
-            textLabel("${item.generales['Pace_NSS']} ${item.generales['Pace_AGRE']}\n"
+            textLabel(
+                "${item.generales['Pace_NSS']} ${item.generales['Pace_AGRE']}\n"
                 "${nombre.toUpperCase()}"
                 "Edad ${item.generales['Pace_Eda']} Años\n"
                 "FN: ${item.hospitalizedData['Feca_INI_Hosp']} : "
@@ -2924,13 +2945,15 @@ class FormatosReportes {
             textLabel(
                 "$auxiliary"
                 "___________________________________________"
-                    "___________________________________________\n\n"
+                "___________________________________________\n\n"
                 "$imagenologicos"
                 "___________________________________________\n\n"
                 "$electrocardiogramas",
                 textAlign: TextAlign.justify),
             textLabel(
                 "$ventilaciones"
+                "_______________________\n\n"
+                "$balances"
                 "_______________________\n\n"
                 "PENDIENTES\n"
                 "$penden",
@@ -3178,7 +3201,8 @@ class CopiasReportes {
     return tipoReporte;
   }
 
-  static String reporteEvolucion(Map<String, dynamic> paraph, {bool esAbreviado = false}) {
+  static String reporteEvolucion(Map<String, dynamic> paraph,
+      {bool esAbreviado = false}) {
     String tipoReporte = "NOTA DE EVOLUCIÓN HOSPITALARIA\n";
     tipoReporte = "$tipoReporte"
         "${paraph['Datos_Generales']}";
@@ -3190,7 +3214,7 @@ class CopiasReportes {
     tipoReporte = "$tipoReporte"
         "${paraph['Subjetivo']}\n";
     if (esAbreviado) {
-      tipoReporte = "${tipoReporte}"
+      tipoReporte = "$tipoReporte"
           "${paraph['Signos_Vitales']}\n"
           "${paraph['Exploracion_Fisica']}\n\n";
     } else {
@@ -3198,7 +3222,6 @@ class CopiasReportes {
           "${paraph['Signos_Vitales']}\n"
           "${paraph['Exploracion_Fisica']}\n\n";
     }
-
 
     if (paraph['Auxiliares_Diagnosticos'] != "") {
       tipoReporte = "$tipoReporte"

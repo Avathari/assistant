@@ -4,7 +4,7 @@ import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
 
 Padding editPassword(
     bool prefixIcon,
@@ -159,10 +159,10 @@ Padding editFormattedText(
   );
 }
 
-Future toast(String msg) {
-  return Fluttertoast.showToast(
-      msg: msg, fontSize: 18, gravity: ToastGravity.BOTTOM);
-}
+// Future toast(String msg) {
+//   return Fluttertoast.showToast(
+//       msg: msg, fontSize: 18, gravity: ToastGravity.BOTTOM);
+// }
 
 Text labelText(String data) {
   return Text(data,

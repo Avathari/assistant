@@ -157,6 +157,9 @@ class Actividades {
       String database, String query, int id,
       {bool emulated = false}) async {
     // List elements
+
+    Terminal.printNotice(message: query);
+
     final response = await http.post(
       Uri.parse("${Env.URL_PREFIX}/detallesById.php"),
       encoding: Encoding.getByName('utf-8'),

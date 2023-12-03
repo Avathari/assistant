@@ -37,6 +37,8 @@ class PdfApi {
       file = File('${dir.path}/$name');
       final bytes = await pdf.save();
 
+      //
+      Terminal.printSuccess(message: "$file");
       await file.writeAsBytes(bytes);
 
       return file;
@@ -157,6 +159,8 @@ class PdfParagraphsApi {
     // Creación de documento en base al paraph.
     try {
       print("indexOfTypeReport $indexOfTypeReport");
+      Terminal.printExpected(message: "$content");
+      //
       pdf.addPage(MultiPage(
         orientation: PageOrientation.landscape,
         margin: EdgeInsets.only(

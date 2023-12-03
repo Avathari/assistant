@@ -24,6 +24,8 @@ class Valores {
     Escalas.serviciosHospitalarios = await Archivos.listFromText(
         path: 'assets/diccionarios/Servicios.txt', splitChar: ',');
     //
+    Terminal.printWarning(message: "INICIADO Valores.load : : ");
+    //
     valores.addAll(Pacientes.Paciente);
     // ********* *********** ********** ******
     Pacientes.getImage();
@@ -89,6 +91,75 @@ class Valores {
         Auxiliares.auxiliares['auxiliarStadistics'],
         Pacientes.ID_Paciente,
         emulated: true);
+
+    valores.addAll(aux);
+    final elect = await Actividades.consultarId(
+        Databases.siteground_database_reggabo,
+        Electrocardiogramas.electrocardiogramas['consultLastQuery'],
+        Pacientes.ID_Paciente,
+        emulated: true);
+    Pacientes.Electrocardiogramas = elect;
+    valores.addAll(elect);
+
+    final vento = await Actividades.consultarId(
+        Databases.siteground_database_reghosp,
+        Ventilaciones.ventilacion['consultLastQuery'],
+        Pacientes.ID_Paciente,
+        emulated: true);
+    valores.addAll(vento);
+
+    final bala = await Actividades.consultarId(
+        Databases.siteground_database_reghosp,
+        Balances.balance['consultLastQuery'],
+        Pacientes.ID_Paciente,
+        emulated: true);
+    valores.addAll(bala);
+
+    final hosp = await Actividades.consultarId(
+        Databases.siteground_database_reghosp,
+        Hospitalizaciones.hospitalizacion['consultLastQuery'],
+        Pacientes.ID_Paciente,
+        emulated: true);
+    valores.addAll(hosp);
+
+    Situaciones.ultimoRegistro();
+    Expedientes.ultimoRegistro();
+
+    Valores.fromJson(valores);
+    return true;
+  }
+
+  Future<bool> loadWithoutRegisters() async {
+    // Otras configuraciones
+    Escalas.serviciosHospitalarios = await Archivos.listFromText(
+        path: 'assets/diccionarios/Servicios.txt', splitChar: ',');
+    //
+    valores.addAll(Pacientes.Paciente);
+    // ********* *********** ********** ******
+    Pacientes.getImage();
+    // ********* *********** ********** ******
+
+    // ********* *********** ********** ******
+
+// ********* *********** ********** ******
+    final vital = await Actividades.consultarId(
+        Databases.siteground_database_regpace,
+        Vitales.vitales['consultLastQuery'],
+        Pacientes.ID_Paciente);
+    // Pacientes.Vital = vital;
+    valores.addAll(vital);
+
+    final antro = await Actividades.consultarId(
+        Databases.siteground_database_regpace,
+        Vitales.antropo['consultLastQuery'],
+        Pacientes.ID_Paciente);
+    valores.addAll(antro);
+    Pacientes.Vital.addAll(antro);
+    final aux = await Actividades.detallesById(
+        Databases.siteground_database_reggabo,
+        Auxiliares.auxiliares['auxiliarStadistics'],
+        Pacientes.ID_Paciente,
+        emulated: true);
     // Terminal.printExpected(message: "Auxiliares ${Auxiliares.auxiliares['auxiliarStadistics']} $aux");
     valores.addAll(aux);
     final elect = await Actividades.consultarId(
@@ -128,7 +199,7 @@ class Valores {
   }
 
   Valores.fromJson(Map<String, dynamic> json) {
-    // print("Valors $json");
+    Terminal.printWarning(message: "INICIADO Valores.fromJson : : ${json.keys}");
 
     numeroPaciente = json['Pace_NSS'];
     agregadoPaciente = json['Pace_AGRE'];
@@ -947,8 +1018,9 @@ class Valores {
     }
   }
 
+  // BALANCES HÍDRICOS
   static double get perdidasInsensibles =>
-      ((Valores.pesoCorporalTotal!) * constantePerdidasInsensibles) *
+      ((Valores.pesoCorporalTotal!) * constantePerdidasInsensibles!) *
       Valores.horario!;
 
   static double get ingresosBalances {
@@ -967,12 +1039,11 @@ class Valores {
         Valores.sangradosBalances! +
         Valores.succcionBalances! +
         Valores.drenesBalances! +
+        Valores.perdidasInsensibles +
         Valores.otrosEgresosBalances!;
   }
 
-  static double get constantePerdidasInsensibles {
-    return 0.5;
-  }
+  static double? constantePerdidasInsensibles = 0.5;
 
   // # Cociente Respiratorio
   static double get RI => 0.8;
@@ -1615,8 +1686,7 @@ class Formatos {
         "verificando previamente fecha de caducidad (Día ${Valores.fechaCaducidad}, de acuerdo a registro).  Serología No Reactiva.";
   }
 
-
-
+  //
   static String get ideologias {
     String prejuicios = "", creencias = "", valores = "", costumbres = "";
     // ******** **** ******* **** *******

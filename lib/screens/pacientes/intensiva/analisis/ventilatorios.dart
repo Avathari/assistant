@@ -85,27 +85,27 @@ class _VentilatoriosState extends State<Ventilatorios> {
                         mainAxisExtent: 65),
                     children: [
                       ValuePanel(
-                        firstText: 'Volumen tidal',
+                        firstText: 'Vt',
                         secondText: Valores.volumenTidal!.toStringAsFixed(0),
                         thirdText: 'mL',
                       ),
                       ValuePanel(
-                        firstText: 'Volumen tidal (6)',
+                        firstText: 'Vt (6)',
                         secondText: Ventometrias.volumentTidal6.toStringAsFixed(0),
                         thirdText: 'mL',
                       ),
                       ValuePanel(
-                        firstText: 'Volumen tidal (7)',
+                        firstText: 'Vt (7)',
                         secondText: Ventometrias.volumentTidal7.toStringAsFixed(0),
                         thirdText: 'mL',
                       ),
                       ValuePanel(
-                        firstText: 'Volumen tidal (8)',
+                        firstText: 'Vt (8)',
                         secondText: Ventometrias.volumentTidal8.toStringAsFixed(0),
                         thirdText: 'mL',
                       ),
                       ValuePanel(
-                        firstText: 'Frecuencia Ventilatoria',
+                        firstText: 'F. Vent',
                         secondText:
                             Valores.frecuenciaVentilatoria!.toStringAsFixed(0),
                         thirdText: 'Vent/min',
@@ -117,7 +117,7 @@ class _VentilatoriosState extends State<Ventilatorios> {
                         thirdText: 'cmH2O',
                       ),
                       ValuePanel(
-                        firstText: 'Presión máxima',
+                        firstText: 'Pmax',
                         secondText: Valores.presionMaxima!.toStringAsFixed(0),
                         thirdText: 'cmH2O',
                       ),
@@ -128,7 +128,7 @@ class _VentilatoriosState extends State<Ventilatorios> {
                         thirdText: '%',
                       ),
                       ValuePanel(
-                        firstText: 'P. Control / P. Soporte',
+                        firstText: 'PC / Psopp',
                         secondText: Valores.presionControl!.toStringAsFixed(0),
                         thirdText: 'cmH2O',
                       ),
@@ -153,7 +153,7 @@ class _VentilatoriosState extends State<Ventilatorios> {
                         thirdText: "cmH2O",
                       ),
                       ValuePanel(
-                        firstText: "Dyst Pulmonar",
+                        firstText: "Dyst",
                         secondText:
                         Ventometrias.distensibilidadPulmonar.toStringAsFixed(2),
                         thirdText: 'mL/cmH2O',
@@ -171,7 +171,7 @@ class _VentilatoriosState extends State<Ventilatorios> {
                         thirdText: 'mL/cmH2O',
                       ),
                       ValuePanel(
-                        firstText: "Rest. Pulmonar",
+                        firstText: "Ryst P.",
                         secondText:
                         Ventometrias.resistenciaPulmonar.toStringAsFixed(2),
                         thirdText: 'mL/cmH2O',
@@ -186,18 +186,18 @@ class _VentilatoriosState extends State<Ventilatorios> {
                           mainAxisExtent: 65),
                       children: [
                         ValuePanel(
-                          firstText: "Volumen Minuto",
+                          firstText: "VM",
                           secondText: Ventometrias.volumenMinuto.toStringAsFixed(1),
                           thirdText: "L/min",
                         ),
                         ValuePanel(
-                          firstText: "Volumen Minuto Ideal",
+                          firstText: "VMi",
                           secondText:
                           Ventometrias.volumenMinutoIdeal.toStringAsFixed(1),
                           thirdText: "L/min",
                         ),
                         ValuePanel(
-                          firstText: "Flujo Ventilatorio",
+                          firstText: "F",
                           secondText: Ventometrias.flujoVentilatorioMedido
                               .toStringAsFixed(2),
                           thirdText: "L/min",
@@ -223,7 +223,7 @@ class _VentilatoriosState extends State<Ventilatorios> {
                           thirdText: "",
                         ),
                         ValuePanel(
-                          firstText: "Indice Ventilatorio",
+                          firstText: "I. Vent.",
                           secondText: Valores.IV.toStringAsFixed(1),
                           thirdText: "",
                         ),
@@ -233,7 +233,7 @@ class _VentilatoriosState extends State<Ventilatorios> {
                           thirdText: "",
                         ),
                         ValuePanel(
-                          firstText: "FiO2 por Ventilación",
+                          firstText: "FiO2 Vent",
                           secondText: Valores.VENT.toStringAsFixed(0),
                           thirdText: "%",
                         ),

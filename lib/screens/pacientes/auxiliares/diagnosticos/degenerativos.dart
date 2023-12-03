@@ -59,7 +59,6 @@ class _DegenerativosState extends State<Degenerativos> {
             child: ListView.separated(
                 controller: ScrollController(),
                 itemBuilder: ((context, index) {
-                  Terminal.printData(message: "${Pacientes.Patologicos}");
                   return ListTile(
                     onTap: () {
                       Operadores.openWindow(

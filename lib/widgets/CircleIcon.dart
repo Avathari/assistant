@@ -9,12 +9,15 @@ class CircleIcon extends StatefulWidget {
   double? radios, difRadios;
   var onChangeValue;
 
+  Color? externalCircleColor;
+
   CircleIcon({
     Key? key,
     this.tittle = '',
     this.iconed = Icons.cable_rounded,
     required this.onChangeValue,
     this.radios = 40,
+    this.externalCircleColor = Colors.grey,
     this.difRadios = 10,
   }) : super(key: key);
 
@@ -60,11 +63,11 @@ class _CircleIconState extends State<CircleIcon> {
       //       });
       // },
       child: CircleAvatar(
-        backgroundColor: Theming.bdColor,
+        backgroundColor: widget.externalCircleColor!,
         radius: widget.radios!,
         child: CircleAvatar(
-          backgroundColor: Colors.black,
           radius: widget.radios! - widget.difRadios!,
+          backgroundColor: Colors.black,
           child: GrandIcon(
             size: 30 - widget.difRadios!,
             labelButton: widget.tittle!,

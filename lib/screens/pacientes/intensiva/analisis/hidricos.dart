@@ -11,9 +11,7 @@ import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/TittleContainer.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
-import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
-import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -34,8 +32,15 @@ class _HidricosState extends State<Hidricos> {
 
   @override
   void initState() {
-    Pacientes.getValores();
-    Pacientes.getParaclinicosHistorial();
+    //
+  //   Terminal.printAlert(message: "ERROR : : ${Pacientes.ID_Paciente}");
+  //   //
+  // Auxiliares.ultimoRegistro()
+  //     .then((value) => Auxiliares.fromJson(value))
+  //     .whenComplete(() => setState(() {}))
+  //     .onError((error, stackTrace) =>
+  //     Terminal.printAlert(message: "ERROR : : $error : $stackTrace"));
+
     //
     super.initState();
   }

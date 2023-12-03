@@ -473,11 +473,11 @@ class Operadores {
         context: context,
         builder: (context) {
           return Dialog(
-              backgroundColor: Colors.black,
+              backgroundColor: Colors.black54 ,
               shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20))),
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(2.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
