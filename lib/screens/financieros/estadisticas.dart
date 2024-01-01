@@ -62,32 +62,32 @@ class _EstadisticasActivosState extends State<EstadisticasActivos> {
     Terminal.printWarning(
         message:
             " INICIAR : Iniciando Actividad - Estádisticas del Repositorio de Pacientes");
-    Archivos.readJsonToMap(filePath: Activos.fileStadistics).then((value) {
-      // **************************************************************************
-      setState(() {
-        // Terminal.printWarning(message: " . . . $value");
-        data = value[0];
-      });
-      // **************************************************************************
-    }).onError((error, stackTrace) {
-      Terminal.printAlert(
-          message:
-          "ERROR : $error : $stackTrace");
-      // **************************************************************************
-      Actividades.detalles(Databases.siteground_database_regfine,
-              Activos.activos['activosStadistics'])
-          .then((value) {
-        // **************************************************************************
-        setState(() {
-          data = value;
-          // **************************************************************************
-          Terminal.printWarning(message: " . . . $value\n $data");
-          // **************************************************************************
-          Archivos.createJsonFromMap([data],
-              filePath: Activos.fileStadistics);
-        });
-      });
-    });
+    // Archivos.readJsonToMap(filePath: Activos.fileStadistics).then((value) {
+    //   // **************************************************************************
+    //   setState(() {
+    //     // Terminal.printWarning(message: " . . . $value");
+    //     data = value[0];
+    //   });
+    //   // **************************************************************************
+    // }).onError((error, stackTrace) {
+    //   Terminal.printAlert(
+    //       message:
+    //       "ERROR : $error : $stackTrace");
+    //   // **************************************************************************
+    //   Actividades.detalles(Databases.siteground_database_regfine,
+    //           Activos.activos['activosStadistics'])
+    //       .then((value) {
+    //     // **************************************************************************
+    //     setState(() {
+    //       data = value;
+    //       // **************************************************************************
+    //       Terminal.printWarning(message: " . . . $value\n $data");
+    //       // **************************************************************************
+    //       Archivos.createJsonFromMap([data],
+    //           filePath: Activos.fileStadistics);
+    //     });
+    //   });
+    // });
 
     super.initState();
   }
@@ -105,19 +105,19 @@ class _EstadisticasActivosState extends State<EstadisticasActivos> {
         viewTablet()
     );
   }
-
-  void reiniciar() {
-    Actividades.detalles(Databases.siteground_database_regfine,
-            Activos.activos['activosStadistics'])
-        .then((value) {
-      setState(() {
-        data = value;
-        // Terminal.printWarning(message: " . . . $value\n $data");
-        Archivos.createJsonFromMap([data],
-            filePath: Activos.fileStadistics);
-      });
-    });
-  }
+  //
+  // void reiniciar() {
+  //   Actividades.detalles(Databases.siteground_database_regfine,
+  //           Activos.activos['activosStadistics'])
+  //       .then((value) {
+  //     setState(() {
+  //       data = value;
+  //       // Terminal.printWarning(message: " . . . $value\n $data");
+  //       Archivos.createJsonFromMap([data],
+  //           filePath: Activos.fileStadistics);
+  //     });
+  //   });
+  // }
 
   Padding tileStat(IconData? icon, String tittle, double stat) {
     return Padding(

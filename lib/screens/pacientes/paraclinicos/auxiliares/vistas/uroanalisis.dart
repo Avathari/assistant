@@ -163,7 +163,7 @@ class _UroanalisisState extends State<Uroanalisis> {
               ),
               EditTextArea(
                 textController: textBilirrubinasResultController,
-                keyBoardType: TextInputType.number,
+                keyBoardType: TextInputType.text,
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Bilirrubinas ($unidadMedidaBilirrubinas)',
                 numOfLines: 1,
@@ -186,9 +186,9 @@ class _UroanalisisState extends State<Uroanalisis> {
 
               EditTextArea(
                 textController: textEsterasaLeucocitariaResultController,
-                keyBoardType: TextInputType.number,
+                keyBoardType: TextInputType.text,
                 inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'EsterasaLeucocitaria ($unidadMedidaEsterasaLeucocitaria)',
+                labelEditText: 'Esterasa Leucocitaria ($unidadMedidaEsterasaLeucocitaria)',
                 numOfLines: 1,
               ),
 

@@ -38,7 +38,7 @@ class PdfApi {
       final bytes = await pdf.save();
 
       //
-      Terminal.printSuccess(message: "$file");
+      Terminal.printSuccess(message: "ALMACENADO EN $file");
       await file.writeAsBytes(bytes);
 
       return file;
@@ -52,6 +52,7 @@ class PdfApi {
 
   static Future<void> openFile(File pdfFile) async {
     final ur = pdfFile.path;
+    Terminal.printWarning(message: "ABRIENDO ARCHIVO . . . $ur");
     // Alertas.showAlert(
     //     context: Contextos.contexto, error: 'Contenido creado $ur');
     await OpenFile.open(ur);

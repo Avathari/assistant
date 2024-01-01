@@ -8,13 +8,15 @@ import 'package:flutter/material.dart';
 class CircleLabel extends StatefulWidget {
   String? tittle;
   bool? isSwitched;
-  double? radios;
+  double? radios, difRadios, fontSize;
   void Function()? onChangeValue;
 
   CircleLabel(
       {Key? key,
       this.tittle,
       this.radios = 40,
+        this.difRadios = 10,
+        this.fontSize = 16,
       this.isSwitched = false,
       this.onChangeValue})
       : super(key: key);
@@ -68,14 +70,14 @@ class _CircleLabelState extends State<CircleLabel> {
           radius: widget.radios!,
           child: CircleAvatar(
             backgroundColor: Colors.black,
-            radius: widget.radios! - 10,
+            radius: widget.radios! - widget.difRadios!,
             child: Text(
-              widget.tittle!.length <= 3 ? widget.tittle! : "",
+              widget.tittle!.length <= 4 ? widget.tittle! : "",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.grey,
-                  fontSize: widget.tittle!.length <= 3 ? 16 : 9),
+                  fontSize: widget.tittle!.length <= 3 ? widget.fontSize! : 9),
             ),
           ),
         ),

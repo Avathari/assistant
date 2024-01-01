@@ -392,6 +392,18 @@ class Listas {
   static List<String> traslateFromString(String value, {String charSplit = '\n'}) {
     return value.split(charSplit);
   }
+
+  static List compareList(List estudiosPresentes, List especiales) {
+    return {...especiales, ...estudiosPresentes}.toList();
+  }
+
+  static List compareOneListWithAnother(List primeraLista, List listaBase) {
+    List aux = [];
+    for (var element in listaBase) {
+      if (primeraLista.contains(element)) aux.add(element);
+    }
+    return [...{...aux}];
+  }
 }
 
 class Alertas {
@@ -959,6 +971,7 @@ class Dialogos {
         children: [
           ListTile(
             onTap: () {
+              Terminal.printWarning(message: "OPENING ${element[1]}");
               PdfApi.openFile(File(element[1]));
               onCloss!();
             },

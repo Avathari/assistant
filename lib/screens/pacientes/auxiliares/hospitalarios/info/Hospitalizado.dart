@@ -10,6 +10,7 @@ class Internado {
       patologicosRepositoryPath,
       diagnosticosRepositoryPath,
       pendientesRepositoryPath,
+      licenciasRepositoryPath,
       ventilacionesRepositoryPath,
       balancesRepositoryPath,
       paraclinicosRepositoryPath,
@@ -20,7 +21,10 @@ class Internado {
       patologicos = [],
       diagnosticos = [],
       paraclinicos = [],
+  //
       pendientes = [],
+      licencias = [],
+  //
       balances = [],
       imagenologicos = [],
       electrocardiogramas = [],
@@ -47,9 +51,9 @@ class Internado {
     patologicosRepositoryPath = "${localRepositoryPath}patologicos.json";
     diagnosticosRepositoryPath = "${localRepositoryPath}diagnosticos.json";
     pendientesRepositoryPath = "${localRepositoryPath}pendientes.json";
+    licenciasRepositoryPath = "${localRepositoryPath}licencias.json";
 
     ventilacionesRepositoryPath = "${localRepositoryPath}ventilaciones.json";
-
     balancesRepositoryPath = "${localRepositoryPath}balances.json";
 
     imagenologicosRepositoryPath = "${localRepositoryPath}imagenologias.json";
@@ -73,6 +77,8 @@ class Internado {
       "diagnosticos": diagnosticos,
       "paraclinicos": paraclinicos,
       "balances": balances,
+      //
+      "licencias": licencias,
       "pendientes": pendientes,
       "imagenologicos": imagenologicos,
       "electrocardiogramas": electrocardiogramas,
@@ -169,6 +175,7 @@ class Internado {
     return diagnosticos;
   }
 
+  //
   Future<List> getPendientesHistorial() async {
     //
     await Archivos.readJsonToMap(filePath: pendientesRepositoryPath)
@@ -194,6 +201,29 @@ class Internado {
     return pendientes;
   }
 
+  Future<List> getLicenciasHistorial() async {
+    //
+    await Archivos.readJsonToMap(filePath: licenciasRepositoryPath)
+        .then((value) {
+      Terminal.printNotice(
+          message: " : : OBTENIDO DE ARCHIVO . . . $licenciasRepositoryPath");
+      //
+      return licencias = value;
+    }).onError((error, stackTrace) async {
+      await Actividades.consultarAllById(
+        Databases.siteground_database_reghosp,
+        "SELECT * FROM licen_med WHERE ID_Pace = ?",
+        idPaciente,
+      ).then((value) async {
+        Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . ");
+        //
+        return licencias = value;
+      }).whenComplete(() => Archivos.createJsonFromMap(licencias,
+          filePath: licenciasRepositoryPath));
+    });
+    return licencias;
+  }
+  //
   Future<List> getVentilacionnesHistorial() async {
     //
     await Archivos.readJsonToMap(filePath: ventilacionesRepositoryPath)
@@ -308,5 +338,36 @@ class Internado {
           filePath: electrocardiogramasRepositoryPath));
     });
     return electrocardiogramas;
+  }
+
+  // METHODS
+  static String getCultivos(
+      {required List listadoFrom, bool esAbreviado = true, }) {
+    String prosa = "", max = "", fecha = "";
+
+    // ***************************** *****************
+    var estudiosPresentes = Listas.listWithoutRepitedValues(
+      Listas.listFromMapWithOneKey(
+        listadoFrom!,
+        keySearched: 'Estudio',
+      ),
+    );
+    // Terminal.printSuccess(message: "presentes: ${estudiosPresentes}");
+    var newList = Listas.compareOneListWithAnother(estudiosPresentes, Auxiliares.cultivos);
+    // Terminal.printSuccess(message: "newList: ${newList}");
+    //
+    for (var elem in newList) {
+      listadoFrom!.where((element) => element["Estudio"].contains(elem)).forEach((eacher) {
+        fecha = "          ${eacher['Estudio']} (${eacher['Fecha_Registro']}) - ";
+        // Terminal.printExpected(message: "eacher: ${eacher}");
+        max = "$max${eacher['Resultado']}, ";
+      });
+      //
+      prosa = "$prosa$fecha$max. \n";
+      max = "";
+    }
+
+    // ************** ***************** ***************
+    return prosa;
   }
 }

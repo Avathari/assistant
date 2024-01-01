@@ -9,6 +9,7 @@ import 'package:assistant/screens/home.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/AppBarText.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CircleLabel.dart';
 import 'package:assistant/widgets/CrossLine.dart';
@@ -114,7 +115,7 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
       appBar: isMobile(context)
           ? AppBar(
               backgroundColor: Theming.primaryColor,
-              title: Text(appBarTitile),
+              title: AppBarText(appBarTitile),
               leading: IconButton(
                 icon: const Icon(
                   Icons.arrow_back,
@@ -451,7 +452,7 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
                     children: [
                       Expanded(
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             GrandIcon(
                               iconData: Icons.photo_camera_back_outlined,
@@ -706,19 +707,19 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
 }
 
 class GestionActivos extends StatefulWidget {
-  Widget? actualSidePage;
+Widget? actualSidePage;
 
-  bool? reverse, esActualized;
-  // ****************** *** ****** **************
-  GestionActivos(
-      {Key? key,
-      this.reverse = false,
-      this.actualSidePage,
-      this.esActualized = true})
-      : super(key: key);
+bool? reverse, esActualized;
+// ****************** *** ****** **************
+GestionActivos(
+{Key? key,
+this.reverse = false,
+this.actualSidePage,
+this.esActualized = true})
+    : super(key: key);
 
-  @override
-  State<GestionActivos> createState() => _GestionActivosState();
+@override
+State<GestionActivos> createState() => _GestionActivosState();
 }
 
 class _GestionActivosState extends State<GestionActivos> {
@@ -1054,6 +1055,7 @@ class _GestionActivosState extends State<GestionActivos> {
             ": : : ${Activos.fileAssocieted}");
     Archivos.readJsonToMap(filePath: Activos.fileAssocieted).then((value) {
       setState(() {
+        Activos.fromJsonItem(value);
         foundedItems = value;
       });
     }).onError((error, stackTrace) {
@@ -1074,6 +1076,7 @@ class _GestionActivosState extends State<GestionActivos> {
     Activos.registros().whenComplete(() {
       setState(() {
         Navigator.pop(context);
+        Activos.fromJsonItem(Financieros.Activos);
         foundedItems = Financieros.Activos;
       });
     })

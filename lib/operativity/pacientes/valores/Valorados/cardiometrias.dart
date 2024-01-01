@@ -4,9 +4,49 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 
 class Cardiometrias {
   // ANALISIS
+  static String get cardiovasculares =>
+      "Parámetros Cardiovasculares - Presión Arterial Media: ${Cardiometrias.presionArterialMedia.toStringAsFixed(0)} mmHg. "
+      //
+          "Diferencia de Presión Arterial ${Cardiometrias.diferenciaTensionArterial.toStringAsFixed(0)} mmHg. "
+          "Presión de Pulso: ${Cardiometrias.presionPulso.toStringAsFixed(0)} mmHg. "
+          "Producto Frecuencia - Presión: ${Cardiometrias.productoFrecuenciaPresion.toStringAsFixed(1)} mmHg/Lpm. "
+          "Presión Coloido - Oncótica: ${Valores.presionColoidoOsmotica.toStringAsFixed(2)}  mmHg. "
+          "Frecuencia Cárdiaca Máxima: ${Cardiometrias.frecuenciaCardiacaMaxima.toStringAsFixed(0)} L/min. "
+          "Frecuencia Cárdiaca Blanco: ${Cardiometrias.frecuenciaCardiacaBlanco.toStringAsFixed(0)} L/min. "
+          "Frecuencia Cárdiaca Intrínseca: ${Cardiometrias.frecuenciaCardiacaIntrinseca.toStringAsFixed(0)} L/min. "
+          "Volemia Aproximada: ${Valores.volemiaAproximada.toStringAsFixed(2)} mL,  "
+          "Volumen Plasmático Aproximado: ${Valores.volumenPlasmatico.toStringAsFixed(2)} L. \n";
+
+  static String get transporteOxigeno =>
+      "Parámetros Hemodinamicos - "
+          "Gasto Cárdiaco (Fick): ${Cardiometrias.gastoCardiacoFick.toStringAsFixed(2)} L/min. "
+          "Volumen Látido Aproximado: ${Valores.indiceVolumenSanguineo.toStringAsFixed(2)} mL/min. \n"
+          "CaO2 ${Valores.CAO.toStringAsFixed(2)}  mL/dL, " // Concentración Arterial de Oxígeno
+          "CvO2 ${Valores.CVO.toStringAsFixed(2)}  mL/dL, " // Concentración Venosa de Oxígeno
+          "DavO2 ${Valores.DAV.toStringAsFixed(2)}  mL/dL, " // Diferencia Arterio - Venosa
+          "Capacidad de Oxígeno (CapO2): ${Valores.CO.toStringAsFixed(2)}  mL O2/g Hb. "
+          "Indice Cárdicado (I.C.): ${Valores.indiceCardiaco.toStringAsFixed(2)} L/min/m2, "
+          "Resistencias Venosas Sistémicas (R.V.S.): ${Valores.RVS.toStringAsFixed(2)} Dinas/seg/cm2. "
+          "Indice de Extracción de Oxígeno (I.E.O.): ${Valores.IEO.toStringAsFixed(2)} %, "
+          "Disponibilidad de Oxígeno (dO2): ${Valores.DO.toStringAsFixed(2)} mL/min,  "
+          "Consumo de Oxígeno (cO2): ${Valores.CAO.toStringAsFixed(2)} mL/min/m2, "
+          "Transporte de Oxígeno (TO2): ${Valores.TO.toStringAsFixed(2)} mL/O2/m2. "
+          "Shunt Fisiológico (QS/QT): ${Valores.SF.toStringAsFixed(2)} %. "
+          "Gradiente Alveolo - Arterial (G(A-a)): ${Gasometricos.GAA.toStringAsFixed(2)} mmHg. \n"
+          "";
+
+  static String get hemodinamicos =>
+      "Parámetros Hemodinámicos - "
+          "Gasto Cárdiaco Aproximado: ${Cardiometrias.gastoCardiacoFick.toStringAsFixed(2)} L/min. "
+          "Volumen Látido Aproximado: ${Valores.indiceVolumenSanguineo.toStringAsFixed(2)} mL/min, "
+          "Volemia Aproximada: ${Valores.volemiaAproximada.toStringAsFixed(2)} mL,  "
+          "Volumen Plasmático Aproximado: ${Valores.volumenPlasmatico.toStringAsFixed(2)} L,  "
+          "Trabajo Cardiaco - Trabajo Cardiaco: ${Valores.TC.toStringAsFixed(2)} Kg*m. "
+          "Trabajo Látido Ventricular Izquierdo: ${Cardiometrias.TLVI.toStringAsFixed(2)} g*m. "
+          "Trabajo Látido Ventricular Derecho: ${Cardiometrias.TLVD.toStringAsFixed(2)} g*m. \n";
 
   // CONCLUSIONES
-  static String get cardiovasculares =>
+  static String get cardiometrias =>
       "Parámetros Cardiovasculares - Presión Arterial Media: ${Cardiometrias.presionArterialMedia} mmHg. "
       // "(${Cardiometrias.clase})
           "Diferencia de Presión Arterial ${Cardiometrias.diferenciaTensionArterial} mmHg. "
@@ -37,9 +77,7 @@ class Cardiometrias {
           "Trabajo Látido Ventricular Izquierdo: ${Cardiometrias.TLVI} g*m. "
           "Trabajo Látido Ventricular Derecho: ${Cardiometrias.TLVD} g*m. \n";
 
-
 // FÓRMULAS
-
   static double get presionArterialMedia =>
       (Valores.tensionArterialSystolica! +
           (2 * Valores.tensionArterialDyastolica!)) /

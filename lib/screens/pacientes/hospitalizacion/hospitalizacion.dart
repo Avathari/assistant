@@ -4,11 +4,13 @@ import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/expedientes.dart';
+import 'package:assistant/screens/pacientes/hospitalizacion/padecimientoActual.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/situacionesHospitalizacion.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/AppBarText.dart';
+import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
@@ -168,9 +170,9 @@ class _OperacionesHospitalizacionesState
       appBar: isDesktop(context)
           ? null
           : AppBar(
-        foregroundColor: Colors.white,
+              foregroundColor: Colors.white,
               backgroundColor: Theming.primaryColor,
-              title: Text(appBarTitile),
+              title: AppBarText(appBarTitile),
               leading: IconButton(
                 icon: const Icon(
                   Icons.arrow_back,
@@ -221,6 +223,16 @@ class _OperacionesHospitalizacionesState
                 child: Text(idOperation.toString(),
                     style: Styles.textSyleGrowth(fontSize: 18)),
               )),
+          Expanded(
+            child: CircleIcon(
+              tittle: "Padecimiento Actual . . . ",
+              iconed: Icons.medication_outlined,
+              onChangeValue: () {
+                Pacientes.ID_Hospitalizacion = idOperation;
+                Cambios.toNextPage(context, const PadecimientoActual());
+              },
+            ),
+          ),
           Expanded(
             flex: 2,
             child: Spinner(
@@ -283,7 +295,7 @@ class _OperacionesHospitalizacionesState
                 Calendarios.today(format: 'yyyy-MM-dd');
           },
         ),
-      if (isTablet(context) || isDesktop(context))
+      if (isTablet(context) || isDesktop(context) || isLargeDesktop(context))
         Row(
           children: [
             Expanded(
@@ -738,9 +750,10 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
           Operadores.alertActivity(
               context: context,
               tittle: "Error al Consultar los registros",
-              message: "ERROR - $error : : $stackTrace", onAcept: () {
+              message: "ERROR - $error : : $stackTrace",
+              onAcept: () {
                 Navigator.of(context).pop();
-          });
+              });
         });
       } else {
         // print(" . . . Hospitalizaciones array iniciado");
@@ -755,7 +768,7 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        foregroundColor: Colors.white,
+          foregroundColor: Colors.white,
           backgroundColor: Theming.primaryColor,
           leading: IconButton(
             icon: const Icon(
@@ -955,7 +968,8 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
                             "Egreso: ${snapshot.data[posicion]['Feca_EGE_Hosp']}",
                             style: Styles.textSyleGrowth(fontSize: 12),
                           ),
-                          Text("D.E.H.: ${snapshot.data[posicion]['Dia_Estan']}",
+                          Text(
+                              "D.E.H.: ${snapshot.data[posicion]['Dia_Estan']}",
                               style: Styles.textSyleGrowth(fontSize: 14)),
                           Text(
                             "${snapshot.data[posicion]['EGE_Motivo']}",

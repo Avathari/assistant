@@ -11,7 +11,7 @@ class TittlePanel extends StatefulWidget {
   TittlePanel(
       {Key? key,
       this.padding = 8.0,
-      this.fontSize = 16,
+      this.fontSize = 10,
       this.colorText = Colors.white,
       this.color = Colores.backgroundPanel,
       required this.textPanel})

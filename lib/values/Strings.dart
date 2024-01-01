@@ -45,6 +45,10 @@ class Sentences {
     print("result $result");
     return result;
   }
+
+  static String capitalizeAll(String value) {
+    return value.toUpperCase();
+  }
 }
 
 class listados {

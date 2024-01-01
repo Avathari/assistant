@@ -32,6 +32,9 @@ class _CircleSwitchedState extends State<CircleSwitched> {
       message: widget.tittle!,
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
+        onTap: () {
+          widget.onChangeValue!(widget.isSwitched );
+        },
         onDoubleTap: () {
           SystemSound.play(SystemSoundType.click);
           SystemSound.play(SystemSoundType.click);
@@ -81,7 +84,7 @@ class _CircleSwitchedState extends State<CircleSwitched> {
               onPress: () {
                 SystemSound.play(SystemSoundType.click);
                 setState(() {
-                  widget.onChangeValue!();
+                  widget.onChangeValue!(widget.isSwitched );
                   // widget.isSwitched = !widget.isSwitched!;
                 });
               },

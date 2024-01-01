@@ -2773,6 +2773,8 @@ class FormatosReportes {
       }
 // **************************************
       Terminal.printExpected(message: "BALLA : : ${item.balances}");
+
+
 //       if (item['Situaciones']['CVP'] != 0) {
 //         situaciones = "$situaciones\nCVP";
 //       }

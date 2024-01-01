@@ -735,10 +735,22 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                 }),
             EditTextArea(
               textController: textResultController,
-              keyBoardType: TextInputType.number,
+              keyBoardType: TextInputType.text,
               inputFormat: MaskTextInputFormatter(),
               labelEditText: "Resultado",
               numOfLines: 1,
+              withShowOption: true,
+              onSelected: () {
+                if (estudioValue == 'Urocultivo') {
+                  Operadores.openWindow(context: context, chyldrim: Container(),
+                  onAction: () {
+                    setState(() {
+                      textResultController.text = "AUS";
+                    });
+                  }
+                  );
+                }
+              },
             ),
             Spinner(
                 width: isMobile(context)
@@ -929,6 +941,18 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                         inputFormat: MaskTextInputFormatter(),
                         labelEditText: "Resultado",
                         numOfLines: 1,
+                        withShowOption: true,
+                        onSelected: () {
+                          if (estudioValue == 'Urocultivo') {
+                            Operadores.openWindow(context: context, chyldrim: Container(),
+                                onAction: () {
+                                  setState(() {
+                                    textResultController.text = "AUS";
+                                  });
+                                }
+                            );
+                          }
+                        },
                       ),
                     ),
                   ],

@@ -6,8 +6,18 @@ class Financieros {
       'activos/${ID_Financieros.toString()}/';
   static int ID_Financieros = 1;
   // **************************************************************************
+  static List Ingresos = [];
+  static List Egresos = [];
   static List Activos = [];
+  static List Pasivos = [];
+  static List Patrimonio = [];
 // **************************************************************************
+  static double? ingresosTotales;
+  static double? egresosTotales;
+  static double? activosTotales;
+  static double? pasivosTotales;
+  static double? patriminiosTotales;
+  // **************************************************************************
   static var Categorias = [
     'Ingresos Registrados',
     'Egresos Registrados',
@@ -42,6 +52,7 @@ class Activos {
     "Salarios eventuales",
     "Sueldo",
     "Vales y despensas",
+    "Patrocinios y Apoyos",
     "Prestamos devueltos",
   ];
   static List conceptoEgresos = [
@@ -50,10 +61,12 @@ class Activos {
     "Gimnasios",
     "Hoteles y viajes",
     "Prestamos no devueltos",
+    "Retiros Bancarios",
     "Restaurantes y bares",
     "Mercados, Supermercados y Establecimientos",
     "Vinos y licores",
     "Gastos varios",
+    "Medios de Transporte",
     "Diplomados",
     "Salud",
     "Papeleria, documentación y derivados",
@@ -73,7 +86,12 @@ class Activos {
     "Agua y Drenaje",
     "Alimentación",
     "Automóvil",
+    "Multas e Infracciones Viáles",
     "Electricidad",
+    "Gas",
+    "Lavanderia y Tintorerías",
+    "Ropa y Artilugios",
+    "Productos de Auto-cuidado",
     "Gasolina",
     "Mantenimiento del Hogar",
     "Rentas y Alquiler",
@@ -112,13 +130,11 @@ class Activos {
   }
 
   static Future<void> registros() async {
-    Actividades.consultarAllById(
-            Databases.siteground_database_regfine,
-            Activos.activos['consultIdQuery'],
-            Financieros.ID_Financieros)
+    Actividades.consultarAllById(Databases.siteground_database_regfine,
+            Activos.activos['consultIdQuery'], Financieros.ID_Financieros)
         .then((value) {
       // **************************************************************************
-      Terminal.printExpected(message: "Response : : : $value");
+      Activos.fromJsonItem(Financieros.Activos);
       // **************************************************************************
       Financieros.Activos = value;
       // **************************************************************************
@@ -187,12 +203,14 @@ class Activos {
     "truncateQuery": "TRUNCATE activos",
     "dropQuery": "DROP TABLE activos",
     "consultQuery": "SELECT * FROM activos",
-    "consultIdQuery": "SELECT ID_Registro, Concepto_Recurso, Tipo_Recurso, Cuenta_Asignada, "
-        "Fecha_Pago_Programado, Intervalo_Programado, "
-        "Monto_Programado, Interes_Acordado, Monto_Pagado, Monto_Restante, "
-        "Estado_Actual, Fecha_Proximo_Pago, Fecha_Baja, Descripcion "
-        "FROM activos WHERE ID_Usuario = ?",
-    "consultImageByIdQuery": "SELECT Fine_IMG FROM activos WHERE ID_Registro = ?",
+    "consultIdQuery":
+        "SELECT ID_Registro, Concepto_Recurso, Tipo_Recurso, Cuenta_Asignada, "
+            "Fecha_Pago_Programado, Intervalo_Programado, "
+            "Monto_Programado, Interes_Acordado, Monto_Pagado, Monto_Restante, "
+            "Estado_Actual, Fecha_Proximo_Pago, Fecha_Baja, Descripcion "
+            "FROM activos WHERE ID_Usuario = ?",
+    "consultImageByIdQuery":
+        "SELECT Fine_IMG FROM activos WHERE ID_Registro = ?",
     "consultByIdPrimaryQuery": "SELECT * FROM activos WHERE ID_Usuario = ?",
     // "consultAllIdsQuery": "SELECT ID_Registro FROM activos",
     "consultLastQuery": "SELECT * FROM activos WHERE ID_Usuario = ?",
@@ -332,4 +350,56 @@ class Activos {
     // "(SELECT (Cuenta_Mensual_Cinco - Egreso_Mensual_Cuenta_Cinco)) AS Cuenta_Mensual_Balance_Cinco,"
     // "(SELECT (Cuenta_Mensual_Seis - Egreso_Mensual_Cuenta_Seis)) AS Cuenta_Mensual_Balance_Seis;"
   };
+
+  static void fromJsonItem(List activos) {
+    Financieros.ingresosTotales = 0;
+    Financieros.egresosTotales = 0;
+    Financieros.activosTotales = 0;
+    Financieros.pasivosTotales = 0;
+    Financieros.patriminiosTotales = 0;
+    //
+    activos.forEach((element) {
+
+      //
+      if (element['Tipo_Recurso'] == 'Ingresos') {
+        Financieros.Ingresos.add(element);
+        // Sumar montos . . .
+        // Terminal.printWarning(message: " . . . ${element}");
+        Financieros.ingresosTotales = (Financieros.ingresosTotales!+ element['Monto_Pagado']);
+        // Sumar montos por Mes . . .
+        // var mensual = Financieros.Ingresos.
+
+
+      }
+      if (element['Tipo_Recurso'] == 'Egresos') {
+        Financieros.Egresos.add(element);
+        Financieros.egresosTotales = (Financieros.egresosTotales!+ element['Monto_Pagado']);
+      }
+      if (element['Tipo_Recurso'] == 'Activos') {
+        Financieros.Activos.add(element);
+        Financieros.activosTotales = (Financieros.activosTotales!+ element['Monto_Pagado']);
+      }
+      if (element['Tipo_Recurso'] == 'Pasivos') {
+        Financieros.Pasivos.add(element);
+        Financieros.pasivosTotales = (Financieros.pasivosTotales!+ element['Monto_Pagado']);
+      }
+      if (element['Tipo_Recurso'] == 'Patrimonio') {
+        Financieros.Patrimonio.add(element);
+        Financieros.patriminiosTotales = (Financieros.patriminiosTotales!+ element['Monto_Pagado']);
+      }
+//
+
+    });
+
+    // MUESTRA
+    Terminal.printWarning(message: " . . . "
+        " ### #### ###### ## # . . . . BALANCE REGISTRADO ### #### ###### ## # . . . ."
+        "\n ACTIVOS TOTALES : ${activos.length} : . . . "
+        "\n ${Financieros.ingresosTotales} : : ${Financieros.Ingresos.length}"
+        "\n ${Financieros.egresosTotales} : : ${Financieros.Egresos.length}"
+        "\n ${Financieros.activosTotales} : : ${Financieros.Activos.length}"
+        "\n ${Financieros.pasivosTotales} : : ${Financieros.Pasivos.length}"
+        "\n ${Financieros.patriminiosTotales} : : ${Financieros.Patrimonio.length}"
+        "\n");
+  }
 }

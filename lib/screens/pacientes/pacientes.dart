@@ -1162,7 +1162,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
         textController: agregadoPacienteTextController,
         keyBoardType: TextInputType.text,
         numOfLines: 1,
-        limitOfChars: 7,
+        limitOfChars: 8,
         inputFormat: MaskTextInputFormatter(),
       ),
 
@@ -1172,10 +1172,25 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           textController: firstNamePaciente,
           keyBoardType: TextInputType.text,
           inputFormat: MaskTextInputFormatter()),
-      editText(false, 'Segundo nombre del paciente', secondNameTextController,
-          false),
-      editText(false, 'Apellido Paterno', apellidoPaternoTextController, false),
-      editText(false, 'Apellido Materno', apellidoMaternoTextController, false),
+      EditTextArea(
+          labelEditText: 'Segundo nombre del paciente',
+          numOfLines: 1,
+          textController: secondNameTextController,
+          keyBoardType: TextInputType.text,
+          inputFormat: MaskTextInputFormatter()),
+      EditTextArea(
+          labelEditText: 'Apellido Paterno',
+          numOfLines: 1,
+          textController: apellidoPaternoTextController,
+          keyBoardType: TextInputType.text,
+          inputFormat: MaskTextInputFormatter()),
+      EditTextArea(
+          labelEditText: 'Apellido Materno',
+          numOfLines: 1,
+          textController: apellidoMaternoTextController,
+          keyBoardType: TextInputType.text,
+          inputFormat: MaskTextInputFormatter()),
+
       Spinner(
           tittle: "Tipo Sanguíneo",
           initialValue: hemotipoValue,

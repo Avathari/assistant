@@ -7,6 +7,7 @@ import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 
 import 'package:assistant/screens/pacientes/auxiliares/presentaciones/presentaciones.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisiones.dart';
+import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisorios.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/padecimientoActual.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
 import 'package:assistant/screens/pacientes/intensiva/procedimientos/cateterTenckhoff.dart';
@@ -30,14 +31,16 @@ import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
+import 'package:assistant/widgets/CircleLabel.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/ListValue.dart';
+import 'package:assistant/widgets/TittleContainer.dart';
 import 'package:flutter/material.dart';
 
 class ReportesMedicos extends StatefulWidget {
-  int actualPage = 6;
+  int actualPage = 6, indexNote = -1;
 
   ReportesMedicos({super.key});
 
@@ -46,10 +49,13 @@ class ReportesMedicos extends StatefulWidget {
 }
 
 class _ReportesMedicosState extends State<ReportesMedicos> {
+  List? listNotes = [];
+
   @override
   void initState() {
     // Llamado a los ultimos registros agregados. ****************************
     setState(() {
+      //
       Diagnosticos.registros();
       Quirurgicos.consultarRegistro();
       //Pendientes.consultarRegistro();
@@ -205,6 +211,11 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
         Pacientes.loadingActivity(context: context);
       });
 
+      // CONSULTAR NOTACIONES PREVIAS ****************************************
+      Reportes.consultarNotasHospitalizacion().then((value) => setState(() {
+            widget.indexNote = 0;
+            listNotes = value;
+          }));
       Terminal.printExpected(
           message: "Analisis Previos : : ${Reportes.analisisAnteriores}");
     });
@@ -220,14 +231,17 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       key: _key,
       endDrawer: drawerForm(context),
       appBar: appBar(context),
-      floatingActionButton: floattingActionButton(context),
+      floatingActionButton:
+          !isLargeDesktop(context) &&!isDesktop(context) ? floattingActionButton(context) : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: bottomNavigationBar(context),
       body: isMobile(context) || isTablet(context)
           ? _mobileView()
           : isDesktop(context)
-              ? _desktopView()
-              : _largeDesktopView(),
+              ? _largeDesktopView() // _desktopView()
+              : isLargeDesktop(context)
+                  ? _largeDesktopView()
+                  : _largeDesktopView(),
     );
   }
 
@@ -289,14 +303,14 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
   Row _largeDesktopView() {
     return Row(
       children: [
-        // Expanded(
-        //     flex: 2,
-        //     child: Container(
-        //       padding: const EdgeInsets.all(8.0),
-        //       margin: const EdgeInsets.all(8.0),
-        //       decoration: ContainerDecoration.containerDecoration(),
-        //       child: sideLeft(),
-        //     )),
+        Expanded(
+            flex: 2,
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              margin: const EdgeInsets.all(8.0),
+              decoration: ContainerDecoration.containerDecoration(),
+              child: sideLeft(),
+            )),
         Expanded(
             flex: 8,
             child: Container(
@@ -305,14 +319,15 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               decoration: ContainerDecoration.containerDecoration(),
               child: pantallasReportesMedicos(widget.actualPage),
             )),
-        // Expanded(
-        //     flex: 1,
-        //     child: Container(
-        //       padding: const EdgeInsets.all(8.0),
-        //       margin: const EdgeInsets.all(8.0),
-        //       decoration: ContainerDecoration.containerDecoration(),
-        //       child: sideRight(),
-        //     )),
+        Expanded(child: _notasPrevias(context)),
+        Expanded(
+            flex: 1,
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              margin: const EdgeInsets.all(8.0),
+              decoration: ContainerDecoration.containerDecoration(),
+              child: sideRight(),
+            )),
       ],
     );
   }
@@ -546,29 +561,29 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             height: 20,
             child: CrossLine(),
           ),
-          if (isLargeDesktop(context))
-            Expanded(
-              child: GrandButton(
-                  labelButton: "Vista previa",
-                  onPress: () async {
-                    await imprimirDocumento()
-                        .then((value) => Operadores.alertActivity(
-                            context: context,
-                            tittle: 'Petición de Registro de Análisis',
-                            message:
-                                '¿Desea registrar el análisis en la base de datos?',
-                            onClose: () {
-                              Navigator.of(context).pop();
-                            },
-                            onAcept: () {
-                              Navigator.of(context).pop();
-                              Repositorios.registrarRegistro();
-                            }))
-                        .onError((error, stackTrace) => Terminal.printAlert(
-                            message: "ERROR - $error : : $stackTrace"));
-                  }),
-            ),
-          if (isDesktop(context))
+          // if (isLargeDesktop(context))
+          //   Expanded(
+          //     child: GrandButton(
+          //         labelButton: "Vista previa",
+          //         onPress: () async {
+          //           await imprimirDocumento()
+          //               .then((value) => Operadores.alertActivity(
+          //                   context: context,
+          //                   tittle: 'Petición de Registro de Análisis',
+          //                   message:
+          //                       '¿Desea registrar el análisis en la base de datos?',
+          //                   onClose: () {
+          //                     Navigator.of(context).pop();
+          //                   },
+          //                   onAcept: () {
+          //                     Navigator.of(context).pop();
+          //                     Repositorios.registrarRegistro();
+          //                   }))
+          //               .onError((error, stackTrace) => Terminal.printAlert(
+          //                   message: "ERROR - $error : : $stackTrace"));
+          //         }),
+          //   ),
+          if (isDesktop(context) || isLargeDesktop(context))
             SizedBox(
               height: 80,
               child: CircleIcon(
@@ -767,7 +782,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
     }
   }
 
-  Widget pantallasReportesMedicos(int actualPage) {
+  Widget pantallasReportesMedicos(int actualPage, {int? index}) {
     List<Widget> list = [
       const ReporteIngreso(), // 0 : Reporte de
       const ReporteEvolucion(), // 1 : Reporte de
@@ -789,10 +804,15 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       const CateterTenckhoff(), // 15 :
       Container(), // 16 : Punción Lumbar
       const ReporteTransfusion(), // 17 : Reporte de Transfusión
-      TerapiasItems(esCorto: true), // 18: Evaluación de Terapia
+      AnalisisRevisorios(
+          isInOther: true), // 18: Revisorios | Evaluación de Terapia
       Revisiones(), // 19 : Revisión
       Semiologicos(withoutAppBar: true), // 20 : Revisión
       const Concentraciones(), // 21 : Concentraciones
+      Container(), // 22
+      Container(), //23
+      Container(), // 24
+      _notaPrevia(context), //25
     ];
 
     return list[actualPage];
@@ -1274,7 +1294,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               iconColor: Colors.white,
               onPress: () => onClose(context)),
           centerTitle: true,
-          toolbarHeight: 80,
+          toolbarHeight: !isLargeDesktop(context) ? 80 : 80,
           shape: const ContinuousRectangleBorder(
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(90.0),
@@ -1288,11 +1308,111 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           ),
           // title: AppBarText(Sentences.app_bar_reportes),
           actions: <Widget>[
-            GrandIcon(
-                labelButton: 'Copiar Esquema del Reporte',
-                iconData: Icons.menu_open_sharp,
-                iconColor: Colors.white,
-                onPress: () => _key.currentState!.openEndDrawer()),
+            if (!isLargeDesktop(context))
+              GrandIcon(
+                  labelButton: 'Copiar Esquema del Reporte',
+                  iconData: Icons.menu_open_sharp,
+                  iconColor: Colors.white,
+                  onPress: () => _key.currentState!.openEndDrawer()),
             const SizedBox(width: 20)
           ]);
+
+  _notasPrevias(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
+      child: Column(
+        children: [
+          CrossLine(height: 10, thickness: 4, color: Colors.black),
+          Expanded(
+            flex: 8,
+            child: FutureBuilder<List>(
+                initialData: listNotes!,
+                future: Future.value(listNotes!),
+                builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  return ListView.separated(
+                      controller: ScrollController(),
+                      itemCount: listNotes!.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        Terminal.printWarning(message: "${listNotes![index].keys}");
+                        return Container(
+                          decoration: ContainerDecoration.roundedDecoration(),
+                          child: ListTile(
+                            title: Text(
+                              listNotes![index]['FechaRealizacion'],
+                              style: Styles.textSyleGrowth(fontSize: 11),
+                            ),
+                            subtitle: Text(
+                              listNotes![index]['Tipo_Analisis'],
+                              style: Styles.textSyleGrowth(fontSize: 8),
+                            ),
+                            onTap: () {
+                              setState(() {
+                                widget.indexNote = index;
+                                widget.actualPage = 25;
+                              });
+                            },
+                            onLongPress: () {
+                              Operadores.openWindow(
+                                  context: context,
+                                  chyldrim: _notaPrevia(context));
+                            },
+                          ),
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) =>
+                          const SizedBox(height: 10));
+                }),
+          ),
+          CrossLine(height: 10, thickness: 4, color: Colors.black),
+          CircleIcon(
+            iconed: Icons.remove_road,
+              onChangeValue: () {
+            // CONSULTAR NOTACIONES PREVIAS ****************************************
+            Reportes.consultarNotasHospitalizacion().then((value) => setState(() {
+              widget.indexNote = 0;
+              listNotes = value;
+            }));
+          }),
+          CrossLine(height: 10, thickness: 2, color: Colors.black),
+          CircleLabel(
+            tittle: "${Pacientes.ID_Hospitalizacion}",
+            radios: 25,
+            difRadios: 3,
+            fontSize: 8,
+          ),
+        ],
+      ),
+    );
+  }
+
+  _notaPrevia(BuildContext context) {
+    if (widget.indexNote  > -1) {
+      return TittleContainer(
+        tittle: listNotes![widget.indexNote]['FechaRealizacion'],
+        child: Column(
+          children: [
+            Text(
+              listNotes![widget.indexNote]['Tipo_Analisis'],
+              style: Styles.textSyleGrowth(fontSize: 12),
+            ),
+            CrossLine(thickness: 4),
+            Text(
+                listNotes![widget.indexNote]['Signos_Vitales'],
+                style: Styles.textSyleGrowth(fontSize: 8)),
+            CrossLine(thickness: 4),
+            CrossLine(thickness: 3),
+            Text(
+                listNotes![widget.indexNote]['Tipo_Analisis'] == "Análisis de Ingreso"
+                    ? listNotes![widget.indexNote]['Padecimiento_Actual']
+                    : listNotes![widget.indexNote]['Tipo_Analisis'] == "Análisis de Evolución" ?
+                listNotes![widget.indexNote]['Analisis_Medico'] :
+                "",
+                style: Styles.textSyleGrowth(fontSize: 8)),
+          ],
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
 }

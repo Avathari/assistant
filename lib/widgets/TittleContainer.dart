@@ -6,11 +6,13 @@ class TittleContainer extends StatefulWidget {
   Widget? child;
   Color? color;
   bool? centered;
+  double? padding;
 
   TittleContainer(
       {super.key,
       required this.child,
       this.tittle = "",
+        this.padding = 0,
       this.centered = false,
       this.color = Theming.bdColor});
 
@@ -25,8 +27,8 @@ class _TittleContainerState extends State<TittleContainer> {
       Container(
           width: double.infinity,
           // height: double.infinity,
-          margin: const EdgeInsets.all(10.0),
-          padding: const EdgeInsets.only(left: 10, right: 8, top: 7, bottom: 5),
+          margin: EdgeInsets.all(widget.padding! == 0? 10.0:widget.padding!),
+          padding: EdgeInsets.only(left: widget.padding! == 0? 10 : widget.padding!, right: 8, top: 7, bottom: 5),
           decoration: BoxDecoration(
             border: Border.all(color: Colors.grey, width: 1),
             borderRadius: BorderRadius.circular(20),

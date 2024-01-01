@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/actividades/pdfGenerete/PdfApi.dart';
 import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteFormats/formatosReportes.dart';
@@ -8,9 +10,11 @@ import 'package:assistant/operativity/pacientes/valores/Valorados/ventometr%C3%A
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/home.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
+import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizado.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/info/Hospitalizado.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/subjetivos.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/generales.dart';
+import 'package:assistant/screens/pacientes/epidemiologicos/licencias.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/padecimientoActual.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/pendientes.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/situacionesHospitalizacion.dart';
@@ -511,15 +515,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                           Expanded(
                               flex: 5,
                               child: fichaIdentificacion(snapshot, index)),
-                          Expanded(
-                              flex: 5,
-                              child: Container(
-                                padding: const EdgeInsets.all(10.0),
-                                margin: const EdgeInsets.all(5.0),
-                                decoration:
-                                    ContainerDecoration.roundedDecoration(),
-                                child: padesView(snapshot, index),
-                              )),
+                          Expanded(flex: 5, child: padesView(snapshot, index)),
                         ],
                       ),
                     ),
@@ -570,9 +566,10 @@ class _HospitalizadosState extends State<Hospitalizados> {
               ),
             ),
             if (isLargeDesktop(context))
-              Expanded(child: _middlePanel(context, snapshot, index)),
-            if (isLargeDesktop(context))
-              Expanded(child: _middlePanel(context, snapshot, index)),
+              Expanded(
+                  flex: 2, child: _licenciasPanel(context, snapshot, index)),
+            // if (isLargeDesktop(context))
+            //   Expanded(child: _middlePanel(context, snapshot, index)),
             if (isLargeDesktop(context))
               Expanded(child: _middlePanel(context, snapshot, index)),
             Expanded(
@@ -580,7 +577,10 @@ class _HospitalizadosState extends State<Hospitalizados> {
               child: Column(
                 children: [
                   Expanded(flex: 5, child: cronicosPanel(snapshot, index)),
-                  Expanded(flex: 5, child: diagnosticosPanel(snapshot, index)),
+                  // Expanded(flex: 5, child: diagnosticosPanel(snapshot, index)),
+                  Expanded(
+                      flex: 5,
+                      child: _licenciasPanel(context, snapshot, index)),
                 ],
               ),
             ),
@@ -773,6 +773,10 @@ class _HospitalizadosState extends State<Hospitalizados> {
                     iconed: Icons.recent_actors_rounded,
                     onChangeValue: () => _refreshActualList(index)),
                 GrandIcon(
+                    iconData: Icons.hourglass_bottom,
+                    labelButton: 'Cutivos y Hemocultivos . . . ',
+                    onPress: () => Datos.portapapeles(context: context, text: Internado.getCultivos(listadoFrom: foundedItems![index].paraclinicos))),
+                GrandIcon(
                     iconData: Icons.monitor_weight_outlined,
                     labelButton: 'Estado General . . . ',
                     onPress: () {
@@ -814,7 +818,8 @@ class _HospitalizadosState extends State<Hospitalizados> {
       },
       child: Container(
         color: Theming.cuaternaryColor,
-        padding: const EdgeInsets.only(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0),
+        padding:
+            const EdgeInsets.only(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -903,9 +908,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                           Expanded(
                               flex: 5,
                               child: fichaIdentificacion(snapshot, index)),
-                          Expanded(
-                              flex: 11,
-                              child: padesView(snapshot, index)),
+                          Expanded(flex: 11, child: padesView(snapshot, index)),
                           CrossLine(),
                           Expanded(
                             flex: 3,
@@ -936,17 +939,25 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                   ),
                                 ),
                                 Expanded(
+                                  flex: 2,
                                   child: ValuePanel(
                                     onLongPress: () => Datos.portapapeles(
                                         context: context,
-                                        text: foundedItems![index]
-                                            .getVentilacionnesHistorial()
-                                            .then((response) {
-                                          return ventilacionesString(
-                                              foundedItems![index]
-                                                  .ventilaciones
-                                                  .last);
-                                        })),
+                                        text: ventilacionesString(
+                                            foundedItems![index]
+                                                .ventilaciones
+                                                .last)),
+
+                                    // Datos.portapapeles(
+                                    // context: context,
+                                    // text: foundedItems![index]
+                                    //     .getVentilacionnesHistorial()
+                                    //     .then((response) {
+                                    //   return ventilacionesString(
+                                    //       foundedItems![index]
+                                    //           .ventilaciones
+                                    //           .last);
+                                    // })),
                                     firstText: foundedItems![index]
                                             .ventilaciones
                                             .isNotEmpty
@@ -955,6 +966,31 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                             .last['Feca_VEN']
                                             .toString()
                                         : 'Sin VMi',
+                                  ),
+                                ),
+                                Expanded(
+                                  child: CircleIcon(
+                                    iconed: Icons.balance_sharp,
+                                    onChangeValue: () async {
+                                      await foundedItems![index]
+                                          .getBalancesHistorial()
+                                          .whenComplete(() {
+                                        Datos.portapapeles(
+                                            context: context,
+                                            text: balancesString(
+                                                foundedItems![index]
+                                                    .balances
+                                                    .last,
+                                                index));
+                                      });
+                                    },
+                                    tittle:
+                                        foundedItems![index].vitales.isNotEmpty
+                                            ? foundedItems![index]
+                                                .vitales
+                                                .last['Pace_Feca_SV']
+                                                .toString()
+                                            : "Sin SV's",
                                   ),
                                 ),
                               ],
@@ -979,8 +1015,11 @@ class _HospitalizadosState extends State<Hospitalizados> {
                       children: [
                         Expanded(
                             flex: 5, child: cronicosPanel(snapshot, index)),
+                        // Expanded(
+                        //     flex: 5, child: diagnosticosPanel(snapshot, index)),
                         Expanded(
-                            flex: 5, child: diagnosticosPanel(snapshot, index)),
+                            flex: 5,
+                            child: _licenciasPanel(context, snapshot, index)),
                       ],
                     ),
                   ),
@@ -1047,38 +1086,42 @@ class _HospitalizadosState extends State<Hospitalizados> {
                             child: SingleChildScrollView(
                               controller: ScrollController(),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   GrandIcon(
                                       iconData: Icons.receipt,
                                       labelButton: 'Antecedentes',
                                       onPress: () {
-                                        Pacientes.ID_Hospitalizacion = foundedItems![index]
-                                            .hospitalizedData['ID_Hosp'];
+                                        Pacientes.ID_Hospitalizacion =
+                                            foundedItems![index]
+                                                .hospitalizedData['ID_Hosp'];
                                         String cronicos = "";
-                    
-                                        if (foundedItems![index].patologicos == []) {
+
+                                        if (foundedItems![index].patologicos ==
+                                            []) {
                                           cronicos =
-                                          'Sin Antecedentes Crónicos Documentados';
+                                              'Sin Antecedentes Crónicos Documentados';
                                         } else {
-                                          for (var i in foundedItems![index].patologicos) {
+                                          for (var i in foundedItems![index]
+                                              .patologicos) {
                                             if (i['Pace_APP_DEG_com'] != null ||
                                                 i['Pace_APP_DEG_com'] != '') {
                                               cronicos =
-                                              "$cronicos${i['Pace_APP_DEG_com'].toUpperCase()}, "
+                                                  "$cronicos${i['Pace_APP_DEG_com'].toUpperCase()}, "
                                                   "${i['Pace_APP_DEG_dia']} años, "
                                                   "${i['Pace_APP_DEG_tra']} "
                                                   "\n\n";
                                             } else {
                                               cronicos =
-                                              'Sin Antecedentes Crónicos Documentados';
+                                                  'Sin Antecedentes Crónicos Documentados';
                                             }
                                           }
                                         }
                                         Datos.portapapeles(
                                             context: context,
                                             text:
-                                            "${foundedItems![index].generales['Pace_NSS']} ${foundedItems![index].generales['Pace_AGRE']}\n"
+                                                "${foundedItems![index].generales['Pace_NSS']} ${foundedItems![index].generales['Pace_AGRE']}\n"
                                                 "${"${foundedItems![index].generales['Pace_Ape_Pat']} ${foundedItems![index].generales['Pace_Ape_Mat']} ${foundedItems![index].generales['Pace_Nome_PI']} ${foundedItems![index].generales['Pace_Nome_SE']}\n".toUpperCase()}"
                                                 "Edad ${foundedItems![index].generales['Pace_Eda']} Años\n"
                                                 "FN: ${foundedItems![index].hospitalizedData['Feca_INI_Hosp']} : "
@@ -1090,36 +1133,46 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                       iconData: Icons.medication_outlined,
                                       labelButton: 'Padecimiento Actual',
                                       onPress: () {
-                                        Pacientes.ID_Hospitalizacion = foundedItems![index]
-                                            .hospitalizedData['ID_Hosp'];
-                                        String pades = "No hay padecimiento Descrito\n",
+                                        Pacientes.ID_Hospitalizacion =
+                                            foundedItems![index]
+                                                .hospitalizedData['ID_Hosp'];
+                                        String pades =
+                                                "No hay padecimiento Descrito\n",
                                             diagos = "",
                                             previos = "";
                                         // ************************
-                                        if (foundedItems![index].padecimientoActual !=
+                                        if (foundedItems![index]
+                                                .padecimientoActual !=
                                             null) {
-                                          if (foundedItems![index]
-                                              .padecimientoActual['Padecimiento_Actual'] !=
-                                              null &&
+                                          if (foundedItems![
+                                                              index]
+                                                          .padecimientoActual[
+                                                      'Padecimiento_Actual'] !=
+                                                  null &&
                                               foundedItems![index]
-                                                  .padecimientoActual['Padecimiento_Actual'] !=
+                                                          .padecimientoActual[
+                                                      'Padecimiento_Actual'] !=
                                                   [] &&
                                               foundedItems![index]
-                                                  .padecimientoActual['Padecimiento_Actual'] !=
+                                                          .padecimientoActual[
+                                                      'Padecimiento_Actual'] !=
                                                   "") {
                                             pades =
-                                            "${foundedItems![index].padecimientoActual['Padecimiento_Actual']}\n";
+                                                "${foundedItems![index].padecimientoActual['Padecimiento_Actual']}\n";
                                           } else {
-                                            pades = "No hay padecimiento Descrito\n";
+                                            pades =
+                                                "No hay padecimiento Descrito\n";
                                           }
                                         }
-                                        for (var i in foundedItems![index].diagnosticos) {
+                                        for (var i in foundedItems![index]
+                                            .diagnosticos) {
                                           diagos =
-                                          "$diagos${i['Pace_APP_DEG'].toUpperCase()} -\n\t${i['Pace_APP_DEG_com']}\n";
+                                              "$diagos${i['Pace_APP_DEG'].toUpperCase()} -\n\t${i['Pace_APP_DEG_com']}\n";
                                         }
-                                        for (var i in foundedItems![index].patologicos) {
+                                        for (var i in foundedItems![index]
+                                            .patologicos) {
                                           previos = "$previos"
-                                          // "${i['Pace_APP_DEG'].toUpperCase()} -\n"
+                                              // "${i['Pace_APP_DEG'].toUpperCase()} -\n"
                                               "\t${i['Pace_APP_DEG_com']}\n";
                                         }
                                         Datos.portapapeles(
@@ -1141,19 +1194,21 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                           // ***************************************************
                                           Datos.portapapeles(
                                               context: context,
-                                              text:
-                                              Auxiliares.historial(esAbreviado: true));
+                                              text: Auxiliares.historial(
+                                                  esAbreviado: true));
                                         });
                                       }),
                                   GrandIcon(
-                                      labelButton: "Historial de Imagenologicos",
+                                      labelButton:
+                                          "Historial de Imagenologicos",
                                       iconData: Icons.recent_actors_outlined,
                                       onPress: () async {
                                         await foundedItems![index]
                                             .getImagenologicosHistorial()
                                             .whenComplete(() {
                                           Pacientes.Imagenologicos =
-                                              foundedItems![index].imagenologicos;
+                                              foundedItems![index]
+                                                  .imagenologicos;
                                           // ***************************************************
                                           Datos.portapapeles(
                                               context: context,
@@ -1161,18 +1216,21 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                         });
                                       }),
                                   GrandIcon(
-                                      labelButton: "Historial de Electrocardiogramas",
+                                      labelButton:
+                                          "Historial de Electrocardiogramas",
                                       iconData: Icons.monitor_heart_outlined,
                                       onPress: () async {
                                         await foundedItems![index]
                                             .getElectrocardiogramasHistorial()
                                             .whenComplete(() {
                                           Pacientes.Electros =
-                                              foundedItems![index].electrocardiogramas;
+                                              foundedItems![index]
+                                                  .electrocardiogramas;
                                           // ***************************************************
                                           Datos.portapapeles(
                                               context: context,
-                                              text: Electrocardiogramas.historial());
+                                              text: Electrocardiogramas
+                                                  .historial());
                                         });
                                       }),
                                   GrandIcon(
@@ -1180,17 +1238,19 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                       iconData: Icons.list_alt,
                                       onPress: () async {
                                         Pacientes.ID_Hospitalizacion =
-                                            foundedItems![index].idHospitalizado =
-                                        foundedItems![index]
-                                            .hospitalizedData['ID_Hosp'];
+                                            foundedItems![index]
+                                                    .idHospitalizado =
+                                                foundedItems![index]
+                                                        .hospitalizedData[
+                                                    'ID_Hosp'];
                                         Pacientes.nombreCompleto =
                                             foundedItems![index].nombreCompleto;
                                         //
                                         Pacientes.Pendiente =
                                             foundedItems![index].pendientes =
-                                        await firstFounded![index]
-                                            .getPendientesHistorial();
-                    // *********************************
+                                                await firstFounded![index]
+                                                    .getPendientesHistorial();
+                                        // *********************************
                                         String penden = "";
                                         // *********************************
                                         for (var i in Pacientes.Pendiente!) {
@@ -1203,31 +1263,42 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                         Datos.portapapeles(
                                             context: context,
                                             text:
-                                            "${foundedItems![index].hospitalizedData['Id_Cama']} - $penden");
+                                                "${foundedItems![index].hospitalizedData['Id_Cama']} - $penden");
                                       }),
                                 ],
                               ),
                             )),
                         Expanded(child: CrossLine()),
                         Expanded(
-                          child: GrandIcon(
-                              iconData: Icons.monitor_weight_outlined,
-                              labelButton: 'Estado General . . . ',
-                              onPress: () {
-                                Pacientes.ID_Hospitalizacion =
-                                foundedItems![index].hospitalizedData['ID_Hosp'];
-                                Operadores.openDialog(
-                                    context: context,
-                                    chyldrim: isMobile(context)
-                                        ? const SituacionesHospitalizacion()
-                                        : SingleChildScrollView(
-                                      controller: ScrollController(),
-                                      child: const SituacionesHospitalizacion(),
-                                    ),
-                                    onAction: () {
-                                      // Repositorios.actualizarRegistro();
-                                    });
-                              }),
+                          child: Row(
+                            children: [
+                              GrandIcon(
+                                  iconData: Icons.monitor_weight_outlined,
+                                  labelButton: 'Estado General . . . ',
+                                  onPress: () {
+                                    Pacientes.ID_Hospitalizacion =
+                                        foundedItems![index]
+                                            .hospitalizedData['ID_Hosp'];
+                                    Operadores.openDialog(
+                                        context: context,
+                                        chyldrim: isMobile(context)
+                                            ? const SituacionesHospitalizacion()
+                                            : SingleChildScrollView(
+                                                controller: ScrollController(),
+                                                child:
+                                                    const SituacionesHospitalizacion(),
+                                              ),
+                                        onAction: () {
+                                          // Repositorios.actualizarRegistro();
+                                        });
+                                  }),
+                              const SizedBox(width: 30),
+                              GrandIcon(
+                                  iconData: Icons.hourglass_bottom,
+                                  labelButton: 'Cutivos y Hemocultivos . . . ',
+                                  onPress: () => Datos.portapapeles(context: context, text: Internado.getCultivos(listadoFrom: foundedItems![index].paraclinicos))),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -1272,7 +1343,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
           },
           child: Text(
             "PA: Sin padecimiento actual registrado . . . ",
-            maxLines: 45,
+            maxLines: isLargeDesktop(context) ? 65 : 45,
             style: Styles.textSyleGrowth(fontSize: 8),
             textAlign: TextAlign.start,
           ));
@@ -1305,7 +1376,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
           color: Theming.cuaternaryColor,
           child: Text(
             "${foundedItems![index].padecimientoActual['Padecimiento_Actual'] ?? 'Sin padecimiento actual registrado . . . '}",
-            maxLines: 45,
+            maxLines: isLargeDesktop(context) ? 65 : 45,
             style: Styles.textSyleGrowth(fontSize: 8),
             textAlign: TextAlign.start,
           ),
@@ -1328,6 +1399,11 @@ class _HospitalizadosState extends State<Hospitalizados> {
               "${snapshot.data[index].generales['Pace_Nome_SE'] ?? ''}",
               maxLines: 2,
               style: Styles.textSyleGrowth(fontSize: 14)),
+          Text(
+            "Ocupación: ${snapshot.data[index].generales['Pace_Ocupa'] ?? ''}",
+            maxLines: 2,
+            style: Styles.textSyleGrowth(fontSize: 10),
+          ),
           // Text(
           //   "Hemotipo: ${snapshot.data[index].hospitalizedData['Pace_Hemo'] ?? ''}",
           //   maxLines: 2,
@@ -1619,6 +1695,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
       await hospitalized[i].getBalancesHistorial();
       //
       await hospitalized[i].getPendientesHistorial();
+      await hospitalized[i].getLicenciasHistorial();
       //
       await hospitalized[i].getParaclinicosHistorial();
       // await hospitalized[i].getImagenologicosHistorial();
@@ -1729,6 +1806,20 @@ class _HospitalizadosState extends State<Hospitalizados> {
         "(${last['Pace_SV_glu_ayu']} Horas)";
   }
 
+  String balancesString(last, int index) {
+    Balances.fromJson(last);
+    Valores.pesoCorporalTotal = double.parse(
+        foundedItems![index].vitales.last["Pace_SV_pct"].toString() ?? '0');
+    //
+    return "${last['Pace_bala_Fecha']} : "
+        "Ingresos ${Valores.ingresosBalances.toStringAsFixed(1)} mL, "
+        "Egresos ${Valores.egresosBalances.toStringAsFixed(1)} mL "
+        ":  ${Valores.balanceTotal.toStringAsFixed(2)} mL ("
+        "Uresis ${Valores.uresisBalances!.toStringAsFixed(2)} mL : "
+        "UKH ${Valores.diuresis.toStringAsFixed(2)} mL/Kg/${Valores.horario} Hr "
+        ")";
+  }
+
   String ventilacionesString(last) {
     Terminal.printAlert(message: "${last.runtimeType}");
     Ventilaciones.fromJson(last);
@@ -1776,6 +1867,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
               //
               Cambios.toNextActivity(context,
                   chyld: OperacionesPendiente(
+                      withAppBar: false,
                       operationActivity: Constantes.Register));
             }),
         CircleIcon(
@@ -1887,6 +1979,130 @@ class _HospitalizadosState extends State<Hospitalizados> {
     );
   }
 
+  //
+  _licenciasPanel(BuildContext context, AsyncSnapshot snapshot, int index) {
+    return TittleContainer(
+      tittle: 'Licencias(s)',
+      padding: 2,
+      color: isMobile(context) ? Theming.cuaternaryColor : Colors.black,
+      child: isDesktop(context) || isLargeDesktop(context)
+          ? Column(
+              children: [
+                Expanded(
+                    flex: 5,
+                    child: ListView.builder(
+                        itemCount: foundedItems![index].licencias.length,
+                        itemBuilder: (BuildContext context, int ind) {
+                          return ListTile(
+                            title: Text(
+                              foundedItems![index].licencias[ind]['Folio'],
+                              style: Styles.textSyleGrowth(fontSize: 9),
+                            ),
+                            subtitle: Text(
+                              foundedItems![index].licencias[ind]
+                                      ['Fecha_Inicio'] +
+                                  " : " +
+                                  foundedItems![index].licencias[ind]
+                                      ['Fecha_Termino'] +
+                                  " : : " +
+                                  "${foundedItems![index].licencias[ind]['Dias_Otorgados']} Días",
+                              style: Styles.textSyleGrowth(fontSize: 9),
+                            ),
+                            onTap: () {
+                              Operadores.openWindow(
+                                  context: context,
+                                  chyldrim: Center(
+                                    child: foundedItems![index].licencias[ind]
+                                    ['Licencia_FIAT'] !=
+                                        null
+                                        ? Image.memory(base64Decode(
+                                        foundedItems![index].licencias[ind]
+                                        ['Licencia_FIAT']))
+                                        : Container(),
+                                  ));
+                            },
+                          );
+                        })),
+                CrossLine(thickness: 3),
+                CircleIcon(
+                    radios: 25,
+                    difRadios: 5,
+                    iconed: Icons.list_alt_sharp,
+                    onChangeValue: () {
+                      Pacientes.ID_Paciente = foundedItems![index].idPaciente;
+                      Pacientes.ID_Hospitalizacion =
+                          foundedItems![index].idHospitalizado =
+                              foundedItems![index].hospitalizedData['ID_Hosp'];
+                      //
+                      Cambios.toNextActivity(context,
+                          chyld: OperacionesLicencia());
+                    }),
+              ],
+            )
+          : Row(
+              children: [
+                Expanded(
+                    flex: 5,
+                    child: ListView.separated(
+                      itemCount: foundedItems![index].licencias.length,
+                      itemBuilder: (BuildContext context, int ind) {
+                        return ListTile(
+                          title: Text(
+                            foundedItems![index].licencias[ind]['Folio'],
+                            style: Styles.textSyleGrowth(fontSize: 10),
+                          ),
+                          subtitle: Text(
+                            foundedItems![index].licencias[ind]
+                                    ['Fecha_Inicio'] +
+                                " : " +
+                                foundedItems![index].licencias[ind]
+                                    ['Fecha_Termino'] +
+                                "\n : : " +
+                                "${foundedItems![index].licencias[ind]['Dias_Otorgados']} Días",
+                            style: Styles.textSyleGrowth(fontSize: 7),
+                          ),
+                          onTap: () {
+                            Operadores.openWindow(
+                                context: context,
+                                chyldrim: Center(
+                                  child: foundedItems![index].licencias[ind]
+                                              ['Licencia_FIAT'] !=
+                                          null
+                                      ? Image.memory(base64Decode(
+                                          foundedItems![index].licencias[ind]
+                                              ['Licencia_FIAT']))
+                                      : Container(),
+                                ));
+                          },
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return CrossLine(height: 7, thickness: 2);
+                      },
+                    )),
+                // CrossLine(thickness: 3),
+                CircleIcon(
+                    radios: 25,
+                    difRadios: 5,
+                    iconed: Icons.list_alt_sharp,
+                    onChangeValue: () {
+                      Pacientes.ID_Paciente = foundedItems![index].idPaciente;
+                      Pacientes.ID_Hospitalizacion =
+                          foundedItems![index].idHospitalizado =
+                              foundedItems![index].hospitalizedData['ID_Hosp'];
+                      //
+                      Cambios.toNextActivity(context,
+                          chyld: OperacionesLicencia(
+                            withAppBar: false,
+                            operationActivity: Constantes.Register,
+                          ));
+                    }),
+              ],
+            ),
+    );
+  }
+
+  //
   _middlePanel(BuildContext context, AsyncSnapshot snapshot, int index) {
     return TittleContainer(child: Container());
   }
@@ -1919,11 +2135,15 @@ List? descompose(value) {
     atreidys.patologicos = value[i]['patologicos'];
     atreidys.diagnosticos = value[i]['diagnosticos'];
     atreidys.paraclinicos = value[i]['paraclinicos'];
+    //
     atreidys.pendientes = value[i]['pendientes'];
+    atreidys.licencias = value[i]['licencias'];
+    //
     atreidys.ventilaciones = value[i]['ventilaciones'];
     // Otros valores . . .
     atreidys.imagenologicos = value[i]['imagenologicos'];
     atreidys.electrocardiogramas = value[i]['electrocardiogramas'];
+    //
     //
     auxiliar.add(atreidys);
   }

@@ -88,7 +88,7 @@ class Valores {
     Pacientes.Vital.addAll(antro);
     final aux = await Actividades.detallesById(
         Databases.siteground_database_reggabo,
-        Auxiliares.auxiliares['auxiliarStadistics'],
+        Pacientes.getAuxiliaryStats(Pacientes.ID_Paciente),
         Pacientes.ID_Paciente,
         emulated: true);
 

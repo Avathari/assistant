@@ -6,7 +6,9 @@ import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/ShowText.dart';
 import 'package:assistant/widgets/ThreeLabelText.dart';
+import 'package:assistant/widgets/TittleContainer.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
+import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -24,289 +26,313 @@ class _AntropometricosState extends State<Antropometricos> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TittlePanel(color: Colors.black, textPanel: 'Análisis Antropométrico'),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+    return TittleContainer(
+      tittle: 'Análisis Antropométrico',
+      color:Colors.black,
+      centered: true,
+      child: Column(
+        children: [
+          Expanded(
+            flex: 8,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                GrandIcon(
-                  iconData: Icons.dataset,
-                  labelButton: 'Datos Iniciales',
-                  onPress: () {
-                    setState(() {
-                      carouselController.jumpToPage(0);
-                    });
-                  },
-                ),
-                GrandIcon(
-                  iconData: Icons.add_chart,
-                  labelButton: 'Indice de Masa Muscular',
-                  onPress: () {
-                    setState(() {
-                      carouselController.jumpToPage(1);
-                    });
-                  },
-                ),
-                GrandIcon(
-                  iconData: Icons.monitor_weight_outlined,
-                  labelButton: 'Peso Corporal Ideal',
-                  onPress: () {
-                    setState(() {
-                      carouselController.jumpToPage(2);
-                    });
-                  },
-                ),
-                GrandIcon(
-                  iconData: Icons.compress_outlined,
-                  labelButton: 'Superficie Corporal',
-                  onPress: () {
-                    setState(() {
-                      carouselController.jumpToPage(3);
-                    });
-                  },
-                ),
-                GrandIcon(
-                  iconData: Icons.line_weight_sharp,
-                  labelButton: 'Peso Corporal Ajustado',
-                  onPress: () {
-                    setState(() {
-                      carouselController.jumpToPage(4);
-                    });
-                  },
-                ),
-                GrandIcon(
-                  iconData: Icons.water_drop_outlined,
-                  labelButton: 'Grasa Corporal',
-                  onPress: () {
-                    setState(() {
-                      carouselController.jumpToPage(5);
-                    });
-                  },
-                ),
-                GrandIcon(
-                  iconData: Icons.area_chart_sharp,
-                  labelButton: 'Areas Musculares y Adiposas',
-                  onPress: () {
-                    setState(() {
-                      carouselController.jumpToPage(6);
-                    });
-                  },
-                ),
-              ],
-            ),
-          ),
-        ),
-        Expanded(
-          flex: 7,
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: CarouselSlider(
-                items: [
-                  SingleChildScrollView(
+                Expanded(
+                  flex: 2,
+                  child: SingleChildScrollView(
                     controller: ScrollController(),
                     child: Column(
                       children: [
-                        ThreeLabelTextAline(
+                        ValuePanel(
                           firstText: "Sexo",
                           secondText: (Valores.sexo ?? ''),
                           padding: 1,
                         ),
-                        ShowText(
-                          title: 'Edad',
-                          data: Valores.edad!.toDouble(),
-                          medida: 'Años',
+                        ValuePanel(
+                          firstText: 'Edad',
+                          secondText: Valores.edad!.toDouble().toStringAsFixed(2),
+                          thirdText: 'Años',
                         ),
-                        ShowText(
-                          title: 'Peso Corporal Total',
-                          data: Valores.pesoCorporalTotal,
-                          medida: 'Kg',
+                        ValuePanel(
+                          firstText: 'PCT',
+                          secondText: Valores.pesoCorporalTotal!.toStringAsFixed(1),
+                          thirdText: 'Kg',
                         ),
-                        ShowText(
-                          title: 'Estatura',
-                          data: Valores.alturaPaciente,
-                          medida: 'mts',
+                        ValuePanel(
+                          firstText: 'Estatura',
+                          secondText: Valores.alturaPaciente!.toStringAsFixed(2),
+                          thirdText: 'mts',
                         ),
                         CrossLine(),
-                        ShowText(
-                          title: 'C. Cervical',
-                          data: Valores.circunferenciaCuello!.toDouble(),
-                          medida: 'mm',
+                        ValuePanel(
+                          firstText: 'C. Cervical',
+                          secondText: Valores.circunferenciaCuello!.toStringAsFixed(2),
+                          thirdText: 'mm',
                         ),
-                        ShowText(
-                          title: 'C. Cintura',
-                          data: Valores.circunferenciaCintura!.toDouble(),
-                          medida: 'mm',
+                        ValuePanel(
+                          firstText: 'C. Cintura',
+                          secondText: Valores.circunferenciaCintura!.toStringAsFixed(2),
+                          thirdText: 'mm',
                         ),
-                        ShowText(
-                          title: 'C. Cadera',
-                          data: Valores.circunferenciaCadera!.toDouble(),
-                          medida: 'mm',
+                        ValuePanel(
+                          firstText: 'C. Cadera',
+                          secondText: Valores.circunferenciaCadera!.toStringAsFixed(2),
+                          thirdText: 'mm',
+                        ),
+                        CrossLine(),
+                        ValuePanel(
+                          firstText: 'P. M. Mesobraquial',
+                          secondText: Antropometrias.perimetroMesobraquial.toStringAsFixed(1),
+                          thirdText: 'cm',
+                        ),
+                        ValuePanel(
+                          firstText: 'A. M.Mesobraquial',
+                          secondText: Antropometrias.areaMesobraquial.toStringAsFixed(1),
+                          thirdText: 'cm2',
+                        ),
+                        ValuePanel(
+                          firstText: 'A. Adip. Mesobraquial',
+                          secondText: Antropometrias.areaAdiposaMesobraquial.toStringAsFixed(1),
+                          thirdText: 'cm2',
                         ),
                       ],
                     ),
                   ),
-                  SingleChildScrollView(
-                    controller: ScrollController(),
-                    child: Column(
-                      children: [
-                        ShowText(
-                          title: 'I.M.C.',
-                          data: Antropometrias.imc,
-                          medida: 'Kg/m2',
+                ),
+                Expanded(
+                  flex: 5,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        flex: 7,
+                        child: TittleContainer(
+                          tittle: "",
+                          centered: true,
+                          color: Colors.black,
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: CarouselSlider(
+                                items: [
+                                  SingleChildScrollView(
+                                    controller: ScrollController(),
+                                    child: Column(
+                                      children: [
+                                        ValuePanel(
+                                          firstText: 'I.M.C.',
+                                          secondText: Antropometrias.imc.toStringAsFixed(2),
+                                          thirdText: 'Kg/m2',
+                                        ),
+                                        TittlePanel(
+                                            textPanel: "Clase I.M.C. ${(Antropometrias.claseIMC)}"),
+                                        CrossLine(),
+                                        ValuePanel(
+                                          firstText: 'Peso Predicho',
+                                          secondText: Antropometrias.pesoCorporalPredicho.toStringAsFixed(2),
+                                          thirdText: 'Kg',
+                                        ),
+                                        ValuePanel(
+                                          firstText: 'P.C.I. (Máximo)',
+                                          secondText: Antropometrias.PCIM.toStringAsFixed(2),
+                                          thirdText: 'Kg',
+                                        ),
+                                        ValuePanel(
+                                          firstText: 'P.C.I. (Broca)',
+                                          secondText: Antropometrias.PCIB.toStringAsFixed(2),
+                                          thirdText: 'Kg',
+                                        ),
+                                        ValuePanel(
+                                          firstText: 'P.C.I. (Lorentz)',
+                                          secondText: Antropometrias.PCIL.toStringAsFixed(2),
+                                          thirdText: 'Kg',
+                                        ),
+                                        ValuePanel(
+                                          firstText: 'P.C.I. (West)',
+                                          secondText: Antropometrias.PCIW.toStringAsFixed(2),
+                                          thirdText: 'Kg',
+                                        ),
+                                        CrossLine(),
+                                        ValuePanel(
+                                          firstText: 'Indice Cintura - Cadera',
+                                          secondText: Antropometrias.indiceCinturaCadera.toStringAsFixed(2),
+                                          thirdText: '',
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SingleChildScrollView(
+                                    controller: ScrollController(),
+                                    child: Column(children: [
+                                      ValuePanel(
+                                        firstText: 'Sup. Corporal',
+                                        secondText: Antropometrias.SC.toStringAsFixed(2),
+                                        thirdText: 'm2',
+                                      ),
+                                      ValuePanel(
+                                        firstText: 'Sup. Corporal Simp.',
+                                        secondText: Antropometrias.SCS.toStringAsFixed(2),
+                                        thirdText: 'm2',
+                                      ),
+                                      ValuePanel(
+                                        firstText: 'SCT / Edad',
+                                        secondText: Antropometrias.SCE.toStringAsFixed(2),
+                                        thirdText: 'm2',
+                                      ),
+                                      ValuePanel(
+                                        firstText: 'SCT (Haycock)',
+                                        secondText: Antropometrias.SCH.toStringAsFixed(2),
+                                        thirdText: 'm2',
+                                      ),
+                                    ]),
+                                  ),
+                                  SingleChildScrollView(
+                                    controller: ScrollController(),
+                                    child: Column(children: [
+                                      ValuePanel(
+                                        firstText: 'Exceso Peso Corporal',
+                                        secondText: Antropometrias.excesoPesoCorporal.toStringAsFixed(2),
+                                        thirdText: 'Kg',
+                                      ),
+                                      ValuePanel(
+                                        firstText: 'PCT Ajustado',
+                                        secondText: Antropometrias.pesoCorporalAjustado.toStringAsFixed(2),
+                                        thirdText: 'Kg',
+                                      ),
+                                      ValuePanel(
+                                        firstText: 'P.C.A. (IMC 25)',
+                                        secondText: Antropometrias.PCB_25.toStringAsFixed(2),
+                                        thirdText: 'Kg',
+                                      ),
+                                      ValuePanel(
+                                        firstText: 'P.C.A. (IMC 30)',
+                                        secondText: Antropometrias.PCB_30.toStringAsFixed(2),
+                                        thirdText: 'Kg',
+                                      ),
+                                    ]),
+                                  ),
+                                  SingleChildScrollView(
+                                    controller: ScrollController(),
+                                    child: Column(children: [
+                                      ValuePanel(
+                                        firstText: 'Grasa Corporal',
+                                        secondText: Antropometrias.grasaCorporalEsencial.toStringAsFixed(2),
+                                        thirdText: '%',
+                                      ),
+                                      ValuePanel(
+                                        firstText: 'GC. Esencial',
+                                        secondText: Antropometrias.grasaCorporalEsencial.toStringAsFixed(2),
+                                        thirdText: '%',
+                                      ),
+                                      ValuePanel(
+                                        firstText: 'Peso Magro',
+                                        secondText: Antropometrias.masaMuscularMagra.toStringAsFixed(2),
+                                        thirdText: 'Kg',
+                                      ),
+
+                                    ]),
+                                  ),
+
+                                ],
+                                carouselController: carouselController,
+                                options: CarouselOptions(
+                                    height: 500,
+                                    enableInfiniteScroll: false,
+                                    viewportFraction: 1.0)),
+                          ),
                         ),
-                        TittlePanel(
-                            textPanel: "Clase I.M.C. ${(Antropometrias.claseIMC)}"),
-                      ],
-                    ),
+                      ),
+                      Expanded(
+                        child: GrandButton(
+                          weigth: 2000,
+                          labelButton: "Copiar en Portapapeles",
+                          onPress: () {
+                            Datos.portapapeles(
+                                context: context, text: Antropometrias.antropometricos(isAbreviado: false));
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                  SingleChildScrollView(
-                    controller: ScrollController(),
-                    child: Column(children: [
-                      ShowText(
-                        title: 'Peso Predicho',
-                        data: Antropometrias.pesoCorporalPredicho,
-                        medida: 'Kg',
-                      ),
-                      ShowText(
-                        title: 'P.C.I. (Máximo)',
-                        data: Antropometrias.PCIM,
-                        medida: 'Kg',
-                      ),
-                      ShowText(
-                        title: 'P.C.I. (Broca)',
-                        data: Antropometrias.PCIB,
-                        medida: 'Kg',
-                      ),
-                      ShowText(
-                        title: 'P.C.I. (Lorentz)',
-                        data: Antropometrias.PCIL,
-                        medida: 'Kg',
-                      ),
-                      ShowText(
-                        title: 'P.C.I. (West)',
-                        data: Antropometrias.PCIW,
-                        medida: 'Kg',
-                      ),
-                    ]),
+                ),
+
+              ],
+            ),
+          ),
+
+          //
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GrandIcon(
+                    iconData: Icons.dataset,
+                    labelButton: 'Datos Iniciales',
+                    onPress: () {
+                      setState(() {
+                        carouselController.jumpToPage(0);
+                      });
+                    },
                   ),
-                  SingleChildScrollView(
-                    controller: ScrollController(),
-                    child: Column(children: [
-                      ShowText(
-                        title: 'Sup. Corporal',
-                        data: Antropometrias.SC,
-                        medida: 'm2',
-                      ),
-                      ShowText(
-                        title: 'Sup. Corporal Simp.',
-                        data: Antropometrias.SCS,
-                        medida: 'm2',
-                      ),
-                      ShowText(
-                        title: 'Sup. Corporal para Edad',
-                        data: Antropometrias.SCE,
-                        medida: 'm2',
-                      ),
-                      ShowText(
-                        title: 'Sup. Corporal (Haycock)',
-                        data: Antropometrias.SCH,
-                        medida: 'm2',
-                      ),
-                    ]),
+                  GrandIcon(
+                    iconData: Icons.add_chart,
+                    labelButton: 'Indice de Masa Muscular',
+                    onPress: () {
+                      setState(() {
+                        carouselController.jumpToPage(1);
+                      });
+                    },
                   ),
-                  SingleChildScrollView(
-                    controller: ScrollController(),
-                    child: Column(children: [
-                      ShowText(
-                        title: 'Exceso Peso Corporal',
-                        data: Antropometrias.excesoPesoCorporal,
-                        medida: 'Kg',
-                      ),
-                      ShowText(
-                        title: 'Peso Corporal Ajustado',
-                        data: Antropometrias.pesoCorporalAjustado,
-                        medida: 'Kg',
-                      ),
-                      ShowText(
-                        title: 'P.C.A. (IMC 25)',
-                        data: Antropometrias.PCB_25,
-                        medida: 'Kg',
-                      ),
-                      ShowText(
-                        title: 'P.C.A. (IMC 30)',
-                        data: Antropometrias.PCB_30,
-                        medida: 'Kg',
-                      ),
-                    ]),
+                  GrandIcon(
+                    iconData: Icons.monitor_weight_outlined,
+                    labelButton: 'Peso Corporal Ideal',
+                    onPress: () {
+                      setState(() {
+                        carouselController.jumpToPage(2);
+                      });
+                    },
                   ),
-                  SingleChildScrollView(
-                    controller: ScrollController(),
-                    child: Column(children: [
-                      ShowText(
-                        title: 'Grasa Corporal',
-                        data: Antropometrias.grasaCorporalEsencial,
-                        medida: '%',
-                      ),
-                      ShowText(
-                        title: 'Grasa Corporal Esencial',
-                        data: Antropometrias.grasaCorporalEsencial,
-                        medida: '%',
-                      ),
-                      ShowText(
-                        title: 'Peso Magro',
-                        data: Antropometrias.masaMuscularMagra,
-                        medida: 'Kg',
-                      ),
-                      ShowText(
-                        title: 'Indice Cintura - Cadera',
-                        data: Antropometrias.indiceCinturaCadera,
-                        medida: '',
-                      ),
-                    ]),
+                  GrandIcon(
+                    iconData: Icons.compress_outlined,
+                    labelButton: 'Superficie Corporal',
+                    onPress: () {
+                      setState(() {
+                        carouselController.jumpToPage(3);
+                      });
+                    },
                   ),
-                  SingleChildScrollView(
-                    controller: ScrollController(),
-                    child: Column(children: [
-                      ShowText(
-                        title: 'P. Muscular Mesobraquial',
-                        data: Antropometrias.perimetroMesobraquial,
-                        medida: 'cm',
-                      ),
-                      ShowText(
-                        title: 'A. Muscular Mesobraquial',
-                        data: Antropometrias.areaMesobraquial,
-                        medida: 'cm2',
-                      ),
-                      ShowText(
-                        title: 'A. Adiposa Mesobraquial',
-                        data: Antropometrias.areaAdiposaMesobraquial,
-                        medida: 'cm2',
-                      ),
-                    ]),
+                  GrandIcon(
+                    iconData: Icons.line_weight_sharp,
+                    labelButton: 'Peso Corporal Ajustado',
+                    onPress: () {
+                      setState(() {
+                        carouselController.jumpToPage(4);
+                      });
+                    },
+                  ),
+                  GrandIcon(
+                    iconData: Icons.water_drop_outlined,
+                    labelButton: 'Grasa Corporal',
+                    onPress: () {
+                      setState(() {
+                        carouselController.jumpToPage(5);
+                      });
+                    },
+                  ),
+                  GrandIcon(
+                    iconData: Icons.area_chart_sharp,
+                    labelButton: 'Areas Musculares y Adiposas',
+                    onPress: () {
+                      setState(() {
+                        carouselController.jumpToPage(6);
+                      });
+                    },
                   ),
                 ],
-                carouselController: carouselController,
-                options: CarouselOptions(
-                    height: 500,
-                    enableInfiniteScroll: false,
-                    viewportFraction: 1.0)),
+              ),
+            ),
           ),
-        ),
-        Expanded(
-          child: GrandButton(
-            weigth: 2000,
-            labelButton: "Copiar en Portapapeles",
-            onPress: () {
-              Datos.portapapeles(
-                  context: context, text: Antropometrias.antropometricos(isAbreviado: false));
-            },
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

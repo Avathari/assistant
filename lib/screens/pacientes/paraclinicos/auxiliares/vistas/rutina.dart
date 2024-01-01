@@ -993,8 +993,7 @@ class _RutinasState extends State<Rutinas> {
   var textADEResultController = TextEditingController();
   String? unidadMedidaADE =
   Auxiliares.Medidas[Auxiliares.Categorias[0]][1];
-
-
+  //
   var textHemoglobinaResultController = TextEditingController();
   String? unidadMedidaHemoglobina =
       Auxiliares.Medidas[Auxiliares.Categorias[0]][0];
@@ -1784,7 +1783,7 @@ class _RutinasState extends State<Rutinas> {
             ),
             EditTextArea(
               textController: textPCRResultController,
-              keyBoardType: TextInputType.number,
+              keyBoardType: TextInputType.numberWithOptions(),
               inputFormat: MaskTextInputFormatter(),
               labelEditText: 'Proteína C Reactiva ($unidadMedidaPCR)',
               numOfLines: 1,

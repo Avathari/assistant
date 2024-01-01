@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
@@ -7,17 +10,22 @@ import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/AppBarText.dart';
+import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/Spinner.dart';
+import 'package:assistant/widgets/TittleContainer.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:photo_view/photo_view.dart';
 
 // # Clase .dart para la creación predeterminada de interfaces de registro, consulta y actualización.
 // Contiene un botón que enn _OperacionesLicenciaState.build que desplega una ventana emergente,
@@ -35,8 +43,9 @@ class OperacionesLicencia extends StatefulWidget {
   String? operationActivity;
 
   String _operationButton = 'Nulo';
+  bool? withAppBar;
 
-  OperacionesLicencia({Key? key, this.operationActivity = Constantes.Nulo})
+  OperacionesLicencia({Key? key, this.operationActivity = Constantes.Nulo, this.withAppBar = true})
       : super(key: key);
 
   @override
@@ -50,7 +59,7 @@ class _OperacionesLicenciaState extends State<OperacionesLicencia> {
   String? updateQuery = Licencias.vicencia['updateQuery'];
 
   int idOperation = 0; // diasOtorgados = 0;
-
+  //
   List<dynamic>? listOfValues;
 
   var fechaRealizacionTextController = TextEditingController();
@@ -61,12 +70,11 @@ class _OperacionesLicenciaState extends State<OperacionesLicencia> {
   var fechaTerminoTextController = TextEditingController();
   var motivoValue = Licencias.typesLicencias[0];
   var caracterValue = Licencias.caracterLicencia[0];
-  var expedicionValue  = Licencias.lugarExpedicion[0];
+  var expedicionValue = Licencias.lugarExpedicion[0];
   var diagnosticoLicenciaTextController = TextEditingController();
   // var descripcionLicenciaTextController = TextEditingController();
   //
   var carouselController = CarouselController();
-
 
   //
 
@@ -91,17 +99,26 @@ class _OperacionesLicenciaState extends State<OperacionesLicencia> {
           widget._operationButton = 'Actualizar';
           //
           idOperation = Licencias.Licencia['ID_Licen_Med'];
-          fechaRealizacionTextController.text = Licencias.Licencia['Fecha_Realizacion'];
+          fechaRealizacionTextController.text =
+              Licencias.Licencia['Fecha_Realizacion'];
           //
           folioLicenciaTextController.text = Licencias.Licencia['Folio'];
-          diasOtorgadosTextController.text = Licencias.Licencia['Dias_Otorgados'].toString();
+          diasOtorgadosTextController.text =
+              Licencias.Licencia['Dias_Otorgados'].toString();
           fechaInicioTextController.text = Licencias.Licencia['Fecha_Inicio'];
           fechaTerminoTextController.text = Licencias.Licencia['Fecha_Termino'];
           motivoValue = Licencias.Licencia['Motivo_Incapacidad'];
           caracterValue = Licencias.Licencia['Caracter'];
           expedicionValue = Licencias.Licencia['Lugar_Expedicion'];
-          diagnosticoLicenciaTextController.text = Licencias.Licencia['Diagnos_Expedicion'];
+          diagnosticoLicenciaTextController.text =
+              Licencias.Licencia['Diagnos_Expedicion'];
 
+          Terminal.printSuccess(
+              message:
+                  "Licencia_FIAT : : ${Licencias.Licencia['Licencia_FIAT']}");
+          setState(() {
+            stringImage = Licencias.Licencia['Licencia_FIAT'];
+          });
           // descripcionLicenciaTextController.text =
           //     Licencias.Licencia['Pace_Desc_PEN'].toString();
         });
@@ -115,56 +132,116 @@ class _OperacionesLicenciaState extends State<OperacionesLicencia> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: isDesktop(context) || isTabletAndDesktop(context)
-          ? null
-          : AppBar(
-              backgroundColor: Theming.primaryColor,
-              title: Text(appBarTitile),
-              leading: IconButton(
-                icon: const Icon(
-                  Icons.arrow_back,
-                ),
-                tooltip: Sentences.regresar,
-                onPressed: () {
-                  onClose(context);
-                },
-              )),
+      appBar: widget.withAppBar == true
+          ? isDesktop(context) || isTabletAndDesktop(context)
+              ? null
+              : AppBar(
+                  backgroundColor: Theming.primaryColor,
+                  title: AppBarText(appBarTitile),
+                  leading: IconButton(
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                    ),
+                    tooltip: Sentences.regresar,
+                    onPressed: () {
+                      onClose(context);
+                    },
+                  ),
+                  actions: isMobile(context)
+                      ? [
+                          CrossLine(isHorizontal: false, thickness: 4),
+                          const SizedBox(width: 15),
+                          GrandIcon(
+                              onPress: () => Operadores.openDialog(
+                                  context: context, chyldrim: _licenPhoto())),
+                          const SizedBox(width: 15),
+                        ]
+                      : null,
+                )
+          : null,
       body: Container(
         padding: const EdgeInsets.all(8.0),
         decoration: ContainerDecoration.roundedDecoration(),
-        child: Column(
+        child: Row(
           children: [
-            EditTextArea(
-              keyBoardType: TextInputType.number,
-              inputFormat: MaskTextInputFormatter(
-                  mask: '####/##/##',
-                  filter: {"#": RegExp(r'[0-9]')},
-                  type: MaskAutoCompletionType.lazy),
-              labelEditText: 'Fecha de realización',
-              textController: fechaRealizacionTextController,
-              numOfLines: 1,
-            ),
             Expanded(
-              flex: 10,
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(10.0),
-                controller: ScrollController(),
-                child: Column(
-                  children: component(context),
-                ),
+              child: Column(
+                children: [
+                  EditTextArea(
+                    keyBoardType: TextInputType.number,
+                    inputFormat: MaskTextInputFormatter(
+                        mask: '####/##/##',
+                        filter: {"#": RegExp(r'[0-9]')},
+                        type: MaskAutoCompletionType.lazy),
+                    labelEditText: 'Fecha de realización',
+                    textController: fechaRealizacionTextController,
+                    numOfLines: 1,
+                    iconData: Icons.calendar_month,
+                    selection: true,
+                    withShowOption: true,
+                    onSelected: () => fechaRealizacionTextController.text =
+                        Calendarios.today(format: "yyyy/MM/dd"),
+                  ),
+                  Expanded(
+                    flex: 12,
+                    child: Container(
+                      decoration: ContainerDecoration.roundedDecoration(),
+                      child: SingleChildScrollView(
+                        padding: const EdgeInsets.all(1.0),
+                        controller: ScrollController(),
+                        child: Column(
+                          children: component(context),
+                        ),
+                      ),
+                    ),
+                  ),
+                  CrossLine(thickness: 4),
+                  Expanded(
+                    flex: 2,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CircleIcon(
+                          iconed: Icons.mobile_screen_share_rounded,
+                          tittle: "Cargar desde Dispositivo",
+                          onChangeValue: () async {
+                            var bytes = await Directorios.choiseFromDirectory();
+                            setState(() {
+                              stringImage = base64Encode(bytes);
+                            });
+                          },
+                        ),
+                        Expanded(
+                          child: GrandButton(
+                              labelButton: widget._operationButton,
+                              weigth: 2000,
+                              onPress: () {
+                                operationMethod(context);
+                              }),
+                        ),
+                        CircleIcon(
+                          iconed: Icons.camera_alt_outlined,
+                          tittle: "Cargar desde Cámara",
+                          onChangeValue: () async {
+                            var bytes = await Directorios.choiseFromCamara();
+                            setState(() {
+                              stringImage = base64Encode(bytes);
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  CrossLine(thickness: 2),
+                  //
+                ],
               ),
             ),
-            Expanded(
-              child: Container(
-                decoration: ContainerDecoration.roundedDecoration(),
-                child: GrandButton(
-                    labelButton: widget._operationButton,
-                    weigth: 2000,
-                    onPress: () {
-                      operationMethod(context);
-                    }),
-              ),
-            )
+            if (isDesktop(context) ||
+                isLargeDesktop(context) ||
+                isTablet(context))
+              Expanded(child: _licenPhoto()),
           ],
         ),
       ),
@@ -201,12 +278,11 @@ class _OperacionesLicenciaState extends State<OperacionesLicencia> {
               onChange: (value) {
                 setState(() {
                   try {
-                    DateFormat dateFormat = DateFormat("yyyy-MM-dd"); // how you want it to be formatted
-                    fechaTerminoTextController
-                        .text = dateFormat.format(DateTime.parse(fechaInicioTextController.text)
-                        .add(Duration(
-                        days:
-                        int.parse(value) - 1)));
+                    DateFormat dateFormat = DateFormat(
+                        "yyyy-MM-dd"); // how you want it to be formatted
+                    fechaTerminoTextController.text = dateFormat.format(
+                        DateTime.parse(fechaInicioTextController.text)
+                            .add(Duration(days: int.parse(value) - 1)));
                   } on Exception {
                     // TODO
                   }
@@ -234,7 +310,8 @@ class _OperacionesLicenciaState extends State<OperacionesLicencia> {
                       DateTime.parse(fechaTerminoTextController.text)
                           .difference(
                               DateTime.parse(fechaInicioTextController.text))
-                          .inDays.toString();
+                          .inDays
+                          .toString();
                 });
               },
             ),
@@ -255,7 +332,8 @@ class _OperacionesLicenciaState extends State<OperacionesLicencia> {
                       DateTime.parse(fechaTerminoTextController.text)
                           .difference(
                               DateTime.parse(fechaInicioTextController.text))
-                          .inDays.toString();
+                          .inDays
+                          .toString();
                 });
               },
             ),
@@ -303,12 +381,12 @@ class _OperacionesLicenciaState extends State<OperacionesLicencia> {
           width: isDesktop(context)
               ? 200
               : isTabletAndDesktop(context)
-              ? 130
-              : isTablet(context)
-              ? 200
-              : isMobile(context)
-              ? 100
-              : 200,
+                  ? 130
+                  : isTablet(context)
+                      ? 200
+                      : isMobile(context)
+                          ? 100
+                          : 200,
           tittle: "Lugar de Expedición",
           onChangeValue: (String value) {
             setState(() {
@@ -341,7 +419,8 @@ class _OperacionesLicenciaState extends State<OperacionesLicencia> {
           onChange: (value) {
             setState(() {
               Valores.motivoCirugia = value;
-              Reportes.reportes['Motivo_Prequirurgico'] = Pacientes.motivoPrequirurgico();
+              Reportes.reportes['Motivo_Prequirurgico'] =
+                  Pacientes.motivoPrequirurgico();
             });
           },
           inputFormat: MaskTextInputFormatter()),
@@ -364,6 +443,8 @@ class _OperacionesLicenciaState extends State<OperacionesLicencia> {
         expedicionValue,
         //
         diagnosticoLicenciaTextController.text,
+        //
+        stringImage,
         //
         idOperation
       ];
@@ -451,6 +532,46 @@ class _OperacionesLicenciaState extends State<OperacionesLicencia> {
       default:
     }
   }
+
+  Future<void> toBaseImage() async {
+    ByteData bytes = await rootBundle.load('assets/images/person.png');
+    var buffer = bytes.buffer;
+
+    setState(() {
+      stringImage = base64.encode(Uint8List.view(buffer));
+    });
+  }
+
+  _licenPhoto() => TittleContainer(
+        child: PhotoView(
+          backgroundDecoration: BoxDecoration(
+            color: Colors.black,
+            borderRadius: BorderRadius.circular(20.0),
+            border: Border.all(
+              color: Colors.grey,
+              style: BorderStyle.solid,
+              width: 1.0,
+            ),
+          ),
+          imageProvider: MemoryImage(base64Decode(stringImage!)),
+          loadingBuilder: (context, progress) => Center(
+            child: SizedBox(
+              width: 20.0,
+              height: 20.0,
+              child: CircularProgressIndicator(
+                value: _progress == null
+                    ? null
+                    : _progress.cumulativeBytesLoaded /
+                        _progress.expectedTotalBytes,
+              ),
+            ),
+          ),
+        ),
+      );
+
+  //
+  String? stringImage = '';
+  var _progress;
 }
 
 // ignore: must_be_immutable
@@ -606,8 +727,8 @@ class _GestionLicenciaState extends State<GestionLicencia> {
                                 return itemListView(
                                     snapshot, posicion, context);
                               },
-                              gridDelegate:
-                                  GridViewTools.gridDelegate(crossAxisCount: 3),
+                              gridDelegate: GridViewTools.gridDelegate(
+                                  crossAxisCount: isMobile(context) ? 1 : 3),
                             )
                           : Center(
                               child: Column(
@@ -780,6 +901,7 @@ class _GestionLicenciaState extends State<GestionLicencia> {
   void onSelected(AsyncSnapshot<dynamic> snapshot, int posicion,
       BuildContext context, String operaciones) {
     Licencias.Licencia = snapshot.data[posicion];
+    // Licencias.ID_Licencias = snapshot.data[posicion]['ID_Licen_Med'];
     // Licencias.selectedDiagnosis = Licencias.vicencia['Pace_APP_ALE'];
     Pacientes.Licencias = snapshot.data;
     //

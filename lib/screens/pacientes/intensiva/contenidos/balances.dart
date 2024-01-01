@@ -15,6 +15,7 @@ import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/Spinner.dart';
+import 'package:assistant/widgets/TittleContainer.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -259,28 +260,15 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
                 decoration: ContainerDecoration.roundedDecoration(),
                 child: CarouselSlider(
                     items: [
-                      GridView(
-                        gridDelegate: GridViewTools.gridDelegate(
-                            crossAxisCount: isMobile(context)
-                                ? 1
-                                : isTablet(context)
-                                    ? 2
-                                    : 2,
-                            crossAxisSpacing: 2.0,
-                            mainAxisExtent: 80),
-                        children: component(context),
+                      TittleContainer(
+                        child: SingleChildScrollView(
+                            controller: ScrollController(),
+                            child: Column(children: component(context))),
                       ),
-                      GridView(
-                        gridDelegate: GridViewTools.gridDelegate(
-                          crossAxisCount: isMobile(context)
-                              ? 1
-                              : isTablet(context)
-                                  ? 2
-                                  : 2,
-                          crossAxisSpacing: 2.0,
-                          mainAxisExtent: 80,
-                        ),
-                        children: secondComponent(context),
+                      TittleContainer(
+                        child: SingleChildScrollView(
+                            controller: ScrollController(),
+                            child: Column(children: secondComponent(context))),
                       ),
                       const BalanceHidrico(),
                     ],
@@ -329,6 +317,16 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         labelEditText: 'Via Oral (mL)',
         textController: viaOralTextController,
         numOfLines: 1,
+        selection: true,
+        withShowOption: true,
+        onSelected: () {
+          Operadores.editTwoValuesDialog(
+              context: context,
+              onAcept: (value) {
+                Navigator.of(context).pop();
+                viaOralTextController.text = value;
+              });
+        },
         onChange: (value) {
           setState(() {
             Valores.viaOralBalances = double.parse(value);
@@ -341,6 +339,16 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         labelEditText: 'Vía Sonda Orogástrica (mL)',
         textController: viaOrogasTextController,
         numOfLines: 1,
+        selection: true,
+        withShowOption: true,
+        onSelected: () {
+          Operadores.editTwoValuesDialog(
+              context: context,
+              onAcept: (value) {
+                Navigator.of(context).pop();
+                viaOrogasTextController.text = value;
+              });
+        },
         onChange: (value) {
           setState(() {
             Valores.sondaOrogastricaBalances = double.parse(value);
@@ -355,6 +363,16 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         labelEditText: 'Vía Hemoderivados (mL)',
         textController: viaHemosTextController,
         numOfLines: 1,
+        selection: true,
+        withShowOption: true,
+        onSelected: () {
+          Operadores.editTwoValuesDialog(
+              context: context,
+              onAcept: (value) {
+                Navigator.of(context).pop();
+                viaHemosTextController.text = value;
+              });
+        },
         onChange: (value) {
           setState(() {
             Valores.hemoderivadosBalances = double.parse(value);
@@ -367,6 +385,16 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         labelEditText: 'Vía N.P.T. (mL)',
         textController: viaNutrianTextController,
         numOfLines: 1,
+        selection: true,
+        withShowOption: true,
+        onSelected: () {
+          Operadores.editTwoValuesDialog(
+              context: context,
+              onAcept: (value) {
+                Navigator.of(context).pop();
+                viaNutrianTextController.text = value;
+              });
+        },
         onChange: (value) {
           setState(() {
             Valores.nutricionParenteralBalances = double.parse(value);
@@ -379,6 +407,16 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         labelEditText: 'Vía Sol. Parenterales (mL)',
         textController: viaParesTextController,
         numOfLines: 1,
+        selection: true,
+        withShowOption: true,
+        onSelected: () {
+          Operadores.editTwoValuesDialog(
+              context: context,
+              onAcept: (value) {
+                Navigator.of(context).pop();
+                viaParesTextController.text = value;
+              });
+        },
         onChange: (value) {
           setState(() {
             Valores.parenteralesBalances = double.parse(value);
@@ -391,6 +429,16 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         labelEditText: 'Vía Diluciones (mL)',
         textController: viaDilucionesTextController,
         numOfLines: 1,
+        selection: true,
+        withShowOption: true,
+        onSelected: () {
+          Operadores.editTwoValuesDialog(
+              context: context,
+              onAcept: (value) {
+                Navigator.of(context).pop();
+                viaDilucionesTextController.text = value;
+              });
+        },
         onChange: (value) {
           setState(() {
             Valores.dilucionesBalances = double.parse(value);
@@ -403,6 +451,16 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         labelEditText: 'Otros Ingresos (mL)',
         textController: viaOtrosIngresosTextController,
         numOfLines: 1,
+        selection: true,
+        withShowOption: true,
+        onSelected: () {
+          Operadores.editTwoValuesDialog(
+              context: context,
+              onAcept: (value) {
+                Navigator.of(context).pop();
+                viaOtrosIngresosTextController.text = value;
+              });
+        },
         onChange: (value) {
           setState(() {
             Valores.otrosIngresosBalances = double.parse(value);
@@ -420,6 +478,16 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         labelEditText: 'Vía Uresis (mL)',
         textController: viaUresisTextController,
         numOfLines: 1,
+        selection: true,
+        withShowOption: true,
+        onSelected: () {
+          Operadores.editTwoValuesDialog(
+              context: context,
+              onAcept: (value) {
+                Navigator.of(context).pop();
+                viaUresisTextController.text = value;
+              });
+        },
         onChange: (value) {
           Valores.uresisBalances = double.parse(value);
           setState(() {});
@@ -431,6 +499,16 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         labelEditText: 'Vía Evacuacionees. (mL)',
         textController: viaEvacTextController,
         numOfLines: 1,
+        selection: true,
+        withShowOption: true,
+        onSelected: () {
+          Operadores.editTwoValuesDialog(
+              context: context,
+              onAcept: (value) {
+                Navigator.of(context).pop();
+                viaEvacTextController.text = value;
+              });
+        },
         onChange: (value) {
           setState(() {
             Valores.evacuacionesBalances = double.parse(value);
@@ -443,6 +521,16 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         labelEditText: 'Vía Sangrados (mL)',
         textController: viaSangTextController,
         numOfLines: 1,
+        selection: true,
+        withShowOption: true,
+        onSelected: () {
+          Operadores.editTwoValuesDialog(
+              context: context,
+              onAcept: (value) {
+                Navigator.of(context).pop();
+                viaSangTextController.text = value;
+              });
+        },
         onChange: (value) {
           setState(() {
             Valores.sangradosBalances = double.parse(value);
@@ -455,6 +543,16 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         labelEditText: 'Vía Succión (mL)',
         textController: viaSucciTextController,
         numOfLines: 1,
+        selection: true,
+        withShowOption: true,
+        onSelected: () {
+          Operadores.editTwoValuesDialog(
+              context: context,
+              onAcept: (value) {
+                Navigator.of(context).pop();
+                viaSucciTextController.text = value;
+              });
+        },
         onChange: (value) {
           setState(() {
             Valores.succcionBalances = double.parse(value);
@@ -468,9 +566,33 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         textController: viaPerdidaTextController,
         numOfLines: 1,
       ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(),
+        labelEditText: 'Otros Egresos (mL)',
+        textController: viaOtrosEgresosTextController,
+        numOfLines: 1,
+        selection: true,
+        withShowOption: true,
+        onSelected: () {
+          Operadores.editTwoValuesDialog(
+              context: context,
+              onAcept: (value) {
+                Navigator.of(context).pop();
+                viaOtrosEgresosTextController.text = value;
+              });
+        },
+        onChange: (value) {
+          setState(() {
+            Valores.otrosEgresosBalances = double.parse(value);
+          });
+        },
+      ),
+      CrossLine(height: 15, thickness: 3),
       Wrap(
         alignment: WrapAlignment.center,
         spacing: 8,
+        runSpacing: 8,
         children: [
           CircleIcon(
               radios: 20,
@@ -537,18 +659,6 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
                     Valores.perdidasInsensibles.toStringAsFixed(2);
               }),
         ],
-      ),
-      EditTextArea(
-        keyBoardType: TextInputType.number,
-        inputFormat: MaskTextInputFormatter(),
-        labelEditText: 'Otros Egresos (mL)',
-        textController: viaOtrosEgresosTextController,
-        numOfLines: 1,
-        onChange: (value) {
-          setState(() {
-            Valores.otrosEgresosBalances = double.parse(value);
-          });
-        },
       ),
     ];
   }
@@ -938,10 +1048,11 @@ class _GestionBalancesState extends State<GestionBalances> {
   void iniciar() {
     Terminal.printWarning(
         message:
-            " . . . Iniciando Actividad - Repositorio Balances del Pacientes");
+            " . . . Iniciando Actividad - Repositorio Balances del Pacientes"
+                .toUpperCase());
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       setState(() {
-        foundedItems = value;
+        foundedItems = value[0];
         Pacientes.Balances = value;
         Terminal.printSuccess(
             message: 'Repositorio Balances del Pacientes Obtenido');
@@ -961,6 +1072,7 @@ class _GestionBalancesState extends State<GestionBalances> {
             Balances.balance['consultIdQuery'], Pacientes.ID_Paciente)
         .then((value) {
       setState(() {
+        Terminal.printAlert(message: "VALUE $value");
         foundedItems = value;
         Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
       });

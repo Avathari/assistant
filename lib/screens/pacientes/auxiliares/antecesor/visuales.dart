@@ -676,9 +676,9 @@ class _VisualPacientesState extends State<VisualPacientes> {
               CrossLine(height: 5),
               CircleIcon(
                 tittle: 'Revisorio',
-                iconed: Icons.ac_unit,
+                iconed: Icons.circle_outlined,
                 onChangeValue: () {
-                  Cambios.toNextPage(context, GestionRevisorios());
+                  Cambios.toNextPage(context, AnalisisRevisorios());
                 },
               ),
             ],
@@ -688,12 +688,10 @@ class _VisualPacientesState extends State<VisualPacientes> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GrandIcon(
-                iconData: Icons.water_drop,
-                labelButton: 'Análisis Hidrico',
-                onPress: () {
-                  Cambios.toNextActivity(context, chyld: const Hidricos());
-                },
-              ),
+                  iconData: Icons.water_drop,
+                  labelButton: 'Análisis Hidrico',
+                  onPress: () =>
+                      Cambios.toNextActivity(context, chyld: const Hidricos())),
               GrandIcon(
                 iconData: Icons.bubble_chart,
                 labelButton: 'Análisis Metabólico',
@@ -705,26 +703,18 @@ class _VisualPacientesState extends State<VisualPacientes> {
               GrandIcon(
                 iconData: Icons.horizontal_rule_sharp,
                 labelButton: 'Análisis Antropométrico',
-                onPress: () {
-                  Operadores.openDialog(
-                      context: context, chyldrim: const Antropometricos());
-                },
+                onPress: ()  => Cambios.toNextActivity(context, chyld: const Antropometricos()),
               ),
               GrandIcon(
-                iconData: Icons.monitor_heart_outlined,
-                labelButton: 'Análisis Cardiovascular',
-                onPress: () {
-                  Operadores.openDialog(
-                      context: context, chyldrim: const Cardiovasculares());
-                },
-              ),
+                  iconData: Icons.monitor_heart_outlined,
+                  labelButton: 'Análisis Cardiovascular',
+                  onPress: () => Cambios.toNextActivity(context,
+                      chyld: const Cardiovasculares())),
               GrandIcon(
                 iconData: Icons.all_inclusive_rounded,
                 labelButton: 'Análisis Ventilatorio',
-                onPress: () {
-                  Operadores.openDialog(
-                      context: context, chyldrim: const Ventilatorios());
-                },
+                onPress: ()  => Cambios.toNextActivity(context, chyld: const Ventilatorios())
+                ,
               ),
               GrandIcon(
                 iconData: Icons.g_mobiledata,
@@ -863,6 +853,41 @@ class _VisualPacientesState extends State<VisualPacientes> {
             ],
           ),
           CrossLine(height: 20, thickness: 3),
+          // ESPECIALES
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              GrandIcon(
+                iconData: Icons.speaker,
+                labelButton: "Estudios Especiales . . . ",
+                onPress: () {
+                  Datos.portapapeles(
+                      context: context,
+                      text: Auxiliares.getEspeciales());
+                },
+                onLongPress: () {
+                  Datos.portapapeles(
+                      context: context,
+                      text: Auxiliares.getCultivos());
+                },
+              ),
+              GrandIcon(
+                iconData: Icons.hourglass_bottom,
+                labelButton: "Cultivos Recabados . . . ",
+                onPress: () {
+                  Datos.portapapeles(
+                      context: context,
+                      text: Auxiliares.getCultivos());
+                },
+                onLongPress: () {
+                  Datos.portapapeles(
+                      context: context,
+                      text: Auxiliares.getCultivos());
+                },
+              ),
+            ],
+          ),
+          CrossLine(height: 20, thickness: 3),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -933,7 +958,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
                         message: "ERROR - toVisual : : $error",
                         context: context,
                         tittle: 'Error al Inicial Visual');
-                  });
+                  }).whenComplete(() => setState(() {}));
                 },
               ),
             ],
@@ -956,7 +981,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
               ),
             ],
           ),
-const SizedBox(height: 5),
+          const SizedBox(height: 5),
           Stack(
             alignment: AlignmentDirectional.center,
             children: [
@@ -1104,7 +1129,7 @@ const SizedBox(height: 5),
               ScaffoldMessenger.of(context)
                   .showMaterialBanner(_hospitalizacion(context));
             }),
-    //
+        //
         CrossLine(
           thickness: 1,
           height: 15,
@@ -1152,7 +1177,8 @@ const SizedBox(height: 5),
                   onChangeValue: () {
                     _key.currentState!.closeEndDrawer();
                     Datos.portapapeles(
-                        context: context, text: Antropometrias.vitalesAbreviado);
+                        context: context,
+                        text: Antropometrias.vitalesAbreviado);
                   }),
             ],
           ),

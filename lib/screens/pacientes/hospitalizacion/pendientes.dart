@@ -35,9 +35,12 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 class OperacionesPendiente extends StatefulWidget {
   String? operationActivity;
 
+  bool? withAppBar;
   String _operationButton = 'Nulo';
 
-  OperacionesPendiente({Key? key, this.operationActivity = Constantes.Nulo})
+  OperacionesPendiente({Key? key,
+  this.withAppBar = true,
+    this.operationActivity = Constantes.Nulo})
       : super(key: key);
 
   @override
@@ -92,7 +95,7 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
       backgroundColor: Colors.black,
       appBar: isDesktop(context) || isTabletAndDesktop(context)
           ? null
-          : AppBar(
+          : widget.withAppBar! ? AppBar(
         foregroundColor: Colors.white,
               backgroundColor: Theming.primaryColor,
               title: AppBarText(appBarTitile),
@@ -106,7 +109,7 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
                 onPressed: () {
                   onClose(context);
                 },
-              )),
+              )) : null,
       body: Container(
         padding: const EdgeInsets.all(8.0),
         decoration: ContainerDecoration.roundedDecoration(),
