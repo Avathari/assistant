@@ -115,12 +115,12 @@ class Valores {
         emulated: true);
     valores.addAll(bala);
 
-    final hosp = await Actividades.consultarId(
-        Databases.siteground_database_reghosp,
-        Hospitalizaciones.hospitalizacion['consultLastQuery'],
-        Pacientes.ID_Paciente,
-        emulated: true);
-    valores.addAll(hosp);
+    // final hosp = await Actividades.consultarId(
+    //     Databases.siteground_database_reghosp,
+    //     Hospitalizaciones.hospitalizacion['consultLastQuery'],
+    //     Pacientes.ID_Paciente,
+    //     emulated: true);
+    // valores.addAll(hosp);
 
     Situaciones.ultimoRegistro();
     Expedientes.ultimoRegistro();
@@ -2489,6 +2489,7 @@ class Escalas {
     'Máximo beneficio',
     'Mejorado',
     'Traslado',
+    'Cambio de Sector', // Otras Hospitalización / Cambio de Cama
     'Alta voluntaria',
     'Defunción',
   ];

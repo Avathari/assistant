@@ -237,16 +237,16 @@ class Pacientes {
   // Prosas y apartados literales en la formación de las Actividades.
   static String originario() {
     if (Valores.sexo == 'Masculino') {
-      return "Originario de ${Pacientes.Paciente['Pace_Orig_Muni']}, ${Pacientes.Paciente['Pace_Orig_EntFed']}";
+      return "Originario de ${Pacientes.Paciente['Pace_Orig_Muni']}"; // , ${Pacientes.Paciente['Pace_Orig_EntFed']}";
     } else if (Valores.sexo == 'Femenino') {
-      return "Originaria ${Pacientes.Paciente['Pace_Orig_Muni']}, ${Pacientes.Paciente['Pace_Orig_EntFed']}";
+      return "Originaria de ${Pacientes.Paciente['Pace_Orig_Muni']}"; // , ${Pacientes.Paciente['Pace_Orig_EntFed']}";
     } else {
       return "${Pacientes.Paciente['Pace_Orig_Muni']}, ${Pacientes.Paciente['Pace_Orig_EntFed']}";
     }
   }
 
   static String residente() {
-    return "la localidad de ${Pacientes.Paciente['Pace_Resi_Loca']}";
+    return "la localidad de ${Pacientes.Paciente['Pace_Orig_EntFed']}"; // Pace_Resi_Loca
     // "por ${Pacientes.Paciente['Pace_Resi_Dur'].toString()} año(s)";
   }
 
@@ -5692,7 +5692,17 @@ class Imagenologias {
     return prosa; // """$prosa$max. ";
   }
 
-  static List<String> regiones = ['Ritmo Sinusal', 'Ritmo no Sinusal'];
+  static List<String> regiones = [
+    'Cabeza',
+    'Cuello',
+    'Tórax',
+    'Abdomen',
+    'Pélvis',
+    'Humeral izquierda',
+    'Humeral derecha',
+    '',
+    '',
+  ];
   static List<String> typesEstudios = [
     'Radiografías',
     'Ultrasonidos',
@@ -5701,6 +5711,7 @@ class Imagenologias {
     'Ecocardiograma',
     'Endoscopia',
     'Colonoscopia',
+    'Biopsia', // Reporte Histopatológico
   ];
 }
 
@@ -5725,13 +5736,39 @@ class Auxiliares {
     'Ligeramente Rojizo',
   ];
 
+  // static List otrosEspeciales = [
+  //   "Panel Viral",
+  //   "Panel TORCH",
+  //   "Citoquímico de Líquido Cefalorraquídeo",
+  //   "Citológico de Líquido Cefalorraquídeo",
+  //   "Líquido de Diálisis Peritoneal", // 13
+  //   "Examen General de Orina", // 11
+  //   "Depuración de Orina de 24 Horas", // 12
+  //   "Aspirado de Médula Ósea",
+  //   "Carga Viral",
+  //   "Conteo de Linfocitos T CD4+", // 17
+  //   "Marcadores Cárdiacos", // 18
+  //   "Cultivos", // 19
+  //   "Panel Viral", // 20
+  //   "Perfil de Hierro",
+  //   "Inmunológicos",
+  // ];
   static List especiales = [
-    "Examen General de Orina", // 11
-    "Depuración de Orina de 24 Horas", // 12
-    "Líquido de Diálisis Peritoneal", // 13
+    "Panel Viral",
+    "Panel TORCH",
     "Citoquímico de Líquido Cefalorraquídeo",
     "Citológico de Líquido Cefalorraquídeo",
+    "Líquido de Diálisis Peritoneal", // 13
+    "Examen General de Orina", // 11
+    "Depuración de Orina de 24 Horas", // 12
     "Aspirado de Médula Ósea",
+    "Carga Viral",
+    "Conteo de Linfocitos T CD4+", // 17
+    // "Marcadores Cárdiacos", // 18
+    "Cultivos", // 19
+    "Panel Viral", // 20
+    "Perfil de Hierro",
+    "Inmunológicos",
   ];
   static List cultivos = [
     "Urocultivo",
@@ -5739,6 +5776,14 @@ class Auxiliares {
     "Cultivo de Líquido Cefalorraquídeo",
     "Cultivo de Líquido Pleural",
     "Coprocultivo",
+    "Hemocultivo central",
+    "Hemocultivo periférico, brazo izquierdo",
+    "Hemocultivo periférico, brazo derecho",
+    "Cultivo de Abceso, cavidad abdominal",
+    "Cultivo de Abceso, cavidad torácica",
+    "Cultivo de Abceso, cavidad pélvica",
+    "Cultivo de Abceso, cavidad renal",
+    "Cultivo de Abceso, cavidad hepática",
   ];
 
   //
@@ -5885,6 +5930,7 @@ class Auxiliares {
     // Devolución de la prosa.
     return "$prosa$max. ";
   }
+
   static String porFecha({String fechaActual = "", bool esAbreviado = false}) {
     // Filtro por estudio de los registros de Pacientes.Paraclinicos
     var aux = Pacientes.Paraclinicos!
@@ -5949,9 +5995,13 @@ class Auxiliares {
 
         for (var element in aux) {
           // ***************************** *****************
-          if (element['Tipo_Estudio'] != "Examen General de Orina" || element['Tipo_Estudio'] != "Depuración de Orina de 24 Horas"
-              || element['Tipo_Estudio'] != "Líquido de Diálisis Peritoneal" || element['Tipo_Estudio'] != "Citoquímico de Líquido Cefalorraquídeo"
-              || element['Tipo_Estudio'] != "Citológico de Líquido Cefalorraquídeo") {
+          if (element['Tipo_Estudio'] != "Examen General de Orina" ||
+              element['Tipo_Estudio'] != "Depuración de Orina de 24 Horas" ||
+              element['Tipo_Estudio'] != "Líquido de Diálisis Peritoneal" ||
+              element['Tipo_Estudio'] !=
+                  "Citoquímico de Líquido Cefalorraquídeo" ||
+              element['Tipo_Estudio'] !=
+                  "Citológico de Líquido Cefalorraquídeo") {
             if (max == "") {
               max =
                   "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
@@ -5971,9 +6021,13 @@ class Auxiliares {
 
         for (var element in aux) {
           // ***************************** *****************
-          if (element['Tipo_Estudio'] != "Examen General de Orina" || element['Tipo_Estudio'] != "Depuración de Orina de 24 Horas"
-              || element['Tipo_Estudio'] != "Líquido de Diálisis Peritoneal" || element['Tipo_Estudio'] != "Citoquímico de Líquido Cefalorraquídeo"
-              || element['Tipo_Estudio'] != "Citológico de Líquido Cefalorraquídeo") {
+          if (element['Tipo_Estudio'] != "Examen General de Orina" ||
+              element['Tipo_Estudio'] != "Depuración de Orina de 24 Horas" ||
+              element['Tipo_Estudio'] != "Líquido de Diálisis Peritoneal" ||
+              element['Tipo_Estudio'] !=
+                  "Citoquímico de Líquido Cefalorraquídeo" ||
+              element['Tipo_Estudio'] !=
+                  "Citológico de Líquido Cefalorraquídeo") {
             if (max == "") {
               max =
                   "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
@@ -5982,7 +6036,6 @@ class Auxiliares {
                   "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
             }
           }
-
         }
         prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
       } else {
@@ -5994,9 +6047,13 @@ class Auxiliares {
 
         for (var element in aux) {
           // ***************************** *****************
-          if (element['Tipo_Estudio'] != "Examen General de Orina" || element['Tipo_Estudio'] != "Depuración de Orina de 24 Horas"
-              || element['Tipo_Estudio'] != "Líquido de Diálisis Peritoneal" || element['Tipo_Estudio'] != "Citoquímico de Líquido Cefalorraquídeo"
-              || element['Tipo_Estudio'] != "Citológico de Líquido Cefalorraquídeo") {
+          if (element['Tipo_Estudio'] != "Examen General de Orina" ||
+              element['Tipo_Estudio'] != "Depuración de Orina de 24 Horas" ||
+              element['Tipo_Estudio'] != "Líquido de Diálisis Peritoneal" ||
+              element['Tipo_Estudio'] !=
+                  "Citoquímico de Líquido Cefalorraquídeo" ||
+              element['Tipo_Estudio'] !=
+                  "Citológico de Líquido Cefalorraquídeo") {
             if (max == "") {
               max =
                   "${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
@@ -6117,8 +6174,9 @@ class Auxiliares {
   }
 
   // Especiales . . .
-  static String getEspeciales(
-      {bool esAbreviado = true,}) {
+  static String getCurvaCardiaca({
+    bool esAbreviado = true,
+  }) {
     String prosa = "";
 
     var fechar = Listas.listWithoutRepitedValues(
@@ -6127,74 +6185,185 @@ class Auxiliares {
         keySearched: 'Fecha_Registro',
       ),
     );
-    if (fechar.first.isNotEmpty) {
-      List<dynamic>? alam = Pacientes.Paraclinicos!;
-      var aux = alam
-          .where((user) => user["Fecha_Registro"].contains(fechar.first))
-          .toList();
-      String max = "";
+    fechar.forEach((element) {
+      if (fechar.first.isNotEmpty) {
+        List<dynamic>? alam = Pacientes.Paraclinicos!;
+        var aux = alam
+            .where((user) => user["Fecha_Registro"].contains(element))
+            .toList();
+        String max = "";
 
-      // ***************************** *****************
+        // ***************************** *****************
 
-      var estudiosPresentes = Listas.listWithoutRepitedValues(
-        Listas.listFromMapWithOneKey(
-          aux,
-          keySearched: 'Tipo_Estudio',
-        ),
-      );
-      Terminal.printSuccess(message: "presentes: ${estudiosPresentes}");
-      String fecha = "";
-      int counter = 0, distancia = aux.length;
-      //
-      var newList = Listas.compareOneListWithAnother(estudiosPresentes, Auxiliares.especiales);
-      Terminal.printSuccess(message: "newList: ${newList}");
-      //
-      for (var elem in newList) {
-        aux.where((element) => element["Tipo_Estudio"].contains(elem)).forEach((eacher) {
-          fecha = "          ${eacher['Tipo_Estudio']} (${fechar.first}) - ";
-          // Terminal.printExpected(message: "eacher: ${counter} : : $distancia");
-          if (counter != distancia) {
-            if (eacher['Unidad_Medida'] != '') {
-              max = "$max${eacher['Estudio']} ${eacher['Resultado']} ${eacher['Unidad_Medida']}, ";
-            } else {
-              max = "$max${eacher['Estudio']} ${eacher['Resultado']}, ";
-            }
-          } else {
-            if (eacher['Unidad_Medida'] != '') {
-              max = "$max${eacher['Estudio']} ${eacher['Resultado']} ${eacher['Unidad_Medida']}";
-            } else {
-              max = "$max${eacher['Estudio']} ${eacher['Resultado']}";
-            }
-          }
-        });
-        prosa = "$prosa$fecha$max. \n";
+        var estudiosPresentes = Listas.listWithoutRepitedValues(
+          Listas.listFromMapWithOneKey(
+            aux,
+            keySearched: 'Tipo_Estudio',
+          ),
+        );
+        Terminal.printSuccess(message: "presentes: ${estudiosPresentes}");
+        String fecha = "";
+        int counter = 0, distancia = aux.length;
         //
-        max = "";
-        counter = counter++;
+        var newList = Listas.compareOneListWithAnother(
+            estudiosPresentes, ['Marcadores Cárdiacos']);
+        //
+        for (var elem in newList) {
+          aux
+              .where((element) => element["Tipo_Estudio"].contains(elem))
+              .forEach((eacher) {
+            fecha = "          ${eacher['Tipo_Estudio']} (${element}) - ";
+            // Terminal.printExpected(message: "eacher: ${counter} : : $distancia");
+            if (counter != distancia) {
+              if (eacher['Unidad_Medida'] != '') {
+                max =
+                "$max${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
+                    "${eacher['Resultado']} ${eacher['Unidad_Medida']}, ";
+              } else {
+                print("${eacher['Resultado']}, ${eacher['Tipo_Estudio']}, ${eacher['Estudio']}");
+
+                max= "$max${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
+                    "${eacher['Resultado']}, ";
+              }
+            } else {
+              if (eacher['Unidad_Medida'] != '') {
+                max =
+                "$max${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
+                    "${eacher['Resultado']} ${eacher['Unidad_Medida']}";
+              } else {
+                max=
+                "$max${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
+                    "${eacher['Resultado']}";
+              }
+            }
+          });
+          prosa = "$prosa$fecha$max. \n";
+          //
+          max = "";
+          counter = counter++;
+        }
+        //
+        // for (var element in estudiosPresentes) {
+        //   // ***************************** *****************
+        //   if (element['Tipo_Estudio'] == "Examen General de Orina" || element['Tipo_Estudio'] == "Depuración de Orina de 24 Horas"
+        //       || element['Tipo_Estudio'] == "Líquido de Diálisis Peritoneal" || element['Tipo_Estudio'] == "Citoquímico de Líquido Cefalorraquídeo"
+        //       || element['Tipo_Estudio'] == "Citológico de Líquido Cefalorraquídeo") {
+        //     if (max == "") {
+        //       max =
+        //       "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+        //     } else {
+        //       max =
+        //       "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+        //     }
+        //   }
+        // }
+        // prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
       }
-      //
-      // for (var element in estudiosPresentes) {
-      //   // ***************************** *****************
-      //   if (element['Tipo_Estudio'] == "Examen General de Orina" || element['Tipo_Estudio'] == "Depuración de Orina de 24 Horas"
-      //       || element['Tipo_Estudio'] == "Líquido de Diálisis Peritoneal" || element['Tipo_Estudio'] == "Citoquímico de Líquido Cefalorraquídeo"
-      //       || element['Tipo_Estudio'] == "Citológico de Líquido Cefalorraquídeo") {
-      //     if (max == "") {
-      //       max =
-      //       "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
-      //     } else {
-      //       max =
-      //       "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
-      //     }
-      //   }
-      // }
-      // prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+    });
+    // ************** ***************** ***************
+    return prosa;
+  }
+
+  static String getEspeciales({
+    bool esAbreviado = true,
+  }) {
+    String prosa = "";
+
+    var fechar = Listas.listWithoutRepitedValues(
+      Listas.listFromMapWithOneKey(
+        Pacientes.Paraclinicos!,
+        keySearched: 'Fecha_Registro',
+      ),
+    );
+    try {
+      if (fechar.first.isNotEmpty) {
+        List<dynamic>? alam = Pacientes.Paraclinicos!;
+        var aux = alam
+            .where((user) => user["Fecha_Registro"].contains(fechar.first))
+            .toList();
+        String max = "";
+
+        // ***************************** *****************
+
+        var estudiosPresentes = Listas.listWithoutRepitedValues(
+          Listas.listFromMapWithOneKey(
+            aux,
+            keySearched: 'Tipo_Estudio',
+          ),
+        );
+        Terminal.printSuccess(message: "presentes: ${estudiosPresentes}");
+        String fecha = "";
+        int counter = 0, distancia = aux.length;
+        //
+        var newList = Listas.compareOneListWithAnother(
+            estudiosPresentes, Auxiliares.especiales);
+        Terminal.printSuccess(message: "newList: ${newList}");
+        //
+        for (var elem in newList) {
+          aux
+              .where((element) => element["Tipo_Estudio"].contains(elem))
+              .forEach((eacher) {
+            fecha = "          ${eacher['Tipo_Estudio']} (${fechar.first}) - ";
+            // Terminal.printExpected(message: "eacher: ${counter} : : $distancia");
+            if (counter != distancia) {
+              if (eacher['Unidad_Medida'] != '') {
+                max =
+                    "$max${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
+                    "${eacher['Resultado']} ${eacher['Unidad_Medida']}, ";
+              } else {
+                print("${eacher['Resultado']}, ${eacher['Tipo_Estudio']}, ${eacher['Estudio']}");
+
+                max= "$max${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
+                    "${eacher['Resultado']}, ";
+              }
+            } else {
+              if (eacher['Unidad_Medida'] != '') {
+                max =
+                "$max${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
+                    "${eacher['Resultado']} ${eacher['Unidad_Medida']}";
+              } else {
+                max=
+                "$max${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
+                    "${eacher['Resultado']}";
+              }
+            }
+          });
+          prosa = "$prosa$fecha$max. \n";
+          //
+          max = "";
+          counter = counter++;
+        }
+        //
+        // for (var element in estudiosPresentes) {
+        //   // ***************************** *****************
+        //   if (element['Tipo_Estudio'] == "Examen General de Orina" || element['Tipo_Estudio'] == "Depuración de Orina de 24 Horas"
+        //       || element['Tipo_Estudio'] == "Líquido de Diálisis Peritoneal" || element['Tipo_Estudio'] == "Citoquímico de Líquido Cefalorraquídeo"
+        //       || element['Tipo_Estudio'] == "Citológico de Líquido Cefalorraquídeo") {
+        //     if (max == "") {
+        //       max =
+        //       "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+        //     } else {
+        //       max =
+        //       "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+        //     }
+        //   }
+        // }
+        // prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+      }
+    } on Exception catch (e, s) {
+      // Operadores.alertActivity(context: Contextos.contexto,
+      // tittle: "ERROR : $e",
+      // message: "$s");
+      Terminal.printAlert(
+          message: "ERROR al Conformar Estudios Especiales : : $e : $s");
     }
     // ************** ***************** ***************
     return prosa;
   }
 
-  static String getCultivos(
-      {bool esAbreviado = true,}) {
+  static String getCultivos({
+    bool esAbreviado = true,
+  }) {
     String prosa = "", max = "", fecha = "";
 
     // ***************************** *****************
@@ -6205,13 +6374,17 @@ class Auxiliares {
       ),
     );
     // Terminal.printSuccess(message: "presentes: ${estudiosPresentes}");
-    var newList = Listas.compareOneListWithAnother(estudiosPresentes, Auxiliares.cultivos);
+    var newList = Listas.compareOneListWithAnother(
+        estudiosPresentes, Auxiliares.cultivos);
     // Terminal.printSuccess(message: "newList: ${newList}");
     //
     for (var elem in newList) {
-      Pacientes.Paraclinicos!.where((element) => element["Estudio"].contains(elem)).forEach((eacher) {
-        fecha = "          ${eacher['Estudio']} (${eacher['Fecha_Registro']}) - ";
-         // Terminal.printExpected(message: "eacher: ${eacher}");
+      Pacientes.Paraclinicos!
+          .where((element) => element["Estudio"].contains(elem))
+          .forEach((eacher) {
+        fecha =
+            "          ${eacher['Estudio']} (${eacher['Fecha_Registro']}) - ";
+        // Terminal.printExpected(message: "eacher: ${eacher}");
         max = "$max${eacher['Resultado']}, ";
       });
       //
@@ -6268,180 +6441,233 @@ class Auxiliares {
 
   static String abreviado(
       {required String tipoEstudio, required String estudio}) {
-    if (tipoEstudio != 'Gasometría Arterial' &&
-        tipoEstudio != 'Gasometría Venosa') {
-      if (estudio == 'Concentración Media de Hemoglobina Corpuscular') {
-        return 'CMHC';
-      } else if (estudio == 'Ancho de Distribución Eritrocitaria') {
-        return 'RDW';
-      } else if (estudio == 'Alaninoaminotrasferasa') {
-        return 'ALT';
-      } else if (estudio == 'Aspartatoaminotransferasa') {
-        return 'AST';
-      } else if (estudio == 'Bilirrubinas Totales') {
-        return 'BT';
-      } else if (estudio == 'Bilirrubina Directa') {
-        return 'BD';
-      } else if (estudio == 'Bilirrubina Indirecta') {
-        return 'BI';
-      } else if (estudio == 'Deshidrogenasa Láctica') {
-        return 'DHL';
-      } else if (estudio == 'Glutrailtranspeptidasa') {
-        return 'GGT';
-      } else if (estudio == 'Fosfatasa Alcalina') {
-        return 'FA';
-      } else if (estudio == 'Tiempo de Protrombina') {
-        return 'TP';
-      } else if (estudio == 'Tiempo Parcial de Tromboplastina') {
-        return 'TPT';
-      } else if (estudio == 'Velocidad de Sedimentación Globular') {
-        return 'VSG';
-      } else if (estudio == 'Presión de Dióxido de Carbono') {
-        return 'pCO2';
-      } else if (estudio == 'Presión de Oxígeno') {
-        return 'pO2';
-      } else if (estudio == 'Bicarbonato Sérico') {
-        return 'HCO3-' '';
-      } else if (estudio == 'Fracción Inspiratoria de Oxígeno') {
-        return 'FiO2';
-      } else if (estudio == 'Saturación de Oxígeno') {
-        return 'SO2';
-      } else if (estudio == 'Sodio Urinario') {
-        return 'NaU';
-      } else if (estudio == 'Potasio Urinario') {
-        return 'K+U';
-      } else if (estudio == 'Cloro Urinario') {
-        return 'CL-U';
-      } else if (estudio == 'Calcio Urinario') {
-        return 'CaU';
-      } else if (estudio == 'Fósforo Urinario') {
-        return 'PO3u';
-      } else if (estudio == 'Magnesio Urinario') {
-        return 'MgU';
-      } else if (estudio == 'Creatinina Urinaria') {
-        return 'CrU';
-      } else if (estudio == 'Sodio') {
-        return 'Na+';
-      } else if (estudio == 'Potasio') {
-        return 'K+';
-      } else if (estudio == 'Cloro') {
-        return 'Cl-';
-      } else if (estudio == 'Magnesio') {
-        return 'Mg';
-      } else if (estudio == 'Fósforo') {
-        return 'PO3';
-      } else if (estudio == 'Calcio') {
-        return 'Ca2';
-      } else if (estudio == 'Leucocitos Totales') {
-        return 'Leu';
-      } else if (estudio == 'Neutrofilos Totales') {
-        return 'Neu';
-      } else if (estudio == 'Linfocitos Totales') {
-        return 'Lyn';
-      } else if (estudio == 'Monocitos Totales') {
-        return 'Mon';
-      } else if (estudio == 'Hemoglobina') {
-        return 'Hb';
-      } else if (estudio == 'Hematocrito') {
-        return 'Hto';
-      } else if (estudio == 'Eritrocitos') {
-        return 'Erit';
-      } else if (estudio == 'Plaquetas') {
-        return 'Plat';
-      } else if (estudio == 'Albúmina') {
-        return 'Alb';
-      } else if (estudio == 'Urea') {
-        return 'Ure';
-      } else if (estudio == 'Creatinina') {
-        return 'Cr';
-      } else if (estudio == 'Glucosa') {
-        return 'Glu';
-      } else if (estudio == 'Nitrógeno Úrico') {
-        return 'BUN';
-        // ****************************************
-      } else if (estudio == 'P-ANCA') {
-        return "p-ANCA";
-      } else if (estudio == 'C-ANCA') {
-        return "c-ANCA";
-      } else if (estudio == '"U1 ribonucleoproteína (RNP)"') {
-        return 'Ac. Anti-RNP';
-      } else if (estudio == 'Anticoagulante Lúpico (Anti-La)') {
-        return 'BUN';
-        // } else if (estudio == 'Anticoagulante Lúpico (Anti-La)') {
-        //   return 'BUN';
-      } else if (estudio == "Anti-beta2-glicoproteina [GP]") {
-        return 'Anti-B2 Gliicoproteina';
-      } else if (estudio == "Anticuerpos Anticardiolipina [aCL]") {
-        return 'Ac. Anticardiolipina';
-      } else if (estudio == 'Cuantificación de IgM') {
-        return 'IgM';
-      } else if (estudio == 'Cuantificación de IgG') {
-        return 'IgG';
-      } else if (estudio == 'Anticuerpo Anti-Nucleares') {
-        return 'Anti-ANA';
-      } else if (estudio == 'Cuantificación de Complemento C3') {
-        return 'C3';
-      } else if (estudio == 'Cuantificación de Complemento C4') {
-        return 'C4';
-      } else if (estudio == 'Ac. Anti-Smith') {
-        return 'anti-Sm';
-      } else if (estudio == 'Ac. Anti-SSA (Ro/SSA)') {
-        return 'Ac. Anti-Ro/SSA';
-      } else if (estudio == 'Ac. Anti-SSB (La/SSB)') {
-        return 'Ac. Anti-La/SSB';
-      } else if (estudio == 'Ac. Anti-Tiroglobulina') {
-        return 'Ac. Anti-Tiroglobulina';
-      } else if (estudio == 'Ac. Antiperoxidasa Tiroidea') {
-        return 'Ac. Anti-TPO';
-      } else if (estudio == 'Nitrógeno') {
-        return 'BUN';
-      } else if (estudio == 'Nitrógeno') {
-        return 'BUN';
-      } else if (estudio == 'Hemoglobina Glucosilada') {
-        return 'HbA1c';
-      } else if (estudio == 'Antigeno Prostático Específico') {
-        return 'APE';
-      } else if (estudio == 'Antigeno Protático Total') {
-        return 'APEt';
+
+    if (tipoEstudio != 'Examen General de Orina') {
+      if (tipoEstudio != 'Gasometría Arterial' &&
+          tipoEstudio != 'Gasometría Venosa') {
+        if (estudio == 'Concentración Media de Hemoglobina Corpuscular') {
+          return 'CMHC';
+        } else if (estudio == 'Ancho de Distribución Eritrocitaria') {
+          return 'RDW';
+        } else if (estudio == 'Alaninoaminotrasferasa') {
+          return 'ALT';
+        } else if (estudio == 'Aspartatoaminotransferasa') {
+          return 'AST';
+        } else if (estudio == 'Bilirrubinas Totales') {
+          return 'BT';
+        } else if (estudio == 'Bilirrubina Directa') {
+          return 'BD';
+        } else if (estudio == 'Bilirrubina Indirecta') {
+          return 'BI';
+        } else if (estudio == 'Deshidrogenasa Láctica') {
+          return 'DHL';
+        } else if (estudio == 'Glutrailtranspeptidasa') {
+          return 'GGT';
+        } else if (estudio == 'Fosfatasa Alcalina') {
+          return 'FA';
+        } else if (estudio == 'Tiempo de Protrombina') {
+          return 'TP';
+        } else if (estudio == 'Tiempo Parcial de Tromboplastina') {
+          return 'TPT';
+        } else if (estudio == 'Velocidad de Sedimentación Globular') {
+          return 'VSG';
+        } else if (estudio == 'Presión de Dióxido de Carbono') {
+          return 'pCO2';
+        } else if (estudio == 'Presión de Oxígeno') {
+          return 'pO2';
+        } else if (estudio == 'Bicarbonato Sérico') {
+          return 'HCO3-' '';
+        } else if (estudio == 'Fracción Inspiratoria de Oxígeno') {
+          return 'FiO2';
+        } else if (estudio == 'Saturación de Oxígeno') {
+          return 'SO2';
+        } else if (estudio == 'Sodio Urinario') {
+          return 'NaU';
+        } else if (estudio == 'Potasio Urinario') {
+          return 'K+U';
+        } else if (estudio == 'Cloro Urinario') {
+          return 'CL-U';
+        } else if (estudio == 'Calcio Urinario') {
+          return 'CaU';
+        } else if (estudio == 'Fósforo Urinario') {
+          return 'PO3u';
+        } else if (estudio == 'Magnesio Urinario') {
+          return 'MgU';
+        } else if (estudio == 'Creatinina Urinaria') {
+          return 'CrU';
+        } else if (estudio == 'Sodio') {
+          return 'Na+';
+        } else if (estudio == 'Potasio') {
+          return 'K+';
+        } else if (estudio == 'Cloro') {
+          return 'Cl-';
+        } else if (estudio == 'Magnesio') {
+          return 'Mg';
+        } else if (estudio == 'Fósforo') {
+          return 'PO3';
+        } else if (estudio == 'Calcio') {
+          return 'Ca2';
+        } else if (estudio == 'Leucocitos Totales') {
+          return 'Leu';
+        } else if (estudio == 'Neutrofilos Totales') {
+          return 'Neu';
+        } else if (estudio == 'Linfocitos Totales') {
+          return 'Lyn';
+        } else if (estudio == 'Monocitos Totales') {
+          return 'Mon';
+        } else if (estudio == 'Hemoglobina') {
+          return 'Hb';
+        } else if (estudio == 'Hematocrito') {
+          return 'Hto';
+        } else if (estudio == 'Eritrocitos') {
+          return 'Erit';
+        } else if (estudio == 'Plaquetas') {
+          return 'Plat';
+        } else if (estudio == 'Albúmina') {
+          return 'Alb';
+        } else if (estudio == 'Urea') {
+          return 'Ure';
+        } else if (estudio == 'Creatinina') {
+          return 'Cr';
+        } else if (estudio == 'Glucosa') {
+          return 'Glu';
+        } else if (estudio == 'Nitrógeno Úrico') {
+          return 'BUN';
+          // ****************************************
+        } else if (estudio == 'P-ANCA') {
+          return "p-ANCA";
+        } else if (estudio == 'C-ANCA') {
+          return "c-ANCA";
+        } else if (estudio == '"U1 ribonucleoproteína (RNP)"') {
+          return 'Ac. Anti-RNP';
+        } else if (estudio == 'Anticoagulante Lúpico (Anti-La)') {
+          return 'BUN';
+          // } else if (estudio == 'Anticoagulante Lúpico (Anti-La)') {
+          //   return 'BUN';
+        } else if (estudio == "Anti-beta2-glicoproteina [GP]") {
+          return 'Anti-B2 Gliicoproteina';
+        } else if (estudio == "Anticuerpos Anticardiolipina [aCL]") {
+          return 'Ac. Anticardiolipina';
+        } else if (estudio == 'Cuantificación de IgM') {
+          return 'IgM';
+        } else if (estudio == 'Cuantificación de IgG') {
+          return 'IgG';
+        } else if (estudio == 'Anticuerpo Anti-Nucleares') {
+          return 'Anti-ANA';
+        } else if (estudio == 'Cuantificación de Complemento C3') {
+          return 'C3';
+        } else if (estudio == 'Cuantificación de Complemento C4') {
+          return 'C4';
+        } else if (estudio == 'Ac. Anti-Smith') {
+          return 'anti-Sm';
+        } else if (estudio == 'Ac. Anti-SSA (Ro/SSA)') {
+          return 'Ac. Anti-Ro/SSA';
+        } else if (estudio == 'Ac. Anti-SSB (La/SSB)') {
+          return 'Ac. Anti-La/SSB';
+        } else if (estudio == 'Ac. Anti-Tiroglobulina') {
+          return 'Ac. Anti-Tiroglobulina';
+        } else if (estudio == 'Ac. Antiperoxidasa Tiroidea') {
+          return 'Ac. Anti-TPO';
+        } else if (estudio == 'Nitrógeno') {
+          return 'BUN';
+        } else if (estudio == 'Nitrógeno') {
+          return 'BUN';
+        } else if (estudio == 'Hemoglobina Glucosilada') {
+          return 'HbA1c';
+        } else if (estudio == 'Antigeno Prostático Específico') {
+          return 'APE';
+        } else if (estudio == 'Antigeno Protático Total') {
+          return 'APEt';
+        } else {
+          return estudio;
+        }
       } else {
-        return estudio;
+        if (tipoEstudio == 'Gasometría Arterial') {
+          if (estudio == 'pH') {
+            return 'pHa';
+          } else if (estudio == 'Presión de Dióxido de Carbono') {
+            return 'PaCO2';
+          } else if (estudio == 'Presión de Oxígeno') {
+            return 'PaO2';
+          } else if (estudio == 'Bicarbonato Sérico') {
+            return 'aHCO3-' '';
+          } else if (estudio == 'Saturación de Oxígeno') {
+            return 'SaO2';
+          } else if (estudio == 'Fracción Inspiratoria de Oxígeno') {
+            return 'FiO2';
+          } else {
+            return estudio;
+          }
+        } else if (tipoEstudio == 'Gasometría Venosa') {
+          if (estudio == 'pH') {
+            return 'pHv';
+          } else if (estudio == 'Presión de Dióxido de Carbono') {
+            return 'PvCO2';
+          } else if (estudio == 'Presión de Oxígeno') {
+            return 'PvO2';
+          } else if (estudio == 'Bicarbonato Sérico') {
+            return 'vHCO3-' '';
+          } else if (estudio == 'Saturación de Oxígeno') {
+            return 'SvO2';
+          } else if (estudio == 'Fracción Inspiratoria de Oxígeno') {
+            return 'FiO2';
+          } else {
+            return estudio;
+          }
+        } else {
+          return estudio;
+        }
       }
     } else {
-      if (tipoEstudio == 'Gasometría Arterial') {
-        if (estudio == 'pH') {
-          return 'pHa';
-        } else if (estudio == 'Presión de Dióxido de Carbono') {
-          return 'PaCO2';
-        } else if (estudio == 'Presión de Oxígeno') {
-          return 'PaO2';
-        } else if (estudio == 'Bicarbonato Sérico') {
-          return 'aHCO3-' '';
-        } else if (estudio == 'Saturación de Oxígeno') {
-          return 'SaO2';
-        } else if (estudio == 'Fracción Inspiratoria de Oxígeno') {
-          return 'FiO2';
-        } else {
-          return estudio;
-        }
-      } else if (tipoEstudio == 'Gasometría Venosa') {
-        if (estudio == 'pH') {
-          return 'pHv';
-        } else if (estudio == 'Presión de Dióxido de Carbono') {
-          return 'PvCO2';
-        } else if (estudio == 'Presión de Oxígeno') {
-          return 'PvO2';
-        } else if (estudio == 'Bicarbonato Sérico') {
-          return 'vHCO3-' '';
-        } else if (estudio == 'Saturación de Oxígeno') {
-          return 'SvO2';
-        } else if (estudio == 'Fracción Inspiratoria de Oxígeno') {
-          return 'FiO2';
-        } else {
-          return estudio;
-        }
+      if (estudio == 'pH Urinario' && tipoEstudio == 'Examen General de Orina') {
+        return 'pH';
+      } else if (estudio == 'Color' && tipoEstudio == 'Examen General de Orina') {
+          return '';
+      } else if (estudio == 'Densidad Urinaria') {
+        return 'densidad';
+      } else if (estudio == 'Proteinas Urinarias') {
+        return 'proteinas';
+      } else if (estudio == 'Urobilinógeno Urinario') {
+        return 'urobilinógeno';
+      } else if (estudio == 'Bilirrubinas Urinarias') {
+        return 'bilirrubinas';
+      } else if (estudio == 'Esterasa Leucocitaria') {
+        return estudio.toLowerCase();
+      } else if (estudio == 'Uratos Amorfos') {
+        return estudio.toLowerCase();
+      } else if (estudio == 'Fosfatos Amorfos') {
+        return estudio.toLowerCase();
+      } else if (estudio == 'Cristales en Orina') {
+        return estudio.toLowerCase();
+      } else if (estudio == 'Mucina Urinaria') {
+        return estudio.toLowerCase();
+      } else if (estudio == 'Células Renales Urinarias') {
+        return "células renales";
+      //
+      } else if (estudio == 'Hemoglobina Urinaria') {
+        return 'hemoglobina';
+      } else if (estudio == 'Cetonas Urinarias') {
+        return 'cetonas';
+      } else if (estudio == 'Glucosa Urinaria') {
+    return 'glucosa';
+      } else if (estudio == 'Nitritos Urinarios') {
+        return 'nitritos';
+      } else if (estudio == 'Leucocitos Urinarios') {
+        return 'leucocitos';
+      } else if (estudio == 'Eritrocitos Urinarios') {
+        return 'eritrocitos';
+      } else if (estudio == 'Celulas Epiteliales Urinarias') {
+        return 'células epiteliales';
+      } else if (estudio == 'Bacterias Urinarias') {
+        return 'bacterias';
+      } else if (estudio == 'Levaduras Urinarias') {
+        return 'levaduras';
+      } else if (estudio == 'Cilindros Urinarios') {
+        return 'cilindros';
       } else {
         return estudio;
       }
+
     }
   }
 
@@ -6468,7 +6694,7 @@ class Auxiliares {
     "Cultivos", // 19
     "Panel Viral", // 20
     "Perfil de Hierro",
-    "Inmunológicos",
+    "Inmunológicos", // 22
     "Perfil Hormonal",
     "Cuantificación de Vitaminas",
     "Otros", // 25
@@ -6682,6 +6908,14 @@ class Auxiliares {
       "Cultivo de Líquido Cefalorraquídeo",
       "Cultivo de Líquido Pleural",
       "Coprocultivo",
+      "Hemocultivo central",
+      "Hemocultivo periférico, brazo izquierdo",
+      "Hemocultivo periférico, brazo derecho",
+      "Cultivo de Abceso, cavidad abdominal",
+      "Cultivo de Abceso, cavidad torácica",
+      "Cultivo de Abceso, cavidad pélvica",
+      "Cultivo de Abceso, cavidad renal",
+      "Cultivo de Abceso, cavidad hepática",
       "",
     ], // CULTIVOS
     //
@@ -7549,7 +7783,8 @@ class Reportes {
 
   //
   static Future<List> consultarNotasHospitalizacion() async {
-    final response = await Actividades.consultarAllById(Databases.siteground_database_reghosp,
+    final response = await Actividades.consultarAllById(
+        Databases.siteground_database_reghosp,
         "SELECT * FROM pace_hosp_repo where ID_Hosp = ? ",
         Pacientes.ID_Hospitalizacion);
     return response;
@@ -8274,7 +8509,9 @@ class Repositorios {
           message: "ERROR al Consultar Repositorio - "
               "${Pacientes.ID_Hospitalizacion}"
               "- $error : : $stackTrace");
-    });
+    }).whenComplete(() => Terminal.printSuccess(
+        message: "COMPLETADO : : Recabado Repositorio de la Hospitalización - "
+            "${Pacientes.ID_Hospitalizacion}"));
   }
 
   static void actualizarPadecimientoRegistro() {
@@ -8658,7 +8895,7 @@ class Situaciones {
   static void consultarRegistro() {
     Actividades.consultarAllById(Databases.siteground_database_reghosp,
             situacion['consultQuery'], Pacientes.ID_Hospitalizacion)
-        .then((value)  => Situaciones.fromJson(value));
+        .then((value) => Situaciones.fromJson(value));
   }
 
   static final Map<String, dynamic> situacion = {
@@ -8758,9 +8995,10 @@ class Situaciones {
         "(SELECT IFNULL(count(*), 0) FROM pace_sita WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
   };
 
-  static void fromJson(List situacion) {// Map<String, dynamic>
+  static void fromJson(List situacion) {
+    // Map<String, dynamic>
     for (var element in situacion) {
-      element.forEach((key, value){
+      element.forEach((key, value) {
         // Terminal.printAlert(message: "        : : ${element}");
         if (element['Sita_SINO'] == 1) {
           Terminal.printAlert(message: "        : : $key : $value");
@@ -8955,6 +9193,7 @@ class Licencias {
     return await Actividades.consultarId(Databases.siteground_database_regpace,
         vicencia['consultImage'], ID_Licencias);
   }
+
   //
   static String porTipoEstudio({int? indice = 0, String fechaActual = ""}) {
     // Filtro por estudio de los registros de Pacientes.Paraclinicos
@@ -9022,7 +9261,8 @@ class Licencias {
     "consultLastQuery":
         "SELECT * FROM licen_med WHERE ID_Pace = ? ORDER BY Fecha_Realizacion ASC",
     "consultByName": "SELECT * FROM licen_med WHERE Pace_APP_DEG LIKE '%",
-    "consultImage": "SELECT Licencia_FIAT FROM licen_med WHERE ID_Licen_Med = ? ",
+    "consultImage":
+        "SELECT Licencia_FIAT FROM licen_med WHERE ID_Licen_Med = ? ",
     "registerQuery": "INSERT INTO licen_med (ID_Pace, Folio, Dias_Otorgados, "
         "Fecha_Realizacion, Fecha_Inicio, Fecha_Termino, "
         "Motivo_Incapacidad, Caracter, Lugar_Expedicion, "

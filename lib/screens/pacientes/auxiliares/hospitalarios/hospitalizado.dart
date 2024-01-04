@@ -8,6 +8,7 @@ import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart
 import 'package:assistant/screens/pacientes/hospitalizacion/padecimientoActual.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/situacionesHospitalizacion.dart';
 import 'package:assistant/values/SizingInfo.dart';
+import 'package:assistant/values/WidgetValues.dart';
 
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
@@ -43,8 +44,81 @@ class _HospitalizadoState extends State<Hospitalizado> {
   @override
   Widget build(BuildContext context) {
     return TittleContainer(
-      color: Colors.black,
-        tittle: "Datos de hospitalización del paciente", child: _generalView());
+        color: widget.isVertical == true ? Colores.backgroundWidget : Colors.black,
+        tittle: widget.isVertical == true ? "  . : : * * * : : .  " : "Datos de hospitalización del paciente",
+        child: widget.isVertical == true ? _verticalView() : _generalView());
+  }
+
+  _verticalView() {
+    return Column(
+      children: [
+        ValuePanel(
+          margin: 1,
+          padding: 1,
+          withBorder: false,
+          firstText: 'Folio',
+          secondText: Pacientes.ID_Hospitalizacion.toString(),
+        ),
+        ValuePanel(
+          margin: 1,
+          padding: 1,
+          withBorder: false,
+          firstText: 'NG.: ',
+          secondText: Valores.fechaIngresoHospitalario,
+        ),
+        ValuePanel(
+          margin: 1,
+          padding: 1,
+          firstText: 'Cama',
+          secondText: Valores.numeroCama, // .toString(),
+        ),
+        ValuePanel(
+          margin: 1,
+          padding: 1,
+          firstText: 'D.E.H.',
+          secondText: Valores.diasEstancia.toString(),
+        ),
+        // // ValuePanel(
+        // //   margin: 1,
+        // //   padding: 1,
+        // //   withBorder: false,
+        // //   firstText: 'Médico Tratante',
+        // //   secondText: Valores.medicoTratante,
+        // // ),
+        // ValuePanel(
+        //   padding: 2.0,
+        //   firstText: 'S. Tratante',
+        //   secondText: Valores.servicioTratante,
+        // ),
+        // ValuePanel(
+        //   padding: 2.0,
+        //   firstText: 'S. Ingreso',
+        //   secondText: Valores.servicioTratanteInicial,
+        // ),
+        CrossLine(
+          height: 1,
+        ),
+        // ValuePanel(
+        //   margin: 1,
+        //   padding: 1,
+        //   firstText: 'C. Programada',
+        //   secondText: '', // Valores.servicioTratanteInicial,
+        // ),
+        // ValuePanel(
+        //   margin: 1,
+        //   padding: 1,
+        //   firstText: 'E. Prolongada',
+        //   secondText: Valores
+        //       .isEstanciaProlongada, // Valores.servicioTratanteInicial,
+        // ),
+        // ValuePanel(
+        //   margin: 1,
+        //   padding: 1,
+        //   firstText: 'I. Pendiente',
+        //   secondText: '', // Valores.servicioTratanteInicial,
+        // ),
+      ],
+    );
   }
 
   _generalView() {

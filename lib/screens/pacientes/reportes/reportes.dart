@@ -4,11 +4,13 @@ import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
+import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizado.dart';
 
 import 'package:assistant/screens/pacientes/auxiliares/presentaciones/presentaciones.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisiones.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisorios.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/padecimientoActual.dart';
+import 'package:assistant/screens/pacientes/hospitalizacion/situacionesHospitalizacion.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
 import 'package:assistant/screens/pacientes/intensiva/procedimientos/cateterTenckhoff.dart';
 import 'package:assistant/screens/pacientes/intensiva/procedimientos/cateterVenosoCentral.dart';
@@ -68,15 +70,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       }).whenComplete(() =>
               Reportes.reportes["Antecedentes_Patologicos_Ingreso"] =
                   Pacientes.antecedentesIngresosPatologicos());
-// Patologicos del Paciente *************************************
-      Archivos.readJsonToMap(
-              filePath: "${Pacientes.localRepositoryPath}patologicos.json")
-          .then((value) {
-        Pacientes.Patologicos = value;
-      }).whenComplete(() =>
-              Reportes.reportes["Antecedentes_Patologicos_Ingreso"] =
-                  Pacientes.antecedentesIngresosPatologicos());
-// Vitales del Paciente ****************************************
+      // Vitales del Paciente ****************************************
       Archivos.readJsonToMap(
               filePath: "${Pacientes.localRepositoryPath}vitales.json")
           .then((value) {
@@ -117,7 +111,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           Pacientes.Notas = value;
           // VALUE almacenado en Json : : "${Pacientes.localRepositoryPath}/reportes/reportes.json"
           Terminal.printSuccess(
-              message: "VALUE - ${value.last} "
+              message: "VALUE reportes.json- ${value.last} "
                   ": ${value.runtimeType} "
                   ": : ${value.last.runtimeType}");
           // Actualizar . . .
@@ -231,8 +225,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       key: _key,
       endDrawer: drawerForm(context),
       appBar: appBar(context),
-      floatingActionButton:
-          !isLargeDesktop(context) &&!isDesktop(context) ? floattingActionButton(context) : null,
+      floatingActionButton: !isLargeDesktop(context) && !isDesktop(context)
+          ? floattingActionButton(context)
+          : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: bottomNavigationBar(context),
       body: isMobile(context) || isTablet(context)
@@ -304,24 +299,25 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
     return Row(
       children: [
         Expanded(
-            flex: 2,
+            flex: 4,
             child: Container(
               padding: const EdgeInsets.all(8.0),
               margin: const EdgeInsets.all(8.0),
               decoration: ContainerDecoration.containerDecoration(),
               child: sideLeft(),
             )),
+        Expanded(flex: 2,child: Hospitalizado(isVertical: true)),
         Expanded(
-            flex: 8,
+            flex: 14,
             child: Container(
               padding: const EdgeInsets.all(15.0),
               margin: const EdgeInsets.all(8.0),
               decoration: ContainerDecoration.containerDecoration(),
               child: pantallasReportesMedicos(widget.actualPage),
             )),
-        Expanded(child: _notasPrevias(context)),
+        Expanded(flex: 2, child: _notasPrevias(context)),
         Expanded(
-            flex: 1,
+            flex: 2,
             child: Container(
               padding: const EdgeInsets.all(8.0),
               margin: const EdgeInsets.all(8.0),
@@ -1328,12 +1324,14 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             child: FutureBuilder<List>(
                 initialData: listNotes!,
                 future: Future.value(listNotes!),
-                builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                builder:
+                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   return ListView.separated(
                       controller: ScrollController(),
                       itemCount: listNotes!.length,
                       itemBuilder: (BuildContext context, int index) {
-                        Terminal.printWarning(message: "${listNotes![index].keys}");
+                        Terminal.printWarning(
+                            message: "${listNotes![index].keys}");
                         return Container(
                           decoration: ContainerDecoration.roundedDecoration(),
                           child: ListTile(
@@ -1365,20 +1363,24 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           ),
           CrossLine(height: 10, thickness: 4, color: Colors.black),
           CircleIcon(
-            iconed: Icons.remove_road,
+              iconed: Icons.remove_road,
               onChangeValue: () {
-            // CONSULTAR NOTACIONES PREVIAS ****************************************
-            Reportes.consultarNotasHospitalizacion().then((value) => setState(() {
-              widget.indexNote = 0;
-              listNotes = value;
-            }));
-          }),
+                // CONSULTAR NOTACIONES PREVIAS ****************************************
+                Reportes.consultarNotasHospitalizacion()
+                    .then((value) => setState(() {
+                          widget.indexNote = 0;
+                          listNotes = value;
+                        }));
+              }),
           CrossLine(height: 10, thickness: 2, color: Colors.black),
           CircleLabel(
             tittle: "${Pacientes.ID_Hospitalizacion}",
             radios: 25,
             difRadios: 3,
             fontSize: 8,
+            onChangeValue: () {
+    Repositorios.consultarAnalisis();}
+            ,
           ),
         ],
       ),
@@ -1386,27 +1388,36 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
   }
 
   _notaPrevia(BuildContext context) {
-    if (widget.indexNote  > -1) {
+    if (widget.indexNote > -1) {
       return TittleContainer(
         tittle: listNotes![widget.indexNote]['FechaRealizacion'],
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
               listNotes![widget.indexNote]['Tipo_Analisis'],
               style: Styles.textSyleGrowth(fontSize: 12),
             ),
-            CrossLine(thickness: 4),
             Text(
-                listNotes![widget.indexNote]['Signos_Vitales'],
+              "Inicio de Padecimiento - " + listNotes![widget.indexNote]['FechaPadecimiento'],
+              style: Styles.textSyleGrowth(fontSize: 12),
+            ),
+            CrossLine(thickness: 4),
+            Text(listNotes![widget.indexNote]['Signos_Vitales'],
                 style: Styles.textSyleGrowth(fontSize: 8)),
             CrossLine(thickness: 4),
             CrossLine(thickness: 3),
             Text(
-                listNotes![widget.indexNote]['Tipo_Analisis'] == "Análisis de Ingreso"
-                    ? listNotes![widget.indexNote]['Padecimiento_Actual']
-                    : listNotes![widget.indexNote]['Tipo_Analisis'] == "Análisis de Evolución" ?
-                listNotes![widget.indexNote]['Analisis_Medico'] :
-                "",
+                listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                        "Análisis de Ingreso"
+                    ? "MOTIVO DE INGRESO: " + listNotes![widget.indexNote]['Padecimiento_Actual']
+                    : listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                            "Análisis de Evolución"
+                        ? listNotes![widget.indexNote]['Analisis_Medico']
+                        : "",
+                style: Styles.textSyleGrowth(fontSize: 8)),
+            CrossLine(thickness: 3),
+            Text(listNotes![widget.indexNote]['Pendientes'],
                 style: Styles.textSyleGrowth(fontSize: 8)),
           ],
         ),

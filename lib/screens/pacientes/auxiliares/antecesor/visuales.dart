@@ -868,7 +868,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
                 onLongPress: () {
                   Datos.portapapeles(
                       context: context,
-                      text: Auxiliares.getCultivos());
+                      text: Auxiliares.getEspeciales());
                 },
               ),
               GrandIcon(
@@ -883,6 +883,20 @@ class _VisualPacientesState extends State<VisualPacientes> {
                   Datos.portapapeles(
                       context: context,
                       text: Auxiliares.getCultivos());
+                },
+              ),
+              GrandIcon(
+                iconData: Icons.linear_scale,
+                labelButton: "Marcadores Cardiacos . . . ",
+                onPress: () {
+                  Datos.portapapeles(
+                      context: context,
+                      text: Auxiliares.getCurvaCardiaca());
+                },
+                onLongPress: () {
+                  Datos.portapapeles(
+                      context: context,
+                      text: Auxiliares.getCurvaCardiaca());
                 },
               ),
             ],

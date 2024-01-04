@@ -7,6 +7,7 @@ import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/depur
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/electrolitos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/ferricos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/hepaticos.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/inmunologicos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/linfocitos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/lipidicos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/liquidoDialisis.dart';
@@ -107,6 +108,9 @@ class _ConmutadorParaclinicosState extends State<ConmutadorParaclinicos> {
         return const Virales();
       case "Perfil de Hierro":
         return const Ferricos();
+
+      case "Inmunológicos":
+        return const Inmunologicos();
       default:
         return const Rutinas();
     }
