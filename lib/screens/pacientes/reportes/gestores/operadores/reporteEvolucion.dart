@@ -38,7 +38,9 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
     setState(() {
       initialTextController.text = Pacientes.prosa(isTerapia: true);
       // ********************************************
-      diagoTextController.text = Pacientes.diagnosticos();
+      diagoTextController.text = Reportes.impresionesDiagnosticas.isNotEmpty
+          ? Reportes.impresionesDiagnosticas
+          : Pacientes.diagnosticos();
       subjetivoTextController.text = Pacientes.subjetivos();
       // ********************************************
       heredoTextController.text = Pacientes.heredofamiliares();
@@ -58,7 +60,8 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: ContainerDecoration.roundedDecoration(),
+      decoration: ContainerDecoration.roundedDecoration(
+          colorBackground: Theming.quincuaryColor),
       child: Column(children: [
         Expanded(
           flex: isDesktop(context) ? 16 : 11,
@@ -67,10 +70,11 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
             child: Row(
               children: [
                 Expanded(
-                  flex: isLargeDesktop(context) ? 14:4 ,
+                  flex: isLargeDesktop(context) ? 14 : 4,
                   child: Container(
                     padding: const EdgeInsets.all(8),
-                    decoration: ContainerDecoration.roundedDecoration(),
+                    decoration: ContainerDecoration.roundedDecoration(
+                        colorBackground: Theming.quincuaryColor),
                     child: CarouselSlider(
                       items: [
                         Column(
@@ -85,7 +89,11 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
                             Row(
                               children: [
                                 Expanded(
-                                  flex: isMobile(context) || isDesktop(context) ? 3 : isLargeDesktop(context) ? 4 : 1,
+                                  flex: isMobile(context) || isDesktop(context)
+                                      ? 3
+                                      : isLargeDesktop(context)
+                                          ? 4
+                                          : 1,
                                   child: EditTextArea(
                                       textController: diagoTextController,
                                       labelEditText: "Impresiones diagnósticas",
@@ -183,13 +191,19 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
                   ),
                 ),
                 Expanded(
-                  flex: isLargeDesktop(context) ? 1:1 ,
+                  flex: isLargeDesktop(context) ? 1 : 1,
                   child: Column(
-                    mainAxisAlignment: isLargeDesktop(context) ? MainAxisAlignment.start:MainAxisAlignment.end,
+                    mainAxisAlignment: isLargeDesktop(context)
+                        ? MainAxisAlignment.start
+                        : MainAxisAlignment.end,
                     children: [
-                      CrossLine(height: isLargeDesktop(context) ? 10 :20, thickness: 3),
+                      CrossLine(
+                          height: isLargeDesktop(context) ? 10 : 20,
+                          thickness: 3),
                       Wrap(
-                        direction: isLargeDesktop(context) ? Axis.vertical : Axis.horizontal,
+                        direction: isLargeDesktop(context)
+                            ? Axis.vertical
+                            : Axis.horizontal,
                         alignment: WrapAlignment.spaceBetween,
                         spacing: 10,
                         children: [
@@ -247,10 +261,13 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
                           ),
                         ],
                       ),
-                      if (isLargeDesktop(context)) CrossLine(height: 4, thickness: 3),
+                      if (isLargeDesktop(context))
+                        CrossLine(height: 4, thickness: 3),
                       // if (!isLargeDesktop(context)) const SizedBox(height: 10),
                       Wrap(
-                        direction: isLargeDesktop(context) ? Axis.vertical : Axis.horizontal,
+                        direction: isLargeDesktop(context)
+                            ? Axis.vertical
+                            : Axis.horizontal,
                         alignment: WrapAlignment.spaceBetween,
                         spacing: 10,
                         children: [

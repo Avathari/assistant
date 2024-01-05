@@ -6908,6 +6908,7 @@ class Auxiliares {
       "Cultivo de Líquido Cefalorraquídeo",
       "Cultivo de Líquido Pleural",
       "Coprocultivo",
+      "Cultivo de Expectoración",
       "Hemocultivo central",
       "Hemocultivo periférico, brazo izquierdo",
       "Hemocultivo periférico, brazo derecho",
@@ -8570,6 +8571,7 @@ class Repositorios {
       // Valores.servicioTratanteInicial,
       Valores.servicioTratante,
       Calendarios.today(format: 'yyyy/MM/dd'),
+      Reportes.impresionesDiagnosticas,
       Reportes.reportes['Subjetivo'],
       Reportes.signosVitales,
       Reportes.exploracionFisica,
@@ -8710,17 +8712,19 @@ class Repositorios {
         "ID_Pace, ID_Hosp, "
         "FechaPadecimiento, Padecimiento_Actual, "
         "ServicioMedico, FechaRealizacion, "
+        "Diagnosticos_Hospital, "
         "Subjetivo, Signos_Vitales, Exploracion_Fisica, "
         "Eventualidades, Terapias_Previas, Analisis_Medico, Tratamiento_Propuesto, "
         "Dietoterapia, Hidroterapia, Insulinoterapia, Hemoterapia, Oxigenoterapia, Medicamentos, Medidas_Generales, Pendientes, "
         "Tipo_Analisis) "
-        "VALUES (?,?,?,?,?,?,?,?,?,?,"
+        "VALUES (?,?,?,?,?,?,?,?,?,?,?,"
         "?,?,?,?,?,?,?,?,?,?,"
         "?,?)",
     "updateQuery": "UPDATE pace_hosp_repo SET "
         "ID_Compendio = ?, ID_Pace = ?, ID_Hosp = ?, "
         "FechaPadecimiento = ?, Padecimiento_Actual = ?, "
         "ServicioMedico = ?, FechaRealizacion = ?, "
+        "Diagnosticos_Hospital = ?, "
         "Subjetivo = ?, Signos_Vitales = ?, Exploracion_Fisica = ?, "
         "Eventualidades = ?, Terapias_Previas = ?, Analisis_Medico = ?, Tratamiento_Propuesto = ?, "
         "Dietoterapia = ?, Hidroterapia = ?, Insulinoterapia = ?, Hemoterapia = ?, Oxigenoterapia = ?, Medicamentos = ?, Medidas_Generales = ?, Pendientes = ?, "

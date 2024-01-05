@@ -9,6 +9,7 @@ import 'package:assistant/screens/pacientes/hospitalizacion/padecimientoActual.d
 import 'package:assistant/screens/pacientes/hospitalizacion/situacionesHospitalizacion.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/CircleIcon.dart';
 
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
@@ -42,12 +43,11 @@ class _HospitalizadoState extends State<Hospitalizado> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return TittleContainer(
+  Widget build(BuildContext context) => TittleContainer(
         color: widget.isVertical == true ? Colores.backgroundWidget : Colors.black,
         tittle: widget.isVertical == true ? "  . : : * * * : : .  " : "Datos de hospitalización del paciente",
         child: widget.isVertical == true ? _verticalView() : _generalView());
-  }
+
 
   _verticalView() {
     return Column(
@@ -98,6 +98,7 @@ class _HospitalizadoState extends State<Hospitalizado> {
         CrossLine(
           height: 1,
         ),
+        CircleIcon(iconed: Icons.receipt_outlined, onChangeValue: () => Repositorios.consultarAnalisis())
         // ValuePanel(
         //   margin: 1,
         //   padding: 1,

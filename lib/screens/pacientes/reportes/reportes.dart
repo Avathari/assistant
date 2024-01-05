@@ -10,7 +10,6 @@ import 'package:assistant/screens/pacientes/auxiliares/presentaciones/presentaci
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisiones.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisorios.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/padecimientoActual.dart';
-import 'package:assistant/screens/pacientes/hospitalizacion/situacionesHospitalizacion.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
 import 'package:assistant/screens/pacientes/intensiva/procedimientos/cateterTenckhoff.dart';
 import 'package:assistant/screens/pacientes/intensiva/procedimientos/cateterVenosoCentral.dart';
@@ -21,7 +20,6 @@ import 'package:assistant/screens/pacientes/intensiva/valoraciones/prequirurgico
 import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteFormats/formatosReportes.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/indicaciones.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/semiologicos.dart';
-import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/terapias.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteConsulta.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteEvolucion.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteIngreso.dart';
@@ -121,6 +119,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                 value.last['Padecimiento_Actual'] ?? '';
             Valores.fechaPadecimientoActual =
                 value.last['Fecha_Padecimiento'] ?? '';
+            // Primeras Variables **************************************************
+            Reportes.impresionesDiagnosticas = value.last['Diagnosticos_Hospital'] ?? '';
             // Primeras Variables **************************************************
             Reportes.exploracionFisica = value.last['Exploracion_Fisica'] ?? '';
             Reportes.signosVitales = value.last['Signos_Vitales'] ?? '';
@@ -1393,6 +1393,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
         tittle: listNotes![widget.indexNote]['FechaRealizacion'],
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               listNotes![widget.indexNote]['Tipo_Analisis'],
@@ -1403,9 +1404,22 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               style: Styles.textSyleGrowth(fontSize: 12),
             ),
             CrossLine(thickness: 4),
+            CrossLine(thickness: 3),
+            Text(listNotes![widget.indexNote]['Diagnosticos_Hospital'],
+                style: Styles.textSyleGrowth(fontSize: 9)),
+            CrossLine(thickness: 4),
+            Text(
+              listNotes![widget.indexNote]['Subjetivo'],
+              style: Styles.textSyleGrowth(fontSize: 9),
+            ),
             Text(listNotes![widget.indexNote]['Signos_Vitales'],
                 style: Styles.textSyleGrowth(fontSize: 8)),
-            CrossLine(thickness: 4),
+            CrossLine(thickness: 3),
+            Text(
+              listNotes![widget.indexNote]['Exploracion_Fisica'],
+              maxLines: 20,
+              style: Styles.textSyleGrowth(fontSize: 9),
+            ),
             CrossLine(thickness: 3),
             Text(
                 listNotes![widget.indexNote]['Tipo_Analisis'] ==
@@ -1416,6 +1430,29 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                         ? listNotes![widget.indexNote]['Analisis_Medico']
                         : "",
                 style: Styles.textSyleGrowth(fontSize: 8)),
+            CrossLine(thickness: 3),
+            Text(
+              listNotes![widget.indexNote]['Eventualidades'],
+              maxLines: 20,
+              style: Styles.textSyleGrowth(fontSize: 9),
+            ),
+            CrossLine(thickness: 1),
+            Text(
+              listNotes![widget.indexNote]['Terapias_Previas'],
+              maxLines: 20,
+              style: Styles.textSyleGrowth(fontSize: 9),
+            ),
+            Text(
+              listNotes![widget.indexNote]['Analisis_Medico'],
+              maxLines: 20,
+              style: Styles.textSyleGrowth(fontSize: 9),
+            ),
+            Text(
+              listNotes![widget.indexNote]['Tratamiento_Propuesto'],
+              maxLines: 20,
+              style: Styles.textSyleGrowth(fontSize: 9),
+            ),
+            CrossLine(thickness: 4),
             CrossLine(thickness: 3),
             Text(listNotes![widget.indexNote]['Pendientes'],
                 style: Styles.textSyleGrowth(fontSize: 8)),
