@@ -199,7 +199,8 @@ class Valores {
   }
 
   Valores.fromJson(Map<String, dynamic> json) {
-    Terminal.printWarning(message: "INICIADO Valores.fromJson : : ${json.keys}");
+    Terminal.printWarning(
+        message: "INICIADO Valores.fromJson : : ${json.keys}");
 
     numeroPaciente = json['Pace_NSS'];
     agregadoPaciente = json['Pace_AGRE'];
@@ -853,7 +854,7 @@ class Valores {
       concentracionMediaHemoglobina,
       volumenCorpuscularMedio,
       hemoglobinaCorpuscularMedia,
-  anchoDistribucionEritrocitaria,
+      anchoDistribucionEritrocitaria,
       plaquetas,
       leucocitosTotales,
       linfocitosTotales,
@@ -954,7 +955,6 @@ class Valores {
       presionPlateau = 0;
   static double? volumenTidal = 0;
 
-
   // Variables Estaticas
   static int presionBarometrica = 585; // mmHg (Nm: 760
   static int presionVaporAgua = 47; // mmHg
@@ -1048,7 +1048,6 @@ class Valores {
   // # Cociente Respiratorio
   static double get RI => 0.8;
 
-
   // # Indice de Volumen Sanguineo
   static double get indiceVolumenSanguineo =>
       Hidrometrias.volumenPlasmatico /
@@ -1063,8 +1062,9 @@ class Valores {
   static double get IRVS =>
       (Cardiometrias.presionArterialMedia / Valores.indiceCardiaco);
 
-  static double get RVS => (((Cardiometrias.presionArterialMedia - 12.0) * 80.00) /
-      Valores.indiceCardiaco); //  # Resistencias Venosas Sistémicas
+  static double get RVS =>
+      (((Cardiometrias.presionArterialMedia - 12.0) * 80.00) /
+          Valores.indiceCardiaco); //  # Resistencias Venosas Sistémicas
   // # (((Valores.presionArterialMedia! - 12.0) / IC) * 79.9)
   static double get IEO =>
       (((DAV / CAO) * 100)); // # Indice de Extracción de Oxígeno
@@ -1100,11 +1100,13 @@ class Valores {
 
   static double get indiceOxigenacion {
     if (Valores.poArteriales! != 0) {
-      return (Ventometrias.presionMediaViaAerea * (Valores.fioArteriales! / 100)) *
+      return (Ventometrias.presionMediaViaAerea *
+              (Valores.fioArteriales! / 100)) *
           (100.00) /
           Valores.poArteriales!;
     } else if (Valores.soArteriales != 0) {
-      return ((Ventometrias.presionMediaViaAerea * (Valores.fioArteriales! / 100)) *
+      return ((Ventometrias.presionMediaViaAerea *
+              (Valores.fioArteriales! / 100)) *
           (100.00) /
           Valores.poArteriales!);
     } //  Indice de Saturación
@@ -1139,11 +1141,13 @@ class Valores {
       Valores
           .frecuenciaCardiaca!); //  # Volumen Latido Sistólico De Litros a mL
   static double get IVL => (VLS /
-      Antropometrias.SCE); //mL/Lat/m2 *IC se multiplica por 1000 para ajustar unidades a mL/min/m2
+      Antropometrias
+          .SCE); //mL/Lat/m2 *IC se multiplica por 1000 para ajustar unidades a mL/min/m2
   // ((indiceCardiaco * 1000) / Valores.frecuenciaCardiaca!);
   static double get DO =>
       ((gastoCardiaco * CAO) * (10)); // # Disponibilidad de Oxígeno
-  static double get iDO => (DO / Antropometrias.SCS); // # Indice de Disponibilidad de Oxígeno
+  static double get iDO =>
+      (DO / Antropometrias.SCS); // # Indice de Disponibilidad de Oxígeno
   static double get TO =>
       ((capacidadOxigeno * CAO) / (10)); // # Transporte de Oxígeno // CAP_O
   static double get SF =>
@@ -1166,11 +1170,11 @@ class Valores {
   static double get CAO =>
       (((Valores.hemoglobina! * 1.34) * Valores.soArteriales!) +
           (Valores.poArteriales! * 0.031)) /
-          (100); //  # Concentración Arterial de Oxígeno
+      (100); //  # Concentración Arterial de Oxígeno
   static double get CVO =>
       (((Valores.hemoglobina! * 1.34) * Valores.soVenosos!) +
           (Valores.poVenosos! * 0.031)) /
-          (100); // # Concentración Venosa de Oxígeno
+      (100); // # Concentración Venosa de Oxígeno
   static double get CCO => ((Valores.hemoglobina! * 1.39) +
       (Valores.poArteriales! * 0.0031)); // # Concentración Capilar de Oxígeno
   // (((Valores.hemoglobina! * 1.34) *
@@ -1276,6 +1280,7 @@ class Valores {
       return 0;
     }
   }
+
   static double get diuresis {
     if (Valores.uresisBalances != 0 &&
         Valores.pesoCorporalTotal != null &&
@@ -1286,7 +1291,6 @@ class Valores {
       return double.nan;
     }
   }
-
 
   static double dummy = 0;
 
@@ -1503,26 +1507,26 @@ class Valores {
   static String? edemaPulmonar = Dicotomicos.dicotomicos()[1];
   static String? edemaPulmonarPasado = Dicotomicos.dicotomicos()[1];
   static String? saturacionPerifericaOrigeno =
-  Escalas.saturacionPerifericaOrigeno[0];
+      Escalas.saturacionPerifericaOrigeno[0];
   static String? infeccionRespiratoria = Dicotomicos.dicotomicos()[1];
   static String? hemoglobinaInferior = Dicotomicos.dicotomicos()[1];
   static String? incisionTipo = Escalas.incisionTipo[0];
   static String? duracionCirugiaHoras = Escalas.duracionCirugiaHoras[0];
-
-
 }
 
 class Valorados {
   static String get mSOFA {
     String resultado = "";
-    int resp = 0, plat = 0,hig = 0, card = 0, glasg = 0, ren = 0;
+    int resp = 0, plat = 0, hig = 0, card = 0, glasg = 0, ren = 0;
     // ***************************************************
     if (Gasometricos.PAFI != null) {
       if (Datos.isMiddleValue(value: Gasometricos.PAFI, min: 300, max: 400)) {
         resp = 1;
-      } else if (Datos.isMiddleValue(value: Gasometricos.PAFI, min: 200, max: 300)) {
+      } else if (Datos.isMiddleValue(
+          value: Gasometricos.PAFI, min: 200, max: 300)) {
         resp = 2;
-      } else if (Datos.isMiddleValue(value: Gasometricos.PAFI, min: 100, max: 200)) {
+      } else if (Datos.isMiddleValue(
+          value: Gasometricos.PAFI, min: 100, max: 200)) {
         resp = 3;
       } else if (Datos.isInnerValue(value: Gasometricos.PAFI, lim: 200)) {
         resp = 2;
@@ -1532,9 +1536,11 @@ class Valorados {
     } else if (Gasometricos.SAFI != null) {
       if (Datos.isMiddleValue(value: Gasometricos.SAFI, min: 221, max: 301)) {
         resp = 1;
-      } else if (Datos.isMiddleValue(value: Gasometricos.SAFI, min: 142, max: 220)) {
+      } else if (Datos.isMiddleValue(
+          value: Gasometricos.SAFI, min: 142, max: 220)) {
         resp = 2;
-      } else if (Datos.isMiddleValue(value: Gasometricos.SAFI, min: 67, max: 141)) {
+      } else if (Datos.isMiddleValue(
+          value: Gasometricos.SAFI, min: 67, max: 141)) {
         resp = 3;
       } else if (Datos.isInnerValue(value: Gasometricos.SAFI, lim: 67)) {
         resp = 2;
@@ -1545,9 +1551,11 @@ class Valorados {
     // ***************************************************
     if (Datos.isMiddleValue(value: Valores.plaquetas, min: 150, max: 300)) {
       plat = 1;
-    } else if (Datos.isMiddleValue(value: Valores.plaquetas, min: 100, max: 150)) {
+    } else if (Datos.isMiddleValue(
+        value: Valores.plaquetas, min: 100, max: 150)) {
       plat = 2;
-    } else if (Datos.isMiddleValue(value: Valores.plaquetas, min: 50, max: 100)) {
+    } else if (Datos.isMiddleValue(
+        value: Valores.plaquetas, min: 50, max: 100)) {
       plat = 3;
     } else if (Datos.isInnerValue(value: Valores.plaquetas!, lim: 20)) {
       plat = 2;
@@ -1555,13 +1563,17 @@ class Valorados {
       plat = 0;
     }
     // ***************************************************
-    if (Datos.isMiddleValue(value: Valores.bilirrubinasTotales, min: 1.2, max: 1.9)) {
+    if (Datos.isMiddleValue(
+        value: Valores.bilirrubinasTotales, min: 1.2, max: 1.9)) {
       hig = 1;
-    } else if (Datos.isMiddleValue(value: Valores.bilirrubinasTotales, min: 2.0, max: 5.9)) {
+    } else if (Datos.isMiddleValue(
+        value: Valores.bilirrubinasTotales, min: 2.0, max: 5.9)) {
       hig = 2;
-    } else if (Datos.isMiddleValue(value: Valores.bilirrubinasTotales, min: 6.0, max: 11.9)) {
+    } else if (Datos.isMiddleValue(
+        value: Valores.bilirrubinasTotales, min: 6.0, max: 11.9)) {
       hig = 3;
-    } else if (Datos.isUpperValue(value: Valores.bilirrubinasTotales!, lim: 12)) {
+    } else if (Datos.isUpperValue(
+        value: Valores.bilirrubinasTotales!, lim: 12)) {
       hig = 2;
     } else {
       hig = 0;
@@ -1569,9 +1581,11 @@ class Valorados {
     // ***************************************************
     if (Datos.isMiddleValue(value: Valores.creatinina, min: 1.2, max: 1.9)) {
       ren = 1;
-    } else if (Datos.isMiddleValue(value: Valores.creatinina, min: 2.0, max: 3.4)) {
+    } else if (Datos.isMiddleValue(
+        value: Valores.creatinina, min: 2.0, max: 3.4)) {
       ren = 2;
-    } else if (Datos.isMiddleValue(value: Valores.creatinina, min: 3.5, max: 4.9)) {
+    } else if (Datos.isMiddleValue(
+        value: Valores.creatinina, min: 3.5, max: 4.9)) {
       ren = 3;
     } else if (Datos.isUpperValue(value: Valores.creatinina!, lim: 5)) {
       ren = 2;
@@ -1579,28 +1593,38 @@ class Valorados {
       ren = 0;
     }
     // Glasgow ***************************************************
-    if (Datos.isMiddleValue(value: double.parse(Exploracion.glasgow!), min: 6.0, max: 9.0)) {
+    if (Datos.isMiddleValue(
+        value: double.parse(Exploracion.glasgow!), min: 6.0, max: 9.0)) {
       glasg = 3;
-    } else if (Datos.isMiddleValue(value: double.parse(Exploracion.glasgow!), min: 10.0, max: 12.0)) {
+    } else if (Datos.isMiddleValue(
+        value: double.parse(Exploracion.glasgow!), min: 10.0, max: 12.0)) {
       glasg = 2;
-    } else if (Datos.isMiddleValue(value: double.parse(Exploracion.glasgow!), min: 13, max: 14.0)) {
+    } else if (Datos.isMiddleValue(
+        value: double.parse(Exploracion.glasgow!), min: 13, max: 14.0)) {
       glasg = 1;
-    } else if (Datos.isUpperValue(value: double.parse(Exploracion.glasgow!), lim: 15)) {
+    } else if (Datos.isUpperValue(
+        value: double.parse(Exploracion.glasgow!), lim: 15)) {
       glasg = 0;
     } else {
       glasg = 4;
     }
 
     // SUMATORIA ***************************************************
-    double aux = resp.toDouble() + plat.toDouble() + hig.toDouble() + card.toDouble() +glasg.toDouble() + ren.toDouble();
+    double aux = resp.toDouble() +
+        plat.toDouble() +
+        hig.toDouble() +
+        card.toDouble() +
+        glasg.toDouble() +
+        ren.toDouble();
     // RESULTADOS ***************************************************
     if (Datos.isMiddleValue(value: aux, min: 0.0, max: 6.0)) {
-      resultado = 'menor al 10% de Mortalidad estimada durante la Hospitalización';
+      resultado =
+          'menor al 10% de Mortalidad estimada durante la Hospitalización';
     } else if (Datos.isMiddleValue(value: aux, min: 6.0, max: 9.0)) {
       resultado = '15-20% de Mortalidad estimada durante la Hospitalización';
     } else if (Datos.isMiddleValue(value: aux, min: 9.0, max: 12.0)) {
       resultado = '40-50% de Mortalidad estimada durante la Hospitalización';
-    }else if (Datos.isMiddleValue(value: aux, min: 12.0, max: 14.0)) {
+    } else if (Datos.isMiddleValue(value: aux, min: 12.0, max: 14.0)) {
       resultado = '50-60% de Mortalidad estimada durante la Hospitalización';
     } else if (Datos.isMiddleValue(value: aux, min: 14.0, max: 15.0)) {
       resultado = '60-80% de Mortalidad estimada durante la Hospitalización';
@@ -1610,8 +1634,9 @@ class Valorados {
       resultado = 'no concordante. ';
     }
 
-    Terminal.printSuccess(message: "mSOFA $resultado : : "
-        "$hig . $ren . $glasg . $resp . $card : ($aux)");
+    Terminal.printSuccess(
+        message: "mSOFA $resultado : : "
+            "$hig . $ren . $glasg . $resp . $card : ($aux)");
     return resultado;
   }
 
@@ -1624,15 +1649,17 @@ class Valorados {
         "";
   }
 
-  static double get indiceChoque => Valores.frecuenciaCardiaca! / Valores.tensionArterialSystolica!;
+  static double get indiceChoque =>
+      Valores.frecuenciaCardiaca! / Valores.tensionArterialSystolica!;
   // Si Mayor a 1.0, alta probabiilidad de Choque ; 0.5 - 0.7
 
-  static double get indiceChoqueModificado => Valores.frecuenciaCardiaca! / Cardiometrias.presionArterialMedia;
+  static double get indiceChoqueModificado =>
+      Valores.frecuenciaCardiaca! / Cardiometrias.presionArterialMedia;
 // 0.7 - 1.3
 }
 
 class Formatos {
-    static String get dietasAyuno {
+  static String get dietasAyuno {
     return 'Ayuno hasta nueva orden';
   }
 
@@ -1832,67 +1859,65 @@ class Formatos {
         "$compania";
   }
 
-    static String get viviendasSimplificado {
-      // Variables ******** **** ********* ******** **********
-      String formacion = "",
-          comodidades = "",
-          servicios = "",
-          conformacion = "";
+  static String get viviendasSimplificado {
+    // Variables ******** **** ********* ******** **********
+    String formacion = "", comodidades = "", servicios = "", conformacion = "";
 
-      // Formación ******** **** ********* ******** **********
-      if (Valores.viviendaSala) {
-        formacion = "$formacion con sala";
-      }
-      if (Valores.viviendaComedor) {
-        formacion = "$formacion, comedor";
-      }
-      if (Valores.viviendaBano) {
-        formacion = "$formacion, baño";
-      }
-      if (Valores.viviendaHabitacionesSeparadas) {
-        formacion = "$formacion, habitaciones separadas";
-      }
-      // Servicios ******** **** ********* ******** **********
-      if (Valores.viviendaAguaPotable) {
-        servicios = "$servicios con agua potable";
-      }
-      if (Valores.viviendaDrenaje) {
-        servicios = "$servicios, drenaje";
-      }
-      if (Valores.viviendaAlcantarillado) {
-        servicios = "$servicios, alcantarillado";
-      }
-      if (Valores.viviendaElectricidad) {
-        servicios = "$servicios, electricidad";
-      }
-      // Comodidades ******** **** ********* ******** **********
-      if (Valores.viviendaTelevision) {
-        comodidades = "$comodidades con televisión";
-      }
-      if (Valores.viviendaEstufa) {
-        comodidades = "$comodidades, estufa";
-      }
-      if (Valores.viviendaHornoLena) {
-        comodidades = "$comodidades, leña";
-      }
-      // Conformación ******** **** ********* ******** **********
-      if (Valores.viviendaPatioDelantero) {
-        conformacion = "$conformacion con patio delantero";
-      } else {
-        conformacion = "$conformacion sin patio delantero";
-      }
-      if (Valores.viviendaPatioTrasero) {
-        conformacion = "$conformacion, con patio trasero";
-      } else {
-        conformacion = "$conformacion, sin patio trasero";
-      }
-      // ******** **** ********* ******** **********
-      return "Vivienda: Propiedad ${Valores.propiedadVivienda}. "
-          "Conformación interna de la vivienda con separación habitacional$formacion. "
-          "Servicios públicos habitacionales$servicios. "
-          "Servicios domiciliarios$comodidades. "
-          "Conformación externa de la vivienda$conformacion. \n";
+    // Formación ******** **** ********* ******** **********
+    if (Valores.viviendaSala) {
+      formacion = "$formacion con sala";
     }
+    if (Valores.viviendaComedor) {
+      formacion = "$formacion, comedor";
+    }
+    if (Valores.viviendaBano) {
+      formacion = "$formacion, baño";
+    }
+    if (Valores.viviendaHabitacionesSeparadas) {
+      formacion = "$formacion, habitaciones separadas";
+    }
+    // Servicios ******** **** ********* ******** **********
+    if (Valores.viviendaAguaPotable) {
+      servicios = "$servicios con agua potable";
+    }
+    if (Valores.viviendaDrenaje) {
+      servicios = "$servicios, drenaje";
+    }
+    if (Valores.viviendaAlcantarillado) {
+      servicios = "$servicios, alcantarillado";
+    }
+    if (Valores.viviendaElectricidad) {
+      servicios = "$servicios, electricidad";
+    }
+    // Comodidades ******** **** ********* ******** **********
+    if (Valores.viviendaTelevision) {
+      comodidades = "$comodidades con televisión";
+    }
+    if (Valores.viviendaEstufa) {
+      comodidades = "$comodidades, estufa";
+    }
+    if (Valores.viviendaHornoLena) {
+      comodidades = "$comodidades, leña";
+    }
+    // Conformación ******** **** ********* ******** **********
+    if (Valores.viviendaPatioDelantero) {
+      conformacion = "$conformacion con patio delantero";
+    } else {
+      conformacion = "$conformacion sin patio delantero";
+    }
+    if (Valores.viviendaPatioTrasero) {
+      conformacion = "$conformacion, con patio trasero";
+    } else {
+      conformacion = "$conformacion, sin patio trasero";
+    }
+    // ******** **** ********* ******** **********
+    return "Vivienda: Propiedad ${Valores.propiedadVivienda}. "
+        "Conformación interna de la vivienda con separación habitacional$formacion. "
+        "Servicios públicos habitacionales$servicios. "
+        "Servicios domiciliarios$comodidades. "
+        "Conformación externa de la vivienda$conformacion. \n";
+  }
+
   static String get alimentarios {
     return "Hábitos alimenticios: "
         "${Valores.alimentacionDiariaDescripcion}. "
@@ -2087,7 +2112,8 @@ class Formatos {
         suspension = "";
       }
       // ***** // ******************** // ************
-      drogadismo = "Toxicomania iniciado a los ${Valores.edadInicioDrogadismo}, "
+      drogadismo =
+          "Toxicomania iniciado a los ${Valores.edadInicioDrogadismo}, "
           "con duración aproximada de  ${Valores.duracionAnosDrogadismo} años, "
           "a razón de  ${Valores.periodicidadDrogadismo} cada  ${Valores.intervaloDrogadismo}. "
           "$suspension"
@@ -2097,7 +2123,7 @@ class Formatos {
     }
     // ************* ********** ************** ***
 
-    return 'Toxicomanias: '
+    return ''
         '$alcoholismo'
         '$tabaquismo'
         '$drogadismo';
@@ -2377,7 +2403,6 @@ class Formatos {
       "(${Valores.diuresis.toStringAsFixed(2)} mL/${Valores.horario} Horas). \n"
       "${Auxiliares.getUltimo(esAbreviado: true)}";
 
-
   // OTROS ************* ********** ************** ***
   static String get licenciaMedica {
     return "Licencia médica otorgada con folio ${Valores.folioLicencia}, "
@@ -2396,8 +2421,6 @@ class Formatos {
         "diuresis ${Valores.diuresis.toStringAsFixed(2)} mL/${Valores.horario} mL.  "
         "\n ";
   }
-
-
 }
 
 class Escalas {
@@ -2591,32 +2614,37 @@ class Escalas {
 
   // ABDOMEN
   static List<String> aspectoAbdomen = [
-    'Blando', 'Globoso'
-    'En Batea',
+    'Blando',
+    'Globoso'
+        'En Batea',
     'En batracio',
   ];
   static List<String> peristalisisAbdomen = [
-    'Peristalsis disminuida', 'Normo-peristalsis', 'Peristalsis Aumentada',
+    'Peristalsis disminuida',
+    'Normo-peristalsis',
+    'Peristalsis Aumentada',
   ];
   static List<String> dolorosoAbdomen = [
-    'No doloroso', 'Doloroso a la palpación superficial',
-    'Doloroso a la palpación media'
-    ,'Doloroso a la palpación profunda',
-        'Doloroso a la palpación media y profunda'
+    'No doloroso',
+    'Doloroso a la palpación superficial',
+    'Doloroso a la palpación media',
+    'Doloroso a la palpación profunda',
+    'Doloroso a la palpación media y profunda'
   ];
   static List<String> irritacionPeritoneal = [
     "Sin irritación peritoneal",
     "Con irritación peritoneal",
   ];
-
 }
 
 class Items {
   static List<String> tiposAnalisis = [
-    'Análisis de Ingreso',
+    'Análisis de Ingreso', // 0
     'Análisis de Evolución',
     'Análisis de Revisión',
-    'Análisis de Egreso'
+    'Análisis de Egreso',
+        'Análisis de Gravedad',
+    'Análisis de Traslado', // 5
   ];
 
   static List<String> motivosTraslado = [
@@ -3030,7 +3058,32 @@ class Items {
 
   static List<String> coloracionMucosas = ['Deshidratado', 'Hidratado'];
 
-  static List<String> inspeccionGeneral = ['Alerta', 'Obnubilado', 'Somnoliento', 'Estuporoso'];
+  static List<String> inspeccionGeneral = [
+    'Alerta',
+    'Obnubilado',
+    'Somnoliento',
+    'Estuporoso'
+  ];
+
+  static List<String> typesDocumentaciones = [
+    'Cartilla Nacional de Vacunación',
+    'Identificación Federal del Elector',
+    'Acta de Nacimiento',
+    'Comprobante de Domicilio',
+    'Reporte de Biopsia',
+    'Valoración Preanestésica',
+    'Valoración Preoperatoria',
+    'Valoración por Especialidades',
+    'Reporte de Gammagrama',
+    'Reporte de Ecocardiografía',
+    'Reporte de Holter',
+    'Antibiogramas',
+    '',
+    'Alerta',
+    'Obnubilado',
+    'Somnoliento',
+    'Estuporoso',
+  ];
 
   static List<String> get orderOfCamas {
     List<String> list = [];
@@ -3194,7 +3247,6 @@ class Items {
     "Centésimo Noveno",
   ];
 }
-
 
 class Parenterales {
   static List parenterales = [

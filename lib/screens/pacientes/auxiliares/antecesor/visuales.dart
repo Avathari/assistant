@@ -14,6 +14,7 @@ import 'package:assistant/screens/pacientes/auxiliares/presentaciones/antecedent
 import 'package:assistant/screens/pacientes/auxiliares/presentaciones/presentaciones.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/generales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisiones.dart';
+import 'package:assistant/screens/pacientes/epidemiologicos/documentacion.dart';
 import 'package:assistant/screens/pacientes/epidemiologicos/licencias.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/hematinicos.dart';
@@ -327,7 +328,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
 
   Widget pantallasAuxiliares(int actualPage) {
     var list = [
-      Dashboard(),
+      Dashboard(), // 0
       OperacionesPacientes(operationActivity: Constantes.Update),
       const MenuPersonales(),
       const GestionVitales(),
@@ -338,10 +339,11 @@ class _VisualPacientesState extends State<VisualPacientes> {
       Intensiva(), // Analisis(),
       ReportesMedicos(),
       // GestionBalances(),
-      const Center(
-        child: Text('Body 7'),
-      ),
-      GestionHospitalizaciones(),
+      GestionDocumentacion(withAppBar: false,),
+      // const Center(
+      //   child: Text('Body 7'),
+      // ),
+    GestionHospitalizaciones(withAppBar: false,),
       GestionLicencia(),
       Container(margin: const EdgeInsets.all(10), child: Revisiones()),
       const Center(
@@ -369,7 +371,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
             widget.actualPage = 0;
           });
         },
-      ),
+      ), // 0
       ListTile(
         leading: const Icon(
           Icons.person,
@@ -474,7 +476,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
             widget.actualPage = 6;
           });
         },
-      ),
+      ), // 6
       ListTile(
         leading: const Icon(
           Icons.bookmarks_outlined,
@@ -509,7 +511,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
             widget.actualPage = 8;
           });
         },
-      ),
+      ), // 8
       ListTile(
         leading: const Icon(
           Icons.medical_services_outlined,
@@ -523,7 +525,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
           }
           // Update the state of the app
           toNextScreen(
-              context: context, index: 9, screen: GestionHospitalizaciones());
+              context: context, index: 9, screen: GestionHospitalizaciones(withAppBar: true,));
         },
       ),
       ListTile(

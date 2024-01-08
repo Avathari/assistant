@@ -24,8 +24,10 @@ import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporte
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteEvolucion.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteIngreso.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reportePrequirurgico.dart';
+import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteRevision.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteTerapia.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteTransfusion.dart';
+import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteTraslado.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
@@ -125,12 +127,12 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             Reportes.exploracionFisica = value.last['Exploracion_Fisica'] ?? '';
             Reportes.signosVitales = value.last['Signos_Vitales'] ?? '';
             // Segundas Variables **************************************************
-            Reportes.eventualidadesOcurridas =
-                value.last['Eventualidades'] ?? '';
-            Reportes.terapiasPrevias = value.last['Terapias_Previas'] ?? '';
+            // Reportes.eventualidadesOcurridas =
+            //     value.last['Eventualidades'] ?? '';
+            // Reportes.terapiasPrevias = value.last['Terapias_Previas'] ?? '';
             Reportes.analisisMedico = value.last['Analisis_Medico'] ?? '';
-            Reportes.tratamientoPropuesto =
-                value.last['Tratamiento_Propuesto'] ?? '';
+            // Reportes.tratamientoPropuesto =
+            //     value.last['Tratamiento_Propuesto'] ?? '';
             // Listados desde String  ************************************************
             // Reportes.dieta = ;
 
@@ -557,6 +559,22 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             height: 20,
             child: CrossLine(),
           ),
+          Expanded(
+            flex: 1,
+            child: CircleIcon(
+              radios: 30,
+              difRadios: 5,
+              tittle: 'Copiar Esquema del Reporte',
+              iconed: Icons.copy_all_sharp,
+              onChangeValue: () {
+                Datos.portapapeles(
+                    context: context,
+                    text: Reportes.copiarReporte(
+                        tipoReporte: getTypeReport()));
+                _key.currentState!.closeEndDrawer();
+              },
+            ),
+          ),
           // if (isLargeDesktop(context))
           //   Expanded(
           //     child: GrandButton(
@@ -754,6 +772,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
         Repositorios.tipo_Analisis = Items.tiposAnalisis[3];
         return TypeReportes.reporteRevision;
       case 8:
+        Repositorios.tipo_Analisis = Items.tiposAnalisis[5];
         return TypeReportes.reporteTraslado;
       case 9:
         return TypeReportes.reportePreanestesica;
@@ -787,8 +806,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       const ReportePrequirurgico(), // 4 : Reporte de
       Container(), // 5 : Reporte de Preanestésico
       Container(), // 6 : Reporte de Egreso
-      Container(), // 7 : Reporte de Revisión
-      Container(), // 8 : Reporte de Traslado
+      const ReporteRevision(), // 7 : Reporte de Revisión
+      const ReporteTraslado(), // 8 : Reporte de Traslado
       Pacientes.esHospitalizado == true
           ? const IndicacionesHospital()
           : const IndicacionesConsulta(), // Container(),
@@ -1391,72 +1410,78 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
     if (widget.indexNote > -1) {
       return TittleContainer(
         tittle: listNotes![widget.indexNote]['FechaRealizacion'],
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              listNotes![widget.indexNote]['Tipo_Analisis'],
-              style: Styles.textSyleGrowth(fontSize: 12),
-            ),
-            Text(
-              "Inicio de Padecimiento - " + listNotes![widget.indexNote]['FechaPadecimiento'],
-              style: Styles.textSyleGrowth(fontSize: 12),
-            ),
-            CrossLine(thickness: 4),
-            CrossLine(thickness: 3),
-            Text(listNotes![widget.indexNote]['Diagnosticos_Hospital'],
-                style: Styles.textSyleGrowth(fontSize: 9)),
-            CrossLine(thickness: 4),
-            Text(
-              listNotes![widget.indexNote]['Subjetivo'],
-              style: Styles.textSyleGrowth(fontSize: 9),
-            ),
-            Text(listNotes![widget.indexNote]['Signos_Vitales'],
-                style: Styles.textSyleGrowth(fontSize: 8)),
-            CrossLine(thickness: 3),
-            Text(
-              listNotes![widget.indexNote]['Exploracion_Fisica'],
-              maxLines: 20,
-              style: Styles.textSyleGrowth(fontSize: 9),
-            ),
-            CrossLine(thickness: 3),
-            Text(
-                listNotes![widget.indexNote]['Tipo_Analisis'] ==
-                        "Análisis de Ingreso"
-                    ? "MOTIVO DE INGRESO: " + listNotes![widget.indexNote]['Padecimiento_Actual']
-                    : listNotes![widget.indexNote]['Tipo_Analisis'] ==
-                            "Análisis de Evolución"
-                        ? listNotes![widget.indexNote]['Analisis_Medico']
-                        : "",
-                style: Styles.textSyleGrowth(fontSize: 8)),
-            CrossLine(thickness: 3),
-            Text(
-              listNotes![widget.indexNote]['Eventualidades'],
-              maxLines: 20,
-              style: Styles.textSyleGrowth(fontSize: 9),
-            ),
-            CrossLine(thickness: 1),
-            Text(
-              listNotes![widget.indexNote]['Terapias_Previas'],
-              maxLines: 20,
-              style: Styles.textSyleGrowth(fontSize: 9),
-            ),
-            Text(
-              listNotes![widget.indexNote]['Analisis_Medico'],
-              maxLines: 20,
-              style: Styles.textSyleGrowth(fontSize: 9),
-            ),
-            Text(
-              listNotes![widget.indexNote]['Tratamiento_Propuesto'],
-              maxLines: 20,
-              style: Styles.textSyleGrowth(fontSize: 9),
-            ),
-            CrossLine(thickness: 4),
-            CrossLine(thickness: 3),
-            Text(listNotes![widget.indexNote]['Pendientes'],
-                style: Styles.textSyleGrowth(fontSize: 8)),
-          ],
+        child: SingleChildScrollView(
+          controller: ScrollController(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                listNotes![widget.indexNote]['Tipo_Analisis'],
+                style: Styles.textSyleGrowth(fontSize: 12),
+              ),
+              Text(
+                "Inicio de Padecimiento - " + listNotes![widget.indexNote]['FechaPadecimiento'],
+                style: Styles.textSyleGrowth(fontSize: 12),
+              ),
+              CrossLine(thickness: 4),
+              CrossLine(thickness: 3),
+              Text(listNotes![widget.indexNote]['Diagnosticos_Hospital'],
+                  style: Styles.textSyleGrowth(fontSize: 9)),
+              CrossLine(thickness: 4),
+              Text(
+                listNotes![widget.indexNote]['Subjetivo'],
+                maxLines: 3,
+                style: Styles.textSyleGrowth(fontSize: 9),
+              ),
+              Text(listNotes![widget.indexNote]['Signos_Vitales'],
+                  maxLines: 3,
+                  style: Styles.textSyleGrowth(fontSize: 8)),
+              CrossLine(thickness: 3),
+              Text(
+                listNotes![widget.indexNote]['Exploracion_Fisica'],
+                maxLines: 20,
+                style: Styles.textSyleGrowth(fontSize: 9),
+              ),
+              CrossLine(thickness: 3),
+              Text(
+                  listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                          "Análisis de Ingreso"
+                      ? "MOTIVO DE INGRESO: " + listNotes![widget.indexNote]['Padecimiento_Actual']
+                      : listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                              "Análisis de Evolución"
+                          ? listNotes![widget.indexNote]['Analisis_Medico']
+                          : "",
+                  maxLines: 25,
+                  style: Styles.textSyleGrowth(fontSize: 8)),
+              CrossLine(thickness: 3),
+              // Text(
+              //   listNotes![widget.indexNote]['Eventualidades'],
+              //   maxLines: 20,
+              //   style: Styles.textSyleGrowth(fontSize: 9),
+              // ),
+              CrossLine(thickness: 1),
+              // Text(
+              //   listNotes![widget.indexNote]['Terapias_Previas'],
+              //   maxLines: 20,
+              //   style: Styles.textSyleGrowth(fontSize: 9),
+              // ),
+              Text(
+                listNotes![widget.indexNote]['Analisis_Medico'],
+                maxLines: 20,
+                style: Styles.textSyleGrowth(fontSize: 9),
+              ),
+              // Text(
+              //   listNotes![widget.indexNote]['Tratamiento_Propuesto'],
+              //   maxLines: 20,
+              //   style: Styles.textSyleGrowth(fontSize: 9),
+              // ),
+              CrossLine(thickness: 4),
+              CrossLine(thickness: 3),
+              Text(listNotes![widget.indexNote]['Pendientes'],
+                  style: Styles.textSyleGrowth(fontSize: 8)),
+            ],
+          ),
         ),
       );
     } else {

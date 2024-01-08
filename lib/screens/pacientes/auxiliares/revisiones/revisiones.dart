@@ -4,6 +4,7 @@ import 'package:assistant/operativity/pacientes/valores/Valorados/citometrias.da
 import 'package:assistant/operativity/pacientes/valores/Valorados/hepatometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/globulares.dart';
+import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizado.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/antropometricos.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/balancesHidrico.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/cardiovasculares.dart';
@@ -2555,6 +2556,12 @@ class _RevisionesState extends State<Revisiones> {
 
   // **** ********** ********* *****************
   Widget? principal(BuildContext context) {
-    return Container();
+    return Column(
+      children: [
+        Expanded(child: Hospitalizado()),
+      ],
+    );
+
+    // return Container();
   }
 }

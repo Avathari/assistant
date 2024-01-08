@@ -123,6 +123,8 @@ class Pacientes {
   static List? Vacunales = [];
   //
   static List? Licencias = [];
+  static List? Documentaciones = [];
+  //
   static List? Balances = [];
   static List? Notas = []; // Registro de Análisis, Notas y Eventualidades.
   static List? Ventilaciones = [];
@@ -237,16 +239,16 @@ class Pacientes {
   // Prosas y apartados literales en la formación de las Actividades.
   static String originario() {
     if (Valores.sexo == 'Masculino') {
-      return "Originario de ${Pacientes.Paciente['Pace_Orig_Muni']}"; // , ${Pacientes.Paciente['Pace_Orig_EntFed']}";
+      return "Originario de ${Pacientes.Paciente['Pace_Orig_EntFed']}"; // , ${Pacientes.Paciente['Pace_Orig_EntFed']}";
     } else if (Valores.sexo == 'Femenino') {
-      return "Originaria de ${Pacientes.Paciente['Pace_Orig_Muni']}"; // , ${Pacientes.Paciente['Pace_Orig_EntFed']}";
+      return "Originaria de ${Pacientes.Paciente['Pace_Orig_EntFed']}"; // , ${Pacientes.Paciente['Pace_Orig_EntFed']}";
     } else {
       return "${Pacientes.Paciente['Pace_Orig_Muni']}, ${Pacientes.Paciente['Pace_Orig_EntFed']}";
     }
   }
 
   static String residente() {
-    return "la localidad de ${Pacientes.Paciente['Pace_Orig_EntFed']}"; // Pace_Resi_Loca
+    return "la localidad de ${Pacientes.Paciente['Pace_Orig_Muni']}"; // Pace_Resi_Loca
     // "por ${Pacientes.Paciente['Pace_Resi_Dur'].toString()} año(s)";
   }
 
@@ -291,7 +293,7 @@ class Pacientes {
       // ************* *********** ************* ************ ********* ********
       if (otherForm) {
         return "${Pacientes.Paciente['Pace_Ses']} de ${Pacientes.Paciente['Pace_Eda']} años, "
-            "DEH ${Valores.diasEstancia} dia(s): \n";
+            "DEH ${Valores.diasEstancia} día(s). \n";
       } else {
         return "${Pacientes.Paciente['Pace_Ses']} de ${Pacientes.Paciente['Pace_Eda']} años, "
             "en su ${Pacientes.diasOrdinalesEstancia.toLowerCase()} día de estancia intrahospitalaria, "
@@ -448,11 +450,19 @@ class Pacientes {
         "";
   }
 
-  static String antecedentesIngresosPatologicos() {
-    return "${Pacientes.patologicos()}\n"
-        "Antecedentes quirúrgicos: ${Pacientes.hospitalarios()}."
-        "Antecedentes alérgicos: ${Pacientes.alergicos()}\n";
+  static String antecedentesIngresosPatologicos({bool resumido = false, String saltoLinea = "\n"}) {
+    return "${Pacientes.patologicos(resumido: resumido, saltoLinea: saltoLinea)}\n"
+        "RELEVANTES: "
+        "Antecedentes quirúrgicos: ${Pacientes.hospitalarios()}. "
+        "Antecedentes alérgicos: ${Pacientes.alergicos()}\n"
+        "${Formatos.toxicomanias}\n";
     // "Antecedentes traumáticos: ${Pacientes.traumaticos()}\n";
+  }
+
+  static String antecedentesRelevantes() {
+    return "Antecedentes quirúrgicos: ${Pacientes.hospitalarios()}.   "
+        "Antecedentes alérgicos: ${Pacientes.alergicos()}\n"
+        "${Formatos.toxicomanias}\n";
   }
 
   static String antecedentesPatologicos() {
@@ -462,7 +472,7 @@ class Pacientes {
         "Antecedentes patológicos: ${Pacientes.patologicos()}\n";
   }
 
-  static String patologicos({bool resaltado = true}) {
+  static String patologicos({bool resaltado = true, bool resumido = false, String saltoLinea = "\n"}) {
     // ************************ ************** ********** **** *** *
     // Reportes.reportes['Antecedentes_Patologicos'] = "";
     // Reportes.personalesPatologicos = "";
@@ -473,36 +483,70 @@ class Pacientes {
     if (Patologicos != []) {
       Reportes.personalesPatologicos = "";
 
-      if (resaltado) {
-        for (var element in Patologicos!) {
-          if (Reportes.personalesPatologicos == "") {
-            Reportes.personalesPatologicos =
-                "$prefix${element['Pace_APP_DEG_com'].toUpperCase()} "
-                "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
-                "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
-                "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
-          } else {
-            Reportes.personalesPatologicos =
-                "${Reportes.personalesPatologicos}. \n$prefix${element['Pace_APP_DEG_com'].toUpperCase()} "
-                "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
-                "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
-                "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
+      if (resumido) {
+        if (resaltado) {
+          for (var element in Patologicos!) {
+            if (Reportes.personalesPatologicos == "") {
+              Reportes.personalesPatologicos =
+                  "${element['Pace_APP_DEG_com'].toUpperCase()} "
+                  "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+                  "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. ";
+            } else {
+              Reportes.personalesPatologicos =
+                  "${Reportes.personalesPatologicos}. ${element['Pace_APP_DEG_com'].toUpperCase()} "
+                  "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+                  "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. ";
+            }
+          }
+        } else {
+          for (var element in Patologicos!) {
+            if (Reportes.personalesPatologicos == "") {
+              Reportes.personalesPatologicos =
+                  "$prefix${element['Pace_APP_DEG_com']} "
+                  "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+                  "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
+                  "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
+            } else {
+              Reportes.personalesPatologicos =
+                  "${Reportes.personalesPatologicos}. $saltoLinea$prefix${element['Pace_APP_DEG_com']} "
+                  "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+                  "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
+                  "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
+            }
           }
         }
       } else {
-        for (var element in Patologicos!) {
-          if (Reportes.personalesPatologicos == "") {
-            Reportes.personalesPatologicos =
-                "$prefix${element['Pace_APP_DEG_com']} "
-                "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
-                "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
-                "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
-          } else {
-            Reportes.personalesPatologicos =
-                "${Reportes.personalesPatologicos}. \n$prefix${element['Pace_APP_DEG_com']} "
-                "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
-                "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
-                "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
+        if (resaltado) {
+          for (var element in Patologicos!) {
+            if (Reportes.personalesPatologicos == "") {
+              Reportes.personalesPatologicos =
+              "$prefix${element['Pace_APP_DEG_com'].toUpperCase()} "
+                  "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+                  "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
+                  "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
+            } else {
+              Reportes.personalesPatologicos =
+              "${Reportes.personalesPatologicos}. $saltoLinea$prefix${element['Pace_APP_DEG_com'].toUpperCase()} "
+                  "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+                  "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
+                  "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
+            }
+          }
+        } else {
+          for (var element in Patologicos!) {
+            if (Reportes.personalesPatologicos == "") {
+              Reportes.personalesPatologicos =
+              "$prefix${element['Pace_APP_DEG_com']} "
+                  "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+                  "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
+                  "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
+            } else {
+              Reportes.personalesPatologicos =
+              "${Reportes.personalesPatologicos}. \n$prefix${element['Pace_APP_DEG_com']} "
+                  "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+                  "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
+                  "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
+            }
           }
         }
       }
@@ -7546,12 +7590,14 @@ class Reportes {
     "Motivo_Cirugia": Valores.motivoCirugia,
     // "Antecedentes_No_Patologicos": Valores.tipoInterrogatorio,
     "Datos_Generales": Pacientes.prosa(),
+    "Datos_Generales_Simple": Pacientes.prosa(isTerapia: true, otherForm: true),
     "Antecedentes_No_Patologicos":
         Pacientes.noPatologicos(), //"Sin información recabada",
     "Antecedetes_No_Patologicos_Analisis": Pacientes.noPatologicosAnalisis(),
     "Antecedentes_Patologicos_Otros": Pacientes.antecedentesPatologicos(),
     "Antecedentes_Patologicos_Ingreso":
         Pacientes.antecedentesIngresosPatologicos(),
+    "Antecedentes_Relevantes": Pacientes.antecedentesRelevantes(),
     "Antecedentes_Heredofamiliares": Pacientes.heredofamiliares(),
     "Antecedentes_Quirurgicos": Pacientes.hospitalarios(),
     "Antecedentes_Patologicos": Pacientes.patologicos(),
@@ -7560,6 +7606,7 @@ class Reportes {
     "Antecedentes_Alergicos": Pacientes.alergicos(),
     // MOTIVOS DE ATENCIÓN **********************************
     "Motivo_Consulta": Reportes.motivoConsulta,
+    "Motivo_Traslado": Reportes.motivoTraslado,
     "Subjetivo": Reportes.subjetivoHospitalizacion,
     "Padecimiento_Actual": Reportes.padecimientoActual,
     // EXPLORACIÓN FÍSICA ************************************
@@ -7639,7 +7686,7 @@ class Reportes {
   static String impresionesDiagnosticas = "";
   static String pronosticoMedico = "";
   //
-  static String motivoConsulta = "",
+  static String motivoConsulta = "", motivoTraslado = "",
       subjetivoHospitalizacion =
           // "El paciente se refiere ${Valores.estadoGeneral}. "
           "${Exploracion.referenciasHospitalizacion}. "
@@ -7741,8 +7788,8 @@ class Reportes {
         return "(N-ANES) - ${Pacientes.nombreCompleto} - (${Calendarios.today()}).pdf";
       case 6: // Nota de Egreso
         return "(PA) - ${Pacientes.nombreCompleto} - (${Calendarios.today()}).pdf";
-      case 7: //
-        return "(NE) - ${Pacientes.nombreCompleto} - (${Calendarios.today()}).pdf";
+      case 7: // Nota de Revisión
+        return "(REV) - ${Pacientes.nombreCompleto} - (${Calendarios.today()}).pdf";
       case 8: //
         return "(CE) - ${Pacientes.nombreCompleto} - (${Calendarios.today()}).pdf";
       case 9: //
@@ -7777,6 +7824,10 @@ class Reportes {
         return CopiasReportes.reporteConsulta(Reportes.reportes);
       case TypeReportes.reporteTerapiaIntensiva:
         return CopiasReportes.reporteTerapia(Reportes.reportes);
+      case TypeReportes.reporteRevision:
+        return CopiasReportes.reporteRevision(Reportes.reportes);
+      case TypeReportes.reporteTraslado:
+        return CopiasReportes.reporteTraslado(Reportes.reportes);
       default:
         return CopiasReportes.reporteIngreso(Reportes.reportes);
     }
@@ -8449,17 +8500,16 @@ class Repositorios {
           value; // Se Asigna a la Estructura Pacientes.Notas ***************************
       Terminal.printExpected(
           message: "VALUE - Consultar Repositorio : ${value.last} : : ");
+      //
+      Reportes.reportes = value.last;
       // Del Padecimiento **************************************************
       Reportes.padecimientoActual = value.last['Padecimiento_Actual'] ?? '';
       Valores.fechaPadecimientoActual = value.last['FechaPadecimiento'] ?? '';
       // Primeras Variables **************************************************
       Reportes.exploracionFisica = value.last['Exploracion_Fisica'] ?? '';
       Reportes.signosVitales = value.last['Signos_Vitales'] ?? '';
-      // Segundas Variables **************************************************
-      Reportes.eventualidadesOcurridas = value.last['Eventualidades'] ?? '';
-      Reportes.terapiasPrevias = value.last['Terapias_Previas'] ?? '';
-      Reportes.analisisMedico = value.last['Analisis_Medico'] ?? '';
-      Reportes.tratamientoPropuesto = value.last['Tratamiento_Propuesto'] ?? '';
+      // Segundas Variables ************************************************** Reportes.eventualidadesOcurridas = value.last['Eventualidades'] ?? ''; Reportes.terapiasPrevias = value.last['Terapias_Previas'] ?? '';
+      Reportes.analisisMedico = value.last['Analisis_Medico'] ?? '';  // Reportes.tratamientoPropuesto = value.last['Tratamiento_Propuesto'] ?? '';
       // Listados desde String  ************************************************
       // Reportes.dieta = ;
 
@@ -8575,10 +8625,10 @@ class Repositorios {
       Reportes.reportes['Subjetivo'],
       Reportes.signosVitales,
       Reportes.exploracionFisica,
-      Reportes.eventualidadesOcurridas,
-      Reportes.terapiasPrevias,
+      // Reportes.eventualidadesOcurridas,
+      // Reportes.terapiasPrevias,
       Reportes.analisisMedico,
-      Reportes.tratamientoPropuesto,
+      // Reportes.tratamientoPropuesto,
       // INDICACIONES MÉDICAS *******************************
       Reportes.dieta.toString(),
       Reportes.hidroterapia.toString(),
@@ -8714,11 +8764,11 @@ class Repositorios {
         "ServicioMedico, FechaRealizacion, "
         "Diagnosticos_Hospital, "
         "Subjetivo, Signos_Vitales, Exploracion_Fisica, "
-        "Eventualidades, Terapias_Previas, Analisis_Medico, Tratamiento_Propuesto, "
+        "Analisis_Medico, "
         "Dietoterapia, Hidroterapia, Insulinoterapia, Hemoterapia, Oxigenoterapia, Medicamentos, Medidas_Generales, Pendientes, "
         "Tipo_Analisis) "
         "VALUES (?,?,?,?,?,?,?,?,?,?,?,"
-        "?,?,?,?,?,?,?,?,?,?,"
+        "?,?,?,?,?,?,?,"
         "?,?)",
     "updateQuery": "UPDATE pace_hosp_repo SET "
         "ID_Compendio = ?, ID_Pace = ?, ID_Hosp = ?, "
@@ -8726,7 +8776,7 @@ class Repositorios {
         "ServicioMedico = ?, FechaRealizacion = ?, "
         "Diagnosticos_Hospital = ?, "
         "Subjetivo = ?, Signos_Vitales = ?, Exploracion_Fisica = ?, "
-        "Eventualidades = ?, Terapias_Previas = ?, Analisis_Medico = ?, Tratamiento_Propuesto = ?, "
+        "Analisis_Medico = ?, "
         "Dietoterapia = ?, Hidroterapia = ?, Insulinoterapia = ?, Hemoterapia = ?, Oxigenoterapia = ?, Medicamentos = ?, Medidas_Generales = ?, Pendientes = ?, "
         "Tipo_Analisis =  ? "
         "WHERE ID_Hosp = ?",
@@ -9140,6 +9190,7 @@ class Expedientes {
   };
 }
 
+//
 class Licencias {
   static int ID_Licencias = 0;
   //
@@ -9295,6 +9346,130 @@ class Licencias {
         "(SELECT IFNULL(AVG('Pace_SV_tas'), 0) FROM licen_med WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAS,"
         "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM licen_med WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
         "(SELECT IFNULL(count(*), 0) FROM licen_med WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
+  };
+}
+
+class Documentaciones {
+  static int ID_Documentaciones = 0;
+  //
+  static void fromJson(Map<String, dynamic> json) {
+    Valores.folioLicencia = json['Folio'];
+    Valores.diasOtorgadosLicencia = json['Dias_Otorgados'].toString();
+    Valores.fechaRealizacionLicencia = json['Fecha_Realizacion'];
+    Valores.fechaInicioLicencia = json['Fecha_Inicio'];
+    Valores.fechaTerminoLicencia = json['Fecha_Termino'];
+    Valores.motivoLicencia = json['Motivo_Incapacidad'];
+    Valores.caracterLicencia = json['Caracter'];
+    Valores.lugarExpedicionLicencia = json['Lugar_Expedicion'];
+    Valores.diagnosticoLicencia = json['Diagnos_Expedicion'];
+  }
+
+  //
+
+  static Map<String, dynamic> Documentos = {};
+
+  static List<String> typesDocumentaciones = Items.typesDocumentaciones;
+  static List<String> lugarExpedicion = Items.lugarExpedicion;
+  static List<String> caracterLicencia = Items.caracterLicencia;
+
+  static void ultimoRegistro() {
+    Actividades.consultarId(Databases.siteground_database_reghosp,
+        Documentaciones.documentacion['consultLastQuery'], Pacientes.ID_Paciente)
+        .then((value) {
+      // Enfermedades de base del paciente, asi como las Hospitalarias.
+      Documentaciones.Documentos = value;
+      //
+      Valores.folioLicencia = value['Folio'];
+      Valores.diasOtorgadosLicencia = value['Dias_Otorgados'].toString();
+      Valores.fechaRealizacionLicencia = value['Fecha_Realizacion'];
+      Valores.fechaInicioLicencia = value['Fecha_Inicio'];
+      Valores.fechaTerminoLicencia = value['Fecha_Termino'];
+      Valores.motivoLicencia = value['Motivo_Incapacidad'];
+      Valores.caracterLicencia = value['Caracter'];
+      Valores.lugarExpedicionLicencia = value['Lugar_Expedicion'];
+      Valores.diagnosticoLicencia = value['Diagnos_Expedicion'];
+    });
+  }
+
+  static void consultarRegistro() {
+    Actividades.consultarAllById(Databases.siteground_database_reghosp,
+        Documentaciones.documentacion['consultIdQuery'], Pacientes.ID_Paciente)
+        .then((value) {
+      // Enfermedades de base del paciente, asi como las Hospitalarias.
+      Pacientes.Documentaciones = value;
+      // print("Pacientes.Documentaciones ${Pacientes.Documentaciones}");
+    });
+  }
+
+  //
+  static getImage() async {
+    return await Actividades.consultarId(Databases.siteground_database_regpace,
+        documentacion['consultImage'], ID_Documentaciones);
+  }
+
+  // VARIABLES GLOBALES *********************************************************
+
+  static final Map<String, dynamic> documentacion = {
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_regphosp "
+        "DEFAULT CHARACTER SET utf8 "
+        "COLLATE utf8_unicode_ci;",
+    "showTables": "SHOW tables;",
+    "dropDatabase": "DROP DATABASE bd_regphosp",
+    "describeTable": "DESCRIBE pace_repo;",
+    "showColumns": "SHOW columns FROM pace_repo",
+    "showInformation":
+    "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_repo'",
+    "createQuery": """CREATE TABLE pace_repo (
+                          ID_Pace_Repo int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                          ID_Pace int(10) NOT NULL,
+                          FechaReporte date NOT NULL,
+                          Reporte_FIAT LONGBLOB,
+                          TipoReporte varchar(200) COLLATE utf8_unicode_ci NOT NULL, 
+                          NombreReporte varchar(200) COLLATE utf8_unicode_ci NOT NULL,                            
+                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 
+                    COLLATE=utf8_unicode_ci 
+                    COMMENT='Tabla para Registro de Documentos Personales y Relevantes Médicos.';
+            """,
+    "truncateQuery": "TRUNCATE pace_repo",
+    "dropQuery": "DROP TABLE pace_repo",
+    "consultQuery": "SELECT * FROM pace_repo",
+    "consultIdQuery":
+    "SELECT * FROM pace_repo WHERE ID_Pace = ? ORDER BY FechaReporte DESC",
+    "consultByIdPrimaryQuery": "SELECT * FROM pace_repo WHERE ID_Pace = ?",
+    "consultAllIdsQuery": "SELECT ID_Pace FROM pace_repo",
+    "consultLastQuery":
+    "SELECT * FROM pace_repo WHERE ID_Pace = ? ORDER BY FechaReporte ASC",
+    "consultByName": "SELECT * FROM pace_repo WHERE Pace_APP_DEG LIKE '%",
+    "consultImage":
+    "SELECT Reporte_FIAT FROM pace_repo WHERE ID_Pace_Repo = ? ",
+    "registerQuery": "INSERT INTO pace_repo (ID_Pace, "
+        "FechaReporte, "
+        "Reporte_FIAT, "
+        "TipoReporte, NombreReporte) "
+        "VALUES (?,?,from_base64(?),?,?)",
+    "updateQuery": "UPDATE pace_repo "
+        "SET ID_Pace_Repo = ?, ID_Pace = ?, "
+        "FechaReporte = ?, "
+        "Reporte_FIAT = from_base64(?) , "
+        "TipoReporte = ?, NombreReporte = ? "
+        "WHERE ID_Pace_Repo = ?",
+    "deleteQuery": "DELETE FROM pace_repo WHERE ID_Pace_Repo = ?",
+    "vicenciaColumns": [
+      "ID_Pace",
+    ],
+    "vicenciaItems": [
+      "ID_Pace",
+    ],
+    "vicenciaColums": [
+      "ID Paciente",
+    ],
+    "vicenciaStats": [
+      "Total_Administradores",
+    ],
+    "vicenciaStadistics": "SELECT "
+        "(SELECT IFNULL(AVG('Pace_SV_tas'), 0) FROM pace_repo WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAS,"
+        "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM pace_repo WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_repo WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
   };
 }
 

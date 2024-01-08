@@ -50,7 +50,7 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
           widget.isTerapia!
               ? Container()
               : Expanded(
-                  flex: 2,
+                  flex: 3,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -74,13 +74,13 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                 ),
           CrossLine(),
           Expanded(
-            flex: widget.isTerapia! ? 8 : 4, // 6
+            flex: widget.isTerapia! ? 8 : 17, // 6
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  flex: 7,
+                  flex: isLargeDesktop(context) ? 12: 7,
                   child: EditTextArea(
                       textController: expoTextController,
                       labelEditText: "Exploración física",
@@ -251,9 +251,12 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
     return Expanded(
       flex: 1,
       child: Wrap(
+        direction: Axis.horizontal,
       alignment: WrapAlignment.spaceBetween,
-        spacing: 10,
-        runSpacing: 10,
+        runAlignment: WrapAlignment.center,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        spacing: 25,
+        runSpacing: 15,
         children: [
           GrandIcon(
             iconData: Icons.explore,
@@ -379,7 +382,7 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
     return Expanded(
       flex: isLargeDesktop(context) ? 3 : 1,
       child: Wrap(
-        direction: isLargeDesktop(context) ? Axis.vertical : Axis.horizontal,
+        direction: isLargeDesktop(context) ? Axis.horizontal : Axis.horizontal,
         alignment: WrapAlignment.spaceBetween,
         spacing: 8,
         runSpacing: 8,

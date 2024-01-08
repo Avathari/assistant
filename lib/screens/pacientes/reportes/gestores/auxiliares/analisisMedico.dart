@@ -95,43 +95,43 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
             : Expanded(
             child: SingleChildScrollView(
               child: Column(children: [
-                EditTextArea(
-                    textController: eventualidadesTextController,
-                    labelEditText: "Eventualidades sucitadas",
-                    keyBoardType: TextInputType.text,
-                    numOfLines: isTablet(context) ? 8 : 5,
-                    withShowOption: true,
-                    onChange: ((value) {
-                      eventualidadesTextController.text = value;
-                      // ************ ******* *****************
-                      Reportes.eventualidadesOcurridas = "$value.";
-                      Reportes.reportes['Eventualidades'] = "$value.";
-                      // ************ ******* *****************
-                      Reportes.reportes['Analisis_Medico'] =
-                      "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                      Reportes.reportes['Analisis_Terapia'] =
-                      "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                    }),
-                    inputFormat: MaskTextInputFormatter()),
-                EditTextArea(
-                    textController: terapiasTextController,
-                    labelEditText: "Terapias previas",
-                    keyBoardType: TextInputType.multiline,
-                    numOfLines: isTablet(context) ? 8 : 5,
-                    withShowOption: true,
-                    onChange: ((value) {
-                      Reportes.terapiasPrevias = "$value.";
-                      Reportes.reportes['Analisis_Medico'] =
-                      "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                      Reportes.reportes['Analisis_Terapia'] =
-                      "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                    }),
-                    inputFormat: MaskTextInputFormatter()),
+                // EditTextArea(
+                //     textController: eventualidadesTextController,
+                //     labelEditText: "Eventualidades sucitadas",
+                //     keyBoardType: TextInputType.text,
+                //     numOfLines: isTablet(context) ? 8 : 5,
+                //     withShowOption: true,
+                //     onChange: ((value) {
+                //       eventualidadesTextController.text = value;
+                //       // ************ ******* *****************
+                //       Reportes.eventualidadesOcurridas = "$value.";
+                //       Reportes.reportes['Eventualidades'] = "$value.";
+                //       // ************ ******* *****************
+                //       Reportes.reportes['Analisis_Medico'] =
+                //       "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                //       Reportes.reportes['Analisis_Terapia'] =
+                //       "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                //     }),
+                //     inputFormat: MaskTextInputFormatter()),
+                // EditTextArea(
+                //     textController: terapiasTextController,
+                //     labelEditText: "Terapias previas",
+                //     keyBoardType: TextInputType.multiline,
+                //     numOfLines: isTablet(context) ? 8 : 5,
+                //     withShowOption: true,
+                //     onChange: ((value) {
+                //       Reportes.terapiasPrevias = "$value.";
+                //       Reportes.reportes['Analisis_Medico'] =
+                //       "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                //       Reportes.reportes['Analisis_Terapia'] =
+                //       "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                //     }),
+                //     inputFormat: MaskTextInputFormatter()),
                 EditTextArea(
                     textController: analisisTextController,
                     labelEditText: "Análisis médico",
                     keyBoardType: TextInputType.multiline,
-                    numOfLines: isTablet(context) ? 8 : 5,
+                    numOfLines: isLargeDesktop(context) ? 28 : isTablet(context) ? 12 : 5,
                     withShowOption: true,
                     selection: true,
                     onSelected: () {
@@ -153,20 +153,20 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                       "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
                     }),
                     inputFormat: MaskTextInputFormatter()),
-                EditTextArea(
-                    textController: tratamientoTextController,
-                    labelEditText: "Terapéutica propuesta",
-                    keyBoardType: TextInputType.multiline,
-                    numOfLines: isTablet(context) ? 8 : 5,
-                    withShowOption: true,
-                    onChange: ((value) {
-                      Reportes.tratamientoPropuesto = "$value.";
-                      Reportes.reportes['Analisis_Medico'] =
-                      "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                      Reportes.reportes['Analisis_Terapia'] =
-                      "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                    }),
-                    inputFormat: MaskTextInputFormatter()),
+                // EditTextArea(
+                //     textController: tratamientoTextController,
+                //     labelEditText: "Terapéutica propuesta",
+                //     keyBoardType: TextInputType.multiline,
+                //     numOfLines: isTablet(context) ? 8 : 5,
+                //     withShowOption: true,
+                //     onChange: ((value) {
+                //       Reportes.tratamientoPropuesto = "$value.";
+                //       Reportes.reportes['Analisis_Medico'] =
+                //       "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                //       Reportes.reportes['Analisis_Terapia'] =
+                //       "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                //     }),
+                //     inputFormat: MaskTextInputFormatter()),
               ]),
             ))
       ],

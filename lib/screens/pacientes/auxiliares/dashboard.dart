@@ -5,27 +5,16 @@ import 'package:assistant/screens/pacientes/auxiliares/detalles/detalles.dart';
 import 'package:assistant/screens/pacientes/auxiliares/detalles/estadisticasVitales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/diagnosticos/degenerativos.dart';
 import 'package:assistant/screens/pacientes/auxiliares/diagnosticos/diagnosticos.dart';
-import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/actividadesHospitalarias.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizado.dart';
-import 'package:assistant/screens/pacientes/auxiliares/revisiones/generales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisiones.dart';
-import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisorios.dart';
-import 'package:assistant/screens/pacientes/hospitalizacion/diagnosticados.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/pendientes.dart';
-import 'package:assistant/screens/pacientes/intensiva/contenidos/balances.dart';
-import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
-import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/conmutadorParaclinicos.dart';
-import 'package:assistant/screens/pacientes/paraclinicos/operadores/laboratorios.dart';
-import 'package:assistant/screens/pacientes/patologicos/epidemiologicos.dart';
-import 'package:assistant/screens/pacientes/patologicos/patologicos.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/ChartLine.dart';
 
 import 'package:assistant/widgets/CrossLine.dart';
-import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/GrandLabel.dart';
 import 'package:assistant/widgets/RoundedPanel.dart';
 import 'package:assistant/widgets/TittlePanel.dart';

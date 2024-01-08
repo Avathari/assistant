@@ -716,9 +716,11 @@ class GestionHospitalizaciones extends StatefulWidget {
   Widget? actualSidePage = Container();
   // ****************** *** ****** **************
   var keySearch = "Pace_APP_ALE";
+
+  bool? withAppBar;
   // ****************** *** ****** **************
 
-  GestionHospitalizaciones({Key? key, this.actualSidePage}) : super(key: key);
+  GestionHospitalizaciones({Key? key, this.withAppBar = true, this.actualSidePage}) : super(key: key);
 
   @override
   State<GestionHospitalizaciones> createState() =>
@@ -767,7 +769,7 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
+      appBar: widget.withAppBar! == true ? AppBar(
           foregroundColor: Colors.white,
           backgroundColor: Theming.primaryColor,
           leading: IconButton(
@@ -802,7 +804,7 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
                 //
               },
             ),
-          ]),
+          ]) : null,
       body: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         Expanded(
           child: Column(
@@ -865,6 +867,7 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
                       if (snapshot.hasError) print(snapshot.error);
                       return snapshot.hasData
                           ? GridView.builder(
+                        padding: const EdgeInsets.all(10.0),
                               gridDelegate: GridViewTools.gridDelegate(
                                   crossAxisCount: isMobile(context) ? 1 : 3,
                                   mainAxisExtent:
