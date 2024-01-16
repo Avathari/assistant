@@ -597,7 +597,7 @@ class _OperacionesHospitalizacionesState
                               // ******************************************** *** *
                             }).then((value) => onClose(context)))
                         .whenComplete(() => Pacientes.hospitalizar(
-                            modus: Pacientes.modoAtencion!));
+                            modus: Pacientes.modoAtencion!).whenComplete(() => Pacientes.Paciente['Pace_Hosp'] = Pacientes.modoAtencion!));
                     break;
                   default:
                 }

@@ -3114,6 +3114,8 @@ class FormatosReportes {
 
 class CopiasReportes {
   static String reporteIngreso(Map<String, dynamic> paraph) {
+    // print(paraph);
+    //
     String tipoReporte = "NOTA DE INGRESO HOSPITALARIO\n";
     tipoReporte = "${tipoReporte}FICHA DE IDENTIFICACIÓN\n"
         "${paraph['Datos_Generales']}\n";
@@ -3158,39 +3160,39 @@ class CopiasReportes {
         "ANÁLISIS\n"
         "${paraph['Analisis_Medico']}\n";
 
-    tipoReporte = "$tipoReporte\n"
-        "INDICACIONES MÉDICAS\n"
-        "DIETAS\n"
-        "${Listas.stringFromList(listValues: paraph['Dieta'])}\n"
-        "SOLUCIONES PARENTERALES\n"
-        "${Listas.stringFromList(listValues: paraph['Hidroterapia'])}\n"
-        "MEDICAMENTOS\n"
-        "${Listas.stringFromList(listValues: paraph['Medicamentos'])}\n";
-
-    if (paraph['Hemoterapia'][0] != 'Sin reposicion sanguinea.') {
-      tipoReporte = "$tipoReporte"
-          "HEMOTRANSFUSION\n"
-          "${Listas.stringFromList(listValues: paraph['Hemoterapia'])}\n";
-    }
-
-    if (paraph['Insulinoterapia'][0] != 'Sin terapia insulinica.') {
-      tipoReporte = "$tipoReporte"
-          "INSULINOTERAPIA\n"
-          "${Listas.stringFromList(listValues: paraph['Insulinoterapia'])}\n";
-    }
-    if (paraph['Oxigenoterapia'][0] !=
-        'Sin administración de oxígeno suplementario.') {
-      tipoReporte = "$tipoReporte"
-          "OXIGENOTERAPIA\n"
-          "${Listas.stringFromList(listValues: paraph['Oxigenoterapia'])}\n";
-    }
-
-    tipoReporte = "$tipoReporte"
-        "MEDIDAS GENERALES\n"
-        "${Listas.stringFromList(listValues: paraph['Medidas_Generales'])}\n"
-        "PENDIENTES\n"
-        "${Listas.stringFromList(listValues: paraph['Pendientes'])}\n"
-        "GRACIAS\n";
+    // tipoReporte = "$tipoReporte\n"
+    //     "INDICACIONES MÉDICAS\n"
+    //     "DIETAS\n"
+    //     "${Listas.stringFromList(listValues: paraph['Dieta'])}\n"
+    //     "SOLUCIONES PARENTERALES\n"
+    //     "${Listas.stringFromList(listValues: paraph['Hidroterapia'])}\n"
+    //     "MEDICAMENTOS\n"
+    //     "${Listas.stringFromList(listValues: paraph['Medicamentos'])}\n";
+    //
+    // if (paraph['Hemoterapia'][0] != 'Sin reposicion sanguinea.') {
+    //   tipoReporte = "$tipoReporte"
+    //       "HEMOTRANSFUSION\n"
+    //       "${Listas.stringFromList(listValues: paraph['Hemoterapia'])}\n";
+    // }
+    //
+    // if (paraph['Insulinoterapia'][0] != 'Sin terapia insulinica.') {
+    //   tipoReporte = "$tipoReporte"
+    //       "INSULINOTERAPIA\n"
+    //       "${Listas.stringFromList(listValues: paraph['Insulinoterapia'])}\n";
+    // }
+    // if (paraph['Oxigenoterapia'][0] !=
+    //     'Sin administración de oxígeno suplementario.') {
+    //   tipoReporte = "$tipoReporte"
+    //       "OXIGENOTERAPIA\n"
+    //       "${Listas.stringFromList(listValues: paraph['Oxigenoterapia'])}\n";
+    // }
+    //
+    // tipoReporte = "$tipoReporte"
+    //     "MEDIDAS GENERALES\n"
+    //     "${Listas.stringFromList(listValues: paraph['Medidas_Generales'])}\n"
+    //     "PENDIENTES\n"
+    //     "${Listas.stringFromList(listValues: paraph['Pendientes'])}\n"
+    //     "GRACIAS\n";
 
     if (paraph['Pronostico_Medico'] != "") {
       tipoReporte = "$tipoReporte\n"

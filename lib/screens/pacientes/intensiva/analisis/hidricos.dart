@@ -314,9 +314,9 @@ class _HidricosState extends State<Hidricos> {
                                               sodioInfundidoTextController,
                                           keyBoardType: TextInputType.number,
                                           inputFormat: MaskTextInputFormatter(
-                                            mask: '####',
-                                            filter: {"#": RegExp(r'[0-9]')},
-                                            type: MaskAutoCompletionType.lazy,
+                                            // mask: '####',
+                                            // filter: {"#": RegExp(r'[0-9]')},
+                                            // type: MaskAutoCompletionType.lazy,
                                           ),
                                           onChange: (String value) {
                                             setState(() {
@@ -332,7 +332,13 @@ class _HidricosState extends State<Hidricos> {
                                           firstText: 'Delta Sodio',
                                           secondText: Hidrometrias.deltaSodio
                                               .toStringAsFixed(2),
-                                          thirdText: 'mEq/L',
+                                          thirdText: 'mEq/L INF',
+                                        ),
+                                        ValuePanel(
+                                          firstText: 'Sodio Resultante',
+                                          secondText: (Valores.sodio! + Hidrometrias.deltaSodio)
+                                              .toStringAsFixed(2),
+                                          thirdText: 'mmol/L',
                                         ),
                                       ],
                                     )
@@ -347,9 +353,9 @@ class _HidricosState extends State<Hidricos> {
                                                 sodioInfundidoTextController,
                                             keyBoardType: TextInputType.number,
                                             inputFormat: MaskTextInputFormatter(
-                                              mask: '####',
-                                              filter: {"#": RegExp(r'[0-9]')},
-                                              type: MaskAutoCompletionType.lazy,
+                                              // mask: '####',
+                                              // filter: {"#": RegExp(r'[0-9]')},
+                                              // type: MaskAutoCompletionType.lazy,
                                             ),
                                             onChange: (String value) {
                                               setState(() {
@@ -363,11 +369,21 @@ class _HidricosState extends State<Hidricos> {
                                           ),
                                         ),
                                         Expanded(
-                                          child: ValuePanel(
-                                            firstText: 'Delta Sodio',
-                                            secondText: Hidrometrias.deltaSodio
-                                                .toStringAsFixed(2),
-                                            thirdText: 'mEq/L',
+                                          child: Column(
+                                            children: [
+                                              ValuePanel(
+                                                firstText: 'Delta Sodio',
+                                                secondText: Hidrometrias.deltaSodio
+                                                    .toStringAsFixed(2),
+                                                thirdText: 'mEq/L INF',
+                                              ),
+                                              ValuePanel(
+                                                firstText: 'Sodio Resultante',
+                                                secondText: (Valores.sodio! + Hidrometrias.deltaSodio)
+                                                    .toStringAsFixed(2),
+                                                thirdText: 'mmol/L',
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ],

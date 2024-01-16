@@ -70,7 +70,7 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
             child: Row(
               children: [
                 Expanded(
-                  flex: isLargeDesktop(context) ? 14 : 4,
+                  flex: isLargeDesktop(context) || isDesktop(context) ? 14 : 4,
                   child: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: ContainerDecoration.roundedDecoration(
@@ -192,141 +192,126 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
                 ),
                 Expanded(
                   flex: isLargeDesktop(context) ? 1 : 1,
-                  child: Column(
-                    mainAxisAlignment: isLargeDesktop(context)
-                        ? MainAxisAlignment.start
-                        : MainAxisAlignment.end,
-                    children: [
-                      CrossLine(
-                          height: isLargeDesktop(context) ? 10 : 20,
-                          thickness: 3),
-                      Wrap(
-                        direction: isLargeDesktop(context)
-                            ? Axis.vertical
-                            : Axis.horizontal,
-                        alignment: WrapAlignment.spaceBetween,
-                        spacing: 10,
-                        children: [
-                          GrandIcon(
-                            iconData: Icons.water_drop,
-                            labelButton: 'Análisis Hidrico',
-                            onPress: () {
-                              Cambios.toNextActivity(context,
-                                  chyld: const Hidricos());
-                            },
-                          ),
-                          GrandIcon(
-                            iconData: Icons.bubble_chart,
-                            labelButton: 'Análisis Metabólico',
-                            onPress: () {
-                              Operadores.openDialog(
-                                  context: context,
-                                  chyldrim: const Metabolicos());
-                            },
-                          ),
-                          GrandIcon(
-                            iconData: Icons.horizontal_rule_sharp,
-                            labelButton: 'Análisis Antropométrico',
-                            onPress: () {
-                              Operadores.openDialog(
-                                  context: context,
-                                  chyldrim: const Antropometricos());
-                            },
-                          ),
-                          GrandIcon(
-                            iconData: Icons.monitor_heart_outlined,
-                            labelButton: 'Análisis Cardiovascular',
-                            onPress: () {
-                              Operadores.openDialog(
-                                  context: context,
-                                  chyldrim: const Cardiovasculares());
-                            },
-                          ),
-                          GrandIcon(
-                            iconData: Icons.all_inclusive_rounded,
-                            labelButton: 'Análisis Ventilatorio',
-                            onPress: () {
-                              Operadores.openDialog(
-                                  context: context,
-                                  chyldrim: const Ventilatorios());
-                            },
-                          ),
-                          GrandIcon(
-                            iconData: Icons.g_mobiledata,
-                            labelButton: 'Análisis Gasométrico',
-                            onPress: () {
-                              Cambios.toNextActivity(context,
-                                  chyld: const Gasometricos());
-                            },
-                          ),
-                        ],
-                      ),
-                      if (isLargeDesktop(context))
-                        CrossLine(height: 4, thickness: 3),
-                      // if (!isLargeDesktop(context)) const SizedBox(height: 10),
-                      Wrap(
-                        direction: isLargeDesktop(context)
-                            ? Axis.vertical
-                            : Axis.horizontal,
-                        alignment: WrapAlignment.spaceBetween,
-                        spacing: 10,
-                        children: [
-                          GrandIcon(
-                            iconData: Icons.accessibility,
-                            labelButton: 'Análisis de Hemáticos',
-                            onPress: () {
-                              Cambios.toNextActivity(context,
-                                  chyld: const Hematinicos());
-                            },
-                          ),
-                          GrandIcon(
-                            labelButton: 'Análisis Renal',
-                            onPress: () {
-                              Operadores.alertActivity(
-                                  context: context,
-                                  tittle: "¡Disculpas!",
-                                  message: "Actividad en construcción");
-                              // Operadores.openDialog(
-                              //     context: context, chyldrim: const Hidricos());
-                            },
-                          ),
-                          GrandIcon(
-                            labelButton: 'Análisis Sanguíneo Circulante',
-                            onPress: () {
-                              Operadores.alertActivity(
-                                  context: context,
-                                  tittle: "¡Disculpas!",
-                                  message: "Actividad en construcción");
-                              // Operadores.openDialog(
-                              //     context: context, chyldrim: const Hidricos());
-                            },
-                          ),
-                          GrandIcon(
-                            labelButton: 'Análisis Pulmonar',
-                            onPress: () {
-                              Operadores.alertActivity(
-                                  context: context,
-                                  tittle: "¡Disculpas!",
-                                  message: "Actividad en construcción");
-                              // Operadores.openDialog(
-                              //     context: context, chyldrim: const Hidricos());
-                            },
-                          ),
-                          GrandIcon(
-                            labelButton: 'Edad Corregida',
-                            onPress: () {
-                              Operadores.alertActivity(
-                                  context: context,
-                                  tittle: "¡Disculpas!",
-                                  message: "Actividad en construcción");
-                              // Operadores.openDialog(
-                              //     context: context, chyldrim: const Hidricos());
-                            },
-                          ),
-                        ],
-                      ),
-                      CrossLine(height: 20, thickness: 3),
-                    ],
+                  child: SingleChildScrollView(
+                    controller: ScrollController(),
+                    child: Column(
+                      mainAxisAlignment: isLargeDesktop(context)
+                          ? MainAxisAlignment.start
+                          : MainAxisAlignment.end,
+                      children: [
+                        CrossLine(
+                            height: isLargeDesktop(context) ? 10 : 20,
+                            thickness: 3),
+                        GrandIcon(
+                          iconData: Icons.water_drop,
+                          labelButton: 'Análisis Hidrico',
+                          onPress: () {
+                            Cambios.toNextActivity(context,
+                                chyld: const Hidricos());
+                          },
+                        ),
+                        GrandIcon(
+                          iconData: Icons.bubble_chart,
+                          labelButton: 'Análisis Metabólico',
+                          onPress: () {
+                            Operadores.openDialog(
+                                context: context,
+                                chyldrim: const Metabolicos());
+                          },
+                        ),
+                        GrandIcon(
+                          iconData: Icons.horizontal_rule_sharp,
+                          labelButton: 'Análisis Antropométrico',
+                          onPress: () {
+                            Operadores.openDialog(
+                                context: context,
+                                chyldrim: const Antropometricos());
+                          },
+                        ),
+                        GrandIcon(
+                          iconData: Icons.monitor_heart_outlined,
+                          labelButton: 'Análisis Cardiovascular',
+                          onPress: () {
+                            Operadores.openDialog(
+                                context: context,
+                                chyldrim: const Cardiovasculares());
+                          },
+                        ),
+                        GrandIcon(
+                          iconData: Icons.all_inclusive_rounded,
+                          labelButton: 'Análisis Ventilatorio',
+                          onPress: () {
+                            Operadores.openDialog(
+                                context: context,
+                                chyldrim: const Ventilatorios());
+                          },
+                        ),
+                        GrandIcon(
+                          iconData: Icons.g_mobiledata,
+                          labelButton: 'Análisis Gasométrico',
+                          onPress: () {
+                            Cambios.toNextActivity(context,
+                                chyld: const Gasometricos());
+                          },
+                        ),
+                        // if (isLargeDesktop(context))
+                          CrossLine(height: 4, thickness: 3),
+                        // if (!isLargeDesktop(context)) const SizedBox(height: 10),
+                        GrandIcon(
+                          iconData: Icons.accessibility,
+                          labelButton: 'Análisis de Hemáticos',
+                          onPress: () {
+                            Cambios.toNextActivity(context,
+                                chyld: const Hematinicos());
+                          },
+                        ),
+                        GrandIcon(
+                          labelButton: 'Análisis Renal',
+                          onPress: () {
+                            Operadores.alertActivity(
+                                context: context,
+                                tittle: "¡Disculpas!",
+                                message: "Actividad en construcción");
+                            // Operadores.openDialog(
+                            //     context: context, chyldrim: const Hidricos());
+                          },
+                        ),
+                        GrandIcon(
+                          labelButton: 'Análisis Sanguíneo Circulante',
+                          onPress: () {
+                            Operadores.alertActivity(
+                                context: context,
+                                tittle: "¡Disculpas!",
+                                message: "Actividad en construcción");
+                            // Operadores.openDialog(
+                            //     context: context, chyldrim: const Hidricos());
+                          },
+                        ),
+                        GrandIcon(
+                          labelButton: 'Análisis Pulmonar',
+                          onPress: () {
+                            Operadores.alertActivity(
+                                context: context,
+                                tittle: "¡Disculpas!",
+                                message: "Actividad en construcción");
+                            // Operadores.openDialog(
+                            //     context: context, chyldrim: const Hidricos());
+                          },
+                        ),
+                        GrandIcon(
+                          labelButton: 'Edad Corregida',
+                          onPress: () {
+                            Operadores.alertActivity(
+                                context: context,
+                                tittle: "¡Disculpas!",
+                                message: "Actividad en construcción");
+                            // Operadores.openDialog(
+                            //     context: context, chyldrim: const Hidricos());
+                          },
+                        ),
+                        CrossLine(height: 20, thickness: 3),
+                      ],
+                    ),
                   ),
                 )
               ],

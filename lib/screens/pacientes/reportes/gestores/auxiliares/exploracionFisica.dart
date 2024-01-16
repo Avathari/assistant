@@ -50,12 +50,12 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
           widget.isTerapia!
               ? Container()
               : Expanded(
-                  flex: 3,
+            flex: isDesktop(context) ? 6: 3,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Expanded(
-                        flex: 6,
+                        flex: isDesktop(context) ? 4: 6,
                         child: EditTextArea(
                             textController: vitalTextController,
                             labelEditText: "Signos Vitales",
@@ -68,7 +68,6 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                             inputFormat: MaskTextInputFormatter()),
                       ),
                   isMobile(context)  ? mobileSignalOptions() : mobileSignalOptions() // otherSignalOptions
-
                     ],
                   ),
                 ),
@@ -252,7 +251,7 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
       flex: 1,
       child: Wrap(
         direction: Axis.horizontal,
-      alignment: WrapAlignment.spaceBetween,
+      alignment: WrapAlignment.center,
         runAlignment: WrapAlignment.center,
         crossAxisAlignment: WrapCrossAlignment.center,
         spacing: 25,

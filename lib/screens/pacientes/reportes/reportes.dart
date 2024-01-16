@@ -318,14 +318,14 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               child: pantallasReportesMedicos(widget.actualPage),
             )),
         Expanded(flex: 2, child: _notasPrevias(context)),
-        Expanded(
+        if (!isDesktop(context)) Expanded(
             flex: 2,
             child: Container(
               padding: const EdgeInsets.all(8.0),
               margin: const EdgeInsets.all(8.0),
               decoration: ContainerDecoration.containerDecoration(),
               child: sideRight(),
-            )),
+            )) ,
       ],
     );
   }
@@ -766,10 +766,10 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       case 5:
         return TypeReportes.reportePreanestesica;
       case 6:
-        Repositorios.tipo_Analisis = Items.tiposAnalisis[4];
+        Repositorios.tipo_Analisis = Items.tiposAnalisis[3];
         return TypeReportes.reporteEgreso;
       case 7:
-        Repositorios.tipo_Analisis = Items.tiposAnalisis[3];
+        Repositorios.tipo_Analisis = Items.tiposAnalisis[2];
         return TypeReportes.reporteRevision;
       case 8:
         Repositorios.tipo_Analisis = Items.tiposAnalisis[5];

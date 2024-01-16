@@ -971,11 +971,11 @@ class _VariasPatologiasState extends State<VariasPatologias> {
 
   // VISTAS DE LA INTERFAZ *********************************
   desktopView() {
-    return Column(
-      children: [
-        Expanded(
-          flex: 8,
-          child: Row(
+    return SingleChildScrollView(
+      controller: ScrollController(),
+      child: Column(
+        children: [
+          Row(
             children: [
               Expanded(
                 child: Column(children: [
@@ -1456,13 +1456,13 @@ class _VariasPatologiasState extends State<VariasPatologias> {
               ),
             ],
           ),
-        ),
-        GrandButton(
-            labelButton: 'Agregar Listado de Patologías . . . ',
-            onPress: () {
-              operationMethod();
-            })
-      ],
+          GrandButton(
+              labelButton: 'Agregar Listado de Patologías . . . ',
+              onPress: () {
+                operationMethod();
+              })
+        ],
+      ),
     );
   }
 

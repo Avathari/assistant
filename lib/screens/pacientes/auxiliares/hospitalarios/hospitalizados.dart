@@ -906,7 +906,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
-                              flex: 5,
+                              flex: 8,
                               child: fichaIdentificacion(snapshot, index)),
                           Expanded(flex: 11, child: padesView(snapshot, index)),
                           CrossLine(),

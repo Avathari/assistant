@@ -2,7 +2,7 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 
 class Hidrometrias {
   static double get deltaSodio =>
-      (sodioInfundido! - Valores.sodio!) / (aguaCorporalTotal + 1);
+      (sodioInfundido! - Valores.sodio!) / (aguaCorporalTotal + 1); // Adrogue-Madias
 
   // CALCULOS HIDRICOS ****************************************
   static double get requerimientoHidrico {
