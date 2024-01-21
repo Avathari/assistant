@@ -131,7 +131,7 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                     textController: analisisTextController,
                     labelEditText: "Análisis médico",
                     keyBoardType: TextInputType.multiline,
-                    numOfLines: isLargeDesktop(context) ? 28 : isTablet(context) ? 12 : 5,
+                    numOfLines: isLargeDesktop(context) ? 28 : isTablet(context) ? 12 : isMobile(context) ? 15:  22,
                     withShowOption: true,
                     selection: true,
                     onSelected: () {

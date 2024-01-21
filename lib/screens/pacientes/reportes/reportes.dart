@@ -264,7 +264,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
         //       child: sideLeft(),
         //     )),
         Expanded(
-            flex: 4,
+            flex: isMobile(context) ? 20  : 6,
             child: Container(
               padding: const EdgeInsets.all(5.0),
               margin: const EdgeInsets.all(7.0),
@@ -272,18 +272,18 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   colorBackground: Colores.backgroundPanel),
               child: pantallasReportesMedicos(widget.actualPage),
             )),
-        if (isTablet(context))
-          Expanded(
-              child: Padding(
-            padding: const EdgeInsets.only(
-                right: 82.0, left: 8.0, top: 8.0, bottom: 8.0),
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Colores.backgroundPanel,
-                  borderRadius: BorderRadius.circular(20)),
-              child: sideRight(),
-            ),
-          )),
+        // if (isTablet(context))
+        //   Expanded(
+        //       child: Padding(
+        //     padding: const EdgeInsets.only(
+        //         right: 82.0, left: 8.0, top: 8.0, bottom: 8.0),
+        //     child: Container(
+        //       decoration: BoxDecoration(
+        //           color: Colores.backgroundPanel,
+        //           borderRadius: BorderRadius.circular(20)),
+        //       child: sideRight(),
+        //     ),
+        //   )),
       ],
     );
   }
@@ -1207,15 +1207,17 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                 splashColor: Theming.terciaryColor,
                 icon: const Icon(Icons.bed, color: Colors.grey),
                 tooltip: "Semiologías",
-                onPressed: () => setState(() {
-                      widget.actualPage = 20;
-                    })),
+                onPressed: () => Cambios.toNextPage(context, AnalisisRevisorios())),
+                    // setState(() {
+                    //   widget.actualPage = 20;
+                    // })),
             const SizedBox(width: 25),
             IconButton(
                 splashColor: Theming.terciaryColor,
                 icon: const Icon(Icons.medication_outlined, color: Colors.grey),
                 tooltip: "Terapia Intensiva",
-                onPressed: () => setState(() {
+                onPressed: () =>
+                    setState(() {
                       widget.actualPage = 18;
                     })),
             IconButton(

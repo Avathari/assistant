@@ -50,8 +50,8 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
           widget.isTerapia!
               ? Container()
               : Expanded(
-            flex: isDesktop(context) ? 6: 3,
-                  child: Row(
+            flex: isDesktop(context) ? 6: isMobile(context) ? 16:  6,
+                  child: isMobile(context) ? Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Expanded(
@@ -61,6 +61,24 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                             labelEditText: "Signos Vitales",
                             keyBoardType: TextInputType.multiline,
                             numOfLines: isTablet(context) ? 12 : 10,
+                            onChange: ((value) => setState(() {
+                              Reportes.signosVitales = value;
+                              Reportes.reportes['Signos_Vitales'] = value;
+                            })),
+                            inputFormat: MaskTextInputFormatter()),
+                      ),
+                      isMobile(context)  ? mobileSignalOptions() : mobileSignalOptions() // otherSignalOptions
+                    ],
+                  ): Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        flex: isDesktop(context) ? 4: 6,
+                        child: EditTextArea(
+                            textController: vitalTextController,
+                            labelEditText: "Signos Vitales",
+                            keyBoardType: TextInputType.multiline,
+                            numOfLines: isTablet(context) ? 12 : isMobile(context) ? 16: 10,
                             onChange: ((value) => setState(() {
                                   Reportes.signosVitales = value;
                                   Reportes.reportes['Signos_Vitales'] = value;
@@ -379,7 +397,7 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
 
   mobileSignalOptions() {
     return Expanded(
-      flex: isLargeDesktop(context) ? 3 : 1,
+      flex: isLargeDesktop(context) ? 3 : isMobile(context) ? 4 : 1,
       child: Wrap(
         direction: isLargeDesktop(context) ? Axis.horizontal : Axis.horizontal,
         alignment: WrapAlignment.spaceBetween,

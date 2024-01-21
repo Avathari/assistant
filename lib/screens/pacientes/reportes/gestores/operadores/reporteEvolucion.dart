@@ -64,7 +64,7 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
           colorBackground: Theming.quincuaryColor),
       child: Column(children: [
         Expanded(
-          flex: isDesktop(context) ? 16 : 11,
+          flex: isDesktop(context) ? 16 : isMobile(context) ? 18:11,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(

@@ -28,7 +28,7 @@ class EditTextArea extends StatefulWidget {
 
   IconData? iconData ;
 
-  int? limitOfChars;
+  int? limitOfChars, optionEqui;
 
   EditTextArea({
     Key? key,
@@ -42,6 +42,7 @@ class EditTextArea extends StatefulWidget {
     this.fontSize = 8, // 12
     this.numOfLines = 15,
     this.limitOfChars = 0,
+    this.optionEqui = 2,
     this.selection = false,
     this.onSelected,
     this.onChange,
@@ -123,7 +124,8 @@ class _EditTextAreaState extends State<EditTextArea> {
           ),
           widget.withShowOption
               ? Expanded(
-                  flex: isTablet(context) ? 2 : isMobile(context) ? 3  : 2,
+                  flex:
+                  widget.optionEqui! ,
                   child: Container(
                     padding: const EdgeInsets.all(0.5),
                     margin: const EdgeInsets.all(1.0),
@@ -175,24 +177,14 @@ class _EditTextAreaState extends State<EditTextArea> {
                 )
               : widget.withDeleteOption
               ? Expanded(
-            flex: 3,
-            child: Container(
-              padding: const EdgeInsets.all(4.0),
-              margin: const EdgeInsets.all(4.0),
-              decoration: ContainerDecoration.roundedDecoration(),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  if (widget.withDeleteOption) GrandIcon(
-                      labelButton: "Ver",
-                      iconData: Icons.cleaning_services,
-                      iconColor: widget.iconColor,
-                      onPress: () {
-                        widget.textController.text = "";
-                      }
-                  )
-                ],
-              ),
+            flex: widget.optionEqui!,
+            child: GrandIcon(
+                labelButton: "Ver",
+                iconData: Icons.cleaning_services,
+                iconColor: widget.iconColor,
+                onPress: () {
+                  widget.textController.text = "";
+                }
             ),
           ) : Container()
         ],

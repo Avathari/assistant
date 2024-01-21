@@ -507,10 +507,11 @@ class _VisualPacientesState extends State<VisualPacientes> {
             Navigator.of(context).pop();
           }
           // Update the state of the app
-          setState(() {
-            widget.actualPage = 8;
-          });
-        },
+          toNextScreen(
+              context: context,
+              index: 8,
+              screen: GestionDocumentacion(withAppBar: true,));
+        }
       ), // 8
       ListTile(
         leading: const Icon(

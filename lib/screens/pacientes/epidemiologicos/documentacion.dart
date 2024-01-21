@@ -91,6 +91,7 @@ class _OperacionesDocumentacionState extends State<OperacionesDocumentacion> {
         fechaRealizacionTextController.text = f.format(DateTime.now());
         break;
       case Constantes.Update:
+
         setState(() {
           widget._operationButton = 'Actualizar';
           //
@@ -103,13 +104,13 @@ class _OperacionesDocumentacionState extends State<OperacionesDocumentacion> {
           nombreReporteTextController.text =
               Documentaciones.Documentos['NombreReporte'];
 
-          // Terminal.printSuccess(
-          //     message:
-          //         "Documentacion_FIAT : : ${Documentaciones.Documentos['Reporte_FIAT']}");
+          Terminal.printSuccess(
+              message:
+                  "Documentacion_FIAT : : ${Documentaciones.Documentos['Reporte_FIAT']}");
           setState(() {
             stringImage = Documentaciones.Documentos['Reporte_FIAT'];
           });
-          //
+
         });
         super.initState();
         break;
@@ -173,7 +174,7 @@ class _OperacionesDocumentacionState extends State<OperacionesDocumentacion> {
                         Calendarios.today(format: "yyyy/MM/dd"),
                   ),
                   Expanded(
-                    flex: 12,
+                    flex: 4,
                     child: Container(
                       decoration: ContainerDecoration.roundedDecoration(),
                       child: SingleChildScrollView(
@@ -184,7 +185,10 @@ class _OperacionesDocumentacionState extends State<OperacionesDocumentacion> {
                         ),
                       ),
                     ),
+
                   ),
+                  if(isMobile(context))  Expanded(
+                      flex:9, child: _licenPhoto()),
                   CrossLine(thickness: 4),
                   Expanded(
                     flex: 2,
@@ -408,7 +412,7 @@ class _OperacionesDocumentacionState extends State<OperacionesDocumentacion> {
                     : _progress.cumulativeBytesLoaded /
                         _progress.expectedTotalBytes,
               ),
-            ),
+            )
           ),
         ),
       );
@@ -507,7 +511,7 @@ class _GestionDocumentacionState extends State<GestionDocumentacion> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
         Expanded(
-          flex: 9,
+          flex: 1,
           child: RefreshIndicator(
             color: Colors.white,
             backgroundColor: Colors.black,
@@ -528,7 +532,7 @@ class _GestionDocumentacionState extends State<GestionDocumentacion> {
                           return itemListView(snapshot, posicion, context);
                         },
                         gridDelegate: GridViewTools.gridDelegate(
-                            crossAxisCount: isMobile(context) ? 1 : 3),
+                            crossAxisCount: isMobile(context) ? 1 : isDesktop(context) ? 1 : 3),
                       )
                     : Center(
                         child: Column(
@@ -550,10 +554,10 @@ class _GestionDocumentacionState extends State<GestionDocumentacion> {
             ),
           ),
         ),
-        isDesktop(context) || isTabletAndDesktop(context)
-            ? widget.actualSidePage != null
-                ? Expanded(flex: 1, child: widget.actualSidePage!)
-                : Expanded(flex: 1, child: Container())
+        isDesktop(context) || isTablet(context)
+            ?Expanded(
+          flex: isDesktop(context) ? 2 : 1,
+            child: OperacionesDocumentacion(operationActivity: Constantes.operationsActividad,))
             : Container()
       ]),
     );
@@ -685,7 +689,7 @@ class _GestionDocumentacionState extends State<GestionDocumentacion> {
   }
 
   void toOperaciones(BuildContext context, String operationActivity) {
-    if (isDesktop(context) || isTabletAndDesktop(context)) {
+    if (isDesktop(context) || isTablet(context)) {
       Constantes.operationsActividad = operationActivity;
       Constantes.reinit(value: foundedItems!);
       _pullListRefresh();
@@ -721,14 +725,21 @@ class _GestionDocumentacionState extends State<GestionDocumentacion> {
     Navigator.pushReplacement(
         context,
         PageRouteBuilder(
-            pageBuilder: (a, b, c) => GestionDocumentacion(
-                  actualSidePage: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: OperacionesDocumentacion(
-                      operationActivity: Constantes.operationsActividad,
-                    ),
-                  ),
-                ),
+            pageBuilder: (a, b, c) => VisualPacientes(
+              actualPage: 8,
+            ),
             transitionDuration: const Duration(seconds: 0)));
+    // Navigator.pushReplacement(
+    //     context,
+    //     PageRouteBuilder(
+    //         pageBuilder: (a, b, c) => GestionDocumentacion(
+    //               actualSidePage: Padding(
+    //                 padding: const EdgeInsets.all(8.0),
+    //                 child: OperacionesDocumentacion(
+    //                   operationActivity: Constantes.operationsActividad,
+    //                 ),
+    //               ),
+    //             ),
+    //         transitionDuration: const Duration(seconds: 0)));
   }
 }
