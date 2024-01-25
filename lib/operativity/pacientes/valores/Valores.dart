@@ -2640,10 +2640,10 @@ class Escalas {
 class Items {
   static List<String> tiposAnalisis = [
     'Análisis de Ingreso', // 0
-    'Análisis de Evolución',
+    'Análisis de Evolución', // 1
     'Análisis de Revisión',
     'Análisis de Egreso',
-        'Análisis de Gravedad',
+    'Análisis de Gravedad', // 4
     'Análisis de Traslado', // 5
   ];
 

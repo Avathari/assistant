@@ -7063,11 +7063,12 @@ class Auxiliares {
       "CA 19.9", // U/mL : 0.00 - 37.00
       "CA 125", // U/mL : 0.00 - 35.00
       "CA 53.4",
+      "CA 15-3",
+      "VDRL",
       "",
       "",
       "",
-      "",
-    ],
+    ], // Otros
     // Analíitica de Líquido Cefalorraquideo
     Categorias[26]: [
       // Citoquímico
@@ -8629,6 +8630,7 @@ class Repositorios {
       // Reportes.terapiasPrevias,
       Reportes.analisisMedico,
       // Reportes.tratamientoPropuesto,
+      Reportes.pronosticoMedico,
       // INDICACIONES MÉDICAS *******************************
       Reportes.dieta.toString(),
       Reportes.hidroterapia.toString(),
@@ -8764,11 +8766,11 @@ class Repositorios {
         "ServicioMedico, FechaRealizacion, "
         "Diagnosticos_Hospital, "
         "Subjetivo, Signos_Vitales, Exploracion_Fisica, "
-        "Analisis_Medico, "
+        "Analisis_Medico, Pronostico_Medico, "
         "Dietoterapia, Hidroterapia, Insulinoterapia, Hemoterapia, Oxigenoterapia, Medicamentos, Medidas_Generales, Pendientes, "
         "Tipo_Analisis) "
         "VALUES (?,?,?,?,?,?,?,?,?,?,?,"
-        "?,?,?,?,?,?,?,"
+        "?,?,?,?,?,?,?,?,"
         "?,?)",
     "updateQuery": "UPDATE pace_hosp_repo SET "
         "ID_Compendio = ?, ID_Pace = ?, ID_Hosp = ?, "
@@ -8776,7 +8778,7 @@ class Repositorios {
         "ServicioMedico = ?, FechaRealizacion = ?, "
         "Diagnosticos_Hospital = ?, "
         "Subjetivo = ?, Signos_Vitales = ?, Exploracion_Fisica = ?, "
-        "Analisis_Medico = ?, "
+        "Analisis_Medico = ?, Pronostico_Medico = ?, "
         "Dietoterapia = ?, Hidroterapia = ?, Insulinoterapia = ?, Hemoterapia = ?, Oxigenoterapia = ?, Medicamentos = ?, Medidas_Generales = ?, Pendientes = ?, "
         "Tipo_Analisis =  ? "
         "WHERE ID_Hosp = ?",

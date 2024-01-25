@@ -224,11 +224,16 @@ class FormatosReportes {
     parax.add(paragraph(
       texto: "${paraph['Analisis_Medico']}",
     ));
-    if (paraph['Pronostico_Medico'] != "") {
-      parax.add(paragraphSeparatedBy(
-        pax: "${paraph['Pronostico_Medico']}",
-      ));
-    }
+
+    parax.add(paragraph(
+      texto: "${paraph['Pronostico_Medico']}",
+    ));
+
+    // if (paraph['Pronostico_Medico'] != "") {
+    //   parax.add(paragraphSeparatedBy(
+    //     pax: "${paraph['Pronostico_Medico']}",
+    //   ));
+    // }
     parax.add(
       footerParagraph(
           text:
@@ -338,11 +343,15 @@ class FormatosReportes {
     parax.add(paragraph(
       texto: "${paraph['Analisis_Medico']}",
     ));
-    if (paraph['Pronostico_Medico'] != "") {
-      parax.add(paragraphSeparatedBy(
-        pax: "${paraph['Pronostico_Medico']}",
-      ));
-    }
+    //
+    parax.add(paragraph(
+      texto: "${paraph['Pronostico_Medico']}",
+    ));
+    // if (paraph['Pronostico_Medico'] != "") {
+    //   parax.add(paragraphSeparatedBy(
+    //     pax: "${paraph['Pronostico_Medico']}",
+    //   ));
+    // }
     parax.add(
       footerParagraph(
           text:
@@ -473,11 +482,16 @@ class FormatosReportes {
       ],
     ));
 
-    if (paraph['Pronostico_Medico'] != "") {
-      parax.add(paragraphSeparatedBy(
-        pax: "${paraph['Pronostico_Medico']}",
-      ));
-    }
+    //
+    parax.add(paragraph(
+      texto: "${paraph['Pronostico_Medico']}",
+    ));
+
+    // if (paraph['Pronostico_Medico'] != "") {
+    //   parax.add(paragraphSeparatedBy(
+    //     pax: "${paraph['Pronostico_Medico']}",
+    //   ));
+    // }
     parax.add(
       footerParagraph(
           text:
@@ -716,11 +730,15 @@ class FormatosReportes {
     parax.add(paragraph(
       texto: "${paraph['Analisis_Medico']}",
     ));
-    if (paraph['Pronostico_Medico'] != "") {
-      parax.add(paragraphSeparatedBy(
-        pax: "${paraph['Pronostico_Medico']}",
-      ));
-    }
+    //
+    parax.add(paragraph(
+      texto: "${paraph['Pronostico_Medico']}",
+    ));
+    // if (paraph['Pronostico_Medico'] != "") {
+    //   parax.add(paragraphSeparatedBy(
+    //     pax: "${paraph['Pronostico_Medico']}",
+    //   ));
+    // }
     parax.add(
       footerParagraph(
           text:
@@ -1154,11 +1172,14 @@ class FormatosReportes {
     parax.add(paragraph(
       texto: "${paraph['Analisis_Medico']}",
     ));
-    if (paraph['Pronostico_Medico'] != "") {
-      parax.add(paragraphSeparatedBy(
-        pax: "${paraph['Pronostico_Medico']}",
-      ));
-    }
+    parax.add(paragraph(
+      texto: "${paraph['Pronostico_Medico']}",
+    ));
+    // if (paraph['Pronostico_Medico'] != "") {
+    //   parax.add(paragraphSeparatedBy(
+    //     pax: "${paraph['Pronostico_Medico']}",
+    //   ));
+    // }
     parax.add(
       footerParagraph(
           text:
@@ -1386,11 +1407,15 @@ class FormatosReportes {
     parax.add(paragraph(
       texto: "${paraph['Analisis_Medico']}",
     ));
-    if (paraph['Pronostico_Medico'] != "") {
-      parax.add(paragraphSeparatedBy(
-        pax: "${paraph['Pronostico_Medico']}",
-      ));
-    }
+    //
+    parax.add(paragraph(
+      texto: "${paraph['Pronostico_Medico']}",
+    ));
+    // if (paraph['Pronostico_Medico'] != "") {
+    //   parax.add(paragraphSeparatedBy(
+    //     pax: "${paraph['Pronostico_Medico']}",
+    //   ));
+    // }
     parax.add(
       footerParagraph(
           text:
@@ -1470,11 +1495,15 @@ class FormatosReportes {
       texto: "${paraph['Analisis_Terapia']}",
     ));
 
-    if (paraph['Pronostico_Medico'] != "") {
-      parax.add(paragraphSeparatedBy(
-        pax: "${paraph['Pronostico_Medico']}",
-      ));
-    }
+    parax.add(paragraph(
+      texto: "${paraph['Pronostico_Medico']}",
+    ));
+
+    // if (paraph['Pronostico_Medico'] != "") {
+    //   parax.add(paragraphSeparatedBy(
+    //     pax: "${paraph['Pronostico_Medico']}",
+    //   ));
+    // }
     parax.add(
       footerParagraph(
           text:
@@ -1581,11 +1610,15 @@ class FormatosReportes {
     parax.add(paragraph(
       texto: "${paraph['Analisis_Medico']}",
     ));
-    if (paraph['Pronostico_Medico'] != "") {
-      parax.add(paragraphSeparatedBy(
-        pax: "${paraph['Pronostico_Medico']}",
-      ));
-    }
+    //
+    parax.add(paragraph(
+      texto: "${paraph['Pronostico_Medico']}",
+    ));
+    // if (paraph['Pronostico_Medico'] != "") {
+    //   parax.add(paragraphSeparatedBy(
+    //     pax: "${paraph['Pronostico_Medico']}",
+    //   ));
+    // }
     parax.add(
       footerParagraph(
           text:
@@ -1692,11 +1725,15 @@ class FormatosReportes {
     parax.add(paragraph(
       texto: "${paraph['Analisis_Medico']}",
     ));
-    if (paraph['Pronostico_Medico'] != "") {
-      parax.add(paragraphSeparatedBy(
-        pax: "${paraph['Pronostico_Medico']}",
-      ));
-    }
+    //
+    parax.add(paragraph(
+      texto: "${paraph['Pronostico_Medico']}",
+    ));
+    // if (paraph['Pronostico_Medico'] != "") {
+    //   parax.add(paragraphSeparatedBy(
+    //     pax: "${paraph['Pronostico_Medico']}",
+    //   ));
+    // }
     parax.add(
       footerParagraph(
           text:
@@ -3193,11 +3230,13 @@ class CopiasReportes {
     //     "PENDIENTES\n"
     //     "${Listas.stringFromList(listValues: paraph['Pendientes'])}\n"
     //     "GRACIAS\n";
-
-    if (paraph['Pronostico_Medico'] != "") {
-      tipoReporte = "$tipoReporte\n"
+      tipoReporte = "$tipoReporte"
           "${paraph['Pronostico_Medico']}";
-    }
+
+    // if (paraph['Pronostico_Medico'] != "") {
+    //   tipoReporte = "$tipoReporte\n"
+    //       "${paraph['Pronostico_Medico']}";
+    // }
 
     tipoReporte = "$tipoReporte\n\n"
         "Med. Gral. Romero Pantoja Luis Ced. Prof. 12210866 Medicina General";
@@ -3318,9 +3357,11 @@ class CopiasReportes {
 
     tipoReporte = "$tipoReporte"
         "${paraph['Impresiones_Diagnosticas']}\n\n";
-    tipoReporte = "$tipoReporte"
-        "${paraph['Eventualidades']}\n\n";
-
+    // ************************************
+    if (paraph['Eventualidades'] != "") {
+      tipoReporte = "$tipoReporte"
+          "${paraph['Eventualidades']}\n\n";
+    }
     // # # # # # # ### # # # # # # ###
     tipoReporte = "${tipoReporte}EXPLORACION FÍSICA\n"
         "${paraph['Exploracion_Fisica']}\n\n";

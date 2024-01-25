@@ -3,6 +3,7 @@ import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias
 import 'package:assistant/operativity/pacientes/valores/Valorados/cardiometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CrossLine.dart';
@@ -219,110 +220,108 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                 Expanded(
                   flex: 2,
                   child: Padding(
-                    padding: const EdgeInsets.all(12.0),
+                    padding: const EdgeInsets.all(2.0),
                     child: CarouselSlider(
                         items: [
                           TittleContainer(
                             tittle: "Taller Hemodinámico",
                             color: Colors.black,
-                            child: SingleChildScrollView(
-                              controller: ScrollController(),
-                              child: Column(
-                                children: [
-                                  ValuePanel(
-                                    firstText: 'G.C. (Fick)',
-                                    secondText: Cardiometrias.gastoCardiacoFick.toStringAsFixed(2),
-                                    thirdText: 'Lt/min',
-                                  ),
-                                  ValuePanel(
-                                    firstText: 'I.C.',
-                                    secondText: Valores.indiceCardiaco.toStringAsFixed(2),
-                                    thirdText: 'Lt/min',
-                                  ),
-                                  ValuePanel(
-                                    firstText: 'Vol. Lat. Sys. ',
-                                    secondText: Valores.VLS.toStringAsFixed(2),
-                                    thirdText: 'mL/Lt',
-                                  ),
-                                  ValuePanel(
-                                    firstText: 'I, Vol. Lat. Sys. ',
-                                    secondText: Valores.IVL.toStringAsFixed(2),
-                                    thirdText: 'mL/Lt/m2',
-                                  ),
-                                  // **********************************
-                                  ValuePanel(
-                                    firstText: 'Rest. V. Sist.',
-                                    secondText: Valores.RVS.toStringAsFixed(2),
-                                    thirdText: 'dinas/seg/cm2',
-                                  ),
-                                  ValuePanel(
-                                    firstText: 'T. Card. Izq. ',
-                                    secondText: Valores.TC.toStringAsFixed(2),
-                                    thirdText: 'Kg*m',
-                                  ),
-                                  ValuePanel(
-                                    firstText: 'TLVI',
-                                    secondText: Cardiometrias.TLVI.toStringAsFixed(2),
-                                    thirdText: 'g/Lat/m2',
-                                  ),
-                                  ValuePanel(
-                                    firstText: 'I. TLVI',
-                                    secondText: Cardiometrias.iTLVI.toStringAsFixed(2),
-                                    thirdText: 'g/Lat/m2',
-                                  ),
-                                  //
-                                  ValuePanel(
-                                    firstText: 'Disp. Oxígeno',
-                                    secondText: Valores.DO.toStringAsFixed(2),
-                                    thirdText: 'mL/min/m2',
-                                  ),
-                                  ValuePanel(
-                                    firstText: 'I. Disp. Oxígeno',
-                                    secondText: Valores.iDO.toStringAsFixed(2),
-                                    thirdText: 'mL/min/m2',
-                                  ),
-                                  ValuePanel(
-                                    firstText: 'TO2',
-                                    secondText: Valores.TO.toStringAsFixed(2),
-                                    thirdText: 'mL/O2/m2',
-                                  ),
-                                  //
-                                  ValuePanel(
-                                    firstText: 'P. Fcard-TA',
-                                    secondText: Cardiometrias.productoFrecuenciaPresion
-                                        .toStringAsFixed(2),
-                                    thirdText: 'mmHg',
-                                  ),
-                                  ValuePanel(
-                                    firstText: 'P. Coloido-Osmótica',
-                                    secondText:
-                                    Valores.presionColoidoOsmotica.toStringAsFixed(2),
-                                    thirdText: 'mmHg',
-                                  ),
-                                  //
-                                  ValuePanel(
-                                    firstText: 'Cociente A. Oxígeno',
-                                    secondText: Valores.cAO.toStringAsFixed(2),
-                                    thirdText: '%',
-                                  ),
-                                  ValuePanel(
-                                    firstText: 'Cociente V. Oxígeno',
-                                    secondText: Valores.cVO.toStringAsFixed(2),
-                                    thirdText: '%',
-                                  ),
-                                  // **********************************
-                                  CrossLine(thickness: 3),
-                                  CrossLine(thickness: 2),
-                                  CircleIcon(
-                                    iconed: Icons.copy_all_sharp,
-                                    tittle: "Copiar en Portapapeles",
-                                    onChangeValue: () {
-                                      Datos.portapapeles(
-                                          context: context, text: Cardiometrias.transporteOxigeno);
-                                    },
-                                  ),
-                                ],
-                              ),
+                            child: GridView(
+                              gridDelegate: GridViewTools.gridDelegate(crossAxisCount: 2, mainAxisExtent: 70),
+                              children: [
+                                ValuePanel(
+                                  firstText: 'G.C. (Fick)',
+                                  secondText: Cardiometrias.gastoCardiacoFick.toStringAsFixed(2),
+                                  thirdText: 'Lt/min',
+                                ),
+                                ValuePanel(
+                                  firstText: 'I.C.',
+                                  secondText: Valores.indiceCardiaco.toStringAsFixed(2),
+                                  thirdText: 'Lt/min',
+                                ),
+                                ValuePanel(
+                                  firstText: 'Vol. Lat. Sys. ',
+                                  secondText: Valores.VLS.toStringAsFixed(2),
+                                  thirdText: 'mL/Lt',
+                                ),
+                                ValuePanel(
+                                  firstText: 'I, Vol. Lat. Sys. ',
+                                  secondText: Valores.IVL.toStringAsFixed(2),
+                                  thirdText: 'mL/Lt/m2',
+                                ),
+                                // **********************************
+                                ValuePanel(
+                                  firstText: 'Rest. V. Sist.',
+                                  secondText: Valores.RVS.toStringAsFixed(2),
+                                  thirdText: 'dinas/seg/cm2',
+                                ),
+                                ValuePanel(
+                                  firstText: 'T. Card. Izq. ',
+                                  secondText: Valores.TC.toStringAsFixed(2),
+                                  thirdText: 'Kg*m',
+                                ),
+                                ValuePanel(
+                                  firstText: 'TLVI',
+                                  secondText: Cardiometrias.TLVI.toStringAsFixed(2),
+                                  thirdText: 'g/Lat/m2',
+                                ),
+                                ValuePanel(
+                                  firstText: 'I. TLVI',
+                                  secondText: Cardiometrias.iTLVI.toStringAsFixed(2),
+                                  thirdText: 'g/Lat/m2',
+                                ),
+                                //
+                                ValuePanel(
+                                  firstText: 'Disp. Oxígeno',
+                                  secondText: Valores.DO.toStringAsFixed(2),
+                                  thirdText: 'mL/min/m2',
+                                ),
+                                ValuePanel(
+                                  firstText: 'I. Disp. Oxígeno',
+                                  secondText: Valores.iDO.toStringAsFixed(2),
+                                  thirdText: 'mL/min/m2',
+                                ),
+                                ValuePanel(
+                                  firstText: 'TO2',
+                                  secondText: Valores.TO.toStringAsFixed(2),
+                                  thirdText: 'mL/O2/m2',
+                                ),
+                                //
+                                ValuePanel(
+                                  firstText: 'P. Fcard-TA',
+                                  secondText: Cardiometrias.productoFrecuenciaPresion
+                                      .toStringAsFixed(2),
+                                  thirdText: 'mmHg',
+                                ),
+                                ValuePanel(
+                                  firstText: 'P. Coloido-Osmótica',
+                                  secondText:
+                                  Valores.presionColoidoOsmotica.toStringAsFixed(2),
+                                  thirdText: 'mmHg',
+                                ),
+                                //
+                                ValuePanel(
+                                  firstText: 'Cociente A. Oxígeno',
+                                  secondText: Valores.cAO.toStringAsFixed(2),
+                                  thirdText: '%',
+                                ),
+                                ValuePanel(
+                                  firstText: 'Cociente V. Oxígeno',
+                                  secondText: Valores.cVO.toStringAsFixed(2),
+                                  thirdText: '%',
+                                ),
+                                // **********************************
+                                CrossLine(thickness: 3),
+                                CrossLine(thickness: 2),
+                                CircleIcon(
+                                  iconed: Icons.copy_all_sharp,
+                                  tittle: "Copiar en Portapapeles",
+                                  onChangeValue: () {
+                                    Datos.portapapeles(
+                                        context: context, text: Cardiometrias.transporteOxigeno);
+                                  },
+                                ),
+                              ],
                             ),
                           ), // Taller Hemodinámico
                           TittleContainer(

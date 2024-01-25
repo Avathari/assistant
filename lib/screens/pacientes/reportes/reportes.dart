@@ -94,13 +94,6 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
         Pacientes.Alergicos = value;
       });
 
-      // Archivos.readJsonToMap(
-      //     filePath: "${Pacientes.localRepositoryPath}balances.json")
-      //     .then((value) {
-      //   Pacientes.Balances = value;
-      //   Terminal.printExpected(message: "Balances seleccionados ${value[0].last}");
-      //   Balances.fromJson(value.last);
-      // });
 // *********************************************
       if (Pacientes.ID_Hospitalizacion != 0) {
         // Repositorios.consultarRegistro();
@@ -628,6 +621,10 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
     }
   }
 
+  Widget partialVisor() {
+    return Container();
+  }
+
   Future<void> imprimirDocumento() async {
     Contextos.contexto = context;
     // final pdfFile = await PdfApi.generateCenterText("Prueba");
@@ -662,6 +659,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           "Terapias_Previas": Reportes.terapiasPrevias,
           "Analisis_Medico": Reportes.analisisMedico,
           "Tratamiento_Propuesto": Reportes.tratamientoPropuesto,
+          "Pronostico_Medico": Reportes.pronosticoMedico,
           // INDICACIONES MÉDICAS *******************************
           "Dieta": Reportes.dieta.toString(),
           "Hidroterapia": Reportes.hidroterapia,
@@ -692,6 +690,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           "Terapias_Previas": Reportes.terapiasPrevias,
           "Analisis_Medico": Reportes.analisisMedico,
           "Tratamiento_Propuesto": Reportes.tratamientoPropuesto,
+          "Pronostico_Medico": Reportes.pronosticoMedico,
           // INDICACIONES MÉDICAS *******************************
           "Dieta": Reportes.dieta.toString(),
           "Hidroterapia": Reportes.hidroterapia,
@@ -719,6 +718,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
         "Terapias_Previas": Reportes.terapiasPrevias,
         "Analisis_Medico": Reportes.analisisMedico,
         "Tratamiento_Propuesto": Reportes.tratamientoPropuesto,
+        "Pronostico_Medico": Reportes.pronosticoMedico,
         // INDICACIONES MÉDICAS *******************************
         "Dieta": Reportes.dieta.toString(),
         "Hidroterapia": Reportes.hidroterapia,
@@ -748,6 +748,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
   }
 
   TypeReportes getTypeReport() {
+    Terminal.printExpected(message: "getTypeReport . : ${widget.actualPage}");
+    //
     switch (widget.actualPage) {
       case 0:
         Repositorios.tipo_Analisis = Items.tiposAnalisis[0];
@@ -759,7 +761,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       case 2:
         return TypeReportes.reporteConsulta;
       case 3:
-        // Repositorios.tipo_Analisis = Items.tiposAnalisis[1];
+        Repositorios.tipo_Analisis = Items.tiposAnalisis[4];
         return TypeReportes.reporteTerapiaIntensiva;
       case 4:
         return TypeReportes.reportePrequirurgica;
@@ -1334,6 +1336,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             const SizedBox(width: 20)
           ]);
 
+  //
   _notasPrevias(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
@@ -1470,6 +1473,12 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               // ),
               Text(
                 listNotes![widget.indexNote]['Analisis_Medico'],
+                maxLines: 20,
+                style: Styles.textSyleGrowth(fontSize: 9),
+              ),
+              CrossLine(thickness: 1),
+              Text(
+                listNotes![widget.indexNote]['Pronostico_Medico'] ?? "",
                 maxLines: 20,
                 style: Styles.textSyleGrowth(fontSize: 9),
               ),

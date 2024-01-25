@@ -66,16 +66,15 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
     return TittleContainer(
       tittle: 'Evaluación de Terapia Intensiva . . . ',
       color: Colors.black,
-      child: Column(children: [
-        Expanded(
-          flex: 7,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  flex: 10,
+      child: Row(
+        children: [
+          Expanded(
+            flex: 3,
+            child: Column(children: [
+              Expanded(
+                flex: 7,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: Container(
                     padding: const EdgeInsets.all(8.0),
                     decoration: ContainerDecoration.roundedDecoration(),
@@ -163,168 +162,55 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Wrap(
-                    direction: Axis.vertical,
-                    alignment: WrapAlignment.spaceBetween,
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    runAlignment: WrapAlignment.center,
-                    spacing: 10,runSpacing: 0,
+              ),
+              CrossLine(thickness: 3),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       GrandIcon(
-                        iconData: Icons.water_drop,
-                        labelButton: 'Análisis Hidrico',
+                        iconData: Icons.person,
+                        labelButton: "Información General",
+                        weigth: wieghtRow / index,
                         onPress: () {
-                          Cambios.toNextActivity(context,
-                              chyld: const Hidricos());
+                          carouselController.jumpToPage(0);
                         },
                       ),
                       GrandIcon(
-                        iconData: Icons.bubble_chart,
-                        labelButton: 'Análisis Metabólico',
-                        onPress: () {
-                          Operadores.openDialog(
-                              context: context,
-                              chyldrim: const Metabolicos());
-                        },
-                      ),
+                          iconData: Icons.explicit,
+                          labelButton: "Exploración Física",
+                          weigth: wieghtRow / index,
+                          onPress: () {
+                            carouselController.jumpToPage(1);
+                          }),
                       GrandIcon(
-                        iconData: Icons.horizontal_rule_sharp,
-                        labelButton: 'Análisis Antropométrico',
-                        onPress: () {
-                          Operadores.openDialog(
-                              context: context,
-                              chyldrim: const Antropometricos());
-                        },
-                      ),
+                          iconData: Icons.explore,
+                          labelButton: "Análisis y propuestas",
+                          weigth: wieghtRow / index,
+                          onPress: () {
+                            carouselController.jumpToPage(2);
+                          }),
                       GrandIcon(
-                        iconData: Icons.monitor_heart_outlined,
-                        labelButton: 'Análisis Cardiovascular',
-                        onPress: () {
-                          Operadores.openDialog(
-                              context: context,
-                              chyldrim: const Cardiovasculares());
-                        },
-                      ),
-                      GrandIcon(
-                        iconData: Icons.all_inclusive_rounded,
-                        labelButton: 'Análisis Ventilatorio',
-                        onPress: () {
-                          Operadores.openDialog(
-                              context: context,
-                              chyldrim: const Ventilatorios());
-                        },
-                      ),
-                      GrandIcon(
-                        iconData: Icons.g_mobiledata,
-                        labelButton: 'Análisis Gasométrico',
-                        onPress: () {
-                          Cambios.toNextActivity(context,
-                              chyld: const Gasometricos());
-                        },
-                      ),
-                      CrossLine(height: 20, thickness: 3),
-                      GrandIcon(
-                        iconData: Icons.accessibility,
-                        labelButton: 'Análisis de Hemáticos',
-                        onPress: () {
-                          Cambios.toNextActivity(context,
-                              chyld: const Hematinicos());
-                        },
-                      ),
-                      GrandIcon(
-                        labelButton: 'Análisis Renal',
-                        onPress: () {
-                          Operadores.alertActivity(
-                              context: context,
-                              tittle: "¡Disculpas!",
-                              message: "Actividad en construcción");
-                          // Operadores.openDialog(
-                          //     context: context, chyldrim: const Hidricos());
-                        },
-                      ),
-                      GrandIcon(
-                        labelButton: 'Análisis Sanguíneo Circulante',
-                        onPress: () {
-                          Operadores.alertActivity(
-                              context: context,
-                              tittle: "¡Disculpas!",
-                              message: "Actividad en construcción");
-                          // Operadores.openDialog(
-                          //     context: context, chyldrim: const Hidricos());
-                        },
-                      ),
-                      GrandIcon(
-                        labelButton: 'Análisis Pulmonar',
-                        onPress: () {
-                          Operadores.alertActivity(
-                              context: context,
-                              tittle: "¡Disculpas!",
-                              message: "Actividad en construcción");
-                          // Operadores.openDialog(
-                          //     context: context, chyldrim: const Hidricos());
-                        },
-                      ),
-                      GrandIcon(
-                        labelButton: 'Edad Corregida',
-                        onPress: () {
-                          Operadores.alertActivity(
-                              context: context,
-                              tittle: "¡Disculpas!",
-                              message: "Actividad en construcción");
-                          // Operadores.openDialog(
-                          //     context: context, chyldrim: const Hidricos());
-                        },
-                      ),
+                          iconData: Icons.next_plan,
+                          labelButton: "Diagnósticos y Pronóstico",
+                          weigth: wieghtRow / index,
+                          onPress: () {
+                            carouselController.jumpToPage(3);
+                          }),
                     ],
                   ),
-                )
-              ],
-            ),
-          ),
-        ),
-        CrossLine(thickness: 3),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.only(right: 8.0, left: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GrandIcon(
-                  iconData: Icons.person,
-                  labelButton: "Información General",
-                  weigth: wieghtRow / index,
-                  onPress: () {
-                    carouselController.jumpToPage(0);
-                  },
                 ),
-                GrandIcon(
-                    iconData: Icons.explicit,
-                    labelButton: "Exploración Física",
-                    weigth: wieghtRow / index,
-                    onPress: () {
-                      carouselController.jumpToPage(1);
-                    }),
-                GrandIcon(
-                    iconData: Icons.explore,
-                    labelButton: "Análisis y propuestas",
-                    weigth: wieghtRow / index,
-                    onPress: () {
-                      carouselController.jumpToPage(2);
-                    }),
-                GrandIcon(
-                    iconData: Icons.next_plan,
-                    labelButton: "Diagnósticos y Pronóstico",
-                    weigth: wieghtRow / index,
-                    onPress: () {
-                      carouselController.jumpToPage(3);
-                    }),
-              ],
-            ),
+              ),
+            ]),
           ),
-        ),
-      ]),
+          Expanded(
+            flex: 3,
+            child: _anylisis(context),
+          ),
+        ],
+      ),
     );
   }
 
@@ -340,7 +226,134 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
   var heredoTextController = TextEditingController();
   var hospiTextController = TextEditingController();
   var patoloTextController = TextEditingController();
+
+  _optionals(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Wrap(
+        direction: Axis.vertical,
+        alignment: WrapAlignment.spaceBetween,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        runAlignment: WrapAlignment.center,
+        spacing: 10,runSpacing: 0,
+        children: [
+          GrandIcon(
+            iconData: Icons.water_drop,
+            labelButton: 'Análisis Hidrico',
+            onPress: () {
+              Cambios.toNextActivity(context,
+                  chyld: const Hidricos());
+            },
+          ),
+          GrandIcon(
+            iconData: Icons.bubble_chart,
+            labelButton: 'Análisis Metabólico',
+            onPress: () {
+              Operadores.openDialog(
+                  context: context,
+                  chyldrim: const Metabolicos());
+            },
+          ),
+          GrandIcon(
+            iconData: Icons.horizontal_rule_sharp,
+            labelButton: 'Análisis Antropométrico',
+            onPress: () {
+              Operadores.openDialog(
+                  context: context,
+                  chyldrim: const Antropometricos());
+            },
+          ),
+          GrandIcon(
+            iconData: Icons.monitor_heart_outlined,
+            labelButton: 'Análisis Cardiovascular',
+            onPress: () {
+              Operadores.openDialog(
+                  context: context,
+                  chyldrim: const Cardiovasculares());
+            },
+          ),
+          GrandIcon(
+            iconData: Icons.all_inclusive_rounded,
+            labelButton: 'Análisis Ventilatorio',
+            onPress: () {
+              Operadores.openDialog(
+                  context: context,
+                  chyldrim: const Ventilatorios());
+            },
+          ),
+          GrandIcon(
+            iconData: Icons.g_mobiledata,
+            labelButton: 'Análisis Gasométrico',
+            onPress: () {
+              Cambios.toNextActivity(context,
+                  chyld: const Gasometricos());
+            },
+          ),
+          CrossLine(height: 20, thickness: 3),
+          GrandIcon(
+            iconData: Icons.accessibility,
+            labelButton: 'Análisis de Hemáticos',
+            onPress: () {
+              Cambios.toNextActivity(context,
+                  chyld: const Hematinicos());
+            },
+          ),
+          GrandIcon(
+            labelButton: 'Análisis Renal',
+            onPress: () {
+              Operadores.alertActivity(
+                  context: context,
+                  tittle: "¡Disculpas!",
+                  message: "Actividad en construcción");
+              // Operadores.openDialog(
+              //     context: context, chyldrim: const Hidricos());
+            },
+          ),
+          GrandIcon(
+            labelButton: 'Análisis Sanguíneo Circulante',
+            onPress: () {
+              Operadores.alertActivity(
+                  context: context,
+                  tittle: "¡Disculpas!",
+                  message: "Actividad en construcción");
+              // Operadores.openDialog(
+              //     context: context, chyldrim: const Hidricos());
+            },
+          ),
+          GrandIcon(
+            labelButton: 'Análisis Pulmonar',
+            onPress: () {
+              Operadores.alertActivity(
+                  context: context,
+                  tittle: "¡Disculpas!",
+                  message: "Actividad en construcción");
+              // Operadores.openDialog(
+              //     context: context, chyldrim: const Hidricos());
+            },
+          ),
+          GrandIcon(
+            labelButton: 'Edad Corregida',
+            onPress: () {
+              Operadores.alertActivity(
+                  context: context,
+                  tittle: "¡Disculpas!",
+                  message: "Actividad en construcción");
+              // Operadores.openDialog(
+              //     context: context, chyldrim: const Hidricos());
+            },
+          ),
+        ],
+      ),
+    );
+  }
 // ######################### ### # ### ############################
 // INICIO DE LAS OPERACIONES STATE() Y BUILD().
 // ######################### ### # ### ############################
+}
+
+_anylisis(BuildContext context) {
+  return Container(
+    decoration: ContainerDecoration.roundedDecoration(),
+    child: const Cardiovasculares(),
+  );
 }
