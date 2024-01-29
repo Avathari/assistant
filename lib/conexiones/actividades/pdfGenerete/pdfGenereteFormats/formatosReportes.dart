@@ -20,6 +20,7 @@ class FormatosReportes {
   }
 
   List<Widget> typeOfList(Map<String, dynamic> paraph) {
+
     List<List<Widget>> list = [
       reporteIngreso(paraph), // 0 : Ingreso
       reporteEvolucion(paraph), // 1 : Evolución
@@ -464,23 +465,23 @@ class FormatosReportes {
     parax.add(paragraph(
       texto: "${paraph['Analisis_Medico']}",
     ));
-    parax.add(buildListado(
-      'Indicaciones médicas',
-      [
-        'Medicamentos',
-        'Licencia médica',
-        'Pendientes',
-        'Citas',
-        'Recomendaciones',
-      ],
-      [
-        paraph['Medicamentos'],
-        paraph['Licencia_Medica'],
-        paraph['Pendientes'],
-        paraph['Citas'],
-        paraph['Recomendaciones'],
-      ],
-    ));
+    // parax.add(buildListado(
+    //   'Indicaciones médicas',
+    //   [
+    //     'Medicamentos',
+    //     'Licencia médica',
+    //     'Pendientes',
+    //     'Citas',
+    //     'Recomendaciones',
+    //   ],
+    //   [
+    //     paraph['Medicamentos'],
+    //     paraph['Licencia_Medica'],
+    //     paraph['Pendientes'],
+    //     paraph['Citas'],
+    //     paraph['Recomendaciones'],
+    //   ],
+    // ));
 
     //
     parax.add(paragraph(
@@ -720,10 +721,10 @@ class FormatosReportes {
       ],
       [
         paraph['Medicamentos'],
-        paraph['Licencia_Medica'],
+        paraph['Licencia_Medica'] ?? [""],
         paraph['Pendientes'],
-        paraph['Citas'],
-        paraph['Recomendaciones'],
+        paraph['Citas'] ?? [""],
+        paraph['Recomendaciones'] ?? [""],
       ],
     ));
 
@@ -1485,7 +1486,7 @@ class FormatosReportes {
     );
 
     // # # # # # # ### # # # # # # ###
-    parax.add(paragraph(texto: paraph['Eventualidades']));
+    parax.add(paragraph(texto: paraph['Eventualidades'] ?? ""));
     // # # # # # # ### # # # # # # ###
     parax.add(paragraphWithTittle(
         titulo: "Exploración Física".toUpperCase(),
@@ -1904,9 +1905,9 @@ class FormatosReportes {
       'Pendientes',
     ];
     List<List<dynamic>> contents = [
-      paraph['Hidroterapia'],
-      paraph['Medicamentos'],
-      paraph['Pendientes'],
+      paraph['Hidroterapia'] ?? [""],
+      paraph['Medicamentos'] ?? [""],
+      paraph['Pendientes'] ?? [""],
     ];
     // # # # # # # ### # # # # # # ###
     if (paraph['Oxigenoterapia'] !=
@@ -1980,11 +1981,11 @@ class FormatosReportes {
       'Pendientes',
     ];
     List<List<dynamic>> contents = [
-      paraph['Dieta'],
-      paraph['Hidroterapia'],
-      paraph['Medicamentos'],
-      paraph['Medidas_Generales'],
-      paraph['Pendientes'],
+      paraph['Dieta'] ?? [""],
+      paraph['Hidroterapia'] ?? ['Sin Cateter. Ni soluciones.'],
+      paraph['Medicamentos'] ?? [""],
+      paraph['Medidas_Generales'] ?? [""],
+      paraph['Pendientes'] ?? [""],
     ];
     // # # # # # # ### # # # # # # ###
     // print("paraph['Oxigenoterapia'] ${paraph['Oxigenoterapia']}\n"
@@ -2045,7 +2046,7 @@ class FormatosReportes {
             ),
           ),
         )
-      ]),
+      ])
     ));
     // # # # # # # ### # # # # # # ###
     // # # # # # # ### # # # # # # ###
@@ -3089,7 +3090,7 @@ class FormatosReportes {
       ),
     );
     // # # # # # # ### # # # # # # ###
-    parax.add(paragraph(texto: paraph['Motivo_Transfusion']));
+    parax.add(paragraph(texto: paraph['Motivo_Transfusion'] ?? ""));
 
     // # # # # # # ### # # # # # # ###
     parax.add(paragraph(
@@ -3126,17 +3127,17 @@ class FormatosReportes {
 
     parax.add(paragraphWithTittleAndSeparated(
         titulo: "Seguimiento de Signos Vitales: ".toUpperCase(),
-        subTitulo: paraph['Seguimiento_Vitales']));
+        subTitulo: paraph['Seguimiento_Vitales'] ?? ""));
 
     parax.add(paragraph(
         isBefore: true,
         anteTexto: "Estado General del Paciente: ".toUpperCase(),
-        texto: paraph['Motivo_Transfusion'],
+        texto: paraph['Motivo_Transfusion'] ?? "",
         withJumpSpace: false));
     parax.add(paragraph(
         isBefore: true,
         anteTexto: "Reacciones Adversas presentadas: ".toUpperCase(),
-        texto: paraph['Reacciones_Presentadas'],
+        texto: paraph['Reacciones_Presentadas'] ?? "",
         withJumpSpace: false));
 
     // # # # # # # ### # # # # # # ###
@@ -3151,7 +3152,7 @@ class FormatosReportes {
 
 class CopiasReportes {
   static String reporteIngreso(Map<String, dynamic> paraph) {
-    // print(paraph);
+    print(paraph);
     //
     String tipoReporte = "NOTA DE INGRESO HOSPITALARIO\n";
     tipoReporte = "${tipoReporte}FICHA DE IDENTIFICACIÓN\n"
@@ -3358,10 +3359,10 @@ class CopiasReportes {
     tipoReporte = "$tipoReporte"
         "${paraph['Impresiones_Diagnosticas']}\n\n";
     // ************************************
-    if (paraph['Eventualidades'] != "") {
-      tipoReporte = "$tipoReporte"
-          "${paraph['Eventualidades']}\n\n";
-    }
+    // if (paraph['Eventualidades'] != "") {
+    //   tipoReporte = "$tipoReporte"
+    //       "${paraph['Eventualidades']}\n\n";
+    // }
     // # # # # # # ### # # # # # # ###
     tipoReporte = "${tipoReporte}EXPLORACION FÍSICA\n"
         "${paraph['Exploracion_Fisica']}\n\n";
@@ -3370,17 +3371,19 @@ class CopiasReportes {
         "${paraph['Analisis_Terapia']}\n";
 
     if (paraph['Pronostico_Medico'] != "") {
-      tipoReporte = "$tipoReporte\n"
+      tipoReporte = "$tipoReporte"
           "${paraph['Pronostico_Medico']}";
     }
-
-    tipoReporte = "$tipoReporte\n\n"
-        "Med. Gral. Romero Pantoja Luis Ced. Prof. 12210866 Medicina General";
+    //
+    // tipoReporte = "$tipoReporte\n\n"
+    //     "Med. Gral. Romero Pantoja Luis Ced. Prof. 12210866 Medicina General";
 
     return tipoReporte;
   }
 
   static String reporteRevision(Map<String, dynamic> paraph) {
+    Terminal.printAlert(message: "${paraph['Antecedentes_Patologicos_Ingreso']}");
+    //
     String tipoReporte = "NOTA DE REVISION HOSPITALARIO\n";
 
     tipoReporte = "${tipoReporte}"

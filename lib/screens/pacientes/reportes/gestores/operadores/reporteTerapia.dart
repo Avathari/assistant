@@ -31,32 +31,26 @@ class ReporteTerapia extends StatefulWidget {
 }
 
 class _ReporteTerapiaState extends State<ReporteTerapia> {
-
   @override
   void initState() {
-    // # # # ############## #### ########
     // Llamado a ultimo registro agregado por fecha de bd_regpace.pace_sv, pace_antropo.
-    // Asignación de la consulta en Vitales.Vital.
-    // # # # ############## #### ########
-    // Vitales.ultimoRegistro();
-    // # # # ############## #### ########
-    setState(() {
-      initialTextController.text = Pacientes.prosa(isTerapia: true);
-      //
-      diagoTextController.text = Pacientes.diagnosticos();
-      //
-      consultaTextController.text = Reportes.motivoConsulta;
-      heredoTextController.text = Pacientes.heredofamiliares();
-      hospiTextController.text = Pacientes.hospitalarios();
-      patoloTextController.text = Pacientes.patologicos();
 
-      Reportes.reportes['Datos_Generales'] = Pacientes.prosa(isTerapia: true);
-      Reportes.reportes['Motivo_Consulta'] = Reportes.motivoConsulta;
-      Reportes.reportes['Antecedentes_Heredofamiliares'] =
-          Pacientes.heredofamiliares();
-      Reportes.reportes['Antecedentes_Hospitalarios'] =
-          Pacientes.hospitalarios();
-      Reportes.reportes['Antecedentes_Patologicos'] = Pacientes.patologicos();
+    setState(() {
+      initialTextController.text = Reportes.reportes['Datos_Generales'] =
+          Pacientes.prosa(isTerapia: true);
+      //
+      diagoTextController.text = Reportes.reportes['Impresiones_Diagnosticas'] =
+          Pacientes.diagnosticos();
+      //
+      consultaTextController.text =
+          Reportes.reportes['Motivo_Consulta'] = Reportes.motivoConsulta;
+      heredoTextController.text =
+          Reportes.reportes['Antecedentes_Heredofamiliares'] =
+              Pacientes.heredofamiliares();
+      hospiTextController.text = Reportes
+          .reportes['Antecedentes_Hospitalarios'] = Pacientes.hospitalarios();
+      patoloTextController.text = Reportes
+          .reportes['Antecedentes_Patologicos'] = Pacientes.patologicos();
     });
     super.initState();
   }
@@ -96,18 +90,22 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
                               Row(
                                 children: [
                                   Expanded(
-                                    flex: isMobile(context) || isDesktop(context) ? 3 : 1,
+                                    flex:
+                                        isMobile(context) || isDesktop(context)
+                                            ? 3
+                                            : 1,
                                     child: EditTextArea(
                                         textController: diagoTextController,
-                                        labelEditText: "Impresiones diagnósticas",
+                                        labelEditText:
+                                            "Impresiones diagnósticas",
                                         keyBoardType: TextInputType.multiline,
                                         numOfLines: 10,
                                         onChange: ((value) {
-                                          Reportes.impresionesDiagnosticas =
-                                          "$value.";
-                                          Reportes.reportes[
-                                          'Impresiones_Diagnosticas'] =
-                                          "$value.";
+                                          Reportes
+                                              .impresionesDiagnosticas = Reportes
+                                                      .reportes[
+                                                  'Impresiones_Diagnosticas'] =
+                                              "$value.";
                                         }),
                                         inputFormat: MaskTextInputFormatter()),
                                   ),
@@ -122,7 +120,8 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
                                               setState(() {
                                                 diagoTextController.text =
                                                     Sentences.capitalizeAll(
-                                                        diagoTextController.text);
+                                                        diagoTextController
+                                                            .text);
                                               });
                                             }),
                                         CircleIcon(
@@ -134,10 +133,11 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
                                                     onSelected: ((value) {
                                                       setState(() {
                                                         Diagnosticos
-                                                            .selectedDiagnosis =
+                                                                .selectedDiagnosis =
                                                             value;
-                                                        diagoTextController.text =
-                                                        "${diagoTextController.text}\n${Diagnosticos.selectedDiagnosis}";
+                                                        diagoTextController
+                                                                .text =
+                                                            "${diagoTextController.text}\n${Diagnosticos.selectedDiagnosis}";
                                                       });
                                                     }),
                                                   ));
@@ -154,7 +154,7 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
                           isTerapia: true,
                         ),
                         // const AuxiliaresExploracion(),
-                         AnalisisMedico(),
+                        AnalisisMedico(),
                         DiagnosticosAndPronostico(
                           isTerapia: true,
                         ),
@@ -235,14 +235,14 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
         alignment: WrapAlignment.spaceBetween,
         crossAxisAlignment: WrapCrossAlignment.center,
         runAlignment: WrapAlignment.center,
-        spacing: 10,runSpacing: 0,
+        spacing: 10,
+        runSpacing: 0,
         children: [
           GrandIcon(
             iconData: Icons.water_drop,
             labelButton: 'Análisis Hidrico',
             onPress: () {
-              Cambios.toNextActivity(context,
-                  chyld: const Hidricos());
+              Cambios.toNextActivity(context, chyld: const Hidricos());
             },
           ),
           GrandIcon(
@@ -250,8 +250,7 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
             labelButton: 'Análisis Metabólico',
             onPress: () {
               Operadores.openDialog(
-                  context: context,
-                  chyldrim: const Metabolicos());
+                  context: context, chyldrim: const Metabolicos());
             },
           ),
           GrandIcon(
@@ -259,8 +258,7 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
             labelButton: 'Análisis Antropométrico',
             onPress: () {
               Operadores.openDialog(
-                  context: context,
-                  chyldrim: const Antropometricos());
+                  context: context, chyldrim: const Antropometricos());
             },
           ),
           GrandIcon(
@@ -268,8 +266,7 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
             labelButton: 'Análisis Cardiovascular',
             onPress: () {
               Operadores.openDialog(
-                  context: context,
-                  chyldrim: const Cardiovasculares());
+                  context: context, chyldrim: const Cardiovasculares());
             },
           ),
           GrandIcon(
@@ -277,16 +274,14 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
             labelButton: 'Análisis Ventilatorio',
             onPress: () {
               Operadores.openDialog(
-                  context: context,
-                  chyldrim: const Ventilatorios());
+                  context: context, chyldrim: const Ventilatorios());
             },
           ),
           GrandIcon(
             iconData: Icons.g_mobiledata,
             labelButton: 'Análisis Gasométrico',
             onPress: () {
-              Cambios.toNextActivity(context,
-                  chyld: const Gasometricos());
+              Cambios.toNextActivity(context, chyld: const Gasometricos());
             },
           ),
           CrossLine(height: 20, thickness: 3),
@@ -294,8 +289,7 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
             iconData: Icons.accessibility,
             labelButton: 'Análisis de Hemáticos',
             onPress: () {
-              Cambios.toNextActivity(context,
-                  chyld: const Hematinicos());
+              Cambios.toNextActivity(context, chyld: const Hematinicos());
             },
           ),
           GrandIcon(

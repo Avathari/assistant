@@ -1,4 +1,6 @@
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/analisisMedico.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/auxiliaresReportes.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/exploracionFisica.dart';
@@ -22,38 +24,113 @@ class ReporteIngreso extends StatefulWidget {
 class _ReporteIngresoState extends State<ReporteIngreso> {
   @override
   void initState() {
-    Repositorios.padecimientoActual();
+    //
+    // Repositorios.consultarAnalisis();
     Vitales.ultimoRegistro();
-
     // INICIAR . . .
     setState(() {
-      initialTextController.text = Pacientes.prosa();
-      padesTextController.text = Reportes.padecimientoActual;
-      noPatolTextController.text = Pacientes.noPatologicosSimplificado();
-      heredoTextController.text = Pacientes.heredofamiliares();
-      hospiTextController.text = Pacientes.hospitalarios();
-      patoloTextController.text = Pacientes.patologicos();
-      alergoTextController.text = Pacientes.alergicos();
-
-      Reportes.reportes['Datos_Generales'] = Pacientes.prosa();
-      Reportes.reportes['Padecimiento_Actual'] = Reportes.padecimientoActual;
-      //
-      Reportes.reportes['Antecedentes_No_Patologicos'] =noPatolTextController.text;
-      //
-      Reportes.reportes['Antecedentes_Heredofamiliares'] =
-          Pacientes.heredofamiliares().toLowerCase();
-      Reportes.reportes['Antecedentes_Quirurgicos'] = Pacientes.hospitalarios()
-          .toLowerCase(); // Contiene el antecedente de cirugias.
-      Reportes.reportes['Antecedentes_Patologicos'] =
-          Pacientes.patologicos().toLowerCase();
+      Reportes.reportes['Datos_Generales'] =
+          initialTextController.text = Pacientes.prosa();
+      Reportes.reportes['Padecimiento_Actual'] =
+          padesTextController.text = Reportes.padecimientoActual;
+      Reportes.reportes['Antecedentes_No_Patologicos'] =
+          noPatolTextController.text = Pacientes.noPatologicosSimplificado();
+      Reportes.reportes['Antecedentes_Heredofamiliares'] = heredoTextController
+          .text = Pacientes.heredofamiliares().toLowerCase();
+      Reportes.reportes['Antecedentes_Quirurgicos'] = hospiTextController.text =
+          Pacientes.hospitalarios()
+              .toLowerCase(); // Contiene el antecedente de cirugias.
+      Reportes.reportes['Antecedentes_Patologicos_Otros'] = Reportes
+              .reportes['Antecedentes_Patologicos_Ingreso'] =
+          Reportes.reportes['Antecedentes_Patologicos'] =
+              patoloTextController.text = Pacientes.patologicos();
       Reportes.reportes['Antecedentes_Alergicos'] =
-          Pacientes.alergicos().toLowerCase();
-
-      Reportes.reportes['Antecedentes_Patologicos_Otros'] =
-          Pacientes.antecedentesPatologicos();
+          alergoTextController.text = Pacientes.alergicos().toLowerCase();
     });
     super.initState();
   }
+//
+//   void buscar() {
+//     Archivos.readJsonToMap(
+//             filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json")
+//         .then((value) {
+//       Pacientes.Notas = value;
+//       // VALUE almacenado en Json : : "${Pacientes.localRepositoryPath}/reportes/reportes.json"
+//       Terminal.printSuccess(
+//           message: "VALUE reportes.json- ${value.last} "
+//               ": ${value.runtimeType} "
+//               ": : ${value.last.runtimeType}");
+//       // Actualizar . . .
+//       setState(() {
+//         // Del Padecimiento **************************************************
+//         Reportes.padecimientoActual = value.last['Padecimiento_Actual'] ?? '';
+//         Valores.fechaPadecimientoActual =
+//             value.last['Fecha_Padecimiento'] ?? '';
+//         // Primeras Variables **************************************************
+//         Reportes.impresionesDiagnosticas =
+//             value.last['Diagnosticos_Hospital'] ?? '';
+//         // Primeras Variables **************************************************
+//         Reportes.exploracionFisica = value.last['Exploracion_Fisica'] ?? '';
+//         Reportes.signosVitales = value.last['Signos_Vitales'] ?? '';
+//         // Segundas Variables **************************************************
+//         // Reportes.eventualidadesOcurridas =
+//         //     value.last['Eventualidades'] ?? '';
+//         // Reportes.terapiasPrevias = value.last['Terapias_Previas'] ?? '';
+//         Reportes.analisisMedico = value.last['Analisis_Medico'] ?? '';
+//         // Reportes.tratamientoPropuesto =
+//         //     value.last['Tratamiento_Propuesto'] ?? '';
+//         // Listados desde String  ************************************************
+//         // Reportes.dieta = ;
+//
+//         // String aux = "";
+//         // aux.replaceAll(", ", ",");
+//         // print(""
+//         //     // "Opción A - ${jsonDecode(value.last['Dietoterapia'])} - ${jsonDecode(value.last['Dietoterapia']).runtimeType}"
+//         //     //"Opcion B - ${json.decode(value.last['Medidas_Generales']).cast<List<dynamic>>()}"
+//         //     "Opcion C - ${Listas.listFromString(value.last['Medidas_Generales'].replaceAll(", ", ","))} : ${value.last['Medidas_Generales'].runtimeType}");
+//
+//         // Reportes.dieta = json
+//         //     .decode(value.last['Dietoterapia'].toString())
+//         //     .cast<String>();
+//         //     .toList();
+//         // Reportes.hidroterapia = json
+//         //     .decode(value.last['Hidroterapia'].toString())
+//         //     .cast<String>()
+//         //     .toList();
+//         // Reportes.insulinoterapia = json
+//         //     .decode(value.last['Insulinoterapia'].toString())
+//         //     .cast<String>()
+//         //     .toList();
+//         // Reportes.hemoterapia = json
+//         //     .decode(value.last['Hemoterapia'].toString())
+//         //     .cast<String>()
+//         //     .toList();
+//         // Reportes.oxigenoterapia = json
+//         //     .decode(value.last['Oxigenoterapia'].toString())
+//         //     .cast<String>()
+//         //     .toList();
+//         // Reportes.medicamentosIndicados = json
+//         //     .decode(value.last['Medicamentos'].toString())
+//         //     .cast<String>()
+//         //     .toList();
+//         // Reportes.medidasGenerales = json
+//         //     .decode(value.last['Medidas_Generales'].toString())
+//         //     .cast<String>()
+//         //     .toList();
+//         // Reportes.pendientes = json
+//         //     .decode(value.last['Pendientes'].toString())
+//         //     .cast<String>()
+//         //     .toList();
+//         // Crear Json desde Pacientes.Notas ***************************************
+//       });
+//     }).onError((error, stackTrace) {
+//       Terminal.printAlert(
+//           message: "ERROR - No fue posible acceder a "
+//               "${"${Pacientes.localRepositoryPath}/reportes/reportes.json"} : $error : : $stackTrace");
+// // Consultar Base de Datos : pace_hosp_repo : : Donde están todos los Análisis descritos
+//       Repositorios.consultarAnalisis();
+//     });
+//   }
 
   @override
   Widget build(BuildContext context) {
@@ -206,7 +283,7 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
                                       noPatolTextController.text =
                                           Pacientes.noPatologicosSimplificado();
                                       Reportes.reportes[
-                                      'Antecedentes_No_Patologicos'] =
+                                              'Antecedentes_No_Patologicos'] =
                                           Pacientes.noPatologicosSimplificado();
                                     }),
                               ],

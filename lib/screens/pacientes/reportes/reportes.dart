@@ -58,9 +58,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
     // Llamado a los ultimos registros agregados. ****************************
     setState(() {
       //
-      Diagnosticos.registros();
-      Quirurgicos.consultarRegistro();
-      //Pendientes.consultarRegistro();
+      Diagnosticos.registros(); // Diagnósticos
+      Quirurgicos.consultarRegistro(); // Quirúrgicos //Pendientes.consultarRegistro();
+      Repositorios.consultarAnalisis();
       Balances.consultarRegistro();
       // Patologicos del Paciente *************************************
       Archivos.readJsonToMap(
@@ -96,87 +96,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
 
 // *********************************************
       if (Pacientes.ID_Hospitalizacion != 0) {
-        // Repositorios.consultarRegistro();
-        Archivos.readJsonToMap(
-                filePath:
-                    "${Pacientes.localRepositoryPath}/reportes/reportes.json")
-            .then((value) {
-          Pacientes.Notas = value;
-          // VALUE almacenado en Json : : "${Pacientes.localRepositoryPath}/reportes/reportes.json"
-          Terminal.printSuccess(
-              message: "VALUE reportes.json- ${value.last} "
-                  ": ${value.runtimeType} "
-                  ": : ${value.last.runtimeType}");
-          // Actualizar . . .
-          setState(() {
-            // Del Padecimiento **************************************************
-            Reportes.padecimientoActual =
-                value.last['Padecimiento_Actual'] ?? '';
-            Valores.fechaPadecimientoActual =
-                value.last['Fecha_Padecimiento'] ?? '';
-            // Primeras Variables **************************************************
-            Reportes.impresionesDiagnosticas = value.last['Diagnosticos_Hospital'] ?? '';
-            // Primeras Variables **************************************************
-            Reportes.exploracionFisica = value.last['Exploracion_Fisica'] ?? '';
-            Reportes.signosVitales = value.last['Signos_Vitales'] ?? '';
-            // Segundas Variables **************************************************
-            // Reportes.eventualidadesOcurridas =
-            //     value.last['Eventualidades'] ?? '';
-            // Reportes.terapiasPrevias = value.last['Terapias_Previas'] ?? '';
-            Reportes.analisisMedico = value.last['Analisis_Medico'] ?? '';
-            // Reportes.tratamientoPropuesto =
-            //     value.last['Tratamiento_Propuesto'] ?? '';
-            // Listados desde String  ************************************************
-            // Reportes.dieta = ;
-
-            // String aux = "";
-            // aux.replaceAll(", ", ",");
-            // print(""
-            //     // "Opción A - ${jsonDecode(value.last['Dietoterapia'])} - ${jsonDecode(value.last['Dietoterapia']).runtimeType}"
-            //     //"Opcion B - ${json.decode(value.last['Medidas_Generales']).cast<List<dynamic>>()}"
-            //     "Opcion C - ${Listas.listFromString(value.last['Medidas_Generales'].replaceAll(", ", ","))} : ${value.last['Medidas_Generales'].runtimeType}");
-
-            // Reportes.dieta = json
-            //     .decode(value.last['Dietoterapia'].toString())
-            //     .cast<String>();
-            //     .toList();
-            // Reportes.hidroterapia = json
-            //     .decode(value.last['Hidroterapia'].toString())
-            //     .cast<String>()
-            //     .toList();
-            // Reportes.insulinoterapia = json
-            //     .decode(value.last['Insulinoterapia'].toString())
-            //     .cast<String>()
-            //     .toList();
-            // Reportes.hemoterapia = json
-            //     .decode(value.last['Hemoterapia'].toString())
-            //     .cast<String>()
-            //     .toList();
-            // Reportes.oxigenoterapia = json
-            //     .decode(value.last['Oxigenoterapia'].toString())
-            //     .cast<String>()
-            //     .toList();
-            // Reportes.medicamentosIndicados = json
-            //     .decode(value.last['Medicamentos'].toString())
-            //     .cast<String>()
-            //     .toList();
-            // Reportes.medidasGenerales = json
-            //     .decode(value.last['Medidas_Generales'].toString())
-            //     .cast<String>()
-            //     .toList();
-            // Reportes.pendientes = json
-            //     .decode(value.last['Pendientes'].toString())
-            //     .cast<String>()
-            //     .toList();
-            // Crear Json desde Pacientes.Notas ***************************************
-          });
-        }).onError((error, stackTrace) {
-          Terminal.printAlert(
-              message: "ERROR - No fue posible acceder a "
-                  "${"${Pacientes.localRepositoryPath}/reportes/reportes.json"} : $error : : $stackTrace");
-// Consultar Base de Datos : pace_hosp_repo : : Donde están todos los Análisis descritos
-          Repositorios.consultarAnalisis();
-        });
+        Repositorios.consultarAnalisis();
       }
       // Paraclinicos del Paciente *************************************
       Archivos.readJsonToMap(
@@ -202,8 +122,10 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
 
       // CONSULTAR NOTACIONES PREVIAS ****************************************
       Reportes.consultarNotasHospitalizacion().then((value) => setState(() {
-            widget.indexNote = 0;
-            listNotes = value;
+            if (value.isNotEmpty) {
+              widget.indexNote = 0;
+              listNotes = value;
+            }
           }));
       Terminal.printExpected(
           message: "Analisis Previos : : ${Reportes.analisisAnteriores}");
@@ -257,7 +179,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
         //       child: sideLeft(),
         //     )),
         Expanded(
-            flex: isMobile(context) ? 20  : 6,
+            flex: isMobile(context) ? 20 : 6,
             child: Container(
               padding: const EdgeInsets.all(5.0),
               margin: const EdgeInsets.all(7.0),
@@ -301,7 +223,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               decoration: ContainerDecoration.containerDecoration(),
               child: sideLeft(),
             )),
-        Expanded(flex: 2,child: Hospitalizado(isVertical: true)),
+        Expanded(flex: 2, child: Hospitalizado(isVertical: true)),
         Expanded(
             flex: 14,
             child: Container(
@@ -311,14 +233,15 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               child: pantallasReportesMedicos(widget.actualPage),
             )),
         Expanded(flex: 2, child: _notasPrevias(context)),
-        if (!isDesktop(context)) Expanded(
-            flex: 2,
-            child: Container(
-              padding: const EdgeInsets.all(8.0),
-              margin: const EdgeInsets.all(8.0),
-              decoration: ContainerDecoration.containerDecoration(),
-              child: sideRight(),
-            )) ,
+        if (!isDesktop(context))
+          Expanded(
+              flex: 2,
+              child: Container(
+                padding: const EdgeInsets.all(8.0),
+                margin: const EdgeInsets.all(8.0),
+                decoration: ContainerDecoration.containerDecoration(),
+                child: sideRight(),
+              )),
       ],
     );
   }
@@ -562,8 +485,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               onChangeValue: () {
                 Datos.portapapeles(
                     context: context,
-                    text: Reportes.copiarReporte(
-                        tipoReporte: getTypeReport()));
+                    text: Reportes.copiarReporte(tipoReporte: getTypeReport()));
                 _key.currentState!.closeEndDrawer();
               },
             ),
@@ -609,7 +531,15 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                           },
                           onAcept: () {
                             Navigator.of(context).pop();
-                            Repositorios.registrarRegistro();
+                            Repositorios.registrarRegistro().whenComplete(() =>
+                                Reportes.consultarNotasHospitalizacion()
+                                    .then((value) => setState(() {
+                                  if (value.isNotEmpty) {
+                                    widget.indexNote = 0;
+                                    listNotes = value;
+                                  }
+                                        })));
+                            //
                           }))
                       .onError((error, stackTrace) => Terminal.printAlert(
                           message: "ERROR - $error : : $stackTrace"));
@@ -673,7 +603,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       } else {
         var index = Pacientes.Notas!.indexWhere((v) =>
             v['Fecha_Realizacion'] == Calendarios.today(format: 'yyyy/MM/dd'));
-        Terminal.printAlert(message: "index $index");
+        // Terminal.printAlert(message: "index $index");
 
         Pacientes.Notas![index] = {
           'ID_Pace': Pacientes.ID_Paciente,
@@ -1209,17 +1139,17 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                 splashColor: Theming.terciaryColor,
                 icon: const Icon(Icons.bed, color: Colors.grey),
                 tooltip: "Semiologías",
-                onPressed: () => Cambios.toNextPage(context, AnalisisRevisorios())),
-                    // setState(() {
-                    //   widget.actualPage = 20;
-                    // })),
+                onPressed: () =>
+                    Cambios.toNextPage(context, AnalisisRevisorios())),
+            // setState(() {
+            //   widget.actualPage = 20;
+            // })),
             const SizedBox(width: 25),
             IconButton(
                 splashColor: Theming.terciaryColor,
                 icon: const Icon(Icons.medication_outlined, color: Colors.grey),
                 tooltip: "Terapia Intensiva",
-                onPressed: () =>
-                    setState(() {
+                onPressed: () => setState(() {
                       widget.actualPage = 18;
                     })),
             IconButton(
@@ -1392,8 +1322,10 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                 // CONSULTAR NOTACIONES PREVIAS ****************************************
                 Reportes.consultarNotasHospitalizacion()
                     .then((value) => setState(() {
-                          widget.indexNote = 0;
-                          listNotes = value;
+                  if (value.isNotEmpty) {
+                    widget.indexNote = 0;
+                    listNotes = value;
+                  }
                         }));
               }),
           CrossLine(height: 10, thickness: 2, color: Colors.black),
@@ -1403,8 +1335,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             difRadios: 3,
             fontSize: 8,
             onChangeValue: () {
-    Repositorios.consultarAnalisis();}
-            ,
+              Repositorios.consultarAnalisis();
+            },
           ),
         ],
       ),
@@ -1414,7 +1346,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
   _notaPrevia(BuildContext context) {
     if (widget.indexNote > -1) {
       return TittleContainer(
-        tittle: listNotes![widget.indexNote]['FechaRealizacion'],
+        tittle: listNotes![widget.indexNote]['FechaRealizacion'] ?? "0000/00/00",
         child: SingleChildScrollView(
           controller: ScrollController(),
           child: Column(
@@ -1426,7 +1358,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                 style: Styles.textSyleGrowth(fontSize: 12),
               ),
               Text(
-                "Inicio de Padecimiento - " + listNotes![widget.indexNote]['FechaPadecimiento'],
+                "Inicio de Padecimiento - ${listNotes![widget.indexNote]['FechaPadecimiento']}",
                 style: Styles.textSyleGrowth(fontSize: 12),
               ),
               CrossLine(thickness: 4),
@@ -1440,8 +1372,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                 style: Styles.textSyleGrowth(fontSize: 9),
               ),
               Text(listNotes![widget.indexNote]['Signos_Vitales'],
-                  maxLines: 3,
-                  style: Styles.textSyleGrowth(fontSize: 8)),
+                  maxLines: 3, style: Styles.textSyleGrowth(fontSize: 8)),
               CrossLine(thickness: 3),
               Text(
                 listNotes![widget.indexNote]['Exploracion_Fisica'],
@@ -1452,7 +1383,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               Text(
                   listNotes![widget.indexNote]['Tipo_Analisis'] ==
                           "Análisis de Ingreso"
-                      ? "MOTIVO DE INGRESO: " + listNotes![widget.indexNote]['Padecimiento_Actual']
+                      ? "MOTIVO DE INGRESO: ${listNotes![widget.indexNote]['Padecimiento_Actual']}"
                       : listNotes![widget.indexNote]['Tipo_Analisis'] ==
                               "Análisis de Evolución"
                           ? listNotes![widget.indexNote]['Analisis_Medico']

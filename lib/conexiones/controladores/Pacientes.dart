@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteFormats/formatosReportes.dart';
@@ -450,7 +451,8 @@ class Pacientes {
         "";
   }
 
-  static String antecedentesIngresosPatologicos({bool resumido = false, String saltoLinea = "\n"}) {
+  static String antecedentesIngresosPatologicos(
+      {bool resumido = false, String saltoLinea = "\n"}) {
     return "${Pacientes.patologicos(resumido: resumido, saltoLinea: saltoLinea)}\n"
         "RELEVANTES: "
         "Antecedentes quirúrgicos: ${Pacientes.hospitalarios()}. "
@@ -472,7 +474,10 @@ class Pacientes {
         "Antecedentes patológicos: ${Pacientes.patologicos()}\n";
   }
 
-  static String patologicos({bool resaltado = true, bool resumido = false, String saltoLinea = "\n"}) {
+  static String patologicos(
+      {bool resaltado = true,
+      bool resumido = false,
+      String saltoLinea = "\n"}) {
     // ************************ ************** ********** **** *** *
     // Reportes.reportes['Antecedentes_Patologicos'] = "";
     // Reportes.personalesPatologicos = "";
@@ -520,13 +525,13 @@ class Pacientes {
           for (var element in Patologicos!) {
             if (Reportes.personalesPatologicos == "") {
               Reportes.personalesPatologicos =
-              "$prefix${element['Pace_APP_DEG_com'].toUpperCase()} "
+                  "$prefix${element['Pace_APP_DEG_com'].toUpperCase()} "
                   "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
                   "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
                   "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
             } else {
               Reportes.personalesPatologicos =
-              "${Reportes.personalesPatologicos}. $saltoLinea$prefix${element['Pace_APP_DEG_com'].toUpperCase()} "
+                  "${Reportes.personalesPatologicos}. $saltoLinea$prefix${element['Pace_APP_DEG_com'].toUpperCase()} "
                   "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
                   "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
                   "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
@@ -536,13 +541,13 @@ class Pacientes {
           for (var element in Patologicos!) {
             if (Reportes.personalesPatologicos == "") {
               Reportes.personalesPatologicos =
-              "$prefix${element['Pace_APP_DEG_com']} "
+                  "$prefix${element['Pace_APP_DEG_com']} "
                   "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
                   "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
                   "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
             } else {
               Reportes.personalesPatologicos =
-              "${Reportes.personalesPatologicos}. \n$prefix${element['Pace_APP_DEG_com']} "
+                  "${Reportes.personalesPatologicos}. \n$prefix${element['Pace_APP_DEG_com']} "
                   "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
                   "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
                   "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
@@ -5048,9 +5053,11 @@ class Vitales {
         Actividades.consultarId(Databases.siteground_database_regpace,
                 Vitales.antropo['consultLastQuery'], Pacientes.ID_Paciente)
             .then((value) {
-          Pacientes.Vital.addAll(value);
+          Pacientes.Vital.addAll(
+              value); // Terminal.printAlert(message: "${Pacientes.Vital}");
           //
-          Vitales.fromJson(Pacientes.Vital[Pacientes.Vital.length - 1]);
+          Vitales.fromJson(Pacientes
+              .Vital); // Vitales.fromJson(Pacientes.Vital[Pacientes.Vital.length - 1]);
         });
       });
     });
@@ -6261,22 +6268,24 @@ class Auxiliares {
             if (counter != distancia) {
               if (eacher['Unidad_Medida'] != '') {
                 max =
-                "$max${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
+                    "$max${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
                     "${eacher['Resultado']} ${eacher['Unidad_Medida']}, ";
               } else {
-                print("${eacher['Resultado']}, ${eacher['Tipo_Estudio']}, ${eacher['Estudio']}");
+                print(
+                    "${eacher['Resultado']}, ${eacher['Tipo_Estudio']}, ${eacher['Estudio']}");
 
-                max= "$max${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
+                max =
+                    "$max${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
                     "${eacher['Resultado']}, ";
               }
             } else {
               if (eacher['Unidad_Medida'] != '') {
                 max =
-                "$max${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
+                    "$max${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
                     "${eacher['Resultado']} ${eacher['Unidad_Medida']}";
               } else {
-                max=
-                "$max${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
+                max =
+                    "$max${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
                     "${eacher['Resultado']}";
               }
             }
@@ -6355,19 +6364,21 @@ class Auxiliares {
                     "$max${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
                     "${eacher['Resultado']} ${eacher['Unidad_Medida']}, ";
               } else {
-                print("${eacher['Resultado']}, ${eacher['Tipo_Estudio']}, ${eacher['Estudio']}");
+                print(
+                    "${eacher['Resultado']}, ${eacher['Tipo_Estudio']}, ${eacher['Estudio']}");
 
-                max= "$max${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
+                max =
+                    "$max${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
                     "${eacher['Resultado']}, ";
               }
             } else {
               if (eacher['Unidad_Medida'] != '') {
                 max =
-                "$max${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
+                    "$max${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
                     "${eacher['Resultado']} ${eacher['Unidad_Medida']}";
               } else {
-                max=
-                "$max${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
+                max =
+                    "$max${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
                     "${eacher['Resultado']}";
               }
             }
@@ -6485,7 +6496,6 @@ class Auxiliares {
 
   static String abreviado(
       {required String tipoEstudio, required String estudio}) {
-
     if (tipoEstudio != 'Examen General de Orina') {
       if (tipoEstudio != 'Gasometría Arterial' &&
           tipoEstudio != 'Gasometría Venosa') {
@@ -6663,10 +6673,12 @@ class Auxiliares {
         }
       }
     } else {
-      if (estudio == 'pH Urinario' && tipoEstudio == 'Examen General de Orina') {
+      if (estudio == 'pH Urinario' &&
+          tipoEstudio == 'Examen General de Orina') {
         return 'pH';
-      } else if (estudio == 'Color' && tipoEstudio == 'Examen General de Orina') {
-          return '';
+      } else if (estudio == 'Color' &&
+          tipoEstudio == 'Examen General de Orina') {
+        return '';
       } else if (estudio == 'Densidad Urinaria') {
         return 'densidad';
       } else if (estudio == 'Proteinas Urinarias') {
@@ -6687,13 +6699,13 @@ class Auxiliares {
         return estudio.toLowerCase();
       } else if (estudio == 'Células Renales Urinarias') {
         return "células renales";
-      //
+        //
       } else if (estudio == 'Hemoglobina Urinaria') {
         return 'hemoglobina';
       } else if (estudio == 'Cetonas Urinarias') {
         return 'cetonas';
       } else if (estudio == 'Glucosa Urinaria') {
-    return 'glucosa';
+        return 'glucosa';
       } else if (estudio == 'Nitritos Urinarios') {
         return 'nitritos';
       } else if (estudio == 'Leucocitos Urinarios') {
@@ -6711,7 +6723,6 @@ class Auxiliares {
       } else {
         return estudio;
       }
-
     }
   }
 
@@ -7687,7 +7698,8 @@ class Reportes {
   static String impresionesDiagnosticas = "";
   static String pronosticoMedico = "";
   //
-  static String motivoConsulta = "", motivoTraslado = "",
+  static String motivoConsulta = "",
+      motivoTraslado = "",
       subjetivoHospitalizacion =
           // "El paciente se refiere ${Valores.estadoGeneral}. "
           "${Exploracion.referenciasHospitalizacion}. "
@@ -7750,6 +7762,7 @@ class Reportes {
     procedimientoRealizado = "";
     bibliografias = "";
     //
+    hidroterapia = [""];
     medicamentosIndicados = [''];
     medidasGenerales = [''];
     licenciasMedicas = [''];
@@ -7816,6 +7829,10 @@ class Reportes {
   }
 
   static copiarReporte({required TypeReportes tipoReporte}) {
+    Terminal.printWarning(
+        message:
+            "TypeReportes ${TypeReportes.reporteIngreso} . : : ${Reportes.reportes}");
+    //
     switch (tipoReporte) {
       case TypeReportes.reporteIngreso:
         return CopiasReportes.reporteIngreso(Reportes.reportes);
@@ -8504,55 +8521,36 @@ class Repositorios {
       //
       Reportes.reportes = value.last;
       // Del Padecimiento **************************************************
-      Reportes.padecimientoActual = value.last['Padecimiento_Actual'] ?? '';
+
+      Reportes.reportes['Impresiones_Diagnosticas']= Reportes.impresionesDiagnosticas = value.last['Impresiones_Diagnosticas'] ?? '';
+      Reportes.reportes['Padecimiento_Actual']= Reportes.padecimientoActual = value.last['Padecimiento_Actual'] ?? '';
       Valores.fechaPadecimientoActual = value.last['FechaPadecimiento'] ?? '';
       // Primeras Variables **************************************************
-      Reportes.exploracionFisica = value.last['Exploracion_Fisica'] ?? '';
-      Reportes.signosVitales = value.last['Signos_Vitales'] ?? '';
+      Reportes.reportes['Exploracion_Fisica']=  Reportes.exploracionFisica = value.last['Exploracion_Fisica'] ?? '';
+      Reportes.reportes['Signos_Vitales']= Reportes.signosVitales = value.last['Signos_Vitales'] ?? '';
       // Segundas Variables ************************************************** Reportes.eventualidadesOcurridas = value.last['Eventualidades'] ?? ''; Reportes.terapiasPrevias = value.last['Terapias_Previas'] ?? '';
-      Reportes.analisisMedico = value.last['Analisis_Medico'] ?? '';  // Reportes.tratamientoPropuesto = value.last['Tratamiento_Propuesto'] ?? '';
+      Reportes.reportes['Exploracion_Fisica']= Reportes.exploracionFisica = value.last['Exploracion_Fisica'] ?? '';
+      Reportes.reportes['Analisis_Medico']= Reportes.reportes['Analisis_Terapia']= Reportes.analisisMedico = value.last['Analisis_Medico'] ?? ''; // Reportes.tratamientoPropuesto = value.last['Tratamiento_Propuesto'] ?? '';
+      Reportes.reportes['Pronostico_Medico']= Reportes.pronosticoMedico = value.last['Pronostico_Medico'] ?? '';
       // Listados desde String  ************************************************
-      // Reportes.dieta = ;
+      Reportes.reportes["Dietoterapia"] = Reportes.dieta =
+          Listas.traslateFromString(value.last['Dietoterapia']);
+      Reportes.reportes["Hidroterapia"] = Reportes.hidroterapia =
+          Listas.traslateFromString(value.last['Hidroterapia']);
+      Reportes.reportes["Medicamentos"] = Reportes.medicamentosIndicados =
+          Listas.traslateFromString(value.last['Medicamentos']);
+      Reportes.reportes["Medidas_Generales"] = Reportes.medidasGenerales =
+          Listas.traslateFromString(value.last['Medidas_Generales']);
+      Reportes.reportes["Oxigenoterapia"] = Reportes.oxigenoterapia =
+          Listas.traslateFromString(value.last['Oxigenoterapia']);
+      //
+      Reportes.reportes["Insulinoterapia"] = Reportes.insulinoterapia =
+          Listas.traslateFromString(value.last['Insulinoterapia']);
+      Reportes.reportes["Hemoterapia"] = Reportes.hemoterapia =
+          Listas.traslateFromString(value.last['Hemoterapia']);
+      Reportes.reportes["Pendientes"] = Reportes.pendientes =
+          Listas.traslateFromString(value.last['Pendientes']);
 
-      // String aux = "";
-      // aux.replaceAll(", ", ",");
-      // print(""
-      //     // "Opción A - ${jsonDecode(value.last['Dietoterapia'])} - ${jsonDecode(value.last['Dietoterapia']).runtimeType}"
-      //     //"Opcion B - ${json.decode(value.last['Medidas_Generales']).cast<List<dynamic>>()}"
-      //     "Opcion C - ${Listas.listFromString(value.last['Medidas_Generales'].replaceAll(", ", ","))} : ${value.last['Medidas_Generales'].runtimeType}");
-
-      // Reportes.dieta = json
-      //     .decode(value.last['Dietoterapia'].toString())
-      //     .cast<String>();
-      //     .toList();
-      // Reportes.hidroterapia = json
-      //     .decode(value.last['Hidroterapia'].toString())
-      //     .cast<String>()
-      //     .toList();
-      // Reportes.insulinoterapia = json
-      //     .decode(value.last['Insulinoterapia'].toString())
-      //     .cast<String>()
-      //     .toList();
-      // Reportes.hemoterapia = json
-      //     .decode(value.last['Hemoterapia'].toString())
-      //     .cast<String>()
-      //     .toList();
-      // Reportes.oxigenoterapia = json
-      //     .decode(value.last['Oxigenoterapia'].toString())
-      //     .cast<String>()
-      //     .toList();
-      // Reportes.medicamentosIndicados = json
-      //     .decode(value.last['Medicamentos'].toString())
-      //     .cast<String>()
-      //     .toList();
-      // Reportes.medidasGenerales = json
-      //     .decode(value.last['Medidas_Generales'].toString())
-      //     .cast<String>()
-      //     .toList();
-      // Reportes.pendientes = json
-      //     .decode(value.last['Pendientes'].toString())
-      //     .cast<String>()
-      //     .toList();
       // Crear Json desde Pacientes.Notas ***************************************
       Archivos.createJsonFromMap(value,
           filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
@@ -8562,8 +8560,9 @@ class Repositorios {
               "${Pacientes.ID_Hospitalizacion}"
               "- $error : : $stackTrace");
     }).whenComplete(() => Terminal.printSuccess(
-        message: "COMPLETADO : : Recabado Repositorio de la Hospitalización - "
-            "${Pacientes.ID_Hospitalizacion}"));
+            message:
+                "COMPLETADO : : Recabado Repositorio de la Hospitalización - "
+                "${Pacientes.ID_Hospitalizacion}"));
   }
 
   static void actualizarPadecimientoRegistro() {
@@ -8612,7 +8611,7 @@ class Repositorios {
     });
   }
 
-  static void registrarRegistro() {
+  static Future<void> registrarRegistro() async {
     var Values = [
       Pacientes.ID_Paciente,
       Pacientes.ID_Hospitalizacion,
@@ -8642,7 +8641,8 @@ class Repositorios {
       Reportes.pendientes.toString(),
       tipo_Analisis // Repositorios.tipoAnalisis()
     ];
-    Actividades.registrar(
+    //
+    await Actividades.registrar(
       Databases.siteground_database_reghosp,
       Repositorios.repositorio['registerQuery'],
       Values,
@@ -9375,8 +9375,10 @@ class Documentaciones {
   static List<String> caracterLicencia = Items.caracterLicencia;
 
   static void ultimoRegistro() {
-    Actividades.consultarId(Databases.siteground_database_reghosp,
-        Documentaciones.documentacion['consultLastQuery'], Pacientes.ID_Paciente)
+    Actividades.consultarId(
+            Databases.siteground_database_reghosp,
+            Documentaciones.documentacion['consultLastQuery'],
+            Pacientes.ID_Paciente)
         .then((value) {
       // Enfermedades de base del paciente, asi como las Hospitalarias.
       Documentaciones.Documentos = value;
@@ -9394,8 +9396,10 @@ class Documentaciones {
   }
 
   static void consultarRegistro() {
-    Actividades.consultarAllById(Databases.siteground_database_reghosp,
-        Documentaciones.documentacion['consultIdQuery'], Pacientes.ID_Paciente)
+    Actividades.consultarAllById(
+            Databases.siteground_database_reghosp,
+            Documentaciones.documentacion['consultIdQuery'],
+            Pacientes.ID_Paciente)
         .then((value) {
       // Enfermedades de base del paciente, asi como las Hospitalarias.
       Pacientes.Documentaciones = value;
@@ -9420,7 +9424,7 @@ class Documentaciones {
     "describeTable": "DESCRIBE pace_repo;",
     "showColumns": "SHOW columns FROM pace_repo",
     "showInformation":
-    "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_repo'",
+        "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_name = 'pace_repo'",
     "createQuery": """CREATE TABLE pace_repo (
                           ID_Pace_Repo int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
                           ID_Pace int(10) NOT NULL,
@@ -9436,14 +9440,14 @@ class Documentaciones {
     "dropQuery": "DROP TABLE pace_repo",
     "consultQuery": "SELECT * FROM pace_repo",
     "consultIdQuery":
-    "SELECT * FROM pace_repo WHERE ID_Pace = ? ORDER BY FechaReporte DESC",
+        "SELECT * FROM pace_repo WHERE ID_Pace = ? ORDER BY FechaReporte DESC",
     "consultByIdPrimaryQuery": "SELECT * FROM pace_repo WHERE ID_Pace = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_repo",
     "consultLastQuery":
-    "SELECT * FROM pace_repo WHERE ID_Pace = ? ORDER BY FechaReporte ASC",
+        "SELECT * FROM pace_repo WHERE ID_Pace = ? ORDER BY FechaReporte ASC",
     "consultByName": "SELECT * FROM pace_repo WHERE Pace_APP_DEG LIKE '%",
     "consultImage":
-    "SELECT Reporte_FIAT FROM pace_repo WHERE ID_Pace_Repo = ? ",
+        "SELECT Reporte_FIAT FROM pace_repo WHERE ID_Pace_Repo = ? ",
     "registerQuery": "INSERT INTO pace_repo (ID_Pace, "
         "FechaReporte, "
         "Reporte_FIAT, "

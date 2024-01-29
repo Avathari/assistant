@@ -1,5 +1,6 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/screens/pacientes/patologicos/auxiliares/antecedentes.dart';
 import 'package:assistant/values/SizingInfo.dart';
@@ -279,23 +280,53 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
           children: [
             Expanded(
               flex: 2,
-              child: CircleIcon(
-                tittle: 'Suspensiones . . . ',
-                difRadios: 15,
-                externalCircleColor: Colors.grey,
-                iconed: Icons.surround_sound_outlined,
-                onChangeValue: () {
-                  Operadores.openDialog(
-                      context: context,
-                      chyldrim: Container(
-                          decoration: ContainerDecoration.roundedDecoration(),
-                          child: const Antecedentes()),
-                      onAction: () {
-                        setState(() {
-                          suspensionesTextController.text = '';
+              child: Column(
+                children: [
+                  CircleIcon(
+                    tittle: 'Suspensiones . . . ',
+                    difRadios: 15,
+                    externalCircleColor: Colors.grey,
+                    iconed: Icons.surround_sound_outlined,
+                    onChangeValue: () {
+                      Operadores.openDialog(
+                          context: context,
+                          chyldrim: Container(
+                              decoration: ContainerDecoration.roundedDecoration(),
+                              child: const Antecedentes()),
+                          onAction: () {
+                            setState(() {
+                              suspensionesTextController.text = '';
+                            });
+                          });
+                    },
+                  ),
+                  CrossLine(thickness: 2),
+                  CircleIcon(
+                    tittle: 'Previstos . . . ',
+                    radios: 30,
+                    difRadios: 20,
+                    externalCircleColor: Colors.grey,
+                    iconed: Icons.surround_sound_outlined,
+                    onChangeValue: () {
+                      Operadores.selectOptionsActivity(context: context,
+                          options: Items.previstos.map((e) =>
+                          e['Diagnostico']).toList(),
+                          onClose: (valar) {
+                            Terminal.printWarning(message: "$valar");
+
+                        Items.previstos.forEach((e) {
+                          //
+                          if (e['Diagnostico'] == valar) {
+                            comenDiagnoTextController.text = e['Diagnostico']!;
+                            tratamientoTextController.text = e['Tratamiento']!;
+                            suspensionesTextController.text = e['Antecedentes']!;
+                          }
                         });
+                        Navigator.of(context).pop();
                       });
-                },
+                    },
+                  ),
+                ],
               ),
             ),
             Expanded(

@@ -55,11 +55,13 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
       // diagoTextController.text = "";
       // pronosTextController.text = "";
       //
-      diagoTextController.text = Pacientes.diagnosticos();
-      pronosTextController.text = Pacientes.pronosticoMedico();
-      //
-      Reportes.reportes['Impresiones_Diagnosticas'] = Pacientes.diagnosticos();
-      Reportes.reportes['Pronostico_Medico'] = Pacientes.pronosticoMedico();
+
+      if (Reportes.reportes['Impresiones_Diagnosticas'] != "") diagoTextController.text = Reportes.reportes['Impresiones_Diagnosticas']; else diagoTextController.text = Pacientes.diagnosticos();
+
+      if (Reportes.reportes['Pronostico_Medico'] != "")
+        pronosTextController.text = Reportes.reportes['Pronostico_Medico'];
+      else
+        pronosTextController.text = Pacientes.pronosticoMedico();
     });
     super.initState();
   }
@@ -69,129 +71,129 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
     return Column(children: [
       Expanded(
           child: Column(
-            children: [
-              widget.isTerapia == true
-                  ? Container()
-                  : Expanded(
-                child: EditTextArea(
-                    textController: diagoTextController,
-                    labelEditText: "Impresiones diagnósticas",
-                    keyBoardType: TextInputType.multiline,
-                    numOfLines: 15,
-                    onChange: ((value) {
-                      Reportes.impresionesDiagnosticas = "$value.";
-                      Reportes.reportes['Impresiones_Diagnosticas'] =
-                      "$value.";
-                    }),
-                    inputFormat: MaskTextInputFormatter()),
-              ),
-              Expanded(
-                flex: 3,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 3,
-                      child: SingleChildScrollView(
-                        controller: scrollController,
-                        child: Column(children: [
-                          Spinner(
-                            width: isMobile(context)
-                                ? 60
-                                : isTablet(context) || isTabletAndDesktop(context)
+        children: [
+          widget.isTerapia == true
+              ? Container()
+              : Expanded(
+                  child: EditTextArea(
+                      textController: diagoTextController,
+                      labelEditText: "Impresiones diagnósticas",
+                      keyBoardType: TextInputType.multiline,
+                      numOfLines: 15,
+                      onChange: ((value) {
+                        Reportes.impresionesDiagnosticas = "$value.";
+                        Reportes.reportes['Impresiones_Diagnosticas'] =
+                            "$value.";
+                      }),
+                      inputFormat: MaskTextInputFormatter()),
+                ),
+          Expanded(
+            flex: 3,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: SingleChildScrollView(
+                    controller: scrollController,
+                    child: Column(children: [
+                      Spinner(
+                        width: isMobile(context)
+                            ? 60
+                            : isTablet(context) || isTabletAndDesktop(context)
                                 ? 140
                                 : 180,
-                            tittle: "Estado médico",
-                            initialValue: estadoValue,
-                            onChangeValue: (String? newValue) {
-                              setState(() {
-                                estadoValue = newValue!;
-                              });
-                            },
-                            items: Pacientes.PronosticoEstado,
-                          ),
-                          Spinner(
-                            width: isMobile(context)
-                                ? 60
-                                : isTablet(context) || isTabletAndDesktop(context)
+                        tittle: "Estado médico",
+                        initialValue: estadoValue,
+                        onChangeValue: (String? newValue) {
+                          setState(() {
+                            estadoValue = newValue!;
+                          });
+                        },
+                        items: Pacientes.PronosticoEstado,
+                      ),
+                      Spinner(
+                        width: isMobile(context)
+                            ? 60
+                            : isTablet(context) || isTabletAndDesktop(context)
                                 ? 140
                                 : 180,
-                            tittle: "Para la función",
-                            initialValue: funcionValue,
-                            onChangeValue: (String? newValue) {
-                              setState(() {
-                                funcionValue = newValue!;
-                              });
-                            },
-                            items: Pacientes.PronosticoFuncion,
-                          ),
-                          Spinner(
-                              width: isMobile(context)
-                                  ? 60
-                                  : isTablet(context) || isTabletAndDesktop(context)
+                        tittle: "Para la función",
+                        initialValue: funcionValue,
+                        onChangeValue: (String? newValue) {
+                          setState(() {
+                            funcionValue = newValue!;
+                          });
+                        },
+                        items: Pacientes.PronosticoFuncion,
+                      ),
+                      Spinner(
+                          width: isMobile(context)
+                              ? 60
+                              : isTablet(context) || isTabletAndDesktop(context)
                                   ? 150
                                   : 180,
-                              tittle: "Para la vida",
-                              initialValue: vidaValue,
-                              onChangeValue: (String? newValue) {
-                                setState(() {
-                                  vidaValue = newValue!;
-                                });
-                              },
-                              items: Pacientes.PronosticoVida),
-                          Spinner(
-                            width: isMobile(context)
-                                ? 60
-                                : isTablet(context) || isTabletAndDesktop(context)
+                          tittle: "Para la vida",
+                          initialValue: vidaValue,
+                          onChangeValue: (String? newValue) {
+                            setState(() {
+                              vidaValue = newValue!;
+                            });
+                          },
+                          items: Pacientes.PronosticoVida),
+                      Spinner(
+                        width: isMobile(context)
+                            ? 60
+                            : isTablet(context) || isTabletAndDesktop(context)
                                 ? 150
                                 : 180,
-                            tittle: "Para el tiempo",
-                            initialValue: tiempoValue,
-                            onChangeValue: (String? newValue) {
-                              setState(() {
-                                tiempoValue = newValue!;
-                              });
-                            },
-                            items: Pacientes.PronosticoTiempo,
-                          ),
-                        ]),
+                        tittle: "Para el tiempo",
+                        initialValue: tiempoValue,
+                        onChangeValue: (String? newValue) {
+                          setState(() {
+                            tiempoValue = newValue!;
+                          });
+                        },
+                        items: Pacientes.PronosticoTiempo,
                       ),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            GrandButton(
-                              labelButton: "Aceptar pronóstico",
-                              onPress: () {
-                                setState(() {
-                                  aceptar();
-                                  pronosTextController.text =
-                                      Pacientes.pronosticoMedico();
-                                });
-                              },
-                            ),
-                            EditTextArea(
-                                textController: pronosTextController,
-                                labelEditText: "Pronóstico médico",
-                                keyBoardType: TextInputType.multiline,
-                                numOfLines: 10,
-                                onChange: ((value) {
-                                  Reportes.pronosticoMedico = "$value.";
-                                  Reportes.reportes['Pronostico_Medico'] =
-                                  "$value.";
-                                }),
-                                inputFormat: MaskTextInputFormatter()),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+                    ]),
+                  ),
                 ),
-              ),
-            ],
-          ))
+                Expanded(
+                  flex: 3,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        GrandButton(
+                          labelButton: "Aceptar pronóstico",
+                          onPress: () {
+                            setState(() {
+                              aceptar();
+                              pronosTextController.text =
+                                  Pacientes.pronosticoMedico();
+                            });
+                          },
+                        ),
+                        EditTextArea(
+                            textController: pronosTextController,
+                            labelEditText: "Pronóstico médico",
+                            keyBoardType: TextInputType.multiline,
+                            numOfLines: 10,
+                            onChange: ((value) {
+                              Reportes.pronosticoMedico = "$value.";
+                              Reportes.reportes['Pronostico_Medico'] =
+                                  "$value.";
+                            }),
+                            inputFormat: MaskTextInputFormatter()),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ))
     ]);
   }
 

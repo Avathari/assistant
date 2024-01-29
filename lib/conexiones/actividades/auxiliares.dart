@@ -390,7 +390,18 @@ class Listas {
   }
 
   static List<String> traslateFromString(String value, {String charSplit = '\n'}) {
-    return value.split(charSplit);
+
+    if (charSplit != "\n") {
+      return value.split(charSplit);
+    } else {
+      List<String> list = [];
+      value.replaceAll('[', '')
+          .replaceAll(']', '').split(',').forEach((element) {
+        list.add(element);
+      });
+      //
+      return list;
+    }
   }
 
   static List compareList(List estudiosPresentes, List especiales) {

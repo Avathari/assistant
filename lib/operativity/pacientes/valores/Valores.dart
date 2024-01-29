@@ -3078,11 +3078,35 @@ class Items {
     'Reporte de Ecocardiografía',
     'Reporte de Holter',
     'Antibiogramas',
+    'Electroencefalogramas',
+    'Electromiografías',
+    'Resonancias Magnéticas',
     '',
-    'Alerta',
-    'Obnubilado',
-    'Somnoliento',
-    'Estuporoso',
+    '',
+  ];
+
+  static List<Map<String, String>> previstos = [
+    {
+      "Diagnostico": "Asma bronquial",
+      "Tratamiento":
+          "acude a urgencias por  dificultad  para respirar y tos seca, no realizan estudios complementarios y egresan con diagnóstico de asma; manejo con salbutamol el cual usa desde entonces solo de rescate",
+      "Antecedentes": "*Antecedente de crisis asmática en tres ocasiones: a los 24 años, a los 31 años y a los 42 años de edad,refiere todas con misma sintomatología; odinofagia seguida de tos seca disneizante y cianosante , dolor torácico tipo opresivo, sin irradiaciones, sin atenuantes y exacerbantes  con disnea súbita mMRC 3 y sibilancias audibles,se controlan  con la inhalación de salbutamol.Refiere predominio nocturno de la sintomatología.Niega acompañarse de fiebre Exacerbaciones precedidas por infección de vías respiratorias altas",
+    },
+    {
+      "Diagnostico": "Diabetes Tipo 2",
+      "Tratamiento": "sin tratamiento por decisión propia",
+      "Antecedentes":
+          "refiere monitorización con glucómetro digital diario en cada maneja cifras 180-400 mg/dl y con toma de medicamento no especificado cuando tiene >200mg/dl, "
+              "niega disminución visual, u otras alteraciones microvasculares, niega seguimiento multidisciplinario por complicaciones microvasculares; "
+              "niega hospitalización o visitas a urgencias por descontrol glucémico. ",
+    },
+    {
+      "Diagnostico": "Hipertensión Arterial Esencial ESC/AHA II",
+      "Tratamiento": "sin tratamiento por decisión propia; ",
+      "Antecedentes": "refiere monitorización con baumanómetro digital, con cifras tensionales promedio 140-90 mmHg; "
+          "niega cribado para alteraciones microvasculares o seguimiento multidisciplinario, en seguimiento en UMF; "
+          "niega hospitalizaciones previas por crisis o emergencia hipertensiva. ",
+    },
   ];
 
   static List<String> get orderOfCamas {
