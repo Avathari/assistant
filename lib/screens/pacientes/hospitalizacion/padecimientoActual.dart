@@ -3,6 +3,7 @@ import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
+import 'package:assistant/screens/pacientes/reportes/reportes.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/AppBarText.dart';
@@ -13,7 +14,9 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class PadecimientoActual extends StatefulWidget {
-  const PadecimientoActual({Key? key}) : super(key: key);
+  bool? withAppBar;
+
+  PadecimientoActual({super.key, this.withAppBar = true});
 
   @override
   State<PadecimientoActual> createState() => _PadecimientoActualState();
@@ -94,7 +97,7 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
+      appBar: widget.withAppBar == true ? AppBar(
         foregroundColor: Colors.white,
         backgroundColor: Colors.black,
         title: AppBarText('Padecimiento Actual'),
@@ -111,7 +114,7 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
             },
           )
         ],
-      ),
+      ) : null,
       body: Row(
         children: [
           Expanded(
@@ -326,8 +329,7 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
                                 Repositorios.actualizarPadecimientoRegistro())
                             .whenComplete(() => Navigator.of(context).push(
                                 MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        VisualPacientes(actualPage: 0))));
+                                    builder: (BuildContext context) => widget.withAppBar == true ?  VisualPacientes(actualPage: 0) : ReportesMedicos())));
                       }),
                 ],
               ),

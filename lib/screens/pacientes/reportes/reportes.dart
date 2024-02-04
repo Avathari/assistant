@@ -4,11 +4,11 @@ import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
-import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizado.dart';
 
 import 'package:assistant/screens/pacientes/auxiliares/presentaciones/presentaciones.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisiones.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisorios.dart';
+import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizado.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/padecimientoActual.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
 import 'package:assistant/screens/pacientes/intensiva/procedimientos/cateterTenckhoff.dart';
@@ -868,7 +868,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           labelButton: "Padecimiento Actual",
           onPress: () {
             Operadores.openDialog(
-                context: context, chyldrim: const PadecimientoActual());
+                context: context, chyldrim: PadecimientoActual());
           }),
       GrandIcon(
           iconData: Icons.subtitles_rounded,
@@ -1166,7 +1166,11 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                             },
                             onAcept: () {
                               Navigator.of(context).pop();
-                              Repositorios.registrarRegistro();
+                              if (getTypeReport() == TypeReportes.reporteIngreso || getTypeReport() == TypeReportes.reporteEgreso) {
+                                Repositorios.actualizarRegistro();
+                              }else {
+                                Repositorios.registrarRegistro();
+                              }
                             }))
                         .onError((error, stackTrace) {
                       Terminal.printAlert(

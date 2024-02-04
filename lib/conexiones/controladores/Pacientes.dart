@@ -8611,6 +8611,51 @@ class Repositorios {
     });
   }
 
+  static Future<void> actualizarRegistro() async {
+    var Values = [
+      // Pacientes.ID_Paciente,
+      // Pacientes.ID_Hospitalizacion,
+      // Valores.fechaPadecimientoActual ??
+      //     Calendarios.today(format: 'yyyy/MM/dd'),
+      // Reportes.padecimientoActual,
+      // // Valores.servicioTratanteInicial,
+      Reportes.impresionesDiagnosticas,
+      // INDICACIONES MÉDICAS *******************************
+      Reportes.signosVitales,
+      Reportes.exploracionFisica,
+      Reportes.analisisMedico,
+      Reportes.pronosticoMedico,
+      // INDICACIONES MÉDICAS *******************************
+      Reportes.dieta.toString(),
+      Reportes.hidroterapia.toString(),
+      Reportes.insulinoterapia.toString(),
+      Reportes.hemoterapia.toString(),
+      Reportes.oxigenoterapia.toString(),
+      Reportes.medicamentosIndicados.toString(),
+      Reportes.medidasGenerales.toString(),
+      Reportes.pendientes.toString(),
+      // INDICACIONES MÉDICAS *******************************
+      Pacientes.ID_Hospitalizacion,
+      tipo_Analisis // Repositorios.tipoAnalisis()
+    ];
+    //
+    await Actividades.actualizar(
+      Databases.siteground_database_reghosp,
+      Repositorios.repositorio['updateQuery'],
+      Values,
+      Pacientes.ID_Hospitalizacion
+    ).then((value) {
+      Archivos.deleteFile(
+          filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
+      Terminal.printExpected(message: "VALUE - $value : $Values");
+    }).whenComplete(() {
+      Archivos.createJsonFromMap(Pacientes.Notas!,
+          filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(message: "ERROR - $error : $stackTrace");
+    });
+  }
+
   static Future<void> registrarRegistro() async {
     var Values = [
       Pacientes.ID_Paciente,
@@ -8773,15 +8818,12 @@ class Repositorios {
         "?,?,?,?,?,?,?,?,"
         "?,?)",
     "updateQuery": "UPDATE pace_hosp_repo SET "
-        "ID_Compendio = ?, ID_Pace = ?, ID_Hosp = ?, "
-        "FechaPadecimiento = ?, Padecimiento_Actual = ?, "
-        "ServicioMedico = ?, FechaRealizacion = ?, "
         "Diagnosticos_Hospital = ?, "
-        "Subjetivo = ?, Signos_Vitales = ?, Exploracion_Fisica = ?, "
+        "Signos_Vitales = ?, Exploracion_Fisica = ?, "
         "Analisis_Medico = ?, Pronostico_Medico = ?, "
-        "Dietoterapia = ?, Hidroterapia = ?, Insulinoterapia = ?, Hemoterapia = ?, Oxigenoterapia = ?, Medicamentos = ?, Medidas_Generales = ?, Pendientes = ?, "
-        "Tipo_Analisis =  ? "
-        "WHERE ID_Hosp = ?",
+        "Dietoterapia = ?, Hidroterapia = ?, Insulinoterapia = ?, Hemoterapia = ?, "
+        "Oxigenoterapia = ?, Medicamentos = ?, Medidas_Generales = ?, Pendientes = ? "
+        "WHERE ID_Hosp = ? AND Tipo_Analisis = ?",
     "deleteQuery": "DELETE FROM pace_hosp_repo WHERE ID_Compendio = ?",
     // Operaciones con el Padecimiento Actual *****************************************************
     "consultPadecimientoQuery":

@@ -1,6 +1,9 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';
+import 'package:assistant/screens/pacientes/hospitalizacion/padecimientoActual.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/analisisMedico.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/auxiliaresReportes.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/exploracionFisica.dart';
@@ -40,10 +43,10 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
       Reportes.reportes['Antecedentes_Quirurgicos'] = hospiTextController.text =
           Pacientes.hospitalarios()
               .toLowerCase(); // Contiene el antecedente de cirugias.
-      Reportes.reportes['Antecedentes_Patologicos_Otros'] = Reportes
-              .reportes['Antecedentes_Patologicos_Ingreso'] =
-          Reportes.reportes['Antecedentes_Patologicos'] =
-              patoloTextController.text = Pacientes.patologicos();
+      Reportes.reportes['Antecedentes_Patologicos_Otros'] =
+          Reportes.reportes['Antecedentes_Patologicos_Ingreso'] =
+              Reportes.reportes['Antecedentes_Patologicos'] =
+                  patoloTextController.text = Pacientes.patologicos();
       Reportes.reportes['Antecedentes_Alergicos'] =
           alergoTextController.text = Pacientes.alergicos().toLowerCase();
     });
@@ -328,22 +331,34 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
                     ],
                   ),
                 ),
-                SingleChildScrollView(
-                  controller: ScrollController(),
-                  child: Column(
-                    children: [
-                      EditTextArea(
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 7,
+                      child: EditTextArea(
                           textController: padesTextController,
                           labelEditText: "Padecimiento Actual",
                           keyBoardType: TextInputType.multiline,
                           numOfLines: 20,
-                          withShowOption: true,
                           onChange: (value) {
                             Reportes.padecimientoActual = value;
                           },
                           inputFormat: MaskTextInputFormatter()),
-                    ],
-                  ),
+                    ),
+                    Expanded(
+                      child: GrandIcon(
+                        labelButton: "Padecimiento Actual . . . ",
+                        iconData: Icons.horizontal_split_sharp,
+                        onPress: () => Cambios.toNextActivity(
+                            context,
+                         tittle: "Padecimiento Actual . . . ",
+                         chyld:  PadecimientoActual(withAppBar: false)),
+                         // chyld:   OperacionesHospitalizaciones(
+                         //      operationActivity: Constantes.Update,
+                         //    )),
+                      ),
+                    )
+                  ],
                 ),
                 ExploracionFisica(),
                 AuxiliaresExploracion(isIngreso: true),

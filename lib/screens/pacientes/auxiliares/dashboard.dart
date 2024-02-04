@@ -5,9 +5,9 @@ import 'package:assistant/screens/pacientes/auxiliares/detalles/detalles.dart';
 import 'package:assistant/screens/pacientes/auxiliares/detalles/estadisticasVitales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/diagnosticos/degenerativos.dart';
 import 'package:assistant/screens/pacientes/auxiliares/diagnosticos/diagnosticos.dart';
-import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizado.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisiones.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';
+import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizado.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/pendientes.dart';
 
 import 'package:assistant/values/SizingInfo.dart';

@@ -21,8 +21,6 @@ import 'package:flutter/material.dart';
 
 import 'package:assistant/screens/pacientes/hospitalizacion/pendientes.dart';
 
-import 'package:assistant/widgets/GrandLabel.dart';
-
 class Hospitalizado extends StatefulWidget {
   bool? isVertical;
 
@@ -44,10 +42,12 @@ class _HospitalizadoState extends State<Hospitalizado> {
 
   @override
   Widget build(BuildContext context) => TittleContainer(
-        color: widget.isVertical == true ? Colores.backgroundWidget : Colors.black,
-        tittle: widget.isVertical == true ? "  . : : * * * : : .  " : "Datos de hospitalización del paciente",
-        child: widget.isVertical == true ? _verticalView() : _generalView());
-
+      color:
+          widget.isVertical == true ? Colores.backgroundWidget : Colors.black,
+      tittle: widget.isVertical == true
+          ? "  . : : * * * : : .  "
+          : "Datos de hospitalización del paciente",
+      child: widget.isVertical == true ? _verticalView() : _generalView());
 
   _verticalView() {
     return Column(
@@ -78,46 +78,24 @@ class _HospitalizadoState extends State<Hospitalizado> {
           firstText: 'D.E.H.',
           secondText: Valores.diasEstancia.toString(),
         ),
-        // // ValuePanel(
-        // //   margin: 1,
-        // //   padding: 1,
-        // //   withBorder: false,
-        // //   firstText: 'Médico Tratante',
-        // //   secondText: Valores.medicoTratante,
-        // // ),
-        // ValuePanel(
-        //   padding: 2.0,
-        //   firstText: 'S. Tratante',
-        //   secondText: Valores.servicioTratante,
-        // ),
-        // ValuePanel(
-        //   padding: 2.0,
-        //   firstText: 'S. Ingreso',
-        //   secondText: Valores.servicioTratanteInicial,
-        // ),
         CrossLine(
           height: 1,
+          color: Colors.grey,
         ),
-        CircleIcon(iconed: Icons.receipt_outlined, onChangeValue: () => Repositorios.consultarAnalisis())
-        // ValuePanel(
-        //   margin: 1,
-        //   padding: 1,
-        //   firstText: 'C. Programada',
-        //   secondText: '', // Valores.servicioTratanteInicial,
-        // ),
-        // ValuePanel(
-        //   margin: 1,
-        //   padding: 1,
-        //   firstText: 'E. Prolongada',
-        //   secondText: Valores
-        //       .isEstanciaProlongada, // Valores.servicioTratanteInicial,
-        // ),
-        // ValuePanel(
-        //   margin: 1,
-        //   padding: 1,
-        //   firstText: 'I. Pendiente',
-        //   secondText: '', // Valores.servicioTratanteInicial,
-        // ),
+        CircleIcon(
+            iconed: Icons.receipt_outlined,
+            radios: 30,
+            difRadios: 5,
+            onChangeValue: () => Repositorios.consultarAnalisis()),
+        CrossLine(
+          height: 1,
+          color: Colors.grey,
+          thickness: 2,
+        ),
+        CircleIcon(
+            iconed: Icons.local_hospital_outlined,
+            onChangeValue: () => Cambios.toNextActivity(context,
+                chyld: OperacionesHospitalizaciones(operationActivity: Constantes.Update)))
       ],
     );
   }
@@ -159,9 +137,9 @@ class _HospitalizadoState extends State<Hospitalizado> {
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (BuildContext context) =>
                                 OperacionesHospitalizaciones(
-                                  retornar: true,
-                                  operationActivity: Constantes.Update,
-                                ),
+                              retornar: true,
+                              operationActivity: Constantes.Update,
+                            ),
                           ));
                         }
                       },
@@ -174,7 +152,7 @@ class _HospitalizadoState extends State<Hospitalizado> {
                           //
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) =>
-                              const PadecimientoActual()));
+                                  PadecimientoActual()));
                           // Operadores.openActivity(
                           //     context: context,
                           //     chyldrim: const PadecimientoActual(),
@@ -205,7 +183,7 @@ class _HospitalizadoState extends State<Hospitalizado> {
                     GrandIcon(
                         iconData: Icons.report_problem_outlined,
                         labelButton:
-                        'Conflictos relacionados a la Hospitalización',
+                            'Conflictos relacionados a la Hospitalización',
                         onPress: () {}),
                     GrandIcon(
                         iconData: Icons.data_array,
@@ -331,9 +309,9 @@ class _HospitalizadoState extends State<Hospitalizado> {
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (BuildContext context) =>
                                 OperacionesHospitalizaciones(
-                                  retornar: true,
-                                  operationActivity: Constantes.Update,
-                                ),
+                              retornar: true,
+                              operationActivity: Constantes.Update,
+                            ),
                           ));
                         }
                       },
@@ -346,7 +324,7 @@ class _HospitalizadoState extends State<Hospitalizado> {
                           //
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) =>
-                              const PadecimientoActual()));
+                                  PadecimientoActual()));
                           // Operadores.openActivity(
                           //     context: context,
                           //     chyldrim: const PadecimientoActual(),
@@ -377,7 +355,7 @@ class _HospitalizadoState extends State<Hospitalizado> {
                     GrandIcon(
                         iconData: Icons.report_problem_outlined,
                         labelButton:
-                        'Conflictos relacionados a la Hospitalización',
+                            'Conflictos relacionados a la Hospitalización',
                         onPress: () {}),
                     GrandIcon(
                         iconData: Icons.data_array,

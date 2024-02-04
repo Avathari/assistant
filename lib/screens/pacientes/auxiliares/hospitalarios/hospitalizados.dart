@@ -10,7 +10,6 @@ import 'package:assistant/operativity/pacientes/valores/Valorados/ventometr%C3%A
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/home.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
-import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizado.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/info/Hospitalizado.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/subjetivos.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/generales.dart';
@@ -24,17 +23,13 @@ import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/AppBarText.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
-import 'package:assistant/widgets/CircleLabel.dart';
-import 'package:assistant/widgets/CircularFloattingButton.dart';
 import 'package:assistant/widgets/CrossLine.dart';
-import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/TittleContainer.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Hospitalizados extends StatefulWidget {
   Widget? actualSidePage = Container();
@@ -265,16 +260,28 @@ class _HospitalizadosState extends State<Hospitalizados> {
                         },
                       );
                     } else {
-                      return GridView.builder(
-                        padding: const EdgeInsets.all(10.0),
-                        gridDelegate: GridViewTools.gridDelegate(
-                          crossAxisCount: isMobile(context) ? 1 : 1,
-                          mainAxisExtent: isMobile(context) ? 625 : 350,
-                        ),
-                        controller: ScrollController(),
-                        shrinkWrap: false,
-                        itemCount:
-                            snapshot.data == null ? 0 : snapshot.data.length,
+                      // return GridView.builder(
+                      //   padding: const EdgeInsets.all(10.0),
+                      //   gridDelegate: GridViewTools.gridDelegate(
+                      //     crossAxisCount: isMobile(context) ? 1 : 1,
+                      //     mainAxisExtent: isMobile(context) ? 625 : 350,
+                      //   ),
+                      //   controller: ScrollController(),
+                      //   shrinkWrap: false,
+                      //   itemCount:
+                      //       snapshot.data == null ? 0 : snapshot.data.length,
+                      //   itemBuilder: (context, index) {
+                      //     return itemListView(snapshot, index, context);
+                      //   },
+                      // );
+                      return PageView.builder(
+                        controller: _pageController,
+                        onPageChanged: (int page) {
+                          setState(() {
+                            _activePage = page;
+                          });
+                        },
+                        itemCount: foundedItems!.length,
                         itemBuilder: (context, index) {
                           return itemListView(snapshot, index, context);
                         },
@@ -309,7 +316,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
           ? FloatingActionButtonLocation.centerDocked
           : FloatingActionButtonLocation.endDocked,
       bottomNavigationBar:
-          isMobile(context) ? bottomNavigationBar(context) : null,
+      bottomNavigationBar(context), // isMobile(context) ? bottomNavigationBar(context) : null,
       floatingActionButton: Wrap(spacing: 10, children: [
         if (!isMobile(context))
           CircleIcon(
@@ -427,8 +434,9 @@ class _HospitalizadosState extends State<Hospitalizados> {
         toVisual(context, Constantes.Update);
       },
       child: Container(
-        decoration: ContainerDecoration.roundedDecoration(),
+        decoration: ContainerDecoration.roundedDecoration(colorBackground: Theming.cuaternaryColor),
         padding: const EdgeInsets.all(10.0),
+        margin: const EdgeInsets.all(10.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -498,7 +506,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
             Expanded(
               flex: isLargeDesktop(context) ? 3 : 5,
               child: Container(
-                decoration: ContainerDecoration.roundedDecoration(),
+                decoration: ContainerDecoration.roundedDecoration(colorBackground: Theming.cuaternaryColor),
                 padding: const EdgeInsets.only(
                     left: 10.0, right: 10.0, top: 6, bottom: 8),
                 margin: const EdgeInsets.only(
@@ -511,11 +519,10 @@ class _HospitalizadosState extends State<Hospitalizados> {
                       flex: 3,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(
-                              flex: 5,
-                              child: fichaIdentificacion(snapshot, index)),
-                          Expanded(flex: 5, child: padesView(snapshot, index)),
+                          fichaIdentificacion(snapshot, index),
+                          padesView(snapshot, index),
                         ],
                       ),
                     ),
@@ -535,6 +542,25 @@ class _HospitalizadosState extends State<Hospitalizados> {
                   Expanded(
                       flex: 5,
                       child: _paraclinicosPanel(context, snapshot, index)),
+                  Expanded(
+                    child: ValuePanel(
+                      onLongPress: () async {
+                        await foundedItems![index]
+                            .getBalancesHistorial()
+                            .whenComplete(() {
+                          Datos.portapapeles(
+                              context: context,
+                              text: balancesString(
+                                  foundedItems![index]
+                                      .balances
+                                      .last,
+                                  index));
+                        });
+                      },
+                      firstText: foundedItems![index].balances.isNotEmpty
+                          ? foundedItems![index].balances.last['Pace_bala_Fecha'].toString()
+                          : 'Sin Balance Hídrico',
+                  )),
                   Expanded(
                     child: ValuePanel(
                       onLongPress: () => Datos.portapapeles(
@@ -749,6 +775,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                               text:
                                   "${foundedItems![index].hospitalizedData['Id_Cama']} - $penden");
                         }),
+                    const SizedBox(height: 60),
                   ],
                 )),
             Expanded(
@@ -763,7 +790,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                           foundedItems![index].hospitalizedData['ID_Hosp'];
                       Operadores.openDialog(
                           context: context,
-                          chyldrim: const PadecimientoActual(),
+                          chyldrim: PadecimientoActual(),
                           onAction: () {
                             // Repositorios.actualizarRegistro();
                           });
@@ -985,12 +1012,12 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                       });
                                     },
                                     tittle:
-                                        foundedItems![index].vitales.isNotEmpty
+                                        foundedItems![index].balances.isNotEmpty
                                             ? foundedItems![index]
-                                                .vitales
-                                                .last['Pace_Feca_SV']
+                                                .balances
+                                                .last['Pace_bala_Fecha']
                                                 .toString()
-                                            : "Sin SV's",
+                                            : "Sin BI's",
                                   ),
                                 ),
                               ],
@@ -1376,7 +1403,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
           color: Theming.cuaternaryColor,
           child: Text(
             "${foundedItems![index].padecimientoActual['Padecimiento_Actual'] ?? 'Sin padecimiento actual registrado . . . '}",
-            maxLines: isLargeDesktop(context) ? 65 : 45,
+            maxLines: isLargeDesktop(context) ? 65 : isDesktop(context) ? 95 : 45,
             style: Styles.textSyleGrowth(fontSize: 8),
             textAlign: TextAlign.start,
           ),
@@ -1610,7 +1637,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
         shape: const CircularNotchedRectangle(),
         notchMargin: 10,
         height: 50,
-        child: Row(
+        child: isMobile(context) ? Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             GrandIcon(
@@ -1654,6 +1681,30 @@ class _HospitalizadosState extends State<Hospitalizados> {
                 //     errorLoggerSnackBar(context,
                 //         error: error, stackTrace: stackTrace));
               },
+            ),
+          ],
+        ) : Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+              child: GrandIcon(
+                  labelButton: "Reiniciar . . . ",
+                  iconData: Icons.replay,
+                  onPress: () => _pullListRefresh().onError((error, stackTrace) {
+                    showModalBottomSheet(
+                        context: context,
+                        backgroundColor: Theming.cuaternaryColor,
+                        builder: (BuildContext context) {
+                          return errorLoggerSnackBar(context,
+                              error: error, stackTrace: stackTrace);
+                        });
+                  })),
+            ),
+            Expanded(
+              child: GrandIcon(
+                  labelButton: "Primeros Encontrados",
+                  iconData: Icons.file_present,
+                  onPress: () => _reiniciar()),
             ),
           ],
         ),
@@ -1813,8 +1864,9 @@ class _HospitalizadosState extends State<Hospitalizados> {
     //
     return "${last['Pace_bala_Fecha']} : "
         "Ingresos ${Valores.ingresosBalances.toStringAsFixed(1)} mL, "
-        "Egresos ${Valores.egresosBalances.toStringAsFixed(1)} mL "
-        ":  ${Valores.balanceTotal.toStringAsFixed(2)} mL ("
+        "Egresos ${Valores.egresosBalances.toStringAsFixed(1)} mL . "
+        "[Perdidas Insensibles ${Valores.perdidasInsensibles.toStringAsFixed(1)} mL]"
+        " :  BT ${Valores.balanceTotal.toStringAsFixed(2)} mL ("
         "Uresis ${Valores.uresisBalances!.toStringAsFixed(2)} mL : "
         "UKH ${Valores.diuresis.toStringAsFixed(2)} mL/Kg/${Valores.horario} Hr "
         ")";

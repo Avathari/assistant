@@ -261,7 +261,7 @@ class Internado {
       await Actividades.consultarAllById(Databases.siteground_database_reghosp,
           Balances.balance['consultIdQuery'], idPaciente)
           .then((value) async {
-        Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . ");
+        Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . $value");
         //
         return balances = value;
       }).whenComplete(() => Archivos.createJsonFromMap(balances,

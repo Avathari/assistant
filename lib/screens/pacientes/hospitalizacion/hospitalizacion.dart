@@ -229,7 +229,7 @@ class _OperacionesHospitalizacionesState
               iconed: Icons.medication_outlined,
               onChangeValue: () {
                 Pacientes.ID_Hospitalizacion = idOperation;
-                Cambios.toNextPage(context, const PadecimientoActual());
+                Cambios.toNextPage(context,  PadecimientoActual());
               },
             ),
           ),
