@@ -167,7 +167,7 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
                     },
                     onChange: (value) {
                       setState(() {
-                        Valores.padecimientoActual =
+                        Valores.padecimientoActual = Reportes.reportes['Padecimiento_Actual'] =
                             "${Valores.padecimientoActual}. \n$value";
                       });
                     },
@@ -193,7 +193,7 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
                     },
                     onChange: (value) {
                       setState(() {
-                        Valores.padecimientoActual = value;
+                        Valores.padecimientoActual = Reportes.reportes['Padecimiento_Actual'] = value;
                       });
                     },
                   ),

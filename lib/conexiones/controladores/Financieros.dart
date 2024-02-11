@@ -18,6 +18,10 @@ class Financieros {
   static double? pasivosTotales;
   static double? patriminiosTotales;
   // **************************************************************************
+  static double? ingresosMes, ingresosAno;
+  // **************************************************************************
+  static double? ingresosMesPrevio, ingresoMesAnteprevio, ingresosAnoPrevio;
+  // **************************************************************************
   static var Categorias = [
     'Ingresos Registrados',
     'Egresos Registrados',
@@ -89,6 +93,7 @@ class Activos {
     "Multas e Infracciones Viáles",
     "Electricidad",
     "Gas",
+    "Internet y Telefonía",
     "Lavanderia y Tintorerías",
     "Ropa y Artilugios",
     "Productos de Auto-cuidado",
@@ -357,49 +362,121 @@ class Activos {
     Financieros.activosTotales = 0;
     Financieros.pasivosTotales = 0;
     Financieros.patriminiosTotales = 0;
+    // MES PREVIO
+    Financieros.ingresosMes = 0;
+    Financieros.ingresosAno = 0;
+    Financieros.ingresosMesPrevio = 0;
+    Financieros.ingresoMesAnteprevio = 0;
+    Financieros.ingresosAnoPrevio = 0;
     //
     activos.forEach((element) {
-
+      // Terminal.printWarning(message: "Activos . . . : $element");
       //
       if (element['Tipo_Recurso'] == 'Ingresos') {
         Financieros.Ingresos.add(element);
         // Sumar montos . . .
         // Terminal.printWarning(message: " . . . ${element}");
-        Financieros.ingresosTotales = (Financieros.ingresosTotales!+ element['Monto_Pagado']);
+        Financieros.ingresosTotales =
+            (Financieros.ingresosTotales! + element['Monto_Pagado']);
+
         // Sumar montos por Mes . . .
+        DateTime fecha1 = DateTime.parse(element['Fecha_Pago_Programado']);
+        DateTime today = DateTime.now();
+        //
+        if (fecha1.month == today.month) {
+          Financieros.ingresosMes =
+              Financieros.ingresosMes! + element['Monto_Pagado'];
+        }
+        if (today.month - 1 != 0) {
+          if (fecha1.month == today.month - 1) {
+            Financieros.ingresosMesPrevio =
+                Financieros.ingresosMesPrevio! + element['Monto_Pagado'];
+          }
+        } else if (today.month - 1 == 0) {
+          if (fecha1.month == 12 && fecha1.year == today.year - 1) {
+            Financieros.ingresosMesPrevio =
+                Financieros.ingresosMesPrevio! + element['Monto_Pagado'];
+          }
+        } else {
+          if (fecha1.month == today.month - 1) {
+            Financieros.ingresosMesPrevio =
+                Financieros.ingresosMesPrevio! + element['Monto_Pagado'];
+          }
+        }
+
+        if (today.month - 2 != 0) {
+          if (fecha1.month == today.month - 2) {
+            Financieros.ingresoMesAnteprevio =
+                Financieros.ingresoMesAnteprevio! + element['Monto_Pagado'];
+          }
+        } else if (today.month - 2 == 0) {
+          if (fecha1.month == 12 && fecha1.year == today.year - 1) {
+            Financieros.ingresoMesAnteprevio =
+                Financieros.ingresoMesAnteprevio! + element['Monto_Pagado'];
+          }
+        } else {
+          if (fecha1.month == today.month - 2) {
+            Financieros.ingresoMesAnteprevio =
+                Financieros.ingresoMesAnteprevio! + element['Monto_Pagado'];
+          }
+        }
+
+        //
+        if (fecha1.year == today.year) {
+          Financieros.ingresosAno =
+              Financieros.ingresosAno! + element['Monto_Pagado'];
+        }
+        if (fecha1.year == today.year - 1) {
+          Financieros.ingresosAnoPrevio =
+              Financieros.ingresosAnoPrevio! + element['Monto_Pagado'];
+        }
+
         // var mensual = Financieros.Ingresos.
-
-
       }
       if (element['Tipo_Recurso'] == 'Egresos') {
         Financieros.Egresos.add(element);
-        Financieros.egresosTotales = (Financieros.egresosTotales!+ element['Monto_Pagado']);
+        Financieros.egresosTotales =
+            (Financieros.egresosTotales! + element['Monto_Pagado']);
       }
       if (element['Tipo_Recurso'] == 'Activos') {
         Financieros.Activos.add(element);
-        Financieros.activosTotales = (Financieros.activosTotales!+ element['Monto_Pagado']);
+        Financieros.activosTotales =
+            (Financieros.activosTotales! + element['Monto_Pagado']);
       }
       if (element['Tipo_Recurso'] == 'Pasivos') {
         Financieros.Pasivos.add(element);
-        Financieros.pasivosTotales = (Financieros.pasivosTotales!+ element['Monto_Pagado']);
+        Financieros.pasivosTotales =
+            (Financieros.pasivosTotales! + element['Monto_Pagado']);
       }
       if (element['Tipo_Recurso'] == 'Patrimonio') {
         Financieros.Patrimonio.add(element);
-        Financieros.patriminiosTotales = (Financieros.patriminiosTotales!+ element['Monto_Pagado']);
+        Financieros.patriminiosTotales =
+            (Financieros.patriminiosTotales! + element['Monto_Pagado']);
       }
 //
-
     });
 
     // MUESTRA
-    Terminal.printWarning(message: " . . . "
-        " ### #### ###### ## # . . . . BALANCE REGISTRADO ### #### ###### ## # . . . ."
-        "\n ACTIVOS TOTALES : ${activos.length} : . . . "
-        "\n ${Financieros.ingresosTotales} : : ${Financieros.Ingresos.length}"
-        "\n ${Financieros.egresosTotales} : : ${Financieros.Egresos.length}"
-        "\n ${Financieros.activosTotales} : : ${Financieros.Activos.length}"
-        "\n ${Financieros.pasivosTotales} : : ${Financieros.Pasivos.length}"
-        "\n ${Financieros.patriminiosTotales} : : ${Financieros.Patrimonio.length}"
-        "\n");
+    Terminal.printWarning(
+        message: " . . . "
+            " ### #### ###### ## # . . . . BALANCE REGISTRADO ### #### ###### ## # . . . ."
+            "\n ACTIVOS TOTALES : ${activos.length} : . . . "
+            "\n . . . : Ingresos : : ${Financieros.ingresosTotales} : : ${Financieros.Ingresos.length}"
+            "\n . . . : Egresos : : ${Financieros.egresosTotales} : : ${Financieros.Egresos.length}"
+            "\n . . . : Activos : : ${Financieros.activosTotales} : : ${Financieros.Activos.length}"
+            "\n . . . : Pasivos : : ${Financieros.pasivosTotales} : : ${Financieros.Pasivos.length}"
+            "\n . . . : Patrimonio : : ${Financieros.patriminiosTotales} : : ${Financieros.Patrimonio.length}"
+            "\n : : BALANCE GLOBAL . : : ${Financieros.ingresosTotales! - Financieros.egresosTotales!}"
+            "\n : : BALANCE GENERAL . : : ${(Financieros.ingresosTotales! + Financieros.activosTotales!) - (Financieros.egresosTotales! + Financieros.pasivosTotales!)}"
+            "\n : : PATRIMONIAL . : : ${Financieros.ingresosTotales! - (Financieros.egresosTotales! + Financieros.pasivosTotales!)}"
+            "\n"
+            "\n  INGRESOS : : . . . "
+            "\n . . . : Ingresos del Mes . : ${Financieros.ingresosMes} . "
+            "\n . . . : Ingresos del Mes previo . : ${Financieros.ingresosMesPrevio} . "
+            "\n . . . : Ingresos del Mes Anteprevio . : ${Financieros.ingresoMesAnteprevio} . "
+            "\n . . . : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  . . . "
+            "\n . . . : Ingresos del Año . : ${Financieros.ingresosAno} . "
+            "\n . . . : Ingresos del Año previo . : ${Financieros.ingresosAnoPrevio} . "
+            "");
   }
 }

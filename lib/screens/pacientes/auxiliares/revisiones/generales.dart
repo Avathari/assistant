@@ -90,544 +90,9 @@ class _GeneralesState extends State<Generales> {
 
   @override
   Widget build(BuildContext context) {
-    return CarouselSlider(
-        items: [
-          if (isMobile(context))
-            Wrap(
-              runSpacing: 4.0,
-              children: [
-                EditTextArea(
-                  labelEditText: "Fecha de realización",
-                  numOfLines: 1,
-                  textController: textDateEstudyController,
-                  keyBoardType: TextInputType.datetime,
-                  withShowOption: true,
-                  selection: true,
-                  iconData: Icons.calculate_outlined,
-                  onSelected: () {
-                    setState(() {
-                      textDateEstudyController.text =
-                          Calendarios.today(format: "yyyy/MM/dd");
-                    });
-                  },
-                  inputFormat: MaskTextInputFormatter(
-                      mask: '####/##/##',
-                      filter: {"#": RegExp(r'[0-9]')},
-                      type: MaskAutoCompletionType.lazy),
-                ),
-                CrossLine(thickness: 3, height: 15),
-                Row(
-                  children: [
-                    Expanded(
-                      child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(),
-                          numOfLines: 1,
-                          labelEditText: 'Tensión arterial sistólica',
-                          textController: tasTextController),
-                    ),
-                    Expanded(
-                      child: EditTextArea(
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(),
-                        numOfLines: 1,
-                        labelEditText: 'Tensión arterial diastólica',
-                        textController: tadTextController,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(),
-                          numOfLines: 1,
-                          labelEditText: 'Frecuencia cardiaca',
-                          textController: fcTextController),
-                    ),
-                    Expanded(
-                      child: EditTextArea(
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(),
-                        numOfLines: 1,
-                        labelEditText: 'Frecuencia respiratoria',
-                        textController: frTextController,
-                      ),
-                    ),
-                  ],
-                ),
-                EditTextArea(
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(
-                      mask: '##.#',
-                      filter: {"#": RegExp(r'[0-9]')},
-                      type: MaskAutoCompletionType.lazy),
-                  numOfLines: 1,
-                  labelEditText: 'Temperatura corporal',
-                  textController: tcTextController,
-                ),
-                EditTextArea(
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(),
-                  numOfLines: 1,
-                  labelEditText: 'Saturación periférica de oxígeno',
-                  textController: spoTextController,
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(
-                              mask: '###.##',
-                              filter: {"#": RegExp(r'[0-9]')},
-                              type: MaskAutoCompletionType.lazy),
-                          numOfLines: 1,
-                          labelEditText: 'Peso corporal total',
-                          textController: pctTextController,
-                          onChange: (String value) {
-                            Valores.pesoCorporalTotal = double.parse(pctTextController.text);
-                            viaPerdidaTextController.text = Valores.perdidasInsensibles.toStringAsFixed(0);
-                          }
-                      ),
-                    ),
-                    Expanded(
-                      child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(
-                              mask: '#.##',
-                              filter: {"#": RegExp(r'[0-9]')},
-                              type: MaskAutoCompletionType.lazy),
-                          numOfLines: 1,
-                          labelEditText: 'Estatura (mts)',
-                          textController: estTextController,
-                          onChange: (String value) {
-                            Valores.alturaPaciente = double.parse(estTextController.text);
-                          }
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: EditTextArea(
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(
-                            mask: '###',
-                            filter: {"#": RegExp(r'[0-9]')},
-                            type: MaskAutoCompletionType.lazy),
-                        numOfLines: 1,
-                        labelEditText: 'Glucemia capilar',
-                        textController: gluTextController,
-                      ),
-                    ),
-                    Expanded(
-                      child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(
-                              mask: '##',
-                              filter: {"#": RegExp(r'[0-9]')},
-                              type: MaskAutoCompletionType.lazy),
-                          numOfLines: 1,
-                          labelEditText: 'Horas de ayuno',
-                          textController: gluAyuTextController),
-                    ),
-                  ],
-                ),
-                CrossLine(thickness: 6, height: 15),
-                CrossLine(thickness: 3, height: 15),
-              ],
-            ),
-          if (isMobile(context))
-            SingleChildScrollView(
-              controller: ScrollController(),
-              child: Column(
-                children: [
-                  Spinner(
-                      isRow: true,
-                      tittle: "Intervalo de Horario",
-                      onChangeValue: (String value) {
-                        setState(() {
-                          isHorarioValue = value;
-                          Valores.horario = int.parse(value);
-                        });
-                      },
-                      items: Opciones.horarios(),
-                      width: isDesktop(context)
-                          ? 300
-                          : isTablet(context)
-                          ? 200
-                          : isMobile(context)
-                          ? 170
-                          : 200,
-                      initialValue: isHorarioValue),
-                  Spinner(
-                    isRow: true,
-                    tittle: 'Sonda Vesical',
-                    width: isDesktop(context)
-                        ? 300
-                        : isTablet(context)
-                        ? 200
-                        : isMobile(context)
-                        ? 170
-                        : 200,
-                    items: Items.foley,
-                    initialValue: Exploracion.tipoSondaVesical,
-                    onChangeValue: (value) {
-                      setState(() {
-                        Exploracion.tipoSondaVesical = value;
-                      });
-                    },
-                  ),
-                  CrossLine(
-                    color: Colors.grey,
-                    height: 15,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(),
-                          labelEditText: 'Via Oral (mL)',
-                          textController: viaOralTextController,
-                          numOfLines: 1,
-                          selection: true,
-                          withShowOption: true,
-                          onSelected: () {
-                            Operadores.editTwoValuesDialog(context: context, onAcept: (value) {
-                              Navigator.of(context).pop();
-                              viaOralTextController.text = value;
-                            }
-                            );
-                          },
-                          onChange: (value) {
-                            setState(() {
-                              Valores.viaOralBalances = double.parse(value);
-                            });
-                          },
-                        ),
-                      ),
-                      Expanded(
-                          child: EditTextArea(
-                            keyBoardType: TextInputType.number,
-                            inputFormat: MaskTextInputFormatter(),
-                            labelEditText: 'Vía Uresis (mL)',
-                            textController: viaUresisTextController,
-                            numOfLines: 1,
-                            selection: true,
-                            withShowOption: true,
-                            onSelected: () {
-                              Operadores.editTwoValuesDialog(context: context, onAcept: (value) {
-                                Navigator.of(context).pop();
-                                viaUresisTextController.text = value;
-                              }
-                              );
-                            },
-                            onChange: (value) {
-                              Valores.uresisBalances = double.parse(value);
-                              setState(() {});
-                            },
-                          ))
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(),
-                          labelEditText: 'Vía Sonda Orogástrica (mL)',
-                          textController: viaOrogasTextController,
-                          numOfLines: 1,
-                          selection: true,
-                          withShowOption: true,
-                          onSelected: () {
-                            Operadores.editTwoValuesDialog(context: context, onAcept: (value) {
-                              Navigator.of(context).pop();
-                              viaOrogasTextController.text = value;
-                            }
-                            );
-                          },
-                          onChange: (value) {
-                            setState(() {
-                              Valores.sondaOrogastricaBalances =
-                                  double.parse(value);
-                            });
-                          },
-                        ),
-                      ),
-                      Expanded(
-                          child: EditTextArea(
-                            keyBoardType: TextInputType.number,
-                            inputFormat: MaskTextInputFormatter(),
-                            labelEditText: 'Vía Evacuacionees. (mL)',
-                            textController: viaEvacTextController,
-                            numOfLines: 1,
-                            selection: true,
-                            withShowOption: true,
-                            onSelected: () {
-                              Operadores.editTwoValuesDialog(context: context, onAcept: (value) {
-                                Navigator.of(context).pop();
-                                viaEvacTextController.text = value;
-                              }
-                              );
-                            },
-                            onChange: (value) {
-                              setState(() {
-                                Valores.evacuacionesBalances =
-                                    double.parse(value);
-                              });
-                            },
-                          ))
-                    ],
-                  ),
-                  // CrossLine(),
-                  //
-                  Row(
-                    children: [
-                      Expanded(
-                        child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(),
-                          labelEditText: 'Vía Hemoderivados (mL)',
-                          textController: viaHemosTextController,
-                          numOfLines: 1,
-                          selection: true,
-                          withShowOption: true,
-                          onSelected: () {
-                            Operadores.editTwoValuesDialog(context: context, onAcept: (value) {
-                              Navigator.of(context).pop();
-                              viaHemosTextController.text = value;
-                            }
-                            );
-                          },
-                          onChange: (value) {
-                            setState(() {
-                              Valores.hemoderivadosBalances =
-                                  double.parse(value);
-                            });
-                          },
-                        ),
-                      ),
-                      Expanded(
-                          child: EditTextArea(
-                            keyBoardType: TextInputType.number,
-                            inputFormat: MaskTextInputFormatter(),
-                            labelEditText: 'Vía Sangrados (mL)',
-                            textController: viaSangTextController,
-                            numOfLines: 1,
-                            selection: true,
-                            withShowOption: true,
-                            onSelected: () {
-                              Operadores.editTwoValuesDialog(context: context, onAcept: (value) {
-                                Navigator.of(context).pop();
-                                viaSangTextController.text = value;
-                              }
-                              );
-                            },
-                            onChange: (value) {
-                              setState(() {
-                                Valores.sangradosBalances = double.parse(value);
-                              });
-                            },
-                          ))
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(),
-                          labelEditText: 'Vía N.P.T. (mL)',
-                          textController: viaNutrianTextController,
-                          numOfLines: 1,
-                          selection: true,
-                          withShowOption: true,
-                          onSelected: () {
-                            Operadores.editTwoValuesDialog(context: context, onAcept: (value) {
-                              Navigator.of(context).pop();
-                              viaNutrianTextController.text = value;
-                            }
-                            );
-                          },
-                          onChange: (value) {
-                            setState(() {
-                              Valores.nutricionParenteralBalances =
-                                  double.parse(value);
-                            });
-                          },
-                        ),
-                      ),
-                      Expanded(
-                          child: EditTextArea(
-                            keyBoardType: TextInputType.number,
-                            inputFormat: MaskTextInputFormatter(),
-                            labelEditText: 'Vía Succión (mL)',
-                            textController: viaSucciTextController,
-                            numOfLines: 1,
-                            selection: true,
-                            withShowOption: true,
-                            onSelected: () {
-                              Operadores.editTwoValuesDialog(context: context, onAcept: (value) {
-                                Navigator.of(context).pop();
-                                viaSucciTextController.text = value;
-                              }
-                              );
-                            },
-                            onChange: (value) {
-                              setState(() {
-                                Valores.succcionBalances = double.parse(value);
-                              });
-                            },
-                          ))
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(),
-                          labelEditText: 'Vía Sol. Parenterales (mL)',
-                          textController: viaParesTextController,
-                          numOfLines: 1,
-                          selection: true,
-                          withShowOption: true,
-                          onSelected: () {
-                            Operadores.editTwoValuesDialog(context: context, onAcept: (value) {
-                              Navigator.of(context).pop();
-                              viaParesTextController.text = value;
-                            }
-                            );
-                          },
-                          onChange: (value) {
-                            setState(() {
-                              Valores.parenteralesBalances =
-                                  double.parse(value);
-                            });
-                          },
-                        ),
-                      ),
-                      Expanded(
-                          child: EditTextArea(
-                            keyBoardType: TextInputType.number,
-                            inputFormat: MaskTextInputFormatter(),
-                            labelEditText: 'Perdidas Insensibles (mL)',
-                            textController: viaPerdidaTextController,
-                            numOfLines: 1,
-                          ))
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(),
-                          labelEditText: 'Vía Diluciones (mL)',
-                          textController: viaDilucionesTextController,
-                          numOfLines: 1,
-                          selection: true,
-                          withShowOption: true,
-                          onSelected: () {
-                            Operadores.editTwoValuesDialog(context: context, onAcept: (value) {
-                              Navigator.of(context).pop();
-                              viaDilucionesTextController.text = value;
-                            }
-                            );
-                          },
-                          onChange: (value) {
-                            setState(() {
-                              Valores.dilucionesBalances =
-                                  double.parse(value);
-                            });
-                          },
-                        ),
-                      ),
-                      Expanded(
-                          child: EditTextArea(
-                            keyBoardType: TextInputType.number,
-                            inputFormat: MaskTextInputFormatter(),
-                            labelEditText: 'Otros Egresos (mL)',
-                            textController: viaOtrosEgresosTextController,
-                            numOfLines: 1,
-                            selection: true,
-                            withShowOption: true,
-                            onSelected: () {
-                              Operadores.editTwoValuesDialog(context: context, onAcept: (value) {
-                                Navigator.of(context).pop();
-                                viaOtrosEgresosTextController.text = value;
-                              }
-                              );
-                            },
-                            onChange: (value) {
-                              setState(() {
-                                Valores.otrosEgresosBalances =
-                                    double.parse(value);
-                              });
-                            },
-                          ))
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(),
-                          labelEditText: 'Otros Ingresos (mL)',
-                          textController: viaOtrosIngresosTextController,
-                          numOfLines: 1,
-                          selection: true,
-                          withShowOption: true,
-                          onSelected: () {
-                            Operadores.editTwoValuesDialog(context: context, onAcept: (value) {
-                              Navigator.of(context).pop();
-                              viaOtrosIngresosTextController.text = value;
-                            }
-                            );
-                          },
-                          onChange: (value) {
-                            setState(() {
-                              Valores.otrosIngresosBalances =
-                                  double.parse(value);
-                            });
-                          },
-                        ),
-                      ),
-                      Expanded(child: Container(width: 200))
-                    ],
-                  ),
-                  // Botton ***** ******* ****** * ***
-                  CrossLine(
-                    color: Colors.grey,
-                  ),
-                  Container(
-                    margin: const EdgeInsets.all(5.0),
-                    decoration: ContainerDecoration.roundedDecoration(),
-                    child: GrandButton(
-                        labelButton: "Agregar Datos",
-                        weigth: 2000,
-                        onPress: () {
-                          operationMethod(context);
-                        }),
-                  )
-                ],
-              ),
-            ),
-        ],
-        carouselController: carouselController,
-        options: Carousel.carouselOptions(context: context));
-    //
     if (isMobile(context)) {
       return CarouselSlider(
           items: [
-            if (isMobile(context))
               Wrap(
                 runSpacing: 4.0,
                 children: [
@@ -714,30 +179,30 @@ class _GeneralesState extends State<Generales> {
                     children: [
                       Expanded(
                         child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(
-                              mask: '###.##',
-                              filter: {"#": RegExp(r'[0-9]')},
-                              type: MaskAutoCompletionType.lazy),
-                          numOfLines: 1,
-                          labelEditText: 'Peso corporal total',
-                          textController: pctTextController,
-                          onChange: (String value) {
-                            Valores.pesoCorporalTotal = double.parse(pctTextController.text);
-                            viaPerdidaTextController.text = Valores.perdidasInsensibles.toStringAsFixed(0);
-                          }
+                            keyBoardType: TextInputType.number,
+                            inputFormat: MaskTextInputFormatter(
+                                mask: '###.##',
+                                filter: {"#": RegExp(r'[0-9]')},
+                                type: MaskAutoCompletionType.lazy),
+                            numOfLines: 1,
+                            labelEditText: 'Peso corporal total',
+                            textController: pctTextController,
+                            onChange: (String value) {
+                              Valores.pesoCorporalTotal = double.parse(pctTextController.text);
+                              viaPerdidaTextController.text = Valores.perdidasInsensibles.toStringAsFixed(0);
+                            }
                         ),
                       ),
                       Expanded(
                         child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(
-                              mask: '#.##',
-                              filter: {"#": RegExp(r'[0-9]')},
-                              type: MaskAutoCompletionType.lazy),
-                          numOfLines: 1,
-                          labelEditText: 'Estatura (mts)',
-                          textController: estTextController,
+                            keyBoardType: TextInputType.number,
+                            inputFormat: MaskTextInputFormatter(
+                                mask: '#.##',
+                                filter: {"#": RegExp(r'[0-9]')},
+                                type: MaskAutoCompletionType.lazy),
+                            numOfLines: 1,
+                            labelEditText: 'Estatura (mts)',
+                            textController: estTextController,
                             onChange: (String value) {
                               Valores.alturaPaciente = double.parse(estTextController.text);
                             }
@@ -776,7 +241,6 @@ class _GeneralesState extends State<Generales> {
                   CrossLine(thickness: 3, height: 15),
                 ],
               ),
-            if (isMobile(context))
               SingleChildScrollView(
                 controller: ScrollController(),
                 child: Column(
@@ -794,10 +258,10 @@ class _GeneralesState extends State<Generales> {
                         width: isDesktop(context)
                             ? 300
                             : isTablet(context)
-                                ? 200
-                                : isMobile(context)
-                                    ? 170
-                                    : 200,
+                            ? 200
+                            : isMobile(context)
+                            ? 170
+                            : 200,
                         initialValue: isHorarioValue),
                     Spinner(
                       isRow: true,
@@ -805,10 +269,10 @@ class _GeneralesState extends State<Generales> {
                       width: isDesktop(context)
                           ? 300
                           : isTablet(context)
-                              ? 200
-                              : isMobile(context)
-                                  ? 170
-                                  : 200,
+                          ? 200
+                          : isMobile(context)
+                          ? 170
+                          : 200,
                       items: Items.foley,
                       initialValue: Exploracion.tipoSondaVesical,
                       onChangeValue: (value) {
@@ -837,7 +301,7 @@ class _GeneralesState extends State<Generales> {
                                 Navigator.of(context).pop();
                                 viaOralTextController.text = value;
                               }
-                                );
+                              );
                             },
                             onChange: (value) {
                               setState(() {
@@ -848,11 +312,11 @@ class _GeneralesState extends State<Generales> {
                         ),
                         Expanded(
                             child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(),
-                          labelEditText: 'Vía Uresis (mL)',
-                          textController: viaUresisTextController,
-                          numOfLines: 1,
+                              keyBoardType: TextInputType.number,
+                              inputFormat: MaskTextInputFormatter(),
+                              labelEditText: 'Vía Uresis (mL)',
+                              textController: viaUresisTextController,
+                              numOfLines: 1,
                               selection: true,
                               withShowOption: true,
                               onSelected: () {
@@ -862,11 +326,11 @@ class _GeneralesState extends State<Generales> {
                                 }
                                 );
                               },
-                          onChange: (value) {
-                            Valores.uresisBalances = double.parse(value);
-                            setState(() {});
-                          },
-                        ))
+                              onChange: (value) {
+                                Valores.uresisBalances = double.parse(value);
+                                setState(() {});
+                              },
+                            ))
                       ],
                     ),
                     Row(
@@ -897,11 +361,11 @@ class _GeneralesState extends State<Generales> {
                         ),
                         Expanded(
                             child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(),
-                          labelEditText: 'Vía Evacuacionees. (mL)',
-                          textController: viaEvacTextController,
-                          numOfLines: 1,
+                              keyBoardType: TextInputType.number,
+                              inputFormat: MaskTextInputFormatter(),
+                              labelEditText: 'Vía Evacuacionees. (mL)',
+                              textController: viaEvacTextController,
+                              numOfLines: 1,
                               selection: true,
                               withShowOption: true,
                               onSelected: () {
@@ -911,13 +375,13 @@ class _GeneralesState extends State<Generales> {
                                 }
                                 );
                               },
-                          onChange: (value) {
-                            setState(() {
-                              Valores.evacuacionesBalances =
-                                  double.parse(value);
-                            });
-                          },
-                        ))
+                              onChange: (value) {
+                                setState(() {
+                                  Valores.evacuacionesBalances =
+                                      double.parse(value);
+                                });
+                              },
+                            ))
                       ],
                     ),
                     // CrossLine(),
@@ -950,11 +414,11 @@ class _GeneralesState extends State<Generales> {
                         ),
                         Expanded(
                             child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(),
-                          labelEditText: 'Vía Sangrados (mL)',
-                          textController: viaSangTextController,
-                          numOfLines: 1,
+                              keyBoardType: TextInputType.number,
+                              inputFormat: MaskTextInputFormatter(),
+                              labelEditText: 'Vía Sangrados (mL)',
+                              textController: viaSangTextController,
+                              numOfLines: 1,
                               selection: true,
                               withShowOption: true,
                               onSelected: () {
@@ -964,12 +428,12 @@ class _GeneralesState extends State<Generales> {
                                 }
                                 );
                               },
-                          onChange: (value) {
-                            setState(() {
-                              Valores.sangradosBalances = double.parse(value);
-                            });
-                          },
-                        ))
+                              onChange: (value) {
+                                setState(() {
+                                  Valores.sangradosBalances = double.parse(value);
+                                });
+                              },
+                            ))
                       ],
                     ),
                     Row(
@@ -1000,11 +464,11 @@ class _GeneralesState extends State<Generales> {
                         ),
                         Expanded(
                             child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(),
-                          labelEditText: 'Vía Succión (mL)',
-                          textController: viaSucciTextController,
-                          numOfLines: 1,
+                              keyBoardType: TextInputType.number,
+                              inputFormat: MaskTextInputFormatter(),
+                              labelEditText: 'Vía Succión (mL)',
+                              textController: viaSucciTextController,
+                              numOfLines: 1,
                               selection: true,
                               withShowOption: true,
                               onSelected: () {
@@ -1014,12 +478,12 @@ class _GeneralesState extends State<Generales> {
                                 }
                                 );
                               },
-                          onChange: (value) {
-                            setState(() {
-                              Valores.succcionBalances = double.parse(value);
-                            });
-                          },
-                        ))
+                              onChange: (value) {
+                                setState(() {
+                                  Valores.succcionBalances = double.parse(value);
+                                });
+                              },
+                            ))
                       ],
                     ),
                     Row(
@@ -1050,12 +514,12 @@ class _GeneralesState extends State<Generales> {
                         ),
                         Expanded(
                             child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(),
-                          labelEditText: 'Perdidas Insensibles (mL)',
-                          textController: viaPerdidaTextController,
-                          numOfLines: 1,
-                        ))
+                              keyBoardType: TextInputType.number,
+                              inputFormat: MaskTextInputFormatter(),
+                              labelEditText: 'Perdidas Insensibles (mL)',
+                              textController: viaPerdidaTextController,
+                              numOfLines: 1,
+                            ))
                       ],
                     ),
                     Row(
@@ -1086,11 +550,11 @@ class _GeneralesState extends State<Generales> {
                         ),
                         Expanded(
                             child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(),
-                          labelEditText: 'Otros Egresos (mL)',
-                          textController: viaOtrosEgresosTextController,
-                          numOfLines: 1,
+                              keyBoardType: TextInputType.number,
+                              inputFormat: MaskTextInputFormatter(),
+                              labelEditText: 'Otros Egresos (mL)',
+                              textController: viaOtrosEgresosTextController,
+                              numOfLines: 1,
                               selection: true,
                               withShowOption: true,
                               onSelected: () {
@@ -1100,13 +564,13 @@ class _GeneralesState extends State<Generales> {
                                 }
                                 );
                               },
-                          onChange: (value) {
-                            setState(() {
-                              Valores.otrosEgresosBalances =
-                                  double.parse(value);
-                            });
-                          },
-                        ))
+                              onChange: (value) {
+                                setState(() {
+                                  Valores.otrosEgresosBalances =
+                                      double.parse(value);
+                                });
+                              },
+                            ))
                       ],
                     ),
                     Row(
@@ -1383,7 +847,550 @@ class _GeneralesState extends State<Generales> {
 
   // VISTAS *******************************************************
   Widget desktopView() {
-    return firstView();
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Wrap(
+            runSpacing: 4.0,
+            children: [
+              EditTextArea(
+                labelEditText: "Fecha de realización",
+                numOfLines: 1,
+                textController: textDateEstudyController,
+                keyBoardType: TextInputType.datetime,
+                withShowOption: true,
+                selection: true,
+                iconData: Icons.calculate_outlined,
+                onSelected: () {
+                  setState(() {
+                    textDateEstudyController.text =
+                        Calendarios.today(format: "yyyy/MM/dd");
+                  });
+                },
+                inputFormat: MaskTextInputFormatter(
+                    mask: '####/##/##',
+                    filter: {"#": RegExp(r'[0-9]')},
+                    type: MaskAutoCompletionType.lazy),
+              ),
+              CrossLine(thickness: 3, height: 15),
+              Row(
+                children: [
+                  Expanded(
+                    child: EditTextArea(
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        numOfLines: 1,
+                        labelEditText: 'Tensión arterial sistólica',
+                        textController: tasTextController),
+                  ),
+                  Expanded(
+                    child: EditTextArea(
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      numOfLines: 1,
+                      labelEditText: 'Tensión arterial diastólica',
+                      textController: tadTextController,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: EditTextArea(
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        numOfLines: 1,
+                        labelEditText: 'Frecuencia cardiaca',
+                        textController: fcTextController),
+                  ),
+                  Expanded(
+                    child: EditTextArea(
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      numOfLines: 1,
+                      labelEditText: 'Frecuencia respiratoria',
+                      textController: frTextController,
+                    ),
+                  ),
+                ],
+              ),
+              EditTextArea(
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(
+                    mask: '##.#',
+                    filter: {"#": RegExp(r'[0-9]')},
+                    type: MaskAutoCompletionType.lazy),
+                numOfLines: 1,
+                labelEditText: 'Temperatura corporal',
+                textController: tcTextController,
+              ),
+              EditTextArea(
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                numOfLines: 1,
+                labelEditText: 'Saturación periférica de oxígeno',
+                textController: spoTextController,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: EditTextArea(
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(
+                            mask: '###.##',
+                            filter: {"#": RegExp(r'[0-9]')},
+                            type: MaskAutoCompletionType.lazy),
+                        numOfLines: 1,
+                        labelEditText: 'Peso corporal total',
+                        textController: pctTextController,
+                        onChange: (String value) {
+                          Valores.pesoCorporalTotal = double.parse(pctTextController.text);
+                          viaPerdidaTextController.text = Valores.perdidasInsensibles.toStringAsFixed(0);
+                        }
+                    ),
+                  ),
+                  Expanded(
+                    child: EditTextArea(
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(
+                            mask: '#.##',
+                            filter: {"#": RegExp(r'[0-9]')},
+                            type: MaskAutoCompletionType.lazy),
+                        numOfLines: 1,
+                        labelEditText: 'Estatura (mts)',
+                        textController: estTextController,
+                        onChange: (String value) {
+                          Valores.alturaPaciente = double.parse(estTextController.text);
+                        }
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: EditTextArea(
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(
+                          mask: '###',
+                          filter: {"#": RegExp(r'[0-9]')},
+                          type: MaskAutoCompletionType.lazy),
+                      numOfLines: 1,
+                      labelEditText: 'Glucemia capilar',
+                      textController: gluTextController,
+                    ),
+                  ),
+                  Expanded(
+                    child: EditTextArea(
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(
+                            mask: '##',
+                            filter: {"#": RegExp(r'[0-9]')},
+                            type: MaskAutoCompletionType.lazy),
+                        numOfLines: 1,
+                        labelEditText: 'Horas de ayuno',
+                        textController: gluAyuTextController),
+                  ),
+                ],
+              ),
+              CrossLine(thickness: 6, height: 15),
+              CrossLine(thickness: 3, height: 15),
+            ],
+          ),
+        ),
+        Expanded(
+          child: SingleChildScrollView(
+            controller: ScrollController(),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Spinner(
+                          isRow: true,
+                          tittle: "Intervalo de Horario",
+                          onChangeValue: (String value) {
+                            setState(() {
+                              isHorarioValue = value;
+                              Valores.horario = int.parse(value);
+                            });
+                          },
+                          items: Opciones.horarios(),
+                          width: isDesktop(context)
+                              ? 300
+                              : isTablet(context)
+                              ? 200
+                              : isMobile(context)
+                              ? 170
+                              : 200,
+                          initialValue: isHorarioValue),
+                    ),
+                    Expanded(
+                      child: Spinner(
+                        isRow: true,
+                        tittle: 'Sonda Vesical',
+                        width: isDesktop(context)
+                            ? 300
+                            : isTablet(context)
+                            ? 200
+                            : isMobile(context)
+                            ? 170
+                            : 200,
+                        items: Items.foley,
+                        initialValue: Exploracion.tipoSondaVesical,
+                        onChangeValue: (value) {
+                          setState(() {
+                            Exploracion.tipoSondaVesical = value;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                CrossLine(
+                  color: Colors.grey,
+                  height: 15,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: EditTextArea(
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'Via Oral (mL)',
+                        textController: viaOralTextController,
+                        numOfLines: 1,
+                        selection: true,
+                        withShowOption: true,
+                        onSelected: () {
+                          Operadores.editTwoValuesDialog(context: context, onAcept: (value) {
+                            Navigator.of(context).pop();
+                            viaOralTextController.text = value;
+                          }
+                          );
+                        },
+                        onChange: (value) {
+                          setState(() {
+                            Valores.viaOralBalances = double.parse(value);
+                          });
+                        },
+                      ),
+                    ),
+                    Expanded(
+                        child: EditTextArea(
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          labelEditText: 'Vía Uresis (mL)',
+                          textController: viaUresisTextController,
+                          numOfLines: 1,
+                          selection: true,
+                          withShowOption: true,
+                          onSelected: () {
+                            Operadores.editTwoValuesDialog(context: context, onAcept: (value) {
+                              Navigator.of(context).pop();
+                              viaUresisTextController.text = value;
+                            }
+                            );
+                          },
+                          onChange: (value) {
+                            Valores.uresisBalances = double.parse(value);
+                            setState(() {});
+                          },
+                        ))
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: EditTextArea(
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'Vía Sonda Orogástrica (mL)',
+                        textController: viaOrogasTextController,
+                        numOfLines: 1,
+                        selection: true,
+                        withShowOption: true,
+                        onSelected: () {
+                          Operadores.editTwoValuesDialog(context: context, onAcept: (value) {
+                            Navigator.of(context).pop();
+                            viaOrogasTextController.text = value;
+                          }
+                          );
+                        },
+                        onChange: (value) {
+                          setState(() {
+                            Valores.sondaOrogastricaBalances =
+                                double.parse(value);
+                          });
+                        },
+                      ),
+                    ),
+                    Expanded(
+                        child: EditTextArea(
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          labelEditText: 'Vía Evacuacionees. (mL)',
+                          textController: viaEvacTextController,
+                          numOfLines: 1,
+                          selection: true,
+                          withShowOption: true,
+                          onSelected: () {
+                            Operadores.editTwoValuesDialog(context: context, onAcept: (value) {
+                              Navigator.of(context).pop();
+                              viaEvacTextController.text = value;
+                            }
+                            );
+                          },
+                          onChange: (value) {
+                            setState(() {
+                              Valores.evacuacionesBalances =
+                                  double.parse(value);
+                            });
+                          },
+                        ))
+                  ],
+                ),
+                // CrossLine(),
+                //
+                Row(
+                  children: [
+                    Expanded(
+                      child: EditTextArea(
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'Vía Hemoderivados (mL)',
+                        textController: viaHemosTextController,
+                        numOfLines: 1,
+                        selection: true,
+                        withShowOption: true,
+                        onSelected: () {
+                          Operadores.editTwoValuesDialog(context: context, onAcept: (value) {
+                            Navigator.of(context).pop();
+                            viaHemosTextController.text = value;
+                          }
+                          );
+                        },
+                        onChange: (value) {
+                          setState(() {
+                            Valores.hemoderivadosBalances =
+                                double.parse(value);
+                          });
+                        },
+                      ),
+                    ),
+                    Expanded(
+                        child: EditTextArea(
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          labelEditText: 'Vía Sangrados (mL)',
+                          textController: viaSangTextController,
+                          numOfLines: 1,
+                          selection: true,
+                          withShowOption: true,
+                          onSelected: () {
+                            Operadores.editTwoValuesDialog(context: context, onAcept: (value) {
+                              Navigator.of(context).pop();
+                              viaSangTextController.text = value;
+                            }
+                            );
+                          },
+                          onChange: (value) {
+                            setState(() {
+                              Valores.sangradosBalances = double.parse(value);
+                            });
+                          },
+                        ))
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: EditTextArea(
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'Vía N.P.T. (mL)',
+                        textController: viaNutrianTextController,
+                        numOfLines: 1,
+                        selection: true,
+                        withShowOption: true,
+                        onSelected: () {
+                          Operadores.editTwoValuesDialog(context: context, onAcept: (value) {
+                            Navigator.of(context).pop();
+                            viaNutrianTextController.text = value;
+                          }
+                          );
+                        },
+                        onChange: (value) {
+                          setState(() {
+                            Valores.nutricionParenteralBalances =
+                                double.parse(value);
+                          });
+                        },
+                      ),
+                    ),
+                    Expanded(
+                        child: EditTextArea(
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          labelEditText: 'Vía Succión (mL)',
+                          textController: viaSucciTextController,
+                          numOfLines: 1,
+                          selection: true,
+                          withShowOption: true,
+                          onSelected: () {
+                            Operadores.editTwoValuesDialog(context: context, onAcept: (value) {
+                              Navigator.of(context).pop();
+                              viaSucciTextController.text = value;
+                            }
+                            );
+                          },
+                          onChange: (value) {
+                            setState(() {
+                              Valores.succcionBalances = double.parse(value);
+                            });
+                          },
+                        ))
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: EditTextArea(
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'Vía Sol. Parenterales (mL)',
+                        textController: viaParesTextController,
+                        numOfLines: 1,
+                        selection: true,
+                        withShowOption: true,
+                        onSelected: () {
+                          Operadores.editTwoValuesDialog(context: context, onAcept: (value) {
+                            Navigator.of(context).pop();
+                            viaParesTextController.text = value;
+                          }
+                          );
+                        },
+                        onChange: (value) {
+                          setState(() {
+                            Valores.parenteralesBalances =
+                                double.parse(value);
+                          });
+                        },
+                      ),
+                    ),
+                    Expanded(
+                        child: EditTextArea(
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          labelEditText: 'Perdidas Insensibles (mL)',
+                          textController: viaPerdidaTextController,
+                          numOfLines: 1,
+                        ))
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: EditTextArea(
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'Vía Diluciones (mL)',
+                        textController: viaDilucionesTextController,
+                        numOfLines: 1,
+                        selection: true,
+                        withShowOption: true,
+                        onSelected: () {
+                          Operadores.editTwoValuesDialog(context: context, onAcept: (value) {
+                            Navigator.of(context).pop();
+                            viaDilucionesTextController.text = value;
+                          }
+                          );
+                        },
+                        onChange: (value) {
+                          setState(() {
+                            Valores.dilucionesBalances =
+                                double.parse(value);
+                          });
+                        },
+                      ),
+                    ),
+                    Expanded(
+                        child: EditTextArea(
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          labelEditText: 'Otros Egresos (mL)',
+                          textController: viaOtrosEgresosTextController,
+                          numOfLines: 1,
+                          selection: true,
+                          withShowOption: true,
+                          onSelected: () {
+                            Operadores.editTwoValuesDialog(context: context, onAcept: (value) {
+                              Navigator.of(context).pop();
+                              viaOtrosEgresosTextController.text = value;
+                            }
+                            );
+                          },
+                          onChange: (value) {
+                            setState(() {
+                              Valores.otrosEgresosBalances =
+                                  double.parse(value);
+                            });
+                          },
+                        ))
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: EditTextArea(
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'Otros Ingresos (mL)',
+                        textController: viaOtrosIngresosTextController,
+                        numOfLines: 1,
+                        selection: true,
+                        withShowOption: true,
+                        onSelected: () {
+                          Operadores.editTwoValuesDialog(context: context, onAcept: (value) {
+                            Navigator.of(context).pop();
+                            viaOtrosIngresosTextController.text = value;
+                          }
+                          );
+                        },
+                        onChange: (value) {
+                          setState(() {
+                            Valores.otrosIngresosBalances =
+                                double.parse(value);
+                          });
+                        },
+                      ),
+                    ),
+                    Expanded(child: Container(width: 200))
+                  ],
+                ),
+                // Botton ***** ******* ****** * ***
+                CrossLine(
+                  color: Colors.grey,
+                ),
+                Container(
+                  margin: const EdgeInsets.all(5.0),
+                  decoration: ContainerDecoration.roundedDecoration(),
+                  child: GrandButton(
+                      labelButton: "Agregar Datos",
+                      weigth: 2000,
+                      onPress: () {
+                        operationMethod(context);
+                      }),
+                )
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   Widget firstView() {

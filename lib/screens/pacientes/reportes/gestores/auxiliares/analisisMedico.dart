@@ -129,6 +129,7 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                 //     inputFormat: MaskTextInputFormatter()),
                 EditTextArea(
                     textController: analisisTextController,
+                    limitOfChars: 5000,
                     labelEditText: "Análisis médico",
                     keyBoardType: TextInputType.multiline,
                     numOfLines: isLargeDesktop(context) ? 28 : isTablet(context) ? 12 : isMobile(context) ? 15:  22,

@@ -42,9 +42,12 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
       if (widget.isIngreso! == true) Reportes.reportes['Analisis_Complementarios'] = Reportes.analisisComplementarios + Renometrias.renales();
       if (widget.isIngreso! == true) Reportes.reportes['Analisis_Complementarios'] = Reportes.analisisComplementarios + Renometrias.renales();
 
+      if (widget.isIngreso! == false) Reportes.reportes['Auxiliares_Diagnosticos'] = Reportes.auxiliaresDiagnosticos = Auxiliares.getUltimo(esAbreviado: true);
       //
       auxTextController.text = Reportes.auxiliaresDiagnosticos;
-      commenTextController.text = Reportes.analisisComplementarios;
+      if (Reportes.analisisComplementarios != "") {
+        commenTextController.text = Reportes.analisisComplementarios;
+      }
     });
     super.initState();
   }

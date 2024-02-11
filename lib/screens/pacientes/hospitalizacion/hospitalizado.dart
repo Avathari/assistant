@@ -7,6 +7,7 @@ import 'package:assistant/screens/pacientes/hospitalizacion/expedientes.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/padecimientoActual.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/situacionesHospitalizacion.dart';
+import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
@@ -95,7 +96,11 @@ class _HospitalizadoState extends State<Hospitalizado> {
         CircleIcon(
             iconed: Icons.local_hospital_outlined,
             onChangeValue: () => Cambios.toNextActivity(context,
-                chyld: OperacionesHospitalizaciones(operationActivity: Constantes.Update)))
+                chyld: OperacionesHospitalizaciones(operationActivity: Constantes.Update))),
+        const SizedBox(height: 25),
+        CircleIcon(
+            iconed: Icons.balance,
+            onChangeValue: () => Operadores.openDialog(context: context, chyldrim: const Concentraciones())),
       ],
     );
   }

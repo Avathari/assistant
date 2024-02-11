@@ -194,7 +194,7 @@ class _IntensivaState extends State<Intensiva> {
                     onPress: () {
                       if (isMobile(context)) {
                         Operadores.openDialog(
-                            context: context, chyldrim: const Hidricos());
+                            context: context, chyldrim:  Hidricos());
                       } else {
                         setState(() {
                           widget.actualView = 1;
@@ -436,7 +436,7 @@ class _IntensivaState extends State<Intensiva> {
   Widget getView(int actualView) {
     List list = [
       Container(),
-      const Hidricos(),
+      Hidricos(),
       const Metabolicos(),
       const Antropometricos(),
       const Cardiovasculares(),

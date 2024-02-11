@@ -21,6 +21,7 @@ class EstadisticasActivos extends StatefulWidget {
 }
 
 class _EstadisticasActivosState extends State<EstadisticasActivos> {
+
   Map<String, dynamic> data = {
     'Total_Registrados': 0,
     'Ingresos_Registrados': 0,
@@ -61,7 +62,8 @@ class _EstadisticasActivosState extends State<EstadisticasActivos> {
   void initState() {
     Terminal.printWarning(
         message:
-            " INICIAR : Iniciando Actividad - Estádisticas del Repositorio de Pacientes");
+            " INICIAR : Iniciando Actividad - Estádisticas del Repositorio");
+
     // Archivos.readJsonToMap(filePath: Activos.fileStadistics).then((value) {
     //   // **************************************************************************
     //   setState(() {
@@ -158,7 +160,7 @@ class _EstadisticasActivosState extends State<EstadisticasActivos> {
                           child: TittlePanel(
                             fontSize: 16,
                             textPanel:
-                            'Estadisticas de los Activos del Paciente',
+                            'Estadisticas de los Activos',
                           ),
                         ),
                         Expanded(

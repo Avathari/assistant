@@ -22,7 +22,7 @@ class _PresentacionPacientesState extends State<PresentacionPacientes> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(6.0),
+        padding: const EdgeInsets.all(2.5),
         child:
             Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
           GestureDetector(

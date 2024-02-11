@@ -19,6 +19,7 @@ import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/tiroi
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/uroanalisis.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/venosos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/virales.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/western.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';
@@ -111,6 +112,8 @@ class _ConmutadorParaclinicosState extends State<ConmutadorParaclinicos> {
 
       case "Inmunológicos":
         return const Inmunologicos();
+      case "Western Blot HIV-1, HIV-2":
+        return const WesternBlot();
       default:
         return const Rutinas();
     }

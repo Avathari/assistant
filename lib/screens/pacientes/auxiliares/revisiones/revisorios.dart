@@ -595,8 +595,7 @@ class _GestionRevisoriosState extends State<GestionRevisorios> {
       },
       onDoubleTap: () {
         Situaciones.fromJson(snapshot.data[posicion]);
-        Operadores.openDialog(
-            context: context, chyldrim:  AnalisisRevisorios());
+        Operadores.openDialog(context: context, chyldrim: AnalisisRevisorios());
       },
       child: Container(
         padding:
@@ -801,11 +800,13 @@ class _GestionRevisoriosState extends State<GestionRevisorios> {
 }
 
 class AnalisisRevisorios extends StatefulWidget {
-
   bool? isInOther, esCorto, withoutAppBar;
 
-  AnalisisRevisorios({Key? key,
-  this.isInOther = false, this.esCorto = true, this.withoutAppBar = false,
+  AnalisisRevisorios({
+    Key? key,
+    this.isInOther = false,
+    this.esCorto = true,
+    this.withoutAppBar = false,
   }) : super(key: key);
 
   @override
@@ -818,7 +819,6 @@ class _AnalisisRevisoriosState extends State<AnalisisRevisorios> {
   final _pageController = PageController();
 
   int _activePage = 0;
-
 
   @override
   void initState() {
@@ -885,81 +885,97 @@ class _AnalisisRevisoriosState extends State<AnalisisRevisorios> {
       key: _key,
       backgroundColor: Theming.quincuaryColor,
       appBar: widget.withoutAppBar == false ? _appBar(context) : null,
-      endDrawer: _endDrawerForm(context),
-      floatingActionButton:  widget.isInOther == false ?_floattingActionButton(context):null,
+      endDrawer: _endDrawerForm(context, _activePage),
+      floatingActionButton:
+          widget.isInOther == false ? _floattingActionButton(context) : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar:  widget.isInOther == false ?_bottomNavigationBar(context) : null,
+      bottomNavigationBar:
+          widget.isInOther == false ? _bottomNavigationBar(context) : null,
       body: Padding(
-        padding: const EdgeInsets.only(top: 16.0, right: 8.0, left: 8.0, bottom: 8.0),
+        padding: const EdgeInsets.only(
+            top: 16.0, right: 8.0, left: 8.0, bottom: 8.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _primerRevision(context),
+            // Expanded(
+            //   flex: 2,
+            //   child: _primerRevision(context),
+            // ),
             // ####
             Expanded(
-                flex: isDesktop(context) ? 7: 7,
+                flex: isDesktop(context) ? 7 : 7,
                 child: Center(
                   child: Semiologicos(),
                 )),
             // ####
-            _segunndaRevision(context)
+            // Expanded(
+            //   flex: 2,
+            //   child: _segunndaRevision(context),
+            // ),
           ],
         ),
       ),
     );
   }
 
-  _endDrawerForm(BuildContext context) => Drawer(
-    width: 100,
-    backgroundColor: Theming.cuaternaryColor,
-    child: Container(
-      decoration: const BoxDecoration(
-        border: Border(
-            top: BorderSide(color: Colors.grey),
-            bottom: BorderSide(color: Colors.grey),
-            left: BorderSide(color: Colors.grey)),
-        borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(16), topLeft: Radius.circular(16)),
-      ),
-      child: Column(
-        children: [
-          Expanded(
-            flex: 3,
-            child: DrawerHeader(
-                child: CircleIcon(
+  _endDrawerForm(BuildContext context, int _activePage) => Drawer(
+        width: _activePage == 0 ? 100 : 450,
+        backgroundColor: Theming.cuaternaryColor,
+        child: Container(
+          decoration: const BoxDecoration(
+            border: Border(
+                top: BorderSide(color: Colors.grey),
+                bottom: BorderSide(color: Colors.grey),
+                left: BorderSide(color: Colors.grey)),
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(16), topLeft: Radius.circular(16)),
+          ),
+          child: Column(
+            children: [
+              Expanded(
+                flex: 3,
+                child: DrawerHeader(
+                    child: CircleIcon(
                   difRadios: 15,
                   iconed: Icons.line_weight_sharp,
                   onChangeValue: () {},
                 )),
+              ),
+              Expanded(
+                flex: _activePage == 0 ? 10 : 15,
+                child: this._activePage == 0
+                    ? _Infusiones(context)
+                    : Row(
+                    children: [
+                      Expanded(child: _primerRevision(context)),
+                      Expanded(child: _segunndaRevision(context)),
+                    ],
+                ),
+              ),
+              CrossLine(thickness: 3, height: 20, color: Colors.grey),
+              Expanded(
+                flex: 2,
+                child: CircleIcon(
+                  radios: 30,
+                  difRadios: 5,
+                  tittle: 'Copiar Esquema del Reporte',
+                  iconed: Icons.copy_all_sharp,
+                  onChangeValue: () {
+                    // Datos.portapapeles(
+                    //     context: context,
+                    //     text: Reportes.copiarReporte(
+                    //         tipoReporte: getTypeReport()));
+                    _key.currentState!.closeEndDrawer();
+                  },
+                ),
+              ),
+            ],
           ),
-          Expanded(
-              flex: 10,
-              child: _Infusiones(context),
-          ),
-          CrossLine(thickness: 3, height: 20, color: Colors.grey),
-          Expanded(
-            flex: 2,
-            child: CircleIcon(
-              radios: 30,
-              difRadios: 5,
-              tittle: 'Copiar Esquema del Reporte',
-              iconed: Icons.copy_all_sharp,
-              onChangeValue: () {
-                // Datos.portapapeles(
-                //     context: context,
-                //     text: Reportes.copiarReporte(
-                //         tipoReporte: getTypeReport()));
-                _key.currentState!.closeEndDrawer();
-              },
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
+        ),
+      );
 
-  _bottomNavigationBar(BuildContext context) => const BottomAppBar(
+  _bottomNavigationBar(BuildContext context) => BottomAppBar(
         color: Colors.black,
         shape: CircularNotchedRectangle(),
         notchMargin: 10,
@@ -967,6 +983,13 @@ class _AnalisisRevisoriosState extends State<AnalisisRevisorios> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            GrandIcon(
+              onPress: () => setState(() {
+                _activePage = 1;
+                _key.currentState!.openDrawer();
+                _key.currentState!.openEndDrawer();
+              }),
+            ),
             SizedBox(width: 25),
           ],
         ),
@@ -974,7 +997,10 @@ class _AnalisisRevisoriosState extends State<AnalisisRevisorios> {
 
   _floattingActionButton(BuildContext context) => FloatingActionButton(
         backgroundColor: Colors.black,
-        onPressed: () => _operationMethod(),
+        onPressed: () => setState(() {
+          _activePage = 1;
+          _key.currentState!.openEndDrawer();
+        }), // _operationMethod(),
         shape: RoundedRectangleBorder(
             side: const BorderSide(width: 1, color: Colors.grey),
             borderRadius: BorderRadius.circular(100)),
@@ -987,698 +1013,669 @@ class _AnalisisRevisoriosState extends State<AnalisisRevisorios> {
   //
   //
   _primerRevision(BuildContext context) {
-    return Expanded(
-        flex: 2,
-        child: ListView(
-          controller: ScrollController(),
-          children: [
-            // 0: CVP **************************************************************
-            TittleContainer(
-              tittle: "                                      CVP ",
-              color: Theming.quincuaryColor,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: CircleSwitched(
-                        tittle: "¿Diagnóstico actual?",
-                        radios: 30,
-                        difRadios: 5,
-                        onChangeValue: (bool value) {
-                          Terminal.printExpected(
-                              message:
-                              "Value $value : not value : ${!value}");
-                          setState(() {
-                            isActualCVPValue =
+    return ListView(
+      controller: ScrollController(),
+      children: [
+        // 0: CVP **************************************************************
+        TittleContainer(
+          tittle: "                                      CVP ",
+          color: Theming.quincuaryColor,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                flex: 2,
+                child: CircleSwitched(
+                    tittle: "¿Diagnóstico actual?",
+                    radios: 30,
+                    difRadios: 5,
+                    onChangeValue: (bool value) {
+                      Terminal.printExpected(
+                          message: "Value $value : not value : ${!value}");
+                      setState(() {
+                        isActualCVPValue =
                             Dicotomicos.fromBoolean(!value) as String;
-                            if (isActualCVPValue == 'Si') {
-                              fechaEventoCVPTextController.text =
-                                  Calendarios.today(format: 'yyyy/MM/dd');
-                            } else {
-                              fechaEventoCVPTextController.text = '';
-                            }
-                          });
-                        },
-                        isSwitched:
-                        Dicotomicos.fromString(isActualCVPValue)),
-                  ),
-                  Expanded(
-                    flex: 4,
-                    child: EditTextArea(
-                      iconData: Icons.line_style,
-                      keyBoardType: TextInputType.datetime,
-                      inputFormat: MaskTextInputFormatter(
-                          mask: '####/##/##',
-                          filter: {"#": RegExp(r'[0-9]')},
-                          type: MaskAutoCompletionType.lazy),
-                      labelEditText: 'Fecha del Evento',
-                      textController: fechaEventoCVPTextController,
-                      numOfLines: 1,
-                      selection: true,
-                      withShowOption: true,
-                      optionEqui: 6,
-                      onSelected: () {
-                        fechaEventoCVPTextController.text =
-                            Calendarios.today(format: 'yyyy/MM/dd');
-                      },
-                    ),
-                  ),
-                ],
+                        if (isActualCVPValue == 'Si') {
+                          fechaEventoCVPTextController.text =
+                              Calendarios.today(format: 'yyyy/MM/dd');
+                        } else {
+                          fechaEventoCVPTextController.text = '';
+                        }
+                      });
+                    },
+                    isSwitched: Dicotomicos.fromString(isActualCVPValue)),
               ),
-            ),
-            // 1: CVLP **************************************************************
-            TittleContainer(
-              tittle: "                                      CVLP ",
-              color: Theming.quincuaryColor,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: CircleSwitched(
-                        tittle: "¿Diagnóstico actual?",
-                        radios: 30,
-                        difRadios: 5,
-                        onChangeValue: (bool value) {
-                          Terminal.printExpected(
-                              message:
-                              "Value $value : not value : ${!value}");
-                          setState(() {
-                            isActualCVLPValue =
+              Expanded(
+                flex: 4,
+                child: EditTextArea(
+                  iconData: Icons.line_style,
+                  keyBoardType: TextInputType.datetime,
+                  inputFormat: MaskTextInputFormatter(
+                      mask: '####/##/##',
+                      filter: {"#": RegExp(r'[0-9]')},
+                      type: MaskAutoCompletionType.lazy),
+                  labelEditText: 'Fecha del Evento',
+                  textController: fechaEventoCVPTextController,
+                  numOfLines: 1,
+                  selection: true,
+                  withShowOption: true,
+                  optionEqui: 6,
+                  onSelected: () {
+                    fechaEventoCVPTextController.text =
+                        Calendarios.today(format: 'yyyy/MM/dd');
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+        // 1: CVLP **************************************************************
+        TittleContainer(
+          tittle: "                                      CVLP ",
+          color: Theming.quincuaryColor,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                flex: 2,
+                child: CircleSwitched(
+                    tittle: "¿Diagnóstico actual?",
+                    radios: 30,
+                    difRadios: 5,
+                    onChangeValue: (bool value) {
+                      Terminal.printExpected(
+                          message: "Value $value : not value : ${!value}");
+                      setState(() {
+                        isActualCVLPValue =
                             Dicotomicos.fromBoolean(!value) as String;
-                            if (isActualCVLPValue == 'Si') {
-                              fechaEventoCVLPTextController.text =
-                                  Calendarios.today(format: 'yyyy/MM/dd');
-                            } else {
-                              fechaEventoCVLPTextController.text = '';
-                            }
-                          });
-                        },
-                        isSwitched:
-                        Dicotomicos.fromString(isActualCVLPValue)),
-                  ),
-                  Expanded(
-                    flex: 4,
-                    child: EditTextArea(
-                      iconData: Icons.line_style,
-                      keyBoardType: TextInputType.datetime,
-                      inputFormat: MaskTextInputFormatter(
-                          mask: '####/##/##',
-                          filter: {"#": RegExp(r'[0-9]')},
-                          type: MaskAutoCompletionType.lazy),
-                      labelEditText: 'Fecha del Evento',
-                      textController: fechaEventoCVLPTextController,
-                      numOfLines: 1,
-                      selection: true,
-                      withShowOption: true,
-                      optionEqui: 6,
-                      onSelected: () {
-                        fechaEventoCVLPTextController.text =
-                            Calendarios.today(format: 'yyyy/MM/dd');
-                      },
-                    ),
-                  ),
-                ],
+                        if (isActualCVLPValue == 'Si') {
+                          fechaEventoCVLPTextController.text =
+                              Calendarios.today(format: 'yyyy/MM/dd');
+                        } else {
+                          fechaEventoCVLPTextController.text = '';
+                        }
+                      });
+                    },
+                    isSwitched: Dicotomicos.fromString(isActualCVLPValue)),
               ),
-            ),
-            // 2: CVC **************************************************************
-            TittleContainer(
-              tittle: "                                      CVC ",
-              color: Theming.quincuaryColor,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: CircleSwitched(
-                        tittle: "¿Diagnóstico actual?",
-                        radios: 30,
-                        difRadios: 5,
-                        onChangeValue: (bool value) {
-                          Terminal.printExpected(
-                              message:
-                              "Value $value : not value : ${!value}");
-                          setState(() {
-                            isActualCVCValue =
+              Expanded(
+                flex: 4,
+                child: EditTextArea(
+                  iconData: Icons.line_style,
+                  keyBoardType: TextInputType.datetime,
+                  inputFormat: MaskTextInputFormatter(
+                      mask: '####/##/##',
+                      filter: {"#": RegExp(r'[0-9]')},
+                      type: MaskAutoCompletionType.lazy),
+                  labelEditText: 'Fecha del Evento',
+                  textController: fechaEventoCVLPTextController,
+                  numOfLines: 1,
+                  selection: true,
+                  withShowOption: true,
+                  optionEqui: 6,
+                  onSelected: () {
+                    fechaEventoCVLPTextController.text =
+                        Calendarios.today(format: 'yyyy/MM/dd');
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+        // 2: CVC **************************************************************
+        TittleContainer(
+          tittle: "                                      CVC ",
+          color: Theming.quincuaryColor,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 2,
+                child: CircleSwitched(
+                    tittle: "¿Diagnóstico actual?",
+                    radios: 30,
+                    difRadios: 5,
+                    onChangeValue: (bool value) {
+                      Terminal.printExpected(
+                          message: "Value $value : not value : ${!value}");
+                      setState(() {
+                        isActualCVCValue =
                             Dicotomicos.fromBoolean(!value) as String;
-                            if (isActualCVCValue == 'Si') {
-                              fechaEventoCVCTextController.text =
-                                  Calendarios.today(format: 'yyyy/MM/dd');
-                            } else {
-                              fechaEventoCVCTextController.text = '';
-                            }
-                          });
-                        },
-                        isSwitched:
-                        Dicotomicos.fromString(isActualCVCValue)),
-                  ),
-                  Expanded(
-                    flex: 4,
-                    child: EditTextArea(
-                      iconData: Icons.line_style,
-                      keyBoardType: TextInputType.datetime,
-                      inputFormat: MaskTextInputFormatter(
-                          mask: '####/##/##',
-                          filter: {"#": RegExp(r'[0-9]')},
-                          type: MaskAutoCompletionType.lazy),
-                      labelEditText: 'Fecha del Evento',
-                      textController: fechaEventoCVCTextController,
-                      numOfLines: 1,
-                      selection: true,
-                      withShowOption: true,
-                      optionEqui: 6,
-                      onSelected: () {
-                        fechaEventoCVCTextController.text =
-                            Calendarios.today(format: 'yyyy/MM/dd');
-                      },
-                    ),
-                  ),
-                ],
+                        if (isActualCVCValue == 'Si') {
+                          fechaEventoCVCTextController.text =
+                              Calendarios.today(format: 'yyyy/MM/dd');
+                        } else {
+                          fechaEventoCVCTextController.text = '';
+                        }
+                      });
+                    },
+                    isSwitched: Dicotomicos.fromString(isActualCVCValue)),
               ),
-            ),
-            // 3: MAHA **************************************************************
-            TittleContainer(
-              tittle: "                                      MAHA ",
-              color: Theming.quincuaryColor,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: CircleSwitched(
-                        tittle: "¿Diagnóstico actual?",
-                        radios: 30,
-                        difRadios: 5,
-                        onChangeValue: (bool value) {
-                          Terminal.printExpected(
-                              message:
-                              "Value $value : not value : ${!value}");
-                          setState(() {
-                            isActualMAHAValue =
+              Expanded(
+                flex: 4,
+                child: EditTextArea(
+                  iconData: Icons.line_style,
+                  keyBoardType: TextInputType.datetime,
+                  inputFormat: MaskTextInputFormatter(
+                      mask: '####/##/##',
+                      filter: {"#": RegExp(r'[0-9]')},
+                      type: MaskAutoCompletionType.lazy),
+                  labelEditText: 'Fecha del Evento',
+                  textController: fechaEventoCVCTextController,
+                  numOfLines: 1,
+                  selection: true,
+                  withShowOption: true,
+                  optionEqui: 6,
+                  onSelected: () {
+                    fechaEventoCVCTextController.text =
+                        Calendarios.today(format: 'yyyy/MM/dd');
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+        // 3: MAHA **************************************************************
+        TittleContainer(
+          tittle: "                                      MAHA ",
+          color: Theming.quincuaryColor,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 2,
+                child: CircleSwitched(
+                    tittle: "¿Diagnóstico actual?",
+                    radios: 30,
+                    difRadios: 5,
+                    onChangeValue: (bool value) {
+                      Terminal.printExpected(
+                          message: "Value $value : not value : ${!value}");
+                      setState(() {
+                        isActualMAHAValue =
                             Dicotomicos.fromBoolean(!value) as String;
-                            if (isActualMAHAValue == 'Si') {
-                              fechaEventoMAHATextController.text =
-                                  Calendarios.today(format: 'yyyy/MM/dd');
-                            } else {
-                              fechaEventoMAHATextController.text = '';
-                            }
-                          });
-                        },
-                        isSwitched:
-                        Dicotomicos.fromString(isActualMAHAValue)),
-                  ),
-                  Expanded(
-                    flex: 4,
-                    child: EditTextArea(
-                      iconData: Icons.line_style,
-                      keyBoardType: TextInputType.datetime,
-                      inputFormat: MaskTextInputFormatter(
-                          mask: '####/##/##',
-                          filter: {"#": RegExp(r'[0-9]')},
-                          type: MaskAutoCompletionType.lazy),
-                      labelEditText: 'Fecha del Evento',
-                      textController: fechaEventoMAHATextController,
-                      numOfLines: 1,
-                      selection: true,
-                      withShowOption: true,
-                      optionEqui: 6,
-                      onSelected: () {
-                        fechaEventoMAHATextController.text =
-                            Calendarios.today(format: 'yyyy/MM/dd');
-                      },
-                    ),
-                  ),
-                ],
+                        if (isActualMAHAValue == 'Si') {
+                          fechaEventoMAHATextController.text =
+                              Calendarios.today(format: 'yyyy/MM/dd');
+                        } else {
+                          fechaEventoMAHATextController.text = '';
+                        }
+                      });
+                    },
+                    isSwitched: Dicotomicos.fromString(isActualMAHAValue)),
               ),
-            ),
-            // 4: FOL **************************************************************
-            TittleContainer(
-              tittle: "                                      FOL ",
-              color: Theming.quincuaryColor,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: CircleSwitched(
-                        tittle: "¿Diagnóstico actual?",
-                        radios: 30,
-                        difRadios: 5,
-                        onChangeValue: (bool value) {
-                          Terminal.printExpected(
-                              message:
-                              "Value $value : not value : ${!value}");
-                          setState(() {
-                            isActualFOLValue =
+              Expanded(
+                flex: 4,
+                child: EditTextArea(
+                  iconData: Icons.line_style,
+                  keyBoardType: TextInputType.datetime,
+                  inputFormat: MaskTextInputFormatter(
+                      mask: '####/##/##',
+                      filter: {"#": RegExp(r'[0-9]')},
+                      type: MaskAutoCompletionType.lazy),
+                  labelEditText: 'Fecha del Evento',
+                  textController: fechaEventoMAHATextController,
+                  numOfLines: 1,
+                  selection: true,
+                  withShowOption: true,
+                  optionEqui: 6,
+                  onSelected: () {
+                    fechaEventoMAHATextController.text =
+                        Calendarios.today(format: 'yyyy/MM/dd');
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+        // 4: FOL **************************************************************
+        TittleContainer(
+          tittle: "                                      FOL ",
+          color: Theming.quincuaryColor,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 2,
+                child: CircleSwitched(
+                    tittle: "¿Diagnóstico actual?",
+                    radios: 30,
+                    difRadios: 5,
+                    onChangeValue: (bool value) {
+                      Terminal.printExpected(
+                          message: "Value $value : not value : ${!value}");
+                      setState(() {
+                        isActualFOLValue =
                             Dicotomicos.fromBoolean(!value) as String;
-                            if (isActualFOLValue == 'Si') {
-                              fechaEventoFOLTextController.text =
-                                  Calendarios.today(format: 'yyyy/MM/dd');
-                            } else {
-                              fechaEventoFOLTextController.text = '';
-                            }
-                          });
-                        },
-                        isSwitched:
-                        Dicotomicos.fromString(isActualFOLValue)),
-                  ),
-                  Expanded(
-                    flex: 4,
-                    child: EditTextArea(
-                      iconData: Icons.line_style,
-                      keyBoardType: TextInputType.datetime,
-                      inputFormat: MaskTextInputFormatter(
-                          mask: '####/##/##',
-                          filter: {"#": RegExp(r'[0-9]')},
-                          type: MaskAutoCompletionType.lazy),
-                      labelEditText: 'Fecha del Evento',
-                      textController: fechaEventoFOLTextController,
-                      numOfLines: 1,
-                      selection: true,
-                      withShowOption: true,
-                      optionEqui: 6,
-                      onSelected: () {
-                        fechaEventoFOLTextController.text =
-                            Calendarios.today(format: 'yyyy/MM/dd');
-                      },
-                    ),
-                  ),
-                ],
+                        if (isActualFOLValue == 'Si') {
+                          fechaEventoFOLTextController.text =
+                              Calendarios.today(format: 'yyyy/MM/dd');
+                        } else {
+                          fechaEventoFOLTextController.text = '';
+                        }
+                      });
+                    },
+                    isSwitched: Dicotomicos.fromString(isActualFOLValue)),
               ),
-            ),
-            // 5: SNG **************************************************************
-            TittleContainer(
-              tittle: "                                      SNG ",
-              color: Theming.quincuaryColor,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: CircleSwitched(
-                        tittle: "¿Diagnóstico actual?",
-                        radios: 30,
-                        difRadios: 5,
-                        onChangeValue: (bool value) {
-                          Terminal.printExpected(
-                              message:
-                              "Value $value : not value : ${!value}");
-                          setState(() {
-                            isActualSNGValue =
+              Expanded(
+                flex: 4,
+                child: EditTextArea(
+                  iconData: Icons.line_style,
+                  keyBoardType: TextInputType.datetime,
+                  inputFormat: MaskTextInputFormatter(
+                      mask: '####/##/##',
+                      filter: {"#": RegExp(r'[0-9]')},
+                      type: MaskAutoCompletionType.lazy),
+                  labelEditText: 'Fecha del Evento',
+                  textController: fechaEventoFOLTextController,
+                  numOfLines: 1,
+                  selection: true,
+                  withShowOption: true,
+                  optionEqui: 6,
+                  onSelected: () {
+                    fechaEventoFOLTextController.text =
+                        Calendarios.today(format: 'yyyy/MM/dd');
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+        // 5: SNG **************************************************************
+        TittleContainer(
+          tittle: "                                      SNG ",
+          color: Theming.quincuaryColor,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 2,
+                child: CircleSwitched(
+                    tittle: "¿Diagnóstico actual?",
+                    radios: 30,
+                    difRadios: 5,
+                    onChangeValue: (bool value) {
+                      Terminal.printExpected(
+                          message: "Value $value : not value : ${!value}");
+                      setState(() {
+                        isActualSNGValue =
                             Dicotomicos.fromBoolean(!value) as String;
-                            if (isActualSNGValue == 'Si') {
-                              fechaEventoSNGTextController.text =
-                                  Calendarios.today(format: 'yyyy/MM/dd');
-                            } else {
-                              fechaEventoSNGTextController.text = '';
-                            }
-                          });
-                        },
-                        isSwitched:
-                        Dicotomicos.fromString(isActualSNGValue)),
-                  ),
-                  Expanded(
-                    flex: 4,
-                    child: EditTextArea(
-                      iconData: Icons.line_style,
-                      keyBoardType: TextInputType.datetime,
-                      inputFormat: MaskTextInputFormatter(
-                          mask: '####/##/##',
-                          filter: {"#": RegExp(r'[0-9]')},
-                          type: MaskAutoCompletionType.lazy),
-                      labelEditText: 'Fecha del Evento',
-                      textController: fechaEventoSNGTextController,
-                      numOfLines: 1,
-                      selection: true,
-                      withShowOption: true,
-                      optionEqui: 6,
-                      onSelected: () {
-                        fechaEventoSNGTextController.text =
-                            Calendarios.today(format: 'yyyy/MM/dd');
-                      },
-                    ),
-                  ),
-                ],
+                        if (isActualSNGValue == 'Si') {
+                          fechaEventoSNGTextController.text =
+                              Calendarios.today(format: 'yyyy/MM/dd');
+                        } else {
+                          fechaEventoSNGTextController.text = '';
+                        }
+                      });
+                    },
+                    isSwitched: Dicotomicos.fromString(isActualSNGValue)),
               ),
-            ),
-            // : : ******************************
-            CircleSwitched(
-                tittle: "Agregar . . . ",
-                radios: 30,
-                difRadios: 5,
-                onChangeValue: (bool value) =>_operationMethod(),
-                isSwitched: true),
-          ],
-        ));
+              Expanded(
+                flex: 4,
+                child: EditTextArea(
+                  iconData: Icons.line_style,
+                  keyBoardType: TextInputType.datetime,
+                  inputFormat: MaskTextInputFormatter(
+                      mask: '####/##/##',
+                      filter: {"#": RegExp(r'[0-9]')},
+                      type: MaskAutoCompletionType.lazy),
+                  labelEditText: 'Fecha del Evento',
+                  textController: fechaEventoSNGTextController,
+                  numOfLines: 1,
+                  selection: true,
+                  withShowOption: true,
+                  optionEqui: 6,
+                  onSelected: () {
+                    fechaEventoSNGTextController.text =
+                        Calendarios.today(format: 'yyyy/MM/dd');
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+        // : : ******************************
+        CircleSwitched(
+            tittle: "Agregar . . . ",
+            radios: 30,
+            difRadios: 5,
+            onChangeValue: (bool value) => _operationMethod(),
+            isSwitched: true),
+      ],
+    );
   }
 
   _segunndaRevision(BuildContext context) {
-    return Expanded(
-      flex: 2,
-      child: ListView(
-        // controller: _pageController,
-        controller: ScrollController(),
-        children: [
-          // 6: SOG **************************************************************
-          TittleContainer(
-            tittle: "                                      SOG ",
-            color: Theming.quincuaryColor,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: CircleSwitched(
-                      radios: 30,
-                      difRadios: 5,
-                      tittle: "¿Diagnóstico actual?",
-                      onChangeValue: (bool value) {
-                        Terminal.printExpected(
-                            message:
-                            "Value $value : not value : ${!value}");
-                        setState(() {
-                          isActualSOGValue =
-                          Dicotomicos.fromBoolean(!value) as String;
-                          if (isActualSOGValue == 'Si') {
-                            fechaEventoSOGTextController.text =
-                                Calendarios.today(format: 'yyyy/MM/dd');
-                          } else {
-                            fechaEventoSOGTextController.text = '';
-                          }
-                        });
-                      },
-                      isSwitched:
-                      Dicotomicos.fromString(isActualSOGValue)),
-                ),
-                Expanded(
-                  flex: 4,
-                  child: EditTextArea(
-                    iconData: Icons.line_style,
-                    keyBoardType: TextInputType.datetime,
-                    inputFormat: MaskTextInputFormatter(
-                        mask: '####/##/##',
-                        filter: {"#": RegExp(r'[0-9]')},
-                        type: MaskAutoCompletionType.lazy),
-                    labelEditText: 'Fecha del Evento',
-                    textController: fechaEventoSOGTextController,
-                    numOfLines: 1,
-                    selection: true,
-                    withShowOption: true,
-                    optionEqui: 6,
-                    onSelected: () {
-                      fechaEventoSOGTextController.text =
-                          Calendarios.today(format: 'yyyy/MM/dd');
+    return ListView(
+      // controller: _pageController,
+      controller: ScrollController(),
+      children: [
+        // 6: SOG **************************************************************
+        TittleContainer(
+          tittle: "                                      SOG ",
+          color: Theming.quincuaryColor,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 2,
+                child: CircleSwitched(
+                    radios: 30,
+                    difRadios: 5,
+                    tittle: "¿Diagnóstico actual?",
+                    onChangeValue: (bool value) {
+                      Terminal.printExpected(
+                          message: "Value $value : not value : ${!value}");
+                      setState(() {
+                        isActualSOGValue =
+                            Dicotomicos.fromBoolean(!value) as String;
+                        if (isActualSOGValue == 'Si') {
+                          fechaEventoSOGTextController.text =
+                              Calendarios.today(format: 'yyyy/MM/dd');
+                        } else {
+                          fechaEventoSOGTextController.text = '';
+                        }
+                      });
                     },
-                  ),
+                    isSwitched: Dicotomicos.fromString(isActualSOGValue)),
+              ),
+              Expanded(
+                flex: 4,
+                child: EditTextArea(
+                  iconData: Icons.line_style,
+                  keyBoardType: TextInputType.datetime,
+                  inputFormat: MaskTextInputFormatter(
+                      mask: '####/##/##',
+                      filter: {"#": RegExp(r'[0-9]')},
+                      type: MaskAutoCompletionType.lazy),
+                  labelEditText: 'Fecha del Evento',
+                  textController: fechaEventoSOGTextController,
+                  numOfLines: 1,
+                  selection: true,
+                  withShowOption: true,
+                  optionEqui: 6,
+                  onSelected: () {
+                    fechaEventoSOGTextController.text =
+                        Calendarios.today(format: 'yyyy/MM/dd');
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          // 7: PEN **************************************************************
-          TittleContainer(
-            tittle: "                                      PEN ",
-            color: Theming.quincuaryColor,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: CircleSwitched(
-                      radios: 30,
-                      difRadios: 5,
-                      tittle: "¿Diagnóstico actual?",
-                      onChangeValue: (bool value) {
-                        Terminal.printExpected(
-                            message:
-                            "Value $value : not value : ${!value}");
-                        setState(() {
-                          isActualPENValue =
-                          Dicotomicos.fromBoolean(!value) as String;
-                          if (isActualPENValue == 'Si') {
-                            fechaEventoPENTextController.text =
-                                Calendarios.today(format: 'yyyy/MM/dd');
-                          } else {
-                            fechaEventoPENTextController.text = '';
-                          }
-                        });
-                      },
-                      isSwitched:
-                      Dicotomicos.fromString(isActualPENValue)),
-                ),
-                Expanded(
-                  flex: 4,
-                  child: EditTextArea(
-                    iconData: Icons.line_style,
-                    keyBoardType: TextInputType.datetime,
-                    inputFormat: MaskTextInputFormatter(
-                        mask: '####/##/##',
-                        filter: {"#": RegExp(r'[0-9]')},
-                        type: MaskAutoCompletionType.lazy),
-                    labelEditText: 'Fecha del Evento',
-                    textController: fechaEventoPENTextController,
-                    numOfLines: 1,
-                    selection: true,
-                    withShowOption: true,
-                    optionEqui: 6,
-                    onSelected: () {
-                      fechaEventoPENTextController.text =
-                          Calendarios.today(format: 'yyyy/MM/dd');
+        ),
+        // 7: PEN **************************************************************
+        TittleContainer(
+          tittle: "                                      PEN ",
+          color: Theming.quincuaryColor,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 2,
+                child: CircleSwitched(
+                    radios: 30,
+                    difRadios: 5,
+                    tittle: "¿Diagnóstico actual?",
+                    onChangeValue: (bool value) {
+                      Terminal.printExpected(
+                          message: "Value $value : not value : ${!value}");
+                      setState(() {
+                        isActualPENValue =
+                            Dicotomicos.fromBoolean(!value) as String;
+                        if (isActualPENValue == 'Si') {
+                          fechaEventoPENTextController.text =
+                              Calendarios.today(format: 'yyyy/MM/dd');
+                        } else {
+                          fechaEventoPENTextController.text = '';
+                        }
+                      });
                     },
-                  ),
+                    isSwitched: Dicotomicos.fromString(isActualPENValue)),
+              ),
+              Expanded(
+                flex: 4,
+                child: EditTextArea(
+                  iconData: Icons.line_style,
+                  keyBoardType: TextInputType.datetime,
+                  inputFormat: MaskTextInputFormatter(
+                      mask: '####/##/##',
+                      filter: {"#": RegExp(r'[0-9]')},
+                      type: MaskAutoCompletionType.lazy),
+                  labelEditText: 'Fecha del Evento',
+                  textController: fechaEventoPENTextController,
+                  numOfLines: 1,
+                  selection: true,
+                  withShowOption: true,
+                  optionEqui: 6,
+                  onSelected: () {
+                    fechaEventoPENTextController.text =
+                        Calendarios.today(format: 'yyyy/MM/dd');
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          // 8 : COL **************************************************************
-          TittleContainer(
-            tittle: "                                      COL ",
-            color: Theming.quincuaryColor,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: CircleSwitched(
-                      radios: 30,
-                      difRadios: 5,
-                      tittle: "¿Diagnóstico actual?",
-                      onChangeValue: (bool value) {
-                        Terminal.printExpected(
-                            message:
-                            "Value $value : not value : ${!value}");
-                        setState(() {
-                          isActualCOLValue =
-                          Dicotomicos.fromBoolean(!value) as String;
-                          if (isActualCOLValue == 'Si') {
-                            fechaEventoCOLTextController.text =
-                                Calendarios.today(format: 'yyyy/MM/dd');
-                          } else {
-                            fechaEventoCOLTextController.text = '';
-                          }
-                        });
-                      },
-                      isSwitched:
-                      Dicotomicos.fromString(isActualCOLValue)),
-                ),
-                Expanded(
-                  flex: 4,
-                  child: EditTextArea(
-                    iconData: Icons.line_style,
-                    keyBoardType: TextInputType.datetime,
-                    inputFormat: MaskTextInputFormatter(
-                        mask: '####/##/##',
-                        filter: {"#": RegExp(r'[0-9]')},
-                        type: MaskAutoCompletionType.lazy),
-                    labelEditText: 'Fecha del Evento',
-                    textController: fechaEventoCOLTextController,
-                    numOfLines: 1,
-                    selection: true,
-                    withShowOption: true,
-                    optionEqui: 6,
-                    onSelected: () {
-                      fechaEventoCOLTextController.text =
-                          Calendarios.today(format: 'yyyy/MM/dd');
+        ),
+        // 8 : COL **************************************************************
+        TittleContainer(
+          tittle: "                                      COL ",
+          color: Theming.quincuaryColor,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 2,
+                child: CircleSwitched(
+                    radios: 30,
+                    difRadios: 5,
+                    tittle: "¿Diagnóstico actual?",
+                    onChangeValue: (bool value) {
+                      Terminal.printExpected(
+                          message: "Value $value : not value : ${!value}");
+                      setState(() {
+                        isActualCOLValue =
+                            Dicotomicos.fromBoolean(!value) as String;
+                        if (isActualCOLValue == 'Si') {
+                          fechaEventoCOLTextController.text =
+                              Calendarios.today(format: 'yyyy/MM/dd');
+                        } else {
+                          fechaEventoCOLTextController.text = '';
+                        }
+                      });
                     },
-                  ),
+                    isSwitched: Dicotomicos.fromString(isActualCOLValue)),
+              ),
+              Expanded(
+                flex: 4,
+                child: EditTextArea(
+                  iconData: Icons.line_style,
+                  keyBoardType: TextInputType.datetime,
+                  inputFormat: MaskTextInputFormatter(
+                      mask: '####/##/##',
+                      filter: {"#": RegExp(r'[0-9]')},
+                      type: MaskAutoCompletionType.lazy),
+                  labelEditText: 'Fecha del Evento',
+                  textController: fechaEventoCOLTextController,
+                  numOfLines: 1,
+                  selection: true,
+                  withShowOption: true,
+                  optionEqui: 6,
+                  onSelected: () {
+                    fechaEventoCOLTextController.text =
+                        Calendarios.today(format: 'yyyy/MM/dd');
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          // 9 : SEP ***************************************************************
-          TittleContainer(
-            tittle: "                                      SEP ",
-            color: Theming.quincuaryColor,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: CircleSwitched(
-                      radios: 30,
-                      difRadios: 5,
-                      tittle: "¿Diagnóstico actual?",
-                      onChangeValue: (bool value) {
-                        Terminal.printExpected(
-                            message:
-                            "Value $value : not value : ${!value}");
-                        setState(() {
-                          isActualSEPValue =
-                          Dicotomicos.fromBoolean(!value) as String;
-                          if (isActualSEPValue == 'Si') {
-                            fechaEventoSEPTextController.text =
-                                Calendarios.today(format: 'yyyy/MM/dd');
-                          } else {
-                            fechaEventoSEPTextController.text = '';
-                          }
-                        });
-                      },
-                      isSwitched:
-                      Dicotomicos.fromString(isActualSEPValue)),
-                ),
-                Expanded(
-                  flex: 4,
-                  child: EditTextArea(
-                    iconData: Icons.line_style,
-                    keyBoardType: TextInputType.datetime,
-                    inputFormat: MaskTextInputFormatter(
-                        mask: '####/##/##',
-                        filter: {"#": RegExp(r'[0-9]')},
-                        type: MaskAutoCompletionType.lazy),
-                    labelEditText: 'Fecha del Evento',
-                    textController: fechaEventoSEPTextController,
-                    numOfLines: 1,
-                    selection: true,
-                    withShowOption: true,
-                    optionEqui: 6,
-                    onSelected: () {
-                      fechaEventoSEPTextController.text =
-                          Calendarios.today(format: 'yyyy/MM/dd');
+        ),
+        // 9 : SEP ***************************************************************
+        TittleContainer(
+          tittle: "                                      SEP ",
+          color: Theming.quincuaryColor,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 2,
+                child: CircleSwitched(
+                    radios: 30,
+                    difRadios: 5,
+                    tittle: "¿Diagnóstico actual?",
+                    onChangeValue: (bool value) {
+                      Terminal.printExpected(
+                          message: "Value $value : not value : ${!value}");
+                      setState(() {
+                        isActualSEPValue =
+                            Dicotomicos.fromBoolean(!value) as String;
+                        if (isActualSEPValue == 'Si') {
+                          fechaEventoSEPTextController.text =
+                              Calendarios.today(format: 'yyyy/MM/dd');
+                        } else {
+                          fechaEventoSEPTextController.text = '';
+                        }
+                      });
                     },
-                  ),
+                    isSwitched: Dicotomicos.fromString(isActualSEPValue)),
+              ),
+              Expanded(
+                flex: 4,
+                child: EditTextArea(
+                  iconData: Icons.line_style,
+                  keyBoardType: TextInputType.datetime,
+                  inputFormat: MaskTextInputFormatter(
+                      mask: '####/##/##',
+                      filter: {"#": RegExp(r'[0-9]')},
+                      type: MaskAutoCompletionType.lazy),
+                  labelEditText: 'Fecha del Evento',
+                  textController: fechaEventoSEPTextController,
+                  numOfLines: 1,
+                  selection: true,
+                  withShowOption: true,
+                  optionEqui: 6,
+                  onSelected: () {
+                    fechaEventoSEPTextController.text =
+                        Calendarios.today(format: 'yyyy/MM/dd');
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          // 10 : GAS **************************************************************
-          TittleContainer(
-            tittle: "                                      GAS ",
-            color: Theming.quincuaryColor,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: CircleSwitched(
-                      radios: 30,
-                      difRadios: 5,
-                      tittle: "¿Diagnóstico actual?",
-                      onChangeValue: (bool value) {
-                        Terminal.printExpected(
-                            message:
-                            "Value $value : not value : ${!value}");
-                        setState(() {
-                          isActualGASValue =
-                          Dicotomicos.fromBoolean(!value) as String;
-                          if (isActualGASValue == 'Si') {
-                            fechaEventoGASTextController.text =
-                                Calendarios.today(format: 'yyyy/MM/dd');
-                          } else {
-                            fechaEventoGASTextController.text = '';
-                          }
-                        });
-                      },
-                      isSwitched:
-                      Dicotomicos.fromString(isActualGASValue)),
-                ),
-                Expanded(
-                  flex: 4,
-                  child: EditTextArea(
-                    iconData: Icons.line_style,
-                    keyBoardType: TextInputType.datetime,
-                    inputFormat: MaskTextInputFormatter(
-                        mask: '####/##/##',
-                        filter: {"#": RegExp(r'[0-9]')},
-                        type: MaskAutoCompletionType.lazy),
-                    labelEditText: 'Fecha del Evento',
-                    textController: fechaEventoGASTextController,
-                    numOfLines: 1,
-                    selection: true,
-                    withShowOption: true,
-                    optionEqui: 6,
-                    onSelected: () {
-                      fechaEventoGASTextController.text =
-                          Calendarios.today(format: 'yyyy/MM/dd');
+        ),
+        // 10 : GAS **************************************************************
+        TittleContainer(
+          tittle: "                                      GAS ",
+          color: Theming.quincuaryColor,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 2,
+                child: CircleSwitched(
+                    radios: 30,
+                    difRadios: 5,
+                    tittle: "¿Diagnóstico actual?",
+                    onChangeValue: (bool value) {
+                      Terminal.printExpected(
+                          message: "Value $value : not value : ${!value}");
+                      setState(() {
+                        isActualGASValue =
+                            Dicotomicos.fromBoolean(!value) as String;
+                        if (isActualGASValue == 'Si') {
+                          fechaEventoGASTextController.text =
+                              Calendarios.today(format: 'yyyy/MM/dd');
+                        } else {
+                          fechaEventoGASTextController.text = '';
+                        }
+                      });
                     },
-                  ),
+                    isSwitched: Dicotomicos.fromString(isActualGASValue)),
+              ),
+              Expanded(
+                flex: 4,
+                child: EditTextArea(
+                  iconData: Icons.line_style,
+                  keyBoardType: TextInputType.datetime,
+                  inputFormat: MaskTextInputFormatter(
+                      mask: '####/##/##',
+                      filter: {"#": RegExp(r'[0-9]')},
+                      type: MaskAutoCompletionType.lazy),
+                  labelEditText: 'Fecha del Evento',
+                  textController: fechaEventoGASTextController,
+                  numOfLines: 1,
+                  selection: true,
+                  withShowOption: true,
+                  optionEqui: 6,
+                  onSelected: () {
+                    fechaEventoGASTextController.text =
+                        Calendarios.today(format: 'yyyy/MM/dd');
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          // 11: TNK **************************************************************
-          TittleContainer(
-            tittle: "                                      TNK ",
-            color: Theming.quincuaryColor,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: CircleSwitched(
-                      radios: 30,
-                      difRadios: 5,
-                      tittle: "¿Diagnóstico actual?",
-                      onChangeValue: (bool value) {
-                        Terminal.printExpected(
-                            message:
-                            "Value $value : not value : ${!value}");
-                        setState(() {
-                          isActualTNKValue =
-                          Dicotomicos.fromBoolean(!value) as String;
-                          if (isActualTNKValue == 'Si') {
-                            fechaEventoTNKTextController.text =
-                                Calendarios.today(format: 'yyyy/MM/dd');
-                          } else {
-                            fechaEventoTNKTextController.text = '';
-                          }
-                        });
-                      },
-                      isSwitched:
-                      Dicotomicos.fromString(isActualTNKValue)),
-                ),
-                Expanded(
-                  flex: 4,
-                  child: EditTextArea(
-                    iconData: Icons.line_style,
-                    keyBoardType: TextInputType.datetime,
-                    inputFormat: MaskTextInputFormatter(
-                        mask: '####/##/##',
-                        filter: {"#": RegExp(r'[0-9]')},
-                        type: MaskAutoCompletionType.lazy),
-                    labelEditText: 'Fecha del Evento',
-                    textController: fechaEventoTNKTextController,
-                    numOfLines: 1,
-                    selection: true,
-                    withShowOption: true,
-                    optionEqui: 6,
-                    onSelected: () {
-                      fechaEventoTNKTextController.text =
-                          Calendarios.today(format: 'yyyy/MM/dd');
+        ),
+        // 11: TNK **************************************************************
+        TittleContainer(
+          tittle: "                                      TNK ",
+          color: Theming.quincuaryColor,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 2,
+                child: CircleSwitched(
+                    radios: 30,
+                    difRadios: 5,
+                    tittle: "¿Diagnóstico actual?",
+                    onChangeValue: (bool value) {
+                      Terminal.printExpected(
+                          message: "Value $value : not value : ${!value}");
+                      setState(() {
+                        isActualTNKValue =
+                            Dicotomicos.fromBoolean(!value) as String;
+                        if (isActualTNKValue == 'Si') {
+                          fechaEventoTNKTextController.text =
+                              Calendarios.today(format: 'yyyy/MM/dd');
+                        } else {
+                          fechaEventoTNKTextController.text = '';
+                        }
+                      });
                     },
-                  ),
+                    isSwitched: Dicotomicos.fromString(isActualTNKValue)),
+              ),
+              Expanded(
+                flex: 4,
+                child: EditTextArea(
+                  iconData: Icons.line_style,
+                  keyBoardType: TextInputType.datetime,
+                  inputFormat: MaskTextInputFormatter(
+                      mask: '####/##/##',
+                      filter: {"#": RegExp(r'[0-9]')},
+                      type: MaskAutoCompletionType.lazy),
+                  labelEditText: 'Fecha del Evento',
+                  textController: fechaEventoTNKTextController,
+                  numOfLines: 1,
+                  selection: true,
+                  withShowOption: true,
+                  optionEqui: 6,
+                  onSelected: () {
+                    fechaEventoTNKTextController.text =
+                        Calendarios.today(format: 'yyyy/MM/dd');
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          // : : ******************************
-          CircleSwitched(
-              tittle: "Agregar . . . ",
-              radios: 30,
-              difRadios: 5,
-              onChangeValue: (bool value) =>_operationMethod(),
-              isSwitched: false),
-        ],
-      ),
+        ),
+        // : : ******************************
+        CircleSwitched(
+            tittle: "Agregar . . . ",
+            radios: 30,
+            difRadios: 5,
+            onChangeValue: (bool value) => _operationMethod(),
+            isSwitched: false),
+      ],
     );
   }
 
@@ -1935,19 +1932,18 @@ class _AnalisisRevisoriosState extends State<AnalisisRevisorios> {
       }
     }).whenComplete(() {
       Situaciones.consultarRegistro();
-        //
-        Navigator.of(context).pop(); // Cierre del LoadActivity
-        Operadores.alertActivity(
-            context: context,
-            tittle: "Registrando información . . .",
-            message: "Información registrada",
-            onAcept: () {
-              // Se emplean 3 Navigator.of(context).pop(); para cerrar cada una de
-              //    las ventanas emergentes y la interfaz inicial.
-              //
-              Navigator.of(context).pop(); // Cierre del AlertActivity
-            });
-        
+      //
+      Navigator.of(context).pop(); // Cierre del LoadActivity
+      Operadores.alertActivity(
+          context: context,
+          tittle: "Registrando información . . .",
+          message: "Información registrada",
+          onAcept: () {
+            // Se emplean 3 Navigator.of(context).pop(); para cerrar cada una de
+            //    las ventanas emergentes y la interfaz inicial.
+            //
+            Navigator.of(context).pop(); // Cierre del AlertActivity
+          });
     }).onError((error, stackTrace) {
       Pacientes.getParaclinicosHistorial(reload: true).whenComplete(() {
         Terminal.printAlert(message: "ERROR - $error : : : $stackTrace");
@@ -2831,74 +2827,74 @@ class _AnalisisRevisoriosState extends State<AnalisisRevisorios> {
 
   // ITEMSVIEWER
   _appBar(BuildContext context) => AppBar(
-    foregroundColor: Colors.white,
-    shape: CustomShapeBorder(),
-    backgroundColor: Colors.black,
-    centerTitle: true,
-    toolbarHeight: 60.0,
-    elevation: 0,
-    actions: [
-      GrandIcon(
-          iconData: Icons.receipt,
-          labelButton: "Generales . . . ",
-          onPress: () => Cambios.toNextActivity(context,
-              tittle: 'Generales diarios del Paciente . . . ',
-              chyld: const Generales())),
-      CrossLine(height: 15, isHorizontal: false, thickness: 2),
-      GrandIcon(
-          iconData: Icons.drag_indicator_sharp,
-          labelButton: "Menu",
-          onPress: () {
-            // _key.currentState!.openDrawer();
-            _key.currentState!.openEndDrawer();
-
-          }),
-      CrossLine(height: 15, isHorizontal: false, thickness: 0),
-    ],
-  );
+        foregroundColor: Colors.white,
+        shape: CustomShapeBorder(),
+        backgroundColor: Colors.black,
+        centerTitle: true,
+        toolbarHeight: 60.0,
+        elevation: 0,
+        actions: [
+          GrandIcon(
+              iconData: Icons.receipt,
+              labelButton: "Generales . . . ",
+              onPress: () => Cambios.toNextActivity(context,
+                  tittle: 'Generales diarios del Paciente . . . ',
+                  chyld: const Generales())),
+          CrossLine(height: 15, isHorizontal: false, thickness: 2),
+          GrandIcon(
+              iconData: Icons.drag_indicator_sharp,
+              labelButton: "Menu",
+              onPress: () {
+                setState(() {
+                  _activePage = 0;
+                });
+                _key.currentState!.openEndDrawer();
+              }),
+          CrossLine(height: 15, isHorizontal: false, thickness: 0),
+        ],
+      );
 
   _Infusiones(BuildContext context) => TittleContainer(
-    tittle: 'Infusiones',
-    child: Column(
-      children: [
-        Expanded(
-          child: ValuePanel(
-              heigth: 60,
-              firstText: 'Noradrenalina',
-              secondText:
-              Vasoactivos.getNoradrenalina().toStringAsFixed(2) +
-                  " mcg/Kg/min",
-              withEditMessage: true,
-              onEdit: (value) {
-                Operadores.editActivity(
-                    context: context,
-                    tittle: "Editar . . . ",
-                    message: "¿Noradrenalina (mL/Hr)? . . . ",
-                    onAcept: (value) {
-                      // Terminal.printSuccess(
-                      //     message:
-                      //         "recieve $value");
-                      setState(() {
-                        Vasoactivos.noradrenalina = double.parse(value);
-                        Navigator.of(context).pop();
-                      });
-                    });
-              }),
+        tittle: 'Infusiones',
+        child: Column(
+          children: [
+            Expanded(
+              child: ValuePanel(
+                  heigth: 60,
+                  firstText: 'Noradrenalina',
+                  secondText:
+                      Vasoactivos.getNoradrenalina().toStringAsFixed(2) +
+                          " mcg/Kg/min",
+                  withEditMessage: true,
+                  onEdit: (value) {
+                    Operadores.editActivity(
+                        context: context,
+                        tittle: "Editar . . . ",
+                        message: "¿Noradrenalina (mL/Hr)? . . . ",
+                        onAcept: (value) {
+                          // Terminal.printSuccess(
+                          //     message:
+                          //         "recieve $value");
+                          setState(() {
+                            Vasoactivos.noradrenalina = double.parse(value);
+                            Navigator.of(context).pop();
+                          });
+                        });
+                  }),
+            ),
+            Expanded(
+              child: ValuePanel(
+                heigth: 60,
+                firstText: 'Midazolam',
+              ),
+            ),
+            Expanded(
+              child: ValuePanel(
+                heigth: 60,
+                firstText: 'Buprenorfina',
+              ),
+            ),
+          ],
         ),
-        Expanded(
-          child: ValuePanel(
-            heigth: 60,
-            firstText: 'Midazolam',
-          ),
-        ),
-        Expanded(
-          child: ValuePanel(
-            heigth: 60,
-            firstText: 'Buprenorfina',
-          ),
-        ),
-      ],
-    ),
-  );
-
+      );
 }

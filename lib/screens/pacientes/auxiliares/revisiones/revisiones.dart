@@ -379,7 +379,7 @@ class _RevisionesState extends State<Revisiones> {
                                                                               10
                                                                           ? ventilaciones()
                                                                           : widget.actualView == 11
-                                                                              ? const Hidricos()
+                                                                              ?  Hidricos()
                                                                               : widget.actualView == 12
                                                                                   ? const Metabolicos()
                                                                                   : widget.actualView == 13
@@ -391,13 +391,13 @@ class _RevisionesState extends State<Revisiones> {
                                                                                               : widget.actualView == 16
                                                                                                   ? const Gasometricos()
                                                                                                   : widget.actualView == 17
-                                                                                                      ? const Hidricos()
+                                                                                                      ?  Hidricos()
                                                                                                       : widget.actualView == 18
-                                                                                                          ? const Hidricos()
+                                                                                                          ?  Hidricos()
                                                                                                           : widget.actualView == 19
-                                                                                                              ? const Hidricos()
+                                                                                                              ?  Hidricos()
                                                                                                               : widget.actualView == 20
-                                                                                                                  ? const Hidricos()
+                                                                                                                  ?  Hidricos()
                                                                                                                   : widget.actualView == 21
                                                                                                                       ? const Hemoderivados()
                                                                                                                       : Container(),
@@ -979,7 +979,7 @@ class _RevisionesState extends State<Revisiones> {
                                                           ? ventilaciones()
                                                           : widget.actualView ==
                                                                   11
-                                                              ? const Hidricos()
+                                                              ?  Hidricos()
                                                               : widget.actualView ==
                                                                       12
                                                                   ? const Metabolicos()
@@ -994,13 +994,13 @@ class _RevisionesState extends State<Revisiones> {
                                                                               : widget.actualView == 16
                                                                                   ? const Gasometricos()
                                                                                   : widget.actualView == 17
-                                                                                      ? const Hidricos()
+                                                                                      ?  Hidricos()
                                                                                       : widget.actualView == 18
-                                                                                          ? const Hidricos()
+                                                                                          ?  Hidricos()
                                                                                           : widget.actualView == 19
-                                                                                              ? const Hidricos()
+                                                                                              ?  Hidricos()
                                                                                               : widget.actualView == 20
-                                                                                                  ? const Hidricos()
+                                                                                                  ?  Hidricos()
                                                                                                   : widget.actualView == 21
                                                                                                       ? const Hemoderivados()
                                                                                                       : Container(),

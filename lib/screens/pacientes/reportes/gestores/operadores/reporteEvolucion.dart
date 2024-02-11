@@ -123,6 +123,14 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
                                             });
                                           }),
                                       CircleIcon(
+                                        radios: 30,
+                                          iconed: Icons.home_mini_outlined,
+                                          onChangeValue: () {
+                                            setState(() {
+                                              diagoTextController.text = Reportes.impresionesDiagnosticas;
+                                            });
+                                          }),
+                                      CircleIcon(
                                           iconed: Icons.list_alt_sharp,
                                           onChangeValue: () {
                                             Operadores.openDialog(
@@ -207,7 +215,7 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
                           labelButton: 'Análisis Hidrico',
                           onPress: () {
                             Cambios.toNextActivity(context,
-                                chyld: const Hidricos());
+                                chyld:  Hidricos());
                           },
                         ),
                         GrandIcon(

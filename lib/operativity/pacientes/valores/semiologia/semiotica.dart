@@ -88,7 +88,7 @@ class Exploracion {
   };
 
 // TÓRAX ****************
-  static String? amplexionTorax = Escalas.amplexionTorax[0],
+  static String? amplexionTorax = Escalas.movimientosTorax[0],
       amplexacionTorax = Escalas.amplexacionTorax[0],
       ruidosCardiacos = Escalas.ruidosCardiacos[0],
       murmulloVesicular = Escalas.murmulloVesicular[0],
@@ -101,7 +101,7 @@ class Exploracion {
       irritacionPeritoneal = Escalas.irritacionPeritoneal[0];
 
   static final Map<String, dynamic> torax = {
-    "amplexionTorax": Escalas.amplexionTorax,
+    "amplexionTorax": Escalas.movimientosTorax,
     "amplexacionTorax": Escalas.amplexacionTorax,
     "ruidosCardiacos": Escalas.ruidosCardiacos,
     "murmulloVesicular": Escalas.murmulloVesicular,

@@ -3256,29 +3256,28 @@ class CopiasReportes {
 
     // # # # # # # ### # # # # # # ###
     tipoReporte = "$tipoReporte"
-        "${paraph['Subjetivo']}\n";
+        "S. ${paraph['Subjetivo']}";
     if (esAbreviado) {
       tipoReporte = "$tipoReporte"
           "${paraph['Signos_Vitales']}\n"
           "${paraph['Exploracion_Fisica']}\n\n";
     } else {
-      tipoReporte = "${tipoReporte}A la exploración física con: \n"
+      tipoReporte = "${tipoReporte}" //A la exploración física con: \n"
           "${paraph['Signos_Vitales']}\n"
-          "${paraph['Exploracion_Fisica']}\n\n";
+          "${paraph['Exploracion_Fisica']}\n";
     }
 
     if (paraph['Auxiliares_Diagnosticos'] != "") {
       tipoReporte = "$tipoReporte"
-          "${paraph['Auxiliares_Diagnosticos']}\n\n";
+          "${paraph['Auxiliares_Diagnosticos']}\n";
     }
 
     if (paraph['Analisis_Complementarios'] != "") {
-      tipoReporte = "${tipoReporte}ANALISIS COMPLEMENTARIOS\n"
+      tipoReporte = "${tipoReporte}\nANALISIS COMPLEMENTARIOS\n"
           "${paraph['Analisis_Complementarios']}\n\n";
     }
 
-    tipoReporte = "$tipoReporte"
-        "${paraph['Analisis_Medico']}\n";
+    tipoReporte = "$tipoReporte${paraph['Analisis_Medico']}";
 
     if (paraph['Pronostico_Medico'] != "") {
       tipoReporte = "$tipoReporte\n"

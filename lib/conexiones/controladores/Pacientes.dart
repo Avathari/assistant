@@ -6740,7 +6740,7 @@ class Auxiliares {
     "Gasometría Venosa",
     "Examen General de Orina", // 11
     "Depuración de Orina de 24 Horas", // 12
-    "Líquido de Diálisis Peritoneal", // 13
+    "Líquido de Diálisis Peritoneal", // 13 // Liquido de Ascítis
     "Liquido Cefalorraquídeo", // 14
     "Iones Urinarios",
     "Carga Viral",
@@ -6756,7 +6756,7 @@ class Auxiliares {
     "Citoquímico de Líquido Cefalorraquídeo",
     "Citológico de Líquido Cefalorraquídeo",
     "Aspirado de Médula Ósea",
-    "Western Blot HIV-1, HIV-2",
+    "Western Blot HIV-1, HIV-2", // 29
     "Electrocardiograma"
   ];
   static Map<String, dynamic> Laboratorios = {
@@ -6901,6 +6901,11 @@ class Auxiliares {
       "Levaduras en Diálisis Peritoneal",
       "Otros en Diálisis Peritoneal",
       "pH de Diálisis Peritoneal",
+      // OTROS . . .
+      "Albúmina de Diálisis Peritoneal",
+      "Proteinas de Diálisis Peritoneal",
+      "DHL de Diálisis Peritoneal",
+      "Colesterol de Diálisis Peritoneal",
     ],
     Categorias[14]: [
       // Citoquímico
@@ -7185,6 +7190,11 @@ class Auxiliares {
     Categorias[23]: ["pg/mL", "ng/dL", ""],
     Categorias[24]: [""],
     Categorias[25]: ["%", "", ""],
+    //
+    Categorias[26]: ["%", "", ""],
+    Categorias[27]: ["%", "", ""],
+    Categorias[28]: ["", ""],
+    Categorias[29]: ["", ""],
   };
 
   static final Map<String, dynamic> auxiliares = {

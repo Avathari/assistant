@@ -2581,10 +2581,11 @@ class Escalas {
   ];
 
   // TORAX
-  static List<String> amplexionTorax = [
-    'Grado I: Mayor a 6.5 cm',
-    'Grado II: Entre 6 a 6.5 cm',
-    'Grado III: Menor a 6 cm',
+  static List<String> movimientosTorax = [
+    "",
+    'Movimientos de amplexión y amplexación sin restricciones',
+    'Movimiento torácico aumentado',
+    'Uso de músculos accesorios de la respiración',
   ];
   static List<String> amplexacionTorax = [
     'Grado I: Mayor a 6.5 cm',

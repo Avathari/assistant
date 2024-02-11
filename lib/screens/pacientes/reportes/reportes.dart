@@ -2,14 +2,22 @@ import 'package:assistant/conexiones/actividades/pdfGenerete/PdfApi.dart';
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/cardiometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
+
 
 import 'package:assistant/screens/pacientes/auxiliares/presentaciones/presentaciones.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisiones.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisorios.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizado.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/padecimientoActual.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/antropometricos.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/balancesHidrico.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/cardiovasculares.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/gasometricos.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/hidricos.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/ventilatorios.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
 import 'package:assistant/screens/pacientes/intensiva/procedimientos/cateterTenckhoff.dart';
 import 'package:assistant/screens/pacientes/intensiva/procedimientos/cateterVenosoCentral.dart';
@@ -42,7 +50,7 @@ import 'package:assistant/widgets/TittleContainer.dart';
 import 'package:flutter/material.dart';
 
 class ReportesMedicos extends StatefulWidget {
-  int actualPage = 6, indexNote = -1;
+  int actualPage = 6, indexNote = -1, actualLateralPage = 0;
 
   ReportesMedicos({super.key});
 
@@ -76,18 +84,19 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           .then((value) {
         Pacientes.Vitales = value;
       });
+      // Diagnósticos del Paciente ****************************************
       Archivos.readJsonToMap(
               filePath: "${Pacientes.localRepositoryPath}diagnosticos.json")
           .then((value) {
         Pacientes.Diagnosticos = value;
       });
-
+// Ventilaciones del Paciente ****************************************
       Archivos.readJsonToMap(
               filePath: "${Pacientes.localRepositoryPath}ventilaciones.json")
           .then((value) {
         Pacientes.Ventilaciones = value;
       });
-
+// Alérgias del Paciente ****************************************
       Archivos.readJsonToMap(
               filePath: "${Pacientes.localRepositoryPath}alergicos.json")
           .then((value) {
@@ -529,18 +538,26 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                           onClose: () {
                             Navigator.of(context).pop();
                           },
-                          onAcept: () {
-                            Navigator.of(context).pop();
-                            Repositorios.registrarRegistro().whenComplete(() =>
-                                Reportes.consultarNotasHospitalizacion()
-                                    .then((value) => setState(() {
-                                  if (value.isNotEmpty) {
-                                    widget.indexNote = 0;
-                                    listNotes = value;
-                                  }
-                                        })));
-                            //
-                          }))
+                      onAcept: () {
+                        Navigator.of(context).pop();
+                        if (getTypeReport() == TypeReportes.reporteIngreso || getTypeReport() == TypeReportes.reporteEgreso) {
+                          Repositorios.actualizarRegistro();
+                        }else {
+                          Repositorios.registrarRegistro();
+                        }
+                      }))
+                          // onAcept: () {
+                          //   Navigator.of(context).pop();
+                          //   Repositorios.registrarRegistro().whenComplete(() =>
+                          //       Reportes.consultarNotasHospitalizacion()
+                          //           .then((value) => setState(() {
+                          //         if (value.isNotEmpty) {
+                          //           widget.indexNote = 0;
+                          //           listNotes = value;
+                          //         }
+                          //               })));
+                          //   //
+                          // }))
                       .onError((error, stackTrace) => Terminal.printAlert(
                           message: "ERROR - $error : : $stackTrace"));
                 },
@@ -995,7 +1012,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
 
   // COMPONENTES ****************************************************
   drawerForm(BuildContext context) => Drawer(
-        width: 100,
+        width: !isLargeDesktop(context) ? 100 : 350, // 350
         backgroundColor: Theming.cuaternaryColor,
         child: Container(
           decoration: const BoxDecoration(
@@ -1006,117 +1023,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(16), topLeft: Radius.circular(16)),
           ),
-          child: Column(
-            children: [
-              Expanded(
-                flex: 6,
-                child: DrawerHeader(
-                    child: CircleIcon(
-                  difRadios: 15,
-                  iconed: Icons.line_weight_sharp,
-                  onChangeValue: () {},
-                )),
-              ),
-              Expanded(
-                flex: 16,
-                child: GridView(
-                    controller: ScrollController(),
-                    gridDelegate: GridViewTools.gridDelegate(
-                        crossAxisCount: 1, mainAxisExtent: 20.0),
-                    children: actionsReportes()),
-              ),
-              CrossLine(thickness: 3, color: Colors.grey),
-              Expanded(
-                flex: 4,
-                child: GridView(
-                  controller: ScrollController(),
-                  gridDelegate: GridViewTools.gridDelegate(
-                      mainAxisSpacing: 25.0,
-                      crossAxisSpacing: 10.0,
-                      crossAxisCount: 2,
-                      mainAxisExtent: 20.0),
-                  children: [
-                    IconButton(
-                      icon: const Icon(
-                        color: Colors.white,
-                        Icons.balance,
-                      ),
-                      tooltip: 'Concentraciones y Diluciones',
-                      onPressed: () async {
-                        setState(() {
-                          widget.actualPage = 21;
-                          _key.currentState!.closeEndDrawer();
-                        });
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(
-                        color: Colors.white,
-                        Icons.remove_from_queue,
-                      ),
-                      tooltip: 'Refrescar . . . ',
-                      onPressed: () async {
-                        setState(() {
-                          _key.currentState!.closeEndDrawer();
-                        });
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(
-                        color: Colors.white,
-                        Icons.system_update_alt,
-                      ),
-                      tooltip: 'Cargando . . . ',
-                      onPressed: () async {
-                        Pacientes.loadingActivity(context: context)
-                            .then((value) {
-                          if (value == true) {
-                            Terminal.printAlert(
-                                message:
-                                    'Archivo ${Pacientes.localPath} Re-Creado $value');
-                            Navigator.of(context).pop();
-                          }
-                        });
-                        _key.currentState!.closeEndDrawer();
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.help,
-                        color: Colors.white,
-                      ),
-                      tooltip: Sentences.find_usuario,
-                      onPressed: () {
-                        //
-                        setState(() {
-                          widget.actualPage = 19;
-                          _key.currentState!.closeEndDrawer();
-                        });
-                      },
-                    ),
-                    // CrossLine(isHorizontal: false, thickness: 4),
-                  ],
-                ),
-              ),
-              CrossLine(thickness: 3, height: 20, color: Colors.grey),
-              Expanded(
-                flex: 3,
-                child: CircleIcon(
-                  radios: 30,
-                  difRadios: 5,
-                  tittle: 'Copiar Esquema del Reporte',
-                  iconed: Icons.copy_all_sharp,
-                  onChangeValue: () {
-                    Datos.portapapeles(
-                        context: context,
-                        text: Reportes.copiarReporte(
-                            tipoReporte: getTypeReport()));
-                    _key.currentState!.closeEndDrawer();
-                  },
-                ),
-              ),
-            ],
-          ),
+          child: isLargeDesktop(context) ? _analisisLaterales(context) :_optionsLaterales(context)
         ),
       );
 
@@ -1261,7 +1168,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           ),
           // title: AppBarText(Sentences.app_bar_reportes),
           actions: <Widget>[
-            if (!isLargeDesktop(context))
+            // if (!isLargeDesktop(context))
               GrandIcon(
                   labelButton: 'Copiar Esquema del Reporte',
                   iconData: Icons.menu_open_sharp,
@@ -1369,12 +1276,13 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               CrossLine(thickness: 3),
               Text(listNotes![widget.indexNote]['Diagnosticos_Hospital'],
                   style: Styles.textSyleGrowth(fontSize: 9)),
-              CrossLine(thickness: 4),
+              listNotes![widget.indexNote]['Tipo_Analisis'] != 'Análisis de Gravedad' ? CrossLine(thickness: 4) : Container(),
+              listNotes![widget.indexNote]['Tipo_Analisis'] != 'Análisis de Gravedad' ?
               Text(
                 listNotes![widget.indexNote]['Subjetivo'],
                 maxLines: 3,
                 style: Styles.textSyleGrowth(fontSize: 9),
-              ),
+              ) : Container(),
               Text(listNotes![widget.indexNote]['Signos_Vitales'],
                   maxLines: 3, style: Styles.textSyleGrowth(fontSize: 8)),
               CrossLine(thickness: 3),
@@ -1394,23 +1302,23 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                           : "",
                   maxLines: 25,
                   style: Styles.textSyleGrowth(fontSize: 8)),
-              CrossLine(thickness: 3),
+              listNotes![widget.indexNote]['Tipo_Analisis'] != 'Análisis de Gravedad' ? CrossLine(thickness: 3) : Container(),
               // Text(
               //   listNotes![widget.indexNote]['Eventualidades'],
               //   maxLines: 20,
               //   style: Styles.textSyleGrowth(fontSize: 9),
               // ),
-              CrossLine(thickness: 1),
+              listNotes![widget.indexNote]['Tipo_Analisis'] != 'Análisis de Gravedad' ? CrossLine(thickness: 1) : Container(),
               // Text(
               //   listNotes![widget.indexNote]['Terapias_Previas'],
               //   maxLines: 20,
               //   style: Styles.textSyleGrowth(fontSize: 9),
               // ),
-              Text(
+              listNotes![widget.indexNote]['Tipo_Analisis'] != 'Análisis de Evolución' ?  Text(
                 listNotes![widget.indexNote]['Analisis_Medico'],
                 maxLines: 20,
                 style: Styles.textSyleGrowth(fontSize: 9),
-              ),
+              ) : Container(),
               CrossLine(thickness: 1),
               Text(
                 listNotes![widget.indexNote]['Pronostico_Medico'] ?? "",
@@ -1433,5 +1341,202 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
     } else {
       return Container();
     }
+  }
+
+  _optionsLaterales(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          flex: 6,
+          child: DrawerHeader(
+              child: CircleIcon(
+                difRadios: 15,
+                iconed: Icons.line_weight_sharp,
+                onChangeValue: () {},
+              )),
+        ),
+        Expanded(
+          flex: 16,
+          child: GridView(
+              controller: ScrollController(),
+              gridDelegate: GridViewTools.gridDelegate(
+                  crossAxisCount: 1, mainAxisExtent: 20.0),
+              children: actionsReportes()),
+        ),
+        CrossLine(thickness: 3, color: Colors.grey),
+        Expanded(
+          flex: 4,
+          child: GridView(
+            controller: ScrollController(),
+            gridDelegate: GridViewTools.gridDelegate(
+                mainAxisSpacing: 25.0,
+                crossAxisSpacing: 10.0,
+                crossAxisCount: 2,
+                mainAxisExtent: 20.0),
+            children: [
+              IconButton(
+                icon: const Icon(
+                  color: Colors.white,
+                  Icons.balance,
+                ),
+                tooltip: 'Concentraciones y Diluciones',
+                onPressed: () async {
+                  setState(() {
+                    widget.actualPage = 21;
+                    _key.currentState!.closeEndDrawer();
+                  });
+                },
+              ),
+              IconButton(
+                icon: const Icon(
+                  color: Colors.white,
+                  Icons.remove_from_queue,
+                ),
+                tooltip: 'Refrescar . . . ',
+                onPressed: () async {
+                  setState(() {
+                    _key.currentState!.closeEndDrawer();
+                  });
+                },
+              ),
+              IconButton(
+                icon: const Icon(
+                  color: Colors.white,
+                  Icons.system_update_alt,
+                ),
+                tooltip: 'Cargando . . . ',
+                onPressed: () async {
+                  Pacientes.loadingActivity(context: context)
+                      .then((value) {
+                    if (value == true) {
+                      Terminal.printAlert(
+                          message:
+                          'Archivo ${Pacientes.localPath} Re-Creado $value');
+                      Navigator.of(context).pop();
+                    }
+                  });
+                  _key.currentState!.closeEndDrawer();
+                },
+              ),
+              IconButton(
+                icon: const Icon(
+                  Icons.help,
+                  color: Colors.white,
+                ),
+                tooltip: Sentences.find_usuario,
+                onPressed: () {
+                  //
+                  setState(() {
+                    widget.actualPage = 19;
+                    _key.currentState!.closeEndDrawer();
+                  });
+                },
+              ),
+              // CrossLine(isHorizontal: false, thickness: 4),
+            ],
+          ),
+        ),
+        CrossLine(thickness: 3, height: 20, color: Colors.grey),
+        Expanded(
+          flex: 3,
+          child: CircleIcon(
+            radios: 30,
+            difRadios: 5,
+            tittle: 'Copiar Esquema del Reporte',
+            iconed: Icons.copy_all_sharp,
+            onChangeValue: () {
+              Datos.portapapeles(
+                  context: context,
+                  text: Reportes.copiarReporte(
+                      tipoReporte: getTypeReport()));
+              _key.currentState!.closeEndDrawer();
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  _analisisLaterales(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          flex: 8,
+          child: widget.actualLateralPage == 0? Container() :
+          widget.actualLateralPage == 1?  Hidricos(isLateral: true) :
+          widget.actualLateralPage == 2? const Ventilatorios():
+          widget.actualLateralPage == 3? const Gasometricos():
+          widget.actualLateralPage == 4? const Cardiovasculares():
+          widget.actualLateralPage == 5? const Antropometricos():
+          widget.actualLateralPage == 6? const BalanceHidrico():
+          Container(),
+        ),
+        Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                GrandIcon(labelButton: 'Concentraciones',
+                    iconData: Icons.menu_rounded, onPress: () =>
+                  setState(() {
+                    widget.actualLateralPage = 0;
+                  })
+                ),
+                GrandIcon(
+                  labelButton: "Hídricos",
+                    iconData: Icons.water_drop,
+                    onPress: () =>
+                  setState(() {
+                    widget.actualLateralPage = 1;
+                  })
+                ),
+                GrandIcon(
+                    labelButton: "Ventilatorios",
+                    iconData: Icons.air,
+                    onPress: () =>
+                        setState(() {
+                          widget.actualLateralPage = 2;
+                        })
+                ),
+                GrandIcon(
+                  labelButton: "Gasométricos",
+                    onPress: () =>
+                    setState(() {
+                      widget.actualLateralPage = 3;
+                    })
+                ),
+                GrandIcon(
+                    labelButton: "Cardiovasculares",
+                    iconData: Icons.monitor_heart_outlined,
+                    onPress: () =>
+                    setState(() {
+                      widget.actualLateralPage = 4;
+                    })
+                ),
+                GrandIcon(
+                    labelButton: "Antropometrías",
+                    iconData: Icons.monitor_weight_outlined,
+                    onPress: () =>
+                        setState(() {
+                          widget.actualLateralPage = 5;
+                        })
+                ),
+                GrandIcon(
+                    labelButton: "Balances",
+                    iconData: Icons.waterfall_chart,
+                    onPress: () =>
+                        setState(() {
+                          widget.actualLateralPage = 6;
+                        })
+                ),
+                GrandIcon(onPress: () =>
+                    setState(() {
+                      widget.actualLateralPage = 7;
+                    })
+                ),
+              ],
+            )),
+      ],
+    );
   }
 }

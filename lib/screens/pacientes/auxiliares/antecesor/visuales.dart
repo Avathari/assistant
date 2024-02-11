@@ -694,7 +694,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
                   iconData: Icons.water_drop,
                   labelButton: 'Análisis Hidrico',
                   onPress: () =>
-                      Cambios.toNextActivity(context, chyld: const Hidricos())),
+                      Cambios.toNextActivity(context, chyld:  Hidricos())),
               GrandIcon(
                 iconData: Icons.bubble_chart,
                 labelButton: 'Análisis Metabólico',

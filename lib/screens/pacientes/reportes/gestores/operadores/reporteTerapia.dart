@@ -39,8 +39,13 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
       initialTextController.text = Reportes.reportes['Datos_Generales'] =
           Pacientes.prosa(isTerapia: true);
       //
-      diagoTextController.text = Reportes.reportes['Impresiones_Diagnosticas'] =
-          Pacientes.diagnosticos();
+      if (Reportes.reportes['Impresiones_Diagnosticas'] == "") {
+        diagoTextController.text = Reportes.reportes['Impresiones_Diagnosticas'] =
+            Pacientes.diagnosticos();
+      } else {
+        diagoTextController.text = Reportes.reportes['Impresiones_Diagnosticas'];
+      }
+
       //
       consultaTextController.text =
           Reportes.reportes['Motivo_Consulta'] = Reportes.motivoConsulta;
@@ -93,7 +98,7 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
                                     flex:
                                         isMobile(context) || isDesktop(context)
                                             ? 3
-                                            : 1,
+                                            : 2, // #_#
                                     child: EditTextArea(
                                         textController: diagoTextController,
                                         labelEditText:
@@ -205,10 +210,10 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
               ),
             ]),
           ),
-          Expanded(
-            flex: 3,
-            child: _anylisis(context),
-          ),
+          // Expanded(
+          //   flex: 3,
+          //   child: _anylisis(context),
+          // ),
         ],
       ),
     );
@@ -242,7 +247,7 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
             iconData: Icons.water_drop,
             labelButton: 'Análisis Hidrico',
             onPress: () {
-              Cambios.toNextActivity(context, chyld: const Hidricos());
+              Cambios.toNextActivity(context, chyld: Hidricos());
             },
           ),
           GrandIcon(

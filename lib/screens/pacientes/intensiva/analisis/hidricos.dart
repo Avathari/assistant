@@ -19,7 +19,9 @@ import 'package:flutter/widgets.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Hidricos extends StatefulWidget {
-  const Hidricos({Key? key}) : super(key: key);
+  bool? isLateral;
+
+  Hidricos({Key? key, this.isLateral = false}) : super(key: key);
 
   @override
   State<Hidricos> createState() => _HidricosState();
@@ -124,10 +126,10 @@ class _HidricosState extends State<Hidricos> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                    flex: isTablet(context) || isMobile(context) ? 2 : 1,
+                    flex: widget.isLateral == true? 2: isTablet(context) || isMobile(context) ? 2 : 1,
                     child: valoresIniciales(context)),
                 Expanded(
-                  flex: isTablet(context) ? 5 : 3,
+                  flex: widget.isLateral == true? 5: isTablet(context) ? 5 : 3,
                   child: CarouselSlider(
                       items: [
                         SingleChildScrollView(
@@ -174,7 +176,7 @@ class _HidricosState extends State<Hidricos> {
                                         children: [
                                           Expanded(
                                             child: ValuePanel(
-                                              firstText: 'Req. Hídrico',
+                                              firstText: 'Req. H2O',
                                               secondText: Hidrometrias
                                                   .requerimientoHidrico
                                                   .toString(),
@@ -205,7 +207,7 @@ class _HidricosState extends State<Hidricos> {
                                       ),
                                 CrossLine(height: 10),
                                 ValuePanel(
-                                  firstText: 'Agua Corporal Total',
+                                  firstText: 'ACT',
                                   secondText: Hidrometrias.aguaCorporalTotal
                                       .toStringAsFixed(2),
                                   thirdText: 'L',
@@ -217,7 +219,7 @@ class _HidricosState extends State<Hidricos> {
                                   thirdText: 'mL',
                                 ),
                                 ValuePanel(
-                                  firstText: 'Exceso de Agua Libre',
+                                  firstText: 'Exc. H2O L',
                                   secondText: Hidrometrias.excesoAguaLibre
                                       .toStringAsFixed(2),
                                   thirdText: 'mL',
@@ -227,14 +229,14 @@ class _HidricosState extends State<Hidricos> {
                                     ? Column(
                                         children: [
                                           ValuePanel(
-                                            firstText: 'Osmolaridad Sérica',
+                                            firstText: 'Osm. Sérica',
                                             secondText: Hidrometrias
                                                 .osmolaridadSerica
                                                 .toStringAsFixed(2),
                                             thirdText: 'Osm/mL',
                                           ),
                                           ValuePanel(
-                                            firstText: 'Brecha Osmolar',
+                                            firstText: 'BO',
                                             secondText: Hidrometrias
                                                 .brechaOsmolar
                                                 .toStringAsFixed(2),
@@ -646,38 +648,38 @@ class _HidricosState extends State<Hidricos> {
           ),
           CrossLine(),
           ValuePanel(
-            firstText: 'Sodio',
+            firstText: 'Na2+',
             secondText: Valores.sodio.toString(),
             thirdText: 'mEq/L',
           ),
           ValuePanel(
-            firstText: 'Potasio',
+            firstText: 'K+',
             secondText: Valores.potasio.toString(),
             thirdText: 'mEq/L',
           ),
           ValuePanel(
-            firstText: 'Cloro',
+            firstText: 'Cl-',
             secondText: Valores.cloro.toString(),
             thirdText: 'mg/dL',
           ),
           ValuePanel(
-            firstText: 'Fósforo',
+            firstText: 'PO3',
             secondText: Valores.fosforo.toString(),
             thirdText: 'mg/dL',
           ),
           ValuePanel(
-            firstText: 'Magnesio',
+            firstText: 'Mg',
             secondText: Valores.magnesio.toString(),
             thirdText: 'mg/dL',
           ),
           ValuePanel(
-            firstText: 'Calcio',
+            firstText: 'Ca2+',
             secondText: Valores.calcio.toString(),
             thirdText: 'mg/dL',
           ),
           CrossLine(),
           ValuePanel(
-            firstText: 'Glucosa',
+            firstText: 'CHON-',
             secondText: Valores.glucosa.toString(),
             thirdText: 'mg/dL',
           ),

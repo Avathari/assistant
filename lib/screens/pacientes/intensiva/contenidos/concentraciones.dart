@@ -271,9 +271,7 @@ class _ConcentracionesState extends State<Concentraciones> {
                                   EditTextArea(
                                     keyBoardType: TextInputType.number,
                                     inputFormat: MaskTextInputFormatter(
-                                        mask: '####',
-                                        filter: {"#": RegExp(r'[0-9]')},
-                                        type: MaskAutoCompletionType.lazy),
+                                    ),
                                     labelEditText:
                                         'Concentración del Fármaco (mg)',
                                     textController: concentracionTextController,
@@ -287,10 +285,7 @@ class _ConcentracionesState extends State<Concentraciones> {
                                   ),
                                   EditTextArea(
                                     keyBoardType: TextInputType.number,
-                                    inputFormat: MaskTextInputFormatter(
-                                        mask: '####',
-                                        filter: {"#": RegExp(r'[0-9]')},
-                                        type: MaskAutoCompletionType.lazy),
+                                    inputFormat: MaskTextInputFormatter(),
                                     labelEditText: 'Dilución del Fármaco (mL)',
                                     textController: dilucionTextController,
                                     numOfLines: 1,
@@ -303,10 +298,7 @@ class _ConcentracionesState extends State<Concentraciones> {
                                   ),
                                   EditTextArea(
                                     keyBoardType: TextInputType.number,
-                                    inputFormat: MaskTextInputFormatter(
-                                        mask: '####',
-                                        filter: {"#": RegExp(r'[0-9]')},
-                                        type: MaskAutoCompletionType.lazy),
+                                    inputFormat: MaskTextInputFormatter(),
                                     labelEditText:
                                         'Velocidad de Infusión (mL/Hr)',
                                     textController: velocidadTextController,
