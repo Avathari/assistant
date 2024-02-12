@@ -27,6 +27,7 @@ import 'package:flutter/services.dart';
 
 class Hospitalizados extends StatefulWidget {
   Widget? actualSidePage = Container();
+  int actualLateralPage = 0;
   // ****************** *** ****** **************
   var keySearch = "Pace_APP_ALE";
   // ****************** *** ****** **************
@@ -113,7 +114,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
               );
             },
           ),
-          title: AppBarText(appTittle),
+          // title: AppBarText(appTittle),
           actions: <Widget>[
             GrandIcon(
                 labelButton: 'Estadísticas . . . ',
@@ -122,6 +123,17 @@ class _HospitalizadosState extends State<Hospitalizados> {
                 onPress: () => Cambios.toNextActivity(context,
                     chyld:
                         Paneles.HospitalaryStadystics(context, foundedItems!))),
+        //     const SizedBox(width: 15),
+        // GrandIcon(
+        //     labelButton: 'Pendientes Recabados . . . ',
+        //     iconData: Icons.list_alt_sharp,
+        //     iconColor: Colors.white,
+        //     onPress: () {
+        //       setState(() {
+        //         widget.actualLateralPage = 1;
+        //         _key.currentState!.openEndDrawer();
+        //       });
+        //     }),
             CrossLine(
               thickness: 4,
               isHorizontal: false,
@@ -311,7 +323,12 @@ class _HospitalizadosState extends State<Hospitalizados> {
             // iconColor: Colors.grey,
             radios: isLargeDesktop(context) || isDesktop(context) ? 30 : 20,
             difRadios: 5,
-            onChangeValue: () => _key.currentState!.openEndDrawer(),
+            onChangeValue: () {
+              setState(() {
+                widget.actualLateralPage = 0;
+              });
+              _key.currentState!.openEndDrawer();
+            },
           ),
         CircleIcon(
           iconed: Icons.refresh,
@@ -320,6 +337,13 @@ class _HospitalizadosState extends State<Hospitalizados> {
           difRadios: 5,
           onChangeValue: _pullListRefresh,
         ),
+        if (isTablet(context)) CircleIcon(
+            tittle: "Pendientes Recabados . . . ",
+            iconed: Icons.list_alt_sharp,
+            onChangeValue: () => setState(() {
+              widget.actualLateralPage = 1;
+              _key.currentState!.openEndDrawer();
+            })),
       ]),
     );
   }
@@ -796,7 +820,9 @@ class _HospitalizadosState extends State<Hospitalizados> {
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
                 GrandIcon(
                     iconData: Icons.medical_information_outlined,
                     labelButton: 'Padecimiento Actual',
@@ -839,7 +865,9 @@ class _HospitalizadosState extends State<Hospitalizados> {
                             // Repositorios.actualizarRegistro();
                           });
                     }),
-                const SizedBox(height: 30,),
+                const SizedBox(
+                  height: 30,
+                ),
               ],
             ))
           ],
@@ -1076,10 +1104,10 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                 context, snapshot, index)),
                         // Expanded(
                         //     flex: 5, child: diagnosticosPanel(snapshot, index)),
-                        Expanded(
-                            flex: 5,
-                            child: Paneles.licenciasPanel(
-                                context, snapshot, index)),
+                        // Expanded(
+                        //     flex: 5,
+                        //     child: Paneles.licenciasPanel(
+                        //         context, snapshot, index)),
                       ],
                     ),
                   ),
@@ -1446,11 +1474,22 @@ class _HospitalizadosState extends State<Hospitalizados> {
                       iconData: Icons.file_present,
                       onPress: () => _reiniciar()),
                   const SizedBox(width: 25),
-                  GrandIcon(onPress: () => null),
+                  GrandIcon(
+                      labelButton: 'Pendientes Recabados . . . ',
+                      iconData: Icons.list_alt_sharp,
+                      onPress: () {
+                        setState(() {
+                          widget.actualLateralPage = 1;
+                          _key.currentState!.openEndDrawer();
+                        });
+                      }),
                   GrandIcon(
                     labelButton: "Listado de Camas . . . ",
                     iconData: Icons.blur_linear_sharp,
                     onPress: () async {
+                      setState(() {
+                        widget.actualLateralPage = 0;
+                      });
                       _key.currentState!.openEndDrawer();
                       // final pdfFile = await PdfParagraphsApi.generateFromList(
                       //   topMargin: 10,
@@ -1496,6 +1535,16 @@ class _HospitalizadosState extends State<Hospitalizados> {
                         labelButton: "Primeros Encontrados",
                         iconData: Icons.file_present,
                         onPress: () => _reiniciar()),
+                  ),
+                  if (!isDesktop(context) || !isLargeDesktop(context)) const SizedBox(width: 100),
+                    if (isDesktop(context) || isLargeDesktop(context)) Expanded(
+                    child: GrandIcon(
+                        labelButton: "Pendientes Recabados . . . ",
+                        iconData: Icons.list_alt_sharp,
+                        onPress: () => setState(() {
+                              widget.actualLateralPage = 1;
+                              _key.currentState!.openEndDrawer();
+                            })),
                   ),
                 ],
               ),
@@ -1638,38 +1687,42 @@ class _HospitalizadosState extends State<Hospitalizados> {
   //
   _drawerForm(BuildContext context) {
     return Container(
+      width: widget.actualLateralPage != 0 ? isMobile(context) ? 270:430 : 50,
       color: Colors.black54,
-      child: Wrap(
-        direction: Axis.vertical,
-        runSpacing: 10,
-        spacing: 10,
-        alignment: WrapAlignment.center,
-        children: List<Widget>.generate(
-            foundedItems!.length,
-            (index) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: InkWell(
-                    onTap: () {
-                      _pageController.animateToPage(index,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeIn);
-                      _key.currentState!.closeEndDrawer();
-                    },
-                    child: CircleAvatar(
-                      radius: 14,
-                      // check if a dot is connected to the current page
-                      // if true, give it a different color
-                      backgroundColor:
-                          _activePage == index ? Colors.amber : Colors.grey,
-                      child: Text(
-                          foundedItems![index]
-                              .hospitalizedData['Id_Cama']
-                              .toString(),
-                          style: Styles.textSyleGrowth(fontSize: 8)),
-                    ),
-                  ),
-                )),
-      ),
+      child: widget.actualLateralPage == 0
+          ? Wrap(
+              direction: Axis.vertical,
+              runSpacing: 10,
+              spacing: 10,
+              alignment: WrapAlignment.center,
+              children: List<Widget>.generate(
+                  foundedItems!.length,
+                  (index) => Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: InkWell(
+                          onTap: () {
+                            _pageController.animateToPage(index,
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeIn);
+                            _key.currentState!.closeEndDrawer();
+                          },
+                          child: CircleAvatar(
+                            radius: 14,
+                            // check if a dot is connected to the current page
+                            // if true, give it a different color
+                            backgroundColor: _activePage == index
+                                ? Colors.amber
+                                : Colors.grey,
+                            child: Text(
+                                foundedItems![index]
+                                    .hospitalizedData['Id_Cama']
+                                    .toString(),
+                                style: Styles.textSyleGrowth(fontSize: 8)),
+                          ),
+                        ),
+                      )),
+            )
+          : Paneles.HospitalaryPendientes(context, foundedItems),
     );
   }
 

@@ -238,12 +238,7 @@ class Paneles {
                         style: Styles.textSyleGrowth(fontSize: 8),
                       ),
                     );
-                    return Text(
-                      snapshot.data![index].pendientes[ind]['Pace_Desc_PEN'],
-                      style: Styles.textSyleGrowth(fontSize: 9),
-                    );
                   })),
-
         ],
       ),
     );
@@ -347,7 +342,7 @@ class Paneles {
               Pacientes.ID_Hospitalizacion =
                   foundedItems[index].idHospitalizado =
                       foundedItems[index].hospitalizedData['ID_Hosp'];
-              //
+              // ******************* * * * * * * *** *
               Cambios.toNextActivity(context,
                   chyld: OperacionesPendiente(
                       withAppBar: false,
@@ -660,8 +655,12 @@ class Paneles {
             children: pendientes,
           )));
     }
-    return Column(
-      children: widgets,
+    return TittleContainer(
+      tittle: "Pendientes Recabados . . . ",
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: widgets,
+      ),
     );
   }
 }
