@@ -179,7 +179,7 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                             labelEditText: "Pronóstico médico",
                             keyBoardType: TextInputType.multiline,
                             numOfLines: 10,
-                            limitOfChars: 1700,
+                            limitOfChars: 2000,
                             onChange: ((value) {
                               Reportes.pronosticoMedico = "$value.";
                               Reportes.reportes['Pronostico_Medico'] =

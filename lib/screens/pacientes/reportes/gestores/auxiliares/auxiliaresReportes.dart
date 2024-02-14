@@ -66,12 +66,9 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                   labelEditText: "Auxiliares diagnósticos",
                   keyBoardType: TextInputType.multiline,
                   numOfLines: isTablet(context) ? 16 : 18,
-                  // withShowOption: true,
-                  // withDeleteOption: true,
-                  // onChange: ((value) {
-                  //   Reportes.auxiliaresDiagnosticos = value;
-                  //   Reportes.reportes['Auxiliares_Diagnosticos'] = value;
-                  // }),
+                  onChange: ((value) {
+                    Reportes.auxiliaresDiagnosticos = Reportes.reportes['Auxiliares_Diagnosticos'] = value;
+                  }),
                   inputFormat: MaskTextInputFormatter()),
             ),
             Expanded(

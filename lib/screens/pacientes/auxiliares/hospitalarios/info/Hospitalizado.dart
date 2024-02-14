@@ -176,20 +176,14 @@ class Internado {
   }
 
   //
-  Future<List> getPendientesHistorial() async {
+  Future<List> getPendientesHistorial({bool reload : false}) async {
     //
-    await Archivos.readJsonToMap(filePath: pendientesRepositoryPath)
-        .then((value) {
-      Terminal.printNotice(
-          message: " : : OBTENIDO DE ARCHIVO . . . $pendientesRepositoryPath");
-      //
-      return pendientes = value;
-    }).onError((error, stackTrace) async {
+    if (reload){
       await Actividades.consultarAllById(
         Databases.siteground_database_reghosp,
         "SELECT * FROM pace_pen WHERE ID_Pace = ? "
-        "AND ID_Hosp = '${idHospitalizado}' "
-        "AND Pace_PEN_realized = '0'",
+            "AND ID_Hosp = '${idHospitalizado}' "
+            "AND Pace_PEN_realized = '0'",
         idPaciente,
       ).then((value) async {
         Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . ");
@@ -197,8 +191,30 @@ class Internado {
         return pendientes = value;
       }).whenComplete(() => Archivos.createJsonFromMap(pendientes,
           filePath: pendientesRepositoryPath));
-    });
-    return pendientes;
+      return pendientes;
+    }else {
+      await Archivos.readJsonToMap(filePath: pendientesRepositoryPath)
+          .then((value) {
+        Terminal.printNotice(
+            message: " : : OBTENIDO DE ARCHIVO . . . $pendientesRepositoryPath");
+        //
+        return pendientes = value;
+      }).onError((error, stackTrace) async {
+        await Actividades.consultarAllById(
+          Databases.siteground_database_reghosp,
+          "SELECT * FROM pace_pen WHERE ID_Pace = ? "
+              "AND ID_Hosp = '${idHospitalizado}' "
+              "AND Pace_PEN_realized = '0'",
+          idPaciente,
+        ).then((value) async {
+          Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . ");
+          //
+          return pendientes = value;
+        }).whenComplete(() => Archivos.createJsonFromMap(pendientes,
+            filePath: pendientesRepositoryPath));
+      });
+      return pendientes;
+    }
   }
 
   Future<List> getLicenciasHistorial() async {

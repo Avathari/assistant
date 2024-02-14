@@ -123,17 +123,17 @@ class _HospitalizadosState extends State<Hospitalizados> {
                 onPress: () => Cambios.toNextActivity(context,
                     chyld:
                         Paneles.HospitalaryStadystics(context, foundedItems!))),
-        //     const SizedBox(width: 15),
-        // GrandIcon(
-        //     labelButton: 'Pendientes Recabados . . . ',
-        //     iconData: Icons.list_alt_sharp,
-        //     iconColor: Colors.white,
-        //     onPress: () {
-        //       setState(() {
-        //         widget.actualLateralPage = 1;
-        //         _key.currentState!.openEndDrawer();
-        //       });
-        //     }),
+            //     const SizedBox(width: 15),
+            // GrandIcon(
+            //     labelButton: 'Pendientes Recabados . . . ',
+            //     iconData: Icons.list_alt_sharp,
+            //     iconColor: Colors.white,
+            //     onPress: () {
+            //       setState(() {
+            //         widget.actualLateralPage = 1;
+            //         _key.currentState!.openEndDrawer();
+            //       });
+            //     }),
             CrossLine(
               thickness: 4,
               isHorizontal: false,
@@ -337,13 +337,14 @@ class _HospitalizadosState extends State<Hospitalizados> {
           difRadios: 5,
           onChangeValue: _pullListRefresh,
         ),
-        if (isTablet(context)) CircleIcon(
-            tittle: "Pendientes Recabados . . . ",
-            iconed: Icons.list_alt_sharp,
-            onChangeValue: () => setState(() {
-              widget.actualLateralPage = 1;
-              _key.currentState!.openEndDrawer();
-            })),
+        if (isTablet(context))
+          CircleIcon(
+              tittle: "Pendientes Recabados . . . ",
+              iconed: Icons.list_alt_sharp,
+              onChangeValue: () => setState(() {
+                    widget.actualLateralPage = 1;
+                    _key.currentState!.openEndDrawer();
+                  })),
       ]),
     );
   }
@@ -797,7 +798,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                           Pacientes.Pendiente =
                               foundedItems![index].pendientes =
                                   await firstFounded![index]
-                                      .getPendientesHistorial();
+                                      .getPendientesHistorial(reload: true);
 // *********************************
                           String penden = "";
                           // *********************************
@@ -1477,10 +1478,36 @@ class _HospitalizadosState extends State<Hospitalizados> {
                   GrandIcon(
                       labelButton: 'Pendientes Recabados . . . ',
                       iconData: Icons.list_alt_sharp,
-                      onPress: () {
-                        setState(() {
+                      onPress: () async {
+                        //
+                        Operadores.loadingActivity(
+                            context: context,
+                            tittle: 'Consultando Pendientes Recabados . . . ',
+                            message: 'Consultando . . . ',
+                            onCloss: () {
+                            });
+                        //
+                        int index = -1;
+                        Future.doWhile(() async {
+                          index++;
+                          Pacientes.ID_Hospitalizacion =
+                              foundedItems![index].idHospitalizado =
+                          foundedItems![index]
+                              .hospitalizedData['ID_Hosp'];
+                          //
+                          await foundedItems![index]
+                              .getPendientesHistorial(reload: true);
+                          //
+                          if (index < foundedItems!.length) return false;
+                          //
+                          return true;
+                        }).whenComplete(() => setState(() {
+                          Navigator.pop(context);
                           widget.actualLateralPage = 1;
                           _key.currentState!.openEndDrawer();
+                        })).onError((error, stackTrace) {
+                          Operadores.alertActivity(context: context, tittle: "ERROR Sucedido", message: "ERROR al recolectar pendientes"
+                              "$error : : $stackTrace");
                         });
                       }),
                   GrandIcon(
@@ -1536,16 +1563,46 @@ class _HospitalizadosState extends State<Hospitalizados> {
                         iconData: Icons.file_present,
                         onPress: () => _reiniciar()),
                   ),
-                  if (!isDesktop(context) || !isLargeDesktop(context)) const SizedBox(width: 100),
-                    if (isDesktop(context) || isLargeDesktop(context)) Expanded(
-                    child: GrandIcon(
-                        labelButton: "Pendientes Recabados . . . ",
-                        iconData: Icons.list_alt_sharp,
-                        onPress: () => setState(() {
-                              widget.actualLateralPage = 1;
-                              _key.currentState!.openEndDrawer();
+                  if (!isDesktop(context) || !isLargeDesktop(context))
+                    const SizedBox(width: 100),
+                  if (isDesktop(context) || isLargeDesktop(context))
+                    Expanded(
+                        child: GrandIcon(
+                            labelButton: "Pendientes Recabados . . . ",
+                            iconData: Icons.list_alt_sharp,
+                            onPress: () async {
+                              //
+                              Operadores.loadingActivity(
+                                  context: context,
+                                  tittle: 'Consultando Pendientes Recabados . . . ',
+                                  message: 'Consultando . . . ',
+                                  onCloss: () {
+                                  });
+                              //
+                              int index = -1;
+                              Future.doWhile(() async {
+                                index++;
+                                Pacientes.ID_Hospitalizacion =
+                                    foundedItems![index].idHospitalizado =
+                                        foundedItems![index]
+                                            .hospitalizedData['ID_Hosp'];
+                                //
+                                await foundedItems![index]
+                                    .getPendientesHistorial(reload: true);
+                                //
+                                if (index < foundedItems!.length) return false;
+                                //
+                                return true;
+                              }).whenComplete(() => setState(() {
+                                Navigator.pop(context);
+                                    widget.actualLateralPage = 1;
+                                    _key.currentState!.openEndDrawer();
+                                  })).onError((error, stackTrace) {
+                                Operadores.alertActivity(context: context, tittle: "ERROR Sucedido", message: "ERROR al recolectar pendientes"
+                                    "$error : : $stackTrace");
+                              }
+                              );
                             })),
-                  ),
                 ],
               ),
       );
@@ -1687,7 +1744,11 @@ class _HospitalizadosState extends State<Hospitalizados> {
   //
   _drawerForm(BuildContext context) {
     return Container(
-      width: widget.actualLateralPage != 0 ? isMobile(context) ? 270:430 : 50,
+      width: widget.actualLateralPage != 0
+          ? isMobile(context)
+              ? 270
+              : 430
+          : 50,
       color: Colors.black54,
       child: widget.actualLateralPage == 0
           ? Wrap(

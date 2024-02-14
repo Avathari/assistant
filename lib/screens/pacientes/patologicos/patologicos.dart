@@ -675,7 +675,7 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
             ],
           ),
         ),
-        isDesktop(context)
+        isDesktop(context) || isLargeDesktop(context)
             ? widget.actualSidePage != null
                 ? Expanded(flex: 1, child: widget.actualSidePage!)
                 : Expanded(flex: 1, child: Container())

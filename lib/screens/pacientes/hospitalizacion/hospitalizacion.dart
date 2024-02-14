@@ -905,7 +905,7 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
             ],
           ),
         ),
-        isDesktop(context)
+        isDesktop(context) || isLargeDesktop(context)
             ? widget.actualSidePage != null
                 ? Expanded(flex: 1, child: widget.actualSidePage!)
                 : Expanded(flex: 1, child: Container())
@@ -1060,7 +1060,7 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
   }
 
   void toOperaciones(BuildContext context, String operationActivity) {
-    if (isDesktop(context)) {
+    if (isDesktop(context) || isLargeDesktop(context)) {
       Constantes.operationsActividad = operationActivity;
       Constantes.reinit(value: foundedItems!);
       _pullListRefresh();

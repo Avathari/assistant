@@ -343,10 +343,13 @@ class Paneles {
                   foundedItems[index].idHospitalizado =
                       foundedItems[index].hospitalizedData['ID_Hosp'];
               // ******************* * * * * * * *** *
-              Cambios.toNextActivity(context,
-                  chyld: OperacionesPendiente(
-                      withAppBar: false,
-                      operationActivity: Constantes.Register));
+              Cambios.toNextPage(context,
+                  GestionPendiente(
+                      withReturn: true,
+                      actualSidePage: OperacionesPendiente(
+                        withReturn: true,
+                        operationActivity: Constantes.Register,
+                  )));
             }),
         CircleIcon(
             radios: 25,

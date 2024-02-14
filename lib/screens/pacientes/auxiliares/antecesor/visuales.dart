@@ -339,11 +339,15 @@ class _VisualPacientesState extends State<VisualPacientes> {
       Intensiva(), // Analisis(),
       ReportesMedicos(),
       // GestionBalances(),
-      GestionDocumentacion(withAppBar: false,),
+      GestionDocumentacion(
+        withAppBar: false,
+      ),
       // const Center(
       //   child: Text('Body 7'),
       // ),
-    GestionHospitalizaciones(withAppBar: false,),
+      GestionHospitalizaciones(
+        withAppBar: false,
+      ),
       GestionLicencia(),
       Container(margin: const EdgeInsets.all(10), child: Revisiones()),
       const Center(
@@ -496,23 +500,25 @@ class _VisualPacientesState extends State<VisualPacientes> {
         },
       ),
       ListTile(
-        leading: const Icon(
-          Icons.file_present_sharp,
-          color: Colors.grey,
-        ),
-        title: const Text('Archivos y Documentos',
-            style: TextStyle(fontSize: Font.fontTileSize, color: Colors.grey)),
-        onTap: () {
-          if (isMobile(context) || isTablet(context)) {
-            Navigator.of(context).pop();
-          }
-          // Update the state of the app
-          toNextScreen(
-              context: context,
-              index: 8,
-              screen: GestionDocumentacion(withAppBar: true,));
-        }
-      ), // 8
+          leading: const Icon(
+            Icons.file_present_sharp,
+            color: Colors.grey,
+          ),
+          title: const Text('Archivos y Documentos',
+              style:
+                  TextStyle(fontSize: Font.fontTileSize, color: Colors.grey)),
+          onTap: () {
+            if (isMobile(context) || isTablet(context)) {
+              Navigator.of(context).pop();
+            }
+            // Update the state of the app
+            toNextScreen(
+                context: context,
+                index: 8,
+                screen: GestionDocumentacion(
+                  withAppBar: true,
+                ));
+          }), // 8
       ListTile(
         leading: const Icon(
           Icons.medical_services_outlined,
@@ -526,7 +532,11 @@ class _VisualPacientesState extends State<VisualPacientes> {
           }
           // Update the state of the app
           toNextScreen(
-              context: context, index: 9, screen: GestionHospitalizaciones(withAppBar: true,));
+              context: context,
+              index: 9,
+              screen: GestionHospitalizaciones(
+                withAppBar: true,
+              ));
         },
       ),
       ListTile(
@@ -542,25 +552,27 @@ class _VisualPacientesState extends State<VisualPacientes> {
               MaterialPageRoute(builder: (context) => GestionLicencia()));
         },
       ),
-      Valores.sexo! == 'Femenino'
-          ? ListTile(
-              leading: const Icon(
-                Icons.pregnant_woman_sharp,
-                color: Colors.grey,
-              ),
-              title: const Text('Registro de Embarazos',
-                  style: TextStyle(
-                      fontSize: Font.fontTileSize, color: Colors.grey)),
-              onTap: () {
-                if (isMobile(context) || isTablet(context)) {
-                  Navigator.of(context).pop();
-                }
-                // Update the state of the app
-                setState(() {
-                  widget.actualPage = 11;
-                });
-              },
-            )
+      Valores.sexo != null
+          ? Valores.sexo! == 'Femenino'
+              ? ListTile(
+                  leading: const Icon(
+                    Icons.pregnant_woman_sharp,
+                    color: Colors.grey,
+                  ),
+                  title: const Text('Registro de Embarazos',
+                      style: TextStyle(
+                          fontSize: Font.fontTileSize, color: Colors.grey)),
+                  onTap: () {
+                    if (isMobile(context) || isTablet(context)) {
+                      Navigator.of(context).pop();
+                    }
+                    // Update the state of the app
+                    setState(() {
+                      widget.actualPage = 11;
+                    });
+                  },
+                )
+              : Container()
           : Container(),
       ListTile(
         leading: const Icon(
@@ -694,7 +706,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
                   iconData: Icons.water_drop,
                   labelButton: 'Análisis Hidrico',
                   onPress: () =>
-                      Cambios.toNextActivity(context, chyld:  Hidricos())),
+                      Cambios.toNextActivity(context, chyld: Hidricos())),
               GrandIcon(
                 iconData: Icons.bubble_chart,
                 labelButton: 'Análisis Metabólico',
@@ -706,7 +718,8 @@ class _VisualPacientesState extends State<VisualPacientes> {
               GrandIcon(
                 iconData: Icons.horizontal_rule_sharp,
                 labelButton: 'Análisis Antropométrico',
-                onPress: ()  => Cambios.toNextActivity(context, chyld: const Antropometricos()),
+                onPress: () => Cambios.toNextActivity(context,
+                    chyld: const Antropometricos()),
               ),
               GrandIcon(
                   iconData: Icons.monitor_heart_outlined,
@@ -716,8 +729,8 @@ class _VisualPacientesState extends State<VisualPacientes> {
               GrandIcon(
                 iconData: Icons.all_inclusive_rounded,
                 labelButton: 'Análisis Ventilatorio',
-                onPress: ()  => Cambios.toNextActivity(context, chyld: const Ventilatorios())
-                ,
+                onPress: () => Cambios.toNextActivity(context,
+                    chyld: const Ventilatorios()),
               ),
               GrandIcon(
                 iconData: Icons.g_mobiledata,
@@ -865,13 +878,11 @@ class _VisualPacientesState extends State<VisualPacientes> {
                 labelButton: "Estudios Especiales . . . ",
                 onPress: () {
                   Datos.portapapeles(
-                      context: context,
-                      text: Auxiliares.getEspeciales());
+                      context: context, text: Auxiliares.getEspeciales());
                 },
                 onLongPress: () {
                   Datos.portapapeles(
-                      context: context,
-                      text: Auxiliares.getEspeciales());
+                      context: context, text: Auxiliares.getEspeciales());
                 },
               ),
               GrandIcon(
@@ -879,13 +890,11 @@ class _VisualPacientesState extends State<VisualPacientes> {
                 labelButton: "Cultivos Recabados . . . ",
                 onPress: () {
                   Datos.portapapeles(
-                      context: context,
-                      text: Auxiliares.getCultivos());
+                      context: context, text: Auxiliares.getCultivos());
                 },
                 onLongPress: () {
                   Datos.portapapeles(
-                      context: context,
-                      text: Auxiliares.getCultivos());
+                      context: context, text: Auxiliares.getCultivos());
                 },
               ),
               GrandIcon(
@@ -893,13 +902,11 @@ class _VisualPacientesState extends State<VisualPacientes> {
                 labelButton: "Marcadores Cardiacos . . . ",
                 onPress: () {
                   Datos.portapapeles(
-                      context: context,
-                      text: Auxiliares.getCurvaCardiaca());
+                      context: context, text: Auxiliares.getCurvaCardiaca());
                 },
                 onLongPress: () {
                   Datos.portapapeles(
-                      context: context,
-                      text: Auxiliares.getCurvaCardiaca());
+                      context: context, text: Auxiliares.getCurvaCardiaca());
                 },
               ),
             ],

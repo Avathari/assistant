@@ -469,7 +469,7 @@ class _HospitalizadoState extends State<Hospitalizado> {
               padding: 1,
               withBorder: false,
               firstText: 'NG . :',
-              secondText: Valores.fechaIngresoHospitalario,
+              secondText: Valores.fechaIngresoHospitalario?? "",
             ),
           ),
         ],
@@ -481,7 +481,7 @@ class _HospitalizadoState extends State<Hospitalizado> {
               margin: 1,
               padding: 1,
               firstText: 'Cama . : ',
-              secondText: Valores.numeroCama, // .toString(),
+              secondText: Valores.numeroCama?? "", // .toString(),
             ),
           ),
           Expanded(
@@ -489,7 +489,7 @@ class _HospitalizadoState extends State<Hospitalizado> {
               margin: 1,
               padding: 1,
               firstText: 'D.E.H.',
-              secondText: Valores.diasEstancia.toString(),
+              secondText: Valores.diasEstancia.toString()?? "",
             ),
           ),
         ],
@@ -499,7 +499,7 @@ class _HospitalizadoState extends State<Hospitalizado> {
         padding: 1,
         withBorder: false,
         firstText: 'Médico Tratante',
-        secondText: Valores.medicoTratante,
+        secondText: Valores.medicoTratante?? "",
       ),
       Row(
         children: [
@@ -507,14 +507,14 @@ class _HospitalizadoState extends State<Hospitalizado> {
             child: ValuePanel(
               padding: 2.0,
               firstText: 'S. Trat. ',
-              secondText: Valores.servicioTratante,
+              secondText: Valores.servicioTratante ?? "",
             ),
           ),
           Expanded(
             child: ValuePanel(
               padding: 2.0,
               firstText: 'S. Ing. ',
-              secondText: Valores.servicioTratanteInicial,
+              secondText: Valores.servicioTratanteInicial?? "",
             ),
           ),
         ],

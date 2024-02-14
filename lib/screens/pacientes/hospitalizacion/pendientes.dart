@@ -2,6 +2,7 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
+import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizados.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
@@ -35,13 +36,12 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 class OperacionesPendiente extends StatefulWidget {
   String? operationActivity;
 
-  bool? withAppBar;
+  bool? withReturn;
   String _operationButton = 'Nulo';
 
-  OperacionesPendiente({Key? key,
-  this.withAppBar = true,
-    this.operationActivity = Constantes.Nulo})
-      : super(key: key);
+  OperacionesPendiente({super.key,
+  this.withReturn = false,
+    this.operationActivity = Constantes.Nulo});
 
   @override
   State<OperacionesPendiente> createState() => _OperacionesPendienteState();
@@ -93,9 +93,7 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: isDesktop(context) || isTabletAndDesktop(context)
-          ? null
-          : widget.withAppBar! ? AppBar(
+      appBar: !isDesktop(context) && !isLargeDesktop(context) ? AppBar(
         foregroundColor: Colors.white,
               backgroundColor: Theming.primaryColor,
               title: AppBarText(appBarTitile),
@@ -336,14 +334,14 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
             context,
             MaterialPageRoute(
                 // maintainState: false,
-                builder: (context) => GestionPendiente()));
+                builder: (context) => GestionPendiente(withReturn: widget.withReturn,)));
         break;
       case false:
         Navigator.push(
             context,
             MaterialPageRoute(
                 // maintainState: false,
-                builder: (context) => GestionPendiente()));
+                builder: (context) => GestionPendiente(withReturn: widget.withReturn)));
         break;
       default:
     }
@@ -372,11 +370,12 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
 // ignore: must_be_immutable
 class GestionPendiente extends StatefulWidget {
   Widget? actualSidePage = Container();
+  bool? withReturn;
   // ****************** *** ****** **************
   var keySearch = "Feca_PEN";
   // ****************** *** ****** **************
 
-  GestionPendiente({Key? key, this.actualSidePage}) : super(key: key);
+  GestionPendiente({super.key, this.actualSidePage, this.withReturn});
 
   @override
   State<GestionPendiente> createState() => _GestionPendienteState();
@@ -404,9 +403,15 @@ class _GestionPendienteState extends State<GestionPendiente> {
             ),
             tooltip: Sentences.regresar,
             onPressed: () {
-              Constantes.reinit();
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => VisualPacientes(actualPage: 0)));
+              if (widget.withReturn == true) {
+                Constantes.reinit();
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => Hospitalizados()));
+              } else {
+                Constantes.reinit();
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => VisualPacientes(actualPage: 0)));
+              }
             },
           ),
           title: AppBarText(appTittle),
@@ -429,7 +434,7 @@ class _GestionPendienteState extends State<GestionPendiente> {
                 toOperaciones(context, Constantes.Register);
               },
             ),
-          ]),
+          ]) ,
       body: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         Expanded(
           flex: 6,
@@ -478,7 +483,7 @@ class _GestionPendienteState extends State<GestionPendiente> {
             ),
           ),
         ),
-        isDesktop(context) // || isTablet(context)
+        isDesktop(context) || isLargeDesktop(context)// || isTablet(context)
             ? widget.actualSidePage != null
                 ? Expanded(flex: 5, child: widget.actualSidePage!)
                 : Expanded(flex: 1, child: Container())
@@ -682,20 +687,19 @@ class _GestionPendienteState extends State<GestionPendiente> {
   }
 
   void toOperaciones(BuildContext context, String operationActivity) {
-    if (isDesktop(context) || isTabletAndDesktop(context)) {
-      // Constantes.operationsActividad = operationActivity;
-      // Constantes.reinit(value: foundedItems!);
-      // _pullListRefresh();
+    if (isDesktop(context) || isLargeDesktop(context)) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (BuildContext context) => GestionPendiente(
-                  actualSidePage: OperacionesPendiente(
+              actualSidePage: OperacionesPendiente(
+                withReturn: widget.withReturn,
                 operationActivity: operationActivity,
               ))));
     } else {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (BuildContext context) => OperacionesPendiente(
-                operationActivity: operationActivity,
-              )));
+            withReturn: widget.withReturn,
+            operationActivity: operationActivity,
+          )));
     }
   }
 

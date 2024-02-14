@@ -2412,57 +2412,33 @@ class _RutinasState extends State<Rutinas> {
                   children: [
                     Expanded(
                       child: EditTextArea(
-                        textController: textBTResultController,
+                        textController: textDHLResultController,
                         keyBoardType: TextInputType.number,
                         inputFormat: MaskTextInputFormatter(),
-                        labelEditText: 'Bilirrubinas Totales ($unidadMedidaBT)',
+                        labelEditText: 'Deshidrogenasa Láctica ($unidadMedidaDHL)',
                         numOfLines: 1,
-                        onChange: (String value) {
-                          double val = 0.0;
-                          if (textBDResultController.text.isNotEmpty) {
-                            val = double.parse(textBTResultController.text) -
-                                double.parse(textBDResultController.text);
-                            textBIResultController.text = val.toStringAsFixed(2);
-                          } else {}
-                        },
                       ),
                     ),
                     Expanded(
                       child: EditTextArea(
-                        textController: textBDResultController,
+                        textController: textGlutarilResultController,
                         keyBoardType: TextInputType.number,
                         inputFormat: MaskTextInputFormatter(),
-                        labelEditText: 'Bilirrubina Directa ($unidadMedidaBD)',
+                        labelEditText:
+                        'Glutaril transpeptidasa ($unidadMedidaGlutaril)',
                         numOfLines: 1,
-                        onChange: (String value) {
-                          double val = 0.0;
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        textController: textFosfatasaResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'Fosfatasa Alcalina ($unidadMedidaFosfatasa)',
+                        numOfLines: 1,
+                      ),
+                    ),
 
-                          if (textBTResultController.text.isNotEmpty) {
-                            val = double.parse(textBTResultController.text) -
-                                double.parse(textBDResultController.text);
-                            textBIResultController.text = val.toStringAsFixed(2);
-                          } else {}
-                        },
-                      ),
-                    ),
-                    Expanded(
-                      child: EditTextArea(
-                        textController: textBIResultController,
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(),
-                        labelEditText: 'Bilirrubina Indirecta ($unidadMedidaBI)',
-                        numOfLines: 1,
-                      ),
-                    ),
-                    Expanded(
-                      child: EditTextArea(
-                        textController: textAlaninoResultController,
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(),
-                        labelEditText: 'Alaninoaminotrasferasa ($unidadMedidaAlanino)',
-                        numOfLines: 1,
-                      ),
-                    ),
                   ],
                 ),
                 Row(
