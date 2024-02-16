@@ -1019,7 +1019,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: widget.operationActivity == Constantes.Register
+      appBar: isMobile(context)|| isTablet(context) // widget.operationActivity == Constantes.Register
           ? AppBar(
               title: AppBarText('Registro del Paciente'),
               backgroundColor: Colors.black,
@@ -1030,8 +1030,14 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                 ),
                 tooltip: Sentences.regresar,
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const GestionPacientes()));
+                  if (widget.operationActivity == Constantes.Register) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const GestionPacientes()));
+                  } else {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>  VisualPacientes(actualPage: 0)));
+                  }
+
                 },
               ),
               actions: isMobile(context)

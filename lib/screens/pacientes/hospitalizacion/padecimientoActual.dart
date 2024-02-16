@@ -125,11 +125,11 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
                 children: [
                   // TittlePanel(textPanel: 'Padecimiento Actual'),
                   EditTextArea(
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(
-                        mask: '####/##/##', filter: {"#": RegExp(r'[0-9]')}),
                     labelEditText: 'Fecha de Inicio Padecimiento',
                     textController: fechaPadecimientoTextController,
+                    keyBoardType: TextInputType.datetime,
+                    inputFormat: MaskTextInputFormatter(
+                        mask: '####/##/##', filter: {"#": RegExp(r'[0-9]')}),
                     iconData: Icons.calendar_today,
                     withShowOption: true,
                     selection: true,
@@ -140,11 +140,11 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
                           "Inicia padecimiento actual el ${fechaPadecimientoTextController.text}";
                     },
                     numOfLines: 1,
-                    onChange: (value) {
-                      setState(() {
-                        fechaPadecimientoTextController.text = value;
-                      });
-                    },
+                    // onChange: (value) {
+                    //   setState(() {
+                    //     fechaPadecimientoTextController.text = value;
+                    //   });
+                    // },
                   ),
                   EditTextArea(
                     keyBoardType: TextInputType.multiline,

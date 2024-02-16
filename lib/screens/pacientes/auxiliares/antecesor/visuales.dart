@@ -90,11 +90,11 @@ class _VisualPacientesState extends State<VisualPacientes> {
       endDrawer: _drawerForm(context),
       appBar: AppBar(
           foregroundColor: Colors.white,
-          leading: isDesktop(context)
+          leading: isDesktop(context) || isLargeDesktop(context)
               ? IconButton(
                   icon: const Icon(
                     color: Colors.white,
-                    Icons.arrow_back,
+                    Icons.arrow_back
                   ),
                   tooltip: 'Regresar',
                   onPressed: () => cerrarCasoPaciente())

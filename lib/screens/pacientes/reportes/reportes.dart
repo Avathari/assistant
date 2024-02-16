@@ -28,6 +28,7 @@ import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteFormats/
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/indicaciones.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/semiologicos.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteConsulta.dart';
+import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteEgreso.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteEvolucion.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteIngreso.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reportePrequirurgico.dart';
@@ -542,7 +543,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                             Navigator.of(context).pop();
                             if (getTypeReport() ==
                                     TypeReportes.reporteIngreso ||
-                                getTypeReport() == TypeReportes.reporteEgreso) {
+                                getTypeReport() == TypeReportes.reporteEgreso ||
+                                getTypeReport() ==
+                                    TypeReportes.reporteRevision) {
                               Repositorios.actualizarRegistro();
                             } else {
                               Repositorios.registrarRegistro();
@@ -756,7 +759,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       const ReporteTerapia(), // 3 : Reporte de Reporte tipado
       const ReportePrequirurgico(), // 4 : Reporte de
       Container(), // 5 : Reporte de Preanestésico
-      Container(), // 6 : Reporte de Egreso
+      const ReporteEgreso(), // 6 : Reporte de Egreso
       const ReporteRevision(), // 7 : Reporte de Revisión
       const ReporteTraslado(), // 8 : Reporte de Traslado
       Pacientes.esHospitalizado == true
@@ -1080,7 +1083,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                               if (getTypeReport() ==
                                       TypeReportes.reporteIngreso ||
                                   getTypeReport() ==
-                                      TypeReportes.reporteEgreso) {
+                                      TypeReportes.reporteEgreso ||
+                                  getTypeReport() ==
+                                      TypeReportes.reporteRevision) {
                                 Repositorios.actualizarRegistro();
                               } else {
                                 Repositorios.registrarRegistro();
@@ -1287,15 +1292,28 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                 style: Styles.textSyleGrowth(fontSize: 12),
               ),
               CrossLine(thickness: 4),
-              CrossLine(thickness: 3),
-              Text(listNotes![widget.indexNote]['Diagnosticos_Hospital'],
+              listNotes![widget.indexNote]['Tipo_Analisis'] !=
+                          'Análisis de Gravedad' &&
+                      listNotes![widget.indexNote]['Tipo_Analisis'] !=
+                          'Análisis de Ingreso' &&
+                      listNotes![widget.indexNote]['Tipo_Analisis'] !=
+                          'Análisis de Egreso'
+                  ? CrossLine(thickness: 3)
+                  : Container(),
+              Text(
+                  listNotes![widget.indexNote]['Diagnosticos_Hospital']
+                      .toUpperCase(),
                   style: Styles.textSyleGrowth(fontSize: 9)),
               listNotes![widget.indexNote]['Tipo_Analisis'] !=
                       'Análisis de Gravedad'
                   ? CrossLine(thickness: 4)
                   : Container(),
               listNotes![widget.indexNote]['Tipo_Analisis'] !=
-                      'Análisis de Gravedad'
+                          'Análisis de Gravedad' &&
+                      listNotes![widget.indexNote]['Tipo_Analisis'] !=
+                          'Análisis de Ingreso' &&
+                      listNotes![widget.indexNote]['Tipo_Analisis'] !=
+                          'Análisis de Egreso'
                   ? Text(
                       listNotes![widget.indexNote]['Subjetivo'],
                       maxLines: 3,
@@ -1304,8 +1322,17 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   : Container(),
               Text(listNotes![widget.indexNote]['Signos_Vitales'],
                   maxLines: 3, style: Styles.textSyleGrowth(fontSize: 8)),
-              CrossLine(thickness: 3),
-              Text(
+              listNotes![widget.indexNote]['Tipo_Analisis'] !=
+                          'Análisis de Gravedad' &&
+                      listNotes![widget.indexNote]['Tipo_Analisis'] !=
+                          'Análisis de Ingreso' &&
+                      listNotes![widget.indexNote]['Tipo_Analisis'] !=
+                          'Análisis de Revisión' && listNotes![widget.indexNote]['Tipo_Analisis'] !=
+                  'Análisis de Egreso'
+                  ? CrossLine(thickness: 3)
+                  : Container(),
+              if (listNotes![widget.indexNote]['Tipo_Analisis'] !=
+              'Análisis de Egreso') Text(
                 listNotes![widget.indexNote]['Exploracion_Fisica'],
                 maxLines: 20,
                 style: Styles.textSyleGrowth(fontSize: 9),
@@ -1313,7 +1340,13 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               CrossLine(thickness: 3),
               Text(
                   listNotes![widget.indexNote]['Tipo_Analisis'] ==
-                          "Análisis de Ingreso"
+                              "Análisis de Ingreso" ||
+                          // listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                          //     'Análisis de Gravedad' ||
+                          listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                              'Análisis de Revisión' ||
+                          listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                              'Análisis de Egreso'
                       ? "MOTIVO DE INGRESO: ${listNotes![widget.indexNote]['Padecimiento_Actual']}"
                       : listNotes![widget.indexNote]['Tipo_Analisis'] ==
                               "Análisis de Evolución"
@@ -1322,7 +1355,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   maxLines: 25,
                   style: Styles.textSyleGrowth(fontSize: 8)),
               listNotes![widget.indexNote]['Tipo_Analisis'] !=
-                      'Análisis de Gravedad'
+                      'Análisis de Gravedad' && listNotes![widget.indexNote]['Tipo_Analisis'] !=
+                  'Análisis de Egreso'
                   ? CrossLine(thickness: 3)
                   : Container(),
               // Text(
@@ -1331,7 +1365,10 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               //   style: Styles.textSyleGrowth(fontSize: 9),
               // ),
               listNotes![widget.indexNote]['Tipo_Analisis'] !=
-                      'Análisis de Gravedad'
+                          'Análisis de Gravedad' &&
+                      listNotes![widget.indexNote]['Tipo_Analisis'] !=
+                          'Análisis de Revisión' && listNotes![widget.indexNote]['Tipo_Analisis'] !=
+                  'Análisis de Egreso'
                   ? CrossLine(thickness: 1)
                   : Container(),
               // Text(
@@ -1557,6 +1594,78 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                     })),
           ],
         )),
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              GrandIcon(
+                iconData: Icons.checklist_rtl,
+                labelButton: "Laboratorios",
+                onPress: () {
+                  Operadores.selectOptionsActivity(
+                    context: context,
+                    tittle: "Elija la fecha de los estudios . . . ",
+                    options: Listas.listWithoutRepitedValues(
+                      Listas.listFromMapWithOneKey(
+                        Pacientes.Paraclinicos!,
+                        keySearched: 'Fecha_Registro',
+                      ),
+                    ),
+                    onClose: (value) {
+                      setState(() {
+                        Datos.portapapeles(
+                            context: context,
+                            text: Auxiliares.porFecha(fechaActual: value));
+                        Navigator.of(context).pop();
+                      });
+                    },
+                  );
+                },
+              ),
+              GrandIcon(
+                iconData: Icons.list_alt_sharp,
+                labelButton: "Laboratorios",
+                onPress: () {
+                  Datos.portapapeles(
+                      context: context, text: Auxiliares.historial());
+                },
+                onLongPress: () {
+                  Datos.portapapeles(
+                      context: context,
+                      text: Auxiliares.historial(esAbreviado: true));
+                },
+              ),
+              GrandIcon(
+                iconData: Icons.line_style,
+                labelButton: "Laboratorios",
+                onPress: () {
+                  Datos.portapapeles(
+                      context: context, text: Auxiliares.getUltimo());
+                },
+                onLongPress: () {
+                  Datos.portapapeles(
+                      context: context,
+                      text: Auxiliares.getUltimo(esAbreviado: true));
+                },
+              ),
+              GrandIcon(
+                iconData: Icons.linear_scale_rounded,
+                labelButton: "Actual e Historial",
+                onPress: () {
+                  Datos.portapapeles(
+                      context: context,
+                      text: Auxiliares.getUltimo(withoutInsighs: true));
+                },
+                onLongPress: () {
+                  Datos.portapapeles(
+                      context: context,
+                      text: Auxiliares.historial(withoutInsighs: true));
+                },
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }

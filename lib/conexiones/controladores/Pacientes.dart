@@ -7860,6 +7860,9 @@ class Reportes {
         return CopiasReportes.reporteRevision(Reportes.reportes);
       case TypeReportes.reporteTraslado:
         return CopiasReportes.reporteTraslado(Reportes.reportes);
+        //
+      case TypeReportes.reporteEgreso:
+        return CopiasReportes.reporteEgreso(Reportes.reportes);
       default:
         return CopiasReportes.reporteIngreso(Reportes.reportes);
     }
@@ -8700,6 +8703,35 @@ class Repositorios {
       Reportes.pendientes.toString(),
       tipo_Analisis // Repositorios.tipoAnalisis()
     ];
+    var ValuesEgreso = [
+      Pacientes.ID_Paciente,
+      Pacientes.ID_Hospitalizacion,
+      Valores.fechaPadecimientoActual ??
+          Calendarios.today(format: 'yyyy/MM/dd'),
+      Reportes.padecimientoActual,
+      // Valores.servicioTratanteInicial,
+      Valores.servicioTratante,
+      Calendarios.today(format: 'yyyy/MM/dd'),
+      Reportes.impresionesDiagnosticas,
+      Reportes.reportes['Subjetivo'],
+      Reportes.signosVitales,
+      Reportes.exploracionFisica,
+      // Reportes.eventualidadesOcurridas,
+      // Reportes.terapiasPrevias,
+      Reportes.analisisMedico,
+      // Reportes.tratamientoPropuesto,
+      Reportes.pronosticoMedico,
+      // INDICACIONES MÉDICAS *******************************
+      Reportes.dieta.toString(),
+      Reportes.hidroterapia.toString(),
+      Reportes.insulinoterapia.toString(),
+      Reportes.hemoterapia.toString(),
+      Reportes.oxigenoterapia.toString(),
+      Reportes.medicamentosIndicados.toString(),
+      Reportes.medidasGenerales.toString(),
+      Reportes.pendientes.toString(),
+    Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
+    ];
     //
     await Actividades.registrar(
       Databases.siteground_database_reghosp,
@@ -8709,9 +8741,14 @@ class Repositorios {
       Archivos.deleteFile(
           filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
       Terminal.printExpected(message: "VALUE - $value : $Values");
-    }).whenComplete(() {
+    }).whenComplete(() async {
       Archivos.createJsonFromMap(Pacientes.Notas!,
           filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
+      await Actividades.registrar(
+        Databases.siteground_database_reghosp,
+        Repositorios.repositorio['registerQuery'],
+        ValuesEgreso,
+      ); // REGISTRAR el Formato de Egreso . . .
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "ERROR - $error : $stackTrace");
     });

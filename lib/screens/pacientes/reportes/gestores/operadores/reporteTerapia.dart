@@ -39,12 +39,15 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
       initialTextController.text = Reportes.reportes['Datos_Generales'] =
           Pacientes.prosa(isTerapia: true);
       //
-      if (Reportes.reportes['Impresiones_Diagnosticas'] == "") {
-        diagoTextController.text = Reportes.reportes['Impresiones_Diagnosticas'] =
-            Pacientes.diagnosticos();
-      } else {
-        diagoTextController.text = Reportes.reportes['Impresiones_Diagnosticas'];
-      }
+      diagoTextController.text = Reportes.impresionesDiagnosticas.isNotEmpty
+          ? Reportes.impresionesDiagnosticas
+          : Pacientes.diagnosticos();
+      // if (Reportes.reportes['Impresiones_Diagnosticas'] == "") {
+      //   diagoTextController.text = Reportes.reportes['Impresiones_Diagnosticas'] =
+      //       Pacientes.diagnosticos();
+      // } else {
+      //   diagoTextController.text = Reportes.reportes['Impresiones_Diagnosticas'];
+      // }
 
       //
       consultaTextController.text =

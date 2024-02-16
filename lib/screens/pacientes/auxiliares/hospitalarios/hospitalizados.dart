@@ -523,7 +523,9 @@ class _HospitalizadosState extends State<Hospitalizados> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Paneles.fichaIdentificacion(snapshot, index),
-                          Paneles.padesView(context, snapshot, index),
+                          Expanded(
+                              child:
+                                  Paneles.padesView(context, snapshot, index)),
                         ],
                       ),
                     ),
@@ -533,11 +535,11 @@ class _HospitalizadosState extends State<Hospitalizados> {
               ),
             ),
             Expanded(
-              flex: isLargeDesktop(context) ||
-                      isDesktop(context) ||
-                      isTablet(context)
+              flex: isLargeDesktop(context) || isDesktop(context)
                   ? 2
-                  : 1,
+                  : isTablet(context)
+                      ? 3
+                      : 1,
               child: Column(
                 children: [
                   Expanded(
@@ -574,10 +576,17 @@ class _HospitalizadosState extends State<Hospitalizados> {
                       });
                     },
                     firstText: foundedItems![index].balances.isNotEmpty
-                        ? foundedItems![index]
-                            .balances
-                            .last[0]['Pace_bala_Fecha']
-                            .toString()
+                        ? foundedItems![index].balances.last[0] != null
+                            ? foundedItems![index]
+                                .balances
+                                .last[0]['Pace_bala_Fecha']
+                                .toString()
+                            : foundedItems![index].balances.last != null
+                                ? foundedItems![index]
+                                    .balances
+                                    .last['Pace_bala_Fecha']
+                                    .toString()
+                                : 'Sin Balance Hídrico'
                         : 'Sin Balance Hídrico',
                   ),
                   ValuePanel(
@@ -619,6 +628,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
             Expanded(
               flex: 5,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Expanded(
                       flex: 5,
@@ -626,7 +636,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                   // Expanded(flex: 5, child: diagnosticosPanel(snapshot, index)),
                   Expanded(
                       flex: 5,
-                      child: Paneles.licenciasPanel(context, snapshot, index)),
+                      child: Paneles.pendientesPanel(context, snapshot, index)),
                 ],
               ),
             ),
@@ -634,10 +644,10 @@ class _HospitalizadosState extends State<Hospitalizados> {
                 flex: 2,
                 child: Column(
                   children: [
-                    Expanded(
-                        flex: 4,
-                        child:
-                            Paneles.pendientesPanel(context, snapshot, index)),
+                    // Expanded(
+                    //     flex: 4,
+                    //     child:
+                    //         Paneles.pendientesPanel(context, snapshot, index)),
                     Expanded(
                       child: GrandIcon(
                           labelButton: "Pendientes . . . ",
@@ -655,6 +665,11 @@ class _HospitalizadosState extends State<Hospitalizados> {
                         flex: 2,
                         child: Paneles.opcionesPanel(
                             context, foundedItems, index)),
+                    Expanded(
+                        child: CircleIcon(
+                            tittle: 'Recargar Registro . . . ',
+                            iconed: Icons.recent_actors_rounded,
+                            onChangeValue: () => _refreshActualList(index))),
                   ],
                 )),
             Expanded(
@@ -837,10 +852,11 @@ class _HospitalizadosState extends State<Hospitalizados> {
                             // Repositorios.actualizarRegistro();
                           });
                     }),
-                CircleIcon(
-                    tittle: 'Recargar Registro . . . ',
-                    iconed: Icons.recent_actors_rounded,
-                    onChangeValue: () => _refreshActualList(index)),
+                if (!isTablet(context))
+                  CircleIcon(
+                      tittle: 'Recargar Registro . . . ',
+                      iconed: Icons.recent_actors_rounded,
+                      onChangeValue: () => _refreshActualList(index)),
                 GrandIcon(
                     iconData: Icons.hourglass_bottom,
                     labelButton: 'Cutivos y Hemocultivos . . . ',
@@ -1484,16 +1500,14 @@ class _HospitalizadosState extends State<Hospitalizados> {
                             context: context,
                             tittle: 'Consultando Pendientes Recabados . . . ',
                             message: 'Consultando . . . ',
-                            onCloss: () {
-                            });
+                            onCloss: () {});
                         //
                         int index = -1;
                         Future.doWhile(() async {
                           index++;
-                          Pacientes.ID_Hospitalizacion =
-                              foundedItems![index].idHospitalizado =
-                          foundedItems![index]
-                              .hospitalizedData['ID_Hosp'];
+                          Pacientes.ID_Hospitalizacion = foundedItems![index]
+                                  .idHospitalizado =
+                              foundedItems![index].hospitalizedData['ID_Hosp'];
                           //
                           await foundedItems![index]
                               .getPendientesHistorial(reload: true);
@@ -1501,13 +1515,18 @@ class _HospitalizadosState extends State<Hospitalizados> {
                           if (index < foundedItems!.length) return false;
                           //
                           return true;
-                        }).whenComplete(() => setState(() {
-                          Navigator.pop(context);
-                          widget.actualLateralPage = 1;
-                          _key.currentState!.openEndDrawer();
-                        })).onError((error, stackTrace) {
-                          Operadores.alertActivity(context: context, tittle: "ERROR Sucedido", message: "ERROR al recolectar pendientes"
-                              "$error : : $stackTrace");
+                        })
+                            .whenComplete(() => setState(() {
+                                  Navigator.pop(context);
+                                  widget.actualLateralPage = 1;
+                                  _key.currentState!.openEndDrawer();
+                                }))
+                            .onError((error, stackTrace) {
+                          Operadores.alertActivity(
+                              context: context,
+                              tittle: "ERROR Sucedido",
+                              message: "ERROR al recolectar pendientes"
+                                  "$error : : $stackTrace");
                         });
                       }),
                   GrandIcon(
@@ -1574,10 +1593,10 @@ class _HospitalizadosState extends State<Hospitalizados> {
                               //
                               Operadores.loadingActivity(
                                   context: context,
-                                  tittle: 'Consultando Pendientes Recabados . . . ',
+                                  tittle:
+                                      'Consultando Pendientes Recabados . . . ',
                                   message: 'Consultando . . . ',
-                                  onCloss: () {
-                                  });
+                                  onCloss: () {});
                               //
                               int index = -1;
                               Future.doWhile(() async {
@@ -1593,15 +1612,19 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                 if (index < foundedItems!.length) return false;
                                 //
                                 return true;
-                              }).whenComplete(() => setState(() {
-                                Navigator.pop(context);
-                                    widget.actualLateralPage = 1;
-                                    _key.currentState!.openEndDrawer();
-                                  })).onError((error, stackTrace) {
-                                Operadores.alertActivity(context: context, tittle: "ERROR Sucedido", message: "ERROR al recolectar pendientes"
-                                    "$error : : $stackTrace");
-                              }
-                              );
+                              })
+                                  .whenComplete(() => setState(() {
+                                        Navigator.pop(context);
+                                        widget.actualLateralPage = 1;
+                                        _key.currentState!.openEndDrawer();
+                                      }))
+                                  .onError((error, stackTrace) {
+                                Operadores.alertActivity(
+                                    context: context,
+                                    tittle: "ERROR Sucedido",
+                                    message: "ERROR al recolectar pendientes"
+                                        "$error : : $stackTrace");
+                              });
                             })),
                 ],
               ),

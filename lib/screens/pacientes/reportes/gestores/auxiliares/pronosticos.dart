@@ -48,15 +48,12 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
   @override
   void initState() {
     setState(() {
-      // funcionValue = Pacientes.pronosticoFuncion;
-      // vidaValue = Pacientes.pronosticoVida;
-      // tiempoValue = Pacientes.pronosticoTiempo;
-      // estadoValue = Pacientes.pronosticoEstado;
-      // diagoTextController.text = "";
-      // pronosTextController.text = "";
       //
+      diagoTextController.text = Reportes.impresionesDiagnosticas.isNotEmpty
+          ? Reportes.impresionesDiagnosticas
+          : Pacientes.diagnosticos();
 
-      if (Reportes.reportes['Impresiones_Diagnosticas'] != "") diagoTextController.text = Reportes.reportes['Impresiones_Diagnosticas']; else diagoTextController.text = Pacientes.diagnosticos();
+      // if (Reportes.reportes['Impresiones_Diagnosticas'] != "") diagoTextController.text = Reportes.reportes['Impresiones_Diagnosticas']; else diagoTextController.text = Pacientes.diagnosticos();
 
       if (Reportes.reportes['Pronostico_Medico'] != "")
         pronosTextController.text = Reportes.reportes['Pronostico_Medico'];

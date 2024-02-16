@@ -2642,8 +2642,8 @@ class Items {
   static List<String> tiposAnalisis = [
     'Análisis de Ingreso', // 0
     'Análisis de Evolución', // 1
-    'Análisis de Revisión',
-    'Análisis de Egreso',
+    'Análisis de Revisión', // 2
+    'Análisis de Egreso', // 3
     'Análisis de Gravedad', // 4
     'Análisis de Traslado', // 5
   ];

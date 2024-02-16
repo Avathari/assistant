@@ -3172,7 +3172,7 @@ class CopiasReportes {
           "${paraph['Antecedentes_Patologicos_Ingreso']}\n";
     }
 
-    tipoReporte = "${tipoReporte}PADECIMIENTO ACTUAL\n"
+    tipoReporte = "${tipoReporte}\nPADECIMIENTO ACTUAL\n"
         "${paraph['Padecimiento_Actual']}\n\n";
 
     // # # # # # # ### # # # # # # ###
@@ -3486,6 +3486,42 @@ class CopiasReportes {
           "${paraph['Motivo_Traslado']}";
     }
 
+    // tipoReporte = "$tipoReporte\n\n"
+    //     "Med. Gral. Romero Pantoja Luis Ced. Prof. 12210866 Medicina General";
+
+    return tipoReporte;
+  }
+
+  //
+  static String reporteEgreso(Map<String, dynamic> paraph) {
+    print(paraph);
+    //
+    String tipoReporte = "NOTA DE EGRESO HOSPITALARIO\n";
+    tipoReporte = "${tipoReporte}DIAGNÓSTICO(s) DE EGRESO\n"
+        "${paraph['Impresiones_Diagnosticas']}\n"
+        "${paraph['Datos_Generales']}\n";
+
+    // # # # # # # ### # # # # # # ###
+    if (paraph['Antecedentes_Patologicos_Ingreso'] != "") {
+      tipoReporte = "${tipoReporte}ANTECEDENTES PERSONALES PATOLÓGICOS\n"
+          "${paraph['Antecedentes_Patologicos_Ingreso']}\n";
+    }
+
+    tipoReporte = "${tipoReporte}\nMOTIVO DE INGRESO - "
+        "${paraph['Padecimiento_Actual']}\n\n";
+
+    // # # # # # # ### # # # # # # ###
+    tipoReporte =
+    "${tipoReporte}A la ingreso a hospitalización de medicina interna se encuentra al paciente con: \n"
+        "${paraph['Signos_Vitales']}\n"
+        "${paraph['Exploracion_Fisica']}\n\n";
+
+    tipoReporte = "$tipoReporte"
+        "ANÁLISIS\n"
+        "${paraph['Analisis_Medico']}\n";
+
+    tipoReporte = "$tipoReporte"
+        "${paraph['Pronostico_Medico']}";
     // tipoReporte = "$tipoReporte\n\n"
     //     "Med. Gral. Romero Pantoja Luis Ced. Prof. 12210866 Medicina General";
 
