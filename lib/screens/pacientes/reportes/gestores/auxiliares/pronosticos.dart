@@ -4,6 +4,7 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/analisis.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/DialogSelector.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
@@ -25,25 +26,6 @@ class DiagnosticosAndPronostico extends StatefulWidget {
 }
 
 class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
-  // ######################### ### # ### ############################
-  // INICIO DE LAS OPERACIONES STATE() Y BUILD().
-  // ######################### ### # ### ############################
-  var scrollController = ScrollController();
-  // #######################+## ### # ### ############################
-  // INICIO DE LAS OPERACIONES STATE() Y BUILD().
-  // ######################### ### # ### ############################
-  var diagoTextController = TextEditingController();
-  var pronosTextController = TextEditingController();
-  // ######################### ### # ### ############################
-  // INICIO DE LAS OPERACIONES STATE() Y BUILD().
-  // ######################### ### # ### ############################
-  String? funcionValue = Pacientes.PronosticoFuncion[0];
-  String? vidaValue = Pacientes.PronosticoVida[0];
-  String? tiempoValue = Pacientes.PronosticoTiempo[0];
-  String? estadoValue = Pacientes.PronosticoEstado[0];
-  // ######################### ### # ### ############################
-  // INICIO DE LAS OPERACIONES STATE() Y BUILD().
-  // ######################### ### # ### ############################
 
   @override
   void initState() {
@@ -86,15 +68,14 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                 ),
           Expanded(
             flex: 3,
-            child: Row(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Expanded(
-                  flex: 3,
-                  child: SingleChildScrollView(
-                    controller: scrollController,
-                    child: Column(children: [
-                      Spinner(
+                  flex: 1,
+                  child: Row(children: [
+                    Expanded(
+                      child: Spinner(
                         width: isMobile(context)
                             ? 60
                             : isTablet(context) || isTabletAndDesktop(context)
@@ -109,7 +90,9 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                         },
                         items: Pacientes.PronosticoEstado,
                       ),
-                      Spinner(
+                    ),
+                    Expanded(
+                      child: Spinner(
                         width: isMobile(context)
                             ? 60
                             : isTablet(context) || isTabletAndDesktop(context)
@@ -124,7 +107,9 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                         },
                         items: Pacientes.PronosticoFuncion,
                       ),
-                      Spinner(
+                    ),
+                    Expanded(
+                      child: Spinner(
                           width: isMobile(context)
                               ? 60
                               : isTablet(context) || isTabletAndDesktop(context)
@@ -138,7 +123,9 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                             });
                           },
                           items: Pacientes.PronosticoVida),
-                      Spinner(
+                    ),
+                    Expanded(
+                      child: Spinner(
                         width: isMobile(context)
                             ? 60
                             : isTablet(context) || isTabletAndDesktop(context)
@@ -153,8 +140,8 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                         },
                         items: Pacientes.PronosticoTiempo,
                       ),
-                    ]),
-                  ),
+                    ),
+                  ]),
                 ),
                 Expanded(
                   flex: 3,
@@ -171,18 +158,46 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                             });
                           },
                         ),
-                        EditTextArea(
-                            textController: pronosTextController,
-                            labelEditText: "Pronóstico médico",
-                            keyBoardType: TextInputType.multiline,
-                            numOfLines: 10,
-                            limitOfChars: 2000,
-                            onChange: ((value) {
-                              Reportes.pronosticoMedico = "$value.";
-                              Reportes.reportes['Pronostico_Medico'] =
-                                  "$value.";
-                            }),
-                            inputFormat: MaskTextInputFormatter()),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 5,
+                              child: EditTextArea(
+                                  textController: pronosTextController,
+                                  labelEditText: "Pronóstico médico",
+                                  keyBoardType: TextInputType.multiline,
+                                  numOfLines: 10,
+                                  limitOfChars: 2000,
+                                  onChange: ((value) {
+                                    Reportes.pronosticoMedico = "$value.";
+                                    Reportes.reportes['Pronostico_Medico'] =
+                                        "$value.";
+                                  }),
+                                  inputFormat: MaskTextInputFormatter()),
+                            ),
+                            Expanded(
+                              child: CircleIcon(
+                                  iconed: Icons.add,
+                                  tittle: "Comentarios Previos . . . ",
+                                  onChangeValue: () {
+                                    Operadores.selectOptionsActivity(context: context,
+                                        options: Items.bibliografiasContempladas.map((e) =>
+                                        e['Diagnostico']).toList(),
+                                        onClose: (valar) {
+                                          Terminal.printWarning(message: "$valar");
+
+                                          Items.bibliografiasContempladas.forEach((e) {
+                                            //
+                                            if (e['Diagnostico'] == valar) {
+                                              pronosTextController.text = "${pronosTextController.text}${e['Bibliografia']!}";
+                                            }
+                                          });
+                                          Navigator.of(context).pop();
+                                        });
+                                  }),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -201,4 +216,19 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
     Pacientes.pronosticoTiempo = tiempoValue;
     Pacientes.pronosticoEstado = estadoValue;
   }
+
+  // INICIO DE LAS OPERACIONES STATE() Y BUILD(). **********************
+  var scrollController = ScrollController();
+  //
+  var diagoTextController = TextEditingController();
+  var pronosTextController = TextEditingController();
+  // ######################### ### # ### ############################
+  String? funcionValue = Pacientes.PronosticoFuncion[0];
+  String? vidaValue = Pacientes.PronosticoVida[0];
+  String? tiempoValue = Pacientes.PronosticoTiempo[0];
+  String? estadoValue = Pacientes.PronosticoEstado[0];
+// ######################### ### # ### ############################
+// INICIO DE LAS OPERACIONES STATE() Y BUILD().
+// ######################### ### # ### ############################
+
 }

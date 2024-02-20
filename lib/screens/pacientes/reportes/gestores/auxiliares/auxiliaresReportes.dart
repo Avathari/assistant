@@ -45,8 +45,10 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
       if (widget.isIngreso! == false) Reportes.reportes['Auxiliares_Diagnosticos'] = Reportes.auxiliaresDiagnosticos = Auxiliares.getUltimo(esAbreviado: true);
       //
       auxTextController.text = Reportes.auxiliaresDiagnosticos;
-      if (Reportes.analisisComplementarios != "") {
+      if (Reportes.reportes['Analisis_Complementarios'] != "") {
         commenTextController.text = Reportes.analisisComplementarios;
+      } else {
+        commenTextController.text = Reportes.analisisComplementarios = "";
       }
     });
     super.initState();

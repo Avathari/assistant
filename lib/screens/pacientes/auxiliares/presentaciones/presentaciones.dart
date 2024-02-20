@@ -22,7 +22,7 @@ class _PresentacionPacientesState extends State<PresentacionPacientes> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(2.5),
+        padding: const EdgeInsets.all(1.1),
         child:
             Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
           GestureDetector(
@@ -36,7 +36,8 @@ class _PresentacionPacientesState extends State<PresentacionPacientes> {
                     children: [
                       ImageDialog(
                         tittle: Pacientes.nombreCompleto,
-                        stringImage: Pacientes.imagenPaciente, //Paciente['Pace_FIAT'],
+                        stringImage:
+                            Pacientes.imagenPaciente, //Paciente['Pace_FIAT'],
                       ),
                       Expanded(
                         flex: isTablet(context) ? 3 : 1,
@@ -62,7 +63,8 @@ class _PresentacionPacientesState extends State<PresentacionPacientes> {
                                 ThreeLabelTextAline(
                                   padding: 2.0,
                                   firstText: 'Edad',
-                                  secondText: '${Pacientes.Paciente['Pace_Eda']} Años',
+                                  secondText:
+                                      '${Pacientes.Paciente['Pace_Eda']} Años',
                                 ),
                                 ThreeLabelTextAline(
                                   padding: 2.0,
@@ -82,7 +84,8 @@ class _PresentacionPacientesState extends State<PresentacionPacientes> {
                                 ThreeLabelTextAline(
                                   padding: 2.0,
                                   firstText: 'Estado Civil',
-                                  secondText: Pacientes.Paciente['Pace_Edo_Civ'],
+                                  secondText:
+                                      Pacientes.Paciente['Pace_Edo_Civ'],
                                 ),
                                 ThreeLabelTextAline(
                                   padding: 2.0,
@@ -120,7 +123,8 @@ class _PresentacionPacientesState extends State<PresentacionPacientes> {
                 child: Pacientes.imagenPaciente != ""
                     ? ClipOval(
                         child: Image.memory(
-                        base64Decode(Pacientes.imagenPaciente), // Pacientes.Paciente['Pace_FIAT']),
+                        base64Decode(Pacientes
+                            .imagenPaciente), // Pacientes.Paciente['Pace_FIAT']),
                         width: 250,
                         height: 250,
                         fit: BoxFit.cover,
@@ -159,8 +163,8 @@ class _PresentacionPacientesState extends State<PresentacionPacientes> {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-               SizedBox(
-                height: isMobile(context) ? 12: 20,
+              SizedBox(
+                height: isMobile(context) ? 12 : 20,
                 child: CrossLine(),
               ),
               Text(

@@ -2646,6 +2646,7 @@ class Items {
     'Análisis de Egreso', // 3
     'Análisis de Gravedad', // 4
     'Análisis de Traslado', // 5
+    'Análisis de Preoperatorio', // 6
   ];
 
   static List<String> motivosTraslado = [
@@ -3091,7 +3092,8 @@ class Items {
       "Diagnostico": "Asma bronquial",
       "Tratamiento":
           "acude a urgencias por  dificultad  para respirar y tos seca, no realizan estudios complementarios y egresan con diagnóstico de asma; manejo con salbutamol el cual usa desde entonces solo de rescate",
-      "Antecedentes": "*Antecedente de crisis asmática en tres ocasiones: a los 24 años, a los 31 años y a los 42 años de edad,refiere todas con misma sintomatología; odinofagia seguida de tos seca disneizante y cianosante , dolor torácico tipo opresivo, sin irradiaciones, sin atenuantes y exacerbantes  con disnea súbita mMRC 3 y sibilancias audibles,se controlan  con la inhalación de salbutamol.Refiere predominio nocturno de la sintomatología.Niega acompañarse de fiebre Exacerbaciones precedidas por infección de vías respiratorias altas",
+      "Antecedentes":
+          "*Antecedente de crisis asmática en tres ocasiones: a los 24 años, a los 31 años y a los 42 años de edad,refiere todas con misma sintomatología; odinofagia seguida de tos seca disneizante y cianosante , dolor torácico tipo opresivo, sin irradiaciones, sin atenuantes y exacerbantes  con disnea súbita mMRC 3 y sibilancias audibles,se controlan  con la inhalación de salbutamol.Refiere predominio nocturno de la sintomatología.Niega acompañarse de fiebre Exacerbaciones precedidas por infección de vías respiratorias altas",
     },
     {
       "Diagnostico": "Diabetes Tipo 2",
@@ -3104,9 +3106,218 @@ class Items {
     {
       "Diagnostico": "Hipertensión Arterial Esencial ESC/AHA II",
       "Tratamiento": "sin tratamiento por decisión propia; ",
-      "Antecedentes": "refiere monitorización con baumanómetro digital, con cifras tensionales promedio 140-90 mmHg; "
-          "niega cribado para alteraciones microvasculares o seguimiento multidisciplinario, en seguimiento en UMF; "
-          "niega hospitalizaciones previas por crisis o emergencia hipertensiva. ",
+      "Antecedentes":
+          "refiere monitorización con baumanómetro digital, con cifras tensionales promedio 140-90 mmHg; "
+              "niega cribado para alteraciones microvasculares o seguimiento multidisciplinario, en seguimiento en UMF; "
+              "niega hospitalizaciones previas por crisis o emergencia hipertensiva. ",
+    },
+  ];
+
+  static List<Map<String, String>> comentariosPrevios = [
+    {
+      "Diagnostico": "Asma bronquial",
+      "Comentario": "",
+    },
+    {
+      "Diagnostico": "Análisis Rápido",
+      "Comentario":
+          "Al momento neurologicamente íntegro, hemodinamicamente estable, gastrometabolico con inicio de vía oral, hematoinfecciosos sin datos de respuesta inmune clinicamente, nefrourinario sin datos de retencion urinaria o desequilibrio hidroelectrolitico. 77",
+    },
+    {
+      "Diagnostico":
+          "Análisis Previo a Cirugía - Dialisis Peritoneal", // ANÁLISIS PREVIO A CIRUGÍA:
+      "Comentario":
+          "Se prepara para  programación quirúrgica el 19/10/2023 a las 21:00 Horas. Se requisita tipe y cruce de dos concentrados eritrocitarios para el día previo a la cirugía, mientras tanto se optimizarán cifras de glucemia central, se suspenderá insulina y tratamiento antihipertensivo 24 horas previas. Ayuno a partir de las 22:00 horas. ",
+    },
+    {
+      "Diagnostico":
+          "Análisis Posterior a Cirugía - Dialisis Peritoneal", // ANÁLISIS POSTERIOR A CIRUGÍA:
+      "Comentario":
+          "Postoperada de colocación de catéter de diálisis peritoneal, actualmente con dolor abdominal postoperatorio, reportado como funcional en el transoperatorio. Se mantendrá diálisis cerrada con posterior valoración de funcionalidad el día 22/10/2023. Posteriormente se considerará egreso en las siguientes 72 horas, toda vez corroborada la funcionalidad de la diálisis. Actualmente sin eventualidades, se progresará dieta y se revalorizará reinicio de insulina basal",
+    },
+    // ALTAS PROGRAMADAS
+    {
+      "Diagnostico": "Alta : Proyecto Extenso",
+      "Comentario": "Debido a lo anterior se decide ALTA A DOMICILIO por MEJORÍA, con las siguientes recomendaciones: \n "
+          "CITA ABIERTA A URGENCIAS EN CASO DE PRESENTAR dolor abdominal, nauseas y vómitos incoercible y de manera continua, hinchazón en pies o manos, dificultad para respirar.\n "
+          "CITA A LA CONSULTA EXTERNA DE NEFROLOGÍA PARA SEGUIMIENTO Y VALORACIÓN.\n "
+          "CITA CON LA DRA GALVÁN PARA INCLUSIÓN AL PROGRAMA DE DIÁLISIS PERITONEAL, posterior seguimiento en Diálisis Peritoneal Intermitente para recambio dialítico.\n "
+          "CITA A LA CONSULTA EXTERNA DE MEDICINA FAMILIAR PARA SEGUIMIENTO Y VALORACIÓN.\n "
+          "Nifedipino tabletas 30 mg, tomar 1 tableta via oral cada 12 horas\n "
+          "Eritropoyetina 10,000 UI subcutánea, aplicar los días Viernes\n "
+          "MONITOREO DE LA GLUCEMIA CAPILAR EN DOMICILIO, anotar en una libreta dedicada: Fecha / Horas, Glucemia capilar, Comentar si es en Ayuno o posterior a la comida; realizar por al menos dos semanas diario (antes del desayuno, antes de la comida, antes de la cena).\n "
+          "MONITOREO DE LA GLUCEMIA CAPILAR EN DOMICILIO, anotar en una libreta dedicada: Fecha / Horas, Glucemia capilar, Comentar si es en Ayuno o posterior a la comida; realizar por al menos dos semanas diario (antes del desayuno, antes de la comida, antes de la cena). DURANTE LA PRIMERA SEMANA: Lunes, en ayuno. Martes, después de la primera comida. Miercoles, en ayuno. Jueves, después de la segunda comida. Viernes, en ayuno. Sábado, después de la tercera comida. Domingo, descansar.\n "
+          "MONITOREO DE LA CIFRAS TENSIONALES EN DOMICILIO, anotar en una libreta dedicada: Fecha / Hora, Tensión Arterial, Comentar síntomas presentes al momento de la toma; realizar por al menos dos semanas diario, posterior dos veces por semana.\n ",
+    },
+    {
+      "Diagnostico": "Egreso Hospitalario :  Simplificado",
+      "Comentario": ""
+          "PLAN. ALTA A DOMICILIO POR MEJORÍA. POR SUS PROPIOS MEDIOS\n "
+          "ACUDIR A URGENCIAS EN CASO DE CONSIDERARLO. SE CAPACITA SOBRE DATOS DE ALARMA Y MOTIVOS DE HOSPITALIZACIÓN. \n"
+          "TRANSCRIPCIÓN DE MEDICAMENTOS EN UMF\n ",
+    },
+    {
+      "Diagnostico": "Alta Voluntaria",
+      "Comentario": "       El día de hoy, 16/12/2023, la paciente solicita ALTA VOLUNTARIA, la cual se concede en conformidad al Reglamento de la Ley General de Salud en Materia de Prestación de Servicios de Atención Médica, Artículo 79, donde se cita “En caso de egreso voluntario, aún en contra de la recomendación médica, el usuario, en su caso, un familiar, el tutor o su representante legal, deberán firmar un documento en que se expresen claramente las razones que motivan el egreso, mismo que igualmente deberá ser suscrito por lo menos por dos testigos idóneos, de los cuales uno será designado por el hospital y otro por el usuario o la persona que en representación emita el documento."
+          "En todo caso, el documento a que se refiere el párrafo anterior relevará de la responsabilidad al  establecimiento y se emitirá por duplicado, quedando un ejemplar en poder del mismo y otro se proporcionará al usuario”."
+          "Motivos del alta (Cita textual): “Tras presentar caída y haberme golpeado la cabeza el 21/12/2023, el médico me mandó a realizar una ‘placa’ la cual no me han realizado, y, ya que considero estar bien solicita el alta voluntaria”."
+          "Se explica al paciente los pormenores de su decisión tomada, que a juicio médico, actualmente, un egreso hospitalario de cualquier tipo, está contraindicada, por los siguientes riesgos: Deterioro neurológico derivado de TCE leve, que requiere vigilancia neurológica, necesidad de completar esquema antimicrobiano, por riesgo de resistencia antimicrobiana."
+          "Eximo de toda responsabilidad médica, legal o administrativa que pudiera resultar de mi determinación, al Instituto Mexicano del Seguro Social, al personal de salud que labora en esta unidad médica.",
+    },
+    // INDICACIONES
+    {
+      "Diagnostico": "Indicaciones Generales",
+      "Comentario": ""
+          "INDICACIONES MÉDICAS"
+          "DIETA"
+          "SOLUCIONES"
+          "MEDICAMENTOS"
+          "MEDIDAS GENERALES"
+          "Signos vitales por turno, cuidados generales de enfermería"
+          "Posición fowler, camilla con barandales en alto. REPOSO RELATIVO. Baño en la regadera."
+          "Balance hídrico y reportar diuresis en mililitros"
+          "Curva térmica, control de temperatura mediante medios físicos"
+          "Glucometría capilar por turno, reportar sí <80 mg/dL o >180 mg/dL"
+          "Oxígeno suplementario mediante cánula nasal para mantener saturación periférica de oxígeno >88%"
+          "Reportar eventualidades"
+          "GRACIAS"
+    },
+    {
+      "Diagnostico": "Indicaciones Especiales",
+      "Comentario": "INDICACIONES MÉDICAS"
+          "DIETA"
+          "SOLUCIONES"
+          "MEDICAMENTOS"
+          "MEDIDAS GENERALES"
+          "Signos vitales por turno, cuidados generales de enfermería"
+          "Toma de tensión arterial cada 4 horas, reportar en hoja aparte"
+          "Posición fowler, camilla con barandales en alto. Baño en regadera acompañado de familiar en silla de ruedas."
+          "Deambulación Asistida por Familiar. Movilización entre silla y cama, y viceversa, asistida por familiar"
+          "Balance hídrico y reportar uresis en mililitros. Cuantificar ingresos y egresos, reportar en hoja aparte"
+          "Monitoreo cardiaco continuo con pulsioximetría"
+          "Curva térmica, control de temperatura mediante medios físicos"
+          "Código de evacuaciones"
+          "Glucometría capilar por turno, reportar sí <80 mg/dL o >180 mg/dL"
+          "Oxígeno suplementario mediante cánula nasal para mantener saturación periférica de oxígeno >88%"
+          "GRACIAS"
+    },
+    {
+      "Diagnostico": "Indicaciones del Ventilatorio",
+      "Comentario": "INDICACIONES MÉDICAS"
+          "DIETA"
+          "SOLUCIONES"
+          "Midazolam 105 mg en Sol NaCl 0.9% 100 mL en BIC a 15 mL/Hr"
+          "Buprenorfina 600 mcg aforados en Sol NaCl 0.9% 100 mL en BIC a 4.1 mL/Hr"
+          "Sol NaCl 0.9% 1000 mL IV para 24 Horas"
+          "MEDICAMENTOS"
+          "MEDIDAS GENERALES"
+          "Signos vitales por turno, cuidados generales de enfermería"
+          "Toma de tensión arterial cada 4 horas, reportar en hoja aparte"
+          "Posición fowler, camilla con barandales en alto. Movilización en cama cada 4 horas. Baño en cama."
+          "Balance hídrico y reportar uresis en mililitros. Cuantificar ingresos y egresos, reportar en hoja aparte"
+          "Sonda urinaria a derivación. Cuantificar gasto."
+          "Sonda nasogástrica para alimentación."
+          "Monitoreo cardiaco continuo con pulsioximetría"
+          "Curva térmica, control de temperatura mediante medios físicos"
+          "Código de evacuaciones"
+          "Glucometría capilar por turno, reportar sí <80 mg/dL o >180 mg/dL"
+          "Parámetros del ventilador establecidos"
+          "Aspiración gentil de secreciones cuantas veces sea necesario, documentar en hoja de enfermería cantidad realizada"
+          "Cuidados del paciente intubado"
+          "Protección ocular. Hipromelosa gotas oftálmicas, aplicar 2 gotas cada 4 horas en cada ojo"
+          "Enjuague bucal con clorhexidina cada 12 horas"
+          "GRACIAS"
+    },
+    // ESQUEMAS DE GLUCEMIA
+    {
+      "Diagnostico": "Esquema Glucemia - General",
+      "Comentario": ""
+          "Glucemia capilar cada 8 horas con esquema de insulina de acción rápida a partir de 200 mg/dL"
+          "<80 mg/dL, administrar 25 cc de Sol Glucosada 50%, y reportar,"
+          "200 - 240 mg/dL : 2 UI"
+          "241 - 260 mg/dL : 4 UI"
+          "261 - 300 mg/dL : 6 UI"
+          "301 - 350 mg/dL : 8 UI"
+          "> 351 mg/dL : 10 UI, y reportar"
+    },
+    {
+      "Diagnostico": "Esquema Glucemia - Loquia",
+      "Comentario": ""
+          "Glucemia capilar cada 8 horas con esquema de insulina de acción rápida a partir de 180 mg/dL"
+          "<80 mg/dL, administrar 25 cc de Sol Glucosada 50%, y reportar,"
+          "180 - 220 mg/dL : 2 UI"
+          "221 - 260 mg/dL : 4 UI"
+          "261 - 300 mg/dL : 6 UI"
+          "301 - 340 mg/dL : 8 UI"
+    },
+    {
+      "Diagnostico": "Esquema Glucemia - Angeles",
+      "Comentario": "Glucemia capilar cada 4 horas,  reportar <80 y >180 mg/dL"
+          "141 - 180 mg/dL : 2 UI"
+          "181 - 220 mg/dL : 4 UI"
+          "221 - 260 mg/dL : 6 UI"
+          "261 - 300 mg/dL : 8 UI"
+          "301 - 350 mg/dL : 10 UI"
+          "351 - 400 mg/dL : 12 UI"
+          "mayor a 400 mg/dL : 14 UI"
+    },
+    // OTRAS INDICACIONES
+    {
+      "Diagnostico": "Recomendaciones Dietéticas",
+      "Comentario": "RECOMENDACIONES DIETÉTICAS: "
+          "Dieta fija en 2g de sal y 200mg de colesterol al día. Incrementar consumo de alimentos vegetales, verduras y fruta con abundante fibra en su dieta. Caminata diaria por 30 minutos antes o después de sus actividades diarias.\m"
+          "Enviar con médico nutriólogo de su UMF correspondiente para complementar control metabólico. Vigilar que las cifras de presión arterial se mantengan menores a 140/90mmHg.  En pacientes mayores a 70 años, cifras de presión arterial menores a 150/90mmHg.  En pacientes con Infarto del Miocardio menores a 120/80mmHg. Colesterol total <150mg/dl, triglicéridos <150mg/dl y glucosa en ayuno <140mg/dl, IMC <25kg/m2 en cada consulta en su UMF correspondiente según guías de práctica clínica del Instituto. Ajustar tratamiento médico en su UMF si es necesario.\n",
+    },
+    {
+      "Diagnostico": "Hemodialisis",
+      "Comentario":
+          "SE SOLICITA SESIÓN DE HEMODIALISIS, Se decide paso a hemodialisis urgente,  programar sin panel viral, primer sesion, tiempo 2 hrs, qs 200 qd 500, uf 2000cc, sin heparina. na 136, k 2.0, de no haber eventualidad en primer sesion reingresa a urgencias. A su llegada solicitar urgente biometria hematica, elisa para vih, rx tele de torax, panendoscopia, vdrl, cinetica de hieero completa con ferritina, muestra para cultivo de lesion en lengua y tincion pas, usg renal. ",
+    },
+  ];
+  static List<Map<String, String>> bibliografiasContempladas = [
+    {
+      "Diagnostico": "Enfermedad Renal Crónica",
+      "Bibliografia":
+          "Alcázar Arroyo, R., Orte, L., González Parra, E., Górriz, J. L., Navarro, J. F., Martín de Francisco, A. L., ... & Álvarez Guisasola, F. (2008). Documento de consenso SEN-semFYC sobre la enfermedad renal crónica. Nefrología, 28(3), 273-282."
+              "Gorostidi, M., Santamaría, R., Alcázar, R., Fernández-Fresnedo, G., Galcerán, J. M., Goicoechea, M., ... & Ruilope, L. M. (2014). Documento de la Sociedad Española de Nefrología sobre las guías KDIGO para la evaluación y el tratamiento de la enfermedad renal crónica. Nefrología (Madrid), 34(3), 302-316.",
+    },
+    {
+      "Diagnostico": "Nefropatía Crónica",
+      "Bibliografia":
+          "Llana, H. G., & González, F. T. (2024). 1.4 Planificación compartida de la atención en la Enfermedad Renal Crónica Avanzada. Procedimientos y Protocolos con Competencias Específicas para Enfermería Nefrológica, 1-4. ||| Marcos, M. C., de la Espriella, R., Ordás, J. G., Llàcer, P., Pomares, A., Fort, A., ... & Núñez, J. (2024). Prevalencia y perfil clínico de la enfermedad renal en pacientes con insuficiencia cardiaca crónica. Datos del Registro cardiorrenal español. Revista Española de Cardiología, 77(1), 50-59. .",
+    },
+    {
+      "Diagnostico": "Peritonitis Bacteriana",
+      "Bibliografia":
+          "Li, P. K. T., Szeto, C. C., Piraino, B., de Arteaga, J., Fan, S., Figueiredo, A. E., ... & Johnson, D. W. (2016). ISPD peritonitis recommendations: 2016 update on prevention and treatment. Peritoneal Dialysis International, 36(5), 481-508. || Szeto, C. C. (2018). The new ISPD peritonitis guideline. Renal Replacement Therapy, 4, 1-5.",
+    },
+    {
+      "Diagnostico": "Celulitis",
+      "Bibliografia":
+          "Liu C, Bayer A, Cosgrove SE, et al. Clinical practice guidelines by the infectious diseases society of america for the treatment of methicillin-resistant Staphylococcus aureus infections in adults and children. Clin Infect Dis 2011; 52:e18. || Stevens DL, Bisno AL, Chambers HF, et al. Practice guidelines for the diagnosis and management of skin and soft tissue infections: 2014 update by the Infectious Diseases Society of America. Clin Infect Dis 2014; 59:e10.",
+    },
+    {
+      "Diagnostico": "Insuficiencia Cardiaca",
+      "Bibliografia":
+          "González-Costello, J., Pérez-Blanco, A., Delgado-Jiménez, J., González-Vílchez, F., Mirabet, S., Sandoval, E., ... & Domínguez-Gil, B. (2024). Revisión de los criterios de distribución de trasplante cardiaco en España en 2023. Documento de consenso SEC-Asociación de Insuficiencia Cardiaca/ONT/SECCE. Revista Española de Cardiología, 77(1), 69-78. || Rodríguez, Y. M., Borges, A. G., Triana, B. C. P., Landa, G. D. L. M. G., Domínguez, Á. R. L., & Mora, L. M. (2023). Neumonía asociada a la ventilación mecánica en la Unidad de cuidados intermedios. Acta Médica del Centro, 17(3). .",
+    },
+    {
+      "Diagnostico": "Falla Cárdiaca",
+      "Bibliografia":
+          "Amsterdam EA, Wenger NK, Brindis RG, Casey DE Jr, Ganiats TG, Holmes DR Jr, Jaffe AS, Jneid H, Kelly RF, Kontos MC, Levine GN, Liebson PR, Mukherjee D, Peterson ED, Sabatine MS, Smalling RW, Zieman SJ; ACC/AHA Task Force Members; Society for Cardiovascular Angiography and Interventions and the Society of Thoracic Surgeons. 2014 AHA/ACC guideline for the management of patients with non-ST-elevation acute coronary syndromes: executive summary: a report of the American College of Cardiology/American Heart Association Task Force on Practice Guidelines. Circulation. 2014 Dec 23;130(25):2354-94. doi: 10.1161/CIR.0000000000000133. Epub 2014 Sep 23. Erratum in: Circulation. 2014 Dec 23;130(25):e431-2. Dosage error in article text. PMID: 25249586. || Collet JP, Thiele H, Barbato E, Barthélémy O, Bauersachs J, Bhatt DL, Dendale P, Dorobantu M, Edvardsen T, Folliguet T, Gale CP, Gilard M, Jobs A, Jüni P, Lambrinou E, Lewis BS, Mehilli J, Meliga E, Merkely B, Mueller C, Roffi M, Rutten FH, Sibbing D, Siontis GCM; ESC Scientific Document Group. 2020 ESC Guidelines for the management of acute coronary syndromes in patients presenting without persistent ST-segment elevation. Eur Heart J. 2021 Apr 7;42(14):1289-1367. doi: 10.1093/eurheartj/ehaa575. Erratum in: Eur Heart J. 2021 May 14;42(19):1908. Erratum in: Eur Heart J. 2021 May 14;42(19):1925. Erratum in: Eur Heart J. 2021 May 13;: PMID: 32860058.",
+    },
+    {
+      "Diagnostico": "Infarto Agudo Al Miocardio",
+      "Bibliografia":
+          "Guía de Práctica Clínica. Diagnóstico, estratificación y tratamiento hospitalario inicial de pacientes con síndrome coronario agudo sin elevación ST. México, Secretaría de salud: 2010. IMSS-191-10 || P. Kaul, C.D. Naylor, P.W. Armstrong, D.B. Mark, P. Theroux, G.R. Dagenais. Assessment of activity status and survival according to the Canadian Cardiovascular Society angina classification. Can J Cardiol, 25 (2009), pp. e225-e231 || de Cardiología, S. E., & Heart Failure Association. (2021). Guía ESC 2021 sobre el diagnóstico y tratamiento de la insuficiencia cardiaca aguda y crónica. ",
+    },
+    {
+      "Diagnostico": "",
+      "Bibliografia": "",
+    },
+    {
+      "Diagnostico": "",
+      "Bibliografia": "",
     },
   ];
 

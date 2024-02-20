@@ -3528,6 +3528,92 @@ class CopiasReportes {
     return tipoReporte;
   }
 
+  //
+  static String reportePrequirurgica(Map<String, dynamic> paraph) {
+    Terminal.printAlert(message: "${paraph['Antecedentes_Patologicos_Ingreso']}");
+    //
+    String tipoReporte = "NOTA DE REVISION HOSPITALARIO\n";
+
+    tipoReporte = "${tipoReporte}"
+        "${paraph['Datos_Generales_Simple'].substring(0, paraph['Datos_Generales_Simple'].length - 1)} ";
+
+    // # # # # # # ### # # # # # # ###
+    if (paraph['Antecedentes_Patologicos_Ingreso'] != "") {
+      tipoReporte = "${tipoReporte}ANTECEDENTES: "
+          "${paraph['Antecedentes_Patologicos_Ingreso']}\n";
+    }
+
+    tipoReporte = "${tipoReporte}MOTIVO DE INGRESO: "
+        "${paraph['Padecimiento_Actual']}\n\n";
+
+    // # # # # # # ### # # # # # # ###
+    tipoReporte =
+    "${tipoReporte}A la ingreso a hospitalización de medicina interna se encuentra al paciente con: \n"
+        "${paraph['Signos_Vitales']}\n"
+        "${paraph['Exploracion_Fisica']}\n\n";
+
+    if (paraph['Auxiliares_Diagnosticos'] != "") {
+      tipoReporte = "${tipoReporte}AUXILIARES DIAGNÓSTICOS\n"
+          "${paraph['Auxiliares_Diagnosticos']}\n\n";
+    }
+
+    if (paraph['Analisis_Complementarios'] != "") {
+      tipoReporte = "${tipoReporte}ANALISIS COMPLEMENTARIOS\n"
+          "${paraph['Analisis_Complementarios']}\n\n";
+    }
+
+    tipoReporte = "${tipoReporte}IMPRESIONES DIAGNÓSTICAS\n"
+        "${paraph['Impresiones_Diagnosticas']}\n\n";
+
+    tipoReporte = "$tipoReporte"
+        "ANÁLISIS\n"
+        "${paraph['Analisis_Medico']}\n";
+    //
+    // tipoReporte = "$tipoReporte\n"
+    //     "INDICACIONES MÉDICAS\n"
+    //     "DIETAS\n"
+    //     "${Listas.stringFromList(listValues: paraph['Dieta'])}\n"
+    //     "SOLUCIONES PARENTERALES\n"
+    //     "${Listas.stringFromList(listValues: paraph['Hidroterapia'])}\n"
+    //     "MEDICAMENTOS\n"
+    //     "${Listas.stringFromList(listValues: paraph['Medicamentos'])}\n";
+    //
+    // if (paraph['Hemoterapia'][0] != 'Sin reposicion sanguinea.') {
+    //   tipoReporte = "$tipoReporte"
+    //       "HEMOTRANSFUSION\n"
+    //       "${Listas.stringFromList(listValues: paraph['Hemoterapia'])}\n";
+    // }
+    //
+    // if (paraph['Insulinoterapia'][0] != 'Sin terapia insulinica.') {
+    //   tipoReporte = "$tipoReporte"
+    //       "INSULINOTERAPIA\n"
+    //       "${Listas.stringFromList(listValues: paraph['Insulinoterapia'])}\n";
+    // }
+    // if (paraph['Oxigenoterapia'][0] !=
+    //     'Sin administración de oxígeno suplementario.') {
+    //   tipoReporte = "$tipoReporte"
+    //       "OXIGENOTERAPIA\n"
+    //       "${Listas.stringFromList(listValues: paraph['Oxigenoterapia'])}\n";
+    // }
+    //
+    // tipoReporte = "$tipoReporte"
+    //     "MEDIDAS GENERALES\n"
+    //     "${Listas.stringFromList(listValues: paraph['Medidas_Generales'])}\n"
+    //     "PENDIENTES\n"
+    //     "${Listas.stringFromList(listValues: paraph['Pendientes'])}\n"
+    //     "GRACIAS\n";
+
+    if (paraph['Pronostico_Medico'] != "") {
+      tipoReporte = "$tipoReporte\n"
+          "${paraph['Pronostico_Medico']}";
+    }
+
+    // tipoReporte = "$tipoReporte\n\n"
+    //     "Med. Gral. Romero Pantoja Luis Ced. Prof. 12210866 Medicina General";
+
+    return tipoReporte;
+  }
+
 }
 
 enum TypeReportes {

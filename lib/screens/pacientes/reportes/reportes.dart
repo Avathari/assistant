@@ -51,8 +51,9 @@ import 'package:flutter/material.dart';
 
 class ReportesMedicos extends StatefulWidget {
   int actualPage = 6, indexNote = -1, actualLateralPage = 0;
+  bool? analysis;
 
-  ReportesMedicos({super.key});
+  ReportesMedicos({super.key, this.analysis = false});
 
   @override
   State<ReportesMedicos> createState() => _ReportesMedicosState();
@@ -177,8 +178,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
   }
 
   // ******************************************************
-  Column _mobileView() {
-    return Column(
+  Widget _mobileView() {
+    return Row(
       children: [
         // Expanded(
         //     child: Container(
@@ -189,26 +190,63 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
         //       child: sideLeft(),
         //     )),
         Expanded(
-            flex: isMobile(context) ? 20 : 6,
+            flex: isMobile(context) ? 20 : 9,
             child: Container(
-              padding: const EdgeInsets.all(5.0),
-              margin: const EdgeInsets.all(7.0),
-              decoration: ContainerDecoration.roundedDecoration(
-                  colorBackground: Colores.backgroundPanel),
-              child: pantallasReportesMedicos(widget.actualPage),
-            )),
-        // if (isTablet(context))
-        //   Expanded(
-        //       child: Padding(
-        //     padding: const EdgeInsets.only(
-        //         right: 82.0, left: 8.0, top: 8.0, bottom: 8.0),
-        //     child: Container(
-        //       decoration: BoxDecoration(
-        //           color: Colores.backgroundPanel,
-        //           borderRadius: BorderRadius.circular(20)),
-        //       child: sideRight(),
-        //     ),
-        //   )),
+                padding: const EdgeInsets.all(8.0),
+                margin:  const EdgeInsets.all(4.0),
+                decoration: BoxDecoration(
+                    color: Colores.backgroundPanel,
+                    borderRadius: BorderRadius.circular(20)),
+                child: pantallasReportesMedicos(widget.actualPage))),
+        if (isTablet(context))
+          Expanded(
+            flex: 2,
+              child: Container(
+                padding: const EdgeInsets.all(8.0),
+                margin:  const EdgeInsets.all(4.0),
+                decoration: BoxDecoration(
+                    color: Colores.backgroundPanel,
+                    borderRadius: BorderRadius.circular(20)),
+                child: Column(
+                  children: [
+                    Expanded(
+                      flex: 9,
+                        child: _notasPrevias(context)),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          FloatingActionButton(onPressed: () {
+                            setState(() {
+                              widget.analysis = true;
+                            _key.currentState!.openEndDrawer();
+                            });
+                          },
+                            backgroundColor: Colors.black,
+                            foregroundColor: Colors.white,
+                            child: const Icon(
+                              Icons.menu_open_outlined,
+                              color: Colors.white
+                            ),
+                          ),
+                          FloatingActionButton(onPressed: () {
+                            Datos.portapapeles(
+                                context: context,
+                                text: Reportes.copiarReporte(tipoReporte: getTypeReport()));
+                          },
+                            backgroundColor: Colors.black,
+                            foregroundColor: Colors.white,
+                            child: const Icon(
+                                Icons.copy_rounded,
+                                color: Colors.white
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )),
       ],
     );
   }
@@ -716,6 +754,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
         Repositorios.tipo_Analisis = Items.tiposAnalisis[4];
         return TypeReportes.reporteTerapiaIntensiva;
       case 4:
+        Repositorios.tipo_Analisis = Items.tiposAnalisis[6];
         return TypeReportes.reportePrequirurgica;
       case 5:
         return TypeReportes.reportePreanestesica;
@@ -1016,8 +1055,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
   }
 
   // COMPONENTES ****************************************************
-  drawerForm(BuildContext context) => Drawer(
-        width: !isLargeDesktop(context) ? 100 : 350, // 350
+  drawerForm(BuildContext context, {bool? analysis = false}) => Drawer(
+        width: widget.analysis == false // !isLargeDesktop(context)
+            ? 100 : 350, // 350
         backgroundColor: Theming.cuaternaryColor,
         child: Container(
             decoration: const BoxDecoration(
@@ -1029,7 +1069,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   bottomLeft: Radius.circular(16),
                   topLeft: Radius.circular(16)),
             ),
-            child: isLargeDesktop(context)
+            child: widget.analysis == true //isLargeDesktop(context)
                 ? _analisisLaterales(context)
                 : _optionsLaterales(context)),
       );
@@ -1271,8 +1311,11 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
     if (widget.indexNote > -1) {
       Reportes.impresionesDiagnosticas =
           listNotes![widget.indexNote]['Diagnosticos_Hospital'];
+      Reportes.padecimientoActual = Reportes.reportes['Padecimiento_Actual'] =
+      listNotes![widget.indexNote]['Padecimiento_Actual'];
       Reportes.exploracionFisica = Reportes.reportes['Exploracion_Fisica'] =
           listNotes![widget.indexNote]['Exploracion_Fisica'];
+
       //
       return TittleContainer(
         tittle:
@@ -1327,16 +1370,27 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                       listNotes![widget.indexNote]['Tipo_Analisis'] !=
                           'Análisis de Ingreso' &&
                       listNotes![widget.indexNote]['Tipo_Analisis'] !=
-                          'Análisis de Revisión' && listNotes![widget.indexNote]['Tipo_Analisis'] !=
-                  'Análisis de Egreso'
+                          'Análisis de Revisión' &&
+                      listNotes![widget.indexNote]['Tipo_Analisis'] !=
+                          'Análisis de Egreso'
                   ? CrossLine(thickness: 3)
                   : Container(),
               if (listNotes![widget.indexNote]['Tipo_Analisis'] !=
-              'Análisis de Egreso') Text(
-                listNotes![widget.indexNote]['Exploracion_Fisica'],
-                maxLines: 20,
-                style: Styles.textSyleGrowth(fontSize: 9),
-              ),
+                  'Análisis de Egreso')
+                Text(
+                  listNotes![widget.indexNote]['Exploracion_Fisica'],
+                  maxLines: 20,
+                  style: Styles.textSyleGrowth(fontSize: 9),
+                ),
+              listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                  'Análisis de Egreso' ? Text(
+                  listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                          'Análisis de Egreso'
+                      ? Pacientes.patologicos() // ${listNotes![widget.indexNote]['Antecedentes_Patologicos_Otros']}"
+                      : "",
+                  maxLines: 25,
+                  style: Styles.textSyleGrowth(fontSize: 8)) : Container(),
+
               CrossLine(thickness: 3),
               Text(
                   listNotes![widget.indexNote]['Tipo_Analisis'] ==
@@ -1355,8 +1409,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   maxLines: 25,
                   style: Styles.textSyleGrowth(fontSize: 8)),
               listNotes![widget.indexNote]['Tipo_Analisis'] !=
-                      'Análisis de Gravedad' && listNotes![widget.indexNote]['Tipo_Analisis'] !=
-                  'Análisis de Egreso'
+                          'Análisis de Gravedad' &&
+                      listNotes![widget.indexNote]['Tipo_Analisis'] !=
+                          'Análisis de Egreso'
                   ? CrossLine(thickness: 3)
                   : Container(),
               // Text(
@@ -1367,8 +1422,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               listNotes![widget.indexNote]['Tipo_Analisis'] !=
                           'Análisis de Gravedad' &&
                       listNotes![widget.indexNote]['Tipo_Analisis'] !=
-                          'Análisis de Revisión' && listNotes![widget.indexNote]['Tipo_Analisis'] !=
-                  'Análisis de Egreso'
+                          'Análisis de Revisión' &&
+                      listNotes![widget.indexNote]['Tipo_Analisis'] !=
+                          'Análisis de Egreso'
                   ? CrossLine(thickness: 1)
                   : Container(),
               // Text(
@@ -1380,7 +1436,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                       'Análisis de Evolución'
                   ? Text(
                       listNotes![widget.indexNote]['Analisis_Medico'],
-                      maxLines: 20,
+                      maxLines: listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                          'Análisis de Egreso' ? 50 : 20,
                       style: Styles.textSyleGrowth(fontSize: 9),
                     )
                   : Container(),

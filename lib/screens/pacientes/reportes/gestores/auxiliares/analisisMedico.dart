@@ -3,7 +3,10 @@ import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/analisis.dart';
 import 'package:assistant/values/SizingInfo.dart';
+import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
+import 'package:assistant/widgets/GrandButton.dart';
+import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
@@ -46,20 +49,23 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
         Pacientes.Pendiente!.forEach((element) {
           //Pace_PEN
           if (pendientes == "") {
-            pendientes = "          ${element['Pace_Desc_PEN'].replaceAll("\n", "")}. \n";
+            pendientes =
+                "          ${element['Pace_Desc_PEN'].replaceAll("\n", "")}. \n";
             // Añadir a Reportes.pendientes para Anexión a Indicaciones : Pendientes * * * * * * * *
-            Reportes.pendientes.add("          ${element['Pace_PEN']} - ${element['Pace_Desc_PEN'].replaceAll("\n", "")}. "); // Sin salto de linea, ya ...
+            Reportes.pendientes.add(
+                "          ${element['Pace_PEN']} - ${element['Pace_Desc_PEN'].replaceAll("\n", "")}. "); // Sin salto de linea, ya ...
           } else {
             pendientes = "$pendientes"
                 "          ${element['Pace_Desc_PEN'].replaceAll("\n", "")}. \n";
             // Añadir a Reportes.pendientes para Anexión a Indicaciones : Pendientes * * * * * * * *
-            Reportes.pendientes.add("          ${element['Pace_PEN']} - ${element['Pace_Desc_PEN'].replaceAll("\n", "")}. ");
+            Reportes.pendientes.add(
+                "          ${element['Pace_PEN']} - ${element['Pace_Desc_PEN'].replaceAll("\n", "")}. ");
           }
         });
 
-        tratamientoTextController.text = "${tratamientoTextController.text}. \nPLAN: \n"
+        tratamientoTextController.text =
+            "${tratamientoTextController.text}. \nPLAN: \n"
             "$pendientes";
-
       }
     }
 
@@ -72,104 +78,170 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
       children: [
         widget.isPrequirurgica == true
             ? Expanded(
-            child: SingleChildScrollView(
-              child: Column(children: [
-                EditTextArea(
-                    textController: tratamientoTextController,
-                    labelEditText: "Recomendaciones",
-                    keyBoardType: TextInputType.multiline,
-                    numOfLines: 20,
-                    withShowOption: true,
-                    onChange: ((value) {
-                      Reportes.tratamientoPropuesto = "$value.";
-                      Reportes.reportes['Analisis_Medico'] =
-                      "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                      Reportes.reportes['Analisis_Terapia'] =
-                      "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                      Reportes.reportes['Recomendaciones_Generales'] =
-                          Reportes.tratamientoPropuesto;
-                    }),
-                    inputFormat: MaskTextInputFormatter()),
-              ]),
-            ))
+                child: SingleChildScrollView(
+                child: Column(children: [
+                  EditTextArea(
+                      textController: tratamientoTextController,
+                      labelEditText: "Recomendaciones",
+                      keyBoardType: TextInputType.multiline,
+                      numOfLines: 20,
+                      withShowOption: true,
+                      onChange: ((value) {
+                        Reportes.tratamientoPropuesto = "$value.";
+                        Reportes.reportes['Analisis_Medico'] =
+                            "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                        Reportes.reportes['Analisis_Terapia'] =
+                            "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                        Reportes.reportes['Recomendaciones_Generales'] =
+                            Reportes.tratamientoPropuesto;
+                      }),
+                      inputFormat: MaskTextInputFormatter()),
+                ]),
+              ))
             : Expanded(
-            child: SingleChildScrollView(
-              child: Column(children: [
-                // EditTextArea(
-                //     textController: eventualidadesTextController,
-                //     labelEditText: "Eventualidades sucitadas",
-                //     keyBoardType: TextInputType.text,
-                //     numOfLines: isTablet(context) ? 8 : 5,
-                //     withShowOption: true,
-                //     onChange: ((value) {
-                //       eventualidadesTextController.text = value;
-                //       // ************ ******* *****************
-                //       Reportes.eventualidadesOcurridas = "$value.";
-                //       Reportes.reportes['Eventualidades'] = "$value.";
-                //       // ************ ******* *****************
-                //       Reportes.reportes['Analisis_Medico'] =
-                //       "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                //       Reportes.reportes['Analisis_Terapia'] =
-                //       "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                //     }),
-                //     inputFormat: MaskTextInputFormatter()),
-                // EditTextArea(
-                //     textController: terapiasTextController,
-                //     labelEditText: "Terapias previas",
-                //     keyBoardType: TextInputType.multiline,
-                //     numOfLines: isTablet(context) ? 8 : 5,
-                //     withShowOption: true,
-                //     onChange: ((value) {
-                //       Reportes.terapiasPrevias = "$value.";
-                //       Reportes.reportes['Analisis_Medico'] =
-                //       "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                //       Reportes.reportes['Analisis_Terapia'] =
-                //       "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                //     }),
-                //     inputFormat: MaskTextInputFormatter()),
-                EditTextArea(
-                    textController: analisisTextController,
-                    limitOfChars: 5000,
-                    labelEditText: "Análisis médico",
-                    keyBoardType: TextInputType.multiline,
-                    numOfLines: isLargeDesktop(context) ? 28 : isTablet(context) ? 12 : isMobile(context) ? 15:  22,
-                    withShowOption: true,
-                    selection: true,
-                    onSelected: () {
-                      Operadores.openDialog(
-                          context: context,
-                          chyldrim: const Bibliografico(),
-                          onAction: () {
-                            setState(() {
-                              analisisTextController.text =
-                                  Reportes.analisisMedico;
-                            });
-                          });
-                    },
-                    onChange: ((value) {
-                      Reportes.analisisMedico = "$value.";
-                      Reportes.reportes['Analisis_Medico'] =
-                      "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                      Reportes.reportes['Analisis_Terapia'] =
-                      "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                    }),
-                    inputFormat: MaskTextInputFormatter()),
-                // EditTextArea(
-                //     textController: tratamientoTextController,
-                //     labelEditText: "Terapéutica propuesta",
-                //     keyBoardType: TextInputType.multiline,
-                //     numOfLines: isTablet(context) ? 8 : 5,
-                //     withShowOption: true,
-                //     onChange: ((value) {
-                //       Reportes.tratamientoPropuesto = "$value.";
-                //       Reportes.reportes['Analisis_Medico'] =
-                //       "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                //       Reportes.reportes['Analisis_Terapia'] =
-                //       "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                //     }),
-                //     inputFormat: MaskTextInputFormatter()),
-              ]),
-            ))
+                child: Row(
+                children: [
+                  Expanded(
+                    flex: 6,
+                    child: SingleChildScrollView(
+                      child: Column(children: [
+                        // EditTextArea(
+                        //     textController: eventualidadesTextController,
+                        //     labelEditText: "Eventualidades sucitadas",
+                        //     keyBoardType: TextInputType.text,
+                        //     numOfLines: isTablet(context) ? 8 : 5,
+                        //     withShowOption: true,
+                        //     onChange: ((value) {
+                        //       eventualidadesTextController.text = value;
+                        //       // ************ ******* *****************
+                        //       Reportes.eventualidadesOcurridas = "$value.";
+                        //       Reportes.reportes['Eventualidades'] = "$value.";
+                        //       // ************ ******* *****************
+                        //       Reportes.reportes['Analisis_Medico'] =
+                        //       "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                        //       Reportes.reportes['Analisis_Terapia'] =
+                        //       "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                        //     }),
+                        //     inputFormat: MaskTextInputFormatter()),
+                        // EditTextArea(
+                        //     textController: terapiasTextController,
+                        //     labelEditText: "Terapias previas",
+                        //     keyBoardType: TextInputType.multiline,
+                        //     numOfLines: isTablet(context) ? 8 : 5,
+                        //     withShowOption: true,
+                        //     onChange: ((value) {
+                        //       Reportes.terapiasPrevias = "$value.";
+                        //       Reportes.reportes['Analisis_Medico'] =
+                        //       "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                        //       Reportes.reportes['Analisis_Terapia'] =
+                        //       "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                        //     }),
+                        //     inputFormat: MaskTextInputFormatter()),
+                        EditTextArea(
+                            textController: analisisTextController,
+                            limitOfChars: 5000,
+                            labelEditText: "Análisis médico",
+                            keyBoardType: TextInputType.multiline,
+                            numOfLines: isLargeDesktop(context)
+                                ? 28
+                                : isTablet(context)
+                                    ? 32
+                                    : isMobile(context)
+                                        ? 15
+                                        : 22,
+                            // withShowOption: true,
+                            // selection: true,
+                            // onSelected: () {
+                            //   Operadores.openDialog(
+                            //       context: context,
+                            //       chyldrim: const Bibliografico(),
+                            //       onAction: () {
+                            //         setState(() {
+                            //           analisisTextController.text =
+                            //               Reportes.analisisMedico;
+                            //         });
+                            //       });
+                            // },
+                            onChange: ((value) {
+                              Reportes.analisisMedico = "$value.";
+                              Reportes.reportes['Analisis_Medico'] =
+                                  "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                              Reportes.reportes['Analisis_Terapia'] =
+                                  "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                            }),
+                            inputFormat: MaskTextInputFormatter()),
+
+                        // EditTextArea(
+                        //     textController: tratamientoTextController,
+                        //     labelEditText: "Terapéutica propuesta",
+                        //     keyBoardType: TextInputType.multiline,
+                        //     numOfLines: isTablet(context) ? 8 : 5,
+                        //     withShowOption: true,
+                        //     onChange: ((value) {
+                        //       Reportes.tratamientoPropuesto = "$value.";
+                        //       Reportes.reportes['Analisis_Medico'] =
+                        //       "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                        //       Reportes.reportes['Analisis_Terapia'] =
+                        //       "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                        //     }),
+                        //     inputFormat: MaskTextInputFormatter()),
+                      ]),
+                    ),
+                  ),
+                  Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      CircleIcon(
+                        iconed: Icons.add,
+                          tittle: "Bibliográfico . . . ",
+                          onChangeValue: () {
+                            Operadores.openDialog(
+                                context: context,
+                                chyldrim: const Bibliografico(),
+                                onAction: () {
+                                  setState(() {
+                                    analisisTextController.text =
+                                        Reportes.analisisMedico;
+                                  });
+                                });
+                          }),
+                      GrandIcon(
+                          labelButton: "Bibliográfico . . . ",
+                          onPress: () {
+                            Operadores.openDialog(
+                                context: context,
+                                chyldrim: const Bibliografico(),
+                                onAction: () {
+                                  setState(() {
+                                    analisisTextController.text =
+                                        Reportes.analisisMedico;
+                                  });
+                                });
+                          }),
+                      CircleIcon(
+                          iconed: Icons.add,
+                          tittle: "Comentarios Previos . . . ",
+                          onChangeValue: () {
+                            Operadores.selectOptionsActivity(context: context,
+                                options: Items.comentariosPrevios.map((e) =>
+                                e['Diagnostico']).toList(),
+                                onClose: (valar) {
+                                  Terminal.printWarning(message: "$valar");
+
+                                  Items.comentariosPrevios.forEach((e) {
+                                    //
+                                    if (e['Diagnostico'] == valar) {
+                                      analisisTextController.text = "${analisisTextController.text}\n${e['Comentario']!}";
+                                    }
+                                  });
+                                  Navigator.of(context).pop();
+                                });
+                          }),
+                    ],
+                  ))
+                ],
+              ))
       ],
     );
   }

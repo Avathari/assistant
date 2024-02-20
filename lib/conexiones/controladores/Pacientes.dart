@@ -7860,9 +7860,13 @@ class Reportes {
         return CopiasReportes.reporteRevision(Reportes.reportes);
       case TypeReportes.reporteTraslado:
         return CopiasReportes.reporteTraslado(Reportes.reportes);
-        //
+      //
       case TypeReportes.reporteEgreso:
         return CopiasReportes.reporteEgreso(Reportes.reportes);
+      //
+      case TypeReportes.reportePrequirurgica:
+        return CopiasReportes.reportePrequirurgica(Reportes.reportes);
+      //
       default:
         return CopiasReportes.reporteIngreso(Reportes.reportes);
     }
@@ -8539,16 +8543,26 @@ class Repositorios {
       Reportes.reportes = value.last;
       // Del Padecimiento **************************************************
 
-      Reportes.reportes['Impresiones_Diagnosticas']= Reportes.impresionesDiagnosticas = value.last['Impresiones_Diagnosticas'] ?? '';
-      Reportes.reportes['Padecimiento_Actual']= Reportes.padecimientoActual = value.last['Padecimiento_Actual'] ?? '';
+      Reportes.reportes['Impresiones_Diagnosticas'] =
+          Reportes.impresionesDiagnosticas =
+              value.last['Impresiones_Diagnosticas'] ?? '';
+      Reportes.reportes['Padecimiento_Actual'] =
+          Reportes.padecimientoActual = value.last['Padecimiento_Actual'] ?? '';
       Valores.fechaPadecimientoActual = value.last['FechaPadecimiento'] ?? '';
       // Primeras Variables **************************************************
-      Reportes.reportes['Exploracion_Fisica']=  Reportes.exploracionFisica = value.last['Exploracion_Fisica'] ?? '';
-      Reportes.reportes['Signos_Vitales']= Reportes.signosVitales = value.last['Signos_Vitales'] ?? '';
+      Reportes.reportes['Exploracion_Fisica'] =
+          Reportes.exploracionFisica = value.last['Exploracion_Fisica'] ?? '';
+      Reportes.reportes['Signos_Vitales'] =
+          Reportes.signosVitales = value.last['Signos_Vitales'] ?? '';
       // Segundas Variables ************************************************** Reportes.eventualidadesOcurridas = value.last['Eventualidades'] ?? ''; Reportes.terapiasPrevias = value.last['Terapias_Previas'] ?? '';
-      Reportes.reportes['Exploracion_Fisica']= Reportes.exploracionFisica = value.last['Exploracion_Fisica'] ?? '';
-      Reportes.reportes['Analisis_Medico']= Reportes.reportes['Analisis_Terapia']= Reportes.analisisMedico = value.last['Analisis_Medico'] ?? ''; // Reportes.tratamientoPropuesto = value.last['Tratamiento_Propuesto'] ?? '';
-      Reportes.reportes['Pronostico_Medico']= Reportes.pronosticoMedico = value.last['Pronostico_Medico'] ?? '';
+      Reportes.reportes['Exploracion_Fisica'] =
+          Reportes.exploracionFisica = value.last['Exploracion_Fisica'] ?? '';
+      Reportes.reportes['Analisis_Medico'] = Reportes
+          .reportes['Analisis_Terapia'] = Reportes.analisisMedico = value
+              .last['Analisis_Medico'] ??
+          ''; // Reportes.tratamientoPropuesto = value.last['Tratamiento_Propuesto'] ?? '';
+      Reportes.reportes['Pronostico_Medico'] =
+          Reportes.pronosticoMedico = value.last['Pronostico_Medico'] ?? '';
       // Listados desde String  ************************************************
       Reportes.reportes["Dietoterapia"] = Reportes.dieta =
           Listas.traslateFromString(value.last['Dietoterapia']);
@@ -8657,11 +8671,11 @@ class Repositorios {
     ];
     //
     await Actividades.actualizar(
-      Databases.siteground_database_reghosp,
-      Repositorios.repositorio['updateQuery'],
-      Values,
-      Pacientes.ID_Hospitalizacion
-    ).then((value) {
+            Databases.siteground_database_reghosp,
+            Repositorios.repositorio['updateQuery'],
+            Values,
+            Pacientes.ID_Hospitalizacion)
+        .then((value) {
       Archivos.deleteFile(
           filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
       Terminal.printExpected(message: "VALUE - $value : $Values");
@@ -8703,36 +8717,7 @@ class Repositorios {
       Reportes.pendientes.toString(),
       tipo_Analisis // Repositorios.tipoAnalisis()
     ];
-    var ValuesEgreso = [
-      Pacientes.ID_Paciente,
-      Pacientes.ID_Hospitalizacion,
-      Valores.fechaPadecimientoActual ??
-          Calendarios.today(format: 'yyyy/MM/dd'),
-      Reportes.padecimientoActual,
-      // Valores.servicioTratanteInicial,
-      Valores.servicioTratante,
-      Calendarios.today(format: 'yyyy/MM/dd'),
-      Reportes.impresionesDiagnosticas,
-      Reportes.reportes['Subjetivo'],
-      Reportes.signosVitales,
-      Reportes.exploracionFisica,
-      // Reportes.eventualidadesOcurridas,
-      // Reportes.terapiasPrevias,
-      Reportes.analisisMedico,
-      // Reportes.tratamientoPropuesto,
-      Reportes.pronosticoMedico,
-      // INDICACIONES MÉDICAS *******************************
-      Reportes.dieta.toString(),
-      Reportes.hidroterapia.toString(),
-      Reportes.insulinoterapia.toString(),
-      Reportes.hemoterapia.toString(),
-      Reportes.oxigenoterapia.toString(),
-      Reportes.medicamentosIndicados.toString(),
-      Reportes.medidasGenerales.toString(),
-      Reportes.pendientes.toString(),
-    Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
-    ];
-    //
+    // var ValuesEgreso = ; *******************************************
     await Actividades.registrar(
       Databases.siteground_database_reghosp,
       Repositorios.repositorio['registerQuery'],
@@ -8744,11 +8729,42 @@ class Repositorios {
     }).whenComplete(() async {
       Archivos.createJsonFromMap(Pacientes.Notas!,
           filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
-      await Actividades.registrar(
-        Databases.siteground_database_reghosp,
-        Repositorios.repositorio['registerQuery'],
-        ValuesEgreso,
-      ); // REGISTRAR el Formato de Egreso . . .
+      if (tipo_Analisis == "Análisis de Ingreso") {
+        await Actividades.registrar(
+          Databases.siteground_database_reghosp,
+          Repositorios.repositorio['registerQuery'],
+          [
+            Pacientes.ID_Paciente,
+            Pacientes.ID_Hospitalizacion,
+            Valores.fechaPadecimientoActual ??
+                Calendarios.today(format: 'yyyy/MM/dd'),
+            Reportes.padecimientoActual,
+            // Valores.servicioTratanteInicial,
+            Valores.servicioTratante,
+            Calendarios.today(format: 'yyyy/MM/dd'),
+            Reportes.impresionesDiagnosticas,
+            Reportes.reportes['Subjetivo'],
+            Reportes.signosVitales,
+            Reportes.exploracionFisica,
+            // Reportes.eventualidadesOcurridas,
+            // Reportes.terapiasPrevias,
+            Reportes.analisisMedico,
+            // Reportes.tratamientoPropuesto,
+            Reportes.pronosticoMedico,
+            // INDICACIONES MÉDICAS *******************************
+            Reportes.dieta.toString(),
+            Reportes.hidroterapia.toString(),
+            Reportes.insulinoterapia.toString(),
+            Reportes.hemoterapia.toString(),
+            Reportes.oxigenoterapia.toString(),
+            Reportes.medicamentosIndicados.toString(),
+            Reportes.medidasGenerales.toString(),
+            Reportes.pendientes.toString(),
+            Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
+          ],
+        );
+      }
+// REGISTRAR el Formato de Egreso . . .
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "ERROR - $error : $stackTrace");
     });

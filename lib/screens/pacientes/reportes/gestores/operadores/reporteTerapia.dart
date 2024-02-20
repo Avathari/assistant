@@ -99,7 +99,7 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
                                 children: [
                                   Expanded(
                                     flex:
-                                        isMobile(context) || isDesktop(context)
+                                        isMobile(context) || isDesktop(context) || isLargeDesktop(context)
                                             ? 3
                                             : 2, // #_#
                                     child: EditTextArea(
