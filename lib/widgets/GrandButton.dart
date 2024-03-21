@@ -13,7 +13,7 @@ class GrandButton extends StatefulWidget {
 
   GrandButton({
     Key? key,
-    this.labelButton,
+    this.labelButton = "",
     this.weigth = 0,
     this.height = 0,
     this.fontSize = 14.0,

@@ -28,7 +28,7 @@ class _TittleContainerState extends State<TittleContainer> {
           width: double.infinity,
           // height: double.infinity,
           margin: EdgeInsets.all(widget.padding! == 0? 10.0:widget.padding!),
-          padding: EdgeInsets.only(left: widget.padding! == 0? 10 : widget.padding!, right: 8, top: 7, bottom: 5),
+          padding: EdgeInsets.only(left: widget.padding! == 0? 10 : widget.padding!, right: widget.padding!, top: 7, bottom: 5,),
           decoration: BoxDecoration(
             border: Border.all(color: Colors.grey, width: 1),
             borderRadius: BorderRadius.circular(20),

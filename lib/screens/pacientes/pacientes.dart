@@ -1548,8 +1548,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
         children: [
           ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  primary: Colores.backgroundWidget,
-                  onPrimary: Colors.grey,
+                  foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
                   minimumSize: const Size(50, 50)),
@@ -1564,8 +1563,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
             message: "Datos Personales",
             child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    primary: Colores.backgroundWidget,
-                    onPrimary: Colors.grey,
+                    foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     minimumSize: const Size(50, 50)),
@@ -1581,8 +1579,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
               message: "Datos Generales",
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: Colores.backgroundWidget,
-                      onPrimary: Colors.grey,
+                      foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
                       minimumSize: const Size(50, 50)),
@@ -1629,8 +1626,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                             children: [
                               ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                      primary: Colores.backgroundWidget,
-                                      onPrimary: Colors.grey,
+                                      foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(20)),
@@ -1641,8 +1637,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                                   child: const Icon(Icons.camera)),
                               ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                      primary: Colores.backgroundWidget,
-                                      onPrimary: Colors.grey,
+                                      foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(50)),
@@ -1653,8 +1648,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                                   child: const Icon(Icons.person)),
                               ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                      primary: Colores.backgroundWidget,
-                                      onPrimary: Colors.grey,
+                                      foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(20)),
@@ -1727,8 +1721,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                                         bottom: 2.0),
                                     child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
-                                            primary: Colores.backgroundWidget,
-                                            onPrimary: Colors.grey,
+                                            foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(20)),
@@ -1742,8 +1735,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                                     padding: const EdgeInsets.all(8.0),
                                     child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
-                                            primary: Colores.backgroundWidget,
-                                            onPrimary: Colors.grey,
+                                            foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(50)),
@@ -1757,8 +1749,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                                     padding: const EdgeInsets.all(8.0),
                                     child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
-                                            primary: Colores.backgroundWidget,
-                                            onPrimary: Colors.grey,
+                                            foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(20)),
@@ -1814,8 +1805,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                             padding: const EdgeInsets.all(8.0),
                             child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                    primary: Colores.backgroundWidget,
-                                    onPrimary: Colors.grey,
+                                    foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(20)),
@@ -1829,8 +1819,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                             padding: const EdgeInsets.all(8.0),
                             child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                    primary: Colores.backgroundWidget,
-                                    onPrimary: Colors.grey,
+                                    foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(50)),
@@ -1844,8 +1833,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                             padding: const EdgeInsets.all(8.0),
                             child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                    primary: Colores.backgroundWidget,
-                                    onPrimary: Colors.grey,
+                                    foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(20)),

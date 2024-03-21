@@ -188,8 +188,6 @@ class Ventometrias {
   }
 
   // FÓRMULAS
-  // # Volumenes Tidales Vt6, Vt7, Vt8
-  // # ######################################################
   static double get volumentTidal6 => (Antropometrias.pesoCorporalPredicho * 6);
 
   static double get volumentTidal7 => (Antropometrias.pesoCorporalPredicho * 7);
@@ -197,58 +195,9 @@ class Ventometrias {
   static double get volumentTidal8 => (Antropometrias.pesoCorporalPredicho * 8);
 
   // # ######################################################
-  static double get presionAlveolarOxigeno {
-    if (Valores.volumenTidal != 0 &&
-        Valores.volumenTidal != null &&
-        Antropometrias.pesoCorporalPredicho != 0) {
-      // return (valores.get('FraccionInspiratoriaOxigeno') / 100) * (720 - 47) - (Valores.pcoArteriales! / 0.8);
-      return 0;
-    } else {
-      return double.nan;
-    }
-  }
+  static double get volumenTidalIdeal => (Ventometrias.distensibilidadPulmonarEstatica * Ventometrias.presionDistencion);
 
-  static double get presionMediaViaAerea {
-    if (Valores.presionPlateau != 0 &&
-        Valores.presionPlateau != null &&
-        Valores.sensibilidadInspiratoria != 0 &&
-        Valores.sensibilidadInspiratoria != null) {
-      return (Valores.presionFinalEsiracion! +
-          ((Valores.presionPlateau! - Valores.presionFinalEsiracion!) *
-              (Valores.sensibilidadInspiratoria!)))
-          .toDouble();
-    } else {
-      return double.nan;
-    }
-  }
-
-  static double get volumenMinuto {
-    if (Valores.volumenTidal != 0 &&
-        Valores.volumenTidal != null &&
-        Antropometrias.pesoCorporalPredicho != 0) {
-      return (Valores.volumenTidal! * Valores.frecuenciaVentilatoria!) / 1000;
-    } else {
-      return double.nan;
-    }
-  }
-
-  static double get flujoVentilatorioMedido {
-    if (Ventometrias.volumenMinuto != 0) {
-      return (Ventometrias.volumenMinuto * 4);
-    } else {
-      return double.nan;
-    }
-  }
-
-  static double get volumenMinutoIdeal {
-    if (Antropometrias.pesoCorporalPredicho != 0) {
-      return (Antropometrias.pesoCorporalPredicho / 10);
-      // VMI = (PCI / 10)
-    } else {
-      return double.nan;
-    }
-  }
-
+  // # ######################################################
   static double get poderMecanico {
     if (Antropometrias.pesoCorporalPredicho != 0) {
       return (0.098 *
@@ -261,6 +210,30 @@ class Ventometrias {
     }
   }
 
+  /// Poder Distencion expresado como []
+  static double get poderDistencion {
+    if (Antropometrias.pesoCorporalPredicho != 0) {
+      return (0.098 *
+          (Ventometrias.drivingPressure)
+      * (Valores.volumenTidal! / 1000)
+          *Valores.frecuenciaVentilatoria!);
+      // PM = (0.098 * Valores.frecuenciaVentilatoria * (
+      // Valores.presionPlateau! - Valores.presionFinalEsiracion! / 2))
+    } else {
+      return double.nan;
+    }
+  }
+
+  /// Driving Pressure expresado como [Vt / Cstat]
+  static double get drivingPressure {
+    if (Valores.volumenTidal != 0 && Ventometrias.distensibilidadPulmonarEstatica !=0) {
+      return (Valores.volumenTidal! / Ventometrias.distensibilidadPulmonarEstatica);
+    } else {
+      return double.nan;
+    }
+  }
+
+  // # ######################################################
   static double get distensibilidadPulmonarEstatica {
     if (Valores.presionPlateau != 0 &&
         Valores.presionPlateau != null &&
@@ -338,6 +311,59 @@ class Ventometrias {
       return double.nan;
     }
   }
+  // # ######################################################
+  static double get presionAlveolarOxigeno {
+    if (Valores.volumenTidal != 0 &&
+        Valores.volumenTidal != null &&
+        Antropometrias.pesoCorporalPredicho != 0) {
+      // return (valores.get('FraccionInspiratoriaOxigeno') / 100) * (720 - 47) - (Valores.pcoArteriales! / 0.8);
+      return 0;
+    } else {
+      return double.nan;
+    }
+  }
+
+  static double get presionMediaViaAerea {
+    if (Valores.presionPlateau != 0 &&
+        Valores.presionPlateau != null &&
+        Valores.sensibilidadInspiratoria != 0 &&
+        Valores.sensibilidadInspiratoria != null) {
+      return (Valores.presionFinalEsiracion! +
+          ((Valores.presionPlateau! - Valores.presionFinalEsiracion!) *
+              (Valores.sensibilidadInspiratoria!)))
+          .toDouble();
+    } else {
+      return double.nan;
+    }
+  }
+
+  static double get volumenMinuto {
+    if (Valores.volumenTidal != 0 &&
+        Valores.volumenTidal != null &&
+        Antropometrias.pesoCorporalPredicho != 0) {
+      return (Valores.volumenTidal! * Valores.frecuenciaVentilatoria!) / 1000;
+    } else {
+      return double.nan;
+    }
+  }
+
+  static double get flujoVentilatorioMedido {
+    if (Ventometrias.volumenMinuto != 0) {
+      return (Ventometrias.volumenMinuto * 4);
+    } else {
+      return double.nan;
+    }
+  }
+
+  static double get volumenMinutoIdeal {
+    if (Antropometrias.pesoCorporalPredicho != 0) {
+      return (Antropometrias.pesoCorporalPredicho / 10);
+      // VMI = (PCI / 10)
+    } else {
+      return double.nan;
+    }
+  }
+
 
 // # ######################################################
 

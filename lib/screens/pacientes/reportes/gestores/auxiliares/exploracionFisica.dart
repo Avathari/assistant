@@ -35,7 +35,8 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
   @override
   void initState() {
     setState(() {
-      expoTextController.text = Reportes.exploracionFisica;
+      expoTextController.text =
+          Reportes.exploracionFisica = Reportes.reportes['Exploracion_Fisica'];
       vitalTextController.text = Reportes.signosVitales;
     });
     super.initState();
@@ -50,44 +51,62 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
           widget.isTerapia!
               ? Container()
               : Expanded(
-            flex: isDesktop(context) ? 6: isMobile(context) ? 16:  6,
-                  child: isMobile(context) ? Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        flex: isDesktop(context) ? 4: 6,
-                        child: EditTextArea(
-                            textController: vitalTextController,
-                            labelEditText: "Signos Vitales",
-                            keyBoardType: TextInputType.multiline,
-                            numOfLines: isTablet(context) ? 12 : 10,
-                            onChange: ((value) => setState(() {
-                              Reportes.signosVitales = value;
-                              Reportes.reportes['Signos_Vitales'] = value;
-                            })),
-                            inputFormat: MaskTextInputFormatter()),
-                      ),
-                      isMobile(context)  ? mobileSignalOptions() : mobileSignalOptions() // otherSignalOptions
-                    ],
-                  ): Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        flex: isDesktop(context) ? 4: 6,
-                        child: EditTextArea(
-                            textController: vitalTextController,
-                            labelEditText: "Signos Vitales",
-                            keyBoardType: TextInputType.multiline,
-                            numOfLines: isTablet(context) ? 12 : isMobile(context) ? 16: 10,
-                            onChange: ((value) => setState(() {
-                                  Reportes.signosVitales = value;
-                                  Reportes.reportes['Signos_Vitales'] = value;
-                                })),
-                            inputFormat: MaskTextInputFormatter()),
-                      ),
-                  isMobile(context)  ? mobileSignalOptions() : mobileSignalOptions() // otherSignalOptions
-                    ],
-                  ),
+                  flex: isDesktop(context)
+                      ? 6
+                      : isMobile(context)
+                          ? 16
+                          : 7,
+                  child: isMobile(context)
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              flex: isDesktop(context) ? 4 : 7,
+                              child: EditTextArea(
+                                  textController: vitalTextController,
+                                  labelEditText: "Signos Vitales",
+                                  keyBoardType: TextInputType.multiline,
+                                  fontSize: isTablet(context) ? 12 : 8,
+                                  numOfLines: isTablet(context) ? 12 : 10,
+                                  onChange: ((value) => setState(() {
+                                        Reportes.signosVitales = value;
+                                        Reportes.reportes['Signos_Vitales'] =
+                                            value;
+                                      })),
+                                  inputFormat: MaskTextInputFormatter()),
+                            ),
+                            isMobile(context)
+                                ? mobileSignalOptions()
+                                : mobileSignalOptions() // otherSignalOptions
+                          ],
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              flex: isDesktop(context) ? 4 : 7,
+                              child: EditTextArea(
+                                  textController: vitalTextController,
+                                  labelEditText: "Signos Vitales",
+                                  keyBoardType: TextInputType.multiline,
+                                  fontSize: isTablet(context) ? 12 : 8,
+                                  numOfLines: isTablet(context)
+                                      ? 12
+                                      : isMobile(context)
+                                          ? 16
+                                          : 10,
+                                  onChange: ((value) => setState(() {
+                                        Reportes.signosVitales = value;
+                                        Reportes.reportes['Signos_Vitales'] =
+                                            value;
+                                      })),
+                                  inputFormat: MaskTextInputFormatter()),
+                            ),
+                            isMobile(context)
+                                ? mobileSignalOptions()
+                                : mobileSignalOptions() // otherSignalOptions
+                          ],
+                        ),
                 ),
           CrossLine(),
           Expanded(
@@ -97,81 +116,113 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  flex: isLargeDesktop(context) ? 12: 7,
+                  flex: isLargeDesktop(context) ? 12 : 7,
                   child: EditTextArea(
                       textController: expoTextController,
                       labelEditText: "Exploración física",
                       keyBoardType: TextInputType.multiline,
+                      fontSize: isTablet(context) ? 12 : 8,
                       numOfLines: widget.isTerapia!
                           ? 60
                           : isTablet(context)
                               ? 30
                               : 20,
                       onChange: ((value) => setState(() {
-                            Reportes.exploracionFisica = value;
-                            Reportes.reportes['Exploracion_Fisica'] = value;
+                            Reportes.reportes['Exploracion_Fisica'] =
+                                Reportes.exploracionFisica = value;
                           })),
                       inputFormat: MaskTextInputFormatter()),
                 ),
                 widget.isTerapia!
                     ? Expanded(
-                      child: Column(
-                  children: [
-                      Expanded(
-                        flex: 1,
-                        child: GrandIcon(
-                          iconData: Icons.tire_repair_outlined,
-                          labelButton: "Análisis",
-                          onPress: () {
-                            Reportes.exploracionFisica = Formatos.exploracionTerapia;
-                            //
-                            expoTextController.text =
-                                Reportes.exploracionFisica;
-                            Reportes.reportes['Exploracion_Fisica'] =
-                                Reportes.exploracionFisica;
-                          },
+                        child: Column(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: GrandIcon(
+                                iconData: Icons.tire_repair_outlined,
+                                labelButton: "Análisis",
+                                onPress: () {
+                                  Reportes.exploracionFisica =
+                                      Formatos.exploracionTerapia;
+                                  //
+                                  expoTextController.text =
+                                      Reportes.exploracionFisica;
+                                  Reportes.reportes['Exploracion_Fisica'] =
+                                      Reportes.exploracionFisica;
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: GrandIcon(
+                                iconData: Icons.account_balance_wallet_outlined,
+                                labelButton: "Analisis Corto",
+                                onPress: () {
+                                  Reportes.exploracionFisica =
+                                      Formatos.exploracionTerapiaCorta;
+                                  //
+                                  expoTextController.text =
+                                      Reportes.exploracionFisica;
+                                  Reportes.reportes['Exploracion_Fisica'] =
+                                      Reportes.exploracionFisica;
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: GrandIcon(
+                                iconData: Icons.streetview,
+                                labelButton: "Analisis Corto",
+                                onPress: () {
+                                  Reportes.exploracionFisica =
+                                      Formatos.exploracionTerapiaBreve;
+                                  //
+                                  expoTextController.text =
+                                      Reportes.exploracionFisica;
+                                  Reportes.reportes['Exploracion_Fisica'] =
+                                      Reportes.exploracionFisica;
+                                },
+                              ),
+                            ),
+                            CrossLine(),
+                            Expanded(
+                                child: GrandIcon(
+                              labelButton: 'Ver',
+                              iconData: Icons.view_in_ar,
+                              onPress: () {
+                                Datos.portapapeles(
+                                    context: context,
+                                    text: expoTextController.text);
+                                // Operadores.notifyActivity(context: context, tittle: "Análisis de Terapia . . . ",
+                                //     message: expoTextController.text);
+                              },
+                            )),
+                            CrossLine(),
+                            Expanded(
+                              child: GrandIcon(
+                                iconData: Icons.linear_scale_rounded,
+                                labelButton: "Actual e Historial",
+                                onPress: () {
+                                  expoTextController.text =
+                                      expoTextController.text +
+                                          Auxiliares.getUltimo(
+                                              withoutInsighs: true);
+                                },
+                                onLongPress: () {
+                                  Datos.portapapeles(
+                                      context: context,
+                                      text: Auxiliares.historial(
+                                          withoutInsighs: true));
+                                },
+                              ),
+                            )
+                          ],
                         ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: GrandIcon(
-                          iconData: Icons.account_balance_wallet_outlined,
-                          labelButton: "Analisis Corto",
-                          onPress: () {
-                            Reportes.exploracionFisica = Formatos.exploracionTerapiaCorta;
-                            //
-                            expoTextController.text =
-                                Reportes.exploracionFisica;
-                            Reportes.reportes['Exploracion_Fisica'] =
-                                Reportes.exploracionFisica;
-                          },
-                        ),
-                      ),
-                    Expanded(
-                      flex: 1,
-                      child: GrandIcon(
-                        iconData: Icons.streetview,
-                        labelButton: "Analisis Corto",
-                        onPress: () {
-                          Reportes.exploracionFisica = Formatos.exploracionTerapiaBreve;
-                          //
-                          expoTextController.text =
-                              Reportes.exploracionFisica;
-                          Reportes.reportes['Exploracion_Fisica'] =
-                              Reportes.exploracionFisica;
-                        },
-                      ),
-                    ),
-                      CrossLine(),
-                      Expanded(child: GrandIcon(labelButton: 'Ver', iconData: Icons.view_in_ar, onPress: () {
-                        Datos.portapapeles(context: context, text: expoTextController.text);
-                        // Operadores.notifyActivity(context: context, tittle: "Análisis de Terapia . . . ",
-                        //     message: expoTextController.text);
-                      },))
-                  ],
-                ),
-                    )
-                    : isMobile(context) || isTablet(context)? mobileExploreOptions() : mobileExploreOptions() // otherExploreOptions()
+                      )
+                    : isMobile(context) || isTablet(context)
+                        ? mobileExploreOptions()
+                        : mobileExploreOptions() // otherExploreOptions()
               ],
             ),
           ),
@@ -180,6 +231,7 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
     ]);
   }
 
+  //
   void asignarVitales({required int indice}) {
     setState(() {
       vitalTextController.text = Pacientes.signosVitales(indice: indice);
@@ -209,11 +261,15 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                 asignarExploracion(indice: 1);
               },
               onLongPress: () {
-                Operadores.openDialog(context: context, chyldrim: Semiologicos(), onAction: () {
-                  setState(() {
-                    expoTextController.text = Exploracion.exploracionGeneral;
-                  });
-                });
+                Operadores.openDialog(
+                    context: context,
+                    chyldrim: Semiologicos(),
+                    onAction: () {
+                      setState(() {
+                        expoTextController.text =
+                            Exploracion.exploracionGeneral;
+                      });
+                    });
               },
             ),
             GrandButton(
@@ -242,16 +298,21 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                     chyldrim: TerapiasItems(),
                     onAction: () {
                       setState(() {
-                        expoTextController.text =
-                            Reportes.exploracionFisica;
-                        Reportes.reportes[
-                        'Exploracion_Fisica'] =
+                        expoTextController.text = Reportes.exploracionFisica;
+                        Reportes.reportes['Exploracion_Fisica'] =
                             Reportes.exploracionFisica;
                       });
                     });
                 // asignarExploracion(indice: 3);
               },
             ),
+            GrandButton(
+              labelButton: "Patrón Neurológico",
+              onPress: () {
+                asignarExploracion(indice: 5);
+              },
+            ),
+            //
             GrandButton(
               labelButton: "Sin hallazgos relevantes",
               onPress: () {
@@ -269,7 +330,7 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
       flex: 1,
       child: Wrap(
         direction: Axis.horizontal,
-      alignment: WrapAlignment.center,
+        alignment: WrapAlignment.center,
         runAlignment: WrapAlignment.center,
         crossAxisAlignment: WrapCrossAlignment.center,
         spacing: 25,
@@ -282,11 +343,14 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
               asignarExploracion(indice: 1);
             },
             onLongPress: () {
-              Operadores.openDialog(context: context, chyldrim: Semiologicos(), onAction: () {
-                setState(() {
-                  expoTextController.text = Exploracion.exploracionGeneral;
-                });
-              });
+              Operadores.openDialog(
+                  context: context,
+                  chyldrim: Semiologicos(),
+                  onAction: () {
+                    setState(() {
+                      expoTextController.text = Exploracion.exploracionGeneral;
+                    });
+                  });
             },
           ),
           GrandIcon(
@@ -319,14 +383,19 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                   chyldrim: TerapiasItems(),
                   onAction: () {
                     setState(() {
-                      expoTextController.text =
-                          Reportes.exploracionFisica;
-                      Reportes.reportes[
-                      'Exploracion_Fisica'] =
+                      expoTextController.text = Reportes.exploracionFisica;
+                      Reportes.reportes['Exploracion_Fisica'] =
                           Reportes.exploracionFisica;
                     });
                   });
               // asignarExploracion(indice: 3);
+            },
+          ),
+          GrandIcon(
+            iconData: Icons.brightness_1_outlined,
+            labelButton: "Patrón Neurológico",
+            onPress: () {
+              asignarExploracion(indice: 5);
             },
           ),
           GrandIcon(
@@ -397,7 +466,11 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
 
   mobileSignalOptions() {
     return Expanded(
-      flex: isLargeDesktop(context) ? 3 : isMobile(context) ? 4 : 1,
+      flex: isLargeDesktop(context)
+          ? 3
+          : isMobile(context)
+              ? 4
+              : 1,
       child: Wrap(
         direction: isLargeDesktop(context) ? Axis.horizontal : Axis.horizontal,
         alignment: WrapAlignment.spaceBetween,
@@ -458,6 +531,5 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
     );
   }
 }
-
 
 void showActivity() {}

@@ -539,8 +539,7 @@ class UsuariosPanel extends StatelessWidget {
             children: [
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: Colores.backgroundWidget,
-                      onPrimary: Colors.grey,
+                      foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
                       minimumSize: const Size(50, 50)),
@@ -559,8 +558,7 @@ class UsuariosPanel extends StatelessWidget {
                       ])),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: Colores.backgroundWidget,
-                      onPrimary: Colors.grey,
+                      foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
                       minimumSize: const Size(50, 50)),

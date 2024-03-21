@@ -52,6 +52,10 @@ class Calendarios {
         .difference(DateTime.parse(fechaAnterior))
         .inDays;
   }
+
+  static String formatDate(String formattedString) {
+    return DateFormat("dd.MM.yyyy").format(DateTime.parse(formattedString));
+  }
 }
 
 class Dicotomicos {

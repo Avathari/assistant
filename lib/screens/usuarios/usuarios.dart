@@ -791,8 +791,7 @@ class _OperacionesUsuarioState extends State<OperacionesUsuario> {
         children: [
           ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  primary: Colores.backgroundWidget,
-                  onPrimary: Colors.grey,
+                  foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
                   minimumSize: const Size(50, 50)),
@@ -833,8 +832,7 @@ class _OperacionesUsuarioState extends State<OperacionesUsuario> {
                     children: [
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              primary: Colores.backgroundWidget,
-                              onPrimary: Colors.grey,
+                              foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20)),
                               minimumSize: const Size(75, 75)),
@@ -844,8 +842,7 @@ class _OperacionesUsuarioState extends State<OperacionesUsuario> {
                           child: const Icon(Icons.camera)),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              primary: Colores.backgroundWidget,
-                              onPrimary: Colors.grey,
+                              foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50)),
                               minimumSize: const Size(50, 50)),
@@ -855,8 +852,7 @@ class _OperacionesUsuarioState extends State<OperacionesUsuario> {
                           child: const Icon(Icons.person)),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              primary: Colores.backgroundWidget,
-                              onPrimary: Colors.grey,
+                              foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20)),
                               minimumSize: const Size(75, 75)),
@@ -898,8 +894,7 @@ class _OperacionesUsuarioState extends State<OperacionesUsuario> {
                         padding: const EdgeInsets.all(8.0),
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                primary: Colores.backgroundWidget,
-                                onPrimary: Colors.grey,
+                                foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20)),
                                 minimumSize: const Size(75, 75)),
@@ -912,8 +907,7 @@ class _OperacionesUsuarioState extends State<OperacionesUsuario> {
                         padding: const EdgeInsets.all(8.0),
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                primary: Colores.backgroundWidget,
-                                onPrimary: Colors.grey,
+                                foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(50)),
                                 minimumSize: const Size(50, 50)),
@@ -926,8 +920,7 @@ class _OperacionesUsuarioState extends State<OperacionesUsuario> {
                         padding: const EdgeInsets.all(8.0),
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                primary: Colores.backgroundWidget,
-                                onPrimary: Colors.grey,
+                                foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20)),
                                 minimumSize: const Size(75, 75)),

@@ -3,6 +3,7 @@ import 'package:assistant/operativity/pacientes/valores/Valorados/ventometr%C3%A
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/TittleContainer.dart';
@@ -125,6 +126,19 @@ class _VentilatoriosState extends State<Ventilatorios> {
                                         secondText: Ventometrias.flujoVentilatorioMedido
                                             .toStringAsFixed(2),
                                         thirdText: "L/min",
+                                      ),
+                                      CrossLine(),
+                                      ValuePanel(
+                                        firstText: "VTi (Cstat/Dp)",
+                                        secondText: Ventometrias.volumenTidalIdeal
+                                            .toStringAsFixed(0),
+                                        thirdText: "L/cmH2O",
+                                      ),
+                                      ValuePanel(
+                                        firstText: "Dp (Vt/Cstat)",
+                                        secondText: (Ventometrias.drivingPressure * -1.0)
+                                            .toStringAsFixed(2),
+                                        thirdText: "L/cmH2O",
                                       ),
                                     ]),
                               ),

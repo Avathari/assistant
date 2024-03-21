@@ -1,17 +1,11 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
-import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/analisis.dart';
 import 'package:assistant/values/SizingInfo.dart';
-import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
-import 'package:assistant/widgets/CrossLine.dart';
-import 'package:assistant/widgets/DialogSelector.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
-import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/Spinner.dart';
-import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
@@ -149,6 +143,8 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                     child: Column(
                       children: [
                         GrandButton(
+                          weigth: 1200,
+                          height: 25,
                           labelButton: "Aceptar pronóstico",
                           onPress: () {
                             setState(() {
@@ -166,35 +162,51 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                                   textController: pronosTextController,
                                   labelEditText: "Pronóstico médico",
                                   keyBoardType: TextInputType.multiline,
-                                  numOfLines: 10,
+                                  numOfLines: isTablet(context) ? 15: 10,
                                   limitOfChars: 2000,
                                   onChange: ((value) {
-                                    Reportes.pronosticoMedico = "$value.";
-                                    Reportes.reportes['Pronostico_Medico'] =
+                                    Reportes.pronosticoMedico = Reportes.reportes['Pronostico_Medico'] =
                                         "$value.";
                                   }),
                                   inputFormat: MaskTextInputFormatter()),
                             ),
                             Expanded(
-                              child: CircleIcon(
-                                  iconed: Icons.add,
-                                  tittle: "Comentarios Previos . . . ",
-                                  onChangeValue: () {
-                                    Operadores.selectOptionsActivity(context: context,
-                                        options: Items.bibliografiasContempladas.map((e) =>
-                                        e['Diagnostico']).toList(),
-                                        onClose: (valar) {
-                                          Terminal.printWarning(message: "$valar");
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  CircleIcon(
+                                      iconed: Icons.add,
+                                      tittle: "Comentarios Previos . . . ",
+                                      onChangeValue: () {
+                                        Operadores.selectOptionsActivity(context: context,
+                                            options: Items.bibliografiasContempladas.map((e) =>
+                                            e['Diagnostico']).toList(),
+                                            onClose: (valar) {
+                                              Terminal.printWarning(message: "$valar");
 
-                                          Items.bibliografiasContempladas.forEach((e) {
-                                            //
-                                            if (e['Diagnostico'] == valar) {
-                                              pronosTextController.text = "${pronosTextController.text}${e['Bibliografia']!}";
-                                            }
-                                          });
-                                          Navigator.of(context).pop();
-                                        });
+                                              Items.bibliografiasContempladas.forEach((e) {
+                                                //
+                                                if (e['Diagnostico'] == valar) {
+                                                  pronosTextController.text = "${pronosTextController.text}${e['Bibliografia']!}";
+                                                }
+                                              });
+                                              Navigator.of(context).pop();
+                                            });
+                                      }),
+                                  const SizedBox(height: 15),
+                                  CircleIcon(
+                                    radios: 25,
+                                      difRadios: 7,
+                                      iconed: Icons.hourglass_bottom,
+                                      tittle: "Cultivos Recabados . . . ",
+                                      onChangeValue: () => Reportes.reportes['Pronostico_Medico']  = pronosTextController.text = "${pronosTextController.text} ${Auxiliares.getCultivos()}"
+                                      ),
+                                  const SizedBox(height: 15),
+                                  GrandButton(onPress: () {
+                                    
                                   }),
+                                ],
+                              ),
                             ),
                           ],
                         ),

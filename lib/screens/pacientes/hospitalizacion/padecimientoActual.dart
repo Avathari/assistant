@@ -35,14 +35,15 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
 
   @override
   void initState() {
-
+    fechaPadecimientoTextController.text = Valores.fechaPadecimientoActual!;
     //
     Actividades.consultarId(
             Databases.siteground_database_reghosp,
             Repositorios.repositorio['consultPadecimientoQuery'],
             Pacientes.ID_Hospitalizacion)
         .then((response) {
-      Terminal.printWarning(message: "${Repositorios.repositorio['consultPadecimientoQuery']}");
+      Terminal.printWarning(
+          message: "${Repositorios.repositorio['consultPadecimientoQuery']}");
       Terminal.printWarning(message: "response $response");
       // print("RESPUESTA $response"); **************************************************
       if (response['Error'] == 'Hubo un error') {
@@ -57,11 +58,16 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
               Navigator.of(context).pop();
             },
             onAcept: () {
-              Repositorios.registrarRegistro();
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
+              Repositorios.registrarRegistro()
+                  .onError((error, stackTrace) => Operadores.alertActivity(
+                      context: context,
+                      tittle: "ERROR al Recrear Padecimiento Actual",
+                      message: "ERROR - $error : : $stackTrace"))
+                  .whenComplete(() {
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              });
             });
-
       } else {
         // Terminal.printExpected(message: "PA : : $respuesta");
         setState(() {
@@ -71,7 +77,8 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
           fechaPadecimientoTextController.text =
               response['FechaPadecimiento'] ??
                   Calendarios.today(format: 'yyyy/MM/dd');
-          String respuesta = response['Padecimiento_Actual']; // response['Contexto'];
+          String respuesta =
+              response['Padecimiento_Actual']; // response['Contexto'];
           // Asignación del Padecimiento Actual *******************************************
           padecimientoActualTextController.text =
               respuesta.split('\n')[0] ?? '';
@@ -84,7 +91,8 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
           Calendarios.today(format: 'yyyy/MM/dd');
       padecimientoActualTextController.text =
           "Inicia padecimiento actual ${fechaPadecimientoTextController.text}";
-      Valores.padecimientoActual = "Inicia padecimiento actual ${fechaPadecimientoTextController.text}";
+      Valores.padecimientoActual =
+          "Inicia padecimiento actual ${fechaPadecimientoTextController.text}";
       atencionUrgenciasTextController.text =
           "Es atendido en urgencias reportandose tensión arterial $tensionArterial mmHg, "
           "frecuencia cardiaca $frecuenciaCardiaca Lat/min, frecuencia respiratoria $frecuenciaRespiratoria Resp/min, "
@@ -97,24 +105,26 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: widget.withAppBar == true ? AppBar(
-        foregroundColor: Colors.white,
-        backgroundColor: Colors.black,
-        title: AppBarText('Padecimiento Actual'),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.list_outlined,
-            ),
-            onPressed: () {
-              Operadores.notifyActivity(
-                  context: context,
-                  tittle: 'Padecimiento Actual',
-                  message: "${Valores.padecimientoActual}");
-            },
-          )
-        ],
-      ) : null,
+      appBar: widget.withAppBar == true
+          ? AppBar(
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.black,
+              title: AppBarText('Padecimiento Actual'),
+              actions: [
+                IconButton(
+                  icon: const Icon(
+                    Icons.list_outlined,
+                  ),
+                  onPressed: () {
+                    Operadores.notifyActivity(
+                        context: context,
+                        tittle: 'Padecimiento Actual',
+                        message: "${Valores.padecimientoActual}");
+                  },
+                )
+              ],
+            )
+          : null,
       body: Row(
         children: [
           Expanded(
@@ -134,6 +144,8 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
                     withShowOption: true,
                     selection: true,
                     onSelected: () {
+                      Valores.fechaPadecimientoActual =padecimientoActualTextController.text;
+                      //
                       fechaPadecimientoTextController.text =
                           Calendarios.today(format: 'yyyy/MM/dd');
                       padecimientoActualTextController.text =
@@ -167,8 +179,9 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
                     },
                     onChange: (value) {
                       setState(() {
-                        Valores.padecimientoActual = Reportes.reportes['Padecimiento_Actual'] =
-                            "${Valores.padecimientoActual}. \n$value";
+                        Valores.padecimientoActual =
+                            Reportes.reportes['Padecimiento_Actual'] =
+                                "${Valores.padecimientoActual}. \n$value";
                       });
                     },
                   ),
@@ -193,7 +206,8 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
                     },
                     onChange: (value) {
                       setState(() {
-                        Valores.padecimientoActual = Reportes.reportes['Padecimiento_Actual'] = value;
+                        Valores.padecimientoActual =
+                            Reportes.reportes['Padecimiento_Actual'] = value;
                       });
                     },
                   ),
@@ -323,13 +337,18 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
                       weigth: 1000,
                       labelButton: "Actualizar Padecimiento Actual",
                       onPress: () {
+                        Valores.fechaPadecimientoActual =padecimientoActualTextController.text;
+                        //
                         Valores.padecimientoActual =
                             "${padecimientoActualTextController.text}. \n${atencionUrgenciasTextController.text}";
                         Future(() =>
                                 Repositorios.actualizarPadecimientoRegistro())
                             .whenComplete(() => Navigator.of(context).push(
                                 MaterialPageRoute(
-                                    builder: (BuildContext context) => widget.withAppBar == true ?  VisualPacientes(actualPage: 0) : ReportesMedicos())));
+                                    builder: (BuildContext context) =>
+                                        widget.withAppBar == true
+                                            ? VisualPacientes(actualPage: 0)
+                                            : ReportesMedicos())));
                       }),
                 ],
               ),

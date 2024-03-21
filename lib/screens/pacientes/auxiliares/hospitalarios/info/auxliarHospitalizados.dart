@@ -332,7 +332,7 @@ class Paneles {
 
               //
               Cambios.toNextActivity(context, chyld: const Generales());
-            }),
+            }), // Signos Vitales
         CircleIcon(
             radios: 25,
             difRadios: 5,
@@ -342,6 +342,9 @@ class Paneles {
               Pacientes.ID_Hospitalizacion =
                   foundedItems[index].idHospitalizado =
                       foundedItems[index].hospitalizedData['ID_Hosp'];
+              // Agregarr a Pacientes.nombreCompleto sus variables correspondientes . . .
+              Pacientes.nombreCompleto =
+                  foundedItems![index].nombreCompleto;
               // ******************* * * * * * * *** *
               Cambios.toNextPage(context,
                   GestionPendiente(
@@ -350,7 +353,7 @@ class Paneles {
                         withReturn: true,
                         operationActivity: Constantes.Register,
                   )));
-            }),
+            }), // Pendientes
         CircleIcon(
             radios: 25,
             difRadios: 5,
@@ -360,7 +363,7 @@ class Paneles {
                   foundedItems[index].idHospitalizado;
               //
               Cambios.toNextActivity(context, chyld: const Subjetivos());
-            }),
+            }), // Subjetivos
       ],
     );
   }
@@ -371,6 +374,7 @@ class Paneles {
     return TittleContainer(
         centered: isMobile(context) ? true : false,
         tittle: isMobile(context) ? "LAB's" : 'Laboratorios',
+        padding: 3.0,
         color: isMobile(context)
             ? Theming.cuaternaryColor
             : Theming.cuaternaryColor,
@@ -396,11 +400,11 @@ class Paneles {
 
                   Datos.portapapeles(
                       context: context,
-                      text: Auxiliares.porFecha(fechaActual: list[ind]));
+                      text: Auxiliares.porFecha(fechaActual: list[ind], esAbreviado: true));
                 },
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
                 child: Text(
-                  list[ind],
+                  Calendarios.formatDate(list[ind]),
                   style: Styles.textSyleGrowth(fontSize: 8),
                 ),
               );
@@ -538,6 +542,15 @@ class Paneles {
   }
 
   // ESTADÍSTICAS ***************************************************
+  static HospitalaryNewbies() {
+    // VARIABLES ************************
+
+    // RETORNO *********************************
+    return Container(
+
+    );
+  }
+
   static HospitalaryStadystics(BuildContext context, List? foundedItems) {
     // VARIABLES ************************
     int hombres = 0, mujeres = 0;

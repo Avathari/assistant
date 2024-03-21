@@ -494,13 +494,15 @@ class Pacientes {
             if (Reportes.personalesPatologicos == "") {
               Reportes.personalesPatologicos =
                   "${element['Pace_APP_DEG_com'].toUpperCase()} "
-                  "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
-                  "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. ";
+                  // "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+                  // "actualmente "
+                      "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. ";
             } else {
               Reportes.personalesPatologicos =
                   "${Reportes.personalesPatologicos}. ${element['Pace_APP_DEG_com'].toUpperCase()} "
-                  "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
-                  "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. ";
+                  // "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+                  // "actualmente "
+                      "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. ";
             }
           }
         } else {
@@ -508,14 +510,16 @@ class Pacientes {
             if (Reportes.personalesPatologicos == "") {
               Reportes.personalesPatologicos =
                   "$prefix${element['Pace_APP_DEG_com']} "
-                  "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
-                  "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
+                  // "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+                  // "actualmente "
+                      "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
                   "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
             } else {
               Reportes.personalesPatologicos =
                   "${Reportes.personalesPatologicos}. $saltoLinea$prefix${element['Pace_APP_DEG_com']} "
-                  "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
-                  "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
+                  // "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+                  // "actualmente "
+                      "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
                   "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
             }
           }
@@ -526,14 +530,16 @@ class Pacientes {
             if (Reportes.personalesPatologicos == "") {
               Reportes.personalesPatologicos =
                   "$prefix${element['Pace_APP_DEG_com'].toUpperCase()} "
-                  "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
-                  "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
+                  // "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+                  // "actualmente "
+                      "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
                   "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
             } else {
               Reportes.personalesPatologicos =
                   "${Reportes.personalesPatologicos}. $saltoLinea$prefix${element['Pace_APP_DEG_com'].toUpperCase()} "
-                  "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
-                  "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
+                  // "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+                  // "actualmente "
+                      "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
                   "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
             }
           }
@@ -542,14 +548,16 @@ class Pacientes {
             if (Reportes.personalesPatologicos == "") {
               Reportes.personalesPatologicos =
                   "$prefix${element['Pace_APP_DEG_com']} "
-                  "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
-                  "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
+                  // "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+                  // "actualmente "
+                      "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
                   "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
             } else {
               Reportes.personalesPatologicos =
                   "${Reportes.personalesPatologicos}. \n$prefix${element['Pace_APP_DEG_com']} "
-                  "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
-                  "actualmente ${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
+                  // "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+                  // "actualmente "
+                      "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
                   "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
             }
           }
@@ -678,8 +686,7 @@ class Pacientes {
     switch (indice) {
       case 0:
         return "Sin hallazgos relevantes en la exploración física";
-      case 1:
-        // "Exploración acortada";
+      case 1: // PATRÓN LARGO
         return "Conciente, orientado y cooperador. Palidez mucotegumentaria, sin datos de deshidratación. "
             "Pupilas isocóricas normorreflectivas, con respuesta fotomotora adecuada. \n"
             "Tórax con movimientos de amplexión y amplexación sin restricciones. "
@@ -697,12 +704,20 @@ class Pacientes {
         return "Exploración extensa";
       case 3:
         return "Análisis de terapia intensiva";
-      case 4:
+      case 4: // PATRÓN CORTO
         return "Glasgow E4, V5, M6, hidratado, pálidez tegumentaria. "
             "Precordio rítmico, sin agregados. Murmullo vesicular audible, sin estertores ni sibilancias. "
             "Abdomen sin alteraciones, normoperistalsis, no doloroso, sin irritación peritoneal. "
             "Extremidades funcionales, fuerza conservada, reflejos osteotendinosos, no edema, llenado capilar normal";
-      case 5:
+      case 5: // EXPLORACIÓN NEUROLÓGICA . . .
+        return "Glasgow O4, V4, M6, en posición semifowler, sin facie característica. \n"
+            "NEUROLÓGICO: Funciones mentales: paciente orientado, euproséxico. Nervios craneales. Nc I: no valorado. Nc ii: isocoria de 3 mm, reflejo fotomotor presente, reflejo consensual presente, NC III: motilidad ocular conservada, sin alteraciones en la campimetría NC V: fuerza y tono de músculos maseteros y temporales conservados, sensibilidad conservada en las tres ramas del trigémino. NC VII: Sin alteraciones. NC VIII: reflejo cocleopalpebral presente bilateral. NC IX-X: Úvula central, elevación simétrica del paladar blando, con reflejo nauseoso presente. NC XI: músculos trapecio izquierdo con fuerza muscular conservada, músculo esternocleidomastoideo con tono y trofismo conservado bilateral, fuerza 5/5 bilateral. NC XII: Lengua en reposo sin fasciculaciones, protruye, retrae y lateraliza adecuadamente sin desviación, trofismo normal. Tono y trofismo disminuido en las 4 extremidades fuerza muscular 1/5 escala de Daniels, arcos de movimiento ausentes, sin limitaciones en los movimientos pasivos, reflejos osteotendinosos +++/++++ global. Babinski y sucedáneos negativos. \n"
+            "CABEZA con cráneo normocéfalo, con endostosis región occipital, adecuada implantación de piel cabelluda, cuello cilíndrico, móvil, sin adenopatías palpables, tráquea central, móvil, sin ingurgitación yugular, pulsos carotídeos rítmicos y simétricos. \n"
+            "TÓRAX normolíneo, simétrico, adecuada mecánica ventilatoria con movimiento de amplexión y amplexación, ruidos respiratorios normales en todos los campos pulmonares, sin estertores ni sibilancias, no integró síndrome pleuropulmonar. \n"
+            "ABDOMEN peristalsis con movimientos intestinales 2-4 por minuto. A la palpación blando, depresible, no dolor a palpación, sin irritación peritoneal. \n"
+            "GENITALES de acuerdo a edad y sexo, a la inspección sin datos de secreciones. Tacto rectal colocado en decúbito lateral izquierdo, sin presencia de úlceras, fístulas, tumoraciones, hemorroides o estenosis, presenta adecuado tono muscular tanto de anillo inferior como superior, sin induraciones en la próstata, abarca 2 cm en su plano longitudinal. \n"
+            "COLUMNA sin limitación a los movimientos pasivos, con dificultad para incorporar en sedestación, sin control del fuerza troncal, sin embargo, mantiene en sedestación al ser auxiliado. Cuerpos vertebrales íntegros a la palpación, en lo que respecta a la apófisis espinosa";
+      case 6:
         return "";
       default:
         return Reportes.exploracionFisica;
@@ -6128,10 +6143,8 @@ class Auxiliares {
     String prosa = "";
 
     var fechar = Listas.listWithoutRepitedValues(
-      Listas.listFromMapWithOneKey(
-        Pacientes.Paraclinicos!,
-        keySearched: 'Fecha_Registro',
-      ),
+      Listas.listFromMapWithOneKey(Pacientes.Paraclinicos!,
+          keySearched: 'Fecha_Registro'),
     );
 
     if (esAbreviado) {
@@ -6145,23 +6158,33 @@ class Auxiliares {
 
         for (var element in aux) {
           // ***************************** *****************
-          if (max == "") {
-            if (element['Tipo_Estudio'] == Auxiliares.Categorias[13]) {
-              max =
-                  "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+          if (element['Tipo_Estudio'] != Auxiliares.Categorias[11] &&
+              element['Tipo_Estudio'] != Auxiliares.Categorias[12] &&
+              element['Tipo_Estudio'] != Auxiliares.Categorias[13] &&
+              element['Tipo_Estudio'] != Auxiliares.Categorias[14] &&
+              element['Tipo_Estudio'] != Auxiliares.Categorias[18] &&
+              element['Tipo_Estudio'] != Auxiliares.Categorias[19]) {
+            if (max == "") {
+              if (element['Tipo_Estudio'] == Auxiliares.Categorias[13]) {
+                max =
+                    "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+              } else {
+                max =
+                    "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+              }
             } else {
               max =
-                  "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+                  "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
             }
-          } else {
-            max =
-                "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
           }
         }
-        if (max.startsWith("pH")) {
-          prosa = "$prosa$fecha: $max\n";
-        } else {
-          prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+        //
+        if (max != "") {
+          if (max.startsWith("pH")) {
+            prosa = "$prosa$fecha: $max\n";
+          } else {
+            prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+          }
         }
       });
     } else if (withoutInsighs) {
@@ -6175,23 +6198,35 @@ class Auxiliares {
 
         for (var element in aux) {
           // ***************************** *****************
-          if (max == "") {
-            if (element['Tipo_Estudio'] == Auxiliares.Categorias[13]) {
-              max =
-                  "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
+          if (element['Tipo_Estudio'] != Auxiliares.Categorias[11] &&
+              element['Tipo_Estudio'] != Auxiliares.Categorias[12] &&
+              element['Tipo_Estudio'] != Auxiliares.Categorias[13] &&
+              element['Tipo_Estudio'] != Auxiliares.Categorias[14] &&
+              element['Tipo_Estudio'] != Auxiliares.Categorias[18] &&
+              element['Tipo_Estudio'] != Auxiliares.Categorias[19]) {
+            if (max == "") {
+              if (element['Tipo_Estudio'] == Auxiliares.Categorias[13]) {
+                max =
+                    "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
+              } else {
+                max =
+                    "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
+              }
             } else {
               max =
-                  "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
+                  "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
             }
           } else {
-            max =
-                "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
+            max = "";
           }
         }
-        if (max.startsWith("pH")) {
-          prosa = "$prosa$fecha: $max\n";
-        } else {
-          prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+        //
+        if (max != "") {
+          if (max.startsWith("pH")) {
+            prosa = "$prosa$fecha: $max\n";
+          } else {
+            prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+          }
         }
       });
     } else {
@@ -6752,11 +6787,11 @@ class Auxiliares {
     "Panel Viral", // 20
     "Perfil de Hierro",
     "Inmunológicos", // 22
-    "Perfil Hormonal",
+    "Perfil Hormonal", // 23
     "Cuantificación de Vitaminas",
     "Otros", // 25
     "Citoquímico de Líquido Cefalorraquídeo",
-    "Citológico de Líquido Cefalorraquídeo",
+    "Líquido de Pleural", // 27 : Analítica de Líquido Pleural
     "Aspirado de Médula Ósea",
     "Western Blot HIV-1, HIV-2", // 29
     "Electrocardiograma"
@@ -6979,6 +7014,8 @@ class Auxiliares {
       "Cultivo de Abceso, cavidad pélvica",
       "Cultivo de Abceso, cavidad renal",
       "Cultivo de Abceso, cavidad hepática",
+      "Cultivo de sitio de salida, diálisis peritoneal",
+      "BAAR Seriado",
       "",
     ], // CULTIVOS
     //
@@ -7045,7 +7082,7 @@ class Auxiliares {
       "",
     ],
     Categorias[23]: [
-      "ACTH",
+      "ACTH", // Hormona Adrenocorticotropa
       "Cortisol",
       "Hormona Foliculo-esimulante",
       "Progesterona",
@@ -7054,9 +7091,11 @@ class Auxiliares {
       "Dihidrotestorterona",
       "Testosterona",
       "Prolactina",
-      "Hormona antidiurética",
+      "Hormona Antidiurética",
+      "Hormona Luteinizante",
+      "Hormona de Crecimiento", // Somatotropina
       "",
-    ],
+    ], // Hormonales
     Categorias[24]: [
       "Cianocobalamina",
       "Ácido Fólico Endógeno",
@@ -7087,6 +7126,10 @@ class Auxiliares {
       "Prueba Rápida Covid",
       "RT-PCR SARS-CoV2",
       "RT-PCR H1N1",
+      //
+      "Prueba Inmunológica de Embarazo",
+      "Cuantificación de Hormona Corionica Humana",
+      "",
       "",
     ], // Otros
     // Analíitica de Líquido Cefalorraquideo
@@ -7099,19 +7142,27 @@ class Auxiliares {
       "Tinción de Wrigth",
       "Tinción de Gram",
     ],
+    // Analítica de Líquido Pleural
     Categorias[27]: [
-      // Citológico
-      "Aspecto",
-      "Color",
-      "Leucocitos", //
-      "Polimorfonucleares", // %
-      "Mononucleares", // %
-      "Eritrocitos",
-      "Bacterias",
-      "Levaduras",
-      "Otros",
-      "pH",
-      "",
+      "Glucosa de Líquido Pleural",
+      "DHL de Líquido Pleural",
+      "Proteinas de Líquido Pleural",
+      "Albúmina de Líquido Pleural",
+      "Fosfatasa Alcalina de Líquido Pleural",
+      "Colesterol de Líquido Pleural",
+      // 
+      "Aspecto de Líquido Pleural",
+      "Color de Líquido Pleural",
+      "Leucocitos en Líquido Pleural",
+      "Polimorfonucleares en Líquido Pleural",
+      "Mononucleares en Líquido Pleural",
+      "Eritrocitos en Líquido Pleural",
+      "Bacterias en Líquido Pleural",
+      "Levaduras en Líquido Pleural",
+      "Otros en Líquido Pleural",
+      "pH de Líquido Pleural",
+      // OTROS . . .
+      "", 
     ],
     // Aspirado de Médula Ósea
     Categorias[28]: [
@@ -7191,12 +7242,12 @@ class Auxiliares {
     ],
     Categorias[21]: ["mcg/dl", "ng/mL", "µg/dL", "%", "mg/dL"],
     Categorias[22]: ["pg/mL", "UI/mL", "IU/mL", "mg/dL", ""],
-    Categorias[23]: ["pg/mL", "ng/dL", ""],
+    Categorias[23]: ["", "pg/mL", "ng/dL", "ng/mL", "mUI/mL"], // Hormonales
     Categorias[24]: [""],
     Categorias[25]: ["%", "", ""],
     //
     Categorias[26]: ["%", "", ""],
-    Categorias[27]: ["%", "", ""],
+    Categorias[27]: ["", "mg/dL", "U/L", "%"],
     Categorias[28]: ["", ""],
     Categorias[29]: ["", ""],
   };
@@ -8654,6 +8705,10 @@ class Repositorios {
       // INDICACIONES MÉDICAS *******************************
       Reportes.signosVitales,
       Reportes.exploracionFisica,
+      //
+      Reportes.auxiliaresDiagnosticos,
+      Reportes.analisisComplementarios,
+      //
       Reportes.analisisMedico,
       Reportes.pronosticoMedico,
       // INDICACIONES MÉDICAS *******************************
@@ -8701,6 +8756,9 @@ class Repositorios {
       Reportes.reportes['Subjetivo'],
       Reportes.signosVitales,
       Reportes.exploracionFisica,
+      //
+      Reportes.auxiliaresDiagnosticos,
+      Reportes.analisisComplementarios,
       // Reportes.eventualidadesOcurridas,
       // Reportes.terapiasPrevias,
       Reportes.analisisMedico,
@@ -8715,7 +8773,7 @@ class Repositorios {
       Reportes.medicamentosIndicados.toString(),
       Reportes.medidasGenerales.toString(),
       Reportes.pendientes.toString(),
-      tipo_Analisis // Repositorios.tipoAnalisis()
+      Repositorios.tipo_Analisis, // Items.tiposAnalisis[0] //
     ];
     // var ValuesEgreso = ; *******************************************
     await Actividades.registrar(
@@ -8727,8 +8785,6 @@ class Repositorios {
           filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
       Terminal.printExpected(message: "VALUE - $value : $Values");
     }).whenComplete(() async {
-      Archivos.createJsonFromMap(Pacientes.Notas!,
-          filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
       if (tipo_Analisis == "Análisis de Ingreso") {
         await Actividades.registrar(
           Databases.siteground_database_reghosp,
@@ -8746,10 +8802,11 @@ class Repositorios {
             Reportes.reportes['Subjetivo'],
             Reportes.signosVitales,
             Reportes.exploracionFisica,
-            // Reportes.eventualidadesOcurridas,
-            // Reportes.terapiasPrevias,
+            //
+            Reportes.auxiliaresDiagnosticos,
+            Reportes.analisisComplementarios,
+            //
             Reportes.analisisMedico,
-            // Reportes.tratamientoPropuesto,
             Reportes.pronosticoMedico,
             // INDICACIONES MÉDICAS *******************************
             Reportes.dieta.toString(),
@@ -8762,7 +8819,9 @@ class Repositorios {
             Reportes.pendientes.toString(),
             Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
           ],
-        );
+        ).whenComplete(() => Archivos.createJsonFromMap(Pacientes.Notas!,
+            filePath:
+                "${Pacientes.localRepositoryPath}/reportes/reportes.json"));
       }
 // REGISTRAR el Formato de Egreso . . .
     }).onError((error, stackTrace) {
@@ -8878,15 +8937,17 @@ class Repositorios {
         "ServicioMedico, FechaRealizacion, "
         "Diagnosticos_Hospital, "
         "Subjetivo, Signos_Vitales, Exploracion_Fisica, "
+        "Auxiliares_Diagnosticos, Analisis_Complementario, "
         "Analisis_Medico, Pronostico_Medico, "
         "Dietoterapia, Hidroterapia, Insulinoterapia, Hemoterapia, Oxigenoterapia, Medicamentos, Medidas_Generales, Pendientes, "
         "Tipo_Analisis) "
-        "VALUES (?,?,?,?,?,?,?,?,?,?,?,"
-        "?,?,?,?,?,?,?,?,"
+        "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,"
+        "?,?,?,?,?,?,?,?,?,"
         "?,?)",
     "updateQuery": "UPDATE pace_hosp_repo SET "
         "Diagnosticos_Hospital = ?, "
         "Signos_Vitales = ?, Exploracion_Fisica = ?, "
+        "Auxiliares_Diagnosticos = ?, Analisis_Complementario = ?, "
         "Analisis_Medico = ?, Pronostico_Medico = ?, "
         "Dietoterapia = ?, Hidroterapia = ?, Insulinoterapia = ?, Hemoterapia = ?, "
         "Oxigenoterapia = ?, Medicamentos = ?, Medidas_Generales = ?, Pendientes = ? "

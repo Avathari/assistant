@@ -7,10 +7,12 @@ import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/depur
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/electrolitos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/ferricos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/hepaticos.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/hormonal.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/inmunologicos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/linfocitos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/lipidicos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/liquidoDialisis.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/liquidoPleural.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/pancreaticos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/quimicas.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/reactantes.dart';
@@ -110,6 +112,11 @@ class _ConmutadorParaclinicosState extends State<ConmutadorParaclinicos> {
       case "Perfil de Hierro":
         return const Ferricos();
 
+      case "Perfil Hormonal":
+        return const Hormonales();
+
+      case "Líquido de Pleural":
+        return const LiquidoPleural();
       case "Inmunológicos":
         return const Inmunologicos();
       case "Western Blot HIV-1, HIV-2":

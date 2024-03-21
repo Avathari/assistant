@@ -22,13 +22,15 @@ class ReporteEgreso extends StatefulWidget {
 class _ReporteEgresoState extends State<ReporteEgreso> {
   @override
   void initState() {
-    Repositorios.padecimientoActual();
+    // Repositorios.padecimientoActual();
     Vitales.ultimoRegistro();
 
     // INICIAR . . .
     setState(() {
       initialTextController.text = Reportes.reportes['Datos_Generales'] =
           Pacientes.prosa(isTerapia: true);
+      Reportes.reportes['Padecimiento_Actual'] =
+          padesTextController.text = Reportes.padecimientoActual;
       // Reportes.reportes['Datos_Generales_Simple'] =  Pacientes.prosa(isTerapia: true, otherForm: true);
       relevantesTextController.text =
           Reportes.reportes['Antecedentes_Relevantes'] =
@@ -36,8 +38,6 @@ class _ReporteEgresoState extends State<ReporteEgreso> {
       diagoTextController.text = Reportes.impresionesDiagnosticas.isNotEmpty
           ? Reportes.impresionesDiagnosticas
           : Pacientes.diagnosticos();
-      Reportes.reportes['Padecimiento_Actual'] =
-          padesTextController.text = Reportes.padecimientoActual;
       // ********************************************
       Reportes.reportes['Antecedentes_Patologicos_Otros'] =
           Reportes.reportes['Antecedentes_Patologicos_Ingreso'] =

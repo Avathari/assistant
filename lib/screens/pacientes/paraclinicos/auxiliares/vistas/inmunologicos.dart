@@ -60,18 +60,16 @@ class _InmunologicosState extends State<Inmunologicos> {
                 textController: textAcMusculoLisoResultController,
                 keyBoardType: TextInputType.number,
                 inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Ac. Anti Musculo Liso ($unidadMedidaAcMusculoLiso)',
+                labelEditText:
+                    'Ac. Anti Musculo Liso ($unidadMedidaAcMusculoLiso)',
                 numOfLines: 1,
               ),
               EditTextArea(
                 textController: textAcAntinuclearesResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat:
-                MaskTextInputFormatter(
-                    mask: '#.##',
-                    filter: {"#": RegExp(r'[0-9]')},
-                    type: MaskAutoCompletionType.lazy),
-                labelEditText: 'Ac. Antinucleares ($unidadMedidaAcAntinucleares)',
+                keyBoardType: TextInputType.text,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText:
+                    'Ac. Antinucleares ($unidadMedidaAcAntinucleares)',
                 numOfLines: 1,
               ),
               EditTextArea(
@@ -305,13 +303,14 @@ class _InmunologicosState extends State<Inmunologicos> {
   String? unidadMedidaPANCA =
       Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
   var textCANCAResultController = TextEditingController();
-  String? unidadMedidaCANCA = Auxiliares.Medidas[Auxiliares.Categorias[index]][2];
+  String? unidadMedidaCANCA =
+      Auxiliares.Medidas[Auxiliares.Categorias[index]][2];
   // var textHCMResultController = TextEditingController();
   // String? unidadMedidaHCM = Auxiliares.Medidas[Auxiliares.Categorias[index]][3];
   //
   var textAntiRoResultController = TextEditingController();
   String? unidadMedidaAntiRo =
-  Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
+      Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
 
   // var textPlaquetasResultController = TextEditingController();
   // String? unidadMedidaPlaquetas =

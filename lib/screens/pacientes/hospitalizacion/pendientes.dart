@@ -386,7 +386,8 @@ class _GestionPendienteState extends State<GestionPendiente> {
 
   @override
   void initState() {
-    iniciar();
+    if (widget.withReturn!) reiniciar(); else iniciar();
+
     super.initState();
   }
 

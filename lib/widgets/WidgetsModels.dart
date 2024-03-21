@@ -203,8 +203,7 @@ AlertDialog alertDialog(String? tittle, String? msg, onCloss, onAcept) {
 ElevatedButton textButton(context, String? labelButton, onPress) {
   return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          primary: Colors.black54,
-          onPrimary: Colors.grey,
+          foregroundColor: Colors.grey, backgroundColor: Colors.black54,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           minimumSize: Size(isMobileAndTablet(context) ? 75 : 250, 50)),
@@ -218,8 +217,7 @@ ElevatedButton grandButton(context, String? labelButton, onPress,
     {double? weigth}) {
   return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          primary: Colors.black54,
-          onPrimary: Colors.grey,
+          foregroundColor: Colors.grey, backgroundColor: Colors.black54,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           minimumSize:
@@ -357,8 +355,7 @@ Dialog imageDialog(String? tittle, String? stringImage, onClose) {
           ),
           ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  primary: Colores.backgroundWidget,
-                  onPrimary: Colors.grey,
+                  foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
                   minimumSize: const Size(270, 45)),
@@ -478,8 +475,7 @@ ElevatedButton menuButton(
     context, IconData? iconData, String? labelButton, onPress) {
   return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          primary: Colors.black54,
-          onPrimary: Colors.grey,
+          foregroundColor: Colors.grey, backgroundColor: Colors.black54,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           minimumSize: Size(isMobileAndTablet(context) ? 200 : 500, 500)),

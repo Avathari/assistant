@@ -1,8 +1,5 @@
-import 'package:assistant/conexiones/actividades/pdfGenerete/PdfApi.dart';
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
-import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
-import 'package:assistant/operativity/pacientes/valores/Valorados/cardiometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 
@@ -24,7 +21,6 @@ import 'package:assistant/screens/pacientes/intensiva/procedimientos/intubacionE
 import 'package:assistant/screens/pacientes/intensiva/procedimientos/sondaEndopleural.dart';
 import 'package:assistant/screens/pacientes/intensiva/valoraciones/aereos.dart';
 import 'package:assistant/screens/pacientes/intensiva/valoraciones/prequirurgicos.dart';
-import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteFormats/formatosReportes.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/indicaciones.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/semiologicos.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteConsulta.dart';
@@ -36,6 +32,7 @@ import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporte
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteTerapia.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteTransfusion.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteTraslado.dart';
+import 'package:assistant/screens/pacientes/reportes/info/reportesAuxiliares.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
@@ -52,6 +49,7 @@ import 'package:flutter/material.dart';
 class ReportesMedicos extends StatefulWidget {
   int actualPage = 6, indexNote = -1, actualLateralPage = 0;
   bool? analysis;
+  String? fechaRealizacion;
 
   ReportesMedicos({super.key, this.analysis = false});
 
@@ -68,8 +66,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
     setState(() {
       //
       Diagnosticos.registros(); // Diagnósticos
-      Quirurgicos
-          .consultarRegistro(); // Quirúrgicos //Pendientes.consultarRegistro();
+      Quirurgicos.consultarRegistro(); // Quirúrgicos
+      // Pendientes.consultarRegistro();
       Repositorios.consultarAnalisis();
       Balances.consultarRegistro();
       // Patologicos del Paciente *************************************
@@ -193,53 +191,51 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             flex: isMobile(context) ? 20 : 9,
             child: Container(
                 padding: const EdgeInsets.all(8.0),
-                margin:  const EdgeInsets.all(4.0),
+                margin: const EdgeInsets.all(4.0),
                 decoration: BoxDecoration(
                     color: Colores.backgroundPanel,
                     borderRadius: BorderRadius.circular(20)),
                 child: pantallasReportesMedicos(widget.actualPage))),
         if (isTablet(context))
           Expanded(
-            flex: 2,
+              flex: 2,
               child: Container(
                 padding: const EdgeInsets.all(8.0),
-                margin:  const EdgeInsets.all(4.0),
+                margin: const EdgeInsets.all(4.0),
                 decoration: BoxDecoration(
                     color: Colores.backgroundPanel,
                     borderRadius: BorderRadius.circular(20)),
                 child: Column(
                   children: [
-                    Expanded(
-                      flex: 9,
-                        child: _notasPrevias(context)),
+                    Expanded(flex: 9, child: _notasPrevias(context)),
                     Expanded(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          FloatingActionButton(onPressed: () {
-                            setState(() {
-                              widget.analysis = true;
-                            _key.currentState!.openEndDrawer();
-                            });
-                          },
+                          FloatingActionButton(
+                            onPressed: () {
+                              setState(() {
+                                widget.analysis = true;
+                                _key.currentState!.openEndDrawer();
+                              });
+                            },
                             backgroundColor: Colors.black,
                             foregroundColor: Colors.white,
-                            child: const Icon(
-                              Icons.menu_open_outlined,
-                              color: Colors.white
-                            ),
+                            child: const Icon(Icons.menu_open_outlined,
+                                color: Colors.white),
                           ),
-                          FloatingActionButton(onPressed: () {
-                            Datos.portapapeles(
-                                context: context,
-                                text: Reportes.copiarReporte(tipoReporte: getTypeReport()));
-                          },
+                          FloatingActionButton(
+                            onPressed: () {
+                              Datos.portapapeles(
+                                  context: context,
+                                  text: Reportes.copiarReporte(
+                                      tipoReporte: ReportsMethods.getTypeReport(
+                                          actualPage: widget.actualPage)));
+                            },
                             backgroundColor: Colors.black,
                             foregroundColor: Colors.white,
-                            child: const Icon(
-                                Icons.copy_rounded,
-                                color: Colors.white
-                            ),
+                            child: const Icon(Icons.copy_rounded,
+                                color: Colors.white),
                           ),
                         ],
                       ),
@@ -273,23 +269,70 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             )),
         Expanded(flex: 2, child: Hospitalizado(isVertical: true)),
         Expanded(
-            flex: 14,
+            flex: isDesktop(context) ? 18 : 14,
             child: Container(
               padding: const EdgeInsets.all(15.0),
               margin: const EdgeInsets.all(8.0),
               decoration: ContainerDecoration.containerDecoration(),
               child: pantallasReportesMedicos(widget.actualPage),
             )),
-        Expanded(flex: 2, child: _notasPrevias(context)),
-        if (!isDesktop(context))
+        // Expanded(flex: 2, child: _notasPrevias(context)),
+        if (isDesktop(context))
           Expanded(
-              flex: 2,
+              flex: isDesktop(context) ? 3 : 2,
               child: Container(
                 padding: const EdgeInsets.all(8.0),
-                margin: const EdgeInsets.all(8.0),
-                decoration: ContainerDecoration.containerDecoration(),
-                child: sideRight(),
+                margin: const EdgeInsets.all(4.0),
+                decoration: BoxDecoration(
+                    color: Colores.backgroundPanel,
+                    borderRadius: BorderRadius.circular(20)),
+                child: Column(
+                  children: [
+                    Expanded(flex: 9, child: _notasPrevias(context)),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          FloatingActionButton(
+                            onPressed: () {
+                              setState(() {
+                                widget.analysis = true;
+                                _key.currentState!.openEndDrawer();
+                              });
+                            },
+                            backgroundColor: Colors.black,
+                            foregroundColor: Colors.white,
+                            child: const Icon(Icons.menu_open_outlined,
+                                color: Colors.white),
+                          ),
+                          FloatingActionButton(
+                            onPressed: () {
+                              Datos.portapapeles(
+                                  context: context,
+                                  text: Reportes.copiarReporte(
+                                      tipoReporte: ReportsMethods.getTypeReport(
+                                          actualPage: widget.actualPage)));
+                            },
+                            backgroundColor: Colors.black,
+                            foregroundColor: Colors.white,
+                            child: const Icon(Icons.copy_rounded,
+                                color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               )),
+        // if (!isDesktop(context))
+        //   Expanded(
+        //       flex: 2,
+        //       child: Container(
+        //         padding: const EdgeInsets.all(8.0),
+        //         margin: const EdgeInsets.all(8.0),
+        //         decoration: ContainerDecoration.containerDecoration(),
+        //         child: sideRight(),
+        //       )),
       ],
     );
   }
@@ -462,31 +505,6 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                     children: actionsReportes(),
                   )),
             ),
-            // Expanded(child: Container(color: Colors.black,decoration: ContainerDecoration.roundedDecoration(),child: Container,))
-            // Expanded(
-            //   child: Column(
-            //     children: [
-            //       Expanded(
-            //         child: GrandButton(
-            //             weigth: 200,
-            //             labelButton: "Indicaciones Médicas",
-            //             onPress: () {
-            //               setState(() {
-            //                 widget.actualPage = 9;
-            //               });
-            //             }),
-            //       ),
-            //       Expanded(
-            //         child: GrandButton(
-            //             weigth: 200,
-            //             labelButton: "Vista previa",
-            //             onPress: () async {
-            //               await imprimirDocumento();
-            //             }),
-            //       ),
-            //     ],
-            //   ),
-            // ),
           ],
         ),
       ));
@@ -533,33 +551,13 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               onChangeValue: () {
                 Datos.portapapeles(
                     context: context,
-                    text: Reportes.copiarReporte(tipoReporte: getTypeReport()));
+                    text: Reportes.copiarReporte(
+                        tipoReporte: ReportsMethods.getTypeReport(
+                            actualPage: widget.actualPage)));
                 _key.currentState!.closeEndDrawer();
               },
             ),
           ),
-          // if (isLargeDesktop(context))
-          //   Expanded(
-          //     child: GrandButton(
-          //         labelButton: "Vista previa",
-          //         onPress: () async {
-          //           await imprimirDocumento()
-          //               .then((value) => Operadores.alertActivity(
-          //                   context: context,
-          //                   tittle: 'Petición de Registro de Análisis',
-          //                   message:
-          //                       '¿Desea registrar el análisis en la base de datos?',
-          //                   onClose: () {
-          //                     Navigator.of(context).pop();
-          //                   },
-          //                   onAcept: () {
-          //                     Navigator.of(context).pop();
-          //                     Repositorios.registrarRegistro();
-          //                   }))
-          //               .onError((error, stackTrace) => Terminal.printAlert(
-          //                   message: "ERROR - $error : : $stackTrace"));
-          //         }),
-          //   ),
           if (isDesktop(context) || isLargeDesktop(context))
             SizedBox(
               height: 80,
@@ -568,41 +566,56 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                 radios: 30,
                 iconed: Icons.signal_wifi_statusbar_null_sharp,
                 onChangeValue: () async {
-                  await imprimirDocumento()
-                      .then((value) => Operadores.alertActivity(
-                          context: context,
-                          tittle: 'Petición de Registro de Análisis',
-                          message:
-                              '¿Desea registrar el análisis en la base de datos?',
-                          onClose: () {
-                            Navigator.of(context).pop();
-                          },
-                          onAcept: () {
-                            Navigator.of(context).pop();
-                            if (getTypeReport() ==
-                                    TypeReportes.reporteIngreso ||
-                                getTypeReport() == TypeReportes.reporteEgreso ||
-                                getTypeReport() ==
-                                    TypeReportes.reporteRevision) {
-                              Repositorios.actualizarRegistro();
-                            } else {
-                              Repositorios.registrarRegistro();
-                            }
-                          }))
-                      // onAcept: () {
-                      //   Navigator.of(context).pop();
-                      //   Repositorios.registrarRegistro().whenComplete(() =>
-                      //       Reportes.consultarNotasHospitalizacion()
-                      //           .then((value) => setState(() {
-                      //         if (value.isNotEmpty) {
-                      //           widget.indexNote = 0;
-                      //           listNotes = value;
-                      //         }
-                      //               })));
-                      //   //
-                      // }))
-                      .onError((error, stackTrace) => Terminal.printAlert(
-                          message: "ERROR - $error : : $stackTrace"));
+                  await ReportsMethods.guardarNota(
+                    context: context,
+                    getTypeReport: ReportsMethods.getTypeReport(
+                        actualPage: widget.actualPage),
+                    actualPage: widget.actualPage,
+                    fechaRealizacion: widget.fechaRealizacion!,
+                  );
+                  // await ReportsMethods.imprimirDocumento(
+                  //   context: context,
+                  //   actualPage: widget.actualPage,
+                  //   getTypeReport: getTypeReport(),
+                  // )
+                  //     .then((value) => Operadores.alertActivity(
+                  //         context: context,
+                  //         tittle: 'Petición de Registro de Análisis',
+                  //         message:
+                  //             '¿Desea registrar el análisis en la base de datos?',
+                  //         onClose: () {
+                  //           Navigator.of(context).pop();
+                  //         },
+                  //         onAcept: () {
+                  //           Navigator.of(context).pop();
+                  //           if (getTypeReport() ==
+                  //                   TypeReportes.reporteIngreso ||
+                  //               getTypeReport() == TypeReportes.reporteEgreso) {
+                  //             Repositorios.actualizarRegistro();
+                  //           } else {
+                  //             if (widget.fechaRealizacion! ==
+                  //                     Calendarios.today(format: "yyyy-MM-dd") &&
+                  //                 widget.fechaRealizacion! != null) {
+                  //               Repositorios.actualizarRegistro();
+                  //             } else {
+                  //               Repositorios.registrarRegistro();
+                  //             }
+                  //           }
+                  //         }))
+                  //     // onAcept: () {
+                  //     //   Navigator.of(context).pop();
+                  //     //   Repositorios.registrarRegistro().whenComplete(() =>
+                  //     //       Reportes.consultarNotasHospitalizacion()
+                  //     //           .then((value) => setState(() {
+                  //     //         if (value.isNotEmpty) {
+                  //     //           widget.indexNote = 0;
+                  //     //           listNotes = value;
+                  //     //         }
+                  //     //               })));
+                  //     //   //
+                  //     // }))
+                  //     .onError((error, stackTrace) => Terminal.printAlert(
+                  //         message: "ERROR - $error : : $stackTrace"));
                 },
               ),
             ),
@@ -613,181 +626,6 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
 
   Widget partialVisor() {
     return Container();
-  }
-
-  Future<void> imprimirDocumento() async {
-    Contextos.contexto = context;
-    // final pdfFile = await PdfApi.generateCenterText("Prueba");
-    final pdfFile = await PdfParagraphsApi.generate(
-        withIndicationReport: false,
-        indexOfTypeReport: getTypeReport(),
-        paraph: Reportes.reportes,
-        name: Reportes.nombreReporte(indefOfReport: widget.actualPage));
-    final pdfFileTwo = await PdfParagraphsApi.generate(
-        withIndicationReport: true,
-        indexOfTypeReport: TypeReportes.indicacionesHospitalarias,
-        paraph: Reportes.reportes,
-        name:
-            "(IH) - ${Pacientes.nombreCompleto} - (${Calendarios.today()}).pdf");
-
-    // Crear JSON local de Reportes
-    if (Pacientes.Notas!.isNotEmpty) {
-      if (Pacientes.Notas!.last['Fecha_Realizacion'] !=
-          Calendarios.today(format: 'yyyy/MM/dd')) {
-        Pacientes.Notas!.add({
-          'ID_Pace': Pacientes.ID_Paciente,
-          'ID_Hosp': Pacientes.ID_Hospitalizacion,
-          'Fecha_Padecimiento': Valores.fechaPadecimientoActual,
-          'Padecimiento_Actual': Reportes.padecimientoActual,
-          "Servicio_Inicial": Valores.servicioTratanteInicial,
-          "Servicio_Medico": Valores.servicioTratante,
-          'Fecha_Realizacion': Calendarios.today(format: 'yyyy/MM/dd'),
-          'Subjetivo': Reportes.reportes['Subjetivo'],
-          "Signos_Vitales": Reportes.signosVitales,
-          "Exploracion_Fisica": Reportes.exploracionFisica,
-          "Eventualidades": Reportes.eventualidadesOcurridas,
-          "Terapias_Previas": Reportes.terapiasPrevias,
-          "Analisis_Medico": Reportes.analisisMedico,
-          "Tratamiento_Propuesto": Reportes.tratamientoPropuesto,
-          "Pronostico_Medico": Reportes.pronosticoMedico,
-          // INDICACIONES MÉDICAS *******************************
-          "Dieta": Reportes.dieta.toString(),
-          "Hidroterapia": Reportes.hidroterapia,
-          "Insulinoterapia": Reportes.insulinoterapia,
-          "Hemoterapia": Reportes.hemoterapia,
-          "Oxigenoterapia": Reportes.oxigenoterapia,
-          "Medicamentos": Reportes.medicamentosIndicados,
-          "Medidas_Generales": Reportes.medidasGenerales,
-          "Pendientes": Reportes.pendientes, // ['Sin pendientes'],
-        });
-      } else {
-        var index = Pacientes.Notas!.indexWhere((v) =>
-            v['Fecha_Realizacion'] == Calendarios.today(format: 'yyyy/MM/dd'));
-        // Terminal.printAlert(message: "index $index");
-
-        Pacientes.Notas![index] = {
-          'ID_Pace': Pacientes.ID_Paciente,
-          'ID_Hosp': Pacientes.ID_Hospitalizacion,
-          'Fecha_Padecimiento': Valores.fechaPadecimientoActual,
-          'Padecimiento_Actual': Reportes.padecimientoActual,
-          "Servicio_Inicial": Valores.servicioTratanteInicial,
-          "Servicio_Medico": Valores.servicioTratante,
-          'Fecha_Realizacion': Calendarios.today(format: 'yyyy/MM/dd'),
-          'Subjetivo': Reportes.reportes['Subjetivo'],
-          "Signos_Vitales": Reportes.signosVitales,
-          "Exploracion_Fisica": Reportes.exploracionFisica,
-          "Eventualidades": Reportes.eventualidadesOcurridas,
-          "Terapias_Previas": Reportes.terapiasPrevias,
-          "Analisis_Medico": Reportes.analisisMedico,
-          "Tratamiento_Propuesto": Reportes.tratamientoPropuesto,
-          "Pronostico_Medico": Reportes.pronosticoMedico,
-          // INDICACIONES MÉDICAS *******************************
-          "Dieta": Reportes.dieta.toString(),
-          "Hidroterapia": Reportes.hidroterapia,
-          "Insulinoterapia": Reportes.insulinoterapia,
-          "Hemoterapia": Reportes.hemoterapia,
-          "Oxigenoterapia": Reportes.oxigenoterapia,
-          "Medicamentos": Reportes.medicamentosIndicados,
-          "Medidas_Generales": Reportes.medidasGenerales,
-          "Pendientes": Reportes.pendientes, // ['Sin pendientes'],
-        };
-      }
-    } else if (Pacientes.Notas!.isEmpty) {
-      Pacientes.Notas!.add({
-        'ID_Pace': Pacientes.ID_Paciente,
-        'ID_Hosp': Pacientes.ID_Hospitalizacion,
-        'Fecha_Padecimiento': Valores.fechaPadecimientoActual,
-        'Padecimiento_Actual': Reportes.padecimientoActual,
-        "Servicio_Inicial": Valores.servicioTratanteInicial,
-        "Servicio_Medico": Valores.servicioTratante,
-        'Fecha_Realizacion': Calendarios.today(format: 'yyyy/MM/dd'),
-        'Subjetivo': Reportes.reportes['Subjetivo'],
-        "Signos_Vitales": Reportes.signosVitales,
-        "Exploracion_Fisica": Reportes.exploracionFisica,
-        "Eventualidades": Reportes.eventualidadesOcurridas,
-        "Terapias_Previas": Reportes.terapiasPrevias,
-        "Analisis_Medico": Reportes.analisisMedico,
-        "Tratamiento_Propuesto": Reportes.tratamientoPropuesto,
-        "Pronostico_Medico": Reportes.pronosticoMedico,
-        // INDICACIONES MÉDICAS *******************************
-        "Dieta": Reportes.dieta.toString(),
-        "Hidroterapia": Reportes.hidroterapia,
-        "Insulinoterapia": Reportes.insulinoterapia,
-        "Hemoterapia": Reportes.hemoterapia,
-        "Oxigenoterapia": Reportes.oxigenoterapia,
-        "Medicamentos": Reportes.medicamentosIndicados,
-        "Medidas_Generales": Reportes.medidasGenerales,
-        "Pendientes": Reportes.pendientes, // ['Sin pendientes'],
-      });
-    }
-
-    // Repositorios.tipo_Analisis = Repositorios.tipoAnalisis(widgetPage: widget.actualPage);
-    // ignore: use_build_context_synchronously
-    Operadores.listOptionsActivity(
-        context: context,
-        tittle: 'Seleccione un reporte . . . ',
-        options: [
-          ["Nota Médica", pdfFile.path, Calendarios.today()],
-          ["Indicaciones Médicas", pdfFileTwo.path, Calendarios.today()],
-        ],
-        onClose: () {
-          Navigator.of(context).pop();
-        });
-    // PdfApi.openFile(pdfFile);
-    // PdfApi.openFile(pdfFileTwo);
-  }
-
-  TypeReportes getTypeReport() {
-    Terminal.printExpected(message: "getTypeReport . : ${widget.actualPage}");
-    //
-    switch (widget.actualPage) {
-      case 0:
-        Repositorios.tipo_Analisis = Items.tiposAnalisis[0];
-        return TypeReportes.reporteIngreso;
-      case 1:
-        Repositorios.tipo_Analisis = Items.tiposAnalisis[1];
-        return TypeReportes
-            .reporteEvolucion; // return TypeReportes.reporteIngreso;
-      case 2:
-        return TypeReportes.reporteConsulta;
-      case 3:
-        Repositorios.tipo_Analisis = Items.tiposAnalisis[4];
-        return TypeReportes.reporteTerapiaIntensiva;
-      case 4:
-        Repositorios.tipo_Analisis = Items.tiposAnalisis[6];
-        return TypeReportes.reportePrequirurgica;
-      case 5:
-        return TypeReportes.reportePreanestesica;
-      case 6:
-        Repositorios.tipo_Analisis = Items.tiposAnalisis[3];
-        return TypeReportes.reporteEgreso;
-      case 7:
-        Repositorios.tipo_Analisis = Items.tiposAnalisis[2];
-        return TypeReportes.reporteRevision;
-      case 8:
-        Repositorios.tipo_Analisis = Items.tiposAnalisis[5];
-        return TypeReportes.reporteTraslado;
-      case 9:
-        return TypeReportes.reportePreanestesica;
-      case 10:
-        return TypeReportes.reportePreanestesica;
-      case 11:
-        return TypeReportes.reportePreanestesica;
-      case 12:
-        return TypeReportes.procedimientoCVC;
-      case 13:
-        return TypeReportes.procedimientoIntubacion;
-      case 14:
-        return TypeReportes.procedimientoSondaEndopleural;
-      case 15:
-        return TypeReportes.procedimientoTenckoff;
-      case 16:
-        return TypeReportes.procedimientoLumbar; // 16 : Punción Lumbar
-      case 17:
-        return TypeReportes.reporteTransfusion; // 17 : Transfusión
-      default:
-        return TypeReportes.reporteIngreso;
-    }
   }
 
   Widget pantallasReportesMedicos(int actualPage, {int? index}) {
@@ -1057,7 +895,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
   // COMPONENTES ****************************************************
   drawerForm(BuildContext context, {bool? analysis = false}) => Drawer(
         width: widget.analysis == false // !isLargeDesktop(context)
-            ? 100 : 350, // 350
+            ? 100
+            : 350, // 350
         backgroundColor: Theming.cuaternaryColor,
         child: Container(
             decoration: const BoxDecoration(
@@ -1109,62 +948,14 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             IconButton(
                 icon: const Icon(Icons.scale, color: Colors.grey),
                 tooltip: 'Vista Previa',
-                onPressed: () async => await imprimirDocumento()
-                        .then((value) => Operadores.alertActivity(
-                            context: context,
-                            tittle: 'Petición de Registro de Análisis',
-                            message:
-                                '¿Desea registrar el análisis en la base de datos?',
-                            onClose: () {
-                              Navigator.of(context).pop();
-                            },
-                            onAcept: () {
-                              Navigator.of(context).pop();
-                              if (getTypeReport() ==
-                                      TypeReportes.reporteIngreso ||
-                                  getTypeReport() ==
-                                      TypeReportes.reporteEgreso ||
-                                  getTypeReport() ==
-                                      TypeReportes.reporteRevision) {
-                                Repositorios.actualizarRegistro();
-                              } else {
-                                Repositorios.registrarRegistro();
-                              }
-                            }))
-                        .onError((error, stackTrace) {
-                      Terminal.printAlert(
-                          message: "ERROR - $error : : $stackTrace");
-                      showModalBottomSheet(
-                          context: context,
-                          backgroundColor: Theming.cuaternaryColor,
-                          builder: (BuildContext context) {
-                            return ListView(
-                              padding: const EdgeInsets.all(10.0),
-                              children: [
-                                Text(
-                                  "ERROR: $error",
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                      color: Colors.grey, fontSize: 12),
-                                ),
-                                CrossLine(thickness: 3, height: 25),
-                                Text(
-                                  "ERROR:  $error : $stackTrace",
-                                  style: const TextStyle(
-                                      color: Colors.grey, fontSize: 10),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () => Navigator.of(context).pop(),
-                                  child: const Text(
-                                    "Cerrar . . . ",
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 12),
-                                  ),
-                                )
-                              ],
-                            );
-                          });
-                    })),
+                onPressed: () async => await ReportsMethods.guardarNota(
+                      context: context,
+                      getTypeReport: ReportsMethods.getTypeReport(
+                          actualPage: widget.actualPage),
+                      actualPage: widget.actualPage,
+                      fechaRealizacion: widget.fechaRealizacion ?? "",
+                    )
+                ),
           ],
         ),
       );
@@ -1309,13 +1100,20 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
   _notaPrevia(BuildContext context) {
     //
     if (widget.indexNote > -1) {
-      Reportes.impresionesDiagnosticas =
-          listNotes![widget.indexNote]['Diagnosticos_Hospital'];
-      Reportes.padecimientoActual = Reportes.reportes['Padecimiento_Actual'] =
-      listNotes![widget.indexNote]['Padecimiento_Actual'];
-      Reportes.exploracionFisica = Reportes.reportes['Exploracion_Fisica'] =
-          listNotes![widget.indexNote]['Exploracion_Fisica'];
-
+      widget.fechaRealizacion =
+          listNotes![widget.indexNote]['FechaRealizacion'];
+      //
+      Reportes.impresionesDiagnosticas = Reportes.reportes['Impresiones_Diagnosticas'] = listNotes![widget.indexNote]['Diagnosticos_Hospital'];
+      Reportes.padecimientoActual = Reportes.reportes['Padecimiento_Actual'] = listNotes![widget.indexNote]['Padecimiento_Actual'];
+      Reportes.reportes['Exploracion_Fisica'] = Reportes.exploracionFisica = listNotes![widget.indexNote]['Exploracion_Fisica'];
+      Reportes.analisisMedico = listNotes![widget.indexNote]['Analisis_Medico'];
+      //
+      Reportes.reportes['Auxiliares_Diagnosticos'] =
+          Reportes.auxiliaresDiagnosticos =
+              listNotes![widget.indexNote]['Auxiliares_Diagnosticos'] ?? "";
+      Reportes.reportes['Analisis_Complementario'] =
+          Reportes.analisisComplementarios =
+              listNotes![widget.indexNote]['Analisis_Complementario'] ?? "";
       //
       return TittleContainer(
         tittle:
@@ -1346,52 +1144,13 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               Text(
                   listNotes![widget.indexNote]['Diagnosticos_Hospital']
                       .toUpperCase(),
+                  maxLines: 20,
                   style: Styles.textSyleGrowth(fontSize: 9)),
               listNotes![widget.indexNote]['Tipo_Analisis'] !=
                       'Análisis de Gravedad'
                   ? CrossLine(thickness: 4)
                   : Container(),
-              listNotes![widget.indexNote]['Tipo_Analisis'] !=
-                          'Análisis de Gravedad' &&
-                      listNotes![widget.indexNote]['Tipo_Analisis'] !=
-                          'Análisis de Ingreso' &&
-                      listNotes![widget.indexNote]['Tipo_Analisis'] !=
-                          'Análisis de Egreso'
-                  ? Text(
-                      listNotes![widget.indexNote]['Subjetivo'],
-                      maxLines: 3,
-                      style: Styles.textSyleGrowth(fontSize: 9),
-                    )
-                  : Container(),
-              Text(listNotes![widget.indexNote]['Signos_Vitales'],
-                  maxLines: 3, style: Styles.textSyleGrowth(fontSize: 8)),
-              listNotes![widget.indexNote]['Tipo_Analisis'] !=
-                          'Análisis de Gravedad' &&
-                      listNotes![widget.indexNote]['Tipo_Analisis'] !=
-                          'Análisis de Ingreso' &&
-                      listNotes![widget.indexNote]['Tipo_Analisis'] !=
-                          'Análisis de Revisión' &&
-                      listNotes![widget.indexNote]['Tipo_Analisis'] !=
-                          'Análisis de Egreso'
-                  ? CrossLine(thickness: 3)
-                  : Container(),
-              if (listNotes![widget.indexNote]['Tipo_Analisis'] !=
-                  'Análisis de Egreso')
-                Text(
-                  listNotes![widget.indexNote]['Exploracion_Fisica'],
-                  maxLines: 20,
-                  style: Styles.textSyleGrowth(fontSize: 9),
-                ),
-              listNotes![widget.indexNote]['Tipo_Analisis'] ==
-                  'Análisis de Egreso' ? Text(
-                  listNotes![widget.indexNote]['Tipo_Analisis'] ==
-                          'Análisis de Egreso'
-                      ? Pacientes.patologicos() // ${listNotes![widget.indexNote]['Antecedentes_Patologicos_Otros']}"
-                      : "",
-                  maxLines: 25,
-                  style: Styles.textSyleGrowth(fontSize: 8)) : Container(),
-
-              CrossLine(thickness: 3),
+              // MOTIVO DE INGRESO ********************************************
               Text(
                   listNotes![widget.indexNote]['Tipo_Analisis'] ==
                               "Análisis de Ingreso" ||
@@ -1406,19 +1165,73 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                               "Análisis de Evolución"
                           ? listNotes![widget.indexNote]['Analisis_Medico']
                           : "",
-                  maxLines: 25,
+                  maxLines: 50,
                   style: Styles.textSyleGrowth(fontSize: 8)),
+              // SUBJETIVO ********************************************
+              listNotes![widget.indexNote]['Tipo_Analisis'] !=
+                          'Análisis de Gravedad' &&
+                      listNotes![widget.indexNote]['Tipo_Analisis'] !=
+                          'Análisis de Ingreso' &&
+                      listNotes![widget.indexNote]['Tipo_Analisis'] !=
+                          'Análisis de Egreso'
+                  ? Text(
+                      listNotes![widget.indexNote]['Subjetivo'],
+                      maxLines: 3,
+                      style: Styles.textSyleGrowth(fontSize: 9),
+                    )
+                  : Container(),
+              // VITALES ********************************************
+              Text(listNotes![widget.indexNote]['Signos_Vitales'],
+                  maxLines: 3, style: Styles.textSyleGrowth(fontSize: 8)),
+              listNotes![widget.indexNote]['Tipo_Analisis'] !=
+                          'Análisis de Gravedad' &&
+                      listNotes![widget.indexNote]['Tipo_Analisis'] !=
+                          'Análisis de Ingreso' &&
+                      listNotes![widget.indexNote]['Tipo_Analisis'] !=
+                          'Análisis de Revisión' &&
+                      listNotes![widget.indexNote]['Tipo_Analisis'] !=
+                          'Análisis de Egreso'
+                  ? CrossLine(thickness: 3)
+                  : Container(),
+              if (listNotes![widget.indexNote]['Tipo_Analisis'] !=
+                  'Análisis de Egreso')
+                // EXPLORACIÓN FÍSICA ********************************************
+                Text(
+                  listNotes![widget.indexNote]['Exploracion_Fisica'],
+                  maxLines: 20,
+                  style: Styles.textSyleGrowth(fontSize: 9),
+                ),
+              // PATOLÓGICOS ********************************************
+              listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                      'Análisis de Egreso'
+                  ? Text(
+                      listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                              'Análisis de Egreso'
+                          ? Pacientes
+                              .patologicos() // ${listNotes![widget.indexNote]['Antecedentes_Patologicos_Otros']}"
+                          : "",
+                      maxLines: 25,
+                      style: Styles.textSyleGrowth(fontSize: 8))
+                  : Container(),
+              // AUXILIARES DIAGNÓSTICOS *****************************************
+              Text(
+                  listNotes![widget.indexNote]['Auxiliares_Diagnosticos'] ?? "",
+                  maxLines: 30,
+                  style: Styles.textSyleGrowth(
+                      fontSize: 8)), // AUXILIARES DIAGNÓSTICOS
+              // ANÁLISIS COMPLEMENTARIO *****************************************
+              Text(
+                  listNotes![widget.indexNote]['Analisis_Complementario'] ?? "",
+                  maxLines: 30,
+                  style: Styles.textSyleGrowth(fontSize: 8)),
+              CrossLine(thickness: 3),
               listNotes![widget.indexNote]['Tipo_Analisis'] !=
                           'Análisis de Gravedad' &&
                       listNotes![widget.indexNote]['Tipo_Analisis'] !=
                           'Análisis de Egreso'
                   ? CrossLine(thickness: 3)
                   : Container(),
-              // Text(
-              //   listNotes![widget.indexNote]['Eventualidades'],
-              //   maxLines: 20,
-              //   style: Styles.textSyleGrowth(fontSize: 9),
-              // ),
+
               listNotes![widget.indexNote]['Tipo_Analisis'] !=
                           'Análisis de Gravedad' &&
                       listNotes![widget.indexNote]['Tipo_Analisis'] !=
@@ -1427,21 +1240,20 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                           'Análisis de Egreso'
                   ? CrossLine(thickness: 1)
                   : Container(),
-              // Text(
-              //   listNotes![widget.indexNote]['Terapias_Previas'],
-              //   maxLines: 20,
-              //   style: Styles.textSyleGrowth(fontSize: 9),
-              // ),
+              // ANÁLISIS MÉDICO ********************************************
               listNotes![widget.indexNote]['Tipo_Analisis'] !=
                       'Análisis de Evolución'
                   ? Text(
                       listNotes![widget.indexNote]['Analisis_Medico'],
                       maxLines: listNotes![widget.indexNote]['Tipo_Analisis'] ==
-                          'Análisis de Egreso' ? 50 : 20,
+                              'Análisis de Egreso'
+                          ? 100
+                          : 100,
                       style: Styles.textSyleGrowth(fontSize: 9),
                     )
                   : Container(),
               CrossLine(thickness: 1),
+              // PRONÓSTICO MÉDICO ********************************************
               Text(
                 listNotes![widget.indexNote]['Pronostico_Medico'] ?? "",
                 maxLines: 20,
@@ -1569,7 +1381,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             onChangeValue: () {
               Datos.portapapeles(
                   context: context,
-                  text: Reportes.copiarReporte(tipoReporte: getTypeReport()));
+                  text: Reportes.copiarReporte(
+                      tipoReporte: ReportsMethods.getTypeReport(
+                          actualPage: widget.actualPage)));
               _key.currentState!.closeEndDrawer();
             },
           ),
@@ -1599,6 +1413,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                                       ? const BalanceHidrico()
                                       : Container(),
         ),
+        // CrossLine(color:Colors.grey),
         Expanded(
             child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

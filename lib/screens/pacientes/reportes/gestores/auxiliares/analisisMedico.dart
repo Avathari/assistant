@@ -5,13 +5,14 @@ import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/analisi
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
-import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class AnalisisMedico extends StatefulWidget {
   bool? isPrequirurgica;
+
+  double? fontSize = 8.0;
 
   AnalisisMedico({super.key, this.isPrequirurgica = false});
 
@@ -102,7 +103,7 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                 child: Row(
                 children: [
                   Expanded(
-                    flex: 6,
+                    flex: 10,
                     child: SingleChildScrollView(
                       child: Column(children: [
                         // EditTextArea(
@@ -140,6 +141,7 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                         EditTextArea(
                             textController: analisisTextController,
                             limitOfChars: 5000,
+                            fontSize: widget.fontSize!, // isTablet(context) ? 9 : 9,
                             labelEditText: "Análisis médico",
                             keyBoardType: TextInputType.multiline,
                             numOfLines: isLargeDesktop(context)
@@ -149,19 +151,6 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                                     : isMobile(context)
                                         ? 15
                                         : 22,
-                            // withShowOption: true,
-                            // selection: true,
-                            // onSelected: () {
-                            //   Operadores.openDialog(
-                            //       context: context,
-                            //       chyldrim: const Bibliografico(),
-                            //       onAction: () {
-                            //         setState(() {
-                            //           analisisTextController.text =
-                            //               Reportes.analisisMedico;
-                            //         });
-                            //       });
-                            // },
                             onChange: ((value) {
                               Reportes.analisisMedico = "$value.";
                               Reportes.reportes['Analisis_Medico'] =
@@ -189,6 +178,16 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                     ),
                   ),
                   Expanded(
+                    child: RotatedBox(
+                      quarterTurns: 1,
+                      child: Slider(
+                        label: widget.fontSize!.toString(),
+                        min: 2,
+                        max: 20,
+                        value: widget.fontSize!, onChanged: (double value) => setState(() => widget.fontSize = value)),
+                    ),
+                  ),
+                  Expanded(flex: 2,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [

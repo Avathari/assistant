@@ -3499,29 +3499,22 @@ class CopiasReportes {
     String tipoReporte = "NOTA DE EGRESO HOSPITALARIO\n";
     tipoReporte = "${tipoReporte}DIAGNÓSTICO(s) DE EGRESO\n"
         "${paraph['Impresiones_Diagnosticas']}\n"
-        "${paraph['Datos_Generales']}\n";
-
+        "RESUMEN CLÍNICO\n"
+        "${paraph['Datos_Generales']}"
+        "ANTECEDENTES: ";
     // # # # # # # ### # # # # # # ###
     if (paraph['Antecedentes_Patologicos_Ingreso'] != "") {
-      tipoReporte = "${tipoReporte}ANTECEDENTES PERSONALES PATOLÓGICOS\n"
+      tipoReporte = "${tipoReporte}"
           "${paraph['Antecedentes_Patologicos_Ingreso']}\n";
     }
 
     tipoReporte = "${tipoReporte}\nMOTIVO DE INGRESO - "
-        "${paraph['Padecimiento_Actual']}\n\n";
+        "${paraph['Padecimiento_Actual']} ";
 
     // # # # # # # ### # # # # # # ###
-    tipoReporte =
-    "${tipoReporte}A la ingreso a hospitalización de medicina interna se encuentra al paciente con: \n"
-        "${paraph['Signos_Vitales']}\n"
-        "${paraph['Exploracion_Fisica']}\n\n";
-
-    tipoReporte = "$tipoReporte"
-        "ANÁLISIS\n"
+        tipoReporte = "$tipoReporte"
         "${paraph['Analisis_Medico']}\n";
 
-    tipoReporte = "$tipoReporte"
-        "${paraph['Pronostico_Medico']}";
     // tipoReporte = "$tipoReporte\n\n"
     //     "Med. Gral. Romero Pantoja Luis Ced. Prof. 12210866 Medicina General";
 

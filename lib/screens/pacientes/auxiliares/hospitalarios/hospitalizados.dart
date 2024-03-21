@@ -117,6 +117,14 @@ class _HospitalizadosState extends State<Hospitalizados> {
           // title: AppBarText(appTittle),
           actions: <Widget>[
             GrandIcon(
+                labelButton: 'Nuevos Hospitalizados . . . ',
+                iconData: Icons.format_indent_decrease,
+                iconColor: Colors.white,
+                onPress: () => Cambios.toNextActivity(context,
+                    chyld:
+                    Paneles.HospitalaryNewbies())),
+            const SizedBox(width: 15),
+            GrandIcon(
                 labelButton: 'Estadísticas . . . ',
                 iconData: Icons.pie_chart,
                 iconColor: Colors.white,
@@ -654,7 +662,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                           iconData: Icons.list_alt,
                           onPress: () async {
                             await snapshot.data![index]
-                                .getPendientesHistorial()
+                                .getPendientesHistorial(reload: true)
                                 .then((response) async {
                               setState(() {});
                             });
@@ -1351,13 +1359,15 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                                 foundedItems![index]
                                                         .hospitalizedData[
                                                     'ID_Hosp'];
+
+                                        //
                                         Pacientes.nombreCompleto =
                                             foundedItems![index].nombreCompleto;
                                         //
                                         Pacientes.Pendiente =
                                             foundedItems![index].pendientes =
                                                 await firstFounded![index]
-                                                    .getPendientesHistorial();
+                                                    .getPendientesHistorial(reload: true);
                                         // *********************************
                                         String penden = "";
                                         // *********************************

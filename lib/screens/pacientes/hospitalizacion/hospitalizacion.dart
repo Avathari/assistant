@@ -229,7 +229,7 @@ class _OperacionesHospitalizacionesState
               iconed: Icons.medication_outlined,
               onChangeValue: () {
                 Pacientes.ID_Hospitalizacion = idOperation;
-                Cambios.toNextPage(context,  PadecimientoActual());
+                Cambios.toNextPage(context, PadecimientoActual());
               },
             ),
           ),
@@ -518,6 +518,9 @@ class _OperacionesHospitalizacionesState
         idOperation
       ];
 
+      //
+      Valores.fechaPadecimientoActual =fechaIngresoTextController.text;
+      //
       if (motivoEgresoValue != Escalas.motivosEgresos[0]) {
         Operadores.selectOptionsActivity(
             context: context,
@@ -597,7 +600,15 @@ class _OperacionesHospitalizacionesState
                               // ******************************************** *** *
                             }).then((value) => onClose(context)))
                         .whenComplete(() => Pacientes.hospitalizar(
-                            modus: Pacientes.modoAtencion!).whenComplete(() => Pacientes.Paciente['Pace_Hosp'] = Pacientes.modoAtencion!));
+                                modus: Pacientes.modoAtencion!)
+                            .whenComplete(() =>
+                                Pacientes.Paciente['Pace_Hosp'] =
+                                    Pacientes.modoAtencion!)
+                            .whenComplete(() => Cambios.toNextPage(
+                                context,
+                                VisualPacientes(
+                                  actualPage: 0,
+                                ))));
                     break;
                   default:
                 }
@@ -635,6 +646,8 @@ class _OperacionesHospitalizacionesState
                       Constantes.reinit(value: value);
                       // ******************************************** *** *
                     }).whenComplete(() {
+                      Repositorios.tipo_Analisis = Items.tiposAnalisis[0];
+                      //
                       Repositorios.registrarRegistro();
                       Situaciones.registrarRegistro();
                       Expedientes.registrarRegistro();
@@ -671,8 +684,7 @@ class _OperacionesHospitalizacionesState
           default:
         }
       }
-      // print(
-      //     "${widget.operationActivity} listOfValues $listOfValues ${listOfValues!.length}");
+      // print("${widget.operationActivity} listOfValues $listOfValues ${listOfValues!.length}");
     } catch (ex) {
       showDialog(
           context: context,
@@ -720,7 +732,9 @@ class GestionHospitalizaciones extends StatefulWidget {
   bool? withAppBar;
   // ****************** *** ****** **************
 
-  GestionHospitalizaciones({Key? key, this.withAppBar = true, this.actualSidePage}) : super(key: key);
+  GestionHospitalizaciones(
+      {Key? key, this.withAppBar = true, this.actualSidePage})
+      : super(key: key);
 
   @override
   State<GestionHospitalizaciones> createState() =>
@@ -769,42 +783,44 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: widget.withAppBar! == true ? AppBar(
-          foregroundColor: Colors.white,
-          backgroundColor: Theming.primaryColor,
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-            ),
-            tooltip: Sentences.regresar,
-            onPressed: () {
-              Constantes.reinit();
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => VisualPacientes(actualPage: 0)));
-            },
-          ),
-          title: AppBarText(appTittle),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(
-                Icons.replay_outlined,
+      appBar: widget.withAppBar! == true
+          ? AppBar(
+              foregroundColor: Colors.white,
+              backgroundColor: Theming.primaryColor,
+              leading: IconButton(
+                icon: const Icon(
+                  Icons.arrow_back,
+                ),
+                tooltip: Sentences.regresar,
+                onPressed: () {
+                  Constantes.reinit();
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => VisualPacientes(actualPage: 0)));
+                },
               ),
-              tooltip: Sentences.reload,
-              onPressed: () {
-                // _pullListRefresh();
-              },
-            ),
-            IconButton(
-              icon: const Icon(
-                Icons.add_card,
-              ),
-              tooltip: Sentences.add_vitales,
-              onPressed: () {
-                toOperaciones(context, Constantes.Register);
-                //
-              },
-            ),
-          ]) : null,
+              title: AppBarText(appTittle),
+              actions: <Widget>[
+                  IconButton(
+                    icon: const Icon(
+                      Icons.replay_outlined,
+                    ),
+                    tooltip: Sentences.reload,
+                    onPressed: () {
+                      // _pullListRefresh();
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.add_card,
+                    ),
+                    tooltip: Sentences.add_vitales,
+                    onPressed: () {
+                      toOperaciones(context, Constantes.Register);
+                      //
+                    },
+                  ),
+                ])
+          : null,
       body: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         Expanded(
           child: Column(
@@ -867,7 +883,7 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
                       if (snapshot.hasError) print(snapshot.error);
                       return snapshot.hasData
                           ? GridView.builder(
-                        padding: const EdgeInsets.all(10.0),
+                              padding: const EdgeInsets.all(10.0),
                               gridDelegate: GridViewTools.gridDelegate(
                                   crossAxisCount: isMobile(context) ? 1 : 3,
                                   mainAxisExtent:

@@ -387,10 +387,14 @@ class Valores {
     proteinasTotales = double.parse(json['Proteinas_Totales'] ?? '0');
     //
     fechaReactantes = json['Fecha_Registro_Reactantes'] ?? '';
-    procalcitonina = double.parse(json['Procalcitonina'] ?? '0');
+    procalcitonina = json['Procalcitonina'] != "Pendiente"
+        ? double.parse(json['Procalcitonina'] ?? '0')
+        : 0.0;
     lactato = double.parse(json['Acido_Lactico'] ?? '0');
     velocidadSedimentacionGlobular =
-        double.parse(json['Velocidad_Sedimentacion'] ?? '0');
+        json['Velocidad_Sedimentacion'] != "Pendiente"
+            ? double.parse(json['Velocidad_Sedimentacion'] ?? '0')
+            : 0.0;
     proteinaCreactiva = double.parse(json['Proteina_Reactiva'] ?? '0');
     factorReumatoide = double.parse(json['Factor_Reumatoide'] ?? '0');
     anticuerpoCitrulinado = double.parse(json['Anticuerpo_Citrulinado'] ?? '0');
@@ -3168,65 +3172,65 @@ class Items {
     {
       "Diagnostico": "Indicaciones Generales",
       "Comentario": ""
-          "INDICACIONES MÉDICAS"
-          "DIETA"
-          "SOLUCIONES"
-          "MEDICAMENTOS"
-          "MEDIDAS GENERALES"
-          "Signos vitales por turno, cuidados generales de enfermería"
-          "Posición fowler, camilla con barandales en alto. REPOSO RELATIVO. Baño en la regadera."
-          "Balance hídrico y reportar diuresis en mililitros"
-          "Curva térmica, control de temperatura mediante medios físicos"
-          "Glucometría capilar por turno, reportar sí <80 mg/dL o >180 mg/dL"
-          "Oxígeno suplementario mediante cánula nasal para mantener saturación periférica de oxígeno >88%"
-          "Reportar eventualidades"
-          "GRACIAS"
+          "INDICACIONES MÉDICAS\n"
+          "DIETA\n"
+          "SOLUCIONES\n"
+          "MEDICAMENTOS\n"
+          "MEDIDAS GENERALES\n"
+          "Signos vitales por turno, cuidados generales de enfermería\n"
+          "Posición fowler, camilla con barandales en alto. REPOSO RELATIVO. Baño en la regadera.\n"
+          "Balance hídrico y reportar diuresis en mililitros\n"
+          "Curva térmica, control de temperatura mediante medios físicos\n"
+          "Glucometría capilar por turno, reportar sí <80 mg/dL o >180 mg/dL\n"
+          "Oxígeno suplementario mediante cánula nasal para mantener saturación periférica de oxígeno >88%\n"
+          "Reportar eventualidades\n"
+          "GRACIAS\n"
     },
     {
       "Diagnostico": "Indicaciones Especiales",
-      "Comentario": "INDICACIONES MÉDICAS"
-          "DIETA"
-          "SOLUCIONES"
-          "MEDICAMENTOS"
-          "MEDIDAS GENERALES"
-          "Signos vitales por turno, cuidados generales de enfermería"
-          "Toma de tensión arterial cada 4 horas, reportar en hoja aparte"
-          "Posición fowler, camilla con barandales en alto. Baño en regadera acompañado de familiar en silla de ruedas."
-          "Deambulación Asistida por Familiar. Movilización entre silla y cama, y viceversa, asistida por familiar"
-          "Balance hídrico y reportar uresis en mililitros. Cuantificar ingresos y egresos, reportar en hoja aparte"
-          "Monitoreo cardiaco continuo con pulsioximetría"
-          "Curva térmica, control de temperatura mediante medios físicos"
-          "Código de evacuaciones"
-          "Glucometría capilar por turno, reportar sí <80 mg/dL o >180 mg/dL"
-          "Oxígeno suplementario mediante cánula nasal para mantener saturación periférica de oxígeno >88%"
-          "GRACIAS"
+      "Comentario": "INDICACIONES MÉDICAS\n"
+          "DIETA\n"
+          "SOLUCIONES\n"
+          "MEDICAMENTOS\n"
+          "MEDIDAS GENERALES\n"
+          "Signos vitales por turno, cuidados generales de enfermería\n"
+          "Toma de tensión arterial cada 4 horas, reportar en hoja aparte\n"
+          "Posición fowler, camilla con barandales en alto. Baño en regadera acompañado de familiar en silla de ruedas.\n"
+          "Deambulación Asistida por Familiar. Movilización entre silla y cama, y viceversa, asistida por familiar\n"
+          "Balance hídrico y reportar uresis en mililitros. Cuantificar ingresos y egresos, reportar en hoja aparte\n"
+          "Monitoreo cardiaco continuo con pulsioximetría\n"
+          "Curva térmica, control de temperatura mediante medios físicos\n"
+          "Código de evacuaciones\n"
+          "Glucometría capilar por turno, reportar sí <80 mg/dL o >180 mg/dL\n"
+          "Oxígeno suplementario mediante cánula nasal para mantener saturación periférica de oxígeno >88%\n"
+          "GRACIAS\n"
     },
     {
       "Diagnostico": "Indicaciones del Ventilatorio",
-      "Comentario": "INDICACIONES MÉDICAS"
-          "DIETA"
-          "SOLUCIONES"
-          "Midazolam 105 mg en Sol NaCl 0.9% 100 mL en BIC a 15 mL/Hr"
-          "Buprenorfina 600 mcg aforados en Sol NaCl 0.9% 100 mL en BIC a 4.1 mL/Hr"
-          "Sol NaCl 0.9% 1000 mL IV para 24 Horas"
-          "MEDICAMENTOS"
-          "MEDIDAS GENERALES"
-          "Signos vitales por turno, cuidados generales de enfermería"
-          "Toma de tensión arterial cada 4 horas, reportar en hoja aparte"
-          "Posición fowler, camilla con barandales en alto. Movilización en cama cada 4 horas. Baño en cama."
-          "Balance hídrico y reportar uresis en mililitros. Cuantificar ingresos y egresos, reportar en hoja aparte"
-          "Sonda urinaria a derivación. Cuantificar gasto."
-          "Sonda nasogástrica para alimentación."
-          "Monitoreo cardiaco continuo con pulsioximetría"
-          "Curva térmica, control de temperatura mediante medios físicos"
-          "Código de evacuaciones"
-          "Glucometría capilar por turno, reportar sí <80 mg/dL o >180 mg/dL"
-          "Parámetros del ventilador establecidos"
-          "Aspiración gentil de secreciones cuantas veces sea necesario, documentar en hoja de enfermería cantidad realizada"
-          "Cuidados del paciente intubado"
-          "Protección ocular. Hipromelosa gotas oftálmicas, aplicar 2 gotas cada 4 horas en cada ojo"
-          "Enjuague bucal con clorhexidina cada 12 horas"
-          "GRACIAS"
+      "Comentario": "INDICACIONES MÉDICAS\n"
+          "DIETA\n"
+          "SOLUCIONES\n"
+          "Midazolam 105 mg en Sol NaCl 0.9% 100 mL en BIC a 15 mL/Hr\n"
+          "Buprenorfina 600 mcg aforados en Sol NaCl 0.9% 100 mL en BIC a 4.1 mL/Hr\n"
+          "Sol NaCl 0.9% 1000 mL IV para 24 Horas\n"
+          "MEDICAMENTOS\n"
+          "MEDIDAS GENERALES\n"
+          "Signos vitales por turno, cuidados generales de enfermería\n"
+          "Toma de tensión arterial cada 4 horas, reportar en hoja aparte\n"
+          "Posición fowler, camilla con barandales en alto. Movilización en cama cada 4 horas. Baño en cama.\n"
+          "Balance hídrico y reportar uresis en mililitros. Cuantificar ingresos y egresos, reportar en hoja aparte\n"
+          "Sonda urinaria a derivación. Cuantificar gasto.\n"
+          "Sonda nasogástrica para alimentación.\n"
+          "Monitoreo cardiaco continuo con pulsioximetría\n"
+          "Curva térmica, control de temperatura mediante medios físicos\n"
+          "Código de evacuaciones\n"
+          "Glucometría capilar por turno, reportar sí <80 mg/dL o >180 mg/dL\n"
+          "Parámetros del ventilador establecidos\n"
+          "Aspiración gentil de secreciones cuantas veces sea necesario, documentar en hoja de enfermería cantidad realizada\n"
+          "Cuidados del paciente intubado\n"
+          "Protección ocular. Hipromelosa gotas oftálmicas, aplicar 2 gotas cada 4 horas en cada ojo\n"
+          "Enjuague bucal con clorhexidina cada 12 horas\n"
+          "GRACIAS\n"
     },
     // ESQUEMAS DE GLUCEMIA
     {
@@ -3310,6 +3314,38 @@ class Items {
       "Diagnostico": "Infarto Agudo Al Miocardio",
       "Bibliografia":
           "Guía de Práctica Clínica. Diagnóstico, estratificación y tratamiento hospitalario inicial de pacientes con síndrome coronario agudo sin elevación ST. México, Secretaría de salud: 2010. IMSS-191-10 || P. Kaul, C.D. Naylor, P.W. Armstrong, D.B. Mark, P. Theroux, G.R. Dagenais. Assessment of activity status and survival according to the Canadian Cardiovascular Society angina classification. Can J Cardiol, 25 (2009), pp. e225-e231 || de Cardiología, S. E., & Heart Failure Association. (2021). Guía ESC 2021 sobre el diagnóstico y tratamiento de la insuficiencia cardiaca aguda y crónica. ",
+    },
+    {
+      "Diagnostico": "Tromboembolia Pulmonar",
+      "Bibliografia":
+          "Raja AS, Greenberg JO, Qaseem A, et al. Evaluation of Patients With Suspected Acute Pulmonary Embolism: Best Practice Advice From the Clinical Guidelines Committee of the American College of Physicians. Ann Intern Med 2015; 163:701. || Lim W, Le Gal G, Bates SM, et al. American Society of Hematology 2018 guidelines for management of venous thromboembolism: diagnosis of venous thromboembolism. Blood Adv 2018; 2:3226. || Konstantinides SV, Meyer G, Becattini C, et al. 2019 ESC Guidelines for the diagnosis and management of acute pulmonary embolism developed in collaboration with the European Respiratory Society (ERS): The Task Force for the diagnosis and management of acute pulmonary embolism of the European Society of Cardiology (ESC). Eur Respir J 2019; 54.",
+    },
+    {
+      "Diagnostico": "HIV Naive / TB",
+      "Bibliografia":
+          "Dooley KE, Kaplan R, Mwelase N, Grinsztejn B, Ticona E, Lacerda M, Sued O, Belonosova E, Ait-Khaled M, Angelis K, Brown D, Singh R, Talarico CL, Tenorio AR, Keegan MR, Aboud M; International Study of Patients with HIV on Rifampicin ING study group. Dolutegravir-based Antiretroviral Therapy for Patients Coinfected With Tuberculosis and Human Immunodeficiency Virus: A Multicenter, Noncomparative, Open-label, Randomized Trial. Clin Infect Dis. 2020 Feb 3;70(4):549-556. doi: 10.1093/cid/ciz256. PMID: 30918967.",
+    },
+    {
+      "Diagnostico": "Valoración Preoperatoria",
+      "Bibliografia":
+          "Guía de Práctica Clínica Valoración Preoperatoria en Cirug Valoración Preoperatoria en Cirugí loración Preoperatoria en Cirugía No Cardiaca en el Adulto a No Cardiaca en el Adulto a No Cardiaca en el Adulto México: : InstitutoMexicano del Seguro Social, 2011",
+    },
+    {
+      "Diagnostico": "Insuficiencia Venosa Crónica",
+      "Bibliografia": ""
+          "C. Miquel Abbad,R. Rial Horcajo,M.D. Ballesteros Ortega,C. García Madrid.Guía de práctica clínica en enfermedad venosa crónica del Capítulo de Flebología y Linfología de la Sociedad Española de Angiología y Cirugía Vascular.Angiología. 2015;68(1):55-62.Disponible:https://www.elsevier.es/es-revista-angiologia-294-articulo-guia-practica-clinica-enfermedad-venosa-S0003317015002084| | "
+          "Puras M.Insuficiencia venosa crónica.En: Barnes PJ. Longo DL, Fauci AS, editores. Harrison principios de medicina interna. 18ª ed. México: McGraw‐Hill; 2012. p. 608‐611. ",
+    },
+    {
+      "Diagnostico": "Bradicardia Sinusal",
+      "Bibliografia": ""
+          "Kusumoto FM, Schoenfeld MH, Barrett C, et al. 2018 ACC/AHA/HRS guideline on the evaluation and management of patients with bradycardia and cardiac conduction delay: a report of the American College of Cardiology/American Heart Association Task Force on Clinical Practice Guidelines and the Heart Rhythm Society. J Am Coll Cardiol. 2019 Aug 20;74(7):e51-156. "
+          "|| Kusumoto FM, Schoenfeld MH, Barrett C, et al. 2018 ACC/AHA/HRS guideline on the evaluation and management of patients with bradycardia and cardiac conduction delay: a report of the American College of Cardiology/American Heart Association Task Force on Clinical Practice Guidelines and the Heart Rhythm Society. J Am Coll Cardiol. 2019 Aug 20;74(7):e51-156. "
+          "",
+    },
+    {
+      "Diagnostico": "",
+      "Bibliografia": "",
     },
     {
       "Diagnostico": "",

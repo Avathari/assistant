@@ -29,8 +29,7 @@ class _ListValueState extends State<ListValue> {
       padding: const EdgeInsets.all(8.0),
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-              primary: Colors.black54,
-              onPrimary: Colors.grey,
+              foregroundColor: Colors.grey, backgroundColor: Colors.black54,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               minimumSize: Size(isMobileAndTablet(context) ? 170 : 400, 60)),
@@ -39,7 +38,8 @@ class _ListValueState extends State<ListValue> {
           },
           child: Text(
             widget.title!,
-            textAlign: TextAlign.center,
+            textAlign: TextAlign.center,overflow: TextOverflow.visible,
+            style: Styles.textSyleGrowth(fontSize: 10),
           )),
     );
   }

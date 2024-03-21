@@ -34,7 +34,6 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
   @override
   void initState() {
     // Llamado a ultimo registro agregado por fecha de bd_regpace.pace_sv, pace_antropo.
-
     setState(() {
       initialTextController.text = Reportes.reportes['Datos_Generales'] =
           Pacientes.prosa(isTerapia: true);
@@ -93,6 +92,7 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
                                   labelEditText: "Datos generales",
                                   keyBoardType: TextInputType.text,
                                   numOfLines: 1,
+                                  fontSize: isTablet(context) ? 12: 8,
                                   withShowOption: true,
                                   inputFormat: MaskTextInputFormatter()),
                               Row(
@@ -107,12 +107,17 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
                                         labelEditText:
                                             "Impresiones diagnósticas",
                                         keyBoardType: TextInputType.multiline,
-                                        numOfLines: 10,
+                                        numOfLines: isTablet(context) ? 18: 10,
+                                        fontSize: isTablet(context) ? 12: 8,
                                         onChange: ((value) {
                                           Reportes
-                                              .impresionesDiagnosticas = Reportes
+                                              .impresionesDiagnosticas =
+                                          Reportes
                                                       .reportes[
                                                   'Impresiones_Diagnosticas'] =
+                                          Reportes
+                                              .reportes[
+                                          'Diagnosticos_Hospital'] =
                                               "$value.";
                                         }),
                                         inputFormat: MaskTextInputFormatter()),
@@ -351,11 +356,4 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
 // ######################### ### # ### ############################
 // INICIO DE LAS OPERACIONES STATE() Y BUILD().
 // ######################### ### # ### ############################
-}
-
-_anylisis(BuildContext context) {
-  return Container(
-    decoration: ContainerDecoration.roundedDecoration(),
-    child: const Cardiovasculares(),
-  );
 }

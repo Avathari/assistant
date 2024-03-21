@@ -17,8 +17,7 @@ class _MenuButtonState extends State<MenuButton> {
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
-            primary: Colors.black54,
-            onPrimary: Colors.grey,
+            foregroundColor: Colors.grey, backgroundColor: Colors.black54,
             shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             minimumSize: Size(isMobileAndTablet(context) ? 200 : 500, 500)),
