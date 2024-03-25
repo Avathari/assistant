@@ -48,7 +48,6 @@ class OperacionesActivos extends StatefulWidget {
 }
 
 class _OperacionesActivosState extends State<OperacionesActivos> {
-
   @override
   void initState() {
     //
@@ -167,7 +166,8 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
                                                               .text ==
                                                           'Patrimonio'
                                                       ? Icons.hdr_weak_sharp
-                                                      : Icons.all_out, onChangeValue: () {  },
+                                                      : Icons.all_out,
+                                  onChangeValue: () {},
                                 ),
                               ),
                               Expanded(
@@ -263,7 +263,7 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
                         EditTextArea(
                           labelEditText: 'Fecha de Pago Programada',
                           textController: fechaProgramadaTextController,
-                          keyBoardType: TextInputType.text,
+                          keyBoardType: TextInputType.datetime,
                           numOfLines: 1,
                           selection: true,
                           withShowOption: true,
@@ -349,7 +349,8 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
                                                               .text ==
                                                           'Patrimonio'
                                                       ? Icons.hdr_weak_sharp
-                                                      : Icons.all_out, onChangeValue: () {  },
+                                                      : Icons.all_out,
+                                  onChangeValue: () {},
                                 ),
                               ),
                             ],
@@ -451,84 +452,79 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
                   Column(
                     children: [
                       Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            GrandIcon(
-                              iconData: Icons.photo_camera_back_outlined,
-                              labelButton: 'Imagen del Activo',
-                              onPress: () {
-                                Operadores.optionsActivity(
-                                  context: context,
-                                  tittle:
-                                      'Cargar imagen del Electrocardiograma',
-                                  onClose: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  textOptionA: 'Cargar desde Dispositivo',
-                                  optionA: () async {
-                                    var bytes =
-                                        await Directorios.choiseFromDirectory();
-                                    setState(() {
-                                      stringImage = base64Encode(bytes);
-                                      Navigator.of(context).pop();
-                                    });
-                                  },
-                                  textOptionB: 'Cargar desde Cámara',
-                                  optionB: () async {
-                                    var bytes =
-                                        await Directorios.choiseFromCamara();
-                                    setState(() {
-                                      stringImage = base64Encode(bytes);
-                                      Navigator.of(context).pop();
-                                    });
-                                  },
-                                );
-                              },
-                            ),
-                            GrandIcon(
-                              iconData: Icons.new_releases_outlined,
-                              labelButton: 'Recargar . . . ',
-                              onPress: () {
-                                setState(() {
-                                  stringImage = Activos.imagenActivo;
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
                         flex: 10,
                         child: Container(
                           padding: const EdgeInsets.all(5.0),
                           margin: const EdgeInsets.all(15.0),
                           decoration: ContainerDecoration.roundedDecoration(
                               colorBackground: Colors.grey),
-                          child: PhotoView(
-                            backgroundDecoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(20.0),
-                              border: Border.all(
-                                color: Colors.grey,
-                                style: BorderStyle.solid,
-                                width: 1.0,
-                              ),
-                            ),
-                            imageProvider:
-                                MemoryImage(base64Decode(stringImage!)),
-                            loadingBuilder: (context, progress) => Center(
-                              child: SizedBox(
-                                width: 20.0,
-                                height: 20.0,
-                                child: CircularProgressIndicator(
-                                  value: _progress == null
-                                      ? null
-                                      : _progress.cumulativeBytesLoaded /
-                                          _progress.expectedTotalBytes,
+                          child: Column(
+                            children: [
+                              Expanded(
+                                flex: 4,
+                                child: PhotoView(
+                                  backgroundDecoration: BoxDecoration(
+                                    color: Colors.black,
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    border: Border.all(
+                                      color: Colors.grey,
+                                      style: BorderStyle.solid,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  imageProvider:
+                                      MemoryImage(base64Decode(stringImage!)),
+                                  loadingBuilder: (context, progress) => Center(
+                                    child: SizedBox(
+                                      width: 20.0,
+                                      height: 20.0,
+                                      child: CircularProgressIndicator(
+                                        value: _progress == null
+                                            ? null
+                                            : _progress.cumulativeBytesLoaded /
+                                                _progress.expectedTotalBytes,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
+                              Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  CircleIcon(
+                                      iconed: Icons.file_copy_rounded,
+                                      tittle: 'Cargar desde Dispositivo',
+                                      onChangeValue: () async {
+                                        var bytes = await Directorios
+                                            .choiseFromDirectory();
+                                        setState(() {
+                                          stringImage = base64Encode(bytes);
+                                        });
+                                      }),
+                                  GrandIcon(
+                                    iconColor: Colors.black,
+                                    iconData: Icons.new_releases_outlined,
+                                    labelButton: 'Recargar . . . ',
+                                    onPress: () {
+                                      setState(() {
+                                        stringImage = Activos.imagenActivo;
+                                      });
+                                    },
+                                  ),
+                                  CircleIcon(
+                                    iconed: Icons.camera_alt_outlined,
+                                      tittle: 'Cargar desde Cámara',
+                                      onChangeValue: () async {
+                                        var bytes = await Directorios
+                                            .choiseFromCamara();
+                                        setState(() {
+                                          stringImage = base64Encode(bytes);
+                                        });
+                                      }),
+                                ],
+                              ))
+                            ],
                           ),
                         ),
                       ),
@@ -707,23 +703,22 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
 }
 
 class GestionActivos extends StatefulWidget {
-Widget? actualSidePage;
+  Widget? actualSidePage;
 
-bool? reverse, esActualized;
+  bool? reverse, esActualized;
 // ****************** *** ****** **************
-GestionActivos(
-{Key? key,
-this.reverse = false,
-this.actualSidePage,
-this.esActualized = true})
-    : super(key: key);
+  GestionActivos(
+      {Key? key,
+      this.reverse = false,
+      this.actualSidePage,
+      this.esActualized = true})
+      : super(key: key);
 
-@override
-State<GestionActivos> createState() => _GestionActivosState();
+  @override
+  State<GestionActivos> createState() => _GestionActivosState();
 }
 
 class _GestionActivosState extends State<GestionActivos> {
-
   @override
   void initState() {
     Activos.fileAssocieted = '${Financieros.localRepositoryPath}activos.json';
@@ -1228,23 +1223,24 @@ class _GestionActivosState extends State<GestionActivos> {
                     height: 15,
                   ),
                   CircleIcon(
-                      tittle: "${snapshot.data[posicion]['Tipo_Recurso']}",
-                      iconed: snapshot.data[posicion]['Tipo_Recurso'] ==
-                              'Ingresos'
-                          ? Icons.insights
-                          : snapshot.data[posicion]['Tipo_Recurso'] == 'Egresos'
-                              ? Icons.leaderboard_sharp
-                              : snapshot.data[posicion]['Tipo_Recurso'] ==
-                                      'Activos'
-                                  ? Icons.ac_unit
-                                  : snapshot.data[posicion]['Tipo_Recurso'] ==
-                                          'Pasivos'
-                                      ? Icons.pages_sharp
-                                      : snapshot.data[posicion]
-                                                  ['Tipo_Recurso'] ==
-                                              'Patrimonio'
-                                          ? Icons.hdr_weak_sharp
-                                          : Icons.all_out, onChangeValue: () {  },),
+                    tittle: "${snapshot.data[posicion]['Tipo_Recurso']}",
+                    iconed: snapshot.data[posicion]['Tipo_Recurso'] ==
+                            'Ingresos'
+                        ? Icons.insights
+                        : snapshot.data[posicion]['Tipo_Recurso'] == 'Egresos'
+                            ? Icons.leaderboard_sharp
+                            : snapshot.data[posicion]['Tipo_Recurso'] ==
+                                    'Activos'
+                                ? Icons.ac_unit
+                                : snapshot.data[posicion]['Tipo_Recurso'] ==
+                                        'Pasivos'
+                                    ? Icons.pages_sharp
+                                    : snapshot.data[posicion]['Tipo_Recurso'] ==
+                                            'Patrimonio'
+                                        ? Icons.hdr_weak_sharp
+                                        : Icons.all_out,
+                    onChangeValue: () {},
+                  ),
                 ],
               ),
             ),

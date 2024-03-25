@@ -35,7 +35,7 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
 
   @override
   void initState() {
-    fechaPadecimientoTextController.text = Valores.fechaPadecimientoActual!;
+    fechaPadecimientoTextController.text = Valores.fechaPadecimientoActual ?? Calendarios.today(format: "yyyy/MM/dd");
     //
     Actividades.consultarId(
             Databases.siteground_database_reghosp,
@@ -337,7 +337,7 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
                       weigth: 1000,
                       labelButton: "Actualizar Padecimiento Actual",
                       onPress: () {
-                        Valores.fechaPadecimientoActual =padecimientoActualTextController.text;
+                        Valores.fechaPadecimientoActual =fechaPadecimientoTextController.text;
                         //
                         Valores.padecimientoActual =
                             "${padecimientoActualTextController.text}. \n${atencionUrgenciasTextController.text}";

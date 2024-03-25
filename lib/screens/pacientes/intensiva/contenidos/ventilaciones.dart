@@ -46,7 +46,6 @@ class OperacionesVentilaciones extends StatefulWidget {
 }
 
 class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
-
   @override
   void initState() {
     //
@@ -61,7 +60,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
             Calendarios.today(format: 'yyyy-MM-dd');
 
         Exploracion.tuboEndotraqueal = Items.tuboendotraqueal[0];
-        Exploracion.haciaArcadaDentaria =  Items.arcadaDentaria[0];
+        Exploracion.haciaArcadaDentaria = Items.arcadaDentaria[0];
 
         sensInspTextController.text = '1';
         sensEspTextController.text = '2';
@@ -77,40 +76,46 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
           //
           modoVentilatorioValue =
               Ventilaciones.Ventilacion['VM_Mod'].toString();
-          Valores.modalidadVentilatoria = Ventilaciones.modoVentilatorio(modalidadVentilatoria: modoVentilatorioValue!);
+          Valores.modalidadVentilatoria = Ventilaciones.modoVentilatorio(
+              modalidadVentilatoria: modoVentilatorioValue!);
           //
-          Exploracion.tuboEndotraqueal = Ventilaciones.Ventilacion['Pace_TET'].toString();
-          Exploracion.haciaArcadaDentaria = Ventilaciones.Ventilacion['Pace_DAC'].toString();
+          Exploracion.tuboEndotraqueal =
+              Ventilaciones.Ventilacion['Pace_TET'].toString();
+          Exploracion.haciaArcadaDentaria =
+              Ventilaciones.Ventilacion['Pace_DAC'].toString();
           //
           //
           volTidalTextController.text =
               Ventilaciones.Ventilacion['Pace_Vt'].toString();
-          Valores.volumenTidal =  double.parse(volTidalTextController.text);
+          Valores.volumenTidal = double.parse(volTidalTextController.text);
           //
           peepTextController.text =
               Ventilaciones.Ventilacion['Pace_Peep'].toString();
-          Valores.presionFinalEsiracion =  int.parse(peepTextController.text);
+          Valores.presionFinalEsiracion = int.parse(peepTextController.text);
           //
           respTextController.text =
               Ventilaciones.Ventilacion['Pace_Fr'].toString();
-          Valores.frecuenciaVentilatoria =  int.parse(respTextController.text);
+          Valores.frecuenciaVentilatoria = int.parse(respTextController.text);
           //
           fioTextController.text =
               Ventilaciones.Ventilacion['Pace_Fio'].toString();
-          Valores.fraccionInspiratoriaVentilatoria =  int.parse(fioTextController.text);
+          Valores.fraccionInspiratoriaVentilatoria =
+              int.parse(fioTextController.text);
           //
           sensInspTextController.text =
               Ventilaciones.Ventilacion['Pace_Insp'].toString();
-          Valores.sensibilidadInspiratoria =  int.parse(sensInspTextController.text);
+          Valores.sensibilidadInspiratoria =
+              int.parse(sensInspTextController.text);
           //
           sensEspTextController.text =
               Ventilaciones.Ventilacion['Pace_Espi'].toString();
-          Valores.sensibilidadEspiratoria =  int.parse(sensEspTextController.text);
+          Valores.sensibilidadEspiratoria =
+              int.parse(sensEspTextController.text);
           //
           //
           pControlTextController.text =
               Ventilaciones.Ventilacion['Pace_Pc'].toString();
-          Valores.presionControl =  int.parse(pControlTextController.text);
+          Valores.presionControl = int.parse(pControlTextController.text);
           //
           pMaximaTextController.text =
               Ventilaciones.Ventilacion['Pace_Pm'].toString();
@@ -118,7 +123,8 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
           //
           volTidalEspTextController.text =
               Ventilaciones.Ventilacion['Pace_V'].toString();
-          Valores.volumenVentilatorio =  int.parse(volTidalEspTextController.text);
+          Valores.volumenVentilatorio =
+              int.parse(volTidalEspTextController.text);
           //
           flujoTextController.text =
               Ventilaciones.Ventilacion['Pace_F'].toString();
@@ -126,7 +132,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
           //
           pSoporteTextController.text =
               Ventilaciones.Ventilacion['Pace_Ps'].toString();
-          Valores.presionSoporte =  int.parse(pSoporteTextController.text);
+          Valores.presionSoporte = int.parse(pSoporteTextController.text);
           //
           pPlatTextController.text =
               Ventilaciones.Ventilacion['Pace_Pmet'].toString();
@@ -134,7 +140,8 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
           //
           pInspirattoriaTextController.text =
               Ventilaciones.Ventilacion['Pace_Pip'].toString();
-          Valores.presionInspiratoriaPico = int.parse(pInspirattoriaTextController.text);
+          Valores.presionInspiratoriaPico =
+              int.parse(pInspirattoriaTextController.text);
           //
 
           selectModal();
@@ -148,49 +155,58 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: isDesktop(context)
-          ? null
-          : isTabletAndDesktop(context)
-              ? null
-              : AppBar(
-        foregroundColor: Colors.white,
-                  backgroundColor: Theming.primaryColor,
-                  title: Text(appBarTitile, style: Styles.textSyle,),
-                  leading: IconButton(
-                    icon: const Icon(
-                      Icons.arrow_back,
+        backgroundColor: Colors.black,
+        appBar: isDesktop(context)
+            ? null
+            : isTabletAndDesktop(context)
+                ? null
+                : AppBar(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Theming.primaryColor,
+                    title: Text(
+                      appBarTitile,
+                      style: Styles.textSyle,
                     ),
-                    tooltip: Sentences.regresar,
-                    onPressed: () {
-                      onClose(context);
-                    },
+                    leading: IconButton(
+                      icon: const Icon(
+                        Icons.arrow_back,
+                      ),
+                      tooltip: Sentences.regresar,
+                      onPressed: () {
+                        onClose(context);
+                      },
+                    ),
+                    actions: isMobile(context)
+                        ? <Widget>[
+                            GrandIcon(
+                              iconData: Icons.candlestick_chart,
+                              labelButton: 'Análisis de Parámetros',
+                              onPress: () {
+                                Operadores.openDialog(
+                                    context: context,
+                                    chyldrim: const AnalisisVentilatorio());
+                              },
+                            ),
+                          ]
+                        : isTablet(context)
+                            ? <Widget>[
+                                GrandIcon(
+                                  iconData: Icons.candlestick_chart,
+                                  labelButton: 'Análisis de Parámetros',
+                                  onPress: () {
+                                    Operadores.openDialog(
+                                        context: context,
+                                        chyldrim: const AnalisisVentilatorio());
+                                  },
+                                ),
+                              ]
+                            : null,
                   ),
-                  actions: isMobile(context)
-                      ? <Widget>[
-                          GrandIcon(
-                            iconData: Icons.candlestick_chart,
-                            labelButton: 'Análisis de Parámetros',
-                            onPress: () {
-                              Operadores.openDialog(context: context, chyldrim: const AnalisisVentilatorio());
-                            },
-                          ),
-                        ]
-                      : isTablet(context)
-                          ? <Widget>[
-                              GrandIcon(
-                                iconData: Icons.candlestick_chart,
-                                labelButton: 'Análisis de Parámetros',
-                                onPress: () {
-                                   Operadores.openDialog(context: context, chyldrim: const AnalisisVentilatorio());
-                                },
-                              ),
-                            ]
-                          : null,
-                ),
-      body: isDesktop(context) || isTablet(context) ? DeskTopView() : MobileView()
-    );
+        body: isDesktop(context) || isTablet(context)
+            ? DeskTopView()
+            : MobileView());
   }
+
   // *************************************************************************
   Container DeskTopView() {
     return Container(
@@ -198,126 +214,142 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
       decoration: ContainerDecoration.roundedDecoration(),
       child: Column(
         children: [
-          Expanded(child: Row(children: [
-            Expanded(
-              flex: 2,
-              child: EditTextArea(
-                keyBoardType: TextInputType.number,
-                inputFormat: TextFormat.dateFormat,
-                numOfLines: 1,
-                labelEditText: 'Fecha de realización',
-                textController: fechaRealizacionTextController,
-                iconData: Icons.calendar_today,
-                iconColor: Colors.white,
-                withShowOption: true,
-                selection: true,
-                onSelected: () {
-                  fechaRealizacionTextController.text =
-                      Calendarios.today(format: 'yyyy-MM-dd');
-                },
+          Expanded(
+              child: Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: EditTextArea(
+                  keyBoardType: TextInputType.number,
+                  inputFormat: TextFormat.dateFormat,
+                  numOfLines: 1,
+                  labelEditText: 'Fecha de realización',
+                  textController: fechaRealizacionTextController,
+                  iconData: Icons.calendar_today,
+                  iconColor: Colors.white,
+                  withShowOption: true,
+                  selection: true,
+                  onSelected: () {
+                    fechaRealizacionTextController.text =
+                        Calendarios.today(format: 'yyyy-MM-dd');
+                  },
+                ),
               ),
-            ),
-            Expanded(
-              flex: 3,
-              child: Spinner(
-                width: SpinnersValues.maximumWidth(context: context),
-                tittle: 'Fase ventilatoria',
-                onChangeValue: (value) {
-                  setState(() {
-                    Exploracion.faseVentilatoria = value;
-                  });
-                },
-                items: Items.ventilatorio,
-                initialValue: Exploracion.faseVentilatoria,
+              Expanded(
+                flex: 3,
+                child: Spinner(
+                  width: SpinnersValues.maximumWidth(context: context),
+                  tittle: 'Fase ventilatoria',
+                  onChangeValue: (value) {
+                    setState(() {
+                      Exploracion.faseVentilatoria = value;
+                    });
+                  },
+                  items: Items.ventilatorio,
+                  initialValue: Exploracion.faseVentilatoria,
+                ),
               ),
-            ),
-
-          ],)),
-          CrossLine(height: 20,thickness: 2,),
-          Expanded(child: Row(children: [
-            Expanded(
-              flex: 3,
-              child: Spinner(
-                width: isTablet(context) || isDesktop(context)
-                    ? 500
-                    : isMobile(context)
-                    ? 250
-                    : 150,
-                tittle: 'M. Ventilatorio',
-                onChangeValue: (value) {
-                  setState(() {
-                    modoVentilatorioValue = value;
-                    Valores.modalidadVentilatoria = Ventilaciones.modoVentilatorio(modalidadVentilatoria: modoVentilatorioValue!);
-                    selectModal();
-                  });
-                },
-                items: Ventilaciones.modalidades,
-                initialValue: modoVentilatorioValue,
+            ],
+          )),
+          CrossLine(
+            height: 20,
+            thickness: 2,
+          ),
+          Expanded(
+              child: Row(
+            children: [
+              Expanded(
+                flex: 3,
+                child: Spinner(
+                  width: isTablet(context) || isDesktop(context)
+                      ? 500
+                      : isMobile(context)
+                          ? 250
+                          : 150,
+                  tittle: 'M. Ventilatorio',
+                  onChangeValue: (value) {
+                    setState(() {
+                      modoVentilatorioValue = value;
+                      Valores.modalidadVentilatoria =
+                          Ventilaciones.modoVentilatorio(
+                              modalidadVentilatoria: modoVentilatorioValue!);
+                      selectModal();
+                    });
+                  },
+                  items: Ventilaciones.modalidades,
+                  initialValue: modoVentilatorioValue,
+                ),
               ),
-            ),
-            // Expanded(
-            //   child: Spinner(
-            //     width: SpinnersValues.maximumWidth(context: context),
-            //     tittle: 'Dispositivo empleado',
-            //     onChangeValue: (value) {
-            //       setState(() {
-            //         Valores.dispositivoEmpleado = value;
-            //       });
-            //     },
-            //     items: Items.dispositivosOxigeno,
-            //     initialValue: Valores.dispositivoEmpleado,
-            //   ),
-            // ),
-          ],)),
-          Expanded(child: Row(children: [
-            Expanded(
-              child: Spinner(
-                width: isTablet(context) ? 500
-                    :  isDesktop(context)
-                    ? 315
-                    : isMobile(context)
-                    ? 250
-                    : 150,
-                tittle: 'Tubo Endotraqueal',
-                onChangeValue: (value) {
-                  setState(() {
-                    Exploracion.tuboEndotraqueal = value;
-
-                  });
-                },
-                items: Items.tuboendotraqueal,
-                initialValue: Exploracion.tuboEndotraqueal,
+              // Expanded(
+              //   child: Spinner(
+              //     width: SpinnersValues.maximumWidth(context: context),
+              //     tittle: 'Dispositivo empleado',
+              //     onChangeValue: (value) {
+              //       setState(() {
+              //         Valores.dispositivoEmpleado = value;
+              //       });
+              //     },
+              //     items: Items.dispositivosOxigeno,
+              //     initialValue: Valores.dispositivoEmpleado,
+              //   ),
+              // ),
+            ],
+          )),
+          Expanded(
+              child: Row(
+            children: [
+              Expanded(
+                child: Spinner(
+                  width: isTablet(context)
+                      ? 500
+                      : isDesktop(context)
+                          ? 315
+                          : isMobile(context)
+                              ? 250
+                              : 150,
+                  tittle: 'Tubo Endotraqueal',
+                  onChangeValue: (value) {
+                    setState(() {
+                      Exploracion.tuboEndotraqueal = value;
+                    });
+                  },
+                  items: Items.tuboendotraqueal,
+                  initialValue: Exploracion.tuboEndotraqueal,
+                ),
               ),
-            ),
-            Expanded(
-              child: Spinner(
-                width: isTablet(context) ? 500
-                    :  isDesktop(context)
-                    ? 315
-                    : isMobile(context)
-                    ? 250
-                    : 150,
-                tittle: 'Distancia a arcada',
-                onChangeValue: (value) {
-                  setState(() {
-                    Exploracion.haciaArcadaDentaria = value;
-
-                  });
-                },
-                items: Items.arcadaDentaria,
-                initialValue: Exploracion.haciaArcadaDentaria,
+              Expanded(
+                child: Spinner(
+                  width: isTablet(context)
+                      ? 500
+                      : isDesktop(context)
+                          ? 315
+                          : isMobile(context)
+                              ? 250
+                              : 150,
+                  tittle: 'Distancia a arcada',
+                  onChangeValue: (value) {
+                    setState(() {
+                      Exploracion.haciaArcadaDentaria = value;
+                    });
+                  },
+                  items: Items.arcadaDentaria,
+                  initialValue: Exploracion.haciaArcadaDentaria,
+                ),
               ),
-            ),
-          ],)),
-          CrossLine(height: 20,thickness: 2,),
+            ],
+          )),
+          CrossLine(
+            height: 20,
+            thickness: 2,
+          ),
           Expanded(
             flex: isTabletAndDesktop(context)
                 ? 9
                 : isDesktop(context)
-                ? 7
-                : isTablet(context)
-                ? 6
-                : 6,
+                    ? 7
+                    : isTablet(context)
+                        ? 6
+                        : 6,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -332,17 +364,58 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                             children: component(context),
                           ))),
                   Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                        margin: const EdgeInsets.all(8.0),
-                        decoration: ContainerDecoration.roundedDecoration(),
-                        child: SingleChildScrollView(
-                            controller: ScrollController(),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: getView(widget.actualView),
-                            )),
-                      )),
+                      child: Column(
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: Container(
+                          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                          margin: const EdgeInsets.all(8.0),
+                          decoration: ContainerDecoration.roundedDecoration(),
+                          child: SingleChildScrollView(
+                              controller: ScrollController(),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: getView(widget.actualView),
+                              )),
+                        ),
+                      ),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: EditTextArea(
+                                keyBoardType: TextInputType.number,
+                                inputFormat: TextFormat.numberFourFormat,
+                                labelEditText: 'Presión Platteu (mmHg)',
+                                textController: pPlatTextController,
+                                numOfLines: 1,
+                                onChange: (value) {
+                                  setState(() {
+                                    Valores.presionPlateau = int.parse(value);
+                                  });
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              child: EditTextArea(
+                                keyBoardType: TextInputType.number,
+                                inputFormat: TextFormat.numberFourFormat,
+                                labelEditText: 'Presión Máxima (mmHg)',
+                                textController: pMaximaTextController,
+                                numOfLines: 1,
+                                onChange: (value) {
+                                  setState(() {
+                                    Valores.presionMaxima = int.parse(value);
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )),
                 ],
               ),
             ),
@@ -366,112 +439,133 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
       decoration: ContainerDecoration.roundedDecoration(),
       child: Column(
         children: [
-          Expanded(flex: Keyboard.isDesktopOpen(context) ? 8 : 4, child: Column(children: [
-            Expanded(
-              flex: Keyboard.isDesktopOpen(context) ? 2:1,
-              child: EditTextArea(
-                keyBoardType: TextInputType.number,
-                inputFormat: TextFormat.dateFormat,
-                numOfLines: 1,
-                labelEditText: 'Fecha de realización',
-                textController: fechaRealizacionTextController,
-                iconData: Icons.calendar_today,
-                iconColor: Colors.white,
-                withShowOption: true,
-                selection: true,
-                onSelected: () {
-                  fechaRealizacionTextController.text =
-                      Calendarios.today(format: 'yyyy-MM-dd');
-                },
-              ),
-            ),
-            Expanded(
-              flex: Keyboard.isDesktopOpen(context) ? 3:1,
-              child: Spinner(
-                isRow: true,
-                width: SpinnersValues.maximumWidth(context: context),
-                tittle: 'Fase ventilatoria',
-                onChangeValue: (value) {
-                  setState(() {
-                    Exploracion.faseVentilatoria = value;
-                  });
-                },
-                items: Items.ventilatorio,
-                initialValue: Exploracion.faseVentilatoria,
-              ),
-            ),
-          ],)),
-          CrossLine(height: Keyboard.isDesktopOpen(context) ? 5 : 20, thickness: 2,),
+          Expanded(
+              flex: Keyboard.isDesktopOpen(context) ? 6 : 4,
+              child: Column(
+                children: [
+                  Expanded(
+                    flex: Keyboard.isDesktopOpen(context) ? 2 : 1,
+                    child: EditTextArea(
+                      keyBoardType: TextInputType.number,
+                      inputFormat: TextFormat.dateFormat,
+                      numOfLines: 1,
+                      labelEditText: 'Fecha de realización',
+                      textController: fechaRealizacionTextController,
+                      iconData: Icons.calendar_today,
+                      iconColor: Colors.white,
+                      withShowOption: true,
+                      selection: true,
+                      onSelected: () {
+                        fechaRealizacionTextController.text =
+                            Calendarios.today(format: 'yyyy-MM-dd');
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    flex: Keyboard.isDesktopOpen(context) ? 3 : 1,
+                    child: Spinner(
+                      isRow: true,
+                      width: SpinnersValues.maximumWidth(context: context),
+                      tittle: 'Fase ventilatoria',
+                      onChangeValue: (value) {
+                        setState(() {
+                          Exploracion.faseVentilatoria = value;
+                        });
+                      },
+                      items: Items.ventilatorio,
+                      initialValue: Exploracion.faseVentilatoria,
+                    ),
+                  ),
+                ],
+              )),
+          CrossLine(
+            height: Keyboard.isDesktopOpen(context) ? 5 : 10,
+            thickness: 2,
+          ),
           // *****************************************************
-          Expanded(flex: Keyboard.isDesktopOpen(context) ? 10 :6,
-              child: Column(children: [
-            Expanded(
-              child: Spinner(
-                isRow: true,
-                width: isTablet(context) || isDesktop(context)
-                    ? 500
-                    : isMobile(context)
-                    ? 170
-                    : 150,
-                tittle: 'Modo',
-                onChangeValue: (value) {
-                  setState(() {
-                    modoVentilatorioValue = value;
-                    Valores.modalidadVentilatoria = Ventilaciones.modoVentilatorio(modalidadVentilatoria: modoVentilatorioValue!);
-                    selectModal();
-                  });
-                },
-                items: Ventilaciones.modalidades,
-                initialValue: modoVentilatorioValue,
-              ),
-            ),
-            Expanded(
-              child: Spinner(
-                isRow: true,
-                width: isTablet(context) || isDesktop(context)
-                    ? 500
-                    : isMobile(context)
-                    ? 170
-                    : 150,
-                tittle: 'TET',
-                onChangeValue: (value) {
-                  setState(() {
-                    Exploracion.tuboEndotraqueal = value;
-                  });
-                },
-                items: Items.tuboendotraqueal,
-                initialValue: Exploracion.tuboEndotraqueal,
-              ),
-            ),
-            Expanded(
-              child: Spinner(
-                isRow: true,
-                width: isTablet(context) || isDesktop(context)
-                    ? 500
-                    : isMobile(context)
-                    ? 170
-                    : 150,
-                tittle: 'Dis.',
-                onChangeValue: (value) {
-                  setState(() {
-                    Exploracion.haciaArcadaDentaria = value;
-
-                  });
-                },
-                items: Items.arcadaDentaria,
-                initialValue: Exploracion.haciaArcadaDentaria,
-              ),
-            ),
-          ],)),
-          CrossLine(height:Keyboard.isDesktopOpen(context) ? 5 : 20,thickness: 2,),
+          Expanded(
+              flex: Keyboard.isDesktopOpen(context) ? 6 : 4,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Spinner(
+                      isRow: true,
+                      width: isTablet(context) || isDesktop(context)
+                          ? 500
+                          : isMobile(context)
+                              ? 170
+                              : 150,
+                      tittle: 'Modo',
+                      onChangeValue: (value) {
+                        setState(() {
+                          modoVentilatorioValue = value;
+                          Valores.modalidadVentilatoria =
+                              Ventilaciones.modoVentilatorio(
+                                  modalidadVentilatoria:
+                                      modoVentilatorioValue!);
+                          selectModal();
+                        });
+                      },
+                      items: Ventilaciones.modalidades,
+                      initialValue: modoVentilatorioValue,
+                    ),
+                  ),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Spinner(
+                            isRow: true,
+                            width: isTablet(context) || isDesktop(context)
+                                ? 500
+                                : isMobile(context)
+                                    ? 170
+                                    : 150,
+                            tittle: 'TET',
+                            onChangeValue: (value) {
+                              setState(() {
+                                Exploracion.tuboEndotraqueal = value;
+                              });
+                            },
+                            items: Items.tuboendotraqueal,
+                            initialValue: Exploracion.tuboEndotraqueal,
+                          ),
+                        ),
+                        Expanded(
+                          child: Spinner(
+                            isRow: true,
+                            width: isTablet(context) || isDesktop(context)
+                                ? 500
+                                : isMobile(context)
+                                    ? 170
+                                    : 150,
+                            tittle: 'Dis.',
+                            onChangeValue: (value) {
+                              setState(() {
+                                Exploracion.haciaArcadaDentaria = value;
+                              });
+                            },
+                            items: Items.arcadaDentaria,
+                            initialValue: Exploracion.haciaArcadaDentaria,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              )),
+          CrossLine(
+            height: Keyboard.isDesktopOpen(context) ? 5 : 10,
+            thickness: 2,
+          ),
           Expanded(
             flex: isTabletAndDesktop(context)
                 ? 9
                 : isDesktop(context)
-                ? 7
-                : isTablet(context)
-                ? 6
-                : 8,
+                    ? 7
+                    : isTablet(context)
+                        ? 6
+                        : 8,
             child: Padding(
               padding: const EdgeInsets.all(4.0),
               child: Row(
@@ -486,17 +580,58 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                             children: component(context),
                           ))),
                   Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.all(2.0),
-                        margin: const EdgeInsets.all(2.0),
-                        decoration: ContainerDecoration.roundedDecoration(),
-                        child: SingleChildScrollView(
-                            controller: ScrollController(),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: getView(widget.actualView),
-                            )),
-                      )),
+                      child: Column(
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: Container(
+                          padding: const EdgeInsets.all(2.0),
+                          margin: const EdgeInsets.all(2.0),
+                          decoration: ContainerDecoration.roundedDecoration(),
+                          child: SingleChildScrollView(
+                              controller: ScrollController(),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: getView(widget.actualView),
+                              )),
+                        ),
+                      ),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: EditTextArea(
+                                keyBoardType: TextInputType.number,
+                                inputFormat: TextFormat.numberFourFormat,
+                                labelEditText: 'Presión Platteu (mmHg)',
+                                textController: pPlatTextController,
+                                numOfLines: 1,
+                                onChange: (value) {
+                                  setState(() {
+                                    Valores.presionPlateau = int.parse(value);
+                                  });
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              child: EditTextArea(
+                                keyBoardType: TextInputType.number,
+                                inputFormat: TextFormat.numberFourFormat,
+                                labelEditText: 'Presión Máxima (mmHg)',
+                                textController: pMaximaTextController,
+                                numOfLines: 1,
+                                onChange: (value) {
+                                  setState(() {
+                                    Valores.presionMaxima = int.parse(value);
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )),
                 ],
               ),
             ),
@@ -514,6 +649,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
       ),
     );
   }
+
 // *************************************************************************
   List<Widget> getView(int actualView) {
     List<List<Widget>> list = [
@@ -956,8 +1092,6 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
   //
   var carouselController = CarouselController();
 //
-
-
 }
 
 class GestionVentilaciones extends StatefulWidget {
@@ -973,7 +1107,6 @@ class GestionVentilaciones extends StatefulWidget {
 }
 
 class _GestionVentilacionesState extends State<GestionVentilaciones> {
-
   @override
   void initState() {
     if (Constantes.dummyArray!.isNotEmpty) {
@@ -999,7 +1132,7 @@ class _GestionVentilacionesState extends State<GestionVentilaciones> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        foregroundColor: Colors.white,
+          foregroundColor: Colors.white,
           backgroundColor: Theming.primaryColor,
           leading: IconButton(
             icon: const Icon(
@@ -1014,19 +1147,27 @@ class _GestionVentilacionesState extends State<GestionVentilaciones> {
           ),
           title: AppBarText(appTittle),
           actions: <Widget>[
-            isTabletAndDesktop(context) ? GrandIcon(
-              iconData: Icons.candlestick_chart,
-              labelButton: 'Análisis de Parámetros',
-              onPress: () {
-                Operadores.openDialog(context: context, chyldrim: const AnalisisVentilatorio());
-              },
-            ) : isDesktop(context) ? GrandIcon(
-              iconData: Icons.candlestick_chart,
-              labelButton: 'Análisis de Parámetros',
-              onPress: () {
-                Operadores.openDialog(context: context, chyldrim: const AnalisisVentilatorio());
-              },
-            ) : Container(),
+            isTabletAndDesktop(context)
+                ? GrandIcon(
+                    iconData: Icons.candlestick_chart,
+                    labelButton: 'Análisis de Parámetros',
+                    onPress: () {
+                      Operadores.openDialog(
+                          context: context,
+                          chyldrim: const AnalisisVentilatorio());
+                    },
+                  )
+                : isDesktop(context)
+                    ? GrandIcon(
+                        iconData: Icons.candlestick_chart,
+                        labelButton: 'Análisis de Parámetros',
+                        onPress: () {
+                          Operadores.openDialog(
+                              context: context,
+                              chyldrim: const AnalisisVentilatorio());
+                        },
+                      )
+                    : Container(),
             IconButton(
               icon: const Icon(
                 Icons.replay_outlined,
@@ -1045,7 +1186,6 @@ class _GestionVentilacionesState extends State<GestionVentilaciones> {
                 toOperaciones(context, Constantes.Register);
               },
             ),
-
           ]),
       body: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         Expanded(
@@ -1228,8 +1368,7 @@ class _GestionVentilacionesState extends State<GestionVentilaciones> {
                                   closeDialog(context);
                                 },
                                 () {
-                                  deleteRegister(
-                                      snapshot, posicion, context);
+                                  deleteRegister(snapshot, posicion, context);
                                 },
                               );
                             });
@@ -1340,7 +1479,6 @@ class AnalisisVentilatorio extends StatefulWidget {
 }
 
 class _AnalisisVentilatorioState extends State<AnalisisVentilatorio> {
-
   @override
   Widget build(BuildContext context) {
     return const Ventilatorios();

@@ -56,7 +56,7 @@ double get desktopExtraLarge => 4096;
 
 class Keyboard {
   static bool isDesktopOpen(BuildContext context) {
-    Terminal.printAlert(message: "HOLO ${MediaQuery.of(context).viewInsets.bottom}");
+    // Terminal.printAlert(message: "HOLO ${MediaQuery.of(context).viewInsets.bottom}");
     if (MediaQuery.of(context).viewInsets.bottom != 0) {
       return true; // Keyboard is visible.
     } else {
