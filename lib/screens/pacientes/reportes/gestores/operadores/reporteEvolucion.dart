@@ -1,28 +1,25 @@
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/subjetivos.dart';
-import 'package:assistant/screens/pacientes/intensiva/analisis/antropometricos.dart';
-import 'package:assistant/screens/pacientes/intensiva/analisis/cardiovasculares.dart';
-import 'package:assistant/screens/pacientes/intensiva/analisis/gasometricos.dart';
-import 'package:assistant/screens/pacientes/intensiva/analisis/hematinicos.dart';
-import 'package:assistant/screens/pacientes/intensiva/analisis/hidricos.dart';
-import 'package:assistant/screens/pacientes/intensiva/analisis/metabolometrias.dart';
-import 'package:assistant/screens/pacientes/intensiva/analisis/ventilatorios.dart';
+
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/analisisMedico.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/auxiliaresReportes.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/exploracionFisica.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/pronosticos.dart';
+
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
+
 import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/DialogSelector.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/material.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class ReporteEvolucion extends StatefulWidget {
   const ReporteEvolucion({super.key});
@@ -41,11 +38,10 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
       diagoTextController.text = Reportes.impresionesDiagnosticas.isNotEmpty
           ? Reportes.impresionesDiagnosticas
           : Pacientes.diagnosticos();
-      subjetivoTextController.text = Reportes.reportes['Subjetivo']; // Pacientes.subjetivos();
+      //
+      subjetivoTextController.text =
+          Reportes.reportes['Subjetivo']; // Pacientes.subjetivos();
       // ********************************************
-      heredoTextController.text = Pacientes.heredofamiliares();
-      hospiTextController.text = Pacientes.hospitalarios();
-      patoloTextController.text = Pacientes.patologicos();
       // ********************************************
       Reportes.reportes['Datos_Generales'] = Pacientes.prosa(isTerapia: true);
       Reportes.reportes['Antecedentes_Heredofamiliares'] =
@@ -61,10 +57,14 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
   Widget build(BuildContext context) {
     return Container(
       decoration: ContainerDecoration.roundedDecoration(
-          colorBackground: Theming.quincuaryColor),
+          colorBackground: Theming.cuaternaryColor),
       child: Column(children: [
         Expanded(
-          flex: isDesktop(context) ? 16 : isMobile(context) ? 18:11,
+          flex: isDesktop(context)
+              ? 16
+              : isMobile(context)
+                  ? 18
+                  : 11,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -74,7 +74,7 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
                   child: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: ContainerDecoration.roundedDecoration(
-                        colorBackground: Theming.quincuaryColor),
+                        colorBackground: Theming.cuaternaryColor),
                     child: CarouselSlider(
                       items: [
                         Column(
@@ -94,18 +94,23 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
                                       ? 3
                                       : isLargeDesktop(context)
                                           ? 4
-                                          : isTablet(context) ? 2: 1,
+                                          : isTablet(context)
+                                              ? 2
+                                              : 1,
                                   child: EditTextArea(
                                       textController: diagoTextController,
                                       labelEditText: "Impresiones diagnósticas",
                                       keyBoardType: TextInputType.multiline,
                                       numOfLines: 10,
                                       onChange: ((value) {
-                                        Reportes.impresionesDiagnosticas =
-                                            "$value.";
-                                        Reportes.reportes[
-                                                'Impresiones_Diagnosticas'] =
-                                            "$value.";
+                                        setState(() {
+                                          Reportes
+                                              .impresionesDiagnosticas = Reportes
+                                                      .reportes[
+                                                  'Impresiones_Diagnosticas'] =
+                                              value;
+                                          // Terminal.printData(message: Reportes.impresionesDiagnosticas);
+                                        });
                                       }),
                                       inputFormat: MaskTextInputFormatter()),
                                 ),
@@ -124,11 +129,13 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
                                             });
                                           }),
                                       CircleIcon(
-                                        radios: 30,
+                                          radios: 30,
                                           iconed: Icons.home_mini_outlined,
                                           onChangeValue: () {
                                             setState(() {
-                                              diagoTextController.text = Reportes.impresionesDiagnosticas;
+                                              diagoTextController.text =
+                                                  Reportes
+                                                      .impresionesDiagnosticas;
                                             });
                                           }),
                                       CircleIcon(
@@ -176,8 +183,9 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
                                       chyld: const Subjetivos());
                                 },
                                 onChange: ((value) {
-                                  Reportes.subjetivoHospitalizacion = "$value.";
-                                  Reportes.reportes['Subjetivo'] = "$value.";
+                                  setState(() {
+                                    Reportes.subjetivoHospitalizacion = Reportes.reportes['Subjetivo'] = "$value.";
+                                  });
                                 }),
                                 inputFormat: MaskTextInputFormatter()),
                           ],
@@ -390,8 +398,6 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
   var initialTextController = TextEditingController();
   var diagoTextController = TextEditingController();
   var subjetivoTextController = TextEditingController();
-  var heredoTextController = TextEditingController();
-  var hospiTextController = TextEditingController();
-  var patoloTextController = TextEditingController();
+
 // INICIO DE LAS OPERACIONES STATE() Y BUILD(). ######################### ### # ### ###############
 }

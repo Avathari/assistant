@@ -1,13 +1,15 @@
+import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:assistant/values/SizingInfo.dart';
+
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
-import 'package:assistant/values/SizingInfo.dart';
+
 import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/Spinner.dart';
-import 'package:flutter/material.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class DiagnosticosAndPronostico extends StatefulWidget {
   bool? isTerapia;
@@ -25,16 +27,22 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
   void initState() {
     setState(() {
       //
-      diagoTextController.text = Reportes.impresionesDiagnosticas.isNotEmpty
-          ? Reportes.impresionesDiagnosticas
-          : Pacientes.diagnosticos();
 
-      // if (Reportes.reportes['Impresiones_Diagnosticas'] != "") diagoTextController.text = Reportes.reportes['Impresiones_Diagnosticas']; else diagoTextController.text = Pacientes.diagnosticos();
+      if (widget.isTerapia!) {
 
-      if (Reportes.reportes['Pronostico_Medico'] != "")
+      } else {
+        if (Reportes.reportes['Impresiones_Diagnosticas'] != "") {
+          diagoTextController.text = Reportes.reportes['Impresiones_Diagnosticas'];
+        } else {
+          diagoTextController.text = Pacientes.diagnosticos();
+        }
+      }
+
+      if (Reportes.reportes['Pronostico_Medico'] != "") {
         pronosTextController.text = Reportes.reportes['Pronostico_Medico'];
-      else
+      } else {
         pronosTextController.text = Pacientes.pronosticoMedico();
+      }
     });
     super.initState();
   }
@@ -54,8 +62,7 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                       keyBoardType: TextInputType.multiline,
                       numOfLines: 15,
                       onChange: ((value) {
-                        Reportes.impresionesDiagnosticas = "$value.";
-                        Reportes.reportes['Impresiones_Diagnosticas'] =
+                        Reportes.impresionesDiagnosticas = Reportes.reportes['Impresiones_Diagnosticas'] =
                             "$value.";
                       }),
                       inputFormat: MaskTextInputFormatter()),
@@ -165,8 +172,10 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                                   numOfLines: isTablet(context) ? 15: 10,
                                   limitOfChars: 2000,
                                   onChange: ((value) {
-                                    Reportes.pronosticoMedico = Reportes.reportes['Pronostico_Medico'] =
-                                        "$value.";
+                                    setState(() {
+                                      Reportes.pronosticoMedico = Reportes.reportes['Pronostico_Medico'] =
+                                      "$value.";
+                                    });
                                   }),
                                   inputFormat: MaskTextInputFormatter()),
                             ),

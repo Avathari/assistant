@@ -139,15 +139,23 @@ class ReportsMethods {
     required TypeReportes getTypeReport,
     required int actualPage,
     required String? fechaRealizacion,
+    required List values,
+    required List valuesEgreso
   }) async {
+    Terminal.printWarning(message: ": : : guardarNota - - fechaRealizacion . . . $fechaRealizacion "
+        ": ${fechaRealizacion! == Calendarios.today(format: "yyyy-MM-dd")}\n "
+        ": : $getTypeReport . . . "
+    // ". . . Reportes.impresionesDiagnosticas ${Reportes.impresionesDiagnosticas}"
+        "\n\n");
+    //
     await ReportsMethods.imprimirDocumento(
             context: context,
             actualPage: actualPage,
-            getTypeReport: getTypeReport)
+            getTypeReport: getTypeReport, )
         .then((value) => Operadores.alertActivity(
             context: context,
             tittle: 'Petición de Registro de Análisis',
-            message: '¿Desea registrar el análisis en la base de datos?',
+            message: "Desea registrar el análisis en la base de datos?",
             onClose: () {
               Navigator.of(context).pop();
             },
@@ -155,15 +163,14 @@ class ReportsMethods {
               Navigator.of(context).pop();
               if (getTypeReport == TypeReportes.reporteIngreso ||
                   getTypeReport == TypeReportes.reporteEgreso) {
-                Repositorios.actualizarRegistro();
+                //
+                Repositorios.actualizarRegistro(context: context, Values: values);
               } else {
-                if (fechaRealizacion! ==
-                        Calendarios.today(format: "yyyy-MM-dd") &&
-                    // fechaRealizacion != null &&
-                    fechaRealizacion != "") {
-                  Repositorios.actualizarRegistro();
+                if (fechaRealizacion == Calendarios.today(format: "yyyy-MM-dd")
+                    ) {
+                  Repositorios.actualizarRegistro(context: context, Values: values);
                 } else {
-                  Repositorios.registrarRegistro();
+                  Repositorios.registrarRegistro(context: context, Values: values, ValuesEgreso: valuesEgreso);
                 }
               }
             }))

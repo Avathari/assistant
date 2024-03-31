@@ -1,4 +1,5 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
@@ -64,10 +65,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
   void initState() {
     // Llamado a los ultimos registros agregados. ****************************
     setState(() {
-      //
-      Diagnosticos.registros(); // Diagnósticos
+      // Diagnosticos.registros(); // Diagnósticos
       Quirurgicos.consultarRegistro(); // Quirúrgicos
-      // Pendientes.consultarRegistro();
       Repositorios.consultarAnalisis();
       Balances.consultarRegistro();
       // Patologicos del Paciente *************************************
@@ -90,13 +89,13 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           .then((value) {
         Pacientes.Diagnosticos = value;
       });
-// Ventilaciones del Paciente ****************************************
+      // Ventilaciones del Paciente ****************************************
       Archivos.readJsonToMap(
               filePath: "${Pacientes.localRepositoryPath}ventilaciones.json")
           .then((value) {
         Pacientes.Ventilaciones = value;
       });
-// Alérgias del Paciente ****************************************
+      // Alérgias del Paciente ****************************************
       Archivos.readJsonToMap(
               filePath: "${Pacientes.localRepositoryPath}alergicos.json")
           .then((value) {
@@ -118,9 +117,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       Archivos.readJsonToMap(filePath: Pacientes.localPath).then((value) {
         Valores.fromJson(value[0]);
       }).onError((error, stackTrace) {
-        Terminal.printAlert(
-            message: "ERROR al Abrir ${Pacientes.localPath}"
-                " - $error : : $stackTrace");
+        // Terminal.printAlert(
+        //     message: "ERROR al Abrir ${Pacientes.localPath}"
+        //         " - $error : : $stackTrace");
         Operadores.alertActivity(
             context: context,
             tittle: "Error al Abrir ${Pacientes.localPath}",
@@ -136,8 +135,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               listNotes = value;
             }
           }));
-      Terminal.printExpected(
-          message: "Analisis Previos : : ${Reportes.analisisAnteriores}");
+
     });
     // # # # ############## #### ######## #### ########
     super.initState();
@@ -174,6 +172,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               actualPage: 0,
             )));
   }
+
 
   // ******************************************************
   Widget _mobileView() {
@@ -379,8 +378,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                                   fontSize: 10.0,
                                   labelButton: "Tipo de Nota Médica",
                                   onPress: () {
-                                    if (isMobile(context))
+                                    if (isMobile(context)) {
                                       Navigator.of(context).pop();
+                                    }
                                     setState(() {
                                       widget.actualPage = 19;
                                     });
@@ -411,8 +411,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                             weigth: 2000,
                             labelButton: "Tipo de Nota Médica",
                             onPress: () {
-                              if (isMobile(context))
+                              if (isMobile(context)) {
                                 Navigator.of(context).pop();
+                              }
                               setState(() {
                                 widget.actualPage = 19;
                               });
@@ -567,12 +568,75 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                 iconed: Icons.signal_wifi_statusbar_null_sharp,
                 onChangeValue: () async {
                   await ReportsMethods.guardarNota(
-                    context: context,
-                    getTypeReport: ReportsMethods.getTypeReport(
-                        actualPage: widget.actualPage),
-                    actualPage: widget.actualPage,
-                    fechaRealizacion: widget.fechaRealizacion!,
-                  );
+                      context: context,
+                      getTypeReport: ReportsMethods.getTypeReport(
+                          actualPage: widget.actualPage),
+                      actualPage: widget.actualPage,
+                      fechaRealizacion: widget.fechaRealizacion!,
+                      values: [
+                        Pacientes.ID_Paciente,
+                        Pacientes.ID_Hospitalizacion,
+                        Valores.fechaPadecimientoActual ??
+                            Calendarios.today(format: 'yyyy/MM/dd'),
+                        Reportes.padecimientoActual,
+                        // Valores.servicioTratanteInicial,
+                        Valores.servicioTratante,
+                        Calendarios.today(format: 'yyyy/MM/dd'),
+                        //
+                        Reportes.impresionesDiagnosticas,
+                        //
+                        Reportes.reportes['Subjetivo'],
+                        Reportes.signosVitales,
+                        Reportes.exploracionFisica,
+                        //
+                        Reportes.auxiliaresDiagnosticos,
+                        Reportes.analisisComplementarios,
+                        // Reportes.eventualidadesOcurridas,
+                        // Reportes.terapiasPrevias,
+                        Reportes.analisisMedico,
+                        // Reportes.tratamientoPropuesto,
+                        Reportes.pronosticoMedico,
+                        // INDICACIONES MÉDICAS *******************************
+                        Reportes.dieta.toString(),
+                        Reportes.hidroterapia.toString(),
+                        Reportes.insulinoterapia.toString(),
+                        Reportes.hemoterapia.toString(),
+                        Reportes.oxigenoterapia.toString(),
+                        Reportes.medicamentosIndicados.toString(),
+                        Reportes.medidasGenerales.toString(),
+                        Reportes.pendientes.toString(),
+                        Repositorios.tipo_Analisis, // Items.tiposAnalisis[0] //
+                      ],
+                      valuesEgreso: [
+                        Pacientes.ID_Paciente,
+                        Pacientes.ID_Hospitalizacion,
+                        Valores.fechaPadecimientoActual ??
+                            Calendarios.today(format: 'yyyy/MM/dd'),
+                        Reportes.padecimientoActual,
+                        // Valores.servicioTratanteInicial,
+                        Valores.servicioTratante,
+                        Calendarios.today(format: 'yyyy/MM/dd'),
+                        Reportes.impresionesDiagnosticas,
+                        Reportes.reportes['Subjetivo'],
+                        Reportes.signosVitales,
+                        Reportes.exploracionFisica,
+                        //
+                        Reportes.auxiliaresDiagnosticos,
+                        Reportes.analisisComplementarios,
+                        //
+                        Reportes.analisisMedico,
+                        Reportes.pronosticoMedico,
+                        // INDICACIONES MÉDICAS *******************************
+                        Reportes.dieta.toString(),
+                        Reportes.hidroterapia.toString(),
+                        Reportes.insulinoterapia.toString(),
+                        Reportes.hemoterapia.toString(),
+                        Reportes.oxigenoterapia.toString(),
+                        Reportes.medicamentosIndicados.toString(),
+                        Reportes.medidasGenerales.toString(),
+                        Reportes.pendientes.toString(),
+                        Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
+                      ]);
                   // await ReportsMethods.imprimirDocumento(
                   //   context: context,
                   //   actualPage: widget.actualPage,
@@ -949,13 +1013,74 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                 icon: const Icon(Icons.scale, color: Colors.grey),
                 tooltip: 'Vista Previa',
                 onPressed: () async => await ReportsMethods.guardarNota(
-                      context: context,
-                      getTypeReport: ReportsMethods.getTypeReport(
-                          actualPage: widget.actualPage),
-                      actualPage: widget.actualPage,
-                      fechaRealizacion: widget.fechaRealizacion ?? "",
-                    )
-                ),
+                        context: context,
+                        getTypeReport: ReportsMethods.getTypeReport(
+                            actualPage: widget.actualPage),
+                        actualPage: widget.actualPage,
+                        fechaRealizacion: widget.fechaRealizacion ?? "",
+                        values: [
+                          Pacientes.ID_Paciente,
+                          Pacientes.ID_Hospitalizacion,
+                          Valores.fechaPadecimientoActual ??
+                              Calendarios.today(format: 'yyyy/MM/dd'),
+                          Reportes.padecimientoActual,
+                          // Valores.servicioTratanteInicial,
+                          Valores.servicioTratante,
+                          Calendarios.today(format: 'yyyy/MM/dd'),
+                          //
+                          Reportes.impresionesDiagnosticas,
+                          //
+                          Reportes.reportes['Subjetivo'],
+                          Reportes.signosVitales,
+                          Reportes.exploracionFisica,
+                          //
+                          Reportes.auxiliaresDiagnosticos,
+                          Reportes.analisisComplementarios,
+                          // Reportes.eventualidadesOcurridas,
+                          // Reportes.terapiasPrevias,
+                          Reportes.analisisMedico,
+                          // Reportes.tratamientoPropuesto,
+                          Reportes.pronosticoMedico,
+                          // INDICACIONES MÉDICAS *******************************
+                          Reportes.dieta.toString(),
+                          Reportes.hidroterapia.toString(),
+                          Reportes.insulinoterapia.toString(),
+                          Reportes.hemoterapia.toString(),
+                          Reportes.oxigenoterapia.toString(),
+                          Reportes.medicamentosIndicados.toString(),
+                          Reportes.medidasGenerales.toString(),
+                          Reportes.pendientes.toString(),
+                          Repositorios.tipo_Analisis, // Items.tiposAnalisis[0] //
+                        ], valuesEgreso: [
+                  Pacientes.ID_Paciente,
+                  Pacientes.ID_Hospitalizacion,
+                  Valores.fechaPadecimientoActual ??
+                      Calendarios.today(format: 'yyyy/MM/dd'),
+                  Reportes.padecimientoActual,
+                  // Valores.servicioTratanteInicial,
+                  Valores.servicioTratante,
+                  Calendarios.today(format: 'yyyy/MM/dd'),
+                  Reportes.impresionesDiagnosticas,
+                  Reportes.reportes['Subjetivo'],
+                  Reportes.signosVitales,
+                  Reportes.exploracionFisica,
+                  //
+                  Reportes.auxiliaresDiagnosticos,
+                  Reportes.analisisComplementarios,
+                  //
+                  Reportes.analisisMedico,
+                  Reportes.pronosticoMedico,
+                  // INDICACIONES MÉDICAS *******************************
+                  Reportes.dieta.toString(),
+                  Reportes.hidroterapia.toString(),
+                  Reportes.insulinoterapia.toString(),
+                  Reportes.hemoterapia.toString(),
+                  Reportes.oxigenoterapia.toString(),
+                  Reportes.medicamentosIndicados.toString(),
+                  Reportes.medidasGenerales.toString(),
+                  Reportes.pendientes.toString(),
+                  Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
+                ])),
           ],
         ),
       );
@@ -997,7 +1122,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               iconColor: Colors.white,
               onPress: () => onClose(context)),
           centerTitle: true,
-          toolbarHeight: !isLargeDesktop(context) ? 80 : 80,
+          toolbarHeight: 80,
           shape: const ContinuousRectangleBorder(
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(90.0),
@@ -1038,8 +1163,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                       controller: ScrollController(),
                       itemCount: listNotes!.length,
                       itemBuilder: (BuildContext context, int index) {
-                        Terminal.printWarning(
-                            message: "${listNotes![index].keys}");
+                        // Terminal.printWarning(
+                        //     message: "${listNotes![index].keys}");
                         return Container(
                           decoration: ContainerDecoration.roundedDecoration(),
                           child: ListTile(
@@ -1088,8 +1213,55 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             radios: 25,
             difRadios: 3,
             fontSize: 8,
-            onChangeValue: () {
-              Repositorios.consultarAnalisis();
+            onChangeValue: () async {
+              await Actividades.registrar(
+                Databases.siteground_database_reghosp,
+                Repositorios.repositorio['registerQuery'],
+                [
+                  Pacientes.ID_Paciente,
+                  Pacientes.ID_Hospitalizacion,
+                  Valores.fechaPadecimientoActual ??
+                      Calendarios.today(format: 'yyyy/MM/dd'),
+                  Reportes.padecimientoActual,
+                  // Valores.servicioTratanteInicial,
+                  Valores.servicioTratante,
+                  Calendarios.today(format: 'yyyy/MM/dd'),
+                  Reportes.impresionesDiagnosticas,
+                  Reportes.reportes['Subjetivo'],
+                  Reportes.signosVitales,
+                  Reportes.exploracionFisica,
+                  //
+                  Reportes.auxiliaresDiagnosticos,
+                  Reportes.analisisComplementarios,
+                  //
+                  Reportes.analisisMedico,
+                  Reportes.pronosticoMedico,
+                  // INDICACIONES MÉDICAS *******************************
+                  Reportes.dieta.toString(),
+                  Reportes.hidroterapia.toString(),
+                  Reportes.insulinoterapia.toString(),
+                  Reportes.hemoterapia.toString(),
+                  Reportes.oxigenoterapia.toString(),
+                  Reportes.medicamentosIndicados.toString(),
+                  Reportes.medidasGenerales.toString(),
+                  Reportes.pendientes.toString(),
+                  Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
+                ],
+              )
+                  .whenComplete(() => Archivos.createJsonFromMap(
+                      Pacientes.Notas!,
+                      filePath:
+                          "${Pacientes.localRepositoryPath}/reportes/reportes.json"))
+                  .whenComplete(() {
+                Reportes.consultarNotasHospitalizacion()
+                    .then((value) => setState(() {
+                          if (value.isNotEmpty) {
+                            widget.indexNote = 0;
+                            listNotes = value;
+                          }
+                        }));
+              });
+              // Repositorios.consultarAnalisis();
             },
           ),
         ],
@@ -1100,12 +1272,20 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
   _notaPrevia(BuildContext context) {
     //
     if (widget.indexNote > -1) {
+      // Terminal.printWarning(
+      //     message: listNotes![widget.indexNote]['Diagnosticos_Hospital']);
+      //
       widget.fechaRealizacion =
           listNotes![widget.indexNote]['FechaRealizacion'];
       //
-      Reportes.impresionesDiagnosticas = Reportes.reportes['Impresiones_Diagnosticas'] = listNotes![widget.indexNote]['Diagnosticos_Hospital'];
-      Reportes.padecimientoActual = Reportes.reportes['Padecimiento_Actual'] = listNotes![widget.indexNote]['Padecimiento_Actual'];
-      Reportes.reportes['Exploracion_Fisica'] = Reportes.exploracionFisica = listNotes![widget.indexNote]['Exploracion_Fisica'];
+      Reportes.impresionesDiagnosticas =
+          Reportes.reportes['Impresiones_Diagnosticas'] =
+              listNotes![widget.indexNote]['Diagnosticos_Hospital'];
+      //
+      Reportes.padecimientoActual = Reportes.reportes['Padecimiento_Actual'] =
+          listNotes![widget.indexNote]['Padecimiento_Actual'];
+      Reportes.reportes['Exploracion_Fisica'] = Reportes.exploracionFisica =
+          listNotes![widget.indexNote]['Exploracion_Fisica'];
       Reportes.analisisMedico = listNotes![widget.indexNote]['Analisis_Medico'];
       //
       Reportes.reportes['Auxiliares_Diagnosticos'] =
@@ -1124,6 +1304,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // PRESENTACION
               Text(
                 listNotes![widget.indexNote]['Tipo_Analisis'],
                 style: Styles.textSyleGrowth(fontSize: 12),
@@ -1141,6 +1322,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                           'Análisis de Egreso'
                   ? CrossLine(thickness: 3)
                   : Container(),
+              // DIAGNOSTICOS ********************************************
               Text(
                   listNotes![widget.indexNote]['Diagnosticos_Hospital']
                       .toUpperCase(),
@@ -1163,7 +1345,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                       ? "MOTIVO DE INGRESO: ${listNotes![widget.indexNote]['Padecimiento_Actual']}"
                       : listNotes![widget.indexNote]['Tipo_Analisis'] ==
                               "Análisis de Evolución"
-                          ? listNotes![widget.indexNote]['Analisis_Medico']
+                          ? "" // listNotes![widget.indexNote]['Analisis_Medico']
                           : "",
                   maxLines: 50,
                   style: Styles.textSyleGrowth(fontSize: 8)),
@@ -1189,6 +1371,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                           'Análisis de Ingreso' &&
                       listNotes![widget.indexNote]['Tipo_Analisis'] !=
                           'Análisis de Revisión' &&
+                  listNotes![widget.indexNote]['Tipo_Analisis'] !=
+                      'Análisis de Evolución' &&
                       listNotes![widget.indexNote]['Tipo_Analisis'] !=
                           'Análisis de Egreso'
                   ? CrossLine(thickness: 3)
@@ -1224,14 +1408,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   listNotes![widget.indexNote]['Analisis_Complementario'] ?? "",
                   maxLines: 30,
                   style: Styles.textSyleGrowth(fontSize: 8)),
-              CrossLine(thickness: 3),
-              listNotes![widget.indexNote]['Tipo_Analisis'] !=
-                          'Análisis de Gravedad' &&
-                      listNotes![widget.indexNote]['Tipo_Analisis'] !=
-                          'Análisis de Egreso'
-                  ? CrossLine(thickness: 3)
-                  : Container(),
-
+              //
               listNotes![widget.indexNote]['Tipo_Analisis'] !=
                           'Análisis de Gravedad' &&
                       listNotes![widget.indexNote]['Tipo_Analisis'] !=
@@ -1241,17 +1418,15 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   ? CrossLine(thickness: 1)
                   : Container(),
               // ANÁLISIS MÉDICO ********************************************
-              listNotes![widget.indexNote]['Tipo_Analisis'] !=
-                      'Análisis de Evolución'
-                  ? Text(
+              Text(
                       listNotes![widget.indexNote]['Analisis_Medico'],
                       maxLines: listNotes![widget.indexNote]['Tipo_Analisis'] ==
                               'Análisis de Egreso'
                           ? 100
                           : 100,
                       style: Styles.textSyleGrowth(fontSize: 9),
-                    )
-                  : Container(),
+                    ),
+
               CrossLine(thickness: 1),
               // PRONÓSTICO MÉDICO ********************************************
               Text(

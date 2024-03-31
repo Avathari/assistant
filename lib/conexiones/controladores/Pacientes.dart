@@ -1,19 +1,20 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteFormats/formatosReportes.dart';
 import 'package:assistant/conexiones/conexiones.dart';
+
 import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/cardiometrias.dart';
-
 import 'package:assistant/operativity/pacientes/valores/Valorados/citometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/hepatometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/hidrometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/metabolometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/renometrias.dart';
+
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/operativity/pacientes/valores/semiologia/semiotica.dart';
+
 import 'package:assistant/values/Strings.dart';
 import 'package:flutter/material.dart';
 
@@ -496,13 +497,13 @@ class Pacientes {
                   "${element['Pace_APP_DEG_com'].toUpperCase()} "
                   // "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
                   // "actualmente "
-                      "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. ";
+                  "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. ";
             } else {
               Reportes.personalesPatologicos =
                   "${Reportes.personalesPatologicos}. ${element['Pace_APP_DEG_com'].toUpperCase()} "
                   // "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
                   // "actualmente "
-                      "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. ";
+                  "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. ";
             }
           }
         } else {
@@ -512,14 +513,14 @@ class Pacientes {
                   "$prefix${element['Pace_APP_DEG_com']} "
                   // "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
                   // "actualmente "
-                      "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
+                  "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
                   "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
             } else {
               Reportes.personalesPatologicos =
                   "${Reportes.personalesPatologicos}. $saltoLinea$prefix${element['Pace_APP_DEG_com']} "
                   // "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
                   // "actualmente "
-                      "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
+                  "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
                   "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
             }
           }
@@ -532,14 +533,14 @@ class Pacientes {
                   "$prefix${element['Pace_APP_DEG_com'].toUpperCase()} "
                   // "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
                   // "actualmente "
-                      "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
+                  "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
                   "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
             } else {
               Reportes.personalesPatologicos =
                   "${Reportes.personalesPatologicos}. $saltoLinea$prefix${element['Pace_APP_DEG_com'].toUpperCase()} "
                   // "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
                   // "actualmente "
-                      "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
+                  "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
                   "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
             }
           }
@@ -550,14 +551,14 @@ class Pacientes {
                   "$prefix${element['Pace_APP_DEG_com']} "
                   // "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
                   // "actualmente "
-                      "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
+                  "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
                   "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
             } else {
               Reportes.personalesPatologicos =
                   "${Reportes.personalesPatologicos}. \n$prefix${element['Pace_APP_DEG_com']} "
                   // "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
                   // "actualmente "
-                      "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
+                  "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
                   "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
             }
           }
@@ -765,9 +766,8 @@ class Pacientes {
 
   static String diagnosticos() {
     // ************************ ************** ********** **** *** *
-    Reportes.reportes['Impresiones_Diagnosticas'] = "";
-    Reportes.impresionesDiagnosticas = "";
-
+    Reportes.reportes['Impresiones_Diagnosticas'] =
+        Reportes.impresionesDiagnosticas = "";
     // ************************ ************** ********** **** *** *
     if (Patologicos != []) {
       for (var element in Patologicos!) {
@@ -784,26 +784,21 @@ class Pacientes {
       }
     }
     // ************************ ************** ********** **** *** *
-    // // print("Diagnosticos $Diagnosticos");
     if (Diagnosticos != []) {
       for (var element in Diagnosticos!) {
         if (Reportes.impresionesDiagnosticas != "") {
           Reportes.impresionesDiagnosticas =
               "${Reportes.impresionesDiagnosticas.substring(0, Reportes.impresionesDiagnosticas.length - 1)} \n"
-              // "${element['Pace_APP_DEG']} (${element['Pace_APP_DEG_com']}). ";
               "${element['Pace_APP_DEG_com']}. ";
         } else {
           Reportes.impresionesDiagnosticas = "${element['Pace_APP_DEG_com']}. ";
-          // "${element['Pace_APP_DEG']} (${element['Pace_APP_DEG_com']}). ";
         }
       }
     }
 
-    // // print("Reportes.impresionesDiagnosticas ${Reportes.impresionesDiagnosticas}");
-    Reportes.reportes['Impresiones_Diagnosticas'] =
-        Reportes.impresionesDiagnosticas;
     // ************************ ************** ********** **** *** *
-    return Reportes.impresionesDiagnosticas;
+    return Reportes.reportes['Impresiones_Diagnosticas'] =
+        Reportes.impresionesDiagnosticas;
   }
 
   static String diagnosticosCie() {
@@ -835,12 +830,9 @@ class Pacientes {
         }
       }
     }
-
-    // // print("Reportes.impresionesDiagnosticas ${Reportes.impresionesDiagnosticas}");
-    Reportes.reportes['Impresiones_Diagnosticas'] =
-        Reportes.impresionesDiagnosticas;
     // ************************ ************** ********** **** *** *
-    return Reportes.impresionesDiagnosticas;
+    return Reportes.reportes['Impresiones_Diagnosticas'] =
+        Reportes.impresionesDiagnosticas;
   }
 
   static String subjetivos({bool corto = false}) {
@@ -1249,7 +1241,69 @@ class Pacientes {
                     // ******************************************** *** *
                     // Registro de Actividades Iniciales de la Hospitalización
                     // ******************************************** *** *
-                    Repositorios.registrarRegistro();
+                    Repositorios.registrarRegistro(Values: [
+                      Pacientes.ID_Paciente,
+                      Pacientes.ID_Hospitalizacion,
+                      Valores.fechaPadecimientoActual ??
+                          Calendarios.today(format: 'yyyy/MM/dd'),
+                      Reportes.padecimientoActual,
+                      // Valores.servicioTratanteInicial,
+                      Valores.servicioTratante,
+                      Calendarios.today(format: 'yyyy/MM/dd'),
+                      //
+                      Reportes.impresionesDiagnosticas,
+                      //
+                      Reportes.reportes['Subjetivo'],
+                      Reportes.signosVitales,
+                      Reportes.exploracionFisica,
+                      //
+                      Reportes.auxiliaresDiagnosticos,
+                      Reportes.analisisComplementarios,
+                      // Reportes.eventualidadesOcurridas,
+                      // Reportes.terapiasPrevias,
+                      Reportes.analisisMedico,
+                      // Reportes.tratamientoPropuesto,
+                      Reportes.pronosticoMedico,
+                      // INDICACIONES MÉDICAS *******************************
+                      Reportes.dieta.toString(),
+                      Reportes.hidroterapia.toString(),
+                      Reportes.insulinoterapia.toString(),
+                      Reportes.hemoterapia.toString(),
+                      Reportes.oxigenoterapia.toString(),
+                      Reportes.medicamentosIndicados.toString(),
+                      Reportes.medidasGenerales.toString(),
+                      Reportes.pendientes.toString(),
+                      Repositorios.tipo_Analisis, // Items.tiposAnalisis[0] //
+                    ], ValuesEgreso: [
+                      Pacientes.ID_Paciente,
+                      Pacientes.ID_Hospitalizacion,
+                      Valores.fechaPadecimientoActual ??
+                          Calendarios.today(format: 'yyyy/MM/dd'),
+                      Reportes.padecimientoActual,
+                      // Valores.servicioTratanteInicial,
+                      Valores.servicioTratante,
+                      Calendarios.today(format: 'yyyy/MM/dd'),
+                      Reportes.impresionesDiagnosticas,
+                      Reportes.reportes['Subjetivo'],
+                      Reportes.signosVitales,
+                      Reportes.exploracionFisica,
+                      //
+                      Reportes.auxiliaresDiagnosticos,
+                      Reportes.analisisComplementarios,
+                      //
+                      Reportes.analisisMedico,
+                      Reportes.pronosticoMedico,
+                      // INDICACIONES MÉDICAS *******************************
+                      Reportes.dieta.toString(),
+                      Reportes.hidroterapia.toString(),
+                      Reportes.insulinoterapia.toString(),
+                      Reportes.hemoterapia.toString(),
+                      Reportes.oxigenoterapia.toString(),
+                      Reportes.medicamentosIndicados.toString(),
+                      Reportes.medidasGenerales.toString(),
+                      Reportes.pendientes.toString(),
+                      Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
+                    ]);
                     Situaciones.registrarRegistro();
                     Expedientes.registrarRegistro();
                   })));
@@ -7150,7 +7204,7 @@ class Auxiliares {
       "Albúmina de Líquido Pleural",
       "Fosfatasa Alcalina de Líquido Pleural",
       "Colesterol de Líquido Pleural",
-      // 
+      //
       "Aspecto de Líquido Pleural",
       "Color de Líquido Pleural",
       "Leucocitos en Líquido Pleural",
@@ -7162,7 +7216,7 @@ class Auxiliares {
       "Otros en Líquido Pleural",
       "pH de Líquido Pleural",
       // OTROS . . .
-      "", 
+      "",
     ],
     // Aspirado de Médula Ósea
     Categorias[28]: [
@@ -7243,7 +7297,7 @@ class Auxiliares {
     Categorias[21]: ["mcg/dl", "ng/mL", "µg/dL", "%", "mg/dL"],
     Categorias[22]: ["pg/mL", "UI/mL", "IU/mL", "mg/dL", ""],
     Categorias[23]: ["", "pg/mL", "ng/dL", "ng/mL", "mUI/mL"], // Hormonales
-    Categorias[24]: [""],
+    Categorias[24]: ["", "ng/dL", ""],
     Categorias[25]: ["%", "", ""],
     //
     Categorias[26]: ["%", "", ""],
@@ -7699,7 +7753,9 @@ class Reportes {
     "Analisis_Medico":
         "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}",
     "Recomendaciones_Generales": Reportes.tratamientoPropuesto,
+    //
     "Impresiones_Diagnosticas": Reportes.impresionesDiagnosticas,
+    "Pronostico_Medico": Reportes.pronosticoMedico,
     // INDICACIONES ***************************************
     "Dieta": Reportes.dieta,
     "Hidroterapia": Reportes.hidroterapia,
@@ -7708,8 +7764,8 @@ class Reportes {
     "Oxigenoterapia": Reportes.oxigenoterapia,
     "Medicamentos": Reportes.medicamentosIndicados,
     "Medidas_Generales": Reportes.medidasGenerales,
-    "Pendientes": Reportes.pendientes, // ['Sin pendientes'],
-    // PROCEDIMIENTOS ***************************************
+    "Pendientes": Reportes.pendientes,
+    // PROCEDIMIENTOS **************************************
     "Motivo_Procedimiento": Valores.motivoProcedimiento,
     "Procedimiento_Realizado": Reportes.procedimientoRealizado,
     "Complicaciones_Procedimiento": Valores.complicacionesProcedimiento,
@@ -7731,7 +7787,6 @@ class Reportes {
     "Recomendaciones":
         Reportes.recomendacionesGenerales, // ['Sin recomendaciones'],
     "Citas": Reportes.citasMedicas, //  ['Cita de acuerdo a agenda'],
-    "Pronostico_Medico": Reportes.pronosticoMedico
   };
   //  # # # # ### ### ### # # # # . # # # # ### ### ### # # # #
   //
@@ -8594,9 +8649,8 @@ class Repositorios {
       Reportes.reportes = value.last;
       // Del Padecimiento **************************************************
 
-      Reportes.reportes['Impresiones_Diagnosticas'] =
-          Reportes.impresionesDiagnosticas =
-              value.last['Impresiones_Diagnosticas'] ?? '';
+      Reportes.reportes['Impresiones_Diagnosticas'] = Reportes
+          .impresionesDiagnosticas = value.last['Diagnosticos_Hospital'] ?? '';
       Reportes.reportes['Padecimiento_Actual'] =
           Reportes.padecimientoActual = value.last['Padecimiento_Actual'] ?? '';
       Valores.fechaPadecimientoActual = value.last['FechaPadecimiento'] ?? '';
@@ -8693,139 +8747,96 @@ class Repositorios {
     });
   }
 
-  static Future<void> actualizarRegistro() async {
-    var Values = [
-      // Pacientes.ID_Paciente,
-      // Pacientes.ID_Hospitalizacion,
-      // Valores.fechaPadecimientoActual ??
-      //     Calendarios.today(format: 'yyyy/MM/dd'),
-      // Reportes.padecimientoActual,
-      // // Valores.servicioTratanteInicial,
-      Reportes.impresionesDiagnosticas,
-      // INDICACIONES MÉDICAS *******************************
-      Reportes.signosVitales,
-      Reportes.exploracionFisica,
-      //
-      Reportes.auxiliaresDiagnosticos,
-      Reportes.analisisComplementarios,
-      //
-      Reportes.analisisMedico,
-      Reportes.pronosticoMedico,
-      // INDICACIONES MÉDICAS *******************************
-      Reportes.dieta.toString(),
-      Reportes.hidroterapia.toString(),
-      Reportes.insulinoterapia.toString(),
-      Reportes.hemoterapia.toString(),
-      Reportes.oxigenoterapia.toString(),
-      Reportes.medicamentosIndicados.toString(),
-      Reportes.medidasGenerales.toString(),
-      Reportes.pendientes.toString(),
-      // INDICACIONES MÉDICAS *******************************
-      Pacientes.ID_Hospitalizacion,
-      tipo_Analisis // Repositorios.tipoAnalisis()
-    ];
+  static Future<void> actualizarRegistro(
+      {BuildContext? context, required List Values}) async {
+    String response = "";
     //
+    List newValues = Values.sublist(6, Values.length-1);
+    newValues.removeAt(1);
+    newValues.insert(newValues.length, Pacientes.ID_Hospitalizacion);
+    newValues.insert(newValues.length, Repositorios.tipo_Analisis);
+    //
+    Terminal.printWarning(message: "${newValues} : ${newValues.length}");
+    // Terminal.printWarning(message: "${Values.sublist(6, Values.length)}");
     await Actividades.actualizar(
             Databases.siteground_database_reghosp,
             Repositorios.repositorio['updateQuery'],
-            Values,
+            newValues,
             Pacientes.ID_Hospitalizacion)
         .then((value) {
+      response = value;
+      //
       Archivos.deleteFile(
           filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
-      Terminal.printExpected(message: "VALUE - $value : $Values");
+      Terminal.printExpected(
+          message: "VALUE _UPDATE.UPDATE - $value : ${Values[0]}");
     }).whenComplete(() {
       Archivos.createJsonFromMap(Pacientes.Notas!,
           filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
+      if (context! != null) {
+        Operadores.notifyActivity(
+          context: context,
+          tittle: "Registro Actualizado",
+          message: "$response",
+        );
+      }
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "ERROR - $error : $stackTrace");
+      if (context! != null) {
+        Operadores.alertActivity(
+            context: context,
+            tittle: "Error Al Actualizar Registro",
+            message: "ERROR : : $error : $stackTrace");
+      }
+      //
     });
   }
 
-  static Future<void> registrarRegistro() async {
-    var Values = [
-      Pacientes.ID_Paciente,
-      Pacientes.ID_Hospitalizacion,
-      Valores.fechaPadecimientoActual ??
-          Calendarios.today(format: 'yyyy/MM/dd'),
-      Reportes.padecimientoActual,
-      // Valores.servicioTratanteInicial,
-      Valores.servicioTratante,
-      Calendarios.today(format: 'yyyy/MM/dd'),
-      Reportes.impresionesDiagnosticas,
-      Reportes.reportes['Subjetivo'],
-      Reportes.signosVitales,
-      Reportes.exploracionFisica,
-      //
-      Reportes.auxiliaresDiagnosticos,
-      Reportes.analisisComplementarios,
-      // Reportes.eventualidadesOcurridas,
-      // Reportes.terapiasPrevias,
-      Reportes.analisisMedico,
-      // Reportes.tratamientoPropuesto,
-      Reportes.pronosticoMedico,
-      // INDICACIONES MÉDICAS *******************************
-      Reportes.dieta.toString(),
-      Reportes.hidroterapia.toString(),
-      Reportes.insulinoterapia.toString(),
-      Reportes.hemoterapia.toString(),
-      Reportes.oxigenoterapia.toString(),
-      Reportes.medicamentosIndicados.toString(),
-      Reportes.medidasGenerales.toString(),
-      Reportes.pendientes.toString(),
-      Repositorios.tipo_Analisis, // Items.tiposAnalisis[0] //
-    ];
-    // var ValuesEgreso = ; *******************************************
+  static Future<void> registrarRegistro(
+      {BuildContext? context,
+      required List Values,
+      required List ValuesEgreso}) async {
+    String response = "";
+    //
     await Actividades.registrar(
       Databases.siteground_database_reghosp,
       Repositorios.repositorio['registerQuery'],
       Values,
     ).then((value) {
+      response = value;
+      //
       Archivos.deleteFile(
           filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
-      Terminal.printExpected(message: "VALUE - $value : $Values");
+      Terminal.printExpected(
+          message: "VALUE _REGISTER.REGISTER - $value : ${Values[6]}");
     }).whenComplete(() async {
       if (tipo_Analisis == "Análisis de Ingreso") {
         await Actividades.registrar(
           Databases.siteground_database_reghosp,
           Repositorios.repositorio['registerQuery'],
-          [
-            Pacientes.ID_Paciente,
-            Pacientes.ID_Hospitalizacion,
-            Valores.fechaPadecimientoActual ??
-                Calendarios.today(format: 'yyyy/MM/dd'),
-            Reportes.padecimientoActual,
-            // Valores.servicioTratanteInicial,
-            Valores.servicioTratante,
-            Calendarios.today(format: 'yyyy/MM/dd'),
-            Reportes.impresionesDiagnosticas,
-            Reportes.reportes['Subjetivo'],
-            Reportes.signosVitales,
-            Reportes.exploracionFisica,
-            //
-            Reportes.auxiliaresDiagnosticos,
-            Reportes.analisisComplementarios,
-            //
-            Reportes.analisisMedico,
-            Reportes.pronosticoMedico,
-            // INDICACIONES MÉDICAS *******************************
-            Reportes.dieta.toString(),
-            Reportes.hidroterapia.toString(),
-            Reportes.insulinoterapia.toString(),
-            Reportes.hemoterapia.toString(),
-            Reportes.oxigenoterapia.toString(),
-            Reportes.medicamentosIndicados.toString(),
-            Reportes.medidasGenerales.toString(),
-            Reportes.pendientes.toString(),
-            Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
-          ],
-        ).whenComplete(() => Archivos.createJsonFromMap(Pacientes.Notas!,
-            filePath:
-                "${Pacientes.localRepositoryPath}/reportes/reportes.json"));
+          ValuesEgreso,
+        )
+            .whenComplete(() => Archivos.createJsonFromMap(Pacientes.Notas!,
+                filePath:
+                    "${Pacientes.localRepositoryPath}/reportes/reportes.json"))
+            .whenComplete(() {
+          if (context! != null) {
+            Operadores.notifyActivity(
+              context: context,
+              tittle: "Repositorio Registrado . . . ",
+              message: "$response",
+            );
+          }
+        }); // REGISTRAR el Formato de Egreso . . .
       }
-// REGISTRAR el Formato de Egreso . . .
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "ERROR - $error : $stackTrace");
+      if (context! != null) {
+        Operadores.alertActivity(
+            context: context,
+            tittle: "Error Al Registrar",
+            message: "ERROR : : $error : $stackTrace");
+      }
     });
   }
 
@@ -8941,9 +8952,10 @@ class Repositorios {
         "Analisis_Medico, Pronostico_Medico, "
         "Dietoterapia, Hidroterapia, Insulinoterapia, Hemoterapia, Oxigenoterapia, Medicamentos, Medidas_Generales, Pendientes, "
         "Tipo_Analisis) "
-        "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,"
-        "?,?,?,?,?,?,?,?,?,"
-        "?,?)",
+        "VALUES ("
+        "?,?,?,?,?,?,?,?,?,?,"
+        "?,?,?,?,?,?,?,?,?,?,"
+        "?,?,?)",
     "updateQuery": "UPDATE pace_hosp_repo SET "
         "Diagnosticos_Hospital = ?, "
         "Signos_Vitales = ?, Exploracion_Fisica = ?, "
@@ -8953,6 +8965,7 @@ class Repositorios {
         "Oxigenoterapia = ?, Medicamentos = ?, Medidas_Generales = ?, Pendientes = ? "
         "WHERE ID_Hosp = ? AND Tipo_Analisis = ?",
     "deleteQuery": "DELETE FROM pace_hosp_repo WHERE ID_Compendio = ?",
+
     // Operaciones con el Padecimiento Actual *****************************************************
     "consultPadecimientoQuery":
         "SELECT FechaPadecimiento, Padecimiento_Actual FROM pace_hosp_repo "

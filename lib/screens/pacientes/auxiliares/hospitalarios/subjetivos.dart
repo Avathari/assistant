@@ -33,7 +33,7 @@ class _SubjetivosState extends State<Subjetivos> {
 
   void reInit() {
      Reportes.subjetivoHospitalizacion = Exploracion.subjetivos;
-    Reportes.reportes['Subjetivo'] = Reportes.subjetivoHospitalizacion;
+Reportes.reportes['Subjetivo'] = Reportes.subjetivoHospitalizacion;
   }
 
   @override

@@ -53,14 +53,17 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
         //
 
         if (Reportes.auxiliaresDiagnosticos != "") {
-          auxTextController.text = Reportes.reportes['Auxiliares_Diagnosticos'] = Reportes.auxiliaresDiagnosticos;
+          auxTextController.text =
+              Reportes.reportes['Auxiliares_Diagnosticos'] =
+                  Reportes.auxiliaresDiagnosticos;
         } else {
           Reportes.reportes['Auxiliares_Diagnosticos'] = Reportes
               .auxiliaresDiagnosticos = Auxiliares.historial(esAbreviado: true);
         }
       }
       // **************************************
-      if (Reportes.analisisComplementarios != "" && Reportes.analisisComplementarios != Null) {
+      if (Reportes.analisisComplementarios != "" &&
+          Reportes.analisisComplementarios != Null) {
         commenTextController.text = Reportes.analisisComplementarios =
             Reportes.reportes['Analisis_Complementarios'] ?? "";
       } else {
@@ -86,8 +89,10 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                   keyBoardType: TextInputType.multiline,
                   numOfLines: isTablet(context) ? 16 : 18,
                   onChange: ((value) {
-                    Reportes.auxiliaresDiagnosticos =
-                        Reportes.reportes['Auxiliares_Diagnosticos'] = value;
+                    setState(() {
+                      Reportes.auxiliaresDiagnosticos =
+                          Reportes.reportes['Auxiliares_Diagnosticos'] = value;
+                    });
                   }),
                   inputFormat: MaskTextInputFormatter()),
             ),
@@ -121,10 +126,9 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                       onLongCloss: (value) {
                                         setState(() {
                                           auxTextController.text =
-                                              Auxiliares.porFecha(
-                                                  fechaActual: value,
-                                                  esAbreviado: true);
-                                          Reportes.reportes[
+                                              Reportes
+                                              .auxiliaresDiagnosticos = Reportes
+                                                      .reportes[
                                                   'Auxiliares_Diagnosticos'] =
                                               value;
                                           Navigator.of(context).pop();
@@ -132,12 +136,13 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                       },
                                       onClose: (value) {
                                         setState(() {
-                                          auxTextController.text =
+                                          auxTextController.text = Reportes
+                                              .auxiliaresDiagnosticos = Reportes
+                                                      .reportes[
+                                                  'Auxiliares_Diagnosticos'] =
                                               Auxiliares.porFecha(
                                                   fechaActual: value);
-                                          Reportes.reportes[
-                                                  'Auxiliares_Diagnosticos'] =
-                                              value;
+                                          //
                                           Navigator.of(context).pop();
                                         });
                                       },
@@ -149,22 +154,21 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                   labelButton: "Historial",
                                   onPress: () {
                                     setState(() {
-                                      auxTextController.text =
-                                          Auxiliares.historial();
-                                      Reportes.reportes[
-                                              'Auxiliares_Diagnosticos'] =
-                                          Auxiliares.historial();
+                                      auxTextController.text = Reportes
+                                              .auxiliaresDiagnosticos =
+                                          Reportes.reportes[
+                                                  'Auxiliares_Diagnosticos'] =
+                                              Auxiliares.historial();
                                     });
                                   },
                                   onLongPress: () {
                                     setState(() {
-                                      auxTextController.text =
-                                          Auxiliares.historial(
-                                              esAbreviado: true);
-                                      Reportes.reportes[
-                                              'Auxiliares_Diagnosticos'] =
-                                          Auxiliares.historial(
-                                              esAbreviado: true);
+                                      auxTextController.text = Reportes
+                                              .auxiliaresDiagnosticos =
+                                          Reportes.reportes[
+                                                  'Auxiliares_Diagnosticos'] =
+                                              Auxiliares.historial(
+                                                  esAbreviado: true);
                                     });
                                   },
                                 ),
@@ -173,7 +177,8 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                   labelButton: "Ultimos Recabados . . . ",
                                   onPress: () {
                                     setState(() {
-                                      auxTextController.text =
+                                      auxTextController.text = Reportes
+                                              .auxiliaresDiagnosticos =
                                           Reportes.reportes[
                                                   'Auxiliares_Diagnosticos'] =
                                               Auxiliares.getUltimo(
@@ -184,8 +189,11 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                 CircleIcon(
                                     radios: 22,
                                     difRadios: 6,
-                                    onChangeValue: () =>
-                                        auxTextController.text = ""),
+                                    onChangeValue: () => auxTextController
+                                        .text = Reportes
+                                            .auxiliaresDiagnosticos =
+                                        Reportes.reportes[
+                                            'Auxiliares_Diagnosticos'] = ""),
                               ],
                             ),
                             CrossLine(
@@ -217,8 +225,7 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                             Listas.listWithoutRepitedValues(
                                           Listas.listFromMapWithOneKey(
                                             Listas.listFromMap(
-                                                lista:
-                                                    Pacientes.Paraclinicos!,
+                                                lista: Pacientes.Paraclinicos!,
                                                 keySearched: 'Tipo_Estudio',
                                                 elementSearched: Auxiliares
                                                     .Categorias[index]),
@@ -248,8 +255,7 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                             Listas.listWithoutRepitedValues(
                                           Listas.listFromMapWithOneKey(
                                             Listas.listFromMap(
-                                                lista:
-                                                    Pacientes.Paraclinicos!,
+                                                lista: Pacientes.Paraclinicos!,
                                                 keySearched: 'Tipo_Estudio',
                                                 elementSearched: Auxiliares
                                                     .Categorias[index]),
@@ -279,8 +285,7 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                             Listas.listWithoutRepitedValues(
                                           Listas.listFromMapWithOneKey(
                                             Listas.listFromMap(
-                                                lista:
-                                                    Pacientes.Paraclinicos!,
+                                                lista: Pacientes.Paraclinicos!,
                                                 keySearched: 'Tipo_Estudio',
                                                 elementSearched: Auxiliares
                                                     .Categorias[index]),
@@ -310,8 +315,7 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                             Listas.listWithoutRepitedValues(
                                           Listas.listFromMapWithOneKey(
                                             Listas.listFromMap(
-                                                lista:
-                                                    Pacientes.Paraclinicos!,
+                                                lista: Pacientes.Paraclinicos!,
                                                 keySearched: 'Tipo_Estudio',
                                                 elementSearched: Auxiliares
                                                     .Categorias[index]),
@@ -341,8 +345,7 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                             Listas.listWithoutRepitedValues(
                                           Listas.listFromMapWithOneKey(
                                             Listas.listFromMap(
-                                                lista:
-                                                    Pacientes.Paraclinicos!,
+                                                lista: Pacientes.Paraclinicos!,
                                                 keySearched: 'Tipo_Estudio',
                                                 elementSearched: Auxiliares
                                                     .Categorias[index]),
@@ -372,8 +375,7 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                             Listas.listWithoutRepitedValues(
                                           Listas.listFromMapWithOneKey(
                                             Listas.listFromMap(
-                                                lista:
-                                                    Pacientes.Paraclinicos!,
+                                                lista: Pacientes.Paraclinicos!,
                                                 keySearched: 'Tipo_Estudio',
                                                 elementSearched: Auxiliares
                                                     .Categorias[index]),
@@ -403,8 +405,7 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                             Listas.listWithoutRepitedValues(
                                           Listas.listFromMapWithOneKey(
                                             Listas.listFromMap(
-                                                lista:
-                                                    Pacientes.Paraclinicos!,
+                                                lista: Pacientes.Paraclinicos!,
                                                 keySearched: 'Tipo_Estudio',
                                                 elementSearched: Auxiliares
                                                     .Categorias[index]),
@@ -482,19 +483,18 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                         labelButton: "Historial",
                                         onPress: () {
                                           setState(() {
-                                            auxTextController.text =
-                                                Auxiliares.historial();
-                                            Reportes.reportes[
+                                            auxTextController.text = Reportes
+                                                .auxiliaresDiagnosticos = Reportes
+                                                        .reportes[
                                                     'Auxiliares_Diagnosticos'] =
                                                 Auxiliares.historial();
                                           });
                                         },
                                         onLongPress: () {
                                           setState(() {
-                                            auxTextController.text =
-                                                Auxiliares.historial(
-                                                    esAbreviado: true);
-                                            Reportes.reportes[
+                                            auxTextController.text = Reportes
+                                                .auxiliaresDiagnosticos = Reportes
+                                                        .reportes[
                                                     'Auxiliares_Diagnosticos'] =
                                                 Auxiliares.historial(
                                                     esAbreviado: true);
@@ -513,7 +513,10 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                         labelButton: "Historial",
                                         onPress: () {
                                           setState(() {
-                                            auxTextController.text = "";
+                                            auxTextController.text = Reportes
+                                                .auxiliaresDiagnosticos = Reportes
+                                                    .reportes[
+                                                'Auxiliares_Diagnosticos'] = "";
                                           });
                                         },
                                       ),
@@ -1099,8 +1102,10 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                   keyBoardType: TextInputType.multiline,
                   numOfLines: isTablet(context) ? 16 : 16,
                   onChange: ((value) {
-                    Reportes.analisisComplementarios =
-                        Reportes.reportes['Analisis_Complementarios'] = value ?? "";
+                    setState(() {
+                      Reportes.analisisComplementarios = Reportes
+                          .reportes['Analisis_Complementarios'] = value ?? "";
+                    });
                   }),
                   inputFormat: MaskTextInputFormatter()),
             ),

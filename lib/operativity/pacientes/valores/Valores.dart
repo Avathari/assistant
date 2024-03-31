@@ -2643,6 +2643,22 @@ class Escalas {
 }
 
 class Items {
+  /// Tipos de Analisis :
+  ///
+  /// 0 : Análisis de Ingreso
+  ///
+  /// 1 : Análisis de Evolución
+  ///
+  /// 2 : Análisis de Revisión
+  ///
+  /// 3 : Análisis de Egreso
+  ///
+  /// 4 : Análisis de Gravedad
+  ///
+  /// 5 : Análisis de Traslado
+  ///
+  /// 6 : Análisis de Preoparatorio
+  ///
   static List<String> tiposAnalisis = [
     'Análisis de Ingreso', // 0
     'Análisis de Evolución', // 1

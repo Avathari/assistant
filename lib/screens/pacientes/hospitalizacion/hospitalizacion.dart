@@ -564,7 +564,69 @@ class _OperacionesHospitalizacionesState
                               Constantes.reinit(value: value);
                               // ******************************************** *** *
                             }).whenComplete(() {
-                              Repositorios.registrarRegistro();
+                              Repositorios.registrarRegistro(Values: [
+                                Pacientes.ID_Paciente,
+                                Pacientes.ID_Hospitalizacion,
+                                Valores.fechaPadecimientoActual ??
+                                    Calendarios.today(format: 'yyyy/MM/dd'),
+                                Reportes.padecimientoActual,
+                                // Valores.servicioTratanteInicial,
+                                Valores.servicioTratante,
+                                Calendarios.today(format: 'yyyy/MM/dd'),
+                                //
+                                Reportes.impresionesDiagnosticas,
+                                //
+                                Reportes.reportes['Subjetivo'],
+                                Reportes.signosVitales,
+                                Reportes.exploracionFisica,
+                                //
+                                Reportes.auxiliaresDiagnosticos,
+                                Reportes.analisisComplementarios,
+                                // Reportes.eventualidadesOcurridas,
+                                // Reportes.terapiasPrevias,
+                                Reportes.analisisMedico,
+                                // Reportes.tratamientoPropuesto,
+                                Reportes.pronosticoMedico,
+                                // INDICACIONES MÉDICAS *******************************
+                                Reportes.dieta.toString(),
+                                Reportes.hidroterapia.toString(),
+                                Reportes.insulinoterapia.toString(),
+                                Reportes.hemoterapia.toString(),
+                                Reportes.oxigenoterapia.toString(),
+                                Reportes.medicamentosIndicados.toString(),
+                                Reportes.medidasGenerales.toString(),
+                                Reportes.pendientes.toString(),
+                                Repositorios.tipo_Analisis, // Items.tiposAnalisis[0] //
+                              ], ValuesEgreso: [
+                                Pacientes.ID_Paciente,
+                                Pacientes.ID_Hospitalizacion,
+                                Valores.fechaPadecimientoActual ??
+                                    Calendarios.today(format: 'yyyy/MM/dd'),
+                                Reportes.padecimientoActual,
+                                // Valores.servicioTratanteInicial,
+                                Valores.servicioTratante,
+                                Calendarios.today(format: 'yyyy/MM/dd'),
+                                Reportes.impresionesDiagnosticas,
+                                Reportes.reportes['Subjetivo'],
+                                Reportes.signosVitales,
+                                Reportes.exploracionFisica,
+                                //
+                                Reportes.auxiliaresDiagnosticos,
+                                Reportes.analisisComplementarios,
+                                //
+                                Reportes.analisisMedico,
+                                Reportes.pronosticoMedico,
+                                // INDICACIONES MÉDICAS *******************************
+                                Reportes.dieta.toString(),
+                                Reportes.hidroterapia.toString(),
+                                Reportes.insulinoterapia.toString(),
+                                Reportes.hemoterapia.toString(),
+                                Reportes.oxigenoterapia.toString(),
+                                Reportes.medicamentosIndicados.toString(),
+                                Reportes.medidasGenerales.toString(),
+                                Reportes.pendientes.toString(),
+                                Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
+                              ]);
                               Situaciones.registrarRegistro();
                               Expedientes.registrarRegistro();
                             }).whenComplete(() => onClose(context)));
@@ -648,7 +710,69 @@ class _OperacionesHospitalizacionesState
                     }).whenComplete(() {
                       Repositorios.tipo_Analisis = Items.tiposAnalisis[0];
                       //
-                      Repositorios.registrarRegistro();
+                      Repositorios.registrarRegistro(Values: [
+                        Pacientes.ID_Paciente,
+                        Pacientes.ID_Hospitalizacion,
+                        Valores.fechaPadecimientoActual ??
+                            Calendarios.today(format: 'yyyy/MM/dd'),
+                        Reportes.padecimientoActual,
+                        // Valores.servicioTratanteInicial,
+                        Valores.servicioTratante,
+                        Calendarios.today(format: 'yyyy/MM/dd'),
+                        //
+                        Reportes.impresionesDiagnosticas,
+                        //
+                        Reportes.reportes['Subjetivo'],
+                        Reportes.signosVitales,
+                        Reportes.exploracionFisica,
+                        //
+                        Reportes.auxiliaresDiagnosticos,
+                        Reportes.analisisComplementarios,
+                        // Reportes.eventualidadesOcurridas,
+                        // Reportes.terapiasPrevias,
+                        Reportes.analisisMedico,
+                        // Reportes.tratamientoPropuesto,
+                        Reportes.pronosticoMedico,
+                        // INDICACIONES MÉDICAS *******************************
+                        Reportes.dieta.toString(),
+                        Reportes.hidroterapia.toString(),
+                        Reportes.insulinoterapia.toString(),
+                        Reportes.hemoterapia.toString(),
+                        Reportes.oxigenoterapia.toString(),
+                        Reportes.medicamentosIndicados.toString(),
+                        Reportes.medidasGenerales.toString(),
+                        Reportes.pendientes.toString(),
+                        Repositorios.tipo_Analisis, // Items.tiposAnalisis[0] //
+                      ], ValuesEgreso: [
+                        Pacientes.ID_Paciente,
+                        Pacientes.ID_Hospitalizacion,
+                        Valores.fechaPadecimientoActual ??
+                            Calendarios.today(format: 'yyyy/MM/dd'),
+                        Reportes.padecimientoActual,
+                        // Valores.servicioTratanteInicial,
+                        Valores.servicioTratante,
+                        Calendarios.today(format: 'yyyy/MM/dd'),
+                        Reportes.impresionesDiagnosticas,
+                        Reportes.reportes['Subjetivo'],
+                        Reportes.signosVitales,
+                        Reportes.exploracionFisica,
+                        //
+                        Reportes.auxiliaresDiagnosticos,
+                        Reportes.analisisComplementarios,
+                        //
+                        Reportes.analisisMedico,
+                        Reportes.pronosticoMedico,
+                        // INDICACIONES MÉDICAS *******************************
+                        Reportes.dieta.toString(),
+                        Reportes.hidroterapia.toString(),
+                        Reportes.insulinoterapia.toString(),
+                        Reportes.hemoterapia.toString(),
+                        Reportes.oxigenoterapia.toString(),
+                        Reportes.medicamentosIndicados.toString(),
+                        Reportes.medidasGenerales.toString(),
+                        Reportes.pendientes.toString(),
+                        Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
+                      ]);
                       Situaciones.registrarRegistro();
                       Expedientes.registrarRegistro();
                     }).whenComplete(() => onClose(context)));

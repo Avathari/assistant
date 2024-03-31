@@ -152,11 +152,13 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                                         ? 15
                                         : 22,
                             onChange: ((value) {
-                              Reportes.analisisMedico = "$value.";
-                              Reportes.reportes['Analisis_Medico'] =
+                                setState(() {
+                                  Reportes.analisisMedico = "$value.";
+                                  Reportes.reportes['Analisis_Medico'] =
                                   "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                              Reportes.reportes['Analisis_Terapia'] =
+                                  Reportes.reportes['Analisis_Terapia'] =
                                   "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                                });
                             }),
                             inputFormat: MaskTextInputFormatter()),
 

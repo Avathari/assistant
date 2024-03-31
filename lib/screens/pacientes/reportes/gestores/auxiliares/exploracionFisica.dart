@@ -128,7 +128,7 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                               ? 30
                               : 20,
                       onChange: ((value) => setState(() {
-                            Reportes.reportes['Exploracion_Fisica'] =
+                        expoTextController.text = Reportes.reportes['Exploracion_Fisica'] =
                                 Reportes.exploracionFisica = value;
                           })),
                       inputFormat: MaskTextInputFormatter()),
@@ -142,48 +142,38 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                               child: GrandIcon(
                                 iconData: Icons.tire_repair_outlined,
                                 labelButton: "Análisis",
-                                onPress: () {
-                                  Reportes.exploracionFisica =
-                                      Formatos.exploracionTerapia;
+                                onPress: () => setState(() {
                                   //
                                   expoTextController.text =
-                                      Reportes.exploracionFisica;
+                                      Reportes.exploracionFisica =
                                   Reportes.reportes['Exploracion_Fisica'] =
-                                      Reportes.exploracionFisica;
-                                },
-                              ),
+                                      Formatos.exploracionTerapia;
+                                })),
                             ),
                             Expanded(
                               flex: 1,
                               child: GrandIcon(
                                 iconData: Icons.account_balance_wallet_outlined,
                                 labelButton: "Analisis Corto",
-                                onPress: () {
-                                  Reportes.exploracionFisica =
-                                      Formatos.exploracionTerapiaCorta;
-                                  //
-                                  expoTextController.text =
-                                      Reportes.exploracionFisica;
-                                  Reportes.reportes['Exploracion_Fisica'] =
-                                      Reportes.exploracionFisica;
-                                },
+                                  onPress: () => setState(() {
+                                    //
+                                    expoTextController.text =
+                                        Reportes.exploracionFisica =
+                                    Reportes.reportes['Exploracion_Fisica'] = Formatos.exploracionTerapiaCorta;
+                                  })),
                               ),
-                            ),
                             Expanded(
                               flex: 1,
                               child: GrandIcon(
                                 iconData: Icons.streetview,
                                 labelButton: "Analisis Corto",
-                                onPress: () {
-                                  Reportes.exploracionFisica =
-                                      Formatos.exploracionTerapiaBreve;
-                                  //
-                                  expoTextController.text =
-                                      Reportes.exploracionFisica;
-                                  Reportes.reportes['Exploracion_Fisica'] =
-                                      Reportes.exploracionFisica;
-                                },
-                              ),
+                                  onPress: () => setState(() {
+                                    //
+                                    expoTextController.text =
+                                        Reportes.exploracionFisica =
+                                    Reportes.reportes['Exploracion_Fisica'] =
+                                        Formatos.exploracionTerapiaBreve;
+                                  })),
                             ),
                             CrossLine(),
                             Expanded(
@@ -203,18 +193,18 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                               child: GrandIcon(
                                 iconData: Icons.linear_scale_rounded,
                                 labelButton: "Actual e Historial",
-                                onPress: () {
-                                  expoTextController.text =
-                                      expoTextController.text +
-                                          Auxiliares.getUltimo(
-                                              withoutInsighs: true);
-                                },
-                                onLongPress: () {
+                                  onPress: () => setState(() {
+                                    expoTextController.text =
+                                        expoTextController.text +
+                                            Auxiliares.getUltimo(
+                                                withoutInsighs: true);
+                                  }),
+                                onLongPress: () => setState(() {
                                   Datos.portapapeles(
                                       context: context,
                                       text: Auxiliares.historial(
                                           withoutInsighs: true));
-                                },
+                                }),
                               ),
                             )
                           ],
@@ -257,10 +247,10 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
           children: [
             GrandButton(
               labelButton: "Exploración física",
-              onPress: () {
+              onPress: () => setState(() {
                 asignarExploracion(indice: 1);
-              },
-              onLongPress: () {
+              }),
+              onLongPress: () => setState(() {
                 Operadores.openDialog(
                     context: context,
                     chyldrim: Semiologicos(),
@@ -270,29 +260,29 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                             Exploracion.exploracionGeneral;
                       });
                     });
-              },
+              }),
             ),
             GrandButton(
               labelButton: "Exploración corta",
-              onPress: () {
+              onPress: () => setState(() {
                 asignarExploracion(indice: 4);
-              },
+              }),
             ),
             GrandButton(
               labelButton: "Exploración física extensa",
-              onPress: () {
+              onPress: () => setState(() {
                 asignarExploracion(indice: 2);
-              },
+              }),
             ),
             GrandButton(
               labelButton: "Exploración física extensa",
-              onPress: () {
+              onPress: () => setState(() {
                 asignarExploracion(indice: 2);
-              },
+              }),
             ),
             GrandButton(
               labelButton: "Analisis de terapia intensiva",
-              onPress: () {
+              onPress: () => setState(() {
                 Operadores.openDialog(
                     context: context,
                     chyldrim: TerapiasItems(),
@@ -304,20 +294,20 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                       });
                     });
                 // asignarExploracion(indice: 3);
-              },
+              }),
             ),
             GrandButton(
               labelButton: "Patrón Neurológico",
-              onPress: () {
+              onPress: () => setState(() {
                 asignarExploracion(indice: 5);
-              },
+              }),
             ),
             //
             GrandButton(
               labelButton: "Sin hallazgos relevantes",
-              onPress: () {
+              onPress: () => setState(() {
                 asignarExploracion(indice: 0);
-              },
+              }),
             ),
           ],
         ),
@@ -339,45 +329,46 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
           GrandIcon(
             iconData: Icons.explore,
             labelButton: "Exploración física",
-            onPress: () {
+            onPress: () => setState(() {
               asignarExploracion(indice: 1);
-            },
-            onLongPress: () {
-              Operadores.openDialog(
-                  context: context,
-                  chyldrim: Semiologicos(),
-                  onAction: () {
-                    setState(() {
-                      expoTextController.text = Exploracion.exploracionGeneral;
-                    });
+            }),
+            onLongPress: () => setState(() {              Operadores.openDialog(
+                context: context,
+                chyldrim: Semiologicos(),
+                onAction: () {
+                  setState(() {
+                    expoTextController.text = Exploracion.exploracionGeneral;
                   });
-            },
+                });
+
+            }),
           ),
           GrandIcon(
             iconData: Icons.data_exploration,
             labelButton: "Exploración corta",
-            onPress: () {
+            onPress: () => setState(() {
               asignarExploracion(indice: 4);
-            },
+            }),
           ),
           GrandIcon(
             iconData: Icons.explore_outlined,
             labelButton: "Exploración física extensa",
-            onPress: () {
+            onPress: () => setState(() {
               asignarExploracion(indice: 2);
-            },
+            }),
+
           ),
           GrandIcon(
             iconData: Icons.travel_explore,
             labelButton: "Exploración física extensa",
-            onPress: () {
+            onPress: () => setState(() {
               asignarExploracion(indice: 2);
-            },
+            }),
           ),
           GrandIcon(
             iconData: Icons.travel_explore_sharp,
             labelButton: "Analisis de terapia intensiva",
-            onPress: () {
+            onPress: () => setState(() {
               Operadores.openDialog(
                   context: context,
                   chyldrim: TerapiasItems(),
@@ -389,20 +380,21 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                     });
                   });
               // asignarExploracion(indice: 3);
-            },
+            }),
+
           ),
           GrandIcon(
             iconData: Icons.brightness_1_outlined,
             labelButton: "Patrón Neurológico",
-            onPress: () {
+            onPress: () => setState(() {
               asignarExploracion(indice: 5);
-            },
+            }),
           ),
           GrandIcon(
             labelButton: "Sin hallazgos relevantes",
-            onPress: () {
+            onPress: () => setState(() {
               asignarExploracion(indice: 0);
-            },
+            }),
           ),
         ],
       ),
@@ -418,45 +410,45 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
           children: [
             GrandButton(
               labelButton: "Vitales",
-              onPress: () {
+              onPress: () => setState(() {
                 asignarVitales(indice: 0);
-              },
+              }),
             ),
             GrandButton(
               labelButton: "Bioconstantes",
-              onPress: () {
+              onPress: () => setState(() {
                 asignarVitales(indice: 1);
-              },
+              }),
             ),
             GrandButton(
               labelButton: "Signos vitales",
-              onPress: () {
+              onPress: () => setState(() {
                 asignarVitales(indice: 2);
-              },
+              }),
             ),
             GrandButton(
               labelButton: "Medidas antropométricas",
-              onPress: () {
+              onPress: () => setState(() {
                 asignarVitales(indice: 3);
-              },
+              }),
             ),
             GrandButton(
               labelButton: "Asociado a Riesgo",
-              onPress: () {
+              onPress: () => setState(() {
                 asignarVitales(indice: 4);
-              },
+              }),
             ),
             GrandButton(
               labelButton: "Antropometría infantil",
-              onPress: () {
+              onPress: () => setState(() {
                 asignarVitales(indice: 5);
-              },
+              }),
             ),
             GrandButton(
               labelButton: "Vitales Resumido",
-              onPress: () {
+              onPress: () => setState(() {
                 asignarVitales(indice: 6);
-              },
+              }),
             ),
           ],
         ),
@@ -480,51 +472,51 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
           GrandIcon(
             iconData: Icons.safety_divider,
             labelButton: "Vitales",
-            onPress: () {
+            onPress: () => setState(() {
               asignarVitales(indice: 0);
-            },
+            }),
           ),
           GrandIcon(
             iconData: Icons.monitor_weight_outlined,
             labelButton: "Bioconstantes",
-            onPress: () {
+            onPress: () => setState(() {
               asignarVitales(indice: 1);
-            },
+            }),
           ),
           GrandIcon(
             iconData: Icons.monitor_heart_outlined,
             labelButton: "Signos vitales",
-            onPress: () {
+            onPress: () => setState(() {
               asignarVitales(indice: 2);
-            },
+            }),
           ),
           GrandIcon(
             iconData: Icons.mic_external_on,
             labelButton: "Medidas antropométricas",
-            onPress: () {
+            onPress: () => setState(() {
               asignarVitales(indice: 3);
-            },
+            }),
           ),
           GrandIcon(
             iconData: Icons.align_horizontal_right_sharp,
             labelButton: "Asociado a Riesgo",
-            onPress: () {
+            onPress: () => setState(() {
               asignarVitales(indice: 4);
-            },
+            }),
           ),
           GrandIcon(
             iconData: Icons.line_weight,
             labelButton: "Antropometría infantil",
-            onPress: () {
+            onPress: () => setState(() {
               asignarVitales(indice: 5);
-            },
+            }),
           ),
           GrandIcon(
             iconData: Icons.accessibility,
             labelButton: "Vitales Resumido",
-            onPress: () {
+            onPress: () => setState(() {
               asignarVitales(indice: 6);
-            },
+            }),
           ),
         ],
       ),
