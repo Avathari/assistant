@@ -279,7 +279,7 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
             labelButton: 'Análisis Cardiovascular',
             onPress: () {
               Operadores.openDialog(
-                  context: context, chyldrim: const Cardiovasculares());
+                  context: context, chyldrim: Cardiovasculares());
             },
           ),
           GrandIcon(

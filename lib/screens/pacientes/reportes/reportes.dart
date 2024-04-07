@@ -1313,6 +1313,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                 "Inicio de Padecimiento - ${listNotes![widget.indexNote]['FechaPadecimiento']}",
                 style: Styles.textSyleGrowth(fontSize: 12),
               ),
+              //
               CrossLine(thickness: 4),
               listNotes![widget.indexNote]['Tipo_Analisis'] !=
                           'Análisis de Gravedad' &&
@@ -1332,6 +1333,27 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                       'Análisis de Gravedad'
                   ? CrossLine(thickness: 4)
                   : Container(),
+              // PATOLÓGICOS ********************************************
+              listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                  'Análisis de Egreso'
+                  ? Text(
+                  listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                      'Análisis de Egreso'
+                      ? Pacientes
+                      .patologicos() // ${listNotes![widget.indexNote]['Antecedentes_Patologicos_Otros']}"
+                      : "",
+                  maxLines: 25,
+                  style: Styles.textSyleGrowth(fontSize: 8))
+                  : Container(),
+              //
+              listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                  'Análisis de Gravedad' ||
+                  listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                      'Análisis de Ingreso' ||
+                  listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                      'Análisis de Egreso'
+                  ? CrossLine(thickness: 3)
+                  : Container(),
               // MOTIVO DE INGRESO ********************************************
               Text(
                   listNotes![widget.indexNote]['Tipo_Analisis'] ==
@@ -1350,6 +1372,15 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   maxLines: 50,
                   style: Styles.textSyleGrowth(fontSize: 8)),
               // SUBJETIVO ********************************************
+              listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                  'Análisis de Gravedad' ||
+                  listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                      'Análisis de Ingreso' ||
+                  listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                      'Análisis de Egreso'
+                  ? CrossLine(thickness: 3)
+                  : Container(),
+              //
               listNotes![widget.indexNote]['Tipo_Analisis'] !=
                           'Análisis de Gravedad' &&
                       listNotes![widget.indexNote]['Tipo_Analisis'] !=
@@ -1385,18 +1416,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   maxLines: 20,
                   style: Styles.textSyleGrowth(fontSize: 9),
                 ),
-              // PATOLÓGICOS ********************************************
-              listNotes![widget.indexNote]['Tipo_Analisis'] ==
-                      'Análisis de Egreso'
-                  ? Text(
-                      listNotes![widget.indexNote]['Tipo_Analisis'] ==
-                              'Análisis de Egreso'
-                          ? Pacientes
-                              .patologicos() // ${listNotes![widget.indexNote]['Antecedentes_Patologicos_Otros']}"
-                          : "",
-                      maxLines: 25,
-                      style: Styles.textSyleGrowth(fontSize: 8))
-                  : Container(),
+
               // AUXILIARES DIAGNÓSTICOS *****************************************
               Text(
                   listNotes![widget.indexNote]['Auxiliares_Diagnosticos'] ?? "",
@@ -1410,9 +1430,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   style: Styles.textSyleGrowth(fontSize: 8)),
               //
               listNotes![widget.indexNote]['Tipo_Analisis'] !=
-                          'Análisis de Gravedad' &&
+                          'Análisis de Gravedad' ||
                       listNotes![widget.indexNote]['Tipo_Analisis'] !=
-                          'Análisis de Revisión' &&
+                          'Análisis de Revisión' ||
                       listNotes![widget.indexNote]['Tipo_Analisis'] !=
                           'Análisis de Egreso'
                   ? CrossLine(thickness: 1)
@@ -1581,7 +1601,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                       : widget.actualLateralPage == 3
                           ? const Gasometricos()
                           : widget.actualLateralPage == 4
-                              ? const Cardiovasculares()
+                              ? Cardiovasculares()
                               : widget.actualLateralPage == 5
                                   ? const Antropometricos()
                                   : widget.actualLateralPage == 6

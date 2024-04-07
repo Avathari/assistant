@@ -198,16 +198,13 @@ class Ventometrias {
   static double get volumenTidalIdeal => (Ventometrias.distensibilidadPulmonarEstatica * Ventometrias.presionDistencion);
 
   // # ######################################################
+  /// Poder Mecánico : :
   static double get poderMecanico {
-    if (Antropometrias.pesoCorporalPredicho != 0) {
       return (0.098 *
           Valores.frecuenciaVentilatoria! *
           (Valores.presionPlateau! - Valores.presionFinalEsiracion! / 2));
       // PM = (0.098 * Valores.frecuenciaVentilatoria * (
       // Valores.presionPlateau! - Valores.presionFinalEsiracion! / 2))
-    } else {
-      return double.nan;
-    }
   }
 
   /// Poder Distencion expresado como []

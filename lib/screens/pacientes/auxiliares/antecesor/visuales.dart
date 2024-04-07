@@ -620,7 +620,8 @@ class _VisualPacientesState extends State<VisualPacientes> {
                 tittle: 'Revisorio',
                 iconed: Icons.ac_unit,
                 onChangeValue: () {
-                  Cambios.toNextActivity(context, chyld: const Generales());
+                  Cambios.toNextPage(context, const Generales());
+                  // Cambios.toNextActivity(context, chyld: const Generales());
                 },
               ),
               CrossLine(height: 20),
@@ -725,7 +726,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
                   iconData: Icons.monitor_heart_outlined,
                   labelButton: 'Análisis Cardiovascular',
                   onPress: () => Cambios.toNextActivity(context,
-                      chyld: const Cardiovasculares())),
+                      chyld: Cardiovasculares())),
               GrandIcon(
                 iconData: Icons.all_inclusive_rounded,
                 labelButton: 'Análisis Ventilatorio',
@@ -1131,29 +1132,6 @@ class _VisualPacientesState extends State<VisualPacientes> {
           thickness: 0,
           height: 7,
         ),
-        GrandIcon(
-          iconData: Icons.account_tree,
-          labelButton: 'Revisiones . . . ',
-          onPress: () {
-            _key.currentState!.closeEndDrawer();
-            setState(() {
-              widget.actualPage = 11;
-            });
-          },
-        ),
-        CrossLine(
-          thickness: 4,
-          height: 30,
-        ),
-        CircleIcon(
-            iconed: Icons.medical_services_outlined,
-            tittle: "Hospitalizaciones",
-            onChangeValue: () {
-              _key.currentState!.closeEndDrawer();
-              ScaffoldMessenger.of(context)
-                  .showMaterialBanner(_hospitalizacion(context));
-            }),
-        //
         CrossLine(
           thickness: 1,
           height: 15,

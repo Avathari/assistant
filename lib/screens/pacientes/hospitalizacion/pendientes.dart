@@ -39,15 +39,19 @@ class OperacionesPendiente extends StatefulWidget {
   bool? withReturn;
   String _operationButton = 'Nulo';
 
-  OperacionesPendiente({super.key,
-  this.withReturn = false,
-    this.operationActivity = Constantes.Nulo});
+  OperacionesPendiente(
+      {super.key,
+      this.withReturn = false,
+      this.operationActivity = Constantes.Nulo});
 
   @override
   State<OperacionesPendiente> createState() => _OperacionesPendienteState();
 }
 
 class _OperacionesPendienteState extends State<OperacionesPendiente> {
+  int index = 0, secondIndex = 0;
+  late List _pendientesList = [];
+
   @override
   void initState() {
     //
@@ -93,21 +97,22 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: !isDesktop(context) && !isLargeDesktop(context) ? AppBar(
-        foregroundColor: Colors.white,
+      appBar: !isDesktop(context) && !isLargeDesktop(context)
+          ? AppBar(
+              foregroundColor: Colors.white,
               backgroundColor: Theming.primaryColor,
               title: AppBarText(appBarTitile),
               leading: IconButton(
                 color: Colors.white,
                 icon: const Icon(
-
                   Icons.arrow_back,
                 ),
                 tooltip: Sentences.regresar,
                 onPressed: () {
                   onClose(context);
                 },
-              )) : null,
+              ))
+          : null,
       body: Container(
         padding: const EdgeInsets.all(8.0),
         decoration: ContainerDecoration.roundedDecoration(),
@@ -202,9 +207,13 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
                                 ? 100
                                 : 200,
                 tittle: "Tipo de Pendiente",
-                onChangeValue: (String value) {
+                onChangeValue: (String newValue) {
                   setState(() {
-                    pendienteValue = value;
+                    pendienteValue = newValue;
+                    //
+                    index = Pendientes.typesPendientes.indexOf(newValue);
+                    subPendienteValue = Pendientes.subTypesPendientes[index][0];
+                    //
                     descripcionPendienteTextController.text = "";
                   });
                 },
@@ -213,6 +222,21 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
           ),
         ],
       ),
+      const SizedBox(height: 10),
+      Spinner(
+          tittle: " . . . Incidencias",
+          onChangeValue: (String newValue) {
+            setState(() {
+              subPendienteValue = newValue;
+              //
+              _pendientesList.add(newValue);
+              //
+              descripcionPendienteTextController.text =
+                  Listas.stringFromList(listValues: _pendientesList);
+            });
+          },
+          items: Pendientes.subTypesPendientes[index],
+          initialValue: subPendienteValue),
       CrossLine(
         height: 10,
       ),
@@ -240,7 +264,11 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
                 Navigator.pop(context);
               });
         },
-        onChange: (value) {},
+        onChange: (value) {
+          setState(() {
+            _pendientesList = Listas.traslateFromString(value);
+          });
+        },
       ),
       CrossLine(),
     ];
@@ -334,14 +362,17 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
             context,
             MaterialPageRoute(
                 // maintainState: false,
-                builder: (context) => GestionPendiente(withReturn: widget.withReturn,)));
+                builder: (context) => GestionPendiente(
+                      withReturn: widget.withReturn,
+                    )));
         break;
       case false:
         Navigator.push(
             context,
             MaterialPageRoute(
                 // maintainState: false,
-                builder: (context) => GestionPendiente(withReturn: widget.withReturn)));
+                builder: (context) =>
+                    GestionPendiente(withReturn: widget.withReturn)));
         break;
       default:
     }
@@ -360,7 +391,7 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
   var fechaRealizacionTextController = TextEditingController();
   bool? realized = false;
   //
-  var pendienteValue = Pendientes.typesPendientes[0];
+  var pendienteValue = Pendientes.typesPendientes[0], subPendienteValue;
   var descripcionPendienteTextController = TextEditingController();
   //
   var carouselController = CarouselController();
@@ -386,7 +417,11 @@ class _GestionPendienteState extends State<GestionPendiente> {
 
   @override
   void initState() {
-    if (widget.withReturn!) reiniciar(); else iniciar();
+    if (widget.withReturn!) {
+      reiniciar();
+    } else {
+      iniciar();
+    }
 
     super.initState();
   }
@@ -406,8 +441,8 @@ class _GestionPendienteState extends State<GestionPendiente> {
             onPressed: () {
               if (widget.withReturn == true) {
                 Constantes.reinit();
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => Hospitalizados()));
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => Hospitalizados()));
               } else {
                 Constantes.reinit();
                 Navigator.of(context).push(MaterialPageRoute(
@@ -435,7 +470,7 @@ class _GestionPendienteState extends State<GestionPendiente> {
                 toOperaciones(context, Constantes.Register);
               },
             ),
-          ]) ,
+          ]),
       body: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         Expanded(
           flex: 6,
@@ -450,20 +485,17 @@ class _GestionPendienteState extends State<GestionPendiente> {
                 if (snapshot.hasError) print(snapshot.error);
                 return snapshot.hasData
                     ? GridView.builder(
-                  gridDelegate: GridViewTools.gridDelegate(
-                      crossAxisCount: isMobile(context) ? 1 : 3,
-                      mainAxisExtent:
-                      isMobile(context) ? 200 : 250),
-                  controller: gestionScrollController,
-                  shrinkWrap: isMobile(context) ? false : true,
-                  itemCount: snapshot.data == null
-                      ? 0
-                      : snapshot.data.length,
-                  itemBuilder: (context, posicion) {
-                    return itemListView(
-                        snapshot, posicion, context);
-                  },
-                )
+                        gridDelegate: GridViewTools.gridDelegate(
+                            crossAxisCount: isMobile(context) ? 1 : 3,
+                            mainAxisExtent: isMobile(context) ? 200 : 250),
+                        controller: gestionScrollController,
+                        shrinkWrap: isMobile(context) ? false : true,
+                        itemCount:
+                            snapshot.data == null ? 0 : snapshot.data.length,
+                        itemBuilder: (context, posicion) {
+                          return itemListView(snapshot, posicion, context);
+                        },
+                      )
                     : Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -484,7 +516,7 @@ class _GestionPendienteState extends State<GestionPendiente> {
             ),
           ),
         ),
-        isDesktop(context) || isLargeDesktop(context)// || isTablet(context)
+        isDesktop(context) || isLargeDesktop(context) // || isTablet(context)
             ? widget.actualSidePage != null
                 ? Expanded(flex: 5, child: widget.actualSidePage!)
                 : Expanded(flex: 1, child: Container())
@@ -691,37 +723,21 @@ class _GestionPendienteState extends State<GestionPendiente> {
     if (isDesktop(context) || isLargeDesktop(context)) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (BuildContext context) => GestionPendiente(
+              withReturn: widget.withReturn,
               actualSidePage: OperacionesPendiente(
-                withReturn: widget.withReturn,
+                withReturn: widget.withReturn ?? false,
                 operationActivity: operationActivity,
               ))));
     } else {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (BuildContext context) => OperacionesPendiente(
-            withReturn: widget.withReturn,
-            operationActivity: operationActivity,
-          )));
+                withReturn: widget.withReturn ?? false,
+                operationActivity: operationActivity,
+              )));
     }
   }
 
 // Operaciones de Búsqueda ***** ******* ********** ****
-  void _runFilterSearch(String enteredKeyword) {
-    List? results = [];
-
-    if (enteredKeyword.isEmpty) {
-      _pullListRefresh();
-    } else {
-      results = Listas.listFromMap(
-          lista: foundedItems!,
-          keySearched: widget.keySearch,
-          elementSearched: enteredKeyword);
-
-      setState(() {
-        foundedItems = results;
-      });
-    }
-  }
-
   Future<Null> _pullListRefresh() async {
     iniciar();
   }
@@ -734,4 +750,21 @@ class _GestionPendienteState extends State<GestionPendiente> {
   late List? foundedItems = [];
   var gestionScrollController = ScrollController();
   var searchTextController = TextEditingController();
+
+  //  void _runFilterSearch(String enteredKeyword) {
+//     List? results = [];
+//
+//     if (enteredKeyword.isEmpty) {
+//       _pullListRefresh();
+//     } else {
+//       results = Listas.listFromMap(
+//           lista: foundedItems!,
+//           keySearched: widget.keySearch,
+//           elementSearched: enteredKeyword);
+//
+//       setState(() {
+//         foundedItems = results;
+//       });
+//     }
+//   }
 }

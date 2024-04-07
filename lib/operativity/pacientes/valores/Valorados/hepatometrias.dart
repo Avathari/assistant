@@ -125,6 +125,10 @@ class Hepatometrias {
       return double.nan;
     }
   }
+
+  static double get globulinas {
+    return (Valores.proteinasTotales! - Valores.albuminaSerica!);
+  }
 }
 
 // Puntaje de Maddrey : si Mayor a 32 : : Hepatitis Grave (Mort mayor 50%) , Menor 32 : : Hepatitis Moderada (Mort 10%)

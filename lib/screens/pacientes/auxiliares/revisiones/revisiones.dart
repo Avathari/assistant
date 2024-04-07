@@ -385,7 +385,7 @@ class _RevisionesState extends State<Revisiones> {
                                                                                   : widget.actualView == 13
                                                                                       ? const Antropometricos()
                                                                                       : widget.actualView == 14
-                                                                                          ? const Cardiovasculares()
+                                                                                          ? Cardiovasculares()
                                                                                           : widget.actualView == 15
                                                                                               ? const Ventilatorios()
                                                                                               : widget.actualView == 16
@@ -988,7 +988,7 @@ class _RevisionesState extends State<Revisiones> {
                                                                       ? const Antropometricos()
                                                                       : widget.actualView ==
                                                                               14
-                                                                          ? const Cardiovasculares()
+                                                                          ? Cardiovasculares()
                                                                           : widget.actualView == 15
                                                                               ? const Ventilatorios()
                                                                               : widget.actualView == 16

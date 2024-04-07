@@ -56,6 +56,8 @@ class Calendarios {
   static String formatDate(String formattedString) {
     return DateFormat("dd.MM.yyyy").format(DateTime.parse(formattedString));
   }
+
+
 }
 
 class Dicotomicos {

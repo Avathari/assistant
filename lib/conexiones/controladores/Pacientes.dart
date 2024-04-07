@@ -6343,7 +6343,7 @@ class Auxiliares {
             keySearched: 'Tipo_Estudio',
           ),
         );
-        Terminal.printSuccess(message: "presentes: ${estudiosPresentes}");
+        Terminal.printSuccess(message: "presentes: $estudiosPresentes");
         String fecha = "";
         int counter = 0, distancia = aux.length;
         //
@@ -6354,7 +6354,7 @@ class Auxiliares {
           aux
               .where((element) => element["Tipo_Estudio"].contains(elem))
               .forEach((eacher) {
-            fecha = "          ${eacher['Tipo_Estudio']} (${element}) - ";
+            fecha = "          ${eacher['Tipo_Estudio']} ($element) - ";
             // Terminal.printExpected(message: "eacher: ${counter} : : $distancia");
             if (counter != distancia) {
               if (eacher['Unidad_Medida'] != '') {
@@ -6435,13 +6435,13 @@ class Auxiliares {
             keySearched: 'Tipo_Estudio',
           ),
         );
-        Terminal.printSuccess(message: "presentes: ${estudiosPresentes}");
+        Terminal.printSuccess(message: "presentes: $estudiosPresentes");
         String fecha = "";
         int counter = 0, distancia = aux.length;
         //
         var newList = Listas.compareOneListWithAnother(
             estudiosPresentes, Auxiliares.especiales);
-        Terminal.printSuccess(message: "newList: ${newList}");
+        Terminal.printSuccess(message: "newList: $newList");
         //
         for (var elem in newList) {
           aux
@@ -7161,7 +7161,7 @@ class Auxiliares {
       "",
       "",
       "",
-    ],
+    ], // Vitaminas
     // Otros
     Categorias[25]: [
       "Hemoglobina Glucosilada",
@@ -7297,7 +7297,7 @@ class Auxiliares {
     Categorias[21]: ["mcg/dl", "ng/mL", "µg/dL", "%", "mg/dL"],
     Categorias[22]: ["pg/mL", "UI/mL", "IU/mL", "mg/dL", ""],
     Categorias[23]: ["", "pg/mL", "ng/dL", "ng/mL", "mUI/mL"], // Hormonales
-    Categorias[24]: ["", "ng/dL", ""],
+    Categorias[24]: ["", "ng/dL", "ng/mL", ""],
     Categorias[25]: ["%", "", ""],
     //
     Categorias[26]: ["%", "", ""],
@@ -7632,6 +7632,7 @@ class Pendientes {
   static Map<String, dynamic> Pendiente = {};
 
   static List<String> typesPendientes = [
+    'Previos',
     'Estudios',
     'Paraclinicos',
     'Procedimientos',
@@ -7640,6 +7641,14 @@ class Pendientes {
     'Trámites',
   ];
   static List<List<String>> subTypesPendientes = [
+    [
+      "Manejo Avanzado de la Vía Aérea", // MAVA
+      "Intubación Orotraqueal", // IOT
+      "Extubación", // EXT
+      "",
+      "",
+      "",
+    ],
     [
       'Radiografías',
       'Ultrasonidos',
@@ -7652,15 +7661,27 @@ class Pendientes {
     ], // Estudios
     Auxiliares.Categorias, //'Paraclinicos',
     [
-      'Colocación de CVC',
-      'Colocación de Cateter de Hemodialisis',
-      'Colocación de Cateter de Dialisis Peritoneal',
+      "Colocación de Cateter Venoso Periférico", // 0: CVP
+      "Colocación de Cateter Venoso Largo Periférico", // 1: CVLP
+      "Colocación de Cateter Venoso Central", // 2: CVC
+      "Colocación de Cateter de Hemodialisis", // 3: MAHA
+      "Colocación de Sonda Foley", // 4: FOL
+      //
+      "Colocación de Sonda Nasogástrica", // 5: SNG
+      "Colocación de Sonda Orogástrica", // 6: SOG
+      //
+      "Colocación de Drenaje Penrose", // 7: PEN
+      "Colocación de Colostomía", // 8 : COL
+      "Colocación de Sonda Endopleural", // 9 : SEP
+      "Colocación de Gastrostomía", // 10 : GAS
+      "Colocación de Dialisis Peritoneal", // 11: TNK
+      //
       'Sesión de Hemodialisis',
       'Implementación de Dialisis Peritoneal',
       'Instalación de Sonda Urinaria',
-      'Colocación de Sonda Endopleural',
       'Curación de Herida',
       'Debridación de Herida Infectada',
+      //
       'Toma de Hemocultivos Periféricos',
       'Toma de Hemocultivos Centrales',
       'Urocultivo',
@@ -8756,7 +8777,7 @@ class Repositorios {
     newValues.insert(newValues.length, Pacientes.ID_Hospitalizacion);
     newValues.insert(newValues.length, Repositorios.tipo_Analisis);
     //
-    Terminal.printWarning(message: "${newValues} : ${newValues.length}");
+    Terminal.printWarning(message: "$newValues : ${newValues.length}");
     // Terminal.printWarning(message: "${Values.sublist(6, Values.length)}");
     await Actividades.actualizar(
             Databases.siteground_database_reghosp,

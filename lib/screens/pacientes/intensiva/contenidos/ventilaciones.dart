@@ -99,7 +99,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
           //
           fioTextController.text =
               Ventilaciones.Ventilacion['Pace_Fio'].toString();
-          Valores.fraccionInspiratoriaVentilatoria =
+          Valores.fraccionInspiratoriaOxigeno = Valores.fraccionInspiratoriaVentilatoria =
               int.parse(fioTextController.text);
           //
           sensInspTextController.text =
@@ -711,7 +711,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         numOfLines: 1,
         onChange: (value) {
           setState(() {
-            Valores.fraccionInspiratoriaVentilatoria = int.parse(value);
+            Valores.fraccionInspiratoriaOxigeno = Valores.fraccionInspiratoriaVentilatoria = int.parse(value);
           });
         },
       ),

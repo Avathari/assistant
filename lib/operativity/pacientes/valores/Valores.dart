@@ -18,6 +18,8 @@ class Valores {
   Map<String, dynamic> valores = {};
   static double? prueba;
 
+
+
 // ******* **** ****** ** * * * * * ** ***** **** *
   Future<bool> load() async {
     // Otras configuraciones
@@ -798,7 +800,6 @@ class Valores {
   static String? fechaVitales;
   static int? tensionArterialSystolica,
       tensionArterialDyastolica,
-      presionVenosaCentral,
       frecuenciaCardiaca,
       frecuenciaRespiratoria,
       saturacionPerifericaOxigeno,
@@ -825,10 +826,13 @@ class Valores {
       factorEstres;
 
   //
+  static int? fraccionInspiratoriaOxigeno;
+  static double? presionVenosaCentral, presionIntraabdominal;
   static double? presionArteriaPulmonarSistolica,
       presionArteriaPulmonarDiastolica,
       presionMediaArteriaPulmonar,
-      presionCunaPulmonar;
+      presionCunaPulmonar,
+      presionIntraCerebral;
 
   //
   static String? fechaRealizacionBalances = "";
@@ -906,7 +910,12 @@ class Valores {
   //
   static String? fechaElectrolitos;
   static double? sodio, potasio, cloro, fosforo, calcio, magnesio;
-
+  //
+  static String? fechaElectrolitosUrinarios;
+  static double? creatininaUrinarios, nitrogenoUrinario, bicarbonatoUrinario;
+  static double? sodioUrinarios, potasioUrinarios, cloroUrinarios, fosforoUrinarios, calcioUrinarios, magnesioUrinarios;
+  //
+  static double? ingestaProteica;
   //
   static String? fechaReactantes;
   static double? procalcitonina,
@@ -1096,6 +1105,41 @@ class Valores {
 
   static double get CI => (Valores.pcoArteriales! / DAV);
 
+  /// Shunt Pulmonar : : Fracción QS/QT
+  ///
+  /// Shunt Fisiológico	Qs/Qt		0	7	0	100
+  ///     Valor Normal menor 5%
+  ///         Si mayor a 20 % : Indicación de Intubación
+  ///         Si menor a 1 : Atelectasias, Edema Pulmonar Agudo, SDRA, Neumonia, TEP
+  ///         Si mayor a 1 : Enfisema Pulnonar, Neumonía, Sobredistención Alveolar en VM, Falla Cardiaca
+  /// Consulte : https://www.scymed.com/es/smnxpr/prgsh315.htm
+  /// https://derangedphysiology.com/main/cicm-primary-exam/required-reading/respiratory-system/Chapter%20082/measurement-and-estimation-shunt
+  /// https://www.redalyc.org/journal/2390/239053104007/html/
+  /// https://pubmed.ncbi.nlm.nih.gov/3585433/
+  /// https://i.pinimg.com/originals/ee/da/3e/eeda3ec80ba4c8c3d2b4fd08bdc4b94e.gif
+  /// https://1.bp.blogspot.com/-SyrTV0msTUk/VAaTKeiPOjI/AAAAAAAAAHU/SXATI-vDQWs/s1600/shunt.png
+  ///
+  static double get shuntPulmonar =>
+      (CCO - CAO) / (CCO - CVO) * 100;
+
+  /// Shunt Pulmonar II : : Fracción QS/QT
+  ///     Basado en el Gradiente Alveolo-Arterial
+  ///         AaG = pAO2 - paO2
+  ///  * Este cálculo únicamente debe aplicarse en una situación en la que el paciente ha estado respirando O2 al 100 % durante al menos 20 minutos.
+  ///  * Para que esta prueba sea válida, el paciente debe presentar un gradiente Aa inicial normal y un consumo normal de O2.
+  ///  * Las ecuaciones indicadas simplifican el cálculo de gradiente Aa tradicional, puesto que se asume que el cociente respiratorio y FIO2 son 1 después de la eliminación de nitrógeno.
+  ///  * La derivación normal superior es de aproximadamente el 5 %.
+  ///
+  /// Shunt Fisiológico	Qs/Qt		0	7	0	100
+  ///
+  /// Consulte : https://www.merckmanuals.com/medical-calculators/Qs_Qt-es.htm
+  ///     Chiang ST. A nomogram for venous shunt (Qs-Qt) calculation. Thorax. 1968 Sep;23(5):563-5. PubMed ID: 5680242 PubMed Logo
+  ///
+  static double get shuntPulmonarII =>
+      100 * ( .0031 * Gasometricos.GAA) / ((.0031 * Gasometricos.GAA) + 5);
+
+
+  
   // (Valores.pcoArteriales! * Valores.frecuenciaVentilatoria!) / 40.00;
 
   // # Análisis Gasométrico : : de pCO2 / pO2
@@ -1161,9 +1205,9 @@ class Valores {
   static double get cAO => (CAO / DAV); // # Cociente Arterial de Oxígeno
   static double get cVO => (CVO / DAV); // # Cociente Venoso de Oxígeno
 
-  static double get presionColoidoOsmotica => // PC
-      ((Valores.proteinasTotales! - Valores.albuminaSerica!) * 1.4) +
-      (Valores.albuminaSerica! * 5.5); //  # Presión Coloidóncotica
+  // static double get presionColoidoOsmotica => // PC
+  //     ((Valores.proteinasTotales! - Valores.albuminaSerica!) * 1.4) +
+  //     (Valores.albuminaSerica! * 5.5); //  # Presión Coloidóncotica
   static double get TC => (gastoCardiaco *
       Cardiometrias.presionArterialMedia *
       0.0144); // # Trabajo Cardiaco

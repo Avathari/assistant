@@ -7,12 +7,12 @@ class Metabolometrias {
   // CONCLUSIONES
   static String get metabolometrias =>
       "Análisis Energético: Gasto Energético Basal ${Metabolometrias.gastoEnergeticoBasal.toStringAsFixed(2)} kCal/dia "
-          "(Factor de Actividad ${Valores.factorActividad}; "
-          "Factor de Éstres ${Valores.factorEstres}); "
-          "Metabolismo Basal ${Metabolometrias.metabolismoBasal.toStringAsFixed(2)} kCal/m2/hr, "
-          "Efecto Térmico de los Alimentos ${Metabolometrias.efectoTermicoAlimentos.toStringAsFixed(2)} kCal/m2/hr. "
-          "Gasto Energético Total ${Metabolometrias.gastoEnergeticoTotal.toStringAsFixed(2)} kCal/dia. "
-          "Fibra total ${Metabolometrias.fibraDietaria.toStringAsFixed(2)} gr/Día";
+      "(Factor de Actividad ${Valores.factorActividad}; "
+      "Factor de Éstres ${Valores.factorEstres}); "
+      "Metabolismo Basal ${Metabolometrias.metabolismoBasal.toStringAsFixed(2)} kCal/m2/hr, "
+      "Efecto Térmico de los Alimentos ${Metabolometrias.efectoTermicoAlimentos.toStringAsFixed(2)} kCal/m2/hr. "
+      "Gasto Energético Total ${Metabolometrias.gastoEnergeticoTotal.toStringAsFixed(2)} kCal/dia. "
+      "Fibra total ${Metabolometrias.fibraDietaria.toStringAsFixed(2)} gr/Día";
   // FÓRMULAS
   static double get gastoEnergeticoBasal {
     if (Valores.sexo == "Masculino") {
@@ -72,23 +72,32 @@ class Metabolometrias {
 
   static double get proteinasAVM => (Antropometrias.pesoCorporalPredicho / 1.5);
 
-  static double get sodioDietario => (Antropometrias.pesoCorporalPredicho / 2.0);
+  static double get sodioDietario =>
+      (Antropometrias.pesoCorporalPredicho / 2.0);
 
-  static double get potasioDietario => (Antropometrias.pesoCorporalPredicho / 3.0);
+  static double get potasioDietario =>
+      (Antropometrias.pesoCorporalPredicho / 3.0);
 
-  static double get cloroDietario => (Antropometrias.pesoCorporalPredicho / 5.0);
+  static double get cloroDietario =>
+      (Antropometrias.pesoCorporalPredicho / 5.0);
 
-  static double get magnesioDietario => (Antropometrias.pesoCorporalPredicho / 3.5);
+  static double get magnesioDietario =>
+      (Antropometrias.pesoCorporalPredicho / 3.5);
 
-  static double get calcioDietario => (Antropometrias.pesoCorporalPredicho / 14.0);
+  static double get calcioDietario =>
+      (Antropometrias.pesoCorporalPredicho / 14.0);
 
-  static double get selenioDietario => (Antropometrias.pesoCorporalPredicho / 0.7);
+  static double get selenioDietario =>
+      (Antropometrias.pesoCorporalPredicho / 0.7);
 
-  static double get hierroDietario => (Antropometrias.pesoCorporalPredicho / 0.14);
+  static double get hierroDietario =>
+      (Antropometrias.pesoCorporalPredicho / 0.14);
 
-  static double get fosforoDietario => (Antropometrias.pesoCorporalPredicho / 11.42);
+  static double get fosforoDietario =>
+      (Antropometrias.pesoCorporalPredicho / 11.42);
 
-  static double get cromoDietario => (Antropometrias.pesoCorporalPredicho / 0.71);
+  static double get cromoDietario =>
+      (Antropometrias.pesoCorporalPredicho / 0.71);
 
   static int get sumaPorcentualMetabolicos =>
       porcentajeCarbohidratos + porcentajeProteinas + porcentajeLipidos;
@@ -109,10 +118,34 @@ class Metabolometrias {
     }
   }
 
+  /// Indice Catabólico : Indice de Bristian
+  ///
+  /// Tambien llamado 'Indice de Bristian', empleado para medir el estado metabólico del paciente, generalmente
+  /// quirúrgico.
+  ///
+  /// Cat_I =
+  ///       Cat_I = Indice Catabólico (g/d)
+  ///       Ingesta Proteica (g/d)
+  ///       UUN = Nitrógeno de Urea (U, g/d)
+  ///       *UUN/0.8 representa el UUN más el N+ urinario no-ureico.
+  ///       *2.5 es la suma del N+ fecal y tegumentario.
+  ///
+  ///  Consulta  :https://www.scymed.com/es/smnxpn/pnjdh298.htm
+  static double get indiceCatabolico {
+    return (Valores.nitrogenoUrinario! / 0.8) -
+        ((0.5 * (Valores.ingestaProteica! / 6.25)) + 3);
+  }
+
+  /// Balance Nitrogenado
+  ///
+  /// Cociente entre los compuestos nitrogenados administrados contra los depurados.
+  ///
+  static double get balanceNitrogenado {
+    return (Valores.ingestaProteica! - Valores.nitrogenoUrinario!);
+  }
+
   // VARIABLES ESTATICAS
   static int porcentajeCarbohidratos = 50;
   static int porcentajeLipidos = 20;
   static int porcentajeProteinas = 30;
 }
-
-

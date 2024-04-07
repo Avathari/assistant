@@ -108,4 +108,33 @@ class Renometrias {
       return 'Normal';
     }
   }
+
+  /// Indice de Insuficiencia Renal (RFI)
+  ///
+  /// Se usa para diferenciar entre Insuficiencia Renal "renal o prerenal".
+  ///
+  /// RFI > 1% (> 0.01 fracción) indica causa renal.
+  ///
+  /// RFI < 1% (< 0.01 fracción) indica causa prerenal.
+  ///
+  /// puede consultar https://www.scymed.com/es/smnxps/pspdm085.htm
+  ///
+  static double? get indiceFallaRenal{
+    if (Valores.creatinina != null) {
+      if (Valores.creatininaUrinarios != null) {
+        if (Valores.sodioUrinarios != null) {
+          return (Valores.sodioUrinarios!) /
+              (Valores.creatininaUrinarios! / Valores.sodioUrinarios!);
+        }
+      }
+    } else {
+      return null;
+    }
+    return null;
+  }
+
+
+  /// Fracción Excretada de Sodio (FeNa2+) . . .
+  ///
+  static double get fraccionExcretadaSodio => Valores.urea! / Valores.creatinina!;
 }

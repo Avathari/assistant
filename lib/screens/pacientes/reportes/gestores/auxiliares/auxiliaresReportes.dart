@@ -62,13 +62,20 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
         }
       }
       // **************************************
-      if (Reportes.analisisComplementarios != "" &&
-          Reportes.analisisComplementarios != Null) {
+      if (Reportes.reportes['Analisis_Complementarios'] != "" &&
+          Reportes.reportes['Analisis_Complementarios'] != Null) {
         commenTextController.text = Reportes.analisisComplementarios =
             Reportes.reportes['Analisis_Complementarios'] ?? "";
       } else {
         commenTextController.text = Reportes.analisisComplementarios =
             Reportes.reportes['Analisis_Complementarios'] = "";
+      }
+
+      // ASIGNAR AUXILIARES GUARDADOS . . .
+      if (Reportes.reportes['Auxiliares_Diagnosticos'] != "" &&
+          Reportes.reportes['Auxiliares_Diagnosticos'] != Null) {
+        auxTextController.text = Reportes.auxiliaresDiagnosticos =
+            Reportes.reportes['Auxiliares_Diagnosticos'];
       }
     });
     super.initState();
@@ -125,8 +132,7 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                       ),
                                       onLongCloss: (value) {
                                         setState(() {
-                                          auxTextController.text =
-                                              Reportes
+                                          auxTextController.text = Reportes
                                               .auxiliaresDiagnosticos = Reportes
                                                       .reportes[
                                                   'Auxiliares_Diagnosticos'] =

@@ -1,5 +1,4 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
-import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/hidrometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';

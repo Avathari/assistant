@@ -238,7 +238,7 @@ class _IntensivaState extends State<Intensiva> {
                       if (isMobile(context)) {
                         Operadores.openDialog(
                             context: context,
-                            chyldrim: const Cardiovasculares());
+                            chyldrim: Cardiovasculares());
                       } else {
                         setState(() {
                           widget.actualView = 4;
@@ -439,7 +439,7 @@ class _IntensivaState extends State<Intensiva> {
       Hidricos(),
       const Metabolicos(),
       const Antropometricos(),
-      const Cardiovasculares(),
+      Cardiovasculares(),
       const Ventilatorios(),
       const Gasometricos(),
       Container(),

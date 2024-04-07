@@ -3,15 +3,12 @@ import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias
 import 'package:assistant/operativity/pacientes/valores/Valorados/cardiometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
-import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CrossLine.dart';
-import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/TittleContainer.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
-import 'package:assistant/widgets/TittlePanel.dart';
 
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -19,7 +16,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class Cardiovasculares extends StatefulWidget {
-  const Cardiovasculares({Key? key}) : super(key: key);
+  double? mainAxisExtent;
+
+  Cardiovasculares({super.key, this.mainAxisExtent = 50.0});
 
   @override
   State<Cardiovasculares> createState() => _CardiovascularesState();
@@ -227,7 +226,7 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                             tittle: "Taller Hemodinámico",
                             color: Colors.black,
                             child: GridView(
-                              gridDelegate: GridViewTools.gridDelegate(crossAxisCount: 2, mainAxisExtent: 70),
+                              gridDelegate: GridViewTools.gridDelegate(crossAxisCount: 2, mainAxisExtent: widget.mainAxisExtent!),
                               children: [
                                 ValuePanel(
                                   firstText: 'G.C. (Fick)',
@@ -296,7 +295,13 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                                 ValuePanel(
                                   firstText: 'P. Coloido-Osmótica',
                                   secondText:
-                                  Valores.presionColoidoOsmotica.toStringAsFixed(2),
+                                  Cardiometrias.presionColoidosmotica.toStringAsFixed(2),
+                                  thirdText: 'mmHg',
+                                ),
+                                ValuePanel(
+                                  firstText: 'I. Briones',
+                                  secondText:
+                                  Cardiometrias.indiceBriones.toStringAsFixed(2),
                                   thirdText: 'mmHg',
                                 ),
                                 //
@@ -327,9 +332,8 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                           TittleContainer(
                             tittle: "Transporte de Oxígeno",
                             color: Colors.black,
-                            child: SingleChildScrollView(
-                              controller: ScrollController(),
-                              child: Column(
+                            child: GridView(
+                              gridDelegate: GridViewTools.gridDelegate(crossAxisCount: 2, mainAxisExtent: widget.mainAxisExtent!),
                                 children: [
                                   ValuePanel(
                                     firstText: 'PiO2',
@@ -404,15 +408,13 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                                   ),
 
                                 ],
-                              ),
                             ),
                           ), // Transporte de Oxígeno
                           TittleContainer(
                             tittle: "Valores por Swan-Ganz",
                             color: Colors.black,
-                            child: SingleChildScrollView(
-                              controller: ScrollController(),
-                              child: Column(
+                            child: GridView(
+                              gridDelegate: GridViewTools.gridDelegate(crossAxisCount: 2, mainAxisExtent: widget.mainAxisExtent!),
                                 children: [
                                   // Valores por Swan-Ganz
                                   ValuePanel(
@@ -454,7 +456,6 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                                     },
                                   ),
                                 ],
-                              ),
                             ),
                           ), // Valores de Swan-Ganz
                         ],
@@ -466,7 +467,6 @@ class _CardiovascularesState extends State<Cardiovasculares> {
             ),
           ),
           CrossLine(thickness: 3),
-          CrossLine(thickness: 2),
           Expanded(
             flex: 2,
             child: Row(
