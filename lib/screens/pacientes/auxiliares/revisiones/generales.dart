@@ -7,10 +7,8 @@ import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.d
 import 'package:assistant/operativity/pacientes/valores/Valorados/renometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/operativity/pacientes/valores/semiologia/semiotica.dart';
-import 'package:assistant/screens/pacientes/auxiliares/presentaciones/presentaciones.dart';
-import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizado.dart';
+import 'package:assistant/screens/pacientes/auxiliares/revisiones/auxiliares/auxiliaresRevisiones.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/pendientes.dart';
-import 'package:assistant/screens/pacientes/hospitalizacion/situacionesHospitalizacion.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/AppBarText.dart';
@@ -18,11 +16,8 @@ import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
-import 'package:assistant/widgets/GrandDateButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/Spinner.dart';
-import 'package:assistant/widgets/TittleContainer.dart';
-import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +32,7 @@ class Generales extends StatefulWidget {
 }
 
 class _GeneralesState extends State<Generales> {
+  int actualView = 0;
 
   @override
   void initState() {
@@ -118,12 +114,10 @@ class _GeneralesState extends State<Generales> {
           const SizedBox(width: 20),
         ],
       ),
-      body: isMobile(context)
-          ? mobileView()
-          : desktopView(),
+      body: isMobile(context) ? mobileView() : desktopView(),
       floatingActionButton: !isMobile(context)
           ? CircleIcon(
-        tittle: "Agregar Registro . . . ",
+              tittle: "Agregar Registro . . . ",
               iconed: Icons.app_registration_sharp,
               onChangeValue: () {
                 operationMethod(context);
@@ -477,9 +471,8 @@ class _GeneralesState extends State<Generales> {
                         onChange: (String value) {
                           Valores.pesoCorporalTotal =
                               double.parse(pctTextController.text);
-                          viaPerdidaTextController.text = Valores
-                              .perdidasInsensibles
-                              .toStringAsFixed(0);
+                          viaPerdidaTextController.text =
+                              Valores.perdidasInsensibles.toStringAsFixed(0);
                         }),
                   ),
                   Expanded(
@@ -548,10 +541,10 @@ class _GeneralesState extends State<Generales> {
                     width: isDesktop(context)
                         ? 300
                         : isTablet(context)
-                        ? 200
-                        : isMobile(context)
-                        ? 170
-                        : 200,
+                            ? 200
+                            : isMobile(context)
+                                ? 170
+                                : 200,
                     initialValue: isHorarioValue),
                 Spinner(
                   isRow: true,
@@ -559,10 +552,10 @@ class _GeneralesState extends State<Generales> {
                   width: isDesktop(context)
                       ? 300
                       : isTablet(context)
-                      ? 200
-                      : isMobile(context)
-                      ? 170
-                      : 200,
+                          ? 200
+                          : isMobile(context)
+                              ? 170
+                              : 200,
                   items: Items.foley,
                   initialValue: Exploracion.tipoSondaVesical,
                   onChangeValue: (value) {
@@ -596,34 +589,33 @@ class _GeneralesState extends State<Generales> {
                         },
                         onChange: (value) {
                           setState(() {
-                            Valores.viaOralBalances =
-                                double.parse(value);
+                            Valores.viaOralBalances = double.parse(value);
                           });
                         },
                       ),
                     ),
                     Expanded(
                         child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(),
-                          labelEditText: 'Vía Uresis (mL)',
-                          textController: viaUresisTextController,
-                          numOfLines: 1,
-                          selection: true,
-                          withShowOption: true,
-                          onSelected: () {
-                            Operadores.editTwoValuesDialog(
-                                context: context,
-                                onAcept: (value) {
-                                  Navigator.of(context).pop();
-                                  viaUresisTextController.text = value;
-                                });
-                          },
-                          onChange: (value) {
-                            Valores.uresisBalances = double.parse(value);
-                            setState(() {});
-                          },
-                        ))
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Vía Uresis (mL)',
+                      textController: viaUresisTextController,
+                      numOfLines: 1,
+                      selection: true,
+                      withShowOption: true,
+                      onSelected: () {
+                        Operadores.editTwoValuesDialog(
+                            context: context,
+                            onAcept: (value) {
+                              Navigator.of(context).pop();
+                              viaUresisTextController.text = value;
+                            });
+                      },
+                      onChange: (value) {
+                        Valores.uresisBalances = double.parse(value);
+                        setState(() {});
+                      },
+                    ))
                   ],
                 ),
                 Row(
@@ -655,28 +647,27 @@ class _GeneralesState extends State<Generales> {
                     ),
                     Expanded(
                         child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(),
-                          labelEditText: 'Vía Evacuacionees. (mL)',
-                          textController: viaEvacTextController,
-                          numOfLines: 1,
-                          selection: true,
-                          withShowOption: true,
-                          onSelected: () {
-                            Operadores.editTwoValuesDialog(
-                                context: context,
-                                onAcept: (value) {
-                                  Navigator.of(context).pop();
-                                  viaEvacTextController.text = value;
-                                });
-                          },
-                          onChange: (value) {
-                            setState(() {
-                              Valores.evacuacionesBalances =
-                                  double.parse(value);
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Vía Evacuacionees. (mL)',
+                      textController: viaEvacTextController,
+                      numOfLines: 1,
+                      selection: true,
+                      withShowOption: true,
+                      onSelected: () {
+                        Operadores.editTwoValuesDialog(
+                            context: context,
+                            onAcept: (value) {
+                              Navigator.of(context).pop();
+                              viaEvacTextController.text = value;
                             });
-                          },
-                        ))
+                      },
+                      onChange: (value) {
+                        setState(() {
+                          Valores.evacuacionesBalances = double.parse(value);
+                        });
+                      },
+                    ))
                   ],
                 ),
                 // CrossLine(),
@@ -702,36 +693,34 @@ class _GeneralesState extends State<Generales> {
                         },
                         onChange: (value) {
                           setState(() {
-                            Valores.hemoderivadosBalances =
-                                double.parse(value);
+                            Valores.hemoderivadosBalances = double.parse(value);
                           });
                         },
                       ),
                     ),
                     Expanded(
                         child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(),
-                          labelEditText: 'Vía Sangrados (mL)',
-                          textController: viaSangTextController,
-                          numOfLines: 1,
-                          selection: true,
-                          withShowOption: true,
-                          onSelected: () {
-                            Operadores.editTwoValuesDialog(
-                                context: context,
-                                onAcept: (value) {
-                                  Navigator.of(context).pop();
-                                  viaSangTextController.text = value;
-                                });
-                          },
-                          onChange: (value) {
-                            setState(() {
-                              Valores.sangradosBalances =
-                                  double.parse(value);
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Vía Sangrados (mL)',
+                      textController: viaSangTextController,
+                      numOfLines: 1,
+                      selection: true,
+                      withShowOption: true,
+                      onSelected: () {
+                        Operadores.editTwoValuesDialog(
+                            context: context,
+                            onAcept: (value) {
+                              Navigator.of(context).pop();
+                              viaSangTextController.text = value;
                             });
-                          },
-                        ))
+                      },
+                      onChange: (value) {
+                        setState(() {
+                          Valores.sangradosBalances = double.parse(value);
+                        });
+                      },
+                    ))
                   ],
                 ),
                 Row(
@@ -763,28 +752,27 @@ class _GeneralesState extends State<Generales> {
                     ),
                     Expanded(
                         child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(),
-                          labelEditText: 'Vía Succión (mL)',
-                          textController: viaSucciTextController,
-                          numOfLines: 1,
-                          selection: true,
-                          withShowOption: true,
-                          onSelected: () {
-                            Operadores.editTwoValuesDialog(
-                                context: context,
-                                onAcept: (value) {
-                                  Navigator.of(context).pop();
-                                  viaSucciTextController.text = value;
-                                });
-                          },
-                          onChange: (value) {
-                            setState(() {
-                              Valores.succcionBalances =
-                                  double.parse(value);
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Vía Succión (mL)',
+                      textController: viaSucciTextController,
+                      numOfLines: 1,
+                      selection: true,
+                      withShowOption: true,
+                      onSelected: () {
+                        Operadores.editTwoValuesDialog(
+                            context: context,
+                            onAcept: (value) {
+                              Navigator.of(context).pop();
+                              viaSucciTextController.text = value;
                             });
-                          },
-                        ))
+                      },
+                      onChange: (value) {
+                        setState(() {
+                          Valores.succcionBalances = double.parse(value);
+                        });
+                      },
+                    ))
                   ],
                 ),
                 Row(
@@ -808,20 +796,19 @@ class _GeneralesState extends State<Generales> {
                         },
                         onChange: (value) {
                           setState(() {
-                            Valores.parenteralesBalances =
-                                double.parse(value);
+                            Valores.parenteralesBalances = double.parse(value);
                           });
                         },
                       ),
                     ),
                     Expanded(
                         child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(),
-                          labelEditText: 'Perdidas Insensibles (mL)',
-                          textController: viaPerdidaTextController,
-                          numOfLines: 1,
-                        ))
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Perdidas Insensibles (mL)',
+                      textController: viaPerdidaTextController,
+                      numOfLines: 1,
+                    ))
                   ],
                 ),
                 //
@@ -834,72 +821,64 @@ class _GeneralesState extends State<Generales> {
                         tittle: '0.4',
                         onChangeValue: () {
                           Valores.constantePerdidasInsensibles = 0.2;
-                          viaPerdidaTextController.text = Valores
-                              .perdidasInsensibles
-                              .toStringAsFixed(2);
+                          viaPerdidaTextController.text =
+                              Valores.perdidasInsensibles.toStringAsFixed(2);
                         }),
                     CircleIcon(
                         radios: 20,
                         tittle: '0.5',
                         onChangeValue: () {
                           Valores.constantePerdidasInsensibles = 0.2;
-                          viaPerdidaTextController.text = Valores
-                              .perdidasInsensibles
-                              .toStringAsFixed(2);
+                          viaPerdidaTextController.text =
+                              Valores.perdidasInsensibles.toStringAsFixed(2);
                         }),
                     CircleIcon(
                         radios: 20,
                         tittle: '0.6',
                         onChangeValue: () {
                           Valores.constantePerdidasInsensibles = 0.6;
-                          viaPerdidaTextController.text = Valores
-                              .perdidasInsensibles
-                              .toStringAsFixed(2);
+                          viaPerdidaTextController.text =
+                              Valores.perdidasInsensibles.toStringAsFixed(2);
                         }),
                     CircleIcon(
                         radios: 20,
                         tittle: '0.5',
                         onChangeValue: () {
                           Valores.constantePerdidasInsensibles = 0.7;
-                          viaPerdidaTextController.text = Valores
-                              .perdidasInsensibles
-                              .toStringAsFixed(2);
+                          viaPerdidaTextController.text =
+                              Valores.perdidasInsensibles.toStringAsFixed(2);
                         }),
                     CircleIcon(
                         radios: 20,
                         tittle: '0.8',
                         onChangeValue: () {
                           Valores.constantePerdidasInsensibles = 0.8;
-                          viaPerdidaTextController.text = Valores
-                              .perdidasInsensibles
-                              .toStringAsFixed(2);
+                          viaPerdidaTextController.text =
+                              Valores.perdidasInsensibles.toStringAsFixed(2);
                         }),
                     CircleIcon(
                         radios: 20,
                         tittle: '0.9',
                         onChangeValue: () {
                           Valores.constantePerdidasInsensibles = 0.9;
-                          viaPerdidaTextController.text = Valores
-                              .perdidasInsensibles
-                              .toStringAsFixed(2);
+                          viaPerdidaTextController.text =
+                              Valores.perdidasInsensibles.toStringAsFixed(2);
                         }),
                     CircleIcon(
                         radios: 20,
                         tittle: '1.1',
                         onChangeValue: () {
                           Valores.constantePerdidasInsensibles = 1.1;
-                          viaPerdidaTextController.text = Valores
-                              .perdidasInsensibles
-                              .toStringAsFixed(2);
+                          viaPerdidaTextController.text =
+                              Valores.perdidasInsensibles.toStringAsFixed(2);
                         }),
                     CircleIcon(
                         radios: 20,
                         tittle: '1.2',
                         onChangeValue: () {
                           Valores.constantePerdidasInsensibles = 1.2;
-                          viaPerdidaTextController.text = Valores
-                              .perdidasInsensibles
-                              .toStringAsFixed(2);
+                          viaPerdidaTextController.text =
+                              Valores.perdidasInsensibles.toStringAsFixed(2);
                         }),
                   ],
                 ),
@@ -921,43 +900,39 @@ class _GeneralesState extends State<Generales> {
                               context: context,
                               onAcept: (value) {
                                 Navigator.of(context).pop();
-                                viaDilucionesTextController.text =
-                                    value;
+                                viaDilucionesTextController.text = value;
                               });
                         },
                         onChange: (value) {
                           setState(() {
-                            Valores.dilucionesBalances =
-                                double.parse(value);
+                            Valores.dilucionesBalances = double.parse(value);
                           });
                         },
                       ),
                     ),
                     Expanded(
                         child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(),
-                          labelEditText: 'Otros Egresos (mL)',
-                          textController: viaOtrosEgresosTextController,
-                          numOfLines: 1,
-                          selection: true,
-                          withShowOption: true,
-                          onSelected: () {
-                            Operadores.editTwoValuesDialog(
-                                context: context,
-                                onAcept: (value) {
-                                  Navigator.of(context).pop();
-                                  viaOtrosEgresosTextController.text =
-                                      value;
-                                });
-                          },
-                          onChange: (value) {
-                            setState(() {
-                              Valores.otrosEgresosBalances =
-                                  double.parse(value);
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Otros Egresos (mL)',
+                      textController: viaOtrosEgresosTextController,
+                      numOfLines: 1,
+                      selection: true,
+                      withShowOption: true,
+                      onSelected: () {
+                        Operadores.editTwoValuesDialog(
+                            context: context,
+                            onAcept: (value) {
+                              Navigator.of(context).pop();
+                              viaOtrosEgresosTextController.text = value;
                             });
-                          },
-                        ))
+                      },
+                      onChange: (value) {
+                        setState(() {
+                          Valores.otrosEgresosBalances = double.parse(value);
+                        });
+                      },
+                    ))
                   ],
                 ),
                 Row(
@@ -976,14 +951,12 @@ class _GeneralesState extends State<Generales> {
                               context: context,
                               onAcept: (value) {
                                 Navigator.of(context).pop();
-                                viaOtrosIngresosTextController.text =
-                                    value;
+                                viaOtrosIngresosTextController.text = value;
                               });
                         },
                         onChange: (value) {
                           setState(() {
-                            Valores.otrosIngresosBalances =
-                                double.parse(value);
+                            Valores.otrosIngresosBalances = double.parse(value);
                           });
                         },
                       ),
@@ -1015,280 +988,289 @@ class _GeneralesState extends State<Generales> {
 
   Widget desktopView() {
     return Container(
-      padding: EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.only(top: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             flex: 6,
-            child: Wrap(
-              runSpacing: 4.0,
-              children: [
-                EditTextArea(
-                  labelEditText: "Fecha de realización",
-                  numOfLines: 1,
-                  textController: textDateEstudyController,
-                  keyBoardType: TextInputType.datetime,
-                  withShowOption: true,
-                  selection: true,
-                  iconData: Icons.calculate_outlined,
-                  onSelected: () {
-                    setState(() {
-                      textDateEstudyController.text =
-                          Calendarios.today(format: "yyyy/MM/dd");
-                    });
-                  },
-                  inputFormat: MaskTextInputFormatter(
-                      mask: '####/##/##',
-                      filter: {"#": RegExp(r'[0-9]')},
-                      type: MaskAutoCompletionType.lazy),
-                ),
-                CrossLine(thickness: 3, height: 15),
-                Row(
-                  children: [
-                    Expanded(
-                      child: EditTextArea(
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(),
-                        numOfLines: 1,
-                        labelEditText: 'Tensión arterial sistólica',
-                        textController: tasTextController,
-                        onChange: (value) {
-                          setState(() {
-                            Valores.tensionArterialSystolica = int.parse(value);
-                          });
-                        },
-                      ),
-                    ),
-                    Expanded(
-                      child: EditTextArea(
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(),
-                        numOfLines: 1,
-                        labelEditText: 'Tensión arterial diastólica',
-                        textController: tadTextController,
-                        onChange: (value) {
-                          setState(() {
-                            Valores.tensionArterialDyastolica = int.parse(value);
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: EditTextArea(
+            child: SingleChildScrollView(
+              controller: ScrollController(),
+              child: Column(
+                children: [
+                  EditTextArea(
+                    labelEditText: "Fecha de realización",
+                    numOfLines: 1,
+                    textController: textDateEstudyController,
+                    keyBoardType: TextInputType.datetime,
+                    withShowOption: true,
+                    selection: true,
+                    iconData: Icons.calculate_outlined,
+                    onSelected: () {
+                      setState(() {
+                        textDateEstudyController.text =
+                            Calendarios.today(format: "yyyy/MM/dd");
+                      });
+                    },
+                    inputFormat: MaskTextInputFormatter(
+                        mask: '####/##/##',
+                        filter: {"#": RegExp(r'[0-9]')},
+                        type: MaskAutoCompletionType.lazy),
+                  ),
+                  CrossLine(thickness: 3, height: 15),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: EditTextArea(
                           keyBoardType: TextInputType.number,
                           inputFormat: MaskTextInputFormatter(),
                           numOfLines: 1,
-                          labelEditText: 'Frecuencia cardiaca',
-                          textController: fcTextController),
-                    ),
-                    Expanded(
-                      child: EditTextArea(
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(),
-                        numOfLines: 1,
-                        labelEditText: 'Frecuencia respiratoria',
-                        textController: frTextController,
+                          labelEditText: 'Tensión arterial sistólica',
+                          textController: tasTextController,
+                          onChange: (value) {
+                            setState(() {
+                              Valores.tensionArterialSystolica =
+                                  int.parse(value);
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                EditTextArea(
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(
-                      mask: '##.#',
-                      filter: {"#": RegExp(r'[0-9]')},
-                      type: MaskAutoCompletionType.lazy),
-                  numOfLines: 1,
-                  labelEditText: 'Temperatura corporal',
-                  textController: tcTextController,
-                ),
-                EditTextArea(
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(),
-                  numOfLines: 1,
-                  labelEditText: 'Saturación periférica de oxígeno',
-                  textController: spoTextController,
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: EditTextArea(
+                      Expanded(
+                        child: EditTextArea(
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          numOfLines: 1,
+                          labelEditText: 'Tensión arterial diastólica',
+                          textController: tadTextController,
+                          onChange: (value) {
+                            setState(() {
+                              Valores.tensionArterialDyastolica =
+                                  int.parse(value);
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: EditTextArea(
+                            keyBoardType: TextInputType.number,
+                            inputFormat: MaskTextInputFormatter(),
+                            numOfLines: 1,
+                            labelEditText: 'Frecuencia cardiaca',
+                            textController: fcTextController),
+                      ),
+                      Expanded(
+                        child: EditTextArea(
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          numOfLines: 1,
+                          labelEditText: 'Frecuencia respiratoria',
+                          textController: frTextController,
+                        ),
+                      ),
+                    ],
+                  ),
+                  EditTextArea(
+                    keyBoardType: TextInputType.number,
+                    inputFormat: MaskTextInputFormatter(
+                        mask: '##.#',
+                        filter: {"#": RegExp(r'[0-9]')},
+                        type: MaskAutoCompletionType.lazy),
+                    numOfLines: 1,
+                    labelEditText: 'Temperatura corporal',
+                    textController: tcTextController,
+                  ),
+                  EditTextArea(
+                    keyBoardType: TextInputType.number,
+                    inputFormat: MaskTextInputFormatter(),
+                    numOfLines: 1,
+                    labelEditText: 'Saturación periférica de oxígeno',
+                    textController: spoTextController,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: EditTextArea(
+                            keyBoardType: TextInputType.number,
+                            inputFormat: MaskTextInputFormatter(
+                                mask: '###.##',
+                                filter: {"#": RegExp(r'[0-9]')},
+                                type: MaskAutoCompletionType.lazy),
+                            numOfLines: 1,
+                            labelEditText: 'Peso corporal total',
+                            textController: pctTextController,
+                            onChange: (String value) {
+                              Valores.pesoCorporalTotal =
+                                  double.parse(pctTextController.text);
+                              viaPerdidaTextController.text = Valores
+                                  .perdidasInsensibles
+                                  .toStringAsFixed(0);
+                            }),
+                      ),
+                      Expanded(
+                        child: EditTextArea(
+                            keyBoardType: TextInputType.number,
+                            inputFormat: MaskTextInputFormatter(
+                                mask: '#.##',
+                                filter: {"#": RegExp(r'[0-9]')},
+                                type: MaskAutoCompletionType.lazy),
+                            numOfLines: 1,
+                            labelEditText: 'Estatura (mts)',
+                            textController: estTextController,
+                            onChange: (String value) {
+                              Valores.alturaPaciente =
+                                  double.parse(estTextController.text);
+                            }),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: EditTextArea(
                           keyBoardType: TextInputType.number,
                           inputFormat: MaskTextInputFormatter(
-                              mask: '###.##',
+                              mask: '###',
                               filter: {"#": RegExp(r'[0-9]')},
                               type: MaskAutoCompletionType.lazy),
                           numOfLines: 1,
-                          labelEditText: 'Peso corporal total',
-                          textController: pctTextController,
-                          onChange: (String value) {
-                            Valores.pesoCorporalTotal =
-                                double.parse(pctTextController.text);
-                            viaPerdidaTextController.text =
-                                Valores.perdidasInsensibles.toStringAsFixed(0);
-                          }),
-                    ),
-                    Expanded(
-                      child: EditTextArea(
+                          labelEditText: 'Glucemia capilar',
+                          textController: gluTextController,
+                        ),
+                      ),
+                      Expanded(
+                        child: EditTextArea(
+                            keyBoardType: TextInputType.number,
+                            inputFormat: MaskTextInputFormatter(
+                                mask: '##',
+                                filter: {"#": RegExp(r'[0-9]')},
+                                type: MaskAutoCompletionType.lazy),
+                            numOfLines: 1,
+                            labelEditText: 'Horas de ayuno',
+                            textController: gluAyuTextController),
+                      ),
+                    ],
+                  ),
+                  CrossLine(thickness: 6, height: 15),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: EditTextArea(
                           keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(
-                              mask: '#.##',
-                              filter: {"#": RegExp(r'[0-9]')},
-                              type: MaskAutoCompletionType.lazy),
+                          inputFormat: MaskTextInputFormatter(),
                           numOfLines: 1,
-                          labelEditText: 'Estatura (mts)',
-                          textController: estTextController,
-                          onChange: (String value) {
-                            Valores.alturaPaciente =
-                                double.parse(estTextController.text);
-                          }),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: EditTextArea(
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(
-                            mask: '###',
-                            filter: {"#": RegExp(r'[0-9]')},
-                            type: MaskAutoCompletionType.lazy),
-                        numOfLines: 1,
-                        labelEditText: 'Glucemia capilar',
-                        textController: gluTextController,
+                          labelEditText: 'FiO2',
+                          textController:
+                              fraccionInspiratoriaOxigenoTextController,
+                          onChange: (value) {
+                            setState(() {
+                              Valores.fraccionInspiratoriaOxigeno =
+                                  Valores.fraccionInspiratoriaVentilatoria =
+                                      int.parse(value);
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: EditTextArea(
+                      Expanded(
+                        child: EditTextArea(
                           keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(
-                              mask: '##',
-                              filter: {"#": RegExp(r'[0-9]')},
-                              type: MaskAutoCompletionType.lazy),
+                          inputFormat: MaskTextInputFormatter(),
                           numOfLines: 1,
-                          labelEditText: 'Horas de ayuno',
-                          textController: gluAyuTextController),
-                    ),
-                  ],
-                ),
-                CrossLine(thickness: 6, height: 15),
-                Row(
-                  children: [
-                    Expanded(
-                      child: EditTextArea(
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(),
-                        numOfLines: 1,
-                        labelEditText: 'FiO2',
-                        textController: fraccionInspiratoriaOxigenoTextController,
-                        onChange: (value) {
-                          setState(() {
-                            Valores.fraccionInspiratoriaOxigeno =
-                                Valores.fraccionInspiratoriaVentilatoria =
-                                    int.parse(value);
-                          });
-                        },
+                          labelEditText: 'C. Abd. ',
+                          textController: circunferenciaCinturaTextController,
+                          onChange: (value) {
+                            setState(() {
+                              Valores.circunferenciaCintura = int.parse(value);
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: EditTextArea(
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(),
-                        numOfLines: 1,
-                        labelEditText: 'C. Abd. ',
-                        textController: circunferenciaCinturaTextController,
-                        onChange: (value) {
-                          setState(() {
-                            Valores.circunferenciaCintura = int.parse(value);
-                          });
-                        },
+                      Expanded(
+                        child: EditTextArea(
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          numOfLines: 1,
+                          labelEditText: 'PVC',
+                          textController: presionVenosaCentralTextController,
+                          onChange: (value) {
+                            setState(() {
+                              Valores.presionVenosaCentral =
+                                  double.parse(value);
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: EditTextArea(
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(),
-                        numOfLines: 1,
-                        labelEditText: 'PVC',
-                        textController: presionVenosaCentralTextController,
-                        onChange: (value) {
-                          setState(() {
-                            Valores.presionVenosaCentral = double.parse(value);
-                          });
-                        },
+                      Expanded(
+                        child: EditTextArea(
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          numOfLines: 1,
+                          labelEditText: 'P.C. Pulmonar', //
+                          textController: presionCunaPulmonarTextController,
+                          onChange: (value) {
+                            setState(() {
+                              Valores.presionCunaPulmonar = double.parse(value);
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: EditTextArea(
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(),
-                        numOfLines: 1,
-                        labelEditText: 'P.C. Pulmonar', //
-                        textController: presionCunaPulmonarTextController,
-                        onChange: (value) {
-                          setState(() {
-                            Valores.presionCunaPulmonar = double.parse(value);
-                          });
-                        },
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: EditTextArea(
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          numOfLines: 1,
+                          labelEditText: 'PWAP',
+                          textController: presionCunaPulmonarTextController,
+                          onChange: (value) {
+                            setState(() {
+                              Valores.presionCunaPulmonar = double.parse(value);
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: EditTextArea(
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(),
-                        numOfLines: 1,
-                        labelEditText: 'PWAP',
-                        textController: presionCunaPulmonarTextController,
-                        onChange: (value) {
-                          setState(() {
-                            Valores.presionCunaPulmonar = double.parse(value);
-                          });
-                        },
+                      Expanded(
+                        child: EditTextArea(
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          numOfLines: 1,
+                          labelEditText: 'PIC',
+                          textController: presionIntraCerebralTextController,
+                          onChange: (value) {
+                            setState(() {
+                              Valores.presionIntraCerebral =
+                                  double.parse(value);
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: EditTextArea(
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(),
-                        numOfLines: 1,
-                        labelEditText: 'PIC',
-                        textController: presionIntraCerebralTextController,
-                        onChange: (value) {
-                          setState(() {
-                            Valores.presionIntraCerebral = double.parse(value);
-                          });
-                        },
+                      Expanded(
+                        child: EditTextArea(
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          numOfLines: 1,
+                          labelEditText: 'PIA', // Presión Intraabdominal
+                          textController: presionIntraabdominalTextController,
+                          onChange: (value) {
+                            setState(() {
+                              Valores.presionIntraabdominal =
+                                  double.parse(value);
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: EditTextArea(
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(),
-                        numOfLines: 1,
-                        labelEditText: 'PIA', // Presión Intraabdominal
-                        textController: presionIntraabdominalTextController,
-                        onChange: (value) {
-                          setState(() {
-                            Valores.presionIntraabdominal = double.parse(value);
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                CrossLine(thickness: 3, height: 15),
-              ],
+                    ],
+                  ),
+                  CrossLine(thickness: 3, height: 15),
+                ],
+              ),
             ),
           ),
           Expanded(
@@ -1470,7 +1452,8 @@ class _GeneralesState extends State<Generales> {
                           },
                           onChange: (value) {
                             setState(() {
-                              Valores.hemoderivadosBalances = double.parse(value);
+                              Valores.hemoderivadosBalances =
+                                  double.parse(value);
                             });
                           },
                         ),
@@ -1573,7 +1556,8 @@ class _GeneralesState extends State<Generales> {
                           },
                           onChange: (value) {
                             setState(() {
-                              Valores.parenteralesBalances = double.parse(value);
+                              Valores.parenteralesBalances =
+                                  double.parse(value);
                             });
                           },
                         ),
@@ -1733,7 +1717,8 @@ class _GeneralesState extends State<Generales> {
                           },
                           onChange: (value) {
                             setState(() {
-                              Valores.otrosIngresosBalances = double.parse(value);
+                              Valores.otrosIngresosBalances =
+                                  double.parse(value);
                             });
                           },
                         ),
@@ -1925,22 +1910,25 @@ class _GeneralesState extends State<Generales> {
               )),
           Expanded(
             flex: 2,
-            child: Column(
-              children: [
-                Spinner(
-                  items: Items.dispositivosOxigeno,
-                  initialValue: disposValue,
-                  width: isDesktop(context)
-                      ? 600
-                      : SpinnersValues.maximumWidth(context: context),
-                  tittle: 'Dispositivo / Evento',
-                  onChangeValue: (value) {
-                    setState(() {
-                      disposValue = value;
-                    });
-                  },
-                ),
-              ],
+            child: SingleChildScrollView(
+              controller: ScrollController(),
+              child: Column(
+                children: [
+                  Spinner(
+                    items: Items.dispositivosOxigeno,
+                    initialValue: disposValue,
+                    width: isDesktop(context)
+                        ? 600
+                        : SpinnersValues.maximumWidth(context: context),
+                    tittle: 'Dispositivo / Evento',
+                    onChangeValue: (value) {
+                      setState(() {
+                        disposValue = value;
+                      });
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
           Expanded(
@@ -1970,14 +1958,15 @@ class _GeneralesState extends State<Generales> {
                     ),
                     ValuePanel(
                       firstText: "TFG (CKD-EPI)",
-                      secondText: Renometrias.tasaRenalCKDEPI.toStringAsFixed(2),
+                      secondText:
+                          Renometrias.tasaRenalCKDEPI.toStringAsFixed(2),
                       thirdText: "mL/min/1.72 m2",
                     ),
                     CrossLine(),
                     ValuePanel(
                       firstText: "P.P.",
-                      secondText:
-                          Antropometrias.pesoCorporalPredicho.toStringAsFixed(2),
+                      secondText: Antropometrias.pesoCorporalPredicho
+                          .toStringAsFixed(2),
                       thirdText: "kG",
                     ),
                     ValuePanel(
@@ -2026,76 +2015,7 @@ class _GeneralesState extends State<Generales> {
         children: [
           Expanded(
             flex: 12,
-            child: Column(
-              children: [
-                Expanded(
-                  flex: 5,
-                  child: TittleContainer(
-                    tittle: "Paraclínicos",
-                    child: GridView.builder(
-                      controller: ScrollController(),
-                      padding: const EdgeInsets.all(2),
-                      gridDelegate: GridViewTools.gridDelegate(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 5.0,
-                          mainAxisExtent: 55),
-                      itemCount: Listas.listWithoutRepitedValues(
-                          Listas.listFromMapWithOneKey(
-                              Pacientes.Paraclinicos!))
-                          .length,
-                      // snapshot.data[posicion]['Auxiliares'].length,
-                      itemBuilder: (BuildContext context, index) {
-                        var list = Listas.listWithoutRepitedValues(
-                            Listas.listFromMapWithOneKey(
-                                Pacientes.Paraclinicos!));
-                        return ValuePanel(
-                          fontSize: 8,
-                          secondText: "${list[index]}", // Resultado
-                          withEditMessage: true,
-                          onEdit: (value) {
-                            Datos.portapapeles(
-                                context: context,
-                                text: Auxiliares.porFecha(fechaActual: value));
-                          },
-                        );
-                      }), )
-                ),
-                CrossLine(),
-                Expanded(
-                  flex: 5,
-                  child: TittleContainer(
-                      tittle: "Pendientes",
-                    child: GridView.builder(
-                        controller: ScrollController(),
-                        padding: const EdgeInsets.all(2),
-                        gridDelegate: GridViewTools.gridDelegate(
-                            crossAxisCount: 1,
-                            mainAxisSpacing: 5.0,
-                            mainAxisExtent: 55),
-                        itemCount: Pacientes.Pendiente!.length,
-                        // snapshot.data[posicion]['Auxiliares'].length,
-                        itemBuilder: (BuildContext context, index) {
-                          return ValuePanel(
-                            fontSize: 8,
-                            firstText:
-                            "${Pacientes.Pendiente![index]['Pace_Desc_PEN']}", // Resultado
-                            secondText:
-                            "${Pacientes.Pendiente![index]['Pace_PEN']}", // Resultado
-                            withEditMessage: true,
-                            onEdit: (value) {
-                              Datos.portapapeles(
-                                  context: context,
-                                  text:
-                                  "${Pacientes.Pendiente![index]['Pace_PEN']} "
-                                      ": ${Pacientes.Pendiente![index]['Pace_Desc_PEN']} "
-                                      ": : ${Dicotomicos.fromInt(Pacientes.Pendiente![index]['Pace_PEN_realized'])} Realizado. ");
-                            },
-                          );
-                        })
-                  ),
-                ),
-              ],
-            ),
+            child: actualVista(context, actualView: actualView),
           ),
           Expanded(
             child: Wrap(
@@ -2103,14 +2023,14 @@ class _GeneralesState extends State<Generales> {
               spacing: 8,
               // mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                GrandIcon(onPress: () => null),
-                GrandIcon(onPress: () => null),
-                GrandIcon(onPress: () => null),
-                GrandIcon(onPress: () => null),
-                GrandIcon(onPress: () => null),
-                GrandIcon(onPress: () => null),
-                GrandIcon(onPress: () => null),
-                GrandIcon(onPress: () => null),
+                GrandIcon(onPress: () => setState(() => actualView = 0)),
+                GrandIcon(onPress: () => setState(() => actualView = 1)),
+                GrandIcon(onPress: () => setState(() => actualView = 2)),
+                GrandIcon(onPress: () => setState(() => actualView = 3)),
+                GrandIcon(onPress: () => setState(() => actualView = 4)),
+                GrandIcon(onPress: () => setState(() => actualView = 5)),
+                GrandIcon(onPress: () => setState(() => actualView = 6)),
+                GrandIcon(onPress: () => setState(() => actualView = 7)),
               ],
             ),
           ),
@@ -2121,8 +2041,9 @@ class _GeneralesState extends State<Generales> {
               // mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 GrandIcon(
-                  iconData: Icons.list_alt_sharp,
-                    onPress: () => Cambios.toNextPage(context, GestionPendiente(withReturn: false ))),
+                    iconData: Icons.list_alt_sharp,
+                    onPress: () => Cambios.toNextPage(
+                        context, GestionPendiente(withReturn: false))),
                 GrandIcon(onPress: () => null),
                 // GrandIcon(
                 //     iconData: Icons.view_array_outlined,
@@ -2140,4 +2061,61 @@ class _GeneralesState extends State<Generales> {
       ),
     );
   }
+
+  Widget actualVista(BuildContext context, {required int actualView}) {
+    return Container(
+      child: actualView == 0
+          ? AuxiliaresRevisiones.pendientesLaboratorios(context)
+          : actualView == 1
+              ? AuxiliaresRevisiones.biometrias(context)
+              : actualView == 2
+                  ? AuxiliaresRevisiones.quimicas(context)
+                  : actualView == 3
+                      ? AuxiliaresRevisiones.arteriales(context)
+                      : actualView == 4
+                          ? AuxiliaresRevisiones.hepaticos(context)
+                          : actualView == 5
+                              ? AuxiliaresRevisiones.arteriales(context)
+                              : actualView == 6
+                                  ? AuxiliaresRevisiones.hepaticos(context)
+                                  : actualView == 7
+                                      ? AuxiliaresRevisiones.electrolitos(context)
+                                      : actualView == 8
+                                          ? AuxiliaresRevisiones.electrolitos(context)
+                                          // : actualView == 9
+                                          //     ? const BalanceHidrico()
+                                          //     : actualView == 10
+                                          //         ? AuxiliaresRevisiones
+                                          //             .ventilaciones(context)
+                                          //         : actualView == 11
+                                          //             ? Hidricos()
+                                          //             : actualView == 12
+                                          //                 ? const Metabolicos()
+                                          //                 : actualView ==
+                                          //                         13
+                                          //                     ? const Antropometricos()
+                                          //                     : actualView ==
+                                          //                             14
+                                          //                         ? Cardiovasculares()
+                                          //                         : actualView ==
+                                          //                                 15
+                                          //                             ? const Ventilatorios()
+                                          //                             : actualView ==
+                                          //                                     16
+                                          //                                 ? Gasometricos()
+                                          //                                 : actualView == 17
+                                          //                                     ? Hidricos()
+                                          //                                     : actualView == 18
+                                          //                                         ? Hidricos()
+                                          //                                         : actualView == 19
+                                          //                                             ? Hidricos()
+                                          //                                             : actualView == 20
+                                          //                                                 ? Hidricos()
+                                          //                                                 : actualView == 21
+                                          //                                                     ? const Hemoderivados()
+                                                                                              : Container(),
+    );
+  }
+
+
 }

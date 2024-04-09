@@ -195,10 +195,12 @@ class Ventometrias {
   static double get volumentTidal8 => (Antropometrias.pesoCorporalPredicho * 8);
 
   // # ######################################################
-  static double get volumenTidalIdeal => (Ventometrias.distensibilidadPulmonarEstatica * Ventometrias.presionDistencion);
+  static double get volumenTidalIdeal => (Ventometrias.distensibilidadPulmonarEstatica * Ventometrias.drivingPressure);
 
   // # ######################################################
   /// Poder Mecánico : :
+  ///
+  /// VN : Menor a 12 J/min
   static double get poderMecanico {
       return (0.098 *
           Valores.frecuenciaVentilatoria! *
@@ -208,25 +210,40 @@ class Ventometrias {
   }
 
   /// Poder Distencion expresado como []
+  ///
+  /// VN : Menor a 12 J/min
   static double get poderDistencion {
-    if (Antropometrias.pesoCorporalPredicho != 0) {
       return (0.098 *
           (Ventometrias.drivingPressure)
       * (Valores.volumenTidal! / 1000)
           *Valores.frecuenciaVentilatoria!);
       // PM = (0.098 * Valores.frecuenciaVentilatoria * (
       // Valores.presionPlateau! - Valores.presionFinalEsiracion! / 2))
-    } else {
-      return double.nan;
-    }
+
+  }
+
+  /// Presión Transpulmonar (Pta)
+  ///
+  /// VN : 2.5-3.0 cmH2O
+  static double get presionTranspulmonar {
+    return Valores.presionMaxima!.toDouble() - Valores.presionPlateau!.toDouble();
+    return double.nan;
   }
 
   /// Driving Pressure expresado como [Vt / Cstat]
   static double get drivingPressure {
-    if (Valores.volumenTidal != 0 && Ventometrias.distensibilidadPulmonarEstatica !=0) {
-      return (Valores.volumenTidal! / Ventometrias.distensibilidadPulmonarEstatica);
+    if (Valores.distensibilidadEstaticaMedida == null) {
+      if (Valores.volumenTidal != 0 && Ventometrias.distensibilidadPulmonarEstatica !=0) {
+        return (Valores.volumenTidal! / Ventometrias.distensibilidadPulmonarEstatica);
+      } else {
+        return double.nan;
+      }
     } else {
-      return double.nan;
+      if (Valores.volumenTidal != 0 && Valores.distensibilidadEstaticaMedida !=0) {
+        return (Valores.volumenTidal! / Valores.distensibilidadEstaticaMedida!);
+      } else {
+        return double.nan;
+      }
     }
   }
 

@@ -144,6 +144,37 @@ class Metabolometrias {
     return (Valores.ingestaProteica! - Valores.nitrogenoUrinario!);
   }
 
+  /// INDICE TyG :
+  ///        El índice TyG fue calculado como el logaritmo natural (Ln) del producto de glucosa y TG plasmáticos,
+  ///        según la siguiente fórmula: Ln (TG [mg/dL] x glucosa [mg/dL]/2)14.
+  ///     * El índice TyG fue un buen discriminante de SM. La simplicidad de su cálculo justifica profundizar su estudio como marcador alternativo de insulinorresistencia.
+  /// El punto de corte para el índice TyG en hombres fue 8,8 y en mujeres 8,7;
+  /// Consulte: https://search.bvsalud.org/portal/resource/es/ibc-217725#:~:text=El%20%C3%ADndice%20triglic%C3%A9ridos%20y%20glucosa%20%28TyG%29%20fue%20creado,ha%20empleado%20en%20la%20predicci%C3%B3n%20de%20diabetes%20mellitus.
+  /// https://www.elsevier.es/es-revista-endocrinologia-nutricion-12-articulo-ndice-trigliceridos-glucosa-un-indicador-S1575092214002009
+  /// * * Unger, G., Benozzi, S. F., Perruzza, F., & Pennacchiotti, G. L. (2014). Índice triglicéridos y glucosa: un indicador útil de insulinorresistencia. Endocrinología y Nutrición, 61(10), 533-540.
+  /// * * https://www.incmnsz.mx/2020/uiem/Publicaciones/Indices%20para%20la%20evaluacion%20de%20la%20resistencia%20a%20la%20insulina%20en%20individuos%20mexicanos%20sin%20diabetes.pdf
+  ///
+  static double get indiceTrigliceridosGlucosa {
+    if (Valores.trigliceridos != null && Valores.glucosa != null) {
+      return Valores.trigliceridos! / Valores.glucosa!;
+    }
+    return double.nan;
+  }
+
+  /// INDICE TG/HDL
+  ///         Se calculó la relación TG/C-HDL.
+  /// Los valores respectivos para TG/C-HDL fueron 3,1 en hombres y 2,2 en mujeres.
+  ///  * * Salazar et al. en base a un estudio realizado en una población de Argentina, sugirieron que tanto el diagnóstico de SM como la relación TG/C-HDL son adecuados para identificar individuos con IR.
+  ///   Consulte: M.R. Salazar, H.A. Carbajal, W.G. Espeche, C.E. Leiva Sisnieguez, C.E. March, E. Balbín, et al. Comparison of the abilities of the plasma triglyceride/high-density lipoprotein cholesterol ratio and the metabolic syndrome to identify insulin resistance.
+  ///   Diab Vasc Dis Res, 10 (2013), pp. 346-352
+  ///
+  static double get indiceTrigliceridosCHDL {
+    if (Valores.trigliceridos != null && Valores.cHDL != null) {
+      return Valores.trigliceridos! / Valores.cHDL!;
+    }
+    return double.nan;
+  }
+
   // VARIABLES ESTATICAS
   static int porcentajeCarbohidratos = 50;
   static int porcentajeLipidos = 20;

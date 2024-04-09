@@ -114,6 +114,7 @@ class Cardiometrias {
       ((220 - Valores.edad!) * 0.7); // # Frecuencia_Cardiaca_Blanco
   static double get frecuenciaCardiacaIntrinseca =>
       (118.1 - (0.57 * Valores.edad!)); // # Frecuencia Cardiaca Intrinseca
+
   // Paramétros con Catéter Swan-Ganz
   static double get resistenciaVascularPulmonar => // PC
       ((Valores.proteinasTotales! - Valores.albuminaSerica!) * 1.4) +

@@ -18,8 +18,6 @@ class Valores {
   Map<String, dynamic> valores = {};
   static double? prueba;
 
-
-
 // ******* **** ****** ** * * * * * ** ***** **** *
   Future<bool> load() async {
     // Otras configuraciones
@@ -874,6 +872,7 @@ class Valores {
   //
   static String? fechaQuimicas;
   static double? glucosa, urea, creatinina, acidoUrico, nitrogenoUreico;
+  static double? trigliceridos, colesterolTotal, cHDL, cLDL, cVLDL;
 
   //
   static String? fechaHepaticos;
@@ -966,7 +965,8 @@ class Valores {
       presionSoporte = 0,
       presionInspiratoriaPico = 0,
       presionPlateau = 0;
-  static double? volumenTidal = 0;
+  static double? volumenTidal = 0,
+      distensibilidadEstaticaMedida = 0;
 
   // Variables Estaticas
   static int presionBarometrica = 585; // mmHg (Nm: 760
