@@ -58,8 +58,14 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
         widget._operationButton = 'Registrar';
         fechaRealizacionTextController.text =
             Calendarios.today(format: "yyyy/MM/dd");
-        viaPerdidaTextController.text = Valores.perdidasInsensibles.toString();
         Exploracion.tipoSondaVesical = Items.foley[0];
+        //
+        setState(() {
+          Valores.otrosIngresosBalances  = Valores.otrosIngresosBalances! + Valores.aguaMetabolica;
+          //
+          viaOtrosIngresosTextController.text = Valores.aguaMetabolica.toStringAsFixed(2);
+          viaPerdidaTextController.text = Valores.perdidasInsensibles.toString();
+        });
         break;
       case Constantes.Update:
         setState(() {

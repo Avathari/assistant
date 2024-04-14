@@ -223,7 +223,7 @@ class _AntropometricosState extends State<Antropometricos> {
                                       ),
                                       ValuePanel(
                                         firstText: 'Peso Magro',
-                                        secondText: Antropometrias.masaMuscularMagra.toStringAsFixed(2),
+                                        secondText: Antropometrias.pesoCorporalMagro.toStringAsFixed(2),
                                         thirdText: 'Kg',
                                       ),
 

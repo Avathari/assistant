@@ -315,6 +315,47 @@ class _RevisionesState extends State<Revisiones> {
                                 });
                           },
                         ),
+                        //
+                        ValuePanel(
+                          firstText: "FiO2",
+                          secondText: Valores.fraccionInspiratoriaOxigeno.toString(),
+                          thirdText: "%",
+                          withEditMessage: true,
+                          onEdit: (value) {
+                            Operadores.editActivity(
+                                context: context,
+                                tittle: "Editar . . . ",
+                                message: "¿Fracción Inspiratoria Oxigeno? . . . ",
+                                onAcept: (value) {
+                                  Terminal.printSuccess(
+                                      message: "recieve $value");
+                                  setState(() {
+                                    Valores.fraccionInspiratoriaOxigeno = int.parse(value);
+                                    Navigator.of(context).pop();
+                                  });
+                                });
+                          },
+                        ),
+                        ValuePanel(
+                          firstText: "P.V.C.",
+                          secondText: Valores.presionVenosaCentral.toString(),
+                          thirdText: "cmH20",
+                          withEditMessage: true,
+                          onEdit: (value) {
+                            Operadores.editActivity(
+                                context: context,
+                                tittle: "Editar . . . ",
+                                message: "¿Presión Venosa Central? . . . ",
+                                onAcept: (value) {
+                                  Terminal.printSuccess(
+                                      message: "recieve $value");
+                                  setState(() {
+                                    Valores.presionVenosaCentral = int.parse(value);
+                                    Navigator.of(context).pop();
+                                  });
+                                });
+                          },
+                        ),
                         CrossLine(),
                         CrossLine(),
                         ValuePanel(
@@ -924,7 +965,7 @@ class _RevisionesState extends State<Revisiones> {
                           },
                         ),
                         ValuePanel(
-                          firstText: "Horas ayuno",
+                          firstText: "H. Ayuno",
                           secondText: Valores.horasAyuno.toString(),
                           thirdText: "Horas",
                           withEditMessage: true,
@@ -938,6 +979,47 @@ class _RevisionesState extends State<Revisiones> {
                                       message: "recieve $value");
                                   setState(() {
                                     Valores.horasAyuno = int.parse(value);
+                                    Navigator.of(context).pop();
+                                  });
+                                });
+                          },
+                        ),
+                        //
+                        ValuePanel(
+                          firstText: "FiO2",
+                          secondText: Valores.fraccionInspiratoriaOxigeno.toString(),
+                          thirdText: "%",
+                          withEditMessage: true,
+                          onEdit: (value) {
+                            Operadores.editActivity(
+                                context: context,
+                                tittle: "Editar . . . ",
+                                message: "¿Fracción Inspiratoria Oxigeno? . . . ",
+                                onAcept: (value) {
+                                  Terminal.printSuccess(
+                                      message: "recieve $value");
+                                  setState(() {
+                                    Valores.fraccionInspiratoriaOxigeno = int.parse(value);
+                                    Navigator.of(context).pop();
+                                  });
+                                });
+                          },
+                        ),
+                        ValuePanel(
+                          firstText: "P.V.C.",
+                          secondText: Valores.presionVenosaCentral.toString(),
+                          thirdText: "cmH20",
+                          withEditMessage: true,
+                          onEdit: (value) {
+                            Operadores.editActivity(
+                                context: context,
+                                tittle: "Editar . . . ",
+                                message: "¿Presión Venosa Central? . . . ",
+                                onAcept: (value) {
+                                  Terminal.printSuccess(
+                                      message: "recieve $value");
+                                  setState(() {
+                                    Valores.presionVenosaCentral = int.parse(value);
                                     Navigator.of(context).pop();
                                   });
                                 });

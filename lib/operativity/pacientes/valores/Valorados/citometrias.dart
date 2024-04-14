@@ -143,6 +143,10 @@ class Citometrias {
   static double get CMHC =>
       (Valores.hemoglobina! / Valores.hematocrito!) * 100; // 30 - 38 g/dL
 
+  /// Deficit de Hierro
+  ///     Fe_Def = [PCT (kG) * (15-Hb)] + 100 . .
+  ///       * Si la Hb es mayor a 15 g/dL, el resultado será 0 .
+  /// VN :
   static double get deficitHierro =>
       (Valores.pesoCorporalTotal! * (15 - Valores.hemoglobina!)) +
       1000; // 0 - 0 mg {0.001 : gr}

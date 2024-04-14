@@ -27,7 +27,7 @@ class _RutinasState extends State<Rutinas> {
 
   @override
   void initState() {
-    final f = DateFormat('yyyy-MM-dd');
+    final f = DateFormat('yyyy-MM-dd HH:mm:ss');
     textDateEstudyController.text = f.format(DateTime.now());
     // *************************************
     super.initState();

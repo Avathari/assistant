@@ -62,6 +62,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         Exploracion.tuboEndotraqueal = Items.tuboendotraqueal[0];
         Exploracion.haciaArcadaDentaria = Items.arcadaDentaria[0];
 
+        fioTextController.text = Valores.fraccionInspiratoriaOxigeno!.toString();
         sensInspTextController.text = '1';
         sensEspTextController.text = '2';
         break;

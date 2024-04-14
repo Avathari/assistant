@@ -196,6 +196,18 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                     Valores.hemoglobina!.toStringAsFixed(2),
                     thirdText: 'g/dL',
                                     ),
+                        ValuePanel(
+                          firstText: 'FiaO2',
+                          secondText:
+                          Valores.fioArteriales!.toStringAsFixed(2),
+                          thirdText: '%',
+                        ),
+                        ValuePanel(
+                          firstText: 'FivO2',
+                          secondText:
+                          Valores.fioVenosos!.toStringAsFixed(2),
+                          thirdText: '%',
+                        ),
                                     ValuePanel(
                     firstText: 'Fecha Biometrías',
                     secondText:
@@ -223,11 +235,143 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                     child: CarouselSlider(
                         items: [
                           TittleContainer(
+                            tittle: "Taller Gasométrico",
+                            color: Colors.black,
+                            child: GridView(
+                              padding: const EdgeInsets.all(8.0),
+                              gridDelegate: GridViewTools.gridDelegate(crossAxisCount: 2, mainAxisExtent: widget.mainAxisExtent!),
+                              children: [
+                                ValuePanel(
+                                  firstText: 'PiO2',
+                                  secondText: Gasometricos.PIO.toStringAsFixed(2),
+                                  thirdText: 'mmHg',
+                                ),
+                                ValuePanel(
+                                  firstText: 'PAO2',
+                                  secondText: Gasometricos.PAO.toStringAsFixed(2),
+                                  thirdText: 'mmHg',
+                                ),
+                                ValuePanel(
+                                  firstText: 'GA-a O2',
+                                  secondText: Gasometricos.GAA.toStringAsFixed(2),
+                                  thirdText: 'mmHg',
+                                ),
+                                // ** * * * * * * *
+                                Container(),
+                                ValuePanel(
+                                  firstText: 'CaO2', // Contenido Arterial de Oxígeno
+                                  secondText: Valores.CAO.toStringAsFixed(2),
+                                  thirdText: 'mL/O2%',
+                                ),
+                                ValuePanel(
+                                  firstText: 'CcO2', // Contenido Capilar de Oxígeno
+                                  secondText: Valores.CCO.toStringAsFixed(2),
+                                  thirdText: 'mL/O2%',
+                                ),
+                                ValuePanel(
+                                  firstText: 'CvO2', // Contenido Arterial de Oxígeno
+                                  secondText: Valores.CVO.toStringAsFixed(2),
+                                  thirdText: 'mL/O2%',
+                                ),
+                                Container(),
+                                ValuePanel(
+                                  firstText: 'Da-vO2', // Diferencia Arterio-venosa de Oxígeno
+                                  secondText: Valores.DAV.toStringAsFixed(2),
+                                  thirdText: 'mL',
+                                ),
+                                Container(),
+                                ValuePanel(
+                                  firstText: 'G.C. (Fick)',
+                                  secondText: Cardiometrias.gastoCardiacoFick.toStringAsFixed(2),
+                                  thirdText: 'Lt/min',
+                                ),
+                                ValuePanel(
+                                  firstText: 'I.C.',
+                                  secondText: Valores.indiceCardiaco.toStringAsFixed(2),
+                                  thirdText: 'Lt/min',
+                                ),
+                                ValuePanel(
+                                  firstText: 'VO2', // Consumo de Oxígeno
+                                  secondText: Valores.CO.toStringAsFixed(2),
+                                  thirdText: 'mL/min',
+                                ),
+                                ValuePanel(
+                                  firstText: 'Disp. Oxígeno',
+                                  secondText: Valores.DO.toStringAsFixed(2),
+                                  thirdText: 'mL/min/m2',
+                                ),
+                                ValuePanel(
+                                  firstText: 'I. Disp. Oxígeno',
+                                  secondText: Valores.iDO.toStringAsFixed(2),
+                                  thirdText: 'mL/min/m2',
+                                ),
+                                //
+                                ValuePanel(
+                                  firstText: 'QS/QT', // Shunt Arterio-venoso
+                                  secondText: Valores.SF.toStringAsFixed(2),
+                                  thirdText: '%',
+                                ),
+                                ValuePanel(
+                                  firstText: 'I. V/P (Kirby)', //
+                                  secondText: Gasometricos.PAFI.toStringAsFixed(0),
+                                ),
+                                ValuePanel(
+                                  firstText: '% Extracción Oxígeno',
+                                  secondText: Valores.IEO.toStringAsFixed(2),
+                                  thirdText: '%',
+                                ),
+                                ValuePanel(
+                                  firstText: 'Indice Respiratorio',
+                                  secondText: Valores.CI.toStringAsFixed(2),
+                                ),
+                                ValuePanel(
+                                  firstText: 'Rest. V. Sist.',
+                                  secondText: Valores.RVS.toStringAsFixed(2),
+                                  thirdText: 'dinas/seg/cm2',
+                                ),
+                                //
+                                ValuePanel(
+                                  firstText: 'Delta COS.',
+                                  secondText: Valores.DavCO2.toStringAsFixed(2),
+                                  thirdText: 'mmHg',
+                                ),
+                                Container(),
+                                // **********************************
+                                CrossLine(thickness: 3),
+                                CrossLine(thickness: 2),
+                                CircleIcon(
+                                  iconed: Icons.copy_all_sharp,
+                                  tittle: "Copiar en Portapapeles",
+                                  onChangeValue: () {
+                                    Datos.portapapeles(
+                                        context: context, text: Cardiometrias.transporteOxigeno);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ), // Taller Hemodinámico
+                          TittleContainer(
                             tittle: "Taller Hemodinámico",
                             color: Colors.black,
                             child: GridView(
                               gridDelegate: GridViewTools.gridDelegate(crossAxisCount: 2, mainAxisExtent: widget.mainAxisExtent!),
                               children: [
+                                ValuePanel(
+                                  firstText: 'PiO2',
+                                  secondText: Gasometricos.PIO.toStringAsFixed(2),
+                                  thirdText: 'mmHg',
+                                ),
+                                ValuePanel(
+                                  firstText: 'PAO2',
+                                  secondText: Gasometricos.PAO.toStringAsFixed(2),
+                                  thirdText: 'mmHg',
+                                ),
+                                ValuePanel(
+                                  firstText: 'GA-a O2',
+                                  secondText: Gasometricos.GAA.toStringAsFixed(2),
+                                  thirdText: 'mmHg',
+                                ),
+                                // ** * * * * * * *
                                 ValuePanel(
                                   firstText: 'G.C. (Fick)',
                                   secondText: Cardiometrias.gastoCardiacoFick.toStringAsFixed(2),
@@ -336,47 +480,11 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                               gridDelegate: GridViewTools.gridDelegate(crossAxisCount: 2, mainAxisExtent: widget.mainAxisExtent!),
                                 children: [
                                   ValuePanel(
-                                    firstText: 'PiO2',
-                                    secondText: Gasometricos.PIO.toStringAsFixed(2),
-                                    thirdText: 'mmHg',
-                                  ),
-                                  ValuePanel(
-                                    firstText: 'PAO2',
-                                    secondText: Gasometricos.PAO.toStringAsFixed(2),
-                                    thirdText: 'mmHg',
-                                  ),
-                                  ValuePanel(
-                                    firstText: 'GA-a O2',
-                                    secondText: Gasometricos.GAA.toStringAsFixed(2),
-                                    thirdText: 'mmHg',
-                                  ),
-                                  ValuePanel(
                                     firstText: 'VO2', // Consumo de Oxígeno
                                     secondText: Valores.CO.toStringAsFixed(2),
                                     thirdText: 'mL/min',
                                   ),
                                   //
-                                  ValuePanel(
-                                    firstText: 'CaO2', // Contenido Arterial de Oxígeno
-                                    secondText: Valores.CAO.toStringAsFixed(2),
-                                    thirdText: 'mL/O2%',
-                                  ),
-                                  ValuePanel(
-                                    firstText: 'CcO2', // Contenido Capilar de Oxígeno
-                                    secondText: Valores.CCO.toStringAsFixed(2),
-                                    thirdText: 'mL/O2%',
-                                  ),
-                                  ValuePanel(
-                                    firstText: 'CvO2', // Contenido Arterial de Oxígeno
-                                    secondText: Valores.CVO.toStringAsFixed(2),
-                                    thirdText: 'mL/O2%',
-                                  ),
-                                  //
-                                  ValuePanel(
-                                    firstText: 'Da-vO2', // Diferencia Arterio-venosa de Oxígeno
-                                    secondText: Valores.DAV.toStringAsFixed(2),
-                                    thirdText: 'mL',
-                                  ),
                                   ValuePanel(
                                     firstText: 'QS/QT', // Shunt Arterio-venoso
                                     secondText: Valores.SF.toStringAsFixed(2),

@@ -288,16 +288,17 @@ class Gasometricos {
     //     (Valores.pcoArteriales! / 0.8); // # Presión alveolar de oxígeno
   }
 
-  static double get PIO => (Valores.presionGasSeco / Valores.fioArteriales!);
+  //(Valores.presionGasSeco / (Valores.fioArteriales! / 100));
+  static double get PIO =>  (Valores.presionBarometrica - Valores.presionVaporAgua) * (Valores.fioArteriales! / 100);
 
-  /// Gradiente Alveolo Arterial (GAA)
+      /// Gradiente Alveolo Arterial (GAA)
   ///
   /// Otras fórmulas : (PAO - Valores.poArteriales!); //  # Gradiente Alveolo - Arterial
-  static double get GAA => ((Valores.presionBarometrica - Valores.presionVaporAgua) * (Valores.fioArteriales! / 100) -
-      (Valores.pcoArteriales! / 0.8) -
-      Valores.poArteriales!); //  # Gradiente Alveolo Arterial
+  // static double get GAA => ((Valores.presionBarometrica - Valores.presionVaporAgua) * (Valores.fioArteriales! / 100) -
+  //     (Valores.pcoArteriales! / 0.8) -
+  //     Valores.poArteriales!); //  # Gradiente Alveolo Arterial
 
-  // static double get GAA => (PAO - Valores.poArteriales!); //  # Gradiente Alveolo - Arterial
+  static double get GAA => (PAO - Valores.poArteriales!); //  # Gradiente Alveolo - Arterial
 
   /// Delta CO2 : Un delta CO2 (PvCO2-PaCO2) mayor a 6 mmhG denotan Hipoperfusión
   ///

@@ -10,6 +10,7 @@ import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/AppBarText.dart';
+import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
@@ -48,11 +49,12 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
         widget._operationButton = 'Registrar';
 
         fechaRealizacionTextController.text =
-            Calendarios.today(format: 'yyyy-MM-dd');
+            Calendarios.today(format: "yyyy/MM/dd HH:mm:ss");
         // estTextController.text = Pacientes.Vital['Pace_SV_est'].toString();
         // pctTextController.text = Pacientes.Vital['Pace_SV_pct'].toString();
         estTextController.text = Valores.alturaPaciente!.toString();
         pctTextController.text = Valores.pesoCorporalTotal!.toString();
+        fraccionInspiratoriaOxigenoTextController.text = 21.toString();
         break;
       case Constantes.Update:
         setState(() {
@@ -76,7 +78,15 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
           //
           gluTextController.text = Valores.glucemiaCapilar!.toString();
           gluAyuTextController.text = Valores.horasAyuno!.toString();
-
+          //
+          fraccionInspiratoriaOxigenoTextController.text=
+          Valores.fraccionInspiratoriaOxigeno.toString();
+          presionVenosaCentralTextController.text=
+              Valores.presionVenosaCentral.toString();
+          presionIntraCerebralTextController.text=
+              Valores.presionIntraCerebral.toString();
+          presionIntraabdominalTextController.text=
+              Valores.presionIntraabdominal.toString();
           // Variables Antropométricas ********* *************** **********
           cueTextController.text = Valores.circunferenciaCuello!.toString();
           //
@@ -193,7 +203,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                       selection: true,
                       onSelected: () {
                         fechaRealizacionTextController.text =
-                            Calendarios.today(format: 'yyyy-MM-dd');
+                            Calendarios.today(format: "yyyy/MM/dd HH:mm:ss");
                       },
                     ),
                   ),
@@ -502,6 +512,62 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
           'Horas de ayuno',
           gluAyuTextController,
           false),
+      CrossLine(),
+      isMobile(context) || isTablet(context) ? Container() : CrossLine(),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(),
+        numOfLines: 1,
+        labelEditText: 'Fracción Insp. O2',
+        textController:
+        fraccionInspiratoriaOxigenoTextController,
+        onChange: (value) {
+          setState(() {
+            Valores.fraccionInspiratoriaOxigeno =
+                Valores.fraccionInspiratoriaVentilatoria =
+                int.parse(value);
+          });
+        },
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(),
+        numOfLines: 1,
+        labelEditText: 'Presión Venosa Central',
+        textController: presionVenosaCentralTextController,
+        onChange: (value) {
+          setState(() {
+            Valores.presionVenosaCentral =
+                int.parse(value);
+          });
+        },
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(),
+        numOfLines: 1,
+        labelEditText: 'Presión Intracerebral',
+        textController: presionIntraCerebralTextController,
+        onChange: (value) {
+          setState(() {
+            Valores.presionIntraCerebral =
+                int.parse(value);
+          });
+        },
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(),
+        numOfLines: 1,
+        labelEditText: 'Presión Intraabdominal', // Presión Intraabdominal
+        textController: presionIntraabdominalTextController,
+        onChange: (value) {
+          setState(() {
+            Valores.presionIntraabdominal =
+                int.parse(value);
+          });
+        },
+      ),
     ];
   }
 
@@ -680,6 +746,12 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
   var gluTextController = TextEditingController();
   var gluAyuTextController = TextEditingController();
   //
+  var fraccionInspiratoriaOxigenoTextController = TextEditingController();
+  //
+  var presionVenosaCentralTextController = TextEditingController();
+  var presionIntraabdominalTextController = TextEditingController();
+  var presionIntraCerebralTextController = TextEditingController();
+  //
   var cueTextController = TextEditingController();
   var cinTextController = TextEditingController();
   var cadTextController = TextEditingController();
@@ -720,6 +792,11 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
         pctTextController.text,
         gluTextController.text,
         gluAyuTextController.text,
+        //
+        fraccionInspiratoriaOxigenoTextController.text,
+        presionVenosaCentralTextController.text,
+        presionIntraCerebralTextController.text,
+        presionIntraabdominalTextController.text,
         idOperation
       ];
       listOfSecondValues = [

@@ -199,12 +199,19 @@ class Ventometrias {
 
   // # ######################################################
   /// Poder Mecánico : :
-  ///
+  ///  Formula
+  ///     PM = 0.098 * FR * VC * (Pmax - ((Pplat - PEEP) / 2)
+  ///       * * El Mantener PM mayor a 10 J/min, y un aumento de 2 J/min del basal del poder mecánico identifica a los pacientes con mayor riesgo de reintubación.
+  ///       * * El mantener PM menor a 8 J/min, identifica a los pacientes con menor incidencia en reintubaciones.
+  /// Existen otras formulas :
+  ///     MP = VE * (Pmax + PEEP + F/6) / 20
+  ///         Consulte: https://icm-experimental.springeropen.com/articles/10.1186/s40635-019-0276-8
+  ///            Giosa, L., Busana, M., Pasticci, I. et al. Mechanical power at a glance: a simple surrogate for volume-controlled ventilation. ICMx 7, 61 (2019). https://doi.org/10.1186/s40635-019-0276-8
   /// VN : Menor a 12 J/min
   static double get poderMecanico {
       return (0.098 *
-          Valores.frecuenciaVentilatoria! *
-          (Valores.presionPlateau! - Valores.presionFinalEsiracion! / 2));
+          Valores.frecuenciaVentilatoria! * Valores.volumenTidal! *
+          (Valores.presionMaxima! - (Valores.presionPlateau! - Valores.presionFinalEsiracion!) / 2));
       // PM = (0.098 * Valores.frecuenciaVentilatoria * (
       // Valores.presionPlateau! - Valores.presionFinalEsiracion! / 2))
   }
@@ -220,6 +227,19 @@ class Ventometrias {
       // PM = (0.098 * Valores.frecuenciaVentilatoria * (
       // Valores.presionPlateau! - Valores.presionFinalEsiracion! / 2))
 
+  }
+
+  /// Poder Mecánico Indexado .
+  ///     Al parecer describe exíto de intubación.
+  ///     VN : menor a 3000 incrementa probabilidad de éxito.
+  ///              entre 4000-6000, se conoce como Zona Gris.
+  ///              mayor a 7000 incrementa la posibiliadd de fracaso.
+  /// Consulte: Ghiani, A., Paderewska, J., Walcher, S. et al. Mechanical power normalized to lung-thorax compliance predicts prolonged ventilation weaning failure: a prospective study. BMC Pulm Med 21, 202 (2021).
+  ///       https://doi.org/10.1186/s12890-021-01566-8
+  ///
+  static double get poderMecanicoIndexado {
+    return Valores.frecuenciaVentilatoria! * Valores.presionMaxima! * (Valores.presionMaxima! - Valores.presionFinalEsiracion!) *
+        (Valores.pcoArteriales! / 45);
   }
 
   /// Presión Transpulmonar (Pta)

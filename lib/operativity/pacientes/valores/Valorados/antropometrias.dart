@@ -11,23 +11,23 @@ class Antropometrias {
     if (Valores.circunferenciaCintura! != 0 ||
         Valores.circunferenciaCadera! != 0) {
       indiceCaderaCintura =
-      "Relacion Cintura  Cadera ${Antropometrias.indiceCinturaCadera.toStringAsFixed(2)} cm. ";
+          "Relacion Cintura  Cadera ${Antropometrias.indiceCinturaCadera.toStringAsFixed(2)} cm. ";
     }
     if (Valores.pliegueCutaneoBicipital! != 0 &&
         Valores.pliegueCutaneoTricipital! != 0 &&
         Valores.pliegueCutaneoEscapular! != 0 &&
         Valores.pliegueCutaneoIliaco != 0) {
       grasaCorporal =
-      "Grasa Corporal ${Antropometrias.grasaCorporalEsencial.toStringAsFixed(2)} Kg, "
+          "Grasa Corporal ${Antropometrias.grasaCorporalEsencial.toStringAsFixed(2)} Kg, "
           "Grasa Corporal Porcentual ${Antropometrias.grasaCorporalEsencial.toStringAsFixed(2)} %, "
-          "Peso Corporal Magro ${Antropometrias.porcentajeCorporalMagro.toStringAsFixed(2)} Kg. ";
+          "Peso Corporal Magro ${Antropometrias.pesoCorporalMagro.toStringAsFixed(2)} Kg. ";
     }
     if (isAbreviado) {
       return "Análisis de Medidas Corporales: "
           "Peso Corporal Ideal ${Antropometrias.pesoCorporalPredicho.toStringAsFixed(2)} Kg, "
           "Indice de Masa Corporal ${Antropometrias.imc.toStringAsFixed(2)} Kg/m2. (${Antropometrias.claseIMC}). "
           "Superficie Corporal Total ${Antropometrias.SC.toStringAsFixed(2)} m2. ";
-    }else {
+    } else {
       return "Análisis de Medidas Corporales: "
           "Peso Corporal Ideal ${Antropometrias.pesoCorporalPredicho.toStringAsFixed(2)} Kg, (${Antropometrias.PCIP.toStringAsFixed(2)} %), "
           "Peso Corporal Ajustado ${Antropometrias.pesoCorporalAjustado.toStringAsFixed(2)} Kg, "
@@ -43,69 +43,68 @@ class Antropometrias {
 
   static String get vitales =>
       "Signos vitales con " // fecha de ${Pacientes.Vital['Pace_Feca_SV']} con "
-          "tensión arterial sistémica en ${Valores.tensionArterialSistemica} mmHg, "
-          "frecuencia cardiaca de ${Valores.frecuenciaCardiaca} L/min, "
-          "frecuencia respiratoria de ${Valores.frecuenciaRespiratoria} L/min, "
-          "temperatura corporal ${Valores.temperaturCorporal}°C, "
-          "saturación periférica de oxígeno ${Valores.saturacionPerifericaOxigeno}%, "
-          "peso corporal total ${Valores.pesoCorporalTotal} Kg, "
-          "estatura ${Valores.alturaPaciente} mts";
+      "tensión arterial sistémica en ${Valores.tensionArterialSistemica} mmHg, "
+      "frecuencia cardiaca de ${Valores.frecuenciaCardiaca} L/min, "
+      "frecuencia respiratoria de ${Valores.frecuenciaRespiratoria} L/min, "
+      "temperatura corporal ${Valores.temperaturCorporal}°C, "
+      "saturación periférica de oxígeno ${Valores.saturacionPerifericaOxigeno}%, "
+      "peso corporal total ${Valores.pesoCorporalTotal} Kg, "
+      "estatura ${Valores.alturaPaciente} mts";
 
   static String get vitalesAbreviado =>
       "TA ${Valores.tensionArterialSistemica} mmHg, "
-          "FC ${Valores.frecuenciaCardiaca} L/min, "
-          "FR ${Valores.frecuenciaRespiratoria} L/min, "
-          "Temp ${Valores.temperaturCorporal}°C, "
-          "SpO2 ${Valores.saturacionPerifericaOxigeno}%, "
-          "PCT ${Valores.pesoCorporalTotal} Kg, "
-          "Estatura ${Valores.alturaPaciente} mts";
+      "FC ${Valores.frecuenciaCardiaca} L/min, "
+      "FR ${Valores.frecuenciaRespiratoria} L/min, "
+      "Temp ${Valores.temperaturCorporal}°C, "
+      "SpO2 ${Valores.saturacionPerifericaOxigeno}%, "
+      "PCT ${Valores.pesoCorporalTotal} Kg, "
+      "Estatura ${Valores.alturaPaciente} mts";
 
   static String get vitalesTerapiaAbreviado =>
       "TA ${Valores.tensionArterialSistemica} mmHg, "
-          "FC ${Valores.frecuenciaCardiaca} L/min, "
-          "FR ${Valores.frecuenciaRespiratoria} L/min, "
-          "Temp ${Valores.temperaturCorporal}°C, "
-          "SpO2 ${Valores.saturacionPerifericaOxigeno}%, "
-          "PCT ${Valores.pesoCorporalTotal} Kg, "
-          "Estatura ${Valores.alturaPaciente} mts, "
-          "IMC ${Antropometrias.imc.toStringAsFixed(2)} Kg/m2, "
-          "PCI ${Antropometrias.pesoCorporalPredicho.toStringAsFixed(2)} Kg";
+      "FC ${Valores.frecuenciaCardiaca} L/min, "
+      "FR ${Valores.frecuenciaRespiratoria} L/min, "
+      "Temp ${Valores.temperaturCorporal}°C, "
+      "SpO2 ${Valores.saturacionPerifericaOxigeno}%, "
+      "PCT ${Valores.pesoCorporalTotal} Kg, "
+      "Estatura ${Valores.alturaPaciente} mts, "
+      "IMC ${Antropometrias.imc.toStringAsFixed(2)} Kg/m2, "
+      "PCI ${Antropometrias.pesoCorporalPredicho.toStringAsFixed(2)} Kg";
 
   static String get signosVitales =>
       "Signos vitales con " // fecha de ${Pacientes.Vital['Pace_Feca_SV']} con "
-          "tensión arterial sistémica en ${Valores.tensionArterialSistemica} mmHg, "
-          "frecuencia cardiaca de ${Valores.frecuenciaCardiaca} L/min, "
-          "frecuencia respiratoria de ${Valores.frecuenciaRespiratoria} L/min, "
-          "temperatura corporal ${Valores.temperaturCorporal}°C, "
-          "saturación periférica de oxígeno ${Valores.saturacionPerifericaOxigeno}%, "
-          "estatura ${Valores.alturaPaciente} mts, "
-          "peso corporal total ${Valores.pesoCorporalTotal} Kg, "
-          "I.M.C. ${Antropometrias.imc.toStringAsFixed(2)} Kg/m2. "
-          "Glucemia capilar ${Valores.glucemiaCapilar} mg/dL, con ${Valores.horasAyuno} horas de ayuno";
+      "tensión arterial sistémica en ${Valores.tensionArterialSistemica} mmHg, "
+      "frecuencia cardiaca de ${Valores.frecuenciaCardiaca} L/min, "
+      "frecuencia respiratoria de ${Valores.frecuenciaRespiratoria} L/min, "
+      "temperatura corporal ${Valores.temperaturCorporal}°C, "
+      "saturación periférica de oxígeno ${Valores.saturacionPerifericaOxigeno}%, "
+      "estatura ${Valores.alturaPaciente} mts, "
+      "peso corporal total ${Valores.pesoCorporalTotal} Kg, "
+      "I.M.C. ${Antropometrias.imc.toStringAsFixed(2)} Kg/m2. "
+      "Glucemia capilar ${Valores.glucemiaCapilar} mg/dL, con ${Valores.horasAyuno} horas de ayuno";
 
   static String get bioconstantes =>
       "Signos vitales con " // fecha de ${Pacientes.Vital['Pace_Feca_SV']} con "
-          "tensión arterial sistémica en ${Valores.tensionArterialSistemica} mmHg, "
-          "frecuencia cardiaca de ${Valores.frecuenciaCardiaca} L/min, "
-          "frecuencia respiratoria de ${Valores.frecuenciaRespiratoria} L/min, "
-          "temperatura corporal ${Valores.temperaturCorporal}°C, "
-          "saturación periférica de oxígeno ${Valores.saturacionPerifericaOxigeno}%, "
-          "estatura ${Valores.alturaPaciente} mts, "
-          "peso corporal total ${Valores.pesoCorporalTotal} Kg, "
-          "I.M.C. ${Antropometrias.imc.toStringAsFixed(2)} Kg/m2. "
-          "C. cintura ${Valores.circunferenciaCintura} cm. "
-          "C. cadera ${Valores.circunferenciaCadera} cm. "
-          "Glucemia capilar ${Valores.glucemiaCapilar} mg/dL, con ${Valores.horasAyuno} horas de ayuno";
+      "tensión arterial sistémica en ${Valores.tensionArterialSistemica} mmHg, "
+      "frecuencia cardiaca de ${Valores.frecuenciaCardiaca} L/min, "
+      "frecuencia respiratoria de ${Valores.frecuenciaRespiratoria} L/min, "
+      "temperatura corporal ${Valores.temperaturCorporal}°C, "
+      "saturación periférica de oxígeno ${Valores.saturacionPerifericaOxigeno}%, "
+      "estatura ${Valores.alturaPaciente} mts, "
+      "peso corporal total ${Valores.pesoCorporalTotal} Kg, "
+      "I.M.C. ${Antropometrias.imc.toStringAsFixed(2)} Kg/m2. "
+      "C. cintura ${Valores.circunferenciaCintura} cm. "
+      "C. cadera ${Valores.circunferenciaCadera} cm. "
+      "Glucemia capilar ${Valores.glucemiaCapilar} mg/dL, con ${Valores.horasAyuno} horas de ayuno";
 
   static String get asociadosRiesgo =>
       "Análisis Antropométrico enfocado al Riesgo: "
-          "Pliegue Cutáneo Trícipital ${Valores.pliegueCutaneoTricipital} mm, "
-          "Circunferencia Mesobraquial ${Valores.circunferenciaMesobraquial} cm, "
-          "Perimetro Muscular Mesobraquial ${Antropometrias.perimetroMesobraquial} cm, "
-          "Área Muscular Mesobraquial ${Antropometrias.AM} cm2, "
-          "Área Adiposa Mesobraquial ${Antropometrias.areaAdiposaMesobraquial} cm2, "
-          "Área Mesobraquial ${Antropometrias.areaMesobraquial} cm2. ";
-
+      "Pliegue Cutáneo Trícipital ${Valores.pliegueCutaneoTricipital} mm, "
+      "Circunferencia Mesobraquial ${Valores.circunferenciaMesobraquial} cm, "
+      "Perimetro Muscular Mesobraquial ${Antropometrias.perimetroMesobraquial} cm, "
+      "Área Muscular Mesobraquial ${Antropometrias.AM} cm2, "
+      "Área Adiposa Mesobraquial ${Antropometrias.areaAdiposaMesobraquial} cm2, "
+      "Área Mesobraquial ${Antropometrias.areaMesobraquial} cm2. ";
 
 // FÓRMULAS
   static double get pesoCorporalPredicho {
@@ -120,7 +119,8 @@ class Antropometrias {
   }
 
   static double get imc =>
-      Valores.pesoCorporalTotal! / (Valores.alturaPaciente! * Valores.alturaPaciente!);
+      Valores.pesoCorporalTotal! /
+      (Valores.alturaPaciente! * Valores.alturaPaciente!);
 
   static double get PP {
     if (Valores.sexo == "Masculino") {
@@ -163,7 +163,7 @@ class Antropometrias {
 
   static double get pesoCorporalAjustado =>
       pesoCorporalPredicho +
-          ((Valores.pesoCorporalTotal! - pesoCorporalPredicho) * 0.25);
+      ((Valores.pesoCorporalTotal! - pesoCorporalPredicho) * 0.25);
 
   static double get excesoPesoCorporal =>
       (Valores.pesoCorporalTotal! / pesoCorporalPredicho);
@@ -177,7 +177,7 @@ class Antropometrias {
   static double get SC =>
       ((math.pow(Valores.pesoCorporalTotal!, 0.425)) *
           (math.pow((Valores.alturaPaciente! * 100), 0.725) * (0.7184))) /
-          100; // Dubois y Dubois
+      100; // Dubois y Dubois
 
   // static double get SC => (math.pow(Valores.pesoCorporalTotal!, 0.425)) * (math.pow(Valores.alturaPaciente!, 0.725) * 0.007184);
 
@@ -279,18 +279,27 @@ class Antropometrias {
 
   static double get pesoCorporalMagro {
     if (Valores.sexo == 'Femenino') {
-      return (1.07 * Valores.pesoCorporalTotal!) -
-          (148 *
-              (math.pow(Valores.pesoCorporalTotal!, 2) /
-                  math.pow(Valores.alturaPaciente! * 100, 2)));
+      return ((9270 * Valores.pesoCorporalTotal!) /
+          (8780 + 244 * Antropometrias.imc));
     } else if (Valores.sexo == 'Masculino') {
-      return (1.10 * Valores.pesoCorporalTotal!) -
-          (128 *
-              (math.pow(Valores.pesoCorporalTotal!, 2) /
-                  math.pow(Valores.alturaPaciente! * 100, 2)));
+      return ((9270 * Valores.pesoCorporalTotal!) /
+          (6680 + 216 * Antropometrias.imc));
     } else {
       return double.nan;
     }
+    // if (Valores.sexo == 'Femenino') {
+    //   return (1.07 * Valores.pesoCorporalTotal!) -
+    //       (148 *
+    //           (math.pow(Valores.pesoCorporalTotal!, 2) /
+    //               math.pow(Valores.alturaPaciente! * 100, 2)));
+    // } else if (Valores.sexo == 'Masculino') {
+    //   return (1.10 * Valores.pesoCorporalTotal!) -
+    //       (128 *
+    //           (math.pow(Valores.pesoCorporalTotal!, 2) /
+    //               math.pow(Valores.alturaPaciente! * 100, 2)));
+    // } else {
+    //   return double.nan;
+    // }
   }
 
   static double get masaMuscularMagra =>
@@ -405,19 +414,16 @@ class Antropometrias {
           (3.1416 * (Valores.pliegueCutaneoTricipital! / 100)));
 
   static double get areaMesobraquial => (math.pow(
-      Valores.circunferenciaMesobraquial! -
-          (3.1416 * (Valores.pliegueCutaneoTricipital! / 100)),
-      2) /
+          Valores.circunferenciaMesobraquial! -
+              (3.1416 * (Valores.pliegueCutaneoTricipital! / 100)),
+          2) /
       (4 * 3.1416));
 
   static double get areaAdiposaMesobraquial =>
       (((perimetroMesobraquial * (Valores.pliegueCutaneoTricipital! / 100)) /
-          2) -
+              2) -
           ((3.1416 * (Valores.pliegueCutaneoTricipital! / 100)) / 4));
 
   static double get AM =>
       ((3.1416) * math.pow(((perimetroMesobraquial) / (2 * 3.1416)), 2));
-
 }
-
-

@@ -5174,7 +5174,7 @@ class Vitales {
     "createQuery": """CREATE TABLE pace_sv (
               ID_Pace_SV int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
               ID_Pace int(10) NOT NULL,
-              Pace_Feca_SV date NOT NULL,
+              Pace_Feca_SV datetime NOT NULL,
               Pace_SV_tas int(10) NOT NULL,
               Pace_SV_tad int(10) NOT NULL,
               Pace_SV_fc int(10) NOT NULL,
@@ -5184,7 +5184,11 @@ class Vitales {
               Pace_SV_est double NOT NULL,
               Pace_SV_pct double NOT NULL, 
               Pace_SV_glu double NOT NULL, 
-              Pace_SV_glu_ayu double NOT NULL
+              Pace_SV_glu_ayu double NOT NULL, 
+              Pace_SV_fio INT, 
+              Pace_SV_pvc INT, 
+              Pace_SV_pic INT, 
+              Pace_SV_pia INT
             ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla para Agregar Signos Vitales del Paciente.';""",
     "truncateQuery": "TRUNCATE pace_sv",
     "dropQuery": "DROP TABLE pace_sv",
@@ -5198,13 +5202,16 @@ class Vitales {
     "registerQuery":
         "INSERT INTO pace_sv (ID_Pace, Pace_Feca_SV, Pace_SV_tas, Pace_SV_tad, "
             "Pace_SV_fc, Pace_SV_fr, Pace_SV_tc, Pace_SV_spo, Pace_SV_est, Pace_SV_pct, "
-            "Pace_SV_glu, Pace_SV_glu_ayu) "
-            "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+            "Pace_SV_glu, Pace_SV_glu_ayu, "
+            "Pace_SV_fio, Pace_SV_pvc, Pace_SV_pic, Pace_SV_pia) "
+            "VALUES (?,?,?,?,?,?,?,?,?,?,?,?, "
+            "?,?,?,?)",
     "updateQuery": "UPDATE pace_sv "
         "SET ID_Pace_SV = ?, ID_Pace = ?, Pace_Feca_SV = ?, Pace_SV_tas = ?, Pace_SV_tad = ?, "
         "Pace_SV_fc = ?, Pace_SV_fr = ?, Pace_SV_tc = ?, Pace_SV_spo = ?, "
         "Pace_SV_est = ?, Pace_SV_pct = ?, "
-        "Pace_SV_glu = ?, Pace_SV_glu_ayu = ? "
+        "Pace_SV_glu = ?, Pace_SV_glu_ayu = ?, "
+        "Pace_SV_fio = ?, Pace_SV_pvc = ?, Pace_SV_pic = ?, Pace_SV_pia = ? "
         "WHERE ID_Pace_SV = ?",
     "deleteQuery": "DELETE FROM pace_sv WHERE ID_Pace_SV = ?",
     "vitalesColumns": [

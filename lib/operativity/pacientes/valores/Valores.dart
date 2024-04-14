@@ -312,6 +312,12 @@ class Valores {
     glucemiaCapilar = json['Pace_SV_glu'] ?? 0;
     horasAyuno = json['Pace_SV_glu_ayu'] ?? 0;
 
+    fraccionInspiratoriaOxigeno = json['Pace_SV_fio'] ?? 21;
+    presionVenosaCentral = json['Pace_SV_pvc'] ?? 0;
+    presionIntraCerebral = json['Pace_SV_pic'] ?? 0;
+    presionIntraabdominal = json['Pace_SV_pia'] ?? 0;
+
+    //
     circunferenciaCuello = json['Pace_SV_cue'] ?? 0;
     circunferenciaCintura = json['Pace_SV_cin'] ?? 0;
     circunferenciaCadera = json['Pace_SV_cad'] ?? 0;
@@ -817,6 +823,8 @@ class Valores {
       circunferenciaFemoralDerecha,
       circunferenciaSuralIzquierda,
       circunferenciaSuralDerecha;
+  static int? fraccionInspiratoriaOxigeno, presionVenosaCentral, presionIntraabdominal,
+      presionIntraCerebral;
   static double? temperaturCorporal,
       pesoCorporalTotal,
       alturaPaciente,
@@ -824,13 +832,9 @@ class Valores {
       factorEstres;
 
   //
-  static int? fraccionInspiratoriaOxigeno;
-  static double? presionVenosaCentral, presionIntraabdominal;
   static double? presionArteriaPulmonarSistolica,
       presionArteriaPulmonarDiastolica,
-      presionMediaArteriaPulmonar,
-      presionCunaPulmonar,
-      presionIntraCerebral;
+      presionMediaArteriaPulmonar, presionCunaPulmonar;
 
   //
   static String? fechaRealizacionBalances = "";
@@ -849,6 +853,16 @@ class Valores {
       succcionBalances = 0,
       drenesBalances = 0,
       otrosEgresosBalances = 0;
+
+  /// Agua Metabólica
+  ///
+  /// * * Al pareccer la fórmula completa es AM= PCT(Kg) * 0.5 * #Horas - 300
+  ///       Aprox. 540 mL/#Horas para PCT 70 kG
+  ///
+  static double get aguaMetabolica {
+    return (Valores.pesoCorporalTotal! * 0.5 * horario!.toDouble()) - 300;
+  }
+
   static double? uresis = 0;
   static int? horario = 24;
 
@@ -912,7 +926,12 @@ class Valores {
   //
   static String? fechaElectrolitosUrinarios;
   static double? creatininaUrinarios, nitrogenoUrinario, bicarbonatoUrinario;
-  static double? sodioUrinarios, potasioUrinarios, cloroUrinarios, fosforoUrinarios, calcioUrinarios, magnesioUrinarios;
+  static double? sodioUrinarios,
+      potasioUrinarios,
+      cloroUrinarios,
+      fosforoUrinarios,
+      calcioUrinarios,
+      magnesioUrinarios;
   //
   static double? ingestaProteica;
   //
@@ -965,8 +984,7 @@ class Valores {
       presionSoporte = 0,
       presionInspiratoriaPico = 0,
       presionPlateau = 0;
-  static double? volumenTidal = 0,
-      distensibilidadEstaticaMedida = 0;
+  static double? volumenTidal = 0, distensibilidadEstaticaMedida = 0;
 
   // Variables Estaticas
   static int presionBarometrica = 585; // mmHg (Nm: 760
@@ -1072,13 +1090,24 @@ class Valores {
 
   static double get indiceCardiaco =>
       (Valores.gastoCardiaco / Antropometrias.SC); // # Indice Cardiaco
+
   static double get IRVS =>
       (Cardiometrias.presionArterialMedia / Valores.indiceCardiaco);
 
+  /// Resistencias Venosas Sístémicas (RVS)
+  ///
+  /// VN: 800-1200 dynas/seg/m2
+  ///
   static double get RVS =>
-      (((Cardiometrias.presionArterialMedia - 12.0) * 80.00) /
-          Valores.indiceCardiaco); //  # Resistencias Venosas Sistémicas
-  // # (((Valores.presionArterialMedia! - 12.0) / IC) * 79.9)
+      (((Cardiometrias.presionArterialMedia - Valores.presionVenosaCentral!) /
+              Valores.gastoCardiaco) *
+          79.9); //  # Resistencias Venosas Sistémicas
+  // RVS # (((Valores.presionArterialMedia! - 12.0) / IC) * 79.9)
+
+  /// Indice de Extracción de Oxígeno (IEO2%)
+  ///
+  /// VN: 24-28%
+  ///
   static double get IEO =>
       (((DAV / CAO) * 100)); // # Indice de Extracción de Oxígeno
   static double get IV =>
@@ -1103,7 +1132,7 @@ class Valores {
 
   static int get PPE => Valores.presionFinalEsiracion!;
 
-  static double get CI => (Valores.pcoArteriales! / DAV);
+  static double get CI => (DAV / Valores.poArteriales!);
 
   /// Shunt Pulmonar : : Fracción QS/QT
   ///
@@ -1119,8 +1148,7 @@ class Valores {
   /// https://i.pinimg.com/originals/ee/da/3e/eeda3ec80ba4c8c3d2b4fd08bdc4b94e.gif
   /// https://1.bp.blogspot.com/-SyrTV0msTUk/VAaTKeiPOjI/AAAAAAAAAHU/SXATI-vDQWs/s1600/shunt.png
   ///
-  static double get shuntPulmonar =>
-      (CCO - CAO) / (CCO - CVO) * 100;
+  static double get shuntPulmonar => (CCO - CAO) / (CCO - CVO) * 100;
 
   /// Shunt Pulmonar II : : Fracción QS/QT
   ///     Basado en el Gradiente Alveolo-Arterial
@@ -1136,10 +1164,8 @@ class Valores {
   ///     Chiang ST. A nomogram for venous shunt (Qs-Qt) calculation. Thorax. 1968 Sep;23(5):563-5. PubMed ID: 5680242 PubMed Logo
   ///
   static double get shuntPulmonarII =>
-      100 * ( .0031 * Gasometricos.GAA) / ((.0031 * Gasometricos.GAA) + 5);
+      100 * (.0031 * Gasometricos.GAA) / ((.0031 * Gasometricos.GAA) + 5);
 
-
-  
   // (Valores.pcoArteriales! * Valores.frecuenciaVentilatoria!) / 40.00;
 
   // # Análisis Gasométrico : : de pCO2 / pO2
@@ -1185,6 +1211,10 @@ class Valores {
     }
   }
 
+  /// Volumen Látido Sístolico (VLS)
+  ///
+  ///
+  ///
   static double get VLS => ((Cardiometrias.gastoCardiacoFick * 1000) /
       Valores
           .frecuenciaCardiaca!); //  # Volumen Latido Sistólico De Litros a mL
@@ -1195,13 +1225,25 @@ class Valores {
   static double get DO =>
       ((gastoCardiaco * CAO) * (10)); // # Disponibilidad de Oxígeno
   static double get iDO =>
-      (DO / Antropometrias.SCS); // # Indice de Disponibilidad de Oxígeno
+      (DO / Antropometrias.SCE); // # Indice de Disponibilidad de Oxígeno
   static double get TO =>
       ((capacidadOxigeno * CAO) / (10)); // # Transporte de Oxígeno // CAP_O
+
+  /// Shunt Fisiologíco (SF) (QS/QT)
+  ///
+  /// VN: <15%
+  ///
   static double get SF =>
       ((CCO - CAO) / (CCO - CVO)) * (100); //  # Shunt Fisiológico
+
+  /// Volumen Disponible de Oxígeno
+  ///     ** Consumo de Oxígeno
+  /// VN : 200-300ml/min
+  ///
   static double get CO =>
       ((gastoCardiaco * DAV) * (10)); // # Consumo de Oxígeno
+
+  ///
   static double get cAO => (CAO / DAV); // # Cociente Arterial de Oxígeno
   static double get cVO => (CVO / DAV); // # Cociente Venoso de Oxígeno
 
@@ -1215,24 +1257,65 @@ class Valores {
   static double get FE => 0.0;
 
 // # Parametros Hemodinamicos ******************************************
+  /// Concentración Arterial de Oxígeno
+  /// VN: 14-19ml/O2%
+  ///
   static double get CAO =>
-      (((Valores.hemoglobina! * 1.34) * Valores.soArteriales!) +
-          (Valores.poArteriales! * 0.031)) /
-      (100); //  # Concentración Arterial de Oxígeno
+      (((Valores.hemoglobina! * 1.34) * (Valores.soArteriales! / 100)) +
+          (Valores.poArteriales! *
+              0.031)); // / (100); //  # Concentración Arterial de Oxígeno
+
+  /// Concentración Venosa de Oxígeno
+  /// VN: 11-16ml/O2%
+  ///
   static double get CVO =>
-      (((Valores.hemoglobina! * 1.34) * Valores.soVenosos!) +
-          (Valores.poVenosos! * 0.031)) /
-      (100); // # Concentración Venosa de Oxígeno
+      (((Valores.hemoglobina! * 1.34) * (Valores.soVenosos! / 100)) +
+          (Valores.poVenosos! *
+              0.031)); //  / (100); // # Concentración Venosa de Oxígeno
+
+  /// Concentración Capilar de Oxígeno
+  ///
+  /// VN: 16-20ml/O2%
+  ///
   static double get CCO => ((Valores.hemoglobina! * 1.39) +
-      (Valores.poArteriales! * 0.0031)); // # Concentración Capilar de Oxígeno
+      (Valores.poArteriales! * 0.031)); // # Concentración Capilar de Oxígeno
   // (((Valores.hemoglobina! * 1.34) *
   //         (Valores.soVenosos! - Valores.soArteriales!) +
   //     ((Valores.poVenosos! - Valores.poArteriales!) * 0.031)) /
   // (100));
-  static double get DAV => (CAO - CVO); // # Diferencia Arteriovenosa
+
+  static double get CACO =>
+      (((Valores.hemoglobina! * 1.34) * (Valores.soArteriales! / 100)) +
+          (Valores.pcoArteriales! * 0.031)) /
+      (100); //  # Concentración Arterial de Oxígeno
+  static double get CVCO =>
+      (((Valores.hemoglobina! * 1.34) * (Valores.soVenosos! / 100)) +
+          (Valores.pcoVenosos! * 0.031)) /
+      (100); // # Concentración Venosa de Oxígeno
+
+  static double get DAV => (CAO - CVO); // # Diferencia Arteriovenosa de O2
+  
+  /// Delta de CO2 (D_CO2) , DavCO2
+  ///     *** Denota Hipoperfusión tisular.
+  /// VN: menor 6 mmHg
+  /// 
+  static double get DavCO2 =>
+      (CACO - CVCO); // # Diferencia Arteriovenosa de CO2
+
+  /// Delta DavCO2/DavO2 : PavCO2
+  ///     Cociente de la división de CO2 veno-arterial y la diferencia arteriovenosa
+  /// VN : Menor a 1.6 . . . Normal . .
+  ///         Mayor a 1.6 indica Hipoperfusión Tisular
+  ///
+  static double get DvaCO2DavO2 => (Gasometricos.DeltaCOS - DAV);
   static double get capacidadOxigeno =>
       (Valores.hemoglobina! * (1.36)); //  # Capacidad de Oxígeno
-  // # Gasto Cardiaco
+
+  /// Gasto Cardiaco (GC)
+  ///
+  ///   Como resultad de la DavO2 y CaO2
+  ///   VN: 4.75 L/min
+  ///
   static double get gastoCardiaco {
     if (DAV != 0) {
       return (((DAV * 100) / CAO) / (DAV)); // # Gasto Cardiaco
@@ -1322,8 +1405,7 @@ class Valores {
   //
   static double get balanceTotal {
     if (Valores.ingresosBalances != 0 && Valores.egresosBalances != 0) {
-      return (Valores.ingresosBalances -
-          (Valores.egresosBalances + Valores.perdidasInsensibles));
+      return (Valores.ingresosBalances - (Valores.egresosBalances));
     } else {
       return 0;
     }

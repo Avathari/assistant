@@ -36,7 +36,9 @@ class _GeneralesState extends State<Generales> {
 
   @override
   void initState() {
-    textDateEstudyController.text = Calendarios.today(format: 'yyyy-MM-dd');
+    textDateEstudyController.text = Calendarios.today(format: 'yyyy-MM-dd HH:mm:ss');
+    //
+
     if (Valores.alturaPaciente != null) {
       estTextController.text = Valores.alturaPaciente!.toString();
     } else {
@@ -50,8 +52,10 @@ class _GeneralesState extends State<Generales> {
       Valores.pesoCorporalTotal = 0;
       pctTextController.text = '0';
     }
-
-    viaPerdidaTextController.text = Valores.perdidasInsensibles.toString();
+//
+    fraccionInspiratoriaOxigenoTextController.text = 21.toString();
+    viaOtrosIngresosTextController.text = Valores.aguaMetabolica.toStringAsFixed(2);
+    viaPerdidaTextController.text = Valores.perdidasInsensibles.toStringAsFixed(2);
 
     // Repositorio de Balances *****************************
     Archivos.readJsonToMap(
@@ -155,14 +159,15 @@ class _GeneralesState extends State<Generales> {
   // **********************************************
   var fraccionInspiratoriaOxigenoTextController = TextEditingController();
   //
+  var presionVenosaCentralTextController = TextEditingController();
+  var presionIntraabdominalTextController = TextEditingController();
+  var presionIntraCerebralTextController = TextEditingController();
+  //
   var presionArteriaPulmonarSistolicaTextController = TextEditingController();
   var presionArteriaPulmonarDiastolicaTextController = TextEditingController();
   var presionMediaArteriaPulmonarTextController = TextEditingController();
   var presionCunaPulmonarTextController = TextEditingController();
-  //
-  var presionVenosaCentralTextController = TextEditingController();
-  var presionIntraabdominalTextController = TextEditingController();
-  var presionIntraCerebralTextController = TextEditingController();
+
 // **********************************************
   var isHorarioValue = Balances.actualDiagno[6];
 // **********************************************
@@ -202,12 +207,11 @@ class _GeneralesState extends State<Generales> {
         gluTextController.text,
         gluAyuTextController.text,
         //
-        // PVC
-        // PIC
+        fraccionInspiratoriaOxigenoTextController.text,
+        presionVenosaCentralTextController.text,
+        presionIntraCerebralTextController.text,
+        presionIntraabdominalTextController.text,
         //
-        // PCP
-        // PWAP
-        // PIA
         idOperation
       ];
       listOfSecondValues = [
@@ -388,7 +392,7 @@ class _GeneralesState extends State<Generales> {
                 onSelected: () {
                   setState(() {
                     textDateEstudyController.text =
-                        Calendarios.today(format: "yyyy/MM/dd");
+                        Calendarios.today(format: "yyyy/MM/dd HH:mm:ss");
                   });
                 },
                 inputFormat: MaskTextInputFormatter(
@@ -521,6 +525,87 @@ class _GeneralesState extends State<Generales> {
                 ],
               ),
               CrossLine(thickness: 6, height: 15),
+              Row(
+                children: [
+                  Expanded(
+                    child: EditTextArea(
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      numOfLines: 1,
+                      labelEditText: 'FiO2',
+                      textController:
+                      fraccionInspiratoriaOxigenoTextController,
+                      onChange: (value) {
+                        setState(() {
+                          Valores.fraccionInspiratoriaOxigeno =
+                              Valores.fraccionInspiratoriaVentilatoria =
+                              int.parse(value);
+                        });
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: EditTextArea(
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      numOfLines: 1,
+                      labelEditText: 'C. Abd. ',
+                      textController: circunferenciaCinturaTextController,
+                      onChange: (value) {
+                        setState(() {
+                          Valores.circunferenciaCintura = int.parse(value);
+                        });
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: EditTextArea(
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      numOfLines: 1,
+                      labelEditText: 'PVC',
+                      textController: presionVenosaCentralTextController,
+                      onChange: (value) {
+                        setState(() {
+                          Valores.presionVenosaCentral = int.parse(value);
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: EditTextArea(
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      numOfLines: 1,
+                      labelEditText: 'PIC',
+                      textController: presionIntraCerebralTextController,
+                      onChange: (value) {
+                        setState(() {
+                          Valores.presionIntraCerebral = int.parse(value);
+                        });
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: EditTextArea(
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      numOfLines: 1,
+                      labelEditText: 'PIA', // Presión Intraabdominal
+                      textController: presionIntraabdominalTextController,
+                      onChange: (value) {
+                        setState(() {
+                          Valores.presionIntraabdominal = int.parse(value);
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
               CrossLine(thickness: 3, height: 15),
             ],
           ),
@@ -994,7 +1079,7 @@ class _GeneralesState extends State<Generales> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            flex: 6,
+            flex: 3,
             child: SingleChildScrollView(
               controller: ScrollController(),
               child: Column(
@@ -1010,7 +1095,7 @@ class _GeneralesState extends State<Generales> {
                     onSelected: () {
                       setState(() {
                         textDateEstudyController.text =
-                            Calendarios.today(format: "yyyy/MM/dd");
+                            Calendarios.today(format: "yyyy/MM/dd HH:mm:ss");
                       });
                     },
                     inputFormat: MaskTextInputFormatter(
@@ -1198,22 +1283,7 @@ class _GeneralesState extends State<Generales> {
                           textController: presionVenosaCentralTextController,
                           onChange: (value) {
                             setState(() {
-                              Valores.presionVenosaCentral =
-                                  double.parse(value);
-                            });
-                          },
-                        ),
-                      ),
-                      Expanded(
-                        child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(),
-                          numOfLines: 1,
-                          labelEditText: 'P.C. Pulmonar', //
-                          textController: presionCunaPulmonarTextController,
-                          onChange: (value) {
-                            setState(() {
-                              Valores.presionCunaPulmonar = double.parse(value);
+                              Valores.presionVenosaCentral = int.parse(value);
                             });
                           },
                         ),
@@ -1227,26 +1297,11 @@ class _GeneralesState extends State<Generales> {
                           keyBoardType: TextInputType.number,
                           inputFormat: MaskTextInputFormatter(),
                           numOfLines: 1,
-                          labelEditText: 'PWAP',
-                          textController: presionCunaPulmonarTextController,
-                          onChange: (value) {
-                            setState(() {
-                              Valores.presionCunaPulmonar = double.parse(value);
-                            });
-                          },
-                        ),
-                      ),
-                      Expanded(
-                        child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(),
-                          numOfLines: 1,
                           labelEditText: 'PIC',
                           textController: presionIntraCerebralTextController,
                           onChange: (value) {
                             setState(() {
-                              Valores.presionIntraCerebral =
-                                  double.parse(value);
+                              Valores.presionIntraCerebral = int.parse(value);
                             });
                           },
                         ),
@@ -1260,8 +1315,7 @@ class _GeneralesState extends State<Generales> {
                           textController: presionIntraabdominalTextController,
                           onChange: (value) {
                             setState(() {
-                              Valores.presionIntraabdominal =
-                                  double.parse(value);
+                              Valores.presionIntraabdominal = int.parse(value);
                             });
                           },
                         ),
@@ -2079,9 +2133,11 @@ class _GeneralesState extends State<Generales> {
                               : actualView == 6
                                   ? AuxiliaresRevisiones.hepaticos(context)
                                   : actualView == 7
-                                      ? AuxiliaresRevisiones.electrolitos(context)
+                                      ? AuxiliaresRevisiones.electrolitos(
+                                          context)
                                       : actualView == 8
-                                          ? AuxiliaresRevisiones.electrolitos(context)
+                                          ? AuxiliaresRevisiones.electrolitos(
+                                              context)
                                           // : actualView == 9
                                           //     ? const BalanceHidrico()
                                           //     : actualView == 10
@@ -2113,9 +2169,7 @@ class _GeneralesState extends State<Generales> {
                                           //                                                 ? Hidricos()
                                           //                                                 : actualView == 21
                                           //                                                     ? const Hemoderivados()
-                                                                                              : Container(),
+                                          : Container(),
     );
   }
-
-
 }

@@ -1,6 +1,7 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
@@ -25,6 +26,8 @@ class _VenososState extends State<Venosos> {
   void initState() {
     final f = DateFormat('yyyy-MM-dd');
     textDateEstudyController.text = f.format(DateTime.now());
+    //
+    textFIOResultController.text = Valores.fraccionInspiratoriaOxigeno!.toString();
     super.initState();
   }
 
