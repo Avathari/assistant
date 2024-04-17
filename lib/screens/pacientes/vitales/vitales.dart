@@ -191,10 +191,10 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                     flex: 4,
                     child: EditTextArea(
                       labelEditText: 'Fecha de realización',
-                      keyBoardType: TextInputType.number,
+                      keyBoardType: TextInputType.datetime,
                       numOfLines: 1,
                       inputFormat: MaskTextInputFormatter(
-                          mask: '####/##/##',
+                          mask: '####/##/## ##:##:##', // 'yyyy-MM-dd HH:mm:ss'
                           filter: {"#": RegExp(r'[0-9]')},
                           type: MaskAutoCompletionType.lazy),
                       textController: fechaRealizacionTextController,

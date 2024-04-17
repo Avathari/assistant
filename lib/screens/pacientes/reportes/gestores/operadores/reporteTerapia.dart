@@ -287,7 +287,7 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
             labelButton: 'Análisis Ventilatorio',
             onPress: () {
               Operadores.openDialog(
-                  context: context, chyldrim: const Ventilatorios());
+                  context: context, chyldrim:  Ventilatorios());
             },
           ),
           GrandIcon(

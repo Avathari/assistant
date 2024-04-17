@@ -244,7 +244,8 @@ class Gasometricos {
       (24) -
           ((Valores.bicarbonatoArteriales! + 10.00) *
               (Valores.pHArteriales! - 7.4)); //  # Bicarbonato Standard
-  static double get d_GAP => (GAP - 14) / (20 - Valores.bicarbonatoArteriales!);
+  static double get d_GAP => (GAP - 14);
+  static double get d_HCO => (20 - Valores.bicarbonatoArteriales!);
 
   // Trastorno_DGAP = '';
   static String get trastorno_d_GAP {
@@ -257,9 +258,17 @@ class Gasometricos {
     }
   }
 
-  static double get D_d_GAP => d_GAP - Valores.bicarbonatoArteriales!;
+  static double get D_d_GAP => d_GAP - d_HCO;
 
-  static double get GAPO => ((280) / (Hidrometrias.osmolaridadSerica));
+  /// Gap Osmolar (ΔOms)
+  ///
+  /// *** Existen bibliografias que, de hecho, toman como fórmula OSMmedido * OSMcalculado
+  ///       Tal que . . . OSMc = (2*Na2) + (Glu/18)
+  /// VN: menor a 10 - 15
+  ///         mayor a 25 sugiere Intoxicación por Etilen Glicol
+  ///
+  ///
+  static double get GAPO => ((280) - (Hidrometrias.osmolaridadSerica));
 
   static double get DIF =>
       (Valores.sodio! +
@@ -324,6 +333,11 @@ class Gasometricos {
   static double get PaO2PAO2 =>
       (Valores.poArteriales! / PAO); //  # Relación PaO2 / PAO2
 
+  /// Saturación Venosa Central (SvcO2)
+  ///
+  ///
+  ///
+  static double get SvcO2 => (Valores.soArteriales!) - (Valores.DO - Valores.TO) * Valores.hemoglobina!;
   // # ######################################################
   // # Reglas del Bicarbonato
   // # ######################################################

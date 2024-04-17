@@ -24,7 +24,7 @@ class _VenososState extends State<Venosos> {
 
   @override
   void initState() {
-    final f = DateFormat('yyyy-MM-dd');
+    final f = DateFormat('yyyy-MM-dd HH:mm:ss');
     textDateEstudyController.text = f.format(DateTime.now());
     //
     textFIOResultController.text = Valores.fraccionInspiratoriaOxigeno!.toString();
@@ -46,11 +46,11 @@ class _VenososState extends State<Venosos> {
           onSelected: () {
             setState(() {
               textDateEstudyController.text =
-                  Calendarios.today(format: "yyyy/MM/dd");
+                  Calendarios.today(format: "yyyy/MM/dd HH:mm:ss");
             });
           },
           inputFormat: MaskTextInputFormatter(
-              mask: '####/##/##',
+              mask: '####/##/## ##:##:##', // 'yyyy-MM-dd HH:mm:ss'
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
         ),

@@ -57,7 +57,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
       case Constantes.Register:
         widget._operationButton = 'Registrar';
         fechaRealizacionTextController.text =
-            Calendarios.today(format: 'yyyy-MM-dd');
+            Calendarios.today(format: 'yyyy-MM-dd HH:mm:ss');
 
         Exploracion.tuboEndotraqueal = Items.tuboendotraqueal[0];
         Exploracion.haciaArcadaDentaria = Items.arcadaDentaria[0];
@@ -211,11 +211,13 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
   // *************************************************************************
   Container DeskTopView() {
     return Container(
-      margin: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(10.0),
+      margin: const EdgeInsets.all(6.0),
       decoration: ContainerDecoration.roundedDecoration(),
       child: Column(
         children: [
           Expanded(
+              flex: !isDesktop(context) ?1:2,
               child: Row(
             children: [
               Expanded(
@@ -224,6 +226,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                   keyBoardType: TextInputType.number,
                   inputFormat: TextFormat.dateFormat,
                   numOfLines: 1,
+                  optionEqui: 4,
                   labelEditText: 'Fecha de realización',
                   textController: fechaRealizacionTextController,
                   iconData: Icons.calendar_today,
@@ -232,12 +235,12 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                   selection: true,
                   onSelected: () {
                     fechaRealizacionTextController.text =
-                        Calendarios.today(format: 'yyyy-MM-dd');
+                        Calendarios.today(format: 'yyyy-MM-dd HH:mm:ss');
                   },
                 ),
               ),
               Expanded(
-                flex: 3,
+                flex: 2,
                 child: Spinner(
                   width: SpinnersValues.maximumWidth(context: context),
                   tittle: 'Fase ventilatoria',
@@ -253,50 +256,32 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
             ],
           )),
           CrossLine(
-            height: 20,
-            thickness: 2,
+            height: 15,
+            thickness: 4
           ),
           Expanded(
-              child: Row(
-            children: [
-              Expanded(
-                flex: 3,
-                child: Spinner(
-                  width: isTablet(context) || isDesktop(context)
-                      ? 500
-                      : isMobile(context)
-                          ? 250
-                          : 150,
-                  tittle: 'M. Ventilatorio',
-                  onChangeValue: (value) {
-                    setState(() {
-                      modoVentilatorioValue = value;
-                      Valores.modalidadVentilatoria =
-                          Ventilaciones.modoVentilatorio(
-                              modalidadVentilatoria: modoVentilatorioValue!);
-                      selectModal();
-                    });
-                  },
-                  items: Ventilaciones.modalidades,
-                  initialValue: modoVentilatorioValue,
-                ),
-              ),
-              // Expanded(
-              //   child: Spinner(
-              //     width: SpinnersValues.maximumWidth(context: context),
-              //     tittle: 'Dispositivo empleado',
-              //     onChangeValue: (value) {
-              //       setState(() {
-              //         Valores.dispositivoEmpleado = value;
-              //       });
-              //     },
-              //     items: Items.dispositivosOxigeno,
-              //     initialValue: Valores.dispositivoEmpleado,
-              //   ),
-              // ),
-            ],
-          )),
+              flex: 2,
+              child: Spinner(
+                width: isTablet(context) || isDesktop(context)
+                    ? 500
+                    : isMobile(context)
+                        ? 250
+                        : 150,
+                tittle: 'M. Ventilatorio',
+                onChangeValue: (value) {
+                  setState(() {
+                    modoVentilatorioValue = value;
+                    Valores.modalidadVentilatoria =
+                        Ventilaciones.modoVentilatorio(
+                            modalidadVentilatoria: modoVentilatorioValue!);
+                    selectModal();
+                  });
+                },
+                items: Ventilaciones.modalidades,
+                initialValue: modoVentilatorioValue,
+              )),
           Expanded(
+              flex: 2,
               child: Row(
             children: [
               Expanded(
@@ -340,14 +325,14 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
             ],
           )),
           CrossLine(
-            height: 20,
+            height: 10,
             thickness: 2,
           ),
           Expanded(
             flex: isTabletAndDesktop(context)
                 ? 9
                 : isDesktop(context)
-                    ? 7
+                    ? 10
                     : isTablet(context)
                         ? 6
                         : 6,
@@ -365,6 +350,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                             children: component(context),
                           ))),
                   Expanded(
+                    flex: 2,
                       child: Column(
                     children: [
                       Expanded(
@@ -421,9 +407,13 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
               ),
             ),
           ),
+          CrossLine(
+
+          ),
           Expanded(
+            flex: !isDesktop(context) ?1:2,
             child: GrandButton(
-                weigth: 300,
+                weigth: 1000,
                 labelButton: widget._operationButton,
                 onPress: () {
                   operationMethod(context);
@@ -819,77 +809,101 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
 
   List<Widget> intermitenteComponent(BuildContext context) {
     return [
-      EditTextArea(
-        keyBoardType: TextInputType.number,
-        inputFormat: TextFormat.numberFourFormat,
-        labelEditText: 'Presión Inspiratoria (mmHg)',
-        textController: pInspirattoriaTextController,
-        numOfLines: 1,
-        onChange: (value) {
-          setState(() {
-            Valores.presionInspiratoriaPico = int.parse(value);
-          });
-        },
+      Row(
+        children: [
+          Expanded(
+            child: EditTextArea(
+              keyBoardType: TextInputType.number,
+              inputFormat: TextFormat.numberFourFormat,
+              labelEditText: 'Presión Inspiratoria (mmHg)',
+              textController: pInspirattoriaTextController,
+              numOfLines: 1,
+              onChange: (value) {
+                setState(() {
+                  Valores.presionInspiratoriaPico = int.parse(value);
+                });
+              },
+            ),
+          ),
+          Expanded(
+            child: EditTextArea(
+              keyBoardType: TextInputType.number,
+              inputFormat: TextFormat.numberFourFormat,
+              labelEditText: 'Volumen Tidal Espiratorio (mL)',
+              textController: volTidalEspTextController,
+              numOfLines: 1,
+              onChange: (value) {
+                setState(() {
+                  Valores.volumenVentilatorio = int.parse(value);
+                });
+              },
+            ),
+          ),
+        ],
       ),
-      EditTextArea(
-        keyBoardType: TextInputType.number,
-        inputFormat: TextFormat.numberFourFormat,
-        labelEditText: 'Volumen Tidal Espiratorio (mL)',
-        textController: volTidalEspTextController,
-        numOfLines: 1,
-        onChange: (value) {
-          setState(() {
-            Valores.volumenVentilatorio = int.parse(value);
-          });
-        },
+      Row(
+        children: [
+          Expanded(
+            child: EditTextArea(
+              keyBoardType: TextInputType.number,
+              inputFormat: TextFormat.numberFourFormat,
+              labelEditText: 'Presión Máxima (mmHg)',
+              textController: pMaximaTextController,
+              numOfLines: 1,
+              onChange: (value) {
+                setState(() {
+                  Valores.presionMaxima = int.parse(value);
+                });
+              },
+            ),
+          ),
+          Expanded(
+            child: EditTextArea(
+              keyBoardType: TextInputType.number,
+              inputFormat: TextFormat.numberFourFormat,
+              labelEditText: 'Flujo (L/min)',
+              textController: flujoTextController,
+              numOfLines: 1,
+              onChange: (value) {
+                setState(() {
+                  Valores.flujoVentilatorio = int.parse(value);
+                });
+              },
+            ),
+          ),
+        ],
       ),
-      EditTextArea(
-        keyBoardType: TextInputType.number,
-        inputFormat: TextFormat.numberFourFormat,
-        labelEditText: 'Presión Máxima (mmHg)',
-        textController: pMaximaTextController,
-        numOfLines: 1,
-        onChange: (value) {
-          setState(() {
-            Valores.presionMaxima = int.parse(value);
-          });
-        },
-      ),
-      EditTextArea(
-        keyBoardType: TextInputType.number,
-        inputFormat: TextFormat.numberFourFormat,
-        labelEditText: 'Flujo (L/min)',
-        textController: flujoTextController,
-        numOfLines: 1,
-        onChange: (value) {
-          setState(() {
-            Valores.flujoVentilatorio = int.parse(value);
-          });
-        },
-      ),
-      EditTextArea(
-        keyBoardType: TextInputType.number,
-        inputFormat: TextFormat.numberFourFormat,
-        labelEditText: 'Presión Platteu (mmHg)',
-        textController: pPlatTextController,
-        numOfLines: 1,
-        onChange: (value) {
-          setState(() {
-            Valores.presionPlateau = int.parse(value);
-          });
-        },
-      ),
-      EditTextArea(
-        keyBoardType: TextInputType.number,
-        inputFormat: TextFormat.numberFourFormat,
-        labelEditText: 'Presión Soporte (mmHg)',
-        textController: pSoporteTextController,
-        numOfLines: 1,
-        onChange: (value) {
-          setState(() {
-            Valores.presionSoporte = int.parse(value);
-          });
-        },
+      Row(
+        children: [
+          Expanded(
+            child: EditTextArea(
+              keyBoardType: TextInputType.number,
+              inputFormat: TextFormat.numberFourFormat,
+              labelEditText: 'Presión Platteu (mmHg)',
+              textController: pPlatTextController,
+              numOfLines: 1,
+              onChange: (value) {
+                setState(() {
+                  Valores.presionPlateau = int.parse(value);
+                });
+              },
+            ),
+          ),
+          Expanded(
+            child: EditTextArea(
+              keyBoardType: TextInputType.number,
+              inputFormat: TextFormat.numberFourFormat,
+              labelEditText: 'Presión Soporte (mmHg)',
+              textController: pSoporteTextController,
+              numOfLines: 1,
+              onChange: (value) {
+                setState(() {
+                  Valores.presionSoporte = int.parse(value);
+                });
+              },
+            ),
+          ),
+        ],
       ),
       CrossLine(),
     ];
@@ -1289,7 +1303,12 @@ class _GestionVentilacionesState extends State<GestionVentilaciones> {
                 : Expanded(flex: 1, child: Container())
             : isDesktop(context)
                 ? widget.actualSidePage != null
-                    ? Expanded(flex: 2, child: widget.actualSidePage!)
+                    ? Expanded(flex: 3, child: Row(
+                      children: [
+                        Expanded(child: widget.actualSidePage!),
+                        const Expanded(child: AnalisisVentilatorio()),
+                      ],
+                    ))
                     : Expanded(flex: 1, child: Container())
                 : Container()
       ]),
@@ -1482,6 +1501,6 @@ class AnalisisVentilatorio extends StatefulWidget {
 class _AnalisisVentilatorioState extends State<AnalisisVentilatorio> {
   @override
   Widget build(BuildContext context) {
-    return const Ventilatorios();
+    return Ventilatorios();
   }
 }

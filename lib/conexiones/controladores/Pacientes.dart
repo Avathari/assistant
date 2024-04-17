@@ -7652,10 +7652,11 @@ class Pendientes {
       "Manejo Avanzado de la Vía Aérea", // MAVA
       "Intubación Orotraqueal", // IOT
       "Extubación", // EXT
+      'Hemotranfusión', // TRAN
+      'Sesión de Hemodialisis', //  HEMO
+      "Cirugía", // QUIR
       "",
-      "",
-      "",
-    ],
+    ], // PREVIOS . . .
     [
       'Radiografías',
       'Ultrasonidos',

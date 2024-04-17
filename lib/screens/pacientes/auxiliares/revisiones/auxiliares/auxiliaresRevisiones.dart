@@ -39,7 +39,7 @@ class AuxiliaresRevisiones {
                       onEdit: (value) {
                         Datos.portapapeles(
                             context: context,
-                            text: Auxiliares.porFecha(fechaActual: value));
+                            text: Auxiliares.porFecha(fechaActual: value, esAbreviado: true));
                       },
                     );
                   }),

@@ -1,5 +1,4 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
-import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/ventometr%C3%ADas.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
@@ -7,17 +6,16 @@ import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CrossLine.dart';
-import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/TittleContainer.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Ventilatorios extends StatefulWidget {
-  const Ventilatorios({Key? key}) : super(key: key);
+
+  Ventilatorios({super.key});
 
   @override
   State<Ventilatorios> createState() => _VentilatoriosState();
@@ -32,6 +30,7 @@ class _VentilatoriosState extends State<Ventilatorios> {
   void initState() {
 
     setState(() {
+      //
       Valores.distensibilidadEstaticaMedida = Ventometrias
           .distensibilidadPulmonarEstatica;
     });
@@ -70,8 +69,7 @@ class _VentilatoriosState extends State<Ventilatorios> {
                         children: [
                           ValuePanel(
                             firstText: 'Vt',
-                            secondText:
-                                Valores.volumenTidal!.toStringAsFixed(0),
+                            secondText: Valores.volumenTidal!.toStringAsFixed(0),
                             thirdText: 'mL',
                           ),
                           CrossLine(),
@@ -264,59 +262,56 @@ class _VentilatoriosState extends State<Ventilatorios> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Expanded(
-                                      child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            ValuePanel(
-                                              firstText: "VM",
-                                              secondText: Ventometrias
-                                                  .volumenMinuto
-                                                  .toStringAsFixed(1),
-                                              thirdText: "L/min",
-                                            ), // Volumen Minuto
-                                            ValuePanel(
-                                              firstText: "Pta",
-                                              secondText: Ventometrias
-                                                  .presionTranspulmonar
-                                                  .toStringAsFixed(2),
-                                              thirdText: "cmH2O",
-                                            ), // Pta : Presión Transpulmonar
-                                            CrossLine(),
-                                            ValuePanel(
-                                              firstText: "Dp (Vt/Cstat)",
-                                              secondText:
-                                                  (Ventometrias.drivingPressure)
-                                                      .toStringAsFixed(0),
-                                              thirdText: "L/cmH2O",
-                                            ),
-                                            ValuePanel(
-                                              firstText: "Dpres",
-                                              secondText: (Ventometrias
-                                                      .presionDistencion)
-                                                  .toStringAsFixed(0),
-                                              thirdText: "L/cmH2O",
-                                            ),
-                                            CrossLine(),
-                                            Expanded(
-                                              child: ValuePanel(
+                                      child: SingleChildScrollView(
+                                        controller: ScrollController(),
+                                        child: Column(
+                                            children: [
+                                              ValuePanel(
+                                                firstText: "VM",
+                                                secondText: Ventometrias
+                                                    .volumenMinuto
+                                                    .toStringAsFixed(1),
+                                                thirdText: "L/min",
+                                              ), // Volumen Minuto
+                                              ValuePanel(
+                                                firstText: "Pta",
+                                                secondText: Ventometrias
+                                                    .presionTranspulmonar
+                                                    .toStringAsFixed(2),
+                                                thirdText: "cmH2O",
+                                              ), // Pta : Presión Transpulmonar
+                                              CrossLine(),
+                                              ValuePanel(
+                                                firstText: "Dp (Vt/Cstat)",
+                                                secondText:
+                                                    (Ventometrias.drivingPressure)
+                                                        .toStringAsFixed(0),
+                                                thirdText: "L/cmH2O",
+                                              ),
+                                              ValuePanel(
+                                                firstText: "Dpres",
+                                                secondText: (Ventometrias
+                                                        .presionDistencion)
+                                                    .toStringAsFixed(0),
+                                                thirdText: "L/cmH2O",
+                                              ),
+                                              CrossLine(),
+                                              ValuePanel(
                                                 firstText: "W.O.B.",
                                                 secondText: Ventometrias
                                                     .poderMecanico
                                                     .toStringAsFixed(1),
                                                 thirdText: "cmH2O",
                                               ),
-                                            ),
-                                            Expanded(
-                                              child: ValuePanel(
+                                              ValuePanel(
                                                 firstText: "P.d.A.",
                                                 secondText: Ventometrias
                                                     .poderDistencion
                                                     .toStringAsFixed(1),
                                                 thirdText: "cmH2O",
                                               ),
-                                            ),
-                                          ]),
+                                            ]),
+                                      ),
                                     ),
                                     Expanded(
                                       child: SingleChildScrollView(

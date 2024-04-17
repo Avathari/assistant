@@ -18,6 +18,7 @@ class Cardiometrias {
       "Volemia Aproximada: ${Valores.volemiaAproximada.toStringAsFixed(2)} mL,  "
       "Volumen Plasmático Aproximado: ${Valores.volumenPlasmatico.toStringAsFixed(2)} L. \n";
 
+  // Δ
   static String get transporteOxigeno => "Parámetros Hemodinamicos - "
       "CaO2 ${Valores.CAO.toStringAsFixed(2)} mL/dL, " // Concentración Arterial de Oxígeno
       "CvO2 ${Valores.CVO.toStringAsFixed(2)} mL/dL, " // Concentración Venosa de Oxígeno

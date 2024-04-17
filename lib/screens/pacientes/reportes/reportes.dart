@@ -1597,7 +1597,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               : widget.actualLateralPage == 1
                   ? Hidricos(isLateral: true)
                   : widget.actualLateralPage == 2
-                      ? const Ventilatorios()
+                      ? Ventilatorios()
                       : widget.actualLateralPage == 3
                           ? const Gasometricos()
                           : widget.actualLateralPage == 4

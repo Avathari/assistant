@@ -428,7 +428,7 @@ class _RevisionesState extends State<Revisiones> {
                                                                                       : widget.actualView == 14
                                                                                           ? Cardiovasculares()
                                                                                           : widget.actualView == 15
-                                                                                              ? const Ventilatorios()
+                                                                                              ? Ventilatorios()
                                                                                               : widget.actualView == 16
                                                                                                   ? const Gasometricos()
                                                                                                   : widget.actualView == 17
@@ -1072,7 +1072,7 @@ class _RevisionesState extends State<Revisiones> {
                                                                               14
                                                                           ? Cardiovasculares()
                                                                           : widget.actualView == 15
-                                                                              ? const Ventilatorios()
+                                                                              ? Ventilatorios()
                                                                               : widget.actualView == 16
                                                                                   ? const Gasometricos()
                                                                                   : widget.actualView == 17

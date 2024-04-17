@@ -1076,9 +1076,6 @@ class Valores {
 
   static double? constantePerdidasInsensibles = 0.5;
 
-  // # Cociente Respiratorio
-  static double get RI => 0.8;
-
   // # Indice de Volumen Sanguineo
   static double get indiceVolumenSanguineo =>
       Hidrometrias.volumenPlasmatico /
@@ -1222,6 +1219,7 @@ class Valores {
       Antropometrias
           .SCE); //mL/Lat/m2 *IC se multiplica por 1000 para ajustar unidades a mL/min/m2
   // ((indiceCardiaco * 1000) / Valores.frecuenciaCardiaca!);
+  /// D
   static double get DO =>
       ((gastoCardiaco * CAO) * (10)); // # Disponibilidad de Oxígeno
   static double get iDO =>
@@ -1258,6 +1256,7 @@ class Valores {
 
 // # Parametros Hemodinamicos ******************************************
   /// Concentración Arterial de Oxígeno
+  ///
   /// VN: 14-19ml/O2%
   ///
   static double get CAO =>
@@ -1308,6 +1307,38 @@ class Valores {
   ///         Mayor a 1.6 indica Hipoperfusión Tisular
   ///
   static double get DvaCO2DavO2 => (Gasometricos.DeltaCOS - DAV);
+
+  /// Cociente Respiratorio
+  ///   ** Tambien expresado como . . .
+  ///             CR = VCO2 / VO2
+  ///             CR = GC*CavCO2 / GC * CavO2
+  ///             CR = D_PavCO2 / D_PavO2
+  /// VN mayor a 1 (1,4-1,68 mmHg/mL) . .
+  /// * * * Los cambios en el CO2 (efecto Haldane), la concentración de hemoglobina y EO2
+  /// tisular influyen en el ∆pv-aCO2 y el ∆pvaCO2/∆Ca-vO2 a pesar de una perfusión
+  /// tisular preservada o incluso aumentada.
+  /// * * * El argumento en contra más importante es el relacionado con la interacción en la
+  /// curva de disociación del CO2. Otro dato importante es el punto de corte ideal para el
+  /// ∆pv-aCO2/∆Ca-vO2 el cual aún no está bien
+  /// definido, aunque los rangos oscilan entre
+  /// 1,4-1,68 mmHg/mL
+  /// Consulte : http://scielo.org.co/pdf/rca/v49n1/es_2256-2087-rca-49-01-e500.pdf
+  ///
+  static double get D_PavCO2D_PavO2 => (D_PavO2/D_PavCO2);
+
+  static double get D_PavO2 => (Valores.poArteriales! - Valores.poVenosos!);
+  static double get D_PavCO2 => (Valores.pcoArteriales! - Valores.pcoVenosos!);
+
+  /// Indice Mitocodrial
+  ///
+  /// VN : menos de 1.6
+  ///          mayor de 1.6 . . . Hipoperfusión Celular
+  /// 
+  static double get indiceMitocondrial => (Gasometricos.DeltaCOS / DAV);
+  
+  // # Cociente Respiratorio
+  static double get RI => 0.8;
+
   static double get capacidadOxigeno =>
       (Valores.hemoglobina! * (1.36)); //  # Capacidad de Oxígeno
 

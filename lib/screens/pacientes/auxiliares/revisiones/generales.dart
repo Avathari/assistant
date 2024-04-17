@@ -9,6 +9,8 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/operativity/pacientes/valores/semiologia/semiotica.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/auxiliares/auxiliaresRevisiones.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/pendientes.dart';
+import 'package:assistant/screens/pacientes/intensiva/contenidos/ventilaciones.dart';
+import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/indicaciones.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/AppBarText.dart';
@@ -36,7 +38,8 @@ class _GeneralesState extends State<Generales> {
 
   @override
   void initState() {
-    textDateEstudyController.text = Calendarios.today(format: 'yyyy-MM-dd HH:mm:ss');
+    textDateEstudyController.text =
+        Calendarios.today(format: 'yyyy-MM-dd HH:mm:ss');
     //
 
     if (Valores.alturaPaciente != null) {
@@ -54,8 +57,10 @@ class _GeneralesState extends State<Generales> {
     }
 //
     fraccionInspiratoriaOxigenoTextController.text = 21.toString();
-    viaOtrosIngresosTextController.text = Valores.aguaMetabolica.toStringAsFixed(2);
-    viaPerdidaTextController.text = Valores.perdidasInsensibles.toStringAsFixed(2);
+    viaOtrosIngresosTextController.text =
+        Valores.aguaMetabolica.toStringAsFixed(2);
+    viaPerdidaTextController.text =
+        Valores.perdidasInsensibles.toStringAsFixed(2);
 
     // Repositorio de Balances *****************************
     Archivos.readJsonToMap(
@@ -533,13 +538,12 @@ class _GeneralesState extends State<Generales> {
                       inputFormat: MaskTextInputFormatter(),
                       numOfLines: 1,
                       labelEditText: 'FiO2',
-                      textController:
-                      fraccionInspiratoriaOxigenoTextController,
+                      textController: fraccionInspiratoriaOxigenoTextController,
                       onChange: (value) {
                         setState(() {
                           Valores.fraccionInspiratoriaOxigeno =
                               Valores.fraccionInspiratoriaVentilatoria =
-                              int.parse(value);
+                                  int.parse(value);
                         });
                       },
                     ),
@@ -613,6 +617,39 @@ class _GeneralesState extends State<Generales> {
             controller: ScrollController(),
             child: Column(
               children: [
+                Container(
+                  margin: const EdgeInsets.all(5.0),
+                  padding: const EdgeInsets.all(5.0),
+                  decoration: ContainerDecoration.roundedDecoration(),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: ValuePanel(
+                          firstText: "ING",
+                          secondText:
+                              Valores.ingresosBalances.toStringAsFixed(2),
+                          thirdText: "mL",
+                        ),
+                      ),
+                      Expanded(
+                        child: ValuePanel(
+                          firstText: "ENG",
+                          secondText:
+                              Valores.egresosBalances.toStringAsFixed(2),
+                          thirdText: "mL",
+                        ),
+                      ),
+                      Expanded(
+                        child: ValuePanel(
+                          firstText: "BT",
+                          secondText: Valores.balanceTotal.toStringAsFixed(2),
+                          thirdText: "mL",
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                CrossLine(color: Colors.grey),
                 Spinner(
                     isRow: true,
                     tittle: "Intervalo de Horario",
@@ -1333,6 +1370,40 @@ class _GeneralesState extends State<Generales> {
               controller: ScrollController(),
               child: Column(
                 children: [
+                  Container(
+                    margin: const EdgeInsets.all(5.0),
+                    padding: const EdgeInsets.all(5.0),
+                    decoration: ContainerDecoration.roundedDecoration(),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: ValuePanel(
+                            firstText: "ING",
+                            secondText:
+                                Valores.ingresosBalances.toStringAsFixed(2),
+                            thirdText: "mL",
+                          ),
+                        ),
+                        Expanded(
+                          child: ValuePanel(
+                            firstText: "ENG",
+                            secondText:
+                                Valores.egresosBalances.toStringAsFixed(2),
+                            thirdText: "mL",
+                          ),
+                        ),
+                        Expanded(
+                          child: ValuePanel(
+                            firstText: "BT",
+                            secondText: Valores.balanceTotal.toStringAsFixed(2),
+                            thirdText: "mL",
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  CrossLine(color: Colors.grey),
+                  //
                   Row(
                     children: [
                       Expanded(
@@ -1784,37 +1855,6 @@ class _GeneralesState extends State<Generales> {
                   CrossLine(
                     color: Colors.grey,
                   ),
-                  Container(
-                    margin: const EdgeInsets.all(5.0),
-                    decoration: ContainerDecoration.roundedDecoration(),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: ValuePanel(
-                            firstText: "ING",
-                            secondText:
-                                Valores.ingresosBalances.toStringAsFixed(2),
-                            thirdText: "mL",
-                          ),
-                        ),
-                        Expanded(
-                          child: ValuePanel(
-                            firstText: "ENG",
-                            secondText:
-                                Valores.egresosBalances.toStringAsFixed(2),
-                            thirdText: "mL",
-                          ),
-                        ),
-                        Expanded(
-                          child: ValuePanel(
-                            firstText: "BT",
-                            secondText: Valores.balanceTotal.toStringAsFixed(2),
-                            thirdText: "mL",
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                   // Container(
                   //   margin: const EdgeInsets.all(5.0),
                   //   decoration: ContainerDecoration.roundedDecoration(),
@@ -2098,12 +2138,19 @@ class _GeneralesState extends State<Generales> {
                     iconData: Icons.list_alt_sharp,
                     onPress: () => Cambios.toNextPage(
                         context, GestionPendiente(withReturn: false))),
-                GrandIcon(onPress: () => null),
+                GrandIcon(
+                    iconData: Icons.vertical_split_outlined,
+                    onPress: () =>
+                        Cambios.toNextPage(context, GestionVentilaciones())),
+                GrandIcon(
+                    iconData: Icons.lens_blur,
+                    onPress: () => Cambios.toNextActivity(
+                        tittle: "Indicaciones de la Hospitalización",
+                        context,
+                        chyld: IndicacionesHospital())),
                 // GrandIcon(
                 //     iconData: Icons.view_array_outlined,
                 //     onPress: () => Cambios.toNextActivity(context, chyld: SituacionesHospitalizacion())),
-                GrandIcon(onPress: () => null),
-                GrandIcon(onPress: () => null),
                 GrandIcon(onPress: () => null),
                 GrandIcon(onPress: () => null),
                 GrandIcon(onPress: () => null),

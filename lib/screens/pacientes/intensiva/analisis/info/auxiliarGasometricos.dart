@@ -85,32 +85,54 @@ return SingleChildScrollView(
       child: Column(
         children: [
           ValuePanel(
-            firstText: "Osm",
-            secondText:
-            Hidrometrias.osmolaridadSerica.toStringAsFixed(0),
-            thirdText: "mOsm//L",
-          ),
-          ValuePanel(
-            firstText: "Osm Gap",
-            secondText: Gas.Gasometricos.GAPO.toStringAsFixed(0),
-            thirdText: "mOsm/L",
-          ),
-          ValuePanel(
-            firstText: "a-GAP",
+            firstText: "aGap",
             secondText: Gas.Gasometricos.GAP.toStringAsFixed(0),
             thirdText: "",
           ),
-          ValuePanel(
-            firstText: "Delta GAP",
-            secondText: Gas.Gasometricos.d_GAP.toStringAsFixed(2),
-            thirdText: "",
+          Row(
+            children: [
+              Expanded(
+                child: ValuePanel(
+                  firstText: "ΔGap",
+                  secondText: Gas.Gasometricos.d_GAP.toStringAsFixed(2),
+                  thirdText: "",
+                ),
+              ),
+              Expanded(
+                child: ValuePanel(
+                  firstText: "ΔHCO3-",
+                  secondText: Gas.Gasometricos.d_HCO.toStringAsFixed(2),
+                  thirdText: "",
+                ),
+              ),
+            ],
           ),
-          CrossLine(),
           ValuePanel(
-            firstText: "Delta-Delta GAP",
+            firstText: "Δ-Δ Gap/HCO3-",
             secondText: Gas.Gasometricos.D_d_GAP.toStringAsFixed(2),
             thirdText: "",
           ),
+          CrossLine(),
+          Row(
+            children: [
+              Expanded(
+                child: ValuePanel(
+                  firstText: "OSMc",
+                  secondText:
+                  Hidrometrias.osmolaridadSerica.toStringAsFixed(0),
+                  thirdText: "mOsm//L",
+                ),
+              ),
+              Expanded(
+                child: ValuePanel(
+                  firstText: "ΔOsm",
+                  secondText: Gas.Gasometricos.GAPO.toStringAsFixed(0),
+                  thirdText: "mOsm/L",
+                ),
+              ),
+            ],
+          ),
+          CrossLine(),
           ValuePanel(
             firstText: "Dif. Aniones Libres",
             secondText: Gas.Gasometricos.DIF.toStringAsFixed(2),

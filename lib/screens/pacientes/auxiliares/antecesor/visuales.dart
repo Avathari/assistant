@@ -731,7 +731,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
                 iconData: Icons.all_inclusive_rounded,
                 labelButton: 'Análisis Ventilatorio',
                 onPress: () => Cambios.toNextActivity(context,
-                    chyld: const Ventilatorios()),
+                    chyld: Ventilatorios()),
               ),
               GrandIcon(
                 iconData: Icons.g_mobiledata,
