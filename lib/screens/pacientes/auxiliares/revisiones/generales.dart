@@ -20,9 +20,11 @@ import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/Spinner.dart';
+import 'package:assistant/widgets/TittleContainer.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Generales extends StatefulWidget {
@@ -35,6 +37,8 @@ class Generales extends StatefulWidget {
 
 class _GeneralesState extends State<Generales> {
   int actualView = 0;
+
+  var textMAHController = TextEditingController();
 
   @override
   void initState() {
@@ -1110,7 +1114,7 @@ class _GeneralesState extends State<Generales> {
 
   Widget desktopView() {
     return Container(
-      padding: const EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.only(top: 10, bottom: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -2003,28 +2007,398 @@ class _GeneralesState extends State<Generales> {
                 ),
               )),
           Expanded(
-            flex: 2,
-            child: SingleChildScrollView(
-              controller: ScrollController(),
-              child: Column(
-                children: [
-                  Spinner(
-                    items: Items.dispositivosOxigeno,
-                    initialValue: disposValue,
-                    width: isDesktop(context)
-                        ? 600
-                        : SpinnersValues.maximumWidth(context: context),
-                    tittle: 'Dispositivo / Evento',
-                    onChangeValue: (value) {
-                      setState(() {
-                        disposValue = value;
-                      });
-                    },
+              flex: 2,
+              child: TittleContainer(
+                padding: 2.0,
+                tittle: "Dispositivo(s)",
+                child: SingleChildScrollView(
+                  controller: ScrollController(),
+                  child: Column(
+                    children: [
+                      GrandButton(
+                          labelButton: "Actualizar Información",
+                          onPress: () {
+
+                          }),
+                      CrossLine(),
+                      Dispositivos(
+                        dispositivoName: "CVP",
+                        otherName: Valores.withCVP,
+                        onChangeValue: (esSelected) async {
+                          //
+                          if (esSelected) {
+                            final DateTime? picked = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2055),
+                                builder: (BuildContext context, Widget? child) {
+                                  return Theme(
+                                      data: ThemeData.dark().copyWith(
+                                          dialogBackgroundColor:
+                                              Theming.cuaternaryColor),
+                                      child: child!);
+                                });
+                            if (picked != null && picked != Valores.withCVP) {
+                              setState(() {
+                                Valores.withCVP =
+                                    DateFormat("yyyy/MM/dd").format(picked);
+                              });
+                            }
+                          } else {
+                            setState(() {
+                              Valores.withCVP = "";
+                            });
+                          }
+                        },
+                      ), // "CVP",
+                      Dispositivos(
+                        dispositivoName: "CVLP",
+                        otherName: Valores.withCVLP,
+                        onChangeValue: (esSelected) async {
+                          //
+                          if (esSelected) {
+                            final DateTime? picked = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2055),
+                                builder: (BuildContext context, Widget? child) {
+                                  return Theme(
+                                      data: ThemeData.dark().copyWith(
+                                          dialogBackgroundColor:
+                                              Theming.cuaternaryColor),
+                                      child: child!);
+                                });
+                            if (picked != null && picked != Valores.withCVLP) {
+                              setState(() {
+                                Valores.withCVLP =
+                                    DateFormat("yyyy/MM/dd").format(picked);
+                              });
+                            }
+                          } else {
+                            setState(() {
+                              Valores.withCVLP = "";
+                            });
+                          }
+                        },
+                      ), // "CVLP",
+                      Dispositivos(
+                        dispositivoName: "CVC",
+                        otherName: Valores.withCVC,
+                        onChangeValue: (esSelected) async {
+                          //
+                          if (esSelected) {
+                            final DateTime? picked = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2055),
+                                builder: (BuildContext context, Widget? child) {
+                                  return Theme(
+                                      data: ThemeData.dark().copyWith(
+                                          dialogBackgroundColor:
+                                              Theming.cuaternaryColor),
+                                      child: child!);
+                                });
+                            if (picked != null && picked != Valores.withCVC) {
+                              setState(() {
+                                Valores.withCVC =
+                                    DateFormat("yyyy/MM/dd").format(picked);
+                              });
+                            }
+                          } else {
+                            setState(() {
+                              Valores.withCVC = "";
+                            });
+                          }
+                        },
+                      ), // "CVC",
+                      Dispositivos(
+                        dispositivoName: "MAH",
+                        otherName: Valores.withMahurkar,
+                        onChangeValue: (esSelected) async {
+                          //
+                          if (esSelected) {
+                            final DateTime? picked = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2055),
+                                builder: (BuildContext context, Widget? child) {
+                                  return Theme(
+                                      data: ThemeData.dark().copyWith(
+                                          dialogBackgroundColor:
+                                              Theming.cuaternaryColor),
+                                      child: child!);
+                                });
+                            if (picked != null &&
+                                picked != Valores.withMahurkar) {
+                              setState(() {
+                                Valores.withMahurkar =
+                                    DateFormat("yyyy/MM/dd").format(picked);
+                              });
+                            }
+                          } else {
+                            setState(() {
+                              Valores.withMahurkar = "";
+                            });
+                          }
+                        },
+                      ), // "MAHA",
+                      Dispositivos(
+                        dispositivoName: "FOL",
+                        otherName: Valores.withFOL,
+                        onChangeValue: (esSelected) async {
+                          //
+                          if (esSelected) {
+                            final DateTime? picked = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2055),
+                                builder: (BuildContext context, Widget? child) {
+                                  return Theme(
+                                      data: ThemeData.dark().copyWith(
+                                          dialogBackgroundColor:
+                                              Theming.cuaternaryColor),
+                                      child: child!);
+                                });
+                            if (picked != null && picked != Valores.withFOL) {
+                              setState(() {
+                                Valores.withFOL =
+                                    DateFormat("yyyy/MM/dd").format(picked);
+                              });
+                            }
+                          } else {
+                            setState(() {
+                              Valores.withFOL = "";
+                            });
+                          }
+                        },
+                      ), // "FOL",
+                      Dispositivos(
+                        dispositivoName: "SNG",
+                        otherName: Valores.withSNG,
+                        onChangeValue: (esSelected) async {
+                          //
+                          if (esSelected) {
+                            final DateTime? picked = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2055),
+                                builder: (BuildContext context, Widget? child) {
+                                  return Theme(
+                                      data: ThemeData.dark().copyWith(
+                                          dialogBackgroundColor:
+                                              Theming.cuaternaryColor),
+                                      child: child!);
+                                });
+                            if (picked != null && picked != Valores.withSNG) {
+                              setState(() {
+                                Valores.withSNG =
+                                    DateFormat("yyyy/MM/dd").format(picked);
+                              });
+                            }
+                          } else {
+                            setState(() {
+                              Valores.withSNG = "";
+                            });
+                          }
+                        },
+                      ), // "SNG",
+                      Dispositivos(
+                        dispositivoName: "SOG",
+                        otherName: Valores.withSOG,
+                        onChangeValue: (esSelected) async {
+                          //
+                          if (esSelected) {
+                            final DateTime? picked = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2055),
+                                builder: (BuildContext context, Widget? child) {
+                                  return Theme(
+                                      data: ThemeData.dark().copyWith(
+                                          dialogBackgroundColor:
+                                              Theming.cuaternaryColor),
+                                      child: child!);
+                                });
+                            if (picked != null && picked != Valores.withSOG) {
+                              setState(() {
+                                Valores.withSOG =
+                                    DateFormat("yyyy/MM/dd").format(picked);
+                              });
+                            }
+                          } else {
+                            setState(() {
+                              Valores.withSOG = "";
+                            });
+                          }
+                        },
+                      ), // "SOG",
+                      Dispositivos(
+                        dispositivoName: "PEN",
+                        otherName: Valores.withPEN,
+                        onChangeValue: (esSelected) async {
+                          //
+                          if (esSelected) {
+                            final DateTime? picked = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2055),
+                                builder: (BuildContext context, Widget? child) {
+                                  return Theme(
+                                      data: ThemeData.dark().copyWith(
+                                          dialogBackgroundColor:
+                                              Theming.cuaternaryColor),
+                                      child: child!);
+                                });
+                            if (picked != null && picked != Valores.withPEN) {
+                              setState(() {
+                                Valores.withPEN =
+                                    DateFormat("yyyy/MM/dd").format(picked);
+                              });
+                            }
+                          } else {
+                            setState(() {
+                              Valores.withPEN = "";
+                            });
+                          }
+                        },
+                      ), // "PEN",
+                      Dispositivos(
+                        dispositivoName: "COL",
+                        otherName: Valores.withCOL,
+                        onChangeValue: (esSelected) async {
+                          //
+                          if (esSelected) {
+                            final DateTime? picked = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2055),
+                                builder: (BuildContext context, Widget? child) {
+                                  return Theme(
+                                      data: ThemeData.dark().copyWith(
+                                          dialogBackgroundColor:
+                                              Theming.cuaternaryColor),
+                                      child: child!);
+                                });
+                            if (picked != null && picked != Valores.withCOL) {
+                              setState(() {
+                                Valores.withCOL =
+                                    DateFormat("yyyy/MM/dd").format(picked);
+                              });
+                            }
+                          } else {
+                            setState(() {
+                              Valores.withCOL = "";
+                            });
+                          }
+                        },
+                      ), // "COL",
+                      Dispositivos(
+                        dispositivoName: "SEP",
+                        otherName: Valores.withSEP,
+                        onChangeValue: (esSelected) async {
+                          //
+                          if (esSelected) {
+                            final DateTime? picked = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2055),
+                                builder: (BuildContext context, Widget? child) {
+                                  return Theme(
+                                      data: ThemeData.dark().copyWith(
+                                          dialogBackgroundColor:
+                                              Theming.cuaternaryColor),
+                                      child: child!);
+                                });
+                            if (picked != null && picked != Valores.withSEP) {
+                              setState(() {
+                                Valores.withSEP =
+                                    DateFormat("yyyy/MM/dd").format(picked);
+                              });
+                            }
+                          } else {
+                            setState(() {
+                              Valores.withSEP = "";
+                            });
+                          }
+                        },
+                      ), // "SEP",
+                      Dispositivos(
+                        dispositivoName: "GAS",
+                        otherName: Valores.withGAS,
+                        onChangeValue: (esSelected) async {
+                          //
+                          if (esSelected) {
+                            final DateTime? picked = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2055),
+                                builder: (BuildContext context, Widget? child) {
+                                  return Theme(
+                                      data: ThemeData.dark().copyWith(
+                                          dialogBackgroundColor:
+                                              Theming.cuaternaryColor),
+                                      child: child!);
+                                });
+                            if (picked != null && picked != Valores.withGAS) {
+                              setState(() {
+                                Valores.withGAS =
+                                    DateFormat("yyyy/MM/dd").format(picked);
+                              });
+                            }
+                          } else {
+                            setState(() {
+                              Valores.withGAS = "";
+                            });
+                          }
+                        },
+                      ), // "GAS",
+                      Dispositivos(
+                        dispositivoName: "TNK",
+                        otherName: Valores.withTNK,
+                        onChangeValue: (esSelected) async {
+                          //
+                          if (esSelected) {
+                            final DateTime? picked = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2055),
+                                builder: (BuildContext context, Widget? child) {
+                                  return Theme(
+                                      data: ThemeData.dark().copyWith(
+                                          dialogBackgroundColor:
+                                              Theming.cuaternaryColor),
+                                      child: child!);
+                                });
+                            if (picked != null && picked != Valores.withTNK) {
+                              setState(() {
+                                Valores.withTNK =
+                                    DateFormat("yyyy/MM/dd").format(picked);
+                              });
+                            }
+                          } else {
+                            setState(() {
+                              Valores.withTNK = "";
+                            });
+                          }
+                        },
+                      ), // "TNK"
+
+                    ],
                   ),
-                ],
-              ),
-            ),
-          ),
+                ),
+              )),
           Expanded(
             flex: 2,
             child: Container(

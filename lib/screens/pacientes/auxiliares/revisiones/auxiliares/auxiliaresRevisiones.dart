@@ -5,6 +5,7 @@ import 'package:assistant/operativity/pacientes/valores/Valorados/hepatometrias.
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/TittleContainer.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
@@ -26,7 +27,7 @@ class AuxiliaresRevisiones {
                       mainAxisSpacing: 5.0,
                       mainAxisExtent: 55),
                   itemCount: Listas.listWithoutRepitedValues(
-                      Listas.listFromMapWithOneKey(Pacientes.Paraclinicos!))
+                          Listas.listFromMapWithOneKey(Pacientes.Paraclinicos!))
                       .length,
                   // snapshot.data[posicion]['Auxiliares'].length,
                   itemBuilder: (BuildContext context, index) {
@@ -39,7 +40,8 @@ class AuxiliaresRevisiones {
                       onEdit: (value) {
                         Datos.portapapeles(
                             context: context,
-                            text: Auxiliares.porFecha(fechaActual: value, esAbreviado: true));
+                            text: Auxiliares.porFecha(
+                                fechaActual: value, esAbreviado: true));
                       },
                     );
                   }),
@@ -62,9 +64,10 @@ class AuxiliaresRevisiones {
                     return ValuePanel(
                       fontSize: 8,
                       firstText:
-                      "${Pacientes.Pendiente![index]['Pace_Desc_PEN']}", // Resultado
-                      secondText:
-                      "${Pacientes.Pendiente![index]['Pace_PEN']}", // Resultado
+                          "${Pacientes.Pendiente![index]['Pace_Desc_PEN']}",
+                      // Resultado
+                      secondText: "${Pacientes.Pendiente![index]['Pace_PEN']}",
+                      // Resultado
                       withEditMessage: true,
                       onEdit: (value) {
                         Datos.portapapeles(
@@ -80,6 +83,37 @@ class AuxiliaresRevisiones {
     );
   }
 
+  static Widget pendientesDesglose(BuildContext context) {
+    return Expanded(
+      flex: 5,
+      child: TittleContainer(
+          tittle: "Pendientes",
+          child: GridView.builder(
+              controller: ScrollController(),
+              padding: const EdgeInsets.all(2),
+              gridDelegate: GridViewTools.gridDelegate(
+                  crossAxisCount: 1, mainAxisSpacing: 5.0, mainAxisExtent: 55),
+              itemCount: Pacientes.Pendiente!.length,
+              // snapshot.data[posicion]['Auxiliares'].length,
+              itemBuilder: (BuildContext context, index) {
+                return ValuePanel(
+                  fontSize: 8,
+                  firstText:
+                      "${Pacientes.Pendiente![index]['Pace_Desc_PEN']}", // Resultado
+                  secondText:
+                      "${Pacientes.Pendiente![index]['Pace_PEN']}", // Resultado
+                  withEditMessage: true,
+                  onEdit: (value) {
+                    Datos.portapapeles(
+                        context: context,
+                        text: "${Pacientes.Pendiente![index]['Pace_PEN']} "
+                            ": ${Pacientes.Pendiente![index]['Pace_Desc_PEN']} "
+                            ": : ${Dicotomicos.fromInt(Pacientes.Pendiente![index]['Pace_PEN_realized'])} Realizado. ");
+                  },
+                );
+              })),
+    );
+  }
 
   //
   static Widget biometrias(BuildContext context) {
@@ -87,11 +121,13 @@ class AuxiliaresRevisiones {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          Expanded(child: ValuePanel(
-            firstText: "",
-            secondText: Valores.fechaBiometria.toString(),
-            thirdText: "",
-          ),),
+          Expanded(
+            child: ValuePanel(
+              firstText: "",
+              secondText: Valores.fechaBiometria.toString(),
+              thirdText: "",
+            ),
+          ),
           CrossLine(),
           Expanded(
             flex: 8,
@@ -165,7 +201,8 @@ class AuxiliaresRevisiones {
                         ),
                         ValuePanel(
                           firstText: "CMHC",
-                          secondText: Valores.concentracionMediaHemoglobina.toString(),
+                          secondText:
+                              Valores.concentracionMediaHemoglobina.toString(),
                           thirdText: "g/dL",
                           withEditMessage: true,
                           // onEdit: (value) {
@@ -186,7 +223,8 @@ class AuxiliaresRevisiones {
                         ),
                         ValuePanel(
                           firstText: "HCM",
-                          secondText: Valores.hemoglobinaCorpuscularMedia.toString(),
+                          secondText:
+                              Valores.hemoglobinaCorpuscularMedia.toString(),
                           thirdText: "fL",
                           withEditMessage: true,
                           // onEdit: (value) {
@@ -207,7 +245,8 @@ class AuxiliaresRevisiones {
                         ),
                         ValuePanel(
                           firstText: "VCM",
-                          secondText: Valores.volumenCorpuscularMedio.toString(),
+                          secondText:
+                              Valores.volumenCorpuscularMedio.toString(),
                           thirdText: "pg",
                           withEditMessage: true,
                           // onEdit: (value) {
@@ -256,7 +295,8 @@ class AuxiliaresRevisiones {
                       children: [
                         ValuePanel(
                           firstText: "Leucocitos",
-                          secondText: Valores.leucocitosTotales!.toStringAsFixed(2),
+                          secondText:
+                              Valores.leucocitosTotales!.toStringAsFixed(2),
                           thirdText: "K/uL",
                           withEditMessage: true,
                           // onEdit: (value) {
@@ -355,7 +395,8 @@ class AuxiliaresRevisiones {
                       ),
                       ValuePanel(
                         firstText: "Indice Metzner",
-                        secondText: Citometrias.indiceMetzner.toStringAsFixed(2),
+                        secondText:
+                            Citometrias.indiceMetzner.toStringAsFixed(2),
                         thirdText: "",
                       ),
                     ],
@@ -465,7 +506,6 @@ class AuxiliaresRevisiones {
                   ),
                   CrossLine(),
                   CrossLine(),
-              
                 ],
               ),
             ),
@@ -866,112 +906,115 @@ class AuxiliaresRevisiones {
                 ],
               ),
             ),
-            Expanded(child: Column(children: [
-              ValuePanel(
-                firstText: "",
-                secondText: Valores.fechaGasometriaVenosa.toString(),
-                thirdText: "",
-              ),
-              CrossLine(),
-              ValuePanel(
-                firstText: "pH Venoso",
-                secondText: Valores.pHVenosos.toString(),
-                thirdText: "",
-                withEditMessage: true,
-                // onEdit: (value) {
-                //   Operadores.editActivity(
-                //       context: context,
-                //       keyBoardType: TextInputType.number,
-                //       tittle: "Editar . . . ",
-                //       message: "¿pH Venoso? . . . ",
-                //       onAcept: (value) {
-                //         Terminal.printSuccess(message: "recieve $value");
-                //         setState(() {
-                //           Valores.pHVenosos = double.parse(value);
-                //           Navigator.of(context).pop();
-                //         });
-                //       });
-                // },
-              ),
-              ValuePanel(
-                firstText: "pCO2 Venoso",
-                secondText: Valores.pcoVenosos.toString(),
-                thirdText: "mmHg",
-                withEditMessage: true,
-                // onEdit: (value) {
-                //   Operadores.editActivity(
-                //       context: context,
-                //       tittle: "Editar . . . ",
-                //       message: "¿pCO2 Venoso? . . . ",
-                //       onAcept: (value) {
-                //         Terminal.printSuccess(message: "recieve $value");
-                //         setState(() {
-                //           Valores.pcoVenosos = double.parse(value);
-                //           Navigator.of(context).pop();
-                //         });
-                //       });
-                // },
-              ),
-              ValuePanel(
-                firstText: "pO2 Venoso",
-                secondText: Valores.poVenosos.toString(),
-                thirdText: "mmHg",
-                withEditMessage: true,
-                // onEdit: (value) {
-                //   Operadores.editActivity(
-                //       context: context,
-                //       tittle: "Editar . . . ",
-                //       message: "¿pO2 Venosos? . . . ",
-                //       onAcept: (value) {
-                //         Terminal.printSuccess(message: "recieve $value");
-                //         setState(() {
-                //           Valores.poVenosos = double.parse(value);
-                //           Navigator.of(context).pop();
-                //         });
-                //       });
-                // },
-              ),
-              ValuePanel(
-                firstText: "HCO3- Venoso",
-                secondText: Valores.bicarbonatoVenosos.toString(),
-                thirdText: "mmol/L",
-                withEditMessage: true,
-                // onEdit: (value) {
-                //   Operadores.editActivity(
-                //       context: context,
-                //       keyBoardType: TextInputType.number,
-                //       tittle: "Editar . . . ",
-                //       message: "¿HCO3- Venoso? . . . ",
-                //       onAcept: (value) {
-                //         Terminal.printSuccess(message: "recieve $value");
-                //         setState(() {
-                //           Valores.bicarbonatoVenosos = double.parse(value);
-                //           Navigator.of(context).pop();
-                //         });
-                //       });
-                // },
-              ),
-              ValuePanel(
-                firstText: "SaO2",
-                secondText: Valores.soVenosos.toString(),
-                thirdText: "%",
-                withEditMessage: true,
-                // onEdit: (value) {
-                //   Operadores.editActivity(
-                //       context: context,
-                //       keyBoardType: TextInputType.number,
-                //       tittle: "Editar . . . ",
-                //       message: "¿SO2 Venoso? . . . ",
-                //       onAcept: (value) {
-                //         Terminal.printSuccess(message: "recieve $value");
-                //         setState(() {
-                //           Valores.soVenosos = double.parse(value);
-                //           Navigator.of(context).pop();
-                //         });
-                //       });
-                // },
-              ),
-            ],)),
+            Expanded(
+                child: Column(
+              children: [
+                ValuePanel(
+                  firstText: "",
+                  secondText: Valores.fechaGasometriaVenosa.toString(),
+                  thirdText: "",
+                ),
+                CrossLine(),
+                ValuePanel(
+                  firstText: "pH Venoso",
+                  secondText: Valores.pHVenosos.toString(),
+                  thirdText: "",
+                  withEditMessage: true,
+                  // onEdit: (value) {
+                  //   Operadores.editActivity(
+                  //       context: context,
+                  //       keyBoardType: TextInputType.number,
+                  //       tittle: "Editar . . . ",
+                  //       message: "¿pH Venoso? . . . ",
+                  //       onAcept: (value) {
+                  //         Terminal.printSuccess(message: "recieve $value");
+                  //         setState(() {
+                  //           Valores.pHVenosos = double.parse(value);
+                  //           Navigator.of(context).pop();
+                  //         });
+                  //       });
+                  // },
+                ),
+                ValuePanel(
+                  firstText: "pCO2 Venoso",
+                  secondText: Valores.pcoVenosos.toString(),
+                  thirdText: "mmHg",
+                  withEditMessage: true,
+                  // onEdit: (value) {
+                  //   Operadores.editActivity(
+                  //       context: context,
+                  //       tittle: "Editar . . . ",
+                  //       message: "¿pCO2 Venoso? . . . ",
+                  //       onAcept: (value) {
+                  //         Terminal.printSuccess(message: "recieve $value");
+                  //         setState(() {
+                  //           Valores.pcoVenosos = double.parse(value);
+                  //           Navigator.of(context).pop();
+                  //         });
+                  //       });
+                  // },
+                ),
+                ValuePanel(
+                  firstText: "pO2 Venoso",
+                  secondText: Valores.poVenosos.toString(),
+                  thirdText: "mmHg",
+                  withEditMessage: true,
+                  // onEdit: (value) {
+                  //   Operadores.editActivity(
+                  //       context: context,
+                  //       tittle: "Editar . . . ",
+                  //       message: "¿pO2 Venosos? . . . ",
+                  //       onAcept: (value) {
+                  //         Terminal.printSuccess(message: "recieve $value");
+                  //         setState(() {
+                  //           Valores.poVenosos = double.parse(value);
+                  //           Navigator.of(context).pop();
+                  //         });
+                  //       });
+                  // },
+                ),
+                ValuePanel(
+                  firstText: "HCO3- Venoso",
+                  secondText: Valores.bicarbonatoVenosos.toString(),
+                  thirdText: "mmol/L",
+                  withEditMessage: true,
+                  // onEdit: (value) {
+                  //   Operadores.editActivity(
+                  //       context: context,
+                  //       keyBoardType: TextInputType.number,
+                  //       tittle: "Editar . . . ",
+                  //       message: "¿HCO3- Venoso? . . . ",
+                  //       onAcept: (value) {
+                  //         Terminal.printSuccess(message: "recieve $value");
+                  //         setState(() {
+                  //           Valores.bicarbonatoVenosos = double.parse(value);
+                  //           Navigator.of(context).pop();
+                  //         });
+                  //       });
+                  // },
+                ),
+                ValuePanel(
+                  firstText: "SaO2",
+                  secondText: Valores.soVenosos.toString(),
+                  thirdText: "%",
+                  withEditMessage: true,
+                  // onEdit: (value) {
+                  //   Operadores.editActivity(
+                  //       context: context,
+                  //       keyBoardType: TextInputType.number,
+                  //       tittle: "Editar . . . ",
+                  //       message: "¿SO2 Venoso? . . . ",
+                  //       onAcept: (value) {
+                  //         Terminal.printSuccess(message: "recieve $value");
+                  //         setState(() {
+                  //           Valores.soVenosos = double.parse(value);
+                  //           Navigator.of(context).pop();
+                  //         });
+                  //       });
+                  // },
+                ),
+              ],
+            )),
           ],
         ),
       ),
@@ -1063,65 +1106,75 @@ class AuxiliaresRevisiones {
                       children: [
                         ValuePanel(
                           firstText: "BT",
-                          secondText: Valores.bilirrubinasTotales!.toStringAsFixed(2),
+                          secondText:
+                              Valores.bilirrubinasTotales!.toStringAsFixed(2),
                           thirdText: "mg/dL",
                         ),
                         ValuePanel(
                           firstText: "BD",
-                          secondText: Valores.bilirrubinaDirecta!.toStringAsFixed(2),
+                          secondText:
+                              Valores.bilirrubinaDirecta!.toStringAsFixed(2),
                           thirdText: "mg/dL",
                         ),
                         ValuePanel(
                           firstText: "BI",
-                          secondText: Valores.bilirrubinaIndirecta!.toStringAsFixed(2),
+                          secondText:
+                              Valores.bilirrubinaIndirecta!.toStringAsFixed(2),
                           thirdText: "mg/dL",
                         ),
                         ValuePanel(
                           firstText: "ALT / TGA",
-                          secondText: Valores.alaninoaminotrasferasa!.toStringAsFixed(0),
+                          secondText: Valores.alaninoaminotrasferasa!
+                              .toStringAsFixed(0),
                           thirdText: "UI/L",
                         ),
                         ValuePanel(
                           firstText: "AST / TGO",
-                          secondText:
-                          Valores.aspartatoaminotransferasa!.toStringAsFixed(0),
+                          secondText: Valores.aspartatoaminotransferasa!
+                              .toStringAsFixed(0),
                           thirdText: "UI/L",
                         ),
                         ValuePanel(
                           firstText: "GGT",
-                          secondText: Valores.glutrailtranspeptidasa!.toStringAsFixed(0),
+                          secondText: Valores.glutrailtranspeptidasa!
+                              .toStringAsFixed(0),
                           thirdText: "UI/L",
                         ),
                         ValuePanel(
                           firstText: "FA",
-                          secondText: Valores.fosfatasaAlcalina!.toStringAsFixed(0),
+                          secondText:
+                              Valores.fosfatasaAlcalina!.toStringAsFixed(0),
                           thirdText: "UI/L",
                         ),
                         ValuePanel(
                           firstText: "Albúmina",
-                          secondText: Valores.albuminaSerica!.toStringAsFixed(1),
+                          secondText:
+                              Valores.albuminaSerica!.toStringAsFixed(1),
                           thirdText: "g/dL",
                         ),
                         ValuePanel(
                           firstText: "Proteínas Totales",
-                          secondText: Valores.proteinasTotales!.toStringAsFixed(1),
+                          secondText:
+                              Valores.proteinasTotales!.toStringAsFixed(1),
                           thirdText: "g/dL",
                         ),
                         CrossLine(),
-
                       ],
                     ),
                   ),
-                  Expanded(child: Column(
+                  Expanded(
+                      child: Column(
                     children: [
                       ValuePanel(
                         firstText: "AST/ALT",
-                        secondText: Hepatometrias.relacionASTALT.toStringAsFixed(2),
+                        secondText:
+                            Hepatometrias.relacionASTALT.toStringAsFixed(2),
                         thirdText: "",
                       ),
                       ValuePanel(
                         firstText: "ALT/FA",
-                        secondText: Hepatometrias.relacionALTFA.toStringAsFixed(2),
+                        secondText:
+                            Hepatometrias.relacionALTFA.toStringAsFixed(2),
                         thirdText: "",
                       ),
                       ValuePanel(
@@ -1460,3 +1513,82 @@ class AuxiliaresRevisiones {
     );
   }
 }
+
+class Dispositivos extends StatefulWidget {
+  bool? isSelected;
+  String? dispositivoName, otherName;
+  Function? onChangeValue;
+
+  Dispositivos({
+    super.key,
+    this.dispositivoName = "",
+    this.otherName = "",
+    this.isSelected = false,
+    required this.onChangeValue,
+  });
+
+  @override
+  State<Dispositivos> createState() => _DispositivosState();
+}
+
+class _DispositivosState extends State<Dispositivos> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 0.0, left: 1.0, bottom: 5.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: CircleIcon(
+              radios: 20,
+                difRadios: 4,
+                tittle: "${widget.dispositivoName}",
+                iconed: widget.isSelected == true
+                    ? Icons.circle
+                    : widget.isSelected == false
+                        ? Icons.circle_outlined
+                        : Icons.abc,
+                onChangeValue: () {
+                  setState(() {
+                    //
+                    if (widget.otherName != "") {
+                      widget.onChangeValue!(widget.isSelected = false);
+                    } else {
+                      widget.onChangeValue!(widget.isSelected = true);
+                    }
+
+                  });
+                }),
+          ),
+          // const SizedBox(width: 2.0),
+          Expanded(
+            child: Text(
+              "${widget.dispositivoName} : ${widget.otherName}",
+              style: Styles.textSyleGrowth(fontSize: 8),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+// Expanded(
+//           child: CircleIcon(
+//               tittle: widget.dispositivoName,
+//               iconed: widget.isSelected == true
+//                   ? Icons.circle
+//                   : Icons.circle_outlined,
+//               onChangeValue: () {
+//                 setState(() {
+//                   if (widget.isSelected == true) {
+//                     Valores.withMahurkar =
+//                         Calendarios.today(format: "yyyy/MM/dd");
+//                     widget.isSelected = false;
+//                   } else {
+//                     Valores.withMahurkar = "";
+//                     widget.isSelected = true;
+//                   }
+//                 });
+//               }),
+//         ),

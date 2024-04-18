@@ -135,6 +135,7 @@ class Citometrias {
       return "Hemoglobina Normal";
     }
  }
+
   // FÓRMULAS
   static double get VCM =>
       (Valores.hematocrito! / Valores.eritrocitos!) * 10; // 80 - 98 fL
@@ -156,6 +157,14 @@ class Citometrias {
       Valores.volumenCorpuscularMedio! /
       Valores
           .eritrocitos!; // menor a 13 : Talasemia menor; mayor 13 : Deficiencia de Hierro
+
+  /// Indice de Protrombina
+  ///
+  /// * * * Determina la relación del tiempo de protrombina comparado con cTP ordinal; en este caso, 30 segundos como estándar
+  /// * * * * Sirve para determinar alteraciones de la Vía Extrínseca
+  /// VN:
+  ///
+  static double get indiceProtrombina => (Valores.tiempoProtrombina! / 30);
 // RELACIONES
 }
 

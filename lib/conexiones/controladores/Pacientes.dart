@@ -6825,15 +6825,15 @@ class Auxiliares {
   }
 
   static List<String> Categorias = [
-    "Biometría Hemática",
+    "Biometría Hemática", // 0 :
     "Química Sanguínea",
     "Electrolitos Séricos",
     "Pruebas de Funcionamiento Hepático",
-    "Perfil Tiroideo",
+    "Perfil Tiroideo", // 4
     "Perfil Pancreático",
     "Perfil Lipídico",
     "Tiempos de Coagulación",
-    "Reactantes de Fase Aguda",
+    "Reactantes de Fase Aguda", // 8
     "Gasometría Arterial",
     "Gasometría Venosa",
     "Examen General de Orina", // 11
@@ -7171,11 +7171,11 @@ class Auxiliares {
     ], // Vitaminas
     // Otros
     Categorias[25]: [
-      "Hemoglobina Glucosilada",
+      "Hemoglobina Glucosilada", // 0
       "Antigeno Prostático Específico",
       "Antigeno Protático Total",
-      "BNP",
-      "NT-pro BNP",
+      "BNP", // 3
+      "NT-pro BNP", // 4
       "Alfa Fetoproteina", // ng/mL : 0.00 - 4.00
       "Antigeno Carcinoembrionario", // ng/mL : 0.00 - 5.00
       "CA 19.9", // U/mL : 0.00 - 37.00
@@ -7267,7 +7267,7 @@ class Auxiliares {
     Categorias[5]: ["UI/L"],
     Categorias[6]: ["mg/dL"],
     Categorias[7]: ["", "seg"],
-    Categorias[8]: ["ng/dL", "mm/Hr", "mg/dL", "ng/mL"],
+    Categorias[8]: ["ng/dL", "mm/Hr", "mg/dL", "ng/mL", "UI/mL"],
     Categorias[9]: ["", "mmHg", "cmH20", "mmol/L", "%"],
     Categorias[10]: ["", "mmHg", "cmH20", "mmol/L", "%"],
     Categorias[11]: ["", "Hem/uL", "mg/dL", "Leu/uL", "cel/Campo"],
@@ -7305,7 +7305,7 @@ class Auxiliares {
     Categorias[22]: ["pg/mL", "UI/mL", "IU/mL", "mg/dL", ""],
     Categorias[23]: ["", "pg/mL", "ng/dL", "ng/mL", "mUI/mL"], // Hormonales
     Categorias[24]: ["", "ng/dL", "ng/mL", ""],
-    Categorias[25]: ["%", "", ""],
+    Categorias[25]: ["%", "", "", "",""],
     //
     Categorias[26]: ["%", "", ""],
     Categorias[27]: ["", "mg/dL", "U/L", "%"],

@@ -800,6 +800,17 @@ class Valores {
           "Se realiza seguimiento y control a la paciente durante la transfusión. Termina procedimiento sin complicaciones ni evidencia de reacciones adversas asociadas a la transfusión de hemoderivados. ",
       reaccionesPresentadas = "Ninguna manifestada durante la transfusión. ";
 
+  // DISPOSITIVOS ************************ * * * *
+  static String? withCVP = "", withCVLP = "",withCVC = "", withMahurkar = "",
+      withFOL = "",
+      withSNG = "",
+      withSOG = "",
+      withPEN = "",
+      withCOL = "",
+      withSEP = "",
+      withGAS = "",
+      withTNK = "";
+
   //
   static String? fechaVitales;
   static int? tensionArterialSystolica,

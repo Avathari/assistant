@@ -746,6 +746,57 @@ class _RutinasState extends State<Rutinas> {
         unidadMedidaGlobulinas!
         //0,
       ],
+      // TIROIDEOS
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[4],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[4]][0],
+        textTSHResultController.text,
+        unidadMedidaTSH!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[4],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[4]][1],
+        textT4LResultController.text,
+        unidadMedidaT4L!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[4],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[4]][2],
+        textT3LResultController.text,
+        unidadMedidaT3L!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[4],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[4]][3],
+        textT4ResultController.text,
+        unidadMedidaT4!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[4],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[4]][4],
+        textT3ResultController.text,
+        unidadMedidaT3!
+        //0,
+      ],
       // COAGULACIONES
       [
         "0",
@@ -829,16 +880,37 @@ class _RutinasState extends State<Rutinas> {
         unidadMedidaProcalcitonina!
         //0,
       ],
+      // [
+      //   "0",
+      //   Pacientes.ID_Paciente.toString(),
+      //   textDateEstudyController.text,
+      //   Auxiliares.Categorias[8],
+      //   Auxiliares.Laboratorios[Auxiliares.Categorias[8]][1],
+      //   textLactatoResultController.text,
+      //   unidadMedidaLactato!
+      //   //0,
+      // ],
+      //
       [
         "0",
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[8],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[8]][1],
-        textLactatoResultController.text,
-        unidadMedidaLactato!
+        Auxiliares.Laboratorios[Auxiliares.Categorias[8]][2],
+        textFibrinogenoResultController.text,
+        unidadMedidaFibrinogeno!
         //0,
-      ],
+      ], // Fibrinogeno
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[8],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[8]][2],
+        textDimeroDResultController.text,
+        unidadMedidaDimeroD!
+        //0,
+      ], // Dimero D
       // CARDIACOS
       [
         "0",
@@ -858,6 +930,26 @@ class _RutinasState extends State<Rutinas> {
         Auxiliares.Laboratorios[Auxiliares.Categorias[18]][1],
         textCKMBResultController.text,
         unidadMedidaCKMB!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[25],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[25]][4],
+        textProBNPResultController.text,
+        unidadMedidaProBNP!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[25],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[25]][3],
+        textBNPResultController.text,
+        unidadMedidaBNP!
         //0,
       ],
       // ARTERIALES
@@ -915,12 +1007,23 @@ class _RutinasState extends State<Rutinas> {
         "0",
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
+        Auxiliares.Categorias[8],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[8]][1],
+        textLactatoResultController.text,
+        unidadMedidaLactato!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
         Auxiliares.Categorias[9],
         Auxiliares.Laboratorios[Auxiliares.Categorias[9]][5],
         textSOResultController.text,
         unidadMedidaSO!
         //0,
       ],
+
       // OTROS
       [
         "0",
@@ -932,6 +1035,7 @@ class _RutinasState extends State<Rutinas> {
         unidadMedidaHbAc!
         //0,
       ],
+
       // VIRALES
       [
         "0",
@@ -1147,14 +1251,35 @@ class _RutinasState extends State<Rutinas> {
       Auxiliares.Medidas[Auxiliares.Categorias[8]][3];
   var textLactatoResultController = TextEditingController();
   String? unidadMedidaLactato = Auxiliares.Medidas[Auxiliares.Categorias[8]][2];
+  // 
+  var textFibrinogenoResultController = TextEditingController();
+  String? unidadMedidaFibrinogeno = Auxiliares.Medidas[Auxiliares.Categorias[8]][1];
+  var textDimeroDResultController = TextEditingController();
+  String? unidadMedidaDimeroD = Auxiliares.Medidas[Auxiliares.Categorias[8]][1];
 // CARDIACOS ********* *************** ************* *
   var textCKResultController = TextEditingController();
   String? unidadMedidaCK = Auxiliares.Medidas[Auxiliares.Categorias[18]][0];
   var textCKMBResultController = TextEditingController();
   String? unidadMedidaCKMB = Auxiliares.Medidas[Auxiliares.Categorias[18]][0];
+  // TIROIDEOS  ********* *************** ************* *
+  var textT4LResultController = TextEditingController();
+  String? unidadMedidaT4L = Auxiliares.Medidas[Auxiliares.Categorias[4]][2];
+  var textTSHResultController = TextEditingController();
+  String? unidadMedidaTSH = Auxiliares.Medidas[Auxiliares.Categorias[4]][0];
+  var textT3LResultController = TextEditingController();
+  String? unidadMedidaT3L = Auxiliares.Medidas[Auxiliares.Categorias[4]][1];
+  var textT4ResultController = TextEditingController();
+  String? unidadMedidaT4 = Auxiliares.Medidas[Auxiliares.Categorias[4]][2];
+  var textT3ResultController = TextEditingController();
+  String? unidadMedidaT3 = Auxiliares.Medidas[Auxiliares.Categorias[4]][1];
   // OTROS  ********* *************** ************* *
   var textHbAcResultController = TextEditingController();
   String? unidadMedidaHbAc = Auxiliares.Medidas[Auxiliares.Categorias[25]][0];
+  //
+  var textProBNPResultController = TextEditingController();
+  String? unidadMedidaProBNP = Auxiliares.Medidas[Auxiliares.Categorias[25]][3];
+  var textBNPResultController = TextEditingController();
+  String? unidadMedidaBNP = Auxiliares.Medidas[Auxiliares.Categorias[25]][2];
 
   // OPERACIONES DE LA INTERFAZ ****************** ********
   void cerrar() {}
@@ -1690,8 +1815,7 @@ class _RutinasState extends State<Rutinas> {
               )
             ],
           ),
-        ), // Hepaticos
-        // Tiroideos
+        ), // Hepaticos // Tiroideos
         SingleChildScrollView(
           padding: const EdgeInsets.all(7.0),
           controller: ScrollController(),
@@ -1719,6 +1843,60 @@ class _RutinasState extends State<Rutinas> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'I.N.R. ', // ($unidadMedidaInr)
                 numOfLines: 1,
+              ),
+              CrossLine(
+                color: Colors.grey,
+              ),
+              EditTextArea(
+                textController: textTSHResultController,
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'T.S.H. ($unidadMedidaTSH)',
+                numOfLines: 1,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: EditTextArea(
+                      textController: textT4LResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'T4 Libre ($unidadMedidaT4L)',
+                      numOfLines: 1,
+                    ),
+                  ),
+                  Expanded(
+                    child: EditTextArea(
+                      textController: textT3LResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'T3 Libre ($unidadMedidaT3L)',
+                      numOfLines: 1,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: EditTextArea(
+                      textController: textT4ResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'T4 Total ($unidadMedidaT4)',
+                      numOfLines: 1,
+                    ),
+                  ),
+                  Expanded(
+                    child: EditTextArea(
+                      textController: textT3ResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'T3 Total ($unidadMedidaT3)',
+                      numOfLines: 1,
+                    ),
+                  ),
+                ],
               ),
               CrossLine(
                 color: Colors.grey,
@@ -1780,18 +1958,66 @@ class _RutinasState extends State<Rutinas> {
                 color: Colors.grey,
               ),
               EditTextArea(
-                textController: textCKResultController,
+                textController: textFibrinogenoResultController,
                 keyBoardType: TextInputType.number,
                 inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'CK ($unidadMedidaCK)',
+                labelEditText: 'Fibrinogeno ($unidadMedidaFibrinogeno)',
                 numOfLines: 1,
               ),
               EditTextArea(
-                textController: textCKMBResultController,
+                textController: textDimeroDResultController,
                 keyBoardType: TextInputType.number,
                 inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'CK-Mb ($unidadMedidaCKMB)',
+                labelEditText: 'Dimero D ($unidadMedidaDimeroD)',
                 numOfLines: 1,
+              ),
+              CrossLine(
+                color: Colors.grey,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: EditTextArea(
+                      textController: textCKResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'CK ($unidadMedidaCK)',
+                      numOfLines: 1,
+                    ),
+                  ),
+                  Expanded(
+                    child: EditTextArea(
+                      textController: textCKMBResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'CK-Mb ($unidadMedidaCKMB)',
+                      numOfLines: 1,
+                    ),
+                  ),
+                ],
+              ),
+              // PERFIL CARDIACO
+              Row(
+                children: [
+                  Expanded(
+                    child: EditTextArea(
+                      textController: textProBNPResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'NT-pro BNP ($unidadMedidaProBNP)',
+                      numOfLines: 1,
+                    ),
+                  ),
+                  Expanded(
+                    child: EditTextArea(
+                      textController: textBNPResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'BNP ($unidadMedidaBNP)',
+                      numOfLines: 1,
+                    ),
+                  ),
+                ],
               ),
               Container(
                 margin: const EdgeInsets.all(5.0),
@@ -2450,6 +2676,59 @@ class _RutinasState extends State<Rutinas> {
                   ),
                 ],
               )),
+          // Perfil Tiroideo **************************
+          TittleContainer(
+            tittle: "Perfil Tiroideo",
+            child: Row(
+              children: [
+                Expanded(
+                  child: EditTextArea(
+                    textController: textTSHResultController,
+                    keyBoardType: TextInputType.number,
+                    inputFormat: MaskTextInputFormatter(),
+                    labelEditText: 'T.S.H. ($unidadMedidaTSH)',
+                    numOfLines: 1,
+                  ),
+                ),
+                Expanded(
+                  child: EditTextArea(
+                    textController: textT4LResultController,
+                    keyBoardType: TextInputType.number,
+                    inputFormat: MaskTextInputFormatter(),
+                    labelEditText: 'T4 Libre ($unidadMedidaT4L)',
+                    numOfLines: 1,
+                  ),
+                ),
+                Expanded(
+                  child: EditTextArea(
+                    textController: textT3LResultController,
+                    keyBoardType: TextInputType.number,
+                    inputFormat: MaskTextInputFormatter(),
+                    labelEditText: 'T3 Libre ($unidadMedidaT3L)',
+                    numOfLines: 1,
+                  ),
+                ),
+                Expanded(
+                  child: EditTextArea(
+                    textController: textT4ResultController,
+                    keyBoardType: TextInputType.number,
+                    inputFormat: MaskTextInputFormatter(),
+                    labelEditText: 'T4 Total ($unidadMedidaT4)',
+                    numOfLines: 1,
+                  ),
+                ),
+                Expanded(
+                  child: EditTextArea(
+                    textController: textT3ResultController,
+                    keyBoardType: TextInputType.number,
+                    inputFormat: MaskTextInputFormatter(),
+                    labelEditText: 'T3 Total ($unidadMedidaT3)',
+                    numOfLines: 1,
+                  ),
+                ),
+              ],
+            ),
+          ),
           // Tiempos de Coagulación **************************
           TittleContainer(
             tittle: "Tiempos de Coagulación",
@@ -2487,6 +2766,10 @@ class _RutinasState extends State<Rutinas> {
               ],
             ),
           ),
+
+          CrossLine(
+            color: Colors.grey,
+          ),
           // Enzimas Pancreaticas **************************
           Row(
             children: [
@@ -2510,6 +2793,7 @@ class _RutinasState extends State<Rutinas> {
               ),
             ],
           ),
+
           //
           Row(
             children: [
@@ -2550,13 +2834,61 @@ class _RutinasState extends State<Rutinas> {
                 ),
               ),
               //
+              CrossLine(
+                              isHorizontal: false,
+                              thickness: 3,
+                              color: Colors.white,
+                              height: 1,
+                            ),
               Expanded(
-                  child: CrossLine(
+                child: EditTextArea(
+                  textController: textFibrinogenoResultController,
+                  keyBoardType: TextInputType.number,
+                  inputFormat: MaskTextInputFormatter(),
+                  labelEditText: 'Fibrinogeno ($unidadMedidaFibrinogeno)',
+                  numOfLines: 1,
+                ),
+              ),
+              Expanded(
+                child: EditTextArea(
+                  textController: textDimeroDResultController,
+                  keyBoardType: TextInputType.number,
+                  inputFormat: MaskTextInputFormatter(),
+                  labelEditText: 'Dimero D ($unidadMedidaDimeroD)',
+                  numOfLines: 1,
+                ),
+              ),
+              CrossLine(
                 isHorizontal: false,
                 thickness: 3,
                 color: Colors.white,
                 height: 1,
-              )),
+              ),
+              // PERFIL CARDIACO
+              Expanded(
+                child: EditTextArea(
+                  textController: textProBNPResultController,
+                  keyBoardType: TextInputType.number,
+                  inputFormat: MaskTextInputFormatter(),
+                  labelEditText: 'NT-pro BNP ($unidadMedidaProBNP)',
+                  numOfLines: 1,
+                ),
+              ),
+              Expanded(
+                child: EditTextArea(
+                  textController: textBNPResultController,
+                  keyBoardType: TextInputType.number,
+                  inputFormat: MaskTextInputFormatter(),
+                  labelEditText: 'BNP ($unidadMedidaBNP)',
+                  numOfLines: 1,
+                ),
+              ),
+              CrossLine(
+                isHorizontal: false,
+                thickness: 3,
+                color: Colors.white,
+                height: 1,
+              ),
               Expanded(
                 child: EditTextArea(
                   textController: textCKResultController,
