@@ -1708,6 +1708,7 @@ class _GeneralesState extends State<Generales> {
                     children: [
                       CircleIcon(
                           radios: 20,
+                          difRadios: 5,
                           tittle: '0.4',
                           onChangeValue: () {
                             Valores.constantePerdidasInsensibles = 0.2;
@@ -1716,6 +1717,7 @@ class _GeneralesState extends State<Generales> {
                           }),
                       CircleIcon(
                           radios: 20,
+                          difRadios: 5,
                           tittle: '0.5',
                           onChangeValue: () {
                             Valores.constantePerdidasInsensibles = 0.2;
@@ -1724,6 +1726,7 @@ class _GeneralesState extends State<Generales> {
                           }),
                       CircleIcon(
                           radios: 20,
+                          difRadios: 5,
                           tittle: '0.6',
                           onChangeValue: () {
                             Valores.constantePerdidasInsensibles = 0.6;
@@ -1732,6 +1735,7 @@ class _GeneralesState extends State<Generales> {
                           }),
                       CircleIcon(
                           radios: 20,
+                          difRadios: 5,
                           tittle: '0.5',
                           onChangeValue: () {
                             Valores.constantePerdidasInsensibles = 0.7;
@@ -1740,6 +1744,7 @@ class _GeneralesState extends State<Generales> {
                           }),
                       CircleIcon(
                           radios: 20,
+                          difRadios: 5,
                           tittle: '0.8',
                           onChangeValue: () {
                             Valores.constantePerdidasInsensibles = 0.8;
@@ -1748,6 +1753,7 @@ class _GeneralesState extends State<Generales> {
                           }),
                       CircleIcon(
                           radios: 20,
+                          difRadios: 5,
                           tittle: '0.9',
                           onChangeValue: () {
                             Valores.constantePerdidasInsensibles = 0.9;
@@ -1756,6 +1762,7 @@ class _GeneralesState extends State<Generales> {
                           }),
                       CircleIcon(
                           radios: 20,
+                          difRadios: 5,
                           tittle: '1.1',
                           onChangeValue: () {
                             Valores.constantePerdidasInsensibles = 1.1;
@@ -1764,6 +1771,7 @@ class _GeneralesState extends State<Generales> {
                           }),
                       CircleIcon(
                           radios: 20,
+                          difRadios: 5,
                           tittle: '1.2',
                           onChangeValue: () {
                             Valores.constantePerdidasInsensibles = 1.2;
@@ -2008,397 +2016,7 @@ class _GeneralesState extends State<Generales> {
               )),
           Expanded(
               flex: 2,
-              child: TittleContainer(
-                padding: 2.0,
-                tittle: "Dispositivo(s)",
-                child: SingleChildScrollView(
-                  controller: ScrollController(),
-                  child: Column(
-                    children: [
-                      GrandButton(
-                          labelButton: "Actualizar Información",
-                          onPress: () {
-
-                          }),
-                      CrossLine(),
-                      Dispositivos(
-                        dispositivoName: "CVP",
-                        otherName: Valores.withCVP,
-                        onChangeValue: (esSelected) async {
-                          //
-                          if (esSelected) {
-                            final DateTime? picked = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2055),
-                                builder: (BuildContext context, Widget? child) {
-                                  return Theme(
-                                      data: ThemeData.dark().copyWith(
-                                          dialogBackgroundColor:
-                                              Theming.cuaternaryColor),
-                                      child: child!);
-                                });
-                            if (picked != null && picked != Valores.withCVP) {
-                              setState(() {
-                                Valores.withCVP =
-                                    DateFormat("yyyy/MM/dd").format(picked);
-                              });
-                            }
-                          } else {
-                            setState(() {
-                              Valores.withCVP = "";
-                            });
-                          }
-                        },
-                      ), // "CVP",
-                      Dispositivos(
-                        dispositivoName: "CVLP",
-                        otherName: Valores.withCVLP,
-                        onChangeValue: (esSelected) async {
-                          //
-                          if (esSelected) {
-                            final DateTime? picked = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2055),
-                                builder: (BuildContext context, Widget? child) {
-                                  return Theme(
-                                      data: ThemeData.dark().copyWith(
-                                          dialogBackgroundColor:
-                                              Theming.cuaternaryColor),
-                                      child: child!);
-                                });
-                            if (picked != null && picked != Valores.withCVLP) {
-                              setState(() {
-                                Valores.withCVLP =
-                                    DateFormat("yyyy/MM/dd").format(picked);
-                              });
-                            }
-                          } else {
-                            setState(() {
-                              Valores.withCVLP = "";
-                            });
-                          }
-                        },
-                      ), // "CVLP",
-                      Dispositivos(
-                        dispositivoName: "CVC",
-                        otherName: Valores.withCVC,
-                        onChangeValue: (esSelected) async {
-                          //
-                          if (esSelected) {
-                            final DateTime? picked = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2055),
-                                builder: (BuildContext context, Widget? child) {
-                                  return Theme(
-                                      data: ThemeData.dark().copyWith(
-                                          dialogBackgroundColor:
-                                              Theming.cuaternaryColor),
-                                      child: child!);
-                                });
-                            if (picked != null && picked != Valores.withCVC) {
-                              setState(() {
-                                Valores.withCVC =
-                                    DateFormat("yyyy/MM/dd").format(picked);
-                              });
-                            }
-                          } else {
-                            setState(() {
-                              Valores.withCVC = "";
-                            });
-                          }
-                        },
-                      ), // "CVC",
-                      Dispositivos(
-                        dispositivoName: "MAH",
-                        otherName: Valores.withMahurkar,
-                        onChangeValue: (esSelected) async {
-                          //
-                          if (esSelected) {
-                            final DateTime? picked = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2055),
-                                builder: (BuildContext context, Widget? child) {
-                                  return Theme(
-                                      data: ThemeData.dark().copyWith(
-                                          dialogBackgroundColor:
-                                              Theming.cuaternaryColor),
-                                      child: child!);
-                                });
-                            if (picked != null &&
-                                picked != Valores.withMahurkar) {
-                              setState(() {
-                                Valores.withMahurkar =
-                                    DateFormat("yyyy/MM/dd").format(picked);
-                              });
-                            }
-                          } else {
-                            setState(() {
-                              Valores.withMahurkar = "";
-                            });
-                          }
-                        },
-                      ), // "MAHA",
-                      Dispositivos(
-                        dispositivoName: "FOL",
-                        otherName: Valores.withFOL,
-                        onChangeValue: (esSelected) async {
-                          //
-                          if (esSelected) {
-                            final DateTime? picked = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2055),
-                                builder: (BuildContext context, Widget? child) {
-                                  return Theme(
-                                      data: ThemeData.dark().copyWith(
-                                          dialogBackgroundColor:
-                                              Theming.cuaternaryColor),
-                                      child: child!);
-                                });
-                            if (picked != null && picked != Valores.withFOL) {
-                              setState(() {
-                                Valores.withFOL =
-                                    DateFormat("yyyy/MM/dd").format(picked);
-                              });
-                            }
-                          } else {
-                            setState(() {
-                              Valores.withFOL = "";
-                            });
-                          }
-                        },
-                      ), // "FOL",
-                      Dispositivos(
-                        dispositivoName: "SNG",
-                        otherName: Valores.withSNG,
-                        onChangeValue: (esSelected) async {
-                          //
-                          if (esSelected) {
-                            final DateTime? picked = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2055),
-                                builder: (BuildContext context, Widget? child) {
-                                  return Theme(
-                                      data: ThemeData.dark().copyWith(
-                                          dialogBackgroundColor:
-                                              Theming.cuaternaryColor),
-                                      child: child!);
-                                });
-                            if (picked != null && picked != Valores.withSNG) {
-                              setState(() {
-                                Valores.withSNG =
-                                    DateFormat("yyyy/MM/dd").format(picked);
-                              });
-                            }
-                          } else {
-                            setState(() {
-                              Valores.withSNG = "";
-                            });
-                          }
-                        },
-                      ), // "SNG",
-                      Dispositivos(
-                        dispositivoName: "SOG",
-                        otherName: Valores.withSOG,
-                        onChangeValue: (esSelected) async {
-                          //
-                          if (esSelected) {
-                            final DateTime? picked = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2055),
-                                builder: (BuildContext context, Widget? child) {
-                                  return Theme(
-                                      data: ThemeData.dark().copyWith(
-                                          dialogBackgroundColor:
-                                              Theming.cuaternaryColor),
-                                      child: child!);
-                                });
-                            if (picked != null && picked != Valores.withSOG) {
-                              setState(() {
-                                Valores.withSOG =
-                                    DateFormat("yyyy/MM/dd").format(picked);
-                              });
-                            }
-                          } else {
-                            setState(() {
-                              Valores.withSOG = "";
-                            });
-                          }
-                        },
-                      ), // "SOG",
-                      Dispositivos(
-                        dispositivoName: "PEN",
-                        otherName: Valores.withPEN,
-                        onChangeValue: (esSelected) async {
-                          //
-                          if (esSelected) {
-                            final DateTime? picked = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2055),
-                                builder: (BuildContext context, Widget? child) {
-                                  return Theme(
-                                      data: ThemeData.dark().copyWith(
-                                          dialogBackgroundColor:
-                                              Theming.cuaternaryColor),
-                                      child: child!);
-                                });
-                            if (picked != null && picked != Valores.withPEN) {
-                              setState(() {
-                                Valores.withPEN =
-                                    DateFormat("yyyy/MM/dd").format(picked);
-                              });
-                            }
-                          } else {
-                            setState(() {
-                              Valores.withPEN = "";
-                            });
-                          }
-                        },
-                      ), // "PEN",
-                      Dispositivos(
-                        dispositivoName: "COL",
-                        otherName: Valores.withCOL,
-                        onChangeValue: (esSelected) async {
-                          //
-                          if (esSelected) {
-                            final DateTime? picked = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2055),
-                                builder: (BuildContext context, Widget? child) {
-                                  return Theme(
-                                      data: ThemeData.dark().copyWith(
-                                          dialogBackgroundColor:
-                                              Theming.cuaternaryColor),
-                                      child: child!);
-                                });
-                            if (picked != null && picked != Valores.withCOL) {
-                              setState(() {
-                                Valores.withCOL =
-                                    DateFormat("yyyy/MM/dd").format(picked);
-                              });
-                            }
-                          } else {
-                            setState(() {
-                              Valores.withCOL = "";
-                            });
-                          }
-                        },
-                      ), // "COL",
-                      Dispositivos(
-                        dispositivoName: "SEP",
-                        otherName: Valores.withSEP,
-                        onChangeValue: (esSelected) async {
-                          //
-                          if (esSelected) {
-                            final DateTime? picked = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2055),
-                                builder: (BuildContext context, Widget? child) {
-                                  return Theme(
-                                      data: ThemeData.dark().copyWith(
-                                          dialogBackgroundColor:
-                                              Theming.cuaternaryColor),
-                                      child: child!);
-                                });
-                            if (picked != null && picked != Valores.withSEP) {
-                              setState(() {
-                                Valores.withSEP =
-                                    DateFormat("yyyy/MM/dd").format(picked);
-                              });
-                            }
-                          } else {
-                            setState(() {
-                              Valores.withSEP = "";
-                            });
-                          }
-                        },
-                      ), // "SEP",
-                      Dispositivos(
-                        dispositivoName: "GAS",
-                        otherName: Valores.withGAS,
-                        onChangeValue: (esSelected) async {
-                          //
-                          if (esSelected) {
-                            final DateTime? picked = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2055),
-                                builder: (BuildContext context, Widget? child) {
-                                  return Theme(
-                                      data: ThemeData.dark().copyWith(
-                                          dialogBackgroundColor:
-                                              Theming.cuaternaryColor),
-                                      child: child!);
-                                });
-                            if (picked != null && picked != Valores.withGAS) {
-                              setState(() {
-                                Valores.withGAS =
-                                    DateFormat("yyyy/MM/dd").format(picked);
-                              });
-                            }
-                          } else {
-                            setState(() {
-                              Valores.withGAS = "";
-                            });
-                          }
-                        },
-                      ), // "GAS",
-                      Dispositivos(
-                        dispositivoName: "TNK",
-                        otherName: Valores.withTNK,
-                        onChangeValue: (esSelected) async {
-                          //
-                          if (esSelected) {
-                            final DateTime? picked = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2055),
-                                builder: (BuildContext context, Widget? child) {
-                                  return Theme(
-                                      data: ThemeData.dark().copyWith(
-                                          dialogBackgroundColor:
-                                              Theming.cuaternaryColor),
-                                      child: child!);
-                                });
-                            if (picked != null && picked != Valores.withTNK) {
-                              setState(() {
-                                Valores.withTNK =
-                                    DateFormat("yyyy/MM/dd").format(picked);
-                              });
-                            }
-                          } else {
-                            setState(() {
-                              Valores.withTNK = "";
-                            });
-                          }
-                        },
-                      ), // "TNK"
-
-                    ],
-                  ),
-                ),
-              )),
+              child: RevisionDispositivos()),
           Expanded(
             flex: 2,
             child: Container(

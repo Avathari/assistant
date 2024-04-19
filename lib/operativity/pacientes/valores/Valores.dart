@@ -801,7 +801,22 @@ class Valores {
       reaccionesPresentadas = "Ninguna manifestada durante la transfusión. ";
 
   // DISPOSITIVOS ************************ * * * *
-  static String? withCVP = "", withCVLP = "",withCVC = "", withMahurkar = "",
+  static int? initCVP = 0,
+      initCVLP = 0,
+      initCVC = 0,
+      initMahurkar = 0,
+      initFOL = 0,
+      initSNG = 0,
+      initSOG = 0,
+      initPEN = 0,
+      initCOL = 0,
+      initSEP = 0,
+      initGAS = 0,
+      initTNK = 0;
+  static String? withCVP = "",
+      withCVLP = "",
+      withCVC = "",
+      withMahurkar = "",
       withFOL = "",
       withSNG = "",
       withSOG = "",
@@ -834,7 +849,9 @@ class Valores {
       circunferenciaFemoralDerecha,
       circunferenciaSuralIzquierda,
       circunferenciaSuralDerecha;
-  static int? fraccionInspiratoriaOxigeno, presionVenosaCentral, presionIntraabdominal,
+  static int? fraccionInspiratoriaOxigeno,
+      presionVenosaCentral,
+      presionIntraabdominal,
       presionIntraCerebral;
   static double? temperaturCorporal,
       pesoCorporalTotal,
@@ -845,7 +862,8 @@ class Valores {
   //
   static double? presionArteriaPulmonarSistolica,
       presionArteriaPulmonarDiastolica,
-      presionMediaArteriaPulmonar, presionCunaPulmonar;
+      presionMediaArteriaPulmonar,
+      presionCunaPulmonar;
 
   //
   static String? fechaRealizacionBalances = "";
@@ -1304,11 +1322,11 @@ class Valores {
       (100); // # Concentración Venosa de Oxígeno
 
   static double get DAV => (CAO - CVO); // # Diferencia Arteriovenosa de O2
-  
+
   /// Delta de CO2 (D_CO2) , DavCO2
   ///     *** Denota Hipoperfusión tisular.
   /// VN: menor 6 mmHg
-  /// 
+  ///
   static double get DavCO2 =>
       (CACO - CVCO); // # Diferencia Arteriovenosa de CO2
 
@@ -1335,7 +1353,7 @@ class Valores {
   /// 1,4-1,68 mmHg/mL
   /// Consulte : http://scielo.org.co/pdf/rca/v49n1/es_2256-2087-rca-49-01-e500.pdf
   ///
-  static double get D_PavCO2D_PavO2 => (D_PavO2/D_PavCO2);
+  static double get D_PavCO2D_PavO2 => (D_PavO2 / D_PavCO2);
 
   static double get D_PavO2 => (Valores.poArteriales! - Valores.poVenosos!);
   static double get D_PavCO2 => (Valores.pcoArteriales! - Valores.pcoVenosos!);
@@ -1344,9 +1362,9 @@ class Valores {
   ///
   /// VN : menos de 1.6
   ///          mayor de 1.6 . . . Hipoperfusión Celular
-  /// 
+  ///
   static double get indiceMitocondrial => (Gasometricos.DeltaCOS / DAV);
-  
+
   // # Cociente Respiratorio
   static double get RI => 0.8;
 
