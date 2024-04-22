@@ -166,6 +166,38 @@ class Cardiometrias {
     }
   }
 
+  /// Poder Cardiaco
+  /// * *  It has been found that a cutoff value for CP of 0.53 W accurately predict in–hospital mortality for cardiogenic shock patients. Others investigators observed cutoff for increased mortality of CP < 1 W, data that were obtained at doses of maximal pharmacologic support yielding the individual maximal CP.
+  /// * * In our experience, the cutoff value for CP that accurately predicts in–hospital mortality for cardiogenic shock patients is 0.7 W but its impact on short–term prognosis is clearer if the patient achieves a CP equal or higher than 1 W after an optimal myocardial revascularization with interventional cardiac procedures.
+  ///
+  /// VN: mayor a 0.53 Watts (J/seg)
+  /// * * * Por cada incremento del 0.20 en el poder cardiaco se abate el riesgo relativo de muerte en un 45%. El poder cardiaco menor de 0.53 tuvo una sensibilidaad-especificidad de 0.66 con un VP 58% y VPN 71% cuando es mayor de 0.53.
+  /// Consulte : https://www.scielo.org.mx/scielo.php?script=sci_arttext&pid=S1405-99402006000100015
+  ///
+  static double get poderCardiaco {
+    if (Valores.presionVenosaCentral != 0 || Valores.presionVenosaCentral !=null) {
+      return (Cardiometrias.presionArterialMedia - Valores.presionVenosaCentral!) * Valores.gastoCardiaco / 451;
+    } else {
+      return (Cardiometrias.presionArterialMedia) * Valores.gastoCardiaco / 451;
+    }
+  }
+
+  /// Poder Cardiaco
+  /// * *  It has been found that a cutoff value for CP of 0.53 W accurately predict in–hospital mortality for cardiogenic shock patients. Others investigators observed cutoff for increased mortality of CP < 1 W, data that were obtained at doses of maximal pharmacologic support yielding the individual maximal CP.
+  /// * * In our experience, the cutoff value for CP that accurately predicts in–hospital mortality for cardiogenic shock patients is 0.7 W but its impact on short–term prognosis is clearer if the patient achieves a CP equal or higher than 1 W after an optimal myocardial revascularization with interventional cardiac procedures.
+  ///
+  /// VN: mayor a 0.53 Watts (J/seg)
+  /// * * * Por cada incremento del 0.20 en el poder cardiaco se abate el riesgo relativo de muerte en un 45%. El poder cardiaco menor de 0.53 tuvo una sensibilidaad-especificidad de 0.66 con un VP 58% y VPN 71% cuando es mayor de 0.53.
+  /// Consulte : https://www.scielo.org.mx/scielo.php?script=sci_arttext&pid=S1405-99402006000100015
+  ///
+  static double get poderCardiacoIndexado {
+    if (Valores.presionVenosaCentral != 0 || Valores.presionVenosaCentral !=null) {
+      return (Cardiometrias.presionArterialMedia - Valores.presionVenosaCentral!) * Valores.indiceCardiaco / 451;
+    } else {
+      return (Cardiometrias.presionArterialMedia) * Valores.indiceCardiaco / 451;
+    }
+  }
+
   /// Indice de Briones  : :
   ///
   /// VN : mayor a 0.11

@@ -33,6 +33,57 @@ class _GasometricosState extends State<Gasometricos> {
       child: Column(
         children: [
           Expanded(
+            child: Row(
+              children: [
+                Expanded(
+                  child: ValuePanel(
+                    firstText: "P.C.T.",
+                    secondText: Valores.pesoCorporalTotal.toString(),
+                    thirdText: "Kg",
+                  ),
+                ),
+                Expanded(
+                  child: ValuePanel(
+                    firstText: "Est",
+                    secondText: Valores.alturaPaciente.toString(),
+                    thirdText: "mts",
+                  ),
+                ),
+                Expanded(
+                  child: ValuePanel(
+                    firstText: "S.C.",
+                    secondText: Antropometrias.SC.toStringAsFixed(2),
+                    thirdText: "m2",
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(child: Row
+            (children: [
+            Expanded(
+              child: ValuePanel(
+                firstText: "Na2+",
+                secondText: Valores.sodio.toString(),
+                thirdText: "mEq/L",
+              ),
+            ),
+            Expanded(
+              child: ValuePanel(
+                firstText: "K+",
+                secondText: Valores.potasio.toString(),
+                thirdText: "mEq/L",
+              ),
+            ),
+            Expanded(
+              child: ValuePanel(
+                firstText: "Cl-",
+                secondText: Valores.cloro.toString(),
+                thirdText: "mEq/L",
+              ),
+            ),
+          ],),),
+          Expanded(
             flex: 9,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,21 +91,6 @@ class _GasometricosState extends State<Gasometricos> {
                 Expanded(child: SingleChildScrollView(
                   controller: ScrollController(),
                   child: Column(children: [
-                        ValuePanel(
-                          firstText: "P.C.T.",
-                          secondText: Valores.pesoCorporalTotal.toString(),
-                          thirdText: "Kg",
-                        ),
-                    ValuePanel(
-                      firstText: "Est",
-                      secondText: Valores.alturaPaciente.toString(),
-                      thirdText: "mts",
-                    ),
-                    ValuePanel(
-                      firstText: "S.C.",
-                      secondText: Antropometrias.SC.toStringAsFixed(2),
-                      thirdText: "m2",
-                    ),
                     CrossLine(),
                         ValuePanel(
                           firstText: "pH",
@@ -93,6 +129,12 @@ class _GasometricosState extends State<Gasometricos> {
                           thirdText: "%",
                         ),
                         CrossLine(),
+                    ValuePanel(
+                      firstText: "Lactato",
+                      secondText: Valores.lactatoArterial.toString(),
+                      thirdText: "%",
+                    ),
+                    CrossLine(),
                         ValuePanel(
                           firstText: "Temp. C.",
                           secondText: Valores.temperaturCorporal.toString(),
@@ -103,6 +145,11 @@ class _GasometricosState extends State<Gasometricos> {
                           secondText: Valores.fechaGasometriaArterial.toString(),
                           thirdText: "",
                         ),
+                    ValuePanel(
+                      firstText: "Proteinas",
+                      secondText: Valores.proteinasTotales.toString(),
+                      thirdText: "g/dL",
+                    ),
                         CrossLine(),
                   ],),
                 )),
@@ -123,50 +170,55 @@ class _GasometricosState extends State<Gasometricos> {
                         options: Carousel.carouselOptions(context: context)),
                   ),
                 ),
-                Expanded(child: Wrap(
-                    children: [
-                      ValuePanel(
-                        firstText: "EB Esperado",
-                        secondText: Gas.Gasometricos.EBb.toStringAsFixed(2),
-                        thirdText: "mmol/L",
-                      ),
-                      ValuePanel(
-                        firstText: "PCO2 Esperado",
-                        secondText: Gas.Gasometricos.PCO2C.toStringAsFixed(2),
-                        thirdText: "mmHg",
-                      ),
-                      CrossLine(),
-                      ValuePanel(
-                        firstText: "Delta CO2",
-                        secondText: Gas.Gasometricos.DeltaCOS.toStringAsFixed(2),
-                        thirdText: "mmHg",
-                      ),
-                      CrossLine(),
-                      ValuePanel(
-                        firstText: "TCO2",
-                        secondText: Gas.Gasometricos.TCO.toStringAsFixed(2),
-                        thirdText: "mmHg",
-                      ),
-                      ValuePanel(
-                        firstText: "PCO2 Corregido",
-                        secondText: Gas.Gasometricos.PCO2C.toStringAsFixed(2),
-                        thirdText: "mmHg",
-                      ),
-                      ValuePanel(
-                        firstText: "EB Corregido",
-                        secondText: Gas.Gasometricos.EBecf.toStringAsFixed(2),
-                        thirdText: "mmol/L",
-                      ),
-                      ValuePanel(
-                        firstText: "EB Estándar",
-                        secondText: Gas.Gasometricos.EB.toStringAsFixed(2),
-                        thirdText: 'mmol/L',
-                      ),
-                    ]
+                Expanded(child: SingleChildScrollView(
+                  controller: ScrollController(),
+                  child: Column(
+                      children: [
+                        CrossLine(),
+                        ValuePanel(
+                          firstText: "EBesp",
+                          secondText: Gas.Gasometricos.EBb.toStringAsFixed(2),
+                          thirdText: "mmol/L",
+                        ),
+                        ValuePanel(
+                          firstText: "PCO2e",
+                          secondText: Gas.Gasometricos.PCO2C.toStringAsFixed(2),
+                          thirdText: "mmHg",
+                        ),
+                        CrossLine(),
+                        ValuePanel(
+                          firstText: "ΔCO2",
+                          secondText: Gas.Gasometricos.DeltaCOS.toStringAsFixed(2),
+                          thirdText: "mmHg",
+                        ),
+                        CrossLine(),
+                        ValuePanel(
+                          firstText: "TCO2",
+                          secondText: Gas.Gasometricos.TCO.toStringAsFixed(2),
+                          thirdText: "mmHg",
+                        ),
+                        ValuePanel(
+                          firstText: "cPCO2",
+                          secondText: Gas.Gasometricos.PCO2C.toStringAsFixed(2),
+                          thirdText: "mmHg",
+                        ),
+                        ValuePanel(
+                          firstText: "cEB",
+                          secondText: Gas.Gasometricos.EBecf.toStringAsFixed(2),
+                          thirdText: "mmol/L",
+                        ),
+                        ValuePanel(
+                          firstText: "EBstd",
+                          secondText: Gas.Gasometricos.EB.toStringAsFixed(2),
+                          thirdText: 'mmol/L',
+                        ),
+                      ]
+                  ),
                 ))
               ],
             ),
           ),
+          CrossLine(),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(right: 8.0, left: 8.0),
@@ -213,8 +265,8 @@ class _GasometricosState extends State<Gasometricos> {
               ),
             ),
           ),
-          Expanded(child: Wrap(
-            spacing: 20,
+          Expanded(child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               GrandIcon(
                   iconData: Icons.g_mobiledata,
@@ -246,17 +298,7 @@ class _GasometricosState extends State<Gasometricos> {
                       context: context,
                       text: Gas.Gasometricos.gasometricosNombrado)),
             ],
-          ),), 
-          // Expanded(
-          //   child: GrandButton(
-          //     weigth: 2000,
-          //     labelButton: "Copiar en Portapapeles",
-          //     onPress: () {
-          //       Datos.portapapeles(
-          //           context: context, text: Gas.Gasometricos.gasometricos);
-          //     },
-          //   ),
-          // ),
+          ),),
         ],
       ),
     );

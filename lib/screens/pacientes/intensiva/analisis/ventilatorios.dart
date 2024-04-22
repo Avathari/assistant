@@ -85,12 +85,27 @@ class _VentilatoriosState extends State<Ventilatorios> {
                                 .toStringAsFixed(0),
                             thirdText: 'cmH2O',
                           ),
-                          ValuePanel(
-                            firstText: 'FiO2',
-                            secondText: Valores
-                                .fraccionInspiratoriaVentilatoria!
-                                .toStringAsFixed(0),
-                            thirdText: '%',
+                          Row(
+                            children: [
+                              Expanded(
+                                child: ValuePanel(
+                                  firstText: 'FiO2',
+                                  secondText: Valores
+                                      .fraccionInspiratoriaVentilatoria!
+                                      .toStringAsFixed(0),
+                                  thirdText: '%',
+                                ),
+                              ),
+                              Expanded(
+                                child: ValuePanel(
+                                  firstText: 'PaO2',
+                                  secondText: Valores
+                                      .poArteriales!
+                                      .toStringAsFixed(0),
+                                  thirdText: 'mmHg',
+                                ),
+                              ),
+                            ],
                           ),
                           ValuePanel(
                             firstText: 'PC / Psopp',
@@ -324,13 +339,6 @@ class _VentilatoriosState extends State<Ventilatorios> {
                                             thirdText: "Resp/L.seg",
                                           ),
                                           ValuePanel(
-                                            firstText: "iO2",
-                                            secondText: Valores
-                                                .indiceOxigenacion
-                                                .toStringAsFixed(2),
-                                            thirdText: "",
-                                          ),
-                                          ValuePanel(
                                             firstText: "I. Vent.",
                                             secondText:
                                                 Valores.IV.toStringAsFixed(1),
@@ -342,6 +350,26 @@ class _VentilatoriosState extends State<Ventilatorios> {
                                                 Valores.EV.toStringAsFixed(1),
                                             thirdText: "",
                                           ),
+                                          Row(children: [
+                                            Expanded(
+                                              child: ValuePanel(
+                                                firstText: "iO2",
+                                                secondText: Valores
+                                                    .indiceOxigenacion
+                                                    .toStringAsFixed(2),
+                                                thirdText: "",
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: ValuePanel(
+                                                firstText: "iO2a",
+                                                secondText: Valores
+                                                    .indiceOxigenacionAdaptado
+                                                    .toStringAsFixed(2),
+                                                thirdText: "",
+                                              ),
+                                            ),
+                                          ],)
                                         ]),
                                       ),
                                     ),

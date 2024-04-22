@@ -6048,7 +6048,10 @@ class Auxiliares {
     //
     Valores.fechaReactantes = json['Fecha_Registro_Reactantes'] ?? '';
     Valores.procalcitonina = double.parse(json['Procalcitonina'] ?? '0');
-    Valores.lactato = double.parse(json['Acido_Lactico'] ?? '0');
+
+    Valores.lactatoVenoso = double.parse(json['Lactato'] ?? '0');
+    Valores.lactatoArterial = double.parse(json['Lactato'] ?? '0');
+    //
     Valores.velocidadSedimentacionGlobular =
         double.parse(json['Velocidad_Sedimentacion'] ?? '0');
     Valores.proteinaCreactiva = double.parse(json['Proteina_Reactiva'] ?? '0');
@@ -7017,7 +7020,7 @@ class Auxiliares {
       "Presión de Oxígeno",
       "Bicarbonato Sérico",
       "Fracción Inspiratoria de Oxígeno",
-      "Saturación de Oxígeno"
+      "Saturación de Oxígeno",
     ],
     Categorias[10]: [
       "pH",
@@ -7025,7 +7028,7 @@ class Auxiliares {
       "Presión de Oxígeno",
       "Bicarbonato Sérico",
       "Fracción Inspiratoria de Oxígeno",
-      "Saturación de Oxígeno"
+      "Saturación de Oxígeno",
     ],
     //
     Categorias[11]: [
@@ -7084,6 +7087,8 @@ class Auxiliares {
       "Glucosa en LCR", // GLU-LCR : mg/dL
       "Lactato Deshidrogenasa", // LD H-LCR : UI/L
       "Proteinas Totales en LCR", // Prot-LCR : NA
+      "Albumina en LCR", // Prot-LCR : NA
+      //
       "Tinta China",
       "Tinción de Wrigth",
       "Tinción de Gram",
@@ -7099,7 +7104,7 @@ class Auxiliares {
       "Otros",
       "pH",
       "",
-    ],
+    ], // LCR
     Categorias[15]: [
       "Sodio Urinario",
       "Potasio Urinario",
@@ -7342,8 +7347,8 @@ class Auxiliares {
     Categorias[6]: ["mg/dL"],
     Categorias[7]: ["", "seg"],
     Categorias[8]: ["ng/dL", "mm/Hr", "mg/dL", "ng/mL", "UI/mL"],
-    Categorias[9]: ["", "mmHg", "cmH20", "mmol/L", "%"],
-    Categorias[10]: ["", "mmHg", "cmH20", "mmol/L", "%"],
+    Categorias[9]: ["", "mmHg", "cmH20", "mmol/L", "%", "mmol/L"],
+    Categorias[10]: ["", "mmHg", "cmH20", "mmol/L", "%", "mmol/L"],
     Categorias[11]: ["", "Hem/uL", "mg/dL", "Leu/uL", "cel/Campo"],
     Categorias[12]: [
       "mL",
@@ -7364,7 +7369,7 @@ class Auxiliares {
       "mm3",
       "%",
     ],
-    Categorias[14]: [""],
+    Categorias[14]: ["", "mm3", "mg/dL", "%", "mmHg", "g/dL", "mmol/L", "UI/L"],
     Categorias[15]: [""],
     Categorias[16]: [""],
     Categorias[17]: ["cell/mm3", "%", ""],

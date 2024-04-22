@@ -258,7 +258,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                       child: EditTextArea(
                         keyBoardType: TextInputType.number,
                         inputFormat: MaskTextInputFormatter(
-                            mask: '####/##/##',
+                            mask: '####/##/## ##:##:##',
                             filter: {"#": RegExp(r'[0-9]')},
                             type: MaskAutoCompletionType.lazy),
                         labelEditText: "Fecha de realización",
@@ -412,7 +412,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                         child: EditTextArea(
                           keyBoardType: TextInputType.number,
                           inputFormat: MaskTextInputFormatter(
-                              mask: '####/##/##',
+                              mask: '####/##/## ##:##:##',
                               filter: {"#": RegExp(r'[0-9]')},
                               type: MaskAutoCompletionType.lazy),
                           labelEditText: "Fecha de realización",
@@ -793,11 +793,11 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
               onSelected: () {
                 setState(() {
                   textDateEstudyController.text =
-                      Calendarios.today(format: "yyyy/MM/dd");
+                      Calendarios.today(format: "yyyy/MM/dd HH:mm:ss");
                 });
               },
               inputFormat: MaskTextInputFormatter(
-                  mask: '####/##/##', filter: {"#": RegExp(r'[0-9]')}),
+                  mask: '####/##/## ##:##:##', filter: {"#": RegExp(r'[0-9]')}),
             ),
             Row(
               children: [
@@ -980,160 +980,162 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
       );
     } else {
       return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(child: TittlePanel(textPanel: tittle)),
+          TittlePanel(textPanel: tittle),
           Expanded(
-            flex: 4,
-            child: Column(
+            child: Row(
               children: [
                 Expanded(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: EditTextArea(
-                          labelEditText: "Fecha de realización",
-                          numOfLines: 1,
-                          textController: textDateEstudyController,
-                          keyBoardType: TextInputType.datetime,
-                          inputFormat: MaskTextInputFormatter(
-                              mask: '####/##/##',
-                              filter: {"#": RegExp(r'[0-9]')},
-                              type: MaskAutoCompletionType.lazy),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: Spinner(
-                            width: isTabletAndDesktop(context) ? 190 : 170,
-                            // 90
-                            tittle: "Tipo de Estudio",
-                            initialValue: tipoEstudioValue!,
-                            items: Auxiliares.Categorias,
-                            onChangeValue: (String? newValue) {
+                  flex: 3,
+                  child: EditTextArea(
+                    labelEditText: "Fecha de realización",
+                    numOfLines: 1,
+                    textController: textDateEstudyController,
+                    keyBoardType: TextInputType.datetime,
+                    inputFormat: MaskTextInputFormatter(
+                        mask: '####/##/## ##:##:##',
+                        filter: {"#": RegExp(r'[0-9]')},
+                        type: MaskAutoCompletionType.lazy),
+                  ),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Spinner(
+                      width: isTabletAndDesktop(context) ? 190 : 170,
+                      // 90
+                      tittle: "Tipo de Estudio",
+                      initialValue: tipoEstudioValue!,
+                      items: Auxiliares.Categorias,
+                      onChangeValue: (String? newValue) {
+                        setState(() {
+                          tipoEstudioValue = newValue!;
+                          // *************** *********** **************
+                          // Actualización del Indice
+                          // *************** *********** **************
+                          index = Auxiliares.Categorias.indexOf(newValue);
+                          print("${tipoEstudioValue} : $index");
+                          // *************** *********** **************
+                          estudioValue = Auxiliares.Laboratorios[
+                          Auxiliares.Categorias[index]][0];
+                          unidadMedidaValue = Auxiliares
+                              .Medidas[Auxiliares.Categorias[index]][0];
+                          // *************** *********** **************
+                        });
+                      }),
+                ),
+                Expanded(
+                    child: GrandIcon(
+                      labelButton: "Agregar por Categoría",
+                      iconData: Icons.list_alt,
+                      onPress: () {
+                        Operadores.selectOptionsActivity(
+                            context: context,
+                            tittle: 'Seleccione un Tipo de Estudio',
+                            options: Auxiliares.Categorias,
+                            onClose: (value) {
                               setState(() {
-                                tipoEstudioValue = newValue!;
+                                tipoEstudioValue = value;
                                 // *************** *********** **************
                                 // Actualización del Indice
                                 // *************** *********** **************
-                                index = Auxiliares.Categorias.indexOf(newValue);
-                                print("${tipoEstudioValue} : $index");
+                                index = Auxiliares.Categorias.indexOf(value);
                                 // *************** *********** **************
                                 estudioValue = Auxiliares.Laboratorios[
                                 Auxiliares.Categorias[index]][0];
                                 unidadMedidaValue = Auxiliares
                                     .Medidas[Auxiliares.Categorias[index]][0];
                                 // *************** *********** **************
+                                Navigator.of(context).pop();
                               });
-                            }),
-                      ),
-                      Expanded(
-                          child: GrandIcon(
-                            labelButton: "Agregar por Categoría",
-                            iconData: Icons.list_alt,
-                            onPress: () {
-                              Operadores.selectOptionsActivity(
-                                  context: context,
-                                  tittle: 'Seleccione un Tipo de Estudio',
-                                  options: Auxiliares.Categorias,
-                                  onClose: (value) {
-                                    setState(() {
-                                      tipoEstudioValue = value;
-                                      // *************** *********** **************
-                                      // Actualización del Indice
-                                      // *************** *********** **************
-                                      index = Auxiliares.Categorias.indexOf(value);
-                                      // *************** *********** **************
-                                      estudioValue = Auxiliares.Laboratorios[
-                                      Auxiliares.Categorias[index]][0];
-                                      unidadMedidaValue = Auxiliares
-                                          .Medidas[Auxiliares.Categorias[index]][0];
-                                      // *************** *********** **************
-                                      Navigator.of(context).pop();
-                                    });
-                                    Cambios.toNextActivity(context, tittle: '$value', chyld: ConmutadorParaclinicos(
-                                      categoriaEstudio: value,
-                                    ));
-                                    // Operadores.openWindow(
-                                    //     context: context,
-                                    //     chyldrim: ConmutadorParaclinicos(
-                                    //       categoriaEstudio: value,
-                                    //     ));
-                                  });
-                            },
-                          )),
-                    ],
-                  ),
-                ),
+                              Cambios.toNextActivity(context, tittle: '$value', chyld: ConmutadorParaclinicos(
+                                categoriaEstudio: value,
+                              ));
+                              // Operadores.openWindow(
+                              //     context: context,
+                              //     chyldrim: ConmutadorParaclinicos(
+                              //       categoriaEstudio: value,
+                              //     ));
+                            });
+                      },
+                    )),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Row(
+              children: [
                 Expanded(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Spinner(
-                            width: isTabletAndDesktop(context) ? 120 : 170,
-                            // 90
-                            tittle: "Estudio",
-                            initialValue: estudioValue!,
-                            items: Auxiliares.Laboratorios[tipoEstudioValue],
-                            onChangeValue: (String? newValue) {
-                              setState(() {
-                                estudioValue = newValue!;
-                                //
-                              });
-                            }),
-                      ),
+                  child: Spinner(
+                      width: isTabletAndDesktop(context) ? 120 : 170,
+                      // 90
+                      tittle: "Estudio",
+                      initialValue: estudioValue!,
+                      items: Auxiliares.Laboratorios[tipoEstudioValue],
+                      onChangeValue: (String? newValue) {
+                        setState(() {
+                          estudioValue = newValue!;
+                          //
+                        });
+                      }),
+                ),
 
-                    ],
+              ],
+            ),
+          ),
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(
+                  child: EditTextArea(
+                    textController: textResultController,
+                    keyBoardType: TextInputType.number,
+                    inputFormat: MaskTextInputFormatter(),
+                    labelEditText: "Resultado",
+                    numOfLines: 1,
+                    withShowOption: true,
+                    onSelected: () {
+                      if (estudioValue == 'Urocultivo') {
+                        Operadores.openWindow(context: context, chyldrim: Container(),
+                            onAction: () {
+                              setState(() {
+                                textResultController.text = "AUS";
+                              });
+                            }
+                        );
+                      }
+                    },
                   ),
                 ),
                 Expanded(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: EditTextArea(
-                          textController: textResultController,
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(),
-                          labelEditText: "Resultado",
-                          numOfLines: 1,
-                          withShowOption: true,
-                          onSelected: () {
-                            if (estudioValue == 'Urocultivo') {
-                              Operadores.openWindow(context: context, chyldrim: Container(),
-                                  onAction: () {
-                                    setState(() {
-                                      textResultController.text = "AUS";
-                                    });
-                                  }
-                              );
-                            }
-                          },
-                        ),
-                      ),
-                      Expanded(
-                        child: Spinner(
-                            width: isMobile(context)
-                                ? 100
-                                : isTabletAndDesktop(context)
-                                ? 120
-                                : 170,
-                            isRow: true,
-                            tittle: "Unidad de Medida",
-                            initialValue: unidadMedidaValue!,
-                            items: Auxiliares.Medidas[tipoEstudioValue],
-                            onChangeValue: (String? newValue) {
-                              setState(() {
-                                unidadMedidaValue = newValue!;
-                              });
-                            }),
-                      ),
-                    ],
-                  ),
+                  child: Spinner(
+                      width: isMobile(context)
+                          ? 100
+                          : isTabletAndDesktop(context)
+                          ? 120
+                          : 170,
+                      isRow: true,
+                      tittle: "Unidad de Medida",
+                      initialValue: unidadMedidaValue!,
+                      items: Auxiliares.Medidas[tipoEstudioValue],
+                      onChangeValue: (String? newValue) {
+                        setState(() {
+                          unidadMedidaValue = newValue!;
+                        });
+                      }),
                 ),
               ],
             ),
           ),
-          
+          Expanded(
+            flex: 4,
+            child: Column(
+
+              children: [
+
+              ],
+            ),
+          ),
           CrossLine(),
           Expanded(
             child: Row(

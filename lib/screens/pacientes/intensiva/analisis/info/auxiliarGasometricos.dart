@@ -132,10 +132,29 @@ return SingleChildScrollView(
               ),
             ],
           ),
+
           CrossLine(),
+          Row(
+            children: [
+              Expanded(
+                child: ValuePanel(
+                  firstText: "DIF",
+                  secondText: Gas.Gasometricos.DIF.toStringAsFixed(2),
+                  thirdText: "",
+                ),
+              ),
+              Expanded(
+                child: ValuePanel(
+                  firstText: "Atot",
+                  secondText: Gas.Gasometricos.aTOT.toStringAsFixed(2),
+                  thirdText: "",
+                ),
+              ),
+            ],
+          ),
           ValuePanel(
-            firstText: "Dif. Aniones Libres",
-            secondText: Gas.Gasometricos.DIF.toStringAsFixed(2),
+            firstText: "GIF Iones",
+            secondText: Gas.Gasometricos.GIF.toStringAsFixed(2),
             thirdText: "",
           ),
           CrossLine(),
@@ -145,7 +164,7 @@ return SingleChildScrollView(
             thirdText: "",
           ),
           ValuePanel(
-            firstText: "Dif. Anionica",
+            firstText: "ΔEb",
             secondText: Gas.Gasometricos.DA.toStringAsFixed(2),
             thirdText: "",
           ),
@@ -154,18 +173,31 @@ return SingleChildScrollView(
             secondText: Gas.Gasometricos.VDb.toStringAsFixed(2),
             thirdText: "",
           ),
-          ValuePanel(
-            firstText: "[H+]",
-            secondText: Gas.Gasometricos.H.toStringAsFixed(2),
-            thirdText: "",
+          CrossLine(),
+          Row(
+            children: [
+              Expanded(
+                child: ValuePanel(
+                  firstText: "[H+]",
+                  secondText: Gas.Gasometricos.H.toStringAsFixed(2),
+                  thirdText: "",
+                ),
+              ),
+              Expanded(
+                child: ValuePanel(
+                  firstText: "pH[]",
+                  secondText: Gas.Gasometricos.PH.toStringAsFixed(2),
+                  thirdText: "",
+                ),
+              ),
+            ],
           ),
           CrossLine(),
           ValuePanel(
-            firstText: "pH[]",
-            secondText: Gas.Gasometricos.PH.toStringAsFixed(2),
+            firstText: "Na2+/Cl-",
+            secondText: Gas.Gasometricos.NaClindex.toStringAsFixed(2),
             thirdText: "",
           ),
-          CrossLine(),
         ],
       ),
     );
@@ -179,7 +211,7 @@ return SingleChildScrollView(
         children: [
           ValuePanel(
             firstText: "1ra HCO3-",
-            secondText: Gas.Gasometricos.HCOR_a.toString(),
+            secondText: Gas.Gasometricos.HCOR_a.toStringAsFixed(2),
             thirdText: "",
           ),
           ValuePanel(
@@ -200,15 +232,23 @@ return SingleChildScrollView(
             thirdText: "mEq/L",
           ),
           CrossLine(),
-          ValuePanel(
-            firstText: "Def. HCO3- (Astrup)",
-            secondText: Gas.Gasometricos.HCOAM.toStringAsFixed(2),
-            thirdText: "mEq/L",
-          ),
-          ValuePanel(
-            firstText: "Rep. HCO3-",
-            secondText: Gas.Gasometricos.VHCOAM.toStringAsFixed(2),
-            thirdText: "mEq/L",
+          Row(
+            children: [
+              Expanded(
+                child: ValuePanel(
+                  firstText: "Def. HCO3-\n(Astrup)",
+                  secondText: Gas.Gasometricos.HCOAM.toStringAsFixed(2),
+                  thirdText: "mEq/L",
+                ),
+              ),
+              Expanded(
+                child: ValuePanel(
+                  firstText: "Rep. HCO3-",
+                  secondText: Gas.Gasometricos.VHCOAM.toStringAsFixed(2),
+                  thirdText: "mEq/L",
+                ),
+              ),
+            ],
           ),
           CrossLine(),
           ValuePanel(

@@ -551,6 +551,7 @@ class _HidricosState extends State<Hidricos> {
                         SingleChildScrollView(
                           controller: ScrollController(),
                           child: TittleContainer(
+                            padding: 4,
                             tittle: 'Análisis de Calcio',
                             color: Colors.black,
                             child: Column(children: [
@@ -559,6 +560,71 @@ class _HidricosState extends State<Hidricos> {
                                 secondText: Hidrometrias.calcioCorregidoAlbumina
                                     .toStringAsFixed(2),
                                 thirdText: 'mEql/L',
+                              ),
+                              CrossLine(),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: ValuePanel(
+                                      firstText: 'Albumina',
+                                      secondText: Valores.albuminaSerica
+                                          .toString(),
+                                      thirdText: 'g/dL',
+                                    ),
+
+                                  ),
+                                  Expanded(
+                                    child: ValuePanel(
+                                      firstText: 'Mg-',
+                                      secondText: Valores.magnesio
+                                          .toString(),
+                                      thirdText: 'mg/dL',
+                                    ),),
+                                  Expanded(
+                                    child: ValuePanel(
+                                      firstText: 'PO3-',
+                                      secondText: Valores.fosforo
+                                          .toString(),
+                                      thirdText: 'mg/dL',
+                                    ),),
+                                  Expanded(
+                                    child: ValuePanel(
+                                      firstText: 'Creatinina',
+                                      secondText: Valores.creatinina
+                                          .toString(),
+                                      thirdText: 'mg/dL',
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+
+                                  Expanded(
+                                    child: ValuePanel(
+                                      firstText: 'PTH',
+                                      secondText: "0"
+                                          .toString(),
+                                      thirdText: 'mg/dL',
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: ValuePanel(
+                                      firstText: '25(OH)D',
+                                      secondText: "0"
+                                          .toString(),
+                                      thirdText: 'mg/dL',
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: ValuePanel(
+                                      firstText: '1,25(OH)2D',
+                                      secondText: "0"
+                                          .toString(),
+                                      thirdText: 'mg/dL',
+                                    ),
+                                  ),
+                                ],
                               ),
                             ]),
                           ),

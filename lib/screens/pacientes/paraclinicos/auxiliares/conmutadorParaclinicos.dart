@@ -11,6 +11,7 @@ import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/hormo
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/inmunologicos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/linfocitos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/lipidicos.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/liquidoCefalorraquideo.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/liquidoDialisis.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/liquidoPleural.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/pancreaticos.dart';
@@ -103,6 +104,8 @@ class _ConmutadorParaclinicosState extends State<ConmutadorParaclinicos> {
 
       case "Líquido de Diálisis Peritoneal":
         return const LiquidoDialisis();
+      case "Liquido Cefalorraquídeo":
+        return const LiquidoCefalorraquideo();
 
       case "Depuración de Orina de 24 Horas":
         return const Depuraciones();

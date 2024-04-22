@@ -396,7 +396,8 @@ class Valores {
     procalcitonina = json['Procalcitonina'] != "Pendiente"
         ? double.parse(json['Procalcitonina'] ?? '0')
         : 0.0;
-    lactato = double.parse(json['Acido_Lactico'] ?? '0');
+    lactatoArterial = double.parse(json['Lactato'] ?? '0');
+    lactatoVenoso = double.parse(json['Lactato'] ?? '0');
     velocidadSedimentacionGlobular =
         json['Velocidad_Sedimentacion'] != "Pendiente"
             ? double.parse(json['Velocidad_Sedimentacion'] ?? '0')
@@ -966,7 +967,7 @@ class Valores {
   //
   static String? fechaReactantes;
   static double? procalcitonina,
-      lactato,
+      lactatoVenoso, lactatoArterial,
       velocidadSedimentacionGlobular,
       proteinaCreactiva,
       factorReumatoide,
@@ -1198,22 +1199,44 @@ class Valores {
   static double get indiceTobinYang =>
       (Valores.frecuenciaVentilatoria! / Valores.volumenTidal!) * 100;
 
+  /// Indice de Oxígenación
+  ///
+  /// AOI = Edad +PVMA * (FiO2 / PaO2)
+  ///
+  /// VN: AOI score 60 == mortalidad 50%
+  ///         AOI score 80 == mortalidad 80%
+  ///
+  /// Consulte: https://www.ncbi.nlm.nih.gov/pubmed/24458052
+  ///
   static double get indiceOxigenacion {
-    if (Valores.poArteriales! != 0) {
+    if (Valores.poArteriales! != 0 && Ventometrias.presionMediaViaAerea != 0) {
       return (Ventometrias.presionMediaViaAerea *
-              (Valores.fioArteriales! / 100)) *
-          (100.00) /
-          Valores.poArteriales!;
-    } else if (Valores.soArteriales != 0) {
-      return ((Ventometrias.presionMediaViaAerea *
-              (Valores.fioArteriales! / 100)) *
-          (100.00) /
-          Valores.poArteriales!);
-    } //  Indice de Saturación
-    else {
+          Valores.fraccionInspiratoriaOxigeno!) /
+              Valores.poArteriales!;
+    } else {
       return double.nan;
     }
   }
+
+  /// Indice de Oxígenación Adaptado a la Edad
+  ///
+  /// AOI = Edad +PVMA * (FiO2 / PaO2)
+  ///
+  /// VN: AOI score 60 == mortalidad 50%
+  ///         AOI score 80 == mortalidad 80%
+  ///
+  /// Consulte: https://www.ncbi.nlm.nih.gov/pubmed/24458052
+  ///
+  static double get indiceOxigenacionAdaptado {
+    if (Valores.poArteriales! != 0 && Ventometrias.presionMediaViaAerea != 0) {
+      return (Valores.edad! + Ventometrias.presionMediaViaAerea) *
+          (Valores.fraccionInspiratoriaOxigeno!  /
+              Valores.poArteriales!);
+    } else {
+      return double.nan;
+    }
+}
+
 
   static double get FIOV => ((Gasometricos.GAA + 100) / 760) * 100;
 

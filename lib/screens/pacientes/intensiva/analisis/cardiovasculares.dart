@@ -476,6 +476,18 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                                       .toStringAsFixed(2),
                                   thirdText: 'mmHg',
                                 ),
+                                Container(),
+                                // Poder Cardiaco
+                                ValuePanel(
+                                  firstText: 'CW',
+                                  secondText: Cardiometrias.poderCardiaco.toStringAsFixed(2),
+                                  thirdText: 'Watts',
+                                ),
+                                ValuePanel(
+                                  firstText: 'iCW',
+                                  secondText: Cardiometrias.poderCardiacoIndexado.toStringAsFixed(2),
+                                  thirdText: 'Watts',
+                                ),
                                 //
                                 ValuePanel(
                                   firstText: 'Cociente A. Oxígeno',

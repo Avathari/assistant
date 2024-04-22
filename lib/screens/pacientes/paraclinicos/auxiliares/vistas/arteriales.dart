@@ -101,6 +101,13 @@ class _ArterialesState extends State<Arteriales> {
                 labelEditText: 'SO ($unidadMedidaSO)',
                 numOfLines: 1,
               ),
+              EditTextArea(
+                textController: textLactResultController,
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Lactato ($unidadMedidaLact)',
+                numOfLines: 1,
+              ),
 
               // Botton ***** ******* ****** * ***
               CrossLine(
@@ -192,6 +199,16 @@ class _ArterialesState extends State<Arteriales> {
         unidadMedidaSO!
         //0,
       ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[8],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[8]][1],
+        textLactResultController.text,
+        unidadMedidaLact!
+        //0,
+      ],
     ];
   }
 
@@ -214,6 +231,9 @@ class _ArterialesState extends State<Arteriales> {
   String? unidadMedidaFIO = Auxiliares.Medidas[Auxiliares.Categorias[index]][4];
   var textSOResultController = TextEditingController();
   String? unidadMedidaSO = Auxiliares.Medidas[Auxiliares.Categorias[index]][4];
+
+  var textLactResultController = TextEditingController();
+  String? unidadMedidaLact = Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
 
 
   // OPERACIONES DE LA INTERFAZ ****************** ********

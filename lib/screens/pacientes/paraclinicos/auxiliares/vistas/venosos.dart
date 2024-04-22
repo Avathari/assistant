@@ -103,7 +103,13 @@ class _VenososState extends State<Venosos> {
                 labelEditText: 'SO ($unidadMedidaSO)',
                 numOfLines: 1,
               ),
-
+              EditTextArea(
+                textController: textLactResultController,
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Lactato ($unidadMedidaLact)',
+                numOfLines: 1,
+              ),
               // Botton ***** ******* ****** * ***
               CrossLine(
                 color: Colors.grey,
@@ -194,6 +200,16 @@ class _VenososState extends State<Venosos> {
         unidadMedidaSO!
         //0,
       ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[8],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[8]][1],
+        textLactResultController.text,
+        unidadMedidaLact!
+        //0,
+      ],
     ];
   }
 
@@ -216,6 +232,9 @@ class _VenososState extends State<Venosos> {
   String? unidadMedidaFIO = Auxiliares.Medidas[Auxiliares.Categorias[index]][4];
   var textSOResultController = TextEditingController();
   String? unidadMedidaSO = Auxiliares.Medidas[Auxiliares.Categorias[index]][4];
+
+  var textLactResultController = TextEditingController();
+  String? unidadMedidaLact = Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
 
 
   // OPERACIONES DE LA INTERFAZ ****************** ********

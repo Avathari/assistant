@@ -1023,7 +1023,16 @@ class _RutinasState extends State<Rutinas> {
         unidadMedidaSO!
         //0,
       ],
-
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[8],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[8]][1],
+        textLactResultController.text,
+        unidadMedidaLact!
+        //0,
+      ],
       // OTROS
       [
         "0",
@@ -1241,6 +1250,10 @@ class _RutinasState extends State<Rutinas> {
   String? unidadMedidaFIO = Auxiliares.Medidas[Auxiliares.Categorias[9]][4];
   var textSOResultController = TextEditingController();
   String? unidadMedidaSO = Auxiliares.Medidas[Auxiliares.Categorias[9]][4];
+  var textLactResultController = TextEditingController();
+  String? unidadMedidaLact = Auxiliares.Medidas[Auxiliares.Categorias[9]][5];
+
+  //
   // REACTANTES ********* *************** ************* *
   var textVSGResultController = TextEditingController();
   String? unidadMedidaVSG = Auxiliares.Medidas[Auxiliares.Categorias[8]][1];
@@ -2140,6 +2153,13 @@ class _RutinasState extends State<Rutinas> {
                 labelEditText: 'SO ($unidadMedidaSO)',
                 numOfLines: 1,
               ),
+              EditTextArea(
+                textController: textLactResultController,
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Lactato ($unidadMedidaLact)',
+                numOfLines: 1,
+              ),
               CrossLine(
                 color: Colors.grey,
               ),
@@ -3016,6 +3036,7 @@ class _RutinasState extends State<Rutinas> {
                   inputFormat: MaskTextInputFormatter(),
                   labelEditText: 'FIO ($unidadMedidaFIO)',
                   numOfLines: 1,
+                  optionEqui: 4,
                   selection: true,
                   withShowOption: true,
                   onSelected: () => setState(() => textFIOResultController
@@ -3028,6 +3049,15 @@ class _RutinasState extends State<Rutinas> {
                   keyBoardType: TextInputType.number,
                   inputFormat: MaskTextInputFormatter(),
                   labelEditText: 'SO ($unidadMedidaSO)',
+                  numOfLines: 1,
+                ),
+              ),
+              Expanded(
+                child: EditTextArea(
+                  textController: textLactResultController,
+                  keyBoardType: TextInputType.number,
+                  inputFormat: MaskTextInputFormatter(),
+                  labelEditText: 'Lactato ($unidadMedidaLact)',
                   numOfLines: 1,
                 ),
               ),

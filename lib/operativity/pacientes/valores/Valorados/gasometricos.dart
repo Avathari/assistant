@@ -29,7 +29,7 @@ class Gasometricos {
         "EB ${Gasometricos.EB.toStringAsFixed(2)} mmol/L, "
         "TCO2 ${Gasometricos.TCO.toStringAsFixed(2)} mmHg, "
         "PCO2e ${Gasometricos.PCO2C.toStringAsFixed(2)} mmHg, "
-    // "EBe ${Valores.pHArteriales} mmol/L, "
+        // "EBe ${Valores.pHArteriales} mmol/L, "
         "aGAP ${Gasometricos.GAP.toStringAsFixed(1)}, "
         "Temp ${Valores.temperaturCorporal}°C, "
         "FiO2 ${Valores.fioArteriales}%, "
@@ -49,7 +49,7 @@ class Gasometricos {
         "EB ${Gasometricos.EB.toStringAsFixed(2)} mmol/L, "
         "TCO2 ${Gasometricos.TCO.toStringAsFixed(2)} mmHg, "
         "PCO2e ${Gasometricos.PCO2C.toStringAsFixed(2)} mmHg, "
-    // "EBe ${Valores.pHArteriales} mmol/L, "
+        // "EBe ${Valores.pHArteriales} mmol/L, "
         "aGAP ${Gasometricos.GAP.toStringAsFixed(1)}, "
         "Temp ${Valores.temperaturCorporal}°C, "
         "FiO2 ${Valores.fioArteriales}%, "
@@ -139,6 +139,7 @@ class Gasometricos {
         "en total ${Gasometricos.NOAMP.toStringAsFixed(0)} ámpulas de bicarbonato al 7.5%"
         ".";
   }
+
   // FÓRMULAS
   static String get trastornoPrimario {
     if (Valores.pHArteriales! < 7.34) {
@@ -203,9 +204,23 @@ class Gasometricos {
     }
   }
   //
+
+  /// Indice Cl-/Na+2
+  ///  * * Adyuva en la descripción de la Acidosis Metabólica.
+  ///  * * * Se explica que,
+  ///           valores menores a 0.75 correponden a Iones no medidos
+  ///           valores entre 0.75 - 0.79 correponden al Lactato-Cloro e Iones no meididos, por lo que su naturaleza es mixta
+  ///           valores mayores a 0.79 correponden a Hipercloremia
+  ///
+  /// VN: Depende del contexto y de otros valores.
+  ///
+  /// Consulte : https://www.medigraphic.com/pdfs/medcri/ti-2017/ti173h.pdf
+  ///
+  static double get NaClindex => (Valores.cloro!) / (Valores.sodio!);
+  //
   static double get GAP =>
       (Valores.sodio! + Valores.potasio!) -
-          (Valores.cloro! + Valores.bicarbonatoArteriales!);
+      (Valores.cloro! + Valores.bicarbonatoArteriales!);
 
   static double get PAFI =>
       (Valores.poArteriales! / (Valores.fioArteriales! / 100));
@@ -242,8 +257,8 @@ class Gasometricos {
 
   static double get EBecf =>
       (24) -
-          ((Valores.bicarbonatoArteriales! + 10.00) *
-              (Valores.pHArteriales! - 7.4)); //  # Bicarbonato Standard
+      ((Valores.bicarbonatoArteriales! + 10.00) *
+          (Valores.pHArteriales! - 7.4)); //  # Bicarbonato Standard
   static double get d_GAP => (GAP - 14);
   static double get d_HCO => (20 - Valores.bicarbonatoArteriales!);
 
@@ -270,20 +285,57 @@ class Gasometricos {
   ///
   static double get GAPO => ((280) - (Hidrometrias.osmolaridadSerica));
 
-  static double get DIF =>
-      (Valores.sodio! +
-          Valores.potasio! +
-          Valores.magnesio! +
-          Valores.calcio!) -
-          (Valores.cloro! + Valores.lactato!);
+  /// Diferencia de Ion Fuerte (DIF) / Strong Ion Difference (SID)
+  ///
+  /// * * * En el plasma normal el DIF es igual a 42 mEq/lt.
+  ///
+  ///               Esto significa que para lograr la electroneutralidad requiero de 42 mEq de iones de carga negativa diferente de los iones fuertes.
+  ///
+  /// Las causas de DIF disminuido (acidosis metabólica) son:
+  ///
+  /// * * (1) Acidosis tubular renal: Distal tipo 1 (pH urinario >5,5), Proximal tipo 2 (pH urinario <5,5, K+ sérico bajo); deficiencia de aldosterona tipo 4 (ph urinario < 5,5, K+ sérico alto)
+  ///
+  /// * * (2) Causas no renales: Gastrointestinal (diarrea, drenaje pancreático, intestino corto); Iatrogénica (nutrición parenteral, salino, resina de intercambio aniónico).
+  ///
+  /// Consulta : http://www.scielo.org.pe/scielo.php?script=sci_arttext&pid=S1728-59172011000100008
+  ///
+  static double get DIF {
+    if (Valores.lactatoArterial != null || Valores.lactatoArterial != 0) {
+      return (Valores.sodio! +
+              Valores.potasio! +
+              Valores.calcio! +
+              Valores.magnesio!) -
+          (Valores.cloro! + Valores.lactatoArterial!);
+    } else {
+      return double.nan;
+    }
+  }
 
-  // # GAPIonesLibres GIF = SID - (2.46 * 108 * Gasometria.Valores.pcoArteriales! / 10)
+  /// Ácidos débiles no volátiles (Atot)
+  ///
+  /// a) Atot = 2 (Albúmina gr/dl) + 0,5 (P04-) mg/dl y su valor normal oscila entre 17 y 19 meq/lt.
+  ///
+  /// b) Atot = 2,43 * [Proteínas totales].
+  ///
+  /// c) Atot = [Albúmina (0,123*pH – 0,631] – [Fosfato (0,309*pH – 0,469)]
+  ///
+  /// * * * Forman parte de los Atot la albúmina y el fosfato.
+  /// * * * Atot = 2 (Albúmina gr/dl) + 0,5 (P04-) mg/dl y su valor normal oscila entre 17 y 19 meq/lt.
+  static double get aTOT => 2.43 * (Valores.proteinasTotales!);
+  // => 2 * (Valores.albuminaSerica!) +  (0.5 * Valores.fosforo!);
+  // => (Valores.albuminaSerica! * (0.123 * Valores.pHArteriales! - 0.631)) -
+  // (Valores.fosforo! * (0.309 * Valores.pHArteriales! - 0.469));
+
+  /// GAPIonesLibres (GIF)
+  static double get GIF => DIF - (2.46 * 108 * Valores.pcoArteriales! / 10);
+
   static double get EBvGilFix => (Valores.sodio!) - (Valores.cloro!) - 38;
 
   static double get EBb => (0.25 *
       (42.00 - Valores.albuminaSerica!)); //  # Efecto de Buffers Principales
   static double get DA => (Gasometricos.EB - EBb); // # Diferencia Anionica
-  static double get VDb => (Gasometricos.EB - DA); // # Verdadero Déficit de Base
+  static double get VDb =>
+      (Gasometricos.EB - DA); // # Verdadero Déficit de Base
 
   static double get TCO {
     return ((Valores.bicarbonatoArteriales!) +
@@ -298,22 +350,28 @@ class Gasometricos {
   }
 
   //(Valores.presionGasSeco / (Valores.fioArteriales! / 100));
-  static double get PIO =>  (Valores.presionBarometrica - Valores.presionVaporAgua) * (Valores.fioArteriales! / 100);
+  static double get PIO =>
+      (Valores.presionBarometrica - Valores.presionVaporAgua) *
+      (Valores.fioArteriales! / 100);
 
-      /// Gradiente Alveolo Arterial (GAA)
+  /// Gradiente Alveolo Arterial (GAA)
   ///
   /// Otras fórmulas : (PAO - Valores.poArteriales!); //  # Gradiente Alveolo - Arterial
-  // static double get GAA => ((Valores.presionBarometrica - Valores.presionVaporAgua) * (Valores.fioArteriales! / 100) -
+
+  static double get GAA =>
+      (PAO - Valores.poArteriales!); //  # Gradiente Alveolo - Arterial
+// static double get GAA => ((Valores.presionBarometrica - Valores.presionVaporAgua) * (Valores.fioArteriales! / 100) -
   //     (Valores.pcoArteriales! / 0.8) -
   //     Valores.poArteriales!); //  # Gradiente Alveolo Arterial
 
-  static double get GAA => (PAO - Valores.poArteriales!); //  # Gradiente Alveolo - Arterial
-
-  /// Delta CO2 : Un delta CO2 (PvCO2-PaCO2) mayor a 6 mmhG denotan Hipoperfusión
+  /// Delta CO2
+  ///
+  /// VN : Un delta CO2 (PvCO2-PaCO2) mayor a 6 mmhG denotan Hipoperfusión
   ///
   /// Valores normales : menor a 6 mmHg
-  static double get DeltaCOS => (Valores.pcoVenosos!) -
-      (Valores.pcoArteriales!);
+  ///
+  static double get DeltaCOS =>
+      (Valores.pcoVenosos!) - (Valores.pcoArteriales!);
 
   static String get DiagnosticosPorGradiente {
     if (GAA < 10) {
@@ -337,7 +395,9 @@ class Gasometricos {
   ///
   ///
   ///
-  static double get SvcO2 => (Valores.soArteriales!) - (Valores.DO - Valores.TO) * Valores.hemoglobina!;
+  static double get SvcO2 =>
+      (Valores.soArteriales!) -
+      (Valores.DO - Valores.TO) * Valores.hemoglobina!;
   // # ######################################################
   // # Reglas del Bicarbonato
   // # ######################################################
@@ -433,8 +493,8 @@ class Gasometricos {
 
   static double get PH =>
       6.1 +
-          numerics.log10(
-              (Valores.bicarbonatoArteriales! / (0.03 * Valores.pcoArteriales!)));
+      numerics.log10(
+          (Valores.bicarbonatoArteriales! / (0.03 * Valores.pcoArteriales!)));
 
   static double get PaO2_estimado => 103.5 - 0.42 * Valores.edad!;
 
@@ -443,6 +503,4 @@ class Gasometricos {
   static double get PaO2_estimado_decubito => 109.0 - 0.43 * Valores.edad!;
 
 // static double get PAO => (Valores.fioArteriales! / 100) * (720 - 47) - (Valores.pcoArteriales! / 0.8)
-
-
 }
