@@ -773,7 +773,10 @@ class _OperacionesHospitalizacionesState
                         Reportes.pendientes.toString(),
                         Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
                       ]);
+                      //
                       Pendientes.registrarDispositivos(context);
+                      Pendientes.registrarDispositivos(context);
+                      //
                       Expedientes.registrarRegistro();
                     }).whenComplete(() => onClose(context)));
             break;

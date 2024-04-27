@@ -122,7 +122,7 @@ class Valores {
     //     emulated: true);
     // valores.addAll(hosp);
 
-    Situaciones.ultimoRegistro();
+    // Situaciones.ultimoRegistro();
     Expedientes.ultimoRegistro();
 
     Valores.fromJson(valores);
@@ -368,6 +368,8 @@ class Valores {
     tiempoProtrombina = double.parse(json['Tiempo_Protrombina'] ?? '0');
     tiempoTromboplastina = double.parse(json['TP_Tromboplastina'] ?? '0');
     INR = double.parse(json['Normalized_Ratio'] ?? '0');
+    //
+    densidadUrinaria = double.parse(json['Densidad_Urinaria'] ?? '0');
     //
     fechaElectrolitos = json['Fecha_Registro_Electrolitos'] ?? '';
     sodio = double.parse(json['Sodio'] ?? '0');
@@ -827,6 +829,21 @@ class Valores {
       withGAS = "",
       withTNK = "";
 
+  // PREVIOS ************************ * * * *
+  static int? initMAVA = 0,
+      initIOT = 0,
+      initEXT = 0,
+      initTRAN = 0,
+      initHEMO = 0,
+      initQUIR = 0;
+  static String? withMAVA = "",
+      withIOT = "",
+      withEXT = "",
+      withTRAN = "",
+      withHEMO = "",
+      withQUIR = "";
+
+
   //
   static String? fechaVitales;
   static int? tensionArterialSystolica,
@@ -955,6 +972,7 @@ class Valores {
   static double? sodio, potasio, cloro, fosforo, calcio, magnesio;
   //
   static String? fechaElectrolitosUrinarios;
+  static double? densidadUrinaria = 1.020;
   static double? creatininaUrinarios, nitrogenoUrinario, bicarbonatoUrinario;
   static double? sodioUrinarios,
       potasioUrinarios,

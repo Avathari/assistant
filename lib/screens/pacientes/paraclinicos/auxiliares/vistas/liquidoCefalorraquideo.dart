@@ -329,6 +329,16 @@ class _LiquidoCefalorraquideoState extends State<LiquidoCefalorraquideo> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][0],
+        textPresionAperturaResultController.text,
+        unidadMedidaPresionApertura!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
         Auxiliares.Laboratorios[Auxiliares.Categorias[index]][1],
         textGlucosaLCRResultController.text,
         unidadMedidaGlucosaLCR!
@@ -339,7 +349,7 @@ class _LiquidoCefalorraquideoState extends State<LiquidoCefalorraquideo> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][0],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][2],
         textDhlLCRResultController.text,
         unidadMedidaDhlLCR!
         //0,
@@ -349,7 +359,7 @@ class _LiquidoCefalorraquideoState extends State<LiquidoCefalorraquideo> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][2],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][3],
         textProteinasLCRResultController.text,
         unidadMedidaProteinasLCR!
         //0,
@@ -359,31 +369,12 @@ class _LiquidoCefalorraquideoState extends State<LiquidoCefalorraquideo> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][3],
-        textPresionAperturaResultController.text,
-        unidadMedidaPresionApertura!
-        //0,
-      ],
-      [
-        "0",
-        Pacientes.ID_Paciente.toString(),
-        textDateEstudyController.text,
-        Auxiliares.Categorias[index],
         Auxiliares.Laboratorios[Auxiliares.Categorias[index]][4],
-        texteritrocitosLCRResultController.text,
-        unidadMedidaeritrocitosLCR!
+        textAlbuminaLCRResultController.text,
+        unidadMedidaAlbuminaLCR!
         //0,
       ],
-      [
-        "0",
-        Pacientes.ID_Paciente.toString(),
-        textDateEstudyController.text,
-        Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][5],
-        textphLCRResultController.text,
-        unidadMedidaphLCR!
-        //0,
-      ],
+      // CITOQUIMICO
       [
         "0",
         Pacientes.ID_Paciente.toString(),
@@ -400,6 +391,17 @@ class _LiquidoCefalorraquideoState extends State<LiquidoCefalorraquideo> {
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
         Auxiliares.Laboratorios[Auxiliares.Categorias[index]][9],
+        textColorResultController.text,
+        unidadMedidaColor!
+        //0,
+      ],
+      //
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][10],
         textLeucocitosResultController.text,
         unidadMedidaLeucocitos!
         //0,
@@ -409,7 +411,7 @@ class _LiquidoCefalorraquideoState extends State<LiquidoCefalorraquideo> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][10],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][11],
         textpolimorfonuclearesLCRResultController.text,
         unidadMedidapolimorfonuclearesLCR!
         //0,
@@ -419,7 +421,7 @@ class _LiquidoCefalorraquideoState extends State<LiquidoCefalorraquideo> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][11],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][12],
         textmononuclearesLCRResultController.text,
         unidadMedidamononuclearesLCR!
         //0,
@@ -429,9 +431,20 @@ class _LiquidoCefalorraquideoState extends State<LiquidoCefalorraquideo> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][12],
-        textColorResultController.text,
-        unidadMedidaColor!
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][13],
+        texteritrocitosLCRResultController.text,
+        unidadMedidaeritrocitosLCR!
+        //0,
+      ],
+      //
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][17],
+        textphLCRResultController.text,
+        unidadMedidaphLCR!
         //0,
       ],
     ];

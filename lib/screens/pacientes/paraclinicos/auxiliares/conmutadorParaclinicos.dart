@@ -9,6 +9,7 @@ import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/ferri
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/hepaticos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/hormonal.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/inmunologicos.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/ionesUrinarios.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/linfocitos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/lipidicos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/liquidoCefalorraquideo.dart';
@@ -106,6 +107,8 @@ class _ConmutadorParaclinicosState extends State<ConmutadorParaclinicos> {
         return const LiquidoDialisis();
       case "Liquido Cefalorraquídeo":
         return const LiquidoCefalorraquideo();
+      case "Iones Urinarios":
+        return const IonesUrinarios();
 
       case "Depuración de Orina de 24 Horas":
         return const Depuraciones();

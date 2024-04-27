@@ -336,6 +336,11 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                                 //
                                 ValuePanel(
                                   firstText: 'ΔCO2',
+                                  secondText: Gasometricos.DeltaCOS.toStringAsFixed(2),
+                                  thirdText: 'mmHg',
+                                ),
+                                ValuePanel(
+                                  firstText: 'ΔΔCO2',
                                   secondText: Valores.DavCO2.toStringAsFixed(2),
                                   thirdText: 'mmHg',
                                 ),

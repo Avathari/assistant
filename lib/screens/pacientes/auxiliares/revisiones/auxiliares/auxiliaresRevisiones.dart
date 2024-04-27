@@ -1601,12 +1601,10 @@ class _RevisionDispositivosState extends State<RevisionDispositivos> {
       controller: ScrollController(),
       child: Column(
         children: [
-          GrandButton(
-            labelButton: "Actualizar Información",
-            onPress: () {
-              _operationMethod();
-            },
-          ),
+          CircleIcon(
+              iconed: Icons.move_up_outlined,
+              tittle: "Actualizar Información",
+              onChangeValue: () => _operationMethod()),
           CrossLine(),
           Dispositivos(
             dispositivoName: "CVP",
@@ -2140,6 +2138,345 @@ class _RevisionDispositivosState extends State<RevisionDispositivos> {
       //
     }).onError((error, stackTrace) {
       Pacientes.getDispositivosHistorial().whenComplete(() {
+        Terminal.printAlert(message: "ERROR - $error : : : $stackTrace");
+        Operadores.alertActivity(
+          context: context,
+          tittle: "$error . . .",
+          message: "$stackTrace",
+        );
+      });
+      //
+    });
+  }
+}
+
+
+//
+class RevisionPrevios extends StatefulWidget {
+  const RevisionPrevios({super.key});
+
+  @override
+  State<RevisionPrevios> createState() => _RevisionPreviosState();
+}
+
+class _RevisionPreviosState extends State<RevisionPrevios> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    Pacientes.getPreviosHistorial().whenComplete(() {
+      setState(() {});
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        decoration: ContainerDecoration.roundedDecoration(colorBackground: Theming.quincuaryColor ),
+      padding: const EdgeInsets.all(8.0),
+      child: SingleChildScrollView(
+        controller: ScrollController(),
+        child: Column(
+          children: [
+            Dispositivos(
+              dispositivoName: "MAVA",
+              otherName: Valores.withMAVA,
+              onChangeValue: (esSelected) async {
+                //
+                if (esSelected) {
+                  final DateTime? picked = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2055),
+                      builder: (BuildContext context, Widget? child) {
+                        return Theme(
+                            data: ThemeData.dark().copyWith(
+                                dialogBackgroundColor: Theming.cuaternaryColor),
+                            child: child!);
+                      });
+                  if (picked != null && picked != Valores.withMAVA) {
+                    setState(() {
+                      Valores.withMAVA = DateFormat("yyyy/MM/dd").format(picked);
+                    });
+                  }
+                } else {
+                  setState(() {
+                    Valores.withMAVA = "";
+                  });
+                }
+              },
+            ), // "MAVA",
+            Dispositivos(
+              dispositivoName: "IOT",
+              otherName: Valores.withIOT,
+              onChangeValue: (esSelected) async {
+                //
+                if (esSelected) {
+                  final DateTime? picked = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2055),
+                      builder: (BuildContext context, Widget? child) {
+                        return Theme(
+                            data: ThemeData.dark().copyWith(
+                                dialogBackgroundColor: Theming.cuaternaryColor),
+                            child: child!);
+                      });
+                  if (picked != null && picked != Valores.withIOT) {
+                    setState(() {
+                      Valores.withIOT = DateFormat("yyyy/MM/dd").format(picked);
+                    });
+                  }
+                } else {
+                  setState(() {
+                    Valores.withIOT = "";
+                  });
+                }
+              },
+            ), // "IOT",
+            Dispositivos(
+              dispositivoName: "EXT",
+              otherName: Valores.withEXT,
+              onChangeValue: (esSelected) async {
+                //
+                if (esSelected) {
+                  final DateTime? picked = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2055),
+                      builder: (BuildContext context, Widget? child) {
+                        return Theme(
+                            data: ThemeData.dark().copyWith(
+                                dialogBackgroundColor: Theming.cuaternaryColor),
+                            child: child!);
+                      });
+                  if (picked != null && picked != Valores.withEXT) {
+                    setState(() {
+                      Valores.withEXT = DateFormat("yyyy/MM/dd").format(picked);
+                    });
+                  }
+                } else {
+                  setState(() {
+                    Valores.withEXT = "";
+                  });
+                }
+              },
+            ), // "EXT",
+            Dispositivos(
+              dispositivoName: "MAH",
+              otherName: Valores.withTRAN,
+              onChangeValue: (esSelected) async {
+                //
+                if (esSelected) {
+                  final DateTime? picked = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2055),
+                      builder: (BuildContext context, Widget? child) {
+                        return Theme(
+                            data: ThemeData.dark().copyWith(
+                                dialogBackgroundColor: Theming.cuaternaryColor),
+                            child: child!);
+                      });
+                  if (picked != null && picked != Valores.withTRAN) {
+                    setState(() {
+                      Valores.withTRAN =
+                          DateFormat("yyyy/MM/dd").format(picked);
+                    });
+                  }
+                } else {
+                  setState(() {
+                    Valores.withTRAN = "";
+                  });
+                }
+              },
+            ), // "TRAN",
+            Dispositivos(
+              dispositivoName: "HEMO",
+              otherName: Valores.withHEMO,
+              onChangeValue: (esSelected) async {
+                //
+                if (esSelected) {
+                  final DateTime? picked = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2055),
+                      builder: (BuildContext context, Widget? child) {
+                        return Theme(
+                            data: ThemeData.dark().copyWith(
+                                dialogBackgroundColor: Theming.cuaternaryColor),
+                            child: child!);
+                      });
+                  if (picked != null && picked != Valores.withHEMO) {
+                    setState(() {
+                      Valores.withHEMO = DateFormat("yyyy/MM/dd").format(picked);
+                    });
+                  }
+                } else {
+                  setState(() {
+                    Valores.withHEMO = "";
+                  });
+                }
+              },
+            ), // "HEMO",
+            Dispositivos(
+              dispositivoName: "QUIR",
+              otherName: Valores.withQUIR,
+              onChangeValue: (esSelected) async {
+                //
+                if (esSelected) {
+                  final DateTime? picked = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2055),
+                      builder: (BuildContext context, Widget? child) {
+                        return Theme(
+                            data: ThemeData.dark().copyWith(
+                                dialogBackgroundColor: Theming.cuaternaryColor),
+                            child: child!);
+                      });
+                  if (picked != null && picked != Valores.withQUIR) {
+                    setState(() {
+                      Valores.withQUIR = DateFormat("yyyy/MM/dd").format(picked);
+                    });
+                  }
+                } else {
+                  setState(() {
+                    Valores.withQUIR = "";
+                  });
+                }
+              },
+            ), // "QUIR",
+            CrossLine(),
+            CircleIcon(
+                iconed: Icons.move_up_outlined,
+                tittle: "Actualizar Información",
+                onChangeValue: () => _operationMethod()),
+
+          ],
+        ),
+      ),
+    );
+  }
+
+  List<List<dynamic>> listOfValues() {
+    return [
+      [
+        Valores.initMAVA,
+        Pacientes.ID_Paciente,
+        Pacientes.ID_Hospitalizacion,
+        Valores
+            .withMAVA, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+        Valores.withMAVA == "" ? false : true,
+        Pendientes.typesPendientes[0], // Categoria de Procedimientos . . .
+        Pendientes.subTypesPendientes[0][0],
+        Valores.initMAVA,
+      ], // MAVA
+      [
+        Valores.initIOT,
+        Pacientes.ID_Paciente,
+        Pacientes.ID_Hospitalizacion,
+        Valores
+            .withIOT, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+        Valores.withIOT == "" ? false : true,
+        Pendientes.typesPendientes[0], // Categoria de Procedimientos . . .
+        Pendientes.subTypesPendientes[0][1],
+        Valores.initIOT,
+      ], // IOT
+      [
+        Valores.initEXT,
+        Pacientes.ID_Paciente,
+        Pacientes.ID_Hospitalizacion,
+        Valores
+            .withEXT, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+        Valores.withEXT == "" ? false : true,
+        Pendientes.typesPendientes[0], // Categoria de Procedimientos . . .
+        Pendientes.subTypesPendientes[0][2],
+        Valores.initEXT,
+      ], // EXT
+      [
+        Valores.initTRAN,
+        Pacientes.ID_Paciente,
+        Pacientes.ID_Hospitalizacion,
+        Valores
+            .withTRAN, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+        Valores.withTRAN == "" ? false : true,
+        Pendientes.typesPendientes[0], // Categoria de Procedimientos . . .
+        Pendientes.subTypesPendientes[0][0],
+        Valores.initTRAN,
+      ], // TRAN
+      [
+        Valores.initHEMO,
+        Pacientes.ID_Paciente,
+        Pacientes.ID_Hospitalizacion,
+        Valores
+            .withHEMO, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+        Valores.withHEMO == "" ? false : true,
+        Pendientes.typesPendientes[0], // Categoria de Procedimientos . . .
+        Pendientes.subTypesPendientes[0][4],
+        Valores.initHEMO,
+      ], // HEMO
+      [
+        Valores.initQUIR,
+        Pacientes.ID_Paciente,
+        Pacientes.ID_Hospitalizacion,
+        Valores
+            .withQUIR, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+        Valores.withQUIR == "" ? false : true,
+        Pendientes.typesPendientes[0], // Categoria de Procedimientos . . .
+        Pendientes.subTypesPendientes[0][5],
+        Valores.initQUIR,
+      ], // QUIR
+    ];
+  }
+
+  _operationMethod() async {
+    Operadores.loadingActivity(
+        context: context,
+        tittle: "Actualizando información . . .",
+        message: "Información de Dispositivos actualizándose . . . ",
+        onCloss: () {
+          Navigator.of(context).pop();
+        });
+    //
+    Future.forEach(listOfValues(), (element) async {
+      var aux = element as List<dynamic>;
+
+      Terminal.printData(message: "$aux : :  ${aux[0]}");
+      //
+      await Actividades.actualizar(
+        Databases.siteground_database_reghosp,
+        Pendientes.pendientes['updateQuery'],
+        element as List<dynamic>,
+        Pacientes.ID_Paciente,
+      );
+      // if (aux[0] != '' && aux[0] != null)
+    }).whenComplete(() {
+      Pacientes.getPreviosHistorial().then((onValue) {
+        // Terminal.printAlert(message: "ON_VALUE : $onValue");
+      }).whenComplete(() {
+        //
+        Navigator.of(context).pop(); // Cierre del LoadActivity
+        Operadores.alertActivity(
+            context: context,
+            tittle: "Actualizando información . . .",
+            message: "Información actualizada",
+            onAcept: () {
+              // Se emplean 3 Navigator.of(context).pop(); para cerrar cada una de
+              //    las ventanas emergentes y la interfaz inicial.
+              Navigator.of(context).pop(); // Cierre de la Interfaz Inicial
+              Navigator.of(context).pop(); // Cierre del AlertActivity
+            });
+      });
+      //
+    }).onError((error, stackTrace) {
+      Pacientes.getPreviosHistorial().whenComplete(() {
         Terminal.printAlert(message: "ERROR - $error : : : $stackTrace");
         Operadores.alertActivity(
           context: context,

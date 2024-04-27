@@ -1,10 +1,13 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/pleurometrias.dart';
+import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
+import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -24,9 +27,11 @@ class _LiquidoPleuralState extends State<LiquidoPleural> {
     final f = DateFormat('yyyy-MM-dd HH:mm:ss');
     textDateEstudyController.text = f.format(DateTime.now());
     // ************************************************
-    textGlucosaResultController.text = "Ligeramente Turbio";
-    textDHLResultController.text = "Incoloro";
+    textGlucosaResultController.text = "120";
+    //
+    textDHLResultController.text = "100";
     textProteinasTotalesResultController.text = "1690";
+    //
     textFosfatasaAlcalinaResultController.text = "68";
     textAspectoResultController.text = "32";
     textColorResultController.text = "No se Observan";
@@ -61,157 +66,203 @@ class _LiquidoPleuralState extends State<LiquidoPleural> {
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
         ),
-        SingleChildScrollView(
-          padding: const EdgeInsets.all(7.0),
-          controller: ScrollController(),
-          child: Column(
-            children: [
-              EditTextArea(
-                textController: textGlucosaResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Glucosa ($unidadMedidaGlucosa)',
-                numOfLines: 1,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(child: Column(children: [
+              ValuePanel(
+                firstText: "Prot-",
+                secondText: Valores.proteinasTotales!.toStringAsFixed(2),
+                thirdText: "g/dL",
               ),
-              EditTextArea(
-                textController: textDHLResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'DHL ($unidadMedidaDHL)',
-                numOfLines: 1,
+              ValuePanel(
+                firstText: "DHL",
+                secondText: Valores.deshidrogenasaLactica!.toStringAsFixed(2),
+                thirdText: "UI/L",
               ),
-              EditTextArea(
-                textController: textProteinasTotalesResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Proteinas Totales ($unidadMedidaProteinasTotales)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textAlbuminaResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Fosfatasa Alcalina ($unidadMedidaAlbumina)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textFosfatasaAlcalinaResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Fosfatasa Alcalina ($unidadMedidaFosfatasaAlcalina)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textColesterolResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Colesterol ($unidadMedidaColesterol)',
-                numOfLines: 1,
-              ),
-              CrossLine(),
-              EditTextArea(
-                textController: textAspectoResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Aspecto ($unidadMedidaAspecto)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textColorResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Color ($unidadMedidaColor)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textLeucocitosResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Leucocitos ($unidadMedidaLeucocitos)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textPolimorfonuclearesResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Polimorfonucleares ($unidadMedidaPolimorfonucleares)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textEritrocitosResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Eritrocitos ($unidadMedidaEritrocitos)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textMononuclearesResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Mononucleares ($unidadMedidaMononucleares)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textEritrocitosResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Eritrocitos ($unidadMedidaEritrocitos)',
-                numOfLines: 1,
-              ),
-
-              EditTextArea(
-                textController: textBacteriasResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Bacterias ($unidadMedidaBacterias)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textLevadurasResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Levaduras ($unidadMedidaLevaduras)',
-                numOfLines: 1,
-              ),
-              // 
-              EditTextArea(
-                textController: textOtrosResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Otros ($unidadMedidaOtros)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textPhResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Ph ($unidadMedidaPh)',
-                numOfLines: 1,
-              ),
-              // Botton ***** ******* ****** * ***
-              CrossLine(
-                color: Colors.grey,
-              ),
-              Container(
-                margin: const EdgeInsets.all(5.0),
-                decoration: ContainerDecoration.roundedDecoration(),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+            ],)),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(7.0),
+                controller: ScrollController(),
+                child: Column(
                   children: [
-                    Expanded(
-                      child: GrandButton(
-                          labelButton: "Agregar Datos",
-                          weigth: 2000,
-                          onPress: () {
-                            operationMethod();
+                    EditTextArea(
+                      textController: textGlucosaResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Glucosa ($unidadMedidaGlucosa)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textDHLResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'DHL ($unidadMedidaDHL)',
+                      numOfLines: 1,
+                      onChange: (String value) {
+                        setState(() {
+                          if (textDHLResultController.text.isNotEmpty){
+                            Pleurometrias.dhlPleural = double.parse(textDHLResultController.text);
+                          }
+                        });
+                      },
+                    ),
+                    EditTextArea(
+                      textController: textProteinasTotalesResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Proteinas Totales ($unidadMedidaProteinasTotales)',
+                      numOfLines: 1,
+                      onChange: (String value) {
+                        setState(() {
+                          if (textProteinasTotalesResultController.text.isNotEmpty){
+                            Pleurometrias.proteinasPleural = double.parse(textProteinasTotalesResultController.text);
+                          }
+                        });
+                      },
+                    ),
+                    EditTextArea(
+                      textController: textAlbuminaResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Fosfatasa Alcalina ($unidadMedidaAlbumina)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textFosfatasaAlcalinaResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Fosfatasa Alcalina ($unidadMedidaFosfatasaAlcalina)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textColesterolResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Colesterol ($unidadMedidaColesterol)',
+                      numOfLines: 1,
+                    ),
+                    CrossLine(),
+                    EditTextArea(
+                      textController: textAspectoResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Aspecto ($unidadMedidaAspecto)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textColorResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Color ($unidadMedidaColor)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textLeucocitosResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Leucocitos ($unidadMedidaLeucocitos)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textPolimorfonuclearesResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Polimorfonucleares ($unidadMedidaPolimorfonucleares)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textEritrocitosResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Eritrocitos ($unidadMedidaEritrocitos)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textMononuclearesResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Mononucleares ($unidadMedidaMononucleares)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textEritrocitosResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Eritrocitos ($unidadMedidaEritrocitos)',
+                      numOfLines: 1,
+                    ),
 
-                          }),
+                    EditTextArea(
+                      textController: textBacteriasResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Bacterias ($unidadMedidaBacterias)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textLevadurasResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Levaduras ($unidadMedidaLevaduras)',
+                      numOfLines: 1,
+                    ),
+                    //
+                    EditTextArea(
+                      textController: textOtrosResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Otros ($unidadMedidaOtros)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textPhResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Ph ($unidadMedidaPh)',
+                      numOfLines: 1,
+                    ),
+                    // Botton ***** ******* ****** * ***
+                    CrossLine(
+                      color: Colors.grey,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(5.0),
+                      decoration: ContainerDecoration.roundedDecoration(),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: GrandButton(
+                                labelButton: "Agregar Datos",
+                                weigth: 2000,
+                                onPress: () {
+                                  operationMethod();
+
+                                }),
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),
-              )
-            ],
-          ),
+              ),
+            ),
+            Expanded(child: Column(children: [
+              ValuePanel(
+                firstText: "DHL-S/DHL-LP",
+                secondText: Pleurometrias.relacionDHL.toStringAsFixed(2),
+                thirdText: "",
+              ),
+              ValuePanel(
+                firstText: "PT-S/PT-LP",
+                secondText: Pleurometrias.relacionProteinas.toStringAsFixed(2),
+                thirdText: "",
+              ),
+            ],)),
+          ],
         ),
       ],
     );

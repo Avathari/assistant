@@ -42,12 +42,11 @@ class Calendarios {
         .format(DateTime.now());
   }
 
-  static int differenceInDaysToNow (String fechaAnterior) {
-    return DateTime.now()
-        .difference(DateTime.parse(fechaAnterior))
-        .inDays;
+  static int differenceInDaysToNow(String fechaAnterior) {
+    return DateTime.now().difference(DateTime.parse(fechaAnterior)).inDays;
   }
-  static int differenceBetweenInDays (String fechaActual, String fechaAnterior) {
+
+  static int differenceBetweenInDays(String fechaActual, String fechaAnterior) {
     return DateTime.parse(fechaActual)
         .difference(DateTime.parse(fechaAnterior))
         .inDays;
@@ -56,8 +55,6 @@ class Calendarios {
   static String formatDate(String formattedString) {
     return DateFormat("dd.MM.yyyy").format(DateTime.parse(formattedString));
   }
-
-
 }
 
 class Dicotomicos {
@@ -130,18 +127,26 @@ class Cambios {
         .push(MaterialPageRoute(builder: ((context) => screen)));
   }
 
-  static void toNextActivity(BuildContext context, {required chyld, String? tittle = '', void Function()? onClose}) {
+  static void toNextActivity(
+    BuildContext context, {
+    required chyld,
+    String? tittle = '',
+    void Function()? onClose,
+    Color? backgroundColor = Colors.black,
+  }) {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (BuildContext context) => Scaffold(
-            backgroundColor: Colors.black,
+            backgroundColor: backgroundColor,
             appBar: AppBar(
-              leading: IconButton(onPressed: () {
-                if(onClose == null) {
-                  Navigator.of(context).pop();
-                } else {
-                  onClose();
-                }
-              }, icon: const Icon(Icons.arrow_back_ios)) ,
+              leading: IconButton(
+                  onPressed: () {
+                    if (onClose == null) {
+                      Navigator.of(context).pop();
+                    } else {
+                      onClose();
+                    }
+                  },
+                  icon: const Icon(Icons.arrow_back_ios)),
               title: AppBarText(tittle!),
               foregroundColor: Colors.white,
               backgroundColor: Colors.black,
@@ -342,6 +347,127 @@ class Listas {
     return listado;
   }
 
+  /// De la List<List<Map<String, dynamic> > >  aux, busca el firstKeySearched
+  /// secondKeySearched : : Elemento Buscado desde una lista List<String>
+  static List<dynamic> listFromMapWithTwoKey(List<dynamic> aux,
+      {String firstKeySearched = 'Estudio',
+      required List<String>? secondKeySearched,
+      elementDeseado = 'Resultado'}) {
+    List<dynamic> listado = [];
+    //
+    for (var item in aux) {
+      for (int index = 0; index <= secondKeySearched!.length - 1; index++) {
+        if (item[firstKeySearched] == secondKeySearched[index]) {
+          Terminal.printOther(
+              message:
+              "${item["Fecha_Registro"]} : ${secondKeySearched[index]} . . . ${item[elementDeseado]}");
+
+          // Terminal.printNotice(message: auxiliar.toString());
+          listado.add(
+            [
+              item['Fecha_Registro'].toString(),
+              item[elementDeseado], // I
+              item[elementDeseado], // II
+            ],
+          );
+          // Terminal.printData(message: "${listado.toString()}");
+        }
+      }
+    }
+    Terminal.printData(
+        message: "listFromMapWithTwoKey : : ${listado.toString()}");
+    return listado;
+  }
+
+  // static String? obtenerValorFromList(List<dynamic> aux,
+  //     {String firstKeySearched = 'Estudio',
+  //     required String fechaRegistro,
+  //     required String secondKeySearched,
+  //     elementDeseado = 'Resultado'}) {
+  //     List<dynamic> listado = [];
+  //     //
+  //     List sinRepetir = Listas.listWithoutRepitedValues(secondKeySearched!);
+  //     List fechasSinRepetir = Listas.listWithoutRepitedValues(Listas.listFromMapWithOneKey(aux, keySearched: "Fecha_Registro"));
+  //     //
+  //     Terminal.printWarning(
+  //         message: "secondKeySearched.length : : ${secondKeySearched!.length}\n "
+  //             "Valores buscados : : ${sinRepetir.toString()}\n "
+  //             "Fechas Obtenidas : : ${fechasSinRepetir!.length} ${fechasSinRepetir.toString()}"
+  //     );
+  //     //
+  //     for (var item in aux) {
+  //       for (int index = 0; index <= secondKeySearched.length - 1; index++) {
+  //         if (item[firstKeySearched] == secondKeySearched[index]) {
+  //           Terminal.printOther(
+  //               message:
+  //               "${item["Fecha_Registro"]} : ${secondKeySearched[index]} . . . ${item[elementDeseado]}");
+  //
+  //           // Terminal.printNotice(message: auxiliar.toString());
+  //
+  //           listado.add(
+  //             [
+  //               item['Fecha_Registro'].toString(),
+  //               item[elementDeseado], // I
+  //               item[elementDeseado], // II
+  //             ],
+  //           );
+  //           // Terminal.printData(message: "${listado.toString()}");
+  //         }
+  //       }
+  //       // for (var entis in secondKeySearched) {
+  //       //   //
+  //       //
+  //       // }
+  //     }
+  //     Terminal.printData(
+  //         message: "listFromMapWithTwoKey : : ${listado.toString()}");
+  //     return listado;
+  // }
+  //
+  // static List<dynamic> listFromMapWithTwoKey(List<dynamic> aux,
+  //     {String firstKeySearched = 'Estudio',
+  //       required List<String>? secondKeySearched,
+  //       elementDeseado = 'Resultado'}) {
+  //   List<dynamic> listado = [];
+  //   //
+  //   List sinRepetir = Listas.listWithoutRepitedValues(secondKeySearched!);
+  //   List fechasSinRepetir = Listas.listWithoutRepitedValues(Listas.listFromMapWithOneKey(aux, keySearched: "Fecha_Registro"));
+  //   //
+  //   Terminal.printWarning(
+  //       message: "secondKeySearched.length : : ${secondKeySearched!.length}\n "
+  //           "Valores buscados : : ${sinRepetir.toString()}\n "
+  //           "Fechas Obtenidas : : ${fechasSinRepetir!.length} ${fechasSinRepetir.toString()}"
+  //   );
+  //   //
+  //   for (var item in aux) {
+  //     for (int index = 0; index <= secondKeySearched.length - 1; index++) {
+  //       if (item[firstKeySearched] == secondKeySearched[index]) {
+  //         Terminal.printOther(
+  //             message:
+  //             "${item["Fecha_Registro"]} : ${secondKeySearched[index]} . . . ${item[elementDeseado]}");
+  //
+  //         // Terminal.printNotice(message: auxiliar.toString());
+  //
+  //         listado.add(
+  //           [
+  //             item['Fecha_Registro'].toString(),
+  //             item[elementDeseado], // I
+  //             item[elementDeseado], // II
+  //           ],
+  //         );
+  //         // Terminal.printData(message: "${listado.toString()}");
+  //       }
+  //     }
+  //     // for (var entis in secondKeySearched) {
+  //     //   //
+  //     //
+  //     // }
+  //   }
+  //   Terminal.printData(
+  //       message: "listFromMapWithTwoKey : : ${listado.toString()}");
+  //   return listado;
+  // }
+
   static List<String> listOfRange({required int maxNum, bool withNull = true}) {
     List<String> list =
         List<String>.generate(maxNum, (i) => (i + 1).toString());
@@ -395,14 +521,17 @@ class Listas {
     return string;
   }
 
-  static List<String> traslateFromString(String value, {String charSplit = '\n'}) {
-
+  static List<String> traslateFromString(String value,
+      {String charSplit = '\n'}) {
     if (charSplit != "\n") {
       return value.split(charSplit);
     } else {
       List<String> list = [];
-      value.replaceAll('[', '')
-          .replaceAll(']', '').split(',').forEach((element) {
+      value
+          .replaceAll('[', '')
+          .replaceAll(']', '')
+          .split(',')
+          .forEach((element) {
         list.add(element);
       });
       //
@@ -419,7 +548,9 @@ class Listas {
     for (var element in listaBase) {
       if (primeraLista.contains(element)) aux.add(element);
     }
-    return [...{...aux}];
+    return [
+      ...{...aux}
+    ];
   }
 }
 
@@ -502,7 +633,7 @@ class Operadores {
         context: context,
         builder: (context) {
           return Dialog(
-              backgroundColor: Colors.black54 ,
+              backgroundColor: Colors.black54,
               shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20))),
               child: Padding(
@@ -658,7 +789,6 @@ class Operadores {
     String? message,
     Function? onCloss,
   }) {
-
     showDialog(
         context: context,
         builder: (context) {
@@ -670,14 +800,13 @@ class Operadores {
         });
   }
 
-  static void selectOptionsActivity({
-    required BuildContext context,
-    String? tittle = "Manejo de Opciones",
-    String? message = "Seleccione una opción . . . ",
-    required List<dynamic> options,
-    Function(String)? onClose,
-    Function(String)? onLongCloss
-  }) {
+  static void selectOptionsActivity(
+      {required BuildContext context,
+      String? tittle = "Manejo de Opciones",
+      String? message = "Seleccione una opción . . . ",
+      required List<dynamic> options,
+      Function(String)? onClose,
+      Function(String)? onLongCloss}) {
     showDialog(
         context: context,
         builder: (context) {
@@ -686,7 +815,7 @@ class Operadores {
             msg: message,
             options: options,
             onCloss: onClose,
-              onLongCloss: onLongCloss,
+            onLongCloss: onLongCloss,
           );
         });
   }
@@ -751,12 +880,12 @@ class Operadores {
     showDialog(
         context: context,
         builder: (context) {
-          return Dialogos.editTwoValuesDialog(keyBoardType, tittle, message, () {
+          return Dialogos.editTwoValuesDialog(keyBoardType, tittle, message,
+              () {
             Navigator.of(context).pop();
           }, onAcept);
         });
   }
-
 }
 
 class Dialogos {
@@ -780,7 +909,7 @@ class Dialogos {
             child:
                 const Text("Cancelar", style: TextStyle(color: Colors.white))),
         ElevatedButton(
-          style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
             onPressed: () {
               onAcept();
             },
@@ -864,8 +993,8 @@ class Dialogos {
     );
   }
 
-  static AlertDialog editTwoValuesDialog(TextInputType keyBoardType, String? tittle,
-      String? msg, onCloss, ValueChanged<String>? onAcept) {
+  static AlertDialog editTwoValuesDialog(TextInputType keyBoardType,
+      String? tittle, String? msg, onCloss, ValueChanged<String>? onAcept) {
     var textAEditController = TextEditingController();
     var textBEditController = TextEditingController();
     var textCEditController = TextEditingController();
@@ -919,12 +1048,14 @@ class Dialogos {
               onCloss();
             },
             child:
-            const Text("Cancelar", style: TextStyle(color: Colors.white))),
+                const Text("Cancelar", style: TextStyle(color: Colors.white))),
         ElevatedButton(
             onPressed: () {
               double auxyl = 0.0;
               //
-              auxyl = double.parse(textAEditController.text) + double.parse(textBEditController.text) + double.parse(textCEditController.text);
+              auxyl = double.parse(textAEditController.text) +
+                  double.parse(textBEditController.text) +
+                  double.parse(textCEditController.text);
               //
               onAcept!(auxyl.toStringAsFixed(0));
             },
@@ -1069,9 +1200,9 @@ class Dialogos {
           )),
       actions: [
         ElevatedButton(
-          onLongPress: () {
-            onLongCloss!(selected);
-          },
+            onLongPress: () {
+              onLongCloss!(selected);
+            },
             onPressed: () {
               onCloss!(selected);
             },
@@ -1105,9 +1236,11 @@ class Dialogos {
               ),
             ],
           )),
-      actions:  [
+      actions: [
         ElevatedButton(
-          style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll<Color>(Colors.black),),
+            style: const ButtonStyle(
+              backgroundColor: MaterialStatePropertyAll<Color>(Colors.black),
+            ),
             onPressed: () {
               onCloss!();
             },
@@ -1131,8 +1264,9 @@ class Datos {
     }
   }
 
-  static bool isMiddleValue({required num? value, required num? min, required num? max}) {
-    if (value! > min! && value< max!) {
+  static bool isMiddleValue(
+      {required num? value, required num? min, required num? max}) {
+    if (value! > min! && value < max!) {
       return true;
     } else {
       return false;
@@ -1149,14 +1283,15 @@ class Datos {
   }
 
   static bool isInnerValue({required double value, required int lim}) {
-    if (value< lim) {
+    if (value < lim) {
       return true;
     } else {
       return false;
     }
   }
+
   static bool isUpperValue({required double value, required int lim}) {
-    if (value>lim) {
+    if (value > lim) {
       return true;
     } else {
       return false;

@@ -10,6 +10,7 @@ import 'package:assistant/operativity/pacientes/valores/semiologia/semiotica.dar
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/auxiliares/auxiliaresRevisiones.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/pendientes.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/ventilaciones.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/info/historialParaclinicos.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/indicaciones.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
@@ -548,6 +549,7 @@ class _GeneralesState extends State<Generales> {
                           Valores.fraccionInspiratoriaOxigeno =
                               Valores.fraccionInspiratoriaVentilatoria =
                                   int.parse(value);
+                          Valores.fioArteriales = double.parse(value);
                         });
                       },
                     ),
@@ -1128,6 +1130,7 @@ class _GeneralesState extends State<Generales> {
                   EditTextArea(
                     labelEditText: "Fecha de realización",
                     numOfLines: 1,
+                    optionEqui: 5,
                     textController: textDateEstudyController,
                     keyBoardType: TextInputType.datetime,
                     withShowOption: true,
@@ -1297,6 +1300,7 @@ class _GeneralesState extends State<Generales> {
                               Valores.fraccionInspiratoriaOxigeno =
                                   Valores.fraccionInspiratoriaVentilatoria =
                                       int.parse(value);
+                              Valores.fioArteriales = double.parse(value);
                             });
                           },
                         ),
@@ -1369,7 +1373,7 @@ class _GeneralesState extends State<Generales> {
             ),
           ),
           Expanded(
-            flex: 5,
+            flex: 3,
             child: SingleChildScrollView(
               controller: ScrollController(),
               child: Column(
@@ -1465,6 +1469,7 @@ class _GeneralesState extends State<Generales> {
                           labelEditText: 'Via Oral (mL)',
                           textController: viaOralTextController,
                           numOfLines: 1,
+                          optionEqui: 4,
                           selection: true,
                           withShowOption: true,
                           onSelected: () {
@@ -1489,6 +1494,7 @@ class _GeneralesState extends State<Generales> {
                         labelEditText: 'Vía Uresis (mL)',
                         textController: viaUresisTextController,
                         numOfLines: 1,
+                        optionEqui: 4,
                         selection: true,
                         withShowOption: true,
                         onSelected: () {
@@ -1515,6 +1521,7 @@ class _GeneralesState extends State<Generales> {
                           labelEditText: 'Vía Sonda Orogástrica (mL)',
                           textController: viaOrogasTextController,
                           numOfLines: 1,
+                          optionEqui: 4,
                           selection: true,
                           withShowOption: true,
                           onSelected: () {
@@ -1540,6 +1547,7 @@ class _GeneralesState extends State<Generales> {
                         labelEditText: 'Vía Evacuacionees. (mL)',
                         textController: viaEvacTextController,
                         numOfLines: 1,
+                        optionEqui: 4,
                         selection: true,
                         withShowOption: true,
                         onSelected: () {
@@ -1569,6 +1577,7 @@ class _GeneralesState extends State<Generales> {
                           labelEditText: 'Vía Hemoderivados (mL)',
                           textController: viaHemosTextController,
                           numOfLines: 1,
+                          optionEqui: 4,
                           selection: true,
                           withShowOption: true,
                           onSelected: () {
@@ -1594,6 +1603,7 @@ class _GeneralesState extends State<Generales> {
                         labelEditText: 'Vía Sangrados (mL)',
                         textController: viaSangTextController,
                         numOfLines: 1,
+                        optionEqui: 4,
                         selection: true,
                         withShowOption: true,
                         onSelected: () {
@@ -1621,6 +1631,7 @@ class _GeneralesState extends State<Generales> {
                           labelEditText: 'Vía N.P.T. (mL)',
                           textController: viaNutrianTextController,
                           numOfLines: 1,
+                          optionEqui: 4,
                           selection: true,
                           withShowOption: true,
                           onSelected: () {
@@ -1646,6 +1657,7 @@ class _GeneralesState extends State<Generales> {
                         labelEditText: 'Vía Succión (mL)',
                         textController: viaSucciTextController,
                         numOfLines: 1,
+                        optionEqui: 4,
                         selection: true,
                         withShowOption: true,
                         onSelected: () {
@@ -1673,6 +1685,7 @@ class _GeneralesState extends State<Generales> {
                           labelEditText: 'Vía Sol. Parenterales (mL)',
                           textController: viaParesTextController,
                           numOfLines: 1,
+                          optionEqui: 4,
                           selection: true,
                           withShowOption: true,
                           onSelected: () {
@@ -1698,6 +1711,7 @@ class _GeneralesState extends State<Generales> {
                         labelEditText: 'Perdidas Insensibles (mL)',
                         textController: viaPerdidaTextController,
                         numOfLines: 1,
+                        optionEqui: 4,
                       ))
                     ],
                   ),
@@ -1742,6 +1756,12 @@ class _GeneralesState extends State<Generales> {
                             viaPerdidaTextController.text =
                                 Valores.perdidasInsensibles.toStringAsFixed(2);
                           }),
+                    ],
+                  ),
+                  const SizedBox(height: 5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
                       CircleIcon(
                           radios: 20,
                           difRadios: 5,
@@ -1791,6 +1811,7 @@ class _GeneralesState extends State<Generales> {
                           labelEditText: 'Vía Diluciones (mL)',
                           textController: viaDilucionesTextController,
                           numOfLines: 1,
+                          optionEqui: 4,
                           selection: true,
                           withShowOption: true,
                           onSelected: () {
@@ -1815,6 +1836,7 @@ class _GeneralesState extends State<Generales> {
                         labelEditText: 'Otros Egresos (mL)',
                         textController: viaOtrosEgresosTextController,
                         numOfLines: 1,
+                        optionEqui: 4,
                         selection: true,
                         withShowOption: true,
                         onSelected: () {
@@ -1842,6 +1864,7 @@ class _GeneralesState extends State<Generales> {
                           labelEditText: 'Otros Ingresos (mL)',
                           textController: viaOtrosIngresosTextController,
                           numOfLines: 1,
+                          optionEqui: 4,
                           selection: true,
                           withShowOption: true,
                           onSelected: () {
@@ -2014,9 +2037,8 @@ class _GeneralesState extends State<Generales> {
                   ],
                 ),
               )),
-          Expanded(
-              flex: 2,
-              child: RevisionDispositivos()),
+          Expanded(flex: 2, child: RevisionDispositivos()),
+          Expanded(flex: 2, child: RevisionPrevios()),
           Expanded(
             flex: 2,
             child: Container(
@@ -2128,14 +2150,17 @@ class _GeneralesState extends State<Generales> {
               children: [
                 GrandIcon(
                     iconData: Icons.list_alt_sharp,
+                    labelButton: "Pendientes . . . ",
                     onPress: () => Cambios.toNextPage(
                         context, GestionPendiente(withReturn: false))),
                 GrandIcon(
                     iconData: Icons.vertical_split_outlined,
+                    labelButton: "Ventilaciones . . . ",
                     onPress: () =>
                         Cambios.toNextPage(context, GestionVentilaciones())),
                 GrandIcon(
                     iconData: Icons.lens_blur,
+                    labelButton: "Indicaciones . . . ",
                     onPress: () => Cambios.toNextActivity(
                         tittle: "Indicaciones de la Hospitalización",
                         context,
@@ -2143,13 +2168,19 @@ class _GeneralesState extends State<Generales> {
                 // GrandIcon(
                 //     iconData: Icons.view_array_outlined,
                 //     onPress: () => Cambios.toNextActivity(context, chyld: SituacionesHospitalizacion())),
-                GrandIcon(onPress: () => null),
+                const SizedBox(width: 30),
+                GrandIcon(
+                    iconData: Icons.list_alt_sharp,
+                    labelButton: "Laboratorios Previos . . . ",
+                    onPress: () => Cambios.toNextActivity(
+                        backgroundColor: Theming.cuaternaryColor,
+                        context, chyld: HistorialParaclinicos())),
                 GrandIcon(onPress: () => null),
                 GrandIcon(onPress: () => null),
                 GrandIcon(onPress: () => null),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

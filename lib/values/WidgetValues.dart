@@ -67,7 +67,9 @@ class Colores {
     Color.fromARGB(255, 69, 20, 28),
     Color.fromARGB(255, 194, 196, 193),
     Color.fromARGB(255, 9, 67, 159),
-    Color.fromARGB(255, 59, 41, 7)
+    Color.fromARGB(255, 59, 41, 7),
+    Color.fromARGB(255, 39, 32, 6),
+
   ];
 }
 

@@ -1406,7 +1406,7 @@ class Pacientes {
     try {
       var response = await Valores().load().onError((error, stackTrace) {
         Operadores.alertActivity(
-            message: "ERROR - Valores : : $error",
+            message: "ERROR - Valores : : $error : $stackTrace . ",
             context: context,
             tittle: 'Error al Iniciar Valores . . . ');
         return false;
@@ -1484,7 +1484,63 @@ class Pacientes {
     return Pacientes.Paraclinicos!;
   }
 
+  static Future<Map<String, dynamic>> getLastParaclinicos(
+      {bool reload = false}) async {
+    Map<String, dynamic> last = await Actividades.detallesById(
+        Databases.siteground_database_reggabo,
+        Pacientes.getAuxiliaryStats(Pacientes.ID_Paciente),
+        Pacientes.ID_Paciente,
+        emulated: true);
+    print(last);
+    return last;
+  }
+
+  // Pendientes . . Funciones
   static Future<void> getDispositivosHistorial() async {
+    //
+    await Actividades.consultarAllById(
+            Databases.siteground_database_reghosp,
+            Pendientes.pendientes['consultDispositivosByIdPrimaryQuery'],
+            Pacientes.ID_Hospitalizacion)
+        .then((onValue) {
+      //
+      for (var element in onValue) {
+        //
+        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[0][0]) {
+          Valores.initMAVA = element['ID_Pace_Pen'];
+          Valores.withMAVA =
+              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+        }
+        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[0][1]) {
+          Valores.initIOT = element['ID_Pace_Pen'];
+          Valores.withIOT =
+              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+        }
+        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[0][2]) {
+          Valores.initEXT = element['ID_Pace_Pen'];
+          Valores.withEXT =
+              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+        }
+        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[0][3]) {
+          Valores.initTRAN = element['ID_Pace_Pen'];
+          Valores.withTRAN =
+              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+        }
+        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[0][4]) {
+          Valores.initHEMO = element['ID_Pace_Pen'];
+          Valores.withHEMO =
+              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+        }
+        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[0][5]) {
+          Valores.initQUIR = element['ID_Pace_Pen'];
+          Valores.withQUIR =
+              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+        }
+      }
+    });
+  }
+
+  static Future<void> getPreviosHistorial() async {
     //
     await Actividades.consultarAllById(
             Databases.siteground_database_reghosp,
@@ -1556,17 +1612,6 @@ class Pacientes {
         }
       }
     });
-  }
-
-  static Future<Map<String, dynamic>> getLastParaclinicos(
-      {bool reload = false}) async {
-    Map<String, dynamic> last = await Actividades.detallesById(
-        Databases.siteground_database_reggabo,
-        Pacientes.getAuxiliaryStats(Pacientes.ID_Paciente),
-        Pacientes.ID_Paciente,
-        emulated: true);
-    print(last);
-    return last;
   }
 }
 
@@ -5988,7 +6033,6 @@ class Auxiliares {
   ];
 
   //
-
   static fromJson(Map<String, dynamic> json) {
     json.forEach((key, value) =>
         Terminal.printExpected(message: "           $key : $value"));
@@ -6018,6 +6062,8 @@ class Auxiliares {
     Valores.acidoUrico = double.parse(json['Acido_Urico'] ?? '0');
     Valores.nitrogenoUreico = double.parse(json['Nitrogeno_Ureico'] ?? '0');
 
+    //
+    Valores.densidadUrinaria = double.parse(json['Densidad_Urinaria'] ?? '0');
     //
     Valores.fechaElectrolitos = json['Fecha_Registro_Electrolitos'] ?? '';
     Valores.sodio = double.parse(json['Sodio'] ?? '0');
@@ -6917,7 +6963,7 @@ class Auxiliares {
     "Depuración de Orina de 24 Horas", // 12
     "Líquido de Diálisis Peritoneal", // 13 // Liquido de Ascítis
     "Liquido Cefalorraquídeo", // 14
-    "Iones Urinarios",
+    "Iones Urinarios", // 15
     "Carga Viral",
     "Conteo de Linfocitos T CD4+", // 17
     "Marcadores Cárdiacos", // 18
@@ -7081,28 +7127,29 @@ class Auxiliares {
       "Proteinas de Diálisis Peritoneal",
       "DHL de Diálisis Peritoneal",
       "Colesterol de Diálisis Peritoneal",
-    ],
+    ], // Dialisis Peritoneal
     Categorias[14]: [
+      "Presion de Apertura en LCR",
       // Citoquímico
       "Glucosa en LCR", // GLU-LCR : mg/dL
-      "Lactato Deshidrogenasa", // LD H-LCR : UI/L
+      "Lactato Deshidrogenasa en LCR", // LD H-LCR : UI/L
       "Proteinas Totales en LCR", // Prot-LCR : NA
-      "Albumina en LCR", // Prot-LCR : NA
+      "Albumina en LCR", // 4: Prot-LCR : NA
       //
-      "Tinta China",
-      "Tinción de Wrigth",
-      "Tinción de Gram",
+      "Tinta China en LCR", // 5 :
+      "Tinción de Wrigth en LCR", // 6.
+      "Tinción de Gram en LCR", // 7:
       // Citológico
-      "Aspecto",
-      "Color",
-      "Leucocitos", //
-      "Polimorfonucleares", // %
-      "Mononucleares", // %
-      "Eritrocitos",
-      "Bacterias",
-      "Levaduras",
-      "Otros",
-      "pH",
+      "Aspecto en LCR", // 8 :
+      "Color en LCR", // 9 :
+      "Leucocitos en LCR", //
+      "Polimorfonucleares en LCR", // %
+      "Mononucleares en LCR", // %
+      "Eritrocitos en LCR", // 13 :
+      "Bacterias en LCR",
+      "Levaduras en LCR",
+      "Otros en LCR",
+      "pH en LCR", // 17 :
       "",
     ], // LCR
     Categorias[15]: [
@@ -7112,8 +7159,10 @@ class Auxiliares {
       "Calcio Urinario",
       "Fósforo Urinario",
       "Magnesio Urinario",
-      "Creatinina Urinaria"
-    ],
+      "Creatinina Urinaria",
+      "Glucosa Urinaria",
+      //
+    ], // IONES
     Categorias[16]: [
       "Conteo de Viriones de VIH",
       "Conteo de Viriones de Hepatitis A",
@@ -7370,7 +7419,7 @@ class Auxiliares {
       "%",
     ],
     Categorias[14]: ["", "mm3", "mg/dL", "%", "mmHg", "g/dL", "mmol/L", "UI/L"],
-    Categorias[15]: [""],
+    Categorias[15]: ["mEq/L", "mg/dL", ""],
     Categorias[16]: [""],
     Categorias[17]: ["cell/mm3", "%", ""],
     Categorias[18]: ["UI/L", "ng/mL"],
@@ -7508,6 +7557,8 @@ class Auxiliares {
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Creatinina' ORDER BY Fecha_Registro DESC limit 1) as Creatinina,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Acido Úrico' ORDER BY Fecha_Registro DESC limit 1) as Acido_Urico,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Nitrógeno Úrico' ORDER BY Fecha_Registro DESC limit 1) as Nitrogeno_Ureico,"
+        //
+        "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Densidad_Urinaria' ORDER BY Fecha_Registro DESC limit 1) as Densidad_Urinaria,"
         //
         "(SELECT Fecha_Registro FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Tipo_Estudio = 'Electrolitos Séricos' ORDER BY Fecha_Registro DESC limit 1) as Fecha_Registro_Electrolitos,"
         "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Sodio' ORDER BY Fecha_Registro DESC limit 1) as Sodio,"
@@ -7688,6 +7739,8 @@ class Pendientes {
     "consultByIdPrimaryQuery": "SELECT * FROM pace_pen WHERE ID_Pace = ?",
     "consultDispositivosByIdPrimaryQuery": "SELECT * FROM pace_pen "
         "WHERE ID_Hosp = ? AND Pace_PEN = 'Procedimientos'",
+    "consultPreviosByIdPrimaryQuery": "SELECT * FROM pace_pen "
+        "WHERE ID_Hosp = ? AND Pace_PEN = 'Previos'",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_pen",
     "consultLastQuery":
         "SELECT * FROM pace_pen WHERE ID_Pace = ? ORDER BY Feca_PEN DESC",
@@ -7733,6 +7786,7 @@ class Pendientes {
       "Manejo Avanzado de la Vía Aérea", // MAVA
       "Intubación Orotraqueal", // IOT
       "Extubación", // EXT
+      "Cambio de Cánula", // CAN
       'Hemotranfusión', // TRAN
       'Sesión de Hemodialisis', //  HEMO
       "Cirugía", // QUIR
@@ -7931,6 +7985,98 @@ class Pendientes {
         Pendientes.typesPendientes[3], // Categoria de Procedimientos . . .
         Pendientes.subTypesPendientes[3][11],
       ], // TNK
+    ], (element) async {
+      await Actividades.registrar(
+        Databases.siteground_database_reghosp,
+        Pendientes.pendientes['registerQuery'],
+        element as List<dynamic>,
+      );
+    }).whenComplete(() {
+      Terminal.printSuccess(message: "SUCCESS- Dispositivos Agregados . . . ");
+      Operadores.alertActivity(
+        context: context,
+        tittle: "Registro de Dispositivos . . .",
+        message: "Se han registrado los Dispositivos de Inicio . ",
+      );
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(message: "ERROR - $error : : : $stackTrace");
+      Operadores.alertActivity(
+        context: context,
+        tittle: "$error . . .",
+        message: "$stackTrace",
+      );
+      //
+    });
+  }
+
+  static void registrarPrevios(BuildContext context) {
+    Future.forEach([
+      [
+        Valores.initMAVA,
+        Pacientes.ID_Paciente,
+        Pacientes.ID_Hospitalizacion,
+        Valores
+            .withMAVA, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+        Valores.withMAVA == "" ? false : true,
+        Pendientes.typesPendientes[0], // Categoria de Procedimientos . . .
+        Pendientes.subTypesPendientes[0][0],
+        Valores.initMAVA,
+      ], // MAVA
+      [
+        Valores.initIOT,
+        Pacientes.ID_Paciente,
+        Pacientes.ID_Hospitalizacion,
+        Valores
+            .withIOT, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+        Valores.withIOT == "" ? false : true,
+        Pendientes.typesPendientes[0], // Categoria de Procedimientos . . .
+        Pendientes.subTypesPendientes[0][1],
+        Valores.initIOT,
+      ], // IOT
+      [
+        Valores.initEXT,
+        Pacientes.ID_Paciente,
+        Pacientes.ID_Hospitalizacion,
+        Valores
+            .withEXT, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+        Valores.withEXT == "" ? false : true,
+        Pendientes.typesPendientes[0], // Categoria de Procedimientos . . .
+        Pendientes.subTypesPendientes[0][2],
+        Valores.initEXT,
+      ], // EXT
+      [
+        Valores.initTRAN,
+        Pacientes.ID_Paciente,
+        Pacientes.ID_Hospitalizacion,
+        Valores
+            .withTRAN, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+        Valores.withTRAN == "" ? false : true,
+        Pendientes.typesPendientes[0], // Categoria de Procedimientos . . .
+        Pendientes.subTypesPendientes[0][0],
+        Valores.initTRAN,
+      ], // TRAN
+      [
+        Valores.initHEMO,
+        Pacientes.ID_Paciente,
+        Pacientes.ID_Hospitalizacion,
+        Valores
+            .withHEMO, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+        Valores.withHEMO == "" ? false : true,
+        Pendientes.typesPendientes[0], // Categoria de Procedimientos . . .
+        Pendientes.subTypesPendientes[0][4],
+        Valores.initHEMO,
+      ], // HEMO
+      [
+        Valores.initQUIR,
+        Pacientes.ID_Paciente,
+        Pacientes.ID_Hospitalizacion,
+        Valores
+            .withQUIR, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+        Valores.withQUIR == "" ? false : true,
+        Pendientes.typesPendientes[0], // Categoria de Procedimientos . . .
+        Pendientes.subTypesPendientes[0][5],
+        Valores.initQUIR,
+      ], // QUIR
     ], (element) async {
       await Actividades.registrar(
         Databases.siteground_database_reghosp,
