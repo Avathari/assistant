@@ -87,7 +87,7 @@ class _HistorialParaclinicosState extends State<HistorialParaclinicos> {
                       Listas.listFromMapWithTwoKey(
                         Pacientes.Paraclinicos!,
                         firstKeySearched: "Estudio",
-                        secondKeySearched: ["Hemoglobina", "Eritrocitos"],
+                        secondKeySearched: ["Hemoglobina", "Eritrocitos", "Leucocitos Totales"],
                       ),
                     ])),
                 // Expanded(

@@ -34,7 +34,7 @@ class Dashboard extends StatefulWidget {
     'T. Sistólica',
     'T. Diastólica',
     'F. Cardiaca',
-    'F. Respiratoria',
+    // 'F. Respiratoria',
     'T. Corporal',
     'SPO2 %',
   ];
@@ -58,7 +58,7 @@ class _DashboardState extends State<Dashboard> {
         list.clear();
         //
         widget.dymValues.insert(i, [
-          Pacientes.Vitales![i]['Pace_Feca_SV'],
+          Pacientes.Vitales![i]['Pace_Feca_SV'].toString(),
           Pacientes.Vitales![i]['Pace_SV_tas'],
           Pacientes.Vitales![i]['Pace_SV_tad'],
           Pacientes.Vitales![i]['Pace_SV_fc'],
@@ -75,7 +75,7 @@ class _DashboardState extends State<Dashboard> {
           list.clear();
           //
           widget.dymValues.insert(i, [
-            Pacientes.Vitales![i]['Pace_Feca_SV'],
+            Pacientes.Vitales![i]['Pace_Feca_SV'].toString(),
             Pacientes.Vitales![i]['Pace_SV_tas'],
             Pacientes.Vitales![i]['Pace_SV_tad'],
             Pacientes.Vitales![i]['Pace_SV_fc'],
@@ -103,7 +103,9 @@ class _DashboardState extends State<Dashboard> {
         ? mobileView()
         : isTablet(context)
             ? tabletView()
-            : desktopView();
+            : isTablet(context)
+                ? desktopView()
+                : desktopView(); // bigDesktopView
   }
 
   void iniciar() {
@@ -140,9 +142,7 @@ class _DashboardState extends State<Dashboard> {
           Column(
             children: [
               RoundedPanel(
-                child: TittlePanel(
-                  textPanel: 'Diagnóstico(s)'
-                ),
+                child: TittlePanel(textPanel: 'Diagnóstico(s)'),
               ),
               const SizedBox(height: 6),
               Expanded(
@@ -158,7 +158,10 @@ class _DashboardState extends State<Dashboard> {
               ),
             ],
           ),
-
+          ChartLine(
+              maxY: 160,
+              chartTittle: "Signo(s) Vital(es)",
+              dymValues: [widget.dymValues]),
         ],
       ),
     );
@@ -174,7 +177,6 @@ class _DashboardState extends State<Dashboard> {
             Revisiones(),
             Column(
               children: [
-
                 const SizedBox(height: 6),
                 Expanded(
                   child: Row(
@@ -190,7 +192,6 @@ class _DashboardState extends State<Dashboard> {
                 const SizedBox(height: 6),
               ],
             ),
-
           ],
         ));
 
@@ -217,21 +218,19 @@ class _DashboardState extends State<Dashboard> {
               children: [
                 Expanded(
                     child: RoundedPanel(
-                      child: const Degenerativos(),
-                    )),
+                  child: const Degenerativos(),
+                )),
                 const SizedBox(height: 6),
                 Expanded(
                     child: RoundedPanel(
-                      child: const Diagnosis(),
-                    )),
+                  child: const Diagnosis(),
+                )),
                 const SizedBox(height: 6),
               ],
             ),
           ),
           const SizedBox(width: 6),
-          Expanded(
-            flex: 3,
-            child: Revisiones()),
+          Expanded(flex: 3, child: Revisiones()),
         ],
       ),
     );
@@ -258,7 +257,9 @@ class _DashboardState extends State<Dashboard> {
                     flex: 2,
                     child: RoundedPanel(
                       child: ChartLine(
-                        dymValues: widget.dymValues,
+                        maxY: 200,
+                        chartTittle: "Signo(s) Vital(es)",
+                        dymValues: [widget.dymValues],
                         withTittles: true,
                         tittles: widget.tittles,
                       ),
@@ -277,7 +278,7 @@ class _DashboardState extends State<Dashboard> {
                       child: RoundedPanel(
                     padding: 2,
                     child: Pacientes.esHospitalizado == true
-                        ?  Hospitalizado()
+                        ? Hospitalizado()
                         : const EstadisticasVitales(),
                   )),
                   const SizedBox(width: 6),
@@ -367,5 +368,4 @@ class _DashboardState extends State<Dashboard> {
     );
   }
   // **************************************
-
 }

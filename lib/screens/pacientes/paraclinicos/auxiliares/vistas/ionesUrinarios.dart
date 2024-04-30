@@ -59,50 +59,64 @@ class _IonesUrinariosState extends State<IonesUrinarios> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
+                flex: 2,
                 child: TittleContainer(
-              padding: 2,
-              child: Column(
-                children: [
-                  ValuePanel(
-                    firstText: "Na2+",
-                    secondText: Valores.sodio.toString(),
-                    thirdText: "mEq/L",
-                  ),
-                  ValuePanel(
-                    firstText: "K+",
-                    secondText: Valores.potasio.toString(),
-                    thirdText: "mEq/L",
-                  ),
-                  ValuePanel(
-                    firstText: "Cl-",
-                    secondText: Valores.cloro.toString(),
-                    thirdText: "mg/dL",
-                  ),
-                  CrossLine(),
-                  ValuePanel(
-                    firstText: "PO3-",
-                    secondText: Valores.fosforo.toString(),
-                    thirdText: "mg/dL",
-                  ),
-                  CrossLine(),
-                  ValuePanel(
-                    firstText: "Cr-",
-                    secondText: Valores.creatinina.toString(),
-                    thirdText: "mg/dL",
-                  ),
-                  ValuePanel(
-                    firstText: "Ure-",
-                    secondText: Valores.urea.toString(),
-                    thirdText: "mg/dL",
-                  ),
-                  CrossLine(),
-                  ValuePanel(
-                    firstText: "Glu-",
-                    secondText: Valores.glucosa.toString(),
-                    thirdText: "mg/dL",
-                  ),
-                  CrossLine(),
-                ],
+              padding: 4,
+              child: SingleChildScrollView(
+                controller: ScrollController(),
+                child: Column(
+                  children: [
+                    ValuePanel(
+                      firstText: "Na2+",
+                      secondText: Valores.sodio.toString(),
+                      thirdText: "mEq/L",
+                    ),
+                    ValuePanel(
+                      firstText: "K+",
+                      secondText: Valores.potasio.toString(),
+                      thirdText: "mEq/L",
+                    ),
+                    ValuePanel(
+                      firstText: "Cl-",
+                      secondText: Valores.cloro.toString(),
+                      thirdText: "mg/dL",
+                    ),
+                    CrossLine(),
+                    ValuePanel(
+                      firstText: "PO3-",
+                      secondText: Valores.fosforo.toString(),
+                      thirdText: "mg/dL",
+                    ),
+                    CrossLine(),
+                    ValuePanel(
+                      firstText: "Cr-",
+                      secondText: Valores.creatinina.toString(),
+                      thirdText: "mg/dL",
+                    ),
+                    ValuePanel(
+                      firstText: "Ure-",
+                      secondText: Valores.urea.toString(),
+                      thirdText: "mg/dL",
+                    ),
+                    CrossLine(),
+                    ValuePanel(
+                      firstText: "Glu-",
+                      secondText: Valores.glucosa.toString(),
+                      thirdText: "mg/dL",
+                    ),
+                    CrossLine(),
+                    ValuePanel(
+                      firstText: "",
+                      secondText: Valores.fechaQuimicas.toString(),
+                      thirdText: "Fecha Quimicas",
+                    ),
+                    ValuePanel(
+                      firstText: "",
+                      secondText: Valores.fechaElectrolitos.toString(),
+                      thirdText: "Fecha Electrolitos",
+                    ),
+                  ],
+                ),
               ),
             )),
             Expanded(
@@ -133,7 +147,7 @@ class _IonesUrinariosState extends State<IonesUrinarios> {
                       keyBoardType: TextInputType.number,
                       inputFormat: MaskTextInputFormatter(),
                       labelEditText:
-                          'Sodio Urinario ($unidadMedidaSodioUrinario)',
+                          'Na2+ U_ ($unidadMedidaSodioUrinario)',
                       numOfLines: 1,
                       onChange: (String value) {
                         if (textSodioUrinarioResultController.text.isNotEmpty) {
@@ -148,7 +162,7 @@ class _IonesUrinariosState extends State<IonesUrinarios> {
                       textController: textPotasioUrinarioResultController,
                       keyBoardType: TextInputType.text,
                       inputFormat: MaskTextInputFormatter(),
-                      labelEditText: 'Potasio Urinario ($unidadMedidaPotasioUrinario)',
+                      labelEditText: 'K+ U_ ($unidadMedidaPotasioUrinario)',
                       numOfLines: 1,
                       onChange: (String value) {
                         if (textPotasioUrinarioResultController.text.isNotEmpty) {

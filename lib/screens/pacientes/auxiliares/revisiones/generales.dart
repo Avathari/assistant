@@ -10,6 +10,7 @@ import 'package:assistant/operativity/pacientes/valores/semiologia/semiotica.dar
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/auxiliares/auxiliaresRevisiones.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/pendientes.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/ventilaciones.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/conmutadorParaclinicos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/info/historialParaclinicos.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/indicaciones.dart';
 import 'package:assistant/values/SizingInfo.dart';
@@ -21,11 +22,9 @@ import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/Spinner.dart';
-import 'package:assistant/widgets/TittleContainer.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Generales extends StatefulWidget {
@@ -130,13 +129,38 @@ class _GeneralesState extends State<Generales> {
       ),
       body: isMobile(context) ? mobileView() : desktopView(),
       floatingActionButton: !isMobile(context)
-          ? CircleIcon(
-              tittle: "Agregar Registro . . . ",
-              iconed: Icons.app_registration_sharp,
-              onChangeValue: () {
-                operationMethod(context);
-              },
-            )
+          ? Wrap(children: [
+              Column(
+                children: [
+                  GrandIcon(
+                    // weigth: 25,
+                    // heigth: 25,
+                    size: 32,
+                    labelButton: "Menu Lateral . . . ",
+                    iconData: Icons.menu_open,
+                    onPress: () => _key.currentState!.openEndDrawer(),
+                  ),
+                  const SizedBox(height: 20),
+                  GrandIcon(
+                      labelButton: "Rutina",
+                      iconData: Icons.ad_units,
+                      onPress: () {
+                        Cambios.toNextActivity(context,
+                            tittle: 'Anexión de la Rutina',
+                            chyld: ConmutadorParaclinicos(
+                                categoriaEstudio: "Rutina"));
+                      }),
+                ],
+              ),
+              const SizedBox(width: 20),
+              CircleIcon(
+                tittle: "Agregar Registro . . . ",
+                iconed: Icons.app_registration_sharp,
+                onChangeValue: () {
+                  operationMethod(context);
+                },
+              ),
+            ])
           : null,
     );
   }
@@ -2038,7 +2062,16 @@ class _GeneralesState extends State<Generales> {
                 ),
               )),
           Expanded(flex: 2, child: RevisionDispositivos()),
-          Expanded(flex: 2, child: RevisionPrevios()),
+          Expanded(
+              flex: 2,
+              child: Column(
+                children: [
+                  const Expanded(child: RevisionPrevios()),
+                  Expanded(
+                      child: RevisionCultivos(
+                          listado: Pacientes.getRevisionCultivos())),
+                ],
+              )),
           Expanded(
             flex: 2,
             child: Container(
@@ -2137,8 +2170,12 @@ class _GeneralesState extends State<Generales> {
                 GrandIcon(onPress: () => setState(() => actualView = 3)),
                 GrandIcon(onPress: () => setState(() => actualView = 4)),
                 GrandIcon(onPress: () => setState(() => actualView = 5)),
-                GrandIcon(onPress: () => setState(() => actualView = 6)),
-                GrandIcon(onPress: () => setState(() => actualView = 7)),
+                GrandIcon(
+                    iconData: Icons.hourglass_bottom,
+                    onPress: () => setState(() => actualView = 6)),
+                GrandIcon(
+                    iconData: Icons.line_style_outlined,
+                    onPress: () => setState(() => actualView = 7)),
               ],
             ),
           ),
@@ -2174,7 +2211,8 @@ class _GeneralesState extends State<Generales> {
                     labelButton: "Laboratorios Previos . . . ",
                     onPress: () => Cambios.toNextActivity(
                         backgroundColor: Theming.cuaternaryColor,
-                        context, chyld: HistorialParaclinicos())),
+                        context,
+                        chyld: HistorialParaclinicos())),
                 GrandIcon(onPress: () => null),
                 GrandIcon(onPress: () => null),
                 GrandIcon(onPress: () => null),
@@ -2201,10 +2239,10 @@ class _GeneralesState extends State<Generales> {
                           : actualView == 5
                               ? AuxiliaresRevisiones.arteriales(context)
                               : actualView == 6
-                                  ? AuxiliaresRevisiones.hepaticos(context)
+                                  ? RevisionCultivos(
+                                      listado: Pacientes.getRevisionCultivos())
                                   : actualView == 7
-                                      ? AuxiliaresRevisiones.electrolitos(
-                                          context)
+                                      ? RevisionIndicacioness()
                                       : actualView == 8
                                           ? AuxiliaresRevisiones.electrolitos(
                                               context)

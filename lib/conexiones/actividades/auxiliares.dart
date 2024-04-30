@@ -356,26 +356,34 @@ class Listas {
     List<dynamic> listado = [];
     //
     for (var item in aux) {
+      //
       for (int index = 0; index <= secondKeySearched!.length - 1; index++) {
-        if (item[firstKeySearched] == secondKeySearched[index]) {
-          Terminal.printOther(
-              message:
-              "${item["Fecha_Registro"]} : ${secondKeySearched[index]} . . . ${item[elementDeseado]}");
 
-          // Terminal.printNotice(message: auxiliar.toString());
-          listado.add(
-            [
-              item['Fecha_Registro'].toString(),
-              item[elementDeseado], // I
-              item[elementDeseado], // II
-            ],
-          );
-          // Terminal.printData(message: "${listado.toString()}");
+        if (item[firstKeySearched] == secondKeySearched[index]) {
+          Terminal.printOther(message: "${item["Fecha_Registro"]} : ${secondKeySearched[index]} . $index . . . ${item[elementDeseado]}");
+          if (index == 0) {
+            listado.add([item['Fecha_Registro'].toString(), item[elementDeseado] ?? 0.0]);
+          } else {
+            // Terminal.printData(message: "Fecha : ${item['Fecha_Registro']} : ${listado[listado.length-1][0]}");
+            if (item['Fecha_Registro'] == listado[listado.length-1][0]) {
+              listado[listado.length-1].insert(index + 1 , item[elementDeseado] ?? 0.0);
+            }
+            Terminal.printData(message: "Listado . ${listado.length} : : ${listado[listado.length-1].toString()}");
+          }
+          // listado.add(auxiliar);
         }
+        //
       }
+      //
     }
-    Terminal.printData(
-        message: "listFromMapWithTwoKey : : ${listado.toString()}");
+    //
+    // Terminal.printSuccess(message: "\n\n");
+    //
+    // listado.forEach((elemento) {
+    //   Terminal.printSuccess(
+    //       message: "listFromMapWithTwoKey : : ${elemento.toString()}");
+    // });
+
     return listado;
   }
 

@@ -1,4 +1,5 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/RoundedPanel.dart';
 import 'package:assistant/widgets/TittleContainer.dart';
@@ -10,6 +11,8 @@ class ChartLine extends StatefulWidget {
   String? chartTittle;
   bool? withTittles;
   List? tittles;
+  //
+  double? bottonTileInterval;
   //
   List<List> dymValues = [];
   //
@@ -26,6 +29,7 @@ class ChartLine extends StatefulWidget {
     this.maxY = 30,
     this.tittles,
     this.withTittles = false,
+    this.bottonTileInterval = 1.0,
     required this.dymValues,
   });
 
@@ -149,7 +153,7 @@ class _ChartLineState extends State<ChartLine> {
     }
     //
     for (var element in widget.dymValues[0]) {
-      print("element Of $element");
+      // print("element Of $element");
       // Se agregan como bottomTittles el primer elemento de la lista.
       setState(() {
         widget.bottomTittles!.add(element[0]);
@@ -160,12 +164,11 @@ class _ChartLineState extends State<ChartLine> {
         // if (element[i + 1].runtimeType != String) {
         //   widget.values![i].add(double.parse(element[i + 1].toString()));
         // }
-        widget.values![i].add(double.parse(element[i + 1].toString()));
+        if (element[i + 1]!= null) widget.values![i].add(double.parse(element[i + 1].toString()));
       }
     }
 
-    Terminal.printExpected(
-        message: "widget.values ${widget.values!.length} ${widget.values}");
+    // Terminal.printExpected(message: "widget.values ${widget.values!.length} ${widget.values}");
     for (var i = 0; i < widget.values!.length; i++) {
       // print("${Colores.locales[i]!}, ${widget.values![i]}");
       widget.spotsVals!.add(getSpots(
@@ -184,12 +187,12 @@ class _ChartLineState extends State<ChartLine> {
   }
 
   List<FlSpot> toSpots(List<double> values) {
-    setState(() {
-      widget.minY =
-          values.reduce((current, next) => current < next ? current : next);
-      widget.maxY =
-          values.reduce((current, next) => current > next ? current : next);
-    });
+    // setState(() {
+    //   widget.minY =
+    //       values.reduce((current, next) => current < next ? current : next);
+    //   widget.maxY =
+    //       values.reduce((current, next) => current > next ? current : next);
+    // });
 
     // Terminal.printExpected(message: values.toString());
     List<FlSpot> spots = [];
@@ -208,9 +211,10 @@ class _ChartLineState extends State<ChartLine> {
       show: true,
       bottomTitles: AxisTitles(
           sideTitles: SideTitles(
-        interval: widget.bottomTittles!.isNotEmpty
-            ? widget.bottomTittles!.length / 3
-            : 2, // 2,
+        interval: widget.bottonTileInterval,
+        // widget.bottomTittles!.isNotEmpty
+        //     ? widget.bottomTittles!.length / 3
+        //     : widget.dymValues[0].length / 3, // 2,
         reservedSize: 66,
         showTitles: true,
         getTitlesWidget: (value, meta) {
@@ -218,7 +222,7 @@ class _ChartLineState extends State<ChartLine> {
             quarterTurns: -1,
             child: Text(
               widget.bottomTittles!.isNotEmpty
-                  ? widget.bottomTittles!.elementAt(value.toInt())
+                  ? widget.bottomTittles!.elementAt(value.toInt()) ?? ""
                   : "",
               style: const TextStyle(
                   fontSize: 10,
@@ -231,7 +235,7 @@ class _ChartLineState extends State<ChartLine> {
       leftTitles: AxisTitles(
           sideTitles: SideTitles(
               interval: 5,
-              reservedSize: 70, // widget.maxY!,
+              reservedSize: isMobile(context)? 50: 70, // widget.maxY!,
               showTitles: true,
               getTitlesWidget: (value, meta) {
                 // Terminal.printExpected(message: value.toString());

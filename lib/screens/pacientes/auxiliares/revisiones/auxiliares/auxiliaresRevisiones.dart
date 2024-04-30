@@ -8,7 +8,6 @@ import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CrossLine.dart';
-import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/TittleContainer.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
@@ -2486,5 +2485,107 @@ class _RevisionPreviosState extends State<RevisionPrevios> {
       });
       //
     });
+  }
+}
+
+//
+class RevisionCultivos extends StatefulWidget {
+  List? listado;
+
+  RevisionCultivos({super.key, required this.listado});
+
+  @override
+  State<RevisionCultivos> createState() => _RevisionCultivosState();
+}
+
+class _RevisionCultivosState extends State<RevisionCultivos> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    // Terminal.printNotice(message: widget.listado!.toString());
+    super.initState();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return TittleContainer(
+      tittle: "Cultivo(s) . . . ",
+      color: Theming.cuaternaryColor,
+      centered: true,
+      child: ListView.builder(
+          controller: ScrollController(),
+          padding: const EdgeInsets.all(1),
+          itemCount: widget.listado!.length,
+          itemBuilder: (BuildContext context, index) {
+            return ValuePanel(
+              fontSize: 10,
+              firstText: "${widget.listado![index]['Estudio']}", // Resultado
+              secondText: "${widget.listado![index]['Fecha_Registro']}", // Resultado
+              thirdText: "${widget.listado![index]['Resultado']}", // Resultado
+              withEditMessage: true,
+              onEdit: (value) {
+                Datos.portapapeles(
+                    context: context,
+                    text: Auxiliares.porFecha(
+                        fechaActual: value, esAbreviado: true));
+              },
+            );
+          }),
+    );
+  }
+}
+
+//
+class RevisionIndicacioness extends StatefulWidget {
+  List? listado = [];
+
+  RevisionIndicacioness({super.key});
+
+  @override
+  State<RevisionIndicacioness> createState() => _RevisionIndicacionessState();
+}
+
+class _RevisionIndicacionessState extends State<RevisionIndicacioness> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    Actividades.consultarAllById(
+        Databases.siteground_database_reghosp,
+        Pendientes.pendientes['consultIndicacionesByIdPrimaryQuery'],
+        Pacientes.ID_Hospitalizacion)
+        .then((onValue) {
+      // Terminal.printExpected(message: onValue.toString());
+      setState(() {
+        widget.listado = onValue;
+      });
+    });
+    super.initState();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return TittleContainer(
+      tittle: "Indicaciones(s) . . . ",
+      color: Theming.cuaternaryColor,
+      centered: true,
+      child: ListView.builder(
+          controller: ScrollController(),
+          padding: const EdgeInsets.all(1),
+          itemCount: widget.listado!.length,
+          itemBuilder: (BuildContext context, index) {
+            return ValuePanel(
+              fontSize: 10,
+              firstText: "${widget.listado![index]['Feca_PEN']}", // Resultado
+              secondText:  "${widget.listado![index]['Pace_Desc_PEN']}", // Resultado
+              withEditMessage: true,
+              onEdit: (value) {
+                Datos.portapapeles(
+                    context: context,
+                    text: Auxiliares.porFecha(
+                        fechaActual: value, esAbreviado: true));
+              },
+            );
+          }),
+    );
   }
 }

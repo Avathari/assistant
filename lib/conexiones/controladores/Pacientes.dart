@@ -1613,6 +1613,44 @@ class Pacientes {
       }
     });
   }
+
+  static List<dynamic>  getPreviosIndicaciones() {
+    List<dynamic> listado = [];
+    //
+    Actividades.consultarAllById(
+        Databases.siteground_database_reghosp,
+        Pendientes.pendientes['consultIndicacionesByIdPrimaryQuery'],
+        Pacientes.ID_Hospitalizacion)
+        .then((onValue) {
+      // Terminal.printExpected(message: onValue.toString());
+      listado = onValue;
+    });
+    return listado;
+  }
+
+  static List getRevisionCultivos() {
+    List listado = [];
+    // ***************************** *****************
+    var newList = Listas.compareOneListWithAnother(
+        Listas.listWithoutRepitedValues(
+          Listas.listFromMapWithOneKey(
+            Pacientes.Paraclinicos!,
+            keySearched: 'Estudio',
+          ),
+        ), Auxiliares.cultivos);
+    //
+    for (var elem in newList) {
+      Pacientes.Paraclinicos!
+          .where((element) => element["Estudio"].contains(elem))
+          .forEach((eacher) {
+            listado.add(eacher);
+      });
+    }
+    // |Terminal.printExpected(message: "listado: ${listado} : ${listado.runtimeType}");
+    // ************** ***************** ***************
+    return listado;
+  }
+
 }
 
 class Heredofamiliares {
@@ -7067,6 +7105,21 @@ class Auxiliares {
       "Bicarbonato Sérico",
       "Fracción Inspiratoria de Oxígeno",
       "Saturación de Oxígeno",
+      // Electrolitos
+      "Sodio Arterial", // Na2+
+      "Potasio Arterial", // K+
+      "Cloro Arterial", // Cl-
+      "Calcio Ionico", // Ca++
+      "Hematocrito Arterial", // HTCart
+      "Glucosa Arterial", // GLUart
+      "Lactato Arterial", // LACart
+      // CO-Oximetria
+      "Hemoglobina Arterial", // tHb
+      "Oxihemoglobina Arterial", // O2Hb
+      "Carboxihemoglobina Arterial", // COHb
+      "Metahemoglobina Arterial", // MetHb
+      "", // HHb
+      "",
     ],
     Categorias[10]: [
       "pH",
@@ -7075,6 +7128,21 @@ class Auxiliares {
       "Bicarbonato Sérico",
       "Fracción Inspiratoria de Oxígeno",
       "Saturación de Oxígeno",
+      // Electrolitos
+      "Sodio Venoso", // Na2+
+      "Potasio Venoso", // K+
+      "Cloro Venoso", // Cl-
+      "Calcio Ionico", // Ca++
+      "Hematocrito Venoso", // HTCart
+      "Glucosa Venoso", // GLUart
+      "Lactato Venoso", // LACart
+      // CO-Oximetria
+      "Hemoglobina Venoso", // tHb
+      "Oxihemoglobina Venoso", // O2Hb
+      "Carboxihemoglobina Venoso", // COHb
+      "Metahemoglobina Venoso", // MetHb
+      "", // HHb
+      "",
     ],
     //
     Categorias[11]: [
@@ -7739,6 +7807,8 @@ class Pendientes {
     "consultByIdPrimaryQuery": "SELECT * FROM pace_pen WHERE ID_Pace = ?",
     "consultDispositivosByIdPrimaryQuery": "SELECT * FROM pace_pen "
         "WHERE ID_Hosp = ? AND Pace_PEN = 'Procedimientos'",
+    "consultIndicacionesByIdPrimaryQuery": "SELECT * FROM pace_pen "
+        "WHERE ID_Hosp = ? AND Pace_PEN = 'Indicaciones'",
     "consultPreviosByIdPrimaryQuery": "SELECT * FROM pace_pen "
         "WHERE ID_Hosp = ? AND Pace_PEN = 'Previos'",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_pen",
