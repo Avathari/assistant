@@ -132,6 +132,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 FloatingActionButton(
+                  heroTag: UniqueKey(),
                   backgroundColor: Theming.terciaryColor,
                   child:
                       const Icon(Icons.menu_open_outlined, color: Colors.grey),
@@ -139,12 +140,14 @@ class _VisualPacientesState extends State<VisualPacientes> {
                 ),
                 const SizedBox(height: 10),
                 FloatingActionButton(
+                  heroTag: UniqueKey(),
                   backgroundColor: Theming.terciaryColor,
                   child: const Icon(Icons.list_alt_sharp, color: Colors.grey),
                   onPressed: () => _key.currentState!.openDrawer(),
                 ),
                 const SizedBox(height: 10),
                 FloatingActionButton(
+                  heroTag: UniqueKey(),
                   backgroundColor: Theming.terciaryColor,
                   child: const Icon(Icons.filter_list, color: Colors.grey),
                   onPressed: () {
@@ -1193,6 +1196,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
   floatingWidgets(BuildContext context) {
     return [
       FloatingActionButton(
+        heroTag: UniqueKey(),
         backgroundColor: Colors.black87,
         foregroundColor: Colors.grey,
         tooltip: 'Vista Previa',
@@ -1214,7 +1218,6 @@ class _VisualPacientesState extends State<VisualPacientes> {
                 child: modalBottomPanel(context),
               );
             }),
-        heroTag: null,
         child: const Icon(
           Icons.scale,
           color: Colors.grey,
@@ -1222,6 +1225,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
       ),
       const SizedBox(height: 10),
       FloatingActionButton(
+        heroTag: UniqueKey(),
         backgroundColor: Colors.black87,
         foregroundColor: Colors.grey,
         tooltip: 'Indicaciones Médicas',
@@ -1236,7 +1240,6 @@ class _VisualPacientesState extends State<VisualPacientes> {
                 },
               )));
         },
-        heroTag: null,
         child: const Icon(
           Icons.line_weight,
           color: Colors.grey,

@@ -998,9 +998,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                 tooltip: "Semiologías",
                 onPressed: () =>
                     Cambios.toNextPage(context, AnalisisRevisorios())),
-            // setState(() {
-            //   widget.actualPage = 20;
-            // })),
+            //
             const SizedBox(width: 25),
             IconButton(
                 splashColor: Theming.terciaryColor,

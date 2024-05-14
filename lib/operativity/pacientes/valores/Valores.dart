@@ -932,8 +932,8 @@ class Valores {
   static double? ferritinaSerica, transferrinaSerica, hierroSerico;
   //
   static String? fechaQuimicas;
-  static double? glucosa, urea, creatinina, acidoUrico, nitrogenoUreico;
-  static double? trigliceridos, colesterolTotal, cHDL, cLDL, cVLDL;
+  static double? glucosa = 0, urea = 0, creatinina = 0, acidoUrico = 0, nitrogenoUreico = 0;
+  static double? trigliceridos = 0, colesterolTotal = 0, cHDL = 0, cLDL = 0, cVLDL = 0;
 
   //
   static String? fechaHepaticos;

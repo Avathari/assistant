@@ -5754,6 +5754,7 @@ class Electrocardiogramas {
   ];
 
   static void fromJson(Map<String, dynamic> json) {
+    //
     try {
       Valores.fechaElectrocardiograma = json['Pace_GAB_EC_Feca'] ?? '';
       Valores.ritmoCardiaco = json['Pace_EC_rit'] ?? '';
@@ -5808,9 +5809,6 @@ class Electrocardiogramas {
       // Valores.ima = json['Pace_GAB_IMG'];
     } on Exception catch (e) {
       Terminal.printExpected(message: "ERROR - $e");
-    } finally {
-      // Terminal.printExpected(
-      //     message: "Electrocardiograma seleccionados en Finally $json");
     }
   }
 
@@ -7012,7 +7010,7 @@ class Auxiliares {
     "Perfil Hormonal", // 23
     "Cuantificación de Vitaminas",
     "Otros", // 25
-    "Citoquímico de Líquido Cefalorraquídeo",
+    "Líquido de Ascitis", // 26
     "Líquido de Pleural", // 27 : Analítica de Líquido Pleural
     "Aspirado de Médula Ósea",
     "Western Blot HIV-1, HIV-2", // 29
@@ -7035,10 +7033,10 @@ class Auxiliares {
       "Monocitos Totales",
       "Eosinófilos Totales",
       "Basófilos Totales",
-      "Bandas Totales"
+      "Bandas Totales",
           "Volumen Plaquetar Medio",
       "Ancho de Distribución Plaquetaria", // 17
-      "Reticulocitos",
+      "Reticulocitos", // % _
       "",
     ],
     Categorias[1]: [
@@ -7501,10 +7499,11 @@ class Auxiliares {
     Categorias[22]: ["pg/mL", "UI/mL", "IU/mL", "mg/dL", ""],
     Categorias[23]: ["", "pg/mL", "ng/dL", "ng/mL", "mUI/mL"], // Hormonales
     Categorias[24]: ["", "ng/dL", "ng/mL", ""],
-    Categorias[25]: ["%", "", "", "", ""],
+    Categorias[25]: ["%", "ng/dL", "mg/dL", "UI/L", ""],
     //
-    Categorias[26]: ["%", "", ""],
-    Categorias[27]: ["", "mg/dL", "U/L", "%"],
+    Categorias[26]: ["", "mg/dL", "U/L", "%", "g/dL"],
+    Categorias[27]: ["", "mg/dL", "U/L", "%", "g/dL"],
+    //
     Categorias[28]: ["", ""],
     Categorias[29]: ["", ""],
   };

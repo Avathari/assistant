@@ -1,7 +1,7 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
-import 'package:assistant/operativity/pacientes/valores/Valorados/pleurometrias.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/ascitometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
@@ -12,27 +12,27 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-class LiquidoPleural extends StatefulWidget {
-  const LiquidoPleural({Key? key}) : super(key: key);
+class LiquidoAscitis extends StatefulWidget {
+  const LiquidoAscitis({Key? key}) : super(key: key);
 
   @override
-  State<LiquidoPleural> createState() => _LiquidoPleuralState();
+  State<LiquidoAscitis> createState() => _LiquidoAscitisState();
 }
 
-class _LiquidoPleuralState extends State<LiquidoPleural> {
-  static var index = 27; // LiquidoPleural
+class _LiquidoAscitisState extends State<LiquidoAscitis> {
+  static var index = 26; // LiquidoAscitis
 
   @override
   void initState() {
     final f = DateFormat('yyyy-MM-dd HH:mm:ss');
     textDateEstudyController.text = f.format(DateTime.now());
     // ************************************************
-    textGlucosaResultController.text = "120";
+    textGlucosaResultController.text = "0";
     //
-    textDHLResultController.text = "";
-    textProteinasTotalesResultController.text = "";
+    textDHLResultController.text = "0";
+    textProteinasTotalesResultController.text = "0";
     //
-    textFosfatasaAlcalinaResultController.text = "68";
+    textFosfatasaAlcalinaResultController.text = "";
     textAspectoResultController.text = "32";
     textColorResultController.text = "No se Observan";
     textLeucocitosResultController .text = "No se Observan";
@@ -72,10 +72,27 @@ class _LiquidoPleuralState extends State<LiquidoPleural> {
           children: [
             Expanded(child: Column(children: [
               ValuePanel(
+                firstText: "Glu-",
+                secondText: Valores.glucosa!.toStringAsFixed(2),
+                thirdText: "mg/dL",
+              ),
+              CrossLine(),
+              ValuePanel(
+                firstText: "Coles-",
+                secondText: Valores.colesterolTotal!.toStringAsFixed(2) ?? "0",
+                thirdText: "mg/dL",
+              ),
+              ValuePanel(
                 firstText: "Prot-",
-                secondText: Valores.proteinasTotales!.toStringAsFixed(2),
+                secondText: Valores.proteinasTotales!.toStringAsFixed(2) ?? "0",
                 thirdText: "g/dL",
               ),
+              ValuePanel(
+                firstText: "Alb-",
+                secondText: Valores.albuminaSerica!.toStringAsFixed(2) ?? "0",
+                thirdText: "g/dL",
+              ),
+              CrossLine(),
               ValuePanel(
                 firstText: "DHL",
                 secondText: Valores.deshidrogenasaLactica!.toStringAsFixed(2),
@@ -83,8 +100,13 @@ class _LiquidoPleuralState extends State<LiquidoPleural> {
               ),
               CrossLine(),
               ValuePanel(
-                firstText: Valores.fechaHepaticos!.toString(),
-                secondText: "",
+                firstText: "" , // Valores.fechaHepaticos!.toString(),
+                secondText: "Quimicas",
+                thirdText: Valores.fechaQuimicas!.toString(),
+              ),
+              ValuePanel(
+                firstText: "" , // Valores.fechaHepaticos!.toString(),
+                secondText: "Hepáticos",
                 thirdText: Valores.fechaHepaticos!.toString(),
               ),
             ],)),
@@ -100,6 +122,13 @@ class _LiquidoPleuralState extends State<LiquidoPleural> {
                       inputFormat: MaskTextInputFormatter(),
                       labelEditText: 'Glucosa ($unidadMedidaGlucosa)',
                       numOfLines: 1,
+                      onChange: (String value) {
+                        setState(() {
+                          if (textGlucosaResultController.text.isNotEmpty){
+                            Ascitometrias.glucosaAscitis = double.parse(textGlucosaResultController.text);
+                          }
+                        });
+                      },
                     ),
                     EditTextArea(
                       textController: textDHLResultController,
@@ -110,7 +139,7 @@ class _LiquidoPleuralState extends State<LiquidoPleural> {
                       onChange: (String value) {
                         setState(() {
                           if (textDHLResultController.text.isNotEmpty){
-                            Pleurometrias.dhlPleural = double.parse(textDHLResultController.text);
+                            Ascitometrias.dhlAscital = double.parse(textDHLResultController.text);
                           }
                         });
                       },
@@ -124,7 +153,7 @@ class _LiquidoPleuralState extends State<LiquidoPleural> {
                       onChange: (String value) {
                         setState(() {
                           if (textProteinasTotalesResultController.text.isNotEmpty){
-                            Pleurometrias.proteinasPleural = double.parse(textProteinasTotalesResultController.text);
+                            Ascitometrias.proteinasAscital = double.parse(textProteinasTotalesResultController.text);
                           }
                         });
                       },
@@ -138,7 +167,7 @@ class _LiquidoPleuralState extends State<LiquidoPleural> {
                       onChange: (String value) {
                         setState(() {
                           if (textAlbuminaResultController.text.isNotEmpty){
-                            Pleurometrias.proteinasPleural = double.parse(textAlbuminaResultController.text);
+                            Ascitometrias.albuminaAscital = double.parse(textAlbuminaResultController.text);
                           }
                         });
                       },
@@ -266,13 +295,39 @@ class _LiquidoPleuralState extends State<LiquidoPleural> {
             ),
             Expanded(child: Column(children: [
               ValuePanel(
-                firstText: "DHL-S/DHL-LP",
-                secondText: Pleurometrias.relacionDHL.toStringAsFixed(2),
+                firstText: "Alb-A", //
+                secondText: Ascitometrias.albuminaAscital!.toStringAsFixed(2),
+                thirdText: "",
+              ),
+              ValuePanel(
+                firstText: "DHL-A", //
+                secondText: Ascitometrias.dhlAscital!.toStringAsFixed(2),
+                thirdText: "",
+              ),
+              ValuePanel(
+                firstText: "Prot-A",
+                secondText: Ascitometrias.proteinasAscital!.toStringAsFixed(2),
+                thirdText: "",
+              ),
+              CrossLine(),
+              ValuePanel(
+                firstText: "ΔAlb", // GASA
+                secondText: Ascitometrias.relacionAlbumina.toStringAsFixed(2),
+                thirdText: "",
+              ),
+              ValuePanel(
+                firstText: "DHL Ratio",
+                secondText: Ascitometrias.relacionDHL.toStringAsFixed(2),
                 thirdText: "",
               ),
               ValuePanel(
                 firstText: "PT-S/PT-LP",
-                secondText: Pleurometrias.relacionProteinas.toStringAsFixed(2),
+                secondText: Ascitometrias.relacionProteinas.toStringAsFixed(2),
+                thirdText: "",
+              ),
+              ValuePanel(
+                firstText: "ΔGlu-", //
+                secondText: Ascitometrias.relacionGlucosa.toStringAsFixed(2),
                 thirdText: "",
               ),
             ],)),

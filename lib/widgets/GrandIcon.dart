@@ -38,7 +38,7 @@ class _GrandIconState extends State<GrandIcon> {
         },
         onTap:  () {
           SystemSound.play(SystemSoundType.click);
-          widget.onPress();
+          widget.onPress!();
         },
         child: Icon(size: widget.size!, widget.iconData, color: widget.iconColor),
       ),

@@ -428,8 +428,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
       onTap: () {
         operationActivity = false;
         // ***************** ************* *****
-        elementSelected = data[index];
-        Pacientes.Imagenologias = data[index];
+        elementSelected = Pacientes.Imagenologias = data[index];
         carouselController.jumpToPage(1);
         // ***************** ************* *****
         updateElement(data[index]);

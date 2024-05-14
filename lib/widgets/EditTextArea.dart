@@ -88,10 +88,13 @@ class _EditTextAreaState extends State<EditTextArea> {
               textAlign: TextAlign.justify,
               decoration: InputDecoration(
                 prefix: widget.prefixIcon == true
-                    ? Icon(
-                        widget.iconData,
-                        color: widget.iconColor,
-                      )
+                    ? Padding(
+                      padding: const EdgeInsets.only(right: 7.0),
+                      child: Icon(
+                          widget.iconData,
+                          color: widget.iconColor,
+                        ),
+                    )
                     : null,
                 helperStyle: const TextStyle(
                   color: Colors.white,
@@ -101,7 +104,7 @@ class _EditTextAreaState extends State<EditTextArea> {
                   fontSize: 10,
                   color: Colors.white,
                 ),
-                contentPadding: const EdgeInsets.all(20),
+                contentPadding: const EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 10),
                 enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.white, width: 0.5),
                     borderRadius: BorderRadius.all(Radius.circular(20))),

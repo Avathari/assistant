@@ -176,19 +176,23 @@ class Paneles {
         color: isMobile(context) ? Theming.cuaternaryColor : Colors.black,
         tittle: "Crónico(s) ",
         child: ListView.separated(
-            itemCount: snapshot.data![index].patologicos.length,
-            itemBuilder: (BuildContext context, ind) {
-              return ElevatedButton(
-                onPressed: () {
-                  Pacientes.Diagnosticos = snapshot.data![index].patologicos;
-                },
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-                child: Text(
-                  snapshot.data![index].patologicos[ind]['Pace_APP_DEG'],
-                  style: Styles.textSyleGrowth(fontSize: 8),
-                ),
-              );
-            }, separatorBuilder: (BuildContext context, int index) { return const SizedBox(height: 10); },));
+          itemCount: snapshot.data![index].patologicos.length,
+          itemBuilder: (BuildContext context, ind) {
+            return ElevatedButton(
+              onPressed: () {
+                Pacientes.Diagnosticos = snapshot.data![index].patologicos;
+              },
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+              child: Text(
+                snapshot.data![index].patologicos[ind]['Pace_APP_DEG'],
+                style: Styles.textSyleGrowth(fontSize: 8),
+              ),
+            );
+          },
+          separatorBuilder: (BuildContext context, int index) {
+            return const SizedBox(height: 10);
+          },
+        ));
   }
 
   static Widget diagnosticosPanel(
@@ -228,16 +232,19 @@ class Paneles {
               child: ListView.builder(
                   itemCount: snapshot.data![index].pendientes.length,
                   itemBuilder: (BuildContext context, int ind) {
-                    return ElevatedButton(
-                      onPressed: () {
-                        Pacientes.Pendiente = snapshot.data![index].pendientes;
-                      },
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-                      child: Text(
-                        snapshot.data![index].pendientes[ind]['Pace_Desc_PEN'],
-                        style: Styles.textSyleGrowth(fontSize: 8),
-                      ),
-                    );
+                    if (snapshot.data![index].pendientes[ind]['Pace_PEN'] !='Procedimientos')  {
+                      return ElevatedButton(
+                        onPressed: () {
+                          Pacientes.Pendiente = snapshot.data![index].pendientes;
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black),
+                        child: Text(
+                          snapshot.data![index].pendientes[ind]['Pace_Desc_PEN'],
+                          style: Styles.textSyleGrowth(fontSize: 8),
+                        ),
+                      );
+                    }
                   })),
         ],
       ),
@@ -343,16 +350,16 @@ class Paneles {
                   foundedItems[index].idHospitalizado =
                       foundedItems[index].hospitalizedData['ID_Hosp'];
               // Agregarr a Pacientes.nombreCompleto sus variables correspondientes . . .
-              Pacientes.nombreCompleto =
-                  foundedItems![index].nombreCompleto;
+              Pacientes.nombreCompleto = foundedItems![index].nombreCompleto;
               // ******************* * * * * * * *** *
-              Cambios.toNextPage(context,
+              Cambios.toNextPage(
+                  context,
                   GestionPendiente(
                       withReturn: true,
                       actualSidePage: OperacionesPendiente(
                         withReturn: true,
                         operationActivity: Constantes.Register,
-                  )));
+                      )));
             }), // Pendientes
         CircleIcon(
             radios: 25,
@@ -400,7 +407,8 @@ class Paneles {
 
                   Datos.portapapeles(
                       context: context,
-                      text: Auxiliares.porFecha(fechaActual: list[ind], esAbreviado: true));
+                      text: Auxiliares.porFecha(
+                          fechaActual: list[ind], esAbreviado: true));
                 },
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
                 child: Text(
@@ -546,9 +554,7 @@ class Paneles {
     // VARIABLES ************************
 
     // RETORNO *********************************
-    return Container(
-
-    );
+    return Container();
   }
 
   static HospitalaryStadystics(BuildContext context, List? foundedItems) {
@@ -649,21 +655,22 @@ class Paneles {
     List<Widget> widgets = [];
     int ID_Cama = 0;
 
-    Terminal.printWarning(
-        message:
-            "PENDIENTES : ${foundedItems![0].hospitalizedData.keys.toString()}");
+    // Terminal.printWarning(message: "PENDIENTES : ${foundedItems![0].hospitalizedData.keys.toString()}");
 
-    for (int index = 0; index < foundedItems.length; index++) {
-      ID_Cama = int.parse(foundedItems[index].hospitalizedData['Id_Cama']);
+    for (int index = 0; index < foundedItems!.length; index++) {
+      ID_Cama = int.parse(
+          foundedItems[index].hospitalizedData['Id_Cama'] ?? "0");
       //
       Terminal.printExpected(message: "${foundedItems![index].pendientes}");
 
       List<Widget> pendientes = [];
       for (var pendiente in foundedItems![index].pendientes) {
-        pendientes.add(Text(
-          pendiente['Pace_Desc_PEN'],
-          style: Styles.textSyleGrowth(fontSize: 8),
-        ));
+        if (pendiente['Pace_PEN'] !='Procedimientos') {
+          pendientes.add(Text(
+            pendiente['Pace_Desc_PEN'],
+            style: Styles.textSyleGrowth(fontSize: 8),
+          ));
+        }
       }
       widgets.add(TittleContainer(
           tittle: "$ID_Cama",
@@ -673,9 +680,12 @@ class Paneles {
     }
     return TittleContainer(
       tittle: "Pendientes Recabados . . . ",
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: widgets,
+      child: SingleChildScrollView(
+        controller: ScrollController(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: widgets,
+        ),
       ),
     );
   }

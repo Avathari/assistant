@@ -28,16 +28,10 @@ class _ParaclinicosState extends State<Paraclinicos> {
         Expanded(
           flex: 8,
           child: Container(
-            padding: const EdgeInsets.all(5.0),
-            margin: const EdgeInsets.all(5.0),
+            // padding: const EdgeInsets.all(5.0),
+            // margin: const EdgeInsets.all(5.0),
             decoration: ContainerDecoration.roundedDecoration(colorBackground: Colors.black),
-            child: ListView(
-              controller: ScrollController(),
-              itemExtent: 150,
-              // gridDelegate: GridViewTools.gridDelegate(
-              //   crossAxisCount: isMobile(context) ? 1 : 2,
-              //   mainAxisExtent: 150,
-              // ),
+            child: Column(
               children: [
                 Expanded(
                   child: Padding(

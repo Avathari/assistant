@@ -4,7 +4,7 @@ import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/operativity/pacientes/valores/semiologia/semiotica.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
-import 'package:assistant/screens/pacientes/intensiva/analisis/ventilatorios.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/ventilaciones.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
@@ -1491,16 +1491,3 @@ class _GestionVentilacionesState extends State<GestionVentilaciones> {
   var searchTextController = TextEditingController();
 }
 
-class AnalisisVentilatorio extends StatefulWidget {
-  const AnalisisVentilatorio({Key? key}) : super(key: key);
-
-  @override
-  State<AnalisisVentilatorio> createState() => _AnalisisVentilatorioState();
-}
-
-class _AnalisisVentilatorioState extends State<AnalisisVentilatorio> {
-  @override
-  Widget build(BuildContext context) {
-    return Ventilatorios();
-  }
-}

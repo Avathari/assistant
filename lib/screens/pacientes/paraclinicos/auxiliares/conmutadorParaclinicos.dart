@@ -12,6 +12,7 @@ import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/inmun
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/ionesUrinarios.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/linfocitos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/lipidicos.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/liquidoAscitis.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/liquidoCefalorraquideo.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/liquidoDialisis.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/liquidoPleural.dart';
@@ -121,8 +122,11 @@ class _ConmutadorParaclinicosState extends State<ConmutadorParaclinicos> {
       case "Perfil Hormonal":
         return const Hormonales();
 
+      case "Líquido de Ascitis":
+        return const LiquidoAscitis();
       case "Líquido de Pleural":
         return const LiquidoPleural();
+
       case "Inmunológicos":
         return const Inmunologicos();
       case "Western Blot HIV-1, HIV-2":

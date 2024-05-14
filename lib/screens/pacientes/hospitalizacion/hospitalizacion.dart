@@ -775,7 +775,6 @@ class _OperacionesHospitalizacionesState
                       ]);
                       //
                       Pendientes.registrarDispositivos(context);
-                      Pendientes.registrarDispositivos(context);
                       //
                       Expedientes.registrarRegistro();
                     }).whenComplete(() => onClose(context)));
