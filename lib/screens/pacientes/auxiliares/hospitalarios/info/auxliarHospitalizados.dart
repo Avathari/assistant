@@ -338,7 +338,7 @@ class Paneles {
               }
 
               //
-              Cambios.toNextActivity(context, chyld: const Generales());
+              Cambios.toNextActivity(context, chyld: Generales());
             }), // Signos Vitales
         CircleIcon(
             radios: 25,

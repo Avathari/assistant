@@ -3,6 +3,7 @@ import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/semiologia/semiotica.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
+import 'package:assistant/screens/pacientes/auxiliares/revisiones/auxiliares/infusiones.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/generales.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/semiologicos.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/terapias.dart';
@@ -945,7 +946,7 @@ class _AnalisisRevisoriosState extends State<AnalisisRevisorios> {
               Expanded(
                 flex: _activePage == 0 ? 10 : 15,
                 child: this._activePage == 0
-                    ? _Infusiones(context)
+                    ? Infusiones()
                     : Row(
                     children: [
                       Expanded(child: _primerRevision(context)),
@@ -2839,7 +2840,7 @@ class _AnalisisRevisoriosState extends State<AnalisisRevisorios> {
               labelButton: "Generales . . . ",
               onPress: () => Cambios.toNextActivity(context,
                   tittle: 'Generales diarios del Paciente . . . ',
-                  chyld: const Generales())),
+                  chyld: Generales())),
           CrossLine(height: 15, isHorizontal: false, thickness: 2),
           GrandIcon(
               iconData: Icons.drag_indicator_sharp,
@@ -2854,47 +2855,48 @@ class _AnalisisRevisoriosState extends State<AnalisisRevisorios> {
         ],
       );
 
-  _Infusiones(BuildContext context) => TittleContainer(
-        tittle: 'Infusiones',
-        child: Column(
-          children: [
-            Expanded(
-              child: ValuePanel(
-                  heigth: 60,
-                  firstText: 'Noradrenalina',
-                  secondText:
-                      Vasoactivos.getNoradrenalina().toStringAsFixed(2) +
-                          " mcg/Kg/min",
-                  withEditMessage: true,
-                  onEdit: (value) {
-                    Operadores.editActivity(
-                        context: context,
-                        tittle: "Editar . . . ",
-                        message: "¿Noradrenalina (mL/Hr)? . . . ",
-                        onAcept: (value) {
-                          // Terminal.printSuccess(
-                          //     message:
-                          //         "recieve $value");
-                          setState(() {
-                            Vasoactivos.noradrenalina = double.parse(value);
-                            Navigator.of(context).pop();
-                          });
-                        });
-                  }),
-            ),
-            Expanded(
-              child: ValuePanel(
-                heigth: 60,
-                firstText: 'Midazolam',
-              ),
-            ),
-            Expanded(
-              child: ValuePanel(
-                heigth: 60,
-                firstText: 'Buprenorfina',
-              ),
-            ),
-          ],
-        ),
-      );
+  // _Infusiones(BuildContext context) => TittleContainer(
+  //   padding: 5.0,
+  //       tittle: 'Infusiones',
+  //       child: Column(
+  //         children: [
+  //           Expanded(
+  //             child: ValuePanel(
+  //                 heigth: 60,
+  //                 firstText: 'Noradrenalina',
+  //                 secondText:
+  //                     Vasoactivos.getNoradrenalina().toStringAsFixed(2) +
+  //                         " mcg/Kg/min",
+  //                 withEditMessage: true,
+  //                 onEdit: (value) {
+  //                   Operadores.editActivity(
+  //                       context: context,
+  //                       tittle: "Editar . . . ",
+  //                       message: "¿Noradrenalina (mL/Hr)? . . . ",
+  //                       onAcept: (value) {
+  //                         // Terminal.printSuccess(
+  //                         //     message:
+  //                         //         "recieve $value");
+  //                         setState(() {
+  //                           Vasoactivos.noradrenalina = double.parse(value);
+  //                           Navigator.of(context).pop();
+  //                         });
+  //                       });
+  //                 }),
+  //           ),
+  //           Expanded(
+  //             child: ValuePanel(
+  //               heigth: 60,
+  //               firstText: 'Midazolam',
+  //             ),
+  //           ),
+  //           Expanded(
+  //             child: ValuePanel(
+  //               heigth: 60,
+  //               firstText: 'Buprenorfina',
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //     );
 }

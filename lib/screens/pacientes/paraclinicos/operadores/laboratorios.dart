@@ -94,32 +94,33 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
         ),
         foregroundColor: Colors.white,
         backgroundColor: Theming.primaryColor,
-        title: AppBarText(
-          tittle
-        ),
+        title: AppBarText(tittle),
         actions: isMobile(context) || isTablet(context)
             ? <Widget>[
-                GrandIcon(
-                  iconData: Icons.dataset_linked_outlined,
-                  labelButton: "Registro de paraclínicos",
-                  onPress: () {
-                    carouselController.jumpToPage(0);
-                  },
-                ),
-                GrandIcon(
-                  iconData: Icons.browser_updated,
-                  labelButton: "Gestion del Registro",
-                  onPress: () {
-                    carouselController.jumpToPage(1);
-                  },
-                ),
-                GrandIcon(
-                  iconData: Icons.replay_outlined,
-                  labelButton: Sentences.reload,
-                  onPress: () {
-                    reiniciar();
-                  },
-                ),
+                if (!isMobile(context))
+                  GrandIcon(
+                    iconData: Icons.dataset_linked_outlined,
+                    labelButton: "Registro de paraclínicos",
+                    onPress: () {
+                      carouselController.jumpToPage(0);
+                    },
+                  ),
+                if (!isMobile(context))
+                  GrandIcon(
+                    iconData: Icons.browser_updated,
+                    labelButton: "Gestion del Registro",
+                    onPress: () {
+                      carouselController.jumpToPage(1);
+                    },
+                  ),
+                if (!isMobile(context))
+                  GrandIcon(
+                    iconData: Icons.replay_outlined,
+                    labelButton: Sentences.reload,
+                    onPress: () {
+                      reiniciar();
+                    },
+                  ),
                 // GrandIcon(
                 //   iconData: Icons.photo_camera_back_outlined,
                 //   labelButton: 'Imagen del Electrocardiograma',
@@ -195,44 +196,46 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
         decoration: ContainerDecoration.roundedDecoration(),
         child: Column(
           children: [
-            if (isMobile(context) || isTablet(context)) Container(
-              padding: const EdgeInsets.all(5),
-              margin: const EdgeInsets.all(5),
-              decoration: ContainerDecoration.roundedDecoration(),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: GrandButton(
-                        weigth: 100,
-                        labelButton: "Registro de paraclínicos",
-                        onPress: () {
-                          carouselController.jumpToPage(0);
-                        }),
-                  ),
-                  Expanded(
-                    child: GrandButton(
-                        weigth: 100,
-                        labelButton: "Gestion del Registro",
-                        onPress: () {
-                          carouselController.jumpToPage(1);
-                        }),
-                  ),
-                  // Expanded(
-                  //   child: GrandButton(
-                  //       weigth: 100,
-                  //       labelButton: "Imagen del Registro",
-                  //       onPress: () {
-                  //         carouselController.jumpToPage(2);
-                  //       }),
-                  // ),
-                ],
+            if (isMobile(context) || isTablet(context))
+              Container(
+                padding: const EdgeInsets.all(5),
+                margin: const EdgeInsets.all(5),
+                decoration: ContainerDecoration.roundedDecoration(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: GrandButton(
+                          weigth: 100,
+                          labelButton: "Registro de paraclínicos",
+                          onPress: () {
+                            carouselController.jumpToPage(0);
+                          }),
+                    ),
+                    Expanded(
+                      child: GrandButton(
+                          weigth: 100,
+                          labelButton: "Gestion del Registro",
+                          onPress: () {
+                            carouselController.jumpToPage(1);
+                          }),
+                    ),
+                    // Expanded(
+                    //   child: GrandButton(
+                    //       weigth: 100,
+                    //       labelButton: "Imagen del Registro",
+                    //       onPress: () {
+                    //         carouselController.jumpToPage(2);
+                    //       }),
+                    // ),
+                  ],
+                ),
               ),
-            ),
             Expanded(
-              flex: 8,
-              child: isMobile(context) || isTablet(context) ? mobileView() : desktopView()
-            ),
+                flex: 8,
+                child: isMobile(context) || isTablet(context)
+                    ? mobileView()
+                    : desktopView()),
           ],
         ),
       ),
@@ -271,8 +274,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                           iniciar();
                           Operadores.selectOptionsActivity(
                               context: context,
-                              options:
-                              Listas.listWithoutRepitedValues(
+                              options: Listas.listWithoutRepitedValues(
                                 Listas.listFromMapWithOneKey(
                                   values!,
                                   keySearched: 'Fecha_Registro',
@@ -288,7 +290,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                         },
                         onChange: (value) {
                           setState(
-                                () {
+                            () {
                               _runFilterSearch(value);
                             },
                           );
@@ -297,43 +299,41 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                     ),
                     Expanded(
                         child: GrandIcon(
-                          iconData: Icons.currency_exchange,
-                          onPress: () {
-                            Operadores.editActivity(
-                                context: context,
-                                tittle: "Editar . . . ",
-                                message: "¿Nueva fecha? . . . ",
-                                onAcept: (value) {
-                                  if (textDateController
-                                      .text.isNotEmpty) {
-                                    // Terminal.printSuccess(
-                                    //     message:
-                                    //     "textDateController.text ${textDateController.text}");
-                                    Auxiliares.cambiarFecha(
-                                        fechaPrevia:
-                                        textDateController.text,
+                      iconData: Icons.currency_exchange,
+                      onPress: () {
+                        Operadores.editActivity(
+                            context: context,
+                            tittle: "Editar . . . ",
+                            message: "¿Nueva fecha? . . . ",
+                            onAcept: (value) {
+                              if (textDateController.text.isNotEmpty) {
+                                // Terminal.printSuccess(
+                                //     message:
+                                //     "textDateController.text ${textDateController.text}");
+                                Auxiliares.cambiarFecha(
+                                        fechaPrevia: textDateController.text,
                                         fechaNueva: value)
-                                        .whenComplete(() {
-                                      textDateController.text = value;
-                                      Navigator.of(context).pop();
-                                      reiniciar();
-                                    });
-                                  } else {
-                                    Navigator.of(context).pop();
-                                    Operadores.alertActivity(
-                                        context: context,
-                                        tittle: 'Sin Fecha Asignada',
-                                        message:
-                                        "No se introdujo fecha para el cambio . . . ");
-                                  }
+                                    .whenComplete(() {
+                                  textDateController.text = value;
+                                  Navigator.of(context).pop();
+                                  reiniciar();
                                 });
-                          },
-                        ))
+                              } else {
+                                Navigator.of(context).pop();
+                                Operadores.alertActivity(
+                                    context: context,
+                                    tittle: 'Sin Fecha Asignada',
+                                    message:
+                                        "No se introdujo fecha para el cambio . . . ");
+                              }
+                            });
+                      },
+                    ))
                   ],
                 ),
               ),
               Expanded(
-                flex: isMobile(context) ? 14: 10,
+                flex: isMobile(context) ? 14 : 10,
                 child: Row(
                   children: [
                     Expanded(
@@ -345,28 +345,26 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                             if (snapshot.hasError) print(snapshot.error);
                             return snapshot.hasData
                                 ? GridView.builder(
-                                padding: const EdgeInsets.all(8.0),
-                                gridDelegate:
-                                GridViewTools.gridDelegate(
-                                    crossAxisCount:
-                                    isMobile(context) ? 1 : 3,
-                                    mainAxisExtent: 150),
-                                shrinkWrap: true,
-                                itemCount: snapshot.data == null
-                                    ? 0
-                                    : snapshot.data.length,
-                                itemBuilder: (context, posicion) {
-                                  return itemSelected(
-                                      context: context,
-                                      data: snapshot.data,
-                                      index: posicion);
-                                })
+                                    padding: const EdgeInsets.all(8.0),
+                                    gridDelegate: GridViewTools.gridDelegate(
+                                        crossAxisCount:
+                                            isMobile(context) ? 1 : 3,
+                                        mainAxisExtent: 150),
+                                    shrinkWrap: true,
+                                    itemCount: snapshot.data == null
+                                        ? 0
+                                        : snapshot.data.length,
+                                    itemBuilder: (context, posicion) {
+                                      return itemSelected(
+                                          context: context,
+                                          data: snapshot.data,
+                                          index: posicion);
+                                    })
                                 : Container();
                           }),
                     ),
                     Expanded(
-                        flex: isMobile(context) ? 2 : 1,
-                        child: lateralBar())
+                        flex: isMobile(context) ? 2 : 1, child: lateralBar())
                   ],
                 ),
               ),
@@ -425,8 +423,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                             iniciar();
                             Operadores.selectOptionsActivity(
                                 context: context,
-                                options:
-                                Listas.listWithoutRepitedValues(
+                                options: Listas.listWithoutRepitedValues(
                                   Listas.listFromMapWithOneKey(
                                     values!,
                                     keySearched: 'Fecha_Registro',
@@ -442,7 +439,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                           },
                           onChange: (value) {
                             setState(
-                                  () {
+                              () {
                                 _runFilterSearch(value);
                               },
                             );
@@ -451,43 +448,41 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                       ),
                       Expanded(
                           child: GrandIcon(
-                            iconData: Icons.currency_exchange,
-                            onPress: () {
-                              Operadores.editActivity(
-                                  context: context,
-                                  tittle: "Editar . . . ",
-                                  message: "¿Nueva fecha? . . . ",
-                                  onAcept: (value) {
-                                    if (textDateController
-                                        .text.isNotEmpty) {
-                                      // Terminal.printSuccess(
-                                      //     message:
-                                      //     "textDateController.text ${textDateController.text}");
-                                      Auxiliares.cambiarFecha(
-                                          fechaPrevia:
-                                          textDateController.text,
+                        iconData: Icons.currency_exchange,
+                        onPress: () {
+                          Operadores.editActivity(
+                              context: context,
+                              tittle: "Editar . . . ",
+                              message: "¿Nueva fecha? . . . ",
+                              onAcept: (value) {
+                                if (textDateController.text.isNotEmpty) {
+                                  // Terminal.printSuccess(
+                                  //     message:
+                                  //     "textDateController.text ${textDateController.text}");
+                                  Auxiliares.cambiarFecha(
+                                          fechaPrevia: textDateController.text,
                                           fechaNueva: value)
-                                          .whenComplete(() {
-                                        textDateController.text = value;
-                                        Navigator.of(context).pop();
-                                        reiniciar();
-                                      });
-                                    } else {
-                                      Navigator.of(context).pop();
-                                      Operadores.alertActivity(
-                                          context: context,
-                                          tittle: 'Sin Fecha Asignada',
-                                          message:
-                                          "No se introdujo fecha para el cambio . . . ");
-                                    }
+                                      .whenComplete(() {
+                                    textDateController.text = value;
+                                    Navigator.of(context).pop();
+                                    reiniciar();
                                   });
-                            },
-                          ))
+                                } else {
+                                  Navigator.of(context).pop();
+                                  Operadores.alertActivity(
+                                      context: context,
+                                      tittle: 'Sin Fecha Asignada',
+                                      message:
+                                          "No se introdujo fecha para el cambio . . . ");
+                                }
+                              });
+                        },
+                      ))
                     ],
                   ),
                 ),
                 Expanded(
-                  flex: isMobile(context) ? 14: 10,
+                  flex: isMobile(context) ? 14 : 10,
                   child: Row(
                     children: [
                       Expanded(
@@ -499,28 +494,26 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                               if (snapshot.hasError) print(snapshot.error);
                               return snapshot.hasData
                                   ? GridView.builder(
-                                  padding: const EdgeInsets.all(8.0),
-                                  gridDelegate:
-                                  GridViewTools.gridDelegate(
-                                      crossAxisCount:
-                                      isMobile(context) ? 1 : 3,
-                                      mainAxisExtent: 150),
-                                  shrinkWrap: true,
-                                  itemCount: snapshot.data == null
-                                      ? 0
-                                      : snapshot.data.length,
-                                  itemBuilder: (context, posicion) {
-                                    return itemSelected(
-                                        context: context,
-                                        data: snapshot.data,
-                                        index: posicion);
-                                  })
+                                      padding: const EdgeInsets.all(8.0),
+                                      gridDelegate: GridViewTools.gridDelegate(
+                                          crossAxisCount:
+                                              isMobile(context) ? 1 : 3,
+                                          mainAxisExtent: 150),
+                                      shrinkWrap: true,
+                                      itemCount: snapshot.data == null
+                                          ? 0
+                                          : snapshot.data.length,
+                                      itemBuilder: (context, posicion) {
+                                        return itemSelected(
+                                            context: context,
+                                            data: snapshot.data,
+                                            index: posicion);
+                                      })
                                   : Container();
                             }),
                       ),
                       Expanded(
-                          flex: isMobile(context) ? 2 : 1,
-                          child: lateralBar())
+                          flex: isMobile(context) ? 2 : 1, child: lateralBar())
                     ],
                   ),
                 ),
@@ -528,13 +521,17 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
             ),
           ),
         ),
-        Expanded(child: Container(padding: const EdgeInsets.all(8.0), margin: const EdgeInsets.all(8.0),
-            decoration: ContainerDecoration.roundedDecoration(),child: operationScreen())),
+        Expanded(
+            child: Container(
+                padding: const EdgeInsets.all(8.0),
+                margin: const EdgeInsets.all(8.0),
+                decoration: ContainerDecoration.roundedDecoration(),
+                child: operationScreen())),
       ],
     );
   }
 
- // OPERACIONES DE LA INTERFAZ ****** ************ ************
+  // OPERACIONES DE LA INTERFAZ ****** ************ ************
   void initAllElement() {
     setState(() {
       operationActivity = true;
@@ -807,8 +804,8 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                       width: isMobile(context)
                           ? 150
                           : isTabletAndDesktop(context)
-                          ? 190
-                          : 220,
+                              ? 190
+                              : 220,
                       isRow: false,
                       tittle: "Tipo de Estudio",
                       initialValue: tipoEstudioValue!,
@@ -831,39 +828,47 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                 ),
                 Expanded(
                     child: GrandIcon(
-                      labelButton: "Agregar por Categoría",
-                      iconData: Icons.list_alt,
-                      onPress: () {
-                        Operadores.selectOptionsActivity(
-                            context: context,
-                            tittle: 'Seleccione un Tipo de Estudio',
-                            options: Auxiliares.Categorias,
-                            onClose: (value) {
-                              setState(() {
-                                tipoEstudioValue = value;
-                                // *************** *********** **************
-                                // Actualización del Indice
-                                // *************** *********** **************
-                                index = Auxiliares.Categorias.indexOf(value);
-                                // *************** *********** **************
-                                estudioValue = Auxiliares
-                                    .Laboratorios[Auxiliares.Categorias[index]][0];
-                                unidadMedidaValue = Auxiliares
-                                    .Medidas[Auxiliares.Categorias[index]][0];
-                                // *************** *********** **************
-                                Navigator.of(context).pop();
-                              });
-                              // Operadores.openDialog(
-                              //     context: context,
-                              //     chyldrim: ConmutadorParaclinicos(
-                              //       categoriaEstudio: value,
-                              //     ));
-                              Cambios.toNextActivity(context, tittle: '$value', chyld: ConmutadorParaclinicos(
+                  labelButton: "Agregar por Categoría",
+                  iconData: Icons.list_alt,
+                  onPress: () {
+                    Operadores.selectOptionsActivity(
+                        context: context,
+                        tittle: 'Seleccione un Tipo de Estudio',
+                        options: Auxiliares.Categorias,
+                        onClose: (value) {
+                          setState(() {
+                            tipoEstudioValue = value;
+                            // *************** *********** **************
+                            // Actualización del Indice
+                            // *************** *********** **************
+                            index = Auxiliares.Categorias.indexOf(value);
+                          });
+                          //
+                          if (index < 29) {
+                            // Son 29 Indices de Auxiliares.Categorias
+                            setState(() {
+                              // *************** *********** **************
+                              estudioValue = Auxiliares.Laboratorios[
+                                  Auxiliares.Categorias[index]][0];
+                              unidadMedidaValue = Auxiliares
+                                  .Medidas[Auxiliares.Categorias[index]][0];
+                              // *************** *********** **************
+                              Navigator.of(context).pop();
+                            });
+                          }
+                          // Operadores.openDialog(
+                          //     context: context,
+                          //     chyldrim: ConmutadorParaclinicos(
+                          //       categoriaEstudio: value,
+                          //     ));
+                          Cambios.toNextActivity(context,
+                              tittle: '$value',
+                              chyld: ConmutadorParaclinicos(
                                 categoriaEstudio: value,
                               ));
-                            });
-                      },
-                    )),
+                        });
+                  },
+                )),
               ],
             ),
             Spinner(
@@ -887,13 +892,14 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
               withShowOption: true,
               onSelected: () {
                 if (estudioValue == 'Urocultivo') {
-                  Operadores.openWindow(context: context, chyldrim: Container(),
-                  onAction: () {
-                    setState(() {
-                      textResultController.text = "AUS";
-                    });
-                  }
-                  );
+                  Operadores.openWindow(
+                      context: context,
+                      chyldrim: Container(),
+                      onAction: () {
+                        setState(() {
+                          textResultController.text = "AUS";
+                        });
+                      });
                 }
               },
             ),
@@ -901,8 +907,8 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                 width: isMobile(context)
                     ? 100
                     : isTabletAndDesktop(context)
-                    ? 120
-                    : 170,
+                        ? 120
+                        : 170,
                 isRow: true,
                 tittle: "Unidad de Medida",
                 initialValue: unidadMedidaValue!,
@@ -944,14 +950,14 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                 operationActivity
                     ? Container()
                     : Expanded(
-                  flex: 2,
-                  child: GrandButton(
-                      labelButton: "Nuevo",
-                      weigth: 50,
-                      onPress: () {
-                        initAllElement();
-                      }),
-                ),
+                        flex: 2,
+                        child: GrandButton(
+                            labelButton: "Nuevo",
+                            weigth: 50,
+                            onPress: () {
+                              initAllElement();
+                            }),
+                      ),
                 Expanded(
                   flex: 2,
                   child: GrandButton(
@@ -963,16 +969,23 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                             operationActivity: operationActivity);
                       }),
                 ),
-                Expanded(flex: 1, child: GrandIcon(labelButton: "Rutina", iconData: Icons.ad_units, onPress: () {
-                  // Operadores.openWindow(
-                  // context: context,
-                  // chyldrim: ConmutadorParaclinicos(
-                  // categoriaEstudio: 'Rutina',
-                  // ));
-                  Cambios.toNextActivity(context, tittle: 'Rutina', chyld: ConmutadorParaclinicos(
-                    categoriaEstudio: 'Rutina',
-                  ));
-                })),
+                Expanded(
+                    flex: 1,
+                    child: GrandIcon(
+                        labelButton: "Rutina",
+                        iconData: Icons.ad_units,
+                        onPress: () {
+                          // Operadores.openWindow(
+                          // context: context,
+                          // chyldrim: ConmutadorParaclinicos(
+                          // categoriaEstudio: 'Rutina',
+                          // ));
+                          Cambios.toNextActivity(context,
+                              tittle: 'Rutina',
+                              chyld: ConmutadorParaclinicos(
+                                categoriaEstudio: 'Rutina',
+                              ));
+                        })),
               ],
             ),
           ],
@@ -1016,8 +1029,8 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                           index = Auxiliares.Categorias.indexOf(newValue);
                           print("${tipoEstudioValue} : $index");
                           // *************** *********** **************
-                          estudioValue = Auxiliares.Laboratorios[
-                          Auxiliares.Categorias[index]][0];
+                          estudioValue = Auxiliares
+                              .Laboratorios[Auxiliares.Categorias[index]][0];
                           unidadMedidaValue = Auxiliares
                               .Medidas[Auxiliares.Categorias[index]][0];
                           // *************** *********** **************
@@ -1026,39 +1039,47 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                 ),
                 Expanded(
                     child: GrandIcon(
-                      labelButton: "Agregar por Categoría",
-                      iconData: Icons.list_alt,
-                      onPress: () {
-                        Operadores.selectOptionsActivity(
-                            context: context,
-                            tittle: 'Seleccione un Tipo de Estudio',
-                            options: Auxiliares.Categorias,
-                            onClose: (value) {
-                              setState(() {
-                                tipoEstudioValue = value;
-                                // *************** *********** **************
-                                // Actualización del Indice
-                                // *************** *********** **************
-                                index = Auxiliares.Categorias.indexOf(value);
-                                // *************** *********** **************
-                                estudioValue = Auxiliares.Laboratorios[
-                                Auxiliares.Categorias[index]][0];
-                                unidadMedidaValue = Auxiliares
-                                    .Medidas[Auxiliares.Categorias[index]][0];
-                                // *************** *********** **************
-                                Navigator.of(context).pop();
-                              });
-                              Cambios.toNextActivity(context, tittle: '$value', chyld: ConmutadorParaclinicos(
+                  labelButton: "Agregar por Categoría",
+                  iconData: Icons.list_alt,
+                  onPress: () {
+                    Operadores.selectOptionsActivity(
+                        context: context,
+                        tittle: 'Seleccione un Tipo de Estudio',
+                        options: Auxiliares.Categorias,
+                        onClose: (value) {
+                          setState(() {
+                            tipoEstudioValue = value;
+                            // *************** *********** **************
+                            // Actualización del Indice
+                            // *************** *********** **************
+                            index = Auxiliares.Categorias.indexOf(value);
+                          });
+                          //
+                          if (index < 29) {
+                            // Son 29 Indices de Auxiliares.Categorias
+                            setState(() {
+                              // *************** *********** **************
+                              estudioValue = Auxiliares.Laboratorios[
+                                  Auxiliares.Categorias[index]][0];
+                              unidadMedidaValue = Auxiliares
+                                  .Medidas[Auxiliares.Categorias[index]][0];
+                              // *************** *********** **************
+                              Navigator.of(context).pop();
+                            });
+                          }
+                          Cambios.toNextActivity(context,
+                              tittle: '$value',
+                              chyld: ConmutadorParaclinicos(
                                 categoriaEstudio: value,
                               ));
-                              // Operadores.openWindow(
-                              //     context: context,
-                              //     chyldrim: ConmutadorParaclinicos(
-                              //       categoriaEstudio: value,
-                              //     ));
-                            });
-                      },
-                    )),
+                          // Operadores.openWindow(
+                          //     context: context,
+                          //     chyldrim: ConmutadorParaclinicos(
+                          //       categoriaEstudio: value,
+                          //     ));
+                        });
+                  },
+                )),
               ],
             ),
           ),
@@ -1079,7 +1100,6 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                         });
                       }),
                 ),
-
               ],
             ),
           ),
@@ -1096,13 +1116,14 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                     withShowOption: true,
                     onSelected: () {
                       if (estudioValue == 'Urocultivo') {
-                        Operadores.openWindow(context: context, chyldrim: Container(),
+                        Operadores.openWindow(
+                            context: context,
+                            chyldrim: Container(),
                             onAction: () {
                               setState(() {
                                 textResultController.text = "AUS";
                               });
-                            }
-                        );
+                            });
                       }
                     },
                   ),
@@ -1112,8 +1133,8 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                       width: isMobile(context)
                           ? 100
                           : isTabletAndDesktop(context)
-                          ? 120
-                          : 170,
+                              ? 120
+                              : 170,
                       isRow: true,
                       tittle: "Unidad de Medida",
                       initialValue: unidadMedidaValue!,
@@ -1130,10 +1151,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
           Expanded(
             flex: 4,
             child: Column(
-
-              children: [
-
-              ],
+              children: [],
             ),
           ),
           CrossLine(),
@@ -1169,13 +1187,13 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                 operationActivity
                     ? Container()
                     : Expanded(
-                  child: GrandButton(
-                      labelButton: "Nuevo",
-                      weigth: 50,
-                      onPress: () {
-                        initAllElement();
-                      }),
-                ),
+                        child: GrandButton(
+                            labelButton: "Nuevo",
+                            weigth: 50,
+                            onPress: () {
+                              initAllElement();
+                            }),
+                      ),
                 Expanded(
                   flex: 2,
                   child: GrandButton(
@@ -1191,136 +1209,140 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                             Auxiliares.auxiliares['registerQuery'],
                             aux,
                           ).then((value) => showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: const Text("Registrados"),
-                                  content: Text(
-                                      "Los registros \n${listOfValues().toString()} \n fueron actualizados"),
-                                );
-                              })
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: const Text("Registrados"),
+                                      content: Text(
+                                          "Los registros \n${listOfValues().toString()} \n fueron actualizados"),
+                                    );
+                                  })
                               .then((value) => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      VisualPacientes(actualPage: 5)))));
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          VisualPacientes(actualPage: 5)))));
                         } else {
                           Actividades.actualizar(
-                              Databases.siteground_database_reggabo,
-                              Auxiliares.auxiliares['updateQuery'],
-                              listOfValues(),
-                              idOperacion!)
+                                  Databases.siteground_database_reggabo,
+                                  Auxiliares.auxiliares['updateQuery'],
+                                  listOfValues(),
+                                  idOperacion!)
                               .then((value) => showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: const Text("Actualizados"),
-                                  content: Text(
-                                      "Los registros \n${listOfValues().toString()} \n fueron actualizados"),
-                                );
-                              })
-                              .then((value) => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      VisualPacientes(actualPage: 5)))));
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: const Text("Actualizados"),
+                                      content: Text(
+                                          "Los registros \n${listOfValues().toString()} \n fueron actualizados"),
+                                    );
+                                  }).then((value) => Navigator.of(
+                                      context)
+                                  .push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          VisualPacientes(actualPage: 5)))));
                         }
                       }),
                 ),
-                Expanded(flex: 1, child: GrandIcon(labelButton: "Rutina", iconData: Icons.ad_units, onPress: () {
-                  Cambios.toNextActivity(context, tittle: 'Rutina', chyld: ConmutadorParaclinicos(
-                    categoriaEstudio: 'Rutina',
-                  ));
-                })),
+                Expanded(
+                    flex: 1,
+                    child: GrandIcon(
+                        labelButton: "Rutina",
+                        iconData: Icons.ad_units,
+                        onPress: () {
+                          Cambios.toNextActivity(context,
+                              tittle: 'Rutina',
+                              chyld: ConmutadorParaclinicos(
+                                categoriaEstudio: 'Rutina',
+                              ));
+                        })),
               ],
             ),
           ),
-
         ],
       );
     }
   }
 
   Container lateralBar() {
-    return Container(decoration: ContainerDecoration.roundedDecoration(),child: Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        GrandIcon(
-          iconData: Icons.currency_exchange,
-          onPress: () {
-            Operadores.editActivity(
-                context: context,
-                tittle: "Editar . . . ",
-                message: "¿Nueva fecha? . . . ",
-                onAcept: (value) {
-                  if (textDateController
-                      .text.isNotEmpty) {
-                    // Terminal.printSuccess(
-                    //     message:
-                    //     "textDateController.text ${textDateController.text}");
-                    Auxiliares.cambiarFecha(
-                        fechaPrevia:
-                        textDateController.text,
-                        fechaNueva: value)
-                        .whenComplete(() {
-                      textDateController.text = value;
-                      Navigator.of(context).pop();
-                      reiniciar();
-                    });
-                  } else {
-                    Navigator.of(context).pop();
-                    Operadores.alertActivity(
-                        context: context,
-                        tittle: 'Sin Fecha Asignada',
-                        message:
-                        "No se introdujo fecha para el cambio . . . ");
-                  }
-                });
-          },
-        ),
-        const SizedBox(height: 30),
-        GrandIcon(
-            labelButton: 'Eliminar por Fecha',
-            iconData: Icons.delete_sweep_rounded,
+    return Container(
+      decoration: ContainerDecoration.roundedDecoration(),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          GrandIcon(
+            iconData: Icons.currency_exchange,
             onPress: () {
-              if (textDateController
-                  .text.isNotEmpty) {
-                Auxiliares.eliminarPorFecha(
-                    fechaPrevia:
-                    textDateController.text)
-                    .whenComplete(() {
-                  reiniciar();
-                });
-              } else {
-                Navigator.of(context).pop();
-                Operadores.alertActivity(
-                    context: context,
-                    tittle: 'Sin Fecha Asignada',
-                    message:
-                    "No se introdujo fecha para el cambio . . . ");
-              }
-            }),
-        const SizedBox(height: 30),
-        GrandIcon(
-          iconData: Icons.dataset_linked_outlined,
-          labelButton: "Registro de paraclínicos",
-          onPress: () {
-            carouselController.jumpToPage(0);
-          },
-        ),
-        GrandIcon(
-          iconData: Icons.browser_updated,
-          labelButton: "Gestion del Registro",
-          onPress: () {
-            carouselController.jumpToPage(1);
-          },
-        ),
-        GrandIcon(
-          iconData: Icons.replay_outlined,
-          labelButton: Sentences.reload,
-          onPress: () {
-            reiniciar();
-          },
-        ),
-      ],
-    ),);
+              Operadores.editActivity(
+                  context: context,
+                  tittle: "Editar . . . ",
+                  message: "¿Nueva fecha? . . . ",
+                  onAcept: (value) {
+                    if (textDateController.text.isNotEmpty) {
+                      // Terminal.printSuccess(
+                      //     message:
+                      //     "textDateController.text ${textDateController.text}");
+                      Auxiliares.cambiarFecha(
+                              fechaPrevia: textDateController.text,
+                              fechaNueva: value)
+                          .whenComplete(() {
+                        textDateController.text = value;
+                        Navigator.of(context).pop();
+                        reiniciar();
+                      });
+                    } else {
+                      Navigator.of(context).pop();
+                      Operadores.alertActivity(
+                          context: context,
+                          tittle: 'Sin Fecha Asignada',
+                          message:
+                              "No se introdujo fecha para el cambio . . . ");
+                    }
+                  });
+            },
+          ),
+          const SizedBox(height: 30),
+          GrandIcon(
+              labelButton: 'Eliminar por Fecha',
+              iconData: Icons.delete_sweep_rounded,
+              onPress: () {
+                if (textDateController.text.isNotEmpty) {
+                  Auxiliares.eliminarPorFecha(
+                          fechaPrevia: textDateController.text)
+                      .whenComplete(() {
+                    reiniciar();
+                  });
+                } else {
+                  Navigator.of(context).pop();
+                  Operadores.alertActivity(
+                      context: context,
+                      tittle: 'Sin Fecha Asignada',
+                      message: "No se introdujo fecha para el cambio . . . ");
+                }
+              }),
+          const SizedBox(height: 30),
+          GrandIcon(
+            iconData: Icons.dataset_linked_outlined,
+            labelButton: "Registro de paraclínicos",
+            onPress: () {
+              carouselController.jumpToPage(0);
+            },
+          ),
+          GrandIcon(
+            iconData: Icons.browser_updated,
+            labelButton: "Gestion del Registro",
+            onPress: () {
+              carouselController.jumpToPage(1);
+            },
+          ),
+          GrandIcon(
+            iconData: Icons.replay_outlined,
+            labelButton: Sentences.reload,
+            onPress: () {
+              reiniciar();
+            },
+          ),
+        ],
+      ),
+    );
   }
 }

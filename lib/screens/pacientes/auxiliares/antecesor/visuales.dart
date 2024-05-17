@@ -619,14 +619,6 @@ class _VisualPacientesState extends State<VisualPacientes> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CircleIcon(
-                tittle: 'Revisorio',
-                iconed: Icons.ac_unit,
-                onChangeValue: () {
-                  Cambios.toNextPage(context, const Generales());
-                  // Cambios.toNextActivity(context, chyld: const Generales());
-                },
-              ),
               CrossLine(height: 20),
               Expanded(
                 child: Column(
@@ -692,14 +684,23 @@ class _VisualPacientesState extends State<VisualPacientes> {
                   ],
                 ),
               ),
-              CrossLine(height: 5),
+              CrossLine(height: 20),
               CircleIcon(
                 tittle: 'Revisorio',
                 iconed: Icons.circle_outlined,
                 onChangeValue: () {
-                  Cambios.toNextPage(context, AnalisisRevisorios());
+                  Cambios.toNextPage(context, Generales());
+                  // Cambios.toNextActivity(context, chyld: const Generales());
                 },
               ),
+              // CrossLine(height: 5),
+              // CircleIcon(
+              //   tittle: 'Revisorio',
+              //   iconed: Icons.circle_outlined,
+              //   onChangeValue: () {
+              //     Cambios.toNextPage(context, AnalisisRevisorios());
+              //   },
+              // ),
             ],
           ),
           CrossLine(height: 20, thickness: 3),

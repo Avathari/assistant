@@ -9,12 +9,7 @@ import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisiones.dar
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisorios.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizado.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/padecimientoActual.dart';
-import 'package:assistant/screens/pacientes/intensiva/analisis/antropometricos.dart';
-import 'package:assistant/screens/pacientes/intensiva/analisis/balancesHidrico.dart';
-import 'package:assistant/screens/pacientes/intensiva/analisis/cardiovasculares.dart';
-import 'package:assistant/screens/pacientes/intensiva/analisis/gasometricos.dart';
-import 'package:assistant/screens/pacientes/intensiva/analisis/hidricos.dart';
-import 'package:assistant/screens/pacientes/intensiva/analisis/ventilatorios.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/analisisLaterales/analisisLaterales.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
 import 'package:assistant/screens/pacientes/intensiva/procedimientos/cateterTenckhoff.dart';
 import 'package:assistant/screens/pacientes/intensiva/procedimientos/cateterVenosoCentral.dart';
@@ -960,7 +955,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
   drawerForm(BuildContext context, {bool? analysis = false}) => Drawer(
         width: widget.analysis == false // !isLargeDesktop(context)
             ? 100
-            : 350, // 350
+            : 290, // 350
         backgroundColor: Theming.cuaternaryColor,
         child: Container(
             decoration: const BoxDecoration(
@@ -973,7 +968,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   topLeft: Radius.circular(16)),
             ),
             child: widget.analysis == true //isLargeDesktop(context)
-                ? _analisisLaterales(context)
+                ? AnalisisLaterales()
                 : _optionsLaterales(context)),
       );
 
@@ -1002,10 +997,11 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             const SizedBox(width: 25),
             IconButton(
                 splashColor: Theming.terciaryColor,
-                icon: const Icon(Icons.medication_outlined, color: Colors.grey),
-                tooltip: "Terapia Intensiva",
+                icon: const Icon(Icons.menu_open_sharp, color: Colors.grey),
+                tooltip: "Otras Opciones . . . ",
                 onPressed: () => setState(() {
-                      widget.actualPage = 18;
+                    widget.analysis = true;
+                    _key.currentState!.openEndDrawer();
                     })),
             IconButton(
                 icon: const Icon(Icons.scale, color: Colors.grey),
@@ -1585,153 +1581,153 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
     );
   }
 
-  _analisisLaterales(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          flex: 8,
-          child: widget.actualLateralPage == 0
-              ? Container()
-              : widget.actualLateralPage == 1
-                  ? Hidricos(isLateral: true)
-                  : widget.actualLateralPage == 2
-                      ? Ventilatorios()
-                      : widget.actualLateralPage == 3
-                          ? const Gasometricos()
-                          : widget.actualLateralPage == 4
-                              ? Cardiovasculares()
-                              : widget.actualLateralPage == 5
-                                  ? const Antropometricos()
-                                  : widget.actualLateralPage == 6
-                                      ? const BalanceHidrico()
-                                      : Container(),
-        ),
-        // CrossLine(color:Colors.grey),
-        Expanded(
-            child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            GrandIcon(
-                labelButton: 'Concentraciones',
-                iconData: Icons.menu_rounded,
-                onPress: () => setState(() {
-                      widget.actualLateralPage = 0;
-                    })),
-            GrandIcon(
-                labelButton: "Hídricos",
-                iconData: Icons.water_drop,
-                onPress: () => setState(() {
-                      widget.actualLateralPage = 1;
-                    })),
-            GrandIcon(
-                labelButton: "Ventilatorios",
-                iconData: Icons.air,
-                onPress: () => setState(() {
-                      widget.actualLateralPage = 2;
-                    })),
-            GrandIcon(
-                labelButton: "Gasométricos",
-                onPress: () => setState(() {
-                      widget.actualLateralPage = 3;
-                    })),
-            GrandIcon(
-                labelButton: "Cardiovasculares",
-                iconData: Icons.monitor_heart_outlined,
-                onPress: () => setState(() {
-                      widget.actualLateralPage = 4;
-                    })),
-            GrandIcon(
-                labelButton: "Antropometrías",
-                iconData: Icons.monitor_weight_outlined,
-                onPress: () => setState(() {
-                      widget.actualLateralPage = 5;
-                    })),
-            GrandIcon(
-                labelButton: "Balances",
-                iconData: Icons.waterfall_chart,
-                onPress: () => setState(() {
-                      widget.actualLateralPage = 6;
-                    })),
-            GrandIcon(
-                onPress: () => setState(() {
-                      widget.actualLateralPage = 7;
-                    })),
-          ],
-        )),
-        Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              GrandIcon(
-                iconData: Icons.checklist_rtl,
-                labelButton: "Laboratorios",
-                onPress: () {
-                  Operadores.selectOptionsActivity(
-                    context: context,
-                    tittle: "Elija la fecha de los estudios . . . ",
-                    options: Listas.listWithoutRepitedValues(
-                      Listas.listFromMapWithOneKey(
-                        Pacientes.Paraclinicos!,
-                        keySearched: 'Fecha_Registro',
-                      ),
-                    ),
-                    onClose: (value) {
-                      setState(() {
-                        Datos.portapapeles(
-                            context: context,
-                            text: Auxiliares.porFecha(fechaActual: value));
-                        Navigator.of(context).pop();
-                      });
-                    },
-                  );
-                },
-              ),
-              GrandIcon(
-                iconData: Icons.list_alt_sharp,
-                labelButton: "Laboratorios",
-                onPress: () {
-                  Datos.portapapeles(
-                      context: context, text: Auxiliares.historial());
-                },
-                onLongPress: () {
-                  Datos.portapapeles(
-                      context: context,
-                      text: Auxiliares.historial(esAbreviado: true));
-                },
-              ),
-              GrandIcon(
-                iconData: Icons.line_style,
-                labelButton: "Laboratorios",
-                onPress: () {
-                  Datos.portapapeles(
-                      context: context, text: Auxiliares.getUltimo());
-                },
-                onLongPress: () {
-                  Datos.portapapeles(
-                      context: context,
-                      text: Auxiliares.getUltimo(esAbreviado: true));
-                },
-              ),
-              GrandIcon(
-                iconData: Icons.linear_scale_rounded,
-                labelButton: "Actual e Historial",
-                onPress: () {
-                  Datos.portapapeles(
-                      context: context,
-                      text: Auxiliares.getUltimo(withoutInsighs: true));
-                },
-                onLongPress: () {
-                  Datos.portapapeles(
-                      context: context,
-                      text: Auxiliares.historial(withoutInsighs: true));
-                },
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
+  // _analisisLaterales(BuildContext context) {
+  //   return Column(
+  //     children: [
+  //       Expanded(
+  //         flex: 8,
+  //         child: widget.actualLateralPage == 0
+  //             ? Container()
+  //             : widget.actualLateralPage == 1
+  //                 ? Hidricos(isLateral: true)
+  //                 : widget.actualLateralPage == 2
+  //                     ? Ventilatorios()
+  //                     : widget.actualLateralPage == 3
+  //                         ? const Gasometricos()
+  //                         : widget.actualLateralPage == 4
+  //                             ? Cardiovasculares()
+  //                             : widget.actualLateralPage == 5
+  //                                 ? const Antropometricos()
+  //                                 : widget.actualLateralPage == 6
+  //                                     ? const BalanceHidrico()
+  //                                     : Container(),
+  //       ),
+  //       // CrossLine(color:Colors.grey),
+  //       Expanded(
+  //           child: Row(
+  //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //         crossAxisAlignment: CrossAxisAlignment.center,
+  //         children: [
+  //           GrandIcon(
+  //               labelButton: 'Concentraciones',
+  //               iconData: Icons.menu_rounded,
+  //               onPress: () => setState(() {
+  //                     widget.actualLateralPage = 0;
+  //                   })),
+  //           GrandIcon(
+  //               labelButton: "Hídricos",
+  //               iconData: Icons.water_drop,
+  //               onPress: () => setState(() {
+  //                     widget.actualLateralPage = 1;
+  //                   })),
+  //           GrandIcon(
+  //               labelButton: "Ventilatorios",
+  //               iconData: Icons.air,
+  //               onPress: () => setState(() {
+  //                     widget.actualLateralPage = 2;
+  //                   })),
+  //           GrandIcon(
+  //               labelButton: "Gasométricos",
+  //               onPress: () => setState(() {
+  //                     widget.actualLateralPage = 3;
+  //                   })),
+  //           GrandIcon(
+  //               labelButton: "Cardiovasculares",
+  //               iconData: Icons.monitor_heart_outlined,
+  //               onPress: () => setState(() {
+  //                     widget.actualLateralPage = 4;
+  //                   })),
+  //           GrandIcon(
+  //               labelButton: "Antropometrías",
+  //               iconData: Icons.monitor_weight_outlined,
+  //               onPress: () => setState(() {
+  //                     widget.actualLateralPage = 5;
+  //                   })),
+  //           GrandIcon(
+  //               labelButton: "Balances",
+  //               iconData: Icons.waterfall_chart,
+  //               onPress: () => setState(() {
+  //                     widget.actualLateralPage = 6;
+  //                   })),
+  //           GrandIcon(
+  //               onPress: () => setState(() {
+  //                     widget.actualLateralPage = 7;
+  //                   })),
+  //         ],
+  //       )),
+  //       Expanded(
+  //         child: Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //           crossAxisAlignment: CrossAxisAlignment.center,
+  //           children: [
+  //             GrandIcon(
+  //               iconData: Icons.checklist_rtl,
+  //               labelButton: "Laboratorios",
+  //               onPress: () {
+  //                 Operadores.selectOptionsActivity(
+  //                   context: context,
+  //                   tittle: "Elija la fecha de los estudios . . . ",
+  //                   options: Listas.listWithoutRepitedValues(
+  //                     Listas.listFromMapWithOneKey(
+  //                       Pacientes.Paraclinicos!,
+  //                       keySearched: 'Fecha_Registro',
+  //                     ),
+  //                   ),
+  //                   onClose: (value) {
+  //                     setState(() {
+  //                       Datos.portapapeles(
+  //                           context: context,
+  //                           text: Auxiliares.porFecha(fechaActual: value));
+  //                       Navigator.of(context).pop();
+  //                     });
+  //                   },
+  //                 );
+  //               },
+  //             ),
+  //             GrandIcon(
+  //               iconData: Icons.list_alt_sharp,
+  //               labelButton: "Laboratorios",
+  //               onPress: () {
+  //                 Datos.portapapeles(
+  //                     context: context, text: Auxiliares.historial());
+  //               },
+  //               onLongPress: () {
+  //                 Datos.portapapeles(
+  //                     context: context,
+  //                     text: Auxiliares.historial(esAbreviado: true));
+  //               },
+  //             ),
+  //             GrandIcon(
+  //               iconData: Icons.line_style,
+  //               labelButton: "Laboratorios",
+  //               onPress: () {
+  //                 Datos.portapapeles(
+  //                     context: context, text: Auxiliares.getUltimo());
+  //               },
+  //               onLongPress: () {
+  //                 Datos.portapapeles(
+  //                     context: context,
+  //                     text: Auxiliares.getUltimo(esAbreviado: true));
+  //               },
+  //             ),
+  //             GrandIcon(
+  //               iconData: Icons.linear_scale_rounded,
+  //               labelButton: "Actual e Historial",
+  //               onPress: () {
+  //                 Datos.portapapeles(
+  //                     context: context,
+  //                     text: Auxiliares.getUltimo(withoutInsighs: true));
+  //               },
+  //               onLongPress: () {
+  //                 Datos.portapapeles(
+  //                     context: context,
+  //                     text: Auxiliares.historial(withoutInsighs: true));
+  //               },
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 }

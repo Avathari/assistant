@@ -56,7 +56,7 @@ class _HidricosState extends State<Hidricos> {
         children: [
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(left: 4.0, right: 4.0, top: 10.0, bottom: 8.0),
               child: Wrap(
                 spacing: 18.0,
                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -135,6 +135,7 @@ class _HidricosState extends State<Hidricos> {
                           controller: ScrollController(),
                           child: TittleContainer(
                             color: Colors.black,
+                            padding: 4.0,
                             tittle: "Análisis Hídrico",
                             child: Column(
                               children: [
@@ -675,7 +676,7 @@ class _HidricosState extends State<Hidricos> {
                         //
                         SingleChildScrollView(
                           controller: ScrollController(),
-                          child: Column(children: []),
+                          child: const Column(children: []),
                         ),
                       ],
                       carouselController: carouselController,
@@ -702,8 +703,10 @@ class _HidricosState extends State<Hidricos> {
   TittleContainer valoresIniciales(BuildContext context) {
     return TittleContainer(
       color: Colors.black,
-      tittle: "Valores Iniciales",
+      padding: 4.0,
+      tittle: "",
       child: SingleChildScrollView(
+        padding: const EdgeInsets.only(top: 5.0),
         controller: ScrollController(),
         child: Wrap(children: [
           ValuePanel(

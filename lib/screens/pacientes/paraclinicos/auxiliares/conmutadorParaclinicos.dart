@@ -20,6 +20,7 @@ import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/pancr
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/quimicas.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/reactantes.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/rutina.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/tallerGasometrico.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/tiroideos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/uroanalisis.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/venosos.dart';
@@ -131,6 +132,9 @@ class _ConmutadorParaclinicosState extends State<ConmutadorParaclinicos> {
         return const Inmunologicos();
       case "Western Blot HIV-1, HIV-2":
         return const WesternBlot();
+
+      case "Taller Gasométrico":
+        return const TallerGasometrico();
       default:
         return const Rutinas();
     }

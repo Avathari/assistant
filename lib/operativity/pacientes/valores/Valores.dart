@@ -842,8 +842,30 @@ class Valores {
       withTRAN = "",
       withHEMO = "",
       withQUIR = "";
-
-
+  
+  // INFUSIONES ************************ * * * *
+  static int? initSedacion = 0,
+      initVasopresor = 0,
+      initInotropico = 0,
+      initDiuretico = 0,
+      initParalisis = 0,
+  initAnticoagulante = 0,
+      initAntiarritmico = 0;
+  static String? withSedacion = "",
+      withVasopresor = "",
+      withInotropico = "",
+      withDiuretico = "",
+      withParalisis = "",
+      withAnticoagulante = "",
+      withAntiarritmico = "";
+  static String? commenSedacion = "",
+      commenVasopresor = "",
+      commenInotropico = "",
+      commenDiuretico = "",
+      commenParalisis = "",
+      commenAnticoagulante = "",
+      commenAntiarritmico = "";
+  
   //
   static String? fechaVitales;
   static int? tensionArterialSystolica,
@@ -1289,9 +1311,17 @@ class Valores {
       Antropometrias
           .SCE); //mL/Lat/m2 *IC se multiplica por 1000 para ajustar unidades a mL/min/m2
   // ((indiceCardiaco * 1000) / Valores.frecuenciaCardiaca!);
-  /// D
+
+  /// Disponibilidad de Oxígeno (DO2) (mL/min)
+  ///
+  /// DO = (GC * CaO2) * (10)
+  ///
   static double get DO =>
       ((gastoCardiaco * CAO) * (10)); // # Disponibilidad de Oxígeno
+  /// Disponibilidad de Oxígeno Indexado (iDO2) (mL/min/m2)
+  ///
+  /// DO = (GC * CaO2) * (10)
+  ///
   static double get iDO =>
       (DO / Antropometrias.SCE); // # Indice de Disponibilidad de Oxígeno
   static double get TO =>
@@ -1346,7 +1376,7 @@ class Valores {
   ///
   /// VN: 16-20ml/O2%
   ///
-  static double get CCO => ((Valores.hemoglobina! * 1.39) +
+  static double get CCO => ((Valores.hemoglobina! * 1.34) +
       (Valores.poArteriales! * 0.031)); // # Concentración Capilar de Oxígeno
   // (((Valores.hemoglobina! * 1.34) *
   //         (Valores.soVenosos! - Valores.soArteriales!) +

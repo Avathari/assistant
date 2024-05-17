@@ -774,6 +774,8 @@ class _OperacionesHospitalizacionesState
                         Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
                       ]);
                       //
+                      Pendientes.registrarPrevios(context);
+                      Pendientes.registrarInfusiones(context);
                       Pendientes.registrarDispositivos(context);
                       //
                       Expedientes.registrarRegistro();

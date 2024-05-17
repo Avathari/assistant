@@ -1132,7 +1132,7 @@ class _SemiologicosState extends State<Semiologicos>
               labelButton: "Generales . . . ",
               onPress: () => Cambios.toNextActivity(context,
                   tittle: 'Generales diarios del Paciente . . . ',
-                  chyld: const Generales())),
+                  chyld:  Generales())),
           CrossLine(height: 15, isHorizontal: false, thickness: 2),
           GrandIcon(
               iconData: Icons.drag_indicator_sharp,

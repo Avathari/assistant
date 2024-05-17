@@ -9,6 +9,7 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/operativity/pacientes/valores/semiologia/semiotica.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/auxiliares/auxiliaresRevisiones.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/pendientes.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/analisisLaterales/analisisLaterales.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/ventilaciones.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/conmutadorParaclinicos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/info/historialParaclinicos.dart';
@@ -28,8 +29,10 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Generales extends StatefulWidget {
+  bool? analysis;
+
   /// Destinado a la Anexión de Vitales y Balance Hídrico del paciente de acuerdo a una fecha determinada.
-  const Generales({Key? key}) : super(key: key);
+  Generales({Key? key, this.analysis = false}) : super(key: key);
 
   @override
   State<Generales> createState() => _GeneralesState();
@@ -59,10 +62,13 @@ class _GeneralesState extends State<Generales> {
       Valores.pesoCorporalTotal = 0;
       pctTextController.text = '0';
     }
-//
+    //
     fraccionInspiratoriaOxigenoTextController.text = 21.toString();
+    //
+    setState(() => Valores.otrosIngresosBalances = Valores.aguaMetabolica);
+    //
     viaOtrosIngresosTextController.text =
-        Valores.aguaMetabolica.toStringAsFixed(2);
+        Valores.otrosIngresosBalances!.toStringAsFixed(2);
     viaPerdidaTextController.text =
         Valores.perdidasInsensibles.toStringAsFixed(2);
 
@@ -90,9 +96,7 @@ class _GeneralesState extends State<Generales> {
             }
           }
         }
-
-//        Pacientes.Pendiente = value;
-        Terminal.printExpected(message: '${Pacientes.Pendiente!}');
+        // Pacientes.Pendiente = value; Terminal.printExpected(message: '${Pacientes.Pendiente!}');
       });
     });
     // Repositorio de Paraclínicos *****************************
@@ -113,21 +117,12 @@ class _GeneralesState extends State<Generales> {
       key: _key,
       backgroundColor: Theming.quincuaryColor,
       endDrawer: _endDrawer(context),
-      appBar: AppBar(
-        elevation: 80,
-        foregroundColor: Colors.grey,
-        backgroundColor: Colors.black,
-        title: AppBarText(""),
-        actions: [
-          GrandIcon(
-            labelButton: "Menu Lateral . . . ",
-            iconData: Icons.menu_open,
-            onPress: () => _key.currentState!.openEndDrawer(),
-          ),
-          const SizedBox(width: 20),
-        ],
-      ),
+      appBar: _appBar(context),
       body: isMobile(context) ? mobileView() : desktopView(),
+      bottomNavigationBar: _bottomNavigationBar(context),
+      floatingActionButtonLocation: isMobile(context)
+          ? FloatingActionButtonLocation.centerDocked
+          : FloatingActionButtonLocation.endDocked,
       floatingActionButton: !isMobile(context)
           ? Wrap(children: [
               Column(
@@ -161,7 +156,7 @@ class _GeneralesState extends State<Generales> {
                 },
               ),
             ])
-          : null,
+          : _floattingActionButton(context),
     );
   }
 
@@ -680,41 +675,49 @@ class _GeneralesState extends State<Generales> {
                   ),
                 ),
                 CrossLine(color: Colors.grey),
-                Spinner(
-                    isRow: true,
-                    tittle: "Intervalo de Horario",
-                    onChangeValue: (String value) {
-                      setState(() {
-                        isHorarioValue = value;
-                        Valores.horario = int.parse(value);
-                      });
-                    },
-                    items: Opciones.horarios(),
-                    width: isDesktop(context)
-                        ? 300
-                        : isTablet(context)
-                            ? 200
-                            : isMobile(context)
-                                ? 170
-                                : 200,
-                    initialValue: isHorarioValue),
-                Spinner(
-                  isRow: true,
-                  tittle: 'Sonda Vesical',
-                  width: isDesktop(context)
-                      ? 300
-                      : isTablet(context)
-                          ? 200
-                          : isMobile(context)
-                              ? 170
-                              : 200,
-                  items: Items.foley,
-                  initialValue: Exploracion.tipoSondaVesical,
-                  onChangeValue: (value) {
-                    setState(() {
-                      Exploracion.tipoSondaVesical = value;
-                    });
-                  },
+                Row(
+                  children: [
+                    Expanded(
+                      child: Spinner(
+                          isRow: true,
+                          tittle: "Intervalo de Horario",
+                          onChangeValue: (String value) {
+                            setState(() {
+                              isHorarioValue = value;
+                              Valores.horario = int.parse(value);
+                            });
+                          },
+                          items: Opciones.horarios(),
+                          width: isDesktop(context)
+                              ? 300
+                              : isTablet(context)
+                                  ? 200
+                                  : isMobile(context)
+                                      ? 170
+                                      : 200,
+                          initialValue: isHorarioValue),
+                    ),
+                    Expanded(
+                      child: Spinner(
+                        isRow: true,
+                        tittle: 'Sonda Vesical',
+                        width: isDesktop(context)
+                            ? 300
+                            : isTablet(context)
+                                ? 200
+                                : isMobile(context)
+                                    ? 170
+                                    : 200,
+                        items: Items.foley,
+                        initialValue: Exploracion.tipoSondaVesical,
+                        onChangeValue: (value) {
+                          setState(() {
+                            Exploracion.tipoSondaVesical = value;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
                 ),
                 CrossLine(
                   color: Colors.grey,
@@ -1000,6 +1003,12 @@ class _GeneralesState extends State<Generales> {
                           viaPerdidaTextController.text =
                               Valores.perdidasInsensibles.toStringAsFixed(2);
                         }),
+                  ],
+                ),
+                const SizedBox(height: 3),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
                     CircleIcon(
                         radios: 20,
                         tittle: '0.8',
@@ -1132,6 +1141,22 @@ class _GeneralesState extends State<Generales> {
                 )
               ],
             ),
+          ),
+          // REVISIONES . . .
+          const Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    Expanded(flex: 2, child: RevisionPrevios()),
+                    Expanded(child: RevisionInfusiones()),
+                    // Expanded(child: RevisionCultivos(listado: Pacientes.getRevisionCultivos())),
+                  ],
+                ),
+              ),
+              Expanded(child: RevisionDispositivos()),
+            ],
           ),
         ],
         carouselController: carouselController,
@@ -2061,7 +2086,7 @@ class _GeneralesState extends State<Generales> {
                   ],
                 ),
               )),
-          Expanded(flex: 2, child: RevisionDispositivos()),
+          const Expanded(flex: 2, child: RevisionDispositivos()),
           Expanded(
               flex: 2,
               child: Column(
@@ -2151,79 +2176,120 @@ class _GeneralesState extends State<Generales> {
 
   _endDrawer(BuildContext context) {
     return Drawer(
-      backgroundColor: Theming.cuaternaryColor,
-      child: Column(
-        children: [
-          Expanded(
-            flex: 12,
-            child: actualVista(context, actualView: actualView),
-          ),
-          Expanded(
-            child: Wrap(
-              alignment: WrapAlignment.spaceAround,
-              spacing: 8,
-              // mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                GrandIcon(onPress: () => setState(() => actualView = 0)),
-                GrandIcon(onPress: () => setState(() => actualView = 1)),
-                GrandIcon(onPress: () => setState(() => actualView = 2)),
-                GrandIcon(onPress: () => setState(() => actualView = 3)),
-                GrandIcon(onPress: () => setState(() => actualView = 4)),
-                GrandIcon(onPress: () => setState(() => actualView = 5)),
-                GrandIcon(
-                    iconData: Icons.hourglass_bottom,
-                    onPress: () => setState(() => actualView = 6)),
-                GrandIcon(
-                    iconData: Icons.line_style_outlined,
-                    onPress: () => setState(() => actualView = 7)),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Wrap(
-              alignment: WrapAlignment.spaceAround,
-              spacing: 8,
-              // mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                GrandIcon(
-                    iconData: Icons.list_alt_sharp,
-                    labelButton: "Pendientes . . . ",
-                    onPress: () => Cambios.toNextPage(
-                        context, GestionPendiente(withReturn: false))),
-                GrandIcon(
-                    iconData: Icons.vertical_split_outlined,
-                    labelButton: "Ventilaciones . . . ",
-                    onPress: () =>
-                        Cambios.toNextPage(context, GestionVentilaciones())),
-                GrandIcon(
-                    iconData: Icons.lens_blur,
-                    labelButton: "Indicaciones . . . ",
-                    onPress: () => Cambios.toNextActivity(
-                        tittle: "Indicaciones de la Hospitalización",
-                        context,
-                        chyld: IndicacionesHospital())),
-                // GrandIcon(
-                //     iconData: Icons.view_array_outlined,
-                //     onPress: () => Cambios.toNextActivity(context, chyld: SituacionesHospitalizacion())),
-                const SizedBox(width: 30),
-                GrandIcon(
-                    iconData: Icons.list_alt_sharp,
-                    labelButton: "Laboratorios Previos . . . ",
-                    onPress: () => Cambios.toNextActivity(
-                        backgroundColor: Theming.cuaternaryColor,
-                        context,
-                        chyld: HistorialParaclinicos())),
-                GrandIcon(onPress: () => null),
-                GrandIcon(onPress: () => null),
-                GrandIcon(onPress: () => null),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+        backgroundColor: Theming.cuaternaryColor,
+        child: widget.analysis == true //isLargeDesktop(context)
+            ? AnalisisLaterales()
+            : _optionRevisiones(context));
   }
 
+  _bottomNavigationBar(BuildContext context) => BottomAppBar(
+        color: Colors.black,
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 10,
+        height: 60,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton(
+              icon: const Icon(
+                Icons.system_update_alt,
+                color: Colors.white,
+              ),
+              tooltip: 'Cargando . . . ',
+              onPressed: () async {
+                Pacientes.loadingActivity(context: context).then((value) {
+                  if (value == true) {
+                    Terminal.printAlert(
+                        message:
+                        'Archivo ${Pacientes.localPath} Re-Creado $value');
+                    Navigator.of(context).pop();
+                  }
+                }).onError((error, stackTrace) {
+                  Terminal.printAlert(
+                      message:
+                      "ERROR - toVisual : : $error : : Descripción : $stackTrace");
+                  Operadores.alertActivity(
+                      message: "ERROR - toVisual : : $error",
+                      context: context,
+                      tittle: 'Error al Inicial Visual');
+                }).whenComplete(() => setState(() {}));
+              },
+            ),
+            IconButton(
+                splashColor: Theming.terciaryColor,
+                icon: const Icon(Icons.bed, color: Colors.grey),
+                tooltip: "Semiologías",
+                onPressed: () => setState(() {
+                      // widget.actualPage = 18;
+                    })),
+            //
+            const SizedBox(width: 40),
+            IconButton(
+                splashColor: Theming.terciaryColor,
+                icon: const Icon(Icons.line_style_outlined, color: Colors.grey),
+                tooltip: "Terapia Intensiva",
+                onPressed: () => setState(() {
+                      widget.analysis = true;
+                      _key.currentState!.openEndDrawer();
+                    })),
+            CircleIcon(
+                radios: 30,
+                difRadios: 15,
+                iconed: Icons.update,
+                tittle: "Actualizar balances y vitales . . . ",
+                onChangeValue: () => setState(() => operationMethod(context))),
+          ],
+        ),
+      );
+
+  _appBar(BuildContext context) => AppBar(
+        elevation: 80,
+        foregroundColor: Colors.grey,
+        backgroundColor: Colors.black,
+        title: AppBarText(""),
+        actions: [
+          GrandIcon(
+            labelButton: "Menu Lateral . . . ",
+            iconData: Icons.menu_open,
+            onPress: () =>
+              setState(() {
+                widget.analysis = false;
+                _key.currentState!.openEndDrawer();
+              }),
+          ),
+          const SizedBox(width: 20),
+        ],
+      );
+
+  _floattingActionButton(BuildContext context) => FloatingActionButton(
+        backgroundColor: Colors.black,
+        onPressed: () => showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) {
+              return Container(
+                padding: const EdgeInsets.all(8.0),
+                decoration: const BoxDecoration(
+                  color: Theming.cuaternaryColor,
+                  border: Border(
+                      top: BorderSide(color: Colors.grey),
+                      right: BorderSide(color: Colors.grey),
+                      left: BorderSide(color: Colors.grey)),
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(16),
+                      topLeft: Radius.circular(16)),
+                ),
+                child: Container(),
+              );
+            }),
+        shape: RoundedRectangleBorder(
+            side: const BorderSide(width: 1, color: Colors.grey),
+            borderRadius: BorderRadius.circular(100)),
+        child: const Icon(
+          Icons.hdr_strong,
+          color: Colors.grey,
+        ),
+      );
+  //
   Widget actualVista(BuildContext context, {required int actualView}) {
     return Container(
       child: actualView == 0
@@ -2278,6 +2344,80 @@ class _GeneralesState extends State<Generales> {
                                           //                                                 : actualView == 21
                                           //                                                     ? const Hemoderivados()
                                           : Container(),
+    );
+  }
+
+  Widget _optionRevisiones(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          flex: 12,
+          child: actualVista(context, actualView: actualView),
+        ),
+        Expanded(
+          child: Wrap(
+            alignment: WrapAlignment.spaceAround,
+            spacing: 8,
+            // mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              GrandIcon(onPress: () => setState(() => actualView = 0)),
+              GrandIcon(onPress: () => setState(() => actualView = 1)),
+              GrandIcon(onPress: () => setState(() => actualView = 2)),
+              GrandIcon(onPress: () => setState(() => actualView = 3)),
+              GrandIcon(onPress: () => setState(() => actualView = 4)),
+              GrandIcon(onPress: () => setState(() => actualView = 5)),
+              GrandIcon(
+                  labelButton: "Historial de Cultivos",
+                  iconData: Icons.hourglass_bottom,
+                  onPress: () => setState(() => actualView = 6)),
+              GrandIcon(
+                  labelButton: "Revisión de Indicaciones",
+                  iconData: Icons.line_style_outlined,
+                  onPress: () => setState(() => actualView = 7)),
+            ],
+          ),
+        ),
+        Expanded(
+          child: Wrap(
+            alignment: WrapAlignment.spaceAround,
+            spacing: 8,
+            // mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              GrandIcon(
+                  iconData: Icons.list_alt_sharp,
+                  labelButton: "Pendientes . . . ",
+                  onPress: () => Cambios.toNextPage(
+                      context, GestionPendiente(withReturn: false))),
+              GrandIcon(
+                  iconData: Icons.vertical_split_outlined,
+                  labelButton: "Ventilaciones . . . ",
+                  onPress: () =>
+                      Cambios.toNextPage(context, GestionVentilaciones())),
+              GrandIcon(
+                  iconData: Icons.lens_blur,
+                  labelButton: "Indicaciones . . . ",
+                  onPress: () => Cambios.toNextActivity(
+                      tittle: "Indicaciones de la Hospitalización",
+                      context,
+                      chyld: const IndicacionesHospital())),
+              // GrandIcon(
+              //     iconData: Icons.view_array_outlined,
+              //     onPress: () => Cambios.toNextActivity(context, chyld: SituacionesHospitalizacion())),
+              const SizedBox(width: 30),
+              GrandIcon(
+                  iconData: Icons.list_alt_sharp,
+                  labelButton: "Laboratorios Previos . . . ",
+                  onPress: () => Cambios.toNextActivity(
+                      backgroundColor: Theming.cuaternaryColor,
+                      context,
+                      chyld: HistorialParaclinicos())),
+              GrandIcon(onPress: () => null),
+              GrandIcon(onPress: () => null),
+              GrandIcon(onPress: () => null),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

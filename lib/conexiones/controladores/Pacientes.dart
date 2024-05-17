@@ -1614,6 +1614,81 @@ class Pacientes {
     });
   }
 
+  static Future<void> getInfusionesHistorial() async {
+    //
+    await Actividades.consultarAllById(
+        Databases.siteground_database_reghosp,
+        Pendientes.pendientes['consultDispositivosByIdPrimaryQuery'],
+        Pacientes.ID_Hospitalizacion)
+        .then((onValue) {
+      //
+      for (var element in onValue) {
+        //
+        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[3][0]) {
+          Valores.initCVP = element['ID_Pace_Pen'];
+          Valores.withCVP =
+          element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+        }
+        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[3][1]) {
+          Valores.initCVLP = element['ID_Pace_Pen'];
+          Valores.withCVLP =
+          element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+        }
+        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[3][2]) {
+          Valores.initCVC = element['ID_Pace_Pen'];
+          Valores.withCVC =
+          element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+        }
+        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[3][3]) {
+          Valores.initMahurkar = element['ID_Pace_Pen'];
+          Valores.withMahurkar =
+          element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+        }
+        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[3][4]) {
+          Valores.initFOL = element['ID_Pace_Pen'];
+          Valores.withFOL =
+          element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+        }
+        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[3][5]) {
+          Valores.initSNG = element['ID_Pace_Pen'];
+          Valores.withSNG =
+          element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+        }
+        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[3][6]) {
+          Valores.initSOG = element['ID_Pace_Pen'];
+          Valores.withSOG =
+          element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+        }
+        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[3][7]) {
+          Valores.initPEN = element['ID_Pace_Pen'];
+          Valores.withPEN =
+          element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+        }
+        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[3][8]) {
+          Valores.initCOL = element['ID_Pace_Pen'];
+          Valores.withCOL =
+          element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+        }
+        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[3][9]) {
+          Valores.initSEP = element['ID_Pace_Pen'];
+          Valores.withSEP =
+          element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+        }
+        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[3][10]) {
+          Valores.initGAS = element['ID_Pace_Pen'];
+          Valores.withGAS =
+          element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+        }
+        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[3][11]) {
+          Valores.initTNK = element['ID_Pace_Pen'];
+          Valores.withTNK =
+          element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+        }
+      }
+    });
+  }
+
+
   static List<dynamic>  getPreviosIndicaciones() {
     List<dynamic> listado = [];
     //
@@ -6038,8 +6113,8 @@ class Auxiliares {
   static List especiales = [
     "Panel Viral",
     "Panel TORCH",
-    "Citoquímico de Líquido Cefalorraquídeo",
-    "Citológico de Líquido Cefalorraquídeo",
+    "Liquido Cefalorraquídeo", // "Citoquímico de Líquido Cefalorraquídeo",
+    // "Citológico de Líquido Cefalorraquídeo",
     "Líquido de Diálisis Peritoneal", // 13
     "Examen General de Orina", // 11
     "Depuración de Orina de 24 Horas", // 12
@@ -6618,20 +6693,18 @@ class Auxiliares {
             if (counter != distancia) {
               if (eacher['Unidad_Medida'] != '') {
                 max =
-                    "$max${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
-                    "${eacher['Resultado']} ${eacher['Unidad_Medida']}, ";
+                    "$max, ${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
+                    "${eacher['Resultado']} ${eacher['Unidad_Medida']}";
               } else {
-                print(
-                    "${eacher['Resultado']}, ${eacher['Tipo_Estudio']}, ${eacher['Estudio']}");
-
+                // print("${eacher['Resultado']}, ${eacher['Tipo_Estudio']}, ${eacher['Estudio']} ${eacher['Unidad_Medida']}");
                 max =
-                    "$max${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
-                    "${eacher['Resultado']}, ";
+                    "$max, ${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
+                    "${eacher['Resultado']}";
               }
             } else {
               if (eacher['Unidad_Medida'] != '') {
                 max =
-                    "$max${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
+                    "$max, ${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
                     "${eacher['Resultado']} ${eacher['Unidad_Medida']}";
               } else {
                 max =
@@ -6640,7 +6713,7 @@ class Auxiliares {
               }
             }
           });
-          prosa = "$prosa$fecha$max. \n";
+          prosa = "$prosa$fecha${max.replaceFirst(", ", "")}. \n";
           //
           max = "";
           counter = counter++;
@@ -6753,7 +6826,7 @@ class Auxiliares {
 
   static String abreviado(
       {required String tipoEstudio, required String estudio}) {
-    if (tipoEstudio != 'Examen General de Orina') {
+    if (tipoEstudio != 'Examen General de Orina' &&tipoEstudio != 'Liquido Cefalorraquídeo') {
       if (tipoEstudio != 'Gasometría Arterial' &&
           tipoEstudio != 'Gasometría Venosa') {
         if (estudio == 'Concentración Media de Hemoglobina Corpuscular') {
@@ -6930,55 +7003,89 @@ class Auxiliares {
         }
       }
     } else {
-      if (estudio == 'pH Urinario' &&
-          tipoEstudio == 'Examen General de Orina') {
-        return 'pH';
-      } else if (estudio == 'Color' &&
-          tipoEstudio == 'Examen General de Orina') {
-        return '';
-      } else if (estudio == 'Densidad Urinaria') {
-        return 'densidad';
-      } else if (estudio == 'Proteinas Urinarias') {
-        return 'proteinas';
-      } else if (estudio == 'Urobilinógeno Urinario') {
-        return 'urobilinógeno';
-      } else if (estudio == 'Bilirrubinas Urinarias') {
-        return 'bilirrubinas';
-      } else if (estudio == 'Esterasa Leucocitaria') {
-        return estudio.toLowerCase();
-      } else if (estudio == 'Uratos Amorfos') {
-        return estudio.toLowerCase();
-      } else if (estudio == 'Fosfatos Amorfos') {
-        return estudio.toLowerCase();
-      } else if (estudio == 'Cristales en Orina') {
-        return estudio.toLowerCase();
-      } else if (estudio == 'Mucina Urinaria') {
-        return estudio.toLowerCase();
-      } else if (estudio == 'Células Renales Urinarias') {
-        return "células renales";
-        //
-      } else if (estudio == 'Hemoglobina Urinaria') {
-        return 'hemoglobina';
-      } else if (estudio == 'Cetonas Urinarias') {
-        return 'cetonas';
-      } else if (estudio == 'Glucosa Urinaria') {
-        return 'glucosa';
-      } else if (estudio == 'Nitritos Urinarios') {
-        return 'nitritos';
-      } else if (estudio == 'Leucocitos Urinarios') {
-        return 'leucocitos';
-      } else if (estudio == 'Eritrocitos Urinarios') {
-        return 'eritrocitos';
-      } else if (estudio == 'Celulas Epiteliales Urinarias') {
-        return 'células epiteliales';
-      } else if (estudio == 'Bacterias Urinarias') {
-        return 'bacterias';
-      } else if (estudio == 'Levaduras Urinarias') {
-        return 'levaduras';
-      } else if (estudio == 'Cilindros Urinarios') {
-        return 'cilindros';
-      } else {
-        return estudio;
+      if (tipoEstudio == 'Examen General de Orina') {
+        if (estudio == 'pH Urinario' &&
+            tipoEstudio == 'Examen General de Orina') {
+          return 'pH';
+        } else if (estudio == 'Color' &&
+            tipoEstudio == 'Examen General de Orina') {
+          return '';
+        } else if (estudio == 'Densidad Urinaria') {
+          return 'densidad';
+        } else if (estudio == 'Proteinas Urinarias') {
+          return 'proteinas';
+        } else if (estudio == 'Urobilinógeno Urinario') {
+          return 'urobilinógeno';
+        } else if (estudio == 'Bilirrubinas Urinarias') {
+          return 'bilirrubinas';
+        } else if (estudio == 'Esterasa Leucocitaria') {
+          return estudio.toLowerCase();
+        } else if (estudio == 'Uratos Amorfos') {
+          return estudio.toLowerCase();
+        } else if (estudio == 'Fosfatos Amorfos') {
+          return estudio.toLowerCase();
+        } else if (estudio == 'Cristales en Orina') {
+          return estudio.toLowerCase();
+        } else if (estudio == 'Mucina Urinaria') {
+          return estudio.toLowerCase();
+        } else if (estudio == 'Células Renales Urinarias') {
+          return "células renales";
+          //
+        } else if (estudio == 'Hemoglobina Urinaria') {
+          return 'hemoglobina';
+        } else if (estudio == 'Cetonas Urinarias') {
+          return 'cetonas';
+        } else if (estudio == 'Glucosa Urinaria') {
+          return 'glucosa';
+        } else if (estudio == 'Nitritos Urinarios') {
+          return 'nitritos';
+        } else if (estudio == 'Leucocitos Urinarios') {
+          return 'leucocitos';
+        } else if (estudio == 'Eritrocitos Urinarios') {
+          return 'eritrocitos';
+        } else if (estudio == 'Celulas Epiteliales Urinarias') {
+          return 'células epiteliales';
+        } else if (estudio == 'Bacterias Urinarias') {
+          return 'bacterias';
+        } else if (estudio == 'Levaduras Urinarias') {
+          return 'levaduras';
+        } else if (estudio == 'Cilindros Urinarios') {
+          return 'cilindros';
+        } else {
+          return estudio;
+        }
+      }
+      else if (tipoEstudio == 'Liquido Cefalorraquídeo') {
+        if (estudio == 'pH Urinario en LCR') {
+          return 'pH';
+        } else if (estudio == 'Color en LCR') {
+          return 'Color';
+        } else if (estudio == 'Presion de Apertura en LCR') {
+          return 'Presión de Apertura';
+        } else if (estudio == 'Glucosa en LCR') {
+          return 'Glucorraquia';
+        } else if (estudio == 'Lactato Deshidrogenasa en LCR') {
+          return 'LDH-lcr';
+        } else if (estudio == 'Proteinas Totales en LCR') {
+          return 'PROT-lcr';
+        } else if (estudio == 'Albúmina en LCR') {
+          return "ALB-lcr";
+        } else if (estudio == 'Aspecto en LCR') {
+          return "Aspecto";
+        } else if (estudio == 'Albumina en LCR') {
+          return "ALB-lcr";
+        } else if (estudio == 'Leucocitos en LCR') {
+          return "LEU-lcr";
+        } else if (estudio == 'Polimorfonucleares en LCR') {
+          return "PMN-lcr";
+        } else if (estudio == 'Mononucleares en LCR') {
+          return "MON-lcr";
+        } else {
+          return estudio;
+        }
+      }
+      else {
+        return "";
       }
     }
   }
@@ -7014,7 +7121,9 @@ class Auxiliares {
     "Líquido de Pleural", // 27 : Analítica de Líquido Pleural
     "Aspirado de Médula Ósea",
     "Western Blot HIV-1, HIV-2", // 29
-    "Electrocardiograma"
+    "Electrocardiograma",
+    // Valoraciones conformadas
+    "Taller Gasométrico"
   ];
   static Map<String, dynamic> Laboratorios = {
     Categorias[0]: [
@@ -7817,12 +7926,13 @@ class Pendientes {
     "registerQuery": "INSERT INTO pace_pen (ID_Pace, ID_Hosp, "
         "Feca_PEN, Pace_PEN_realized, "
         "Pace_PEN, Pace_Desc_PEN) "
-        "VALUES (?,?,?,?,?,?)",
+        "VALUES (?,?,?,?,?,?)", // Omitido : Pace_Commen_PEN . ?
     "updateQuery": "UPDATE pace_pen "
         "SET ID_Pace_Pen = ?,  ID_Pace = ?,  ID_Hosp = ?,  "
         "Feca_PEN = ?,  "
         "Pace_PEN_realized = ?, "
-        "Pace_PEN = ?,  Pace_Desc_PEN = ? "
+        "Pace_PEN = ?,  Pace_Desc_PEN = ?, "
+        "Pace_Commen_PEN = ? "
         "WHERE ID_Pace_Pen = ?",
     "updateDoQuery": "UPDATE pace_pen "
         "SET Pace_PEN_realized = ? "
@@ -7842,12 +7952,12 @@ class Pendientes {
   static Map<String, dynamic> Pendiente = {};
 
   static List<String> typesPendientes = [
-    'Previos',
+    'Previos', // 0
     'Estudios',
-    'Paraclinicos',
+    'Paraclinicos', // 2
     'Procedimientos',
     'Envios',
-    'Indicaciones',
+    'Indicaciones', // 5
     'Trámites',
   ];
   static List<List<String>> subTypesPendientes = [
@@ -7906,11 +8016,14 @@ class Pendientes {
       'Interconsultas',
     ], // Interconsultas
     [
-      'Impregnación Antbiótica',
-      'Anticoagulación',
-      'Terapia de Compensacón Cardiaca',
-      'Sedación',
-      'Ministración de Vasoactivos',
+      'Impregnación Antbiótica', // 0
+      'Ministración de Anticoagulación', // 1
+      'Terapia de Compensación Cardiaca',
+      'Sedación o Sedoanalgesia', // 3
+      'Administración de Antiarritmicos', // 4
+      'Ministración de Vasoactivos', // 5
+      'Ministración de Inotrópico', // 6
+      'Ministración de Parálisis', // 7
       'Historial de Curva Enzimática',
     ], // Indicaciones
     [
@@ -7941,6 +8054,98 @@ class Pendientes {
       } else {
         Pacientes.Pendiente = value;
       }
+    });
+  }
+
+  static void registrarInfusiones(BuildContext context) {
+    Future.forEach([
+      [
+        Valores.initSedacion,
+        Pacientes.ID_Paciente,
+        Pacientes.ID_Hospitalizacion,
+        Valores
+            .withSedacion, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+        Valores.withSedacion == "" ? false : true,
+        Pendientes.typesPendientes[5], // Categoria de Procedimientos . . .
+        Pendientes.subTypesPendientes[5][3],
+        Valores.initSedacion,
+      ], // SEDA
+      [
+        Valores.initVasopresor,
+        Pacientes.ID_Paciente,
+        Pacientes.ID_Hospitalizacion,
+        Valores
+            .withVasopresor, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+        Valores.withVasopresor == "" ? false : true,
+        Pendientes.typesPendientes[5], // Categoria de Procedimientos . . .
+        Pendientes.subTypesPendientes[5][5],
+        Valores.initVasopresor,
+      ], // VASA
+      [
+        Valores.initInotropico,
+        Pacientes.ID_Paciente,
+        Pacientes.ID_Hospitalizacion,
+        Valores
+            .withInotropico, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+        Valores.withInotropico == "" ? false : true,
+        Pendientes.typesPendientes[5], // Categoria de Procedimientos . . .
+        Pendientes.subTypesPendientes[5][6],
+        Valores.initInotropico,
+      ], // IONO
+      [
+        Valores.initParalisis,
+        Pacientes.ID_Paciente,
+        Pacientes.ID_Hospitalizacion,
+        Valores
+            .withParalisis, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+        Valores.withParalisis == "" ? false : true,
+        Pendientes.typesPendientes[5], // Categoria de Procedimientos . . .
+        Pendientes.subTypesPendientes[5][7],
+        Valores.initParalisis,
+      ], // PARA
+      [
+        Valores.initAntiarritmico,
+        Pacientes.ID_Paciente,
+        Pacientes.ID_Hospitalizacion,
+        Valores
+            .withAntiarritmico, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+        Valores.withAntiarritmico == "" ? false : true,
+        Pendientes.typesPendientes[5], // Categoria de Procedimientos . . .
+        Pendientes.subTypesPendientes[5][4],
+        Valores.initAntiarritmico,
+      ], // ARRI
+      [
+        Valores.initAnticoagulante,
+        Pacientes.ID_Paciente,
+        Pacientes.ID_Hospitalizacion,
+        Valores
+            .withAnticoagulante, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+        Valores.withAnticoagulante == "" ? false : true,
+        Pendientes.typesPendientes[5], // Categoria de Procedimientos . . .
+        Pendientes.subTypesPendientes[5][1],
+        Valores.initAnticoagulante,
+      ], // COAN
+    ], (element) async {
+      await Actividades.registrar(
+        Databases.siteground_database_reghosp,
+        Pendientes.pendientes['registerQuery'],
+        element as List<dynamic>,
+      );
+    }).whenComplete(() {
+      Terminal.printSuccess(message: "SUCCESS- Dispositivos Agregados . . . ");
+      Operadores.alertActivity(
+        context: context,
+        tittle: "Registro de Dispositivos . . .",
+        message: "Se han registrado los Dispositivos de Inicio . ",
+      );
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(message: "ERROR - $error : : : $stackTrace");
+      Operadores.alertActivity(
+        context: context,
+        tittle: "$error . . .",
+        message: "$stackTrace",
+      );
+      //
     });
   }
 
