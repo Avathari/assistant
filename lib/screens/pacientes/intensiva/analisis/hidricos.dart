@@ -567,7 +567,7 @@ class _HidricosState extends State<Hidricos> {
                                 children: [
                                   Expanded(
                                     child: ValuePanel(
-                                      firstText: 'Albumina',
+                                      firstText: 'Alb-',
                                       secondText: Valores.albuminaSerica
                                           .toString(),
                                       thirdText: 'g/dL',
@@ -590,7 +590,7 @@ class _HidricosState extends State<Hidricos> {
                                     ),),
                                   Expanded(
                                     child: ValuePanel(
-                                      firstText: 'Creatinina',
+                                      firstText: 'Cr-',
                                       secondText: Valores.creatinina
                                           .toString(),
                                       thirdText: 'mg/dL',

@@ -11,6 +11,7 @@ import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/LoadingScreen.dart';
 import 'package:assistant/widgets/TittleContainer.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
@@ -54,6 +55,21 @@ class Calendarios {
 
   static String formatDate(String formattedString) {
     return DateFormat("dd.MM.yyyy").format(DateTime.parse(formattedString));
+  }
+
+  static Future<void> showPickedDate(
+      {required BuildContext context}) async {
+    await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2055),
+        builder: (BuildContext context, Widget? child) {
+          return Theme(
+              data: ThemeData.dark().copyWith(
+                  dialogBackgroundColor: Theming.cuaternaryColor),
+              child: child!);
+        });
   }
 }
 
@@ -358,17 +374,24 @@ class Listas {
     for (var item in aux) {
       //
       for (int index = 0; index <= secondKeySearched!.length - 1; index++) {
-
         if (item[firstKeySearched] == secondKeySearched[index]) {
-          Terminal.printOther(message: "${item["Fecha_Registro"]} : ${secondKeySearched[index]} . $index . . . ${item[elementDeseado]}");
+          Terminal.printOther(
+              message:
+                  "${item["Fecha_Registro"]} : ${secondKeySearched[index]} . $index . . . ${item[elementDeseado]}");
           if (index == 0) {
-            listado.add([item['Fecha_Registro'].toString(), item[elementDeseado] ?? 0.0]);
+            listado.add([
+              item['Fecha_Registro'].toString(),
+              item[elementDeseado] ?? 0.0
+            ]);
           } else {
             // Terminal.printData(message: "Fecha : ${item['Fecha_Registro']} : ${listado[listado.length-1][0]}");
-            if (item['Fecha_Registro'] == listado[listado.length-1][0]) {
-              listado[listado.length-1].insert(index + 1 , item[elementDeseado] ?? 0.0);
+            if (item['Fecha_Registro'] == listado[listado.length - 1][0]) {
+              listado[listado.length - 1]
+                  .insert(index + 1, item[elementDeseado] ?? 0.0);
             }
-            Terminal.printData(message: "Listado . ${listado.length} : : ${listado[listado.length-1].toString()}");
+            Terminal.printData(
+                message:
+                    "Listado . ${listado.length} : : ${listado[listado.length - 1].toString()}");
           }
           // listado.add(auxiliar);
         }

@@ -144,6 +144,8 @@ class Pacientes {
   static List? Imagenologicos = [];
   static List? Electros = [];
   static List? Pendiente = [];
+  //
+  static List? ProcedimientosQuirurgicos = [];
 
   static String get diasOrdinalesEstancia {
     Terminal.printExpected(
@@ -10423,3 +10425,205 @@ class Vacunales {
         "(SELECT IFNULL(count(*), 0) FROM pace_app_vac WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
   };
 }
+
+//
+class Cirugias {
+  static int ID_Cirugias = 0;
+  static var fileAssocieted =
+      '${Pacientes.localRepositoryPath}cirugias.json';
+
+  static Map<String, dynamic> Cirugia = {};
+
+  //
+  static List dispositivosBasicos = [
+    "CVP",
+    "CVLP",
+    "CVC",
+    "MAHA",
+    "FOL",
+    "SNG",
+    "SOG",
+    "PEN",
+    "COL",
+    "SEP",
+    "GAS",
+    "TNK"
+  ];
+  //
+  static List<String> Incidencias = [
+    "Previos",
+    "Dispositivos",
+    "Procedimientos",
+  ];
+  static Map<String, dynamic> Eventualidades = {
+    Incidencias[0]: [
+      "Manejo Avanzado de la Vía Aérea", // MAVA
+      "Intubación Orotraqueal", // IOT
+      "Extubación", // EXT
+      "",
+      "",
+    ],
+    Incidencias[1]: [
+      "Colocación de Cateter Venoso Periférico", // 0: CVP
+      "Colocación de Cateter Venoso Largo Periférico", // 1: CVLP
+      "Colocación de Cateter Venoso Central", // 2: CVC
+      "Colocación de Cateter de Hemodialisis", // 3: MAHA
+      "Colocación de Sonda Foley", // 4: FOL
+      //
+      "Colocación de Sonda Nasogástrica", // 5: SNG
+      "Colocación de Sonda Orogástrica", // 6: SOG
+      //
+      "Colocación de Drenaje Penrose", // 7: PEN
+      "Colocación de Colostomía", // 8 : COL
+      "Colocación de Sonda Endopleural", // 9 : SEP
+      "Colocación de Gastrostomía", // 10 : GAS
+      "Colocación de Dialisis Peritoneal", // 11: TNK
+      "",
+    ],
+    Incidencias[2]: [
+      "Hemodíalisis", // HEMO
+      "Procedimiento Quirúrgico", //
+      "",
+    ],
+  };
+
+//   static void ultimoRegistro() {
+//     Actividades.consultarId(Databases.siteground_database_reghosp,
+//         cirugias['consultLastQuery'], Pacientes.ID_Paciente)
+//         .then((value) {
+// // Enfermedades de base del paciente, asi como las Hospitalarias.
+//       Cirugia = value;
+//       Cirugias.ID_Cirugias = value['ID_Siti'] ?? 0;
+//     });
+//   }
+//
+//   static void actualizarRegistro() {
+//     Actividades.actualizar(
+//       Databases.siteground_database_reghosp,
+//       Cirugias.cirugias['updateQuery'],
+//       [
+//         Pacientes.ID_Paciente,
+//         Pacientes.ID_Hospitalizacion,
+//         'Hosp_Siti',
+//         Exploracion.dispositivoOxigeno,
+//         Dicotomicos.fromBoolean(Exploracion.isCateterPeriferico!, toInt: true),
+//         Dicotomicos.fromBoolean(Exploracion.isCateterLargoPeriferico!,
+//             toInt: true),
+//         Dicotomicos.fromBoolean(Exploracion.isCateterVenosoCentral!,
+//             toInt: true),
+//         Dicotomicos.fromBoolean(Exploracion.isCateterHemodialisis!,
+//             toInt: true),
+//         Dicotomicos.fromBoolean(Exploracion.isSondaFoley!, toInt: true),
+//         Dicotomicos.fromBoolean(Exploracion.isSondaNasogastrica!, toInt: true),
+//         Dicotomicos.fromBoolean(Exploracion.isSondaOrogastrica!, toInt: true),
+//         Dicotomicos.fromBoolean(Exploracion.isDrenajePenrose!, toInt: true),
+//         Dicotomicos.fromBoolean(Exploracion.isPleuroVac!, toInt: true),
+//         Dicotomicos.fromBoolean(Exploracion.isColostomia!, toInt: true),
+//         Dicotomicos.fromBoolean(Exploracion.isGastrostomia!, toInt: true),
+//         Dicotomicos.fromBoolean(Exploracion.isDialisisPeritoneal!, toInt: true),
+//         Pacientes.ID_Hospitalizacion,
+//       ],
+//       Pacientes.ID_Paciente,
+//     ).whenComplete(() => Terminal.printAlert(
+//         message: 'Situación Hospitalaria Actualizada . . . '));
+//   }
+//
+//   static void registrarRegistro() {
+//     Actividades.registrar(
+//       Databases.siteground_database_reghosp,
+//       Cirugias.cirugias['registerQuery'],
+//       [
+//         Pacientes.ID_Paciente,
+//         Pacientes.ID_Hospitalizacion,
+//         'Hosp_Siti',
+//         Exploracion.dispositivoOxigeno,
+//         false,
+//         false,
+//         false,
+//         false,
+//         false,
+//         false,
+//         false,
+//         false,
+//         false,
+//         false,
+//         false,
+//         false,
+//       ],
+//     ).whenComplete(() => Terminal.printAlert(
+//         message: 'Situación Hospitalaria Registrada . . . '));
+//   }
+//
+//   // static void consultarRegistro() {
+//   //   Actividades.consultarAllById(Databases.siteground_database_reghosp,
+//   //       cirugias['consultQuery'], Pacientes.ID_Hospitalizacion)
+//   //       .then((value) => Cirugias.fromJson(value));
+//   // }
+
+  static final Map<String, dynamic> cirugias = {
+    "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_reghosp "
+        "DEFAULT CHARACTER SET utf8 "
+        "COLLATE utf8_unicode_ci;",
+    "showTables": "SHOW tables;",
+    "dropDatabase": "DROP DATABASE bd_reghosp",
+    "describeTable": "DESCRIBE pace_ciru;",
+    "showColumns": "SHOW columns FROM pace_ciru",
+    "showInformation":
+    "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns "
+        "WHERE table_name = 'pace_ciru'",
+    "createQuery": """
+          CREATE TABLE pace_ciru (
+                 ID_Ciru INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                  ID_Pace INT NOT NULL,
+                  ID_Hosp INT NOT NULL,
+                  Feca_PRO_Ciru TINYINT NOT NULL, 
+                  Tipo_Cirugia VARCHAR(200) NOT NULL,
+                  Cirugia_Realizada VARCHAR(200) NOT NULL,
+                  Medi_Trat DATE NOT NULL
+                   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci 
+                   COMMENT='Tabla de Registro de Protocolos Quirúrgicos.';
+    """,
+    "truncateQuery": "TRUNCATE pace_ciru",
+    "dropQuery": "DROP TABLE pace_ciru",
+    "consultQuery": "SELECT * FROM pace_ciru WHERE ID_Hosp = ?",
+    "consultIdQuery": "SELECT * FROM pace_ciru WHERE ID_Pace = ?",
+    "consultByIdPrimaryQuery": "SELECT * FROM pace_ciru WHERE ID_Hosp = ?",
+    "consultAllIdsQuery": "SELECT ID_Pace FROM pace_ciru",
+    "consultLastQuery":
+    "SELECT * FROM pace_ciru WHERE ID_Pace = ? ORDER BY ID_Hosp ASC",
+    "consultByName": "SELECT * FROM pace_ciru WHERE Pace_APP_DEG LIKE '%",
+    "registerQuery": "INSERT INTO pace_ciru (ID_Pace, ID_Hosp, "
+        "Feca_PRO_Ciru, "
+        "Tipo_Cirugia, Cirugia_Realizada, Medi_Trat) "
+        "VALUES (?,?,?,?,?,?)",
+    "updateQuery": "UPDATE pace_ciru SET "
+        "ID_Ciru = ?, ID_Pace = ?,  ID_Hosp = ?, "
+        "Feca_PRO_Ciru = ?, "
+        "Tipo_Cirugia = ?, Cirugia_Realizada = ?, "
+        "Medi_Trat = ? "
+        "WHERE ID_Ciru = ?",
+    "deleteQuery": "DELETE FROM pace_ciru WHERE ID_Ciru = ?",
+    "cirugiasColumns": [
+      "ID_Pace",
+    ],
+    "cirugiasItems": [
+      "ID_Pace",
+    ],
+    "cirugiasColums": [
+      "ID Paciente",
+    ],
+    "cirugiastats": [
+      "Total_Administradores",
+    ],
+    "cirugiastadistics": "SELECT "
+        "(SELECT IFNULL(AVG('Pace_SV_tas'), 0) FROM pace_ciru WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAS,"
+        "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM pace_ciru WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
+        "(SELECT IFNULL(count(*), 0) FROM pace_ciru WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
+  };
+
+  static void fromJson(Map<String, dynamic> cirugias) {
+    // Map<String, dynamic>
+    // Terminal.printExpected(message: cirugias.toString());
+  }
+}
+

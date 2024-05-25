@@ -55,9 +55,9 @@ class _OperacionesCirugiasState extends State<OperacionesCirugias> {
         setState(() {
           widget._operationButton = 'Actualizar';
           idOperation = Cirugias.Cirugia['ID_Ciru'];
-
-          fechaCirugiaTextController.text =
-          Cirugias.Cirugia['Feca_PRO_Ciru'];
+          
+            fechaCirugiaTextController.text =
+            Cirugias.Cirugia['Feca_PRO_Ciru'];
 
           cirugiaProspectadaTextController.text =
           Cirugias.Cirugia['Tipo_Cirugia'];
@@ -169,9 +169,9 @@ class _OperacionesCirugiasState extends State<OperacionesCirugias> {
                         dialogBackgroundColor: Theming.cuaternaryColor),
                     child: child!);
               });
-          setState(() {
-            fechaCirugiaTextController.text = DateFormat("yyyy/MM/dd").format(picked!);
-          });
+              setState(() {
+                fechaCirugiaTextController.text = DateFormat("yyyy/MM/dd").format(picked!);
+              });
         },
       ),
       CrossLine(
@@ -187,21 +187,21 @@ class _OperacionesCirugiasState extends State<OperacionesCirugias> {
           withShowOption: true,
           iconData: Icons.line_style,
           onSelected: () =>
-              Operadores.openDialog(
-                  context: context,
-                  chyldrim: DialogSelector(
-                    tittle: 'Elemento quirúrgico',
-                    searchCriteria: 'Buscar por',
-                    typeOfDocument: 'txt',
-                    pathForFileSource: 'assets/diccionarios/Cirugias.txt',
-                    onSelected: ((value) {
-                      setState(() {
-                        Quirurgicos.selectedDiagnosis = value;
-                        cirugiaProspectadaTextController.text = Quirurgicos.selectedDiagnosis;
-                      });
-                    }),
-                  ))
-      ),
+            Operadores.openDialog(
+                context: context,
+                chyldrim: DialogSelector(
+                  tittle: 'Elemento quirúrgico',
+                  searchCriteria: 'Buscar por',
+                  typeOfDocument: 'txt',
+                  pathForFileSource: 'assets/diccionarios/Cirugias.txt',
+                  onSelected: ((value) {
+                    setState(() {
+                      Quirurgicos.selectedDiagnosis = value;
+                      cirugiaProspectadaTextController.text = Quirurgicos.selectedDiagnosis;
+                    });
+                  }),
+                ))
+          ),
       EditTextArea(
           keyBoardType: TextInputType.text,
           inputFormat: MaskTextInputFormatter(),
@@ -212,22 +212,22 @@ class _OperacionesCirugiasState extends State<OperacionesCirugias> {
           withShowOption: true,
           iconData: Icons.line_style,
           onSelected: () =>
-              Operadores.openDialog(
-                  context: context,
-                  chyldrim: DialogSelector(
-                    tittle: 'Elemento quirúrgico',
-                    searchCriteria: 'Buscar por',
-                    typeOfDocument: 'txt',
-                    pathForFileSource: 'assets/diccionarios/Cirugias.txt',
-                    onSelected: ((value) {
-                      setState(() {
-                        cirugiaRealizadaTextController.text = Quirurgicos.selectedDiagnosis = value;
-                      });
-                    }),
-                  ))
-      ),
+            Operadores.openDialog(
+                context: context,
+                chyldrim: DialogSelector(
+                  tittle: 'Elemento quirúrgico',
+                  searchCriteria: 'Buscar por',
+                  typeOfDocument: 'txt',
+                  pathForFileSource: 'assets/diccionarios/Cirugias.txt',
+                  onSelected: ((value) {
+                    setState(() {
+                      cirugiaRealizadaTextController.text = Quirurgicos.selectedDiagnosis = value;
+                    });
+                  }),
+                ))
+          ),
       CrossLine(
-          height: 5
+        height: 5
       ),
       EditTextArea(
         keyBoardType: TextInputType.text,
@@ -352,7 +352,7 @@ class _OperacionesCirugiasState extends State<OperacionesCirugias> {
   int idOperation = 0;
 
   List<dynamic>? listOfValues;
-
+  
   var fechaCirugiaTextController = TextEditingController();
   var cirugiaProspectadaTextController = TextEditingController();
   var cirugiaRealizadaTextController = TextEditingController();
@@ -599,9 +599,9 @@ class _GestionCirugiasState extends State<GestionCirugias> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       IconButton(
-                          color: Colors.grey,
-                          icon: const Icon(Icons.update_rounded),
-                          onPressed: () =>onSelected(
+                        color: Colors.grey,
+                        icon: const Icon(Icons.update_rounded),
+                        onPressed: () =>onSelected(
                               snapshot, posicion, context, Constantes.Update)
 
                       ),
@@ -609,23 +609,23 @@ class _GestionCirugiasState extends State<GestionCirugias> {
                         width: 20,
                       ),
                       IconButton(
-                          color: Colors.grey,
-                          icon: const Icon(Icons.delete),
-                          onPressed: () =>
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return alertDialog(
-                                      'Eliminar registro',
-                                      '¿Esta seguro de querer eliminar el registro?',
-                                          () {
-                                        closeDialog(context);
-                                      },
-                                          () {
-                                        deleteRegister(snapshot, posicion, context);
-                                      },
-                                    );
-                                  })
+                        color: Colors.grey,
+                        icon: const Icon(Icons.delete),
+                        onPressed: () =>
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return alertDialog(
+                                  'Eliminar registro',
+                                  '¿Esta seguro de querer eliminar el registro?',
+                                      () {
+                                    closeDialog(context);
+                                  },
+                                      () {
+                                    deleteRegister(snapshot, posicion, context);
+                                  },
+                                );
+                              })
 
                       )
                     ],
