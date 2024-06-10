@@ -41,15 +41,17 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
 
   List<dynamic>? listOfValues;
 
+  String typeIntervencion = Quirurgicos.intervenciones[0];
+  //
+  var firstItem = Quirurgicos.intervenciones[0];
   var isActualDiagoValue = Quirurgicos.actualDiagno[0];
   var cieDiagnoTextController = TextEditingController();
   var ayoDiagoTextController = TextEditingController();
   //
-  var isTratamientoDiagoValue = Quirurgicos.actualTratamiento[0];
+  var isTratamientoDiagoValue = Quirurgicos.actualDiagno[0];
   var tratamientoTextController = TextEditingController();
 
   //
-  var patologicosScroller = ScrollController();
   var fileAssocieted = Quirurgicos.fileAssocieted;
 
   @override
@@ -73,6 +75,10 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
           isActualDiagoValue =
               Dicotomicos.fromInt(Quirurgicos.Cirugias['Pace_APP_QUI_SINO'])
                   .toString();
+          //
+          Quirurgicos.typeIntervencion = typeIntervencion =
+              Quirurgicos.Cirugias['Pace_APP_type'].toString();
+          //
           if (Quirurgicos.selectedDiagnosis == "") {
             cieDiagnoTextController.text = Quirurgicos.Cirugias['Pace_APP_QUI'];
           } else {
@@ -81,9 +87,9 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
           ayoDiagoTextController.text =
               Quirurgicos.Cirugias['Pace_APP_QUI_dia'].toString();
           //
-          isTratamientoDiagoValue =
-              Dicotomicos.fromInt(Quirurgicos.Cirugias['Pace_APP_QUI_com_SINO'])
-                  .toString();
+          // isTratamientoDiagoValue =
+          //     Dicotomicos.fromInt(Quirurgicos.Cirugias['Pace_APP_QUI_com_SINO'])
+          //         .toString();
           tratamientoTextController.text =
               Quirurgicos.Cirugias['Pace_APP_QUI_com'];
         });
@@ -142,7 +148,7 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
             Expanded(
               flex: 3,
               child: SingleChildScrollView(
-                  controller: patologicosScroller,
+                  controller: ScrollController(),
                   child: Column(
                     children: component(context),
                   )),
@@ -163,16 +169,18 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
 
   List<Widget> component(BuildContext context) {
     return [
-            Row(
+      Spinner(
+          tittle: "Tipo de Intervención",
+          onChangeValue: (value) =>
+              setState(() => Quirurgicos.typeIntervencion = value),
+          items: Quirurgicos.intervenciones,
+          initialValue: Quirurgicos.typeIntervencion),
+      Row(
         children: [
           CircleSwitched(
               tittle: "¿Diagnóstico actual?",
-              onChangeValue: (value) {
-                setState(() {
-                  isActualDiagoValue =
-                  Dicotomicos.fromBoolean(value) as String;
-                });
-              },
+              onChangeValue: (value) => setState(() => isActualDiagoValue =
+                  Dicotomicos.fromBoolean(value) as String),
               isSwitched: Dicotomicos.fromString(isActualDiagoValue)),
           Expanded(
             flex: 2,
@@ -180,52 +188,70 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
               keyBoardType: TextInputType.text,
               inputFormat: MaskTextInputFormatter(),
               numOfLines: 1,
-              labelEditText: 'Procedimiento quirúrgico',
+              labelEditText: 'Intervención Realizada . . . ',
               textController: cieDiagnoTextController,
-            ),
-          ),
-          GrandIcon(
-            labelButton: "Procedimiento quirúrgico",
-            weigth: 5,
-            onPress: () {
-              cieDialog();
-            },
-          ),
-        ],
-      ),
-      CrossLine(height: 10,),
-      EditTextArea(
-        keyBoardType: TextInputType.number,
-        inputFormat: MaskTextInputFormatter(
-            mask: '##',
-            filter: {"#": RegExp(r'[0-9]')},
-            type: MaskAutoCompletionType.lazy),
-        labelEditText: 'Años desde el procedimiento',
-        textController: ayoDiagoTextController,
-        numOfLines: 1,
-      ),
-      CrossLine(),
-      Row(
-        children: [
-          CircleSwitched(
-              tittle: "¿Complicaciones?",
-              onChangeValue: (value) {
-                setState(() {
-                  isTratamientoDiagoValue =
-                  Dicotomicos.fromBoolean(value) as String;
-                });
+              selection: true,
+              withShowOption: true,
+              iconData: Icons.line_style,
+              onSelected: () {
+                String directionPath = "";
+                //
+                switch (Quirurgicos.typeIntervencion) {
+                  case 'Cirugías':
+                    directionPath = "assets/diccionarios/Cirugias.txt";
+                    break;
+                  case 'Alérgicos':
+                    directionPath = "assets/diccionarios/Alergias.txt";
+                    break;
+                  case 'Traumáticos':
+                    directionPath = "assets/diccionarios/Traumaticos.txt";
+                    break;
+                  case 'Tranfusiones':
+                    directionPath = "assets/diccionarios/Transfusionales.txt";
+                    break;
+                  case 'Vacunas':
+                    directionPath = "assets/diccionarios/Vacunas.txt";
+                    break;
+                  default:
+                    directionPath = "assets/diccionarios/Cirugias.txt";
+                    break;
+                }
+                //
+                Operadores.openDialog(
+                    context: context,
+                    chyldrim: DialogSelector(
+                      pathForFileSource: directionPath,
+                      typeOfDocument: "txt",
+                      onSelected: ((value) {
+                        setState(() {
+                          Diagnosticos.selectedDiagnosis = value;
+                          cieDiagnoTextController.text =
+                              Diagnosticos.selectedDiagnosis;
+                        });
+                      }),
+                    ));
               },
-              isSwitched: Dicotomicos.fromString(isTratamientoDiagoValue)),
-          Expanded(
-            child: EditTextArea(
-              keyBoardType: TextInputType.text,
-              inputFormat: MaskTextInputFormatter(),
-              labelEditText: 'Comentario de la complicación',
-              textController: tratamientoTextController,
-              numOfLines: 3,
             ),
           ),
         ],
+      ),
+      CrossLine(height: 10, thickness: 2),
+      CrossLine(height: 5),
+      // CircleSwitched(
+      //           //     tittle: "¿Complicaciones?",
+      //           //     onChangeValue: (value) {
+      //           //       setState(() {
+      //           //         isTratamientoDiagoValue =
+      //           //         Dicotomicos.fromBoolean(value) as String;
+      //           //       });
+      //           //     },
+      //           //     isSwitched: Dicotomicos.fromString(isTratamientoDiagoValue)),
+      EditTextArea(
+        keyBoardType: TextInputType.text,
+        inputFormat: MaskTextInputFormatter(),
+        labelEditText: 'Comentario de la complicación',
+        textController: tratamientoTextController,
+        numOfLines: 10,
       ),
     ];
   }
@@ -236,6 +262,7 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
         idOperation,
         Pacientes.ID_Paciente,
         Dicotomicos.toInt(isActualDiagoValue),
+        firstItem.toString(),
         cieDiagnoTextController.text,
         ayoDiagoTextController.text,
         Dicotomicos.toInt(isTratamientoDiagoValue),
@@ -323,27 +350,6 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
         break;
       default:
     }
-  }
-
-  cieDialog() {
-    showDialog(
-        useSafeArea: true,
-        context: context,
-        builder: (context) {
-          return Dialog(
-              child: DialogSelector(
-            tittle: 'Elemento quirúrgico',
-            searchCriteria: 'Buscar por',
-            typeOfDocument: 'txt',
-            pathForFileSource: 'assets/diccionarios/Cirugias.txt',
-            onSelected: ((value) {
-              setState(() {
-                Quirurgicos.selectedDiagnosis = value;
-                cieDiagnoTextController.text = Quirurgicos.selectedDiagnosis;
-              });
-            }),
-          ));
-        });
   }
 }
 
@@ -557,15 +563,21 @@ class _GestionQuirurgicosState extends State<GestionQuirurgicos> {
             children: [
               Row(
                 children: [
-                  CircleLabel(tittle: snapshot.data[posicion][widget.idElementQuery].toString(),),
-                  Expanded(child: CrossLine(isHorizontal: false, thickness: 2, color:Colors.grey)),
+                  CircleLabel(
+                    tittle: snapshot.data[posicion][widget.idElementQuery]
+                        .toString(),
+                  ),
+                  Expanded(
+                      child: CrossLine(
+                          isHorizontal: false,
+                          thickness: 2,
+                          color: Colors.grey)),
                   Expanded(
                     flex: 5,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-
                         Text(
                           "${snapshot.data[posicion][widget.keySearch]}",
                           style: const TextStyle(
@@ -592,8 +604,8 @@ class _GestionQuirurgicosState extends State<GestionQuirurgicos> {
                         icon: const Icon(Icons.update_rounded),
                         onPressed: () {
                           //
-                          onSelected(snapshot, posicion, context,
-                              Constantes.Update);
+                          onSelected(
+                              snapshot, posicion, context, Constantes.Update);
                         },
                       ),
                       const SizedBox(
@@ -613,8 +625,7 @@ class _GestionQuirurgicosState extends State<GestionQuirurgicos> {
                                     closeDialog(context);
                                   },
                                   () {
-                                    deleteRegister(
-                                        snapshot, posicion, context);
+                                    deleteRegister(snapshot, posicion, context);
                                   },
                                 );
                               });

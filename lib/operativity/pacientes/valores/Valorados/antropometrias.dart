@@ -200,7 +200,35 @@ class Antropometrias {
       ((math.pow(Valores.alturaPaciente!, 0.3964)) *
           (math.pow(Valores.pesoCorporalTotal!, 0.5378))));
 
-  /// Indice Cintura - Cadera ; Mujeres 0.71 - 0.84, Hombres 0.78 - 0.94
+  /// pO2 equivalente por SpO2 (Ecuación de Severinhause-Ellis / Inverso de Ellis) .
+  ///
+  /// * * *
+  ///
+  /// Consulte : : https://www.rccc.eu/protocolos/SpFi.html#info
+  ///
+  /// Nonlinear Imputation of Pao2/Fio2 From Spo2/Fio2 Among Patients With Acute Respiratory Distress Syndrome : https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4980543/#appsec1
+  /// https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4980543/bin/mmc1.pdf
+  ///
+  /// Imputation of partial pressures of arterial oxygen using oximetry and its impact on sepsis diagnosis : https://iopscience.iop.org/article/10.1088/1361-6579/ab5154
+  ///
+  /// Imputing the ratio of partial pressure of arterial oxygen to fraction of inspired oxygen: the optimal strategy in non-intubated floor patients. : https://bit.ly/2X50EBb
+  ///
+  /// Comparison of the SpO2/FIO2 Ratio and the PaO2/FIO2 Ratio in Patients With Acute Lung Injury or ARDS : http://journal.publications.chestnet.org/article.aspx?articleid=1085326
+  ///
+  ///
+  static double get pO2equivalente {
+    // return math.pow((23400 / (1/(Valores.saturacionPerifericaOxigeno!/100)) - 0.99), (1/3)).toDouble();
+    double S = (Valores.saturacionPerifericaOxigeno! / 100).toDouble();
+    //
+    double A = (11700) * math.pow((math.pow(1 / S, -1) - 1), -1).toDouble();
+    double B = math.pow(math.pow(50, 3) + math.pow(A, 2), (1 / 2)).toDouble();
+
+    return (math.pow(B + A, (1 / 3)) + math.pow(B - A, (1 / 3))).toDouble();
+  }
+
+  /// Indice Cintura - Cadera (iC-C)
+  ///
+  /// VN : Mujeres 0.71 - 0.84, Hombres 0.78 - 0.94
   static double get indiceCinturaCadera {
     if (Valores.circunferenciaCintura! == 0 ||
         Valores.circunferenciaCadera! == 0) {
@@ -258,9 +286,24 @@ class Antropometrias {
 
   //static double get GCE => (495 / densidadCorporal) - 450; // De Siri
   // GCE = (CAD / (Antropometria.getEstatura() * Math.sqrt(Antropometria.getEstatura()))) - 18 // De Brook
+  /// Grasa Corporal Esencial (Fórmula de Siri)
+  ///
+  /// Parte de la medición de la densidad Corporal; es decir, de la medida de los pliegues cutáneos.
+  ///
+  ///
   static double get grasaCorporalEsencial =>
-      ((495 / densidadCorporal) - 450) * -100; // De Siri
+      ((4.95 / densidadCorporal) - 4.50) * 100; // De Siri
 
+  /// Estimación del Porcentaje de Grasa Corporal (Fórmula de Durenberg)
+  ///
+  /// VN : Hombres 15-18% : : Mujeres 20-25%
+  ///
+  /// * Mayor 25% en Hombres, Mayor del 33% en Mujeres, se considera Obesidad.
+  ///
+  /// ** Consulte : https://www.medigraphic.com/cgi-bin/new/resumen.cgi?IDARTICULO=29821
+  ///
+  /// Referencias : Lavalle GFJ, Mancillas AL, Villarreal PJZ, et al. Comparación del porcentaje de grasa corporal estimado por la fórmula de Deurenberg y el obtenido por plestismografía por desplazamiento de aire. Rev Salud Publica Nutr. 2011;12(1):.
+  ///
   static double get porcentajeGrasaCorporal {
     if (Valores.sexo == "Masculino" && imc != 0) {
       return ((1.2 * imc) +
@@ -300,6 +343,10 @@ class Antropometrias {
     // } else {
     //   return double.nan;
     // }
+  }
+
+  static double get pesoCorporalGraso {
+   return (porcentajeGrasaCorporal * 100) / Valores.pesoCorporalTotal!;
   }
 
   static double get masaMuscularMagra =>

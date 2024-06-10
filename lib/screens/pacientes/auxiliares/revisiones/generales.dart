@@ -506,6 +506,8 @@ class _GeneralesState extends State<Generales> {
                               double.parse(pctTextController.text);
                           viaPerdidaTextController.text =
                               Valores.perdidasInsensibles.toStringAsFixed(0);
+                          viaOtrosIngresosTextController.text =
+                              Valores.aguaMetabolica.toStringAsFixed(0);
                         }),
                   ),
                   Expanded(
@@ -2092,9 +2094,9 @@ class _GeneralesState extends State<Generales> {
               child: Column(
                 children: [
                   const Expanded(child: RevisionPrevios()),
-                  Expanded(
-                      child: RevisionCultivos(
-                          listado: Pacientes.getRevisionCultivos())),
+                  // Expanded(
+                  //     child: RevisionCultivos(
+                  //         listado: Pacientes.getRevisionCultivos())),
                 ],
               )),
           Expanded(

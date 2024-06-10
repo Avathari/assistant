@@ -1,10 +1,10 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
-import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart'
     as Gas;
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/dashboard.dart';
+import 'package:assistant/screens/pacientes/auxiliares/detalles/menus.dart';
 import 'package:assistant/screens/pacientes/auxiliares/detalles/detalles.dart';
 import 'package:assistant/screens/pacientes/auxiliares/detalles/estadisticasVitales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizados.dart';
@@ -38,7 +38,6 @@ import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:flutter/material.dart';
-import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisorios.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/diagnosticados.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/balances.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
@@ -715,10 +714,8 @@ class _VisualPacientesState extends State<VisualPacientes> {
               GrandIcon(
                 iconData: Icons.bubble_chart,
                 labelButton: 'Análisis Metabólico',
-                onPress: () {
-                  Operadores.openDialog(
-                      context: context, chyldrim: const Metabolicos());
-                },
+                onPress: () =>
+  Cambios.toNextActivity(context, chyld: Metabolicos())
               ),
               GrandIcon(
                 iconData: Icons.horizontal_rule_sharp,
@@ -1133,59 +1130,18 @@ class _VisualPacientesState extends State<VisualPacientes> {
 
   sidePanel(BuildContext context) => <Widget>[
         CrossLine(
-          thickness: 0,
-          height: 7,
-        ),
-        CrossLine(
           thickness: 1,
-          height: 15,
+          height: 22,
         ),
         Expanded(
           flex: 2,
           child: Wrap(
+            direction: Axis.vertical,
             runSpacing: 10,
             children: [
-              CircleIcon(
-                  radios: 30,
-                  difRadios: 8,
-                  iconed: Icons.medical_information,
-                  tittle: "Datos Generales . . . ",
-                  onChangeValue: () {
-                    _key.currentState!.closeEndDrawer();
-                    Datos.portapapeles(
-                        context: context, text: Pacientes.nombreCompleto!);
-                  }),
-              CircleIcon(
-                  radios: 30,
-                  difRadios: 8,
-                  iconed: Icons.numbers,
-                  tittle: "Número de Seguro Social . . . ",
-                  onChangeValue: () {
-                    _key.currentState!.closeEndDrawer();
-                    Datos.portapapeles(
-                        context: context, text: Pacientes.numeroAfiliacion!);
-                  }),
-              CircleIcon(
-                  radios: 30,
-                  difRadios: 8,
-                  iconed: Icons.nat,
-                  tittle: "Número de Seguro Social . . . ",
-                  onChangeValue: () {
-                    _key.currentState!.closeEndDrawer();
-                    Datos.portapapeles(
-                        context: context, text: Pacientes.numeroPaciente!);
-                  }),
-              CircleIcon(
-                  radios: 30,
-                  difRadios: 8,
-                  iconed: Icons.medical_information,
-                  tittle: "Vitales abreviado . . . ",
-                  onChangeValue: () {
-                    _key.currentState!.closeEndDrawer();
-                    Datos.portapapeles(
-                        context: context,
-                        text: Antropometrias.vitalesAbreviado);
-                  }),
+              Menus.popUpIdentificaciones(context),
+              Menus.popUpVitales(context),
+              Menus.popUpVentometrias(context),
             ],
           ),
         ),
@@ -1280,6 +1236,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
           ),
         ],
       );
+
 
 // onChangeValue: () => showModalBottomSheet(
 //     context: context,

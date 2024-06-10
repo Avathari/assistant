@@ -1,8 +1,6 @@
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/analisisMedico.dart';
-import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/auxiliaresReportes.dart';
-import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/exploracionFisica.dart';
-import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/pronosticos.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
@@ -27,6 +25,8 @@ class _ReporteEgresoState extends State<ReporteEgreso> {
 
     // INICIAR . . .
     setState(() {
+      Repositorios.tipo_Analisis = Items.tiposAnalisis[3];
+      //
       initialTextController.text = Reportes.reportes['Datos_Generales'] =
           Pacientes.prosa(isTerapia: true);
       Reportes.reportes['Padecimiento_Actual'] =

@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/citometrias.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/conmutadorParaclinicos.dart';
 
@@ -822,6 +823,8 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                               .Laboratorios[Auxiliares.Categorias[index]][0];
                           unidadMedidaValue = Auxiliares
                               .Medidas[Auxiliares.Categorias[index]][0];
+                          //
+                          Terminal.printExpected(message: "$unidadMedidaValue");
                           // *************** *********** **************
                         });
                       }),
@@ -879,6 +882,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                 items: Auxiliares.Laboratorios[tipoEstudioValue],
                 onChangeValue: (String? newValue) {
                   setState(() {
+                    // unidadMedidaValue = "";
                     estudioValue = newValue!;
                     //
                   });
@@ -982,6 +986,9 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                           // ));
                           Cambios.toNextActivity(context,
                               tittle: 'Rutina',
+                              onOption: () {
+                            Terminal.printExpected(message: Citometrias.hematicos());
+                              },
                               chyld: ConmutadorParaclinicos(
                                 categoriaEstudio: 'Rutina',
                               ));

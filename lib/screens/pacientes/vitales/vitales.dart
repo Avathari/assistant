@@ -103,7 +103,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
           factorEstresValue = Valores.factorEstres!.toString();
           //
 
-          pectTextController.text = Valores.circunferenciaPectoral!.toString();
+          pectTextController.text = Valores.circunferenciaPectoral!.toString() ?? "";
           //
           pcbTextController.text = Valores.pliegueCutaneoBicipital!.toString();
           //
@@ -1134,20 +1134,25 @@ class _GestionVitalesState extends State<GestionVitales> {
         message: "Iniciando actividad : : \n "
             "Repositorio de Signos Vitales del Paciente . . .");
     List result = [];
+    //
     Pacientes.Vitales!.clear();
     Actividades.consultarAllById(Databases.siteground_database_regpace,
             Vitales.vitales['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
         .then((value) {
+      // print(value);
+
       result.addAll(value);
       Actividades.consultarAllById(Databases.siteground_database_regpace,
               Vitales.antropo['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
           .then((value) {
+            // print(value);
         int index = 0;
         for (var item in result) {
           if (index <= result.length) {
+            print(item);
             var thirdMap = {};
-            print("${value.length} ${result.length}");
-            print("${value[index]['ID_Pace_SV']} ${item['ID_Pace_SV']}");
+            // print("${value.length} ${result.length}");
+            // print("${value[index]['ID_Pace_SV']} ${item['ID_Pace_SV']}");
             thirdMap.addAll(item);
             thirdMap.addAll(value[index]);
             // Adición a Vitales ********** ************ ************** ********

@@ -5,6 +5,7 @@ import 'package:assistant/screens/pacientes/auxiliares/detalles/detalles.dart';
 import 'package:assistant/screens/pacientes/auxiliares/detalles/estadisticasVitales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/diagnosticos/degenerativos.dart';
 import 'package:assistant/screens/pacientes/auxiliares/diagnosticos/diagnosticos.dart';
+import 'package:assistant/screens/pacientes/auxiliares/diagnosticos/prognosis.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisiones.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizado.dart';
@@ -153,7 +154,7 @@ class _DashboardState extends State<Dashboard> {
               const SizedBox(height: 6),
               Expanded(
                 child: RoundedPanel(
-                  child: const Diagnosis(),
+                  child: const Prognosis(),
                 ),
               ),
             ],
@@ -184,7 +185,7 @@ class _DashboardState extends State<Dashboard> {
                       Expanded(
                           child: RoundedPanel(child: const Degenerativos())),
                       const SizedBox(width: 6),
-                      Expanded(child: RoundedPanel(child: const Diagnosis())),
+                      Expanded(child: RoundedPanel(child: const Prognosis())),
                     ],
                   ),
                 ),
@@ -223,7 +224,7 @@ class _DashboardState extends State<Dashboard> {
                 const SizedBox(height: 6),
                 Expanded(
                     child: RoundedPanel(
-                  child: const Diagnosis(),
+                  child:Prognosis(),
                 )),
                 const SizedBox(height: 6),
               ],

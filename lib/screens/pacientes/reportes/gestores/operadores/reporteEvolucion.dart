@@ -1,3 +1,4 @@
+import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -33,6 +34,8 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
   void initState() {
     // # # # ############## #### ########
     setState(() {
+      Repositorios.tipo_Analisis = Items.tiposAnalisis[1];
+      //
       initialTextController.text = Pacientes.prosa(isTerapia: true);
       // ********************************************
       diagoTextController.text = Reportes.impresionesDiagnosticas.isNotEmpty

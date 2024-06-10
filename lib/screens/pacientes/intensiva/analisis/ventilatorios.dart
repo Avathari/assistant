@@ -2,6 +2,7 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/ventometr%C3%ADas.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/screens/pacientes/auxiliares/detalles/menus.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
@@ -14,7 +15,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 class Ventilatorios extends StatefulWidget {
-
   Ventilatorios({super.key});
 
   @override
@@ -28,11 +28,10 @@ class _VentilatoriosState extends State<Ventilatorios> {
 
   @override
   void initState() {
-
     setState(() {
       //
-      Valores.distensibilidadEstaticaMedida = Ventometrias
-          .distensibilidadPulmonarEstatica;
+      Valores.distensibilidadEstaticaMedida =
+          Ventometrias.distensibilidadPulmonarEstatica;
     });
 
     Terminal.printExpected(
@@ -69,7 +68,8 @@ class _VentilatoriosState extends State<Ventilatorios> {
                         children: [
                           ValuePanel(
                             firstText: 'Vt',
-                            secondText: Valores.volumenTidal!.toStringAsFixed(0),
+                            secondText:
+                                Valores.volumenTidal!.toStringAsFixed(0),
                             thirdText: 'mL',
                           ),
                           CrossLine(),
@@ -99,9 +99,8 @@ class _VentilatoriosState extends State<Ventilatorios> {
                               Expanded(
                                 child: ValuePanel(
                                   firstText: 'PaO2',
-                                  secondText: Valores
-                                      .poArteriales!
-                                      .toStringAsFixed(0),
+                                  secondText:
+                                      Valores.poArteriales!.toStringAsFixed(0),
                                   thirdText: 'mmHg',
                                 ),
                               ),
@@ -118,8 +117,8 @@ class _VentilatoriosState extends State<Ventilatorios> {
                               Expanded(
                                 child: ValuePanel(
                                   firstText: 'Pplat',
-                                  secondText:
-                                      Valores.presionPlateau!.toStringAsFixed(0),
+                                  secondText: Valores.presionPlateau!
+                                      .toStringAsFixed(0),
                                   thirdText: 'cmH2O',
                                 ),
                               ),
@@ -142,8 +141,7 @@ class _VentilatoriosState extends State<Ventilatorios> {
                           ),
                           ValuePanel(
                             firstText: "F",
-                            secondText: Ventometrias
-                                .flujoVentilatorioMedido
+                            secondText: Ventometrias.flujoVentilatorioMedido
                                 .toStringAsFixed(2),
                             thirdText: "L/min",
                           ), // Flujo
@@ -161,10 +159,8 @@ class _VentilatoriosState extends State<Ventilatorios> {
                             decoration: ContainerDecoration.roundedDecoration(),
                             child: ValuePanel(
                               firstText: "Csr",
-                              secondText:
-                                  Valores.distensibilidadEstaticaMedida!
-                                          .toStringAsFixed(2)
-                                      ,
+                              secondText: Valores.distensibilidadEstaticaMedida!
+                                  .toStringAsFixed(2),
                               thirdText: "L/cmH2O",
                               onLongPress: () {
                                 Operadores.editActivity(
@@ -179,7 +175,6 @@ class _VentilatoriosState extends State<Ventilatorios> {
                               },
                             ),
                           ),
-
                         ],
                       ),
                     ),
@@ -279,53 +274,60 @@ class _VentilatoriosState extends State<Ventilatorios> {
                                     Expanded(
                                       child: SingleChildScrollView(
                                         controller: ScrollController(),
-                                        child: Column(
-                                            children: [
-                                              ValuePanel(
-                                                firstText: "VM",
-                                                secondText: Ventometrias
-                                                    .volumenMinuto
-                                                    .toStringAsFixed(1),
-                                                thirdText: "L/min",
-                                              ), // Volumen Minuto
-                                              ValuePanel(
-                                                firstText: "Pta",
-                                                secondText: Ventometrias
-                                                    .presionTranspulmonar
-                                                    .toStringAsFixed(2),
-                                                thirdText: "cmH2O",
-                                              ), // Pta : Presión Transpulmonar
-                                              CrossLine(),
-                                              ValuePanel(
-                                                firstText: "Dp (Vt/Cstat)",
-                                                secondText:
-                                                    (Ventometrias.drivingPressure)
-                                                        .toStringAsFixed(0),
-                                                thirdText: "L/cmH2O",
-                                              ),
-                                              ValuePanel(
-                                                firstText: "Dpres",
-                                                secondText: (Ventometrias
-                                                        .presionDistencion)
+                                        child: Column(children: [
+                                          ValuePanel(
+                                            firstText: "VM",
+                                            secondText: Ventometrias
+                                                .volumenMinuto
+                                                .toStringAsFixed(1),
+                                            thirdText: "L/min",
+                                          ), // Volumen Minuto
+                                          ValuePanel(
+                                            firstText: "Pta",
+                                            secondText: Ventometrias
+                                                .presionTranspulmonar
+                                                .toStringAsFixed(2),
+                                            thirdText: "cmH2O",
+                                          ), // Pta : Presión Transpulmonar
+                                          CrossLine(),
+                                          ValuePanel(
+                                            firstText: "Dp (Vt/Cstat)",
+                                            secondText:
+                                                (Ventometrias.drivingPressure)
                                                     .toStringAsFixed(0),
-                                                thirdText: "L/cmH2O",
+                                            thirdText: "L/cmH2O",
+                                          ),
+                                          ValuePanel(
+                                            firstText: "Dpres",
+                                            secondText:
+                                                (Ventometrias.presionDistencion)
+                                                    .toStringAsFixed(0),
+                                            thirdText: "L/cmH2O",
+                                          ),
+                                          CrossLine(),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: ValuePanel(
+                                                  firstText: "W.O.B.",
+                                                  secondText: Ventometrias
+                                                      .poderMecanico
+                                                      .toStringAsFixed(1),
+                                                  thirdText: "cmH2O",
+                                                ),
                                               ),
-                                              CrossLine(),
-                                              ValuePanel(
-                                                firstText: "W.O.B.",
-                                                secondText: Ventometrias
-                                                    .poderMecanico
-                                                    .toStringAsFixed(1),
-                                                thirdText: "cmH2O",
+                                              Expanded(
+                                                child: ValuePanel(
+                                                  firstText: "P.d.A.",
+                                                  secondText: Ventometrias
+                                                      .poderDistencion
+                                                      .toStringAsFixed(1),
+                                                  thirdText: "cmH2O",
+                                                ),
                                               ),
-                                              ValuePanel(
-                                                firstText: "P.d.A.",
-                                                secondText: Ventometrias
-                                                    .poderDistencion
-                                                    .toStringAsFixed(1),
-                                                thirdText: "cmH2O",
-                                              ),
-                                            ]),
+                                            ],
+                                          ),
+                                        ]),
                                       ),
                                     ),
                                     Expanded(
@@ -350,26 +352,28 @@ class _VentilatoriosState extends State<Ventilatorios> {
                                                 Valores.EV.toStringAsFixed(1),
                                             thirdText: "",
                                           ),
-                                          Row(children: [
-                                            Expanded(
-                                              child: ValuePanel(
-                                                firstText: "iO2",
-                                                secondText: Valores
-                                                    .indiceOxigenacion
-                                                    .toStringAsFixed(2),
-                                                thirdText: "",
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: ValuePanel(
+                                                  firstText: "iO2",
+                                                  secondText: Valores
+                                                      .indiceOxigenacion
+                                                      .toStringAsFixed(2),
+                                                  thirdText: "",
+                                                ),
                                               ),
-                                            ),
-                                            Expanded(
-                                              child: ValuePanel(
-                                                firstText: "iO2a",
-                                                secondText: Valores
-                                                    .indiceOxigenacionAdaptado
-                                                    .toStringAsFixed(2),
-                                                thirdText: "",
+                                              Expanded(
+                                                child: ValuePanel(
+                                                  firstText: "iO2a",
+                                                  secondText: Valores
+                                                      .indiceOxigenacionAdaptado
+                                                      .toStringAsFixed(2),
+                                                  thirdText: "",
+                                                ),
                                               ),
-                                            ),
-                                          ],)
+                                            ],
+                                          )
                                         ]),
                                       ),
                                     ),
@@ -492,17 +496,18 @@ class _VentilatoriosState extends State<Ventilatorios> {
                       },
                     ),
                   ),
-                  Expanded(
-                    child: CircleIcon(
-                      difRadios: 11,
-                      tittle: "Copiar en Portapapeles",
-                      iconed: Icons.copy_all,
-                      onChangeValue: () {
-                        Datos.portapapeles(
-                            context: context, text: Ventometrias.ventilador);
-                      },
-                    ),
-                  ),
+                  Expanded(child: Menus.popUpVentometrias(context)
+                      // CircleIcon(
+                      //   difRadios: 11,
+                      //   tittle: "Copiar en Portapapeles",
+                      //   iconed: Icons.copy_all,
+                      //   onChangeValue: () {
+                      //
+                      // Datos.portapapeles(
+                      //     context: context, text: Ventometrias.ventilador);
+                      //   },
+                      // ),
+                      ),
                 ],
               ),
             ),
@@ -511,4 +516,5 @@ class _VentilatoriosState extends State<Ventilatorios> {
       ),
     );
   }
+
 }

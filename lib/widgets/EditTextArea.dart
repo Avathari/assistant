@@ -16,7 +16,7 @@ class EditTextArea extends StatefulWidget {
   bool obscureText = false;
   bool prefixIcon = false;
   bool isObscure = false;
-  bool withShowOption = false, withDeleteOption = false;
+  bool withShowOption = false, withDeleteOption = false, readOnly;
   bool selection;
   int numOfLines;
   double fontSize;
@@ -26,7 +26,7 @@ class EditTextArea extends StatefulWidget {
   void Function()? onSelected;
   final ValueChanged<String>? onChange;
 
-  IconData? iconData ;
+  IconData? iconData;
 
   int? limitOfChars, optionEqui;
 
@@ -39,6 +39,7 @@ class EditTextArea extends StatefulWidget {
     this.obscureText = false,
     this.prefixIcon = false,
     this.isObscure = false,
+    this.readOnly = false,
     this.fontSize = 8, // 12
     this.numOfLines = 15,
     this.limitOfChars = 0,
@@ -48,7 +49,7 @@ class EditTextArea extends StatefulWidget {
     this.onChange,
     this.withShowOption = false,
     this.withDeleteOption = false,
-    this.iconData= Icons.panorama_fish_eye,
+    this.iconData = Icons.panorama_fish_eye,
     this.iconColor = Colors.white,
   }) : super(key: key) {
     // inputFormat = MaskTextInputFormatter();
@@ -66,15 +67,17 @@ class _EditTextAreaState extends State<EditTextArea> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 8.0, left: 8.0, top: 4.0, bottom: 1.0),
+      padding:
+          const EdgeInsets.only(right: 8.0, left: 8.0, top: 4.0, bottom: 1.0),
       child: Row(
         children: [
           Expanded(
-            flex: isDesktop(context) ? 14: 9,
+            flex: isDesktop(context) ? 14 : 9,
             child: TextField(
               maxLength: widget.limitOfChars == 0 ? null : widget.limitOfChars,
               inputFormatters: [widget.inputFormat],
               controller: widget.textController,
+              readOnly: widget.readOnly,
               autofocus: false,
               maxLines: widget.numOfLines,
               keyboardType: widget.keyBoardType,
@@ -83,28 +86,29 @@ class _EditTextAreaState extends State<EditTextArea> {
               obscureText: widget.obscureText,
               style: TextStyle(
                 color: Colors.white,
-                fontSize: isMobile(context) || isTablet(context) ? widget.fontSize : widget.fontSize + 2,
+                fontSize: isMobile(context) || isTablet(context)
+                    ? widget.fontSize
+                    : widget.fontSize + 2,
               ),
               textAlign: TextAlign.justify,
               decoration: InputDecoration(
                 prefix: widget.prefixIcon == true
                     ? Padding(
-                      padding: const EdgeInsets.only(right: 7.0),
-                      child: Icon(
+                        padding: const EdgeInsets.only(right: 7.0),
+                        child: Icon(
                           widget.iconData,
                           color: widget.iconColor,
                         ),
-                    )
+                      )
                     : null,
-                helperStyle: const TextStyle(
-                  color: Colors.white,
-                ),
+                helperStyle: const TextStyle(color: Colors.white),
                 labelText: widget.labelEditText,
                 labelStyle: const TextStyle(
                   fontSize: 10,
                   color: Colors.white,
                 ),
-                contentPadding: const EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 10),
+                contentPadding: const EdgeInsets.only(
+                    left: 10, right: 10, bottom: 10, top: 10),
                 enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.white, width: 0.5),
                     borderRadius: BorderRadius.all(Radius.circular(20))),
@@ -127,8 +131,7 @@ class _EditTextAreaState extends State<EditTextArea> {
           ),
           widget.withShowOption
               ? Expanded(
-                  flex:
-                  widget.optionEqui! ,
+                  flex: widget.optionEqui!,
                   child: Container(
                     padding: const EdgeInsets.all(0.5),
                     margin: const EdgeInsets.all(1.0),
@@ -152,7 +155,8 @@ class _EditTextAreaState extends State<EditTextArea> {
                                           children: [
                                             TittlePanel(
                                                 colorText: Colors.grey,
-                                                textPanel: widget.labelEditText!),
+                                                textPanel:
+                                                    widget.labelEditText!),
                                             Text(
                                               widget.textController.text,
                                               style: const TextStyle(
@@ -166,30 +170,30 @@ class _EditTextAreaState extends State<EditTextArea> {
                                 },
                         ),
                         if (widget.withDeleteOption) CrossLine(),
-                        if (widget.withDeleteOption) GrandIcon(
-                            labelButton: "Ver",
-                            iconData: Icons.cleaning_services,
-                            iconColor: widget.iconColor,
-                            onPress: () {
-                              widget.textController.text = "";
-                            }
-                        )
+                        if (widget.withDeleteOption)
+                          GrandIcon(
+                              labelButton: "Ver",
+                              iconData: Icons.cleaning_services,
+                              iconColor: widget.iconColor,
+                              onPress: () {
+                                widget.textController.text = "";
+                              })
                       ],
                     ),
                   ),
                 )
               : widget.withDeleteOption
-              ? Expanded(
-            flex: widget.optionEqui!,
-            child: GrandIcon(
-                labelButton: "Ver",
-                iconData: Icons.cleaning_services,
-                iconColor: widget.iconColor,
-                onPress: () {
-                  widget.textController.text = "";
-                }
-            ),
-          ) : Container()
+                  ? Expanded(
+                      flex: widget.optionEqui!,
+                      child: GrandIcon(
+                          labelButton: "Ver",
+                          iconData: Icons.cleaning_services,
+                          iconColor: widget.iconColor,
+                          onPress: () {
+                            widget.textController.text = "";
+                          }),
+                    )
+                  : Container()
         ],
       ),
     );

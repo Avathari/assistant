@@ -17,6 +17,7 @@ import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import 'package:assistant/conexiones/conexiones.dart';
@@ -677,7 +678,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
         message: " . . . Iniciando Actividad - Repositorio de Pacientes");
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       setState(() {
-        foundedItems = value;
+        foundedItems = Pacientes.Pacientary = value;
       });
     }).onError((error, stackTrace) {
       Operadores.alertActivity(
@@ -708,7 +709,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
       setState(() {
         Terminal.printSuccess(
             message: "Actualizando repositorio de pacientes . . . ");
-        foundedItems = value;
+        foundedItems = Pacientes.Pacientary = value;
         Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
       });
     });
@@ -948,7 +949,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
         entidadFederativaValue = Pacientes.EntidadesFederativas[0];
         //
         indigenaHablanteEspecificacioTextController.text =
-        "Niega hablar alguna Lengua Indigena";
+            "Niega hablar alguna Lengua Indigena";
         //
         toBaseImage();
 
@@ -1019,7 +1020,9 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: isMobile(context)|| isTablet(context) // widget.operationActivity == Constantes.Register
+      appBar: isMobile(context) ||
+              isTablet(
+                  context) // widget.operationActivity == Constantes.Register
           ? AppBar(
               title: AppBarText('Registro del Paciente'),
               backgroundColor: Colors.black,
@@ -1035,9 +1038,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                         builder: (context) => const GestionPacientes()));
                   } else {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>  VisualPacientes(actualPage: 0)));
+                        builder: (context) => VisualPacientes(actualPage: 0)));
                   }
-
                 },
               ),
               actions: isMobile(context)
@@ -1162,6 +1164,26 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
             mask: '#### ## #### #',
             filter: {"#": RegExp(r'[0-9]')},
             type: MaskAutoCompletionType.lazy),
+        onChange: (String search) {
+          var match = Listas.listFromMap(
+            lista: Pacientes.Pacientary!,
+            keySearched: "Pace_NSS",
+            elementSearched: search.toString(),
+            exactValue: true,
+          );
+
+          if (match.isNotEmpty) {
+            Operadores.notifyActivity(
+                context: context,
+                tittle: "Registro repetido !! ",
+                message:
+                    "El NSS/ID del paciente recién inscrito, ya ha sido registrado . . . \n\n"
+                        "${Pacientes.pacienteSeleccionado(match.last)}",
+                onAcept: () {
+                  Navigator.of(context).pop();
+                });
+          }
+        },
       ),
       EditTextArea(
         labelEditText: "Agregado médico",
@@ -1171,7 +1193,6 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
         limitOfChars: 8,
         inputFormat: MaskTextInputFormatter(),
       ),
-
       EditTextArea(
           labelEditText: 'Primer nombre del paciente',
           numOfLines: 1,
@@ -1196,7 +1217,6 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           textController: apellidoMaternoTextController,
           keyBoardType: TextInputType.text,
           inputFormat: MaskTextInputFormatter()),
-
       Spinner(
           tittle: "Tipo Sanguíneo",
           initialValue: hemotipoValue,
@@ -1291,6 +1311,31 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
         numOfLines: 1,
         labelEditText: 'Fecha de Nacimiento',
         textController: nacimientoTextController,
+        selection: true,
+        withShowOption: true,
+        iconData: Icons.calendar_today_outlined,
+        onSelected: () async {
+            final DateTime? picked = await showDatePicker(
+                context: context,
+                // initialEntryMode: DatePickerEntryMode.calendar,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(1900),
+                lastDate: DateTime(2055),
+                builder: (BuildContext context, Widget? child) {
+                  return Theme(
+                      data: ThemeData.dark().copyWith(
+                          dialogBackgroundColor: Theming.cuaternaryColor),
+                      child: child!);
+                });
+
+              setState(() {
+                nacimientoTextController.text = DateFormat("yyyy-MM-dd").format(picked!);
+                //
+                edadTextController.text =
+                    (DateTime.now().difference(DateTime.parse(nacimientoTextController.text)).inDays / 365)
+                        .toStringAsFixed(0);
+              });
+        },
         onChange: (value) {
           setState(() {
             edadTextController.text =
@@ -1548,7 +1593,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
         children: [
           ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
+                  foregroundColor: Colors.grey,
+                  backgroundColor: Colores.backgroundWidget,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
                   minimumSize: const Size(50, 50)),
@@ -1563,7 +1609,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
             message: "Datos Personales",
             child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
+                    foregroundColor: Colors.grey,
+                    backgroundColor: Colores.backgroundWidget,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     minimumSize: const Size(50, 50)),
@@ -1579,7 +1626,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
               message: "Datos Generales",
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
+                      foregroundColor: Colors.grey,
+                      backgroundColor: Colores.backgroundWidget,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
                       minimumSize: const Size(50, 50)),
@@ -1626,7 +1674,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                             children: [
                               ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                      foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
+                                      foregroundColor: Colors.grey,
+                                      backgroundColor: Colores.backgroundWidget,
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(20)),
@@ -1637,7 +1686,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                                   child: const Icon(Icons.camera)),
                               ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                      foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
+                                      foregroundColor: Colors.grey,
+                                      backgroundColor: Colores.backgroundWidget,
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(50)),
@@ -1648,7 +1698,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                                   child: const Icon(Icons.person)),
                               ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                      foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
+                                      foregroundColor: Colors.grey,
+                                      backgroundColor: Colores.backgroundWidget,
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(20)),
@@ -1721,7 +1772,9 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                                         bottom: 2.0),
                                     child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
-                                            foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
+                                            foregroundColor: Colors.grey,
+                                            backgroundColor:
+                                                Colores.backgroundWidget,
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(20)),
@@ -1735,7 +1788,9 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                                     padding: const EdgeInsets.all(8.0),
                                     child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
-                                            foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
+                                            foregroundColor: Colors.grey,
+                                            backgroundColor:
+                                                Colores.backgroundWidget,
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(50)),
@@ -1749,7 +1804,9 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                                     padding: const EdgeInsets.all(8.0),
                                     child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
-                                            foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
+                                            foregroundColor: Colors.grey,
+                                            backgroundColor:
+                                                Colores.backgroundWidget,
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(20)),
@@ -1805,7 +1862,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                             padding: const EdgeInsets.all(8.0),
                             child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                    foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
+                                    foregroundColor: Colors.grey,
+                                    backgroundColor: Colores.backgroundWidget,
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(20)),
@@ -1819,7 +1877,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                             padding: const EdgeInsets.all(8.0),
                             child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                    foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
+                                    foregroundColor: Colors.grey,
+                                    backgroundColor: Colores.backgroundWidget,
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(50)),
@@ -1833,7 +1892,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                             padding: const EdgeInsets.all(8.0),
                             child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                    foregroundColor: Colors.grey, backgroundColor: Colores.backgroundWidget,
+                                    foregroundColor: Colors.grey,
+                                    backgroundColor: Colores.backgroundWidget,
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(20)),

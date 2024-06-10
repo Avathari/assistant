@@ -2,6 +2,7 @@ import 'package:assistant/conexiones/actividades/Compuesto.dart';
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/bibiliotecarios/bibliotecas.dart';
+import 'package:assistant/screens/enologias/enologias.dart';
 import 'package:assistant/screens/financieros/estadisticas.dart';
 import 'package:assistant/screens/financieros/finanzas.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizados.dart';
@@ -678,10 +679,10 @@ class PacientesPanel extends StatelessWidget {
               },
             ),
             HomeButton(
-              iconData: Icons.warning_amber,
-              labelButton: "",
+              iconData: Icons.wine_bar_outlined,
+              labelButton: "Vinos y Licores",
               onPress: () {
-                toNextScreen(context: context, screen: Semiologicos());
+                toNextScreen(context: context, screen: GestionEnologias());
                 // Operadores.alertActivity(
                 //     context: context,
                 //     tittle: "Error",
@@ -693,6 +694,18 @@ class PacientesPanel extends StatelessWidget {
               labelButton: "Actividades Financieras",
               onPress: () {
                 toNextScreen(context: context, screen: GestionActivos(actualSidePage: const EstadisticasActivos()));
+                // Operadores.alertActivity(
+                //     context: context,
+                //     tittle: "Error",
+                //     message: "Interfaz en contrucción");
+              },
+            ),
+
+            HomeButton(
+              iconData: Icons.warning_amber,
+              labelButton: "",
+              onPress: () {
+                toNextScreen(context: context, screen: Semiologicos());
                 // Operadores.alertActivity(
                 //     context: context,
                 //     tittle: "Error",

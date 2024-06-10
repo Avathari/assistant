@@ -1,6 +1,7 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
@@ -210,21 +211,71 @@ class _AntropometricosState extends State<Antropometricos> {
                                   ),
                                   SingleChildScrollView(
                                     controller: ScrollController(),
-                                    child: Column(children: [
-                                      ValuePanel(
-                                        firstText: 'Grasa Corporal',
-                                        secondText: Antropometrias.grasaCorporalEsencial.toStringAsFixed(2),
-                                        thirdText: '%',
-                                      ),
-                                      ValuePanel(
-                                        firstText: 'GC. Esencial',
-                                        secondText: Antropometrias.grasaCorporalEsencial.toStringAsFixed(2),
-                                        thirdText: '%',
-                                      ),
-                                      ValuePanel(
-                                        firstText: 'Peso Magro',
-                                        secondText: Antropometrias.pesoCorporalMagro.toStringAsFixed(2),
-                                        thirdText: 'Kg',
+                                    child: Row(children: [
+                                      Expanded(child: Column(children: [
+                                        ValuePanel(
+                                          firstText: "p. C. bicipital",
+                                          secondText: Valores.pliegueCutaneoBicipital!.toStringAsFixed(2),
+                                          thirdText: 'mm',
+                                        ),
+                                        ValuePanel(
+                                          firstText: "p. C.tricipital",
+                                          secondText: Valores.pliegueCutaneoTricipital!.toStringAsFixed(2),
+                                          thirdText: 'mm',
+                                        ),
+                                        ValuePanel(
+                                          firstText: "p. C.escapular",
+                                          secondText: Valores.pliegueCutaneoEscapular!.toStringAsFixed(2),
+                                          thirdText: 'mm',
+                                        ),
+                                        ValuePanel(
+                                          firstText: "p. C.ilíaco",
+                                          secondText: Valores.pliegueCutaneoIliaco!.toStringAsFixed(2),
+                                          thirdText: 'mm',
+                                        ),
+                                        ValuePanel(
+                                          firstText: "p. C.pectoral",
+                                          secondText: Valores.pliegueCutaneoPectoral!.toStringAsFixed(2),
+                                          thirdText: 'mm',
+                                        ),
+
+                                      ],)),
+
+                                      Expanded(
+                                        child: Column(
+                                          children: [
+                                            ValuePanel(
+                                              firstText: '% Grasa',
+                                              secondText: Antropometrias.porcentajeGrasaCorporal.toStringAsFixed(2),
+                                              thirdText: '%',
+                                            ),
+                                            CrossLine(),
+                                            Container(
+                                              decoration: ContainerDecoration.roundedDecoration(),
+                                              child: ValuePanel(
+                                                firstText: "Densidad Corporal",
+                                                secondText: Antropometrias.densidadCorporal.toStringAsFixed(2),
+                                                thirdText: '',
+                                              ),
+                                            ),
+                                            CrossLine(),
+                                            ValuePanel(
+                                              firstText: 'Grasa Corporal',
+                                              secondText: Antropometrias.grasaCorporalEsencial.toStringAsFixed(2),
+                                              thirdText: '%',
+                                            ),
+                                            ValuePanel(
+                                              firstText: 'GC. Esencial',
+                                              secondText: Antropometrias.grasaCorporalEsencial.toStringAsFixed(2),
+                                              thirdText: '%',
+                                            ),
+                                            ValuePanel(
+                                              firstText: 'Peso Magro',
+                                              secondText: Antropometrias.pesoCorporalMagro.toStringAsFixed(2),
+                                              thirdText: 'Kg',
+                                            ),
+                                          ],
+                                        ),
                                       ),
 
                                     ]),

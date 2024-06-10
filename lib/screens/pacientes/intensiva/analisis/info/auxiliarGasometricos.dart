@@ -209,15 +209,23 @@ return SingleChildScrollView(
       controller: ScrollController(),
       child: Column(
         children: [
-          ValuePanel(
-            firstText: "1ra HCO3-",
-            secondText: Gas.Gasometricos.HCOR_a.toStringAsFixed(2),
-            thirdText: "",
-          ),
-          ValuePanel(
-            firstText: "2da HCO3-",
-            secondText: Gas.Gasometricos.HCOR_b.toStringAsFixed(2),
-            thirdText: "",
+          Row(
+            children: [
+              Expanded(
+                child: ValuePanel(
+                  firstText: "1ra HCO3-",
+                  secondText: Gas.Gasometricos.HCOR_a.toStringAsFixed(2),
+                  thirdText: "",
+                ),
+              ),
+              Expanded(
+                child: ValuePanel(
+                  firstText: "2da HCO3-",
+                  secondText: Gas.Gasometricos.HCOR_b.toStringAsFixed(2),
+                  thirdText: "",
+                ),
+              ),
+            ],
           ),
           ValuePanel(
             firstText: "3ra HCO3-",
@@ -236,7 +244,7 @@ return SingleChildScrollView(
             children: [
               Expanded(
                 child: ValuePanel(
-                  firstText: "Def. HCO3-\n(Astrup)",
+                  firstText: "Astrup",
                   secondText: Gas.Gasometricos.HCOAM.toStringAsFixed(2),
                   thirdText: "mEq/L",
                 ),

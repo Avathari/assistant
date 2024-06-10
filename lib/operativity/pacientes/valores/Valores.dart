@@ -842,14 +842,14 @@ class Valores {
       withTRAN = "",
       withHEMO = "",
       withQUIR = "";
-  
+
   // INFUSIONES ************************ * * * *
   static int? initSedacion = 0,
       initVasopresor = 0,
       initInotropico = 0,
       initDiuretico = 0,
       initParalisis = 0,
-  initAnticoagulante = 0,
+      initAnticoagulante = 0,
       initAntiarritmico = 0;
   static String? withSedacion = "",
       withVasopresor = "",
@@ -865,7 +865,7 @@ class Valores {
       commenParalisis = "",
       commenAnticoagulante = "",
       commenAntiarritmico = "";
-  
+
   //
   static String? fechaVitales;
   static int? tensionArterialSystolica,
@@ -954,8 +954,16 @@ class Valores {
   static double? ferritinaSerica, transferrinaSerica, hierroSerico;
   //
   static String? fechaQuimicas;
-  static double? glucosa = 0, urea = 0, creatinina = 0, acidoUrico = 0, nitrogenoUreico = 0;
-  static double? trigliceridos = 0, colesterolTotal = 0, cHDL = 0, cLDL = 0, cVLDL = 0;
+  static double? glucosa = 0,
+      urea = 0,
+      creatinina = 0,
+      acidoUrico = 0,
+      nitrogenoUreico = 0;
+  static double? trigliceridos = 0,
+      colesterolTotal = 0,
+      cHDL = 0,
+      cLDL = 0,
+      cVLDL = 0;
 
   //
   static String? fechaHepaticos;
@@ -1007,7 +1015,8 @@ class Valores {
   //
   static String? fechaReactantes;
   static double? procalcitonina,
-      lactatoVenoso, lactatoArterial,
+      lactatoVenoso,
+      lactatoArterial,
       velocidadSedimentacionGlobular,
       proteinaCreactiva,
       factorReumatoide,
@@ -1251,8 +1260,8 @@ class Valores {
   static double get indiceOxigenacion {
     if (Valores.poArteriales! != 0 && Ventometrias.presionMediaViaAerea != 0) {
       return (Ventometrias.presionMediaViaAerea *
-          Valores.fraccionInspiratoriaOxigeno!) /
-              Valores.poArteriales!;
+              Valores.fraccionInspiratoriaOxigeno!) /
+          Valores.poArteriales!;
     } else {
       return double.nan;
     }
@@ -1270,13 +1279,11 @@ class Valores {
   static double get indiceOxigenacionAdaptado {
     if (Valores.poArteriales! != 0 && Ventometrias.presionMediaViaAerea != 0) {
       return (Valores.edad! + Ventometrias.presionMediaViaAerea) *
-          (Valores.fraccionInspiratoriaOxigeno!  /
-              Valores.poArteriales!);
+          (Valores.fraccionInspiratoriaOxigeno! / Valores.poArteriales!);
     } else {
       return double.nan;
     }
-}
-
+  }
 
   static double get FIOV => ((Gasometricos.GAA + 100) / 760) * 100;
 
@@ -1776,6 +1783,8 @@ class Valores {
 }
 
 class Valorados {
+  static int cSOFA = 0, cAPACHE = 0;
+
   static String get mSOFA {
     String resultado = "";
     int resp = 0, plat = 0, hig = 0, card = 0, glasg = 0, ren = 0;
@@ -1877,20 +1886,21 @@ class Valorados {
         card.toDouble() +
         glasg.toDouble() +
         ren.toDouble();
+    cSOFA = aux.toInt();
     // RESULTADOS ***************************************************
     if (Datos.isMiddleValue(value: aux, min: 0.0, max: 6.0)) {
       resultado =
-          'menor al 10% de Mortalidad estimada durante la Hospitalización';
+          '$cSOFA puntos : menor al 10% de Mortalidad estimada durante la Hospitalización';
     } else if (Datos.isMiddleValue(value: aux, min: 6.0, max: 9.0)) {
-      resultado = '15-20% de Mortalidad estimada durante la Hospitalización';
+      resultado = '$cSOFA puntos : 15-20% de Mortalidad estimada durante la Hospitalización';
     } else if (Datos.isMiddleValue(value: aux, min: 9.0, max: 12.0)) {
-      resultado = '40-50% de Mortalidad estimada durante la Hospitalización';
+      resultado = '$cSOFA puntos : 40-50% de Mortalidad estimada durante la Hospitalización';
     } else if (Datos.isMiddleValue(value: aux, min: 12.0, max: 14.0)) {
-      resultado = '50-60% de Mortalidad estimada durante la Hospitalización';
+      resultado = '$cSOFA puntos : 50-60% de Mortalidad estimada durante la Hospitalización';
     } else if (Datos.isMiddleValue(value: aux, min: 14.0, max: 15.0)) {
-      resultado = '60-80% de Mortalidad estimada durante la Hospitalización';
+      resultado = '$cSOFA puntos : 60-80% de Mortalidad estimada durante la Hospitalización';
     } else if (Datos.isUpperValue(value: aux, lim: 15)) {
-      resultado = '90% de Mortalidad estimada durante la Hospitalización';
+      resultado = '$cSOFA puntos : 90% de Mortalidad estimada durante la Hospitalización';
     } else {
       resultado = 'no concordante. ';
     }
@@ -1901,6 +1911,471 @@ class Valorados {
     return resultado;
   }
 
+  /// Scorre APACHE-II
+  ///
+  /// * * Consulte: JAMA 1993; 270(24):2957-2963
+  ///
+  /// Material de Apoyo : https://image.slidesharecdn.com/icuscoringsystems12-2012postgraduateicucourse-140415151833-phpapp01/95/icu-scoring-systems-14-638.jpg?cb=1397575212
+  ///
+  /// https://image1.slideserve.com/2361416/apache-ii-scoring-table-l.jpg
+  ///
+  ///
+  static String get mAPACHE {
+    String resultado = "";
+    //
+    int temp = 0,
+        pam = 0,
+        card = 0,
+        resp = 0,
+        pafi = 0,
+        ph = 0,
+        hco = 0,
+        potasio = 0,
+        na = 0,
+        creat = 0,
+        hto = 0,
+        leu = 0,
+        glasg = 0,
+        edad = 0;
+    // TEMPERATURA (Rectal) ***************************************************
+    if (Datos.isUpperValue(
+        value: Valores.temperaturCorporal!.toDouble(), lim: 41)) {
+      temp = 4;
+    } else if (Datos.isMiddleValue(
+        value: Valores.temperaturCorporal, min: 39, max: 40.9)) {
+      temp = 3;
+    } else if (Datos.isMiddleValue(
+        value: Valores.temperaturCorporal, min: 38.5, max: 38.9)) {
+      temp = 1;
+    } else if (Datos.isMiddleValue(
+        value: Valores.temperaturCorporal, min: 36, max: 38.4)) {
+      temp = 0;
+    } else if (Datos.isMiddleValue(
+        value: Valores.temperaturCorporal, min: 34.5, max: 35.9)) {
+      temp = 1;
+    } else if (Datos.isMiddleValue(
+        value: Valores.temperaturCorporal, min: 32, max: 33.9)) {
+      temp = 2;
+    } else if (Datos.isMiddleValue(
+        value: Valores.temperaturCorporal, min: 30, max: 31.9)) {
+      temp = 3;
+    } else if (Datos.isInnerValue(
+        value: Valores.temperaturCorporal!.toDouble(), lim: 30)) {
+      temp = 4;
+    } else {
+      temp = 0;
+    }
+
+    // TENSION ARTERIAL MEDIA ***************************************************
+    if (Datos.isUpperValue(
+        value: Cardiometrias.presionArterialMedia!.toDouble(), lim: 160)) {
+      pam = 4;
+    } else if (Datos.isMiddleValue(
+        value: Cardiometrias.presionArterialMedia, min: 130, max: 159)) {
+      pam = 3;
+    } else if (Datos.isMiddleValue(
+        value: Cardiometrias.presionArterialMedia, min: 110, max: 129)) {
+      pam = 2;
+    } else if (Datos.isMiddleValue(
+        value: Cardiometrias.presionArterialMedia, min: 70, max: 109)) {
+      pam = 0;
+    } else if (Datos.isMiddleValue(
+        value: Cardiometrias.presionArterialMedia, min: 50, max: 69)) {
+      pam = 2;
+    } else if (Datos.isInnerValue(
+        value: Cardiometrias.presionArterialMedia.toDouble(), lim: 50)) {
+      pam = 4;
+    } else {
+      pam = 0;
+    }
+
+    // FRECUENCIA CARDIACA ***************************************************
+    if (Datos.isUpperValue(
+        value: Valores.frecuenciaCardiaca!.toDouble(), lim: 180)) {
+      card = 4;
+    } else if (Datos.isMiddleValue(
+        value: Valores.frecuenciaCardiaca, min: 140, max: 179)) {
+      card = 3;
+    } else if (Datos.isMiddleValue(
+        value: Valores.frecuenciaCardiaca, min: 110, max: 139)) {
+      card = 2;
+    } else if (Datos.isMiddleValue(
+        value: Valores.frecuenciaCardiaca, min: 79, max: 110)) {
+      card = 0;
+    } else if (Datos.isMiddleValue(
+        value: Valores.frecuenciaCardiaca, min: 50, max: 69)) {
+      card = 2;
+    } else if (Datos.isMiddleValue(
+        value: Valores.frecuenciaCardiaca, min: 40, max: 54)) {
+      card = 3;
+    } else if (Datos.isInnerValue(
+        value: Valores.frecuenciaCardiaca!.toDouble(), lim: 40)) {
+      card = 4;
+    } else {
+      card = 0;
+    }
+
+    // FRECUENCIA RESPIRATORIA ***************************************************
+    if (Datos.isUpperValue(
+        value: Valores.frecuenciaRespiratoria!.toDouble(), lim: 50)) {
+      resp = 4;
+    } else if (Datos.isMiddleValue(
+        value: Valores.frecuenciaRespiratoria, min: 35, max: 49)) {
+      resp = 3;
+    } else if (Datos.isMiddleValue(
+        value: Valores.frecuenciaRespiratoria, min: 24, max: 34)) {
+      resp = 1;
+    } else if (Datos.isMiddleValue(
+        value: Valores.frecuenciaRespiratoria, min: 12, max: 24)) {
+      resp = 0;
+    } else if (Datos.isMiddleValue(
+        value: Valores.frecuenciaRespiratoria, min: 10, max: 11)) {
+      resp = 1;
+    } else if (Datos.isMiddleValue(
+        value: Valores.frecuenciaRespiratoria, min: 6, max: 9)) {
+      resp = 2;
+    } else if (Datos.isInnerValue(
+        value: Valores.frecuenciaRespiratoria!.toDouble(), lim: 6)) {
+      resp = 4;
+    } else {
+      resp = 0;
+    }
+    // OXIGENACIÓN ***************************************************
+    if (Valores.fraccionInspiratoriaOxigeno! >= 50) {
+      if (Datos.isUpperValue(value: Gasometricos.GAA!.toDouble(), lim: 500)) {
+        pafi = 4;
+      } else if (Datos.isMiddleValue(
+          value: Gasometricos.GAA, min: 350, max: 499)) {
+        pafi = 3;
+      } else if (Datos.isMiddleValue(
+          value: Gasometricos.GAA, min: 200, max: 349)) {
+        pafi = 2;
+      } else if (Datos.isInnerValue(
+          value: Gasometricos.GAA!.toDouble(), lim: 200)) {
+        pafi = 0;
+      } else {
+        pafi = 0;
+      }
+    } else if (Valores.fraccionInspiratoriaOxigeno! < 50) {
+      if (Datos.isUpperValue(
+          value: Valores.poArteriales!.toDouble(), lim: 70)) {
+        pafi = 0;
+      } else if (Datos.isMiddleValue(
+          value: Valores.poArteriales, min: 61, max: 70)) {
+        pafi = 1;
+      } else if (Datos.isMiddleValue(
+          value: Valores.poArteriales, min: 55, max: 60)) {
+        pafi = 3;
+      } else if (Datos.isInnerValue(
+          value: Valores.poArteriales!.toDouble(), lim: 55)) {
+        pafi = 4;
+      } else {
+        pafi = 0;
+      }
+    }
+
+    // PH ARTERIAL ***************************************************
+    if (Datos.isUpperValue(
+        value: Valores.pHArteriales!.toDouble(), lim: 7.7.toInt())) {
+      ph = 4;
+    } else if (Datos.isMiddleValue(
+        value: Valores.pHArteriales, min: 7.6, max: 7.69)) {
+      ph = 3;
+    } else if (Datos.isMiddleValue(
+        value: Valores.pHArteriales, min: 7.5, max: 7.59)) {
+      ph = 1;
+    } else if (Datos.isMiddleValue(
+        value: Valores.pHArteriales, min: 7.33, max: 7.49)) {
+      ph = 0;
+    } else if (Datos.isMiddleValue(
+        value: Valores.pHArteriales, min: 7.25, max: 7.32)) {
+      ph = 2;
+    } else if (Datos.isMiddleValue(
+        value: Valores.pHArteriales, min: 7.15, max: 7.24)) {
+      ph = 3;
+    } else if (Datos.isInnerValue(
+        value: Valores.pHArteriales!.toDouble(), lim: 7)) {
+      ph = 4;
+    } else {
+      ph = 0;
+    }
+
+    // HCO3- ARTERIAL ***************************************************
+    if (Datos.isUpperValue(
+        value: Valores.bicarbonatoArteriales!.toDouble(), lim: 52)) {
+      hco = 4;
+    } else if (Datos.isMiddleValue(
+        value: Valores.bicarbonatoArteriales, min: 41, max: 51.9)) {
+      hco = 3;
+    } else if (Datos.isMiddleValue(
+        value: Valores.bicarbonatoArteriales, min: 32, max: 40.9)) {
+      hco = 1;
+    } else if (Datos.isMiddleValue(
+        value: Valores.bicarbonatoArteriales, min: 22, max: 31.9)) {
+      hco = 0;
+    } else if (Datos.isMiddleValue(
+        value: Valores.bicarbonatoArteriales, min: 18, max: 21.9)) {
+      hco = 2;
+    } else if (Datos.isMiddleValue(
+        value: Valores.bicarbonatoArteriales, min: 15, max: 17.9)) {
+      hco = 3;
+    } else if (Datos.isInnerValue(
+        value: Valores.bicarbonatoArteriales!.toDouble(), lim: 15)) {
+      hco = 4;
+    } else {
+      hco = 0;
+    }
+
+    // POTASIO  ***************************************************
+    if (Datos.isUpperValue(value: Valores.potasio!.toDouble(), lim: 7)) {
+      potasio = 4;
+    } else if (Datos.isMiddleValue(value: Valores.potasio, min: 6, max: 6.9)) {
+      potasio = 3;
+    } else if (Datos.isMiddleValue(
+        value: Valores.potasio, min: 5.5, max: 5.9)) {
+      potasio = 1;
+    } else if (Datos.isMiddleValue(
+        value: Valores.potasio, min: 3.5, max: 5.4)) {
+      potasio = 0;
+    } else if (Datos.isMiddleValue(
+        value: Valores.potasio, min: 3.0, max: 3.4)) {
+      potasio = 1;
+    } else if (Datos.isMiddleValue(
+        value: Valores.potasio, min: 2.5, max: 2.9)) {
+      potasio = 2;
+    } else if (Datos.isInnerValue(value: Valores.potasio!.toDouble(), lim: 3)) {
+      potasio = 4;
+    } else {
+      potasio = 0;
+    }
+    // SODIO  ***************************************************
+    if (Datos.isUpperValue(value: Valores.sodio!.toDouble(), lim: 180)) {
+      na = 4;
+    } else if (Datos.isMiddleValue(value: Valores.sodio, min: 160, max: 179)) {
+      na = 3;
+    } else if (Datos.isMiddleValue(value: Valores.sodio, min: 155, max: 159)) {
+      na = 2;
+    } else if (Datos.isMiddleValue(value: Valores.sodio, min: 150, max: 154)) {
+      na = 1;
+    } else if (Datos.isMiddleValue(value: Valores.sodio, min: 130, max: 149)) {
+      na = 0;
+    } else if (Datos.isMiddleValue(value: Valores.sodio, min: 120, max: 129)) {
+      na = 2;
+    } else if (Datos.isMiddleValue(value: Valores.sodio, min: 111, max: 119)) {
+      na = 3;
+    } else if (Datos.isInnerValue(value: Valores.sodio!.toDouble(), lim: 110)) {
+      na = 4;
+    } else {
+      na = 0;
+    }
+
+    // CREATININA  ***************************************************
+    if (Datos.isUpperValue(value: Valores.creatinina!.toDouble(), lim: 4)) {
+      creat = 4;
+    } else if (Datos.isMiddleValue(
+        value: Valores.creatinina, min: 2.0, max: 3.9)) {
+      creat = 3;
+    } else if (Datos.isMiddleValue(
+        value: Valores.creatinina, min: 1.5, max: 1.9)) {
+      creat = 2;
+    } else if (Datos.isMiddleValue(
+        value: Valores.creatinina, min: 1, max: 1.4)) {
+      creat = 0;
+    } else if (Datos.isInnerValue(
+        value: Valores.creatinina!.toDouble(), lim: 1)) {
+      creat = 2;
+    } else {
+      creat = 0;
+    }
+
+    // HEMATOCRITO  ***************************************************
+    if (Datos.isUpperValue(value: Valores.hematocrito!.toDouble(), lim: 40)) {
+      hto = 4;
+    } else if (Datos.isMiddleValue(
+        value: Valores.hematocrito, min: 50.0, max: 59.9)) {
+      hto = 2;
+    } else if (Datos.isMiddleValue(
+        value: Valores.hematocrito, min: 46.0, max: 49.9)) {
+      hto = 1;
+    } else if (Datos.isMiddleValue(
+        value: Valores.hematocrito, min: 30.0, max: 45.9)) {
+      hto = 0;
+    } else if (Datos.isMiddleValue(
+        value: Valores.hematocrito, min: 20.0, max: 29.9)) {
+      hto = 2;
+    } else if (Datos.isInnerValue(
+        value: Valores.hematocrito!.toDouble(), lim: 20)) {
+      hto = 4;
+    } else {
+      hto = 0;
+    }
+
+    // LEUCOCITOS  ***************************************************
+    if (Datos.isUpperValue(
+        value: Valores.leucocitosTotales!.toDouble(), lim: 40)) {
+      leu = 4;
+    } else if (Datos.isMiddleValue(
+        value: Valores.leucocitosTotales, min: 20.0, max: 39.9)) {
+      leu = 2;
+    } else if (Datos.isMiddleValue(
+        value: Valores.leucocitosTotales, min: 15.0, max: 19.9)) {
+      leu = 1;
+    } else if (Datos.isMiddleValue(
+        value: Valores.leucocitosTotales, min: 3.0, max: 14.9)) {
+      leu = 0;
+    } else if (Datos.isMiddleValue(
+        value: Valores.leucocitosTotales, min: 1.0, max: 2.9)) {
+      leu = 2;
+    } else if (Datos.isInnerValue(
+        value: Valores.leucocitosTotales!.toDouble(), lim: 1)) {
+      leu = 4;
+    } else {
+      leu = 0;
+    }
+    // GLASGOW  ***************************************************
+
+    glasg = 15 - double.parse(Exploracion.glasgow!).toInt();
+    // if (double.parse(Exploracion.glasgow!) == 15) glasg = 0;
+    // if (double.parse(Exploracion.glasgow!) == 14) glasg = 1;
+    // if (double.parse(Exploracion.glasgow!) == 13) glasg = 2;
+    // if (double.parse(Exploracion.glasgow!) == 12) glasg = 3;
+    // if (double.parse(Exploracion.glasgow!) == 11) glasg = 4;
+    // if (double.parse(Exploracion.glasgow!) == 10) glasg = 5;
+    // if (double.parse(Exploracion.glasgow!) == 9) glasg = 6;
+    // if (double.parse(Exploracion.glasgow!) == 8) glasg = 7;
+    // if (double.parse(Exploracion.glasgow!) == 7) glasg = 8;
+    // if (double.parse(Exploracion.glasgow!) == 6) glasg = 9;
+    // if (double.parse(Exploracion.glasgow!) == 5) glasg = 10;
+    // if (double.parse(Exploracion.glasgow!) == 4) glasg = 11;
+    // if (double.parse(Exploracion.glasgow!) == 3) glasg = 12;
+
+    // EDAD  ***************************************************
+    if (Datos.isInnerValue(value: Valores.edad!.toDouble(), lim: 40)) {
+      edad = 0;
+    } else if (Datos.isMiddleValue(value: Valores.edad, min: 45.0, max: 54)) {
+      edad = 2;
+    } else if (Datos.isMiddleValue(value: Valores.edad, min: 55, max: 64)) {
+      edad = 3;
+    } else if (Datos.isMiddleValue(value: Valores.edad, min: 65, max: 74)) {
+      edad = 5;
+    } else if (Datos.isUpperValue(value: Valores.edad!.toDouble(), lim: 75)) {
+      edad = 6;
+    } else {
+      edad = 0;
+    }
+
+    // SUMATORIA ***************************************************
+    double aux = temp.toDouble() +
+        pam.toDouble() +
+        card.toDouble() +
+        resp.toDouble() +
+        pafi.toDouble() +
+        ph.toDouble() +
+        hco.toDouble() +
+        potasio.toDouble() +
+        na.toDouble() +
+        creat.toDouble() +
+        hto.toDouble() +
+        leu.toDouble() +
+        glasg.toDouble() +
+        edad.toDouble();
+
+    cAPACHE = aux.toInt();
+
+    // RESULTADOS ***************************************************
+    if (Datos.isMiddleValue(value: aux, min: 0.0, max: 4.0)) {
+      resultado =
+          '$cAPACHE puntos : menor al 4% de Mortalidad estimada durante la Hospitalización';
+    } else if (Datos.isMiddleValue(value: aux, min: 5.0, max: 10.0)) {
+      resultado = '$cAPACHE puntos : 8% de Mortalidad estimada durante la Hospitalización';
+    } else if (Datos.isMiddleValue(value: aux, min: 10.0, max: 15.0)) {
+      resultado = '$cAPACHE puntos : 15% de Mortalidad estimada durante la Hospitalización';
+    } else if (Datos.isMiddleValue(value: aux, min: 15.0, max: 20.0)) {
+      resultado = '$cAPACHE puntos : 25% de Mortalidad estimada durante la Hospitalización';
+    } else if (Datos.isMiddleValue(value: aux, min: 20.0, max: 25.0)) {
+      resultado = '$cAPACHE puntos : 40% de Mortalidad estimada durante la Hospitalización';
+    } else if (Datos.isMiddleValue(value: aux, min: 25.0, max: 30.0)) {
+      resultado = '$cAPACHE puntos : 55% de Mortalidad estimada durante la Hospitalización';
+    } else if (Datos.isMiddleValue(value: aux, min: 30.0, max: 34.0)) {
+      resultado = '$cAPACHE puntos : 75% de Mortalidad estimada durante la Hospitalización';
+    } else if (Datos.isUpperValue(value: aux, lim: 34)) {
+      resultado = '$cAPACHE puntos : 85% de Mortalidad estimada durante la Hospitalización';
+    } else {
+      resultado = 'no concordante. ';
+    }
+
+    Terminal.printSuccess(
+        message: "APACHE-II $resultado : : "
+            "$glasg . $resp . $card : ($aux)");
+    return resultado;
+  }
+
+  static String get mNutriScore {
+    String resultado = "";
+    //
+    int edad = 0, apache = 0, sofa = 0, comob = 1, dias = 1;
+
+    // EDAD  ***************************************************
+    if (Datos.isInnerValue(value: Valores.edad!.toDouble(), lim: 50)) {
+      edad = 0;
+    } else if (Datos.isMiddleValue(value: Valores.edad, min: 50, max: 74)) {
+      edad = 1;
+    } else if (Datos.isUpperValue(value: Valores.edad!.toDouble(), lim: 74)) {
+      edad = 2;
+    } else {
+      edad = 0;
+    }
+
+    // APACHE-II  ***************************************************
+    if (Datos.isInnerValue(value: cAPACHE!.toDouble(), lim: 15)) {
+      apache = 0;
+    } else if (Datos.isMiddleValue(value: cAPACHE, min: 15, max: 20)) {
+      apache = 1;
+    } else if (Datos.isMiddleValue(value: cAPACHE, min: 20, max: 28)) {
+      apache = 2;
+    } else if (Datos.isUpperValue(value: cAPACHE!.toDouble(), lim: 28)) {
+      apache = 3;
+    } else {
+      apache = 0;
+    }
+
+    // APACHE-II  ***************************************************
+    if (Datos.isInnerValue(value: cSOFA!.toDouble(), lim: 6)) {
+      sofa = 0;
+    } else if (Datos.isMiddleValue(value: cSOFA, min: 6, max: 9)) {
+      sofa = 1;
+    } else if (Datos.isUpperValue(value: cSOFA!.toDouble(), lim: 10)) {
+      sofa = 3;
+    } else {
+      sofa = 0;
+    }
+
+    // SUMATORIA ***************************************************
+    double aux = edad.toDouble() +
+        apache.toDouble() +
+        sofa.toDouble() +
+        comob.toDouble() +
+        dias.toDouble();
+
+    // RESULTADOS ***************************************************
+    if (Datos.isUpperValue(value: aux, lim: 4)) {
+      resultado =
+          'Peor evolución clínica (Mayor beneficio en terapia nutricional)';
+    } else if (Datos.isInnerValue(value: aux, lim: 5)) {
+      resultado = 'Bajo riesgo de desnutrición';
+    } else {
+      resultado = 'no concordante. ';
+    }
+
+    Terminal.printSuccess(
+        message: "NUTRI-SCORE $resultado : : "
+            "$edad . $apache . $sofa . "
+            "$comob . $dias "
+            " : ($aux)");
+    return resultado;
+  }
+
+  // **********************************************************************
   static String get prequirurgicos {
     return ""
         "A.S.A.: ${Exploracion.valoracionAsa}. \n"
@@ -1910,13 +2385,13 @@ class Valorados {
         "";
   }
 
+  /// VN: Si Mayor a 1.0, alta probabiilidad de Choque ; 0.5 - 0.7
   static double get indiceChoque =>
       Valores.frecuenciaCardiaca! / Valores.tensionArterialSystolica!;
-  // Si Mayor a 1.0, alta probabiilidad de Choque ; 0.5 - 0.7
 
+  /// VN: 0.7 - 1.3
   static double get indiceChoqueModificado =>
       Valores.frecuenciaCardiaca! / Cardiometrias.presionArterialMedia;
-// 0.7 - 1.3
 }
 
 class Formatos {
@@ -3366,13 +3841,6 @@ class Items {
 
   static List<Map<String, String>> previstos = [
     {
-      "Diagnostico": "Asma bronquial",
-      "Tratamiento":
-          "acude a urgencias por  dificultad  para respirar y tos seca, no realizan estudios complementarios y egresan con diagnóstico de asma; manejo con salbutamol el cual usa desde entonces solo de rescate",
-      "Antecedentes":
-          "*Antecedente de crisis asmática en tres ocasiones: a los 24 años, a los 31 años y a los 42 años de edad,refiere todas con misma sintomatología; odinofagia seguida de tos seca disneizante y cianosante , dolor torácico tipo opresivo, sin irradiaciones, sin atenuantes y exacerbantes  con disnea súbita mMRC 3 y sibilancias audibles,se controlan  con la inhalación de salbutamol.Refiere predominio nocturno de la sintomatología.Niega acompañarse de fiebre Exacerbaciones precedidas por infección de vías respiratorias altas",
-    },
-    {
       "Diagnostico": "Diabetes Tipo 2",
       "Tratamiento": "sin tratamiento por decisión propia",
       "Antecedentes":
@@ -3382,11 +3850,60 @@ class Items {
     },
     {
       "Diagnostico": "Hipertensión Arterial Esencial ESC/AHA II",
-      "Tratamiento": "sin tratamiento por decisión propia; ",
+      "Tratamiento":
+          "dianósticado desde 2014, sin tratamiento por decisión propia; ",
       "Antecedentes":
           "refiere monitorización con baumanómetro digital, con cifras tensionales promedio 140-90 mmHg; "
               "niega cribado para alteraciones microvasculares o seguimiento multidisciplinario, en seguimiento en UMF; "
               "niega hospitalizaciones previas por crisis o emergencia hipertensiva. ",
+    },
+    {
+      "Diagnostico": "Insuficiencia Cardiaca, NYHA III",
+      "Tratamiento":
+          "dianósticado desde 2014, sin tratamiento por decisión propia; ",
+      "Antecedentes":
+          "en seguimiento por Cardiología, última consulta el 00/00/0000, sin modificaciones en el tratamiento; "
+              "ECOTT (00/00/0000): Sin dilatación auricular, sin discinesias o acinesias globales, FEVI 55%, PSAP 25 mmHg, onda S 12 cm/seg, "
+              "sin cortos circuitos ni trombo intracavitario; "
+              "Sin realización de gammagrama previo, "
+              "cifras tensionales promedio 140-90 mmHg; "
+              "niega hospitalizaciones previas por infarto al miocardio o angina. ",
+    },
+    {
+      "Diagnostico": "Asma bronquial",
+      "Tratamiento":
+          "acude a urgencias por  dificultad  para respirar y tos seca, no realizan estudios complementarios y egresan con diagnóstico de asma; manejo con salbutamol el cual usa desde entonces solo de rescate",
+      "Antecedentes":
+          "*Antecedente de crisis asmática en tres ocasiones: a los 24 años, a los 31 años y a los 42 años de edad,refiere todas con misma sintomatología; odinofagia seguida de tos seca disneizante y cianosante , dolor torácico tipo opresivo, sin irradiaciones, sin atenuantes y exacerbantes  con disnea súbita mMRC 3 y sibilancias audibles,se controlan  con la inhalación de salbutamol.Refiere predominio nocturno de la sintomatología.Niega acompañarse de fiebre Exacerbaciones precedidas por infección de vías respiratorias altas",
+    },
+    {
+      "Diagnostico": "Enfermedad Renal Crónica, KDIGO 5",
+      "Tratamiento":
+          "en tratamiento con Hemodialisis temporal, por hipoalbuminemia, con sesiones programadas los dias "
+              "martes, jueves y sábados en SERME Zumpango; UF habitual de 1500 mL",
+      "Antecedentes": "refiere seguimiento por Nefrología, última consulta el día 00/00/0000, sin cambios en la terapeútica; "
+          "Historial de Catéteres: 1er Cateter retirado por disfunción mecánica, instalado el dia 00/00/0000; "
+          "Historial de Angioaccesos: 1er acceso vascular instalado el XX/0000, por Hipoalbuminemia, retirado por "
+          "cambio de modalidad; "
+          "Incidencia de Peritonitis: 1er Evento en XX/0000, verificado por Aislamiento bacteriano (XXX), y clínica sugestiva, tratado "
+          "con ATB empírico; "
+          "Hospitalizaciones relevantes: Por eventos ya comentados; "
+          "Uresis residual 500 mL/Día, Peso seco desconocido. ",
+    },
+    {
+      "Diagnostico":
+          "Infección por Virus de Inmunodeficiencia Humana, Fiebig IV, CDC C3, en falla Virológica",
+      "Tratamiento":
+          "diagnósticado desde 2014, por prueba Ag/Ac positiva; ARV actual BTC/3TC/TAF cada 24 horas, "
+              "sin suspensiones referidas; ARV previos: No; Carga virológica actual INDETECTABLE (00/00/0000), "
+              "CD4 350 cel/mm3 (00/00/0000) [ . . . ] ",
+      "Antecedentes": "Antecedentes del diagnóstico: Síntomas de Inicio; "
+          "En seguimiento por CLISIDA en HGR 200, última consulta 00/00/0000; "
+          "Antecedentes sexuales: IVSA 18 años, NPS 15, método de protección: Condón masculino (Recurrencia de Uso ~80%); "
+          "HSH receptivo, emplea sexo anal, felación, fisting, urofilia, y recurrencia de ChemSex; "
+          "Estatus serológico de la pareja: Indetectable; "
+          "Hospitalizaciones previas: No documentadas; "
+          "Co-infecciones: Ninguna. ",
     },
   ];
 

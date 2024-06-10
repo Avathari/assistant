@@ -81,42 +81,42 @@ class Ventometrias {
 
   static String get ventiladorCorto {
     if (modoVentilatorio == 'ESPON') {
-      return "Ventilación en ${modoVentilatorio}, "
+      return "VMI ${modoVentilatorio}, "
           "F. Resp. ${Valores.frecuenciaVentilatoria} Vent/min, "
           "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
           "PEEP ${Valores.presionFinalEsiracion} mmHg, "
           "Psopp ${Valores.presionControl} mmHg. "
           "${ventilatorios}";
     } else if (modoVentilatorio == 'CPAP/PS') {
-      return "Ventilación en ${modoVentilatorio}, "
+      return "VMI ${modoVentilatorio}, "
           "F. Resp. ${Valores.frecuenciaVentilatoria} Vent/min, "
           "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
           "PEEP ${Valores.presionFinalEsiracion} mmHg, "
           "Psopp ${Valores.presionControl} mmHg. "
           "${ventilatorios}";
     } else if (modoVentilatorio == 'AC-VCV') {
-      return "Ventilación en ${modoVentilatorio} con "
+      return "VMI ${modoVentilatorio} con "
           "F. Resp. ${Valores.frecuenciaVentilatoria} Vent/min, "
           "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
           "PEEP ${Valores.presionFinalEsiracion} mmHg, "
           "Vt ${Valores.volumenTidal} mmHg. "
           "${ventilatorios}";
     } else if (modoVentilatorio == 'AC-VCP') {
-      return "Ventilación en ${modoVentilatorio} con "
+      return "VMI ${modoVentilatorio} con "
           "F. Resp ${Valores.frecuenciaVentilatoria} Vent/min, "
           "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
           "PEEP ${Valores.presionFinalEsiracion} mmHg, "
           "P. control ${Valores.presionControl} mmHg. "
           "${ventilatorios}";
     } else if (modoVentilatorio == 'SIMV/VCV') {
-      return "Ventilación en ${modoVentilatorio} con "
+      return "VMI ${modoVentilatorio} con "
           "F. Resp ${Valores.frecuenciaVentilatoria} Vent/min, "
           "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
           "PEEP ${Valores.presionFinalEsiracion} mmHg, "
           "Vt ${Valores.volumenTidal} mmHg. "
           "${ventilatorios}";
     } else if (modoVentilatorio == 'SIMV/VCP') {
-      return "Ventilación en ${modoVentilatorio} con "
+      return "VMI ${modoVentilatorio} con "
           "F. Resp ${Valores.frecuenciaVentilatoria} Vent/min, "
           "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
           "PEEP ${Valores.presionFinalEsiracion} mmHg, "
@@ -130,7 +130,7 @@ class Ventometrias {
   static String get ventilatorios {
     Terminal.printExpected(
         message:
-        "modoVentilatorioALIDAD VENTILATORIA ${Valores.modalidadVentilatoria} ${modoVentilatorio}");
+            "modoVentilatorioALIDAD VENTILATORIA ${Valores.modalidadVentilatoria} ${modoVentilatorio}");
 
     // Prosa del Análisis Ventilatorio **************** ****************** **********************
     var PS = '';
@@ -145,7 +145,14 @@ class Ventometrias {
     } else if (modoVentilatorio == 'AC-VCV') {
       PS = "VM ${Ventometrias.volumenMinuto.toStringAsFixed(1)} L/min, "
           "Flujo ${Ventometrias.flujoVentilatorioMedido.toStringAsFixed(2)} L/min, "
-          "VTI ${Valores.volumenTidal} mL";
+          "VTI ${Valores.volumenTidal} mL; "
+          "VM ${Ventometrias.volumenMinuto.toStringAsFixed(1)} L/min, "
+          "PIP ${Valores.presionMaxima} cmH2O, "
+          "Pplat ${Valores.presionPlateau} cmH2O. "
+          "PmVA ${Ventometrias.presionMediaViaAerea.toStringAsFixed(0)} cmH2O, "
+          "Dest ${Ventometrias.distensibilidadPulmonarEstatica.toStringAsFixed(2)} mL/cmH2O, "
+          "Dp ${Ventometrias.presionDistencion.toStringAsFixed(0)} mmHg, "
+          "Pd ${Ventometrias.presionDistencion} J. ";
     } else if (modoVentilatorio == 'AC-VCP') {
       PS = "Pinsp ${Valores.presionControl} cmH2O, "
           "PIP ${Valores.presionMaxima} cmH2O, "
@@ -157,7 +164,7 @@ class Ventometrias {
           "Ddyn ${Ventometrias.distensibilidadPulmonarDinamica.toStringAsFixed(2)} mL/cmH2O, "
           "RP ${Ventometrias.resistenciaPulmonar.toStringAsFixed(2)} mL/cmH2O, "
           "Elast ${Ventometrias.elastanciaPulmonar.toStringAsFixed(2)} cmH2O/mL, "
-          "D. Pressure ${Ventometrias.presionDistencion.toStringAsFixed(0)} mmHg, "
+          "Dp  ${Ventometrias.presionDistencion.toStringAsFixed(0)} mmHg, "
           "VM ${Ventometrias.volumenMinuto.toStringAsFixed(1)} L/min, "
           "Flujo ${Ventometrias.flujoVentilatorioMedido.toStringAsFixed(2)} L/min";
     } else if (modoVentilatorio == 'SIMV/VCV') {
@@ -195,38 +202,52 @@ class Ventometrias {
   static double get volumentTidal8 => (Antropometrias.pesoCorporalPredicho * 8);
 
   // # ######################################################
-  static double get volumenTidalIdeal => (Ventometrias.distensibilidadPulmonarEstatica * Ventometrias.drivingPressure);
+  static double get volumenTidalIdeal =>
+      (Ventometrias.distensibilidadPulmonarEstatica *
+          Ventometrias.drivingPressure);
 
   // # ######################################################
   /// Poder Mecánico : :
-  ///  Formula
+  ///
+  /// VN : Menor a 12 J/min
+  ///
+  ///  Formula:
+  ///
   ///     PM = 0.098 * FR * VC * (Pmax - ((Pplat - PEEP) / 2)
   ///       * * El Mantener PM mayor a 10 J/min, y un aumento de 2 J/min del basal del poder mecánico identifica a los pacientes con mayor riesgo de reintubación.
   ///       * * El mantener PM menor a 8 J/min, identifica a los pacientes con menor incidencia en reintubaciones.
   /// Existen otras formulas :
+  ///
   ///     MP = VE * (Pmax + PEEP + F/6) / 20
+  ///
   ///         Consulte: https://icm-experimental.springeropen.com/articles/10.1186/s40635-019-0276-8
   ///            Giosa, L., Busana, M., Pasticci, I. et al. Mechanical power at a glance: a simple surrogate for volume-controlled ventilation. ICMx 7, 61 (2019). https://doi.org/10.1186/s40635-019-0276-8
-  /// VN : Menor a 12 J/min
+  ///
+
   static double get poderMecanico {
-      return (0.098 *
-          Valores.frecuenciaVentilatoria! * Valores.volumenTidal! *
-          (Valores.presionMaxima! - (Valores.presionPlateau! - Valores.presionFinalEsiracion!) / 2));
-      // PM = (0.098 * Valores.frecuenciaVentilatoria * (
-      // Valores.presionPlateau! - Valores.presionFinalEsiracion! / 2))
+    // return (0.098 * Valores.frecuenciaVentilatoria! * (Valores.volumenTidal!/1000) * (Valores.presionMaxima! - (Valores.presionPlateau! - Valores.presionFinalEsiracion!) / 2));
+    return (Valores.frecuenciaVentilatoria! *
+        (Valores.volumenTidal! / 1000) *
+        (Valores.presionMaxima! -
+            ((Valores.presionPlateau! - Valores.presionFinalEsiracion!) / 2)) *
+        0.098);
+    return (0.098 *
+        Valores.frecuenciaVentilatoria! *
+        (Valores.presionPlateau! - Valores.presionFinalEsiracion! / 2));
+    // PM = (0.098 * Valores.frecuenciaVentilatoria * (
+    // Valores.presionPlateau! - Valores.presionFinalEsiracion! / 2))
   }
 
   /// Poder Distencion expresado como []
   ///
   /// VN : Menor a 12 J/min
   static double get poderDistencion {
-      return (0.098 *
-          (Ventometrias.drivingPressure)
-      * (Valores.volumenTidal! / 1000)
-          *Valores.frecuenciaVentilatoria!);
-      // PM = (0.098 * Valores.frecuenciaVentilatoria * (
-      // Valores.presionPlateau! - Valores.presionFinalEsiracion! / 2))
-
+    return (0.098 *
+        (Ventometrias.drivingPressure) *
+        (Valores.volumenTidal! / 1000) *
+        Valores.frecuenciaVentilatoria!);
+    // PM = (0.098 * Valores.frecuenciaVentilatoria * (
+    // Valores.presionPlateau! - Valores.presionFinalEsiracion! / 2))
   }
 
   /// Poder Mecánico Indexado .
@@ -238,7 +259,9 @@ class Ventometrias {
   ///       https://doi.org/10.1186/s12890-021-01566-8
   ///
   static double get poderMecanicoIndexado {
-    return Valores.frecuenciaVentilatoria! * Valores.presionMaxima! * (Valores.presionMaxima! - Valores.presionFinalEsiracion!) *
+    return Valores.frecuenciaVentilatoria! *
+        Valores.presionMaxima! *
+        (Valores.presionMaxima! - Valores.presionFinalEsiracion!) *
         (Valores.pcoArteriales! / 45);
   }
 
@@ -246,20 +269,24 @@ class Ventometrias {
   ///
   /// VN : 2.5-3.0 cmH2O
   static double get presionTranspulmonar {
-    return Valores.presionMaxima!.toDouble() - Valores.presionPlateau!.toDouble();
+    return Valores.presionMaxima!.toDouble() -
+        Valores.presionPlateau!.toDouble();
     return double.nan;
   }
 
   /// Driving Pressure expresado como [Vt / Cstat]
   static double get drivingPressure {
     if (Valores.distensibilidadEstaticaMedida == null) {
-      if (Valores.volumenTidal != 0 && Ventometrias.distensibilidadPulmonarEstatica !=0) {
-        return (Valores.volumenTidal! / Ventometrias.distensibilidadPulmonarEstatica);
+      if (Valores.volumenTidal != 0 &&
+          Ventometrias.distensibilidadPulmonarEstatica != 0) {
+        return (Valores.volumenTidal! /
+            Ventometrias.distensibilidadPulmonarEstatica);
       } else {
         return double.nan;
       }
     } else {
-      if (Valores.volumenTidal != 0 && Valores.distensibilidadEstaticaMedida !=0) {
+      if (Valores.volumenTidal != 0 &&
+          Valores.distensibilidadEstaticaMedida != 0) {
         return (Valores.volumenTidal! / Valores.distensibilidadEstaticaMedida!);
       } else {
         return double.nan;
@@ -326,7 +353,7 @@ class Ventometrias {
         Valores.presionFinalEsiracion != 0 &&
         Valores.presionFinalEsiracion != null) {
       return ((Valores.presionMaxima! - Valores.presionFinalEsiracion!) /
-          (Valores.volumenTidal!)) *
+              (Valores.volumenTidal!)) *
           1000;
       // EP = ((Valores.presionMaxima- Valores.presionFinalEsiracion) / (Valores.volumenTidal!)) * 1000
     } else {
@@ -345,6 +372,7 @@ class Ventometrias {
       return double.nan;
     }
   }
+
   // # ######################################################
   static double get presionAlveolarOxigeno {
     if (Valores.volumenTidal != 0 &&
@@ -363,8 +391,8 @@ class Ventometrias {
         Valores.sensibilidadInspiratoria != 0 &&
         Valores.sensibilidadInspiratoria != null) {
       return (Valores.presionFinalEsiracion! +
-          ((Valores.presionPlateau! - Valores.presionFinalEsiracion!) *
-              (Valores.sensibilidadInspiratoria!)))
+              ((Valores.presionPlateau! - Valores.presionFinalEsiracion!) *
+                  (Valores.sensibilidadInspiratoria!)))
           .toDouble();
     } else {
       return double.nan;
@@ -397,7 +425,6 @@ class Ventometrias {
       return double.nan;
     }
   }
-
 
 // # ######################################################
 

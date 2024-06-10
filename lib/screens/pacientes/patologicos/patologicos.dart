@@ -201,7 +201,8 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
                           });
                         }),
                       ));
-                }),
+                },
+            ),
           ),
         ],
       ),
@@ -224,42 +225,42 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
               comenDiagnoTextController.text = cieDiagnoTextController.text;
             });
           }),
-      Row(
-        children: [
-          Expanded(
-            flex: 2,
-            child: EditTextArea(
-              keyBoardType: TextInputType.number,
-              inputFormat: MaskTextInputFormatter(
-                  mask: '##',
-                  filter: {"#": RegExp(r'[0-9]')},
-                  type: MaskAutoCompletionType.lazy),
-              labelEditText: 'Años de diagnóstico',
-              textController: ayoDiagoTextController,
-              numOfLines: 1,
-            ),
-          ),
-          Expanded(
-            flex: 3,
-            child: Spinner(
-                tittle: "¿Tratamiento actual?",
-                onChangeValue: (String value) {
-                  setState(() {
-                    isTratamientoDiagoValue = value;
-                    if (value == Dicotomicos.dicotomicos()[0]) {
-                      tratamientoTextController.text = "";
-                    } else {
-                      tratamientoTextController.text = "Sin tratamiento actual";
-                    }
-                  });
-                },
-                items: Dicotomicos.dicotomicos(),
-                initialValue: isTratamientoDiagoValue),
-          ),
-        ],
-      ),
+      // Row(
+      //   children: [
+      //     Expanded(
+      //       flex: 2,
+      //       child: EditTextArea(
+      //         keyBoardType: TextInputType.number,
+      //         inputFormat: MaskTextInputFormatter(
+      //             mask: '##',
+      //             filter: {"#": RegExp(r'[0-9]')},
+      //             type: MaskAutoCompletionType.lazy),
+      //         labelEditText: 'Años de diagnóstico',
+      //         textController: ayoDiagoTextController,
+      //         numOfLines: 1,
+      //       ),
+      //     ),
+      //     Expanded(
+      //       flex: 3,
+      //       child: Spinner(
+      //           tittle: "¿Tratamiento actual?",
+      //           onChangeValue: (String value) {
+      //             setState(() {
+      //               isTratamientoDiagoValue = value;
+      //               if (value == Dicotomicos.dicotomicos()[0]) {
+      //                 tratamientoTextController.text = "";
+      //               } else {
+      //                 tratamientoTextController.text = "Sin tratamiento actual";
+      //               }
+      //             });
+      //           },
+      //           items: Dicotomicos.dicotomicos(),
+      //           initialValue: isTratamientoDiagoValue),
+      //     ),
+      //   ],
+      // ),
       CrossLine(
-        height: 5,
+        height: 1,
         thickness: 3,
         color: Colors.black,
       ),
@@ -276,31 +277,30 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
         padding: const EdgeInsets.only(left: 8.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               flex: 2,
-              child: Column(
-                children: [
-                  CircleIcon(
-                    tittle: 'Suspensiones . . . ',
-                    difRadios: 15,
-                    externalCircleColor: Colors.grey,
-                    iconed: Icons.surround_sound_outlined,
-                    onChangeValue: () {
-                      Operadores.openDialog(
-                          context: context,
-                          chyldrim: Container(
-                              decoration: ContainerDecoration.roundedDecoration(),
-                              child: const Antecedentes()),
-                          onAction: () {
-                            setState(() {
-                              suspensionesTextController.text = '';
-                            });
-                          });
-                    },
-                  ),
-                  CrossLine(thickness: 2),
+              child: Column(children: [
+                  // CircleIcon(
+                  //   tittle: 'Suspensiones . . . ',
+                  //   difRadios: 15,
+                  //   externalCircleColor: Colors.grey,
+                  //   iconed: Icons.surround_sound_outlined,
+                  //   onChangeValue: () {
+                  //     Operadores.openDialog(
+                  //         context: context,
+                  //         chyldrim: Container(
+                  //             decoration: ContainerDecoration.roundedDecoration(),
+                  //             child: const Antecedentes()),
+                  //         onAction: () {
+                  //           setState(() {
+                  //             suspensionesTextController.text = '';
+                  //           });
+                  //         });
+                  //   },
+                  // ),
+                  // CrossLine(thickness: 2),
                   CircleIcon(
                     tittle: 'Previstos . . . ',
                     radios: 30,
@@ -337,7 +337,7 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Antecedentes del Diagnóstico',
                 textController: suspensionesTextController,
-                numOfLines: 18,
+                numOfLines: 7,
               ),
             ),
           ],

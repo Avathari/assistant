@@ -577,7 +577,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                         // Valores.servicioTratanteInicial,
                         Valores.servicioTratante,
                         Calendarios.today(format: 'yyyy/MM/dd'),
-                        //
+                        // **********************************************
+                        Reportes.personalesNoPatologicos,
+                        Reportes.personalesPatologicos,
                         Reportes.impresionesDiagnosticas,
                         //
                         Reportes.reportes['Subjetivo'],
@@ -611,7 +613,11 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                         // Valores.servicioTratanteInicial,
                         Valores.servicioTratante,
                         Calendarios.today(format: 'yyyy/MM/dd'),
+                        // ***************************************************
+                        Reportes.personalesNoPatologicos,
+                        Reportes.personalesPatologicos,
                         Reportes.impresionesDiagnosticas,
+                        //
                         Reportes.reportes['Subjetivo'],
                         Reportes.signosVitales,
                         Reportes.exploracionFisica,
@@ -1022,6 +1028,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                           Valores.servicioTratante,
                           Calendarios.today(format: 'yyyy/MM/dd'),
                           //
+                          Reportes.personalesNoPatologicos,
+                          Reportes.personalesPatologicos,
                           Reportes.impresionesDiagnosticas,
                           //
                           Reportes.reportes['Subjetivo'],
@@ -1054,7 +1062,11 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   // Valores.servicioTratanteInicial,
                   Valores.servicioTratante,
                   Calendarios.today(format: 'yyyy/MM/dd'),
+                  //
+                  Reportes.personalesNoPatologicos,
+                  Reportes.personalesPatologicos,
                   Reportes.impresionesDiagnosticas,
+                  //
                   Reportes.reportes['Subjetivo'],
                   Reportes.signosVitales,
                   Reportes.exploracionFisica,
@@ -1269,7 +1281,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       // Terminal.printWarning(
       //     message: listNotes![widget.indexNote]['Diagnosticos_Hospital']);
       //
-      widget.fechaRealizacion =
+      widget.fechaRealizacion = Reportes.fechaRealizacion =
           listNotes![widget.indexNote]['FechaRealizacion'];
       //
       Reportes.impresionesDiagnosticas =

@@ -57,8 +57,7 @@ class Calendarios {
     return DateFormat("dd.MM.yyyy").format(DateTime.parse(formattedString));
   }
 
-  static Future<void> showPickedDate(
-      {required BuildContext context}) async {
+  static Future<void> showPickedDate({required BuildContext context}) async {
     await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
@@ -66,8 +65,8 @@ class Calendarios {
         lastDate: DateTime(2055),
         builder: (BuildContext context, Widget? child) {
           return Theme(
-              data: ThemeData.dark().copyWith(
-                  dialogBackgroundColor: Theming.cuaternaryColor),
+              data: ThemeData.dark()
+                  .copyWith(dialogBackgroundColor: Theming.cuaternaryColor),
               child: child!);
         });
   }
@@ -148,6 +147,7 @@ class Cambios {
     required chyld,
     String? tittle = '',
     void Function()? onClose,
+    void Function()? onOption,
     Color? backgroundColor = Colors.black,
   }) {
     Navigator.of(context).push(MaterialPageRoute(
@@ -166,6 +166,14 @@ class Cambios {
               title: AppBarText(tittle!),
               foregroundColor: Colors.white,
               backgroundColor: Colors.black,
+              actions: [
+                if (onOption != null)
+                  IconButton(
+                      onPressed: () {
+                        onOption();
+                      },
+                      icon: const Icon(Icons.ac_unit_outlined))
+              ],
             ),
             body: chyld)));
   }
@@ -275,8 +283,8 @@ class Archivos {
       final File file = File("${directory.path}/$filePath");
 
       contents = await file.readAsString();
-      Terminal.printOther(
-          message: "Obtenido desde ${directory.path}/$filePath");
+      // Terminal.printOther(
+      //     message: "Obtenido desde ${directory.path}/$filePath");
       return jsonDecode(contents);
     } else {
       file = File(filePath);

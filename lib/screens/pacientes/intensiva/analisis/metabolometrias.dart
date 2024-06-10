@@ -1,4 +1,5 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/metabolometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
@@ -103,14 +104,14 @@ class _MetabolicosState extends State<Metabolicos> {
                         ),
                         Expanded(
                           child: ValuePanel(
-                            firstText: 'Peso Corporal Total',
+                            firstText: 'PCT',
                             secondText: Valores.pesoCorporalTotal!.toStringAsFixed(1),
                             thirdText: 'Kg',
                           ),
                         ),
                         Expanded(
                           child: ValuePanel(
-                            firstText: 'Estatura',
+                            firstText: 'Est',
                             secondText: Valores.alturaPaciente!.toStringAsFixed(2),
                             thirdText: 'mts',
                           ),
@@ -119,18 +120,75 @@ class _MetabolicosState extends State<Metabolicos> {
                     ),
                     const SizedBox(height: 8,),
                     CrossLine(),
-                    ValuePanel(
-                      firstText: 'Factor de Actividad',
-                      secondText: Valores.factorActividad!.toStringAsFixed(2),
-                      thirdText: '',
-                    ),
-                    const SizedBox(height: 8,),
-                    ValuePanel(
-                      firstText: 'Factor de Estrés',
-                      secondText: Valores.factorEstres!.toStringAsFixed(2),
-                      thirdText: '',
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ValuePanel(
+                            firstText: 'Factor de Actividad',
+                            secondText: Valores.factorActividad!.toStringAsFixed(2),
+                            thirdText: '',
+                          ),
+                        ),
+                        Expanded(
+                          child: ValuePanel(
+                            firstText: 'Factor de Estrés',
+                            secondText: Valores.factorEstres!.toStringAsFixed(2),
+                            thirdText: '',
+                          ),
+                        ),
+                      ],
                     ),
                     CrossLine(),
+                    ValuePanel(
+                      firstText: '% Grasa',
+                      secondText: Antropometrias.porcentajeGrasaCorporal.toStringAsFixed(2),
+                      thirdText: '%',
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ValuePanel(
+                            firstText: 'P. Magro',
+                            secondText: Antropometrias.pesoCorporalMagro.toStringAsFixed(2),
+                            thirdText: 'kG',
+                          ),
+                        ),
+                        Expanded(
+                          child: ValuePanel(
+                            firstText: 'P. Graso',
+                            secondText: Antropometrias.pesoCorporalGraso.toStringAsFixed(2),
+                            thirdText: 'kG',
+                          ),
+                        ),
+
+                      ],
+                    ),
+                    ValuePanel(
+                      firstText: 'PCTe',
+                      secondText: (Antropometrias.pesoCorporalMagro + Antropometrias.pesoCorporalGraso).toStringAsFixed(2),
+                      thirdText: 'Kg',
+                    ),
+                    CrossLine(),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ValuePanel(
+                            firstText: 'Grasa Esencial',
+                            secondText: Antropometrias.grasaCorporalEsencial.toStringAsFixed(2),
+                            thirdText: 'kg',
+                          ),
+                        ),
+                        Expanded(
+                          child: ValuePanel(
+                            firstText: 'Peso Calórico',
+                            secondText: (Antropometrias.pesoCorporalGraso * 9).toStringAsFixed(2),
+                            thirdText: 'kCal/PCG',
+                          ),
+                        ),
+                      ],
+                    ),
+
+
                   ],
                 ),
               ),
@@ -162,7 +220,7 @@ class _MetabolicosState extends State<Metabolicos> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ValuePanel(
-                            firstText: 'Efecto Térmico de los Alimentos',
+                            firstText: 'E.T.A.',
                             secondText: Metabolometrias.efectoTermicoAlimentos.toStringAsFixed(2),
                             thirdText: 'kCal/Día',
                           ),

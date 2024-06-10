@@ -1,6 +1,5 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
-import 'package:assistant/screens/operadores/Cie.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
@@ -11,9 +10,6 @@ import 'package:assistant/widgets/DialogSelector.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
-import 'package:assistant/widgets/SelectorArchivos.dart';
-import 'package:assistant/widgets/Spinner.dart';
-import 'package:assistant/widgets/Switched.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -245,39 +241,39 @@ class _OperacionesDiagnosticosState extends State<OperacionesDiagnosticos> {
         textController: comenDiagnoTextController,
         numOfLines: 5,
       ),
-      Row(
-        children: [
-          Expanded(
-            child: EditTextArea(
-              keyBoardType: TextInputType.datetime,
-              inputFormat: MaskTextInputFormatter(
-                  mask: '####-##-##',
-                  filter: {"#": RegExp(r'[0-9]')},
-                  type: MaskAutoCompletionType.lazy),
-              labelEditText: 'Años de diagnóstico',
-              textController: ayoDiagoTextController,
-              numOfLines: 1,
-              withShowOption: true,
-              selection: true,
-              onSelected: (){
-                setState(() {
-                  ayoDiagoTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
-                });
-              },
-            ),
-          ),
-          Expanded(
-            flex: 3,
-            child: EditTextArea(
-              keyBoardType: TextInputType.text,
-              inputFormat: MaskTextInputFormatter(),
-              labelEditText: 'Comentario del Diagnóstico',
-              textController: suspensionesTextController,
-              numOfLines: 3,
-            ),
-          ),
-        ],
-      ),
+      // Row(
+      //   children: [
+      //     Expanded(
+      //       child: EditTextArea(
+      //         keyBoardType: TextInputType.datetime,
+      //         inputFormat: MaskTextInputFormatter(
+      //             mask: '####-##-##',
+      //             filter: {"#": RegExp(r'[0-9]')},
+      //             type: MaskAutoCompletionType.lazy),
+      //         labelEditText: 'Años de diagnóstico',
+      //         textController: ayoDiagoTextController,
+      //         numOfLines: 1,
+      //         withShowOption: true,
+      //         selection: true,
+      //         onSelected: (){
+      //           setState(() {
+      //             ayoDiagoTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
+      //           });
+      //         },
+      //       ),
+      //     ),
+      //     Expanded(
+      //       flex: 3,
+      //       child: EditTextArea(
+      //         keyBoardType: TextInputType.text,
+      //         inputFormat: MaskTextInputFormatter(),
+      //         labelEditText: 'Comentario del Diagnóstico',
+      //         textController: suspensionesTextController,
+      //         numOfLines: 3,
+      //       ),
+      //     ),
+      //   ],
+      // ),
       CrossLine(),
       Row(
         children: [

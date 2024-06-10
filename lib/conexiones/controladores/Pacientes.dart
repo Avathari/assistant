@@ -21,6 +21,8 @@ import 'package:flutter/material.dart';
 class Pacientes {
   static int ID_Paciente = 0, ID_Hospitalizacion = 0;
 
+  static List? Pacientary = [];
+
   static String localPath = 'assets/vault/'
       '${Pacientes.nombreCompleto}/'
       '${Pacientes.nombreCompleto}.json';
@@ -30,7 +32,9 @@ class Pacientes {
       '${Pacientes.nombreCompleto}/'
       'reportes/';
 
-  static String? modoAtencion = Valores.modoAtencion, nombreCompleto;
+  static String? modoAtencion = Valores.modoAtencion,
+      nombreCompleto,
+      datosIniciales;
   static String? numeroAfiliacion, numeroPaciente, agregadoPaciente;
   static bool? esHospitalizado = Valores.isHospitalizado;
   static String imagenPaciente = "";
@@ -230,6 +234,9 @@ class Pacientes {
 
     numeroAfiliacion = "${json['Pace_NSS']} ${json['Pace_AGRE']}";
 
+    datosIniciales = "${nombreCompleto!.toUpperCase()}\n"
+        "${json['Pace_NSS']} ${json['Pace_AGRE']}";
+
     localPath = 'assets/vault/'
         '$nombreCompleto/'
         '$nombreCompleto.json';
@@ -419,6 +426,7 @@ class Pacientes {
         "${Formatos.alimentarios}\n"
         "${Formatos.diarios}\n"
         "${Formatos.higienicos}\n"
+        "${Formatos.limitaciones}\n"
         "${Formatos.exposiciones}\n"
         "${Formatos.toxicomanias}\n";
   }
@@ -428,13 +436,15 @@ class Pacientes {
         "${Formatos.alimentarios}\n"
         "${Formatos.diarios}\n"
         "${Formatos.higienicos}\n"
+        "${Formatos.limitaciones}\n"
         "${Formatos.exposiciones}\n"
         "${Formatos.toxicomanias}\n";
   }
 
   static String noPatologicosSimplificado() {
-    return "${Formatos.viviendasSimplificado}"
+    return "${Formatos.diarios}\n"
         "${Formatos.alimentarios}\n"
+        "${Formatos.limitaciones}\n"
         "${Formatos.exposiciones}\n"
         "${Formatos.toxicomanias}\n";
   }
@@ -1619,9 +1629,9 @@ class Pacientes {
   static Future<void> getInfusionesHistorial() async {
     //
     await Actividades.consultarAllById(
-        Databases.siteground_database_reghosp,
-        Pendientes.pendientes['consultDispositivosByIdPrimaryQuery'],
-        Pacientes.ID_Hospitalizacion)
+            Databases.siteground_database_reghosp,
+            Pendientes.pendientes['consultDispositivosByIdPrimaryQuery'],
+            Pacientes.ID_Hospitalizacion)
         .then((onValue) {
       //
       for (var element in onValue) {
@@ -1629,75 +1639,74 @@ class Pacientes {
         if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[3][0]) {
           Valores.initCVP = element['ID_Pace_Pen'];
           Valores.withCVP =
-          element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
         }
         if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[3][1]) {
           Valores.initCVLP = element['ID_Pace_Pen'];
           Valores.withCVLP =
-          element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
         }
         if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[3][2]) {
           Valores.initCVC = element['ID_Pace_Pen'];
           Valores.withCVC =
-          element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
         }
         if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[3][3]) {
           Valores.initMahurkar = element['ID_Pace_Pen'];
           Valores.withMahurkar =
-          element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
         }
         if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[3][4]) {
           Valores.initFOL = element['ID_Pace_Pen'];
           Valores.withFOL =
-          element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
         }
         if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[3][5]) {
           Valores.initSNG = element['ID_Pace_Pen'];
           Valores.withSNG =
-          element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
         }
         if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[3][6]) {
           Valores.initSOG = element['ID_Pace_Pen'];
           Valores.withSOG =
-          element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
         }
         if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[3][7]) {
           Valores.initPEN = element['ID_Pace_Pen'];
           Valores.withPEN =
-          element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
         }
         if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[3][8]) {
           Valores.initCOL = element['ID_Pace_Pen'];
           Valores.withCOL =
-          element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
         }
         if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[3][9]) {
           Valores.initSEP = element['ID_Pace_Pen'];
           Valores.withSEP =
-          element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
         }
         if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[3][10]) {
           Valores.initGAS = element['ID_Pace_Pen'];
           Valores.withGAS =
-          element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
         }
         if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[3][11]) {
           Valores.initTNK = element['ID_Pace_Pen'];
           Valores.withTNK =
-          element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
         }
       }
     });
   }
 
-
-  static List<dynamic>  getPreviosIndicaciones() {
+  static List<dynamic> getPreviosIndicaciones() {
     List<dynamic> listado = [];
     //
     Actividades.consultarAllById(
-        Databases.siteground_database_reghosp,
-        Pendientes.pendientes['consultIndicacionesByIdPrimaryQuery'],
-        Pacientes.ID_Hospitalizacion)
+            Databases.siteground_database_reghosp,
+            Pendientes.pendientes['consultIndicacionesByIdPrimaryQuery'],
+            Pacientes.ID_Hospitalizacion)
         .then((onValue) {
       // Terminal.printExpected(message: onValue.toString());
       listado = onValue;
@@ -1714,13 +1723,14 @@ class Pacientes {
             Pacientes.Paraclinicos!,
             keySearched: 'Estudio',
           ),
-        ), Auxiliares.cultivos);
+        ),
+        Auxiliares.cultivos);
     //
     for (var elem in newList) {
       Pacientes.Paraclinicos!
           .where((element) => element["Estudio"].contains(elem))
           .forEach((eacher) {
-            listado.add(eacher);
+        listado.add(eacher);
       });
     }
     // |Terminal.printExpected(message: "listado: ${listado} : ${listado.runtimeType}");
@@ -1728,6 +1738,18 @@ class Pacientes {
     return listado;
   }
 
+  static String pacienteSeleccionado(Map<String, dynamic> match) {
+    // Terminal.printExpected(message: match.toString());
+    return ""
+        "REGISTRO OBTENIDO . . : \n"
+        " . . . ${match['Pace_NSS']} ${match['Pace_AGRE']} \n"
+        " . . . ${match['Pace_Ape_Pat']} ${match['Pace_Ape_Mat']} "
+        "${match['Pace_Nome_PI']} ${match['Pace_Nome_SE']} \n"
+        "FN: ${match['Pace_Nace']} : : ${match['Pace_Ses']} \n"
+        "FR . : ${match['Pace_Feca_Hace']} : : . . . "
+        "\n\n"
+        "";
+  }
 }
 
 class Heredofamiliares {
@@ -4732,12 +4754,20 @@ class Quirurgicos {
   static var fileAssocieted =
       '${Pacientes.localRepositoryPath}quirurgicos.json';
   //
-  static String selectedDiagnosis = "";
+  static String selectedDiagnosis = "", typeIntervencion = "";
   //
   static Map<String, dynamic> Cirugias = {};
 
   static List<String> actualDiagno = Dicotomicos.dicotomicos();
-  static List<String> actualTratamiento = Dicotomicos.dicotomicos();
+  static List<String> intervenciones = [
+    "Cirugías",
+    "Hospitalizaciones",
+    "Alérgicos",
+    "Traumáticos",
+    "Tranfusiones",
+    "Vacunas",
+    "",
+  ];
   static List<String> actualSuspendido = Dicotomicos.dicotomicos();
 
   static void ultimoRegistro() {
@@ -4796,11 +4826,13 @@ class Quirurgicos {
                       ID_PACE_APP_QUI int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
                       ID_Pace int(11) NOT NULL,
                       Pace_APP_QUI_SINO tinyint(1) NOT NULL,
+                      Pace_APP_type varchar(60) COLLATE utf8_unicode_ci NOT NULL,
                       Pace_APP_QUI varchar(200) COLLATE utf8_unicode_ci NOT NULL,
                       Pace_APP_QUI_dia int(200) NOT NULL,
                       Pace_APP_QUI_com_SINO tinyint(1) NOT NULL,
                       Pace_APP_QUI_com varchar(200) COLLATE utf8_unicode_ci NOT NULL
-                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla para Antecedentes Quirurgicos.';
+                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci 
+                    COMMENT='Tabla para Antecedentes Relevantes de Hospitalizaciones previas (Quirúrgicos, Hospitalizaciones per sé, Transfusiones)';
             """,
     "truncateQuery": "TRUNCATE pace_app_qui",
     "dropQuery": "DROP TABLE pace_app_qui",
@@ -4810,12 +4842,15 @@ class Quirurgicos {
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_app_qui",
     "consultLastQuery": "SELECT * FROM pace_app_qui WHERE ID_Pace = ?",
     "consultByName": "SELECT * FROM pace_app_qui WHERE Pace_APP_DEG LIKE '%",
-    "registerQuery":
-        "INSERT INTO pace_app_qui (ID_Pace, Pace_APP_QUI_SINO, Pace_APP_QUI, "
-            "Pace_APP_QUI_dia, Pace_APP_QUI_com_SINO, Pace_APP_QUI_com) "
-            "VALUES (?,?,?,?,?,?)",
+    "registerQuery": "INSERT INTO pace_app_qui (ID_Pace, Pace_APP_QUI_SINO, "
+        "Pace_APP_type, "
+        "Pace_APP_QUI, "
+        "Pace_APP_QUI_dia, Pace_APP_QUI_com_SINO, Pace_APP_QUI_com) "
+        "VALUES (?,?,?,?,?,?,?)",
     "updateQuery": "UPDATE pace_app_qui "
-        "SET ID_PACE_APP_QUI = ?, ID_Pace = ?, Pace_APP_QUI_SINO = ?, Pace_APP_QUI = ?, "
+        "SET ID_PACE_APP_QUI = ?, ID_Pace = ?, Pace_APP_QUI_SINO = ?, "
+        "Pace_APP_type = ?, "
+        "Pace_APP_QUI = ?, "
         "Pace_APP_QUI_dia = ?, Pace_APP_QUI_com_SINO = ?, Pace_APP_QUI_com = ? "
         "WHERE ID_PACE_APP_QUI =?",
     "deleteQuery": "DELETE FROM pace_app_qui WHERE ID_pace_app_qui = ?",
@@ -6828,7 +6863,8 @@ class Auxiliares {
 
   static String abreviado(
       {required String tipoEstudio, required String estudio}) {
-    if (tipoEstudio != 'Examen General de Orina' &&tipoEstudio != 'Liquido Cefalorraquídeo') {
+    if (tipoEstudio != 'Examen General de Orina' &&
+        tipoEstudio != 'Liquido Cefalorraquídeo') {
       if (tipoEstudio != 'Gasometría Arterial' &&
           tipoEstudio != 'Gasometría Venosa') {
         if (estudio == 'Concentración Media de Hemoglobina Corpuscular') {
@@ -7056,8 +7092,7 @@ class Auxiliares {
         } else {
           return estudio;
         }
-      }
-      else if (tipoEstudio == 'Liquido Cefalorraquídeo') {
+      } else if (tipoEstudio == 'Liquido Cefalorraquídeo') {
         if (estudio == 'pH Urinario en LCR') {
           return 'pH';
         } else if (estudio == 'Color en LCR') {
@@ -7085,8 +7120,7 @@ class Auxiliares {
         } else {
           return estudio;
         }
-      }
-      else {
+      } else {
         return "";
       }
     }
@@ -7145,7 +7179,7 @@ class Auxiliares {
       "Eosinófilos Totales",
       "Basófilos Totales",
       "Bandas Totales",
-          "Volumen Plaquetar Medio",
+      "Volumen Plaquetar Medio",
       "Ancho de Distribución Plaquetaria", // 17
       "Reticulocitos", // % _
       "",
@@ -7204,7 +7238,7 @@ class Auxiliares {
       "Factor Reumatoide",
       "Anticuerpo Antipéptido Citrulinado",
       "Fibrinógeno",
-      "Dímero D",
+      "Dímero D", // 7
     ],
     //
     Categorias[9]: [
@@ -7600,7 +7634,7 @@ class Auxiliares {
     Categorias[16]: [""],
     Categorias[17]: ["cell/mm3", "%", ""],
     Categorias[18]: ["UI/L", "ng/mL"],
-    Categorias[19]: [""],
+    Categorias[19]: ["", "."],
     Categorias[20]: [
       "S/CO",
       "U/mL",
@@ -7615,8 +7649,52 @@ class Auxiliares {
     Categorias[26]: ["", "mg/dL", "U/L", "%", "g/dL"],
     Categorias[27]: ["", "mg/dL", "U/L", "%", "g/dL"],
     //
-    Categorias[28]: ["", ""],
-    Categorias[29]: ["", ""],
+    Categorias[28]: [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    Categorias[29]: [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
   };
 
   static final Map<String, dynamic> auxiliares = {
@@ -8134,12 +8212,13 @@ class Pendientes {
         element as List<dynamic>,
       );
     }).whenComplete(() {
-      Terminal.printSuccess(message: "SUCCESS- Dispositivos Agregados . . . ");
-      Operadores.alertActivity(
-        context: context,
-        tittle: "Registro de Dispositivos . . .",
-        message: "Se han registrado los Dispositivos de Inicio . ",
-      );
+      Terminal.printSuccess(
+          message: "SUCCESS- Infsuines Agregadas Agregados . . . ");
+      // Operadores.alertActivity(
+      //   context: context,
+      //   tittle: "Registro de Infusiones . . .",
+      //   message: "Registro de Infusiones Preparados . ",
+      // );
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "ERROR - $error : : : $stackTrace");
       Operadores.alertActivity(
@@ -8272,7 +8351,7 @@ class Pendientes {
       Operadores.alertActivity(
         context: context,
         tittle: "Registro de Dispositivos . . .",
-        message: "Se han registrado los Dispositivos de Inicio . ",
+        message: "Registro de Dispositivos Agregados . ",
       );
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "ERROR - $error : : : $stackTrace");
@@ -8360,12 +8439,12 @@ class Pendientes {
         element as List<dynamic>,
       );
     }).whenComplete(() {
-      Terminal.printSuccess(message: "SUCCESS- Dispositivos Agregados . . . ");
-      Operadores.alertActivity(
-        context: context,
-        tittle: "Registro de Dispositivos . . .",
-        message: "Se han registrado los Dispositivos de Inicio . ",
-      );
+      Terminal.printSuccess(message: "SUCCESS- Previos Agregados . . . ");
+      // Operadores.alertActivity(
+      //   context: context,
+      //   tittle: "Registro de Antecedentes Previos . . .",
+      //   message: "Registro de Antecedentes Previos - Preparado . ",
+      // );
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "ERROR - $error : : : $stackTrace");
       Operadores.alertActivity(
@@ -8388,8 +8467,8 @@ class Reportes {
     // "Antecedentes_No_Patologicos": Valores.tipoInterrogatorio,
     "Datos_Generales": Pacientes.prosa(),
     "Datos_Generales_Simple": Pacientes.prosa(isTerapia: true, otherForm: true),
-    "Antecedentes_No_Patologicos":
-        Pacientes.noPatologicos(), //"Sin información recabada",
+    "Antecedentes_No_Patologicos": Reportes.personalesNoPatologicos,
+    // Pacientes.noPatologicos(), //"Sin información recabada",
     "Antecedetes_No_Patologicos_Analisis": Pacientes.noPatologicosAnalisis(),
     "Antecedentes_Patologicos_Otros": Pacientes.antecedentesPatologicos(),
     "Antecedentes_Patologicos_Ingreso":
@@ -8461,6 +8540,7 @@ class Reportes {
   static String antecedentesHeredofamiliares = "";
   // static String antecedentesHospitalarios = "";
   static String padecimientoActual = "";
+  static String? personalesNoPatologicos = "";
   static String? personalesPatologicos =
           "Sin antecedentes patológicos de importancia. ",
       antecedentesQuirurgicos = "Negados. ",
@@ -8481,7 +8561,7 @@ class Reportes {
   //
   static List<dynamic> analisisAnteriores = [];
   //
-  static String impresionesDiagnosticas = "";
+  static String impresionesDiagnosticas = "", fechaRealizacion = "";
   static String pronosticoMedico = "";
   //
   static String motivoConsulta = "",
@@ -9315,6 +9395,10 @@ class Repositorios {
       Reportes.reportes = value.last;
       // Del Padecimiento **************************************************
 
+      Reportes.reportes['Antecedentes_No_Patologicos'] = Reportes.reportes['Personales_No_Patologicos'] =
+          Reportes.personalesNoPatologicos =
+              value.last['Personales_No_Patologicos'] ?? '';
+      //
       Reportes.reportes['Impresiones_Diagnosticas'] = Reportes
           .impresionesDiagnosticas = value.last['Diagnosticos_Hospital'] ?? '';
       Reportes.reportes['Padecimiento_Actual'] =
@@ -9414,19 +9498,33 @@ class Repositorios {
   }
 
   static Future<void> actualizarRegistro(
-      {BuildContext? context, required List Values}) async {
-    String response = "";
+      {BuildContext? context, required List Values, bool isNotte = false}) async {
+    String response = "", direccion = "";
     //
     List newValues = Values.sublist(6, Values.length - 1);
-    newValues.removeAt(1);
+    // newValues.removeAt(1);
     newValues.insert(newValues.length, Pacientes.ID_Hospitalizacion);
-    newValues.insert(newValues.length, Repositorios.tipo_Analisis);
+
+    // Verificación : Sin no es Nota de INGRESO o EGRESO, se actualiza con Repositorio.tipo_Analisis . . .
+    if (isNotte) {
+      newValues.insert(newValues.length, Repositorios.tipo_Analisis);
+      direccion = Repositorios.repositorio['updateQueryNotte']; //
+
+      if (Reportes.fechaRealizacion ==Calendarios.today(format: "yyyy-MM-dd")){
+        newValues.insert(newValues.length, Reportes.fechaRealizacion);
+        direccion = Repositorios.repositorio['updateQueryNotteUpdate']; //
+      }
+
+    } else {
+    direccion = Repositorios.repositorio['updateQuery']; // updateQueryNotte
+    }
+
     //
     Terminal.printWarning(message: "$newValues : ${newValues.length}");
-    // Terminal.printWarning(message: "${Values.sublist(6, Values.length)}");
+    // Terminal.printWarning(message: "${Values.sublist(6, Values.length-1)}");
     await Actividades.actualizar(
             Databases.siteground_database_reghosp,
-            Repositorios.repositorio['updateQuery'],
+            direccion,
             newValues,
             Pacientes.ID_Hospitalizacion)
         .then((value) {
@@ -9434,8 +9532,10 @@ class Repositorios {
       //
       Archivos.deleteFile(
           filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
+
       Terminal.printExpected(
-          message: "VALUE _UPDATE.UPDATE - $value : ${Values[0]}");
+          message:
+              "VALUE _UPDATE.UPDATE - $value : ${value.runtimeType} . ${Values[0]}");
     }).whenComplete(() {
       Archivos.createJsonFromMap(Pacientes.Notas!,
           filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
@@ -9567,9 +9667,11 @@ class Repositorios {
               ID_Hosp int(11) NOT NULL,
               FechaPadecimiento date NOT NULL,
               Padecimiento_Actual VARCHAR(3000) COLLATE utf8_unicode_ci NOT NULL,
+              Personales_No_Patologicos VARCHAR(3000) COLLATE utf8_unicode_ci NOT NULL,
+              Personales_Patologicos VARCHAR(3000) COLLATE utf8_unicode_ci NOT NULL,              
               ServicioMedico VARCHAR(150) COLLATE utf8_unicode_ci NOT NULL,
               FechaRealizacion date NOT NULL,
-              
+           
               Subjetivo VARCHAR(1500) COLLATE utf8_unicode_ci NOT NULL,
               Signos_Vitales VARCHAR(250) COLLATE utf8_unicode_ci NOT NULL,
               Exploracion_Fisica VARCHAR(250) COLLATE utf8_unicode_ci NOT NULL,
@@ -9612,6 +9714,7 @@ class Repositorios {
         "ID_Pace, ID_Hosp, "
         "FechaPadecimiento, Padecimiento_Actual, "
         "ServicioMedico, FechaRealizacion, "
+        "Personales_No_Patologicos, Personales_Patologicos, "
         "Diagnosticos_Hospital, "
         "Subjetivo, Signos_Vitales, Exploracion_Fisica, "
         "Auxiliares_Diagnosticos, Analisis_Complementario, "
@@ -9620,16 +9723,38 @@ class Repositorios {
         "Tipo_Analisis) "
         "VALUES ("
         "?,?,?,?,?,?,?,?,?,?,"
+        "?,?,"
         "?,?,?,?,?,?,?,?,?,?,"
         "?,?,?)",
     "updateQuery": "UPDATE pace_hosp_repo SET "
-        "Diagnosticos_Hospital = ?, "
+        "Personales_No_Patologicos = ?, Personales_Patologicos = ?, "
+        "Diagnosticos_Hospital = ?, Subjetivo = ?, "
+        "Signos_Vitales = ?, Exploracion_Fisica = ?, "
+        "Auxiliares_Diagnosticos = ?, Analisis_Complementario = ?, "
+        "Analisis_Medico = ?, Pronostico_Medico = ?, "
+        "Dietoterapia = ?, Hidroterapia = ?, Insulinoterapia = ?, Hemoterapia = ?, "
+        "Oxigenoterapia = ?, Medicamentos = ?, Medidas_Generales = ?, Pendientes = ? "
+        "WHERE ID_Hosp = ? ",
+        // "AND Tipo_Analisis = ?",
+    "updateQueryNotte": "UPDATE pace_hosp_repo SET "
+        "Personales_No_Patologicos = ?, Personales_Patologicos = ?, "
+        "Diagnosticos_Hospital = ?, Subjetivo = ?, "
         "Signos_Vitales = ?, Exploracion_Fisica = ?, "
         "Auxiliares_Diagnosticos = ?, Analisis_Complementario = ?, "
         "Analisis_Medico = ?, Pronostico_Medico = ?, "
         "Dietoterapia = ?, Hidroterapia = ?, Insulinoterapia = ?, Hemoterapia = ?, "
         "Oxigenoterapia = ?, Medicamentos = ?, Medidas_Generales = ?, Pendientes = ? "
         "WHERE ID_Hosp = ? AND Tipo_Analisis = ?",
+
+    "updateQueryNotteUpdate": "UPDATE pace_hosp_repo SET "
+        "Personales_No_Patologicos = ?, Personales_Patologicos = ?, "
+        "Diagnosticos_Hospital = ?, Subjetivo = ?, "
+        "Signos_Vitales = ?, Exploracion_Fisica = ?, "
+        "Auxiliares_Diagnosticos = ?, Analisis_Complementario = ?, "
+        "Analisis_Medico = ?, Pronostico_Medico = ?, "
+        "Dietoterapia = ?, Hidroterapia = ?, Insulinoterapia = ?, Hemoterapia = ?, "
+        "Oxigenoterapia = ?, Medicamentos = ?, Medidas_Generales = ?, Pendientes = ? "
+        "WHERE ID_Hosp = ? AND Tipo_Analisis = ? AND FechaRealizacion = ?",
     "deleteQuery": "DELETE FROM pace_hosp_repo WHERE ID_Compendio = ?",
 
     // Operaciones con el Padecimiento Actual *****************************************************
@@ -10429,8 +10554,7 @@ class Vacunales {
 //
 class Cirugias {
   static int ID_Cirugias = 0;
-  static var fileAssocieted =
-      '${Pacientes.localRepositoryPath}cirugias.json';
+  static var fileAssocieted = '${Pacientes.localRepositoryPath}cirugias.json';
 
   static Map<String, dynamic> Cirugia = {};
 
@@ -10569,8 +10693,8 @@ class Cirugias {
     "describeTable": "DESCRIBE pace_ciru;",
     "showColumns": "SHOW columns FROM pace_ciru",
     "showInformation":
-    "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns "
-        "WHERE table_name = 'pace_ciru'",
+        "SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns "
+            "WHERE table_name = 'pace_ciru'",
     "createQuery": """
           CREATE TABLE pace_ciru (
                  ID_Ciru INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
@@ -10590,7 +10714,7 @@ class Cirugias {
     "consultByIdPrimaryQuery": "SELECT * FROM pace_ciru WHERE ID_Hosp = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_ciru",
     "consultLastQuery":
-    "SELECT * FROM pace_ciru WHERE ID_Pace = ? ORDER BY ID_Hosp ASC",
+        "SELECT * FROM pace_ciru WHERE ID_Pace = ? ORDER BY ID_Hosp ASC",
     "consultByName": "SELECT * FROM pace_ciru WHERE Pace_APP_DEG LIKE '%",
     "registerQuery": "INSERT INTO pace_ciru (ID_Pace, ID_Hosp, "
         "Feca_PRO_Ciru, "
@@ -10626,4 +10750,3 @@ class Cirugias {
     // Terminal.printExpected(message: cirugias.toString());
   }
 }
-

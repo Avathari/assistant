@@ -134,24 +134,26 @@ class ReportsMethods {
     // PdfApi.openFile(pdfFileTwo);
   }
 
-  static guardarNota({
-    required BuildContext context,
-    required TypeReportes getTypeReport,
-    required int actualPage,
-    required String? fechaRealizacion,
-    required List values,
-    required List valuesEgreso
-  }) async {
-    Terminal.printWarning(message: ": : : guardarNota - - fechaRealizacion . . . $fechaRealizacion "
-        ": ${fechaRealizacion! == Calendarios.today(format: "yyyy-MM-dd")}\n "
-        ": : $getTypeReport . . . "
-    // ". . . Reportes.impresionesDiagnosticas ${Reportes.impresionesDiagnosticas}"
-        "\n\n");
+  static guardarNota(
+      {required BuildContext context,
+      required TypeReportes getTypeReport,
+      required int actualPage,
+      required String? fechaRealizacion,
+      required List values,
+      required List valuesEgreso}) async {
+    Terminal.printWarning(
+        message:
+            ": : : guardarNota - - fechaRealizacion . . . $fechaRealizacion "
+            ": ${fechaRealizacion! == Calendarios.today(format: "yyyy-MM-dd")}\n "
+            ": : $getTypeReport . . . "
+            // ". . . Reportes.impresionesDiagnosticas ${Reportes.impresionesDiagnosticas}"
+            "\n\n");
     //
     await ReportsMethods.imprimirDocumento(
-            context: context,
-            actualPage: actualPage,
-            getTypeReport: getTypeReport, )
+      context: context,
+      actualPage: actualPage,
+      getTypeReport: getTypeReport,
+    )
         .then((value) => Operadores.alertActivity(
             context: context,
             tittle: 'Petición de Registro de Análisis',
@@ -161,16 +163,25 @@ class ReportsMethods {
             },
             onAcept: () {
               Navigator.of(context).pop();
-              if (getTypeReport == TypeReportes.reporteIngreso ||
-                  getTypeReport == TypeReportes.reporteEgreso) {
+              if (getTypeReport == TypeReportes.reporteIngreso // ||
+                  // getTypeReport == TypeReportes.reporteEgreso
+                  ) {
                 //
-                Repositorios.actualizarRegistro(context: context, Values: values);
+                Repositorios.actualizarRegistro(
+                    context: context, Values: values);
+              } else if (getTypeReport == TypeReportes.reporteEgreso) {
+                Repositorios.actualizarRegistro(
+                    context: context, Values: values, isNotte: true);
               } else {
-                if (fechaRealizacion == Calendarios.today(format: "yyyy-MM-dd")
-                    ) {
-                  Repositorios.actualizarRegistro(context: context, Values: values);
+                if (fechaRealizacion ==
+                    Calendarios.today(format: "yyyy-MM-dd")) {
+                  Repositorios.actualizarRegistro(
+                      context: context, Values: values, isNotte: true);
                 } else {
-                  Repositorios.registrarRegistro(context: context, Values: values, ValuesEgreso: valuesEgreso);
+                  Repositorios.registrarRegistro(
+                      context: context,
+                      Values: values,
+                      ValuesEgreso: valuesEgreso);
                 }
               }
             }))

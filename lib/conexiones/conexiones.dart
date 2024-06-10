@@ -215,7 +215,7 @@ class Actividades {
         "id": id.toString(),
       },
     );
-    // // Terminal.printAlert(message: "RESPONSE STATUS (ACTUALIZAR) : : ${response.statusCode} :: :: Body ${response.body}");
+    Terminal.printAlert(message: "RESPONSE STATUS (ACTUALIZAR) : : ${response.statusCode} :: :: Body ${response.body}");
     return response.body;
   }
 

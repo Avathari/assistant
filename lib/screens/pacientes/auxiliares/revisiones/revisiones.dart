@@ -1,8 +1,10 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/citometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/hepatometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart' as Gas;
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/globulares.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizado.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/antropometricos.dart';
@@ -113,9 +115,9 @@ class _RevisionesState extends State<Revisiones> {
                       controller: ScrollController(),
                       gridDelegate: GridViewTools.gridDelegate(
                           crossAxisCount: 1,
-                          mainAxisSpacing: 2.0,
-                          crossAxisSpacing: 2.0,
-                          mainAxisExtent: 60), //46
+                          mainAxisSpacing: 1.0,
+                          crossAxisSpacing: 1.0,
+                          mainAxisExtent: 50), //46
                       children: [
                         ValuePanel(
                           firstText: "",
@@ -123,6 +125,7 @@ class _RevisionesState extends State<Revisiones> {
                           Valores.fechaVitales.toString(),
                           thirdText: "",
                         ),
+                        CrossLine(),
                         ValuePanel(
                           firstText: "T. Sys",
                           secondText:
@@ -230,28 +233,42 @@ class _RevisionesState extends State<Revisiones> {
                                 });
                           },
                         ),
-                        ValuePanel(
-                          firstText: "SpO2",
-                          secondText:
-                              Valores.saturacionPerifericaOxigeno.toString(),
-                          thirdText: "Resp/min",
-                          withEditMessage: true,
-                          onEdit: (value) {
-                            Operadores.editActivity(
-                                context: context,
-                                tittle: "Editar . . . ",
-                                message:
-                                    "¿Saturación periférica de oxígeno? . . . ",
-                                onAcept: (value) {
-                                  Terminal.printSuccess(
-                                      message: "recieve $value");
-                                  setState(() {
-                                    Valores.saturacionPerifericaOxigeno =
-                                        int.parse(value);
-                                    Navigator.of(context).pop();
-                                  });
-                                });
-                          },
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ValuePanel(
+                                firstText: "SpO2",
+                                secondText:
+                                    Valores.saturacionPerifericaOxigeno.toString(),
+                                thirdText: "%",
+                                withEditMessage: true,
+                                onEdit: (value) {
+                                  Operadores.editActivity(
+                                      context: context,
+                                      tittle: "Editar . . . ",
+                                      message:
+                                          "¿Saturación periférica de oxígeno? . . . ",
+                                      onAcept: (value) {
+                                        Terminal.printSuccess(
+                                            message: "recieve $value");
+                                        setState(() {
+                                          Valores.saturacionPerifericaOxigeno =
+                                              int.parse(value);
+                                          Navigator.of(context).pop();
+                                        });
+                                      });
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              child: ValuePanel(
+                                firstText: "E-PO2",
+                                secondText:
+                                Antropometrias.pO2equivalente.toStringAsFixed(2),
+                                thirdText: "mmHg",
+                              ),
+                            ),
+                          ],
                         ),
                         ValuePanel(
                           firstText: "P. Corporal",
@@ -315,7 +332,7 @@ class _RevisionesState extends State<Revisiones> {
                                 });
                           },
                         ),
-                        //
+                        CrossLine(),
                         ValuePanel(
                           firstText: "FiO2",
                           secondText: Valores.fraccionInspiratoriaOxigeno.toString(),
@@ -356,7 +373,6 @@ class _RevisionesState extends State<Revisiones> {
                                 });
                           },
                         ),
-                        CrossLine(),
                         CrossLine(),
                         ValuePanel(
                           firstText: "Horas ayuno",
@@ -751,7 +767,7 @@ class _RevisionesState extends State<Revisiones> {
             flex: 4,
             child: Container(
               padding: const EdgeInsets.all(5),
-              margin: const EdgeInsets.all(5),
+              margin: const EdgeInsets.all(3),
               decoration: ContainerDecoration.roundedDecoration(),
               child: Column(
                 children: [
@@ -769,7 +785,9 @@ class _RevisionesState extends State<Revisiones> {
                       controller: ScrollController(),
                       gridDelegate: GridViewTools.gridDelegate(
                           crossAxisCount: isMobile(context) ? 4 : 2,
-                          mainAxisExtent: 66), //46
+                          crossAxisSpacing: isMobile(context) ? 4.0 : 2.0,
+                          mainAxisSpacing: isMobile(context) ? 4.0 : 2.0,
+                          mainAxisExtent: isMobile(context) ?66:66), //46
                       children: [
                         ValuePanel(
                           firstText: "T. Sys",
@@ -878,6 +896,7 @@ class _RevisionesState extends State<Revisiones> {
                                 });
                           },
                         ),
+                        Container(),
                         ValuePanel(
                           firstText: "SpO2",
                           secondText:
@@ -901,9 +920,56 @@ class _RevisionesState extends State<Revisiones> {
                                 });
                           },
                         ),
+                        ValuePanel(
+                          firstText: "SpO2",
+                          secondText:
+                          Valores.saturacionPerifericaOrigeno!,
+                          thirdText: "Resp/min",
+                          withEditMessage: true,
+                          onEdit: (value) {
+                            Operadores.editActivity(
+                                context: context,
+                                tittle: "Editar . . . ",
+                                message:
+                                "¿Saturación periférica de oxígeno? . . . ",
+                                onAcept: (value) {
+                                  Terminal.printSuccess(
+                                      message: "recieve $value");
+                                  setState(() {
+                                    Valores.saturacionPerifericaOxigeno =
+                                        int.parse(value);
+                                    Navigator.of(context).pop();
+                                  });
+                                });
+                          },
+                        ),
+                        ValuePanel(
+                          firstText: "PaO2e",
+                          secondText:
+                          Antropometrias.pO2equivalente.toStringAsFixed(2),
+                          thirdText: "Resp/min",
+                          withEditMessage: true,
+                          onEdit: (value) {
+                            Operadores.editActivity(
+                                context: context,
+                                tittle: "Editar . . . ",
+                                message:
+                                "¿Saturación periférica de oxígeno? . . . ",
+                                onAcept: (value) {
+                                  Terminal.printSuccess(
+                                      message: "recieve $value");
+                                  setState(() {
+                                    Valores.saturacionPerifericaOxigeno =
+                                        int.parse(value);
+                                    Navigator.of(context).pop();
+                                  });
+                                });
+                          },
+                        ),
+                        Container(),
                         // CrossLine(),
                         ValuePanel(
-                          firstText: "P. Corporal",
+                          firstText: "PCT",
                           secondText: Valores.pesoCorporalTotal.toString(),
                           thirdText: "Kg",
                           withEditMessage: true,
@@ -924,7 +990,7 @@ class _RevisionesState extends State<Revisiones> {
                           },
                         ),
                         ValuePanel(
-                          firstText: "Estatura",
+                          firstText: "Est",
                           secondText: Valores.alturaPaciente.toString(),
                           thirdText: "mts",
                           withEditMessage: true,

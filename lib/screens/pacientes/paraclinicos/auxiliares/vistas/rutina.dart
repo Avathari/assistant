@@ -896,7 +896,7 @@ class _RutinasState extends State<Rutinas> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[8],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[8]][2],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[8]][6],
         textFibrinogenoResultController.text,
         unidadMedidaFibrinogeno!
         //0,
@@ -906,7 +906,7 @@ class _RutinasState extends State<Rutinas> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[8],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[8]][2],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[8]][7],
         textDimeroDResultController.text,
         unidadMedidaDimeroD!
         //0,
@@ -947,7 +947,7 @@ class _RutinasState extends State<Rutinas> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[25],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[25]][3],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[25]][4],
         textBNPResultController.text,
         unidadMedidaBNP!
         //0,
@@ -1258,17 +1258,17 @@ class _RutinasState extends State<Rutinas> {
   var textVSGResultController = TextEditingController();
   String? unidadMedidaVSG = Auxiliares.Medidas[Auxiliares.Categorias[8]][1];
   var textPCRResultController = TextEditingController();
-  String? unidadMedidaPCR = Auxiliares.Medidas[Auxiliares.Categorias[8]][0];
+  String? unidadMedidaPCR = Auxiliares.Medidas[Auxiliares.Categorias[8]][2];
   var textProcalcitoninaResultController = TextEditingController();
   String? unidadMedidaProcalcitonina =
       Auxiliares.Medidas[Auxiliares.Categorias[8]][3];
   var textLactatoResultController = TextEditingController();
-  String? unidadMedidaLactato = Auxiliares.Medidas[Auxiliares.Categorias[8]][2];
+  String? unidadMedidaLactato = Auxiliares.Medidas[Auxiliares.Categorias[8]][0];
   // 
   var textFibrinogenoResultController = TextEditingController();
-  String? unidadMedidaFibrinogeno = Auxiliares.Medidas[Auxiliares.Categorias[8]][1];
+  String? unidadMedidaFibrinogeno = Auxiliares.Medidas[Auxiliares.Categorias[8]][2];
   var textDimeroDResultController = TextEditingController();
-  String? unidadMedidaDimeroD = Auxiliares.Medidas[Auxiliares.Categorias[8]][1];
+  String? unidadMedidaDimeroD = Auxiliares.Medidas[Auxiliares.Categorias[8]][4];
 // CARDIACOS ********* *************** ************* *
   var textCKResultController = TextEditingController();
   String? unidadMedidaCK = Auxiliares.Medidas[Auxiliares.Categorias[18]][0];
@@ -1292,7 +1292,7 @@ class _RutinasState extends State<Rutinas> {
   var textProBNPResultController = TextEditingController();
   String? unidadMedidaProBNP = Auxiliares.Medidas[Auxiliares.Categorias[25]][3];
   var textBNPResultController = TextEditingController();
-  String? unidadMedidaBNP = Auxiliares.Medidas[Auxiliares.Categorias[25]][2];
+  String? unidadMedidaBNP = Auxiliares.Medidas[Auxiliares.Categorias[25]][3];
 
   // OPERACIONES DE LA INTERFAZ ****************** ********
   void cerrar() {}
