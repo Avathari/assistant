@@ -341,18 +341,126 @@ class Pacientes {
   }
 
   static String hospitalarios() {
+    //
+    String cirugiasProsa = "",
+        hospitalizacionesProsa = "",
+        alergicosProsa = "",
+        traumaticosProsa = "",
+        transfusionesProsa = "",
+        vacunasProsa = "";
+    //
+    var newList = Listas.compareOneListWithAnother(
+        Listas.listWithoutRepitedValues(
+          Listas.listFromMapWithOneKey(
+            Pacientes.Quirurgicos!,
+            keySearched: 'Pace_APP_type',
+          ),
+        ),
+        [
+          "Cirugías",
+          "Hospitalizaciones",
+          "Alérgicos",
+          "Traumáticos",
+          "Tranfusiones",
+          "Vacunas",
+          "",
+        ]); // Quirurgicos.intervenciones
+    //
+    Reportes.antecedentesQuirurgicos = "";
+    //
+    for (var elem in newList) {
+      Pacientes.Quirurgicos!
+          .where((element) => element["Pace_APP_type"].contains(elem))
+          .forEach((element) {
+        //
+        switch (element['Pace_APP_type']) {
+          case "Cirugías":
+            if (cirugiasProsa == "") {
+              cirugiasProsa = "${element['Pace_APP_QUI']} "
+                  "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
+            } else {
+              cirugiasProsa = "$cirugiasProsa; ${element['Pace_APP_QUI']} "
+                  "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
+            }
+            break;
+          case "Hospitalizaciones":
+            if (hospitalizacionesProsa == "") {
+              hospitalizacionesProsa = "${element['Pace_APP_QUI']} "
+                  "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
+            } else {
+              hospitalizacionesProsa =
+                  "$hospitalizacionesProsa; ${element['Pace_APP_QUI']} "
+                  "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
+            }
+            break;
+          case "Alérgicos":
+            if (alergicosProsa == "") {
+              alergicosProsa = "${element['Pace_APP_QUI']} "
+                  "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
+            } else {
+              alergicosProsa = "$alergicosProsa; ${element['Pace_APP_QUI']} "
+                  "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
+            }
+            break;
+          case "Traumáticos":
+            if (traumaticosProsa == "") {
+              traumaticosProsa = "${element['Pace_APP_QUI']} "
+                  "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
+            } else {
+              traumaticosProsa =
+                  "$traumaticosProsa; ${element['Pace_APP_QUI']} "
+                  "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
+            }
+            break;
+          case "Tranfusiones":
+            if (transfusionesProsa == "") {
+              transfusionesProsa = "${element['Pace_APP_QUI']} "
+                  "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
+            } else {
+              transfusionesProsa =
+                  "$transfusionesProsa; ${element['Pace_APP_QUI']} "
+                  "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
+            }
+            break;
+          case "Vacunas":
+            if (vacunasProsa == "") {
+              vacunasProsa = "${element['Pace_APP_QUI']} "
+                  "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
+            } else {
+              vacunasProsa = "$vacunasProsa; ${element['Pace_APP_QUI']} "
+                  "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
+            }
+            break;
+
+          default:
+        }
+//
+      });
+      //
+    }
+
+    if (cirugiasProsa != "")      cirugiasProsa = "        Antecedentes Quirúrgicos : $cirugiasProsa . . ";
+    if (hospitalizacionesProsa != "")       hospitalizacionesProsa =  "\n        Antecedentes Hospitalarios : $hospitalizacionesProsa . . ";
+    if (alergicosProsa != "")       alergicosProsa =  "\n        Antecedentes Alérgicos : $alergicosProsa . . ";
+    if (vacunasProsa != "")       vacunasProsa =  "\n        Vacunas recientes empleadas : $vacunasProsa . . ";
+    if (transfusionesProsa != "")       transfusionesProsa =  "\n        Transfusiones en los últimos meses : $transfusionesProsa . . ";
+    if (traumaticosProsa != "")       traumaticosProsa =  "\n        Antecedentes Traumáticos : $traumaticosProsa . . ";
+
+    return Reportes.antecedentesQuirurgicos =
+        "$cirugiasProsa$hospitalizacionesProsa$alergicosProsa$vacunasProsa$transfusionesProsa$traumaticosProsa";
+
     // ************************ ************** ********** **** *** *
-    if (Quirurgicos != []) {
+    if (Pacientes.Quirurgicos != []) {
       // || Quirurgicos!.isNotEmpty
       Reportes.antecedentesQuirurgicos = "";
       for (var element in Quirurgicos!) {
         if (Reportes.antecedentesQuirurgicos == "") {
           Reportes.antecedentesQuirurgicos =
-              "${element['Pace_APP_QUI']} realizado hace ${element['Pace_APP_QUI_dia']} años, "
+              "${element['Pace_APP_QUI']} " // realizado hace ${element['Pace_APP_QUI_dia']} años, "
               "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
         } else {
           Reportes.antecedentesQuirurgicos =
-              "${Reportes.antecedentesQuirurgicos}; ${element['Pace_APP_QUI']} realizado hace ${element['Pace_APP_QUI_dia']} años, "
+              "${Reportes.antecedentesQuirurgicos}; ${element['Pace_APP_QUI']} "
               "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
         }
       }
@@ -7596,6 +7704,9 @@ class Auxiliares {
       "",
       "",
     ],
+    Categorias[31]: [
+      "",
+    ],
   };
   static Map<String, dynamic> Medidas = {
     Categorias[0]: ["g/dL", "%", "fL", "pg", "10^3/UL", "10^6/UL", "K/uL"],
@@ -7694,6 +7805,10 @@ class Auxiliares {
       "",
       "",
       ""
+    ],
+    //
+    Categorias[31]: [
+      "",
     ],
   };
 
@@ -9395,9 +9510,10 @@ class Repositorios {
       Reportes.reportes = value.last;
       // Del Padecimiento **************************************************
 
-      Reportes.reportes['Antecedentes_No_Patologicos'] = Reportes.reportes['Personales_No_Patologicos'] =
-          Reportes.personalesNoPatologicos =
-              value.last['Personales_No_Patologicos'] ?? '';
+      Reportes.reportes['Antecedentes_No_Patologicos'] =
+          Reportes.reportes['Personales_No_Patologicos'] =
+              Reportes.personalesNoPatologicos =
+                  value.last['Personales_No_Patologicos'] ?? '';
       //
       Reportes.reportes['Impresiones_Diagnosticas'] = Reportes
           .impresionesDiagnosticas = value.last['Diagnosticos_Hospital'] ?? '';
@@ -9498,7 +9614,9 @@ class Repositorios {
   }
 
   static Future<void> actualizarRegistro(
-      {BuildContext? context, required List Values, bool isNotte = false}) async {
+      {BuildContext? context,
+      required List Values,
+      bool isNotte = false}) async {
     String response = "", direccion = "";
     //
     List newValues = Values.sublist(6, Values.length - 1);
@@ -9510,23 +9628,20 @@ class Repositorios {
       newValues.insert(newValues.length, Repositorios.tipo_Analisis);
       direccion = Repositorios.repositorio['updateQueryNotte']; //
 
-      if (Reportes.fechaRealizacion ==Calendarios.today(format: "yyyy-MM-dd")){
+      if (Reportes.fechaRealizacion ==
+          Calendarios.today(format: "yyyy-MM-dd")) {
         newValues.insert(newValues.length, Reportes.fechaRealizacion);
         direccion = Repositorios.repositorio['updateQueryNotteUpdate']; //
       }
-
     } else {
-    direccion = Repositorios.repositorio['updateQuery']; // updateQueryNotte
+      direccion = Repositorios.repositorio['updateQuery']; // updateQueryNotte
     }
 
     //
     Terminal.printWarning(message: "$newValues : ${newValues.length}");
     // Terminal.printWarning(message: "${Values.sublist(6, Values.length-1)}");
-    await Actividades.actualizar(
-            Databases.siteground_database_reghosp,
-            direccion,
-            newValues,
-            Pacientes.ID_Hospitalizacion)
+    await Actividades.actualizar(Databases.siteground_database_reghosp,
+            direccion, newValues, Pacientes.ID_Hospitalizacion)
         .then((value) {
       response = value;
       //
@@ -9714,7 +9829,7 @@ class Repositorios {
         "ID_Pace, ID_Hosp, "
         "FechaPadecimiento, Padecimiento_Actual, "
         "ServicioMedico, FechaRealizacion, "
-        "Personales_No_Patologicos, Personales_Patologicos, "
+        // "Personales_No_Patologicos, Personales_Patologicos, "
         "Diagnosticos_Hospital, "
         "Subjetivo, Signos_Vitales, Exploracion_Fisica, "
         "Auxiliares_Diagnosticos, Analisis_Complementario, "
@@ -9723,7 +9838,7 @@ class Repositorios {
         "Tipo_Analisis) "
         "VALUES ("
         "?,?,?,?,?,?,?,?,?,?,"
-        "?,?,"
+        // "?,?,"
         "?,?,?,?,?,?,?,?,?,?,"
         "?,?,?)",
     "updateQuery": "UPDATE pace_hosp_repo SET "
@@ -9735,7 +9850,7 @@ class Repositorios {
         "Dietoterapia = ?, Hidroterapia = ?, Insulinoterapia = ?, Hemoterapia = ?, "
         "Oxigenoterapia = ?, Medicamentos = ?, Medidas_Generales = ?, Pendientes = ? "
         "WHERE ID_Hosp = ? ",
-        // "AND Tipo_Analisis = ?",
+    // "AND Tipo_Analisis = ?",
     "updateQueryNotte": "UPDATE pace_hosp_repo SET "
         "Personales_No_Patologicos = ?, Personales_Patologicos = ?, "
         "Diagnosticos_Hospital = ?, Subjetivo = ?, "

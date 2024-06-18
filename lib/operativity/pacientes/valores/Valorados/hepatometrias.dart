@@ -62,6 +62,9 @@ class Hepatometrias {
     }
   }
 
+  ///
+  /// VN: Mayor a 2.5: Consumo de Alcohol
+  ///
   static double get relacionGGTFA {
     if (Valores.glutrailtranspeptidasa! != 0 &&
         Valores.fosfatasaAlcalina! != 0) {
@@ -81,10 +84,47 @@ class Hepatometrias {
     }
   }
 
+  ///
+  /// VN: Mayor a 5: Hepatocelular
+  ///         2-5: Mixto
+  ///         Menor a 2: Colestásico
+  ///
+  ///
+  ///
   static double get relacionALTFA {
     if (Valores.alaninoaminotrasferasa! != 0 &&
         Valores.fosfatasaAlcalina! != 0) {
       return (Valores.alaninoaminotrasferasa! / Valores.fosfatasaAlcalina!);
+    } else {
+      return double.nan;
+    }
+  }
+
+  ///
+  /// VN: Menor a 1: Hepatitis Viral
+  ///         Mayor a 2: Hepatitis por alcohol, cirrosis de cualquier etiología
+  ///         Mayor a 4: FHA, Enf. Wilson Agudo
+  ///         Mayor a 1: Fibrosis o Enfermedad Avanzada EHNA / Cirrosis por VHC
+  ///
+  static double get relacionALTAST {
+    if (Valores.alaninoaminotrasferasa! != 0 &&
+        Valores.aspartatoaminotransferasa! != 0) {
+      return (Valores.alaninoaminotrasferasa! / Valores.aspartatoaminotransferasa!);
+    } else {
+      return double.nan;
+    }
+  }
+
+  ///
+  /// VN: Mayor a 1.5: Hepatitis Viral
+  ///         Menor a 1.5: Isquemica, toxicidad por paracetamol
+  ///
+  ///
+  ///
+  static double get relacionALTDHL {
+    if (Valores.alaninoaminotrasferasa! != 0 &&
+        Valores.deshidrogenasaLactica! != 0) {
+      return (Valores.alaninoaminotrasferasa! / Valores.deshidrogenasaLactica!);
     } else {
       return double.nan;
     }

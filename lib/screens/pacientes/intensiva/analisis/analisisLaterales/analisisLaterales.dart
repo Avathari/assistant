@@ -2,6 +2,7 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/antropometricos.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/balancesHidrico.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/basico.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/cardiovasculares.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/gasometricos.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/hidricos.dart';
@@ -26,7 +27,7 @@ class _AnalisisLateralesState extends State<AnalisisLaterales> {
         Expanded(
           flex: 8,
           child: widget.actualLateralPage == 0
-              ? Container()
+              ?  Basico()
               : widget.actualLateralPage == 1
               ? Hidricos(isLateral: true)
               : widget.actualLateralPage == 2
@@ -169,6 +170,8 @@ class _AnalisisLateralesState extends State<AnalisisLaterales> {
       ],
     );
   }
+
+
 }
 
 _analisisLaterales(BuildContext context) {

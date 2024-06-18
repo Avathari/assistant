@@ -1,10 +1,13 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/renometrias.dart';
+import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
+import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -49,72 +52,116 @@ class _QuimicasState extends State<Quimicas> {
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
         ),
-        SingleChildScrollView(
-          padding: const EdgeInsets.all(7.0),
-          controller: ScrollController(),
-          child: Column(
-            children: [
-              EditTextArea(
-                textController: textGlucosaResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Glucosa ($unidadMedidaGlucosa)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textUreaResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Urea ($unidadMedidaUrea)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textCreatininaResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Creatinina ($unidadMedidaCreatinina)',
-                numOfLines: 1,
-              ),
-
-              EditTextArea(
-                textController: textAcidoUricoResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Acido Urico ($unidadMedidaAcidoUrico)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textNitrogenoUreicoResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText:
-                    'Nitrógeno Ureico ($unidadMedidaNitrogenoUreico)',
-                numOfLines: 1,
-              ),
-
-              // Botton ***** ******* ****** * ***
-              CrossLine(
-                color: Colors.grey,
-              ),
-              Container(
-                margin: const EdgeInsets.all(5.0),
-                decoration: ContainerDecoration.roundedDecoration(),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+        CrossLine(thickness: 3),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 1,
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(7.0),
+                controller: ScrollController(),
+                child: Column(
                   children: [
-                    Expanded(
-                      child: GrandButton(
-                          labelButton: "Agregar Datos",
-                          weigth: 2000,
-                          onPress: () {
-                            operationMethod();
-                          }),
+                    EditTextArea(
+                      textController: textGlucosaResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Glucosa ($unidadMedidaGlucosa)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textUreaResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Urea ($unidadMedidaUrea)',
+                      numOfLines: 1,
+                      onChange: (value) => setState(() => Valores.urea = double.parse(textUreaResultController.text)),
+                    ),
+                    EditTextArea(
+                      textController: textCreatininaResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Creatinina ($unidadMedidaCreatinina)',
+                      numOfLines: 1,
+                      onChange: (value) => setState(() => Valores.creatinina = double.parse(textCreatininaResultController.text)),
+                    ),
+
+                    EditTextArea(
+                      textController: textAcidoUricoResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Acido Urico ($unidadMedidaAcidoUrico)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textNitrogenoUreicoResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText:
+                          'Nitrógeno Ureico ($unidadMedidaNitrogenoUreico)',
+                      numOfLines: 1,
+                    ),
+
+                    // Botton ***** ******* ****** * ***
+                    CrossLine(
+                      color: Colors.grey,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(5.0),
+                      decoration: ContainerDecoration.roundedDecoration(),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: GrandButton(
+                                labelButton: "Agregar Datos",
+                                weigth: 2000,
+                                onPress: () {
+                                  operationMethod();
+                                }),
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),
-              )
-            ],
-          ),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Column(
+                children: [
+                  ValuePanel(
+                    firstText: "CG-TFG",
+                    secondText: Renometrias.tasaRenalCrockoft_Gault.toStringAsFixed(2),
+                    thirdText: "mL/min/1.72 m2",
+                  ),
+                  ValuePanel(
+                    firstText: "CKD-EPI-TFG",
+                    secondText: Renometrias.tasaRenalCKDEPI.toStringAsFixed(2),
+                    thirdText: "mL/min/1.72 m2",
+                  ),
+                  ValuePanel(
+                    firstText: "MDRD-TFG",
+                    secondText: Renometrias.tasaRenalMDRD.toStringAsFixed(2),
+                    thirdText: "mL/min/1.72 m2",
+                  ),
+                  CrossLine(),
+                  ValuePanel(
+                    firstText: "Ure/Cr",
+                    secondText: Renometrias.ureaCreatinina.toStringAsFixed(2),
+                    thirdText: "",
+                  ),
+                  ValuePanel(
+                    secondText: "",
+                    firstText: Renometrias.uremia,
+                    thirdText: "",
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ],
     );

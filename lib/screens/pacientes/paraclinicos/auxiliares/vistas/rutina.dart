@@ -2,6 +2,7 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/citometrias.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/hepatometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
@@ -1445,6 +1446,7 @@ class _RutinasState extends State<Rutinas> {
                       inputFormat: MaskTextInputFormatter(),
                       labelEditText: 'VCM ($unidadMedidaVCM)',
                       numOfLines: 1,
+                      onChange: (value) => setState(() => Valores.volumenCorpuscularMedio = double.parse(textVCMResultController.text)),
                     ),
                   ),
                   Expanded(
@@ -1454,6 +1456,7 @@ class _RutinasState extends State<Rutinas> {
                       inputFormat: MaskTextInputFormatter(),
                       labelEditText: 'CMHC ($unidadMedidaCMHC)',
                       numOfLines: 1,
+                      onChange: (value) => setState(() => Valores.concentracionMediaHemoglobina = double.parse(textCMHCResultController.text)),
                     ),
                   ),
                   Expanded(
@@ -1463,6 +1466,7 @@ class _RutinasState extends State<Rutinas> {
                       inputFormat: MaskTextInputFormatter(),
                       labelEditText: 'HCM ($unidadMedidaHCM)',
                       numOfLines: 1,
+                      onChange: (value) => setState(() => Valores.hemoglobinaCorpuscularMedia = double.parse(textHCMResultController.text)),
                     ),
                   ),
                 ],
@@ -1473,6 +1477,7 @@ class _RutinasState extends State<Rutinas> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Plaquetas ($unidadMedidaPlaquetas)',
                 numOfLines: 1,
+                onChange: (value) => setState(() => Valores.plaquetas = double.parse(textPlaquetasResultController.text)),
               ),
               EditTextArea(
                 textController: textLeucocitosResultController,
@@ -1480,6 +1485,7 @@ class _RutinasState extends State<Rutinas> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Leucocitos ($unidadMedidaLeucocitos)',
                 numOfLines: 1,
+                onChange: (value) => setState(() => Valores.leucocitosTotales = double.parse(textLeucocitosResultController.text)),
               ),
               Row(
                 children: [
@@ -1490,6 +1496,7 @@ class _RutinasState extends State<Rutinas> {
                       inputFormat: MaskTextInputFormatter(),
                       labelEditText: 'Neutrofilos ($unidadMedidaNeutrofilos)',
                       numOfLines: 1,
+                      onChange: (value) => setState(() => Valores.neutrofilosTotales = double.parse(textNeutrofilosResultController.text)),
                     ),
                   ),
                   Expanded(
@@ -1499,6 +1506,7 @@ class _RutinasState extends State<Rutinas> {
                       inputFormat: MaskTextInputFormatter(),
                       labelEditText: 'Linfocitos ($unidadMedidaLinfocitos)',
                       numOfLines: 1,
+                      onChange: (value) => setState(() => Valores.linfocitosTotales = double.parse(textLinfocitosResultController.text)),
                     ),
                   ),
                 ],
@@ -1509,6 +1517,7 @@ class _RutinasState extends State<Rutinas> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Monocitos ($unidadMedidaMonocitos)',
                 numOfLines: 1,
+                onChange: (value) => setState(() => Valores.monocitosTotales = double.parse(textMonocitosResultController.text)),
               ),
               // Quimica Sanguinea ***** ******* ****** * ***
               CrossLine(
@@ -1520,6 +1529,8 @@ class _RutinasState extends State<Rutinas> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Glucosa ($unidadMedidaGlucosa)',
                 numOfLines: 1,
+                onChange: (value) => setState(() => Valores.glucosa = double.parse(textGlucosaResultController.text)),
+
               ),
               Row(
                 children: [
@@ -1530,6 +1541,7 @@ class _RutinasState extends State<Rutinas> {
                       inputFormat: MaskTextInputFormatter(),
                       labelEditText: 'Urea ($unidadMedidaUrea)',
                       numOfLines: 1,
+                      onChange: (value) => setState(() => Valores.urea = double.parse(textUreaResultController.text)),
                     ),
                   ),
                   Expanded(
@@ -1539,6 +1551,7 @@ class _RutinasState extends State<Rutinas> {
                       inputFormat: MaskTextInputFormatter(),
                       labelEditText: 'Creatinina ($unidadMedidaCreatinina)',
                       numOfLines: 1,
+                      onChange: (value) => setState(() => Valores.creatinina = double.parse(textCreatininaResultController.text)),
                     ),
                   ),
                 ],
@@ -1562,6 +1575,7 @@ class _RutinasState extends State<Rutinas> {
                       labelEditText:
                           'Nitrógeno Ureico ($unidadMedidaNitrogenoUreico)',
                       numOfLines: 1,
+                      onChange: (value) => setState(() => Valores.nitrogenoUreico = double.parse(textNitrogenoUreicoResultController.text)),
                     ),
                   ),
                 ],
@@ -1579,6 +1593,7 @@ class _RutinasState extends State<Rutinas> {
                       inputFormat: MaskTextInputFormatter(),
                       labelEditText: 'Potasio ($unidadMedidaPotasio)',
                       numOfLines: 1,
+                      onChange: (value) => setState(() => Valores.potasio = double.parse(textPotasioResultController.text)),
                     ),
                   ),
                   Expanded(
@@ -1588,6 +1603,7 @@ class _RutinasState extends State<Rutinas> {
                       inputFormat: MaskTextInputFormatter(),
                       labelEditText: 'Sodio ($unidadMedidaSodio)',
                       numOfLines: 1,
+                      onChange: (value) => setState(() => Valores.sodio = double.parse(textSodioResultController.text)),
                     ),
                   ),
                 ],
@@ -1601,6 +1617,7 @@ class _RutinasState extends State<Rutinas> {
                       inputFormat: MaskTextInputFormatter(),
                       labelEditText: 'Cloro ($unidadMedidaCloro)',
                       numOfLines: 1,
+                      onChange: (value) => setState(() => Valores.cloro = double.parse(textCloroResultController.text)),
                     ),
                   ),
                   Expanded(
@@ -1610,6 +1627,7 @@ class _RutinasState extends State<Rutinas> {
                       inputFormat: MaskTextInputFormatter(),
                       labelEditText: 'Fosforo ($unidadMedidaFosforo)',
                       numOfLines: 1,
+                      onChange: (value) => setState(() => Valores.fosforo = double.parse(textFosforoResultController.text)),
                     ),
                   ),
                 ],
@@ -1623,6 +1641,7 @@ class _RutinasState extends State<Rutinas> {
                       inputFormat: MaskTextInputFormatter(),
                       labelEditText: 'Calcio ($unidadMedidaCalcio)',
                       numOfLines: 1,
+                      onChange: (value) => setState(() => Valores.calcio = double.parse(textCalcioResultController.text)),
                     ),
                   ),
                   Expanded(
@@ -1632,6 +1651,7 @@ class _RutinasState extends State<Rutinas> {
                       inputFormat: MaskTextInputFormatter(),
                       labelEditText: 'Magnesio ($unidadMedidaMagnesio)',
                       numOfLines: 1,
+                      onChange: (value) => setState(() => Valores.magnesio = double.parse(textMagnesioResultController.text)),
                     ),
                   ),
                 ],
@@ -1664,6 +1684,7 @@ class _RutinasState extends State<Rutinas> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Colesterol ($unidadMedidaColesterol)',
                 numOfLines: 1,
+                onChange: (value) => setState(() => Valores.colesterolTotal = double.parse(textColesterolResultController.text)),
               ),
               EditTextArea(
                 textController: textTrigliceridosResultController,
@@ -1671,6 +1692,7 @@ class _RutinasState extends State<Rutinas> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Trigliceridos ($unidadMedidaTrigliceridos)',
                 numOfLines: 1,
+                onChange: (value) => setState(() => Valores.trigliceridos = double.parse(textTrigliceridosResultController.text)),
               ),
               Row(
                 children: [
@@ -1681,6 +1703,7 @@ class _RutinasState extends State<Rutinas> {
                       inputFormat: MaskTextInputFormatter(),
                       labelEditText: 'HDL ($unidadMedidaHDL)',
                       numOfLines: 1,
+                      onChange: (value) => setState(() => Valores.cHDL = double.parse(textHDLResultController.text)),
                     ),
                   ),
                   Expanded(
@@ -1690,6 +1713,7 @@ class _RutinasState extends State<Rutinas> {
                       inputFormat: MaskTextInputFormatter(),
                       labelEditText: 'LDL ($unidadMedidaLDL)',
                       numOfLines: 1,
+                      onChange: (value) => setState(() => Valores.cLDL = double.parse(textLDLResultController.text)),
                     ),
                   ),
                 ],
@@ -1700,6 +1724,7 @@ class _RutinasState extends State<Rutinas> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'VLDL ($unidadMedidaVLDL)',
                 numOfLines: 1,
+                onChange: (value) => setState(() => Valores.cVLDL = double.parse(textVLDLResultController.text)),
               ),
 
               // Botton ***** ******* ****** * ***
@@ -1714,10 +1739,12 @@ class _RutinasState extends State<Rutinas> {
                 numOfLines: 1,
                 onChange: (String value) {
                   double val = 0.0;
+
+                  setState(() => Valores.bilirrubinasTotales = double.parse(textBTResultController.text));
                   if (textBDResultController.text.isNotEmpty) {
                     val = double.parse(textBTResultController.text) -
                         double.parse(textBDResultController.text);
-                    textBIResultController.text = val.toStringAsFixed(2);
+                    Valores.bilirrubinaIndirecta = val;
                   } else {}
                 },
               ),
@@ -1730,10 +1757,11 @@ class _RutinasState extends State<Rutinas> {
                 onChange: (String value) {
                   double val = 0.0;
 
+                  setState(() => Valores.bilirrubinaDirecta = double.parse(textBDResultController.text));
                   if (textBTResultController.text.isNotEmpty) {
                     val = double.parse(textBTResultController.text) -
                         double.parse(textBDResultController.text);
-                    textBIResultController.text = val.toStringAsFixed(2);
+                    Valores.bilirrubinaIndirecta= val;
                   } else {}
                 },
               ),
@@ -1743,6 +1771,7 @@ class _RutinasState extends State<Rutinas> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Bilirrubina Indirecta ($unidadMedidaBI)',
                 numOfLines: 1,
+                onChange: (value) => setState(() => Valores.bilirrubinaIndirecta = double.parse(textVLDLResultController.text)),
               ),
 
               EditTextArea(
@@ -1751,6 +1780,7 @@ class _RutinasState extends State<Rutinas> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Alaninoaminotrasferasa ($unidadMedidaAlanino)',
                 numOfLines: 1,
+                onChange: (value) => setState(() => Valores.alaninoaminotrasferasa = double.parse(textAlaninoResultController.text)),
               ),
               EditTextArea(
                 textController: textAspartatoResultController,
@@ -1759,6 +1789,7 @@ class _RutinasState extends State<Rutinas> {
                 labelEditText:
                     'Aspartatoaminotransferasa ($unidadMedidaAspartato)',
                 numOfLines: 1,
+                onChange: (value) => setState(() => Valores.aspartatoaminotransferasa = double.parse(textAspartatoResultController.text)),
               ),
               EditTextArea(
                 textController: textDHLResultController,
@@ -1766,6 +1797,7 @@ class _RutinasState extends State<Rutinas> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Deshidrogenasa Láctica ($unidadMedidaDHL)',
                 numOfLines: 1,
+                onChange: (value) => setState(() => Valores.deshidrogenasaLactica = double.parse(textDHLResultController.text)),
               ),
 
               EditTextArea(
@@ -1775,6 +1807,7 @@ class _RutinasState extends State<Rutinas> {
                 labelEditText:
                     'Glutaril transpeptidasa ($unidadMedidaGlutaril)',
                 numOfLines: 1,
+                onChange: (value) => setState(() => Valores.glutrailtranspeptidasa = double.parse(textGlutarilResultController.text)),
               ),
               EditTextArea(
                 textController: textFosfatasaResultController,
@@ -1782,6 +1815,7 @@ class _RutinasState extends State<Rutinas> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Fosfatasa Alcalina ($unidadMedidaFosfatasa)',
                 numOfLines: 1,
+                onChange: (value) => setState(() => Valores.fosfatasaAlcalina = double.parse(textFosfatasaResultController.text)),
               ),
 
               EditTextArea(
@@ -1790,6 +1824,7 @@ class _RutinasState extends State<Rutinas> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Albumina Sérica ($unidadMedidaAlbumina)',
                 numOfLines: 1,
+                onChange: (value) => setState(() => Valores.albuminaSerica = double.parse(textAlbuminaResultController.text)),
               ),
               EditTextArea(
                 textController: textProteinasResultController,
@@ -1797,6 +1832,7 @@ class _RutinasState extends State<Rutinas> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Proteinas Totales ($unidadMedidaProteinas)',
                 numOfLines: 1,
+                onChange: (value) => setState(() => Valores.proteinasTotales = double.parse(textProteinasResultController.text)),
               ),
               EditTextArea(
                 textController: textGlobulinasResultController,
@@ -1804,6 +1840,7 @@ class _RutinasState extends State<Rutinas> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Globulinas ($unidadMedidaGlobulinas)',
                 numOfLines: 1,
+                onChange: (value) => setState(() => Valores.fosfatasaAlcalina = double.parse(textGlobulinasResultController.text)),
               ),
               // Botton ***** ******* ****** * ***
               CrossLine(
@@ -1841,6 +1878,7 @@ class _RutinasState extends State<Rutinas> {
                 labelEditText:
                     'Tiempo de Protrombina ($unidadMedidaProtrombina)',
                 numOfLines: 1,
+
               ),
               EditTextArea(
                 textController: textTromboplastinaResultController,
@@ -2115,6 +2153,7 @@ class _RutinasState extends State<Rutinas> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'PH',
                 numOfLines: 1,
+                onChange: (value) => setState(() => Valores.pHArteriales = double.parse(textPHResultController.text)),
               ),
               EditTextArea(
                 textController: textPCOResultController,
@@ -2122,6 +2161,7 @@ class _RutinasState extends State<Rutinas> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'PCO ($unidadMedidaPCO)',
                 numOfLines: 1,
+                onChange: (value) => setState(() => Valores.pcoArteriales = double.parse(textPCOResultController.text)),
               ),
 
               EditTextArea(
@@ -2130,6 +2170,7 @@ class _RutinasState extends State<Rutinas> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'PO ($unidadMedidaPO)',
                 numOfLines: 1,
+                onChange: (value) => setState(() => Valores.poArteriales = double.parse(textPOResultController.text)),
               ),
 
               EditTextArea(
@@ -2138,6 +2179,7 @@ class _RutinasState extends State<Rutinas> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'HCO ($unidadMedidaHCO)',
                 numOfLines: 1,
+                onChange: (value) => setState(() => Valores.bicarbonatoArteriales = double.parse(textHCOResultController.text)),
               ),
               EditTextArea(
                 textController: textFIOResultController,
@@ -2145,6 +2187,7 @@ class _RutinasState extends State<Rutinas> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'FIO ($unidadMedidaFIO)',
                 numOfLines: 1,
+                onChange: (value) => setState(() => Valores.fraccionInspiratoriaOxigeno =Valores.frecuenciaVentilatoria = int.parse(textFIOResultController.text)),
               ),
               EditTextArea(
                 textController: textSOResultController,
@@ -2152,6 +2195,7 @@ class _RutinasState extends State<Rutinas> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'SO ($unidadMedidaSO)',
                 numOfLines: 1,
+                onChange: (value) => setState(() => Valores.soArteriales = double.parse(textSOResultController.text)),
               ),
               EditTextArea(
                 textController: textLactResultController,
@@ -2291,6 +2335,7 @@ class _RutinasState extends State<Rutinas> {
                         inputFormat: MaskTextInputFormatter(),
                         labelEditText: 'VCM ($unidadMedidaVCM)',
                         numOfLines: 1,
+                        onChange: (value) => setState(() => Valores.volumenCorpuscularMedio = double.parse(textVCMResultController.text)),
                       ),
                     ),
                     Expanded(
@@ -2300,6 +2345,7 @@ class _RutinasState extends State<Rutinas> {
                         inputFormat: MaskTextInputFormatter(),
                         labelEditText: 'CMHC ($unidadMedidaCMHC)',
                         numOfLines: 1,
+                        onChange: (value) => setState(() => Valores.concentracionMediaHemoglobina = double.parse(textCMHCResultController.text)),
                       ),
                     ),
                     Expanded(
@@ -2309,6 +2355,7 @@ class _RutinasState extends State<Rutinas> {
                         inputFormat: MaskTextInputFormatter(),
                         labelEditText: 'HCM ($unidadMedidaHCM)',
                         numOfLines: 1,
+                        onChange: (value) => setState(() => Valores.hemoglobinaCorpuscularMedia = double.parse(textHCMResultController.text)),
                       ),
                     ),
                   ],
@@ -2323,6 +2370,7 @@ class _RutinasState extends State<Rutinas> {
                         inputFormat: MaskTextInputFormatter(),
                         labelEditText: 'Plaquetas ($unidadMedidaPlaquetas)',
                         numOfLines: 1,
+                        onChange: (value) => setState(() => Valores.plaquetas = double.parse(textPlaquetasResultController.text)),
                       ),
                     ),
                     Expanded(
@@ -2332,6 +2380,7 @@ class _RutinasState extends State<Rutinas> {
                         inputFormat: MaskTextInputFormatter(),
                         labelEditText: 'Leucocitos ($unidadMedidaLeucocitos)',
                         numOfLines: 1,
+                        onChange: (value) => setState(() => Valores.leucocitosTotales = double.parse(textLeucocitosResultController.text)),
                       ),
                     ),
                     Expanded(
@@ -2341,6 +2390,7 @@ class _RutinasState extends State<Rutinas> {
                         inputFormat: MaskTextInputFormatter(),
                         labelEditText: 'Neutrofilos ($unidadMedidaNeutrofilos)',
                         numOfLines: 1,
+                        onChange: (value) => setState(() => Valores.neutrofilosTotales = double.parse(textNeutrofilosResultController.text)),
                       ),
                     ),
                     Expanded(
@@ -2350,6 +2400,7 @@ class _RutinasState extends State<Rutinas> {
                         inputFormat: MaskTextInputFormatter(),
                         labelEditText: 'Linfocitos ($unidadMedidaLinfocitos)',
                         numOfLines: 1,
+                        onChange: (value) => setState(() => Valores.linfocitosTotales = double.parse(textLinfocitosResultController.text)),
                       ),
                     ),
                     Expanded(
@@ -2359,6 +2410,7 @@ class _RutinasState extends State<Rutinas> {
                         inputFormat: MaskTextInputFormatter(),
                         labelEditText: 'Monocitos ($unidadMedidaMonocitos)',
                         numOfLines: 1,
+                        onChange: (value) => setState(() => Valores.monocitosTotales = double.parse(textMonocitosResultController.text)),
                       ),
                     ),
                   ],
@@ -2378,6 +2430,7 @@ class _RutinasState extends State<Rutinas> {
                     inputFormat: MaskTextInputFormatter(),
                     labelEditText: 'Glucosa ($unidadMedidaGlucosa)',
                     numOfLines: 1,
+                    onChange: (value) => setState(() => Valores.glucosa = double.parse(textGlucosaResultController.text)),
                   ),
                 ),
                 Expanded(
@@ -2387,6 +2440,7 @@ class _RutinasState extends State<Rutinas> {
                     inputFormat: MaskTextInputFormatter(),
                     labelEditText: 'Urea ($unidadMedidaUrea)',
                     numOfLines: 1,
+                    onChange: (value) => setState(() => Valores.urea = double.parse(textUreaResultController.text)),
                   ),
                 ),
                 Expanded(
@@ -2396,6 +2450,7 @@ class _RutinasState extends State<Rutinas> {
                     inputFormat: MaskTextInputFormatter(),
                     labelEditText: 'Creatinina ($unidadMedidaCreatinina)',
                     numOfLines: 1,
+                    onChange: (value) => setState(() => Valores.creatinina = double.parse(textCreatininaResultController.text)),
                   ),
                 ),
                 Expanded(
@@ -2432,6 +2487,7 @@ class _RutinasState extends State<Rutinas> {
                     inputFormat: MaskTextInputFormatter(),
                     labelEditText: 'Potasio ($unidadMedidaPotasio)',
                     numOfLines: 1,
+                    onChange: (value) => setState(() => Valores.potasio = double.parse(textPotasioResultController.text)),
                   ),
                 ),
                 Expanded(
@@ -2441,6 +2497,7 @@ class _RutinasState extends State<Rutinas> {
                     inputFormat: MaskTextInputFormatter(),
                     labelEditText: 'Sodio ($unidadMedidaSodio)',
                     numOfLines: 1,
+                    onChange: (value) => setState(() => Valores.sodio = double.parse(textSodioResultController.text)),
                   ),
                 ),
                 Expanded(
@@ -2450,6 +2507,7 @@ class _RutinasState extends State<Rutinas> {
                     inputFormat: MaskTextInputFormatter(),
                     labelEditText: 'Cloro ($unidadMedidaCloro)',
                     numOfLines: 1,
+                    onChange: (value) => setState(() => Valores.cloro = double.parse(textCloroResultController.text)),
                   ),
                 ),
                 Expanded(
@@ -2459,6 +2517,7 @@ class _RutinasState extends State<Rutinas> {
                     inputFormat: MaskTextInputFormatter(),
                     labelEditText: 'Fosforo ($unidadMedidaFosforo)',
                     numOfLines: 1,
+                    onChange: (value) => setState(() => Valores.fosforo = double.parse(textFosforoResultController.text)),
                   ),
                 ),
                 Expanded(
@@ -2468,6 +2527,7 @@ class _RutinasState extends State<Rutinas> {
                     inputFormat: MaskTextInputFormatter(),
                     labelEditText: 'Calcio ($unidadMedidaCalcio)',
                     numOfLines: 1,
+                    onChange: (value) => setState(() => Valores.calcio = double.parse(textCalcioResultController.text)),
                   ),
                 ),
                 Expanded(
@@ -2477,6 +2537,7 @@ class _RutinasState extends State<Rutinas> {
                     inputFormat: MaskTextInputFormatter(),
                     labelEditText: 'Magnesio ($unidadMedidaMagnesio)',
                     numOfLines: 1,
+                    onChange: (value) => setState(() => Valores.magnesio = double.parse(textMagnesioResultController.text)),
                   ),
                 ),
               ],
@@ -2494,6 +2555,7 @@ class _RutinasState extends State<Rutinas> {
                     inputFormat: MaskTextInputFormatter(),
                     labelEditText: 'Colesterol ($unidadMedidaColesterol)',
                     numOfLines: 1,
+                    onChange: (value) => setState(() => Valores.colesterolTotal = double.parse(textColesterolResultController.text)),
                   ),
                 ),
                 Expanded(
@@ -2503,6 +2565,7 @@ class _RutinasState extends State<Rutinas> {
                     inputFormat: MaskTextInputFormatter(),
                     labelEditText: 'Trigliceridos ($unidadMedidaTrigliceridos)',
                     numOfLines: 1,
+                    onChange: (value) => setState(() => Valores.trigliceridos = double.parse(textTrigliceridosResultController.text)),
                   ),
                 ),
                 Expanded(
@@ -2512,6 +2575,7 @@ class _RutinasState extends State<Rutinas> {
                     inputFormat: MaskTextInputFormatter(),
                     labelEditText: 'HDL ($unidadMedidaHDL)',
                     numOfLines: 1,
+                    onChange: (value) => setState(() => Valores.cHDL = double.parse(textHDLResultController.text)),
                   ),
                 ),
                 Expanded(
@@ -2521,6 +2585,7 @@ class _RutinasState extends State<Rutinas> {
                     inputFormat: MaskTextInputFormatter(),
                     labelEditText: 'LDL ($unidadMedidaLDL)',
                     numOfLines: 1,
+                    onChange: (value) => setState(() => Valores.cLDL = double.parse(textLDLResultController.text)),
                   ),
                 ),
                 Expanded(
@@ -2530,6 +2595,7 @@ class _RutinasState extends State<Rutinas> {
                     inputFormat: MaskTextInputFormatter(),
                     labelEditText: 'VLDL ($unidadMedidaVLDL)',
                     numOfLines: 1,
+                    onChange: (value) => setState(() => Valores.cVLDL = double.parse(textVLDLResultController.text)),
                   ),
                 ),
                 Expanded(
@@ -2569,6 +2635,8 @@ class _RutinasState extends State<Rutinas> {
                             if (textBDResultController.text.isNotEmpty) {
                               val = double.parse(textBTResultController.text) -
                                   double.parse(textBDResultController.text);
+
+                              setState(() => Valores.bilirrubinasTotales = double.parse(textBTResultController.text));
                               textBIResultController.text =
                                   val.toStringAsFixed(2);
                             } else {}
@@ -2585,6 +2653,7 @@ class _RutinasState extends State<Rutinas> {
                           numOfLines: 1,
                           onChange: (String value) {
                             double val = 0.0;
+                            setState(() => Valores.bilirrubinaDirecta = double.parse(textBDResultController.text));
 
                             if (textBTResultController.text.isNotEmpty) {
                               val = double.parse(textBTResultController.text) -
@@ -2603,6 +2672,7 @@ class _RutinasState extends State<Rutinas> {
                           labelEditText:
                               'Bilirrubina Indirecta ($unidadMedidaBI)',
                           numOfLines: 1,
+                          onChange: (value) => setState(() => Valores.bilirrubinaIndirecta = double.parse(textBIResultController.text)),
                         ),
                       ),
                       Expanded(
@@ -2613,6 +2683,7 @@ class _RutinasState extends State<Rutinas> {
                           labelEditText:
                               'Alaninoaminotrasferasa ($unidadMedidaAlanino)',
                           numOfLines: 1,
+                          onChange: (value) => setState(() => Valores.alaninoaminotrasferasa = double.parse(textAlaninoResultController.text)),
                         ),
                       ),
                       Expanded(
@@ -2623,6 +2694,7 @@ class _RutinasState extends State<Rutinas> {
                           labelEditText:
                               'Aspartatoaminotransferasa ($unidadMedidaAspartato)',
                           numOfLines: 1,
+                          onChange: (value) => setState(() => Valores.aspartatoaminotransferasa = double.parse(textAspartatoResultController.text)),
                         ),
                       ),
                     ],
@@ -2637,6 +2709,7 @@ class _RutinasState extends State<Rutinas> {
                           labelEditText:
                               'Deshidrogenasa Láctica ($unidadMedidaDHL)',
                           numOfLines: 1,
+                          onChange: (value) => setState(() => Valores.deshidrogenasaLactica = double.parse(textDHLResultController.text)),
                         ),
                       ),
                       Expanded(
@@ -2647,6 +2720,7 @@ class _RutinasState extends State<Rutinas> {
                           labelEditText:
                               'Glutaril transpeptidasa ($unidadMedidaGlutaril)',
                           numOfLines: 1,
+                          onChange: (value) => setState(() => Valores.glutrailtranspeptidasa = double.parse(textGlutarilResultController.text)),
                         ),
                       ),
                       Expanded(
@@ -2657,6 +2731,7 @@ class _RutinasState extends State<Rutinas> {
                           labelEditText:
                               'Fosfatasa Alcalina ($unidadMedidaFosfatasa)',
                           numOfLines: 1,
+                          onChange: (value) => setState(() => Valores.fosfatasaAlcalina = double.parse(textFosfatasaResultController.text)),
                         ),
                       ),
                     ],
@@ -2671,6 +2746,7 @@ class _RutinasState extends State<Rutinas> {
                           labelEditText:
                               'Albumina Sérica ($unidadMedidaAlbumina)',
                           numOfLines: 1,
+                          onChange: (value) => setState(() => Valores.albuminaSerica = double.parse(textAlbuminaResultController.text)),
                         ),
                       ),
                       Expanded(
@@ -2681,8 +2757,12 @@ class _RutinasState extends State<Rutinas> {
                           labelEditText:
                               'Proteinas Totales ($unidadMedidaProteinas)',
                           numOfLines: 1,
-                        ),
-                      ),
+                          onChange: (value) { setState(() {
+                          Valores.proteinasTotales = double.parse(textProteinasResultController.text);
+                          textGlobulinasResultController.text = Hepatometrias.globulinas.toStringAsFixed(2);
+                          },
+                        ); }
+                      )),
                       Expanded(
                         child: EditTextArea(
                           textController: textGlobulinasResultController,
@@ -3000,6 +3080,7 @@ class _RutinasState extends State<Rutinas> {
                   inputFormat: MaskTextInputFormatter(),
                   labelEditText: 'PH',
                   numOfLines: 1,
+                  onChange: (value) => setState(() => Valores.pHArteriales = double.parse(textPHResultController.text)),
                 ),
               ),
               Expanded(
@@ -3009,6 +3090,7 @@ class _RutinasState extends State<Rutinas> {
                   inputFormat: MaskTextInputFormatter(),
                   labelEditText: 'PCO ($unidadMedidaPCO)',
                   numOfLines: 1,
+                  onChange: (value) => setState(() => Valores.poArteriales = double.parse(textPCOResultController.text)),
                 ),
               ),
               Expanded(
@@ -3018,6 +3100,7 @@ class _RutinasState extends State<Rutinas> {
                   inputFormat: MaskTextInputFormatter(),
                   labelEditText: 'PO ($unidadMedidaPO)',
                   numOfLines: 1,
+                  onChange: (value) => setState(() => Valores.poArteriales = double.parse(textPOResultController.text)),
                 ),
               ),
               Expanded(
@@ -3027,6 +3110,7 @@ class _RutinasState extends State<Rutinas> {
                   inputFormat: MaskTextInputFormatter(),
                   labelEditText: 'HCO ($unidadMedidaHCO)',
                   numOfLines: 1,
+                  onChange: (value) => setState(() => Valores.bicarbonatoArteriales = double.parse(textHCOResultController.text)),
                 ),
               ),
               Expanded(
@@ -3041,6 +3125,7 @@ class _RutinasState extends State<Rutinas> {
                   withShowOption: true,
                   onSelected: () => setState(() => textFIOResultController
                       .text = Valores.fraccionInspiratoriaOxigeno!.toString()),
+                  onChange: (value) => setState(() => Valores.fioArteriales = double.parse(textFIOResultController.text)),
                 ),
               ),
               Expanded(
@@ -3050,6 +3135,7 @@ class _RutinasState extends State<Rutinas> {
                   inputFormat: MaskTextInputFormatter(),
                   labelEditText: 'SO ($unidadMedidaSO)',
                   numOfLines: 1,
+                  onChange: (value) => setState(() => Valores.soArteriales = double.parse(textSOResultController.text)),
                 ),
               ),
               Expanded(

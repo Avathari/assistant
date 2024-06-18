@@ -4,6 +4,7 @@ import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/AppBarText.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CircleLabel.dart';
 import 'package:assistant/widgets/CircleSwitched.dart';
@@ -129,7 +130,7 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
       appBar: isMobile(context) || isTablet(context)
           ? AppBar(
               backgroundColor: Theming.primaryColor,
-              title: Text(appBarTitile),
+              title: AppBarText(appBarTitile),
               leading: IconButton(
                 icon: const Icon(
                   Icons.arrow_back,
@@ -188,6 +189,7 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
               keyBoardType: TextInputType.text,
               inputFormat: MaskTextInputFormatter(),
               numOfLines: 1,
+              limitOfChars: 200,
               labelEditText: 'Intervención Realizada . . . ',
               textController: cieDiagnoTextController,
               selection: true,
@@ -251,6 +253,7 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
         inputFormat: MaskTextInputFormatter(),
         labelEditText: 'Comentario de la complicación',
         textController: tratamientoTextController,
+        limitOfChars: 700,
         numOfLines: 10,
       ),
     ];
@@ -262,7 +265,7 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
         idOperation,
         Pacientes.ID_Paciente,
         Dicotomicos.toInt(isActualDiagoValue),
-        firstItem.toString(),
+        Quirurgicos.typeIntervencion,
         cieDiagnoTextController.text,
         ayoDiagoTextController.text,
         Dicotomicos.toInt(isTratamientoDiagoValue),
@@ -393,7 +396,7 @@ class _GestionQuirurgicosState extends State<GestionQuirurgicos> {
                   builder: (context) => VisualPacientes(actualPage: 2)));
             },
           ),
-          title: Text(appTittle),
+          title: AppBarText(appTittle),
           actions: <Widget>[
             IconButton(
               icon: const Icon(
@@ -552,8 +555,8 @@ class _GestionQuirurgicosState extends State<GestionQuirurgicos> {
       AsyncSnapshot snapshot, int posicion, BuildContext context) {
     if (snapshot.data[0].isNotEmpty) {
       return Container(
-        padding: const EdgeInsets.all(20.0),
-        margin: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(10.0),
+        margin: const EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
         decoration: ContainerDecoration.roundedDecoration(),
         child: GestureDetector(
           onTap: () {

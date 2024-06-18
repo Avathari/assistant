@@ -1,10 +1,13 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/hepatometrias.dart';
+import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
+import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -49,133 +52,200 @@ class _HepaticosState extends State<Hepaticos> {
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
         ),
-        SingleChildScrollView(
-          padding: const EdgeInsets.all(7.0),
-          controller: ScrollController(),
-          child: Column(
-            children: [
-              EditTextArea(
-                textController: textBTResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Bilirrubinas Totales ($unidadMedidaBT)',
-                numOfLines: 1,
-                onChange: (String value) {
-                  double val = 0.0;
-                  if (textBDResultController.text.isNotEmpty) {
-                    val = double.parse(textBTResultController.text) -
-                        double.parse(textBDResultController.text);
-                    textBIResultController.text = val.toStringAsFixed(2);
-                  } else {}
-                },
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Column(
+                children: [
+                  ValuePanel(
+                    firstText: "Factor R",
+                    secondText: Hepatometrias.factorR.toStringAsFixed(2),
+                  ),
+                  CrossLine(thickness: 2),
+                  ValuePanel(
+                    firstText: "ALT/FA",
+                    secondText: Hepatometrias.relacionALTFA.toStringAsFixed(2),
+                  ),
+                  ValuePanel(
+                    firstText: "ALT/AST",
+                    secondText: Hepatometrias.relacionALTAST.toStringAsFixed(2),
+                  ),
+                  ValuePanel(
+                    firstText: "ALT/DHL",
+                    secondText: Hepatometrias.relacionALTDHL.toStringAsFixed(2),
+                  ),
+                  ValuePanel(
+                    firstText: "GGT/FA",
+                    secondText: Hepatometrias.relacionGGTFA.toStringAsFixed(2),
+                  ),
+                ],
               ),
-              EditTextArea(
-                textController: textBDResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Bilirrubina Directa ($unidadMedidaBD)',
-                numOfLines: 1,
-                onChange: (String value) {
-                  double val = 0.0;
-                  
-                  if (textBTResultController.text.isNotEmpty) {
-                    val = double.parse(textBTResultController.text) -
-                        double.parse(textBDResultController.text);
-                    textBIResultController.text = val.toStringAsFixed(2);
-                  } else {}
-                },
-              ),
-              EditTextArea(
-                textController: textBIResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Bilirrubina Indirecta ($unidadMedidaBI)',
-                numOfLines: 1,
-              ),
-
-              EditTextArea(
-                textController: textAlaninoResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Alaninoaminotrasferasa ($unidadMedidaAlanino)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textAspartatoResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText:
-                    'Aspartatoaminotransferasa ($unidadMedidaAspartato)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textDHLResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Deshidrogenasa Láctica ($unidadMedidaDHL)',
-                numOfLines: 1,
-              ),
-
-              EditTextArea(
-                textController: textGlutarilResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText:
-                    'Glutaril transpeptidasa ($unidadMedidaGlutaril)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textFosfatasaResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Fosfatasa Alcalina ($unidadMedidaFosfatasa)',
-                numOfLines: 1,
-              ),
-
-              EditTextArea(
-                textController: textAlbuminaResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Albumina Sérica ($unidadMedidaAlbumina)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textProteinasResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Proteinas Totales ($unidadMedidaProteinas)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textGlobulinasResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Globulinas ($unidadMedidaGlobulinas)',
-                numOfLines: 1,
-              ),
-              // Botton ***** ******* ****** * ***
-              CrossLine(
-                color: Colors.grey,
-              ),
-              Container(
-                margin: const EdgeInsets.all(5.0),
-                decoration: ContainerDecoration.roundedDecoration(),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(7.0),
+                controller: ScrollController(),
+                child: Column(
                   children: [
-                    Expanded(
-                      child: GrandButton(
-                          labelButton: "Agregar Datos",
-                          weigth: 2000,
-                          onPress: () {
-                            operationMethod();
-                          }),
+                    EditTextArea(
+                      textController: textBTResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Bilirrubinas Totales ($unidadMedidaBT)',
+                      numOfLines: 1,
+                      onChange: (String value) {
+                        double val = 0.0;
+                        if (textBDResultController.text.isNotEmpty) {
+                          val = double.parse(textBTResultController.text) -
+                              double.parse(textBDResultController.text);
+                          textBIResultController.text = val.toStringAsFixed(2);
+                        } else {}
+                      },
+                    ),
+                    EditTextArea(
+                      textController: textBDResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Bilirrubina Directa ($unidadMedidaBD)',
+                      numOfLines: 1,
+                      onChange: (String value) {
+                        double val = 0.0;
+
+                        if (textBTResultController.text.isNotEmpty) {
+                          val = double.parse(textBTResultController.text) -
+                              double.parse(textBDResultController.text);
+                          textBIResultController.text = val.toStringAsFixed(2);
+                        } else {}
+                      },
+                    ),
+                    EditTextArea(
+                        textController: textBIResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText:
+                            'Bilirrubina Indirecta ($unidadMedidaBI)',
+                        numOfLines: 1,
+                        onChange: (String value) =>
+                            Valores.bilirrubinaIndirecta =
+                                double.parse(textBIResultController.text)),
+                    EditTextArea(
+                        textController: textAlaninoResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText:
+                            'Alaninoaminotrasferasa ($unidadMedidaAlanino)',
+                        numOfLines: 1,
+                        onChange: (String value) => setState(() => Valores
+                                .alaninoaminotrasferasa =
+                            double.parse(textAlaninoResultController.text))),
+                    EditTextArea(
+                        textController: textAspartatoResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText:
+                            'Aspartatoaminotransferasa ($unidadMedidaAspartato)',
+                        numOfLines: 1,
+                        onChange: (String value) => setState(() => Valores
+                                .aspartatoaminotransferasa =
+                            double.parse(textAspartatoResultController.text))),
+                    EditTextArea(
+                        textController: textDHLResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText:
+                            'Deshidrogenasa Láctica ($unidadMedidaDHL)',
+                        numOfLines: 1,
+                        onChange: (String value) => setState(() =>
+                            Valores.deshidrogenasaLactica =
+                                double.parse(textDHLResultController.text))),
+
+                    EditTextArea(
+                        textController: textGlutarilResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText:
+                            'Glutaril transpeptidasa ($unidadMedidaGlutaril)',
+                        numOfLines: 1,
+                        onChange: (String value) => setState(() => Valores
+                                .glutrailtranspeptidasa =
+                            double.parse(textGlutarilResultController.text))),
+                    EditTextArea(
+                        textController: textFosfatasaResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText:
+                            'Fosfatasa Alcalina ($unidadMedidaFosfatasa)',
+                        numOfLines: 1,
+                        onChange: (String value) => setState(() => Valores
+                                .fosfatasaAlcalina =
+                            double.parse(textFosfatasaResultController.text))),
+
+                    EditTextArea(
+                        textController: textAlbuminaResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText:
+                            'Albumina Sérica ($unidadMedidaAlbumina)',
+                        numOfLines: 1,
+                        onChange: (String value) => setState(() => Valores
+                                .albuminaSerica =
+                            double.parse(textAlbuminaResultController.text))),
+                    EditTextArea(
+                        textController: textProteinasResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText:
+                            'Proteinas Totales ($unidadMedidaProteinas)',
+                        numOfLines: 1,
+                        onChange: (String value) {
+                          Valores.proteinasTotales =
+                              double.parse(textProteinasResultController.text);
+                          textGlobulinasResultController.text =
+                              Hepatometrias.globulinas.toStringAsFixed(2);
+                        }),
+                    EditTextArea(
+                      textController: textGlobulinasResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Globulinas ($unidadMedidaGlobulinas)',
+                      numOfLines: 1,
+                    ),
+                    // Botton ***** ******* ****** * ***
+                    CrossLine(
+                      color: Colors.grey,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(5.0),
+                      decoration: ContainerDecoration.roundedDecoration(),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: GrandButton(
+                                labelButton: "Agregar Datos",
+                                weigth: 2000,
+                                onPress: () {
+                                  operationMethod();
+                                }),
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),
-              )
-            ],
-          ),
+              ),
+            ),
+            Expanded(
+                child: Column(
+              children: [
+                ValuePanel(
+                  firstText: "",
+                  secondText: "",
+                ),
+              ],
+            ))
+          ],
         ),
       ],
     );

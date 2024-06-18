@@ -25,8 +25,8 @@ class Cardiometrias {
       "DavO2 ${Valores.DAV.toStringAsFixed(2)} mL/dL. "
       "\n" // Diferencia Arterio - Venosa
       "GC ${Cardiometrias.gastoCardiacoFick.toStringAsFixed(2)} L/min. " // Gasto Cardiaco
-      "GCi ${Valores.indiceCardiaco.toStringAsFixed(2)} L/min/m2, " // Gasto Cardiaco Indexado, Indice Cardiaco
-      "V_Sys ${Valores.VLS.toStringAsFixed(2)} mL/min. " // Volumen Látido Sistólico : GC * FC
+      "GCi ${Cardiometrias.indiceCardiaco.toStringAsFixed(2)} L/min/m2, " // Gasto Cardiaco Indexado, Indice Cardiaco
+      "V_Sys ${Cardiometrias.volumenSistolico.toStringAsFixed(2)} mL/min. " // Volumen Látido Sistólico : GC * FC
       "\n"
       //
       "VO2  ${Valores.CO.toStringAsFixed(2)}  mL O2/g Hb, "
@@ -47,8 +47,8 @@ class Cardiometrias {
       "Volumen Látido Aproximado: ${Valores.indiceVolumenSanguineo.toStringAsFixed(2)} mL/min, "
       "Volemia Aproximada: ${Valores.volemiaAproximada.toStringAsFixed(2)} mL,  "
       "Volumen Plasmático Aproximado: ${Valores.volumenPlasmatico.toStringAsFixed(2)} L,  "
-      "Trabajo Cardiaco - Trabajo Cardiaco: ${Valores.TC.toStringAsFixed(2)} Kg*m. "
-      "Trabajo Látido Ventricular Izquierdo: ${Cardiometrias.TLVI.toStringAsFixed(2)} g*m. "
+      "Trabajo Cardiaco - Trabajo Cardiaco: ${Cardiometrias.trabajoCardiacoIzquierdo.toStringAsFixed(2)} Kg*m. "
+      "Trabajo Látido Ventricular Izquierdo: ${Cardiometrias.trabajoLatidoVentricularIzquierdo.toStringAsFixed(2)} g*m. "
       "Trabajo Látido Ventricular Derecho: ${Cardiometrias.TLVD.toStringAsFixed(2)} g*m. \n";
 
   // CONCLUSIONES
@@ -71,7 +71,7 @@ class Cardiometrias {
       "Concentración Venosa de Oxígeno (CvO2): ${Valores.CVO}  mL/dL, "
       "Diferencia Arterio - Venosa (DavO2): ${Valores.DAV}  mL/dL, "
       "Capacidad de Oxígeno (CapO2): ${Valores.CO}  mL O2/g Hb. "
-      "Indice Cárdicado (I.C.): ${Valores.indiceCardiaco} L/min/m2, "
+      "Indice Cárdicado (I.C.): ${Cardiometrias.indiceCardiaco} L/min/m2, "
       "Resistencias Venosas Sistémicas (R.V.S.): ${Valores.RVS} Dinas/seg/cm2. "
       "Indice de Extracción de Oxígeno (I.E.O.): ${Valores.IEO} %, "
       "Disponibilidad de Oxígeno (dO2): ${Valores.DO} mL/min,  "
@@ -79,8 +79,8 @@ class Cardiometrias {
       "Transporte de Oxígeno (TO2): ${Valores.TO} mL/O2/m2. "
       "Shunt Fisiológico (QS/QT): ${Valores.SF} %. "
       "Gradiente Alveolo - Arterial (G(A-a)): ${Gasometricos.GAA} mmHg. \n"
-      "Trabajo Cardiaco - Trabajo Cardiaco: ${Valores.TC} Kg*m. "
-      "Trabajo Látido Ventricular Izquierdo: ${Cardiometrias.TLVI} g*m. "
+      "Trabajo Cardiaco - Trabajo Cardiaco: ${Cardiometrias.trabajoCardiacoIzquierdo} Kg*m. "
+      "Trabajo Látido Ventricular Izquierdo: ${Cardiometrias.trabajoLatidoVentricularIzquierdo} g*m. "
       "Trabajo Látido Ventricular Derecho: ${Cardiometrias.TLVD} g*m. \n";
 
 // FÓRMULAS
@@ -126,15 +126,48 @@ class Cardiometrias {
   static double get resistenciaVascularPulmonar => // PC
       ((Valores.proteinasTotales! - Valores.albuminaSerica!) * 1.4) +
       (Valores.albuminaSerica! * 5.5); //  # Rest. Vasc. Pulmonar 45 - 255 dinas
-  static double get TLVI =>
-      Valores.VLS *
+
+
+  /// Trabajo Cardiaco Izquierdo (TCI)
+  ///
+  /// *** TTCI = GC * TAM * 0.0144
+  ///
+  /// VN : 5.1 - 9.45 Kg*m
+  ///
+  /// ** Referencias :
+  /// *** Consulte: https://www.scymed.com/es/smnxph/phmfw011.htm
+  ///
+  static double get trabajoCardiacoIzquierdo => (gastoCardiacoFick *
       Cardiometrias.presionArterialMedia *
-      0.0144; //  # Trabajo Latido Ventricular Izquierdo : : 75 - 115 g/Lat/m2
-  static double get iTLVI =>
-      TLVI /
-      Antropometrias.SCS; //  # Indice Trabajo Latido Ventricular Izquierdo
+      0.0144); // # Trabajo Cardiaco Izquierdo
+
+  /// Indice Trabajo Latido Ventricular Izquierdo
+  ///      VN : : 	VL*PAM*0.0144
+  ///
+  static double get indiceTrabajoCardiacoIzquierdo => (indiceCardiaco *
+      Cardiometrias.presionArterialMedia *
+      0.0144); //
+
+  /// Trabajo Latido Ventricular Izquierdo
+  ///       VN : : 75 - 115 g/Lat/m
+  static double get trabajoLatidoVentricularIzquierdo =>
+      Cardiometrias.volumenSistolico *
+      Cardiometrias.presionArterialMedia *
+      0.0144; //
+
+  /// Trabajo Latido Ventricular Izquierdo
+  ///       VN : : 75 - 115 g/Lat/m
+  ///
+  static double get trabajoLatidoVentricularIzquierdoIndexado =>
+      Cardiometrias.volumenSistolicoIndexado *
+          Cardiometrias.presionArterialMedia *
+          0.0144;
+
+  /// Trabajo Latido Ventricular DERECHO
   static double get TLVD => 00.00; //  # Trabajo Latido Ventricular Derecho
   // # FE = VL / VDF # FE(%)= ((VDF-VSF)*100)/VDF. (porque VL= VDF-VSF). (%)
+
+  /// Presión de Perfusión Coronaria (PPC)
   static double get presionPerfusionCoronaria => // PC
       (Valores.tensionArterialDyastolica! -
           Valores
@@ -152,11 +185,16 @@ class Cardiometrias {
       return double.nan;
     }
   }
+  static double get indiceCardiaco =>
+      (Valores.gastoCardiaco / Antropometrias.SC); // # Indice Cardiaco
 
   //
   /// Presion Coloidosmotica :
-  ///       . .
+  ///       . . PCO = 	(glob*1.4)+(alb*5.5)
   /// VN : mayor 15 mmHg
+  ///
+  /// * * Consulte: https://www.scymed.com/es/smnxph/phglp010.htm
+  ///
   static double get presionColoidosmotica {
     if (Hepatometrias.globulinas != 0) {
       return (Hepatometrias.globulinas * 1.14) +
@@ -192,11 +230,29 @@ class Cardiometrias {
   ///
   static double get poderCardiacoIndexado {
     if (Valores.presionVenosaCentral != 0 || Valores.presionVenosaCentral !=null) {
-      return (Cardiometrias.presionArterialMedia - Valores.presionVenosaCentral!) * Valores.indiceCardiaco / 451;
+      return (Cardiometrias.presionArterialMedia - Valores.presionVenosaCentral!) * Cardiometrias.indiceCardiaco / 451;
     } else {
-      return (Cardiometrias.presionArterialMedia) * Valores.indiceCardiaco / 451;
+      return (Cardiometrias.presionArterialMedia) * Cardiometrias.indiceCardiaco / 451;
     }
   }
+
+  /// Volumen Látido Sístolico (VLS)
+  ///
+  ///
+  ///
+  static double get volumenSistolico => ((Cardiometrias.gastoCardiacoFick * 1000) /
+      Valores
+          .frecuenciaCardiaca!); //  # Volumen Latido Sistólico De Litros a mL
+
+  /// Volumen Látido Sístolico Indexado (VLS)
+  ///
+  ///
+  ///
+  static double get volumenSistolicoIndexado => (volumenSistolico /
+      Antropometrias
+          .SCE); //mL/Lat/m2 *IC se multiplica por 1000 para ajustar unidades a mL/min/m2
+  // ((indiceCardiaco * 1000) / Valores.frecuenciaCardiaca!);
+
 
   /// Indice de Briones  : :
   ///

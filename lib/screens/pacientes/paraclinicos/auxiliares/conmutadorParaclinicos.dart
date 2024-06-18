@@ -27,7 +27,6 @@ import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/venos
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/virales.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/western.dart';
 import 'package:assistant/values/WidgetValues.dart';
-import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';
 
 class ConmutadorParaclinicos extends StatefulWidget {

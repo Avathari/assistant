@@ -10,6 +10,7 @@ import 'package:assistant/operativity/pacientes/valores/semiologia/semiotica.dar
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/auxiliares/auxiliaresRevisiones.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/pendientes.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/analisisLaterales/analisisLaterales.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/basico.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/ventilaciones.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/conmutadorParaclinicos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/info/historialParaclinicos.dart';
@@ -434,11 +435,14 @@ class _GeneralesState extends State<Generales> {
                 children: [
                   Expanded(
                     child: EditTextArea(
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(),
-                        numOfLines: 1,
-                        labelEditText: 'Tensión arterial sistólica',
-                        textController: tasTextController),
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      numOfLines: 1,
+                      labelEditText: 'Tensión arterial sistólica',
+                      textController: tasTextController,
+                      onChange: (value) => setState(() =>
+                          Valores.tensionArterialSystolica = int.parse(value)),
+                    ),
                   ),
                   Expanded(
                     child: EditTextArea(
@@ -447,6 +451,8 @@ class _GeneralesState extends State<Generales> {
                       numOfLines: 1,
                       labelEditText: 'Tensión arterial diastólica',
                       textController: tadTextController,
+                      onChange: (value) => setState(() =>
+                          Valores.tensionArterialDyastolica = int.parse(value)),
                     ),
                   ),
                 ],
@@ -455,11 +461,14 @@ class _GeneralesState extends State<Generales> {
                 children: [
                   Expanded(
                     child: EditTextArea(
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(),
-                        numOfLines: 1,
-                        labelEditText: 'Frecuencia cardiaca',
-                        textController: fcTextController),
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      numOfLines: 1,
+                      labelEditText: 'Frecuencia cardiaca',
+                      textController: fcTextController,
+                      onChange: (value) => setState(
+                          () => Valores.frecuenciaCardiaca = int.parse(value)),
+                    ),
                   ),
                   Expanded(
                     child: EditTextArea(
@@ -468,6 +477,9 @@ class _GeneralesState extends State<Generales> {
                       numOfLines: 1,
                       labelEditText: 'Frecuencia respiratoria',
                       textController: frTextController,
+                      onChange: (value) => setState(() => Valores
+                              .frecuenciaRespiratoria =
+                          Valores.frecuenciaVentilatoria = int.parse(value)),
                     ),
                   ),
                 ],
@@ -481,6 +493,8 @@ class _GeneralesState extends State<Generales> {
                 numOfLines: 1,
                 labelEditText: 'Temperatura corporal',
                 textController: tcTextController,
+                onChange: (value) => setState(
+                    () => Valores.temperaturCorporal = double.parse(value)),
               ),
               EditTextArea(
                 keyBoardType: TextInputType.number,
@@ -488,6 +502,8 @@ class _GeneralesState extends State<Generales> {
                 numOfLines: 1,
                 labelEditText: 'Saturación periférica de oxígeno',
                 textController: spoTextController,
+                onChange: (value) => setState(() =>
+                    Valores.saturacionPerifericaOxigeno = int.parse(value)),
               ),
               Row(
                 children: [
@@ -1237,11 +1253,14 @@ class _GeneralesState extends State<Generales> {
                     children: [
                       Expanded(
                         child: EditTextArea(
-                            keyBoardType: TextInputType.number,
-                            inputFormat: MaskTextInputFormatter(),
-                            numOfLines: 1,
-                            labelEditText: 'Frecuencia cardiaca',
-                            textController: fcTextController),
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          numOfLines: 1,
+                          labelEditText: 'Frecuencia cardiaca',
+                          textController: fcTextController,
+                          onChange: (value) => setState(() =>
+                              Valores.frecuenciaCardiaca = int.parse(value)),
+                        ),
                       ),
                       Expanded(
                         child: EditTextArea(
@@ -1250,6 +1269,9 @@ class _GeneralesState extends State<Generales> {
                           numOfLines: 1,
                           labelEditText: 'Frecuencia respiratoria',
                           textController: frTextController,
+                          onChange: (value) => setState(() =>
+                              Valores.frecuenciaRespiratoria = Valores
+                                  .frecuenciaVentilatoria = int.parse(value)),
                         ),
                       ),
                     ],
@@ -1270,6 +1292,8 @@ class _GeneralesState extends State<Generales> {
                     numOfLines: 1,
                     labelEditText: 'Saturación periférica de oxígeno',
                     textController: spoTextController,
+                    onChange: (value) => setState(() =>
+                        Valores.saturacionPerifericaOxigeno = int.parse(value)),
                   ),
                   Row(
                     children: [
@@ -2089,86 +2113,17 @@ class _GeneralesState extends State<Generales> {
                 ),
               )),
           const Expanded(flex: 2, child: RevisionDispositivos()),
-          Expanded(
+          const Expanded(
               flex: 2,
               child: Column(
                 children: [
-                  const Expanded(child: RevisionPrevios()),
+                  Expanded(child: RevisionPrevios()),
                   // Expanded(
                   //     child: RevisionCultivos(
                   //         listado: Pacientes.getRevisionCultivos())),
                 ],
               )),
-          Expanded(
-            flex: 2,
-            child: Container(
-              padding: const EdgeInsets.all(10.0),
-              child: SingleChildScrollView(
-                controller: ScrollController(),
-                child: Column(
-                  children: [
-                    ValuePanel(
-                      firstText: "TAM",
-                      secondText:
-                          Cardiometrias.presionArterialMedia.toStringAsFixed(2),
-                      thirdText: "mmHg",
-                    ),
-                    ValuePanel(
-                      firstText: "P. pulso",
-                      secondText: Cardiometrias.presionPulso.toString(),
-                      thirdText: "mmHg",
-                    ),
-                    CrossLine(),
-                    ValuePanel(
-                      firstText: "UKH",
-                      secondText: Valores.diuresis.toStringAsFixed(2),
-                      thirdText: "mL/Kg/${Valores.horario} Hr",
-                    ),
-                    ValuePanel(
-                      firstText: "TFG (CKD-EPI)",
-                      secondText:
-                          Renometrias.tasaRenalCKDEPI.toStringAsFixed(2),
-                      thirdText: "mL/min/1.72 m2",
-                    ),
-                    CrossLine(),
-                    ValuePanel(
-                      firstText: "P.P.",
-                      secondText: Antropometrias.pesoCorporalPredicho
-                          .toStringAsFixed(2),
-                      thirdText: "kG",
-                    ),
-                    ValuePanel(
-                      firstText: "S.C.",
-                      secondText: Antropometrias.SC.toStringAsFixed(2),
-                      thirdText: "m2",
-                    ),
-                    CrossLine(),
-                    ValuePanel(
-                      firstText: "SaFi",
-                      secondText: Gasometricos.SAFI.toStringAsFixed(2),
-                      thirdText: "%",
-                    ),
-                    ValuePanel(
-                      firstText: "PaFi",
-                      secondText: Gasometricos.PAFI.toStringAsFixed(2),
-                      thirdText: "%",
-                    ),
-                    CrossLine(),
-                    // Container(
-                    //   margin: const EdgeInsets.all(5.0),
-                    //   decoration: ContainerDecoration.roundedDecoration(),
-                    //   child: GrandButton(
-                    //       labelButton: "Agregar Datos",
-                    //       weigth: 2000,
-                    //       onPress: () {
-                    //         operationMethod(context);
-                    //       }),
-                    // )
-                  ],
-                ),
-              ),
-            ),
-          )
+          Expanded(flex: 2, child: Basico())
         ],
       ),
     );
@@ -2203,13 +2158,13 @@ class _GeneralesState extends State<Generales> {
                   if (value == true) {
                     Terminal.printAlert(
                         message:
-                        'Archivo ${Pacientes.localPath} Re-Creado $value');
+                            'Archivo ${Pacientes.localPath} Re-Creado $value');
                     Navigator.of(context).pop();
                   }
                 }).onError((error, stackTrace) {
                   Terminal.printAlert(
                       message:
-                      "ERROR - toVisual : : $error : : Descripción : $stackTrace");
+                          "ERROR - toVisual : : $error : : Descripción : $stackTrace");
                   Operadores.alertActivity(
                       message: "ERROR - toVisual : : $error",
                       context: context,
@@ -2253,11 +2208,10 @@ class _GeneralesState extends State<Generales> {
           GrandIcon(
             labelButton: "Menu Lateral . . . ",
             iconData: Icons.menu_open,
-            onPress: () =>
-              setState(() {
-                widget.analysis = false;
-                _key.currentState!.openEndDrawer();
-              }),
+            onPress: () => setState(() {
+              widget.analysis = false;
+              _key.currentState!.openEndDrawer();
+            }),
           ),
           const SizedBox(width: 20),
         ],

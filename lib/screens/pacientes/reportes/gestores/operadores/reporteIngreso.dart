@@ -48,9 +48,11 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
       //
       Reportes.reportes['Antecedentes_Heredofamiliares'] = heredoTextController
           .text = Pacientes.heredofamiliares().toLowerCase();
+
+      // Reportes.personalesNoPatologicos =
       Reportes.reportes['Antecedentes_Quirurgicos'] = hospiTextController.text =
-          Pacientes.hospitalarios()
-              .toLowerCase(); // Contiene el antecedente de cirugias.
+          Pacientes.hospitalarios();
+              // .toLowerCase(); // Contiene el antecedente de cirugias.
       //
       Reportes.reportes['Antecedentes_Patologicos_Otros'] =
           Reportes.reportes['Antecedentes_Patologicos_Ingreso'] =
@@ -332,7 +334,7 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
                           textController: hospiTextController,
                           labelEditText: "Antecedentes quirúrgicos",
                           keyBoardType: TextInputType.multiline,
-                          numOfLines: 5,
+                          numOfLines: 10, // 5,
                           selection: true,
                           withShowOption: true,
                           onSelected: () {
@@ -344,12 +346,12 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
                             });
                           },
                           inputFormat: MaskTextInputFormatter()),
-                      EditTextArea(
-                          textController: alergoTextController,
-                          labelEditText: "Antecedentes alérgicos",
-                          keyBoardType: TextInputType.multiline,
-                          numOfLines: 5,
-                          inputFormat: MaskTextInputFormatter()),
+                      // EditTextArea(
+                      //     textController: alergoTextController,
+                      //     labelEditText: "Antecedentes alérgicos",
+                      //     keyBoardType: TextInputType.multiline,
+                      //     numOfLines: 5,
+                      //     inputFormat: MaskTextInputFormatter()),
                     ],
                   ),
                 ),

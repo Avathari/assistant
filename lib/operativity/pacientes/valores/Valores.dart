@@ -1164,11 +1164,10 @@ class Valores {
               (math.pow(Valores.pesoCorporalTotal!, 2) /
                   math.pow(Valores.alturaPaciente!, 2))));
 
-  static double get indiceCardiaco =>
-      (Valores.gastoCardiaco / Antropometrias.SC); // # Indice Cardiaco
+
 
   static double get IRVS =>
-      (Cardiometrias.presionArterialMedia / Valores.indiceCardiaco);
+      (Cardiometrias.presionArterialMedia / Cardiometrias.indiceCardiaco);
 
   /// Resistencias Venosas Sístémicas (RVS)
   ///
@@ -1307,17 +1306,6 @@ class Valores {
     }
   }
 
-  /// Volumen Látido Sístolico (VLS)
-  ///
-  ///
-  ///
-  static double get VLS => ((Cardiometrias.gastoCardiacoFick * 1000) /
-      Valores
-          .frecuenciaCardiaca!); //  # Volumen Latido Sistólico De Litros a mL
-  static double get IVL => (VLS /
-      Antropometrias
-          .SCE); //mL/Lat/m2 *IC se multiplica por 1000 para ajustar unidades a mL/min/m2
-  // ((indiceCardiaco * 1000) / Valores.frecuenciaCardiaca!);
 
   /// Disponibilidad de Oxígeno (DO2) (mL/min)
   ///
@@ -1355,9 +1343,8 @@ class Valores {
   // static double get presionColoidoOsmotica => // PC
   //     ((Valores.proteinasTotales! - Valores.albuminaSerica!) * 1.4) +
   //     (Valores.albuminaSerica! * 5.5); //  # Presión Coloidóncotica
-  static double get TC => (gastoCardiaco *
-      Cardiometrias.presionArterialMedia *
-      0.0144); // # Trabajo Cardiaco
+
+
 
   static double get FE => 0.0;
 

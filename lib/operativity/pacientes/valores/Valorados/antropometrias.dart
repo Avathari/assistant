@@ -471,6 +471,41 @@ class Antropometrias {
               2) -
           ((3.1416 * (Valores.pliegueCutaneoTricipital! / 100)) / 4));
 
+  /// Agua Metabólica (AM) : H2Om
+  ///
+  /// Definida como la resultante derivada de las reacciones anabólicas-catabólicas del Organismo, que
+  /// culminan en la formación de H2O
+  ///
   static double get AM =>
       ((3.1416) * math.pow(((perimetroMesobraquial) / (2 * 3.1416)), 2));
+
+  /// Indice ROX :
+  ///
+  /// iROX = [SpO2 / Fio2] / fR
+  ///
+  /// VN:     Mayor 4.88 : : Riesgo bajo de Intubación
+  ///             Entre 3.85 - 4.88 : : Riesgo Indeterminado
+  ///             Menor a 3.85 : : Riesgo incrementado de Intubación
+  ///
+  /// Valores menores a 3 a los 60 minutos de inicio de HFNC (OAF)
+  ///                  menores a 3.5 a las 6 horas, ó 4 a las 12 horas
+  ///                  predicen la neccesidad de intubación.
+  ///       En pacientes con SDRA se recomienda evaluar a los 60 minutos.
+  ///       Cuando se mide 12 horas despues de iniciar HFN, un indice ROX mayor de 4.88 es
+  ///       un determinante de éxito de HFNC en pacientes con neumonía.
+  ///
+  /// ** Consulte: https://www.ncbi.nlm.nih.gov/pubmed/27481760?dopt=Abstract
+  ///
+  /// https://ebmcalc.com/NoteRight3000/ROX.htm#:~:text=ROXIndex%20%3D%20O2Sat%20%2F,%28FIO2%20%2F%20100%29%20%2F%20RespiratoryRate
+  ///
+  /// *** Referencias:
+  ///
+  /// Roca O, Messika J, Caralt B, et al. Predicting success of high-flow nasal cannula in pneumonia patients with hypoxemic respiratory failure: The utility of the ROX index. J Crit Care. 2016 Oct;35:200-5. PubMed ID: 27481760 ::: https://www.ncbi.nlm.nih.gov/pubmed/27481760
+  ///
+  /// Gianstefani A, Farina G, Salvatore V, et al. Role of ROX index in the first assessment of COVID-19 patients in the emergency department. Intern Emerg Med. 2021 Mar 1:1–7. PubMed ID: 33646507 ::: https://www.ncbi.nlm.nih.gov/pubmed/33646507
+  ///
+  /// Roca O, Caralt B, Messika J, Samper M, et al. An Index Combining Respiratory Rate and Oxygenation to Predict Outcome of Nasal High-Flow Therapy. Am J Respir Crit Care Med. 2019 Jun 1;199(11):1368-1376. PubMed ID: 30576221 ::: https://www.ncbi.nlm.nih.gov/pubmed/30576221
+  ///
+  static double get indiceRox =>
+      (Valores.saturacionPerifericaOxigeno! / (Valores.fraccionInspiratoriaOxigeno!/100)) / Valores.frecuenciaRespiratoria! ;
 }

@@ -31,7 +31,8 @@ class _TallerGasometricoState extends State<TallerGasometrico> {
     textDateEstudyController.text = f.format(DateTime.now());
     //
     textPVCResultController.text = Valores.presionVenosaCentral!.toString();
-    textFIOResultController.text = Valores.fraccionInspiratoriaOxigeno!.toString();
+    textFIOResultController.text =
+        Valores.fraccionInspiratoriaOxigeno!.toString();
     super.initState();
   }
 
@@ -92,7 +93,6 @@ class _TallerGasometricoState extends State<TallerGasometrico> {
                         });
                       },
                     ),
-              
                     EditTextArea(
                       textController: textPaOResultController,
                       keyBoardType: TextInputType.number,
@@ -105,7 +105,6 @@ class _TallerGasometricoState extends State<TallerGasometrico> {
                         });
                       },
                     ),
-              
                     EditTextArea(
                       textController: textavHCOResultController,
                       keyBoardType: TextInputType.number,
@@ -133,35 +132,57 @@ class _TallerGasometricoState extends State<TallerGasometrico> {
                     CrossLine(),
                     ValuePanel(
                       firstText: 'G.C. (Fick)',
-                      secondText: Cardiometrias.gastoCardiacoFick
-                          .toStringAsFixed(2),
+                      secondText:
+                          Cardiometrias.gastoCardiacoFick.toStringAsFixed(2),
                       thirdText: 'Lt/min',
                     ),
                     ValuePanel(
                       firstText: 'I.C.',
-                      secondText:
-                      Valores.indiceCardiaco.toStringAsFixed(2),
+                      secondText: Cardiometrias.indiceCardiaco.toStringAsFixed(2),
                       thirdText: 'Lt/min',
                     ),
                     CrossLine(),
                     ValuePanel(
                       firstText: 'CW',
-                      secondText: Cardiometrias.poderCardiaco.toStringAsFixed(2),
+                      secondText:
+                          Cardiometrias.poderCardiaco.toStringAsFixed(2),
                       thirdText: 'Watts',
                     ),
                     ValuePanel(
                       firstText: 'iCW',
-                      secondText: Cardiometrias.poderCardiacoIndexado.toStringAsFixed(2),
+                      secondText: Cardiometrias.poderCardiacoIndexado
+                          .toStringAsFixed(2),
                       thirdText: 'Watts',
                     ),
                     CrossLine(),
                     ValuePanel(
-                      firstText:
-                      'RSV', // Resistencias Venosas Sistémicas
+                      firstText: 'RSV', // Resistencias Venosas Sistémicas
                       secondText: Valores.RVS.toStringAsFixed(2),
                       thirdText: 'dinas/seg/cm2',
                     ),
-
+                    CrossLine(),
+                    Container(
+                      decoration: ContainerDecoration.roundedDecoration(),
+                      child: ValuePanel(
+                          firstText: 'pBAR',
+                          secondText:
+                              Valores.presionBarometrica.toStringAsFixed(0),
+                          thirdText: 'mmHg',
+                          withEditMessage: true,
+                          onEdit: (value) {
+                            Operadores.editActivity(
+                                context: context,
+                                tittle: "Editar . . . ",
+                                message: "¿Presión Barométrica? . . . ",
+                                onAcept: (value) {
+                                  setState(() {
+                                    Valores.presionBarometrica =
+                                        int.parse(value);
+                                    Navigator.of(context).pop();
+                                  });
+                                });
+                          }), // P. Barométrica
+                    ),
                   ],
                 ),
               ),
@@ -173,46 +194,40 @@ class _TallerGasometricoState extends State<TallerGasometrico> {
                   children: [
                     ValuePanel(
                       firstText: 'PiO2',
-                      secondText:
-                      Gasometricos.PIO.toStringAsFixed(2),
+                      secondText: Gasometricos.PIO.toStringAsFixed(2),
                       thirdText: 'mmHg',
                     ),
                     ValuePanel(
                       firstText: 'PAO2',
-                      secondText:
-                      Gasometricos.PAO.toStringAsFixed(2),
+                      secondText: Gasometricos.PAO.toStringAsFixed(2),
                       thirdText: 'mmHg',
                     ),
                     ValuePanel(
                       firstText: 'GA-a O2',
-                      secondText:
-                      Gasometricos.GAA.toStringAsFixed(2),
+                      secondText: Gasometricos.GAA.toStringAsFixed(2),
                       thirdText: 'mmHg',
                     ),
                     // ** * * * * * * *
                     CrossLine(),
                     ValuePanel(
-                      firstText:
-                      'CaO2', // Contenido Arterial de Oxígeno
+                      firstText: 'CaO2', // Contenido Arterial de Oxígeno
                       secondText: Valores.CAO.toStringAsFixed(2),
                       thirdText: 'mL/O2%',
                     ),
                     ValuePanel(
-                      firstText:
-                      'CcO2', // Contenido Capilar de Oxígeno
+                      firstText: 'CcO2', // Contenido Capilar de Oxígeno
                       secondText: Valores.CCO.toStringAsFixed(2),
                       thirdText: 'mL/O2%',
                     ),
                     ValuePanel(
-                      firstText:
-                      'CvO2', // Contenido Arterial de Oxígeno
+                      firstText: 'CvO2', // Contenido Arterial de Oxígeno
                       secondText: Valores.CVO.toStringAsFixed(2),
                       thirdText: 'mL/O2%',
                     ),
                     CrossLine(),
                     ValuePanel(
                       firstText:
-                      'Da-vO2', // Diferencia Arterio-venosa de Oxígeno
+                          'Da-vO2', // Diferencia Arterio-venosa de Oxígeno
                       secondText: Valores.DAV.toStringAsFixed(2),
                       thirdText: 'mL',
                     ),
@@ -248,12 +263,10 @@ class _TallerGasometricoState extends State<TallerGasometrico> {
                     ),
                     ValuePanel(
                       firstText: 'PAFI', //
-                      secondText:
-                      Gasometricos.PAFI.toStringAsFixed(0),
+                      secondText: Gasometricos.PAFI.toStringAsFixed(0),
                     ),
                     ValuePanel(
-                      firstText:
-                      'IEO2%', // Indice de Extracción Oxígeno
+                      firstText: 'IEO2%', // Indice de Extracción Oxígeno
                       secondText: Valores.IEO.toStringAsFixed(2),
                       thirdText: '%',
                     ),
@@ -274,15 +287,12 @@ class _TallerGasometricoState extends State<TallerGasometrico> {
                     ),
                     ValuePanel(
                       firstText: 'ΔPavCO2/\nΔPavO2',
-                      secondText:
-                      Valores.D_PavCO2D_PavO2.toStringAsFixed(
-                          2),
+                      secondText: Valores.D_PavCO2D_PavO2.toStringAsFixed(2),
                       thirdText: "", // 'mmHg/mL',
                     ),
                     ValuePanel(
                       firstText: 'Indice \nMitocondrial',
-                      secondText: Valores.indiceMitocondrial
-                          .toStringAsFixed(2),
+                      secondText: Valores.indiceMitocondrial.toStringAsFixed(2),
                       thirdText: "", // 'mmHg/mL',
                     ),
                     // **********************************
@@ -371,6 +381,19 @@ class _TallerGasometricoState extends State<TallerGasometrico> {
                     //
                     CrossLine(),
                     EditTextArea(
+                      textController: textHbTextController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Hb (g/dL)',
+                      numOfLines: 1,
+                      onChange: (String value) {
+                        setState(() {
+                          Valores.hemoglobina = double.parse(value);
+                        });
+                      },
+                    ),
+                    CrossLine(),
+                    EditTextArea(
                       textController: textPVCResultController,
                       keyBoardType: TextInputType.number,
                       inputFormat: MaskTextInputFormatter(),
@@ -390,7 +413,8 @@ class _TallerGasometricoState extends State<TallerGasometrico> {
                       numOfLines: 1,
                       onChange: (String value) {
                         setState(() {
-                          Valores.fraccionInspiratoriaOxigeno = int.parse(value);
+                          Valores.fraccionInspiratoriaOxigeno =
+                              int.parse(value);
                         });
                       },
                     ),
@@ -403,11 +427,10 @@ class _TallerGasometricoState extends State<TallerGasometrico> {
                     ),
 
                     // Botton ***** ******* ****** * ***
-                    CrossLine(
-                      color: Colors.grey
-                    ),
+                    CrossLine(color: Colors.grey),
                     Container(
-                      width: 50, height: 50,
+                      width: 50,
+                      height: 50,
                       margin: const EdgeInsets.all(5.0),
                       decoration: ContainerDecoration.roundedDecoration(),
                       child: GrandIcon(
@@ -578,20 +601,17 @@ class _TallerGasometricoState extends State<TallerGasometrico> {
   // VARIABLES DE LA INTERFAZ ****************** ********
   var textDateEstudyController = TextEditingController();
   //
-  var textPVCResultController = TextEditingController();
+  var textPVCResultController = TextEditingController(),
+      textHbTextController = TextEditingController();
   // ********* *************** ************* *
   var textavPHResultController = TextEditingController();
-  String? unidadMedidaavPH =
-      Auxiliares.Medidas[Auxiliares.Categorias[9]][0];
+  String? unidadMedidaavPH = Auxiliares.Medidas[Auxiliares.Categorias[9]][0];
   var textPaCOResultController = TextEditingController();
-  String? unidadMedidaPaCO =
-      Auxiliares.Medidas[Auxiliares.Categorias[9]][1];
+  String? unidadMedidaPaCO = Auxiliares.Medidas[Auxiliares.Categorias[9]][1];
   var textPaOResultController = TextEditingController();
-  String? unidadMedidaPaO =
-      Auxiliares.Medidas[Auxiliares.Categorias[9]][1];
+  String? unidadMedidaPaO = Auxiliares.Medidas[Auxiliares.Categorias[9]][1];
   var textavHCOResultController = TextEditingController();
-  String? unidadMedidaavHCO =
-      Auxiliares.Medidas[Auxiliares.Categorias[9]][1];
+  String? unidadMedidaavHCO = Auxiliares.Medidas[Auxiliares.Categorias[9]][1];
   var textFIOResultController = TextEditingController();
   String? unidadMedidaFIO = Auxiliares.Medidas[Auxiliares.Categorias[9]][4];
   var textSaOResultController = TextEditingController();
@@ -599,23 +619,18 @@ class _TallerGasometricoState extends State<TallerGasometrico> {
 // ********* *************** ************* *
   // ********* *************** ************* *
   var textvPHResultController = TextEditingController();
-  String? unidadMedidavPH =
-  Auxiliares.Medidas[Auxiliares.Categorias[10]][0];
+  String? unidadMedidavPH = Auxiliares.Medidas[Auxiliares.Categorias[10]][0];
   var textPvCOResultController = TextEditingController();
-  String? unidadMedidaPvCO =
-  Auxiliares.Medidas[Auxiliares.Categorias[10]][1];
+  String? unidadMedidaPvCO = Auxiliares.Medidas[Auxiliares.Categorias[10]][1];
   var textPvOResultController = TextEditingController();
-  String? unidadMedidaPvO =
-  Auxiliares.Medidas[Auxiliares.Categorias[10]][1];
+  String? unidadMedidaPvO = Auxiliares.Medidas[Auxiliares.Categorias[10]][1];
   var textvHCOResultController = TextEditingController();
-  String? unidadMedidavHCO =
-  Auxiliares.Medidas[Auxiliares.Categorias[10]][1];
+  String? unidadMedidavHCO = Auxiliares.Medidas[Auxiliares.Categorias[10]][1];
   var textSvOResultController = TextEditingController();
   String? unidadMedidaSvO = Auxiliares.Medidas[Auxiliares.Categorias[10]][4];
   // ********* *************** ************* *
   var textLactResultController = TextEditingController();
   String? unidadMedidaLact = Auxiliares.Medidas[Auxiliares.Categorias[9]][5];
-
 
   // OPERACIONES DE LA INTERFAZ ****************** ********
   void cerrar() {
@@ -665,5 +680,3 @@ class _TallerGasometricoState extends State<TallerGasometrico> {
     });
   }
 }
-
-

@@ -2,6 +2,7 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart'
     as Gas;
+import 'package:assistant/operativity/pacientes/valores/Valorados/info/conclusiones.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/dashboard.dart';
 import 'package:assistant/screens/pacientes/auxiliares/detalles/menus.dart';
@@ -669,15 +670,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
                                   builder: ((context) =>
                                       const LaboratoriosGestion())));
                             }),
-                        GrandIcon(
-                            labelButton: "Rutina",
-                            iconData: Icons.ad_units,
-                            onPress: () {
-                              Cambios.toNextActivity(context,
-                                  tittle: 'Anexión de la Rutina',
-                                  chyld: ConmutadorParaclinicos(
-                                      categoriaEstudio: "Rutina"));
-                            }),
+                        Menus.popUpLaboratorios(context),
                       ],
                     ),
                   ],

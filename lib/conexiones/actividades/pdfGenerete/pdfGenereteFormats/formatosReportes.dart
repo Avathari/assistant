@@ -3165,8 +3165,13 @@ class CopiasReportes {
     }
     if (paraph['Antecedentes_No_Patologicos'] != "") {
       tipoReporte = "${tipoReporte}ANTECEDENTES PERSONALES NO PATOLÓGICOS\n"
-          "${paraph['Antecedentes_No_Patologicos']}\n";
+          "${paraph['Antecedentes_No_Patologicos']}";
     }
+    if (paraph['Antecedentes_Quirurgicos'] != "") {
+      tipoReporte = "${tipoReporte}RELEVANTES : "
+          "${paraph['Antecedentes_Quirurgicos']}\n\n";
+    }
+
     if (paraph['Antecedentes_Patologicos_Ingreso'] != "") {
       tipoReporte = "${tipoReporte}ANTECEDENTES PERSONALES PATOLÓGICOS\n"
           "${paraph['Antecedentes_Patologicos_Ingreso']}\n";

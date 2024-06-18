@@ -288,7 +288,7 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                                 ValuePanel(
                                   firstText: 'I.C.',
                                   secondText:
-                                      Valores.indiceCardiaco.toStringAsFixed(2),
+                                  Cardiometrias.indiceCardiaco.toStringAsFixed(2),
                                   thirdText: 'Lt/min',
                                 ),
                                 ValuePanel(
@@ -408,17 +408,17 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                                 ValuePanel(
                                   firstText: 'I.C.',
                                   secondText:
-                                      Valores.indiceCardiaco.toStringAsFixed(2),
+                                  Cardiometrias.indiceCardiaco.toStringAsFixed(2),
                                   thirdText: 'Lt/min',
                                 ),
                                 ValuePanel(
                                   firstText: 'Vol. Lat. Sys. ',
-                                  secondText: Valores.VLS.toStringAsFixed(2),
+                                  secondText: Cardiometrias.volumenSistolico.toStringAsFixed(2),
                                   thirdText: 'mL/Lt',
                                 ),
                                 ValuePanel(
                                   firstText: 'I, Vol. Lat. Sys. ',
-                                  secondText: Valores.IVL.toStringAsFixed(2),
+                                  secondText: Cardiometrias.volumenSistolicoIndexado.toStringAsFixed(2),
                                   thirdText: 'mL/Lt/m2',
                                 ),
                                 // **********************************
@@ -429,19 +429,19 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                                 ),
                                 ValuePanel(
                                   firstText: 'T. Card. Izq. ',
-                                  secondText: Valores.TC.toStringAsFixed(2),
+                                  secondText: Cardiometrias.trabajoCardiacoIzquierdo.toStringAsFixed(2),
                                   thirdText: 'Kg*m',
                                 ),
                                 ValuePanel(
                                   firstText: 'TLVI',
                                   secondText:
-                                      Cardiometrias.TLVI.toStringAsFixed(2),
+                                      Cardiometrias.trabajoLatidoVentricularIzquierdo.toStringAsFixed(2),
                                   thirdText: 'g/Lat/m2',
                                 ),
                                 ValuePanel(
                                   firstText: 'I. TLVI',
                                   secondText:
-                                      Cardiometrias.iTLVI.toStringAsFixed(2),
+                                      Cardiometrias.indiceTrabajoCardiacoIzquierdo.toStringAsFixed(2),
                                   thirdText: 'g/Lat/m2',
                                 ),
                                 //
