@@ -138,7 +138,8 @@ class _TallerGasometricoState extends State<TallerGasometrico> {
                     ),
                     ValuePanel(
                       firstText: 'I.C.',
-                      secondText: Cardiometrias.indiceCardiaco.toStringAsFixed(2),
+                      secondText:
+                          Cardiometrias.indiceCardiaco.toStringAsFixed(2),
                       thirdText: 'Lt/min',
                     ),
                     CrossLine(),
@@ -415,6 +416,8 @@ class _TallerGasometricoState extends State<TallerGasometrico> {
                         setState(() {
                           Valores.fraccionInspiratoriaOxigeno =
                               int.parse(value);
+                          Valores.fioArteriales =
+                              Valores.fioVenosos = double.parse(value);
                         });
                       },
                     ),

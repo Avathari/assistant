@@ -1147,7 +1147,13 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                 labelButton: 'Copiar Esquema del Reporte',
                 iconData: Icons.menu_open_sharp,
                 iconColor: Colors.white,
-                onPress: () => _key.currentState!.openEndDrawer()),
+                onPress: () {
+                setState(() {
+                  widget.analysis = false;
+                });
+                  _key.currentState!.openEndDrawer();
+
+                }),
             const SizedBox(width: 20)
           ]);
 
@@ -1544,9 +1550,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                 onPressed: () async {
                   Pacientes.loadingActivity(context: context).then((value) {
                     if (value == true) {
-                      Terminal.printAlert(
-                          message:
-                              'Archivo ${Pacientes.localPath} Re-Creado $value');
+                      // Terminal.printAlert( message:'Archivo ${Pacientes.localPath} Re-Creado $value');
                       Navigator.of(context).pop();
                     }
                   });

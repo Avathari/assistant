@@ -22,7 +22,7 @@ class ReporteRevision extends StatefulWidget {
 class _ReporteRevisionState extends State<ReporteRevision> {
   @override
   void initState() {
-    Repositorios.padecimientoActual();
+    // Repositorios.registrarPadecimientoActual();
     Vitales.ultimoRegistro();
 
     // INICIAR . . .

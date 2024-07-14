@@ -347,7 +347,8 @@ class Pacientes {
         alergicosProsa = "",
         traumaticosProsa = "",
         transfusionesProsa = "",
-        vacunasProsa = "";
+        vacunasProsa = "",
+        infecciososProsa = "";
     //
     var newList = Listas.compareOneListWithAnother(
         Listas.listWithoutRepitedValues(
@@ -363,6 +364,7 @@ class Pacientes {
           "Traumáticos",
           "Tranfusiones",
           "Vacunas",
+          "Infecciosos",
           "",
         ]); // Quirurgicos.intervenciones
     //
@@ -374,61 +376,72 @@ class Pacientes {
           .forEach((element) {
         //
         switch (element['Pace_APP_type']) {
+          case "Infecciosos":
+            if (infecciososProsa == "") {
+              infecciososProsa = "${element['Pace_APP_QUI']} "
+                  "${element['Pace_APP_QUI_com'].toString()}";
+            } else {
+              infecciososProsa =
+                  "$infecciososProsa [...] ${element['Pace_APP_QUI']} "
+                  "${element['Pace_APP_QUI_com'].toString()}";
+            }
+            break;
           case "Cirugías":
             if (cirugiasProsa == "") {
               cirugiasProsa = "${element['Pace_APP_QUI']} "
-                  "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
+                  "${element['Pace_APP_QUI_com'].toString()}";
             } else {
-              cirugiasProsa = "$cirugiasProsa; ${element['Pace_APP_QUI']} "
-                  "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
+              cirugiasProsa = "$cirugiasProsa [...] ${element['Pace_APP_QUI']} "
+                  "${element['Pace_APP_QUI_com'].toString()}";
             }
             break;
           case "Hospitalizaciones":
             if (hospitalizacionesProsa == "") {
               hospitalizacionesProsa = "${element['Pace_APP_QUI']} "
-                  "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
+                  "${element['Pace_APP_QUI_com'].toString()}";
             } else {
               hospitalizacionesProsa =
-                  "$hospitalizacionesProsa; ${element['Pace_APP_QUI']} "
-                  "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
+                  "$hospitalizacionesProsa [...] ${element['Pace_APP_QUI']} "
+                  "${element['Pace_APP_QUI_com'].toString()}";
             }
             break;
           case "Alérgicos":
             if (alergicosProsa == "") {
               alergicosProsa = "${element['Pace_APP_QUI']} "
-                  "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
+                  "${element['Pace_APP_QUI_com'].toString()}";
             } else {
-              alergicosProsa = "$alergicosProsa; ${element['Pace_APP_QUI']} "
-                  "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
+              alergicosProsa =
+                  "$alergicosProsa [...] ${element['Pace_APP_QUI']} "
+                  "${element['Pace_APP_QUI_com'].toString()}";
             }
             break;
           case "Traumáticos":
             if (traumaticosProsa == "") {
               traumaticosProsa = "${element['Pace_APP_QUI']} "
-                  "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
+                  "${element['Pace_APP_QUI_com'].toString()}";
             } else {
               traumaticosProsa =
-                  "$traumaticosProsa; ${element['Pace_APP_QUI']} "
-                  "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
+                  "$traumaticosProsa [...] ${element['Pace_APP_QUI']} "
+                  "${element['Pace_APP_QUI_com'].toString()}";
             }
             break;
           case "Tranfusiones":
             if (transfusionesProsa == "") {
               transfusionesProsa = "${element['Pace_APP_QUI']} "
-                  "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
+                  "${element['Pace_APP_QUI_com'].toString()}";
             } else {
               transfusionesProsa =
-                  "$transfusionesProsa; ${element['Pace_APP_QUI']} "
-                  "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
+                  "$transfusionesProsa [...] ${element['Pace_APP_QUI']} "
+                  "${element['Pace_APP_QUI_com'].toString()}";
             }
             break;
           case "Vacunas":
             if (vacunasProsa == "") {
               vacunasProsa = "${element['Pace_APP_QUI']} "
-                  "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
+                  "${element['Pace_APP_QUI_com'].toString()}";
             } else {
-              vacunasProsa = "$vacunasProsa; ${element['Pace_APP_QUI']} "
-                  "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
+              vacunasProsa = "$vacunasProsa [...] ${element['Pace_APP_QUI']} "
+                  "${element['Pace_APP_QUI_com'].toString()}";
             }
             break;
 
@@ -439,15 +452,30 @@ class Pacientes {
       //
     }
 
-    if (cirugiasProsa != "")      cirugiasProsa = "        Antecedentes Quirúrgicos : $cirugiasProsa . . ";
-    if (hospitalizacionesProsa != "")       hospitalizacionesProsa =  "\n        Antecedentes Hospitalarios : $hospitalizacionesProsa . . ";
-    if (alergicosProsa != "")       alergicosProsa =  "\n        Antecedentes Alérgicos : $alergicosProsa . . ";
-    if (vacunasProsa != "")       vacunasProsa =  "\n        Vacunas recientes empleadas : $vacunasProsa . . ";
-    if (transfusionesProsa != "")       transfusionesProsa =  "\n        Transfusiones en los últimos meses : $transfusionesProsa . . ";
-    if (traumaticosProsa != "")       traumaticosProsa =  "\n        Antecedentes Traumáticos : $traumaticosProsa . . ";
+    if (cirugiasProsa != "")
+      cirugiasProsa =
+          "        Antecedentes Quirúrgicos : $cirugiasProsa . . . ";
+    if (hospitalizacionesProsa != "")
+      hospitalizacionesProsa =
+          "\n        Antecedentes Hospitalarios : $hospitalizacionesProsa . . ";
+    if (alergicosProsa != "")
+      alergicosProsa =
+          "\n        Antecedentes Alérgicos : $alergicosProsa . . . ";
+    if (vacunasProsa != "")
+      vacunasProsa =
+          "\n        Vacunas recientes empleadas : $vacunasProsa . . .";
+    if (transfusionesProsa != "")
+      transfusionesProsa =
+          "\n        Transfusiones en los últimos meses : $transfusionesProsa . . .";
+    if (traumaticosProsa != "")
+      traumaticosProsa =
+          "\n        Antecedentes Traumáticos : $traumaticosProsa . . . ";
+    if (infecciososProsa != "")
+      infecciososProsa =
+          "\n        Antecedentes Infecciosos : $infecciososProsa . . . ";
 
     return Reportes.antecedentesQuirurgicos =
-        "$cirugiasProsa$hospitalizacionesProsa$alergicosProsa$vacunasProsa$transfusionesProsa$traumaticosProsa";
+        "$infecciososProsa$cirugiasProsa$hospitalizacionesProsa$alergicosProsa$vacunasProsa$transfusionesProsa$traumaticosProsa";
 
     // ************************ ************** ********** **** *** *
     if (Pacientes.Quirurgicos != []) {
@@ -4874,6 +4902,7 @@ class Quirurgicos {
     "Traumáticos",
     "Tranfusiones",
     "Vacunas",
+    "Infecciosos",
     "",
   ];
   static List<String> actualSuspendido = Dicotomicos.dicotomicos();
@@ -6277,6 +6306,7 @@ class Auxiliares {
     "Cultivo de Líquido Peritoneal",
     "Cultivo de Líquido Cefalorraquídeo",
     "Cultivo de Líquido Pleural",
+    "Cultivo de Líquido de Ascítis",
     "Coprocultivo",
     "Hemocultivo central",
     "Hemocultivo periférico, brazo izquierdo",
@@ -6579,7 +6609,9 @@ class Auxiliares {
   }
 
   static String historial(
-      {bool esAbreviado = false, bool withoutInsighs = false}) {
+      {bool esAbreviado = false,
+      bool withoutInsighs = false,
+      bool? withEspeciales = false}) {
     String prosa = "";
 
     var fechar = Listas.listWithoutRepitedValues(
@@ -6698,6 +6730,8 @@ class Auxiliares {
     // ************** ***************** ***************
     // Terminal.printExpected(message: "prosa $prosa");
 
+    if (withEspeciales == true) prosa = "$prosa\n${Auxiliares.getEspeciales()}";
+    //
     return prosa; // """$prosa$max. ";
   }
 
@@ -7290,6 +7324,7 @@ class Auxiliares {
       "Volumen Plaquetar Medio",
       "Ancho de Distribución Plaquetaria", // 17
       "Reticulocitos", // % _
+      "Frotis de sangre periférica",
       "",
     ],
     Categorias[1]: [
@@ -7469,6 +7504,9 @@ class Auxiliares {
       "Levaduras en LCR",
       "Otros en LCR",
       "pH en LCR", // 17 :
+      "Tinta China",
+      "Tinción de Wrigth",
+      "Tinción de Gram",
       "",
     ], // LCR
     Categorias[15]: [
@@ -7512,6 +7550,7 @@ class Auxiliares {
       "Cultivo de Líquido Peritoneal",
       "Cultivo de Líquido Cefalorraquídeo",
       "Cultivo de Líquido Pleural",
+      "Cultivo de Líquido de Ascítis",
       "Coprocultivo",
       "Cultivo de Expectoración",
       "Hemocultivo central",
@@ -7526,7 +7565,6 @@ class Auxiliares {
       "BAAR Seriado",
       "",
     ], // CULTIVOS
-    //
     Categorias[20]: [
       "Ac Anti HCV",
       "HIVab",
@@ -7554,54 +7592,65 @@ class Auxiliares {
       "Saturación de Transferrina",
       "Captación de Hierro Sérico",
       "Capacidad de Fijaión de Hierro", // TIBC : 261 - 478 : : ug/dL
+      "Haptoglobina",
       "",
     ],
     //
     Categorias[22]: [
-      "P-ANCA",
+      "P-ANCA", // 0
       "C-ANCA",
-      "anti-dsDNA",
+      "anti-dsDNA", // 2:
       "U1 ribonucleoproteína (RNP)",
       "Anticoagulante Lúpico (Anti-La)",
       "Anticuerpos Anticardiolipina [aCL]",
       "Cuantificación de IgM",
       "Cuantificación de IgG",
-      "Coombs directo",
-      "Coombs Indirecto",
-      "Anticuerpo Anti-Nucleares",
+      "Coombs directo", // 8
+      "Coombs Indirecto", // 9
+      "Anticuerpo Anti-Nucleares", // 10 :
       "Cuantificación de Complemento C3",
       "Cuantificación de Complemento C4",
       "Ac. Anti-Smith",
       "Ac. Anti-SSA (Ro/SSA)",
       "Ac. Anti-SSB (La/SSB)",
       "Ac. Anti-Ribonucleoproteinas",
-      "Anti-beta2 Microglobulina",
+      "Anti-beta2 Microglobulina (IgA)", // 17 :
+      "Anti-beta2 Microglobulina (IgG)",
+      "Anti-beta2 Microglobulina (IgM)",
       "Anti-beta2-glicoproteina [GP]",
+      "Beta II Glicoproteina IgG",
       "Ac. Anti-Tiroglobulina",
       "Ac. Antiperoxidasa Tiroidea",
-      "Ac. Anti-",
-      "Ac. Anti-",
-      "Ac. Anti-",
-      "Ac. Anti-",
+      "Ac. Anti-Nucleosoma",
+      "Cadenas ligeras Kappa en Orina 24 Horas", // 25:
+      "Ac. Anti-Citoplasma", // 26 :
+      "Ac. Anti-Proteinasa 3", // 27 : UI  . .UR/mL : : Positivo si mayor 20 UR/mL
       "",
       "",
       "",
       "",
       "",
-    ],
+    ], // Inmunnológicos
     Categorias[23]: [
-      "ACTH", // Hormona Adrenocorticotropa
-      "Cortisol",
+      "ACTH", // 0: Hormona Adrenocorticotropa
+      "Cortisol", // 1: Sérico
+      "Cortisol Urinario", // 2:
+      "Cortisol Urinario de 24 Horas", // 3 :
+      "Cortisol Salival", // 4:
       "Hormona Foliculo-esimulante",
       "Progesterona",
-      "Estradiol",
+      "Estradiol", // E2
       "Estrona",
       "Dihidrotestorterona",
-      "Testosterona",
+      "Testosterona", // 10 :
       "Prolactina",
       "Hormona Antidiurética",
       "Hormona Luteinizante",
       "Hormona de Crecimiento", // Somatotropina
+      "PTH", // 15 :
+      "Aldosterona",
+      "Fracción Beta Libre de HGC", // 17 : Gonadotropina Corionica Humana
+      "",
       "",
     ], // Hormonales
     Categorias[24]: [
@@ -7640,7 +7689,6 @@ class Auxiliares {
       "",
       "",
     ], // Otros
-    // Analíitica de Líquido Cefalorraquideo
     Categorias[26]: [
       // Citoquímico
       "Glucosa en LCR", // GLU-LCR : mg/dL
@@ -7649,8 +7697,7 @@ class Auxiliares {
       "Tinta China",
       "Tinción de Wrigth",
       "Tinción de Gram",
-    ],
-    // Analítica de Líquido Pleural
+    ], // Analíitica de Líquido Cefalorraquideo
     Categorias[27]: [
       "Glucosa de Líquido Pleural",
       "DHL de Líquido Pleural",
@@ -7671,8 +7718,7 @@ class Auxiliares {
       "pH de Líquido Pleural",
       // OTROS . . .
       "",
-    ],
-    // Aspirado de Médula Ósea
+    ], // Analítica de Líquido Pleural
     Categorias[28]: [
       "Neutroblasto",
       "Proneutroblasto",
@@ -7686,8 +7732,7 @@ class Auxiliares {
       "Neutrofilos en Banda",
       "Neutrofilos DM (Segmentados)",
       "Promielocitos", "Granulocitos", "Reticulocitos",
-    ],
-    // Western Blot HIV-1, HIV-2
+    ], // Aspirado de Médula Ósea
     Categorias[29]: [
       "Antígeno p24",
       "Ac. Anti p17 (GAG)",
@@ -7703,13 +7748,13 @@ class Auxiliares {
       "Ac. Anti gp36 (ENV)",
       "",
       "",
-    ],
+    ], // Western Blot HIV-1, HIV-2
     Categorias[31]: [
       "",
     ],
   };
   static Map<String, dynamic> Medidas = {
-    Categorias[0]: ["g/dL", "%", "fL", "pg", "10^3/UL", "10^6/UL", "K/uL"],
+    Categorias[0]: ["", "g/dL", "%", "fL", "pg", "10^3/UL", "10^6/UL", "K/uL"],
     Categorias[1]: ["mg/dL"],
     Categorias[2]: ["mEq/L", "mmol/L", "mg/dL"],
     Categorias[3]: ["UI/L", "g/dL", "mg/dL"],
@@ -7751,14 +7796,61 @@ class Auxiliares {
       "U/mL",
       "",
     ],
-    Categorias[21]: ["mcg/dl", "ng/mL", "µg/dL", "%", "mg/dL"],
-    Categorias[22]: ["pg/mL", "UI/mL", "IU/mL", "mg/dL", ""],
-    Categorias[23]: ["", "pg/mL", "ng/dL", "ng/mL", "mUI/mL"], // Hormonales
-    Categorias[24]: ["", "ng/dL", "ng/mL", ""],
-    Categorias[25]: ["%", "ng/dL", "mg/dL", "UI/L", ""],
+    Categorias[21]: [
+      "mcg/dl",
+      "ng/mL",
+      "µg/dL",
+      "%",
+      "mg/dL",
+    ],
+    Categorias[22]: [
+      "pg/mL", // 0 :
+      "UI/mL",
+      "IU/mL",
+      "mg/dL",
+      "ng/L", // 4 :
+      "S/U",
+      "UR/mL",
+      "",
+    ],
+    Categorias[23]: [
+      "",
+      "pg/mL",
+      "ng/dL",
+      "ng/mL",
+      "mUI/mL",
+      "UI/mL",
+    ], // Hormonales
+    Categorias[24]: [
+      "",
+      "ng/dL",
+      "ng/mL",
+      "UI/mL",
+      "UI/L",
+    ],
+    Categorias[25]: [
+      "%",
+      "ng/mL",
+      "ng/dL",
+      "mg/dL",
+      "UI/L",
+      "UI/mL",
+    ],
     //
-    Categorias[26]: ["", "mg/dL", "U/L", "%", "g/dL"],
-    Categorias[27]: ["", "mg/dL", "U/L", "%", "g/dL"],
+    Categorias[26]: [
+      "",
+      "mg/dL",
+      "U/L",
+      "%",
+      "g/dL",
+    ],
+    Categorias[27]: [
+      "",
+      "mg/dL",
+      "U/L",
+      "%",
+      "g/dL",
+    ],
     //
     Categorias[28]: [
       "",
@@ -9494,7 +9586,55 @@ class Repositorios {
 //
   static List<String> actualDiagno = Opciones.horarios();
 
-  static void padecimientoActual() {}
+  //
+  static Future<void> registrarPadecimientoActual(
+      {BuildContext? context,
+      required List Values,
+      required List ValuesEgreso}) async {
+    String response = "";
+    //
+    await Actividades.registrar(
+      Databases.siteground_database_reghosp,
+      Repositorios.repositorio['registerIngresoQuery'],
+      Values,
+    ).then((value) {
+      response = value;
+      //
+      Archivos.deleteFile(
+          filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
+      Terminal.printExpected(
+          message: "VALUE _REGISTER.REGISTER - $value : ${Values[6]}");
+      //
+    }).whenComplete(() async {
+      if (tipo_Analisis == "Análisis de Ingreso") {
+        await Actividades.registrar(
+          Databases.siteground_database_reghosp,
+          Repositorios.repositorio['registerIngresoQuery'],
+          ValuesEgreso,
+        )
+            .whenComplete(() => Archivos.createJsonFromMap(Pacientes.Notas!,
+                filePath:
+                    "${Pacientes.localRepositoryPath}/reportes/reportes.json"))
+            .whenComplete(() {
+          if (context! != null) {
+            Operadores.notifyActivity(
+              context: context,
+              tittle: "Repositorio Registrado . . . ",
+              message: "$response",
+            );
+          }
+        }); // REGISTRAR el Formato de Egreso . . .
+      }
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(message: "ERROR - $error : $stackTrace");
+      if (context! != null) {
+        Operadores.alertActivity(
+            context: context,
+            tittle: "Error Al Registrar",
+            message: "ERROR : : $error : $stackTrace");
+      }
+    });
+  }
 
   static void consultarAnalisis() {
     Actividades.consultarAllById(
@@ -9826,6 +9966,22 @@ class Repositorios {
         "SELECT * FROM pace_hosp_repo WHERE ID_Pace = ? ORDER BY ID_Hosp DESC",
     "consultByName": "SELECT * FROM pace_hosp_repo WHERE Pace_APP_DEG LIKE '%",
     "registerQuery": "INSERT INTO pace_hosp_repo ("
+        "ID_Pace, ID_Hosp, "
+        "FechaPadecimiento, Padecimiento_Actual, "
+        "ServicioMedico, FechaRealizacion, "
+        "Personales_No_Patologicos, Personales_Patologicos, "
+        "Diagnosticos_Hospital, "
+        "Subjetivo, Signos_Vitales, Exploracion_Fisica, "
+        "Auxiliares_Diagnosticos, Analisis_Complementario, "
+        "Analisis_Medico, Pronostico_Medico, "
+        "Dietoterapia, Hidroterapia, Insulinoterapia, Hemoterapia, Oxigenoterapia, Medicamentos, Medidas_Generales, Pendientes, "
+        "Tipo_Analisis) "
+        "VALUES ("
+        "?,?,?,?,?,?,?,?,?,?,"
+        "?,?,"
+        "?,?,?,?,?,?,?,?,?,?,"
+        "?,?,?)",
+    "registerIngresoQuery": "INSERT INTO pace_hosp_repo ("
         "ID_Pace, ID_Hosp, "
         "FechaPadecimiento, Padecimiento_Actual, "
         "ServicioMedico, FechaRealizacion, "

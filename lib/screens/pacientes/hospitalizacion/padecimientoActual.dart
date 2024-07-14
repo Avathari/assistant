@@ -57,7 +57,7 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
               Navigator.of(context).pop();
             },
             onAcept: () {
-              Repositorios.registrarRegistro(Values: [
+              Repositorios.registrarPadecimientoActual(Values: [
                 Pacientes.ID_Paciente,
                 Pacientes.ID_Hospitalizacion,
                 Valores.fechaPadecimientoActual ??

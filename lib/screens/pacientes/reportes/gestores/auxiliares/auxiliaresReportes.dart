@@ -58,7 +58,7 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                   Reportes.auxiliaresDiagnosticos;
         } else {
           Reportes.reportes['Auxiliares_Diagnosticos'] = Reportes
-              .auxiliaresDiagnosticos = Auxiliares.historial(esAbreviado: true);
+              .auxiliaresDiagnosticos = Auxiliares.historial(esAbreviado: true, withEspeciales: true);
         }
       }
       // **************************************
@@ -173,8 +173,7 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                               .auxiliaresDiagnosticos =
                                           Reportes.reportes[
                                                   'Auxiliares_Diagnosticos'] =
-                                              Auxiliares.historial(
-                                                  esAbreviado: true);
+                                          Auxiliares.historial(esAbreviado: true, withEspeciales: true);
                                     });
                                   },
                                 ),

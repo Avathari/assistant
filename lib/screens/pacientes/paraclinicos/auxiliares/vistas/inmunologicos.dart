@@ -102,48 +102,71 @@ class _InmunologicosState extends State<Inmunologicos> {
                 numOfLines: 1,
               ),
               //
-              // EditTextArea(
-              //   textController: textHCMResultController,
-              //   keyBoardType: TextInputType.number,
-              //   inputFormat: MaskTextInputFormatter(),
-              //   labelEditText: 'HCM ($unidadMedidaHCM)',
-              //   numOfLines: 1,
-              // ),
-              // EditTextArea(
-              //   textController: textPlaquetasResultController,
-              //   keyBoardType: TextInputType.number,
-              //   inputFormat: MaskTextInputFormatter(),
-              //   labelEditText: 'Plaquetas ($unidadMedidaPlaquetas)',
-              //   numOfLines: 1,
-              // ),
-              // EditTextArea(
-              //   textController: textLeucocitosResultController,
-              //   keyBoardType: TextInputType.number,
-              //   inputFormat: MaskTextInputFormatter(),
-              //   labelEditText: 'Leucocitos ($unidadMedidaLeucocitos)',
-              //   numOfLines: 1,
-              // ),
-              // EditTextArea(
-              //   textController: textNeutrofilosResultController,
-              //   keyBoardType: TextInputType.number,
-              //   inputFormat: MaskTextInputFormatter(),
-              //   labelEditText: 'Neutrofilos ($unidadMedidaNeutrofilos)',
-              //   numOfLines: 1,
-              // ),
-              // EditTextArea(
-              //   textController: textLinfocitosResultController,
-              //   keyBoardType: TextInputType.number,
-              //   inputFormat: MaskTextInputFormatter(),
-              //   labelEditText: 'Linfocitos ($unidadMedidaLinfocitos)',
-              //   numOfLines: 1,
-              // ),
-              // EditTextArea(
-              //   textController: textMonocitosResultController,
-              //   keyBoardType: TextInputType.number,
-              //   inputFormat: MaskTextInputFormatter(),
-              //   labelEditText: 'Monocitos ($unidadMedidaMonocitos)',
-              //   numOfLines: 1,
-              // ),
+              EditTextArea(
+                textController: textCoombsDirectoResultController,
+                keyBoardType: TextInputType.text,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Coombs Directo ($unidadMedidaCoombsDirecto)',
+                numOfLines: 1,
+              ),
+              EditTextArea(
+                textController: textCoombsIndirectoResultController,
+                keyBoardType: TextInputType.text,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Coombs Indirecto ($unidadMedidaCoombsIndirecto)',
+                numOfLines: 1,
+              ),
+              // 
+              EditTextArea(
+                textController: textAcAntiCitoplasmaResultController,
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Ac Anti-Citoplasma ($unidadMedidaAcAntiCitoplasma)',
+                numOfLines: 1,
+              ),
+              EditTextArea(
+                textController: textAntiProteinasaResultController,
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Anti Proteinasa 3 ($unidadMedidaAntiProteinasa)',
+                numOfLines: 1,
+              ),
+              EditTextArea(
+                textController: textAcAntiDNAResultController,
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Ac Anti-DNA ($unidadMedidaAcAntiDNA)',
+                numOfLines: 1,
+              ),
+              EditTextArea(
+                textController: textAcAntiB2gpIgAResultController,
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Ac Anti B2 gp IgA ($unidadMedidaAcAntiB2gpIgA)',
+                numOfLines: 1,
+              ),
+              EditTextArea(
+                textController: textAcAntiB2gpIgGResultController,
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Ac Anti B2 gp IgG ($unidadMedidaAcAntiB2gpIgG)',
+                numOfLines: 1,
+              ),
+
+              EditTextArea(
+                textController: textAcAntiB2gpIgMResultController,
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Ac Anti B2gp IgM ($unidadMedidaAcAntiB2gpIgM)',
+                numOfLines: 1,
+              ),
+              EditTextArea(
+                textController: textCKligerasOrinaResultController,
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'C. Kappa ligeras Orina de 24 Horas ($unidadMedidaCKligerasOrina)',
+                numOfLines: 1,
+              ),
               // Botton ***** ******* ****** * ***
               CrossLine(
                 color: Colors.grey,
@@ -224,66 +247,99 @@ class _InmunologicosState extends State<Inmunologicos> {
         unidadMedidaCANCA!
         //0,
       ],
-      // [
-      //   "0",
-      //   Pacientes.ID_Paciente.toString(),
-      //   textDateEstudyController.text,
-      //   Auxiliares.Categorias[index],
-      //   Auxiliares.Laboratorios[Auxiliares.Categorias[index]][5],
-      //   textHCMResultController.text,
-      //   unidadMedidaHCM!
-      //   //0,
-      // ],
-      // [
-      //   "0",
-      //   Pacientes.ID_Paciente.toString(),
-      //   textDateEstudyController.text,
-      //   Auxiliares.Categorias[index],
-      //   Auxiliares.Laboratorios[Auxiliares.Categorias[index]][8],
-      //   textPlaquetasResultController.text,
-      //   unidadMedidaPlaquetas!
-      //   //0,
-      // ],
-      // [
-      //   "0",
-      //   Pacientes.ID_Paciente.toString(),
-      //   textDateEstudyController.text,
-      //   Auxiliares.Categorias[index],
-      //   Auxiliares.Laboratorios[Auxiliares.Categorias[index]][9],
-      //   textLeucocitosResultController.text,
-      //   unidadMedidaLeucocitos!
-      //   //0,
-      // ],
-      // [
-      //   "0",
-      //   Pacientes.ID_Paciente.toString(),
-      //   textDateEstudyController.text,
-      //   Auxiliares.Categorias[index],
-      //   Auxiliares.Laboratorios[Auxiliares.Categorias[index]][10],
-      //   textNeutrofilosResultController.text,
-      //   unidadMedidaNeutrofilos!
-      //   //0,
-      // ],
-      // [
-      //   "0",
-      //   Pacientes.ID_Paciente.toString(),
-      //   textDateEstudyController.text,
-      //   Auxiliares.Categorias[index],
-      //   Auxiliares.Laboratorios[Auxiliares.Categorias[index]][11],
-      //   textLinfocitosResultController.text,
-      //   unidadMedidaLinfocitos!
-      //   //0,
-      // ],
-      // [
-      //   "0",
-      //   Pacientes.ID_Paciente.toString(),
-      //   textDateEstudyController.text,
-      //   Auxiliares.Categorias[index],
-      //   Auxiliares.Laboratorios[Auxiliares.Categorias[index]][12],
-      //   textMonocitosResultController.text,
-      //   unidadMedidaMonocitos!
-      //   //0,
-      // ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][8],
+        textCoombsDirectoResultController.text,
+        unidadMedidaCoombsDirecto!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][9],
+        textCoombsIndirectoResultController.text,
+        unidadMedidaCoombsIndirecto!
+        //0,
+      ],
+      //
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][26],
+        textAcAntiCitoplasmaResultController.text,
+        unidadMedidaAcAntiCitoplasma!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][27],
+        textAntiProteinasaResultController.text,
+        unidadMedidaAntiProteinasa!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][2],
+        textAcAntiDNAResultController.text,
+        unidadMedidaAcAntiDNA!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][17],
+        textAcAntiB2gpIgAResultController.text,
+        unidadMedidaAcAntiB2gpIgA!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][18],
+        textAcAntiB2gpIgGResultController.text,
+        unidadMedidaAcAntiB2gpIgG!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][19],
+        textAcAntiB2gpIgMResultController.text,
+        unidadMedidaAcAntiB2gpIgM!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][25],
+        textCKligerasOrinaResultController.text,
+        unidadMedidaCKligerasOrina!
+        //0,
+      ],
+
+      
     ];
   }
 
@@ -305,30 +361,41 @@ class _InmunologicosState extends State<Inmunologicos> {
   var textCANCAResultController = TextEditingController();
   String? unidadMedidaCANCA =
       Auxiliares.Medidas[Auxiliares.Categorias[index]][2];
-  // var textHCMResultController = TextEditingController();
-  // String? unidadMedidaHCM = Auxiliares.Medidas[Auxiliares.Categorias[index]][3];
-  //
+  // 
   var textAntiRoResultController = TextEditingController();
   String? unidadMedidaAntiRo =
       Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
 
-  // var textPlaquetasResultController = TextEditingController();
-  // String? unidadMedidaPlaquetas =
-  //     Auxiliares.Medidas[Auxiliares.Categorias[index]][4];
+  var textCoombsDirectoResultController = TextEditingController();
+  String? unidadMedidaCoombsDirecto = Auxiliares.Medidas[Auxiliares.Categorias[index]][4];
+  var textCoombsIndirectoResultController = TextEditingController();
+  String? unidadMedidaCoombsIndirecto =
+      Auxiliares.Medidas[Auxiliares.Categorias[index]][4];
   //
-  // var textLeucocitosResultController = TextEditingController();
-  // String? unidadMedidaLeucocitos =
-  //     Auxiliares.Medidas[Auxiliares.Categorias[index]][6];
-  // var textNeutrofilosResultController = TextEditingController();
-  // String? unidadMedidaNeutrofilos =
-  //     Auxiliares.Medidas[Auxiliares.Categorias[index]][6];
-  // var textLinfocitosResultController = TextEditingController();
-  // String? unidadMedidaLinfocitos =
-  //     Auxiliares.Medidas[Auxiliares.Categorias[index]][6];
-  // var textMonocitosResultController = TextEditingController();
-  // String? unidadMedidaMonocitos =
-  //     Auxiliares.Medidas[Auxiliares.Categorias[index]][6];
-
+  var textAcAntiCitoplasmaResultController = TextEditingController();
+  String? unidadMedidaAcAntiCitoplasma =
+      Auxiliares.Medidas[Auxiliares.Categorias[index]][4];
+  var textAntiProteinasaResultController = TextEditingController();
+  String? unidadMedidaAntiProteinasa =
+      Auxiliares.Medidas[Auxiliares.Categorias[index]][6];
+  
+  var textAcAntiB2gpIgAResultController = TextEditingController();
+  String? unidadMedidaAcAntiB2gpIgA =
+      Auxiliares.Medidas[Auxiliares.Categorias[index]][6];
+  var textAcAntiB2gpIgGResultController = TextEditingController();
+  String? unidadMedidaAcAntiB2gpIgG =
+      Auxiliares.Medidas[Auxiliares.Categorias[index]][6];
+  var textAcAntiB2gpIgMResultController = TextEditingController();
+  String? unidadMedidaAcAntiB2gpIgM =
+      Auxiliares.Medidas[Auxiliares.Categorias[index]][6];
+  
+  var textCKligerasOrinaResultController = TextEditingController();
+  String? unidadMedidaCKligerasOrina =
+      Auxiliares.Medidas[Auxiliares.Categorias[index]][6];
+  var textAcAntiDNAResultController = TextEditingController();
+  String? unidadMedidaAcAntiDNA =
+  Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
+  
   // OPERACIONES DE LA INTERFAZ ****************** ********
   void cerrar() {
     Navigator.of(context).pop();

@@ -88,16 +88,14 @@ class _GestionPacientesState extends State<GestionPacientes> {
             ),
             IconButton(
               icon: const Icon(
-                Icons.add_card,
+                Icons.add_card
               ),
               tooltip: Sentences.add_usuario,
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => OperacionesPacientes(
-                    operationActivity: Constantes.Register,
-                  ),
-                ));
-              },
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) => OperacionesPacientes(
+                  operationActivity: Constantes.Register,
+                ),
+              )),
             ),
           ]),
       body: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
@@ -1020,7 +1018,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: isMobile(context) ||
+      appBar: isMobile(context) || isDesktop(context) || isLargeDesktop(context) ||
               isTablet(
                   context) // widget.operationActivity == Constantes.Register
           ? AppBar(
@@ -1178,7 +1176,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                 tittle: "Registro repetido !! ",
                 message:
                     "El NSS/ID del paciente recién inscrito, ya ha sido registrado . . . \n\n"
-                        "${Pacientes.pacienteSeleccionado(match.last)}",
+                    "${Pacientes.pacienteSeleccionado(match.last)}",
                 onAcept: () {
                   Navigator.of(context).pop();
                 });
@@ -1315,26 +1313,30 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
         withShowOption: true,
         iconData: Icons.calendar_today_outlined,
         onSelected: () async {
-            final DateTime? picked = await showDatePicker(
-                context: context,
-                // initialEntryMode: DatePickerEntryMode.calendar,
-                initialDate: DateTime.now(),
-                firstDate: DateTime(1900),
-                lastDate: DateTime(2055),
-                builder: (BuildContext context, Widget? child) {
-                  return Theme(
-                      data: ThemeData.dark().copyWith(
-                          dialogBackgroundColor: Theming.cuaternaryColor),
-                      child: child!);
-                });
-
-              setState(() {
-                nacimientoTextController.text = DateFormat("yyyy-MM-dd").format(picked!);
-                //
-                edadTextController.text =
-                    (DateTime.now().difference(DateTime.parse(nacimientoTextController.text)).inDays / 365)
-                        .toStringAsFixed(0);
+          final DateTime? picked = await showDatePicker(
+              context: context,
+              // initialEntryMode: DatePickerEntryMode.calendar,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(1900),
+              lastDate: DateTime(2055),
+              builder: (BuildContext context, Widget? child) {
+                return Theme(
+                    data: ThemeData.dark().copyWith(
+                        dialogBackgroundColor: Theming.cuaternaryColor),
+                    child: child!);
               });
+
+          setState(() {
+            nacimientoTextController.text =
+                DateFormat("yyyy-MM-dd").format(picked!);
+            //
+            edadTextController.text = (DateTime.now()
+                        .difference(
+                            DateTime.parse(nacimientoTextController.text))
+                        .inDays /
+                    365)
+                .toStringAsFixed(0);
+          });
         },
         onChange: (value) {
           setState(() {

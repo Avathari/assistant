@@ -1,5 +1,6 @@
 import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/hepatometrias.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/lipidometria.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/renometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/widgets/CrossLine.dart';
@@ -75,7 +76,25 @@ class _ConclusionesState extends State<Conclusiones> {
         ),
         Expanded(child: Column(
           children: [
-
+            ValuePanel(
+              firstText: 'IndAter',
+              secondText:
+              Lipidometria.indiceAterogenico.toStringAsFixed(2),
+              thirdText: '',
+            ),
+            CrossLine(),
+            ValuePanel(
+              firstText: 'cLDL/cHDL',
+              secondText:
+              Lipidometria.indiceLDLHDL.toStringAsFixed(2),
+              thirdText: '',
+            ),
+            ValuePanel(
+              firstText: 'TG/cHDL',
+              secondText:
+              Lipidometria.indiceTrigliceridosHDL.toStringAsFixed(2),
+              thirdText: '',
+            ),
           ],
         )),
         Expanded(child: Column(children: [
@@ -193,7 +212,20 @@ class _ConclusionesState extends State<Conclusiones> {
           //       .toStringAsFixed(2),
           //   thirdText: "", // 'mmHg/mL',
           // ),
-        ],))
+          CrossLine(),
+          ValuePanel(
+            firstText: "I-APRI",
+            secondText: Hepatometrias.APRI.toStringAsFixed(2),
+          ),
+          ValuePanel(
+            firstText: "FIB-4",
+            secondText: Hepatometrias.Fib4.toStringAsFixed(2),
+          ),
+          ValuePanel(
+            firstText: "MELD",
+            secondText: Hepatometrias.MELD.toStringAsFixed(2),
+          ),
+        ],), )
 
       ],
     );

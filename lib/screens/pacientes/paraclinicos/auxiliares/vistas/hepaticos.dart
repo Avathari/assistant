@@ -240,6 +240,14 @@ class _HepaticosState extends State<Hepaticos> {
                 child: Column(
               children: [
                 ValuePanel(
+                  firstText: "I-APRI",
+                  secondText: Hepatometrias.APRI.toStringAsFixed(2),
+                ),
+                ValuePanel(
+                  firstText: "FIB-4",
+                  secondText: Hepatometrias.Fib4.toStringAsFixed(2),
+                ),
+                ValuePanel(
                   firstText: "",
                   secondText: "",
                 ),

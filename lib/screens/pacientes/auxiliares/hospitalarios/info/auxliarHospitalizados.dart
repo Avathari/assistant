@@ -80,12 +80,13 @@ class Paneles {
             Operadores.openWindow(
                 context: context,
                 chyldrim: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
                       snapshot.data![index].padecimientoActual == null
                           ? 'Sin Padecimiento Actual'
                           : "Padecimiento Actual:\n ${snapshot.data![index].padecimientoActual['Padecimiento_Actual'] ?? ''}",
-                      maxLines: 10,
+                      maxLines: isMobile(context) ? 20: 10,
                       softWrap: true,
                       style: Styles.textSyleGrowth(fontSize: 10),
                       textAlign: TextAlign.justify,
@@ -113,7 +114,7 @@ class Paneles {
                       snapshot.data![index].padecimientoActual == null
                           ? 'Sin Padecimiento Actual'
                           : " ${snapshot.data![index].padecimientoActual['Padecimiento_Actual'] ?? ''}",
-                      maxLines: 45,
+                      maxLines: isMobile(context) ? 85 : 45,
                       softWrap: true,
                       style: Styles.textSyleGrowth(fontSize: 10),
                       textAlign: TextAlign.justify,
@@ -132,7 +133,7 @@ class Paneles {
                 ? 65
                 : isDesktop(context)
                     ? 95
-                    : 45,
+                    : 55,
             style: Styles.textSyleGrowth(fontSize: 8),
             textAlign: TextAlign.start,
           ),
@@ -190,7 +191,7 @@ class Paneles {
             );
           },
           separatorBuilder: (BuildContext context, int index) {
-            return const SizedBox(height: 10);
+            return const SizedBox(height: 8);
           },
         ));
   }

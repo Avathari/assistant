@@ -217,13 +217,6 @@ class _LiquidoAscitisState extends State<LiquidoAscitis> {
                       numOfLines: 1,
                     ),
                     EditTextArea(
-                      textController: textEritrocitosResultController,
-                      keyBoardType: TextInputType.text,
-                      inputFormat: MaskTextInputFormatter(),
-                      labelEditText: 'Eritrocitos ($unidadMedidaEritrocitos)',
-                      numOfLines: 1,
-                    ),
-                    EditTextArea(
                       textController: textMononuclearesResultController,
                       keyBoardType: TextInputType.text,
                       inputFormat: MaskTextInputFormatter(),
@@ -237,7 +230,6 @@ class _LiquidoAscitisState extends State<LiquidoAscitis> {
                       labelEditText: 'Eritrocitos ($unidadMedidaEritrocitos)',
                       numOfLines: 1,
                     ),
-
                     EditTextArea(
                       textController: textBacteriasResultController,
                       keyBoardType: TextInputType.text,

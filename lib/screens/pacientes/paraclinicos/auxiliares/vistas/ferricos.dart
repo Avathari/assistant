@@ -92,6 +92,36 @@ class _FerricosState extends State<Ferricos> {
                 labelEditText: 'Porcentaje Sat. Transferrina ($unidadMedidaHIVAgAg)',
                 numOfLines: 1,
               ),
+              // ***************************************
+              CrossLine(),
+              EditTextArea(
+                textController: textFolicoEndogenoResultController,
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Ac. Fólico Endógeno ($unidadMedidaFolicoEndogeno)',
+                numOfLines: 1,
+              ),
+              EditTextArea(
+                textController: textFolatosResultController,
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Folatos ($unidadMedidaFolatos)',
+                numOfLines: 1,
+              ),
+              EditTextArea(
+                textController: textCianocobResultController,
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Cianocobalamina ($unidadMedidaCianocob)',
+                numOfLines: 1,
+              ),
+              EditTextArea(
+                textController: textHaptoglobinaResultController,
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Haptoglobina ($unidadMedidaHaptoglobina)',
+                numOfLines: 1,
+              ),
               // Botton ***** ******* ****** * ***
               CrossLine(
                 color: Colors.grey,
@@ -173,6 +203,50 @@ class _FerricosState extends State<Ferricos> {
         unidadMedidaHIVAgAg!
         //0,
       ],
+      
+      // *** * * ** * * *
+        [
+        "0",
+    Pacientes.ID_Paciente.toString(),
+    textDateEstudyController.text,
+    Auxiliares.Categorias[index],
+    Auxiliares.Laboratorios[Auxiliares.Categorias[24]][1],
+    textFolicoEndogenoResultController.text,
+    unidadMedidaFolicoEndogeno!
+    //0,
+    ],
+    [
+    "0",
+    Pacientes.ID_Paciente.toString(),
+    textDateEstudyController.text,
+    Auxiliares.Categorias[index],
+    Auxiliares.Laboratorios[Auxiliares.Categorias[24]][2],
+    textFolatosResultController.text,
+    unidadMedidaFolatos!
+    //0,
+    ],
+    [
+    "0",
+    Pacientes.ID_Paciente.toString(),
+    textDateEstudyController.text,
+    Auxiliares.Categorias[index],
+    Auxiliares.Laboratorios[Auxiliares.Categorias[24]][0],
+    textCianocobResultController.text,
+    unidadMedidaCianocob!
+    //0,
+    ],
+      // 
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][6],
+        textHaptoglobinaResultController.text,
+        unidadMedidaHaptoglobina!
+        //0,
+      ],
+
     ];
   }
 
@@ -193,6 +267,16 @@ class _FerricosState extends State<Ferricos> {
       Auxiliares.Medidas[Auxiliares.Categorias[index]][2];
   var textHIVAgAgResultController = TextEditingController();
   String? unidadMedidaHIVAgAg = Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
+// ***************************************************************
+  var textFolicoEndogenoResultController = TextEditingController();
+  String? unidadMedidaFolicoEndogeno = Auxiliares.Medidas[Auxiliares.Categorias[24]][0];
+  var textFolatosResultController = TextEditingController();
+  String? unidadMedidaFolatos = Auxiliares.Medidas[Auxiliares.Categorias[24]][0];
+  var textCianocobResultController = TextEditingController();
+  String? unidadMedidaCianocob = Auxiliares.Medidas[Auxiliares.Categorias[24]][3];
+  //
+  var textHaptoglobinaResultController = TextEditingController();
+  String? unidadMedidaHaptoglobina = Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
 
   // OPERACIONES DE LA INTERFAZ ****************** ********
   void cerrar() {

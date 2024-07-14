@@ -22,7 +22,7 @@ class ReporteTraslado extends StatefulWidget {
 class _ReporteTrasladoState extends State<ReporteTraslado> {
   @override
   void initState() {
-    Repositorios.padecimientoActual();
+    // Repositorios.padecimientoActual();
     Vitales.ultimoRegistro();
 
     // INICIAR . . .

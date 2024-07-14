@@ -275,6 +275,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                 child: Row(
                   children: [
                     Expanded(
+
                       child: Container(
                         decoration: ContainerDecoration.roundedDecoration(),
                         child: CarouselSlider(
@@ -284,10 +285,11 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                                 padding: const EdgeInsets.all(8.0),
                                 gridDelegate: GridViewTools.gridDelegate(
                                   crossAxisCount:
-                                      isMobile(context) || isTablet(context)
-                                          ? 1
+                                      isTablet(context)
+                                          ? 1 :isMobile(context) ? 2
                                           : 2,
-                                  mainAxisExtent: isMobile(context) ? 80 : 70,
+                                  crossAxisSpacing: 1.0,
+                                  mainAxisExtent: isMobile(context) ? 60 : 50,
                                 ),
                                 children: component(context),
                               ),
@@ -312,7 +314,8 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                     isMobile(context)
                         ? Container()
                         : Expanded(
-                            child: Container(
+                      flex: isTablet(context) ? 2 : 1,
+                      child: Container(
                                 padding: const EdgeInsets.all(8.0),
                                 decoration: const BoxDecoration(
                                     color: Colors.black,
@@ -412,108 +415,113 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
 
   List<Widget> component(BuildContext context) {
     return [
-      editFormattedText(
-          TextInputType.number,
-          MaskTextInputFormatter(
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
               mask: '###',
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
-          false,
-          'Tensión arterial sistólica',
-          tasTextController,
-          false),
-      editFormattedText(
-          TextInputType.number,
-          MaskTextInputFormatter(
+        labelEditText: 'Tensión arterial sistólica',
+          textController:tasTextController,
+        onChange: (value) => Valores.tensionArterialSystolica = int.parse(value),
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
               mask: '###',
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
-          false,
-          'Tensión arterial diastólica',
-          tadTextController,
-          false),
-      editFormattedText(
-          TextInputType.number,
-          MaskTextInputFormatter(
+        labelEditText: 'Tensión arterial diastólica',
+          textController:tadTextController,
+        onChange: (value) => Valores.tensionArterialDyastolica = int.parse(value),
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
               mask: '###',
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
-          false,
-          'Frecuencia cardiaca',
-          fcTextController,
-          false),
-      editFormattedText(
-          TextInputType.number,
-          MaskTextInputFormatter(
+        labelEditText: 'Frecuencia cardiaca',
+          textController:fcTextController,
+        onChange: (value) => Valores.frecuenciaCardiaca = int.parse(value),
+          ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
               mask: '##',
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
-          false,
-          'Frecuencia respiratoria',
-          frTextController,
-          false),
-      editFormattedText(
-          TextInputType.number,
-          MaskTextInputFormatter(
+        labelEditText:
+        'Frecuencia respiratoria',
+          textController:frTextController,
+        onChange: (value) => Valores.frecuenciaRespiratoria = int.parse(value),
+          ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
               mask: '##.#',
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
-          false,
-          'Temperatura corporal',
-          tcTextController,
-          false),
-      editFormattedText(
-          TextInputType.number,
-          MaskTextInputFormatter(
+        labelEditText:
+        'Temperatura corporal',
+          textController:tcTextController,
+        onChange: (value) => Valores.temperaturCorporal = double.parse(value),
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
               mask: '##',
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
-          false,
-          'Saturación periférica de oxígeno',
-          spoTextController,
-          false),
-      editFormattedText(
-          TextInputType.number,
-          MaskTextInputFormatter(
+        labelEditText:
+        'Saturación periférica de oxígeno',
+          textController:spoTextController,
+        onChange: (value) => Valores.saturacionPerifericaOxigeno = int.parse(value),
+          ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
               mask: '###.##',
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
-          false,
-          'Peso corporal total',
-          pctTextController,
-          false),
-      editFormattedText(
-          TextInputType.number,
-          MaskTextInputFormatter(
+        labelEditText:
+        'Peso corporal total',
+        textController:pctTextController,
+        onChange: (value) => Valores.pesoCorporalTotal = double.parse(value),
+          ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
               mask: '#.##',
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
-          false,
-          'Estatura (mts)',
-          estTextController,
-          false),
-      editFormattedText(
-          TextInputType.number,
-          MaskTextInputFormatter(
+        labelEditText: 'Estatura (mts)',
+        textController:estTextController,
+        onChange: (value) => Valores.alturaPaciente = double.parse(value),
+          ),
+      EditTextArea(
+          keyBoardType: TextInputType.number,
+          inputFormat: MaskTextInputFormatter(
               mask: '###',
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
-          false,
-          'Glucemia capilar',
-          gluTextController,
-          false),
-      editFormattedText(
-          TextInputType.number,
-          MaskTextInputFormatter(
+        labelEditText: 'Glucemia capilar',
+        textController: gluTextController,
+        onChange: (value) => Valores.glucemiaCapilar = int.parse(value),
+          ),
+      EditTextArea(
+          keyBoardType: TextInputType.number,
+          inputFormat: MaskTextInputFormatter(
               mask: '##',
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
-          false,
+          labelEditText:
           'Horas de ayuno',
-          gluAyuTextController,
-          false),
-      CrossLine(),
-      isMobile(context) || isTablet(context) ? Container() : CrossLine(),
+        textController: gluAyuTextController,
+        onChange: (value) => Valores.horasAyuno = int.parse(value),
+          ),
+      if (!isMobile(context)) CrossLine(),
+      if (!isMobile(context) && !isTablet(context))   CrossLine(),
       EditTextArea(
         keyBoardType: TextInputType.number,
         inputFormat: MaskTextInputFormatter(),

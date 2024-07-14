@@ -141,14 +141,14 @@ class _UroanalisisState extends State<Uroanalisis> {
               ),
               EditTextArea(
                 textController: textHemoglobinaResultController,
-                keyBoardType: TextInputType.number,
+                keyBoardType: TextInputType.text,
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Hemoglobina ($unidadMedidaHemoglobina)',
                 numOfLines: 1,
               ),
               EditTextArea(
                 textController: textProteinasResultController,
-                keyBoardType: TextInputType.number,
+                keyBoardType: TextInputType.text,
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Proteinas ($unidadMedidaProteinas)',
                 numOfLines: 1,
@@ -163,14 +163,14 @@ class _UroanalisisState extends State<Uroanalisis> {
               ),
               EditTextArea(
                 textController: textBilirrubinasResultController,
-                keyBoardType: TextInputType.text,
+                keyBoardType: TextInputType.emailAddress,
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Bilirrubinas ($unidadMedidaBilirrubinas)',
                 numOfLines: 1,
               ),
               EditTextArea(
                 textController: textCetonasResultController,
-                keyBoardType: TextInputType.number,
+                keyBoardType: TextInputType.streetAddress,
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Cetonas ($unidadMedidaCetonas)',
                 numOfLines: 1,
@@ -178,7 +178,7 @@ class _UroanalisisState extends State<Uroanalisis> {
 
               EditTextArea(
                 textController: textGlucosaResultController,
-                keyBoardType: TextInputType.number,
+                keyBoardType: TextInputType.text,
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Glucosa ($unidadMedidaGlucosa)',
                 numOfLines: 1,
@@ -194,7 +194,7 @@ class _UroanalisisState extends State<Uroanalisis> {
 
               EditTextArea(
                 textController: textNitritosResultController,
-                keyBoardType: TextInputType.number,
+                keyBoardType: TextInputType.text,
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Nitritos ($unidadMedidaNitritos)',
                 numOfLines: 1,
@@ -202,14 +202,14 @@ class _UroanalisisState extends State<Uroanalisis> {
               
               EditTextArea(
                 textController: textLeucocitosResultController,
-                keyBoardType: TextInputType.number,
+                keyBoardType: TextInputType.text,
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Leucocitos ($unidadMedidaLeucocitos)',
                 numOfLines: 1,
               ),
               EditTextArea(
                 textController: textEritrocitosResultController,
-                keyBoardType: TextInputType.number,
+                keyBoardType: TextInputType.text,
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Eritrocitos ($unidadMedidaEritrocitos)',
                 numOfLines: 1,
@@ -217,7 +217,7 @@ class _UroanalisisState extends State<Uroanalisis> {
             
             EditTextArea(
                 textController: textCelulasEpitelialesResultController,
-                keyBoardType: TextInputType.number,
+                keyBoardType: TextInputType.text,
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'CelulasEpiteliales ($unidadMedidaCelulasEpiteliales)',
                 numOfLines: 1,
@@ -238,7 +238,7 @@ class _UroanalisisState extends State<Uroanalisis> {
               ),              
               EditTextArea(
                 textController: textCilindrosResultController,
-                keyBoardType: TextInputType.number,
+                keyBoardType: TextInputType.text,
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Cilindros ($unidadMedidaCilindros)',
                 numOfLines: 1,

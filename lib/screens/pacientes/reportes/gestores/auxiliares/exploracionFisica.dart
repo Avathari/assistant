@@ -128,7 +128,8 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                               ? 30
                               : 20,
                       onChange: ((value) => setState(() {
-                        expoTextController.text = Reportes.reportes['Exploracion_Fisica'] =
+                        // expoTextController.text =
+                        Reportes.reportes['Exploracion_Fisica'] =
                                 Reportes.exploracionFisica = value;
                           })),
                       inputFormat: MaskTextInputFormatter()),

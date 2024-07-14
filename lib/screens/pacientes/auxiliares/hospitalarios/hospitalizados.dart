@@ -1007,12 +1007,12 @@ class _HospitalizadosState extends State<Hospitalizados> {
                               child:
                                   Paneles.fichaIdentificacion(snapshot, index)),
                           Expanded(
-                              flex: 11,
+                              flex: 20,
                               child:
                                   Paneles.padesView(context, snapshot, index)),
                           CrossLine(),
                           Expanded(
-                            flex: 3,
+                            flex: 4,
                             child: Row(
                               children: [
                                 Expanded(
@@ -1108,11 +1108,34 @@ class _HospitalizadosState extends State<Hospitalizados> {
                     ),
                     Expanded(
                         child:
-                            Paneles.paraclinicosPanel(context, snapshot, index))
+                            Column(
+                              children: [
+                                Expanded(
+                                  flex: 4,
+                                  child: Paneles.paraclinicosPanel(context, snapshot, index)),
+                                Expanded(
+                                  flex: 1,
+                                  child: CircleIcon(
+                                    tittle: 'Recargar laboratorios . . . ',
+                                    iconed: Icons.receipt_long,
+                                    difRadios: 7,
+                                    onChangeValue: () async {
+                                      await snapshot.data![index]
+                                          .getParaclinicosHistorial()
+                                          .then((response) async {
+                                        setState(() {});
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ]
+                            )
+                    ),
                   ],
+                    ),
                 ),
               ),
-            ),
+
             Expanded(
               flex: 10,
               child: Row(

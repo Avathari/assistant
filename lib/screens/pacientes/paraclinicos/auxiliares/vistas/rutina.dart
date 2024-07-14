@@ -3,6 +3,7 @@ import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/citometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/hepatometrias.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/lipidometria.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
@@ -1692,7 +1693,10 @@ class _RutinasState extends State<Rutinas> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Trigliceridos ($unidadMedidaTrigliceridos)',
                 numOfLines: 1,
-                onChange: (value) => setState(() => Valores.trigliceridos = double.parse(textTrigliceridosResultController.text)),
+                onChange: (value) => setState(() {
+                  Valores.trigliceridos = double.parse(textTrigliceridosResultController.text);
+                  textVLDLResultController.text = Lipidometria.vldlCalculado.toStringAsFixed(2);
+                }),
               ),
               Row(
                 children: [
@@ -2565,7 +2569,10 @@ class _RutinasState extends State<Rutinas> {
                     inputFormat: MaskTextInputFormatter(),
                     labelEditText: 'Trigliceridos ($unidadMedidaTrigliceridos)',
                     numOfLines: 1,
-                    onChange: (value) => setState(() => Valores.trigliceridos = double.parse(textTrigliceridosResultController.text)),
+                    onChange: (value) => setState(() {
+                      Valores.trigliceridos = double.parse(textTrigliceridosResultController.text);
+                      textVLDLResultController.text = Lipidometria.vldlCalculado.toStringAsFixed(2);
+                    }),
                   ),
                 ),
                 Expanded(

@@ -62,11 +62,11 @@ class _HormonalesState extends State<Hormonales> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Cortisol ($unidadMedidaCortisol)',
                 numOfLines: 1,
-                onChange: (String value) {
-                  if (textCortisolResultController.text.isNotEmpty)
-                    Valores.hemoglobina =
-                        double.parse(textCortisolResultController.text);
-                },
+                // onChange: (String value) {
+                //   if (textCortisolResultController.text.isNotEmpty)
+                //     Valores.hemoglobina =
+                //         double.parse(textCortisolResultController.text);
+                // },
               ),
               EditTextArea(
                 textController: textACTHResultController,
@@ -77,11 +77,11 @@ class _HormonalesState extends State<Hormonales> {
                     type: MaskAutoCompletionType.lazy),
                 labelEditText: 'ACTH ($unidadMedidaACTH)',
                 numOfLines: 1,
-                onChange: (String value) {
-                  if (textACTHResultController.text.isNotEmpty)
-                    Valores.eritrocitos =
-                        double.parse(textACTHResultController.text);
-                },
+                // onChange: (String value) {
+                //   if (textACTHResultController.text.isNotEmpty)
+                //     Valores.eritrocitos =
+                //         double.parse(textACTHResultController.text);
+                // },
               ),
               EditTextArea(
                 textController: textFHSResultController,
@@ -90,19 +90,7 @@ class _HormonalesState extends State<Hormonales> {
                 labelEditText: 'FHS ($unidadMedidaFHS)',
                 numOfLines: 1,
               ),
-              EditTextArea(
-                textController: textADEResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'RWD / ADE ($unidadMedidaADE)',
-                numOfLines: 1,
-                onChange: (String value) {
-                  if (textADEResultController.text.isNotEmpty) {
-                    Valores.anchoDistribucionEritrocitaria =
-                        double.parse(textADEResultController.text);
-                  }
-                },
-              ),
+
 
               EditTextArea(
                 textController: textProgesteronaResultController,
@@ -138,7 +126,7 @@ class _HormonalesState extends State<Hormonales> {
                 textController: textTestosteronaResultController,
                 keyBoardType: TextInputType.number,
                 inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Testosterona ($unidadMedidaTestosterona)',
+                labelEditText: 'Testosterona Total ($unidadMedidaTestosterona)',
                 numOfLines: 1,
               ),
 
@@ -162,6 +150,87 @@ class _HormonalesState extends State<Hormonales> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Luteinizante ($unidadMedidaLuteinizante)',
                 numOfLines: 1,
+              ),
+              // CORTISOL 
+              EditTextArea(
+                textController: textCortisolUrinarioResultController,
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Cortisol Urinario ($unidadMedidaCortisolUrinario)',
+                numOfLines: 1,
+                // onChange: (String value) {
+                //   if (textCortisolUrinarioResultController.text.isNotEmpty) {
+                //     Valores.anchoDistribucionEritrocitaria =
+                //         double.parse(textCortisolUrinarioResultController.text);
+                //   }
+                // },
+              ),
+              EditTextArea(
+                textController: textCortisol24hrsResultController,
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Cortisol Urinario en 24 Hrs ($unidadMedidaCortisol24hrs)',
+                numOfLines: 1,
+                // onChange: (String value) {
+                //   if (textCortisol24hrsResultController.text.isNotEmpty) {
+                //     Valores.anchoDistribucionEritrocitaria =
+                //         double.parse(textCortisol24hrsResultController.text);
+                //   }
+                // },
+              ),
+              EditTextArea(
+                textController: textCortisolSalivalResultController,
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Cortisol Salival ($unidadMedidaCortisolSalival)',
+                numOfLines: 1,
+                // onChange: (String value) {
+                //   if (textCortisolSalivalResultController.text.isNotEmpty) {
+                //     Valores.anchoDistribucionEritrocitaria =
+                //         double.parse(textCortisolSalivalResultController.text);
+                //   }
+                // },
+              ),
+              // 
+              EditTextArea(
+                textController: textPTHResultController,
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'PTH ($unidadMedidaPTH)',
+                numOfLines: 1,
+                // onChange: (String value) {
+                //   if (textPTHResultController.text.isNotEmpty) {
+                //     Valores.anchoDistribucionEritrocitaria =
+                //         double.parse(textPTHResultController.text);
+                //   }
+                // },
+              ),
+              EditTextArea(
+                textController: textAldosteronaResultController,
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Aldosterona ($unidadMedidaAldosterona)',
+                numOfLines: 1,
+                // onChange: (String value) {
+                //   if (textAldosteronaResultController.text.isNotEmpty) {
+                //     Valores.anchoDistribucionEritrocitaria =
+                //         double.parse(textAldosteronaResultController.text);
+                //   }
+                // },
+              ),
+
+              EditTextArea(
+                textController: textHGCHResultController,
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText: 'Fracción Libre HCG ($unidadMedidaHGCH)',
+                numOfLines: 1,
+                // onChange: (String value) {
+                //   if (textHGCHResultController.text.isNotEmpty) {
+                //     Valores.anchoDistribucionEritrocitaria =
+                //         double.parse(textHGCHResultController.text);
+                //   }
+                // },
               ),
               // Botton ***** ******* ****** * ***
               CrossLine(color: Colors.grey),
@@ -301,6 +370,67 @@ class _HormonalesState extends State<Hormonales> {
         unidadMedidaLuteinizante!
         //0,
       ],
+      // CORTISOL 
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][2],
+        textCortisolUrinarioResultController.text,
+        unidadMedidaCortisolUrinario!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][3],
+        textCortisol24hrsResultController.text,
+        unidadMedidaCortisol24hrs!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][4],
+        textCortisolSalivalResultController.text,
+        unidadMedidaCortisolSalival!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][15],
+        textPTHResultController.text,
+        unidadMedidaPTH!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][16],
+        textAldosteronaResultController.text,
+        unidadMedidaAldosterona!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][17],
+        textHGCHResultController.text,
+        unidadMedidaHGCH!
+        //0,
+      ],      
     ];
   }
 
@@ -324,8 +454,6 @@ class _HormonalesState extends State<Hormonales> {
   var textEstronaResultController = TextEditingController();
   String? unidadMedidaEstrona =
       Auxiliares.Medidas[Auxiliares.Categorias[index]][3];
-  var textADEResultController = TextEditingController();
-  String? unidadMedidaADE = Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
 
   var textDihidrotestosteronaResultController = TextEditingController();
   String? unidadMedidaDihidrotestosterona =
@@ -342,6 +470,25 @@ class _HormonalesState extends State<Hormonales> {
   var textLuteinizanteResultController = TextEditingController();
   String? unidadMedidaLuteinizante =
       Auxiliares.Medidas[Auxiliares.Categorias[index]][4];
+  
+  //
+  var textCortisolUrinarioResultController = TextEditingController();
+  String? unidadMedidaCortisolUrinario = Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
+  var textCortisol24hrsResultController = TextEditingController();
+  String? unidadMedidaCortisol24hrs = Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
+  var textCortisolSalivalResultController = TextEditingController();
+  String? unidadMedidaCortisolSalival = Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
+  var textPTHResultController = TextEditingController();
+  String? unidadMedidaPTH = Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
+  var textAldosteronaResultController = TextEditingController();
+  String? unidadMedidaAldosterona = Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
+  var textHGCHResultController = TextEditingController();
+  String? unidadMedidaHGCH = Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
+  //
+  // var textADEResultController = TextEditingController();
+  // String? unidadMedidaADE = Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
+  // var textADEResultController = TextEditingController();
+  // String? unidadMedidaADE = Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
 
   // OPERACIONES DE LA INTERFAZ ****************** ********
   void cerrar() {

@@ -848,6 +848,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                             // Actualización del Indice
                             // *************** *********** **************
                             index = Auxiliares.Categorias.indexOf(value);
+                            Terminal.printNotice(message: "index $index");
                           });
                           //
                           if (index < 29) {
@@ -896,6 +897,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
               inputFormat: MaskTextInputFormatter(),
               labelEditText: "Resultado",
               numOfLines: 1,
+              limitOfChars: 200,
               withShowOption: true,
               onSelected: () {
                 if (estudioValue == 'Urocultivo') {
@@ -1123,6 +1125,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                     inputFormat: MaskTextInputFormatter(),
                     labelEditText: "Resultado",
                     numOfLines: 1,
+                    limitOfChars: 200,
                     withShowOption: true,
                     onSelected: () {
                       if (estudioValue == 'Urocultivo') {

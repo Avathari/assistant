@@ -344,7 +344,7 @@ class Gasometricos {
 
   static double get PAO {
     return PIO -
-        (Valores.pcoArteriales! * 1.25); // # Presión alveolar de oxígeno
+        (Valores.pcoArteriales! * 0.8); // 1.25 # Presión alveolar de oxígeno
     // return (Valores.fioArteriales! / 100) * (760 - 47) -
     //     (Valores.pcoArteriales! / 0.8); // # Presión alveolar de oxígeno
   }

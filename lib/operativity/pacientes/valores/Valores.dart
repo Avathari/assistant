@@ -3831,7 +3831,7 @@ class Items {
       "Diagnostico": "Diabetes Tipo 2",
       "Tratamiento": "sin tratamiento por decisión propia",
       "Antecedentes":
-          "refiere monitorización con glucómetro digital diario en cada maneja cifras 180-400 mg/dl y con toma de medicamento no especificado cuando tiene >200mg/dl, "
+          "refiere monitorización con glucómetro digital diario en cada maneja cifras 180-200 mg/dl, "
               "niega disminución visual, u otras alteraciones microvasculares, niega seguimiento multidisciplinario por complicaciones microvasculares; "
               "niega hospitalización o visitas a urgencias por descontrol glucémico. ",
     },
@@ -3876,6 +3876,37 @@ class Items {
           "con ATB empírico; "
           "Hospitalizaciones relevantes: Por eventos ya comentados; "
           "Uresis residual 500 mL/Día, Peso seco desconocido. ",
+    },
+    {
+      "Diagnostico":
+      "Enfermedad Hepática Crónica, Child Pugh A, de etiología indeterminada",
+      "Tratamiento":
+      "diagnósticado desde XXXX, tratado con Propanolol 20 mg/12 horas",
+      "Antecedentes": "Protocolo diagnóstico considerado desde hospitalización; "
+          "se realizó USG hepático doppler en el que destacó Hipertensión portal, vena porta de 13 mm, "
+          "velocidad pico sistólico XXX cm/seg; no cuenta con biopsia hepática; "
+          "Incidencia de descompensaciones por Hemorragia gastro intestinal NEGADO; "
+          "Incidencia de ascitis NEGADO; "
+          "Incidencia de Encefalopatía hepática NEGADO; "
+          "Incidencias de Peritonitis Bacteriana Espontánea NEGADO. ",
+    },
+    {
+      "Diagnostico":
+      "Neumopatía Intersticial Crónica, no específicada, de etiología indeterminada",
+      "Tratamiento":
+      "presenta sintomás desde XXXX, manifestado por disnea progresiva, recurrente, actualmente "
+          "con requerimiento de oxígeno suplementario, domiciliario, desde XXXX, empleando "
+          "2 Lt/min, por 24 horas",
+      "Antecedentes": ""
+          "Factores de riesgo: Exposición a biomasa (IEB 104), desde la infancia, tabaquismo pasivo desde XXXX, "
+          "exposición a comburentes (Petróleo, entre otros no especifícados); "
+          "Protocolo diagnóstico considerado:  "
+          "contó con Radiografia de Tórax en el que destacó Infiltrado Intersticial Difuso, heterogéneo, acompañado de "
+          "zonas de micronodulares y macronodulares parahiliares; "
+          "TAC-AR no realizada; "
+          "sin valoraciones previas por neumología; "
+          "No cuenta con realización de espirometría; "
+          "Inciidencia de exacerbaciones: NEGADOS",
     },
     {
       "Diagnostico":
