@@ -5,6 +5,7 @@ import 'package:assistant/screens/bibiliotecarios/bibliotecas.dart';
 import 'package:assistant/screens/enologias/enologias.dart';
 import 'package:assistant/screens/financieros/estadisticas.dart';
 import 'package:assistant/screens/financieros/finanzas.dart';
+import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/embarazadas.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizados.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
@@ -50,6 +51,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    print("MediaQuery.of(context).size.width  ${MediaQuery.of(context).size.width}");
     return Scaffold(
       drawer: isMobile(context) ? drawerHome(context) : null,
       appBar: AppBar(
@@ -665,6 +667,13 @@ class PacientesPanel extends StatelessWidget {
               labelButton: "Concentraciones",
               onPress: () {
                 toNextScreen(context: context, screen:  Scaffold(appBar:AppBar(backgroundColor: Colors.black,), body: const Concentraciones()));
+              },
+            ),
+            HomeButton(
+              iconData: Icons.pregnant_woman_sharp,
+              labelButton: "Embarazadas",
+              onPress: () {
+                Cambios.toNextActivity(context, chyld: const Embarazadas());
               },
             ),
             HomeButton(

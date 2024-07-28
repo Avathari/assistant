@@ -1,12 +1,13 @@
-import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:flutter/material.dart'
     show BuildContext, MediaQuery, WidgetsBinding;
 
 bool isMobile(BuildContext context) {
+  // print("MediaQuery.of(context).size.width  ${MediaQuery.of(context).size.width}");
   return MediaQuery.of(context).size.width < mobileNormal; // tabletSmall;
 }
 
 bool isMobileAndTablet(context) {
+  // print("MediaQuery.of(context).size.width  ${MediaQuery.of(context).size.width}");
   return MediaQuery.of(context).size.width <= tabletSmall;
 }
 
@@ -36,8 +37,8 @@ bool isLargeDesktop(BuildContext context) {
 
 //Mobile size
 double get mobileSmall => 320;
-double get mobileNormal => 375;
-double get mobileLarge => 414;
+double get mobileNormal => 424;
+double get mobileLarge => 458;
 double get mobileExtraLarge => 480;
 
 //table size

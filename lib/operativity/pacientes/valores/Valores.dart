@@ -1767,6 +1767,38 @@ class Valores {
   static String? hemoglobinaInferior = Dicotomicos.dicotomicos()[1];
   static String? incisionTipo = Escalas.incisionTipo[0];
   static String? duracionCirugiaHoras = Escalas.duracionCirugiaHoras[0];
+
+  /// Fecha Probable Parto (FPP)
+  ///
+  /// ** La fórmula es FPP = FUM + 7 días + 1 año - 3 meses
+  /// La fórmula para estimar la fecha probable de parto (FPP) se basa en la fecha de la última menstruación (FUM) de la mujer.
+  ///
+  static fechaProbableParto() {
+    // final aux = DateTime.parse(fechaUltimaMestruacion!);
+    DateTime dateTime = new DateTime.now();
+    print(dateTime.day);
+
+    dateTime = dateTime.add(const Duration(days: (7+365)));
+    dateTime = dateTime.subtract(const Duration(days: (30*3)));
+    return dateTime.toString();
+  }
+
+  /// Peso Fetal Estiimado (PFE) - Fórmula de Johnson y Toshach
+  ///  * Fórmula de Johnson y Toshach: Peso fetal en gramos = (AU en cm – K) × 155,
+  /// con ajustes basados en la obesidad materna y el compromiso de la cabeza fetal.
+  /// * * * Estimación clínica del peso fetal: para la determinación clínica del peso fetal se utilizó la fórmula de Johnson y Toshach, donde el peso fetal en gramos = (AU en cm – K)×155, con algunos ajustes basados en la obesidad materna y el compromiso de la cabeza fetal. Dependiendo de la estación en la que se encontraba la presentación se adecuó el valor de la constante; si el vértice se ubicaba sobre la espinas iliacas (estación cero) sería igual a 12, si las rebasa la constante fue igual a 11 (estación positiva) y si se encontraba en una estación positiva se le asignó un valor de 133.
+  ///
+  static pesoFetalEstimado(double? alturaFondoUterino, {int? constante = 12}) {
+    return (alturaFondoUterino! - constante!) * 155;
+  }
+
+  /// Edad Gestacional Estimada (EGE) - Regla de Alfehld
+  ///  ** AFU (cm) + 4 / 4
+  ///  Resultado en meses
+  /// 
+  static edadGestacionalEstimada(double? alturaFondoUterino) {
+    return (alturaFondoUterino! + 4) ;
+  }
 }
 
 class Valorados {
@@ -3024,7 +3056,7 @@ class Formatos {
       "${Hidrometrias.hidricos}";
 
   static String get exploracionTerapiaCorta => ""
-      "${Antropometrias.vitalesAbreviado}\n"
+      "${Antropometrias.vitalesTerapiaAbreviado}\n"
       "Durante la Exploración Física, siendo evaluado por Aparatos y Sistemas, es encontrado: \n"
       "          "
       "En sedoanalgesia con ${Exploracion.sedoanalgesia}, "
@@ -3035,24 +3067,31 @@ class Formatos {
       "Apoyo ventilatorio "
       "mediante ${Exploracion.tuboEndotraqueal} ${Exploracion.haciaArcadaDentaria!.toLowerCase()}. "
       "${Ventometrias.ventiladorCorto}. "
-      // **************** ************ ********
+  // Parametros ideals
+      "pCO2_e ${Gasometricos.PCO2esperado.toStringAsFixed(0)} mmHg. "
+      "pO2_e ${Gasometricos.PaO2_estimado.toStringAsFixed(0)} mmHg, "
+      "FiO2_i ${Ventometrias.fiO2deal.toStringAsFixed(0)} mmHg, "
+      "VT_i ${Ventometrias.volumenTidalIdeal.toStringAsFixed(0)} mmHg. "
+      "RSBI ${Ventometrias.indiceTobinYang.toStringAsFixed(0)} mmHg. "
+  // **************** ************ ********
       "Última gasometría (${Valores.fechaGasometriaArterial}): "
       "PaCO2 ${Valores.pcoArteriales!.toStringAsFixed(0)} mmHg, "
       "PaO2 ${Valores.poArteriales!.toStringAsFixed(0)} mmHg, "
       "SaO2 ${Valores.soArteriales!.toStringAsFixed(0)} %, "
       "PaO2/FiO2 ${Gasometricos.PAFI.toStringAsFixed(0)} mmHg. "
       "Aa-O2 ${Gasometricos.GAA.toStringAsFixed(0)} mmHg. "
+  //
       "Murmullo vesicular audible, sin estertores ni sibilancias. "
       "\n"
       "          "
-      "T/A ${Valores.tensionArterialSistemica} mmHg, "
+      // "T/A ${Valores.tensionArterialSistemica} mmHg, "
       "(TAM ${Cardiometrias.presionArterialMedia.toStringAsFixed(0)} mmHg), "
       "${Exploracion.apoyoAminergico!.toLowerCase()}; "
-      "FC ${Valores.frecuenciaCardiaca!.toStringAsFixed(0)} L/min, "
+      // "FC ${Valores.frecuenciaCardiaca!.toStringAsFixed(0)} L/min, "
       "telemetría a  ritmo sinusal; precordio rítmico, "
       "llenado capilar 2 segundos, pulsos homócrotos presentes. \n"
       "          "
-      "Temperatura corporal ${Valores.temperaturCorporal!.toStringAsFixed(1)} °C, con "
+      // "Temperatura corporal ${Valores.temperaturCorporal!.toStringAsFixed(1)} °C, con "
       "${Exploracion.antibioticoterapia!.toLowerCase()}; última biometría hemática (${Valores.fechaBiometria}): "
       "Hb ${Valores.hemoglobina} g/dL, "
       "Hto ${Valores.hematocrito}%, "
@@ -3065,9 +3104,9 @@ class Formatos {
       "No presenta sangrado, sin requerimiento transfusional. \n"
       "          "
       "${Exploracion.tipoSondaAlimentacion}; ${Exploracion.alimentacion!.toLowerCase()}. "
-      "PCT ${Valores.pesoCorporalTotal!.toStringAsFixed(1)} Kg, "
-      "estatura ${Valores.alturaPaciente} mts, I.M.C ${Antropometrias.imc.toStringAsFixed(0)} Kg/m2, y "
-      "PP ${Antropometrias.pesoCorporalPredicho.toStringAsFixed(1)} Kg. "
+      // "PCT ${Valores.pesoCorporalTotal!.toStringAsFixed(1)} Kg, "
+      // "estatura ${Valores.alturaPaciente} mts, I.M.C ${Antropometrias.imc.toStringAsFixed(0)} Kg/m2, y "
+      // "PP ${Antropometrias.pesoCorporalPredicho.toStringAsFixed(1)} Kg. "
       "Glucometría ${Valores.glucemiaCapilar} mg/dL, "
       "glucosa sérica ${Valores.glucosa!.toStringAsFixed(0)} mg/dL, "
       "albúmina ${Valores.albuminaSerica!.toStringAsFixed(1)} g/dL. "
@@ -3090,6 +3129,74 @@ class Formatos {
       "K+ ${Valores.potasio!.toStringAsFixed(1)} mmol/L, "
       "Cl- ${Valores.cloro!.toStringAsFixed(0)} mmol/L. \n"
       "${Auxiliares.getUltimo(esAbreviado: true)}";
+
+  static String get exploracionTerapiaCortaSimplificada => ""
+      "${Antropometrias.vitalesTerapiaAbreviado}\n"
+      "Durante la Exploración Física, siendo evaluado por Aparatos y Sistemas, es encontrado: \n"
+  // Parametros ideals
+      "     "
+      "Glucometría ${Valores.glucemiaCapilar} mg/dL, "
+      //  "pCO2_e ${Gasometricos.PCO2esperado.toStringAsFixed(0)} mmHg. "
+      "pO2_e ${Gasometricos.PaO2_estimado.toStringAsFixed(0)} mmHg, "
+      "FiO2_i ${Ventometrias.fiO2deal.toStringAsFixed(0)} mmHg, "
+      "VT_i ${Ventometrias.volumenTidalIdeal.toStringAsFixed(0)} mmHg. "
+      "RSBI ${Ventometrias.indiceTobinYang.toStringAsFixed(0)} mmHg. "
+  "\n"
+      "     .     "
+      "R.A.S.S. ${Exploracion.rass}, "
+      "En sedoanalgesia con ${Exploracion.sedoanalgesia}, "
+      "sin focalización neurológica con púpilas isóricas mióticas, arreflécticas; reflejos corneal presente, deglutorio, tusígeno abolidos . . . "
+      "${Exploracion.tipoSondaAlimentacion}; ${Exploracion.alimentacion!.toLowerCase()}. "
+      // "          "
+      "Apoyo ventilatorio "
+      "mediante ${Exploracion.tuboEndotraqueal} ${Exploracion.haciaArcadaDentaria!.toLowerCase()}. "
+      "${Ventometrias.ventiladorCorto}. "
+      "Murmullo vesicular audible, sin estertores ni sibilancias. "
+  //
+      "Precordio ritmico, eudinámico, homócrotos; "
+      "TAM ${Cardiometrias.presionArterialMedia.toStringAsFixed(0)} mmHg, "
+      "${Exploracion.apoyoAminergico!.toLowerCase()}; "
+      "telemetría a ritmo sinusal; llenado capilar 2 seg . . . "
+      "Abdomen sin alteraciones, euperístole, depresible, blando, sin irritación peritoneal. "
+      "Genitourinario ${Exploracion.tipoSondaVesical!.toLowerCase()}; "
+      "balance total "
+      // "ingresos ${Valores.ingresosBalances} mL, "
+      // "egresos ${Valores.egresosBalances} mL "
+      "(${Valores.balanceTotal.toStringAsFixed(0)} mL/${Valores.horario} Hrs), "
+      "P.I. ${Valores.perdidasInsensibles} mL, "
+      "uresis ${Valores.uresis!.toStringAsFixed(0)} mL "
+      "(${Valores.diuresis.toStringAsFixed(2)} mL/${Valores.horario} Horas). \n"
+      "${Auxiliares.getUltimo(esAbreviado: true)}";
+
+  //
+
+      // "${Exploracion.antibioticoterapia!.toLowerCase()}; última biometría hemática (${Valores.fechaBiometria}): "
+      // "Hb ${Valores.hemoglobina} g/dL, "
+      // "Hto ${Valores.hematocrito}%, "
+      // "Leu ${Valores.leucocitosTotales} K/uL, "
+      // "Neu ${(Valores.neutrofilosTotales! / Valores.leucocitosTotales!).toStringAsFixed(2)} K/uL, "
+      // "Lyn ${(Valores.linfocitosTotales! / Valores.leucocitosTotales!).toStringAsFixed(2)} K/uL, "
+      // "reactantes de fase aguda con "
+      // "PCR ${Valores.proteinaCreactiva} mg/dL, "
+      // "Procalcitonina ${Valores.procalcitonina} ng/mL. "
+      //
+      // "          "
+      //
+  // "PCT ${Valores.pesoCorporalTotal!.toStringAsFixed(1)} Kg, "
+  // "estatura ${Valores.alturaPaciente} mts, I.M.C ${Antropometrias.imc.toStringAsFixed(0)} Kg/m2, y "
+  // "PP ${Antropometrias.pesoCorporalPredicho.toStringAsFixed(1)} Kg. "
+
+      // "glucosa sérica ${Valores.glucosa!.toStringAsFixed(0)} mg/dL, "
+      // "albúmina ${Valores.albuminaSerica!.toStringAsFixed(1)} g/dL. "
+      //
+      // "Creatinina ${Valores.creatinina!.toStringAsFixed(1)} mg/dL, "
+      // "urea ${Valores.urea!.toStringAsFixed(1)} mg/dL; "
+      // "pH ${Valores.pHArteriales}, "
+      // "HCO3- ${Valores.bicarbonatoArteriales!.toStringAsFixed(1)} mmol/L, "
+      // "E.B. ${Gasometricos.EB.toStringAsFixed(1)} mmol/L. " // excesoBaseArteriales
+      // "Na2+ ${Valores.sodio!.toStringAsFixed(0)} mmol/L, "
+      // "K+ ${Valores.potasio!.toStringAsFixed(1)} mmol/L, "
+      // "Cl- ${Valores.cloro!.toStringAsFixed(0)} mmol/L. "
 
   static String get exploracionTerapiaBreve => ""
       "${Antropometrias.vitalesTerapiaAbreviado}\n"

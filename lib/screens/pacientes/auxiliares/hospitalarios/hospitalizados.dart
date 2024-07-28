@@ -119,8 +119,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                 iconData: Icons.format_indent_decrease,
                 iconColor: Colors.white,
                 onPress: () => Cambios.toNextActivity(context,
-                    chyld:
-                    Paneles.HospitalaryNewbies())),
+                    chyld: Paneles.HospitalaryNewbies())),
             const SizedBox(width: 15),
             GrandIcon(
                 labelButton: 'Estadísticas . . . ',
@@ -368,11 +367,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
   }
 
   // Reinicio con los Valores previamente obtenidos *************************
-  void _reiniciar() {
-    setState(() {
-      foundedItems = firstFounded;
-    });
-  }
+  void _reiniciar() => setState(() => foundedItems = firstFounded);
 
   // Operadores de Interfaz ********* ************ ******** *
   GestureDetector itemListView(
@@ -561,9 +556,10 @@ class _HospitalizadosState extends State<Hospitalizados> {
                       onChangeValue: () async {
                         await snapshot.data![index]
                             .getParaclinicosHistorial()
-                            .then((response) async {
-                          setState(() {});
-                        });
+                            .then((response) async => setState(
+                                () => // Terminal.printNotice(message: response.toString());
+                                    Pacientes.Paraclinicos = snapshot
+                                        .data![index].paraclinicos = response));
                       },
                     ),
                   ),
@@ -824,16 +820,20 @@ class _HospitalizadosState extends State<Hospitalizados> {
                           String penden = "";
                           // *********************************
                           for (var i in Pacientes.Pendiente!) {
-                            penden = "$penden"
-                                "${i['Pace_PEN'].toUpperCase()} - \n"
-                                "${i['Pace_Desc_PEN']}" //  - ${i['Pace_PEN_realized']}"
-                                "\n";
+                            if (i['Pace_PEN'] !='Procedimientos') {
+                              penden = "$penden"
+                                  "${i['Pace_PEN'].toUpperCase()} - \n"
+                                  "${i['Pace_Desc_PEN']}" //  - ${i['Pace_PEN_realized']}"
+                                  "\n";
+                            }
                           }
                           // ***************************************************
                           Datos.portapapeles(
                               context: context,
                               text:
-                                  "${foundedItems![index].hospitalizedData['Id_Cama']} - $penden");
+                                  "${foundedItems![index].hospitalizedData['Id_Cama']} - $penden \n"
+                                      "${        Internado.getCultivos(
+                                      listadoFrom: foundedItems![index].paraclinicos)}");
                         }),
                     const SizedBox(height: 60),
                   ],
@@ -1107,34 +1107,32 @@ class _HospitalizadosState extends State<Hospitalizados> {
                       ),
                     ),
                     Expanded(
-                        child:
-                            Column(
-                              children: [
-                                Expanded(
-                                  flex: 4,
-                                  child: Paneles.paraclinicosPanel(context, snapshot, index)),
-                                Expanded(
-                                  flex: 1,
-                                  child: CircleIcon(
-                                    tittle: 'Recargar laboratorios . . . ',
-                                    iconed: Icons.receipt_long,
-                                    difRadios: 7,
-                                    onChangeValue: () async {
-                                      await snapshot.data![index]
-                                          .getParaclinicosHistorial()
-                                          .then((response) async {
-                                        setState(() {});
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ]
-                            )
-                    ),
+                        child: Column(children: [
+                      Expanded(
+                          flex: 4,
+                          child: Paneles.paraclinicosPanel(
+                              context, snapshot, index)),
+                      Expanded(
+                        flex: 1,
+                        child: CircleIcon(
+                          tittle: 'Recargar laboratorios . . . ',
+                          iconed: Icons.receipt_long,
+                          difRadios: 7,
+                          onChangeValue: () async {
+                            await snapshot.data![index]
+                                .getParaclinicosHistorial()
+                                .then((response) async => setState(
+                                    () => // Terminal.printNotice(message: response.toString());
+                                Pacientes.Paraclinicos = snapshot
+                                    .data![index].paraclinicos = response));
+                          },
+                        ),
+                      ),
+                    ])),
                   ],
-                    ),
                 ),
               ),
+            ),
 
             Expanded(
               flex: 10,
@@ -1388,21 +1386,26 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                         Pacientes.Pendiente =
                                             foundedItems![index].pendientes =
                                                 await firstFounded![index]
-                                                    .getPendientesHistorial(reload: true);
+                                                    .getPendientesHistorial(
+                                                        reload: true);
                                         // *********************************
                                         String penden = "";
                                         // *********************************
                                         for (var i in Pacientes.Pendiente!) {
-                                          penden = "$penden"
-                                              "${i['Pace_PEN'].toUpperCase()} - \n"
-                                              "${i['Pace_Desc_PEN']}" //  - ${i['Pace_PEN_realized']}"
-                                              "\n";
+                                          if (i['Pace_PEN'] !='Procedimientos') {
+                                            penden = "$penden"
+                                                "${i['Pace_PEN'].toUpperCase()} - \n"
+                                                "${i['Pace_Desc_PEN']}" //  - ${i['Pace_PEN_realized']}"
+                                                "\n";
+                                          }
                                         }
                                         // ***************************************************
                                         Datos.portapapeles(
                                             context: context,
                                             text:
-                                                "${foundedItems![index].hospitalizedData['Id_Cama']} - $penden");
+                                            "${foundedItems![index].hospitalizedData['Id_Cama']} - $penden \n "
+                                                "${        Internado.getCultivos(
+                                                listadoFrom: foundedItems![index].paraclinicos)}");
                                       }),
                                 ],
                               ),
@@ -1803,6 +1806,9 @@ class _HospitalizadosState extends State<Hospitalizados> {
               ? 270
               : 430
           : 50,
+      height: isMobile(context)
+          ? 850
+          : 1000,
       color: Colors.black54,
       child: widget.actualLateralPage == 0
           ? Wrap(

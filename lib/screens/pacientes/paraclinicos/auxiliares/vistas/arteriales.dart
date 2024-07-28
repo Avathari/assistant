@@ -1,11 +1,13 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
+import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -25,7 +27,8 @@ class _ArterialesState extends State<Arteriales> {
     final f = DateFormat('yyyy-MM-dd HH:mm:ss');
     textDateEstudyController.text = f.format(DateTime.now());
     //
-    textFIOResultController.text = Valores.fraccionInspiratoriaOxigeno!.toString();
+    textFIOResultController.text =
+        Valores.fraccionInspiratoriaOxigeno!.toString();
     super.initState();
   }
 
@@ -52,86 +55,205 @@ class _ArterialesState extends State<Arteriales> {
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
         ),
-        SingleChildScrollView(
-          padding: const EdgeInsets.all(7.0),
-          controller: ScrollController(),
-          child: Column(
-            children: [
-              EditTextArea(
-                textController: textPHResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'PH',
-                numOfLines: 1,
+        Row(
+          children: [
+            Expanded(
+              child: Column(
+                children: [
+                  ValuePanel(
+                    firstText: "Na+",
+                    secondText: Valores.sodio!.toString(),
+                    thirdText: "mmol/L",
+                  ),
+                  ValuePanel(
+                    firstText: "K+",
+                    secondText: Valores.potasio!.toString(),
+                    thirdText: "mmol/L",
+                  ),
+                  ValuePanel(
+                    firstText: "Cl-",
+                    secondText: Valores.cloro!.toString(),
+                    thirdText: "mg/dL",
+                  ),
+                  ValuePanel(
+                    firstText: "Alb-",
+                    secondText: Valores.albuminaSerica!.toString(),
+                    thirdText: "g/dL",
+                  ),
+                ],
               ),
-              EditTextArea(
-                textController: textPCOResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'PCO ($unidadMedidaPCO)',
-                numOfLines: 1,
-              ),
-
-              EditTextArea(
-                textController: textPOResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'PO ($unidadMedidaPO)',
-                numOfLines: 1,
-              ),
-
-              EditTextArea(
-                textController: textHCOResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'HCO ($unidadMedidaHCO)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textFIOResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'FIO ($unidadMedidaFIO)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textSOResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'SO ($unidadMedidaSO)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textLactResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Lactato ($unidadMedidaLact)',
-                numOfLines: 1,
-              ),
-
-              // Botton ***** ******* ****** * ***
-              CrossLine(
-                color: Colors.grey,
-              ),
-              Container(
-                margin: const EdgeInsets.all(5.0),
-                decoration: ContainerDecoration.roundedDecoration(),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(7.0),
+                controller: ScrollController(),
+                child: Column(
                   children: [
-                    Expanded(
-                      child: GrandButton(
-                          labelButton: "Agregar Datos",
-                          weigth: 2000,
-                          onPress: () {
-                            operationMethod();
-                          }),
+                    EditTextArea(
+                      textController: textPHResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'PH',
+                      numOfLines: 1,
+                      onChange: (value) =>
+                        setState(() =>
+                          Valores.pHArteriales = double.parse(value)
+                        )
+                      ,
+                    ),
+                    EditTextArea(
+                      textController: textPCOResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'PCO ($unidadMedidaPCO)',
+                      numOfLines: 1,
+                      onChange: (value) =>
+                          setState(() =>
+                          Valores.pcoArteriales = double.parse(value)
+                          )
+                      ,
+                    ),
+
+                    EditTextArea(
+                      textController: textPOResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'PO ($unidadMedidaPO)',
+                      numOfLines: 1,
+                      onChange: (value) =>
+                          setState(() =>
+                          Valores.poArteriales = double.parse(value)
+                          )
+                      ,
+                    ),
+
+                    EditTextArea(
+                      textController: textHCOResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'HCO ($unidadMedidaHCO)',
+                      numOfLines: 1,
+                      onChange: (value) =>
+                          setState(() =>
+                          Valores.bicarbonatoArteriales = double.parse(value)
+                          )
+                      ,
+                    ),
+                    EditTextArea(
+                      textController: textFIOResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'FIO ($unidadMedidaFIO)',
+                      numOfLines: 1,
+                      onChange: (value) =>
+                          setState(() =>
+                          Valores.fioArteriales = double.parse(value)
+                          )
+                      ,
+                    ),
+                    EditTextArea(
+                      textController: textSOResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'SO ($unidadMedidaSO)',
+                      numOfLines: 1,
+                      onChange: (value) =>
+                          setState(() =>
+                          Valores.soArteriales = double.parse(value)
+                          )
+                      ,
+                    ),
+                    EditTextArea(
+                      textController: textLactResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Lactato ($unidadMedidaLact)',
+                      numOfLines: 1,
+                      onChange: (value) =>
+                          setState(() =>
+                          Valores.lactatoArterial = double.parse(value)
+                          )
+                      ,
+                    ),
+
+                    // Botton ***** ******* ****** * ***
+                    CrossLine(
+                      color: Colors.grey,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(5.0),
+                      decoration: ContainerDecoration.roundedDecoration(),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: GrandButton(
+                                labelButton: "Agregar Datos",
+                                weigth: 2000,
+                                onPress: () {
+                                  operationMethod();
+                                }),
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),
-              )
-            ],
-          ),
+              ),
+            ),
+            Expanded(
+              child: Column(
+                children: [
+                  ValuePanel(
+                    firstText: "aGAP",
+                    secondText: Gasometricos.GAP.toStringAsFixed(2),
+                    thirdText: "",
+                  ),
+                  ValuePanel(
+                    firstText: "dGAP",
+                    secondText: Gasometricos.d_GAP.toStringAsFixed(2),
+                    thirdText: "mmol/L",
+                  ),
+                  ValuePanel(
+                    firstText: "dHCO3-",
+                    secondText: Gasometricos.d_HCO.toStringAsFixed(2),
+                    thirdText: "mmol/L",
+                  ),
+                  ValuePanel(
+                    firstText: "Delta delta",
+                    secondText: Gasometricos.D_d_GAP.toStringAsFixed(2),
+                    thirdText: "",
+                  ),
+                  ValuePanel(
+                    firstText: "Delta Ratio",
+                    secondText: Gasometricos.D_d_ratio.toStringAsFixed(2),
+                    thirdText: "",
+                  ),
+                  ValuePanel(
+                    firstText: "aGAP/Alb",
+                    secondText: Gasometricos.aGapAlb.toStringAsFixed(2),
+                    thirdText: "",
+                  ),
+                  ValuePanel(
+                    firstText: "aGAP/Alb",
+                    secondText: Gasometricos.aGapAlb.toStringAsFixed(2),
+                    thirdText: "",
+                  ),
+                  CrossLine(),
+                  ValuePanel(
+                    firstText: "i Cl/Na",
+                    secondText: Gasometricos.indiceCloroSodiio.toStringAsFixed(2),
+                    thirdText: "",
+                  ),
+                  ValuePanel(
+                    firstText: "dif Na/Cl",
+                    secondText: Gasometricos.diferenciaSodioCloro.toStringAsFixed(2),
+                    thirdText: "",
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -216,25 +338,21 @@ class _ArterialesState extends State<Arteriales> {
   var textDateEstudyController = TextEditingController();
   // ********* *************** ************* *
   var textPHResultController = TextEditingController();
-  String? unidadMedidaPH =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
+  String? unidadMedidaPH = Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
   var textPCOResultController = TextEditingController();
-  String? unidadMedidaPCO =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
+  String? unidadMedidaPCO = Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
   var textPOResultController = TextEditingController();
-  String? unidadMedidaPO =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
+  String? unidadMedidaPO = Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
   var textHCOResultController = TextEditingController();
-  String? unidadMedidaHCO =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
+  String? unidadMedidaHCO = Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
   var textFIOResultController = TextEditingController();
   String? unidadMedidaFIO = Auxiliares.Medidas[Auxiliares.Categorias[index]][4];
   var textSOResultController = TextEditingController();
   String? unidadMedidaSO = Auxiliares.Medidas[Auxiliares.Categorias[index]][4];
 
   var textLactResultController = TextEditingController();
-  String? unidadMedidaLact = Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
-
+  String? unidadMedidaLact =
+      Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
 
   // OPERACIONES DE LA INTERFAZ ****************** ********
   void cerrar() {
@@ -284,5 +402,3 @@ class _ArterialesState extends State<Arteriales> {
     });
   }
 }
-
-

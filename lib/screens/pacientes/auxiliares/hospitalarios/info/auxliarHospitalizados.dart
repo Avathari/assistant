@@ -397,7 +397,7 @@ class Paneles {
               var list = Listas.listWithoutRepitedValues(
                   Listas.listFromMapWithOneKey(
                       snapshot.data[index].paraclinicos));
-
+              //
               return ElevatedButton(
                 onPressed: () {
                   Pacientes.Paraclinicos = snapshot.data![index].paraclinicos;
@@ -606,6 +606,7 @@ class Paneles {
                 Expanded(
                   child: TittleContainer(
                     tittle: " . . . # . . . ",
+                    padding: 2.0,
                     color: Colors.black,
                     child: Column(
                       children: [
@@ -624,6 +625,7 @@ class Paneles {
                 Expanded(
                   child: TittleContainer(
                     tittle: " . . . # Larga Estancia # . . . ",
+                    padding: 4.0,
                     color: Colors.black,
                     child: Column(
                       children: [
@@ -643,6 +645,7 @@ class Paneles {
             ),
           ),
           Expanded(
+            flex: 2,
             child: HospitalaryPendientes(context, foundedItems),
           ),
         ],
@@ -657,30 +660,46 @@ class Paneles {
     int ID_Cama = 0;
 
     // Terminal.printWarning(message: "PENDIENTES : ${foundedItems![0].hospitalizedData.keys.toString()}");
-
     for (int index = 0; index < foundedItems!.length; index++) {
       ID_Cama = int.parse(
           foundedItems[index].hospitalizedData['Id_Cama'] ?? "0");
       //
-      Terminal.printExpected(message: "${foundedItems![index].pendientes}");
 
+      //
       List<Widget> pendientes = [];
       for (var pendiente in foundedItems![index].pendientes) {
-        if (pendiente['Pace_PEN'] !='Procedimientos') {
+        //
+        if (pendiente['Pace_PEN_realized'] ==1) {
+          // Terminal.printExpected(message: "${foundedItems![index].pendientes}");
           pendientes.add(Text(
-            pendiente['Pace_Desc_PEN'],
+            "${pendiente['Feca_PEN']} : : ${pendiente['Pace_Desc_PEN']}",
             style: Styles.textSyleGrowth(fontSize: 8),
           ));
         }
+        // if (pendiente['Pace_PEN'] =='Procedimientos') {
+        //
+        // }
       }
+      // BUSQUEDA DE CULTIVOS . . .
+      pendientes.add(CrossLine());
+      pendientes.add(Text(
+        Internado.getCultivos(
+            listadoFrom: foundedItems![index].paraclinicos),
+        // overflow: TextOverflow,
+        maxLines: 5,
+        style: Styles.textSyleGrowth(fontSize: 8),
+      ));
+      //
       widgets.add(TittleContainer(
           tittle: "$ID_Cama",
+          padding: 10.0,
           child: Column(
             children: pendientes,
           )));
     }
     return TittleContainer(
       tittle: "Pendientes Recabados . . . ",
+      padding: 2.0,
       child: SingleChildScrollView(
         controller: ScrollController(),
         child: Column(

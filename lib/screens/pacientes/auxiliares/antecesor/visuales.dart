@@ -68,7 +68,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
   @override
   void initState() {
     // Pacientes.getValores();
-    // Pacientes.getParaclinicosHistorial();
+    Pacientes.getParaclinicosHistorial(reload: true);
     //
     super.initState();
   }

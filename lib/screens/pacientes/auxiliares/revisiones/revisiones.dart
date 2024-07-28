@@ -5,6 +5,7 @@ import 'package:assistant/operativity/pacientes/valores/Valorados/citometrias.da
 import 'package:assistant/operativity/pacientes/valores/Valorados/hepatometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart' as Gas;
+import 'package:assistant/screens/pacientes/auxiliares/detalles/detalles.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/globulares.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizado.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/antropometricos.dart';
@@ -2705,7 +2706,8 @@ class _RevisionesState extends State<Revisiones> {
   Widget? principal(BuildContext context) {
     return Column(
       children: [
-        Expanded(child: Hospitalizado()),
+        if(!isMobile(context))Expanded(child: Detalles()),
+        Expanded(flex: 2, child: Hospitalizado()),
       ],
     );
 

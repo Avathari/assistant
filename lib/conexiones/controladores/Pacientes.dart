@@ -7325,7 +7325,8 @@ class Auxiliares {
       "Ancho de Distribución Plaquetaria", // 17
       "Reticulocitos", // % _
       "Frotis de sangre periférica",
-      "",
+      "Volúmen Plaquetar Medio"
+,       "",
     ],
     Categorias[1]: [
       "Glucosa",
@@ -7563,6 +7564,7 @@ class Auxiliares {
       "Cultivo de Abceso, cavidad hepática",
       "Cultivo de sitio de salida, diálisis peritoneal",
       "BAAR Seriado",
+      "Cultivo de Hérida Quirúrgica",
       "",
     ], // CULTIVOS
     Categorias[20]: [
@@ -7625,9 +7627,11 @@ class Auxiliares {
       "Cadenas ligeras Kappa en Orina 24 Horas", // 25:
       "Ac. Anti-Citoplasma", // 26 :
       "Ac. Anti-Proteinasa 3", // 27 : UI  . .UR/mL : : Positivo si mayor 20 UR/mL
-      "",
-      "",
-      "",
+      "Inmunoglobulina A",
+      "Inmunoglobulina G",
+      "Inmunoglobulina M",
+      "Anti-Ro",
+      "Anti-Jo"
       "",
       "",
     ], // Inmunnológicos

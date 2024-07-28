@@ -1078,7 +1078,14 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                               // *************** *********** **************
                               Navigator.of(context).pop();
                             });
+                          } else {
+                            // *************** *********** **************
+                            estudioValue = Auxiliares.Laboratorios[
+                            Auxiliares.Categorias[0]][0];
+                            unidadMedidaValue = Auxiliares
+                                .Medidas[Auxiliares.Categorias[0]][0];
                           }
+                          //
                           Cambios.toNextActivity(context,
                               tittle: '$value',
                               chyld: ConmutadorParaclinicos(

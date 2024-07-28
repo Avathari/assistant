@@ -653,6 +653,35 @@ class Directorios {
       );
     }
   }
+
+  static choiseFromClipboard(BuildContext context, String text) async {
+    try {
+      // final Map<String, dynamic>? result = await SystemChannels.platform.invokeMethod(
+      //   'Clipboard.getData',
+      //   // format,
+      // );
+      //
+      // ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
+      // Terminal.printData(message: "${result!}");
+      // return data!.text;
+      //
+      // Imagen desde String
+      // final picker = Datos.portapapeles(context: context, text: text);
+      // XFile? xFileImage = await picker.pickImage(source: ImageSource.gallery);
+      // if (xFileImage != null) {
+      //   Uint8List bytes = await xFileImage.readAsBytes();
+      //   return bytes;
+      // }
+    } on Exception catch (e) {
+      Terminal.printAlert(
+          message: "ERROR : : No se pudo cargar imagen desde Galeria : $e");
+      Dialogos.notifyDialog(
+        "ERROR - Imagenes de Galeria",
+        'No se pudo cargar imagen desde Galeria : $e',
+        () {},
+      );
+    }
+  }
 }
 
 class Opciones {

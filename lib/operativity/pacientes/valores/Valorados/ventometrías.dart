@@ -1,5 +1,6 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 
 class Ventometrias {
@@ -206,6 +207,12 @@ class Ventometrias {
       (Ventometrias.distensibilidadPulmonarEstatica *
           Ventometrias.drivingPressure);
 
+  static double get fiO2deal =>
+      (Gasometricos.PaO2_estimado * Valores.fraccionInspiratoriaOxigeno!) /
+      Valores.poArteriales!;
+
+  static double get indiceTobinYang =>
+      (Valores.frecuenciaVentilatoria! / (Valores.volumenTidal! / 100));
   // # ######################################################
   /// Poder Mecánico : :
   ///

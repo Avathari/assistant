@@ -41,65 +41,97 @@ class _DetallesState extends State<Detalles> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  ThreeLabelTextAline(
-                    padding: 2.0,
-                    firstText: 'ID',
-                    secondText: Pacientes.Paciente['ID_Pace'].toString() ?? '',
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ThreeLabelTextAline(
+                          padding: 2.0,
+                          firstText: 'ID',
+                          secondText: Pacientes.Paciente['ID_Pace'].toString() ?? '',
+                        ),
+                      ),
+                      Expanded(
+                        child: ThreeLabelTextAline(
+                          padding: 2.0,
+                        //                         firstText: 'Nombre C.',
+                          secondText: Pacientes.nombreCompleto,
+                        ),
+                      ),
+                    ],
                   ),
-                  ThreeLabelTextAline(
-                    padding: 2.0,
-//                         firstText: 'Nombre C.',
-                    secondText: Pacientes.nombreCompleto,
-                  ),
-                  ThreeLabelTextAline(
-                    padding: 2.0,
-                    firstText: 'Fecha Nacimiento',
-                    secondText: Pacientes.Paciente['Pace_Nace'] ?? '',
-                  ),
-                  ThreeLabelTextAline(
-                    padding: 2.0,
-                    firstText: 'Edad',
-                    secondText: '${Pacientes.Paciente['Pace_Eda']} Años',
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ThreeLabelTextAline(
+                          padding: 2.0,
+                          firstText: 'Fecha Nacimiento',
+                          secondText: Pacientes.Paciente['Pace_Nace'] ?? '',
+                        ),
+                      ),
+                      Expanded(
+                        child: ThreeLabelTextAline(
+                          padding: 2.0,
+                          firstText: 'Edad',
+                          secondText: '${Pacientes.Paciente['Pace_Eda']} Años',
+                        ),
+                      ),
+                    ],
                   ),
                   ThreeLabelTextAline(
                     padding: 2.0,
                     firstText: 'Sexo',
                     secondText: Pacientes.Paciente['Pace_Ses'] ?? '',
                   ),
-                  ThreeLabelTextAline(
-                    padding: 2.0,
-                    firstText: 'Teléfono',
-                    secondText: Pacientes.Paciente['Pace_Tele'] ?? '',
-                  ),
+                  // ThreeLabelTextAline(
+                  //   padding: 2.0,
+                  //   firstText: 'Teléfono',
+                  //   secondText: Pacientes.Paciente['Pace_Tele'] ?? '',
+                  // ),
                   ThreeLabelTextAline(
                     padding: 2.0,
                     firstText: 'Modo Atención',
                     secondText: Pacientes.Paciente['Pace_Hosp'] ?? '',
                   ),
-                  ThreeLabelTextAline(
-                    padding: 2.0,
-                    firstText: 'Estado Civil',
-                    secondText: Pacientes.Paciente['Pace_Edo_Civ'] ?? '',
-                  ),
-                  ThreeLabelTextAline(
-                    padding: 2.0,
-                    firstText: 'Ocupación',
-                    secondText: Pacientes.Paciente['Pace_Ocupa'] ?? '',
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ThreeLabelTextAline(
+                          padding: 2.0,
+                          firstText: 'Estado Civil',
+                          secondText: Pacientes.Paciente['Pace_Edo_Civ'] ?? '',
+                        ),
+                      ),
+                      Expanded(
+                        child: ThreeLabelTextAline(
+                          padding: 2.0,
+                          firstText: 'Ocupación',
+                          secondText: Pacientes.Paciente['Pace_Ocupa'].substring(0, 5) ?? '',
+                        ),
+                      ),
+                    ],
                   ),
                   ThreeLabelTextAline(
                     padding: 2.0,
                     firstText: 'Religión',
                     secondText: Pacientes.Paciente['Pace_Reli'] ?? '',
                   ),
-                  ThreeLabelTextAline(
-                    padding: 2.0,
-                    firstText: 'C.U.R.P.',
-                    secondText: Pacientes.Paciente['Pace_Curp'] ?? '',
-                  ),
-                  ThreeLabelTextAline(
-                    padding: 2.0,
-                    firstText: 'R.F.C.',
-                    secondText: Pacientes.Paciente['Pace_RFC'] ?? '',
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ThreeLabelTextAline(
+                          padding: 2.0,
+                          firstText: 'C.U.R.P.',
+                          secondText: Pacientes.Paciente['Pace_Curp'] ?? '',
+                        ),
+                      ),
+                      Expanded(
+                        child: ThreeLabelTextAline(
+                          padding: 2.0,
+                          firstText: 'R.F.C.',
+                          secondText: Pacientes.Paciente['Pace_RFC'] ?? '',
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

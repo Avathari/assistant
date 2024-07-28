@@ -2,6 +2,7 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/operativity/pacientes/valores/semiologia/semiotica.dart';
+import 'package:assistant/screens/pacientes/auxiliares/detalles/menus.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/semiologicos.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/terapias.dart';
 import 'package:assistant/values/SizingInfo.dart';
@@ -138,6 +139,7 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                     ? Expanded(
                         child: Column(
                           children: [
+                            Menus.popUpTerapia(context),
                             Expanded(
                               flex: 1,
                               child: GrandIcon(

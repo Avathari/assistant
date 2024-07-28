@@ -235,6 +235,7 @@ class Gasometricos {
   static double get SAFI =>
       (Valores.soArteriales! / (Valores.fioArteriales! / 100));
 
+  /// pCO2 corregido por Temperatura (°C)
   static double get PCO2C {
     if (Valores.temperaturCorporal == 37) {
       return (Valores.pcoArteriales! *
@@ -250,6 +251,17 @@ class Gasometricos {
     }
   }
 
+  /// pCO2 esperado en Acidosis
+  static double get PCO2esperado {
+    if (Valores.pHArteriales! >= 7.45) {
+      return (Valores.bicarbonatoArteriales! * 1.5) + 8;
+    } else if (Valores.pHArteriales!  <= 7.35) {
+      return (Valores.bicarbonatoArteriales! * 0.7) + 21;
+    } else {
+      return double.nan;
+    }
+  }
+
   static double get EB => ((1 - 0.014 * Valores.hemoglobina!) *
       (Valores.bicarbonatoArteriales! -
           24.8 +
@@ -259,8 +271,8 @@ class Gasometricos {
       (24) -
       ((Valores.bicarbonatoArteriales! + 10.00) *
           (Valores.pHArteriales! - 7.4)); //  # Bicarbonato Standard
-  static double get d_GAP => (GAP - 14);
-  static double get d_HCO => (20 - Valores.bicarbonatoArteriales!);
+  static double get d_GAP => (GAP - 11);
+  static double get d_HCO => (25 - Valores.bicarbonatoArteriales!);
 
   // Trastorno_DGAP = '';
   static String get trastorno_d_GAP {
@@ -274,7 +286,9 @@ class Gasometricos {
   }
 
   static double get D_d_GAP => d_GAP - d_HCO;
+  static double get D_d_ratio => d_GAP / d_HCO;
 
+  static double get aGapAlb => d_GAP + (0.25 * (4.4 - Valores.albuminaSerica!));
   /// Gap Osmolar (ΔOms)
   ///
   /// *** Existen bibliografias que, de hecho, toman como fórmula OSMmedido * OSMcalculado
@@ -348,6 +362,12 @@ class Gasometricos {
     // return (Valores.fioArteriales! / 100) * (760 - 47) -
     //     (Valores.pcoArteriales! / 0.8); // # Presión alveolar de oxígeno
   }
+
+  static double get indiceCloroSodiio =>
+      (Valores.cloro! / Valores.sodio!);
+
+  static double get diferenciaSodioCloro =>
+      (Valores.sodio! - Valores.cloro!);
 
   //(Valores.presionGasSeco / (Valores.fioArteriales! / 100));
   static double get PIO =>

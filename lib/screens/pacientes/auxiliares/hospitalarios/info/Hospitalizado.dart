@@ -176,14 +176,14 @@ class Internado {
   }
 
   //
-  Future<List> getPendientesHistorial({bool reload : false}) async {
+  Future<List> getPendientesHistorial({bool reload = true}) async {
     //
     if (reload){
       await Actividades.consultarAllById(
         Databases.siteground_database_reghosp,
         "SELECT * FROM pace_pen WHERE ID_Pace = ? "
-            "AND ID_Hosp = '${idHospitalizado}' "
-            "AND Pace_PEN_realized = '0'",
+            "AND ID_Hosp = $idHospitalizado",
+            // "AND Pace_PEN_realized = '0'",
         idPaciente,
       ).then((value) async {
         Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . ");
@@ -203,7 +203,7 @@ class Internado {
         await Actividades.consultarAllById(
           Databases.siteground_database_reghosp,
           "SELECT * FROM pace_pen WHERE ID_Pace = ? "
-              "AND ID_Hosp = '${idHospitalizado}' "
+              "AND ID_Hosp = '$idHospitalizado' "
               "AND Pace_PEN_realized = '0'",
           idPaciente,
         ).then((value) async {
@@ -286,25 +286,36 @@ class Internado {
     return balances;
   }
   //
-  Future<List> getParaclinicosHistorial() async {
+  Future<List> getParaclinicosHistorial({bool reload = true}) async {
     //
-    await Archivos.readJsonToMap(filePath: paraclinicosRepositoryPath)
-        .then((value) {
-      Terminal.printNotice(
-          message:
-              " : : OBTENIDO DE ARCHIVO . . . $paraclinicosRepositoryPath");
-      //
-      return paraclinicos = value;
-    }).onError((error, stackTrace) async {
+    if (reload) {
       await Actividades.consultarAllById(Databases.siteground_database_reggabo,
-              Auxiliares.auxiliares['consultByIdPrimaryQuery'], idPaciente)
+          Auxiliares.auxiliares['consultByIdPrimaryQuery'], idPaciente)
           .then((value) async {
         Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . ");
         //
         return paraclinicos = value;
       }).whenComplete(() => Archivos.createJsonFromMap(paraclinicos,
-              filePath: paraclinicosRepositoryPath));
-    });
+          filePath: paraclinicosRepositoryPath));
+    }else{
+      await Archivos.readJsonToMap(filePath: paraclinicosRepositoryPath)
+          .then((value) {
+        Terminal.printNotice(
+            message:
+                " : : OBTENIDO DE ARCHIVO . . . $paraclinicosRepositoryPath");
+        //
+        return paraclinicos = value;
+      }).onError((error, stackTrace) async {
+        await Actividades.consultarAllById(Databases.siteground_database_reggabo,
+                Auxiliares.auxiliares['consultByIdPrimaryQuery'], idPaciente)
+            .then((value) async {
+          Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . ");
+          //
+          return paraclinicos = value;
+        }).whenComplete(() => Archivos.createJsonFromMap(paraclinicos,
+                filePath: paraclinicosRepositoryPath));
+      });
+    }
     return paraclinicos;
   }
 

@@ -9,11 +9,13 @@ import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/AppBarText.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/Spinner.dart';
+import 'package:assistant/widgets/TittleContainer.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
@@ -97,108 +99,146 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back, color: Colors.grey),
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: ((context) => VisualPacientes(actualPage: 5))));
           },
         ),
         backgroundColor: Theming.primaryColor,
-        title: Text(
-          tittle,
-          style: Styles.textSyleGrowth(fontSize: 14),
+        title: AppBarText(
+          tittle
         ),
-        actions: isMobile(context) || isTablet(context)
-            ? <Widget>[
-                GrandIcon(
-                  iconData: Icons.replay_outlined,
-                  labelButton: Sentences.reload,
-                  onPress: () {
-                    reiniciar();
-                  },
-                ),
-                GrandIcon(
-                  iconData: Icons.dataset_linked_outlined,
-                  labelButton: "Registro de imagenológicos",
-                  onPress: () {
-                    carouselController.jumpToPage(0);
-                  },
-                ),
-                GrandIcon(
-                  iconData: Icons.browser_updated,
-                  labelButton: "Gestion del Registro",
-                  onPress: () {
-                    carouselController.jumpToPage(1);
-                  },
-                ),
-                GrandIcon(
-                  iconData: Icons.photo_camera_back_outlined,
-                  labelButton: 'Imagen del Electrocardiograma',
-                  onPress: () {
-                    Operadores.optionsActivity(
-                      context: context,
-                      tittle: 'Cargar imagen del Electrocardiograma',
-                      onClose: () {
-                        Navigator.of(context).pop();
-                      },
-                      textOptionA: 'Cargar desde Dispositivo',
-                      optionA: () async {
-                        var bytes = await Directorios.choiseFromDirectory();
-                        setState(() {
-                          stringImage = base64Encode(bytes);
+        actions: [
+                  GrandIcon(
+                    iconData: Icons.photo_camera_back_outlined,
+                    labelButton: 'Imagen del Electrocardiograma',
+                    onPress: () {
+                      Operadores.optionsActivity(
+                        context: context,
+                        tittle: 'Cargar imagen del Electrocardiograma',
+                        onClose: () {
                           Navigator.of(context).pop();
-                        });
-                      },
-                      textOptionB: 'Cargar desde Cámara',
-                      optionB: () async {
-                        var bytes = await Directorios.choiseFromCamara();
-                        setState(() {
-                          stringImage = base64Encode(bytes);
-                          Navigator.of(context).pop();
-                        });
-                      },
-                    );
-                  },
-                ),
-              ]
-            : <Widget>[
-                GrandIcon(
-                  iconData: Icons.replay_outlined,
-                  labelButton: Sentences.reload,
-                  onPress: () {
-                    reiniciar();
-                  },
-                ),
-                GrandIcon(
-                  iconData: Icons.photo_camera_back_outlined,
-                  labelButton: 'Imagen del Electrocardiograma',
-                  onPress: () {
-                    Operadores.optionsActivity(
-                      context: context,
-                      tittle: 'Cargar imagen del Electrocardiograma',
-                      onClose: () {
-                        Navigator.of(context).pop();
-                      },
-                      textOptionA: 'Cargar desde Dispositivo',
-                      optionA: () async {
-                        var bytes = await Directorios.choiseFromDirectory();
-                        setState(() {
-                          stringImage = base64Encode(bytes);
-                          Navigator.of(context).pop();
-                        });
-                      },
-                      textOptionB: 'Cargar desde Cámara',
-                      optionB: () async {
-                        var bytes = await Directorios.choiseFromCamara();
-                        setState(() {
-                          stringImage = base64Encode(bytes);
-                          Navigator.of(context).pop();
-                        });
-                      },
-                    );
-                  },
-                ),
-              ],
+                        },
+                        textOptionA: 'Cargar desde Dispositivo',
+                        optionA: () async {
+                          var bytes = await Directorios.choiseFromDirectory();
+                          setState(() {
+                            stringImage = base64Encode(bytes);
+                            Navigator.of(context).pop();
+                          });
+                        },
+                        textOptionB: 'Cargar desde Cámara',
+                        optionB: () async {
+                          var bytes = await Directorios.choiseFromCamara();
+                          setState(() {
+                            stringImage = base64Encode(bytes);
+                            Navigator.of(context).pop();
+                          });
+                        },
+                      );
+                    },
+                  ),
+          const SizedBox(width: 25),
+        GrandIcon(
+            iconData: Icons.photo_camera_back_outlined,
+            labelButton: 'Imagen del Electrocardiograma',
+            onPress: () {
+              Directorios.choiseFromClipboard(context, "text");
+            }),
+        ],
+        // actions: isMobile(context) || isTablet(context)
+        //     ? <Widget>[
+        //         GrandIcon(
+        //           iconData: Icons.replay_outlined,
+        //           labelButton: Sentences.reload,
+        //           onPress: () {
+        //             reiniciar();
+        //           },
+        //         ),
+        //         const SizedBox(width: 15),
+        //         GrandIcon(
+        //           iconData: Icons.dataset_linked_outlined,
+        //           labelButton: "Registro de imagenológicos",
+        //           onPress: () {
+        //             carouselController.jumpToPage(0);
+        //           },
+        //         ),
+        //         GrandIcon(
+        //           iconData: Icons.browser_updated,
+        //           labelButton: "Gestion del Registro",
+        //           onPress: () {
+        //             carouselController.jumpToPage(1);
+        //           },
+        //         ),
+        //         GrandIcon(
+        //           iconData: Icons.photo_camera_back_outlined,
+        //           labelButton: 'Imagen del Electrocardiograma',
+        //           onPress: () {
+        //             Operadores.optionsActivity(
+        //               context: context,
+        //               tittle: 'Cargar imagen del Electrocardiograma',
+        //               onClose: () {
+        //                 Navigator.of(context).pop();
+        //               },
+        //               textOptionA: 'Cargar desde Dispositivo',
+        //               optionA: () async {
+        //                 var bytes = await Directorios.choiseFromDirectory();
+        //                 setState(() {
+        //                   stringImage = base64Encode(bytes);
+        //                   Navigator.of(context).pop();
+        //                 });
+        //               },
+        //               textOptionB: 'Cargar desde Cámara',
+        //               optionB: () async {
+        //                 var bytes = await Directorios.choiseFromCamara();
+        //                 setState(() {
+        //                   stringImage = base64Encode(bytes);
+        //                   Navigator.of(context).pop();
+        //                 });
+        //               },
+        //             );
+        //           },
+        //         ),
+        //       ]
+        //     : <Widget>[
+        //         GrandIcon(
+        //           iconData: Icons.replay_outlined,
+        //           labelButton: Sentences.reload,
+        //           onPress: () {
+        //             reiniciar();
+        //           },
+        //         ),
+        //         GrandIcon(
+        //           iconData: Icons.photo_camera_back_outlined,
+        //           labelButton: 'Imagen del Electrocardiograma',
+        //           onPress: () {
+        //             Operadores.optionsActivity(
+        //               context: context,
+        //               tittle: 'Cargar imagen del Electrocardiograma',
+        //               onClose: () {
+        //                 Navigator.of(context).pop();
+        //               },
+        //               textOptionA: 'Cargar desde Dispositivo',
+        //               optionA: () async {
+        //                 var bytes = await Directorios.choiseFromDirectory();
+        //                 setState(() {
+        //                   stringImage = base64Encode(bytes);
+        //                   Navigator.of(context).pop();
+        //                 });
+        //               },
+        //               textOptionB: 'Cargar desde Cámara',
+        //               optionB: () async {
+        //                 var bytes = await Directorios.choiseFromCamara();
+        //                 setState(() {
+        //                   stringImage = base64Encode(bytes);
+        //                   Navigator.of(context).pop();
+        //                 });
+        //               },
+        //             );
+        //           },
+        //         ),
+        //       ],
       ),
       body: Container(
         padding: const EdgeInsets.all(5),
@@ -504,149 +544,153 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
 
   operationScreen() {
     if (isMobile(context) || isTablet(context)) {
-      return SingleChildScrollView(
-        controller: ScrollController(),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TittlePanel(color: Colores.backgroundWidget, textPanel: tittle),
-            EditTextArea(
-              keyBoardType: TextInputType.datetime,
-              inputFormat: MaskTextInputFormatter(
-                  mask: '####/##/##',
-                  filter: {"#": RegExp(r'[0-9]')},
-                  type: MaskAutoCompletionType.lazy),
-              numOfLines: 1,
-              labelEditText: "Fecha de realización",
-              withShowOption: true,
-              selection: true,
-              textController: textDateEstudyController,
-              onSelected: () {
-                textDateEstudyController.text =
-                    Calendarios.today(format: 'yyyy/MM/dd');
-              },
-            ),
-            Spinner(
-                width: isDesktop(context)
-                    ? 400
-                    : isTablet(context)
-                        ? 200
-                        : isMobile(context)
-                            ? 230
-                            : 300,
-                tittle: "Tipo de Estudios",
-                initialValue: tipoEstudioValue!,
-                items: Imagenologias.typesEstudios,
-                onChangeValue: (String? newValue) {
-                  setState(() {
-                    tipoEstudioValue = newValue!;
-                  });
-                }),
-            EditTextArea(
-              keyBoardType: TextInputType.text,
-              inputFormat: MaskTextInputFormatter(),
-              numOfLines: 3,
-              labelEditText: 'Región Estudiada',
-              textController: regionCorporalTextController,
-              selection: true,
-              withShowOption: true,
-              onSelected: () {
-                Operadores.selectOptionsActivity(
-                    context: context,
-                    options: Imagenologias.regiones,
-                    onClose: (value) {
-                      setState(() {
-                        Navigator.pop(context);
-                        regionCorporalTextController.text = value;
-                      });
+      return TittleContainer(
+        centered: true,
+        padding: 5.0,
+        tittle: tittle,
+        child: SingleChildScrollView(
+          controller: ScrollController(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              EditTextArea(
+                keyBoardType: TextInputType.datetime,
+                inputFormat: MaskTextInputFormatter(
+                    mask: '####/##/##',
+                    filter: {"#": RegExp(r'[0-9]')},
+                    type: MaskAutoCompletionType.lazy),
+                numOfLines: 1,
+                labelEditText: "Fecha de realización",
+                withShowOption: true,
+                selection: true,
+                textController: textDateEstudyController,
+                onSelected: () {
+                  textDateEstudyController.text =
+                      Calendarios.today(format: 'yyyy/MM/dd');
+                },
+              ),
+              Spinner(
+                  width: isDesktop(context)
+                      ? 400
+                      : isTablet(context)
+                          ? 200
+                          : isMobile(context)
+                              ? 230
+                              : 300,
+                  tittle: "Tipo de Estudios",
+                  initialValue: tipoEstudioValue!,
+                  items: Imagenologias.typesEstudios,
+                  onChangeValue: (String? newValue) {
+                    setState(() {
+                      tipoEstudioValue = newValue!;
                     });
-              },
-            ),
-            // Spinner(
-            //     width: isDesktop(context)
-            //         ? 400
-            //         : isTablet(context)
-            //         ? 200
-            //         : isMobile(context)
-            //         ? 230
-            //         : 300,
-            //     tittle: "Región Corporal",
-            //     initialValue: regionCorporalValue!,
-            //     items: Imagenologias.regiones,
-            //     onChangeValue: (String? newValue) {
-            //       setState(() {
-            //         regionCorporalValue = newValue!;
-            //       });
-            //     }),
-            EditTextArea(
-              keyBoardType: TextInputType.multiline,
-              inputFormat: MaskTextInputFormatter(),
-              labelEditText: "Hallazgos del Estudio",
-              textController: hallazgosEstudioTextController,
-              numOfLines: 7,
-              onChange: (value) {
-                setState(() {});
-              },
-            ),
-            EditTextArea(
+                  }),
+              EditTextArea(
+                keyBoardType: TextInputType.text,
+                inputFormat: MaskTextInputFormatter(),
+                numOfLines: 3,
+                labelEditText: 'Región Estudiada',
+                textController: regionCorporalTextController,
+                selection: true,
+                withShowOption: true,
+                onSelected: () {
+                  Operadores.selectOptionsActivity(
+                      context: context,
+                      options: Imagenologias.regiones,
+                      onClose: (value) {
+                        setState(() {
+                          Navigator.pop(context);
+                          regionCorporalTextController.text = value;
+                        });
+                      });
+                },
+              ),
+              // Spinner(
+              //     width: isDesktop(context)
+              //         ? 400
+              //         : isTablet(context)
+              //         ? 200
+              //         : isMobile(context)
+              //         ? 230
+              //         : 300,
+              //     tittle: "Región Corporal",
+              //     initialValue: regionCorporalValue!,
+              //     items: Imagenologias.regiones,
+              //     onChangeValue: (String? newValue) {
+              //       setState(() {
+              //         regionCorporalValue = newValue!;
+              //       });
+              //     }),
+              EditTextArea(
                 keyBoardType: TextInputType.multiline,
                 inputFormat: MaskTextInputFormatter(),
-                numOfLines: 15,
-                labelEditText: "Conclusiones",
-                textController: conclusionesTextController,
-                prefixIcon: false),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(
-                  child: GrandButton(
-                      weigth: isMobile(context) ? 30 : 100,
-                      labelButton: operationActivity ? "Nuevo" : "Eliminar",
-                      onPress: () {
-                        if (operationActivity) {
-                          initAllElement();
-                          carouselController.jumpToPage(1);
-                        } else {
-                          try {
-                            deleteDialog(elementSelected!);
-                          } finally {
-                            carouselController.jumpToPage(0);
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: const Text("Eliminados"),
-                                    content: Text(listOfValues().toString()),
-                                  );
-                                });
+                labelEditText: "Hallazgos del Estudio",
+                textController: hallazgosEstudioTextController,
+                numOfLines: 7,
+                onChange: (value) {
+                  setState(() {});
+                },
+              ),
+              EditTextArea(
+                  keyBoardType: TextInputType.multiline,
+                  inputFormat: MaskTextInputFormatter(),
+                  numOfLines: 15,
+                  labelEditText: "Conclusiones",
+                  textController: conclusionesTextController,
+                  prefixIcon: false),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    child: GrandButton(
+                        weigth: isMobile(context) ? 30 : 100,
+                        labelButton: operationActivity ? "Nuevo" : "Eliminar",
+                        onPress: () {
+                          if (operationActivity) {
+                            initAllElement();
+                            carouselController.jumpToPage(1);
+                          } else {
+                            try {
+                              deleteDialog(elementSelected!);
+                            } finally {
+                              carouselController.jumpToPage(0);
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: const Text("Eliminados"),
+                                      content: Text(listOfValues().toString()),
+                                    );
+                                  });
+                            }
                           }
-                        }
-                      }),
-                ),
-                operationActivity
-                    ? Container()
-                    : Expanded(
-                        child: GrandButton(
-                            labelButton: "Nuevo",
-                            weigth: isMobile(context) ? 20 : 100,
-                            onPress: () {
-                              initAllElement();
-                            }),
-                      ),
-                Expanded(
-                  child: GrandButton(
-                      weigth: isMobile(context) || isTablet(context) ? 30 : 100,
-                      labelButton: operationActivity ? "Agregar" : "Actualizar",
-                      onPress: () {
-                        operationMethod(
-                            context: context,
-                            operationActivity: operationActivity);
-                      }),
-                ),
-              ],
-            )
-          ],
+                        }),
+                  ),
+                  operationActivity
+                      ? Container()
+                      : Expanded(
+                          child: GrandButton(
+                              labelButton: "Nuevo",
+                              weigth: isMobile(context) ? 20 : 100,
+                              onPress: () {
+                                initAllElement();
+                              }),
+                        ),
+                  Expanded(
+                    child: GrandButton(
+                        weigth: isMobile(context) || isTablet(context) ? 30 : 100,
+                        labelButton: operationActivity ? "Agregar" : "Actualizar",
+                        onPress: () {
+                          operationMethod(
+                              context: context,
+                              operationActivity: operationActivity);
+                        }),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       );
     } else {

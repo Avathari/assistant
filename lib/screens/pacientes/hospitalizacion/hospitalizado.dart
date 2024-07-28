@@ -165,22 +165,22 @@ class _HospitalizadoState extends State<Hospitalizado> {
                           //       Repositorios.actualizarRegistro();
                           //     });
                         }),
-                    GrandIcon(
-                        iconData: Icons.medication_sharp,
-                        labelButton: 'Situación de la Hospitalización',
-                        onPress: () {
-                          Cambios.toNextActivity(context,
-                              chyld: const SituacionesHospitalizacion());
-                        }),
-                    GrandIcon(
-                        iconData: Icons.restore_page_outlined,
-                        labelButton: 'Diagnósticos de la Hospitalización',
-                        onPress: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                GestionDiagnosticos(),
-                          ));
-                        }),
+                    // GrandIcon(
+                    //     iconData: Icons.medication_sharp,
+                    //     labelButton: 'Situación de la Hospitalización',
+                    //     onPress: () {
+                    //       Cambios.toNextActivity(context,
+                    //           chyld: const SituacionesHospitalizacion());
+                    //     }),
+                    // GrandIcon(
+                    //     iconData: Icons.restore_page_outlined,
+                    //     labelButton: 'Diagnósticos de la Hospitalización',
+                    //     onPress: () {
+                    //       Navigator.of(context).push(MaterialPageRoute(
+                    //         builder: (BuildContext context) =>
+                    //             GestionDiagnosticos(),
+                    //       ));
+                    //     }),
                     GrandIcon(
                         iconData: Icons.airline_seat_flat,
                         labelButton: 'Protocolo Quirúrgico',

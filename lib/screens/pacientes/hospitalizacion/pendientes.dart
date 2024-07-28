@@ -82,10 +82,16 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
               toBoolean: true) as bool;
           fechaRealizacionTextController.text =
               Pendientes.Pendiente['Feca_PEN'];
+          //
           pendienteValue = Pendientes.Pendiente['Pace_PEN'].toString();
+          //
+          index = Pendientes.typesPendientes.indexOf(pendienteValue);
+          subPendienteValue = Pendientes.subTypesPendientes[index][0];
+          //
+          subPendienteValue = Pendientes.Pendiente['Pace_Desc_PEN'].toString();
 
           descripcionPendienteTextController.text =
-              Pendientes.Pendiente['Pace_Desc_PEN'].toString();
+              Pendientes.Pendiente['Pace_Commen_PEN'].toString();
         });
         super.initState();
         break;
@@ -189,7 +195,13 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
               isSwitched: realized,
               onChangeValue: (value) {
                 setState(() {
-                  realized = value;
+                  realized = !value;
+
+                  if (realized!) {
+                    fechaRealizacionTextController.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
+                  } else {
+                    fechaRealizacionTextController.text = "0000-00-00";
+                  }
                 });
               },
             ),
@@ -284,6 +296,7 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
         // hora
         Dicotomicos.fromBoolean(realized!, toInt: true),
         pendienteValue,
+        subPendienteValue,
         descripcionPendienteTextController.text,
         //
         idOperation
@@ -309,6 +322,7 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
         case Constantes.Register:
           // ******************************************** *** *
           listOfValues!.removeAt(0);
+          listOfValues!.removeLast();
           listOfValues!.removeLast();
           // ******************************************** *** *
           Actividades.registrar(Databases.siteground_database_reghosp,
@@ -406,7 +420,7 @@ class GestionPendiente extends StatefulWidget {
   var keySearch = "Feca_PEN";
   // ****************** *** ****** **************
 
-  GestionPendiente({super.key, this.actualSidePage, this.withReturn});
+  GestionPendiente({super.key, this.actualSidePage, this.withReturn = false});
 
   @override
   State<GestionPendiente> createState() => _GestionPendienteState();
