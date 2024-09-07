@@ -1,3 +1,4 @@
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
@@ -75,7 +76,10 @@ class _ExposicionesState extends State<Exposiciones> {
                 textController: exposicionBiomasaTextController,
                 numOfLines: 1,
                 onChange: (value) {
-                  Valores.exposicionBiomasaDescripcion = value;
+                  exposicionBiomasaTextController.text =Valores.exposicionBiomasaDescripcion = value;
+                  //
+                  // Terminal.printData(message: exposicionBiomasaTextController.text);
+                  // Terminal.printWarning(message: Valores.exposicionBiomasaDescripcion.toString());
                 },
               ),
             ),
@@ -112,7 +116,7 @@ class _ExposicionesState extends State<Exposiciones> {
                 textController: exposicionHumosQuimicosTextController,
                 numOfLines: 1,
                 onChange: (value) {
-                  Valores.exposicionHumosQuimicosDescripcion = value;
+                  exposicionHumosQuimicosTextController.text = Valores.exposicionHumosQuimicosDescripcion = value;
                 },
               ),
             ),
@@ -149,7 +153,7 @@ class _ExposicionesState extends State<Exposiciones> {
                 textController: exposicionPesticidasTextController,
                 numOfLines: 1,
                 onChange: (value) {
-                  Valores.exposicionPesticidasDescripcion = value;
+                  exposicionPesticidasTextController.text = Valores.exposicionPesticidasDescripcion = value;
                 },
               ),
             ),
@@ -186,7 +190,7 @@ class _ExposicionesState extends State<Exposiciones> {
                 textController: exposicionMetalesPesadosTextController,
                 numOfLines: 1,
                 onChange: (value) {
-                  Valores.exposicionMetalesPesadosDescripcion = value;
+                  exposicionMetalesPesadosTextController.text = Valores.exposicionMetalesPesadosDescripcion = value;
                 },
               ),
             ),
@@ -223,7 +227,7 @@ class _ExposicionesState extends State<Exposiciones> {
                 textController: exposicionPsicotropicosTextController,
                 numOfLines: 1,
                 onChange: (value) {
-                  Valores.exposicionPsicotropicosDescripcion = value;
+                  exposicionPsicotropicosTextController.text = Valores.exposicionPsicotropicosDescripcion = value;
                 },
               ),
             ),

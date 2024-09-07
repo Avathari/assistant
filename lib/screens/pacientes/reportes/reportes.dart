@@ -961,7 +961,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
   drawerForm(BuildContext context, {bool? analysis = false}) => Drawer(
         width: widget.analysis == false // !isLargeDesktop(context)
             ? 100
-            : 290, // 350
+            : 310, // 350
         backgroundColor: Theming.cuaternaryColor,
         child: Container(
             decoration: const BoxDecoration(

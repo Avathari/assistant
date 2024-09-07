@@ -5551,8 +5551,8 @@ class Vitales {
         for (var item in result) {
           if (index <= result.length) {
             var thirdMap = {};
-            // // print("${value.length} ${result.length}");
-            // // print("${value[index]['ID_Pace_SV']} ${item['ID_Pace_SV']}");
+            print("${value.length} ${result.length}");
+            print("${value[index]['ID_Pace_SV']} ${item['ID_Pace_SV']}");
             thirdMap.addAll(item);
             thirdMap.addAll(value[index]);
             // Adición a Vitales ********** ************ ************** ********
@@ -6223,16 +6223,44 @@ class Imagenologias {
     return prosa; // """$prosa$max. ";
   }
 
-  static List<String> regiones = [
-    'Cabeza',
-    'Cuello',
-    'Tórax',
-    'Abdomen',
-    'Pélvis',
-    'Humeral izquierda',
-    'Humeral derecha',
-    '',
-    '',
+  static List<List<String>> regiones = [
+    [
+      'Cabeza Anteroposterior',
+      'Cabeza Lateral Izquierda',
+      'Cabeza Lateral Derecha',
+      'Senos Paranasales - Proyección Cadwell',
+      'Senos Paranasales - Proyección Watters',
+      '',
+      'Cuello Anteroposterior',
+      'Cuello Lateral Izquierda',
+      'Cuello Lateral Derecha',
+      'Tórax Anteroposterior',
+      'Tórax Lateral Izquierda',
+      'Tórax Lateral Derecha',
+      'Tele de Tórax',
+      'Tórax Portatil',
+      'Abdomen Anteroposterior, en Decúbito Supino',
+      'Abdomen Anteroposterior, en Decúbito Lateral Izquierdo',
+      'Abdomen Anteroposterior, en Decúbito Lateral Derecho',
+      'Abdomen Anteroposterior, en Bipedestación',
+      'Pélvis',
+      'Humeral izquierda',
+      'Humeral derecha',
+      '',
+      '',
+    ], // Radiografías
+    [
+      "Vaina de Nervio Óptico",
+      "",
+      "",
+      "",""       ], // Ultrasonidos
+    [], // Tomografías
+    [], // Resonancias
+    [], // Ecocardiograma
+    [], // Endoscopias
+    [], // Colonoscopias-
+    [], // Biopsias
+    [], // Gamagrafias
   ];
   static List<String> typesEstudios = [
     'Radiografías',
@@ -6243,6 +6271,8 @@ class Imagenologias {
     'Endoscopia',
     'Colonoscopia',
     'Biopsia', // Reporte Histopatológico
+    'Gammagrafía', //
+
   ];
 }
 
@@ -6285,7 +6315,7 @@ class Auxiliares {
   //   "Inmunológicos",
   // ];
   static List especiales = [
-    "Panel Viral",
+    // "Panel Viral",
     "Panel TORCH",
     "Liquido Cefalorraquídeo", // "Citoquímico de Líquido Cefalorraquídeo",
     // "Citológico de Líquido Cefalorraquídeo",
@@ -7295,13 +7325,14 @@ class Auxiliares {
     "Perfil Hormonal", // 23
     "Cuantificación de Vitaminas",
     "Otros", // 25
-    "Líquido de Ascitis", // 26
+    "", // 26
     "Líquido de Pleural", // 27 : Analítica de Líquido Pleural
     "Aspirado de Médula Ósea",
     "Western Blot HIV-1, HIV-2", // 29
     "Electrocardiograma",
     // Valoraciones conformadas
-    "Taller Gasométrico"
+    "Taller Gasométrico",
+    "Líquido de Ascitis", // 32
   ];
   static Map<String, dynamic> Laboratorios = {
     Categorias[0]: [
@@ -7325,8 +7356,7 @@ class Auxiliares {
       "Ancho de Distribución Plaquetaria", // 17
       "Reticulocitos", // % _
       "Frotis de sangre periférica",
-      "Volúmen Plaquetar Medio"
-,       "",
+      "Volúmen Plaquetar Medio", "",
     ],
     Categorias[1]: [
       "Glucosa",
@@ -7565,6 +7595,9 @@ class Auxiliares {
       "Cultivo de sitio de salida, diálisis peritoneal",
       "BAAR Seriado",
       "Cultivo de Hérida Quirúrgica",
+      "Cultivo de Punta de Catéter",
+      "",
+      "",
       "",
     ], // CULTIVOS
     Categorias[20]: [
@@ -7632,7 +7665,7 @@ class Auxiliares {
       "Inmunoglobulina M",
       "Anti-Ro",
       "Anti-Jo"
-      "",
+          "",
       "",
     ], // Inmunnológicos
     Categorias[23]: [
@@ -7661,7 +7694,7 @@ class Auxiliares {
       "Cianocobalamina",
       "Ácido Fólico Endógeno",
       "Folatos",
-      "",
+      "Colecalciferol", // Vitamina D3
       "",
       "",
       "",
@@ -7756,6 +7789,25 @@ class Auxiliares {
     Categorias[31]: [
       "",
     ],
+    Categorias[32]: [
+      "Aspecto de Líquido de Ascitis", // 0
+      "Color de Líquido de Ascitis", // 1
+      "Leucocitos en Líquido de Ascitis", // 2
+      "Polimorfonucleares en Líquido de Ascitis", // 3
+      "Mononucleares en Líquido de Ascitis", // 4
+      "Eritrocitos en Líquido de Ascitis", // 5
+      "Bacterias en Líquido de Ascitis", // 6
+      "Levaduras en Líquido de Ascitis", // 7
+      "Otros en Líquido de Ascitis", // 8
+      "pH de Líquido de Ascitis", // 9
+      // OTROS . . .
+      "Albúmina de Líquido de Ascitis", // 10
+      "Proteinas de Líquido de Ascitis", // 11
+      "DHL de Líquido de Ascitis", // 12
+      "Colesterol de Líquido de Ascitis", // 13
+      "Fosfatasa Alcalina de Líquido de Ascitis", // 14
+      "Glucosa de Líquido de Ascitis", // 15
+    ], // Liquido de Ascitis
   };
   static Map<String, dynamic> Medidas = {
     Categorias[0]: ["", "g/dL", "%", "fL", "pg", "10^3/UL", "10^6/UL", "K/uL"],
@@ -7905,6 +7957,13 @@ class Auxiliares {
     //
     Categorias[31]: [
       "",
+    ],
+    Categorias[32]: [
+      "",
+      "mg/dL",
+      "U/L",
+      "%",
+      "g/dL",
     ],
   };
 
@@ -8351,7 +8410,7 @@ class Pendientes {
   static void registrarInfusiones(BuildContext context) {
     Future.forEach([
       [
-        Valores.initSedacion,
+        // Valores.initSedacion,
         Pacientes.ID_Paciente,
         Pacientes.ID_Hospitalizacion,
         Valores
@@ -8359,10 +8418,10 @@ class Pendientes {
         Valores.withSedacion == "" ? false : true,
         Pendientes.typesPendientes[5], // Categoria de Procedimientos . . .
         Pendientes.subTypesPendientes[5][3],
-        Valores.initSedacion,
+        // Valores.initSedacion,
       ], // SEDA
       [
-        Valores.initVasopresor,
+        // Valores.initVasopresor,
         Pacientes.ID_Paciente,
         Pacientes.ID_Hospitalizacion,
         Valores
@@ -8370,10 +8429,21 @@ class Pendientes {
         Valores.withVasopresor == "" ? false : true,
         Pendientes.typesPendientes[5], // Categoria de Procedimientos . . .
         Pendientes.subTypesPendientes[5][5],
-        Valores.initVasopresor,
+        // Valores.initVasopresor,
       ], // VASA
       [
-        Valores.initInotropico,
+        // Valores.initAntibiotico,
+        Pacientes.ID_Paciente,
+        Pacientes.ID_Hospitalizacion,
+        Valores
+            .withAntibiotico, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+        Valores.withAntibiotico == "" ? false : true,
+        Pendientes.typesPendientes[5], // Categoria de Procedimientos . . .
+        Pendientes.subTypesPendientes[5][0],
+        // Valores.initAntibiotico,
+      ], // ATB
+      [
+        // Valores.initInotropico,
         Pacientes.ID_Paciente,
         Pacientes.ID_Hospitalizacion,
         Valores
@@ -8381,10 +8451,10 @@ class Pendientes {
         Valores.withInotropico == "" ? false : true,
         Pendientes.typesPendientes[5], // Categoria de Procedimientos . . .
         Pendientes.subTypesPendientes[5][6],
-        Valores.initInotropico,
+        // Valores.initInotropico,
       ], // IONO
       [
-        Valores.initParalisis,
+        // Valores.initParalisis,
         Pacientes.ID_Paciente,
         Pacientes.ID_Hospitalizacion,
         Valores
@@ -8392,10 +8462,10 @@ class Pendientes {
         Valores.withParalisis == "" ? false : true,
         Pendientes.typesPendientes[5], // Categoria de Procedimientos . . .
         Pendientes.subTypesPendientes[5][7],
-        Valores.initParalisis,
+        // Valores.initParalisis,
       ], // PARA
       [
-        Valores.initAntiarritmico,
+        // Valores.initAntiarritmico,
         Pacientes.ID_Paciente,
         Pacientes.ID_Hospitalizacion,
         Valores
@@ -8403,10 +8473,10 @@ class Pendientes {
         Valores.withAntiarritmico == "" ? false : true,
         Pendientes.typesPendientes[5], // Categoria de Procedimientos . . .
         Pendientes.subTypesPendientes[5][4],
-        Valores.initAntiarritmico,
+        // Valores.initAntiarritmico,
       ], // ARRI
       [
-        Valores.initAnticoagulante,
+        // Valores.initAnticoagulante,
         Pacientes.ID_Paciente,
         Pacientes.ID_Hospitalizacion,
         Valores
@@ -8414,7 +8484,7 @@ class Pendientes {
         Valores.withAnticoagulante == "" ? false : true,
         Pendientes.typesPendientes[5], // Categoria de Procedimientos . . .
         Pendientes.subTypesPendientes[5][1],
-        Valores.initAnticoagulante,
+        // Valores.initAnticoagulante,
       ], // COAN
     ], (element) async {
       await Actividades.registrar(
@@ -8578,7 +8648,7 @@ class Pendientes {
   static void registrarPrevios(BuildContext context) {
     Future.forEach([
       [
-        Valores.initMAVA,
+        // Valores.initMAVA,
         Pacientes.ID_Paciente,
         Pacientes.ID_Hospitalizacion,
         Valores
@@ -8586,10 +8656,10 @@ class Pendientes {
         Valores.withMAVA == "" ? false : true,
         Pendientes.typesPendientes[0], // Categoria de Procedimientos . . .
         Pendientes.subTypesPendientes[0][0],
-        Valores.initMAVA,
+        // Valores.initMAVA,
       ], // MAVA
       [
-        Valores.initIOT,
+        // Valores.initIOT,
         Pacientes.ID_Paciente,
         Pacientes.ID_Hospitalizacion,
         Valores
@@ -8597,10 +8667,10 @@ class Pendientes {
         Valores.withIOT == "" ? false : true,
         Pendientes.typesPendientes[0], // Categoria de Procedimientos . . .
         Pendientes.subTypesPendientes[0][1],
-        Valores.initIOT,
+        // Valores.initIOT,
       ], // IOT
       [
-        Valores.initEXT,
+        // Valores.initEXT,
         Pacientes.ID_Paciente,
         Pacientes.ID_Hospitalizacion,
         Valores
@@ -8608,10 +8678,10 @@ class Pendientes {
         Valores.withEXT == "" ? false : true,
         Pendientes.typesPendientes[0], // Categoria de Procedimientos . . .
         Pendientes.subTypesPendientes[0][2],
-        Valores.initEXT,
+        // Valores.initEXT,
       ], // EXT
       [
-        Valores.initTRAN,
+        // Valores.initTRAN,
         Pacientes.ID_Paciente,
         Pacientes.ID_Hospitalizacion,
         Valores
@@ -8619,10 +8689,10 @@ class Pendientes {
         Valores.withTRAN == "" ? false : true,
         Pendientes.typesPendientes[0], // Categoria de Procedimientos . . .
         Pendientes.subTypesPendientes[0][0],
-        Valores.initTRAN,
+        // Valores.initTRAN,
       ], // TRAN
       [
-        Valores.initHEMO,
+        // Valores.initHEMO,
         Pacientes.ID_Paciente,
         Pacientes.ID_Hospitalizacion,
         Valores
@@ -8630,10 +8700,10 @@ class Pendientes {
         Valores.withHEMO == "" ? false : true,
         Pendientes.typesPendientes[0], // Categoria de Procedimientos . . .
         Pendientes.subTypesPendientes[0][4],
-        Valores.initHEMO,
+        // Valores.initHEMO,
       ], // HEMO
       [
-        Valores.initQUIR,
+        // Valores.initQUIR,
         Pacientes.ID_Paciente,
         Pacientes.ID_Hospitalizacion,
         Valores
@@ -8641,7 +8711,7 @@ class Pendientes {
         Valores.withQUIR == "" ? false : true,
         Pendientes.typesPendientes[0], // Categoria de Procedimientos . . .
         Pendientes.subTypesPendientes[0][5],
-        Valores.initQUIR,
+        // Valores.initQUIR,
       ], // QUIR
     ], (element) async {
       await Actividades.registrar(

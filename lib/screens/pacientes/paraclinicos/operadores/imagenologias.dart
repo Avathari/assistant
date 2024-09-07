@@ -4,12 +4,15 @@ import 'dart:typed_data';
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/cardiometrias.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/cerebrovasculares.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/AppBarText.dart';
+import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
@@ -33,6 +36,7 @@ class ImagenologiasGestion extends StatefulWidget {
 }
 
 class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
+  int index = 0;
   // ############################ ####### ####### #############################
   // Variables de Ejecución
   // ############################ ####### ####### #############################
@@ -145,6 +149,12 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
             labelButton: 'Imagen del Electrocardiograma',
             onPress: () {
               Directorios.choiseFromClipboard(context, "text");
+            }),
+        if (!isMobile(context))GrandIcon(
+            iconData: Icons.update,
+            labelButton: 'Reiniciar . . . ',
+            onPress: () {
+              reiniciar();
             }),
         ],
         // actions: isMobile(context) || isTablet(context)
@@ -325,7 +335,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                                           crossAxisCount:
                                               isMobile(context) ? 1 : 3,
                                           mainAxisExtent:
-                                              isMobile(context) ? 170 : 150,
+                                              isMobile(context) ? 150 : 170,
                                         ),
                                         shrinkWrap: true,
                                         itemCount: snapshot.data == null
@@ -365,6 +375,10 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
           ],
         ),
       ),
+      floatingActionButton: isMobile(context) || isTablet(context) ? CircleIcon(
+        iconed: Icons.update,
+        onChangeValue: () => reiniciar(),
+      ) :  null
     );
   }
 
@@ -508,12 +522,15 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                   ),
                   Text(
                     data[index]['Pace_GAB_RA_reg'],
+                    maxLines: 4,
                     style: Styles.textSyleGrowth(fontSize: 10),
                   ),
                   CrossLine(),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      SizedBox(width:
+                      isMobile(context) ? 12 : 35),
                       GrandIcon(
                           iconData: Icons.update,
                           labelButton: 'Actualizar',
@@ -531,6 +548,8 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                           onPress: () {
                             deleteDialog(data[index]);
                           }),
+                      const SizedBox(width:
+                      5),
                     ],
                   )
                 ],
@@ -545,7 +564,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
   operationScreen() {
     if (isMobile(context) || isTablet(context)) {
       return TittleContainer(
-        centered: true,
+        centered: false,
         padding: 5.0,
         tittle: tittle,
         child: SingleChildScrollView(
@@ -554,6 +573,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 15),
               EditTextArea(
                 keyBoardType: TextInputType.datetime,
                 inputFormat: MaskTextInputFormatter(
@@ -584,27 +604,63 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                   onChangeValue: (String? newValue) {
                     setState(() {
                       tipoEstudioValue = newValue!;
+
+                      index = Imagenologias.typesEstudios.indexOf(newValue!);
                     });
                   }),
-              EditTextArea(
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                numOfLines: 3,
-                labelEditText: 'Región Estudiada',
-                textController: regionCorporalTextController,
-                selection: true,
-                withShowOption: true,
-                onSelected: () {
-                  Operadores.selectOptionsActivity(
-                      context: context,
-                      options: Imagenologias.regiones,
-                      onClose: (value) {
-                        setState(() {
-                          Navigator.pop(context);
-                          regionCorporalTextController.text = value;
-                        });
-                      });
-                },
+              Row(
+                children: [
+                  Expanded(
+                    flex: 4,
+                    child: EditTextArea(
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      numOfLines: 3,
+                      labelEditText: 'Región Estudiada',
+                      textController: regionCorporalTextController,
+                      selection: true,
+                      withShowOption: true,
+                      onSelected: () {
+                        Operadores.selectOptionsActivity(
+                            context: context,
+                            options: Imagenologias.regiones[index!].toList(),
+                            onClose: (value) {
+                              setState(() {
+                                Navigator.pop(context);
+                                regionCorporalTextController.text = value;
+                              });
+                            });
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: GrandIcon(
+                      labelButton: "PIC/DVNO",
+                      iconData: Icons.remove_red_eye_outlined,
+                      onPress: () {
+                        if (tipoEstudioValue == "Ultrasonidos") {
+                          Operadores.editActivity(
+                              context: context,
+                              tittle: "Medición de PIC por DVNO",
+                              message: "Medición de PIC por DVNO . . . Ingrese DVNO en mm",
+                              onAcept: (value) {
+                                setState(() {
+                                  hallazgosEstudioTextController.text = "Se realiza ultrasonido ocular, "
+                                      "con transductor lineal 3-15 mHz, obteniendo DVNO $value mm, "
+                                      "concordante con PIC ~${Cerebrovasculares.picDVNO(double.parse(value)).toStringAsFixed(2)} mmHg. "
+                                      "${Cardiometrias.presionArterialMedia != 0.0 ? "TAM ${Cardiometrias.presionArterialMedia} mmhG actual : " : ""}"
+                                      "${Cardiometrias.presionArterialMedia != 0.0 ? "PPC inferida ${Cerebrovasculares.presionPrefusionCerebral(double.parse(value)).toStringAsFixed(2)} mmHg. " : ""}"
+                                      "${Cardiometrias.presionArterialMedia != 0.0 ? "FSC aproximado ${Cerebrovasculares.flujoSanguineoCerebral(double.parse(value)).toStringAsFixed(2)} mL/100g/m2" : ""}"                                      ;
+                                  Navigator.of(context).pop();
+                                });
+                              });
+                        }
+                      }
+                      ,
+
+                    ),
+                  )
+                ],
               ),
               // Spinner(
               //     width: isDesktop(context)
@@ -622,6 +678,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
               //         regionCorporalValue = newValue!;
               //       });
               //     }),
+              CrossLine(),
               EditTextArea(
                 keyBoardType: TextInputType.multiline,
                 inputFormat: MaskTextInputFormatter(),
@@ -635,7 +692,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
               EditTextArea(
                   keyBoardType: TextInputType.multiline,
                   inputFormat: MaskTextInputFormatter(),
-                  numOfLines: 15,
+                  numOfLines: 12,
                   labelEditText: "Conclusiones",
                   textController: conclusionesTextController,
                   prefixIcon: false),
@@ -731,30 +788,65 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                   onChangeValue: (String? newValue) {
                     setState(() {
                       tipoEstudioValue = newValue!;
+
+                      index = Imagenologias.typesEstudios.indexOf(newValue!);
                     });
                   }),
               CrossLine(
                 height: 20,
               ),
-              EditTextArea(
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                numOfLines: 3,
-                labelEditText: 'Región Estudiada',
-                textController: regionCorporalTextController,
-                selection: true,
-                withShowOption: true,
-                onSelected: () {
-                  Operadores.selectOptionsActivity(
-                      context: context,
-                      options: Imagenologias.regiones,
-                      onClose: (value) {
-                        setState(() {
-                          Navigator.pop(context);
-                          regionCorporalTextController.text = value;
-                        });
-                      });
-                },
+              Row(
+                children: [
+                  Expanded(
+                    flex: 4,
+                    child: EditTextArea(
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      numOfLines: 3,
+                      labelEditText: 'Región Estudiada',
+                      textController: regionCorporalTextController,
+                      selection: true,
+                      withShowOption: true,
+                      onSelected: () {
+                        Operadores.selectOptionsActivity(
+                            context: context,
+                            options: Imagenologias.regiones[index!].toList(),
+                            onClose: (value) {
+                              setState(() {
+                                Navigator.pop(context);
+                                regionCorporalTextController.text = value;
+                              });
+                            });
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: GrandIcon(
+                      labelButton: "PIC/DVNO",
+                      iconData: Icons.remove_red_eye_outlined,
+                      onPress: () {
+                      if (tipoEstudioValue == "Ultrasonidos") {
+                        Operadores.editActivity(
+                            context: context,
+                            tittle: "Medición de PIC por DVNO",
+                            message: "Medición de PIC por DVNO . . . Ingrese DVNO en mm",
+                            onAcept: (value) {
+                              setState(() {
+                                hallazgosEstudioTextController.text = "Se realiza ultrasonido ocular, "
+                                    "con transductor lineal 3-15 mHz, obteniendo DVNO $value mm, "
+                                    "concordante con PIC ~${Cerebrovasculares.picDVNO(double.parse(value)).toStringAsFixed(2)} mmHg. "
+                                    "PPC inferida ${Cerebrovasculares.presionPrefusionCerebral(double.parse(value)).toStringAsFixed(2)} mmHg. "
+                                    "FSC aproximado ${Cerebrovasculares.flujoSanguineoCerebral(double.parse(value)).toStringAsFixed(2)} mL/100g/m2";
+                                Navigator.of(context).pop();
+                              });
+                            });
+                      }
+                    }
+                      ,
+
+                    ),
+                  )
+                ],
               ),
               EditTextArea(
                 keyBoardType: TextInputType.number,

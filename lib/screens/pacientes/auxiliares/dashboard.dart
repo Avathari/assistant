@@ -1,10 +1,11 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
+
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+
 import 'package:assistant/screens/pacientes/auxiliares/detalles/detalles.dart';
 import 'package:assistant/screens/pacientes/auxiliares/detalles/estadisticasVitales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/diagnosticos/degenerativos.dart';
-import 'package:assistant/screens/pacientes/auxiliares/diagnosticos/diagnosticos.dart';
 import 'package:assistant/screens/pacientes/auxiliares/diagnosticos/prognosis.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisiones.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';

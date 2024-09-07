@@ -55,16 +55,56 @@ return SingleChildScrollView(
           secondText: Gas.Gasometricos.SAFI.toStringAsFixed(2),
           thirdText: "",
         ),
-        ValuePanel(
-          firstText: "PAO2",
-          secondText: Gas.Gasometricos.PAO.toStringAsFixed(2),
-          thirdText: "mmHg",
+        Row(
+          children: [
+            Expanded(
+              child: ValuePanel(
+                firstText: "PAO2",
+                secondText: Gas.Gasometricos.PAO.toStringAsFixed(2),
+                thirdText: "mmHg",
+              ),
+            ),
+            Expanded(
+              child: ValuePanel(
+                firstText: "PiO2",
+                secondText: Gas.Gasometricos.PIO.toStringAsFixed(2),
+                thirdText: "mmHg",
+              ),
+            ),
+          ],
         ),
         ValuePanel(
           firstText: "Aa-O2",
           secondText: Gas.Gasometricos.GAA.toStringAsFixed(2),
           thirdText: "mmHg",
         ),
+        CrossLine(),
+        Row(
+          children: [
+            Expanded(
+              child: ValuePanel(
+                firstText: "CaO2",
+                secondText: Gas.Gasometricos.CAO.toStringAsFixed(2),
+                thirdText: "mmHg",
+              ),
+            ),
+            Expanded(
+              child: ValuePanel(
+                firstText: "CcO2",
+                secondText: Gas.Gasometricos.CCO.toStringAsFixed(2),
+                thirdText: "mmHg",
+              ),
+            ),
+            Expanded(
+              child: ValuePanel(
+                firstText: "CvO2",
+                secondText: Gas.Gasometricos.CVO.toStringAsFixed(2),
+                thirdText: "mmHg",
+              ),
+            ),
+          ],
+        ),
+        CrossLine(),
         ValuePanel(
           firstText: "DAa-O2",
           secondText: Gas.Gasometricos.DAA.toStringAsFixed(2),
@@ -138,8 +178,15 @@ return SingleChildScrollView(
             children: [
               Expanded(
                 child: ValuePanel(
-                  firstText: "DIF",
-                  secondText: Gas.Gasometricos.DIF.toStringAsFixed(2),
+                  firstText: "DIFa",
+                  secondText: Gas.Gasometricos.diferenciaIonesFuertesAparente.toStringAsFixed(0),
+                  thirdText: "",
+                ),
+              ),
+              Expanded(
+                child: ValuePanel(
+                  firstText: "DIFe",
+                  secondText: Gas.Gasometricos.diferenciaIonesFuertesEfectiva.toStringAsFixed(0),
                   thirdText: "",
                 ),
               ),

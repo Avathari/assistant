@@ -20,9 +20,9 @@ class Cardiometrias {
 
   // Δ
   static String get transporteOxigeno => "Parámetros Hemodinamicos - "
-      "CaO2 ${Valores.CAO.toStringAsFixed(2)} mL/dL, " // Concentración Arterial de Oxígeno
-      "CvO2 ${Valores.CVO.toStringAsFixed(2)} mL/dL, " // Concentración Venosa de Oxígeno
-      "DavO2 ${Valores.DAV.toStringAsFixed(2)} mL/dL. "
+      "CaO2 ${Gasometricos.CAO.toStringAsFixed(2)} mL/dL, " // Concentración Arterial de Oxígeno
+      "CvO2 ${Gasometricos.CVO.toStringAsFixed(2)} mL/dL, " // Concentración Venosa de Oxígeno
+      "DavO2 ${Gasometricos.DAV.toStringAsFixed(2)} mL/dL. "
       "\n" // Diferencia Arterio - Venosa
       "GC ${Cardiometrias.gastoCardiacoFick.toStringAsFixed(2)} L/min. " // Gasto Cardiaco
       "GCi ${Cardiometrias.indiceCardiaco.toStringAsFixed(2)} L/min/m2, " // Gasto Cardiaco Indexado, Indice Cardiaco
@@ -53,35 +53,39 @@ class Cardiometrias {
 
   // CONCLUSIONES
   static String get cardiometrias =>
-      "Parámetros Cardiovasculares - Presión Arterial Media: ${Cardiometrias.presionArterialMedia} mmHg. "
-      // "(${Cardiometrias.clase})
-      "Diferencia de Presión Arterial ${Cardiometrias.diferenciaTensionArterial} mmHg. "
-      "Presión de Pulso: ${Cardiometrias.presionPulso} mmHg. "
-      "Producto Frecuencia - Presión: ${Cardiometrias.productoFrecuenciaPresion} mmHg/Lpm. "
-      "Presión Coloido - Oncótica: ${Cardiometrias.presionColoidosmotica.toStringAsFixed(2)}  mmHg. "
-      "Frecuencia Cárdiaca Máxima: ${Cardiometrias.frecuenciaCardiacaMaxima} L/min. "
-      "Frecuencia Cárdiaca Blanco: ${Cardiometrias.frecuenciaCardiacaBlanco} L/min. "
-      "Frecuencia Cárdiaca Intrínseca: ${Cardiometrias.frecuenciaCardiacaIntrinseca} L/min. "
-      "Volemia Aproximada: ${Valores.volemiaAproximada} mL,  "
-      "Volumen Plasmático Aproximado: ${Valores.volumenPlasmatico} L,  "
-      "Gasto Cárdiaco Aproximado: ${Cardiometrias.gastoCardiacoFick} L/min. "
-      "Volumen Látido Aproximado: ${Valores.indiceVolumenSanguineo} mL/min. \n"
+      "Parámetros Cardiovasculares - TAM ${Cardiometrias.presionArterialMedia.toStringAsFixed(0)} mmHg. "
+      // "(${Cardiometrias.clase.toStringAsFixed(2)})
+      "Diferencia de Presión Arterial ${Cardiometrias.diferenciaTensionArterial.toStringAsFixed(0)} mmHg. "
+      "Presión de Pulso: ${Cardiometrias.presionPulso.toStringAsFixed(0)} mmHg. "
+      "Producto Frecuencia - Presión: ${Cardiometrias.productoFrecuenciaPresion.toStringAsFixed(0)} mmHg/Lpm. "
+      "Presión Coloido - Oncótica: ${Cardiometrias.presionColoidosmotica.toStringAsFixed(1)}  mmHg. "
+      "Frecuencia Cárdiaca Máxima: ${Cardiometrias.frecuenciaCardiacaMaxima.toStringAsFixed(0)} L/min. "
+      "Frecuencia Cárdiaca Blanco: ${Cardiometrias.frecuenciaCardiacaBlanco.toStringAsFixed(0)} L/min. "
+      "Frecuencia Cárdiaca Intrínseca: ${Cardiometrias.frecuenciaCardiacaIntrinseca.toStringAsFixed(0)} L/min. "
+      "Volemia Aproximada: ${Valores.volemiaAproximada.toStringAsFixed(2)} L,  "
+      // "Volumen Plasmático Aproximado: ${Valores.volumenPlasmatico.toStringAsFixed(2)} L,  "
+      "aGC ${Cardiometrias.gastoCardiacoFick.toStringAsFixed(2)} L/min. "
+          "GCindex: ${Cardiometrias.indiceCardiaco.toStringAsFixed(2)} L/min. "
+      "Volumen Sistólico: ${Cardiometrias.volumenSistolico.toStringAsFixed(2)} mL/min,"
+          "Volumen Sistólico Indexado: ${Cardiometrias.volumenSistolicoIndexado.toStringAsFixed(2)} mL/min. \n"
       "Parámetros Hemodinámicos - "
-      "Concentración Arterial de Oxígeno (CaO2): ${Valores.CAO}  mL/dL, "
-      "Concentración Venosa de Oxígeno (CvO2): ${Valores.CVO}  mL/dL, "
-      "Diferencia Arterio - Venosa (DavO2): ${Valores.DAV}  mL/dL, "
-      "Capacidad de Oxígeno (CapO2): ${Valores.CO}  mL O2/g Hb. "
-      "Indice Cárdicado (I.C.): ${Cardiometrias.indiceCardiaco} L/min/m2, "
-      "Resistencias Venosas Sistémicas (R.V.S.): ${Valores.RVS} Dinas/seg/cm2. "
-      "Indice de Extracción de Oxígeno (I.E.O.): ${Valores.IEO} %, "
-      "Disponibilidad de Oxígeno (dO2): ${Valores.DO} mL/min,  "
-      "Consumo de Oxígeno (cO2): ${Valores.CAO} mL/min/m2, "
-      "Transporte de Oxígeno (TO2): ${Valores.TO} mL/O2/m2. "
-      "Shunt Fisiológico (QS/QT): ${Valores.SF} %. "
-      "Gradiente Alveolo - Arterial (G(A-a)): ${Gasometricos.GAA} mmHg. \n"
-      "Trabajo Cardiaco - Trabajo Cardiaco: ${Cardiometrias.trabajoCardiacoIzquierdo} Kg*m. "
-      "Trabajo Látido Ventricular Izquierdo: ${Cardiometrias.trabajoLatidoVentricularIzquierdo} g*m. "
-      "Trabajo Látido Ventricular Derecho: ${Cardiometrias.TLVD} g*m. \n";
+      "Concentración Arterial de Oxígeno (CaO2): ${Gasometricos.CAO.toStringAsFixed(2)}  mL/dL, "
+      "Concentración Venosa de Oxígeno (CvO2): ${Gasometricos.CVO.toStringAsFixed(2)}  mL/dL, "
+      "Diferencia Arterio - Venosa (DavO2): ${Gasometricos.DAV.toStringAsFixed(2)}  mL/dL, "
+      "Capacidad de Oxígeno (CapO2): ${Valores.CO.toStringAsFixed(2)}  mL O2/g Hb. "
+      "Indice Cárdiaco ${Cardiometrias.indiceCardiaco.toStringAsFixed(2)} L/min/m2, "
+      "Resistencias Venosas Sistémicas (R.V.S.): ${Valores.RVS.toStringAsFixed(2)} Dinas/seg/cm2. "
+      "Indice de Extracción de Oxígeno (I.E.O.): ${Valores.IEO.toStringAsFixed(2)} %, "
+      "Disponibilidad de Oxígeno (dO2): ${Valores.iDO.toStringAsFixed(2)} mL/min,  "
+      "Transporte de Oxígeno (TO2): ${Valores.TO.toStringAsFixed(2)} mL/O2/m2. "
+      "Shunt Fisiológico (QS/QT): ${Valores.SF.toStringAsFixed(2)} %. "
+      "Gradiente Alveolo - Arterial (G(A-a)): ${Gasometricos.GAA.toStringAsFixed(2)} mmHg. \n"
+      "Trabajo Cardiaco - Trabajo Cardiaco: ${Cardiometrias.trabajoCardiacoIzquierdo.toStringAsFixed(2)} Kg*m. "
+      "Trabajo Látido Ventricular Izquierdo: ${Cardiometrias.trabajoLatidoVentricularIzquierdo.toStringAsFixed(2)} g*m. "
+      "Trabajo Látido Ventricular Derecho: ${Cardiometrias.TLVD.toStringAsFixed(2)} g*m. "
+          "Poder Cardiaco : ${Cardiometrias.poderCardiaco.toStringAsFixed(2)} g*m. "
+          "Poder Cardiaco Indexado : ${Cardiometrias.poderCardiacoIndexado.toStringAsFixed(2)} g*m. "
+          "\n";
 
 // FÓRMULAS
   static double get presionArterialMedia =>
@@ -175,18 +179,9 @@ class Cardiometrias {
 
   // Parámetros de Electrocardiogramas
 
-  static double get gastoCardiacoFick {
-    if (Valores.DAV != 0) {
-      // return ((125 * Antropometrias.SCE) /
-      //     (8.5 * Valores.DAV)); // # Gasto Cardiaco
-      return (((Valores.DAV * 100) / Valores.CAO) /
-          (Valores.DAV)); // # Gasto Cardiaco
-    } else {
-      return double.nan;
-    }
-  }
+  static double get gastoCardiacoFick => Gasometricos.gastoCardiaco!;
   static double get indiceCardiaco =>
-      (Valores.gastoCardiaco / Antropometrias.SC); // # Indice Cardiaco
+      (Gasometricos.gastoCardiaco / Antropometrias.SC); // # Indice Cardiaco
 
   //
   /// Presion Coloidosmotica :
@@ -214,9 +209,9 @@ class Cardiometrias {
   ///
   static double get poderCardiaco {
     if (Valores.presionVenosaCentral != 0 || Valores.presionVenosaCentral !=null) {
-      return (Cardiometrias.presionArterialMedia - Valores.presionVenosaCentral!) * Valores.gastoCardiaco / 451;
+      return (Cardiometrias.presionArterialMedia - Valores.presionVenosaCentral!) * Gasometricos.gastoCardiaco / 451;
     } else {
-      return (Cardiometrias.presionArterialMedia) * Valores.gastoCardiaco / 451;
+      return (Cardiometrias.presionArterialMedia) * Gasometricos.gastoCardiaco / 451;
     }
   }
 
@@ -258,10 +253,6 @@ class Cardiometrias {
   ///
   /// VN : mayor a 0.11
   static double get indiceBriones {
-    if (presionColoidosmotica != 0) {
-      return (presionColoidosmotica) / (Cardiometrias.presionArterialMedia);
-    } else {
-      return double.nan;
-    }
+    if (presionColoidosmotica != 0) return (presionColoidosmotica) / (Cardiometrias.presionArterialMedia!); else return double.nan;
   }
 }

@@ -144,9 +144,9 @@ class Ventometrias {
           "P. pulmonar insp. ${Valores.presionInspiratoriaPico} cmH2O, "
           "P. pulmonar esp. ${Valores.presionFinalEsiracion} cmH2O";
     } else if (modoVentilatorio == 'AC-VCV') {
-      PS = "VM ${Ventometrias.volumenMinuto.toStringAsFixed(1)} L/min, "
+      PS =
           "Flujo ${Ventometrias.flujoVentilatorioMedido.toStringAsFixed(2)} L/min, "
-          "VTI ${Valores.volumenTidal} mL; "
+          // "VTI ${Valores.volumenTidal} mL; "
           "VM ${Ventometrias.volumenMinuto.toStringAsFixed(1)} L/min, "
           "PIP ${Valores.presionMaxima} cmH2O, "
           "Pplat ${Valores.presionPlateau} cmH2O. "
@@ -203,16 +203,23 @@ class Ventometrias {
   static double get volumentTidal8 => (Antropometrias.pesoCorporalPredicho * 8);
 
   // # ######################################################
-  static double get volumenTidalIdeal =>
-      (Ventometrias.distensibilidadPulmonarEstatica *
+  static double get volumenTidalIdeal {
+    if (Valores.distensibilidadEstaticaMedida != 0 &&
+        Valores.distensibilidadEstaticaMedida != null) {
+      return (Valores.distensibilidadEstaticaMedida! *
           Ventometrias.drivingPressure);
+    } else {
+      return (Ventometrias.distensibilidadPulmonarEstatica *
+          Ventometrias.drivingPressure);
+    }
+  }
 
   static double get fiO2deal =>
       (Gasometricos.PaO2_estimado * Valores.fraccionInspiratoriaOxigeno!) /
       Valores.poArteriales!;
 
   static double get indiceTobinYang =>
-      (Valores.frecuenciaVentilatoria! / (Valores.volumenTidal! / 100));
+      (Valores.frecuenciaVentilatoria! / (Valores.volumenTidal! / 1000));
   // # ######################################################
   /// Poder Mecánico : :
   ///

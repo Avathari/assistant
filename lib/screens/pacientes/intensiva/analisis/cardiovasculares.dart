@@ -256,26 +256,26 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                                 ValuePanel(
                                   firstText:
                                       'CaO2', // Contenido Arterial de Oxígeno
-                                  secondText: Valores.CAO.toStringAsFixed(2),
+                                  secondText: Gasometricos.CAO.toStringAsFixed(2),
                                   thirdText: 'mL/O2%',
                                 ),
                                 ValuePanel(
                                   firstText:
                                       'CcO2', // Contenido Capilar de Oxígeno
-                                  secondText: Valores.CCO.toStringAsFixed(2),
+                                  secondText: Gasometricos.CCO.toStringAsFixed(2),
                                   thirdText: 'mL/O2%',
                                 ),
                                 ValuePanel(
                                   firstText:
                                       'CvO2', // Contenido Arterial de Oxígeno
-                                  secondText: Valores.CVO.toStringAsFixed(2),
+                                  secondText: Gasometricos.CVO.toStringAsFixed(2),
                                   thirdText: 'mL/O2%',
                                 ),
                                 Container(),
                                 ValuePanel(
                                   firstText:
                                       'Da-vO2', // Diferencia Arterio-venosa de Oxígeno
-                                  secondText: Valores.DAV.toStringAsFixed(2),
+                                  secondText: Gasometricos.DAV.toStringAsFixed(2),
                                   thirdText: 'mL',
                                 ),
                                 Container(),
@@ -341,19 +341,19 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                                 ),
                                 ValuePanel(
                                   firstText: 'ΔΔCO2',
-                                  secondText: Valores.DavCO2.toStringAsFixed(2),
+                                  secondText: Gasometricos.DavCO2.toStringAsFixed(2),
                                   thirdText: 'mmHg',
                                 ),
                                 ValuePanel(
                                   firstText: 'ΔPavCO2/\nΔPavO2',
                                   secondText:
-                                      Valores.D_PavCO2D_PavO2.toStringAsFixed(
+                                  Gasometricos.D_PavCO2D_PavO2.toStringAsFixed(
                                           2),
                                   thirdText: "", // 'mmHg/mL',
                                 ),
                                 ValuePanel(
                                   firstText: 'Indice \nMitocondrial',
-                                  secondText: Valores.indiceMitocondrial
+                                  secondText: Gasometricos.indiceMitocondrial
                                       .toStringAsFixed(2),
                                   thirdText: "", // 'mmHg/mL',
                                 ),
@@ -580,7 +580,7 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                                 ValuePanel(
                                   firstText: "GC (Swan)",
                                   secondText:
-                                      Valores.gastoCardiaco.toStringAsFixed(2),
+                                  Gasometricos.gastoCardiaco.toStringAsFixed(2),
                                   thirdText: "L/min",
                                 ),
                                 ValuePanel(

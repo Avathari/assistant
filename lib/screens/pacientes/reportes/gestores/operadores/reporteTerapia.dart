@@ -67,163 +67,152 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
     return TittleContainer(
       tittle: 'Evaluación de Terapia Intensiva . . . ',
       color: Colors.black,
-      child: Row(
-        children: [
-          Expanded(
-            flex: 3,
-            child: Column(children: [
-              Expanded(
-                flex: 7,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: ContainerDecoration.roundedDecoration(),
-                    child: CarouselSlider(
-                      carouselController: carouselController,
-                      options: Carousel.carouselOptions(context: context),
-                      items: [
-                        SingleChildScrollView(
-                          controller: ScrollController(),
-                          child: Column(
-                            children: [
-                              EditTextArea(
-                                  textController: initialTextController,
-                                  labelEditText: "Datos generales",
-                                  keyBoardType: TextInputType.text,
-                                  numOfLines: 1,
+      child: Column(children: [
+        Expanded(
+          flex: 11,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              decoration: ContainerDecoration.roundedDecoration(),
+              child: CarouselSlider(
+                carouselController: carouselController,
+                options: Carousel.carouselOptions(context: context),
+                items: [
+                  SingleChildScrollView(
+                    controller: ScrollController(),
+                    child: Column(
+                      children: [
+                        EditTextArea(
+                            textController: initialTextController,
+                            labelEditText: "Datos generales",
+                            keyBoardType: TextInputType.text,
+                            numOfLines: 1,
+                            fontSize: isTablet(context) ? 12: 8,
+                            withShowOption: true,
+                            inputFormat: MaskTextInputFormatter()),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex:
+                                  isMobile(context) || isDesktop(context) || isLargeDesktop(context)
+                                      ? 3
+                                      : 2, // #_#
+                              child: EditTextArea(
+                                  textController: diagoTextController,
+                                  labelEditText:
+                                      "Impresiones diagnósticas",
+                                  keyBoardType: TextInputType.multiline,
+                                  numOfLines: isTablet(context) ? 18: 10,
                                   fontSize: isTablet(context) ? 12: 8,
-                                  withShowOption: true,
+                                  onChange: ((value) {
+                                    Reportes
+                                        .impresionesDiagnosticas =
+                                    Reportes
+                                                .reportes[
+                                            'Impresiones_Diagnosticas'] =
+                                    Reportes
+                                        .reportes[
+                                    'Diagnosticos_Hospital'] =
+                                        "$value.";
+                                  }),
                                   inputFormat: MaskTextInputFormatter()),
-                              Row(
+                            ),
+                            Expanded(
+                              child: Wrap(
+                                alignment: WrapAlignment.center,
+                                spacing: 10,
                                 children: [
-                                  Expanded(
-                                    flex:
-                                        isMobile(context) || isDesktop(context) || isLargeDesktop(context)
-                                            ? 3
-                                            : 2, // #_#
-                                    child: EditTextArea(
-                                        textController: diagoTextController,
-                                        labelEditText:
-                                            "Impresiones diagnósticas",
-                                        keyBoardType: TextInputType.multiline,
-                                        numOfLines: isTablet(context) ? 18: 10,
-                                        fontSize: isTablet(context) ? 12: 8,
-                                        onChange: ((value) {
-                                          Reportes
-                                              .impresionesDiagnosticas =
-                                          Reportes
-                                                      .reportes[
-                                                  'Impresiones_Diagnosticas'] =
-                                          Reportes
-                                              .reportes[
-                                          'Diagnosticos_Hospital'] =
-                                              "$value.";
-                                        }),
-                                        inputFormat: MaskTextInputFormatter()),
-                                  ),
-                                  Expanded(
-                                    child: Wrap(
-                                      alignment: WrapAlignment.center,
-                                      spacing: 10,
-                                      children: [
-                                        CircleIcon(
-                                            iconed: Icons.abc,
-                                            onChangeValue: () {
-                                              setState(() {
-                                                diagoTextController.text =
-                                                    Sentences.capitalizeAll(
-                                                        diagoTextController
-                                                            .text);
-                                              });
-                                            }),
-                                        CircleIcon(
-                                            iconed: Icons.list_alt_sharp,
-                                            onChangeValue: () {
-                                              Operadores.openDialog(
-                                                  context: context,
-                                                  chyldrim: DialogSelector(
-                                                    onSelected: ((value) {
-                                                      setState(() {
-                                                        Diagnosticos
-                                                                .selectedDiagnosis =
-                                                            value;
-                                                        diagoTextController
-                                                                .text =
-                                                            "${diagoTextController.text}\n${Diagnosticos.selectedDiagnosis}";
-                                                      });
-                                                    }),
-                                                  ));
-                                            })
-                                      ],
-                                    ),
-                                  ),
+                                  CircleIcon(
+                                      iconed: Icons.abc,
+                                      onChangeValue: () {
+                                        setState(() {
+                                          diagoTextController.text =
+                                              Sentences.capitalizeAll(
+                                                  diagoTextController
+                                                      .text);
+                                        });
+                                      }),
+                                  CircleIcon(
+                                      iconed: Icons.list_alt_sharp,
+                                      onChangeValue: () {
+                                        Operadores.openDialog(
+                                            context: context,
+                                            chyldrim: DialogSelector(
+                                              onSelected: ((value) {
+                                                setState(() {
+                                                  Diagnosticos
+                                                          .selectedDiagnosis =
+                                                      value;
+                                                  diagoTextController
+                                                          .text =
+                                                      "${diagoTextController.text}\n${Diagnosticos.selectedDiagnosis}";
+                                                });
+                                              }),
+                                            ));
+                                      })
                                 ],
                               ),
-                            ],
-                          ),
-                        ),
-                        ExploracionFisica(
-                          isTerapia: true,
-                        ),
-                        // const AuxiliaresExploracion(),
-                        AnalisisMedico(),
-                        DiagnosticosAndPronostico(
-                          isTerapia: true,
+                            ),
+                          ],
                         ),
                       ],
                     ),
                   ),
-                ),
-              ),
-              CrossLine(thickness: 3),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 8.0, left: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GrandIcon(
-                        iconData: Icons.person,
-                        labelButton: "Información General",
-                        weigth: wieghtRow / index,
-                        onPress: () {
-                          carouselController.jumpToPage(0);
-                        },
-                      ),
-                      GrandIcon(
-                          iconData: Icons.explicit,
-                          labelButton: "Exploración Física",
-                          weigth: wieghtRow / index,
-                          onPress: () {
-                            carouselController.jumpToPage(1);
-                          }),
-                      GrandIcon(
-                          iconData: Icons.explore,
-                          labelButton: "Análisis y propuestas",
-                          weigth: wieghtRow / index,
-                          onPress: () {
-                            carouselController.jumpToPage(2);
-                          }),
-                      GrandIcon(
-                          iconData: Icons.next_plan,
-                          labelButton: "Diagnósticos y Pronóstico",
-                          weigth: wieghtRow / index,
-                          onPress: () {
-                            carouselController.jumpToPage(3);
-                          }),
-                    ],
+                  ExploracionFisica(
+                    isTerapia: true,
                   ),
-                ),
+                  // const AuxiliaresExploracion(),
+                  AnalisisMedico(),
+                  DiagnosticosAndPronostico(
+                    isTerapia: true,
+                  ),
+                ],
               ),
-            ]),
+            ),
           ),
-          // Expanded(
-          //   flex: 3,
-          //   child: _anylisis(context),
-          // ),
-        ],
-      ),
+        ),
+        CrossLine(thickness: 3),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GrandIcon(
+                  iconData: Icons.person,
+                  labelButton: "Información General",
+                  weigth: wieghtRow / index,
+                  onPress: () {
+                    carouselController.jumpToPage(0);
+                  },
+                ),
+                GrandIcon(
+                    iconData: Icons.explicit,
+                    labelButton: "Exploración Física",
+                    weigth: wieghtRow / index,
+                    onPress: () {
+                      carouselController.jumpToPage(1);
+                    }),
+                GrandIcon(
+                    iconData: Icons.explore,
+                    labelButton: "Análisis y propuestas",
+                    weigth: wieghtRow / index,
+                    onPress: () {
+                      carouselController.jumpToPage(2);
+                    }),
+                GrandIcon(
+                    iconData: Icons.next_plan,
+                    labelButton: "Diagnósticos y Pronóstico",
+                    weigth: wieghtRow / index,
+                    onPress: () {
+                      carouselController.jumpToPage(3);
+                    }),
+              ],
+            ),
+          ),
+        ),
+      ]),
     );
   }
 

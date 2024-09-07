@@ -104,6 +104,7 @@ class Internado {
         "ORDER BY ID_Hosp ASC",
         idPaciente,
       ).then((value) {
+
         idHospitalizado = value['ID_Hosp'] ?? 0;
         return hospitalizedData = value;
       });

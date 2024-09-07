@@ -55,7 +55,7 @@ class MenuPersonales extends StatelessWidget {
                         iconData: Icons.person_pin,
                         labelButton: "Antecedentes Personales No Patológicos",
                         onPress: () {
-                          toNextPage(context, const GestionNoPatologicos());
+                          toNextPage(context, GestionNoPatologicos());
                         }),
                     MenuButton(
                         iconData: Icons.draw_outlined,

@@ -1157,15 +1157,19 @@ class _GestionVitalesState extends State<GestionVitales> {
         int index = 0;
         for (var item in result) {
           if (index <= result.length) {
-            print(item);
+            //
             var thirdMap = {};
-            // print("${value.length} ${result.length}");
-            // print("${value[index]['ID_Pace_SV']} ${item['ID_Pace_SV']}");
-            thirdMap.addAll(item);
-            thirdMap.addAll(value[index]);
-            // Adición a Vitales ********** ************ ************** ********
-            Pacientes.Vitales!.add(thirdMap);
-            index++;
+            //
+            if (value.length == item.length) {
+              print("${value.length} ${result.length}");
+              print("${value[index]['ID_Pace_SV']} ${item[index]['ID_Pace_SV']}");
+              //
+              thirdMap.addAll(item);
+              thirdMap.addAll(value[index]);
+              // Adición a Vitales ********** ************ ************** ********
+              Pacientes.Vitales!.add(thirdMap);
+              index++;
+            }
           }
         }
         setState(() {

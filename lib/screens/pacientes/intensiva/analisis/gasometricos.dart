@@ -32,6 +32,11 @@ class _GasometricosState extends State<Gasometricos> {
       color: Colors.black,
       child: Column(
         children: [
+          Expanded(child: ValuePanel(
+            firstText: "",
+            secondText: Valores.fechaGasometriaArterial.toString(),
+            thirdText: "",
+          ),),
           Expanded(
             child: Row(
               children: [
@@ -132,7 +137,7 @@ class _GasometricosState extends State<Gasometricos> {
                     ValuePanel(
                       firstText: "Lactato",
                       secondText: Valores.lactatoArterial.toString(),
-                      thirdText: "%",
+                      thirdText: "mmol/L",
                     ),
                     CrossLine(),
                         ValuePanel(
@@ -177,7 +182,7 @@ class _GasometricosState extends State<Gasometricos> {
                         CrossLine(),
                         ValuePanel(
                           firstText: "EBesp",
-                          secondText: Gas.Gasometricos.EBb.toStringAsFixed(2),
+                          secondText: Gas.Gasometricos.excesoBaseEsperado.toStringAsFixed(2),
                           thirdText: "mmol/L",
                         ),
                         ValuePanel(
@@ -297,6 +302,12 @@ class _GasometricosState extends State<Gasometricos> {
                   onPress: () => Datos.portapapeles(
                       context: context,
                       text: Gas.Gasometricos.gasometricosNombrado)),
+              //
+              GrandIcon(
+                  iconData: Icons.grain_sharp,
+                  labelButton: "Gasometrico Avanzado",
+                  onPress: () => Datos.portapapeles(
+                      context: context, text: Gas.Gasometricos.gasometricosAvanzado)),
             ],
           ),),
         ],

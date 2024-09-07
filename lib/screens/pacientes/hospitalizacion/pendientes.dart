@@ -133,6 +133,10 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
               labelEditText: 'Fecha de realización',
               textController: fechaRealizacionTextController,
               numOfLines: 1,
+              withShowOption: true,
+              selection: true,
+              onSelected: () => setState(() => fechaRealizacionTextController
+                  .text = Calendarios.today(format: "yyyy/MM/dd")),
             ),
             Expanded(
               flex: 10,
@@ -198,7 +202,8 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
                   realized = !value;
 
                   if (realized!) {
-                    fechaRealizacionTextController.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
+                    fechaRealizacionTextController.text =
+                        DateFormat('yyyy-MM-dd').format(DateTime.now());
                   } else {
                     fechaRealizacionTextController.text = "0000-00-00";
                   }
@@ -418,6 +423,8 @@ class GestionPendiente extends StatefulWidget {
   bool? withReturn;
   // ****************** *** ****** **************
   var keySearch = "Feca_PEN";
+
+  String? tipePendiente = Pendientes.typesPendientes[0];
   // ****************** *** ****** **************
 
   GestionPendiente({super.key, this.actualSidePage, this.withReturn = false});
@@ -485,57 +492,78 @@ class _GestionPendienteState extends State<GestionPendiente> {
               },
             ),
           ]),
-      body: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-        Expanded(
-          flex: 6,
-          child: RefreshIndicator(
-            color: Colors.white,
-            backgroundColor: Colors.black,
-            onRefresh: _pullListRefresh,
-            child: FutureBuilder<List>(
-              initialData: foundedItems!,
-              future: Future.value(foundedItems!),
-              builder: (context, AsyncSnapshot snapshot) {
-                if (snapshot.hasError) print(snapshot.error);
-                return snapshot.hasData
-                    ? GridView.builder(
-                        gridDelegate: GridViewTools.gridDelegate(
-                            crossAxisCount: isMobile(context) ? 1 : 3,
-                            mainAxisExtent: isMobile(context) ? 200 : 250),
-                        controller: gestionScrollController,
-                        shrinkWrap: isMobile(context) ? false : true,
-                        itemCount:
-                            snapshot.data == null ? 0 : snapshot.data.length,
-                        itemBuilder: (context, posicion) {
-                          return itemListView(snapshot, posicion, context);
-                        },
-                      )
-                    : Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const CircularProgressIndicator(),
-                            const SizedBox(height: 50),
-                            Text(
-                              snapshot.hasError
-                                  ? snapshot.error.toString()
-                                  : snapshot.error.toString(),
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 10),
-                            ),
-                          ],
-                        ),
-                      );
-              },
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+          Expanded(
+            flex: 6,
+            child: Column(
+              children: [
+                Expanded(child: Spinner(
+                  tittle: "Tipo de Procedimiento . . . ",
+                  onChangeValue: (String value) {
+                    setState(() {
+                      widget.tipePendiente = value;
+                      //
+                      foundedItems = _previos;
+                      //
+                      foundedItems = Listas.listFromMap(lista: foundedItems!, keySearched: 'Pace_PEN', elementSearched: value);
+                    });
+                }, items: Pendientes.typesPendientes, initialValue: widget.tipePendiente!,)),
+                Expanded(
+                  flex: 8,
+                  child: RefreshIndicator(
+                    color: Colors.white,
+                    backgroundColor: Colors.black,
+                    onRefresh: _pullListRefresh,
+                    child: FutureBuilder<List>(
+                      initialData: foundedItems!,
+                      future: Future.value(foundedItems!),
+                      builder: (context, AsyncSnapshot snapshot) {
+                        if (snapshot.hasError) print(snapshot.error);
+                        return snapshot.hasData
+                            ? GridView.builder(
+                                gridDelegate: GridViewTools.gridDelegate(
+                                    crossAxisCount: isMobile(context) ? 1 : 3,
+                                    mainAxisExtent: isMobile(context) ? 200 : 250),
+                                controller: gestionScrollController,
+                                shrinkWrap: isMobile(context) ? false : true,
+                                itemCount:
+                                    snapshot.data == null ? 0 : snapshot.data.length,
+                                itemBuilder: (context, posicion) {
+                                  return itemListView(snapshot, posicion, context);
+                                },
+                              )
+                            : Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const CircularProgressIndicator(),
+                                    const SizedBox(height: 50),
+                                    Text(
+                                      snapshot.hasError
+                                          ? snapshot.error.toString()
+                                          : snapshot.error.toString(),
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 10),
+                                    ),
+                                  ],
+                                ),
+                              );
+                      },
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-        ),
-        isDesktop(context) || isLargeDesktop(context) // || isTablet(context)
-            ? widget.actualSidePage != null
-                ? Expanded(flex: 5, child: widget.actualSidePage!)
-                : Expanded(flex: 1, child: Container())
-            : Container()
-      ]),
+          isDesktop(context) || isLargeDesktop(context) // || isTablet(context)
+              ? widget.actualSidePage != null
+                  ? Expanded(flex: 5, child: widget.actualSidePage!)
+                  : Expanded(flex: 1, child: Container())
+              : Container()
+        ]),
+      ),
     );
   }
 
@@ -546,7 +574,7 @@ class _GestionPendienteState extends State<GestionPendiente> {
             " . . . Iniciando Actividad - Repositorio de Pendientes de la Hospitalización");
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       setState(() {
-        foundedItems = value;
+        foundedItems = _previos = value;
         Terminal.printSuccess(
             message: "Repositorio de Pendientes de la Hospitalización");
       });
@@ -562,7 +590,7 @@ class _GestionPendienteState extends State<GestionPendiente> {
             consultQuery!, Pacientes.ID_Hospitalizacion)
         .then((value) {
       setState(() {
-        foundedItems = value;
+        foundedItems = _previos = value;
         Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
       });
     });
@@ -761,7 +789,7 @@ class _GestionPendienteState extends State<GestionPendiente> {
   String searchCriteria = "Buscar por Fecha";
   String? consultQuery = Pendientes.pendientes['consultIdQuery'];
 
-  late List? foundedItems = [];
+  late List? foundedItems = [], _previos = [];
   var gestionScrollController = ScrollController();
   var searchTextController = TextEditingController();
 

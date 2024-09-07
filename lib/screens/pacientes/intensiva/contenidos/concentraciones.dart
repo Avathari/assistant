@@ -264,92 +264,59 @@ class _ConcentracionesState extends State<Concentraciones> {
                           child: Container(
                             margin: const EdgeInsets.all(10),
                             decoration: ContainerDecoration.roundedDecoration(),
-                            child: SingleChildScrollView(
-                              controller: ScrollController(),
-                              child: Column(
-                                children: [
-                                  EditTextArea(
-                                    keyBoardType: TextInputType.number,
-                                    inputFormat: MaskTextInputFormatter(
-                                    ),
-                                    labelEditText:
-                                        'Concentración del Fármaco (mg)',
-                                    textController: concentracionTextController,
-                                    numOfLines: 1,
-                                    onChange: (value) {
-                                      setState(() {
-                                        concentracion = double.parse(value);
-                                        operation();
-                                      });
-                                    },
+                            child: Column(
+                              children: [
+                                EditTextArea(
+                                  keyBoardType: TextInputType.number,
+                                  inputFormat: MaskTextInputFormatter(
                                   ),
-                                  EditTextArea(
-                                    keyBoardType: TextInputType.number,
-                                    inputFormat: MaskTextInputFormatter(),
-                                    labelEditText: 'Dilución del Fármaco (mL)',
-                                    textController: dilucionTextController,
-                                    numOfLines: 1,
-                                    onChange: (value) {
-                                      setState(() {
-                                        dilucion = double.parse(value);
-                                        operation();
-                                      });
-                                    },
-                                  ),
-                                  EditTextArea(
-                                    keyBoardType: TextInputType.number,
-                                    inputFormat: MaskTextInputFormatter(),
-                                    labelEditText:
-                                        'Velocidad de Infusión (mL/Hr)',
-                                    textController: velocidadTextController,
-                                    numOfLines: 1,
-                                    onChange: (value) {
-                                      setState(() {
-                                        velocidad = double.parse(value);
-                                        operation();
-                                      });
-                                    },
-                                  ),
-                                  CrossLine(),
-                                  Container(
-                                      margin: const EdgeInsets.all(10),
-                                      padding: const EdgeInsets.all(10),
-                                      decoration: ContainerDecoration
-                                          .roundedDecoration(),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            flex: 3,
-                                            child: ShowText(
-                                              title: 'P.C.T.',
-                                              data: pesoCorporalTotal,
-                                              medida: 'Kg',
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: GrandIcon(iconData: Icons.upgrade, onPress: () {
-                                              Operadores.editActivity(
-                                                  context: context,
-                                                  tittle: "Editar . . . ",
-                                                  message:
-                                                  "¿Peso Corporal Total? . . . ",
-                                                  onAcept: (value) {
-                                                    // Terminal.printSuccess(
-                                                    //     message:
-                                                    //         "recieve $value");
-                                                    setState(() {
-                                                      pesoCorporalTotal =
-                                                          double.parse(value);
-                                                      Navigator.of(context).pop();
-                                                    });
-                                                  });
-                                            },),
-                                          )
-                                        ],
-                                      )),
-                                  GrandButton(
-                                    weigth: 2000,
+                                  labelEditText:
+                                      'Concentración del Fármaco (mg)',
+                                  textController: concentracionTextController,
+                                  numOfLines: 1,
+                                  onChange: (value) {
+                                    setState(() {
+                                      concentracion = double.parse(value);
+                                      operation();
+                                    });
+                                  },
+                                ),
+                                EditTextArea(
+                                  keyBoardType: TextInputType.number,
+                                  inputFormat: MaskTextInputFormatter(),
+                                  labelEditText: 'Dilución del Fármaco (mL)',
+                                  textController: dilucionTextController,
+                                  numOfLines: 1,
+                                  onChange: (value) {
+                                    setState(() {
+                                      dilucion = double.parse(value);
+                                      operation();
+                                    });
+                                  },
+                                ),
+                                EditTextArea(
+                                  keyBoardType: TextInputType.number,
+                                  inputFormat: MaskTextInputFormatter(),
+                                  labelEditText:
+                                      'Velocidad de Infusión (mL/Hr)',
+                                  textController: velocidadTextController,
+                                  numOfLines: 1,
+                                  onChange: (value) {
+                                    setState(() {
+                                      velocidad = double.parse(value);
+                                      operation();
+                                    });
+                                  },
+                                ),
+                                CrossLine(),
+                                ValuePanel(
+                                  firstText: 'P.C.T.',
+                                  secondText: pesoCorporalTotal!.toStringAsFixed(2),
+                                  thirdText: 'Kg',
+                                ),
+                                Expanded(
+                                  child: GrandIcon(
+                                    iconData: Icons.copy_sharp,
                                     labelButton: "Copiar en Portapapeles",
                                     onPress: () {
                                       Datos.portapapeles(
@@ -357,8 +324,8 @@ class _ConcentracionesState extends State<Concentraciones> {
                                           text: Formatos.concentraciones);
                                     },
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -371,7 +338,7 @@ class _ConcentracionesState extends State<Concentraciones> {
                             child: GridView(
                               controller: ScrollController(),
                               gridDelegate: GridViewTools.gridDelegate(
-                                crossAxisCount: 4,
+                                crossAxisCount: 3,
                                 mainAxisExtent: 75,
                               ),
                               children: [

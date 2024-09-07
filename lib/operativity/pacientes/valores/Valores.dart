@@ -846,6 +846,7 @@ class Valores {
   // INFUSIONES ************************ * * * *
   static int? initSedacion = 0,
       initVasopresor = 0,
+      initAntibiotico = 0,
       initInotropico = 0,
       initDiuretico = 0,
       initParalisis = 0,
@@ -853,6 +854,7 @@ class Valores {
       initAntiarritmico = 0;
   static String? withSedacion = "",
       withVasopresor = "",
+      withAntibiotico = "",
       withInotropico = "",
       withDiuretico = "",
       withParalisis = "",
@@ -860,6 +862,7 @@ class Valores {
       withAntiarritmico = "";
   static String? commenSedacion = "",
       commenVasopresor = "",
+      commenAntibiotico = "",
       commenInotropico = "",
       commenDiuretico = "",
       commenParalisis = "",
@@ -890,7 +893,7 @@ class Valores {
       circunferenciaSuralIzquierda,
       circunferenciaSuralDerecha;
   static int? fraccionInspiratoriaOxigeno,
-      presionVenosaCentral,
+      presionVenosaCentral = 0,
       presionIntraabdominal,
       presionIntraCerebral;
   static double? temperaturCorporal,
@@ -1173,18 +1176,25 @@ class Valores {
   ///
   /// VN: 800-1200 dynas/seg/m2
   ///
-  static double get RVS =>
-      (((Cardiometrias.presionArterialMedia - Valores.presionVenosaCentral!) /
-              Valores.gastoCardiaco) *
-          79.9); //  # Resistencias Venosas Sistémicas
-  // RVS # (((Valores.presionArterialMedia! - 12.0) / IC) * 79.9)
+  static double get RVS {
+    if (Valores.presionVenosaCentral! != null && Valores.presionVenosaCentral! != 0) {
+      return (((Cardiometrias.presionArterialMedia - Valores.presionVenosaCentral!) /
+          Gasometricos.gastoCardiaco) *
+          79.9);
+    } else {
+      return double.nan;
+    }
+//  # Resistencias Venosas Sistémicas
+    // RVS # (((Valores.presionArterialMedia! - 12.0) / IC) * 79.9)
+  }
+
 
   /// Indice de Extracción de Oxígeno (IEO2%)
   ///
   /// VN: 24-28%
   ///
   static double get IEO =>
-      (((DAV / CAO) * 100)); // # Indice de Extracción de Oxígeno
+      (((Gasometricos.DAV / Gasometricos.CAO) * 100)); // # Indice de Extracción de Oxígeno
   static double get IV =>
       (Ventometrias.presionMediaViaAerea * Valores.frecuenciaVentilatoria!) *
       (Valores.pcoArteriales! / 10);
@@ -1207,7 +1217,7 @@ class Valores {
 
   static int get PPE => Valores.presionFinalEsiracion!;
 
-  static double get CI => (DAV / Valores.poArteriales!);
+  static double get CI => (Gasometricos.DAV / Valores.poArteriales!);
 
   /// Shunt Pulmonar : : Fracción QS/QT
   ///
@@ -1223,7 +1233,7 @@ class Valores {
   /// https://i.pinimg.com/originals/ee/da/3e/eeda3ec80ba4c8c3d2b4fd08bdc4b94e.gif
   /// https://1.bp.blogspot.com/-SyrTV0msTUk/VAaTKeiPOjI/AAAAAAAAAHU/SXATI-vDQWs/s1600/shunt.png
   ///
-  static double get shuntPulmonar => (CCO - CAO) / (CCO - CVO) * 100;
+  static double get shuntPulmonar => (Gasometricos.CCO - Gasometricos.CAO) / (Gasometricos.CCO - Gasometricos.CVO) * 100;
 
   /// Shunt Pulmonar II : : Fracción QS/QT
   ///     Basado en el Gradiente Alveolo-Arterial
@@ -1312,7 +1322,7 @@ class Valores {
   /// DO = (GC * CaO2) * (10)
   ///
   static double get DO =>
-      ((gastoCardiaco * CAO) * (10)); // # Disponibilidad de Oxígeno
+      ((Gasometricos.gastoCardiaco * Gasometricos.CAO) * (10)); // # Disponibilidad de Oxígeno
   /// Disponibilidad de Oxígeno Indexado (iDO2) (mL/min/m2)
   ///
   /// DO = (GC * CaO2) * (10)
@@ -1320,134 +1330,33 @@ class Valores {
   static double get iDO =>
       (DO / Antropometrias.SCE); // # Indice de Disponibilidad de Oxígeno
   static double get TO =>
-      ((capacidadOxigeno * CAO) / (10)); // # Transporte de Oxígeno // CAP_O
+      ((Gasometricos.capacidadOxigeno * Gasometricos.CAO) / (10)); // # Transporte de Oxígeno // CAP_O
 
   /// Shunt Fisiologíco (SF) (QS/QT)
   ///
   /// VN: <15%
   ///
   static double get SF =>
-      ((CCO - CAO) / (CCO - CVO)) * (100); //  # Shunt Fisiológico
+      ((Gasometricos.CCO - Gasometricos.CAO) / (Gasometricos.CCO - Gasometricos.CVO)) * (100); //  # Shunt Fisiológico
 
   /// Volumen Disponible de Oxígeno
   ///     ** Consumo de Oxígeno
   /// VN : 200-300ml/min
   ///
   static double get CO =>
-      ((gastoCardiaco * DAV) * (10)); // # Consumo de Oxígeno
+      ((Gasometricos.gastoCardiaco * Gasometricos.DAV) * (10)); // # Consumo de Oxígeno
 
   ///
-  static double get cAO => (CAO / DAV); // # Cociente Arterial de Oxígeno
-  static double get cVO => (CVO / DAV); // # Cociente Venoso de Oxígeno
+  static double get cAO => (Gasometricos.CAO / Gasometricos.DAV); // # Cociente Arterial de Oxígeno
+  static double get cVO => (Gasometricos.CVO / Gasometricos.DAV); // # Cociente Venoso de Oxígeno
 
   // static double get presionColoidoOsmotica => // PC
   //     ((Valores.proteinasTotales! - Valores.albuminaSerica!) * 1.4) +
   //     (Valores.albuminaSerica! * 5.5); //  # Presión Coloidóncotica
 
-
-
   static double get FE => 0.0;
 
-// # Parametros Hemodinamicos ******************************************
-  /// Concentración Arterial de Oxígeno
-  ///
-  /// VN: 14-19ml/O2%
-  ///
-  static double get CAO =>
-      (((Valores.hemoglobina! * 1.34) * (Valores.soArteriales! / 100)) +
-          (Valores.poArteriales! *
-              0.031)); // / (100); //  # Concentración Arterial de Oxígeno
-
-  /// Concentración Venosa de Oxígeno
-  /// VN: 11-16ml/O2%
-  ///
-  static double get CVO =>
-      (((Valores.hemoglobina! * 1.34) * (Valores.soVenosos! / 100)) +
-          (Valores.poVenosos! *
-              0.031)); //  / (100); // # Concentración Venosa de Oxígeno
-
-  /// Concentración Capilar de Oxígeno
-  ///
-  /// VN: 16-20ml/O2%
-  ///
-  static double get CCO => ((Valores.hemoglobina! * 1.34) +
-      (Valores.poArteriales! * 0.031)); // # Concentración Capilar de Oxígeno
-  // (((Valores.hemoglobina! * 1.34) *
-  //         (Valores.soVenosos! - Valores.soArteriales!) +
-  //     ((Valores.poVenosos! - Valores.poArteriales!) * 0.031)) /
-  // (100));
-
-  static double get CACO =>
-      (((Valores.hemoglobina! * 1.34) * (Valores.soArteriales! / 100)) +
-          (Valores.pcoArteriales! * 0.031)) /
-      (100); //  # Concentración Arterial de Oxígeno
-  static double get CVCO =>
-      (((Valores.hemoglobina! * 1.34) * (Valores.soVenosos! / 100)) +
-          (Valores.pcoVenosos! * 0.031)) /
-      (100); // # Concentración Venosa de Oxígeno
-
-  static double get DAV => (CAO - CVO); // # Diferencia Arteriovenosa de O2
-
-  /// Delta de CO2 (D_CO2) , DavCO2
-  ///     *** Denota Hipoperfusión tisular.
-  /// VN: menor 6 mmHg
-  ///
-  static double get DavCO2 =>
-      (CACO - CVCO); // # Diferencia Arteriovenosa de CO2
-
-  /// Delta DavCO2/DavO2 : PavCO2
-  ///     Cociente de la división de CO2 veno-arterial y la diferencia arteriovenosa
-  /// VN : Menor a 1.6 . . . Normal . .
-  ///         Mayor a 1.6 indica Hipoperfusión Tisular
-  ///
-  static double get DvaCO2DavO2 => (Gasometricos.DeltaCOS - DAV);
-
-  /// Cociente Respiratorio
-  ///   ** Tambien expresado como . . .
-  ///             CR = VCO2 / VO2
-  ///             CR = GC*CavCO2 / GC * CavO2
-  ///             CR = D_PavCO2 / D_PavO2
-  /// VN mayor a 1 (1,4-1,68 mmHg/mL) . .
-  /// * * * Los cambios en el CO2 (efecto Haldane), la concentración de hemoglobina y EO2
-  /// tisular influyen en el ∆pv-aCO2 y el ∆pvaCO2/∆Ca-vO2 a pesar de una perfusión
-  /// tisular preservada o incluso aumentada.
-  /// * * * El argumento en contra más importante es el relacionado con la interacción en la
-  /// curva de disociación del CO2. Otro dato importante es el punto de corte ideal para el
-  /// ∆pv-aCO2/∆Ca-vO2 el cual aún no está bien
-  /// definido, aunque los rangos oscilan entre
-  /// 1,4-1,68 mmHg/mL
-  /// Consulte : http://scielo.org.co/pdf/rca/v49n1/es_2256-2087-rca-49-01-e500.pdf
-  ///
-  static double get D_PavCO2D_PavO2 => (D_PavO2 / D_PavCO2);
-
-  static double get D_PavO2 => (Valores.poArteriales! - Valores.poVenosos!);
-  static double get D_PavCO2 => (Valores.pcoArteriales! - Valores.pcoVenosos!);
-
-  /// Indice Mitocodrial
-  ///
-  /// VN : menos de 1.6
-  ///          mayor de 1.6 . . . Hipoperfusión Celular
-  ///
-  static double get indiceMitocondrial => (Gasometricos.DeltaCOS / DAV);
-
-  // # Cociente Respiratorio
-  static double get RI => 0.8;
-
-  static double get capacidadOxigeno =>
-      (Valores.hemoglobina! * (1.36)); //  # Capacidad de Oxígeno
-
-  /// Gasto Cardiaco (GC)
-  ///
-  ///   Como resultad de la DavO2 y CaO2
-  ///   VN: 4.75 L/min
-  ///
-  static double get gastoCardiaco {
-    if (DAV != 0) {
-      return (((DAV * 100) / CAO) / (DAV)); // # Gasto Cardiaco
-    } else {
-      return double.nan;
-    }
-  }
+// # ELECTROCARDIOGRAMA ******************************************
 
   static double get frecuenciaCardiacaElectrocardiograma {
     if (Valores.intervaloRR! != 0) {
@@ -3138,9 +3047,9 @@ class Formatos {
       "Glucometría ${Valores.glucemiaCapilar} mg/dL, "
       //  "pCO2_e ${Gasometricos.PCO2esperado.toStringAsFixed(0)} mmHg. "
       "pO2_e ${Gasometricos.PaO2_estimado.toStringAsFixed(0)} mmHg, "
-      "FiO2_i ${Ventometrias.fiO2deal.toStringAsFixed(0)} mmHg, "
-      "VT_i ${Ventometrias.volumenTidalIdeal.toStringAsFixed(0)} mmHg. "
-      "RSBI ${Ventometrias.indiceTobinYang.toStringAsFixed(0)} mmHg. "
+      "FiO2_i ${Ventometrias.fiO2deal.toStringAsFixed(0)} %, "
+      "VT_i ${Ventometrias.volumenTidalIdeal.toStringAsFixed(0)} mL. "
+      "RSBI ${Ventometrias.indiceTobinYang.toStringAsFixed(0)} Resp/L.min. "
   "\n"
       "     .     "
       "R.A.S.S. ${Exploracion.rass}, "
@@ -3163,7 +3072,7 @@ class Formatos {
       // "ingresos ${Valores.ingresosBalances} mL, "
       // "egresos ${Valores.egresosBalances} mL "
       "(${Valores.balanceTotal.toStringAsFixed(0)} mL/${Valores.horario} Hrs), "
-      "P.I. ${Valores.perdidasInsensibles} mL, "
+      "P.I. ${Valores.perdidasInsensibles.toStringAsFixed(0)} mL, "
       "uresis ${Valores.uresis!.toStringAsFixed(0)} mL "
       "(${Valores.diuresis.toStringAsFixed(2)} mL/${Valores.horario} Horas). \n"
       "${Auxiliares.getUltimo(esAbreviado: true)}";
@@ -3639,6 +3548,8 @@ class Items {
     "Dieta Líquida",
     "Dieta Blanda",
     "Dieta Enteral Completa",
+    "Dieta Artesanal por sonda orogástrica",
+    "Dieta Artesanal por sonda nasogástrica",
     "Dieta Polimérica",
     "Dieta Líquida por Sonda Nasogástrica",
     "Dieta Blanda por Sonda Nasogástrica",

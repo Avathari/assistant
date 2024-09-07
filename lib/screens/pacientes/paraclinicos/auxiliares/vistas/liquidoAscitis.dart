@@ -20,7 +20,7 @@ class LiquidoAscitis extends StatefulWidget {
 }
 
 class _LiquidoAscitisState extends State<LiquidoAscitis> {
-  static var index = 26; // LiquidoAscitis
+  static var index = 32; // LiquidoAscitis
 
   @override
   void initState() {
@@ -336,163 +336,163 @@ class _LiquidoAscitisState extends State<LiquidoAscitis> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][0],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][15],
         textGlucosaResultController.text,
         unidadMedidaGlucosa!
         //0,
-      ],
-      [
-        "0",
-        Pacientes.ID_Paciente.toString(),
-        textDateEstudyController.text,
-        Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][1],
-        textDHLResultController.text,
-        unidadMedidaDHL!
-        //0,
-      ],
-      [
-        "0",
-        Pacientes.ID_Paciente.toString(),
-        textDateEstudyController.text,
-        Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][2],
-        textProteinasTotalesResultController.text,
-        unidadMedidaProteinasTotales!
-        //0,
-      ],
-      [
-        "0",
-        Pacientes.ID_Paciente.toString(),
-        textDateEstudyController.text,
-        Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][3],
-        textAlbuminaResultController.text,
-        unidadMedidaAlbumina!
-        //0,
-      ],
-      [
-        "0",
-        Pacientes.ID_Paciente.toString(),
-        textDateEstudyController.text,
-        Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][4],
-        textFosfatasaAlcalinaResultController.text,
-        unidadMedidaFosfatasaAlcalina!
-        //0,
-      ],
-      [
-        "0",
-        Pacientes.ID_Paciente.toString(),
-        textDateEstudyController.text,
-        Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][5],
-        textColesterolResultController.text,
-        unidadMedidaColesterol!
-        //0,
-      ],
-      // Citológico
-      [
-        "0",
-        Pacientes.ID_Paciente.toString(),
-        textDateEstudyController.text,
-        Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][6],
-        textAspectoResultController.text,
-        unidadMedidaAspecto!
-        //0,
-      ],
-      [
-        "0",
-        Pacientes.ID_Paciente.toString(),
-        textDateEstudyController.text,
-        Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][7],
-        textColorResultController.text,
-        unidadMedidaColor!
-        //0,
-      ],
-      [
-        "0",
-        Pacientes.ID_Paciente.toString(),
-        textDateEstudyController.text,
-        Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][8],
-        textLeucocitosResultController.text,
-        unidadMedidaLeucocitos!
-        //0,
-      ],
-      [
-        "0",
-        Pacientes.ID_Paciente.toString(),
-        textDateEstudyController.text,
-        Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][9],
-        textPolimorfonuclearesResultController.text,
-        unidadMedidaPolimorfonucleares!
-        //0,
-      ],
-      [
-        "0",
-        Pacientes.ID_Paciente.toString(),
-        textDateEstudyController.text,
-        Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][10],
-        textMononuclearesResultController.text,
-        unidadMedidaMononucleares!
-        //0,
-      ],
-      [
-        "0",
-        Pacientes.ID_Paciente.toString(),
-        textDateEstudyController.text,
-        Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][11],
-        textEritrocitosResultController.text,
-        unidadMedidaEritrocitos!
-        //0,
-      ],
+      ], // 13
       [
         "0",
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
         Auxiliares.Laboratorios[Auxiliares.Categorias[index]][12],
-        textBacteriasResultController.text,
-        unidadMedidaBacterias!
+        textDHLResultController.text,
+        unidadMedidaDHL!
         //0,
-      ],
+      ], // 12
       [
         "0",
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][13],
-        textLevadurasResultController.text,
-        unidadMedidaLevaduras!
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][11],
+        textProteinasTotalesResultController.text,
+        unidadMedidaProteinasTotales!
         //0,
-      ],
-      //
+      ], // 11
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][10],
+        textAlbuminaResultController.text,
+        unidadMedidaAlbumina!
+        //0,
+      ], // 10
       [
         "0",
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
         Auxiliares.Laboratorios[Auxiliares.Categorias[index]][14],
-        textOtrosResultController.text,
-        unidadMedidaOtros!
+        textFosfatasaAlcalinaResultController.text,
+        unidadMedidaFosfatasaAlcalina!
         //0,
-      ],
+      ], // 14
       [
         "0",
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][15],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][13],
+        textColesterolResultController.text,
+        unidadMedidaColesterol!
+        //0,
+      ], // 13
+      // Citológico
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][0],
+        textAspectoResultController.text,
+        unidadMedidaAspecto!
+        //0,
+      ], // 0
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][1],
+        textColorResultController.text,
+        unidadMedidaColor!
+        //0,
+      ], // 1
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][2],
+        textLeucocitosResultController.text,
+        unidadMedidaLeucocitos!
+        //0,
+      ], // 2
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][3],
+        textPolimorfonuclearesResultController.text,
+        unidadMedidaPolimorfonucleares!
+        //0,
+      ], // 3
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][4],
+        textMononuclearesResultController.text,
+        unidadMedidaMononucleares!
+        //0,
+      ], // 4
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][5],
+        textEritrocitosResultController.text,
+        unidadMedidaEritrocitos!
+        //0,
+      ], // 5
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][6],
+        textBacteriasResultController.text,
+        unidadMedidaBacterias!
+        //0,
+      ], // 6
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][7],
+        textLevadurasResultController.text,
+        unidadMedidaLevaduras!
+        //0,
+      ], // 7
+      //
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][8],
+        textOtrosResultController.text,
+        unidadMedidaOtros!
+        //0,
+      ], // 8
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][9],
         textPhResultController.text,
         unidadMedidaPh!
         //0,
-      ],
+      ], // 9
     ];
   }
 

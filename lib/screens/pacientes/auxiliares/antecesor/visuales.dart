@@ -2,6 +2,7 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart'
     as Gas;
+import 'package:assistant/operativity/pacientes/valores/Valorados/hepatometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/info/conclusiones.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/dashboard.dart';
@@ -12,6 +13,7 @@ import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitaliza
 import 'package:assistant/screens/pacientes/auxiliares/presentaciones/antecedentesPersonales.dart';
 
 import 'package:assistant/screens/pacientes/auxiliares/presentaciones/presentaciones.dart';
+import 'package:assistant/screens/pacientes/auxiliares/revisiones/auxiliares/auxiliaresGenerales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/generales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisiones.dart';
 import 'package:assistant/screens/pacientes/epidemiologicos/documentacion.dart';
@@ -21,8 +23,10 @@ import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizado.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/hematinicos.dart';
 import 'package:assistant/screens/pacientes/intensiva/herramientas.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/hepaticos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/paraclinicos.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/semiologicos.dart';
+import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/terapias.dart';
 import 'package:assistant/screens/pacientes/reportes/reportes.dart';
 
 import 'package:assistant/screens/pacientes/vitales/vitales.dart';
@@ -632,7 +636,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
                             iconData: Icons.medication,
                             onPress: () {
                               Cambios.toNextPage(
-                                  context, const GestionNoPatologicos());
+                                  context, GestionNoPatologicos());
                             }),
                         GrandIcon(
                             labelButton: "Diagnósticos de la Hospitalización",
@@ -697,215 +701,262 @@ class _VisualPacientesState extends State<VisualPacientes> {
           ),
           CrossLine(height: 20, thickness: 3),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              GrandIcon(
-                  iconData: Icons.water_drop,
-                  labelButton: 'Análisis Hidrico',
-                  onPress: () =>
-                      Cambios.toNextActivity(context, chyld: Hidricos())),
-              GrandIcon(
-                iconData: Icons.bubble_chart,
-                labelButton: 'Análisis Metabólico',
-                onPress: () =>
-  Cambios.toNextActivity(context, chyld: Metabolicos())
-              ),
-              GrandIcon(
-                iconData: Icons.horizontal_rule_sharp,
-                labelButton: 'Análisis Antropométrico',
-                onPress: () => Cambios.toNextActivity(context,
-                    chyld: const Antropometricos()),
-              ),
-              GrandIcon(
-                  iconData: Icons.monitor_heart_outlined,
-                  labelButton: 'Análisis Cardiovascular',
-                  onPress: () => Cambios.toNextActivity(context,
-                      chyld: Cardiovasculares())),
-              GrandIcon(
-                iconData: Icons.all_inclusive_rounded,
-                labelButton: 'Análisis Ventilatorio',
-                onPress: () => Cambios.toNextActivity(context,
-                    chyld: Ventilatorios()),
-              ),
-              GrandIcon(
-                iconData: Icons.g_mobiledata,
-                labelButton: 'Análisis Gasométrico',
-                onPress: () {
-                  Cambios.toNextActivity(context, chyld: const Gasometricos());
-                },
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GrandIcon(
-                iconData: Icons.accessibility,
-                labelButton: 'Análisis de Hemáticos',
-                onPress: () {
-                  Cambios.toNextActivity(context, chyld: const Hematinicos());
-                },
-              ),
-              GrandIcon(
-                labelButton: 'Análisis Renal',
-                onPress: () {
-                  Operadores.alertActivity(
-                      context: context,
-                      tittle: "¡Disculpas!",
-                      message: "Actividad en construcción");
-                  // Operadores.openDialog(
-                  //     context: context, chyldrim: const Hidricos());
-                },
-              ),
-              GrandIcon(
-                labelButton: 'Análisis Sanguíneo Circulante',
-                onPress: () {
-                  Operadores.alertActivity(
-                      context: context,
-                      tittle: "¡Disculpas!",
-                      message: "Actividad en construcción");
-                  // Operadores.openDialog(
-                  //     context: context, chyldrim: const Hidricos());
-                },
-              ),
-              GrandIcon(
-                labelButton: 'Análisis Pulmonar',
-                onPress: () {
-                  Operadores.alertActivity(
-                      context: context,
-                      tittle: "¡Disculpas!",
-                      message: "Actividad en construcción");
-                  // Operadores.openDialog(
-                  //     context: context, chyldrim: const Hidricos());
-                },
-              ),
-              GrandIcon(
-                labelButton: 'Edad Corregida',
-                onPress: () {
-                  Operadores.alertActivity(
-                      context: context,
-                      tittle: "¡Disculpas!",
-                      message: "Actividad en construcción");
-                  // Operadores.openDialog(
-                  //     context: context, chyldrim: const Hidricos());
-                },
-              ),
-            ],
-          ),
-          CrossLine(height: 20, thickness: 3),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GrandIcon(
-                iconData: Icons.checklist_rtl,
-                labelButton: "Laboratorios",
-                onPress: () {
-                  Operadores.selectOptionsActivity(
-                    context: context,
-                    tittle: "Elija la fecha de los estudios . . . ",
-                    options: Listas.listWithoutRepitedValues(
-                      Listas.listFromMapWithOneKey(
-                        Pacientes.Paraclinicos!,
-                        keySearched: 'Fecha_Registro',
-                      ),
+              Expanded(
+                flex: 4,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GrandIcon(
+                            iconData: Icons.water_drop,
+                            labelButton: 'Análisis Hidrico',
+                            onPress: () =>
+                                Cambios.toNextActivity(context, chyld: Hidricos())),
+                        GrandIcon(
+                          iconData: Icons.bubble_chart,
+                          labelButton: 'Análisis Metabólico',
+                          onPress: () =>
+                      Cambios.toNextActivity(context, chyld: Metabolicos())
+                        ),
+                        GrandIcon(
+                          iconData: Icons.horizontal_rule_sharp,
+                          labelButton: 'Análisis Antropométrico',
+                          onPress: () => Cambios.toNextActivity(context,
+                              chyld: const Antropometricos()),
+                        ),
+                        GrandIcon(
+                            iconData: Icons.monitor_heart_outlined,
+                            labelButton: 'Análisis Cardiovascular',
+                            onPress: () => Cambios.toNextActivity(context,
+                                chyld: Cardiovasculares())),
+                        GrandIcon(
+                          iconData: Icons.all_inclusive_rounded,
+                          labelButton: 'Análisis Ventilatorio',
+                          onPress: () => Cambios.toNextActivity(context,
+                              chyld: Ventilatorios()),
+                        ),
+                        GrandIcon(
+                          iconData: Icons.g_mobiledata,
+                          labelButton: 'Análisis Gasométrico',
+                          onPress: () {
+                            Cambios.toNextActivity(context, chyld: const Gasometricos());
+                          },
+                        ),
+                      ],
                     ),
-                    onClose: (value) {
-                      setState(() {
-                        Datos.portapapeles(
-                            context: context,
-                            text: Auxiliares.porFecha(fechaActual: value));
-                        Navigator.of(context).pop();
-                      });
-                    },
-                  );
-                },
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GrandIcon(
+                          iconData: Icons.accessibility,
+                          labelButton: 'Análisis de Hemáticos',
+                          onPress: () {
+                            Cambios.toNextActivity(context, chyld: const Hematinicos());
+                          },
+                        ),
+                        GrandIcon(
+                          iconData: Icons.gamepad_sharp,
+                          labelButton: 'Análisis Hepáticos',
+                          onPress: () {
+                            // Cambios.toNextActivity(context, chyld:  Analisis());
+                          },
+                        ),
+                        GrandIcon(
+                          labelButton: 'Análisis Renal',
+                          onPress: () {
+                            Operadores.alertActivity(
+                                context: context,
+                                tittle: "¡Disculpas!",
+                                message: "Actividad en construcción");
+                            // Operadores.openDialog(
+                            //     context: context, chyldrim: const Hidricos());
+                          },
+                        ),
+                        GrandIcon(
+                          labelButton: 'Análisis Sanguíneo Circulante',
+                          onPress: () {
+                            Operadores.alertActivity(
+                                context: context,
+                                tittle: "¡Disculpas!",
+                                message: "Actividad en construcción");
+                            // Operadores.openDialog(
+                            //     context: context, chyldrim: const Hidricos());
+                          },
+                        ),
+                        GrandIcon(
+                          labelButton: 'Análisis Pulmonar',
+                          onPress: () {
+                            Operadores.alertActivity(
+                                context: context,
+                                tittle: "¡Disculpas!",
+                                message: "Actividad en construcción");
+                            // Operadores.openDialog(
+                            //     context: context, chyldrim: const Hidricos());
+                          },
+                        ),
+                        GrandIcon(
+                          labelButton: 'Edad Corregida',
+                          onPress: () {
+                            Operadores.alertActivity(
+                                context: context,
+                                tittle: "¡Disculpas!",
+                                message: "Actividad en construcción");
+                            // Operadores.openDialog(
+                            //     context: context, chyldrim: const Hidricos());
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-              GrandIcon(
-                iconData: Icons.list_alt_sharp,
-                labelButton: "Laboratorios",
-                onPress: () {
-                  Datos.portapapeles(
-                      context: context, text: Auxiliares.historial());
-                },
-                onLongPress: () {
-                  Datos.portapapeles(
-                      context: context,
-                      text: Auxiliares.historial(esAbreviado: true));
-                },
+              const SizedBox(width: 10),
+              Expanded(
+                child: CircleIcon(
+                  radios: 35,
+                  difRadios: 7,
+                  tittle: 'Dispositivos . . . ',
+                  iconed: Icons.device_hub,
+                  onChangeValue: ()  =>
+                    Cambios.toNextActivity(context, chyld: const AuxiliaresDispositivos()),
+                ),
               ),
-              GrandIcon(
-                iconData: Icons.line_style,
-                labelButton: "Laboratorios",
-                onPress: () {
-                  Datos.portapapeles(
-                      context: context, text: Auxiliares.getUltimo());
-                },
-                onLongPress: () {
-                  Datos.portapapeles(
-                      context: context,
-                      text: Auxiliares.getUltimo(esAbreviado: true));
-                },
-              ),
-              GrandIcon(
-                iconData: Icons.linear_scale_rounded,
-                labelButton: "Actual e Historial",
-                onPress: () {
-                  Datos.portapapeles(
-                      context: context,
-                      text: Auxiliares.getUltimo(withoutInsighs: true));
-                },
-                onLongPress: () {
-                  Datos.portapapeles(
-                      context: context,
-                      text: Auxiliares.historial(withoutInsighs: true));
-                },
-              ),
+              const SizedBox(width: 10),
             ],
           ),
           CrossLine(height: 20, thickness: 3),
-          // ESPECIALES
+          //
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              GrandIcon(
-                iconData: Icons.speaker,
-                labelButton: "Estudios Especiales . . . ",
-                onPress: () {
-                  Datos.portapapeles(
-                      context: context, text: Auxiliares.getEspeciales());
-                },
-                onLongPress: () {
-                  Datos.portapapeles(
-                      context: context, text: Auxiliares.getEspeciales());
-                },
-              ),
-              GrandIcon(
-                iconData: Icons.hourglass_bottom,
-                labelButton: "Cultivos Recabados . . . ",
-                onPress: () {
-                  Datos.portapapeles(
-                      context: context, text: Auxiliares.getCultivos());
-                },
-                onLongPress: () {
-                  Datos.portapapeles(
-                      context: context, text: Auxiliares.getCultivos());
-                },
-              ),
-              GrandIcon(
-                iconData: Icons.linear_scale,
-                labelButton: "Marcadores Cardiacos . . . ",
-                onPress: () {
-                  Datos.portapapeles(
-                      context: context, text: Auxiliares.getCurvaCardiaca());
-                },
-                onLongPress: () {
-                  Datos.portapapeles(
-                      context: context, text: Auxiliares.getCurvaCardiaca());
-                },
+              Menus.popUpLaboratoriosAuxiliar(context),
+              Menus.popUpLaboratoriosEspeciales(context),
+              CircleIcon(
+                radios: 35,
+                difRadios: 7,
+                tittle: 'Análisis de Terapia . . . ',
+                iconed: Icons.analytics_outlined,
+                onChangeValue: ()  =>
+                    Operadores.openDialog(context: context, chyldrim: TerapiasItems())
+                    // Cambios.toNextActivity(context, chyld: TerapiasItems()),
               ),
             ],
           ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     GrandIcon(
+          //       iconData: Icons.checklist_rtl,
+          //       labelButton: "Laboratorios",
+          //       onPress: () {
+          //         Operadores.selectOptionsActivity(
+          //           context: context,
+          //           tittle: "Elija la fecha de los estudios . . . ",
+          //           options: Listas.listWithoutRepitedValues(
+          //             Listas.listFromMapWithOneKey(
+          //               Pacientes.Paraclinicos!,
+          //               keySearched: 'Fecha_Registro',
+          //             ),
+          //           ),
+          //           onClose: (value) {
+          //             setState(() {
+          //               Datos.portapapeles(
+          //                   context: context,
+          //                   text: Auxiliares.porFecha(fechaActual: value));
+          //               Navigator.of(context).pop();
+          //             });
+          //           },
+          //         );
+          //       },
+          //     ),
+          //     GrandIcon(
+          //       iconData: Icons.list_alt_sharp,
+          //       labelButton: "Laboratorios",
+          //       onPress: () {
+          //         Datos.portapapeles(
+          //             context: context, text: Auxiliares.historial());
+          //       },
+          //       onLongPress: () {
+          //         Datos.portapapeles(
+          //             context: context,
+          //             text: Auxiliares.historial(esAbreviado: true));
+          //       },
+          //     ),
+          //     GrandIcon(
+          //       iconData: Icons.line_style,
+          //       labelButton: "Laboratorios",
+          //       onPress: () {
+          //         Datos.portapapeles(
+          //             context: context, text: Auxiliares.getUltimo());
+          //       },
+          //       onLongPress: () {
+          //         Datos.portapapeles(
+          //             context: context,
+          //             text: Auxiliares.getUltimo(esAbreviado: true));
+          //       },
+          //     ),
+          //     GrandIcon(
+          //       iconData: Icons.linear_scale_rounded,
+          //       labelButton: "Actual e Historial",
+          //       onPress: () {
+          //         Datos.portapapeles(
+          //             context: context,
+          //             text: Auxiliares.getUltimo(withoutInsighs: true));
+          //       },
+          //       onLongPress: () {
+          //         Datos.portapapeles(
+          //             context: context,
+          //             text: Auxiliares.historial(withoutInsighs: true));
+          //       },
+          //     ),
+          //   ],
+          // ),
+          CrossLine(height: 20, thickness: 3),
+          // ESPECIALES
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //   children: [
+          //     GrandIcon(
+          //       iconData: Icons.speaker,
+          //       labelButton: "Estudios Especiales . . . ",
+          //       onPress: () {
+          //         Datos.portapapeles(
+          //             context: context, text: Auxiliares.getEspeciales());
+          //       },
+          //       onLongPress: () {
+          //         Datos.portapapeles(
+          //             context: context, text: Auxiliares.getEspeciales());
+          //       },
+          //     ),
+          //     GrandIcon(
+          //       iconData: Icons.hourglass_bottom,
+          //       labelButton: "Cultivos Recabados . . . ",
+          //       onPress: () {
+          //         Datos.portapapeles(
+          //             context: context, text: Auxiliares.getCultivos());
+          //       },
+          //       onLongPress: () {
+          //         Datos.portapapeles(
+          //             context: context, text: Auxiliares.getCultivos());
+          //       },
+          //     ),
+          //     GrandIcon(
+          //       iconData: Icons.linear_scale,
+          //       labelButton: "Marcadores Cardiacos . . . ",
+          //       onPress: () {
+          //         Datos.portapapeles(
+          //             context: context, text: Auxiliares.getCurvaCardiaca());
+          //       },
+          //       onLongPress: () {
+          //         Datos.portapapeles(
+          //             context: context, text: Auxiliares.getCurvaCardiaca());
+          //       },
+          //     ),
+          //   ],
+          // ),
           CrossLine(height: 20, thickness: 3),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -939,6 +990,12 @@ class _VisualPacientesState extends State<VisualPacientes> {
                   onPress: () => Datos.portapapeles(
                       context: context,
                       text: Gas.Gasometricos.gasometricosNombrado)),
+              GrandIcon(
+                  iconData: Icons.more_horiz,
+                  labelButton: "Gasometricos Avanzado",
+                  onPress: () => Datos.portapapeles(
+                      context: context,
+                      text: Gas.Gasometricos.gasometricosAvanzado)),
             ],
           ),
           CrossLine(height: 20, thickness: 3),
@@ -1103,12 +1160,28 @@ class _VisualPacientesState extends State<VisualPacientes> {
                             }),
                       ])),
               CrossLine(thickness: 3, height: 20, color: Colors.grey),
+          Expanded(
+            flex: 2,
+            child: CircleIcon(
+              iconed: Icons.thermostat,
+              radios: 35,
+              difRadios: 5,
+              tittle: "Dispositivos Empleados. . . ",
+              onChangeValue: () {
+                _key.currentState!.closeEndDrawer();
+                Cambios.toNextActivity(context,
+                    backgroundColor: Theming.cuaternaryColor,
+                    chyld:  const AuxiliaresDispositivos()); // AuxiliarVitales()
+              },
+            ),
+          ),
+
               Expanded(
                 flex: 2,
                 child: CircleIcon(
                   iconed: Icons.query_stats,
-                  radios: 30,
-                  difRadios: 5,
+                  radios: 25,
+                  difRadios: 3,
                   tittle: "Exploraciones y Analisis . . . ",
                   onChangeValue: () {
                     _key.currentState!.closeEndDrawer();

@@ -212,24 +212,24 @@ class _TallerGasometricoState extends State<TallerGasometrico> {
                     CrossLine(),
                     ValuePanel(
                       firstText: 'CaO2', // Contenido Arterial de Oxígeno
-                      secondText: Valores.CAO.toStringAsFixed(2),
+                      secondText: Gasometricos.CAO.toStringAsFixed(2),
                       thirdText: 'mL/O2%',
                     ),
                     ValuePanel(
                       firstText: 'CcO2', // Contenido Capilar de Oxígeno
-                      secondText: Valores.CCO.toStringAsFixed(2),
+                      secondText: Gasometricos.CCO.toStringAsFixed(2),
                       thirdText: 'mL/O2%',
                     ),
                     ValuePanel(
                       firstText: 'CvO2', // Contenido Arterial de Oxígeno
-                      secondText: Valores.CVO.toStringAsFixed(2),
+                      secondText: Gasometricos.CVO.toStringAsFixed(2),
                       thirdText: 'mL/O2%',
                     ),
                     CrossLine(),
                     ValuePanel(
                       firstText:
                           'Da-vO2', // Diferencia Arterio-venosa de Oxígeno
-                      secondText: Valores.DAV.toStringAsFixed(2),
+                      secondText: Gasometricos.DAV.toStringAsFixed(2),
                       thirdText: 'mL',
                     ),
                     CrossLine(),
@@ -283,17 +283,17 @@ class _TallerGasometricoState extends State<TallerGasometrico> {
                     ),
                     ValuePanel(
                       firstText: 'ΔΔCO2',
-                      secondText: Valores.DavCO2.toStringAsFixed(2),
+                      secondText: Gasometricos.DavCO2.toStringAsFixed(2),
                       thirdText: 'mmHg',
                     ),
                     ValuePanel(
                       firstText: 'ΔPavCO2/\nΔPavO2',
-                      secondText: Valores.D_PavCO2D_PavO2.toStringAsFixed(2),
+                      secondText: Gasometricos.D_PavCO2D_PavO2.toStringAsFixed(2),
                       thirdText: "", // 'mmHg/mL',
                     ),
                     ValuePanel(
                       firstText: 'Indice \nMitocondrial',
-                      secondText: Valores.indiceMitocondrial.toStringAsFixed(2),
+                      secondText: Gasometricos.indiceMitocondrial.toStringAsFixed(2),
                       thirdText: "", // 'mmHg/mL',
                     ),
                     // **********************************

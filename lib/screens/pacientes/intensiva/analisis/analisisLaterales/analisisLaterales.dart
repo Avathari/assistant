@@ -7,13 +7,14 @@ import 'package:assistant/screens/pacientes/intensiva/analisis/cardiovasculares.
 import 'package:assistant/screens/pacientes/intensiva/analisis/gasometricos.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/hidricos.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/ventilatorios.dart';
+import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:flutter/material.dart';
 
 class AnalisisLaterales extends StatefulWidget {
   int actualLateralPage;
 
-  AnalisisLaterales({super.key, this.actualLateralPage = 0});
+  AnalisisLaterales({super.key, this.actualLateralPage = 7});
 
   @override
   State<AnalisisLaterales> createState() => _AnalisisLateralesState();
@@ -27,7 +28,7 @@ class _AnalisisLateralesState extends State<AnalisisLaterales> {
         Expanded(
           flex: 8,
           child: widget.actualLateralPage == 0
-              ?  Basico()
+              ?  const Concentraciones()
               : widget.actualLateralPage == 1
               ? Hidricos(isLateral: true)
               : widget.actualLateralPage == 2
@@ -40,7 +41,7 @@ class _AnalisisLateralesState extends State<AnalisisLaterales> {
               ? const Antropometricos()
               : widget.actualLateralPage == 6
               ? const BalanceHidrico()
-              : Container(),
+              : Basico(),
         ),
         // CrossLine(color:Colors.grey),
         Expanded(
@@ -90,6 +91,8 @@ class _AnalisisLateralesState extends State<AnalisisLaterales> {
                       widget.actualLateralPage = 6;
                     })),
                 GrandIcon(
+                    labelButton: " . . . ",
+                    iconData: Icons.account_balance_outlined,
                     onPress: () => setState(() {
                       widget.actualLateralPage = 7;
                     })),

@@ -1,6 +1,7 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/ventometr%C3%ADas.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/operativity/pacientes/valores/semiologia/semiotica.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
@@ -19,6 +20,7 @@ import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 // # Clase .dart para la creación predeterminada de interfaces de registro, consulta y actualización.
 // Contiene un botón que enn _OperacionesVentilacionesState.build que desplega una ventana emergente,
@@ -354,7 +356,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                       child: Column(
                     children: [
                       Expanded(
-                        flex: 4,
+                        flex: isMobile(context) ? 2 : 1,
                         child: Container(
                           padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                           margin: const EdgeInsets.all(8.0),
@@ -373,7 +375,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                             Expanded(
                               child: EditTextArea(
                                 keyBoardType: TextInputType.number,
-                                inputFormat: TextFormat.numberFourFormat,
+                                inputFormat: MaskTextInputFormatter(),
                                 labelEditText: 'Presión Platteu (mmHg)',
                                 textController: pPlatTextController,
                                 numOfLines: 1,
@@ -387,7 +389,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                             Expanded(
                               child: EditTextArea(
                                 keyBoardType: TextInputType.number,
-                                inputFormat: TextFormat.numberFourFormat,
+                                inputFormat: MaskTextInputFormatter(),
                                 labelEditText: 'Presión Máxima (mmHg)',
                                 textController: pMaximaTextController,
                                 numOfLines: 1,
@@ -574,7 +576,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                       child: Column(
                     children: [
                       Expanded(
-                        flex: 3,
+                        flex: isMobile(context) ? 2: 3,
                         child: Container(
                           padding: const EdgeInsets.all(2.0),
                           margin: const EdgeInsets.all(2.0),
@@ -593,7 +595,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                             Expanded(
                               child: EditTextArea(
                                 keyBoardType: TextInputType.number,
-                                inputFormat: TextFormat.numberFourFormat,
+                                inputFormat: TextFormat.standardFormat,
                                 labelEditText: 'Presión Platteu (mmHg)',
                                 textController: pPlatTextController,
                                 numOfLines: 1,
@@ -607,7 +609,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                             Expanded(
                               child: EditTextArea(
                                 keyBoardType: TextInputType.number,
-                                inputFormat: TextFormat.numberFourFormat,
+                                inputFormat: TextFormat.standardFormat,
                                 labelEditText: 'Presión Máxima (mmHg)',
                                 textController: pMaximaTextController,
                                 numOfLines: 1,
@@ -658,7 +660,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
     return [
       EditTextArea(
         keyBoardType: TextInputType.number,
-        inputFormat: TextFormat.dateFormat,
+        inputFormat: TextFormat.standardFormat,
         labelEditText: 'Vol. Tidal (mL)',
         textController: volTidalTextController,
         numOfLines: 1,
@@ -670,7 +672,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
-        inputFormat: TextFormat.dateFormat,
+        inputFormat: TextFormat.standardFormat,
         labelEditText: 'P.E.E.P. (cmH2O)',
         textController: peepTextController,
         numOfLines: 1,
@@ -682,53 +684,70 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
       ),
       CrossLine(),
       //
-      EditTextArea(
-        keyBoardType: TextInputType.number,
-        inputFormat: TextFormat.numberFourFormat,
-        labelEditText: 'F. Resp (Vent/min)',
-        textController: respTextController,
-        numOfLines: 1,
-        onChange: (value) {
-          setState(() {
-            Valores.frecuenciaVentilatoria = int.parse(value);
-          });
-        },
+      Row(
+        children: [
+          Expanded(
+            child: EditTextArea(
+              keyBoardType: TextInputType.number,
+              inputFormat: TextFormat.standardFormat,
+              labelEditText: 'F. Resp (Vent/min)',
+              textController: respTextController,
+              numOfLines: 1,
+              onChange: (value) {
+                setState(() {
+                  Valores.frecuenciaVentilatoria = int.parse(value);
+                });
+              },
+            ),
+          ),
+          Expanded(
+            child: EditTextArea(
+              keyBoardType: TextInputType.number,
+              inputFormat: TextFormat.standardFormat,
+              labelEditText: 'FiO2 (%)',
+              textController: fioTextController,
+              numOfLines: 1,
+              onChange: (value) {
+                setState(() {
+                  Valores.fraccionInspiratoriaOxigeno = Valores.fraccionInspiratoriaVentilatoria = int.parse(value);
+                });
+              },
+            ),
+          ),
+        ],
       ),
-      EditTextArea(
-        keyBoardType: TextInputType.number,
-        inputFormat: TextFormat.numberFourFormat,
-        labelEditText: 'FiO2 (%)',
-        textController: fioTextController,
-        numOfLines: 1,
-        onChange: (value) {
-          setState(() {
-            Valores.fraccionInspiratoriaOxigeno = Valores.fraccionInspiratoriaVentilatoria = int.parse(value);
-          });
-        },
-      ),
-      EditTextArea(
-        keyBoardType: TextInputType.number,
-        inputFormat: TextFormat.numberFourFormat,
-        labelEditText: 'Sens. Insp. (Seg)',
-        textController: sensInspTextController,
-        numOfLines: 1,
-        onChange: (value) {
-          setState(() {
-            Valores.sensibilidadInspiratoria = int.parse(value);
-          });
-        },
-      ),
-      EditTextArea(
-        keyBoardType: TextInputType.number,
-        inputFormat: TextFormat.numberFourFormat,
-        labelEditText: 'Sens. Esp. (Seg)',
-        textController: sensEspTextController,
-        numOfLines: 1,
-        onChange: (value) {
-          setState(() {
-            Valores.sensibilidadEspiratoria = int.parse(value);
-          });
-        },
+      CrossLine(),
+      Row(
+        children: [
+          Expanded(
+            child: EditTextArea(
+              keyBoardType: TextInputType.number,
+              inputFormat: TextFormat.standardFormat,
+              labelEditText: 'Sens. Insp. (Seg)',
+              textController: sensInspTextController,
+              numOfLines: 1,
+              onChange: (value) {
+                setState(() {
+                  Valores.sensibilidadInspiratoria = int.parse(value);
+                });
+              },
+            ),
+          ),
+          Expanded(
+            child: EditTextArea(
+              keyBoardType: TextInputType.number,
+              inputFormat: TextFormat.standardFormat,
+              labelEditText: 'Sens. Esp. (Seg)',
+              textController: sensEspTextController,
+              numOfLines: 1,
+              onChange: (value) {
+                setState(() {
+                  Valores.sensibilidadEspiratoria = int.parse(value);
+                });
+              },
+            ),
+          ),
+        ],
       ),
 
       CrossLine(),
@@ -788,6 +807,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         onChange: (value) {
           setState(() {
             Valores.volumenVentilatorio = int.parse(value);
+            flujoTextController.text = Ventometrias.flujoVentilatorioMedido.toStringAsFixed(2);
           });
         },
       ),

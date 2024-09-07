@@ -277,59 +277,67 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           items: Items.ventilatorio,
                           initialValue: Exploracion.faseVentilatoria,
                         ),
-                        Spinner(
-                          width: isDesktop(context)
-                              ? 500
-                              : isTablet(context)
-                              ? 350
-                              : isMobile(context)
-                              ? 216
-                              : 300,
-                          tittle: 'Dispositivo empleado',
-                          onChangeValue: (value) {
-                            setState(() {
-                              Exploracion.dispositivoEmpleado = value;
-                              reInit();
-                            });
-                          },
-                          items: Items.dispositivosOxigeno,
-                          initialValue: Exploracion.dispositivoEmpleado,
-                        ),
-                        Spinner(
-                          width: isDesktop(context)
-                              ? 200
-                              : isTablet(context)
-                              ? 200
-                              : isMobile(context)
-                              ? 216
-                              : 300,
-                          tittle: 'Tubo Endotraqueal',
-                          onChangeValue: (value) {
-                            setState(() {
-                              Exploracion.tuboEndotraqueal = value;
-                              reInit();
-                            });
-                          },
-                          items: Items.tuboendotraqueal,
-                          initialValue: Exploracion.tuboEndotraqueal,
-                        ),
-                        Spinner(
-                          width: isDesktop(context)
-                              ? 200
-                              : isTablet(context)
-                              ? 200
-                              : isMobile(context)
-                              ? 216
-                              : 300,
-                          tittle: 'Distancia a arcada',
-                          onChangeValue: (value) {
-                            setState(() {
-                              Exploracion.haciaArcadaDentaria = value;
-                              reInit();
-                            });
-                          },
-                          items: Items.arcadaDentaria,
-                          initialValue: Exploracion.haciaArcadaDentaria,
+                        // Spinner(
+                        //   width: isDesktop(context)
+                        //       ? 500
+                        //       : isTablet(context)
+                        //       ? 350
+                        //       : isMobile(context)
+                        //       ? 216
+                        //       : 300,
+                        //   tittle: 'Dispositivo empleado',
+                        //   onChangeValue: (value) {
+                        //     setState(() {
+                        //       Exploracion.dispositivoEmpleado = value;
+                        //       reInit();
+                        //     });
+                        //   },
+                        //   items: Items.dispositivosOxigeno,
+                        //   initialValue: Exploracion.dispositivoEmpleado,
+                        // ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Spinner(
+                                width: isDesktop(context)
+                                    ? 200
+                                    : isTablet(context)
+                                    ? 200
+                                    : isMobile(context)
+                                    ? 216
+                                    : 300,
+                                tittle: 'Tubo Endotraqueal',
+                                onChangeValue: (value) {
+                                  setState(() {
+                                    Exploracion.tuboEndotraqueal = value;
+                                    reInit();
+                                  });
+                                },
+                                items: Items.tuboendotraqueal,
+                                initialValue: Exploracion.tuboEndotraqueal,
+                              ),
+                            ),
+                            Expanded(
+                              child: Spinner(
+                                width: isDesktop(context)
+                                    ? 200
+                                    : isTablet(context)
+                                    ? 200
+                                    : isMobile(context)
+                                    ? 216
+                                    : 300,
+                                tittle: 'Distancia a arcada',
+                                onChangeValue: (value) {
+                                  setState(() {
+                                    Exploracion.haciaArcadaDentaria = value;
+                                    reInit();
+                                  });
+                                },
+                                items: Items.arcadaDentaria,
+                                initialValue: Exploracion.haciaArcadaDentaria,
+                              ),
+                            ),
+                          ],
                         ),
                          CrossLine(),
                       ],

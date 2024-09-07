@@ -65,11 +65,13 @@ class Antropometrias {
       "FC ${Valores.frecuenciaCardiaca} L/min, "
       "FR ${Valores.frecuenciaRespiratoria} L/min, "
       "Temp ${Valores.temperaturCorporal}°C, "
-      "SpO2 ${Valores.saturacionPerifericaOxigeno}%, "
-      "PCT ${Valores.pesoCorporalTotal} Kg, "
+      "SpO2 ${Valores.saturacionPerifericaOxigeno}%. \n"
+      "     "
+          "PCT ${Valores.pesoCorporalTotal} Kg, "
       "Estatura ${Valores.alturaPaciente} mts, "
       "IMC ${Antropometrias.imc.toStringAsFixed(2)} Kg/m2, "
-      "PCI ${Antropometrias.pesoCorporalPredicho.toStringAsFixed(2)} Kg";
+      "PCI ${Antropometrias.pesoCorporalPredicho.toStringAsFixed(2)} Kg . . "
+      "Glucemia capilar ${Valores.glucemiaCapilar} mg/dL, con ${Valores.horasAyuno} horas de ayuno";
 
   static String get signosVitales =>
       "Signos vitales con " // fecha de ${Pacientes.Vital['Pace_Feca_SV']} con "
@@ -346,7 +348,7 @@ class Antropometrias {
   }
 
   static double get pesoCorporalGraso {
-   return (porcentajeGrasaCorporal * 100) / Valores.pesoCorporalTotal!;
+    return (porcentajeGrasaCorporal * 100) / Valores.pesoCorporalTotal!;
   }
 
   static double get masaMuscularMagra =>
@@ -507,5 +509,7 @@ class Antropometrias {
   /// Roca O, Caralt B, Messika J, Samper M, et al. An Index Combining Respiratory Rate and Oxygenation to Predict Outcome of Nasal High-Flow Therapy. Am J Respir Crit Care Med. 2019 Jun 1;199(11):1368-1376. PubMed ID: 30576221 ::: https://www.ncbi.nlm.nih.gov/pubmed/30576221
   ///
   static double get indiceRox =>
-      (Valores.saturacionPerifericaOxigeno! / (Valores.fraccionInspiratoriaOxigeno!/100)) / Valores.frecuenciaRespiratoria! ;
+      (Valores.saturacionPerifericaOxigeno! /
+          (Valores.fraccionInspiratoriaOxigeno! / 100)) /
+      Valores.frecuenciaRespiratoria!;
 }

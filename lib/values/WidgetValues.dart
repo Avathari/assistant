@@ -116,6 +116,9 @@ class TextFormat {
       mask: '####',
       filter: {"#": RegExp(r'[0-9]')},
       type: MaskAutoCompletionType.lazy);
+
+  static MaskTextInputFormatter standardFormat = MaskTextInputFormatter(
+  );
 }
 
 class SpinnersValues {

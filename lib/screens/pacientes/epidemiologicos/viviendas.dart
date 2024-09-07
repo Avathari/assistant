@@ -63,68 +63,64 @@ class _ViviendasState extends State<Viviendas> {
     return Column(
       children: [
         TittlePanel(textPanel: 'Conformación de la Vivienda'),
-        SingleChildScrollView(
-          controller: ScrollController(),
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GrandIcon(
-                iconData: Icons.family_restroom,
-                labelButton: 'Propiedad y Co-Habitantes',
-                onPress: () {
-                  setState(() {
-                    carouselController.jumpToPage(0);
-                  });
-                },
-              ),
-              GrandIcon(
-                iconData: Icons.home_repair_service_outlined,
-                labelButton: 'Servicios Domiciliarios',
-                onPress: () {
-                  setState(() {
-                    carouselController.jumpToPage(1);
-                  });
-                },
-              ),
-              GrandIcon(
-                iconData: Icons.maps_home_work_sharp,
-                labelButton: 'Conformación General',
-                onPress: () {
-                  setState(() {
-                    carouselController.jumpToPage(2);
-                  });
-                },
-              ),
-              GrandIcon(
-                iconData: Icons.home_mini,
-                labelButton: 'Conformación Interna',
-                onPress: () {
-                  setState(() {
-                    carouselController.jumpToPage(3);
-                  });
-                },
-              ),
-              GrandIcon(
-                iconData: Icons.fence,
-                labelButton: 'Animales de Corral',
-                onPress: () {
-                  setState(() {
-                    carouselController.jumpToPage(4);
-                  });
-                },
-              ),
-              GrandIcon(
-                iconData: Icons.pets,
-                labelButton: 'Animales de Compañía',
-                onPress: () {
-                  setState(() {
-                    carouselController.jumpToPage(5);
-                  });
-                },
-              ),
-            ],
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            GrandIcon(
+              iconData: Icons.family_restroom,
+              labelButton: 'Propiedad y Co-Habitantes',
+              onPress: () {
+                setState(() {
+                  carouselController.jumpToPage(0);
+                });
+              },
+            ),
+            GrandIcon(
+              iconData: Icons.home_repair_service_outlined,
+              labelButton: 'Servicios Domiciliarios',
+              onPress: () {
+                setState(() {
+                  carouselController.jumpToPage(1);
+                });
+              },
+            ),
+            GrandIcon(
+              iconData: Icons.maps_home_work_sharp,
+              labelButton: 'Conformación General',
+              onPress: () {
+                setState(() {
+                  carouselController.jumpToPage(2);
+                });
+              },
+            ),
+            GrandIcon(
+              iconData: Icons.home_mini,
+              labelButton: 'Conformación Interna',
+              onPress: () {
+                setState(() {
+                  carouselController.jumpToPage(3);
+                });
+              },
+            ),
+            GrandIcon(
+              iconData: Icons.fence,
+              labelButton: 'Animales de Corral',
+              onPress: () {
+                setState(() {
+                  carouselController.jumpToPage(4);
+                });
+              },
+            ),
+            GrandIcon(
+              iconData: Icons.pets,
+              labelButton: 'Animales de Compañía',
+              onPress: () {
+                setState(() {
+                  carouselController.jumpToPage(5);
+                });
+              },
+            ),
+          ],
         ),
         CrossLine(),
         CarouselSlider(

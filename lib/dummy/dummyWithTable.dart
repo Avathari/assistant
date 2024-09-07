@@ -55,7 +55,7 @@ class _dummyWithTableState extends State<dummyWithTable> {
 
   var textDateEstudyController = TextEditingController();
   String? tipoEstudioValue = Imagenologias.typesEstudios[0];
-  String? regionCorporalValue = Imagenologias.regiones[0];
+  String? regionCorporalValue = Imagenologias.regiones[0][0];
   var hallazgosEstudioTextController = TextEditingController();
   var conclusionesTextController = TextEditingController();
   //
@@ -107,7 +107,7 @@ class _dummyWithTableState extends State<dummyWithTable> {
       textDateEstudyController.text = f.format(DateTime.now());
       //
       tipoEstudioValue = Imagenologias.typesEstudios[0];
-      regionCorporalValue = Imagenologias.regiones[0];
+      regionCorporalValue = Imagenologias.regiones[0][0];
       hallazgosEstudioTextController.text = "";
       conclusionesTextController.text = "";
       //
@@ -170,7 +170,7 @@ class _dummyWithTableState extends State<dummyWithTable> {
                       : 300,
           tittle: "Región Corporal",
           initialValue: regionCorporalValue!,
-          items: Imagenologias.regiones,
+          items: Imagenologias.regiones[0],
           onChangeValue: (String? newValue) {
             setState(() {
               regionCorporalValue = newValue!;

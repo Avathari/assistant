@@ -105,7 +105,7 @@ class _DetallesState extends State<Detalles> {
                         child: ThreeLabelTextAline(
                           padding: 2.0,
                           firstText: 'Ocupación',
-                          secondText: Pacientes.Paciente['Pace_Ocupa'].substring(0, 5) ?? '',
+                          secondText: Pacientes.Paciente['Pace_Ocupa'].substring(0, Pacientes.Paciente['Pace_Ocupa'].length) ?? '',
                         ),
                       ),
                     ],

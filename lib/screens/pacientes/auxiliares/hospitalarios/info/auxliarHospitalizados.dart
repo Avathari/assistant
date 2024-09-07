@@ -8,6 +8,7 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizados.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/info/Hospitalizado.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/subjetivos.dart';
+import 'package:assistant/screens/pacientes/auxiliares/revisiones/auxiliares/auxiliaresGenerales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/generales.dart';
 import 'package:assistant/screens/pacientes/epidemiologicos/licencias.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/pendientes.dart';
@@ -339,7 +340,7 @@ class Paneles {
               }
 
               //
-              Cambios.toNextActivity(context, chyld: Generales());
+              Cambios.toNextPage(context, Generales());
             }), // Signos Vitales
         CircleIcon(
             radios: 25,
@@ -369,9 +370,12 @@ class Paneles {
               Pacientes.ID_Paciente = foundedItems![index].idPaciente;
               Pacientes.ID_Hospitalizacion =
                   foundedItems[index].idHospitalizado;
-              //
-              Cambios.toNextActivity(context, chyld: const Subjetivos());
-            }), // Subjetivos
+              // //
+              Cambios.toNextActivity(context,
+                 backgroundColor: Theming.cuaternaryColor,
+                  chyld:  const AuxiliaresDispositivos()); // AuxiliarVitales()
+              // Cambios.toNextActivity(context, chyld: const Subjetivos());
+            }), // AuxiliarVitales // Subjetivos
       ],
     );
   }

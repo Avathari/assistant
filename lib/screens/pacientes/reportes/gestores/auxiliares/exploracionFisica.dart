@@ -6,6 +6,7 @@ import 'package:assistant/screens/pacientes/auxiliares/detalles/menus.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/semiologicos.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/terapias.dart';
 import 'package:assistant/values/SizingInfo.dart';
+import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
@@ -111,13 +112,13 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                 ),
           CrossLine(),
           Expanded(
-            flex: widget.isTerapia! ? 8 : 17, // 6
+            flex: widget.isTerapia! ? 12 : 17, // 6, 8
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  flex: isLargeDesktop(context) ? 12 : 7,
+                  flex: isLargeDesktop(context) ? 12 : isDesktop(context) ? 7: 7, // 12
                   child: EditTextArea(
                       textController: expoTextController,
                       labelEditText: "Exploración física",
@@ -137,48 +138,80 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                 ),
                 widget.isTerapia!
                     ? Expanded(
+                  flex: !isTablet(context) ? 1 :2,
                         child: Column(
                           children: [
-                            Menus.popUpTerapia(context),
-                            Expanded(
-                              flex: 1,
-                              child: GrandIcon(
-                                iconData: Icons.tire_repair_outlined,
-                                labelButton: "Análisis",
-                                onPress: () => setState(() {
-                                  //
-                                  expoTextController.text =
-                                      Reportes.exploracionFisica =
-                                  Reportes.reportes['Exploracion_Fisica'] =
-                                      Formatos.exploracionTerapia;
-                                })),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Menus.popUpTerapia(context),
                             ),
-                            Expanded(
-                              flex: 1,
-                              child: GrandIcon(
-                                iconData: Icons.account_balance_wallet_outlined,
-                                labelButton: "Analisis Corto",
-                                  onPress: () => setState(() {
-                                    //
-                                    expoTextController.text =
-                                        Reportes.exploracionFisica =
-                                    Reportes.reportes['Exploracion_Fisica'] = Formatos.exploracionTerapiaCorta;
-                                  })),
-                              ),
-                            Expanded(
-                              flex: 1,
-                              child: GrandIcon(
-                                iconData: Icons.streetview,
-                                labelButton: "Analisis Corto",
-                                  onPress: () => setState(() {
-                                    //
-                                    expoTextController.text =
-                                        Reportes.exploracionFisica =
-                                    Reportes.reportes['Exploracion_Fisica'] =
-                                        Formatos.exploracionTerapiaBreve;
-                                  })),
+
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: GrandIcon(
+                                    iconData: Icons.tire_repair_outlined,
+                                    labelButton: "Análisis",
+                                    onPress: () => setState(() {
+                                      //
+                                      expoTextController.text =
+                                          Reportes.exploracionFisica =
+                                      Reportes.reportes['Exploracion_Fisica'] =
+                                          Formatos.exploracionTerapia;
+                                    })),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: GrandIcon(
+                                    iconData: Icons.account_balance_wallet_outlined,
+                                    labelButton: "Analisis Corto",
+                                      onPress: () => setState(() {
+                                        //
+                                        expoTextController.text =
+                                            Reportes.exploracionFisica =
+                                        Reportes.reportes['Exploracion_Fisica'] = Formatos.exploracionTerapiaCorta;
+                                      })),
+                                  ),
+                              ],
                             ),
-                            CrossLine(),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: GrandIcon(
+                                    iconData: Icons.streetview,
+                                    labelButton: "Analisis Corto",
+                                      onPress: () => setState(() {
+                                        //
+                                        expoTextController.text =
+                                            Reportes.exploracionFisica =
+                                        Reportes.reportes['Exploracion_Fisica'] =
+                                            Formatos.exploracionTerapiaBreve;
+                                      })),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: GrandIcon(
+                                      iconData: Icons.self_improvement_sharp,
+                                      labelButton: "Analisis Simplificado",
+                                      onPress: () => setState(() {
+                                        //
+                                        expoTextController.text =
+                                            Reportes.exploracionFisica =
+                                        Reportes.reportes['Exploracion_Fisica'] =
+                                            Formatos.exploracionTerapiaCortaSimplificada;
+                                      })),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+    Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Menus.popUpVentometrias(context),
+    ),
+    CrossLine(),
                             Expanded(
                                 child: GrandIcon(
                               labelButton: 'Ver',
@@ -191,7 +224,27 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                                 //     message: expoTextController.text);
                               },
                             )),
-                            CrossLine(),
+                            CrossLine(height: 5),
+                            CircleIcon(
+                              iconed: Icons.travel_explore_sharp,
+                              tittle: "Analisis de terapia intensiva",
+                              onChangeValue: () => setState(() {
+                                Operadores.openDialog(
+                                    context: context,
+                                    chyldrim: TerapiasItems(),
+                                    onAction: () {
+                                      setState(() {
+                                        expoTextController.text = Reportes.exploracionFisica;
+                                        Reportes.reportes['Exploracion_Fisica'] =
+                                            Reportes.exploracionFisica;
+                                      });
+                                    });
+                                // asignarExploracion(indice: 3);
+                              }),
+
+                            ),
+                            //
+                            const SizedBox(height: 7),
                             Expanded(
                               child: GrandIcon(
                                 iconData: Icons.linear_scale_rounded,

@@ -3,10 +3,9 @@ import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
-import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
-import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -55,10 +54,13 @@ class _ArterialesState extends State<Arteriales> {
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
         ),
+        const SizedBox(height: 12),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   ValuePanel(
                     firstText: "Na+",
@@ -75,15 +77,55 @@ class _ArterialesState extends State<Arteriales> {
                     secondText: Valores.cloro!.toString(),
                     thirdText: "mg/dL",
                   ),
+                  CrossLine(),
+                  ValuePanel(
+                    firstText: "Mg-",
+                    secondText: Valores.magnesio!.toString(),
+                    thirdText: "mEq/L",
+                  ),
+                  ValuePanel(
+                    firstText: "Ca2+",
+                    secondText: Valores.calcio!.toString(),
+                    thirdText: "mg/dL",
+                  ),
+                  ValuePanel(
+                    firstText: "PO3-",
+                    secondText: Valores.fosforo!.toString(),
+                    thirdText: "mg/dL",
+                  ),
+                  CrossLine(),
                   ValuePanel(
                     firstText: "Alb-",
                     secondText: Valores.albuminaSerica!.toString(),
                     thirdText: "g/dL",
                   ),
+                  CrossLine(),
+                  ValuePanel(
+                    firstText: "Hb",
+                    secondText: Valores.hemoglobina!.toString(),
+                    thirdText: "g/dL",
+                  ),
+                  ValuePanel(
+                    firstText: "Hto",
+                    secondText: Valores.hematocrito!.toString(),
+                    thirdText: "%",
+                  ),
+                  CrossLine(),
+                  ValuePanel(
+                    firstText: "Fecha Biometrias",
+                    secondText: Valores.fechaBiometria!.toString(),
+                    thirdText: "",
+                  ),
+                  ValuePanel(
+                    firstText: "Fecha Químicas",
+                    secondText: Valores.fechaQuimicas!.toString(),
+                    thirdText: "",
+                  ),
                 ],
               ),
             ),
             Expanded(
+              flex: 2,
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(7.0),
                 controller: ScrollController(),
@@ -95,11 +137,8 @@ class _ArterialesState extends State<Arteriales> {
                       inputFormat: MaskTextInputFormatter(),
                       labelEditText: 'PH',
                       numOfLines: 1,
-                      onChange: (value) =>
-                        setState(() =>
-                          Valores.pHArteriales = double.parse(value)
-                        )
-                      ,
+                      onChange: (value) => setState(
+                          () => Valores.pHArteriales = double.parse(value)),
                     ),
                     EditTextArea(
                       textController: textPCOResultController,
@@ -107,11 +146,8 @@ class _ArterialesState extends State<Arteriales> {
                       inputFormat: MaskTextInputFormatter(),
                       labelEditText: 'PCO ($unidadMedidaPCO)',
                       numOfLines: 1,
-                      onChange: (value) =>
-                          setState(() =>
-                          Valores.pcoArteriales = double.parse(value)
-                          )
-                      ,
+                      onChange: (value) => setState(
+                          () => Valores.pcoArteriales = double.parse(value)),
                     ),
 
                     EditTextArea(
@@ -120,11 +156,8 @@ class _ArterialesState extends State<Arteriales> {
                       inputFormat: MaskTextInputFormatter(),
                       labelEditText: 'PO ($unidadMedidaPO)',
                       numOfLines: 1,
-                      onChange: (value) =>
-                          setState(() =>
-                          Valores.poArteriales = double.parse(value)
-                          )
-                      ,
+                      onChange: (value) => setState(
+                          () => Valores.poArteriales = double.parse(value)),
                     ),
 
                     EditTextArea(
@@ -133,11 +166,8 @@ class _ArterialesState extends State<Arteriales> {
                       inputFormat: MaskTextInputFormatter(),
                       labelEditText: 'HCO ($unidadMedidaHCO)',
                       numOfLines: 1,
-                      onChange: (value) =>
-                          setState(() =>
-                          Valores.bicarbonatoArteriales = double.parse(value)
-                          )
-                      ,
+                      onChange: (value) => setState(() =>
+                          Valores.bicarbonatoArteriales = double.parse(value)),
                     ),
                     EditTextArea(
                       textController: textFIOResultController,
@@ -145,11 +175,8 @@ class _ArterialesState extends State<Arteriales> {
                       inputFormat: MaskTextInputFormatter(),
                       labelEditText: 'FIO ($unidadMedidaFIO)',
                       numOfLines: 1,
-                      onChange: (value) =>
-                          setState(() =>
-                          Valores.fioArteriales = double.parse(value)
-                          )
-                      ,
+                      onChange: (value) => setState(
+                          () => Valores.fioArteriales = double.parse(value)),
                     ),
                     EditTextArea(
                       textController: textSOResultController,
@@ -157,11 +184,8 @@ class _ArterialesState extends State<Arteriales> {
                       inputFormat: MaskTextInputFormatter(),
                       labelEditText: 'SO ($unidadMedidaSO)',
                       numOfLines: 1,
-                      onChange: (value) =>
-                          setState(() =>
-                          Valores.soArteriales = double.parse(value)
-                          )
-                      ,
+                      onChange: (value) => setState(
+                          () => Valores.soArteriales = double.parse(value)),
                     ),
                     EditTextArea(
                       textController: textLactResultController,
@@ -169,36 +193,97 @@ class _ArterialesState extends State<Arteriales> {
                       inputFormat: MaskTextInputFormatter(),
                       labelEditText: 'Lactato ($unidadMedidaLact)',
                       numOfLines: 1,
-                      onChange: (value) =>
-                          setState(() =>
-                          Valores.lactatoArterial = double.parse(value)
-                          )
-                      ,
+                      onChange: (value) => setState(
+                          () => Valores.lactatoArterial = double.parse(value)),
                     ),
 
                     // Botton ***** ******* ****** * ***
                     CrossLine(
                       color: Colors.grey,
                     ),
-                    Container(
-                      margin: const EdgeInsets.all(5.0),
-                      decoration: ContainerDecoration.roundedDecoration(),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: GrandButton(
-                                labelButton: "Agregar Datos",
-                                weigth: 2000,
-                                onPress: () {
-                                  operationMethod();
-                                }),
-                          )
-                        ],
-                      ),
-                    )
+                    CircleIcon(
+                        tittle: "Agregar Datos . . . ",
+                        iconed: Icons.move_up_rounded,
+                        onChangeValue: () => operationMethod()),
+                    // GrandButton(
+                    //     labelButton: "Agregar Datos",
+                    //     weigth: 2000,
+                    //     onPress: () {
+                    //       operationMethod();
+                    //     })
                   ],
                 ),
+              ),
+            ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  ValuePanel(
+                    firstText: "PAO2",
+                    secondText: Gasometricos.PAO.toStringAsFixed(0),
+                    thirdText: "mmHg",
+                  ),
+                  ValuePanel(
+                    firstText: "PIO2",
+                    secondText: Gasometricos.PIO.toStringAsFixed(0),
+                    thirdText: "mmHg",
+                  ),
+                  ValuePanel(
+                    firstText: "AaO2",
+                    secondText: Gasometricos.GAA.toStringAsFixed(0),
+                    thirdText: "mmHg",
+                  ),
+                  CrossLine(),
+                  CrossLine(),
+                  ValuePanel(
+                    firstText: "CaO2",
+                    secondText: Gasometricos.CAO.toStringAsFixed(0),
+                    thirdText: "mL/dL",
+                  ),
+                  ValuePanel(
+                    firstText: "CcO2",
+                    secondText: Gasometricos.CCO.toStringAsFixed(0),
+                    thirdText: "mL/dL",
+                  ),
+                  CrossLine(),
+                  ValuePanel(
+                    firstText: "PCO2e",
+                    secondText: Gasometricos.PCO2esperado.toStringAsFixed(2),
+                    thirdText: "mmHg",
+                  ),
+                  ValuePanel(
+                    firstText: "EBe",
+                    secondText:
+                    Gasometricos.excesoBaseEsperado.toStringAsFixed(2),
+                    thirdText: "",
+                  ),
+                  CrossLine(),
+                  ValuePanel(
+                    firstText: "DIFa",
+                    secondText: Gasometricos.diferenciaIonesFuertesAparente
+                        .toStringAsFixed(0),
+                    thirdText: "",
+                  ),
+                  ValuePanel(
+                    firstText: "DIFe",
+                    secondText: Gasometricos.diferenciaIonesFuertesEfectiva
+                        .toStringAsFixed(2),
+                    thirdText: "",
+                  ),
+                  ValuePanel(
+                    firstText: "Atot",
+                    secondText: Gasometricos.aTOT.toStringAsFixed(2),
+                    thirdText: "",
+                  ),
+                  ValuePanel(
+                    firstText: "GIF",
+                    secondText: Gasometricos.GIF.toStringAsFixed(2),
+                    thirdText: "",
+                  ),
+                  CrossLine(),
+
+                ],
               ),
             ),
             Expanded(
@@ -210,6 +295,12 @@ class _ArterialesState extends State<Arteriales> {
                     thirdText: "",
                   ),
                   ValuePanel(
+                    firstText: "aGAP/Alb",
+                    secondText: Gasometricos.aGapAlb.toStringAsFixed(2),
+                    thirdText: "",
+                  ),
+                  CrossLine(),
+                  ValuePanel(
                     firstText: "dGAP",
                     secondText: Gasometricos.d_GAP.toStringAsFixed(2),
                     thirdText: "mmol/L",
@@ -219,6 +310,8 @@ class _ArterialesState extends State<Arteriales> {
                     secondText: Gasometricos.d_HCO.toStringAsFixed(2),
                     thirdText: "mmol/L",
                   ),
+                  CrossLine(),
+                  CrossLine(),
                   ValuePanel(
                     firstText: "Delta delta",
                     secondText: Gasometricos.D_d_GAP.toStringAsFixed(2),
@@ -229,25 +322,42 @@ class _ArterialesState extends State<Arteriales> {
                     secondText: Gasometricos.D_d_ratio.toStringAsFixed(2),
                     thirdText: "",
                   ),
-                  ValuePanel(
-                    firstText: "aGAP/Alb",
-                    secondText: Gasometricos.aGapAlb.toStringAsFixed(2),
-                    thirdText: "",
-                  ),
-                  ValuePanel(
-                    firstText: "aGAP/Alb",
-                    secondText: Gasometricos.aGapAlb.toStringAsFixed(2),
-                    thirdText: "",
-                  ),
                   CrossLine(),
                   ValuePanel(
                     firstText: "i Cl/Na",
-                    secondText: Gasometricos.indiceCloroSodiio.toStringAsFixed(2),
+                    secondText:
+                        Gasometricos.indiceCloroSodiio.toStringAsFixed(2),
                     thirdText: "",
                   ),
                   ValuePanel(
                     firstText: "dif Na/Cl",
-                    secondText: Gasometricos.diferenciaSodioCloro.toStringAsFixed(2),
+                    secondText:
+                        Gasometricos.diferenciaSodioCloro.toStringAsFixed(2),
+                    thirdText: "",
+                  ),
+                  CrossLine(),
+                  ValuePanel(
+                    firstText: "I. Lact",
+                    secondText:
+                    Gasometricos.influenciaLactato.toStringAsFixed(2),
+                    thirdText: "",
+                  ),
+                  ValuePanel(
+                    firstText: "I. IMedi",
+                    secondText:
+                    Gasometricos.influenciaIonesMedibles.toStringAsFixed(2),
+                    thirdText: "",
+                  ),
+                  ValuePanel(
+                    firstText: "I. Alb",
+                    secondText:
+                    Gasometricos.influenciaAlbumina.toStringAsFixed(2),
+                    thirdText: "",
+                  ),
+                  ValuePanel(
+                    firstText: "I. O-Iones",
+                    secondText:
+                    Gasometricos.influenciaOtrosIones.toStringAsFixed(2),
                     thirdText: "",
                   ),
                 ],
