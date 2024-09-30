@@ -1,8 +1,6 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
-import 'package:assistant/operativity/pacientes/valores/Valorados/citometrias.dart';
-import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
@@ -56,6 +54,49 @@ class _InmunologicosState extends State<Inmunologicos> {
           controller: ScrollController(),
           child: Column(
             children: [
+              // EditTextArea(
+              //   textController: textAcLupicoResultController,
+              //   keyBoardType: TextInputType.number,
+              //   inputFormat: MaskTextInputFormatter(),
+              //   labelEditText:
+              //   'Ac Lúpico ($unidadMedidaAcLupico)',
+              //   numOfLines: 1,
+              // ),
+              EditTextArea(
+                textController: textProteinaCResultController,
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText:
+                'Proteina C ($unidadMedidaProteinaC)',
+                numOfLines: 1,
+              ),
+              EditTextArea(
+                textController: textProteinaSResultController,
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText:
+                'Proteina S ($unidadMedidaProteinaS)',
+                numOfLines: 1,
+              ),
+
+              EditTextArea(
+                textController: textAcCardiolipinaIgGResultController,
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(),
+                labelEditText:
+                'Ac Cardiolipina IgG ($unidadMedidaAcCardiolipinaIgG)',
+                numOfLines: 1,
+              ),
+              // EditTextArea(
+              //   textController: textAcCardiolipinaIgMResultController,
+              //   keyBoardType: TextInputType.number,
+              //   inputFormat: MaskTextInputFormatter(),
+              //   labelEditText:
+              //   'AcCardiolipinaIgM ($unidadMedidaAcCardiolipinaIgM)',
+              //   numOfLines: 1,
+              // ),
+
+              //
               EditTextArea(
                 textController: textAcMusculoLisoResultController,
                 keyBoardType: TextInputType.number,
@@ -338,7 +379,48 @@ class _InmunologicosState extends State<Inmunologicos> {
         unidadMedidaCKligerasOrina!
         //0,
       ],
+      // OTROS 
 
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][33],
+        textProteinaSResultController.text,
+        unidadMedidaProteinaS!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][34],
+        textProteinaCResultController.text,
+        unidadMedidaProteinaC!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][5],
+        textAcCardiolipinaIgGResultController.text,
+        unidadMedidaAcCardiolipinaIgG!
+        //0,
+      ],
+      // [
+      //   "0",
+      //   Pacientes.ID_Paciente.toString(),
+      //   textDateEstudyController.text,
+      //   Auxiliares.Categorias[index],
+      //   Auxiliares.Laboratorios[Auxiliares.Categorias[index]][25],
+      //   textAcCardiolipinaIgMResultController.text,
+      //   unidadMedidaAcCardiolipinaIgM!
+      //   //0,
+      // ],
       
     ];
   }
@@ -395,6 +477,23 @@ class _InmunologicosState extends State<Inmunologicos> {
   var textAcAntiDNAResultController = TextEditingController();
   String? unidadMedidaAcAntiDNA =
   Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
+  
+  //
+  // var textAcLupicoResultController = TextEditingController();
+  // String? unidadMedidaAcLupico =
+  // Auxiliares.Medidas[Auxiliares.Categorias[index]][33];
+  var textProteinaSResultController = TextEditingController();
+  String? unidadMedidaProteinaS =
+  Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
+  var textProteinaCResultController = TextEditingController();
+  String? unidadMedidaProteinaC =
+  Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
+  var textAcCardiolipinaIgGResultController = TextEditingController();
+  String? unidadMedidaAcCardiolipinaIgG =
+  Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
+  // var textAcCardiolipinaIgMResultController = TextEditingController();
+  // String? unidadMedidaAcCardiolipinaIgM =
+  // Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
   
   // OPERACIONES DE LA INTERFAZ ****************** ********
   void cerrar() {

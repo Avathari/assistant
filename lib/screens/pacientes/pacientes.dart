@@ -87,9 +87,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
               },
             ),
             IconButton(
-              icon: const Icon(
-                Icons.add_card
-              ),
+              icon: const Icon(Icons.add_card),
               tooltip: Sentences.add_usuario,
               onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                 builder: (BuildContext context) => OperacionesPacientes(
@@ -298,7 +296,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                                 .start,
                                                         children: [
                                                           Text(
-                                                            "Número Paciente : ${snapshot.data[posicion]['ID_Pace']}",
+                                                            "Número Paciente : ${snapshot.data[posicion]['ID_Pace'] ?? ""}",
                                                             textAlign:
                                                                 TextAlign.left,
                                                             style: const TextStyle(
@@ -696,20 +694,37 @@ class _GestionPacientesState extends State<GestionPacientes> {
         message: "Iniciando actividad : : \n "
             "Consulta de pacientes hospitalizados . . .");
     Actividades.detalles(Databases.siteground_database_regpace,
-            Pacientes.pacientes['pacientesStadistics'])
+            Pacientes.pacientes['pacientesStadistics'], emulated: true)
         .then((value) {
       Archivos.createJsonFromMap([value],
           filePath: 'assets/vault/patientsStats.json');
+    }).catchError((e, stackTrace) {
+      Operadores.alertActivity(
+          context: context,
+          tittle: "$e",
+          message: "$stackTrace",
+          onAcept: () {
+            Navigator.of(context).pop();
+          });
     });
+
     Actividades.consultar(Databases.siteground_database_regpace,
-            Pacientes.pacientes['consultQuery']!)
+            Pacientes.pacientes['consultQuery']!, emulated: true)
         .then((value) {
       setState(() {
         Terminal.printSuccess(
-            message: "Actualizando repositorio de pacientes . . . ");
+            message: "Actualizando repositorio de pacientes . . . $value");
         foundedItems = Pacientes.Pacientary = value;
         Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
       });
+    }).catchError((e, stackTrace) {
+      Operadores.alertActivity(
+          context: context,
+          tittle: "$e",
+          message: "$stackTrace",
+          onAcept: () {
+            Navigator.of(context).pop();
+          });
     });
     // .whenComplete(() => Operadores.alertActivity(
     //         context: context,
@@ -794,7 +809,10 @@ class _GestionPacientesState extends State<GestionPacientes> {
         Operadores.alertActivity(
             context: context,
             tittle: "Error al Cargar Valores . . . ",
-            message: "ERROR : : $error : $stackTrace");
+            message: "ERROR : : $error : $stackTrace",
+            onAcept: () {
+              Navigator.of(context).pop();
+            });
         return false;
       }); // print("response $response");
       //
@@ -1018,7 +1036,9 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: isMobile(context) || isDesktop(context) || isLargeDesktop(context) ||
+      appBar: isMobile(context) ||
+              isDesktop(context) ||
+              isLargeDesktop(context) ||
               isTablet(
                   context) // widget.operationActivity == Constantes.Register
           ? AppBar(
@@ -2218,5 +2238,5 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
 //
   List<dynamic>? listOfValues;
 
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
 }

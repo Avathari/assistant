@@ -27,7 +27,7 @@ class Hidricos extends StatefulWidget {
 }
 
 class _HidricosState extends State<Hidricos> {
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
 
   var sodioInfundidoTextController = TextEditingController();
 

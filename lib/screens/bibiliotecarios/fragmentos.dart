@@ -363,7 +363,7 @@ class _OperacionesFragmentosState extends State<OperacionesFragmentos> {
   var conceptoFragmentosTextController = TextEditingController();
   var fragmentoFragmentosTextController = TextEditingController();
   //
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
 }
 
 class GestionFragmentos extends StatefulWidget {

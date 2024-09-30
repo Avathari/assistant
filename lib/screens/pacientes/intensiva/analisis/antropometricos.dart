@@ -23,7 +23,7 @@ class Antropometricos extends StatefulWidget {
 }
 
 class _AntropometricosState extends State<Antropometricos> {
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
 
   @override
   Widget build(BuildContext context) {

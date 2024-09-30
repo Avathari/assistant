@@ -197,7 +197,7 @@ class _ReporteEgresoState extends State<ReporteEgreso> {
   // ######################### ### # ### ############################
   // Controladores de widgets en general.
   // ######################### ### # ### ############################
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
   // ######################### ### # ### ############################
   // Variables auxiliares de widget.
   // ######################### ### # ### ############################

@@ -9,6 +9,7 @@ import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/embarazadas
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizados.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
+import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/extractorParaclinicos.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/semiologicos.dart';
 import 'package:assistant/screens/usuarios/usuarios.dart';
 import 'package:assistant/screens/vocablos/vocablos.dart';
@@ -710,6 +711,17 @@ class PacientesPanel extends StatelessWidget {
               },
             ),
 
+            HomeButton(
+              iconData: Icons.temple_buddhist,
+              labelButton: "Tester (Paraclinicos Extractor)",
+              onPress: () {
+                toNextScreen(context: context, screen: ParaclinicosExtractor());
+                // Operadores.alertActivity(
+                //     context: context,
+                //     tittle: "Error",
+                //     message: "Interfaz en contrucción");
+              },
+            ),
             HomeButton(
               iconData: Icons.warning_amber,
               labelButton: "",

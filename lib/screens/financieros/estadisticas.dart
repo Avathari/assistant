@@ -56,7 +56,7 @@ class _EstadisticasActivosState extends State<EstadisticasActivos> {
     'Total_Registrados': 0,
   };
   var statScrollController = ScrollController();
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
 
   @override
   void initState() {

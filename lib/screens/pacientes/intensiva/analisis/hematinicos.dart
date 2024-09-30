@@ -27,7 +27,7 @@ class Hematinicos extends StatefulWidget {
 }
 
 class _HematinicosState extends State<Hematinicos> {
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
 
   var volumenSanguineoTextController = TextEditingController();
 

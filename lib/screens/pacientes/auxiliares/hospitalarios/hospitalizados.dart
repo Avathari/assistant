@@ -70,10 +70,22 @@ class _HospitalizadosState extends State<Hospitalizados> {
       });
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "Error : $error");
-      _pullListRefresh().onError((error, stackTrace) {
-        return errorLoggerSnackBar(context,
-            error: error, stackTrace: stackTrace);
+      _pullListRefresh().catchError((e, stackTrace) {
+        Operadores.alertActivity(
+            context: context,
+            tittle: "$e",
+            message: "$stackTrace",
+            onAcept: () {
+              Navigator.of(context).pop();
+            });
       });
+      // _pullListRefresh().onError((error, stackTrace) {
+      //   Operadores.alertActivity(context: context,
+      //   tittle: "$error",
+      //       message: "$error");
+      //   return errorLoggerSnackBar(context,
+      //       error: error, stackTrace: stackTrace);
+      // });
     });
     Terminal.printWarning(
         message:
@@ -820,7 +832,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                           String penden = "";
                           // *********************************
                           for (var i in Pacientes.Pendiente!) {
-                            if (i['Pace_PEN'] !='Procedimientos') {
+                            if (i['Pace_PEN'] != 'Procedimientos') {
                               penden = "$penden"
                                   "${i['Pace_PEN'].toUpperCase()} - \n"
                                   "${i['Pace_Desc_PEN']}" //  - ${i['Pace_PEN_realized']}"
@@ -832,8 +844,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                               context: context,
                               text:
                                   "${foundedItems![index].hospitalizedData['Id_Cama']} - $penden \n"
-                                      "${        Internado.getCultivos(
-                                      listadoFrom: foundedItems![index].paraclinicos)}");
+                                  "${Internado.getCultivos(listadoFrom: foundedItems![index].paraclinicos)}");
                         }),
                     const SizedBox(height: 60),
                   ],
@@ -1123,8 +1134,9 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                 .getParaclinicosHistorial()
                                 .then((response) async => setState(
                                     () => // Terminal.printNotice(message: response.toString());
-                                Pacientes.Paraclinicos = snapshot
-                                    .data![index].paraclinicos = response));
+                                        Pacientes.Paraclinicos = snapshot
+                                            .data![index]
+                                            .paraclinicos = response));
                           },
                         ),
                       ),
@@ -1392,7 +1404,8 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                         String penden = "";
                                         // *********************************
                                         for (var i in Pacientes.Pendiente!) {
-                                          if (i['Pace_PEN'] !='Procedimientos') {
+                                          if (i['Pace_PEN'] !=
+                                              'Procedimientos') {
                                             penden = "$penden"
                                                 "${i['Pace_PEN'].toUpperCase()} - \n"
                                                 "${i['Pace_Desc_PEN']}" //  - ${i['Pace_PEN_realized']}"
@@ -1403,9 +1416,8 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                         Datos.portapapeles(
                                             context: context,
                                             text:
-                                            "${foundedItems![index].hospitalizedData['Id_Cama']} - $penden \n "
-                                                "${        Internado.getCultivos(
-                                                listadoFrom: foundedItems![index].paraclinicos)}");
+                                                "${foundedItems![index].hospitalizedData['Id_Cama']} - $penden \n "
+                                                "${Internado.getCultivos(listadoFrom: foundedItems![index].paraclinicos)}");
                                       }),
                                 ],
                               ),
@@ -1683,7 +1695,16 @@ class _HospitalizadosState extends State<Hospitalizados> {
     var response = await Actividades.consultar(
       Databases.siteground_database_regpace,
       Pacientes.pacientes['consultHospitalized'],
-    );
+    ).catchError((e, stackTrace) {
+      Navigator.of(context).pop(); // Cerrar LoadingActivity .
+      Operadores.alertActivity(
+          context: context,
+          tittle: "$e",
+          message: "$stackTrace",
+          onAcept: () {
+            Navigator.of(context).pop();
+          });
+    });
     //
     for (int i = 0; i < response.length; i++) {
       hospitalized.insert(i,
@@ -1806,9 +1827,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
               ? 270
               : 430
           : 50,
-      height: isMobile(context)
-          ? 850
-          : 1000,
+      height: isMobile(context) ? 850 : 1000,
       color: Colors.black54,
       child: widget.actualLateralPage == 0
           ? Wrap(

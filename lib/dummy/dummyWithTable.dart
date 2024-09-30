@@ -35,7 +35,7 @@ class _dummyWithTableState extends State<dummyWithTable> {
   // ############################ ####### ####### #############################
   // Variables de Ejecución
   // ############################ ####### ####### #############################
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
   var scrollController = ScrollController();
   // ############################ ####### ####### #############################
   // Variables de Ejecución

@@ -627,7 +627,7 @@ class _OperacionesBibliotecasState extends State<OperacionesBibliotecas> {
   //
   var typesArteValue = Bibliotecas.typesBibliotecas[0];
   //
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
 
   String? filePath = ""; // , fileStringBaseEncode = "";
 //

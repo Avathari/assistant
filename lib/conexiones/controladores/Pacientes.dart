@@ -6441,11 +6441,10 @@ class Auxiliares {
 
   static Future<Map<String, dynamic>> ultimoRegistro() async {
     // Terminal.printNotice(message: "${Auxiliares.auxiliares['auxiliarStadistics']}");
-    return await Actividades.detallesById(
+    return await Actividades.detalles(
         Databases.siteground_database_reggabo,
         Pacientes.getAuxiliaryStats(Pacientes.ID_Paciente),
-        Pacientes.ID_Paciente,
-        emulated: true);
+        emulated: false);
   }
 
   static void registros({String? tipoEstudio}) {
@@ -7423,12 +7422,12 @@ class Auxiliares {
       "Fracción Inspiratoria de Oxígeno",
       "Saturación de Oxígeno",
       // Electrolitos
-      "Sodio Arterial", // Na2+
+      "Sodio Arterial", // Na2+ // 6
       "Potasio Arterial", // K+
       "Cloro Arterial", // Cl-
-      "Calcio Ionico", // Ca++
+      "Calcio Ionico", // Ca++ // 9
       "Hematocrito Arterial", // HTCart
-      "Glucosa Arterial", // GLUart
+      "Glucosa Arterial", // GLUart // 11
       "Lactato Arterial", // LACart
       // CO-Oximetria
       "Hemoglobina Arterial", // tHb
@@ -7636,8 +7635,8 @@ class Auxiliares {
       "C-ANCA",
       "anti-dsDNA", // 2:
       "U1 ribonucleoproteína (RNP)",
-      "Anticoagulante Lúpico (Anti-La)",
-      "Anticuerpos Anticardiolipina [aCL]",
+      "Anticoagulante Lúpico (Anti-La)", // 4
+      "Anticuerpos Anticardiolipina [aCL]", // 5
       "Cuantificación de IgM",
       "Cuantificación de IgG",
       "Coombs directo", // 8
@@ -7662,10 +7661,14 @@ class Auxiliares {
       "Ac. Anti-Proteinasa 3", // 27 : UI  . .UR/mL : : Positivo si mayor 20 UR/mL
       "Inmunoglobulina A",
       "Inmunoglobulina G",
-      "Inmunoglobulina M",
+      "Inmunoglobulina M", // 30
       "Anti-Ro",
       "Anti-Jo"
-          "",
+          // "Ac. Lúpico", // 33
+      "Proteína S", // 33
+      "Proteina C", //34
+      "",
+      "",
       "",
     ], // Inmunnológicos
     Categorias[23]: [
@@ -7819,7 +7822,7 @@ class Auxiliares {
     Categorias[6]: ["mg/dL"],
     Categorias[7]: ["", "seg"],
     Categorias[8]: ["ng/dL", "mm/Hr", "mg/dL", "ng/mL", "UI/mL"],
-    Categorias[9]: ["", "mmHg", "cmH20", "mmol/L", "%", "mmol/L"],
+    Categorias[9]: ["", "mmHg", "cmH20", "mmol/L", "%", "mmol/L", "mg/dL"],
     Categorias[10]: ["", "mmHg", "cmH20", "mmol/L", "%", "mmol/L"],
     Categorias[11]: ["", "Hem/uL", "mg/dL", "Leu/uL", "cel/Campo"],
     Categorias[12]: [

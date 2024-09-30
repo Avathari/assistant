@@ -20,7 +20,7 @@ class CateterVenosoCentral extends StatefulWidget {
 }
 
 class _CateterVenosoCentralState extends State<CateterVenosoCentral> {
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
   //
   var motivoTextController = TextEditingController();
   var complicacionesTextController = TextEditingController();

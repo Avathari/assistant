@@ -57,7 +57,7 @@ class _AuxiliaresDiagnosticosState extends State<AuxiliaresDiagnosticos> {
 
   Map<String, dynamic>? elementSelected;
 
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
 
   int index = 0, secondIndex = 0;
 

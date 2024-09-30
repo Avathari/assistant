@@ -276,6 +276,11 @@ class Gasometricos {
       (Valores.sodio! + Valores.potasio!) -
           (Valores.cloro! + Valores.bicarbonatoArteriales!);
 
+  static double get GAPA =>
+      (Valores.sodioArteriales! + Valores.potasioArteriales!) -
+          (Valores.cloro! + Valores.bicarbonatoArteriales!);
+
+  //
   static double get PAFI =>
       (Valores.poArteriales! / (Valores.fioArteriales! / 100));
 
@@ -371,6 +376,15 @@ class Gasometricos {
       return GAP;
     }
   }
+
+  static double get aGapAlbArterial {
+    if (Valores.albuminaSerica != null || Valores.albuminaSerica! != 0) {
+      return GAPA + (0.25 * (4.4 - Valores.albuminaSerica!));
+    } else {
+      return GAP;
+    }
+  }
+
 
   /// Gap Osmolar (ΔOms)
   ///

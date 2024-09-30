@@ -217,7 +217,7 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
   }
 
   // Controladores de widgets en general. ******************************
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
   // Variables auxiliares de widget. ***********************************
   num index = 6;
   int wieghtRow = 50;

@@ -1576,10 +1576,10 @@ class _DispositivosState extends State<Dispositivos> {
                   Operadores.editActivity(
                       context: context,
                       keyBoardType: TextInputType.text,
-                      onAcept: (value) {
+                      onAcept: (String? value) {
                         setState(() {
-                          widget.specyficName = value;
-                          widget.onDoubleTap!(value);
+                          widget.specyficName = value!;
+                          // widget.onDoubleTap!(value);
                           // Terminal.printExpected(message: "${widget.specyficName}");
                           Navigator.of(context).pop();
                         });

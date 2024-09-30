@@ -1125,7 +1125,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
   var pInspirattoriaTextController = TextEditingController();
   var pSoporteTextController = TextEditingController();
   //
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
 //
 }
 

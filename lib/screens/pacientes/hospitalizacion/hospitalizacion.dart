@@ -68,7 +68,7 @@ class _OperacionesHospitalizacionesState
   var diasEstanciaTextController = TextEditingController();
   var medicoTratanteTextController = TextEditingController();
   //
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
 
   var servicioTratanteValue;
   var servicioTratanteInicialValue;

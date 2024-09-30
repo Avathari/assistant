@@ -164,7 +164,7 @@ class _GeneralesState extends State<Generales> {
 
   // VARIABLES DE LA INTERFAZ ****************** ********
   var textDateEstudyController = TextEditingController();
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
   // **********************************************
   int idOperation = 0;
   List<dynamic>? listOfFirstValues, listOfSecondValues, listOfValues;

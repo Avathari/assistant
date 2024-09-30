@@ -86,13 +86,7 @@ class Valores {
         Pacientes.ID_Paciente);
     valores.addAll(antro);
     Pacientes.Vital.addAll(antro);
-    final aux = await Actividades.detallesById(
-        Databases.siteground_database_reggabo,
-        Pacientes.getAuxiliaryStats(Pacientes.ID_Paciente),
-        Pacientes.ID_Paciente,
-        emulated: true);
 
-    valores.addAll(aux);
     final elect = await Actividades.consultarId(
         Databases.siteground_database_reggabo,
         Electrocardiogramas.electrocardiogramas['consultLastQuery'],
@@ -114,6 +108,16 @@ class Valores {
         Pacientes.ID_Paciente,
         emulated: true);
     valores.addAll(bala);
+
+    // Terminal.printWarning(message: Pacientes.getAuxiliaryStats(Pacientes.ID_Paciente));
+    final aux = await Auxiliares.ultimoRegistro();
+    valores.addAll(aux);
+    // final aux = await Actividades.detallesById(
+    //     Databases.siteground_database_reggabo,
+    //     Pacientes.getAuxiliaryStats(Pacientes.ID_Paciente),
+    //     Pacientes.ID_Paciente,
+    //     emulated: true);
+    // valores.addAll(aux);
 
     // final hosp = await Actividades.consultarId(
     //     Databases.siteground_database_reghosp,
@@ -991,14 +995,28 @@ class Valores {
       bicarbonatoArteriales,
       excesoBaseArteriales,
       fioArteriales,
-      soArteriales;
+      soArteriales,
+      //
+      hematocritoArteriales = 0,
+      hemoglobinaArteriales = 0,
+      sodioArteriales = 0,
+      potasioArteriales = 0,
+      calcioIonicoArteriales = 0,
+      glucosaArteriales = 0;
   static double? pHVenosos,
       pcoVenosos,
       poVenosos,
       bicarbonatoVenosos,
       excesoBaseVenosos,
       fioVenosos,
-      soVenosos;
+      soVenosos,
+      //
+      hematocritoVenoso = 0,
+      hemoglobinaVenoso = 0,
+      sodioVenoso = 0,
+      potasioVenoso = 0,
+      calcioIonicoVenoso = 0,
+      glucosaVenoso = 0;
 
   //
   static String? fechaElectrolitos;
@@ -1167,8 +1185,6 @@ class Valores {
               (math.pow(Valores.pesoCorporalTotal!, 2) /
                   math.pow(Valores.alturaPaciente!, 2))));
 
-
-
   static double get IRVS =>
       (Cardiometrias.presionArterialMedia / Cardiometrias.indiceCardiaco);
 
@@ -1177,9 +1193,11 @@ class Valores {
   /// VN: 800-1200 dynas/seg/m2
   ///
   static double get RVS {
-    if (Valores.presionVenosaCentral! != null && Valores.presionVenosaCentral! != 0) {
-      return (((Cardiometrias.presionArterialMedia - Valores.presionVenosaCentral!) /
-          Gasometricos.gastoCardiaco) *
+    if (Valores.presionVenosaCentral! != null &&
+        Valores.presionVenosaCentral! != 0) {
+      return (((Cardiometrias.presionArterialMedia -
+                  Valores.presionVenosaCentral!) /
+              Gasometricos.gastoCardiaco) *
           79.9);
     } else {
       return double.nan;
@@ -1188,13 +1206,12 @@ class Valores {
     // RVS # (((Valores.presionArterialMedia! - 12.0) / IC) * 79.9)
   }
 
-
   /// Indice de Extracción de Oxígeno (IEO2%)
   ///
   /// VN: 24-28%
   ///
-  static double get IEO =>
-      (((Gasometricos.DAV / Gasometricos.CAO) * 100)); // # Indice de Extracción de Oxígeno
+  static double get IEO => (((Gasometricos.DAV / Gasometricos.CAO) *
+      100)); // # Indice de Extracción de Oxígeno
   static double get IV =>
       (Ventometrias.presionMediaViaAerea * Valores.frecuenciaVentilatoria!) *
       (Valores.pcoArteriales! / 10);
@@ -1233,7 +1250,10 @@ class Valores {
   /// https://i.pinimg.com/originals/ee/da/3e/eeda3ec80ba4c8c3d2b4fd08bdc4b94e.gif
   /// https://1.bp.blogspot.com/-SyrTV0msTUk/VAaTKeiPOjI/AAAAAAAAAHU/SXATI-vDQWs/s1600/shunt.png
   ///
-  static double get shuntPulmonar => (Gasometricos.CCO - Gasometricos.CAO) / (Gasometricos.CCO - Gasometricos.CVO) * 100;
+  static double get shuntPulmonar =>
+      (Gasometricos.CCO - Gasometricos.CAO) /
+      (Gasometricos.CCO - Gasometricos.CVO) *
+      100;
 
   /// Shunt Pulmonar II : : Fracción QS/QT
   ///     Basado en el Gradiente Alveolo-Arterial
@@ -1316,39 +1336,42 @@ class Valores {
     }
   }
 
-
   /// Disponibilidad de Oxígeno (DO2) (mL/min)
   ///
   /// DO = (GC * CaO2) * (10)
   ///
-  static double get DO =>
-      ((Gasometricos.gastoCardiaco * Gasometricos.CAO) * (10)); // # Disponibilidad de Oxígeno
+  static double get DO => ((Gasometricos.gastoCardiaco * Gasometricos.CAO) *
+      (10)); // # Disponibilidad de Oxígeno
   /// Disponibilidad de Oxígeno Indexado (iDO2) (mL/min/m2)
   ///
   /// DO = (GC * CaO2) * (10)
   ///
   static double get iDO =>
       (DO / Antropometrias.SCE); // # Indice de Disponibilidad de Oxígeno
-  static double get TO =>
-      ((Gasometricos.capacidadOxigeno * Gasometricos.CAO) / (10)); // # Transporte de Oxígeno // CAP_O
+  static double get TO => ((Gasometricos.capacidadOxigeno * Gasometricos.CAO) /
+      (10)); // # Transporte de Oxígeno // CAP_O
 
   /// Shunt Fisiologíco (SF) (QS/QT)
   ///
   /// VN: <15%
   ///
   static double get SF =>
-      ((Gasometricos.CCO - Gasometricos.CAO) / (Gasometricos.CCO - Gasometricos.CVO)) * (100); //  # Shunt Fisiológico
+      ((Gasometricos.CCO - Gasometricos.CAO) /
+          (Gasometricos.CCO - Gasometricos.CVO)) *
+      (100); //  # Shunt Fisiológico
 
   /// Volumen Disponible de Oxígeno
   ///     ** Consumo de Oxígeno
   /// VN : 200-300ml/min
   ///
-  static double get CO =>
-      ((Gasometricos.gastoCardiaco * Gasometricos.DAV) * (10)); // # Consumo de Oxígeno
+  static double get CO => ((Gasometricos.gastoCardiaco * Gasometricos.DAV) *
+      (10)); // # Consumo de Oxígeno
 
   ///
-  static double get cAO => (Gasometricos.CAO / Gasometricos.DAV); // # Cociente Arterial de Oxígeno
-  static double get cVO => (Gasometricos.CVO / Gasometricos.DAV); // # Cociente Venoso de Oxígeno
+  static double get cAO =>
+      (Gasometricos.CAO / Gasometricos.DAV); // # Cociente Arterial de Oxígeno
+  static double get cVO =>
+      (Gasometricos.CVO / Gasometricos.DAV); // # Cociente Venoso de Oxígeno
 
   // static double get presionColoidoOsmotica => // PC
   //     ((Valores.proteinasTotales! - Valores.albuminaSerica!) * 1.4) +
@@ -1687,8 +1710,8 @@ class Valores {
     DateTime dateTime = new DateTime.now();
     print(dateTime.day);
 
-    dateTime = dateTime.add(const Duration(days: (7+365)));
-    dateTime = dateTime.subtract(const Duration(days: (30*3)));
+    dateTime = dateTime.add(const Duration(days: (7 + 365)));
+    dateTime = dateTime.subtract(const Duration(days: (30 * 3)));
     return dateTime.toString();
   }
 
@@ -1704,9 +1727,9 @@ class Valores {
   /// Edad Gestacional Estimada (EGE) - Regla de Alfehld
   ///  ** AFU (cm) + 4 / 4
   ///  Resultado en meses
-  /// 
+  ///
   static edadGestacionalEstimada(double? alturaFondoUterino) {
-    return (alturaFondoUterino! + 4) ;
+    return (alturaFondoUterino! + 4);
   }
 }
 
@@ -1820,15 +1843,20 @@ class Valorados {
       resultado =
           '$cSOFA puntos : menor al 10% de Mortalidad estimada durante la Hospitalización';
     } else if (Datos.isMiddleValue(value: aux, min: 6.0, max: 9.0)) {
-      resultado = '$cSOFA puntos : 15-20% de Mortalidad estimada durante la Hospitalización';
+      resultado =
+          '$cSOFA puntos : 15-20% de Mortalidad estimada durante la Hospitalización';
     } else if (Datos.isMiddleValue(value: aux, min: 9.0, max: 12.0)) {
-      resultado = '$cSOFA puntos : 40-50% de Mortalidad estimada durante la Hospitalización';
+      resultado =
+          '$cSOFA puntos : 40-50% de Mortalidad estimada durante la Hospitalización';
     } else if (Datos.isMiddleValue(value: aux, min: 12.0, max: 14.0)) {
-      resultado = '$cSOFA puntos : 50-60% de Mortalidad estimada durante la Hospitalización';
+      resultado =
+          '$cSOFA puntos : 50-60% de Mortalidad estimada durante la Hospitalización';
     } else if (Datos.isMiddleValue(value: aux, min: 14.0, max: 15.0)) {
-      resultado = '$cSOFA puntos : 60-80% de Mortalidad estimada durante la Hospitalización';
+      resultado =
+          '$cSOFA puntos : 60-80% de Mortalidad estimada durante la Hospitalización';
     } else if (Datos.isUpperValue(value: aux, lim: 15)) {
-      resultado = '$cSOFA puntos : 90% de Mortalidad estimada durante la Hospitalización';
+      resultado =
+          '$cSOFA puntos : 90% de Mortalidad estimada durante la Hospitalización';
     } else {
       resultado = 'no concordante. ';
     }
@@ -2215,19 +2243,26 @@ class Valorados {
       resultado =
           '$cAPACHE puntos : menor al 4% de Mortalidad estimada durante la Hospitalización';
     } else if (Datos.isMiddleValue(value: aux, min: 5.0, max: 10.0)) {
-      resultado = '$cAPACHE puntos : 8% de Mortalidad estimada durante la Hospitalización';
+      resultado =
+          '$cAPACHE puntos : 8% de Mortalidad estimada durante la Hospitalización';
     } else if (Datos.isMiddleValue(value: aux, min: 10.0, max: 15.0)) {
-      resultado = '$cAPACHE puntos : 15% de Mortalidad estimada durante la Hospitalización';
+      resultado =
+          '$cAPACHE puntos : 15% de Mortalidad estimada durante la Hospitalización';
     } else if (Datos.isMiddleValue(value: aux, min: 15.0, max: 20.0)) {
-      resultado = '$cAPACHE puntos : 25% de Mortalidad estimada durante la Hospitalización';
+      resultado =
+          '$cAPACHE puntos : 25% de Mortalidad estimada durante la Hospitalización';
     } else if (Datos.isMiddleValue(value: aux, min: 20.0, max: 25.0)) {
-      resultado = '$cAPACHE puntos : 40% de Mortalidad estimada durante la Hospitalización';
+      resultado =
+          '$cAPACHE puntos : 40% de Mortalidad estimada durante la Hospitalización';
     } else if (Datos.isMiddleValue(value: aux, min: 25.0, max: 30.0)) {
-      resultado = '$cAPACHE puntos : 55% de Mortalidad estimada durante la Hospitalización';
+      resultado =
+          '$cAPACHE puntos : 55% de Mortalidad estimada durante la Hospitalización';
     } else if (Datos.isMiddleValue(value: aux, min: 30.0, max: 34.0)) {
-      resultado = '$cAPACHE puntos : 75% de Mortalidad estimada durante la Hospitalización';
+      resultado =
+          '$cAPACHE puntos : 75% de Mortalidad estimada durante la Hospitalización';
     } else if (Datos.isUpperValue(value: aux, lim: 34)) {
-      resultado = '$cAPACHE puntos : 85% de Mortalidad estimada durante la Hospitalización';
+      resultado =
+          '$cAPACHE puntos : 85% de Mortalidad estimada durante la Hospitalización';
     } else {
       resultado = 'no concordante. ';
     }
@@ -2976,20 +3011,20 @@ class Formatos {
       "Apoyo ventilatorio "
       "mediante ${Exploracion.tuboEndotraqueal} ${Exploracion.haciaArcadaDentaria!.toLowerCase()}. "
       "${Ventometrias.ventiladorCorto}. "
-  // Parametros ideals
+      // Parametros ideals
       "pCO2_e ${Gasometricos.PCO2esperado.toStringAsFixed(0)} mmHg. "
       "pO2_e ${Gasometricos.PaO2_estimado.toStringAsFixed(0)} mmHg, "
       "FiO2_i ${Ventometrias.fiO2deal.toStringAsFixed(0)} mmHg, "
       "VT_i ${Ventometrias.volumenTidalIdeal.toStringAsFixed(0)} mmHg. "
       "RSBI ${Ventometrias.indiceTobinYang.toStringAsFixed(0)} mmHg. "
-  // **************** ************ ********
+      // **************** ************ ********
       "Última gasometría (${Valores.fechaGasometriaArterial}): "
       "PaCO2 ${Valores.pcoArteriales!.toStringAsFixed(0)} mmHg, "
       "PaO2 ${Valores.poArteriales!.toStringAsFixed(0)} mmHg, "
       "SaO2 ${Valores.soArteriales!.toStringAsFixed(0)} %, "
       "PaO2/FiO2 ${Gasometricos.PAFI.toStringAsFixed(0)} mmHg. "
       "Aa-O2 ${Gasometricos.GAA.toStringAsFixed(0)} mmHg. "
-  //
+      //
       "Murmullo vesicular audible, sin estertores ni sibilancias. "
       "\n"
       "          "
@@ -3042,7 +3077,7 @@ class Formatos {
   static String get exploracionTerapiaCortaSimplificada => ""
       "${Antropometrias.vitalesTerapiaAbreviado}\n"
       "Durante la Exploración Física, siendo evaluado por Aparatos y Sistemas, es encontrado: \n"
-  // Parametros ideals
+      // Parametros ideals
       "     "
       "Glucometría ${Valores.glucemiaCapilar} mg/dL, "
       //  "pCO2_e ${Gasometricos.PCO2esperado.toStringAsFixed(0)} mmHg. "
@@ -3050,7 +3085,7 @@ class Formatos {
       "FiO2_i ${Ventometrias.fiO2deal.toStringAsFixed(0)} %, "
       "VT_i ${Ventometrias.volumenTidalIdeal.toStringAsFixed(0)} mL. "
       "RSBI ${Ventometrias.indiceTobinYang.toStringAsFixed(0)} Resp/L.min. "
-  "\n"
+      "\n"
       "     .     "
       "R.A.S.S. ${Exploracion.rass}, "
       "En sedoanalgesia con ${Exploracion.sedoanalgesia}, "
@@ -3061,7 +3096,7 @@ class Formatos {
       "mediante ${Exploracion.tuboEndotraqueal} ${Exploracion.haciaArcadaDentaria!.toLowerCase()}. "
       "${Ventometrias.ventiladorCorto}. "
       "Murmullo vesicular audible, sin estertores ni sibilancias. "
-  //
+      //
       "Precordio ritmico, eudinámico, homócrotos; "
       "TAM ${Cardiometrias.presionArterialMedia.toStringAsFixed(0)} mmHg, "
       "${Exploracion.apoyoAminergico!.toLowerCase()}; "
@@ -3079,33 +3114,33 @@ class Formatos {
 
   //
 
-      // "${Exploracion.antibioticoterapia!.toLowerCase()}; última biometría hemática (${Valores.fechaBiometria}): "
-      // "Hb ${Valores.hemoglobina} g/dL, "
-      // "Hto ${Valores.hematocrito}%, "
-      // "Leu ${Valores.leucocitosTotales} K/uL, "
-      // "Neu ${(Valores.neutrofilosTotales! / Valores.leucocitosTotales!).toStringAsFixed(2)} K/uL, "
-      // "Lyn ${(Valores.linfocitosTotales! / Valores.leucocitosTotales!).toStringAsFixed(2)} K/uL, "
-      // "reactantes de fase aguda con "
-      // "PCR ${Valores.proteinaCreactiva} mg/dL, "
-      // "Procalcitonina ${Valores.procalcitonina} ng/mL. "
-      //
-      // "          "
-      //
+  // "${Exploracion.antibioticoterapia!.toLowerCase()}; última biometría hemática (${Valores.fechaBiometria}): "
+  // "Hb ${Valores.hemoglobina} g/dL, "
+  // "Hto ${Valores.hematocrito}%, "
+  // "Leu ${Valores.leucocitosTotales} K/uL, "
+  // "Neu ${(Valores.neutrofilosTotales! / Valores.leucocitosTotales!).toStringAsFixed(2)} K/uL, "
+  // "Lyn ${(Valores.linfocitosTotales! / Valores.leucocitosTotales!).toStringAsFixed(2)} K/uL, "
+  // "reactantes de fase aguda con "
+  // "PCR ${Valores.proteinaCreactiva} mg/dL, "
+  // "Procalcitonina ${Valores.procalcitonina} ng/mL. "
+  //
+  // "          "
+  //
   // "PCT ${Valores.pesoCorporalTotal!.toStringAsFixed(1)} Kg, "
   // "estatura ${Valores.alturaPaciente} mts, I.M.C ${Antropometrias.imc.toStringAsFixed(0)} Kg/m2, y "
   // "PP ${Antropometrias.pesoCorporalPredicho.toStringAsFixed(1)} Kg. "
 
-      // "glucosa sérica ${Valores.glucosa!.toStringAsFixed(0)} mg/dL, "
-      // "albúmina ${Valores.albuminaSerica!.toStringAsFixed(1)} g/dL. "
-      //
-      // "Creatinina ${Valores.creatinina!.toStringAsFixed(1)} mg/dL, "
-      // "urea ${Valores.urea!.toStringAsFixed(1)} mg/dL; "
-      // "pH ${Valores.pHArteriales}, "
-      // "HCO3- ${Valores.bicarbonatoArteriales!.toStringAsFixed(1)} mmol/L, "
-      // "E.B. ${Gasometricos.EB.toStringAsFixed(1)} mmol/L. " // excesoBaseArteriales
-      // "Na2+ ${Valores.sodio!.toStringAsFixed(0)} mmol/L, "
-      // "K+ ${Valores.potasio!.toStringAsFixed(1)} mmol/L, "
-      // "Cl- ${Valores.cloro!.toStringAsFixed(0)} mmol/L. "
+  // "glucosa sérica ${Valores.glucosa!.toStringAsFixed(0)} mg/dL, "
+  // "albúmina ${Valores.albuminaSerica!.toStringAsFixed(1)} g/dL. "
+  //
+  // "Creatinina ${Valores.creatinina!.toStringAsFixed(1)} mg/dL, "
+  // "urea ${Valores.urea!.toStringAsFixed(1)} mg/dL; "
+  // "pH ${Valores.pHArteriales}, "
+  // "HCO3- ${Valores.bicarbonatoArteriales!.toStringAsFixed(1)} mmol/L, "
+  // "E.B. ${Gasometricos.EB.toStringAsFixed(1)} mmol/L. " // excesoBaseArteriales
+  // "Na2+ ${Valores.sodio!.toStringAsFixed(0)} mmol/L, "
+  // "K+ ${Valores.potasio!.toStringAsFixed(1)} mmol/L, "
+  // "Cl- ${Valores.cloro!.toStringAsFixed(0)} mmol/L. "
 
   static String get exploracionTerapiaBreve => ""
       "${Antropometrias.vitalesTerapiaAbreviado}\n"
@@ -3897,9 +3932,9 @@ class Items {
     },
     {
       "Diagnostico":
-      "Enfermedad Hepática Crónica, Child Pugh A, de etiología indeterminada",
+          "Enfermedad Hepática Crónica, Child Pugh A, de etiología indeterminada",
       "Tratamiento":
-      "diagnósticado desde XXXX, tratado con Propanolol 20 mg/12 horas",
+          "diagnósticado desde XXXX, tratado con Propanolol 20 mg/12 horas",
       "Antecedentes": "Protocolo diagnóstico considerado desde hospitalización; "
           "se realizó USG hepático doppler en el que destacó Hipertensión portal, vena porta de 13 mm, "
           "velocidad pico sistólico XXX cm/seg; no cuenta con biopsia hepática; "
@@ -3910,11 +3945,11 @@ class Items {
     },
     {
       "Diagnostico":
-      "Neumopatía Intersticial Crónica, no específicada, de etiología indeterminada",
+          "Neumopatía Intersticial Crónica, no específicada, de etiología indeterminada",
       "Tratamiento":
-      "presenta sintomás desde XXXX, manifestado por disnea progresiva, recurrente, actualmente "
-          "con requerimiento de oxígeno suplementario, domiciliario, desde XXXX, empleando "
-          "2 Lt/min, por 24 horas",
+          "presenta sintomás desde XXXX, manifestado por disnea progresiva, recurrente, actualmente "
+              "con requerimiento de oxígeno suplementario, domiciliario, desde XXXX, empleando "
+              "2 Lt/min, por 24 horas",
       "Antecedentes": ""
           "Factores de riesgo: Exposición a biomasa (IEB 104), desde la infancia, tabaquismo pasivo desde XXXX, "
           "exposición a comburentes (Petróleo, entre otros no especifícados); "

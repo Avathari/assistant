@@ -108,7 +108,7 @@ class _OperacionesEnologiasState extends State<OperacionesEnologias> {
                 _thirdView(context),
                 _fourthView(context),
               ],
-              carouselController: CarouselController(),
+              carouselController: CarouselSliderController(),
               options: CarouselOptions(
                   height: isMobile(context) ? 600 : 500,
                   enableInfiniteScroll: false,

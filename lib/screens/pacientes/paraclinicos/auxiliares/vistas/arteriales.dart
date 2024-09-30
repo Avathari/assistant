@@ -59,6 +59,7 @@ class _ArterialesState extends State<Arteriales> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
+              flex: 1,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -76,6 +77,18 @@ class _ArterialesState extends State<Arteriales> {
                     firstText: "Cl-",
                     secondText: Valores.cloro!.toString(),
                     thirdText: "mg/dL",
+                    withEditMessage: true,
+                    onEdit: (String value) {
+                      Operadores.editActivity(context: context,
+                        onAcept: (value) {
+                        setState(() {
+                          Valores.cloro = double.parse(value);
+                          Navigator.of(context).pop();
+                        });
+                        }
+                      );
+
+                    },
                   ),
                   CrossLine(),
                   ValuePanel(
@@ -127,7 +140,60 @@ class _ArterialesState extends State<Arteriales> {
             Expanded(
               flex: 2,
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(7.0),
+                padding: const EdgeInsets.all(2.0), // padding: const EdgeInsets.all(7.0),
+                controller: ScrollController(),
+                child: Column(
+                  children: [
+                    EditTextArea(
+                      textController: textSodioArterialResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'A_Na+ ($unidadMedidaANA)',
+                      numOfLines: 1,
+                      onChange: (value) => setState(
+                              () => Valores.sodioArteriales = double.parse(value)),
+                    ),
+                    EditTextArea(
+                      textController: textPotasioArterialResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'A_K+ ($unidadMedidaAK)',
+                      numOfLines: 1,
+                      onChange: (value) => setState(
+                              () => Valores.potasioArteriales = double.parse(value)),
+                    ),
+
+                    EditTextArea(
+                      textController: textCalcioIonicoArterialResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'iCa++ ($unidadMedidaCai)',
+                      numOfLines: 1,
+                      onChange: (value) => setState(
+                              () => Valores.calcioIonicoArteriales = double.parse(value)),
+                    ),
+
+                    EditTextArea(
+                      textController: textGluAResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'A_Glu ($unidadMedidaGluA)',
+                      numOfLines: 1,
+                      onChange: (value) => setState(() =>
+                      Valores.glucosaArteriales = double.parse(value)),
+                    ),
+                    // Botton ***** ******* ****** * ***
+                    CrossLine(
+                      color: Colors.grey,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(2.0), // padding: const EdgeInsets.all(7.0),
                 controller: ScrollController(),
                 child: Column(
                   children: [
@@ -295,10 +361,20 @@ class _ArterialesState extends State<Arteriales> {
                     thirdText: "",
                   ),
                   ValuePanel(
+                    firstText: "GAPA",
+                    secondText: Gasometricos.GAPA.toStringAsFixed(2),
+                    thirdText: "",
+                  ),
+                  ValuePanel(
                     firstText: "aGAP/Alb",
                     secondText: Gasometricos.aGapAlb.toStringAsFixed(2),
                     thirdText: "",
                   ),
+                  ValuePanel(
+                    firstText: "Δ-aGAP/Alb",
+                    secondText: Gasometricos.aGapAlbArterial.toStringAsFixed(2),
+                    thirdText: "",
+                  ), // aGap Ionico, ES arteriales
                   CrossLine(),
                   ValuePanel(
                     firstText: "dGAP",
@@ -313,12 +389,12 @@ class _ArterialesState extends State<Arteriales> {
                   CrossLine(),
                   CrossLine(),
                   ValuePanel(
-                    firstText: "Delta delta",
+                    firstText: "ΔΔ",
                     secondText: Gasometricos.D_d_GAP.toStringAsFixed(2),
                     thirdText: "",
                   ),
                   ValuePanel(
-                    firstText: "Delta Ratio",
+                    firstText: "Δr",
                     secondText: Gasometricos.D_d_ratio.toStringAsFixed(2),
                     thirdText: "",
                   ),
@@ -441,6 +517,47 @@ class _ArterialesState extends State<Arteriales> {
         unidadMedidaLact!
         //0,
       ],
+      // 
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[index][6],
+        textSodioArterialResultController.text,
+        unidadMedidaANA!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[index][7],
+        textPotasioArterialResultController.text,
+        unidadMedidaAK!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[index][9],
+        textCalcioIonicoArterialResultController.text,
+        unidadMedidaCai!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[index][11],
+        textGluAResultController.text,
+        unidadMedidaGluA!
+        //0,
+      ],
     ];
   }
 
@@ -463,6 +580,20 @@ class _ArterialesState extends State<Arteriales> {
   var textLactResultController = TextEditingController();
   String? unidadMedidaLact =
       Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
+
+  var textSodioArterialResultController = TextEditingController();
+  String? unidadMedidaANA =
+  Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
+  var textPotasioArterialResultController = TextEditingController();
+  String? unidadMedidaAK =
+  Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
+  var textCalcioIonicoArterialResultController = TextEditingController();
+  String? unidadMedidaCai =
+  Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
+  var textGluAResultController = TextEditingController();
+  String? unidadMedidaGluA =
+  Auxiliares.Medidas[Auxiliares.Categorias[index]][6];
+  
 
   // OPERACIONES DE LA INTERFAZ ****************** ********
   void cerrar() {

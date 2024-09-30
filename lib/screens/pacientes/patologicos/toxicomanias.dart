@@ -134,7 +134,7 @@ class _GestionToxicomaniasState extends State<GestionToxicomanias> {
   // ######################### ### # ### ############################
   // Controladores de widgets en general.
   // ######################### ### # ### ############################
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
   // ######################### ### # ### ############################
   // Variables auxiliares de widget.
   // ######################### ### # ### ############################

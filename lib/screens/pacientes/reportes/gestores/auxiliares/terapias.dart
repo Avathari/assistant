@@ -21,7 +21,7 @@ class TerapiasItems extends StatefulWidget {
 }
 
 class _TerapiasItemsState extends State<TerapiasItems> {
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
   //
   void reInit() {
     if (widget.esCorto!) {

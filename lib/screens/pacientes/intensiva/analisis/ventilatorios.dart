@@ -22,7 +22,7 @@ class Ventilatorios extends StatefulWidget {
 }
 
 class _VentilatoriosState extends State<Ventilatorios> {
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
 
   var cEstTextController = TextEditingController();
 

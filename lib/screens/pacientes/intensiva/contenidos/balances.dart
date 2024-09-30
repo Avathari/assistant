@@ -882,7 +882,7 @@ class _OperacionesBalancesState extends State<OperacionesBalances> {
   var viaPerdidaTextController = TextEditingController();
   var viaOtrosEgresosTextController = TextEditingController();
   //
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
 }
 
 class GestionBalances extends StatefulWidget {

@@ -18,7 +18,7 @@ class Env {
 
 class Direcciones {
   static String urlLocal = "http://localhost:8080/flutter_api";
-  static String urlSite = "https://luisr107.sg-host.com/";
+  static String urlSite = "https://luisr107.sg-host.com/"; // luisr107.sg-host.com // https://luisr107.sg-host.com/
   static String urlAnother = "http://192.168.0.19:8080/flutter_api";
 }
 
@@ -71,9 +71,14 @@ class Actividades {
 
   static Future<List> consultar(String database, String query,
       {bool emulated = false}) async {
+    Terminal.printWarning(message: emulated.toString());
     final response = await http.post(
       Uri.parse("${Env.URL_PREFIX}/consultar.php"),
       encoding: Encoding.getByName('utf-8'),
+      headers: {
+        // 'Content-Type': 'application/json'
+        // "Access-Control-Allow-Credentials: true"
+      },
       body: <String, String>{
         "query": query,
         "database": database,
@@ -83,7 +88,7 @@ class Actividades {
         "emulated": emulated.toString(),
       },
     );
-    // // Terminal.printAlert(message: "RESPONSE STATUS (consultar): : ${response.statusCode} : ${response.body.toString()}");
+    Terminal.printAlert(message: "RESPONSE STATUS (consultar): : ${response.statusCode} : Body ${response.body.isEmpty} . ${response.body.toString()}");
     return json.decode(response.body).cast<Map<String, dynamic>>();
   }
 
@@ -136,7 +141,7 @@ class Actividades {
   }
 
   static Future<Map<String, dynamic>> detalles(String database, String query,
-      {bool emulated = false}) async {
+      {bool emulated = false }) async {
     final response = await http.post(
       Uri.parse("${Env.URL_PREFIX}/detalles.php"),
       encoding: Encoding.getByName('utf-8'),
@@ -150,15 +155,26 @@ class Actividades {
       },
     );
 
+    Terminal.printAlert(message: "RESPONSE STATUS (Detalles) : : ${response.statusCode}"
+        ":: :: Body ${response.body.isEmpty} . ${response.body.toString()}");
     return json.decode(response.body) as Map<String, dynamic>;
   }
 
   static Future<Map<String, dynamic>> detallesById(
       String database, String query, int id,
       {bool emulated = false}) async {
-    // List elements
-
-    Terminal.printNotice(message: query);
+    // List elements //
+    Terminal.printWarning(message: ""
+        "\n"
+        "\n"
+        "$emulated . ID_Pace $id . \n"
+        "$database \n"
+        "$hostname \n"
+        "$username \n"
+        "$password \n"
+        "\n"
+        // "$query"
+        "");
 
     final response = await http.post(
       Uri.parse("${Env.URL_PREFIX}/detallesById.php"),
@@ -173,7 +189,12 @@ class Actividades {
         "id": id.toString()
       },
     );
-    // Terminal.printAlert(message: "RESPONSE STATUS (Detalles) : : ${response.statusCode} :: :: Body ${response.body.toString()}");
+    Terminal.printNotice(message: "${response.headers}");
+    //
+    Terminal.printAlert(message: "RESPONSE STATUS (detallesById)"
+        " : : ${response.statusCode} "
+        " :: ${response.body.isEmpty}"
+        " : : Body ${response.body.toString()}");
     return json.decode(response.body) as Map<String, dynamic>;
   }
 
@@ -280,9 +301,9 @@ class Databases {
   // # ###############################################################
   // # Credenciales de MySQL Siteground
   // # ###############################################################
-  static const HOST_SITEGROUND = '35.209.114.34';
+  static const HOST_SITEGROUND = '35.209.114.34'; // 35.209.114.34
   static const siteground_user = "ux1ge4kaeg7w7";
-  static const siteground_password = "7zch^ob1@1(~";
+  static const siteground_password = "41R.n#@1@4td";
   // # ###############################################################
   static const siteground_database_regasca = "dbwpodcchpxgbf";
   static const siteground_database_regusua =

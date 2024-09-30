@@ -34,7 +34,7 @@ class _IndicacionesHospitalState extends State<IndicacionesHospital> {
   var pendientesTextController = TextEditingController();
 
   //
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
   //
   double? inSodio = 0,
       inPotasio = 0,

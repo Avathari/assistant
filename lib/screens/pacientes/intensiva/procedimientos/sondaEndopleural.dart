@@ -20,7 +20,7 @@ class SondaEndopleural extends StatefulWidget {
 }
 
 class _SondaEndopleuralState extends State<SondaEndopleural> {
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
   //
   var motivoTextController = TextEditingController();
   var complicacionesTextController = TextEditingController();

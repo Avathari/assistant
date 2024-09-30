@@ -20,7 +20,7 @@ class CateterTenckhoff extends StatefulWidget {
 }
 
 class _CateterTenckhoffState extends State<CateterTenckhoff> {
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
   //
   var motivoTextController = TextEditingController();
   var complicacionesTextController = TextEditingController();

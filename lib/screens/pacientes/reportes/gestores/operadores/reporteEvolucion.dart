@@ -393,7 +393,7 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
   }
 
   // Controladores de widgets en general. ######################### ### # ### ############################
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
   // Variables auxiliares de widget. ######################### ### # ### ############################
   num index = 6;
   int wieghtRow = 200;

@@ -131,7 +131,7 @@ class _GestionNoPatologicosState extends State<GestionNoPatologicos> {
   // ######################### ### # ### ############################
   // Controladores de widgets en general.
   // ######################### ### # ### ############################
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
   // ######################### ### # ### ############################
   // Variables auxiliares de widget.
   // ######################### ### # ### ############################

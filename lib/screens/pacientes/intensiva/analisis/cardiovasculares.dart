@@ -25,7 +25,7 @@ class Cardiovasculares extends StatefulWidget {
 }
 
 class _CardiovascularesState extends State<Cardiovasculares> {
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
 
   @override
   Widget build(BuildContext context) {

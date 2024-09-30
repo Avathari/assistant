@@ -72,7 +72,7 @@ class _OperacionesDocumentacionState extends State<OperacionesDocumentacion> {
   //
   String? typeReporte;
   //
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
 
   //
 

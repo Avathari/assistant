@@ -24,7 +24,7 @@ class Rutinas extends StatefulWidget {
 }
 
 class _RutinasState extends State<Rutinas> {
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
 
   @override
   void initState() {

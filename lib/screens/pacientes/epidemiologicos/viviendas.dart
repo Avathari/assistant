@@ -24,7 +24,7 @@ class _ViviendasState extends State<Viviendas> {
   var materialesTextController = TextEditingController();
   var viajesRecientesTextController = TextEditingController();
 
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
 
   var vacunosTextController = TextEditingController();
   var ovinosTextController = TextEditingController();

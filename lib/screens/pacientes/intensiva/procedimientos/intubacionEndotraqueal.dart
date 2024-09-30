@@ -19,7 +19,7 @@ class IntubacionEndotraqueal extends StatefulWidget {
 }
 
 class _IntubacionEndotraquealState extends State<IntubacionEndotraqueal> {
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
   //
   var motivoTextController = TextEditingController();
   var complicacionesTextController = TextEditingController();

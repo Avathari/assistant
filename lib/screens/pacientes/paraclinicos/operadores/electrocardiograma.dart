@@ -1580,7 +1580,7 @@ class _ElectrocardiogramasGestionState
   String idWidget = 'ID_Pace_GAB_EC';
 
   // Variables de Ejecución // ############################ ####### ####### #############################
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
   var textDateController =
       TextEditingController(); // TextController for search.
   // ############################ ####### ####### #############################

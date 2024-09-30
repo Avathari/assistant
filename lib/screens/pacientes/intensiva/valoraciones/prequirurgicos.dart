@@ -22,7 +22,7 @@ class Prequirurgicos extends StatefulWidget {
 }
 
 class _PrequirurgicosState extends State<Prequirurgicos> {
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
   //
   var goldmanntextController = TextEditingController();
   var detskytextController = TextEditingController();

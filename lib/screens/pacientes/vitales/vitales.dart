@@ -782,7 +782,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
   var antropoScroller = ScrollController();
   var vitalesScroller = ScrollController();
 
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
 
   void operationMethod(BuildContext context) {
     try {
@@ -1122,13 +1122,18 @@ class _GestionVitalesState extends State<GestionVitales> {
         message: " . . . Iniciando Actividad - Repositorio de Pacientes");
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       setState(() {
-        foundedItems = value;
-        Pacientes.Vitales = value;
-        //
-        // Vitales.fromJson(Pacientes.Vitales!.last);
-        //
-        Terminal.printSuccess(
-            message: "Repositorio de Signos Vitales del Paciente . . . ");
+        // Terminal.printWarning(
+        //     message: " . . . ${value}");
+        if (value.isNotEmpty && value != []) {
+          foundedItems = value;
+          Pacientes.Vitales = value;
+          // Vitales.fromJson(Pacientes.Vitales!.last);
+          Terminal.printSuccess(
+              message: "Repositorio de Signos Vitales del Paciente . . . ");
+        } else {
+          reiniciar();
+        }
+
       });
     }).onError((error, stackTrace) {
       reiniciar();
@@ -1147,39 +1152,52 @@ class _GestionVitalesState extends State<GestionVitales> {
     Actividades.consultarAllById(Databases.siteground_database_regpace,
             Vitales.vitales['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
         .then((value) {
-      // print(value);
-
+      // print(value.length);
       result.addAll(value);
       Actividades.consultarAllById(Databases.siteground_database_regpace,
               Vitales.antropo['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
           .then((value) {
-            // print(value);
+            // print(value.length);
         int index = 0;
-        for (var item in result) {
-          if (index <= result.length) {
-            //
-            var thirdMap = {};
-            //
-            if (value.length == item.length) {
-              print("${value.length} ${result.length}");
-              print("${value[index]['ID_Pace_SV']} ${item[index]['ID_Pace_SV']}");
+        //
+        try {
+          for (var item in result) {
+            if (index <= result.length) {
               //
-              thirdMap.addAll(item);
-              thirdMap.addAll(value[index]);
-              // Adición a Vitales ********** ************ ************** ********
-              Pacientes.Vitales!.add(thirdMap);
-              index++;
+              var thirdMap = {};
+              //
+              if (value.length == item.length) {
+                print("${value.length} ${result.length}");
+                print("${value[index]['ID_Pace_SV']} ${item[index]['ID_Pace_SV']}");
+                //
+                thirdMap.addAll(item);
+                thirdMap.addAll(value[index]);
+                // Adición a Vitales ********** ************ ************** ********
+                Pacientes.Vitales!.add(thirdMap);
+                index++;
+              }
             }
           }
+          setState(() {
+            foundedItems = Pacientes.Vitales!;
+          });
+        } catch (error, stackTrace) {
+          Operadores.alertActivity(context: context,
+              tittle: "$error", message: "$stackTrace");
         }
-        setState(() {
-          Terminal.printSuccess(
-              message:
-                  "Actualizando Repositorio de Signos Vitales del Paciente . . . ");
-          foundedItems = Pacientes.Vitales!;
-          Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
-        });
+
+        Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
+        //
+        Terminal.printSuccess(
+            message:
+            "Actualizando Repositorio de Signos Vitales del Paciente . . . ");
+      }).catchError((error, stackTrace) {
+        Operadores.alertActivity(context: context,
+            tittle: "$error", message: "$stackTrace");
       });
+    }).catchError((error, stackTrace) {
+      Operadores.alertActivity(context: context,
+          tittle: "$error", message: "$stackTrace");
     });
   }
 

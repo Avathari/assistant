@@ -699,7 +699,7 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
   var fechaBajaTextController = TextEditingController();
   //
   var activosScroller = ScrollController();
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
 }
 
 class GestionActivos extends StatefulWidget {

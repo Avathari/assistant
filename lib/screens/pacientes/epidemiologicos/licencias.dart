@@ -74,7 +74,7 @@ class _OperacionesLicenciaState extends State<OperacionesLicencia> {
   var diagnosticoLicenciaTextController = TextEditingController();
   // var descripcionLicenciaTextController = TextEditingController();
   //
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
 
   //
 

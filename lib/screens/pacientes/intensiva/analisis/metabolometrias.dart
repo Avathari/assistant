@@ -24,7 +24,7 @@ class Metabolicos extends StatefulWidget {
 }
 
 class _MetabolicosState extends State<Metabolicos> {
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
 
   @override
   Widget build(BuildContext context) {

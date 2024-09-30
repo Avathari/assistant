@@ -17,7 +17,7 @@ class Aereas extends StatefulWidget {
 }
 
 class _AereasState extends State<Aereas> {
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
   //
 
   void reInit() {}

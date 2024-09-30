@@ -398,7 +398,7 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
   // ######################### ### # ### ############################
   // Controladores de widgets en general.
   // ######################### ### # ### ############################
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
   // ######################### ### # ### ############################
   // Variables auxiliares de widget.
   // ######################### ### # ### ############################

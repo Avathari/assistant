@@ -243,7 +243,7 @@ class _SemiologicosState extends State<Semiologicos>
 
   // VARIABLES
   var expoTextController = TextEditingController();
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
 
   // COMPONENTES ****************************************************
   _drawerForm(BuildContext context) => Drawer(

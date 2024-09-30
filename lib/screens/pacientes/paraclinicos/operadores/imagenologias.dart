@@ -40,7 +40,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
   // ############################ ####### ####### #############################
   // Variables de Ejecución
   // ############################ ####### ####### #############################
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
   var scrollController = ScrollController();
   // ############################ ####### ####### #############################
   // Variables de Ejecución

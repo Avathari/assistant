@@ -87,7 +87,7 @@ class Paneles {
                       snapshot.data![index].padecimientoActual == null
                           ? 'Sin Padecimiento Actual'
                           : "Padecimiento Actual:\n ${snapshot.data![index].padecimientoActual['Padecimiento_Actual'] ?? ''}",
-                      maxLines: isMobile(context) ? 20: 10,
+                      maxLines: isMobile(context) ? 20 : 10,
                       softWrap: true,
                       style: Styles.textSyleGrowth(fontSize: 10),
                       textAlign: TextAlign.justify,
@@ -234,15 +234,18 @@ class Paneles {
               child: ListView.builder(
                   itemCount: snapshot.data![index].pendientes.length,
                   itemBuilder: (BuildContext context, int ind) {
-                    if (snapshot.data![index].pendientes[ind]['Pace_PEN'] !='Procedimientos')  {
+                    if (snapshot.data![index].pendientes[ind]['Pace_PEN'] !=
+                        'Procedimientos') {
                       return ElevatedButton(
                         onPressed: () {
-                          Pacientes.Pendiente = snapshot.data![index].pendientes;
+                          Pacientes.Pendiente =
+                              snapshot.data![index].pendientes;
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black),
                         child: Text(
-                          snapshot.data![index].pendientes[ind]['Pace_Desc_PEN'],
+                          snapshot.data![index].pendientes[ind]
+                              ['Pace_Desc_PEN'],
                           style: Styles.textSyleGrowth(fontSize: 8),
                         ),
                       );
@@ -372,8 +375,8 @@ class Paneles {
                   foundedItems[index].idHospitalizado;
               // //
               Cambios.toNextActivity(context,
-                 backgroundColor: Theming.cuaternaryColor,
-                  chyld:  const AuxiliaresDispositivos()); // AuxiliarVitales()
+                  backgroundColor: Theming.cuaternaryColor,
+                  chyld: const AuxiliaresDispositivos()); // AuxiliarVitales()
               // Cambios.toNextActivity(context, chyld: const Subjetivos());
             }), // AuxiliarVitales // Subjetivos
       ],
@@ -665,18 +668,23 @@ class Paneles {
 
     // Terminal.printWarning(message: "PENDIENTES : ${foundedItems![0].hospitalizedData.keys.toString()}");
     for (int index = 0; index < foundedItems!.length; index++) {
-      ID_Cama = int.parse(
-          foundedItems[index].hospitalizedData['Id_Cama'] ?? "0");
+      ID_Cama =
+          int.parse(foundedItems[index].hospitalizedData['Id_Cama'] ?? "0");
       //
 
       //
       List<Widget> pendientes = [];
       for (var pendiente in foundedItems![index].pendientes) {
         //
-        if (pendiente['Pace_PEN_realized'] ==1) {
+        // if (pendiente['Pace_PEN_realized'] == 1) {
+        if (pendiente['Pace_PEN_realized'] == 0 &&
+            (pendiente['Pace_PEN'] == Pendientes.typesPendientes[1] ||
+                pendiente['Pace_PEN'] ==
+                    Pendientes.typesPendientes[2])) {
           // Terminal.printExpected(message: "${foundedItems![index].pendientes}");
           pendientes.add(Text(
             "${pendiente['Feca_PEN']} : : ${pendiente['Pace_Desc_PEN']}",
+            textAlign: TextAlign.left,
             style: Styles.textSyleGrowth(fontSize: 8),
           ));
         }
@@ -687,11 +695,57 @@ class Paneles {
       // BUSQUEDA DE CULTIVOS . . .
       pendientes.add(CrossLine());
       pendientes.add(Text(
-        Internado.getCultivos(
-            listadoFrom: foundedItems![index].paraclinicos),
+        Internado.getCultivos(listadoFrom: foundedItems![index].paraclinicos),
         // overflow: TextOverflow,
         maxLines: 5,
         style: Styles.textSyleGrowth(fontSize: 8),
+      ));
+      pendientes.add(CrossLine());
+      pendientes.add(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          GrandIcon(
+            labelButton: "Auxiliares Pendientes . . . ",
+            iconData: Icons.newspaper_rounded,
+            onPress: () {
+              String pendientario = "";
+              for (var pendiente in foundedItems![index].pendientes) {
+                //
+                if (pendiente['Pace_PEN_realized'] == 0 &&
+                    (pendiente['Pace_PEN'] == Pendientes.typesPendientes[1] ||
+                        pendiente['Pace_PEN'] ==
+                            Pendientes.typesPendientes[2])) {
+                  pendientario =
+                  "$pendientario${pendiente['Feca_PEN']} : : ${pendiente['Pace_Desc_PEN']}\n";
+                  //
+                  // if (pendiente['Pace_PEN'] == Pendientes.typesPendientes[1]){
+                  //   pendientario =
+                  //   "$pendientario${pendiente['Feca_PEN']} : : ${pendiente['Pace_Desc_PEN']}\n";
+                  // } else if (pendiente['Pace_PEN'] ==
+                  // Pendientes.typesPendientes[2]){
+                  //
+                  // } else {
+                  //   pendientario = pendientario;
+                  // }
+
+                  // Terminal.printExpected(message: "${foundedItems![index].pendientes}");
+
+                }
+              }
+              Datos.portapapeles(context: context, text: pendientario);
+            },
+          ),
+          GrandIcon(
+            labelButton: "Cultivos Recabados . . . ",
+            iconData: Icons.hourglass_bottom,
+            onPress: () {
+              Datos.portapapeles(
+                  context: context,
+                  text: Internado.getCultivos(
+                      listadoFrom: foundedItems![index].paraclinicos));
+            },
+          ),
+        ],
       ));
       //
       widgets.add(TittleContainer(
@@ -701,16 +755,84 @@ class Paneles {
             children: pendientes,
           )));
     }
-    return TittleContainer(
-      tittle: "Pendientes Recabados . . . ",
-      padding: 2.0,
-      child: SingleChildScrollView(
-        controller: ScrollController(),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: widgets,
+    return Column(
+      children: [
+                Expanded(
+          child: TittleContainer(
+            tittle: "Pendientes Recabados . . . ",
+            padding: 2.0,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.only(top: 8.0),
+              controller: ScrollController(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: widgets,
+              ),
+            ),
+          ),
         ),
-      ),
+        CrossLine(),
+        SizedBox(
+          height: 45,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              GrandIcon(
+                  labelButton: "Pendientes recabados . . . ",
+                  iconData: Icons.newspaper_rounded,
+                  onPress: () {
+                    // OBTENER TODOS LOS PENDIENTES REGISTRADOS
+                    String _pendientes = "";
+                    //
+                    for (int index = 0; index < foundedItems!.length; index++) {
+                      ID_Cama =
+                          int.parse(foundedItems[index].hospitalizedData['Id_Cama'] ?? "0");
+                      String pendie = "";
+                      //
+                      for (var pendiente in foundedItems![index].pendientes) {
+
+                        //
+                        if (pendiente['Pace_PEN_realized'] == 0 &&
+                            (pendiente['Pace_PEN'] == Pendientes.typesPendientes[1] ||
+                                pendiente['Pace_PEN'] ==
+                                    Pendientes.typesPendientes[2])) {
+                          // Terminal.printExpected(message: "${foundedItems![index].pendientes}");
+                          pendie = "$pendie${pendiente['Feca_PEN']} : : ${pendiente['Pace_Commen_PEN']}\n"; // Pace_Commen_PEN Pace_Desc_PEN
+                        }
+                      }
+                      _pendientes = "$_pendientes$ID_Cama : : $pendie\n";
+                    }
+                    //
+                    Datos.portapapeles(
+                        context: context,
+                        text: _pendientes);
+                  }),
+              GrandIcon(
+                  labelButton: "Cultivos Recabados",
+                  iconData: Icons.hourglass_bottom,
+                  onPress: () {
+                    // OBTENER TODOS LOS CULTIVOS REGISTRADOS
+                    String _cultivos = "";
+                    //
+                    for (int index = 0; index < foundedItems!.length; index++) {
+                      ID_Cama =
+                          int.parse(
+                              foundedItems[index].hospitalizedData['Id_Cama'] ??
+                                  "0");
+                      _cultivos = "$_cultivos\n$ID_Cama : : ${Internado.getCultivos(
+                          listadoFrom: foundedItems![index].paraclinicos)}";
+                      //
+                    }
+                    //
+                    Datos.portapapeles(
+                        context: context,
+                        text: _cultivos);
+
+                  }),
+            ],),
+        ),
+
+      ],
     );
   }
 }

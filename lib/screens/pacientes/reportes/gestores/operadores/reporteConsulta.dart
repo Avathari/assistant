@@ -170,7 +170,7 @@ class _ReporteConsultaState extends State<ReporteConsulta> {
   // ######################### ### # ### ############################
   // Controladores de widgets en general.
   // ######################### ### # ### ############################
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
   // ######################### ### # ### ############################
   // Variables auxiliares de widget.
   // ######################### ### # ### ############################

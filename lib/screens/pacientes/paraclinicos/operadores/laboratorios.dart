@@ -651,7 +651,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
   int index = 0, secondIndex = 0;
   late List? values = [];
   Map<String, dynamic>? elementSelected;
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
 
   void operationMethod(
       {required BuildContext context, required bool operationActivity}) {

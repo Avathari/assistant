@@ -413,7 +413,7 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
   var pendienteValue = Pendientes.typesPendientes[0], subPendienteValue;
   var descripcionPendienteTextController = TextEditingController();
   //
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
 //
 }
 

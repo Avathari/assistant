@@ -22,7 +22,7 @@ class Gasometricos extends StatefulWidget {
 }
 
 class _GasometricosState extends State<Gasometricos> {
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
 
   @override
   Widget build(BuildContext context) {

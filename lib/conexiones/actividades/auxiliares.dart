@@ -6,6 +6,7 @@ import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/AppBarText.dart';
+import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
@@ -682,6 +683,28 @@ class Directorios {
       );
     }
   }
+
+  // static choiseDocumentFromDirectory() async {
+  //   var dir = await getApplicationDocumentsDirectory();
+  //   File file = File('${dir.path}/$pName.pdf');
+  //
+  //   bool  fileExists = File(await '${dir.path}/$pName.pdf')
+  //       .existsSync();
+  //
+  //   if(fileExists)
+  //   {
+  //     urlPdfPath = file.toString();
+  //     print('url pdf path $urlPdfPath');
+  //     Navigator.push(context, MaterialPageRoute(builder: (context) {
+  //       return PdfViewer(
+  //         path: urlPdfPath,
+  //         product: pName,
+  //       );
+  //     }));
+  //
+  //   }
+  //
+  // }
 }
 
 class Opciones {
@@ -896,6 +919,7 @@ class Operadores {
     onAcept,
   }) {
     showDialog(
+      barrierDismissible: false,
         context: context,
         builder: (context) {
           return Dialogos.alertDialog(tittle, message, () {
@@ -963,25 +987,41 @@ class Dialogos {
       backgroundColor: Theming.secondaryColor,
       title: Text(
         tittle!,
-        style: const TextStyle(color: Colors.grey),
+        textAlign: TextAlign.center,
+        style: const TextStyle(color: Colors.grey, fontSize: 16),
       ),
-      content: Text(
-        msg!,
-        style: const TextStyle(color: Colors.grey),
+      content: SingleChildScrollView(
+        controller: ScrollController(),
+        child: Column(
+          children: [
+            CrossLine(height: 10),
+            Text(
+              msg!,
+              style: const TextStyle(color: Colors.grey, fontSize: 12),
+            ),
+          ],
+        ),
       ),
+      actionsAlignment: MainAxisAlignment.center,
       actions: [
-        OutlinedButton(
-            onPressed: () {
-              onCloss();
-            },
-            child:
-                const Text("Cancelar", style: TextStyle(color: Colors.white))),
-        ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-            onPressed: () {
-              onAcept();
-            },
-            child: const Text("Aceptar", style: TextStyle(color: Colors.white)))
+        // OutlinedButton(
+        //     onPressed: () {
+        //       onCloss();
+        //     },
+        //     child:
+        //         const Text("Cancelar", style: TextStyle(color: Colors.white))),
+        CircleIcon(
+          iconed: Icons.transit_enterexit,
+            onChangeValue: ( ) {
+          onAcept();
+        }
+          ),
+        // ElevatedButton(
+        //     style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+        //     onPressed: () {
+        //       onAcept();
+        //     },
+        //     child: const Text("Aceptar", style: TextStyle(color: Colors.white)))
       ],
     );
   }

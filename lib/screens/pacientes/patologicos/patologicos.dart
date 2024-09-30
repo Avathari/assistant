@@ -896,7 +896,7 @@ class VariasPatologias extends StatefulWidget {
 }
 
 class _VariasPatologiasState extends State<VariasPatologias> {
-  var carouselController = CarouselController();
+  var carouselController = CarouselSliderController();
 
   @override
   void initState() {
