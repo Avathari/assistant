@@ -3,9 +3,7 @@ import 'dart:io';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/LoadingScreen.dart';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -16,12 +14,12 @@ class ViewDocument extends StatefulWidget {
   String? messageError;
 
   ViewDocument({
-    Key? key,
+    super.key,
     required this.filePath,
     this.fileName,
     this.isFromMemory = false,
     this.messageError = "Seleccione un Archivo",
-  }) : super(key: key);
+  });
 
   @override
   State<ViewDocument> createState() => _ViewDocumentState();
@@ -43,7 +41,7 @@ class _ViewDocumentState extends State<ViewDocument> {
 
   void _showContextMenu(
       BuildContext context, PdfTextSelectionChangedDetails details) {
-    final OverlayState _overlayState = Overlay.of(context);
+    final OverlayState overlayState = Overlay.of(context);
     _overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
         top: details.globalSelectedRegion!.center.dy - 55,
@@ -55,7 +53,7 @@ class _ViewDocumentState extends State<ViewDocument> {
           onPressed: () {
             // Clipboard.setData(ClipboardData(text: details.selectedText));
             print(
-                'Text copied to clipboard: ' + details.selectedText.toString());
+                'Text copied to clipboard: ${details.selectedText}');
             _pdfViewerController.clearSelection();
           },
           // color: Colors.white,
@@ -65,7 +63,7 @@ class _ViewDocumentState extends State<ViewDocument> {
         ),
       ),
     );
-    _overlayState.insert(_overlayEntry!);
+    overlayState.insert(_overlayEntry!);
   }
 
   @override

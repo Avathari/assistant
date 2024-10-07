@@ -293,10 +293,10 @@ class Databases {
   // # ###############################################################
   // # Credenciales de MySQL Heroku
   // # ###############################################################
-  static final HOST_HEROKU = "us-cdbr-east-05.cleardb.net";
-  static final heroku_user = "b0579eb37be76c";
-  static final heroku_password = "786c040e";
-  static final heroku_database = "heroku_ffb1cccf9e66543";
+  static const HOST_HEROKU = "us-cdbr-east-05.cleardb.net";
+  static const heroku_user = "b0579eb37be76c";
+  static const heroku_password = "786c040e";
+  static const heroku_database = "heroku_ffb1cccf9e66543";
 
   // # ###############################################################
   // # Credenciales de MySQL Siteground

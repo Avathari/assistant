@@ -26,8 +26,7 @@ class OperacionesVitales extends StatefulWidget {
 
   String _operationButton = 'Nulo';
 
-  OperacionesVitales({Key? key, required this.operationActivity})
-      : super(key: key);
+  OperacionesVitales({super.key, required this.operationActivity});
 
   @override
   State<OperacionesVitales> createState() => _OperacionesVitalesState();
@@ -944,7 +943,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
 }
 
 class GestionVitales extends StatefulWidget {
-  const GestionVitales({Key? key}) : super(key: key);
+  const GestionVitales({super.key});
 
   @override
   State<GestionVitales> createState() => _GestionVitalesState();

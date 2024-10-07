@@ -17,7 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class SituacionesHospitalizacion extends StatefulWidget {
-  const SituacionesHospitalizacion({Key? key}) : super(key: key);
+  const SituacionesHospitalizacion({super.key});
 
   @override
   State<SituacionesHospitalizacion> createState() =>

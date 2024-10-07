@@ -1,5 +1,4 @@
 import 'package:assistant/values/WidgetValues.dart';
-import 'package:assistant/widgets/CircularFloattingButton.dart';
 import 'package:flutter/material.dart';
 
 class CircularFloattingButton extends StatefulWidget {
@@ -152,7 +151,7 @@ class _VerticalFloattingButtonState extends State<VerticalFloattingButton>
           icon: Icon(icon),
           color: Colors.grey,
           style: const ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll<Color>(Colors.black)),
+              backgroundColor: WidgetStatePropertyAll<Color>(Colors.black)),
         ),
       );
 }

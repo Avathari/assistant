@@ -31,8 +31,7 @@ class OperacionesCirugias extends StatefulWidget {
 
   String _operationButton = 'Nulo';
 
-  OperacionesCirugias({Key? key, this.operationActivity = Constantes.Nulo})
-      : super(key: key);
+  OperacionesCirugias({super.key, this.operationActivity = Constantes.Nulo});
 
   @override
   State<OperacionesCirugias> createState() => _OperacionesCirugiasState();
@@ -367,7 +366,7 @@ class GestionCirugias extends StatefulWidget {
   var keySearch = "Pace_APP_ALE";
   // ****************** *** ****** **************
 
-  GestionCirugias({Key? key, this.actualSidePage}) : super(key: key);
+  GestionCirugias({super.key, this.actualSidePage});
 
   @override
   State<GestionCirugias> createState() => _GestionCirugiasState();

@@ -7,7 +7,7 @@ import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
 
 class TrabajoCardiaco extends StatefulWidget {
-  TrabajoCardiaco({super.key});
+  const TrabajoCardiaco({super.key});
 
   @override
   State<TrabajoCardiaco> createState() => _TrabajoCardiacoState();

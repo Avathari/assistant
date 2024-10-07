@@ -1,7 +1,4 @@
-import 'package:assistant/conexiones/actividades/auxiliares.dart';
-import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
-import 'package:assistant/widgets/GrandIcon.dart';
 
 import 'package:flutter/material.dart';
 
@@ -12,14 +9,13 @@ class CircleLabel extends StatefulWidget {
   void Function()? onChangeValue;
 
   CircleLabel(
-      {Key? key,
+      {super.key,
       this.tittle,
       this.radios = 40,
         this.difRadios = 10,
         this.fontSize = 16,
       this.isSwitched = false,
-      this.onChangeValue})
-      : super(key: key);
+      this.onChangeValue});
 
   @override
   State<CircleLabel> createState() => _CircleLabelState();

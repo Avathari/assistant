@@ -1,5 +1,3 @@
-import 'package:assistant/conexiones/actividades/auxiliares.dart';
-import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 
@@ -13,13 +11,12 @@ class CircleSwitched extends StatefulWidget {
   Function? onChangeValue;
 
   CircleSwitched(
-      {Key? key,
+      {super.key,
       this.tittle,
       this.radios = 40,
         this.difRadios = 10,
       this.isSwitched = false,
-      required this.onChangeValue})
-      : super(key: key);
+      required this.onChangeValue});
 
   @override
   State<CircleSwitched> createState() => _CircleSwitchedState();

@@ -6,14 +6,12 @@ import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class CateterTenckhoff extends StatefulWidget {
-  const CateterTenckhoff({Key? key}) : super(key: key);
+  const CateterTenckhoff({super.key});
 
   @override
   State<CateterTenckhoff> createState() => _CateterTenckhoffState();

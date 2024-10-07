@@ -1,8 +1,5 @@
-import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
-import 'package:assistant/widgets/CircleSwitched.dart';
 import 'package:assistant/widgets/CrossLine.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class infoSemiologias {
@@ -73,7 +70,7 @@ class infoSemiologias {
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
-                        Text(tittle, style: TextStyle(fontSize: 10, color: Colors.grey),),
+                        Text(tittle, style: const TextStyle(fontSize: 10, color: Colors.grey),),
                         Expanded(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

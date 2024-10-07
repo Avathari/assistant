@@ -4,7 +4,6 @@ import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias
 import 'package:assistant/operativity/pacientes/valores/Valorados/citometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/hepatometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
-import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart' as Gas;
 import 'package:assistant/screens/pacientes/auxiliares/detalles/detalles.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/globulares.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizado.dart';
@@ -30,7 +29,7 @@ class Revisiones extends StatefulWidget {
 
   bool? withTitle;
 
-  Revisiones({Key? key, this.withTitle = true}) : super(key: key);
+  Revisiones({super.key, this.withTitle = true});
 
   @override
   State<Revisiones> createState() => _RevisionesState();
@@ -445,7 +444,7 @@ class _RevisionesState extends State<Revisiones> {
                                                                                       : widget.actualView == 14
                                                                                           ? Cardiovasculares()
                                                                                           : widget.actualView == 15
-                                                                                              ? Ventilatorios()
+                                                                                              ? const Ventilatorios()
                                                                                               : widget.actualView == 16
                                                                                                   ? const Gasometricos()
                                                                                                   : widget.actualView == 17
@@ -1139,7 +1138,7 @@ class _RevisionesState extends State<Revisiones> {
                                                                               14
                                                                           ? Cardiovasculares()
                                                                           : widget.actualView == 15
-                                                                              ? Ventilatorios()
+                                                                              ? const Ventilatorios()
                                                                               : widget.actualView == 16
                                                                                   ? const Gasometricos()
                                                                                   : widget.actualView == 17

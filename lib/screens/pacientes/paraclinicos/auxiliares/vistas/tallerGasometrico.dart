@@ -8,7 +8,6 @@ import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
-import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +15,7 @@ import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class TallerGasometrico extends StatefulWidget {
-  const TallerGasometrico({Key? key}) : super(key: key);
+  const TallerGasometrico({super.key});
 
   @override
   State<TallerGasometrico> createState() => _TallerGasometricoState();
@@ -653,11 +652,11 @@ class _TallerGasometricoState extends State<TallerGasometrico> {
     Future.forEach(listOfValues(), (element) async {
       var aux = element as List<String>;
 
-      if (aux[5] != '0' && aux[5] != '' && aux[5] != null) {
+      if (aux[5] != '0' && aux[5] != '') {
         await Actividades.registrar(
           Databases.siteground_database_reggabo,
           Auxiliares.auxiliares['registerQuery'],
-          element as List<String>,
+          element,
         );
       }
     }).whenComplete(() {

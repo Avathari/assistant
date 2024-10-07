@@ -376,7 +376,7 @@ class Internado {
     // ***************************** *****************
     var estudiosPresentes = Listas.listWithoutRepitedValues(
       Listas.listFromMapWithOneKey(
-        listadoFrom!,
+        listadoFrom,
         keySearched: 'Estudio',
       ),
     );
@@ -385,7 +385,7 @@ class Internado {
     // Terminal.printSuccess(message: "newList: ${newList}");
     //
     for (var elem in newList) {
-      listadoFrom!.where((element) => element["Estudio"].contains(elem)).forEach((eacher) {
+      listadoFrom.where((element) => element["Estudio"].contains(elem)).forEach((eacher) {
         fecha = "          ${eacher['Estudio']} (${eacher['Fecha_Registro']}) - ";
         // Terminal.printExpected(message: "eacher: ${eacher}");
         max = "$max${eacher['Resultado']}, ";

@@ -1,7 +1,4 @@
-import 'package:assistant/values/SizingInfo.dart';
-import 'package:assistant/values/WidgetValues.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class GrandChip extends StatefulWidget {
   String? labelButton;
@@ -12,14 +9,14 @@ class GrandChip extends StatefulWidget {
   double? fontSize;
 
   GrandChip({
-    Key? key,
+    super.key,
     this.labelButton,
     this.weigth = 0,
     this.height = 0,
     this.fontSize = 10.0,
     this.onLongPress,
     required this.onPress,
-  }) : super(key: key);
+  });
 
   @override
   State<GrandChip> createState() => _GrandChipState();
@@ -36,7 +33,7 @@ class _GrandChipState extends State<GrandChip> {
           foregroundColor: Colors.grey,
           radius: 20,
         child: Tooltip(message: widget.labelButton!,
-            child: Icon(
+            child: const Icon(
               Icons.add
             )),
       ),

@@ -37,69 +37,69 @@ class EdgeInsetsApp {
 
   late EdgeInsets onlyExLargeTopEdgeInsets;
 
-  ResponsiveApp _responsiveApp;
+  final ResponsiveApp _responsiveApp;
 
   EdgeInsetsApp(this._responsiveApp) {
     //Padding
-    double _smallHeightEdgeInsets = _responsiveApp.setHeight(5);
-    double _smallWidthEdgeInsets = _responsiveApp.setWidth(5);
+    double smallHeightEdgeInsets = _responsiveApp.setHeight(5);
+    double smallWidthEdgeInsets = _responsiveApp.setWidth(5);
 
-    double _mediumHeightEdgeInsets = _responsiveApp.setHeight(10);
-    double _mediumWidthEdgeInsets = _responsiveApp.setWidth(10);
+    double mediumHeightEdgeInsets = _responsiveApp.setHeight(10);
+    double mediumWidthEdgeInsets = _responsiveApp.setWidth(10);
 
-    double _largeHeightEdgeInsets = _responsiveApp.setHeight(20);
-    double _largeWidthEdgeInsets = _responsiveApp.setWidth(20);
+    double largeHeightEdgeInsets = _responsiveApp.setHeight(20);
+    double largeWidthEdgeInsets = _responsiveApp.setWidth(20);
 
-    double _largeExHeightEdgeInsets = _responsiveApp.setHeight(100);
-    double _largeExWidthEdgeInsets = _responsiveApp.setWidth(100);
+    double largeExHeightEdgeInsets = _responsiveApp.setHeight(100);
+    double largeExWidthEdgeInsets = _responsiveApp.setWidth(100);
     //Todo
     allSmallEdgeInsets = EdgeInsets.symmetric(
-        vertical: _smallHeightEdgeInsets, horizontal: _smallWidthEdgeInsets);
+        vertical: smallHeightEdgeInsets, horizontal: smallWidthEdgeInsets);
     allMediumEdgeInsets = EdgeInsets.symmetric(
-        vertical: _mediumHeightEdgeInsets, horizontal: _mediumWidthEdgeInsets);
+        vertical: mediumHeightEdgeInsets, horizontal: mediumWidthEdgeInsets);
     allLargeEdgeInsets = EdgeInsets.symmetric(
-        vertical: _largeHeightEdgeInsets, horizontal: _largeWidthEdgeInsets);
+        vertical: largeHeightEdgeInsets, horizontal: largeWidthEdgeInsets);
 
     allExLargeEdgeInsets = EdgeInsets.symmetric(
-        vertical: _largeExHeightEdgeInsets,
-        horizontal: _largeExWidthEdgeInsets);
+        vertical: largeExHeightEdgeInsets,
+        horizontal: largeExWidthEdgeInsets);
 
     //Vertical
-    vrtSmallEdgeInsets = EdgeInsets.symmetric(vertical: _smallHeightEdgeInsets);
+    vrtSmallEdgeInsets = EdgeInsets.symmetric(vertical: smallHeightEdgeInsets);
     vrtMediumEdgeInsets =
-        EdgeInsets.symmetric(vertical: _mediumHeightEdgeInsets);
-    vrtLargeEdgeInsets = EdgeInsets.symmetric(vertical: _largeHeightEdgeInsets);
+        EdgeInsets.symmetric(vertical: mediumHeightEdgeInsets);
+    vrtLargeEdgeInsets = EdgeInsets.symmetric(vertical: largeHeightEdgeInsets);
     vrtExLargeEdgeInsets =
-        EdgeInsets.symmetric(vertical: _largeExHeightEdgeInsets);
+        EdgeInsets.symmetric(vertical: largeExHeightEdgeInsets);
 
     // Horizontal
     hrzMediumEdgeInsets =
-        EdgeInsets.symmetric(horizontal: _mediumWidthEdgeInsets);
+        EdgeInsets.symmetric(horizontal: mediumWidthEdgeInsets);
     hrzSmallEdgeInsets =
-        EdgeInsets.symmetric(horizontal: _smallWidthEdgeInsets);
+        EdgeInsets.symmetric(horizontal: smallWidthEdgeInsets);
     hrzLargeEdgeInsets =
-        EdgeInsets.symmetric(horizontal: _largeWidthEdgeInsets);
+        EdgeInsets.symmetric(horizontal: largeWidthEdgeInsets);
 
     //Solo derecha, izquierda, arriba y abajo SMALL
-    onlySmallTopEdgeInsets = EdgeInsets.only(top: _smallHeightEdgeInsets);
-    onlySmallBottomEdgeInsets = EdgeInsets.only(bottom: _smallHeightEdgeInsets);
-    onlySmallRightEdgeInsets = EdgeInsets.only(right: _smallWidthEdgeInsets);
-    onlySmallLeftEdgeInsets = EdgeInsets.only(left: _smallWidthEdgeInsets);
+    onlySmallTopEdgeInsets = EdgeInsets.only(top: smallHeightEdgeInsets);
+    onlySmallBottomEdgeInsets = EdgeInsets.only(bottom: smallHeightEdgeInsets);
+    onlySmallRightEdgeInsets = EdgeInsets.only(right: smallWidthEdgeInsets);
+    onlySmallLeftEdgeInsets = EdgeInsets.only(left: smallWidthEdgeInsets);
 
     //Solo derecha, izquierda, arriba y abajo MEDIUM
-    onlyMediumTopEdgeInsets = EdgeInsets.only(top: _mediumHeightEdgeInsets);
+    onlyMediumTopEdgeInsets = EdgeInsets.only(top: mediumHeightEdgeInsets);
     onlyMediumBottomEdgeInsets =
-        EdgeInsets.only(bottom: _mediumHeightEdgeInsets);
-    onlyMediumRightEdgeInsets = EdgeInsets.only(right: _mediumWidthEdgeInsets);
-    onlyMediumLeftEdgeInsets = EdgeInsets.only(left: _mediumWidthEdgeInsets);
+        EdgeInsets.only(bottom: mediumHeightEdgeInsets);
+    onlyMediumRightEdgeInsets = EdgeInsets.only(right: mediumWidthEdgeInsets);
+    onlyMediumLeftEdgeInsets = EdgeInsets.only(left: mediumWidthEdgeInsets);
 
     //Solo derecha, izquierda, arriba y abajo LARGE
-    onlyLargeTopEdgeInsets = EdgeInsets.only(top: _largeHeightEdgeInsets);
-    onlyLargeBottomEdgeInsets = EdgeInsets.only(bottom: _largeHeightEdgeInsets);
-    onlyLargeRightEdgeInsets = EdgeInsets.only(right: _largeWidthEdgeInsets);
-    onlyLargeLeftEdgeInsets = EdgeInsets.only(left: _largeWidthEdgeInsets);
+    onlyLargeTopEdgeInsets = EdgeInsets.only(top: largeHeightEdgeInsets);
+    onlyLargeBottomEdgeInsets = EdgeInsets.only(bottom: largeHeightEdgeInsets);
+    onlyLargeRightEdgeInsets = EdgeInsets.only(right: largeWidthEdgeInsets);
+    onlyLargeLeftEdgeInsets = EdgeInsets.only(left: largeWidthEdgeInsets);
 
     //Solo derecha, izquierda, arriba y abajo Exxlarge
-    onlyExLargeTopEdgeInsets = EdgeInsets.only(top: _largeExHeightEdgeInsets);
+    onlyExLargeTopEdgeInsets = EdgeInsets.only(top: largeExHeightEdgeInsets);
   }
 }

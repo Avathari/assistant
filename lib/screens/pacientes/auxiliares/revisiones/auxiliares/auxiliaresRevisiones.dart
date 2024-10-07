@@ -2149,7 +2149,7 @@ class _RevisionDispositivosState extends State<RevisionDispositivos> {
       await Actividades.actualizar(
         Databases.siteground_database_reghosp,
         Pendientes.pendientes['updateQuery'],
-        element as List<dynamic>,
+        element,
         Pacientes.ID_Paciente,
       );
       // if (aux[3] != '' && aux[3] != null)
@@ -2488,7 +2488,7 @@ class _RevisionPreviosState extends State<RevisionPrevios> {
       await Actividades.actualizar(
         Databases.siteground_database_reghosp,
         Pendientes.pendientes['updateQuery'],
-        element as List<dynamic>,
+        element,
         Pacientes.ID_Paciente,
       );
       // if (aux[0] != '' && aux[0] != null)
@@ -2834,7 +2834,7 @@ class _RevisionInfusionesState extends State<RevisionInfusiones> {
       await Actividades.actualizar(
         Databases.siteground_database_reghosp,
         Pendientes.pendientes['updateQuery'],
-        element as List<dynamic>,
+        element,
         Pacientes.ID_Paciente,
       );
       // if (aux[0] != '' && aux[0] != null)

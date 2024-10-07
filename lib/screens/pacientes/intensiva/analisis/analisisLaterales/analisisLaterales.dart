@@ -32,7 +32,7 @@ class _AnalisisLateralesState extends State<AnalisisLaterales> {
               : widget.actualLateralPage == 1
               ? Hidricos(isLateral: true)
               : widget.actualLateralPage == 2
-              ? Ventilatorios()
+              ? const Ventilatorios()
               : widget.actualLateralPage == 3
               ? const Gasometricos()
               : widget.actualLateralPage == 4
@@ -41,7 +41,7 @@ class _AnalisisLateralesState extends State<AnalisisLaterales> {
               ? const Antropometricos()
               : widget.actualLateralPage == 6
               ? const BalanceHidrico()
-              : Basico(),
+              : const Basico(),
         ),
         // CrossLine(color:Colors.grey),
         Expanded(

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
@@ -16,7 +15,6 @@ import 'package:assistant/widgets/GridLayout.dart';
 import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
@@ -33,7 +31,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
 
 class GestionPacientes extends StatefulWidget {
-  const GestionPacientes({Key? key}) : super(key: key);
+  const GestionPacientes({super.key});
 
   @override
   State<GestionPacientes> createState() => _GestionPacientesState();
@@ -894,7 +892,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
     listOfIDs = await Actividades.consultar(
         Databases.siteground_database_regpace,
         "SELECT ID_Pace FROM pace_iden_iden WHERE Pace_Hosp = '$query'");
-    listOfIDs.forEach((element) {
+    for (var element in listOfIDs) {
       // Terminal.printExpected(message: "$element");
       Actividades.actualizar(
               Databases.siteground_database_regpace,
@@ -908,7 +906,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
           .onError((error, stackTrace) {
         Terminal.printExpected(message: "ERRNO - $error : : $stackTrace");
       });
-    });
+    }
   }
 
   // VARIABLES DE LA INTERFAZ ***************** ******* * * * *
@@ -928,8 +926,7 @@ class OperacionesPacientes extends StatefulWidget {
 
   String _operation_button = 'Nulo';
 
-  OperacionesPacientes({Key? key, required this.operationActivity})
-      : super(key: key);
+  OperacionesPacientes({super.key, required this.operationActivity});
 
   @override
   State<OperacionesPacientes> createState() => _OperacionesPacientesState();

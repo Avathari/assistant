@@ -5,14 +5,12 @@ import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/AppBarText.dart';
-import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CircleLabel.dart';
 import 'package:assistant/widgets/CircleSwitched.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/DialogSelector.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
-import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:flutter/material.dart';
@@ -25,8 +23,7 @@ class OperacionesQuirurgicos extends StatefulWidget {
 
   String _operationButton = 'Nulo';
 
-  OperacionesQuirurgicos({Key? key, this.operationActivity = Constantes.Nulo})
-      : super(key: key);
+  OperacionesQuirurgicos({super.key, this.operationActivity = Constantes.Nulo});
 
   @override
   State<OperacionesQuirurgicos> createState() => _OperacionesQuirurgicosState();
@@ -364,7 +361,7 @@ class GestionQuirurgicos extends StatefulWidget {
   var complementElementQuery = 'Pace_APP_QUI_com';
   // ****************** *** ****** **************
 
-  GestionQuirurgicos({Key? key, this.actualSidePage}) : super(key: key);
+  GestionQuirurgicos({super.key, this.actualSidePage});
 
   @override
   State<GestionQuirurgicos> createState() => _GestionQuirurgicosState();

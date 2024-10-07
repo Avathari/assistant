@@ -2,8 +2,6 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart'
     as Gas;
-import 'package:assistant/operativity/pacientes/valores/Valorados/hepatometrias.dart';
-import 'package:assistant/operativity/pacientes/valores/Valorados/info/conclusiones.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/dashboard.dart';
 import 'package:assistant/screens/pacientes/auxiliares/detalles/menus.dart';
@@ -23,7 +21,6 @@ import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizado.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/hematinicos.dart';
 import 'package:assistant/screens/pacientes/intensiva/herramientas.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
-import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/vistas/hepaticos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/paraclinicos.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/semiologicos.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/terapias.dart';
@@ -46,7 +43,6 @@ import 'package:flutter/material.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/diagnosticados.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/balances.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
-import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/conmutadorParaclinicos.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/operadores/laboratorios.dart';
 import 'package:assistant/screens/pacientes/patologicos/epidemiologicos.dart';
 import 'package:assistant/screens/pacientes/patologicos/patologicos.dart';
@@ -62,7 +58,7 @@ import 'package:assistant/screens/pacientes/intensiva/analisis/ventilatorios.dar
 class VisualPacientes extends StatefulWidget {
   int actualPage = 6;
 
-  VisualPacientes({Key? key, required this.actualPage}) : super(key: key);
+  VisualPacientes({super.key, required this.actualPage});
 
   @override
   State<VisualPacientes> createState() => _VisualPacientesState();
@@ -718,7 +714,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
                           iconData: Icons.bubble_chart,
                           labelButton: 'Análisis Metabólico',
                           onPress: () =>
-                      Cambios.toNextActivity(context, chyld: Metabolicos())
+                      Cambios.toNextActivity(context, chyld: const Metabolicos())
                         ),
                         GrandIcon(
                           iconData: Icons.horizontal_rule_sharp,
@@ -735,7 +731,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
                           iconData: Icons.all_inclusive_rounded,
                           labelButton: 'Análisis Ventilatorio',
                           onPress: () => Cambios.toNextActivity(context,
-                              chyld: Ventilatorios()),
+                              chyld: const Ventilatorios()),
                         ),
                         GrandIcon(
                           iconData: Icons.g_mobiledata,

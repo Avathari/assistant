@@ -179,7 +179,7 @@ class Cardiometrias {
 
   // Parámetros de Electrocardiogramas
 
-  static double get gastoCardiacoFick => Gasometricos.gastoCardiaco!;
+  static double get gastoCardiacoFick => Gasometricos.gastoCardiaco;
   static double get indiceCardiaco =>
       (Gasometricos.gastoCardiaco / Antropometrias.SC); // # Indice Cardiaco
 
@@ -253,6 +253,10 @@ class Cardiometrias {
   ///
   /// VN : mayor a 0.11
   static double get indiceBriones {
-    if (presionColoidosmotica != 0) return (presionColoidosmotica) / (Cardiometrias.presionArterialMedia!); else return double.nan;
+    if (presionColoidosmotica != 0) {
+      return (presionColoidosmotica) / (Cardiometrias.presionArterialMedia);
+    } else {
+      return double.nan;
+    }
   }
 }

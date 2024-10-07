@@ -22,8 +22,7 @@ class OperacionesTransfusionales extends StatefulWidget {
   String _operationButton = 'Nulo';
 
   OperacionesTransfusionales(
-      {Key? key, this.operationActivity = Constantes.Nulo})
-      : super(key: key);
+      {super.key, this.operationActivity = Constantes.Nulo});
 
   @override
   State<OperacionesTransfusionales> createState() =>
@@ -352,7 +351,7 @@ class GestionTransfusionales extends StatefulWidget {
   var complementElementQuery = 'Pace_APP_TRA_com';
   // ****************** *** ****** **************
 
-  GestionTransfusionales({Key? key, this.actualSidePage}) : super(key: key);
+  GestionTransfusionales({super.key, this.actualSidePage});
 
   @override
   State<GestionTransfusionales> createState() => _GestionTransfusionalesState();

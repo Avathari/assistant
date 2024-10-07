@@ -1193,8 +1193,7 @@ class Valores {
   /// VN: 800-1200 dynas/seg/m2
   ///
   static double get RVS {
-    if (Valores.presionVenosaCentral! != null &&
-        Valores.presionVenosaCentral! != 0) {
+    if (Valores.presionVenosaCentral! != 0) {
       return (((Cardiometrias.presionArterialMedia -
                   Valores.presionVenosaCentral!) /
               Gasometricos.gastoCardiaco) *
@@ -1707,7 +1706,7 @@ class Valores {
   ///
   static fechaProbableParto() {
     // final aux = DateTime.parse(fechaUltimaMestruacion!);
-    DateTime dateTime = new DateTime.now();
+    DateTime dateTime = DateTime.now();
     print(dateTime.day);
 
     dateTime = dateTime.add(const Duration(days: (7 + 365)));
@@ -1740,36 +1739,20 @@ class Valorados {
     String resultado = "";
     int resp = 0, plat = 0, hig = 0, card = 0, glasg = 0, ren = 0;
     // ***************************************************
-    if (Gasometricos.PAFI != null) {
-      if (Datos.isMiddleValue(value: Gasometricos.PAFI, min: 300, max: 400)) {
-        resp = 1;
-      } else if (Datos.isMiddleValue(
-          value: Gasometricos.PAFI, min: 200, max: 300)) {
-        resp = 2;
-      } else if (Datos.isMiddleValue(
-          value: Gasometricos.PAFI, min: 100, max: 200)) {
-        resp = 3;
-      } else if (Datos.isInnerValue(value: Gasometricos.PAFI, lim: 200)) {
-        resp = 2;
-      } else {
-        resp = 0;
-      }
-    } else if (Gasometricos.SAFI != null) {
-      if (Datos.isMiddleValue(value: Gasometricos.SAFI, min: 221, max: 301)) {
-        resp = 1;
-      } else if (Datos.isMiddleValue(
-          value: Gasometricos.SAFI, min: 142, max: 220)) {
-        resp = 2;
-      } else if (Datos.isMiddleValue(
-          value: Gasometricos.SAFI, min: 67, max: 141)) {
-        resp = 3;
-      } else if (Datos.isInnerValue(value: Gasometricos.SAFI, lim: 67)) {
-        resp = 2;
-      } else {
-        resp = 0;
-      }
+    if (Datos.isMiddleValue(value: Gasometricos.PAFI, min: 300, max: 400)) {
+      resp = 1;
+    } else if (Datos.isMiddleValue(
+        value: Gasometricos.PAFI, min: 200, max: 300)) {
+      resp = 2;
+    } else if (Datos.isMiddleValue(
+        value: Gasometricos.PAFI, min: 100, max: 200)) {
+      resp = 3;
+    } else if (Datos.isInnerValue(value: Gasometricos.PAFI, lim: 200)) {
+      resp = 2;
+    } else {
+      resp = 0;
     }
-    // ***************************************************
+      // ***************************************************
     if (Datos.isMiddleValue(value: Valores.plaquetas, min: 150, max: 300)) {
       plat = 1;
     } else if (Datos.isMiddleValue(
@@ -1924,7 +1907,7 @@ class Valorados {
 
     // TENSION ARTERIAL MEDIA ***************************************************
     if (Datos.isUpperValue(
-        value: Cardiometrias.presionArterialMedia!.toDouble(), lim: 160)) {
+        value: Cardiometrias.presionArterialMedia.toDouble(), lim: 160)) {
       pam = 4;
     } else if (Datos.isMiddleValue(
         value: Cardiometrias.presionArterialMedia, min: 130, max: 159)) {
@@ -1998,7 +1981,7 @@ class Valorados {
     }
     // OXIGENACIÓN ***************************************************
     if (Valores.fraccionInspiratoriaOxigeno! >= 50) {
-      if (Datos.isUpperValue(value: Gasometricos.GAA!.toDouble(), lim: 500)) {
+      if (Datos.isUpperValue(value: Gasometricos.GAA.toDouble(), lim: 500)) {
         pafi = 4;
       } else if (Datos.isMiddleValue(
           value: Gasometricos.GAA, min: 350, max: 499)) {
@@ -2007,7 +1990,7 @@ class Valorados {
           value: Gasometricos.GAA, min: 200, max: 349)) {
         pafi = 2;
       } else if (Datos.isInnerValue(
-          value: Gasometricos.GAA!.toDouble(), lim: 200)) {
+          value: Gasometricos.GAA.toDouble(), lim: 200)) {
         pafi = 0;
       } else {
         pafi = 0;
@@ -2290,24 +2273,24 @@ class Valorados {
     }
 
     // APACHE-II  ***************************************************
-    if (Datos.isInnerValue(value: cAPACHE!.toDouble(), lim: 15)) {
+    if (Datos.isInnerValue(value: cAPACHE.toDouble(), lim: 15)) {
       apache = 0;
     } else if (Datos.isMiddleValue(value: cAPACHE, min: 15, max: 20)) {
       apache = 1;
     } else if (Datos.isMiddleValue(value: cAPACHE, min: 20, max: 28)) {
       apache = 2;
-    } else if (Datos.isUpperValue(value: cAPACHE!.toDouble(), lim: 28)) {
+    } else if (Datos.isUpperValue(value: cAPACHE.toDouble(), lim: 28)) {
       apache = 3;
     } else {
       apache = 0;
     }
 
     // APACHE-II  ***************************************************
-    if (Datos.isInnerValue(value: cSOFA!.toDouble(), lim: 6)) {
+    if (Datos.isInnerValue(value: cSOFA.toDouble(), lim: 6)) {
       sofa = 0;
     } else if (Datos.isMiddleValue(value: cSOFA, min: 6, max: 9)) {
       sofa = 1;
-    } else if (Datos.isUpperValue(value: cSOFA!.toDouble(), lim: 10)) {
+    } else if (Datos.isUpperValue(value: cSOFA.toDouble(), lim: 10)) {
       sofa = 3;
     } else {
       sofa = 0;
@@ -4130,7 +4113,7 @@ class Items {
     {
       "Diagnostico": "Recomendaciones Dietéticas",
       "Comentario": "RECOMENDACIONES DIETÉTICAS: "
-          "Dieta fija en 2g de sal y 200mg de colesterol al día. Incrementar consumo de alimentos vegetales, verduras y fruta con abundante fibra en su dieta. Caminata diaria por 30 minutos antes o después de sus actividades diarias.\m"
+          "Dieta fija en 2g de sal y 200mg de colesterol al día. Incrementar consumo de alimentos vegetales, verduras y fruta con abundante fibra en su dieta. Caminata diaria por 30 minutos antes o después de sus actividades diarias.m"
           "Enviar con médico nutriólogo de su UMF correspondiente para complementar control metabólico. Vigilar que las cifras de presión arterial se mantengan menores a 140/90mmHg.  En pacientes mayores a 70 años, cifras de presión arterial menores a 150/90mmHg.  En pacientes con Infarto del Miocardio menores a 120/80mmHg. Colesterol total <150mg/dl, triglicéridos <150mg/dl y glucosa en ayuno <140mg/dl, IMC <25kg/m2 en cada consulta en su UMF correspondiente según guías de práctica clínica del Instituto. Ajustar tratamiento médico en su UMF si es necesario.\n",
     },
     {

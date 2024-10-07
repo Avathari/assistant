@@ -12,7 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Arteriales extends StatefulWidget {
-  const Arteriales({Key? key}) : super(key: key);
+  const Arteriales({super.key});
 
   @override
   State<Arteriales> createState() => _ArterialesState();
@@ -613,11 +613,11 @@ class _ArterialesState extends State<Arteriales> {
     Future.forEach(listOfValues(), (element) async {
       var aux = element as List<String>;
 
-      if (aux[5] != '0' && aux[5] != '' && aux[5] != null) {
+      if (aux[5] != '0' && aux[5] != '') {
         await Actividades.registrar(
           Databases.siteground_database_reggabo,
           Auxiliares.auxiliares['registerQuery'],
-          element as List<String>,
+          element,
         );
       }
     }).whenComplete(() {

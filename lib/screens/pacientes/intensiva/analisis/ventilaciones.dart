@@ -3,7 +3,7 @@ import 'package:assistant/screens/pacientes/intensiva/analisis/ventilatorios.dar
 import 'package:flutter/material.dart';
 
 class AnalisisVentilatorio extends StatefulWidget {
-  const AnalisisVentilatorio({Key? key}) : super(key: key);
+  const AnalisisVentilatorio({super.key});
 
   @override
   State<AnalisisVentilatorio> createState() => _AnalisisVentilatorioState();
@@ -12,6 +12,6 @@ class AnalisisVentilatorio extends StatefulWidget {
 class _AnalisisVentilatorioState extends State<AnalisisVentilatorio> {
   @override
   Widget build(BuildContext context) {
-    return Ventilatorios();
+    return const Ventilatorios();
   }
 }

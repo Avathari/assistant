@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Hemoderivados extends StatefulWidget {
-  const Hemoderivados({Key? key}) : super(key: key);
+  const Hemoderivados({super.key});
 
   @override
   State<Hemoderivados> createState() => _HemoderivadosState();

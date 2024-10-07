@@ -2882,7 +2882,7 @@ class FormatosReportes {
           ),
         );
         // Terminal.printExpected(message: "${item['Auxiliares']} ${item['Auxiliares'].runtimeType}");
-        fechar.forEach((element) {
+        for (var element in fechar) {
           String fecha = "          Paraclínicos ($element)", max = "";
 
           List<dynamic>? alam = item.paraclinicos;
@@ -2901,7 +2901,7 @@ class FormatosReportes {
             }
           }
           auxiliary = "$auxiliary$fecha: ${Sentences.capitalize(max)}\n";
-        });
+        }
       }
 
       // Terminal.printExpected(
@@ -3177,7 +3177,7 @@ class CopiasReportes {
           "${paraph['Antecedentes_Patologicos_Ingreso']}\n";
     }
 
-    tipoReporte = "${tipoReporte}\nPADECIMIENTO ACTUAL\n"
+    tipoReporte = "$tipoReporte\nPADECIMIENTO ACTUAL\n"
         "${paraph['Padecimiento_Actual']}\n\n";
 
     // # # # # # # ### # # # # # # ###
@@ -3267,7 +3267,7 @@ class CopiasReportes {
           "${paraph['Signos_Vitales']}\n"
           "${paraph['Exploracion_Fisica']}\n\n";
     } else {
-      tipoReporte = "${tipoReporte}" //A la exploración física con: \n"
+      tipoReporte = "$tipoReporte" //A la exploración física con: \n"
           "${paraph['Signos_Vitales']}\n"
           "${paraph['Exploracion_Fisica']}\n";
     }
@@ -3278,7 +3278,7 @@ class CopiasReportes {
     }
 
     if (paraph['Analisis_Complementarios'] != "") {
-      tipoReporte = "${tipoReporte}\nANALISIS COMPLEMENTARIOS\n"
+      tipoReporte = "$tipoReporte\nANALISIS COMPLEMENTARIOS\n"
           "${paraph['Analisis_Complementarios']}\n\n";
     }
 
@@ -3390,7 +3390,7 @@ class CopiasReportes {
     //
     String tipoReporte = "NOTA DE REVISION HOSPITALARIO\n";
 
-    tipoReporte = "${tipoReporte}"
+    tipoReporte = "$tipoReporte"
         "${paraph['Datos_Generales_Simple'].substring(0, paraph['Datos_Generales_Simple'].length - 1)} ";
 
     // # # # # # # ### # # # # # # ###
@@ -3473,7 +3473,7 @@ class CopiasReportes {
   static String reporteTraslado(Map<String, dynamic> paraph) {
     String tipoReporte = "";
 
-    tipoReporte = "${tipoReporte}"
+    tipoReporte = "$tipoReporte"
         "${paraph['Datos_Generales_Simple'].substring(0, paraph['Datos_Generales_Simple'].length - 1)} ";
 
     // # # # # # # ### # # # # # # ###
@@ -3509,11 +3509,11 @@ class CopiasReportes {
         "ANTECEDENTES: ";
     // # # # # # # ### # # # # # # ###
     if (paraph['Antecedentes_Patologicos_Ingreso'] != "") {
-      tipoReporte = "${tipoReporte}"
+      tipoReporte = "$tipoReporte"
           "${paraph['Antecedentes_Patologicos_Ingreso']}\n";
     }
 
-    tipoReporte = "${tipoReporte}\nMOTIVO DE INGRESO - "
+    tipoReporte = "$tipoReporte\nMOTIVO DE INGRESO - "
         "${paraph['Padecimiento_Actual']} ";
 
     // # # # # # # ### # # # # # # ###
@@ -3532,7 +3532,7 @@ class CopiasReportes {
     //
     String tipoReporte = "NOTA DE REVISION HOSPITALARIO\n";
 
-    tipoReporte = "${tipoReporte}"
+    tipoReporte = "$tipoReporte"
         "${paraph['Datos_Generales_Simple'].substring(0, paraph['Datos_Generales_Simple'].length - 1)} ";
 
     // # # # # # # ### # # # # # # ###

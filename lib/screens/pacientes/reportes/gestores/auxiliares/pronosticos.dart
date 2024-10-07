@@ -191,14 +191,14 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                                             options: Items.bibliografiasContempladas.map((e) =>
                                             e['Diagnostico']).toList(),
                                             onClose: (valar) {
-                                              Terminal.printWarning(message: "$valar");
+                                              Terminal.printWarning(message: valar);
 
-                                              Items.bibliografiasContempladas.forEach((e) {
+                                              for (var e in Items.bibliografiasContempladas) {
                                                 //
                                                 if (e['Diagnostico'] == valar) {
                                                   pronosTextController.text = "${pronosTextController.text}${e['Bibliografia']!}";
                                                 }
-                                              });
+                                              }
                                               Navigator.of(context).pop();
                                             });
                                       }),

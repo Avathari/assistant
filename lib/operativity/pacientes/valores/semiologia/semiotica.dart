@@ -130,8 +130,9 @@ class Exploracion {
     //
     if (elementAt == 'RASS') rass = title;
 // CUELLO
-    if (elementAt == 'movilidadTemporoMandibular')
+    if (elementAt == 'movilidadTemporoMandibular') {
       movilidadTemporoMandibular = title;
+    }
     if (elementAt == 'movilidadCervical') movilidadCervical = title;
     if (elementAt == 'ingurgitacionYugular') ingurgitacionYugular = title;
     if (elementAt == 'bocioCervical') bocioCervical = title;

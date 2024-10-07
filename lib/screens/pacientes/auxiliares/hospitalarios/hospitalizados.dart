@@ -425,8 +425,9 @@ class _HospitalizadosState extends State<Hospitalizados> {
       var response = await Valores().load(); // print("response $response");
 
       // ignore: use_build_context_synchronously
-      if (response == true)
+      if (response == true) {
         Cambios.toNextPage(context, VisualPacientes(actualPage: 0));
+      }
     });
   }
 
@@ -1752,7 +1753,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
   }
 
   Future<Null> _refreshActualList(int index) async {
-    String _pacienteId = foundedItems![index].idPaciente.toString();
+    String pacienteId = foundedItems![index].idPaciente.toString();
     Map<String, dynamic> generales = foundedItems![index].generales;
     //
     Terminal.printAlert(
@@ -1760,7 +1761,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
             "Consulta de Valores del Hospitalizado . . . NUEVA FUNCION\n "
             "-------------------------------------------------------------------------------\n"
             "INDEX $index\n"
-            "ID_Paaace ${foundedItems![index].idPaciente.toString()} : : $_pacienteId : . . . \n\n"
+            "ID_Paaace ${foundedItems![index].idPaciente.toString()} : : $pacienteId : . . . \n\n"
             "-------------------------------------------------------------------------------\n"
             "-------------------------------------------------------------------------------\n"
             "${foundedItems![index].toJson()}");
@@ -1775,7 +1776,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
     // CONSULTA DE VALORES ****************************************
     foundedItems!.removeAt(index);
     // Lista de Pacientes Hospitalizados * * *
-    foundedItems!.insert(index, Internado(int.parse(_pacienteId), generales));
+    foundedItems!.insert(index, Internado(int.parse(pacienteId), generales));
     //
     await foundedItems![index].getHospitalizationRegister();
     await foundedItems![index].getPadecimientoActual();

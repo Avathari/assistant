@@ -39,8 +39,7 @@ class OperacionesEnologias extends StatefulWidget {
 
   String _operationButton = 'Nulo';
 
-  OperacionesEnologias({Key? key, this.operationActivity = Constantes.Nulo})
-      : super(key: key);
+  OperacionesEnologias({super.key, this.operationActivity = Constantes.Nulo});
 
   @override
   State<OperacionesEnologias> createState() => _OperacionesEnologiasState();
@@ -131,7 +130,7 @@ class _OperacionesEnologiasState extends State<OperacionesEnologias> {
             message:
                 "Actualizando Repositorio de Patologías del Paciente . . . ");
 
-        Archivos.createJsonFromMap(Enologias.Enologicos!,
+        Archivos.createJsonFromMap(Enologias.Enologicos,
             filePath: Enologias.fileAssocieted);
       });
     });
@@ -282,7 +281,7 @@ child: Column(
     Spinner(
         tittle: "Intensidad",
         initialValue: "hemotipoValue,",
-        items: ["hemotipoValue,"],
+        items: const ["hemotipoValue,"],
         width: isMobile(context)
             ? 216
             : isTablet(context)
@@ -296,7 +295,7 @@ child: Column(
     Spinner(
         tittle: "Color",
         initialValue: "hemotipoValue,",
-        items: ["hemotipoValue,"],
+        items: const ["hemotipoValue,"],
         width: isMobile(context)
             ? 216
             : isTablet(context)
@@ -310,7 +309,7 @@ child: Column(
     Spinner(
         tittle: "Tonalidad",
         initialValue: "hemotipoValue,",
-        items: ["hemotipoValue,"],
+        items: const ["hemotipoValue,"],
         width: isMobile(context)
             ? 216
             : isTablet(context)
@@ -324,7 +323,7 @@ child: Column(
     Spinner(
         tittle: "Variación",
         initialValue: "hemotipoValue,",
-        items: ["hemotipoValue,"],
+        items: const ["hemotipoValue,"],
         width: isMobile(context)
             ? 216
             : isTablet(context)
@@ -338,7 +337,7 @@ child: Column(
     Spinner(
         tittle: "Evolución",
         initialValue: "hemotipoValue,",
-        items: ["hemotipoValue,"],
+        items: const ["hemotipoValue,"],
         width: isMobile(context)
             ? 216
             : isTablet(context)
@@ -352,7 +351,7 @@ child: Column(
     Spinner(
         tittle: "Aspecto",
         initialValue: "hemotipoValue,",
-        items: ["hemotipoValue,"],
+        items: const ["hemotipoValue,"],
         width: isMobile(context)
             ? 216
             : isTablet(context)
@@ -508,7 +507,7 @@ class GestionEnologias extends StatefulWidget {
   var keySearch = "Pace_APP_ALE";
   // ****************** *** ****** **************
 
-  GestionEnologias({Key? key, this.actualSidePage}) : super(key: key);
+  GestionEnologias({super.key, this.actualSidePage});
 
   @override
   State<GestionEnologias> createState() => _GestionEnologiasState();

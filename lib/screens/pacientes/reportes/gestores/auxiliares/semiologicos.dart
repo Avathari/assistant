@@ -8,7 +8,6 @@ import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
-import 'package:assistant/widgets/CircleLabel.dart';
 import 'package:assistant/widgets/CircleSwitched.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
@@ -16,7 +15,6 @@ import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/GrandLabel.dart';
 import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/TittleContainer.dart';
-import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -106,7 +104,7 @@ class _SemiologicosState extends State<Semiologicos>
   }
 
   List<Widget> _getComponents(
-      {required Map<String, dynamic> entries, bool isSpinner = false}) {
+      {required Map<String, dynamic> entries}) {
     List<Widget> list = [];
 
     for (int index = 0; index < entries.length; index++) {

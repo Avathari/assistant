@@ -10,14 +10,13 @@ class GrandLabel extends StatefulWidget {
   double? fontSized;
 
   GrandLabel(
-      {Key? key,
+      {super.key,
       this.labelButton = "message",
       this.weigth,
       this.height,
       this.fontSized = 8,
       this.iconData = Icons.wallet,
-      required this.onPress})
-      : super(key: key);
+      required this.onPress});
 
   @override
   State<GrandLabel> createState() => _GrandLabelState();
@@ -71,6 +70,5 @@ class _GrandLabelState extends State<GrandLabel> {
         ),
       ),
     );
-    ;
   }
 }

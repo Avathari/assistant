@@ -1,12 +1,9 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
-import 'package:assistant/operativity/pacientes/valores/Valorados/citometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/info/conclusiones.dart';
-import 'package:assistant/operativity/pacientes/valores/Valorados/renometrias.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/conmutadorParaclinicos.dart';
 
@@ -20,7 +17,6 @@ import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
-import 'package:assistant/widgets/ValuePanel.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -85,7 +81,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
 
   @override
   Widget build(BuildContext context) {
-    var _progress;
+    var progress;
 
     return Scaffold(
       appBar: AppBar(
@@ -869,7 +865,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                           //       categoriaEstudio: value,
                           //     ));
                           Cambios.toNextActivity(context,
-                              tittle: '$value',
+                              tittle: value,
                               chyld: ConmutadorParaclinicos(
                                 categoriaEstudio: value,
                               ));
@@ -992,7 +988,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                           Cambios.toNextActivity(context,
                               tittle: 'Rutina',
                               onOption: () =>
-                                  Operadores.openDialog(context: context, chyldrim: Conclusiones())
+                                  Operadores.openDialog(context: context, chyldrim: const Conclusiones())
                               ,
                               chyld: ConmutadorParaclinicos(
                                 categoriaEstudio: 'Rutina',
@@ -1039,7 +1035,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                           // Actualización del Indice
                           // *************** *********** **************
                           index = Auxiliares.Categorias.indexOf(newValue);
-                          print("${tipoEstudioValue} : $index");
+                          print("$tipoEstudioValue : $index");
                           // *************** *********** **************
                           estudioValue = Auxiliares
                               .Laboratorios[Auxiliares.Categorias[index]][0];
@@ -1087,7 +1083,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                           }
                           //
                           Cambios.toNextActivity(context,
-                              tittle: '$value',
+                              tittle: value,
                               chyld: ConmutadorParaclinicos(
                                 categoriaEstudio: value,
                               ));
@@ -1168,7 +1164,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
               ],
             ),
           ),
-          Expanded(
+          const Expanded(
             flex: 4,
             child: Column(
               children: [],
@@ -1272,7 +1268,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                           Cambios.toNextActivity(context,
                               tittle: 'Rutina',
                               onOption: () =>
-                                Operadores.openDialog(context: context, chyldrim: Conclusiones())
+                                Operadores.openDialog(context: context, chyldrim: const Conclusiones())
                               ,
                               chyld: ConmutadorParaclinicos(
                                 categoriaEstudio: 'Rutina',

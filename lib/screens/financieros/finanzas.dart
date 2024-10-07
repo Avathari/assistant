@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
@@ -40,8 +39,7 @@ class OperacionesActivos extends StatefulWidget {
 
   String _operationButton = 'Nulo';
 
-  OperacionesActivos({Key? key, this.operationActivity = Constantes.Nulo})
-      : super(key: key);
+  OperacionesActivos({super.key, this.operationActivity = Constantes.Nulo});
 
   @override
   State<OperacionesActivos> createState() => _OperacionesActivosState();
@@ -107,7 +105,7 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
 
   @override
   Widget build(BuildContext context) {
-    var _progress;
+    var progress;
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -479,10 +477,10 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
                                       width: 20.0,
                                       height: 20.0,
                                       child: CircularProgressIndicator(
-                                        value: _progress == null
+                                        value: progress == null
                                             ? null
-                                            : _progress.cumulativeBytesLoaded /
-                                                _progress.expectedTotalBytes,
+                                            : progress.cumulativeBytesLoaded /
+                                                progress.expectedTotalBytes!,
                                       ),
                                     ),
                                   ),
@@ -708,11 +706,10 @@ class GestionActivos extends StatefulWidget {
   bool? reverse, esActualized;
 // ****************** *** ****** **************
   GestionActivos(
-      {Key? key,
+      {super.key,
       this.reverse = false,
       this.actualSidePage,
-      this.esActualized = true})
-      : super(key: key);
+      this.esActualized = true});
 
   @override
   State<GestionActivos> createState() => _GestionActivosState();
@@ -844,7 +841,7 @@ class _GestionActivosState extends State<GestionActivos> {
                                         keySearched: 'Fecha_Pago_Programado')),
                                 onClose: (value) {
                                   Navigator.of(context).pop();
-                                  Terminal.printSuccess(message: "$value");
+                                  Terminal.printSuccess(message: value);
                                   _runFilterSearch(
                                       enteredKeyword: value,
                                       keySearched: 'Fecha_Pago_Programado');

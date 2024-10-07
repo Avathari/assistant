@@ -4,7 +4,7 @@ class AppBarText extends StatefulWidget {
 
   String? text;
 
-  AppBarText(this.text, {Key? key}) : super(key: key);
+  AppBarText(this.text, {super.key});
 
   @override
   State<AppBarText> createState() => _AppBarTextState();

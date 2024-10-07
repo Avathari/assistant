@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Alcoholismo extends StatefulWidget {
-  const Alcoholismo({Key? key}) : super(key: key);
+  const Alcoholismo({super.key});
 
   @override
   State<Alcoholismo> createState() => _AlcoholismoState();

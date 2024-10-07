@@ -13,7 +13,7 @@ import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Hepaticos extends StatefulWidget {
-  const Hepaticos({Key? key}) : super(key: key);
+  const Hepaticos({super.key});
 
   @override
   State<Hepaticos> createState() => _HepaticosState();
@@ -427,11 +427,11 @@ class _HepaticosState extends State<Hepaticos> {
     Future.forEach(listOfValues(), (element) async {
       var aux = element as List<String>;
 
-      if (aux[5] != '0' && aux[5] != '' && aux[5] != null) {
+      if (aux[5] != '0' && aux[5] != '') {
         await Actividades.registrar(
           Databases.siteground_database_reggabo,
           Auxiliares.auxiliares['registerQuery'],
-          element as List<String>,
+          element,
         );
       }
     }).whenComplete(() {

@@ -1,4 +1,3 @@
-import 'package:assistant/values/SizingInfo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -11,7 +10,7 @@ class GrandIcon extends StatefulWidget {
   Color? iconColor;
 
   GrandIcon(
-      {Key? key,
+      {super.key,
       this.labelButton = "message",
       this.weigth = 15,
       this.heigth = 15,
@@ -19,8 +18,7 @@ class GrandIcon extends StatefulWidget {
       this.iconColor = Colors.grey,
       this.iconData = Icons.wallet,
       this.onLongPress,
-      required this.onPress})
-      : super(key: key);
+      required this.onPress});
 
   @override
   State<GrandIcon> createState() => _GrandIconState();
@@ -43,6 +41,5 @@ class _GrandIconState extends State<GrandIcon> {
         child: Icon(size: widget.size!, widget.iconData, color: widget.iconColor),
       ),
     );
-    ;
   }
 }

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
@@ -45,8 +44,7 @@ class OperacionesLicencia extends StatefulWidget {
   String _operationButton = 'Nulo';
   bool? withAppBar;
 
-  OperacionesLicencia({Key? key, this.operationActivity = Constantes.Nulo, this.withAppBar = true})
-      : super(key: key);
+  OperacionesLicencia({super.key, this.operationActivity = Constantes.Nulo, this.withAppBar = true});
 
   @override
   State<OperacionesLicencia> createState() => _OperacionesLicenciaState();
@@ -581,7 +579,7 @@ class GestionLicencia extends StatefulWidget {
   var keySearch = "Feca_PEN";
   // ****************** *** ****** **************
 
-  GestionLicencia({Key? key, this.actualSidePage}) : super(key: key);
+  GestionLicencia({super.key, this.actualSidePage});
 
   @override
   State<GestionLicencia> createState() => _GestionLicenciaState();

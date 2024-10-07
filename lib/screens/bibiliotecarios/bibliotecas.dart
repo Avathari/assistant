@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
@@ -22,7 +21,6 @@ import 'package:assistant/widgets/ViewDocument.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -46,8 +44,7 @@ class OperacionesBibliotecas extends StatefulWidget {
 
   String _operationButton = 'Nulo';
 
-  OperacionesBibliotecas({Key? key, this.operationActivity = Constantes.Nulo})
-      : super(key: key);
+  OperacionesBibliotecas({super.key, this.operationActivity = Constantes.Nulo});
 
   @override
   State<OperacionesBibliotecas> createState() => _OperacionesBibliotecasState();
@@ -410,7 +407,7 @@ class _OperacionesBibliotecasState extends State<OperacionesBibliotecas> {
                                           // print("names ${result.names}");
                                           // print("count ${result.count}");
                                           // print("isSingle ${result.isSinglePick}");
-                                        } on Exception catch (e) {
+                                        } on Exception {
                                           // TODO
                                         }
                                       },
@@ -585,7 +582,7 @@ class _OperacionesBibliotecasState extends State<OperacionesBibliotecas> {
     String name = tyttleBibliotecasTextController.text.isEmpty
         ? "name"
         : tyttleBibliotecasTextController.text;
-    File decodedimgfile = await File("${name}.pdf")
+    File decodedimgfile = await File("$name.pdf")
         .writeAsBytes(base64.decode(Bibliotecas.biblioteca['Lyben_File']!));
 
     setState(() {
@@ -640,7 +637,7 @@ class GestionBibliotecas extends StatefulWidget {
   var keySearch = "Feca_PEN";
   // ****************** *** ****** **************
 
-  GestionBibliotecas({Key? key, this.actualSidePage}) : super(key: key);
+  GestionBibliotecas({super.key, this.actualSidePage});
 
   @override
   State<GestionBibliotecas> createState() => _GestionBibliotecasState();

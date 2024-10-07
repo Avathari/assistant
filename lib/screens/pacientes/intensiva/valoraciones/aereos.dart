@@ -4,13 +4,11 @@ import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class Aereas extends StatefulWidget {
-  const Aereas({Key? key}) : super(key: key);
+  const Aereas({super.key});
 
   @override
   State<Aereas> createState() => _AereasState();

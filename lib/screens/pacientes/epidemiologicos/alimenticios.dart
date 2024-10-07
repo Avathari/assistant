@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Alimenticios extends StatefulWidget {
-  const Alimenticios({Key? key}) : super(key: key);
+  const Alimenticios({super.key});
 
   @override
   State<Alimenticios> createState() => _AlimenticiosState();

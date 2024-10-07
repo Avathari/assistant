@@ -17,7 +17,7 @@ import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Rutinas extends StatefulWidget {
-  const Rutinas({Key? key}) : super(key: key);
+  const Rutinas({super.key});
 
   @override
   State<Rutinas> createState() => _RutinasState();
@@ -1312,11 +1312,11 @@ class _RutinasState extends State<Rutinas> {
     Future.forEach(listOfValues(), (element) async {
       var aux = element as List<String>;
 
-      if (aux[5] != '0' && aux[5] != '' && aux[5] != null) {
+      if (aux[5] != '0' && aux[5] != '') {
         await Actividades.registrar(
           Databases.siteground_database_reggabo,
           Auxiliares.auxiliares['registerQuery'],
-          element as List<String>,
+          element,
         );
       }
     }).whenComplete(() {
@@ -1370,9 +1370,10 @@ class _RutinasState extends State<Rutinas> {
                       labelEditText: 'Hemoglobina ($unidadMedidaHemoglobina)',
                       numOfLines: 1,
                       onChange: (String value) {
-                        if (textHemoglobinaResultController.text.isNotEmpty)
+                        if (textHemoglobinaResultController.text.isNotEmpty) {
                           Valores.hemoglobina = double.parse(
                               textHemoglobinaResultController.text);
+                        }
                       },
                     ),
                   ),
@@ -1387,9 +1388,10 @@ class _RutinasState extends State<Rutinas> {
                       labelEditText: 'Eritrocitos ($unidadMedidaEritrocitos)',
                       numOfLines: 1,
                       onChange: (String value) {
-                        if (textEritrocitosResultController.text.isNotEmpty)
+                        if (textEritrocitosResultController.text.isNotEmpty) {
                           Valores.eritrocitos = double.parse(
                               textEritrocitosResultController.text);
+                        }
                       },
                     ),
                   ),
@@ -1990,7 +1992,7 @@ class _RutinasState extends State<Rutinas> {
               ),
               EditTextArea(
                 textController: textPCRResultController,
-                keyBoardType: TextInputType.numberWithOptions(),
+                keyBoardType: const TextInputType.numberWithOptions(),
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Proteína C Reactiva ($unidadMedidaPCR)',
                 numOfLines: 1,
@@ -2265,9 +2267,10 @@ class _RutinasState extends State<Rutinas> {
                         labelEditText: 'Hemoglobina ($unidadMedidaHemoglobina)',
                         numOfLines: 1,
                         onChange: (String value) {
-                          if (textHemoglobinaResultController.text.isNotEmpty)
+                          if (textHemoglobinaResultController.text.isNotEmpty) {
                             Valores.hemoglobina = double.parse(
                                 textHemoglobinaResultController.text);
+                          }
                         },
                       ),
                     ),
@@ -2282,9 +2285,10 @@ class _RutinasState extends State<Rutinas> {
                         labelEditText: 'Eritrocitos ($unidadMedidaEritrocitos)',
                         numOfLines: 1,
                         onChange: (String value) {
-                          if (textEritrocitosResultController.text.isNotEmpty)
+                          if (textEritrocitosResultController.text.isNotEmpty) {
                             Valores.eritrocitos = double.parse(
                                 textEritrocitosResultController.text);
+                          }
                         },
                       ),
                     ),

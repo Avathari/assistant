@@ -10,8 +10,7 @@ import 'package:flutter/material.dart';
 
 class AnalisisElectrocardiograma extends StatefulWidget {
   bool operationActivity = true; // Si true entonces REGISTER.register.
-  AnalisisElectrocardiograma({Key? key, required this.operationActivity})
-      : super(key: key);
+  AnalisisElectrocardiograma({super.key, required this.operationActivity});
 
   @override
   State<AnalisisElectrocardiograma> createState() =>

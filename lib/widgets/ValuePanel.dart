@@ -13,7 +13,7 @@ class ValuePanel extends StatefulWidget {
   void Function()? onLongPress;
 
   ValuePanel({
-    Key? key,
+    super.key,
     this.firstText = "",
     this.secondText = "",
     this.thirdText = "",
@@ -25,7 +25,7 @@ class ValuePanel extends StatefulWidget {
     this.withBorder = true, // false,
     this.onLongPress,
     this.onEdit,
-  }) : super(key: key);
+  });
 
   @override
   State<ValuePanel> createState() => _ValuePanelState();

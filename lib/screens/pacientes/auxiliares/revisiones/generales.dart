@@ -1,10 +1,6 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
-import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
-import 'package:assistant/operativity/pacientes/valores/Valorados/cardiometrias.dart';
-import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart';
-import 'package:assistant/operativity/pacientes/valores/Valorados/renometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/operativity/pacientes/valores/semiologia/semiotica.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/auxiliares/auxiliaresGenerales.dart';
@@ -34,7 +30,7 @@ class Generales extends StatefulWidget {
   bool? analysis;
 
   /// Destinado a la Anexión de Vitales y Balance Hídrico del paciente de acuerdo a una fecha determinada.
-  Generales({Key? key, this.analysis = false}) : super(key: key);
+  Generales({super.key, this.analysis = false});
 
   @override
   State<Generales> createState() => _GeneralesState();
@@ -1863,7 +1859,7 @@ class _GeneralesState extends State<Generales> {
                   //         listado: Pacientes.getRevisionCultivos())),
                 ],
               )),
-          Expanded(flex: 2, child: Basico())
+          const Expanded(flex: 2, child: Basico())
         ],
       ),
     );

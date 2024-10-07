@@ -225,7 +225,7 @@ class _DashboardState extends State<Dashboard> {
                 const SizedBox(height: 6),
                 Expanded(
                     child: RoundedPanel(
-                  child:Prognosis(),
+                  child:const Prognosis(),
                 )),
                 const SizedBox(height: 6),
               ],

@@ -452,51 +452,57 @@ class Pacientes {
       //
     }
 
-    if (cirugiasProsa != "")
+    if (cirugiasProsa != "") {
       cirugiasProsa =
           "        Antecedentes Quirúrgicos : $cirugiasProsa . . . ";
-    if (hospitalizacionesProsa != "")
+    }
+    if (hospitalizacionesProsa != "") {
       hospitalizacionesProsa =
           "\n        Antecedentes Hospitalarios : $hospitalizacionesProsa . . ";
-    if (alergicosProsa != "")
+    }
+    if (alergicosProsa != "") {
       alergicosProsa =
           "\n        Antecedentes Alérgicos : $alergicosProsa . . . ";
-    if (vacunasProsa != "")
+    }
+    if (vacunasProsa != "") {
       vacunasProsa =
           "\n        Vacunas recientes empleadas : $vacunasProsa . . .";
-    if (transfusionesProsa != "")
+    }
+    if (transfusionesProsa != "") {
       transfusionesProsa =
           "\n        Transfusiones en los últimos meses : $transfusionesProsa . . .";
-    if (traumaticosProsa != "")
+    }
+    if (traumaticosProsa != "") {
       traumaticosProsa =
           "\n        Antecedentes Traumáticos : $traumaticosProsa . . . ";
-    if (infecciososProsa != "")
+    }
+    if (infecciososProsa != "") {
       infecciososProsa =
           "\n        Antecedentes Infecciosos : $infecciososProsa . . . ";
+    }
 
+    //     // ************************ ************** ********** **** *** *
+    //     if (Pacientes.Quirurgicos != []) {
+    //       // || Quirurgicos!.isNotEmpty
+    //       Reportes.antecedentesQuirurgicos = "";
+    //       for (var element in Quirurgicos!) {
+    //         if (Reportes.antecedentesQuirurgicos == "") {
+    //           Reportes.antecedentesQuirurgicos =
+    //               "${element['Pace_APP_QUI']} " // realizado hace ${element['Pace_APP_QUI_dia']} años, "
+    //               "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
+    //         } else {
+    //           Reportes.antecedentesQuirurgicos =
+    //               "${Reportes.antecedentesQuirurgicos}; ${element['Pace_APP_QUI']} "
+    //               "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
+    //         }
+    //       }
+    //     } else {
+    //       Reportes.antecedentesQuirurgicos = "negados";
+    //     }
+    //     // ************************ ************** ********** **** *** *
+    //     return Reportes.antecedentesQuirurgicos!;
     return Reportes.antecedentesQuirurgicos =
         "$infecciososProsa$cirugiasProsa$hospitalizacionesProsa$alergicosProsa$vacunasProsa$transfusionesProsa$traumaticosProsa";
-
-    // ************************ ************** ********** **** *** *
-    if (Pacientes.Quirurgicos != []) {
-      // || Quirurgicos!.isNotEmpty
-      Reportes.antecedentesQuirurgicos = "";
-      for (var element in Quirurgicos!) {
-        if (Reportes.antecedentesQuirurgicos == "") {
-          Reportes.antecedentesQuirurgicos =
-              "${element['Pace_APP_QUI']} " // realizado hace ${element['Pace_APP_QUI_dia']} años, "
-              "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
-        } else {
-          Reportes.antecedentesQuirurgicos =
-              "${Reportes.antecedentesQuirurgicos}; ${element['Pace_APP_QUI']} "
-              "${element['Pace_APP_QUI_com'].toString().toLowerCase()}";
-        }
-      }
-    } else {
-      Reportes.antecedentesQuirurgicos = "negados";
-    }
-    // ************************ ************** ********** **** *** *
-    return Reportes.antecedentesQuirurgicos!;
   }
 
   static String traumaticos() {
@@ -6197,7 +6203,7 @@ class Imagenologias {
       ),
     );
 
-    fechar.forEach((element) {
+    for (var element in fechar) {
       // Filtro por estudio de los registros de Pacientes.Paraclinicos
       var aux = Pacientes.Imagenologicos!
           .where((user) => user["Fecha_Registro"].contains(element))
@@ -6205,7 +6211,7 @@ class Imagenologias {
       String fecha = "($element)";
       String max = "";
 
-      aux.forEach((element) {
+      for (var element in aux) {
         if (max == "") {
           max =
               "${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
@@ -6213,10 +6219,10 @@ class Imagenologias {
           max =
               "$max, ${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
         }
-      });
+      }
 
       prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
-    });
+    }
     // ************** ***************** ***************
     // Terminal.printExpected(message: "prosa $prosa");
 
@@ -6249,11 +6255,7 @@ class Imagenologias {
       '',
       '',
     ], // Radiografías
-    [
-      "Vaina de Nervio Óptico",
-      "",
-      "",
-      "",""       ], // Ultrasonidos
+    ["Vaina de Nervio Óptico", "", "", "", ""], // Ultrasonidos
     [], // Tomografías
     [], // Resonancias
     [], // Ecocardiograma
@@ -6272,7 +6274,6 @@ class Imagenologias {
     'Colonoscopia',
     'Biopsia', // Reporte Histopatológico
     'Gammagrafía', //
-
   ];
 }
 
@@ -6441,8 +6442,7 @@ class Auxiliares {
 
   static Future<Map<String, dynamic>> ultimoRegistro() async {
     // Terminal.printNotice(message: "${Auxiliares.auxiliares['auxiliarStadistics']}");
-    return await Actividades.detalles(
-        Databases.siteground_database_reggabo,
+    return await Actividades.detalles(Databases.siteground_database_reggabo,
         Pacientes.getAuxiliaryStats(Pacientes.ID_Paciente),
         emulated: false);
   }
@@ -6649,7 +6649,7 @@ class Auxiliares {
     );
 
     if (esAbreviado) {
-      fechar.forEach((element) {
+      for (var element in fechar) {
         String fecha = "          Paraclínicos ($element)", max = "";
 
         List<dynamic>? alam = Pacientes.Paraclinicos!;
@@ -6687,9 +6687,9 @@ class Auxiliares {
             prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
           }
         }
-      });
+      }
     } else if (withoutInsighs) {
-      fechar.forEach((element) {
+      for (var element in fechar) {
         String fecha = "          Paraclínicos ($element)", max = "";
 
         List<dynamic>? alam = Pacientes.Paraclinicos!;
@@ -6729,9 +6729,9 @@ class Auxiliares {
             prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
           }
         }
-      });
+      }
     } else {
-      fechar.forEach((element) {
+      for (var element in fechar) {
         // Filtro por estudio de los registros de Pacientes.Paraclinicos
         var aux = Pacientes.Paraclinicos!
             .where((user) => user["Fecha_Registro"].contains(element))
@@ -6739,7 +6739,7 @@ class Auxiliares {
         String fecha = "($element)";
         String max = "";
 
-        aux.forEach((element) {
+        for (var element in aux) {
           if (max == "") {
             max =
                 "${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
@@ -6747,14 +6747,14 @@ class Auxiliares {
             max =
                 "$max, ${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
           }
-        });
+        }
 
         if (max.startsWith("pH")) {
           prosa = "$prosa$fecha: $max\n";
         } else {
           prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
         }
-      });
+      }
     }
     // ************** ***************** ***************
     // Terminal.printExpected(message: "prosa $prosa");
@@ -6776,7 +6776,7 @@ class Auxiliares {
         keySearched: 'Fecha_Registro',
       ),
     );
-    fechar.forEach((element) {
+    for (var element in fechar) {
       if (fechar.first.isNotEmpty) {
         List<dynamic>? alam = Pacientes.Paraclinicos!;
         var aux = alam
@@ -6852,7 +6852,7 @@ class Auxiliares {
         // }
         // prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
       }
-    });
+    }
     // ************** ***************** ***************
     return prosa;
   }
@@ -7297,6 +7297,24 @@ class Auxiliares {
     }
   }
 
+  static String queCategoriaPertenece(String laboratorioRealizado) {
+    Terminal.printExpected(message: laboratorioRealizado);
+
+      String? resultado = "";
+
+      Laboratorios.forEach((k, value) {
+        value!.forEach((element){
+          // Si la condición se cumple (es decir, se encuentra el laboratorio en la lista)
+          if (element == laboratorioRealizado) {
+            resultado = k; // Se asigna la clave K cuando se cumple la condición
+          }
+        });
+      });
+
+      return resultado!;
+
+  }
+
   static List<String> Categorias = [
     "Biometría Hemática", // 0 :
     "Química Sanguínea",
@@ -7344,12 +7362,18 @@ class Auxiliares {
       "CH", //"Concentración de Hemoglobina",
       "Ancho de Distribución Eritrocitaria", // 7
       "Plaquetas",
-      "Leucocitos Totales",
-      "Neutrofilos Totales",
-      "Linfocitos Totales",
-      "Monocitos Totales",
-      "Eosinófilos Totales",
-      "Basófilos Totales",
+      "Leucocitos",
+      "Neutrofilos",
+      "Linfocitos",
+      "Monocitos",
+      "Eosinófilos",
+      "Basófilos",
+      // "Leucocitos Totales",
+      // "Neutrofilos Totales",
+      // "Linfocitos Totales",
+      // "Monocitos Totales",
+      // "Eosinófilos Totales",
+      // "Basófilos Totales",
       "Bandas Totales",
       "Volumen Plaquetar Medio",
       "Ancho de Distribución Plaquetaria", // 17
@@ -7408,7 +7432,7 @@ class Auxiliares {
       // 1 - 5 mg/dL : : Inflamación Leve
       // 5 - 10 mg/dL : : Inflamación Moderada
       // más 10 mg/dL : : Inflamación Grave
-      "Factor Reumatoide",
+      "Factor reumatoide",
       "Anticuerpo Antipéptido Citrulinado",
       "Fibrinógeno",
       "Dímero D", // 7
@@ -7665,7 +7689,7 @@ class Auxiliares {
       "Anti-Ro",
       "Anti-Jo"
           // "Ac. Lúpico", // 33
-      "Proteína S", // 33
+          "Proteína S", // 33
       "Proteina C", //34
       "",
       "",
@@ -9693,23 +9717,19 @@ class Repositorios {
                 filePath:
                     "${Pacientes.localRepositoryPath}/reportes/reportes.json"))
             .whenComplete(() {
-          if (context! != null) {
-            Operadores.notifyActivity(
-              context: context,
-              tittle: "Repositorio Registrado . . . ",
-              message: "$response",
-            );
-          }
+          Operadores.notifyActivity(
+            context: context!,
+            tittle: "Repositorio Registrado . . . ",
+            message: response,
+          );
         }); // REGISTRAR el Formato de Egreso . . .
       }
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "ERROR - $error : $stackTrace");
-      if (context! != null) {
-        Operadores.alertActivity(
-            context: context,
-            tittle: "Error Al Registrar",
-            message: "ERROR : : $error : $stackTrace");
-      }
+      Operadores.alertActivity(
+          context: context!,
+          tittle: "Error Al Registrar",
+          message: "ERROR : : $error : $stackTrace");
     });
   }
 
@@ -9832,11 +9852,11 @@ class Repositorios {
 
   static Future<void> actualizarRegistro(
       {BuildContext? context,
-      required List Values,
+      required List values,
       bool isNotte = false}) async {
     String response = "", direccion = "";
     //
-    List newValues = Values.sublist(6, Values.length - 1);
+    List newValues = values.sublist(6, values.length - 1);
     // newValues.removeAt(1);
     newValues.insert(newValues.length, Pacientes.ID_Hospitalizacion);
 
@@ -9865,27 +9885,23 @@ class Repositorios {
       Archivos.deleteFile(
           filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
 
-      Terminal.printExpected(
-          message:
-              "VALUE _UPDATE.UPDATE - $value : ${value.runtimeType} . ${Values[0]}");
+      // Terminal.printExpected(
+      //     message:
+      //         "VALUE _UPDATE.UPDATE - $value : ${value.runtimeType} . ${values[0]}");
     }).whenComplete(() {
       Archivos.createJsonFromMap(Pacientes.Notas!,
           filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
-      if (context! != null) {
-        Operadores.notifyActivity(
-          context: context,
-          tittle: "Registro Actualizado",
-          message: "$response",
-        );
-      }
+      Operadores.notifyActivity(
+        context: context!,
+        tittle: "Registro Actualizado",
+        message: response,
+      );
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "ERROR - $error : $stackTrace");
-      if (context! != null) {
-        Operadores.alertActivity(
-            context: context,
-            tittle: "Error Al Actualizar Registro",
-            message: "ERROR : : $error : $stackTrace");
-      }
+      Operadores.alertActivity(
+          context: context!,
+          tittle: "Error Al Actualizar Registro",
+          message: "ERROR : : $error : $stackTrace");
       //
     });
   }
@@ -9918,23 +9934,19 @@ class Repositorios {
                 filePath:
                     "${Pacientes.localRepositoryPath}/reportes/reportes.json"))
             .whenComplete(() {
-          if (context! != null) {
-            Operadores.notifyActivity(
-              context: context,
-              tittle: "Repositorio Registrado . . . ",
-              message: "$response",
-            );
-          }
+          Operadores.notifyActivity(
+            context: context!,
+            tittle: "Repositorio Registrado . . . ",
+            message: response,
+          );
         }); // REGISTRAR el Formato de Egreso . . .
       }
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "ERROR - $error : $stackTrace");
-      if (context! != null) {
-        Operadores.alertActivity(
-            context: context,
-            tittle: "Error Al Registrar",
-            message: "ERROR : : $error : $stackTrace");
-      }
+      Operadores.alertActivity(
+          context: context!,
+          tittle: "Error Al Registrar",
+          message: "ERROR : : $error : $stackTrace");
     });
   }
 

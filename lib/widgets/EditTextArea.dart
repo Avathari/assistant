@@ -5,7 +5,6 @@ import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class EditTextArea extends StatefulWidget {
@@ -31,7 +30,7 @@ class EditTextArea extends StatefulWidget {
   int? limitOfChars, optionEqui;
 
   EditTextArea({
-    Key? key,
+    super.key,
     this.labelEditText,
     required this.textController,
     required this.keyBoardType,
@@ -51,7 +50,7 @@ class EditTextArea extends StatefulWidget {
     this.withDeleteOption = false,
     this.iconData = Icons.panorama_fish_eye,
     this.iconColor = Colors.white,
-  }) : super(key: key) {
+  }) {
     // inputFormat = MaskTextInputFormatter();
     // keyBoardType = TextInputType.multiline;
     // obscureText = false;

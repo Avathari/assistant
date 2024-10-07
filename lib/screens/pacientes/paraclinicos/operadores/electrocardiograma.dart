@@ -71,7 +71,7 @@ class _ElectrocardiogramasGestionState
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   @override
   Widget build(BuildContext context) {
-    var _progress;
+    var progress;
 
     return Scaffold(
       key: _key,
@@ -265,10 +265,10 @@ class _ElectrocardiogramasGestionState
                         width: 20.0,
                         height: 20.0,
                         child: CircularProgressIndicator(
-                          value: _progress == null
+                          value: progress == null
                               ? null
-                              : _progress.cumulativeBytesLoaded /
-                                  _progress.expectedTotalBytes,
+                              : progress.cumulativeBytesLoaded /
+                                  progress.expectedTotalBytes!,
                         ),
                       ),
                     ),
@@ -397,7 +397,7 @@ class _ElectrocardiogramasGestionState
             Archivos.deleteFile(filePath: fileAssocieted).then((value) {
               Navigator.of(context).pop();
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const ElectrocardiogramasGestion()));
+                  builder: (context) => ElectrocardiogramasGestion()));
             });
           }).onError((error, stackTrace) {
             Terminal.printAlert(message: "ERROR - Hubo un error : $error");

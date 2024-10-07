@@ -21,8 +21,7 @@ class OperacionesDiagnosticos extends StatefulWidget {
 
   String _operationButton = 'Nulo';
 
-  OperacionesDiagnosticos({Key? key, this.operationActivity = Constantes.Nulo})
-      : super(key: key);
+  OperacionesDiagnosticos({super.key, this.operationActivity = Constantes.Nulo});
 
   @override
   State<OperacionesDiagnosticos> createState() =>
@@ -432,7 +431,7 @@ class GestionDiagnosticos extends StatefulWidget {
   var keySearch = "Pace_APP_DEG";
   // ****************** *** ****** **************
 
-  GestionDiagnosticos({Key? key, this.actualSidePage}) : super(key: key);
+  GestionDiagnosticos({super.key, this.actualSidePage});
 
   @override
   State<GestionDiagnosticos> createState() => _GestionDiagnosticosState();

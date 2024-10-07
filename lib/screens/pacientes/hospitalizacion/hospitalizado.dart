@@ -579,7 +579,7 @@ class _HospitalizadoState extends State<Hospitalizado> {
 // **************************************************************** * * *
 
 class OpcionesHospitalizacion extends StatefulWidget {
-  const OpcionesHospitalizacion({Key? key}) : super(key: key);
+  const OpcionesHospitalizacion({super.key});
 
   @override
   State<OpcionesHospitalizacion> createState() =>

@@ -7,7 +7,7 @@ class Hidrometrias {
   // CALCULOS HIDRICOS ****************************************
   static double get requerimientoHidrico {
     if (Valores.pesoCorporalTotal != 0 && Valores.pesoCorporalTotal != null) {
-      return (Valores.pesoCorporalTotal! * constanteRequerimientos!);
+      return (Valores.pesoCorporalTotal! * constanteRequerimientos);
     } else {
       return double.nan;
     }
@@ -158,7 +158,7 @@ class Hidrometrias {
   }
 
   static double get reposicionPotasio {
-    if (Valores.potasio! != 0 && Valores.potasio! != null) {
+    if (Valores.potasio! != 0) {
       return ((4.0 - Valores.potasio!) * 0.4 * Valores.pesoCorporalTotal!) +
           (requerimientoBasalPotasio);
     } else {

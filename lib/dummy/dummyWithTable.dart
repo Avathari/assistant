@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
@@ -191,7 +190,7 @@ class _dummyWithTableState extends State<dummyWithTable> {
 
   @override
   Widget build(BuildContext context) {
-    var _progress;
+    var progress;
 
     return Scaffold(
       appBar: AppBar(
@@ -535,10 +534,10 @@ class _dummyWithTableState extends State<dummyWithTable> {
                             width: 20.0,
                             height: 20.0,
                             child: CircularProgressIndicator(
-                              value: _progress == null
+                              value: progress == null
                                   ? null
-                                  : _progress.cumulativeBytesLoaded /
-                                  _progress.expectedTotalBytes,
+                                  : progress.cumulativeBytesLoaded /
+                                  progress.expectedTotalBytes!,
                             ),
                           ),
                         ),

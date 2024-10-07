@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class IntubacionEndotraqueal extends StatefulWidget {
-  const IntubacionEndotraqueal({Key? key}) : super(key: key);
+  const IntubacionEndotraqueal({super.key});
 
   @override
   State<IntubacionEndotraqueal> createState() => _IntubacionEndotraquealState();

@@ -1,5 +1,4 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
-import 'package:assistant/main.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
@@ -7,7 +6,6 @@ import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
-import 'package:assistant/widgets/ShowText.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 
@@ -15,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Concentraciones extends StatefulWidget {
-  const Concentraciones({Key? key}) : super(key: key);
+  const Concentraciones({super.key});
 
   @override
   State<Concentraciones> createState() => _ConcentracionesState();

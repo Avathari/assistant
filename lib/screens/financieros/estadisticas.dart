@@ -1,20 +1,16 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
-import 'package:assistant/conexiones/controladores/Financieros.dart';
 import 'package:assistant/widgets/CircularChart.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/foundation.dart';
-import 'package:assistant/conexiones/conexiones.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class EstadisticasActivos extends StatefulWidget {
-  const EstadisticasActivos({Key? key}) : super(key: key);
+  const EstadisticasActivos({super.key});
 
   @override
   State<EstadisticasActivos> createState() => _EstadisticasActivosState();

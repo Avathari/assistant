@@ -1,10 +1,8 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
-import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
@@ -46,10 +44,9 @@ class OperacionesDocumentacion extends StatefulWidget {
   bool? withAppBar;
 
   OperacionesDocumentacion(
-      {Key? key,
+      {super.key,
       this.operationActivity = Constantes.Nulo,
-      this.withAppBar = true})
-      : super(key: key);
+      this.withAppBar = true});
 
   @override
   State<OperacionesDocumentacion> createState() =>
@@ -431,7 +428,7 @@ class GestionDocumentacion extends StatefulWidget {
   bool? withAppBar;
   // ****************** *** ****** **************
 
-  GestionDocumentacion({Key? key, this.withAppBar = true, this.actualSidePage}) : super(key: key);
+  GestionDocumentacion({super.key, this.withAppBar = true, this.actualSidePage});
 
   @override
   State<GestionDocumentacion> createState() => _GestionDocumentacionState();

@@ -1,17 +1,6 @@
-import 'package:assistant/conexiones/actividades/auxiliares.dart';
-import 'package:assistant/operativity/pacientes/valores/Valorados/ferricos.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
-import 'package:assistant/operativity/pacientes/valores/Valorados/info/info.dart';
 import 'dart:math' as math;
-import 'package:assistant/conexiones/actividades/auxiliares.dart';
-import 'package:assistant/conexiones/controladores/Pacientes.dart';
-import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
-import 'package:assistant/operativity/pacientes/valores/Valorados/cardiometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/hidrometrias.dart';
-import 'package:assistant/operativity/pacientes/valores/Valorados/metabolometrias.dart';
-import 'package:assistant/operativity/pacientes/valores/Valorados/renometrias.dart';
-import 'package:assistant/operativity/pacientes/valores/Valorados/ventometr%C3%ADas.dart';
-import 'package:assistant/values/Strings.dart';
 import 'package:dart_numerics/dart_numerics.dart' as numerics;
 
 class Gasometricos {
@@ -733,7 +722,7 @@ class Gasometricos {
   ///
   static double get CCO =>
       ((Valores.hemoglobina! * 1.34) +
-          (Gasometricos.PAO! * 0.031)); // # Concentración Capilar de Oxígeno
+          (Gasometricos.PAO * 0.031)); // # Concentración Capilar de Oxígeno
   // (((Valores.hemoglobina! * 1.34) *
   //         (Valores.soVenosos! - Valores.soArteriales!) +
   //     ((Valores.poVenosos! - Valores.poArteriales!) * 0.031)) /

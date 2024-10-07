@@ -369,7 +369,7 @@ class Activos {
     Financieros.ingresoMesAnteprevio = 0;
     Financieros.ingresosAnoPrevio = 0;
     //
-    activos.forEach((element) {
+    for (var element in activos) {
       // Terminal.printWarning(message: "Activos . . . : $element");
       //
       if (element['Tipo_Recurso'] == 'Ingresos') {
@@ -454,7 +454,7 @@ class Activos {
             (Financieros.patriminiosTotales! + element['Monto_Pagado']);
       }
 //
-    });
+    }
 
     // MUESTRA
     Terminal.printWarning(

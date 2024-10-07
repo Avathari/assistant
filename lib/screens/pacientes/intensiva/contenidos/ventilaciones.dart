@@ -39,8 +39,7 @@ class OperacionesVentilaciones extends StatefulWidget {
   String _operationButton = 'Nulo';
   int actualView = 0;
 
-  OperacionesVentilaciones({Key? key, this.operationActivity = Constantes.Nulo})
-      : super(key: key);
+  OperacionesVentilaciones({super.key, this.operationActivity = Constantes.Nulo});
 
   @override
   State<OperacionesVentilaciones> createState() =>
@@ -1135,7 +1134,7 @@ class GestionVentilaciones extends StatefulWidget {
   var keySearch = "Pace_APP_ALE";
   // ****************** *** ****** **************
 
-  GestionVentilaciones({Key? key, this.actualSidePage}) : super(key: key);
+  GestionVentilaciones({super.key, this.actualSidePage});
 
   @override
   State<GestionVentilaciones> createState() => _GestionVentilacionesState();

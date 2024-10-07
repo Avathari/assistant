@@ -12,14 +12,14 @@ class GrandButton extends StatefulWidget {
   double? fontSize;
 
   GrandButton({
-    Key? key,
+    super.key,
     this.labelButton = "",
     this.weigth = 0,
     this.height = 0,
     this.fontSize = 14.0,
     this.onLongPress,
     required this.onPress,
-  }) : super(key: key);
+  });
 
   @override
   State<GrandButton> createState() => _GrandButtonState();

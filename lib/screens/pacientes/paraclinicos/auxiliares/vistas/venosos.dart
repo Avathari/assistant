@@ -2,18 +2,16 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
-import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
-import 'package:assistant/widgets/Spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Venosos extends StatefulWidget {
-  const Venosos({Key? key}) : super(key: key);
+  const Venosos({super.key});
 
   @override
   State<Venosos> createState() => _VenososState();
@@ -255,11 +253,11 @@ class _VenososState extends State<Venosos> {
     Future.forEach(listOfValues(), (element) async {
       var aux = element as List<String>;
 
-      if (aux[5] != '0' && aux[5] != '' && aux[5] != null) {
+      if (aux[5] != '0' && aux[5] != '') {
         await Actividades.registrar(
           Databases.siteground_database_reggabo,
           Auxiliares.auxiliares['registerQuery'],
-          element as List<String>,
+          element,
         );
       }
     }).whenComplete(() {

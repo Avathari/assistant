@@ -19,7 +19,6 @@ import 'package:assistant/widgets/TittleContainer.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 // # Clase .dart para la creación predeterminada de interfaces de registro, consulta y actualización.
@@ -38,8 +37,7 @@ class OperacionesBalances extends StatefulWidget {
 
   String _operationButton = 'Nulo';
 
-  OperacionesBalances({Key? key, this.operationActivity = Constantes.Nulo})
-      : super(key: key);
+  OperacionesBalances({super.key, this.operationActivity = Constantes.Nulo});
 
   @override
   State<OperacionesBalances> createState() => _OperacionesBalancesState();
@@ -891,7 +889,7 @@ class GestionBalances extends StatefulWidget {
   var keySearch = "Pace_APP_ALE";
   // ****************** *** ****** **************
 
-  GestionBalances({Key? key, this.actualSidePage}) : super(key: key);
+  GestionBalances({super.key, this.actualSidePage});
 
   @override
   State<GestionBalances> createState() => _GestionBalancesState();

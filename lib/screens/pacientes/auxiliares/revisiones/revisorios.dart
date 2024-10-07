@@ -1,12 +1,10 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
-import 'package:assistant/operativity/pacientes/valores/semiologia/semiotica.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/auxiliares/infusiones.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/generales.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/semiologicos.dart';
-import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/terapias.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
@@ -19,7 +17,6 @@ import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/TittleContainer.dart';
-import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -39,8 +36,7 @@ class OperacionesRevisorios extends StatefulWidget {
   String? operationActivity;
 
   String _operationButton = 'Nulo';
-  OperacionesRevisorios({Key? key, this.operationActivity = Constantes.Nulo})
-      : super(key: key);
+  OperacionesRevisorios({super.key, this.operationActivity = Constantes.Nulo});
 
   @override
   State<OperacionesRevisorios> createState() => _OperacionesRevisoriosState();
@@ -417,7 +413,7 @@ class GestionRevisorios extends StatefulWidget {
   var keySearch = "Pace_APP_ALE";
   // ****************** *** ****** **************
 
-  GestionRevisorios({Key? key, this.actualSidePage}) : super(key: key);
+  GestionRevisorios({super.key, this.actualSidePage});
 
   @override
   State<GestionRevisorios> createState() => _GestionRevisoriosState();
@@ -804,11 +800,11 @@ class AnalisisRevisorios extends StatefulWidget {
   bool? isInOther, esCorto, withoutAppBar;
 
   AnalisisRevisorios({
-    Key? key,
+    super.key,
     this.isInOther = false,
     this.esCorto = true,
     this.withoutAppBar = false,
-  }) : super(key: key);
+  });
 
   @override
   State<AnalisisRevisorios> createState() => _AnalisisRevisoriosState();
@@ -920,8 +916,8 @@ class _AnalisisRevisoriosState extends State<AnalisisRevisorios> {
     );
   }
 
-  _endDrawerForm(BuildContext context, int _activePage) => Drawer(
-        width: _activePage == 0 ? 100 : 450,
+  _endDrawerForm(BuildContext context, int activePage) => Drawer(
+        width: activePage == 0 ? 100 : 450,
         backgroundColor: Theming.cuaternaryColor,
         child: Container(
           decoration: const BoxDecoration(
@@ -944,9 +940,9 @@ class _AnalisisRevisoriosState extends State<AnalisisRevisorios> {
                 )),
               ),
               Expanded(
-                flex: _activePage == 0 ? 10 : 15,
-                child: this._activePage == 0
-                    ? Infusiones()
+                flex: activePage == 0 ? 10 : 15,
+                child: _activePage == 0
+                    ? const Infusiones()
                     : Row(
                     children: [
                       Expanded(child: _primerRevision(context)),
@@ -978,7 +974,7 @@ class _AnalisisRevisoriosState extends State<AnalisisRevisorios> {
 
   _bottomNavigationBar(BuildContext context) => BottomAppBar(
         color: Colors.black,
-        shape: CircularNotchedRectangle(),
+        shape: const CircularNotchedRectangle(),
         notchMargin: 10,
         height: 60,
         child: Row(
@@ -991,7 +987,7 @@ class _AnalisisRevisoriosState extends State<AnalisisRevisorios> {
                 _key.currentState!.openEndDrawer();
               }),
             ),
-            SizedBox(width: 25),
+            const SizedBox(width: 25),
           ],
         ),
       );

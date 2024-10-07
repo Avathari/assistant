@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Tiroideos extends StatefulWidget {
-  const Tiroideos({Key? key}) : super(key: key);
+  const Tiroideos({super.key});
 
   @override
   State<Tiroideos> createState() => _TiroideosState();
@@ -209,11 +209,11 @@ class _TiroideosState extends State<Tiroideos> {
     Future.forEach(listOfValues(), (element) async {
       var aux = element as List<String>;
 
-      if (aux[5] != '0' && aux[5] != '' && aux[5] != null) {
+      if (aux[5] != '0' && aux[5] != '') {
         await Actividades.registrar(
           Databases.siteground_database_reggabo,
           Auxiliares.auxiliares['registerQuery'],
-          element as List<String>,
+          element,
         );
       }
     }).whenComplete(() {

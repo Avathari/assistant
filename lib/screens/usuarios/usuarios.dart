@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Usuarios.dart';
@@ -16,7 +15,7 @@ import 'dart:convert';
 import '../../widgets/WidgetsModels.dart';
 
 class GestionUsuarios extends StatefulWidget {
-  const GestionUsuarios({Key? key}) : super(key: key);
+  const GestionUsuarios({super.key});
 
   @override
   State<GestionUsuarios> createState() => _GestionUsuariosState();
@@ -452,8 +451,7 @@ class OperacionesUsuario extends StatefulWidget {
 
   String _operation_button = 'Nulo';
 
-  OperacionesUsuario({Key? key, required this.operationActivity})
-      : super(key: key);
+  OperacionesUsuario({super.key, required this.operationActivity});
 
   @override
   State<OperacionesUsuario> createState() => _OperacionesUsuarioState();
@@ -1065,7 +1063,7 @@ class _OperacionesUsuarioState extends State<OperacionesUsuario> {
 }
 
 class VisualUsuarios extends StatefulWidget {
-  const VisualUsuarios({Key? key}) : super(key: key);
+  const VisualUsuarios({super.key});
 
   @override
   State<VisualUsuarios> createState() => _VisualUsuariosState();
@@ -1677,7 +1675,7 @@ class _VisualUsuariosState extends State<VisualUsuarios> {
 }
 
 class EstadisticasUsuario extends StatefulWidget {
-  const EstadisticasUsuario({Key? key}) : super(key: key);
+  const EstadisticasUsuario({super.key});
 
   @override
   State<EstadisticasUsuario> createState() => _EstadisticasUsuarioState();

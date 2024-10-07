@@ -47,7 +47,7 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
       Reportes.pendientes.clear();
       if (Pacientes.Pendiente!.isNotEmpty) {
         String pendientes = "";
-        Pacientes.Pendiente!.forEach((element) {
+        for (var element in Pacientes.Pendiente!) {
           //Pace_PEN
           if (pendientes == "") {
             pendientes =
@@ -62,7 +62,7 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
             Reportes.pendientes.add(
                 "          ${element['Pace_PEN']} - ${element['Pace_Desc_PEN'].replaceAll("\n", "")}. ");
           }
-        });
+        }
 
         tratamientoTextController.text =
             "${tratamientoTextController.text}. \nPLAN: \n"
@@ -228,14 +228,14 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                                 options: Items.comentariosPrevios.map((e) =>
                                 e['Diagnostico']).toList(),
                                 onClose: (valar) {
-                                  Terminal.printWarning(message: "$valar");
+                                  Terminal.printWarning(message: valar);
 
-                                  Items.comentariosPrevios.forEach((e) {
+                                  for (var e in Items.comentariosPrevios) {
                                     //
                                     if (e['Diagnostico'] == valar) {
                                       analisisTextController.text = "${analisisTextController.text}\n${e['Comentario']!}";
                                     }
-                                  });
+                                  }
                                   Navigator.of(context).pop();
                                 });
                           }),

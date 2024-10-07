@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteFormats/formatosReportes.dart';
@@ -153,10 +152,6 @@ class PdfParagraphsApi {
       required List<dynamic> paraph,
       String? name = "my_example.pdf"}) async {
     final pdf = Document();
-
-    if (content == null) {
-      FormatosReportes.censoHospitalario(paraph);
-    }
     // Creación de documento en base al paraph.
     try {
       print("indexOfTypeReport $indexOfTypeReport");

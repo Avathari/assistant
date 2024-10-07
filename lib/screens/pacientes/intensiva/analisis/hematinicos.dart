@@ -10,17 +10,12 @@ import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/TittleContainer.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
-import 'package:assistant/widgets/Spinner.dart';
-import 'package:assistant/widgets/TittlePanel.dart';
-import 'package:assistant/widgets/ValuePanel.dart';
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Hematinicos extends StatefulWidget {
-  const Hematinicos({Key? key}) : super(key: key);
+  const Hematinicos({super.key});
 
   @override
   State<Hematinicos> createState() => _HematinicosState();
@@ -172,20 +167,20 @@ class _HematinicosState extends State<Hematinicos> {
                         ),
                         SingleChildScrollView(
                           controller: ScrollController(),
-                          child: Column(children: []),
+                          child: const Column(children: []),
                         ),
                         SingleChildScrollView(
                           controller: ScrollController(),
-                          child: Column(children: []),
+                          child: const Column(children: []),
                         ),
                         SingleChildScrollView(
                           controller: ScrollController(),
-                          child: Column(children: []),
+                          child: const Column(children: []),
                         ),
                         //
                         SingleChildScrollView(
                           controller: ScrollController(),
-                          child: Column(children: []),
+                          child: const Column(children: []),
                         ),
                       ],
                       carouselController: carouselController,

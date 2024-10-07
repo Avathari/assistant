@@ -182,7 +182,7 @@ class _ChartLineState extends State<ChartLine> {
     return LineChartBarData(
         color: color,
         isCurved: false,
-        dotData: FlDotData(show: true),
+        dotData: const FlDotData(show: true),
         spots: toSpots(values));
   }
 

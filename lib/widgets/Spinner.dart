@@ -1,4 +1,3 @@
-import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:flutter/material.dart';
 
@@ -12,15 +11,14 @@ class Spinner extends StatefulWidget {
   double? width, fontSize;
 
   Spinner(
-      {Key? key,
+      {super.key,
       required this.onChangeValue,
       required this.items,
       required this.initialValue,
       this.tittle,
       this.fontSize = 10,
       this.isRow = false,
-      this.width = 100})
-      : super(key: key);
+      this.width = 100});
 
   @override
   State<Spinner> createState() => _SpinnerState();

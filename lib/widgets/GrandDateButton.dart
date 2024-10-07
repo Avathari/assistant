@@ -12,14 +12,14 @@ class GrandDateButton extends StatefulWidget {
   double? fontSize;
 
   GrandDateButton({
-    Key? key,
+    super.key,
     this.labelButton = "",
     this.weigth = 0,
     this.height = 0,
     this.fontSize = 14.0,
     this.onLongPress,
     required this.onChangeValue,
-  }) : super(key: key);
+  });
 
   @override
   State<GrandDateButton> createState() => _GrandDateButtonState();

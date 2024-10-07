@@ -1,4 +1,3 @@
-import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 
 import 'package:flutter/material.dart';
@@ -12,14 +11,14 @@ class CircleIcon extends StatefulWidget {
   Color? externalCircleColor;
 
   CircleIcon({
-    Key? key,
+    super.key,
     this.tittle = '',
     this.iconed = Icons.cable_rounded,
     required this.onChangeValue,
     this.radios = 40,
     this.externalCircleColor = Colors.grey,
     this.difRadios = 10,
-  }) : super(key: key);
+  });
 
   @override
   State<CircleIcon> createState() => _CircleIconState();

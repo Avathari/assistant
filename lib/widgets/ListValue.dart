@@ -10,13 +10,12 @@ class ListValue extends StatefulWidget {
   IconData? iconData;
 
   ListValue(
-      {Key? key,
+      {super.key,
       this.title,
       this.subtitle,
       this.thirdTittle,
       required this.onPress,
-      this.iconData})
-      : super(key: key);
+      this.iconData});
 
   @override
   State<ListValue> createState() => _ListValueState();

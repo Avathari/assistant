@@ -5,18 +5,14 @@ import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
-import 'package:assistant/widgets/ShowText.dart';
-import 'package:assistant/widgets/ThreeLabelText.dart';
 import 'package:assistant/widgets/TittleContainer.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class Antropometricos extends StatefulWidget {
-  const Antropometricos({Key? key}) : super(key: key);
+  const Antropometricos({super.key});
 
   @override
   State<Antropometricos> createState() => _AntropometricosState();

@@ -27,8 +27,7 @@ class OperacionesPatologicos extends StatefulWidget {
 
   String _operationButton = 'Nulo';
 
-  OperacionesPatologicos({Key? key, this.operationActivity = Constantes.Nulo})
-      : super(key: key);
+  OperacionesPatologicos({super.key, this.operationActivity = Constantes.Nulo});
 
   @override
   State<OperacionesPatologicos> createState() => _OperacionesPatologicosState();
@@ -312,16 +311,16 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
                           options: Items.previstos.map((e) =>
                           e['Diagnostico']).toList(),
                           onClose: (valar) {
-                            Terminal.printWarning(message: "$valar");
+                            Terminal.printWarning(message: valar);
 
-                        Items.previstos.forEach((e) {
+                        for (var e in Items.previstos) {
                           //
                           if (e['Diagnostico'] == valar) {
                             comenDiagnoTextController.text = e['Diagnostico']!;
                             tratamientoTextController.text = e['Tratamiento']!;
                             suspensionesTextController.text = e['Antecedentes']!;
                           }
-                        });
+                        }
                         Navigator.of(context).pop();
                       });
                     },
@@ -480,8 +479,7 @@ class GestionPatologicos extends StatefulWidget {
   bool? actualized;
   // ****************** *** ****** **************
 
-  GestionPatologicos({Key? key, this.actualSidePage, this.actualized = false})
-      : super(key: key);
+  GestionPatologicos({super.key, this.actualSidePage, this.actualized = false});
 
   @override
   State<GestionPatologicos> createState() => _GestionPatologicosState();
@@ -555,7 +553,7 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
                 labelButton: 'Agregar Listado de Patologías . . . ',
                 iconData: Icons.line_style,
                 onPress: () {
-                  Cambios.toNextActivity(context, chyld: VariasPatologias());
+                  Cambios.toNextActivity(context, chyld: const VariasPatologias());
                 }),
             CrossLine(
               isHorizontal: false,

@@ -2,7 +2,6 @@ import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.d
 import 'package:assistant/operativity/pacientes/valores/Valorados/hepatometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/lipidometria.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/renometrias.dart';
-import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';

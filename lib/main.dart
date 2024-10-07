@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 void main() => runApp(const App());
 
 class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +17,8 @@ class App extends StatelessWidget {
           interactive: true,
           // thumbVisibility: true,
           radius: const Radius.circular(10.0),
-          thumbColor: MaterialStateProperty.all(Colors.grey),
-          thickness: MaterialStateProperty.all(5.0),
+          thumbColor: WidgetStateProperty.all(Colors.grey),
+          thickness: WidgetStateProperty.all(5.0),
           minThumbLength: 100,
         ),
         scaffoldBackgroundColor: Theming.bdColor,

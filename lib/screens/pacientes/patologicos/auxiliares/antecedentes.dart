@@ -1,12 +1,10 @@
 import 'package:assistant/values/WidgetValues.dart';
-import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Antecedentes extends StatefulWidget {
-  const Antecedentes({Key? key}) : super(key: key);
+  const Antecedentes({super.key});
 
   @override
   State<Antecedentes> createState() => _AntecedentesState();

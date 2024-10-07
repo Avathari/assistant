@@ -29,7 +29,7 @@ class Intensiva extends StatefulWidget {
   int? numActivity = 0;
   int? actualView = 0;
 
-  Intensiva({Key? key}) : super(key: key);
+  Intensiva({super.key});
 
   @override
   State<Intensiva> createState() => _IntensivaState();
@@ -252,7 +252,7 @@ class _IntensivaState extends State<Intensiva> {
                     onPress: () {
                       if (isMobile(context)) {
                         Operadores.openDialog(
-                            context: context, chyldrim: Ventilatorios());
+                            context: context, chyldrim: const Ventilatorios());
                       } else {
                         setState(() {
                           widget.actualView = 5;
@@ -440,7 +440,7 @@ class _IntensivaState extends State<Intensiva> {
       const Metabolicos(),
       const Antropometricos(),
       Cardiovasculares(),
-      Ventilatorios(),
+      const Ventilatorios(),
       const Gasometricos(),
       Container(),
       Container(),

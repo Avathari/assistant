@@ -5,14 +5,12 @@ import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CircleSwitched.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
-import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/Spinner.dart';
-import 'package:assistant/widgets/Switched.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Subjetivos extends StatefulWidget {
-  const Subjetivos({Key? key}) : super(key: key);
+  const Subjetivos({super.key});
 
   @override
   State<Subjetivos> createState() => _SubjetivosState();

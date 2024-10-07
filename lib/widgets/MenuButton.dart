@@ -6,7 +6,7 @@ class MenuButton extends StatefulWidget {
   String? labelButton;
   void Function() onPress;
 
-  MenuButton({Key? key, this.iconData = Icons.add_chart, this.labelButton = '', required this.onPress}) : super(key: key);
+  MenuButton({super.key, this.iconData = Icons.add_chart, this.labelButton = '', required this.onPress});
 
   @override
   State<MenuButton> createState() => _MenuButtonState();

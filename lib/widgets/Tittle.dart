@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class Tittle extends StatefulWidget {
   String? tittle;
-  Tittle({Key? key, this.tittle = ''}) : super(key: key);
+  Tittle({super.key, this.tittle = ''});
 
   @override
   State<Tittle> createState() => _TittleState();

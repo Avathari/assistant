@@ -203,7 +203,7 @@ class Menus {
           onTap: () => Cambios.toNextActivity(context,
               tittle: 'Taller Gasométrico ',
               onOption: () => Operadores.openDialog(
-                  context: context, chyldrim: TrabajoCardiaco()),
+                  context: context, chyldrim: const TrabajoCardiaco()),
               chyld: ConmutadorParaclinicos(categoriaEstudio: "Taller Gasométrico")),
           child: Padding(
             padding: const EdgeInsets.only(left: 10.0),

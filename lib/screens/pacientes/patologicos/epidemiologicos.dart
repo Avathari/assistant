@@ -13,7 +13,6 @@ import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/AppBarText.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/GrandButton.dart';
-import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/GrandLabel.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';

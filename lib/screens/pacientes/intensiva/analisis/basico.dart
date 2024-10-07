@@ -8,7 +8,7 @@ import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
 
 class Basico extends StatefulWidget {
-   Basico({super.key});
+   const Basico({super.key});
 
   @override
   State<Basico> createState() => _BasicoState();

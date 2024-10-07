@@ -7,15 +7,12 @@ import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/TittleContainer.dart';
-import 'package:assistant/widgets/TittlePanel.dart';
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Prequirurgicos extends StatefulWidget {
-  const Prequirurgicos({Key? key}) : super(key: key);
+  const Prequirurgicos({super.key});
 
   @override
   State<Prequirurgicos> createState() => _PrequirurgicosState();

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 /// Represents the XlsIO widget class.
 class CreateExcelWidget extends StatelessWidget {
+  const CreateExcelWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
@@ -15,8 +17,7 @@ class CreateExcelWidget extends StatelessWidget {
 /// Represents the XlsIO stateful widget class.
 class CreateExcelStatefulWidget extends StatefulWidget {
   /// Initalize the instance of the [CreateExcelStatefulWidget] class.
-  const CreateExcelStatefulWidget({Key? key, required this.title})
-      : super(key: key);
+  const CreateExcelStatefulWidget({super.key, required this.title});
 
   /// title.
   final String title;

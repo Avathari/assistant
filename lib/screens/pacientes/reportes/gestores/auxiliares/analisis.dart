@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Bibliografico extends StatefulWidget {
-  const Bibliografico({Key? key}) : super(key: key);
+  const Bibliografico({super.key});
 
   @override
   State<Bibliografico> createState() => _BibliograficoState();

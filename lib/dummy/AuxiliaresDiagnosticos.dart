@@ -1,7 +1,6 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/dummy/Electrocardiogramas.dart';
-import 'package:assistant/dummy/dummyWithTable.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/operadores/imagenologias.dart';
 import 'package:assistant/widgets/CrossLine.dart';

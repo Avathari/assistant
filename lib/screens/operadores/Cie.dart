@@ -14,14 +14,14 @@ class CieSelector extends StatefulWidget {
   String? searchCriteria;
 
   CieSelector({
-    Key? key,
+    super.key,
     this.tittle = 'Diagnósticos CIE-10',
     this.searchCriteria = "Buscar por Diagnóstico",
     this.keyMapSearch = 'Diagnostico_CIE',
     this.secondaryKeyMap = 'Codigo_CIE',
     this.pathForFileSource = 'assets/diccionarios/Cie.json',
     required this.onSelected,
-  }) : super(key: key);
+  });
 
   @override
   State<CieSelector> createState() => _CieSelectorState();

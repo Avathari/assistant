@@ -7,7 +7,6 @@ import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/LoadingScreen.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 
 class ReproductorVideo extends StatefulWidget {
@@ -90,7 +89,6 @@ class _ReproductorVideoState extends State<ReproductorVideo> {
               iconData: Icons.video_collection,
               onPress: () async {
                 final file = await pickVideo();
-                if (file == null) return;
                 setState(() {
                   widget.videoSource = file.path;
                 });
@@ -151,7 +149,6 @@ class _ReproductorVideoState extends State<ReproductorVideo> {
               labelButton: "Buscar video",
               onPress: () async {
                 final file = await pickVideo();
-                if (file == null) return;
                 setState(() {
                   widget.videoSource = file.path;
                 });

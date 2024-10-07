@@ -6,14 +6,12 @@ import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class SondaEndopleural extends StatefulWidget {
-  const SondaEndopleural({Key? key}) : super(key: key);
+  const SondaEndopleural({super.key});
 
   @override
   State<SondaEndopleural> createState() => _SondaEndopleuralState();

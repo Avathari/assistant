@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Higienicos extends StatefulWidget {
-  const Higienicos({Key? key}) : super(key: key);
+  const Higienicos({super.key});
 
   @override
   State<Higienicos> createState() => _HigienicosState();

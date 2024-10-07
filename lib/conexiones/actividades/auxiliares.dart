@@ -12,8 +12,7 @@ import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/LoadingScreen.dart';
 import 'package:assistant/widgets/TittleContainer.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 
@@ -70,6 +69,41 @@ class Calendarios {
                   .copyWith(dialogBackgroundColor: Theming.cuaternaryColor),
               child: child!);
         });
+  }
+
+  static fromTextoLlano(String? fechaResultado) {
+    // Mapa de meses en español
+    Map<String, int> meses = {
+      'enero': 1,
+      'febrero': 2,
+      'marzo': 3,
+      'abril': 4,
+      'mayo': 5,
+      'junio': 6,
+      'julio': 7,
+      'agosto': 8,
+      'septiembre': 9,
+      'octubre': 10,
+      'noviembre': 11,
+      'diciembre': 12,
+    };
+
+    // Dividimos la cadena
+    List<String> partesFecha = fechaResultado!.toLowerCase().split(' ')!;
+    // Terminal.printSuccess(message: partesFecha.toString());
+
+    int dia = int.parse(partesFecha[0]); // Obtenemos el día
+    int mes = meses[partesFecha[2]] ?? 1; // Obtenemos el mes y lo convertimos a su representación numérica
+    int anio = int.parse(partesFecha[4]); // Obtenemos el año
+    String hora = partesFecha[5]; // Obtenemos la hora
+
+    // Creamos el objeto DateTime a partir de la fecha y hora
+    String fechaFormateada = "$anio-$mes-$dia $hora";
+    DateTime fechaDateTime = DateFormat("yyyy-M-d HH:mm:ss").parse(fechaFormateada);
+
+    // Imprimir el resultado
+    // print(fechaDateTime);  // Output: 2022-10-12 07:52:11.000
+    return fechaDateTime;
   }
 }
 
@@ -615,7 +649,7 @@ class Directorios {
   }
 
   static upload(String urlPath, {required dynamic filePath}) async {
-    final request = await http.MultipartRequest(
+    final request = http.MultipartRequest(
         'POST', Uri.parse("${Env.URL_PREFIX}/directorios.php"));
     request.files
         .add(await http.MultipartFile.fromPath('file', filePath!.toString()));
@@ -680,6 +714,26 @@ class Directorios {
         "ERROR - Imagenes de Galeria",
         'No se pudo cargar imagen desde Galeria : $e',
         () {},
+      );
+    }
+  }
+
+  /// Open a PDF file from the local device's storage.
+  static Future<FilePickerResult?> choiseFromInternalDocuments(BuildContext context) async {
+    try {
+      FilePickerResult? filePickerResult = await FilePicker.platform
+          .pickFiles(
+          type: FileType.custom, allowedExtensions: ['pdf']);
+      if (filePickerResult != null) {
+        return filePickerResult;
+      }
+    } on Exception catch (e) {
+      Terminal.printAlert(
+          message: "ERROR : : No se pudo cargar imagen desde Galeria : $e");
+      Dialogos.notifyDialog(
+        "ERROR - Imagenes de Galeria",
+        'No se pudo cargar imagen desde Galeria : $e',
+            () {},
       );
     }
   }
@@ -1347,7 +1401,7 @@ class Dialogos {
       actions: [
         ElevatedButton(
             style: const ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll<Color>(Colors.black),
+              backgroundColor: WidgetStatePropertyAll<Color>(Colors.black),
             ),
             onPressed: () {
               onCloss!();
@@ -1453,4 +1507,9 @@ class Numeros {
     list.addAll(Listas.listOfRange(maxNum: 1000000));
     return list;
   }
+}
+
+class Documentos {
+
+
 }

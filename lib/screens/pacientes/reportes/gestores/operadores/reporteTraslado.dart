@@ -1,13 +1,8 @@
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
-import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/analisisMedico.dart';
-import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/auxiliaresReportes.dart';
-import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/exploracionFisica.dart';
-import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/pronosticos.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
-import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';

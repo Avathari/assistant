@@ -5,7 +5,7 @@ import 'package:assistant/values/WidgetValues.dart';
 import 'package:flutter/material.dart';
 
 class VisualVocablos extends StatefulWidget {
-  const VisualVocablos({Key? key}) : super(key: key);
+  const VisualVocablos({super.key});
 
   @override
   State<VisualVocablos> createState() => _VisualVocablosState();

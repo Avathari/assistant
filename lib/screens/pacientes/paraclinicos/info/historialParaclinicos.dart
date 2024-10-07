@@ -1,11 +1,8 @@
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
-import 'package:assistant/screens/pacientes/paraclinicos/paraclinicos.dart';
-import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/ChartLine.dart';
-import 'package:assistant/widgets/CrossLine.dart';
 import 'package:flutter/material.dart';
 
 class HistorialParaclinicos extends StatefulWidget {

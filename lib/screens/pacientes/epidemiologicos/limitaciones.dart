@@ -1,15 +1,13 @@
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
-import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
-import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/Switched.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Limitaciones extends StatefulWidget {
-  const Limitaciones({Key? key}) : super(key: key);
+  const Limitaciones({super.key});
 
   @override
   State<Limitaciones> createState() => _LimitacionesState();

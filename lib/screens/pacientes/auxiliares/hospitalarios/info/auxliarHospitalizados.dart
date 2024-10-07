@@ -7,7 +7,6 @@ import 'package:assistant/operativity/pacientes/valores/Valorados/ventometr%C3%A
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizados.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/info/Hospitalizado.dart';
-import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/subjetivos.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/auxiliares/auxiliaresGenerales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/generales.dart';
 import 'package:assistant/screens/pacientes/epidemiologicos/licencias.dart';
@@ -250,6 +249,7 @@ class Paneles {
                         ),
                       );
                     }
+                    return null;
                   })),
         ],
       ),
@@ -355,7 +355,7 @@ class Paneles {
                   foundedItems[index].idHospitalizado =
                       foundedItems[index].hospitalizedData['ID_Hosp'];
               // Agregarr a Pacientes.nombreCompleto sus variables correspondientes . . .
-              Pacientes.nombreCompleto = foundedItems![index].nombreCompleto;
+              Pacientes.nombreCompleto = foundedItems[index].nombreCompleto;
               // ******************* * * * * * * *** *
               Cambios.toNextPage(
                   context,
@@ -580,7 +580,7 @@ class Paneles {
     }
 
     /// DIAS DE ESTANCIA . . .
-    for (var element in foundedItems!) {
+    for (var element in foundedItems) {
       print(element.generales);
       // print(Calendarios.differenceInDaysToNow(element.hospitalizedData['Feca_INI_Hosp'] ?? Calendarios.today(format: "yyyy-MM-dd")));
 
@@ -664,17 +664,17 @@ class Paneles {
       BuildContext context, List? foundedItems) {
     // LIST OF WIDGETS
     List<Widget> widgets = [];
-    int ID_Cama = 0;
+    int idCama = 0;
 
     // Terminal.printWarning(message: "PENDIENTES : ${foundedItems![0].hospitalizedData.keys.toString()}");
     for (int index = 0; index < foundedItems!.length; index++) {
-      ID_Cama =
+      idCama =
           int.parse(foundedItems[index].hospitalizedData['Id_Cama'] ?? "0");
       //
 
       //
       List<Widget> pendientes = [];
-      for (var pendiente in foundedItems![index].pendientes) {
+      for (var pendiente in foundedItems[index].pendientes) {
         //
         // if (pendiente['Pace_PEN_realized'] == 1) {
         if (pendiente['Pace_PEN_realized'] == 0 &&
@@ -695,7 +695,7 @@ class Paneles {
       // BUSQUEDA DE CULTIVOS . . .
       pendientes.add(CrossLine());
       pendientes.add(Text(
-        Internado.getCultivos(listadoFrom: foundedItems![index].paraclinicos),
+        Internado.getCultivos(listadoFrom: foundedItems[index].paraclinicos),
         // overflow: TextOverflow,
         maxLines: 5,
         style: Styles.textSyleGrowth(fontSize: 8),
@@ -709,7 +709,7 @@ class Paneles {
             iconData: Icons.newspaper_rounded,
             onPress: () {
               String pendientario = "";
-              for (var pendiente in foundedItems![index].pendientes) {
+              for (var pendiente in foundedItems[index].pendientes) {
                 //
                 if (pendiente['Pace_PEN_realized'] == 0 &&
                     (pendiente['Pace_PEN'] == Pendientes.typesPendientes[1] ||
@@ -742,14 +742,14 @@ class Paneles {
               Datos.portapapeles(
                   context: context,
                   text: Internado.getCultivos(
-                      listadoFrom: foundedItems![index].paraclinicos));
+                      listadoFrom: foundedItems[index].paraclinicos));
             },
           ),
         ],
       ));
       //
       widgets.add(TittleContainer(
-          tittle: "$ID_Cama",
+          tittle: "$idCama",
           padding: 10.0,
           child: Column(
             children: pendientes,
@@ -782,14 +782,14 @@ class Paneles {
                   iconData: Icons.newspaper_rounded,
                   onPress: () {
                     // OBTENER TODOS LOS PENDIENTES REGISTRADOS
-                    String _pendientes = "";
+                    String pendientes0 = "";
                     //
-                    for (int index = 0; index < foundedItems!.length; index++) {
-                      ID_Cama =
+                    for (int index = 0; index < foundedItems.length; index++) {
+                      idCama =
                           int.parse(foundedItems[index].hospitalizedData['Id_Cama'] ?? "0");
                       String pendie = "";
                       //
-                      for (var pendiente in foundedItems![index].pendientes) {
+                      for (var pendiente in foundedItems[index].pendientes) {
 
                         //
                         if (pendiente['Pace_PEN_realized'] == 0 &&
@@ -800,33 +800,33 @@ class Paneles {
                           pendie = "$pendie${pendiente['Feca_PEN']} : : ${pendiente['Pace_Commen_PEN']}\n"; // Pace_Commen_PEN Pace_Desc_PEN
                         }
                       }
-                      _pendientes = "$_pendientes$ID_Cama : : $pendie\n";
+                      pendientes0 = "$pendientes0$idCama : : $pendie\n";
                     }
                     //
                     Datos.portapapeles(
                         context: context,
-                        text: _pendientes);
+                        text: pendientes0);
                   }),
               GrandIcon(
                   labelButton: "Cultivos Recabados",
                   iconData: Icons.hourglass_bottom,
                   onPress: () {
                     // OBTENER TODOS LOS CULTIVOS REGISTRADOS
-                    String _cultivos = "";
+                    String cultivos = "";
                     //
-                    for (int index = 0; index < foundedItems!.length; index++) {
-                      ID_Cama =
+                    for (int index = 0; index < foundedItems.length; index++) {
+                      idCama =
                           int.parse(
                               foundedItems[index].hospitalizedData['Id_Cama'] ??
                                   "0");
-                      _cultivos = "$_cultivos\n$ID_Cama : : ${Internado.getCultivos(
-                          listadoFrom: foundedItems![index].paraclinicos)}";
+                      cultivos = "$cultivos\n$idCama : : ${Internado.getCultivos(
+                          listadoFrom: foundedItems[index].paraclinicos)}";
                       //
                     }
                     //
                     Datos.portapapeles(
                         context: context,
-                        text: _cultivos);
+                        text: cultivos);
 
                   }),
             ],),

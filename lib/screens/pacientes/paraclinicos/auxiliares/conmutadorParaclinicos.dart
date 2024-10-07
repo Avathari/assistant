@@ -32,8 +32,7 @@ import 'package:flutter/material.dart';
 class ConmutadorParaclinicos extends StatefulWidget {
   String? categoriaEstudio;
 
-  ConmutadorParaclinicos({Key? key, required this.categoriaEstudio})
-      : super(key: key);
+  ConmutadorParaclinicos({super.key, required this.categoriaEstudio});
 
   @override
   State<ConmutadorParaclinicos> createState() => _ConmutadorParaclinicosState();

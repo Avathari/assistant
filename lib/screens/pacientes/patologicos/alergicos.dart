@@ -1,8 +1,6 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
-import 'package:assistant/screens/operadores/Cie.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
-import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
@@ -23,8 +21,7 @@ class OperacionesAlergicos extends StatefulWidget {
 
   String _operationButton = 'Nulo';
 
-  OperacionesAlergicos({Key? key, this.operationActivity = Constantes.Nulo})
-      : super(key: key);
+  OperacionesAlergicos({super.key, this.operationActivity = Constantes.Nulo});
 
   @override
   State<OperacionesAlergicos> createState() => _OperacionesAlergicosState();
@@ -361,7 +358,7 @@ class GestionAlergicos extends StatefulWidget {
   var keySearch = "Pace_APP_ALE";
   // ****************** *** ****** **************
 
-  GestionAlergicos({Key? key, this.actualSidePage}) : super(key: key);
+  GestionAlergicos({super.key, this.actualSidePage});
 
   @override
   State<GestionAlergicos> createState() => _GestionAlergicosState();

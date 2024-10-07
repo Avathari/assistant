@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Viviendas extends StatefulWidget {
-  const Viviendas({Key? key}) : super(key: key);
+  const Viviendas({super.key});
 
   @override
   State<Viviendas> createState() => _ViviendasState();

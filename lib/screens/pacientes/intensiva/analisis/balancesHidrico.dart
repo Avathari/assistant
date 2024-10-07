@@ -9,7 +9,7 @@ import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
 
 class BalanceHidrico extends StatefulWidget {
-  const BalanceHidrico({Key? key}) : super(key: key);
+  const BalanceHidrico({super.key});
 
   @override
   State<BalanceHidrico> createState() => _BalanceHidricoState();

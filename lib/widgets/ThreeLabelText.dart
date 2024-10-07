@@ -1,4 +1,3 @@
-import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +12,7 @@ class ThreeLabelTextAline extends StatefulWidget {
   final ValueChanged<String>? onEdit;
 
   ThreeLabelTextAline({
-    Key? key,
+    super.key,
     this.firstText = "",
     this.secondText = "",
     this.thirdText = "",
@@ -22,7 +21,7 @@ class ThreeLabelTextAline extends StatefulWidget {
     this.withEditMessage = false,
     this.withBorder = false,
     this.onEdit,
-  }) : super(key: key);
+  });
 
   @override
   State<ThreeLabelTextAline> createState() => _ThreeLabelTextAlineState();

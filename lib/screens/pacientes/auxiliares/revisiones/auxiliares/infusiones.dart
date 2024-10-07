@@ -5,7 +5,7 @@ import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
 
 class Infusiones extends StatefulWidget {
-  Infusiones({super.key});
+  const Infusiones({super.key});
 
   @override
   State<Infusiones> createState() => _InfusionesState();

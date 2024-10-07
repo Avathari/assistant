@@ -1,16 +1,10 @@
 import 'dart:convert';
 
-import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
-import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';
-import 'package:assistant/screens/pacientes/hospitalizacion/pendientes.dart';
 import 'package:assistant/values/SizingInfo.dart';
-import 'package:assistant/widgets/CrossLine.dart';
-import 'package:assistant/widgets/GrandLabel.dart';
 
 import 'package:assistant/widgets/ThreeLabelText.dart';
 import 'package:assistant/widgets/TittleContainer.dart';
-import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';
 
 class Detalles extends StatefulWidget {

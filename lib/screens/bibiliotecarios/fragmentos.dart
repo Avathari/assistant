@@ -2,7 +2,6 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Bibliotecarios.dart';
 import 'package:assistant/screens/bibiliotecarios/bibliotecas.dart';
-import 'package:assistant/screens/home.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
@@ -17,9 +16,7 @@ import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/ViewDocument.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class OperacionesFragmentos extends StatefulWidget {
@@ -27,8 +24,7 @@ class OperacionesFragmentos extends StatefulWidget {
 
   String _operationButton = 'Nulo';
 
-  OperacionesFragmentos({Key? key, this.operationActivity = Constantes.Nulo})
-      : super(key: key);
+  OperacionesFragmentos({super.key, this.operationActivity = Constantes.Nulo});
 
   @override
   State<OperacionesFragmentos> createState() => _OperacionesFragmentosState();
@@ -372,7 +368,7 @@ class GestionFragmentos extends StatefulWidget {
   var keySearch = "Feca_PEN";
   // ****************** *** ****** **************
 
-  GestionFragmentos({Key? key, this.actualSidePage}) : super(key: key);
+  GestionFragmentos({super.key, this.actualSidePage});
 
   @override
   State<GestionFragmentos> createState() => _GestionFragmentosState();

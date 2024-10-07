@@ -11,16 +11,14 @@ import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/TittleContainer.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Hidricos extends StatefulWidget {
   bool? isLateral;
 
-  Hidricos({Key? key, this.isLateral = false}) : super(key: key);
+  Hidricos({super.key, this.isLateral = false});
 
   @override
   State<Hidricos> createState() => _HidricosState();

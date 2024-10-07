@@ -10,7 +10,7 @@ import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';
 
 class ExpedientesClinicos extends StatefulWidget {
-  const ExpedientesClinicos({Key? key}) : super(key: key);
+  const ExpedientesClinicos({super.key});
 
   @override
   State<ExpedientesClinicos> createState() =>

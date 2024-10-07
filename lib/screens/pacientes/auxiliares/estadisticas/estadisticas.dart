@@ -1,16 +1,14 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
-import 'package:flutter/foundation.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class EstadisticasPacientes extends StatefulWidget {
-  const EstadisticasPacientes({Key? key}) : super(key: key);
+  const EstadisticasPacientes({super.key});
 
   @override
   State<EstadisticasPacientes> createState() => _EstadisticasPacientesState();

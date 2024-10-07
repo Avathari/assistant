@@ -8,8 +8,6 @@ import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CircleLabel.dart';
-import 'package:assistant/widgets/CrossLine.dart';
-import 'package:assistant/widgets/DialogSelector.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
@@ -35,8 +33,7 @@ class OperacionesLexemas extends StatefulWidget {
 
   String _operationButton = 'Nulo';
 
-  OperacionesLexemas({Key? key, this.operationActivity = Constantes.Nulo})
-      : super(key: key);
+  OperacionesLexemas({super.key, this.operationActivity = Constantes.Nulo});
 
   @override
   State<OperacionesLexemas> createState() => _OperacionesLexemasState();
@@ -370,7 +367,7 @@ class GestionLexemas extends StatefulWidget {
   var keySearch = "Concepto_Recurso";
   // ****************** *** ****** **************
 
-  GestionLexemas({Key? key, this.actualSidePage}) : super(key: key);
+  GestionLexemas({super.key, this.actualSidePage});
 
   @override
   State<GestionLexemas> createState() => _GestionLexemasState();

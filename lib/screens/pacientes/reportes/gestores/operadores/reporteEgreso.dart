@@ -35,8 +35,8 @@ class _ReporteEgresoState extends State<ReporteEgreso> {
       relevantesTextController.text =
           Reportes.reportes['Antecedentes_Relevantes'] =
               Pacientes.antecedentesRelevantes();
-      diagoTextController.text = Reportes.impresionesDiagnosticas!.isNotEmpty
-          ? Reportes.impresionesDiagnosticas!
+      diagoTextController.text = Reportes.impresionesDiagnosticas.isNotEmpty
+          ? Reportes.impresionesDiagnosticas
           : Pacientes.diagnosticos();
       // ********************************************
       Reportes.reportes['Antecedentes_Patologicos_Otros'] =

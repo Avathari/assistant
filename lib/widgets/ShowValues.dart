@@ -4,7 +4,7 @@ class ShowValues extends StatefulWidget {
   String? label;
   double? value;
 
-  ShowValues({Key? key, this.label, this.value}) : super(key: key);
+  ShowValues({super.key, this.label, this.value});
 
   @override
   State<ShowValues> createState() => _ShowValuesState();

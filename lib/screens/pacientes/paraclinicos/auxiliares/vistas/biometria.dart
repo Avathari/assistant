@@ -12,7 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Biometrias extends StatefulWidget {
-  const Biometrias({Key? key}) : super(key: key);
+  const Biometrias({super.key});
 
   @override
   State<Biometrias> createState() => _BiometriasState();
@@ -63,9 +63,10 @@ class _BiometriasState extends State<Biometrias> {
                 labelEditText: 'Hemoglobina ($unidadMedidaHemoglobina)',
                 numOfLines: 1,
                 onChange: (String value) {
-                  if (textHemoglobinaResultController.text.isNotEmpty)
+                  if (textHemoglobinaResultController.text.isNotEmpty) {
                     Valores.hemoglobina =
                         double.parse(textHemoglobinaResultController.text);
+                  }
                 },
               ),
               EditTextArea(
@@ -79,9 +80,10 @@ class _BiometriasState extends State<Biometrias> {
                 labelEditText: 'Eritrocitos ($unidadMedidaEritrocitos)',
                 numOfLines: 1,
                 onChange: (String value) {
-                  if (textEritrocitosResultController.text.isNotEmpty)
+                  if (textEritrocitosResultController.text.isNotEmpty) {
                     Valores.eritrocitos =
                         double.parse(textEritrocitosResultController.text);
+                  }
                 },
               ),
               EditTextArea(
@@ -378,11 +380,11 @@ class _BiometriasState extends State<Biometrias> {
     Future.forEach(listOfValues(), (element) async {
       var aux = element as List<String>;
 
-      if (aux[5] != '0' && aux[5] != '' && aux[5] != null) {
+      if (aux[5] != '0' && aux[5] != '') {
         await Actividades.registrar(
           Databases.siteground_database_reggabo,
           Auxiliares.auxiliares['registerQuery'],
-          element as List<String>,
+          element,
         );
       }
     }).whenComplete(() {

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
@@ -9,7 +8,6 @@ import 'package:assistant/operativity/pacientes/valores/Valorados/cerebrovascula
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/values/SizingInfo.dart';
-import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/AppBarText.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
@@ -98,7 +96,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
 
   @override
   Widget build(BuildContext context) {
-    var _progress;
+    var progress;
 
     return Scaffold(
       appBar: AppBar(
@@ -360,10 +358,10 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                           width: 20.0,
                           height: 20.0,
                           child: CircularProgressIndicator(
-                            value: _progress == null
+                            value: progress == null
                                 ? null
-                                : _progress.cumulativeBytesLoaded /
-                                    _progress.expectedTotalBytes,
+                                : progress.cumulativeBytesLoaded /
+                                    progress.expectedTotalBytes!,
                           ),
                         ),
                       ),
@@ -605,7 +603,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                     setState(() {
                       tipoEstudioValue = newValue!;
 
-                      index = Imagenologias.typesEstudios.indexOf(newValue!);
+                      index = Imagenologias.typesEstudios.indexOf(newValue);
                     });
                   }),
               Row(
@@ -623,7 +621,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                       onSelected: () {
                         Operadores.selectOptionsActivity(
                             context: context,
-                            options: Imagenologias.regiones[index!].toList(),
+                            options: Imagenologias.regiones[index].toList(),
                             onClose: (value) {
                               setState(() {
                                 Navigator.pop(context);
@@ -789,7 +787,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                     setState(() {
                       tipoEstudioValue = newValue!;
 
-                      index = Imagenologias.typesEstudios.indexOf(newValue!);
+                      index = Imagenologias.typesEstudios.indexOf(newValue);
                     });
                   }),
               CrossLine(
@@ -810,7 +808,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                       onSelected: () {
                         Operadores.selectOptionsActivity(
                             context: context,
-                            options: Imagenologias.regiones[index!].toList(),
+                            options: Imagenologias.regiones[index].toList(),
                             onClose: (value) {
                               setState(() {
                                 Navigator.pop(context);

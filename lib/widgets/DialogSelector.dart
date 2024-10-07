@@ -17,7 +17,7 @@ class DialogSelector extends StatefulWidget {
   String? searchCriteria;
 
   DialogSelector({
-    Key? key,
+    super.key,
     this.tittle = 'Diagnósticos CIE-10',
     this.searchCriteria = "Buscar por Diagnóstico",
     this.keyMapSearch = 'Diagnostico_CIE',
@@ -26,7 +26,7 @@ class DialogSelector extends StatefulWidget {
     this.splitChar = '\n',
     this.pathForFileSource = 'assets/diccionarios/Cie.json',
     required this.onSelected,
-  }) : super(key: key);
+  });
 
   @override
   State<DialogSelector> createState() => _DialogSelectorState();

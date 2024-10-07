@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'dart:math';
-import 'dart:typed_data';
-import 'dart:ui';
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
@@ -894,11 +892,11 @@ class _ElectrocardiogramasGestionState
                                         fit: BoxFit.cover,
                                       ),
                                     )
-                                  : Expanded(
+                                  : const Expanded(
                                       child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
-                                        children: const [
+                                        children: [
                                           ClipOval(
                                             child: Icon(
                                               Icons.file_present,
@@ -1274,8 +1272,7 @@ class _ElectrocardiogramasGestionState
 // ignore: must_be_immutable
 class AnalisisElectrocardiograma extends StatefulWidget {
   bool operationActivity = true; // Si true entonces REGISTER.register.
-  AnalisisElectrocardiograma({Key? key, required this.operationActivity})
-      : super(key: key);
+  AnalisisElectrocardiograma({super.key, required this.operationActivity});
 
   @override
   State<AnalisisElectrocardiograma> createState() =>

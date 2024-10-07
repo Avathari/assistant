@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Diarios extends StatefulWidget {
-  const Diarios({Key? key}) : super(key: key);
+  const Diarios({super.key});
 
   @override
   State<Diarios> createState() => _DiariosState();

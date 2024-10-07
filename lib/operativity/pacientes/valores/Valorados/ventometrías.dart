@@ -34,47 +34,47 @@ class Ventometrias {
 
   static String get ventilador {
     if (modoVentilatorio == 'ESPON') {
-      return "Ventilación en modalidad ${modoVentilatorio} con parámetros ajustados a "
+      return "Ventilación en modalidad $modoVentilatorio con parámetros ajustados a "
           "frecuencia ventilatoria ${Valores.frecuenciaVentilatoria} Vent/min, "
           "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
           "presión al final de la espiración ${Valores.presionFinalEsiracion} mmHg, "
           "presión soporte ${Valores.presionControl} mmHg. "
-          "Analisis ventilatorio con  ${ventilatorios}";
+          "Analisis ventilatorio con  $ventilatorios";
     } else if (modoVentilatorio == 'CPAP/PS') {
-      return "Ventilación en modalidad ${modoVentilatorio} con parámetros ajustados a "
+      return "Ventilación en modalidad $modoVentilatorio con parámetros ajustados a "
           "frecuencia ventilatoria ${Valores.frecuenciaVentilatoria} Vent/min, "
           "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
           "presión al final de la espiración ${Valores.presionFinalEsiracion} mmHg, "
           "presión soporte ${Valores.presionControl} mmHg. "
-          "Analisis ventilatorio con  ${ventilatorios}";
+          "Analisis ventilatorio con  $ventilatorios";
     } else if (modoVentilatorio == 'AC-VCV') {
-      return "Ventilación en modalidad ${modoVentilatorio} con parámetros ajustados a "
+      return "Ventilación en modalidad $modoVentilatorio con parámetros ajustados a "
           "frecuencia ventilatoria ${Valores.frecuenciaVentilatoria} Vent/min, "
           "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
           "presión al final de la espiración ${Valores.presionFinalEsiracion} mmHg, "
           "volumen tidal ${Valores.volumenTidal} mmHg. "
-          "Analisis ventilatorio con  ${ventilatorios}";
+          "Analisis ventilatorio con  $ventilatorios";
     } else if (modoVentilatorio == 'AC-VCP') {
-      return "Ventilación en modalidad ${modoVentilatorio} con parámetros ajustados a "
+      return "Ventilación en modalidad $modoVentilatorio con parámetros ajustados a "
           "frecuencia ventilatoria ${Valores.frecuenciaVentilatoria} Vent/min, "
           "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
           "presión al final de la espiración ${Valores.presionFinalEsiracion} mmHg, "
           "presión control ${Valores.presionControl} mmHg. "
-          "Analisis ventilatorio con  ${ventilatorios}";
+          "Analisis ventilatorio con  $ventilatorios";
     } else if (modoVentilatorio == 'SIMV/VCV') {
-      return "Ventilación en modalidad ${modoVentilatorio} con parámetros ajustados a "
+      return "Ventilación en modalidad $modoVentilatorio con parámetros ajustados a "
           "frecuencia ventilatoria ${Valores.frecuenciaVentilatoria} Vent/min, "
           "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
           "presión al final de la espiración ${Valores.presionFinalEsiracion} mmHg, "
           "volumen tidal ${Valores.volumenTidal} mmHg. "
-          "Analisis ventilatorio con  ${ventilatorios}";
+          "Analisis ventilatorio con  $ventilatorios";
     } else if (modoVentilatorio == 'SIMV/VCP') {
-      return "Ventilación en modalidad ${modoVentilatorio} con parámetros ajustados a "
+      return "Ventilación en modalidad $modoVentilatorio con parámetros ajustados a "
           "frecuencia ventilatoria ${Valores.frecuenciaVentilatoria} Vent/min, "
           "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
           "presión al final de la espiración ${Valores.presionFinalEsiracion} mmHg, "
           "presión control ${Valores.presionControl} mmHg. "
-          "Analisis ventilatorio con  ${ventilatorios}";
+          "Analisis ventilatorio con  $ventilatorios";
     } else {
       return '';
     }
@@ -82,47 +82,47 @@ class Ventometrias {
 
   static String get ventiladorCorto {
     if (modoVentilatorio == 'ESPON') {
-      return "VMI ${modoVentilatorio}, "
+      return "VMI $modoVentilatorio, "
           "F. Resp. ${Valores.frecuenciaVentilatoria} Vent/min, "
           "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
           "PEEP ${Valores.presionFinalEsiracion} mmHg, "
           "Psopp ${Valores.presionControl} mmHg. "
-          "${ventilatorios}";
+          "$ventilatorios";
     } else if (modoVentilatorio == 'CPAP/PS') {
-      return "VMI ${modoVentilatorio}, "
+      return "VMI $modoVentilatorio, "
           "F. Resp. ${Valores.frecuenciaVentilatoria} Vent/min, "
           "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
           "PEEP ${Valores.presionFinalEsiracion} mmHg, "
           "Psopp ${Valores.presionControl} mmHg. "
-          "${ventilatorios}";
+          "$ventilatorios";
     } else if (modoVentilatorio == 'AC-VCV') {
-      return "VMI ${modoVentilatorio} con "
+      return "VMI $modoVentilatorio con "
           "F. Resp. ${Valores.frecuenciaVentilatoria} Vent/min, "
           "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
           "PEEP ${Valores.presionFinalEsiracion} mmHg, "
           "Vt ${Valores.volumenTidal} mmHg. "
-          "${ventilatorios}";
+          "$ventilatorios";
     } else if (modoVentilatorio == 'AC-VCP') {
-      return "VMI ${modoVentilatorio} con "
+      return "VMI $modoVentilatorio con "
           "F. Resp ${Valores.frecuenciaVentilatoria} Vent/min, "
           "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
           "PEEP ${Valores.presionFinalEsiracion} mmHg, "
           "P. control ${Valores.presionControl} mmHg. "
-          "${ventilatorios}";
+          "$ventilatorios";
     } else if (modoVentilatorio == 'SIMV/VCV') {
-      return "VMI ${modoVentilatorio} con "
+      return "VMI $modoVentilatorio con "
           "F. Resp ${Valores.frecuenciaVentilatoria} Vent/min, "
           "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
           "PEEP ${Valores.presionFinalEsiracion} mmHg, "
           "Vt ${Valores.volumenTidal} mmHg. "
-          "${ventilatorios}";
+          "$ventilatorios";
     } else if (modoVentilatorio == 'SIMV/VCP') {
-      return "VMI ${modoVentilatorio} con "
+      return "VMI $modoVentilatorio con "
           "F. Resp ${Valores.frecuenciaVentilatoria} Vent/min, "
           "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
           "PEEP ${Valores.presionFinalEsiracion} mmHg, "
           "P. control ${Valores.presionControl} mmHg. "
-          "${ventilatorios}";
+          "$ventilatorios";
     } else {
       return '';
     }
@@ -131,7 +131,7 @@ class Ventometrias {
   static String get ventilatorios {
     Terminal.printExpected(
         message:
-            "modoVentilatorioALIDAD VENTILATORIA ${Valores.modalidadVentilatoria} ${modoVentilatorio}");
+            "modoVentilatorioALIDAD VENTILATORIA ${Valores.modalidadVentilatoria} $modoVentilatorio");
 
     // Prosa del Análisis Ventilatorio **************** ****************** **********************
     var PS = '';

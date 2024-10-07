@@ -22,8 +22,7 @@ class OperacionesVacunales extends StatefulWidget {
 
   String _operationButton = 'Nulo';
 
-  OperacionesVacunales({Key? key, this.operationActivity = Constantes.Nulo})
-      : super(key: key);
+  OperacionesVacunales({super.key, this.operationActivity = Constantes.Nulo});
 
   @override
   State<OperacionesVacunales> createState() => _OperacionesVacunalesState();
@@ -353,7 +352,7 @@ class GestionVacunales extends StatefulWidget {
   var complementElementQuery = 'Pace_APP_VAC_tra';
   // ****************** *** ****** **************
 
-  GestionVacunales({Key? key, this.actualSidePage}) : super(key: key);
+  GestionVacunales({super.key, this.actualSidePage});
 
   @override
   State<GestionVacunales> createState() => _GestionVacunalesState();

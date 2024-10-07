@@ -23,11 +23,7 @@ class Cerebrovasculares {
   /// Permite determinar la presión de la perfusión cerebral (PPC) mediante la fórmula:
   ///        PPC=PAM (presión arterial media) – PIC.
 static double presionPrefusionCerebral(double dvno) {
-  if (picDVNO(dvno) != null) {
-    return Cardiometrias.presionArterialMedia - picDVNO(dvno);
-  } else {
-    return double.nan;
-  }
+  return Cardiometrias.presionArterialMedia - picDVNO(dvno);
 }
 ///  El FSC es por lo tanto, grande, recibe casi el 20% del gasto cardiaco, aunque sólo representa el 4% del volumen intracraneal.
   ///         En condiciones normales el FSC en un adulto sano es de 50 ml/100 g de tejido cerebral/minuto.
@@ -40,11 +36,7 @@ static double presionPrefusionCerebral(double dvno) {
   ///
 
     static double flujoSanguineoCerebral(double dvno) {
-      if (picDVNO(dvno) != null) {
-        return presionPrefusionCerebral(dvno)*picDVNO(dvno);
-      } else {
-        return double.nan;
-      }
-    }
+      return presionPrefusionCerebral(dvno)*picDVNO(dvno);
+        }
 
 }

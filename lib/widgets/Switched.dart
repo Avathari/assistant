@@ -10,11 +10,10 @@ class Switched extends StatefulWidget {
   Function? onChangeValue;
 
   Switched(
-      {Key? key,
+      {super.key,
       this.tittle,
       this.isSwitched = false,
-      required this.onChangeValue})
-      : super(key: key);
+      required this.onChangeValue});
 
   @override
   State<Switched> createState() => _SwitchedState();
@@ -43,7 +42,7 @@ class _SwitchedState extends State<Switched> {
                         Text(widget.tittle!,
                             maxLines: 2,
                             textAlign: TextAlign.center,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 10,
                               color: Colors.grey,
                               overflow: TextOverflow.ellipsis,

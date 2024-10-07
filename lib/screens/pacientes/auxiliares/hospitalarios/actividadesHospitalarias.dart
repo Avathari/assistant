@@ -8,7 +8,7 @@ import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';
 
 class ActividadesHospitalarias extends StatefulWidget {
-  const ActividadesHospitalarias({Key? key}) : super(key: key);
+  const ActividadesHospitalarias({super.key});
 
   @override
   State<ActividadesHospitalarias> createState() => _ActividadesHospitalariasState();

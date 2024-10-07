@@ -8,12 +8,11 @@ import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 class GestionToxicomanias extends StatefulWidget {
-  const GestionToxicomanias({Key? key}) : super(key: key);
+  const GestionToxicomanias({super.key});
 
   @override
   State<GestionToxicomanias> createState() => _GestionToxicomaniasState();

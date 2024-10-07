@@ -1,13 +1,12 @@
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
-import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/ThreeLabelText.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';
 
 class EstadisticasVitales extends StatefulWidget {
-  const EstadisticasVitales({Key? key}) : super(key: key);
+  const EstadisticasVitales({super.key});
 
   @override
   State<EstadisticasVitales> createState() => _EstadisticasVitalesState();

@@ -168,15 +168,15 @@ class ReportsMethods {
                   ) {
                 //
                 Repositorios.actualizarRegistro(
-                    context: context, Values: values);
+                    context: context, values: values);
               } else if (getTypeReport == TypeReportes.reporteEgreso) {
                 Repositorios.actualizarRegistro(
-                    context: context, Values: values, isNotte: true);
+                    context: context, values: values, isNotte: true);
               } else {
                 if (fechaRealizacion ==
                     Calendarios.today(format: "yyyy-MM-dd")) {
                   Repositorios.actualizarRegistro(
-                      context: context, Values: values, isNotte: true);
+                      context: context, values: values, isNotte: true);
                 } else {
                   Repositorios.registrarRegistro(
                       context: context,
@@ -192,7 +192,7 @@ class ReportsMethods {
   static TypeReportes getTypeReport({
     required int actualPage,
   }) {
-    Terminal.printExpected(message: "getTypeReport . : ${actualPage}");
+    Terminal.printExpected(message: "getTypeReport . : $actualPage");
     //
     switch (actualPage) {
       case 0:

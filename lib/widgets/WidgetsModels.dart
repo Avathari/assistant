@@ -55,7 +55,7 @@ Padding editPassword(
 
 Padding editText(bool prefixIcon, String labelEditText,
     TextEditingController textController, bool obscureText) {
-  bool _isObscure = obscureText;
+  bool isObscure = obscureText;
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: TextField(
@@ -87,14 +87,14 @@ Padding editText(bool prefixIcon, String labelEditText,
             borderSide: BorderSide(color: Colors.white, width: 0.5),
             borderRadius: BorderRadius.all(Radius.circular(20))),
         focusColor: Colors.white,
-        suffixIcon: _isObscure
+        suffixIcon: isObscure
             ? IconButton(
                 icon: Icon(
                   obscureText ? Icons.visibility : Icons.password,
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  _isObscure = !_isObscure;
+                  isObscure = !isObscure;
                 },
               )
             : null,
@@ -110,7 +110,7 @@ Padding editFormattedText(
     String labelEditText,
     TextEditingController textController,
     bool obscureText) {
-  bool _isObscure = obscureText;
+  bool isObscure = obscureText;
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: TextField(
@@ -143,14 +143,14 @@ Padding editFormattedText(
             borderSide: BorderSide(color: Colors.white, width: 0.5),
             borderRadius: BorderRadius.all(Radius.circular(20))),
         focusColor: Colors.white,
-        suffixIcon: _isObscure
+        suffixIcon: isObscure
             ? IconButton(
                 icon: Icon(
                   obscureText ? Icons.visibility : Icons.password,
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  _isObscure = !_isObscure;
+                  isObscure = !isObscure;
                 },
               )
             : null,

@@ -1,6 +1,5 @@
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
-import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/RoundedPanel.dart';
 import 'package:flutter/material.dart';
 

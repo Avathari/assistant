@@ -1,6 +1,4 @@
-import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/values/WidgetValues.dart';
-import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -11,13 +9,13 @@ class CircularChart extends StatefulWidget {
   String? tittle, chartPrefix, chartSuffix;
 
   CircularChart({
-    Key? key,
+    super.key,
     this.tittle = '',
     this.chartPrefix = '\u0024',
     this.chartSuffix = '',
     required this.total,
     required this.values,
-  }) : super(key: key);
+  });
 
   @override
   State<CircularChart> createState() => _CircularChartState();

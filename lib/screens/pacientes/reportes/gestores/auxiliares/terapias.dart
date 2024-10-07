@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 class TerapiasItems extends StatefulWidget {
   bool? esCorto;
 
-  TerapiasItems({Key? key, this.esCorto = true}) : super(key: key);
+  TerapiasItems({super.key, this.esCorto = true});
 
   @override
   State<TerapiasItems> createState() => _TerapiasItemsState();

@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Coagulaciones extends StatefulWidget {
-  const Coagulaciones({Key? key}) : super(key: key);
+  const Coagulaciones({super.key});
 
   @override
   State<Coagulaciones> createState() => _CoagulacionesState();
@@ -170,11 +170,11 @@ class _CoagulacionesState extends State<Coagulaciones> {
     Future.forEach(listOfValues(), (element) async {
       var aux = element as List<String>;
 
-      if (aux[5] != '0' && aux[5] != '' && aux[5] != null) {
+      if (aux[5] != '0' && aux[5] != '') {
         await Actividades.registrar(
           Databases.siteground_database_reggabo,
           Auxiliares.auxiliares['registerQuery'],
-          element as List<String>,
+          element,
         );
       }
     }).whenComplete(() {

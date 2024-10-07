@@ -9,13 +9,12 @@ class TittlePanel extends StatefulWidget {
   Color colorText;
 
   TittlePanel(
-      {Key? key,
+      {super.key,
       this.padding = 8.0,
       this.fontSize = 10,
       this.colorText = Colors.white,
       this.color = Colores.backgroundPanel,
-      required this.textPanel})
-      : super(key: key);
+      required this.textPanel});
 
   @override
   State<TittlePanel> createState() => _TittlePanelState();

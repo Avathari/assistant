@@ -615,7 +615,7 @@ class UsuariosPanel extends StatelessWidget {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (BuildContext context) => CreateExcelWidget()));
+            builder: (BuildContext context) => const CreateExcelWidget()));
   }
 }
 
@@ -715,7 +715,7 @@ class PacientesPanel extends StatelessWidget {
               iconData: Icons.temple_buddhist,
               labelButton: "Tester (Paraclinicos Extractor)",
               onPress: () {
-                toNextScreen(context: context, screen: ParaclinicosExtractor());
+                toNextScreen(context: context, screen: const ParaclinicosExtractor());
                 // Operadores.alertActivity(
                 //     context: context,
                 //     tittle: "Error",

@@ -39,10 +39,9 @@ class OperacionesHospitalizaciones extends StatefulWidget {
   bool? retornar;
 
   OperacionesHospitalizaciones(
-      {Key? key,
+      {super.key,
       this.operationActivity = Constantes.Nulo,
-      this.retornar = false})
-      : super(key: key);
+      this.retornar = false});
 
   @override
   State<OperacionesHospitalizaciones> createState() =>
@@ -861,8 +860,7 @@ class GestionHospitalizaciones extends StatefulWidget {
   // ****************** *** ****** **************
 
   GestionHospitalizaciones(
-      {Key? key, this.withAppBar = true, this.actualSidePage})
-      : super(key: key);
+      {super.key, this.withAppBar = true, this.actualSidePage});
 
   @override
   State<GestionHospitalizaciones> createState() =>

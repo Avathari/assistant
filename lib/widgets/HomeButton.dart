@@ -7,8 +7,7 @@ class HomeButton extends StatefulWidget {
   String? labelButton;
 
   HomeButton(
-      {Key? key, required this.onPress, this.iconData = Icons.medical_services, this.labelButton = "Titulo"})
-      : super(key: key);
+      {super.key, required this.onPress, this.iconData = Icons.medical_services, this.labelButton = "Titulo"});
 
   @override
   State<HomeButton> createState() => _HomeButtonState();

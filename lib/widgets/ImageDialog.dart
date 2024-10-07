@@ -9,8 +9,7 @@ class ImageDialog extends StatefulWidget {
   String? tittle;
   String? stringImage;
 
-  ImageDialog({Key? key, this.tittle, this.stringImage})
-      : super(key: key);
+  ImageDialog({super.key, this.tittle, this.stringImage});
 
   @override
   State<ImageDialog> createState() => _ImageDialogState();

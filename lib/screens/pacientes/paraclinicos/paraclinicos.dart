@@ -7,7 +7,7 @@ import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:flutter/material.dart';
 
 class Paraclinicos extends StatefulWidget {
-  const Paraclinicos({Key? key}) : super(key: key);
+  const Paraclinicos({super.key});
 
   @override
   State<Paraclinicos> createState() => _ParaclinicosState();

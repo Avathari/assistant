@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Eticos extends StatefulWidget {
-  const Eticos({Key? key}) : super(key: key);
+  const Eticos({super.key});
 
   @override
   State<Eticos> createState() => _EticosState();

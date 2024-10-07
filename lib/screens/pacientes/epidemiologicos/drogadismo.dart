@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Drogadismo extends StatefulWidget {
-  const Drogadismo({Key? key}) : super(key: key);
+  const Drogadismo({super.key});
 
   @override
   State<Drogadismo> createState() => _DrogadismoState();

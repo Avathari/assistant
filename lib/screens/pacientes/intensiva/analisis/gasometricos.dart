@@ -1,21 +1,18 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
-import 'package:assistant/operativity/pacientes/valores/Valorados/hidrometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart' as Gas;
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
-import 'package:assistant/screens/pacientes/intensiva/analisis/antropometricos.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/info/auxiliarGasometricos.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/TittleContainer.dart';
-import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 class Gasometricos extends StatefulWidget {
-  const Gasometricos({Key? key}) : super(key: key);
+  const Gasometricos({super.key});
 
   @override
   State<Gasometricos> createState() => _GasometricosState();
