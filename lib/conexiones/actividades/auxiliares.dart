@@ -93,13 +93,15 @@ class Calendarios {
     // Terminal.printSuccess(message: partesFecha.toString());
 
     int dia = int.parse(partesFecha[0]); // Obtenemos el día
-    int mes = meses[partesFecha[2]] ?? 1; // Obtenemos el mes y lo convertimos a su representación numérica
+    int mes = meses[partesFecha[2]] ??
+        1; // Obtenemos el mes y lo convertimos a su representación numérica
     int anio = int.parse(partesFecha[4]); // Obtenemos el año
     String hora = partesFecha[5]; // Obtenemos la hora
 
     // Creamos el objeto DateTime a partir de la fecha y hora
     String fechaFormateada = "$anio-$mes-$dia $hora";
-    DateTime fechaDateTime = DateFormat("yyyy-M-d HH:mm:ss").parse(fechaFormateada);
+    DateTime fechaDateTime =
+        DateFormat("yyyy-M-d HH:mm:ss").parse(fechaFormateada);
 
     // Imprimir el resultado
     // print(fechaDateTime);  // Output: 2022-10-12 07:52:11.000
@@ -626,6 +628,16 @@ class Listas {
       ...{...aux}
     ];
   }
+
+  static String fromEachListToString(List<List> list) {
+    String listado = "";
+    for (var elemente in list) {
+      Terminal.printSuccess(message: "${elemente}");
+      listado = "$listado$elemente\n";
+    }
+
+    return listado;
+  }
 }
 
 class Alertas {
@@ -719,11 +731,11 @@ class Directorios {
   }
 
   /// Open a PDF file from the local device's storage.
-  static Future<FilePickerResult?> choiseFromInternalDocuments(BuildContext context) async {
+  static Future<FilePickerResult?> choiseFromInternalDocuments(
+      BuildContext context) async {
     try {
       FilePickerResult? filePickerResult = await FilePicker.platform
-          .pickFiles(
-          type: FileType.custom, allowedExtensions: ['pdf']);
+          .pickFiles(type: FileType.custom, allowedExtensions: ['pdf']);
       if (filePickerResult != null) {
         return filePickerResult;
       }
@@ -733,11 +745,29 @@ class Directorios {
       Dialogos.notifyDialog(
         "ERROR - Imagenes de Galeria",
         'No se pudo cargar imagen desde Galeria : $e',
-            () {},
+        () {},
       );
     }
   }
 
+
+
+    static Future<List<PlatformFile>?> choiseSeveralFromInternalDocuments(BuildContext context) async {
+      // Utilizar FilePicker para seleccionar archivos
+      FilePickerResult? filePickerResult = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf'], // Solo archivos PDF
+        allowMultiple: true, // Permitir selección de múltiples archivos
+      );
+
+      if (filePickerResult != null) {
+        // Retornar la lista de archivos seleccionados
+        return filePickerResult.files;
+      } else {
+        // Retornar null si no se seleccionaron archivos
+        return null;
+      }
+    }
   // static choiseDocumentFromDirectory() async {
   //   var dir = await getApplicationDocumentsDirectory();
   //   File file = File('${dir.path}/$pName.pdf');
@@ -973,7 +1003,7 @@ class Operadores {
     onAcept,
   }) {
     showDialog(
-      barrierDismissible: false,
+        barrierDismissible: false,
         context: context,
         builder: (context) {
           return Dialogos.alertDialog(tittle, message, () {
@@ -1065,11 +1095,10 @@ class Dialogos {
         //     child:
         //         const Text("Cancelar", style: TextStyle(color: Colors.white))),
         CircleIcon(
-          iconed: Icons.transit_enterexit,
-            onChangeValue: ( ) {
-          onAcept();
-        }
-          ),
+            iconed: Icons.transit_enterexit,
+            onChangeValue: () {
+              onAcept();
+            }),
         // ElevatedButton(
         //     style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
         //     onPressed: () {
@@ -1509,7 +1538,4 @@ class Numeros {
   }
 }
 
-class Documentos {
-
-
-}
+class Documentos {}
