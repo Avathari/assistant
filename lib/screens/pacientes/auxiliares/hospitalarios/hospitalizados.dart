@@ -4,6 +4,7 @@ import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteFormats/
 import 'package:assistant/conexiones/actividades/wordGenerate/DocApi.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/conexiones/controladores/pacientes/auxiliar/extractor.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/home.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
@@ -1534,9 +1535,11 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                 });
                           })),
                   GrandIcon(
-                      labelButton: "Primeros Encontrados",
-                      iconData: Icons.file_present,
-                      onPress: () => _reiniciar()),
+                      labelButton: "Indizar laboratorios de pacientes . . . ",
+                      iconData: Icons.fact_check_outlined,
+                      // onPress: () => _reiniciar(),
+                    onPress: () =>AuxiliarExtractor(context),
+                  ),
                   const SizedBox(width: 25),
                   GrandIcon(
                       labelButton: 'Pendientes Recabados . . . ',

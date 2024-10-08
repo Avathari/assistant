@@ -189,11 +189,30 @@ class ReportsMethods {
             Terminal.printAlert(message: "ERROR - $error : : $stackTrace"));
   }
 
+  static int setTypeReport({required String tipoAnalisis}){
+    if (tipoAnalisis == Items.tiposAnalisis[0]) {
+      return 0;
+    } else if (tipoAnalisis == Items.tiposAnalisis[1]) {
+      return 1;
+    } else if (tipoAnalisis == Items.tiposAnalisis[2]) {
+      return 7;
+    } else if (tipoAnalisis == Items.tiposAnalisis[3]) {
+      return 6;
+    } else if (tipoAnalisis == Items.tiposAnalisis[4]) {
+      return 3;
+    } else if (tipoAnalisis == Items.tiposAnalisis[5]) {
+      return 8;
+    } else if (tipoAnalisis == Items.tiposAnalisis[6]) {
+      return 4;
+    } else {
+      return 0;
+    }
+  }
+
   static TypeReportes getTypeReport({
     required int actualPage,
   }) {
-    Terminal.printExpected(message: "getTypeReport . : $actualPage");
-    //
+    // Terminal.printExpected(message: "getTypeReport . : $actualPage");
     switch (actualPage) {
       case 0:
         Repositorios.tipo_Analisis = Items.tiposAnalisis[0];

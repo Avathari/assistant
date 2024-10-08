@@ -1892,6 +1892,23 @@ class Pacientes {
         "\n\n"
         "";
   }
+
+  static formatearNSS(String? numero) {
+    // Convertir el número a una cadena
+    String numeroStr = numero.toString();
+
+    // Verificar que la longitud sea la esperada (10 dígitos)
+    if (numeroStr.length != 10) {
+      return "Número no válido";  // O cualquier otro mensaje que prefieras para manejar errores
+    }
+
+    // Insertar espacios en las posiciones deseadas
+    String numeroFormateado = numeroStr.substring(0, 4) + " " +  // 1116
+        numeroStr.substring(4, 6) + " " +  // 00
+        numeroStr.substring(6);            // 1724
+
+    return numeroFormateado;
+  }
 }
 
 class Heredofamiliares {
@@ -5902,7 +5919,7 @@ class Vitales {
     Valores.circunferenciaSuralDerecha =
         int.parse(json['Pace_SV_c_suro_der'].toString());
     //
-    Terminal.printExpected(message: "$json");
+    // Terminal.printExpected(message: "$json");
   }
 }
 

@@ -750,24 +750,23 @@ class Directorios {
     }
   }
 
+  static Future<List<PlatformFile>?> choiseSeveralFromInternalDocuments(
+      BuildContext context) async {
+    // Utilizar FilePicker para seleccionar archivos
+    FilePickerResult? filePickerResult = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'], // Solo archivos PDF
+      allowMultiple: true, // Permitir selección de múltiples archivos
+    );
 
-
-    static Future<List<PlatformFile>?> choiseSeveralFromInternalDocuments(BuildContext context) async {
-      // Utilizar FilePicker para seleccionar archivos
-      FilePickerResult? filePickerResult = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['pdf'], // Solo archivos PDF
-        allowMultiple: true, // Permitir selección de múltiples archivos
-      );
-
-      if (filePickerResult != null) {
-        // Retornar la lista de archivos seleccionados
-        return filePickerResult.files;
-      } else {
-        // Retornar null si no se seleccionaron archivos
-        return null;
-      }
+    if (filePickerResult != null) {
+      // Retornar la lista de archivos seleccionados
+      return filePickerResult.files;
+    } else {
+      // Retornar null si no se seleccionaron archivos
+      return null;
     }
+  }
   // static choiseDocumentFromDirectory() async {
   //   var dir = await getApplicationDocumentsDirectory();
   //   File file = File('${dir.path}/$pName.pdf');
@@ -1270,29 +1269,45 @@ class Dialogos {
         tittle!,
         style: const TextStyle(color: Colors.grey),
       ),
-      content: Text(
-        msg!,
-        style: const TextStyle(color: Colors.grey),
+      content: SingleChildScrollView(
+        controller: ScrollController(),
+        child: Text(
+          msg!,
+          style: const TextStyle(color: Colors.grey, fontSize: 10),
+        ),
       ),
+      actionsAlignment: MainAxisAlignment.end,
       actions: [
-        OutlinedButton(
-            onPressed: () {
-              onCloss!();
-            },
-            child:
-                const Text("Cancelar", style: TextStyle(color: Colors.white))),
-        ElevatedButton(
-            onPressed: () {
-              optionA!();
-            },
-            child: Text(textOptionA!,
-                style: const TextStyle(color: Colors.white))),
-        ElevatedButton(
-            onPressed: () {
-              optionB!();
-            },
-            child:
-                Text(textOptionB!, style: const TextStyle(color: Colors.white)))
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            // if (optionB != null) SizedBox(width: 0) else SizedBox(width: 30),
+              Expanded(
+              child: OutlinedButton(
+                  onPressed: () {
+                    onCloss!();
+                  },
+                  child: const Text("Cancelar",
+                      style: TextStyle(color: Colors.white, fontSize: 8))),
+            ),
+            if (optionB != null) Expanded(
+            child: ElevatedButton(
+                onPressed: () {
+                  optionB();
+                },
+                child: Text(textOptionB!,
+                    style:
+                        const TextStyle(color: Colors.white, fontSize: 8))),
+          ),
+            Expanded(
+                child: CircleIcon(
+                    iconed: Icons.confirmation_num,
+                    tittle: textOptionA!,
+                    onChangeValue: () {
+                      optionA!();
+                    })),
+          ],
+        )
       ],
     );
   }

@@ -713,7 +713,7 @@ class PacientesPanel extends StatelessWidget {
 
             HomeButton(
               iconData: Icons.temple_buddhist,
-              labelButton: "Tester (Paraclinicos Extractor)",
+              labelButton: "Tester (Analisis AI)",
               onPress: () {
                 toNextScreen(context: context, screen: const ParaclinicosExtractor());
                 // Operadores.alertActivity(

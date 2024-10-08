@@ -44,10 +44,10 @@ import 'package:flutter/material.dart';
 
 class ReportesMedicos extends StatefulWidget {
   int actualPage = 6, indexNote = -1, actualLateralPage = 0;
-  bool? analysis;
+  int? analysis;
   String? fechaRealizacion;
 
-  ReportesMedicos({super.key, this.analysis = false});
+  ReportesMedicos({super.key, this.analysis = 0});
 
   @override
   State<ReportesMedicos> createState() => _ReportesMedicosState();
@@ -112,9 +112,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       Archivos.readJsonToMap(filePath: Pacientes.localPath).then((value) {
         Valores.fromJson(value[0]);
       }).onError((error, stackTrace) {
-        // Terminal.printAlert(
-        //     message: "ERROR al Abrir ${Pacientes.localPath}"
-        //         " - $error : : $stackTrace");
+        // Terminal.printAlert(message: "ERROR al Abrir ${Pacientes.localPath}" - $error : : $stackTrace");
         Operadores.alertActivity(
             context: context,
             tittle: "Error al Abrir ${Pacientes.localPath}",
@@ -130,7 +128,6 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               listNotes = value;
             }
           }));
-
     });
     // # # # ############## #### ######## #### ########
     super.initState();
@@ -167,7 +164,6 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               actualPage: 0,
             )));
   }
-
 
   // ******************************************************
   Widget _mobileView() {
@@ -209,7 +205,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                           FloatingActionButton(
                             onPressed: () {
                               setState(() {
-                                widget.analysis = true;
+                                widget.analysis = 1;
                                 _key.currentState!.openEndDrawer();
                               });
                             },
@@ -290,7 +286,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                           FloatingActionButton(
                             onPressed: () {
                               setState(() {
-                                widget.analysis = true;
+                                widget.analysis = 0;
                                 _key.currentState!.openEndDrawer();
                               });
                             },
@@ -334,107 +330,106 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
   // ******************************************************
   Widget sideLeft() {
     if (isMobile(context) || isTablet(context)) {
-      return Expanded(
-        child: Row(
-          children: [
-            isTablet(context)
-                ? const Expanded(flex: 3, child: PresentacionPacientesSimple())
-                : Container(),
-            Expanded(
-              flex: isTablet(context) ? 7 : 2,
-              child: isMobile(context)
-                  ? Row(
-                      children: [
-                        isMobile(context)
-                            ? Expanded(
-                                child: Container(
-                                  height: isMobile(context) ? 100 : 0,
-                                  margin: const EdgeInsets.all(8.0),
-                                  decoration:
-                                      ContainerDecoration.roundedDecoration(
-                                          radius: 50),
-                                  child: GrandIcon(
-                                    iconData: Icons.account_balance_sharp,
-                                    labelButton: "Tipo de Nota Médica",
-                                    onPress: () {
-                                      Cambios.toNextActivity(context,
-                                          tittle: 'Revisión de Valores',
-                                          chyld: Revisiones(withTitle: false));
-                                      // setState(() {
-                                      //   widget.actualPage = 19;
-                                      // });
-                                    },
-                                  ),
-                                ),
-                              )
-                            : Expanded(
-                                child: GrandButton(
-                                  weigth: 2000,
-                                  fontSize: 10.0,
+      return Row(
+        children: [
+          isTablet(context)
+              ? const Expanded(flex: 3, child: PresentacionPacientesSimple())
+              : Container(),
+          Expanded(
+            flex: isTablet(context) ? 7 : 2,
+            child: isMobile(context)
+                ? Row(
+                    children: [
+                      isMobile(context)
+                          ? Expanded(
+                              child: Container(
+                                height: isMobile(context) ? 100 : 0,
+                                margin: const EdgeInsets.all(8.0),
+                                decoration:
+                                    ContainerDecoration.roundedDecoration(
+                                        radius: 50),
+                                child: GrandIcon(
+                                  iconData: Icons.account_balance_sharp,
                                   labelButton: "Tipo de Nota Médica",
                                   onPress: () {
-                                    if (isMobile(context)) {
-                                      Navigator.of(context).pop();
-                                    }
-                                    setState(() {
-                                      widget.actualPage = 19;
-                                    });
+                                    Cambios.toNextActivity(context,
+                                        tittle: 'Revisión de Valores',
+                                        chyld: Revisiones(withTitle: false));
+                                    // setState(() {
+                                    //   widget.actualPage = 19;
+                                    // });
                                   },
                                 ),
-                                //     child: Container(
-                                //   decoration: ContainerDecoration.roundedDecoration(),
-                                //   child: TittlePanel(
-                                //       padding: isTablet(context) ? 4 : 2,
-                                //       textPanel: "Tipo de Nota Médica"),
-                                // ),
                               ),
-                        Expanded(
-                            flex: 2,
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.vertical,
-                              controller: ScrollController(),
-                              child: Column(
-                                children: tiposReportes(),
+                            )
+                          : Expanded(
+                              child: GrandButton(
+                                weigth: 2000,
+                                fontSize: 10.0,
+                                labelButton: "Tipo de Nota Médica",
+                                onPress: () {
+                                  if (isMobile(context)) {
+                                    Navigator.of(context).pop();
+                                  }
+                                  setState(() {
+                                    widget.actualPage = 19;
+                                  });
+                                },
                               ),
-                            )),
-                      ],
-                    )
-                  : Column(
-                      children: [
-                        Expanded(
-                          child: GrandButton(
-                            weigth: 2000,
-                            labelButton: "Tipo de Nota Médica",
-                            onPress: () {
-                              if (isMobile(context)) {
-                                Navigator.of(context).pop();
-                              }
-                              setState(() {
-                                widget.actualPage = 19;
-                              });
-                            },
-                          ),
-                          //     child: Container(
-                          //   decoration: ContainerDecoration.roundedDecoration(),
-                          //   child: TittlePanel(
-                          //       padding: isTablet(context) ? 4 : 2,
-                          //       textPanel: "Tipo de Nota Médica"),
-                          // ),
+                              //     child: Container(
+                              //   decoration: ContainerDecoration.roundedDecoration(),
+                              //   child: TittlePanel(
+                              //       padding: isTablet(context) ? 4 : 2,
+                              //       textPanel: "Tipo de Nota Médica"),
+                              // ),
+                            ),
+                      Expanded(flex: 2, child: ListView(children: tiposReportes(),)),
+                      // Expanded(
+                      //     flex: 2,
+                      //     child: SingleChildScrollView(
+                      //       scrollDirection: Axis.vertical,
+                      //       controller: ScrollController(),
+                      //       child: Column(
+                      //         children: tiposReportes(),
+                      //       ),
+                      //     )),
+                    ],
+                  )
+                : Column(
+                    children: [
+                      Expanded(
+                        child: GrandButton(
+                          weigth: 2000,
+                          labelButton: "Tipo de Nota Médica",
+                          onPress: () {
+                            if (isMobile(context)) {
+                              Navigator.of(context).pop();
+                            }
+                            setState(() {
+                              widget.actualPage = 19;
+                            });
+                          },
                         ),
-                        Expanded(
-                            flex: isTablet(context) ? 2 : 1,
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.vertical,
-                              controller: ScrollController(),
-                              child: Column(
-                                children: tiposReportes(),
-                              ),
-                            )),
-                      ],
-                    ),
-            ),
-          ],
-        ),
+                        //     child: Container(
+                        //   decoration: ContainerDecoration.roundedDecoration(),
+                        //   child: TittlePanel(
+                        //       padding: isTablet(context) ? 4 : 2,
+                        //       textPanel: "Tipo de Nota Médica"),
+                        // ),
+                      ),
+                      Expanded(
+                          flex: isTablet(context) ? 2 : 1,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            controller: ScrollController(),
+                            child: Column(
+                              children: tiposReportes(),
+                            ),
+                          )),
+                    ],
+                  ),
+          ),
+        ],
       );
     } else {
       return Column(
@@ -958,24 +953,29 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
   }
 
   // COMPONENTES ****************************************************
-  drawerForm(BuildContext context, {bool? analysis = false}) => Drawer(
-        width: widget.analysis == false // !isLargeDesktop(context)
-            ? 100
-            : 310, // 350
+  drawerForm(BuildContext context, {int? analysis = 1}) => Drawer(
+        width: widget.analysis == 0 // !isLargeDesktop(context)
+            ? 310
+            : widget.analysis == 1
+                ? 100
+                : 270, // 350
         backgroundColor: Theming.cuaternaryColor,
         child: Container(
             decoration: const BoxDecoration(
               border: Border(
-                  top: BorderSide(color: Colors.grey),
-                  bottom: BorderSide(color: Colors.grey),
-                  left: BorderSide(color: Colors.grey)),
+                top: BorderSide(color: Colors.grey),
+                bottom: BorderSide(color: Colors.grey),
+                left: BorderSide(color: Colors.grey),
+              ),
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(16),
                   topLeft: Radius.circular(16)),
             ),
-            child: widget.analysis == true //isLargeDesktop(context)
+            child: widget.analysis == 0 //isLargeDesktop(context)
                 ? AnalisisLaterales()
-                : _optionsLaterales(context)),
+                : widget.analysis == 1
+                    ? _optionsLaterales(context)
+                    : _notasPrevias(context)),
       );
 
   bottomNavigationBar(BuildContext context) => BottomAppBar(
@@ -1006,8 +1006,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                 icon: const Icon(Icons.menu_open_sharp, color: Colors.grey),
                 tooltip: "Otras Opciones . . . ",
                 onPressed: () => setState(() {
-                    widget.analysis = true;
-                    _key.currentState!.openEndDrawer();
+                      widget.analysis = 1;
+                      _key.currentState!.openEndDrawer();
                     })),
             IconButton(
                 icon: const Icon(Icons.scale, color: Colors.grey),
@@ -1052,41 +1052,43 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                           Reportes.medicamentosIndicados.toString(),
                           Reportes.medidasGenerales.toString(),
                           Reportes.pendientes.toString(),
-                          Repositorios.tipo_Analisis, // Items.tiposAnalisis[0] //
-                        ], valuesEgreso: [
-                  Pacientes.ID_Paciente,
-                  Pacientes.ID_Hospitalizacion,
-                  Valores.fechaPadecimientoActual ??
-                      Calendarios.today(format: 'yyyy/MM/dd'),
-                  Reportes.padecimientoActual,
-                  // Valores.servicioTratanteInicial,
-                  Valores.servicioTratante,
-                  Calendarios.today(format: 'yyyy/MM/dd'),
-                  //
-                  Reportes.personalesNoPatologicos,
-                  Reportes.personalesPatologicos,
-                  Reportes.impresionesDiagnosticas,
-                  //
-                  Reportes.reportes['Subjetivo'],
-                  Reportes.signosVitales,
-                  Reportes.exploracionFisica,
-                  //
-                  Reportes.auxiliaresDiagnosticos,
-                  Reportes.analisisComplementarios,
-                  //
-                  Reportes.analisisMedico,
-                  Reportes.pronosticoMedico,
-                  // INDICACIONES MÉDICAS *******************************
-                  Reportes.dieta.toString(),
-                  Reportes.hidroterapia.toString(),
-                  Reportes.insulinoterapia.toString(),
-                  Reportes.hemoterapia.toString(),
-                  Reportes.oxigenoterapia.toString(),
-                  Reportes.medicamentosIndicados.toString(),
-                  Reportes.medidasGenerales.toString(),
-                  Reportes.pendientes.toString(),
-                  Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
-                ])),
+                          Repositorios
+                              .tipo_Analisis, // Items.tiposAnalisis[0] //
+                        ],
+                        valuesEgreso: [
+                          Pacientes.ID_Paciente,
+                          Pacientes.ID_Hospitalizacion,
+                          Valores.fechaPadecimientoActual ??
+                              Calendarios.today(format: 'yyyy/MM/dd'),
+                          Reportes.padecimientoActual,
+                          // Valores.servicioTratanteInicial,
+                          Valores.servicioTratante,
+                          Calendarios.today(format: 'yyyy/MM/dd'),
+                          //
+                          Reportes.personalesNoPatologicos,
+                          Reportes.personalesPatologicos,
+                          Reportes.impresionesDiagnosticas,
+                          //
+                          Reportes.reportes['Subjetivo'],
+                          Reportes.signosVitales,
+                          Reportes.exploracionFisica,
+                          //
+                          Reportes.auxiliaresDiagnosticos,
+                          Reportes.analisisComplementarios,
+                          //
+                          Reportes.analisisMedico,
+                          Reportes.pronosticoMedico,
+                          // INDICACIONES MÉDICAS *******************************
+                          Reportes.dieta.toString(),
+                          Reportes.hidroterapia.toString(),
+                          Reportes.insulinoterapia.toString(),
+                          Reportes.hemoterapia.toString(),
+                          Reportes.oxigenoterapia.toString(),
+                          Reportes.medicamentosIndicados.toString(),
+                          Reportes.medidasGenerales.toString(),
+                          Reportes.pendientes.toString(),
+                          Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
+                        ])),
           ],
         ),
       );
@@ -1097,7 +1099,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             context: context,
             builder: (BuildContext context) {
               return Container(
+                width: 350,
                 padding: const EdgeInsets.all(8.0),
+                // margin: const EdgeInsets.all(8.0),
                 decoration: const BoxDecoration(
                   color: Theming.cuaternaryColor,
                   border: Border(
@@ -1138,29 +1142,47 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           title: CircleIcon(
             iconed: Icons.lens_blur,
             radios: 30,
-            onChangeValue: () {},
+            onChangeValue: () {
+              setState(() {
+                widget.analysis = 3;
+              });
+              _key.currentState!.openEndDrawer();
+            },
           ),
           // title: AppBarText(Sentences.app_bar_reportes),
           actions: <Widget>[
             // if (!isLargeDesktop(context))
+            // GrandIcon(
+            //     labelButton: 'Copiar Esquema del Reporte',
+            //     iconData: Icons.remove_red_eye_outlined,
+            //     iconColor: Colors.white,
+            //     onPress: () {
+            //       setState(() {
+            //         widget.analysis = 3;
+            //       });
+            //       _key.currentState!.openEndDrawer();
+            //     }),
+            // const SizedBox(width: 15),
             GrandIcon(
                 labelButton: 'Copiar Esquema del Reporte',
                 iconData: Icons.menu_open_sharp,
                 iconColor: Colors.white,
                 onPress: () {
-                setState(() {
-                  widget.analysis = false;
-                });
+                  setState(() {
+                    widget.analysis = 0;
+                  });
                   _key.currentState!.openEndDrawer();
-
                 }),
-            const SizedBox(width: 20)
+            const SizedBox(width: 20),
           ]);
 
   //
   _notasPrevias(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
+      padding: widget.analysis == 3
+          ? const EdgeInsets.only(
+              top: 32.0, bottom: 16.0, left: 16.0, right: 16.0)
+          : const EdgeInsets.only(top: 16.0, bottom: 16.0),
       child: Column(
         children: [
           CrossLine(height: 10, thickness: 4, color: Colors.black),
@@ -1189,6 +1211,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                               style: Styles.textSyleGrowth(fontSize: 8),
                             ),
                             onTap: () {
+                              if (widget.analysis == 3)
+                                Navigator.of(context).pop();
+                              //
                               setState(() {
                                 widget.indexNote = index;
                                 widget.actualPage = 25;
@@ -1347,23 +1372,23 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   : Container(),
               // PATOLÓGICOS ********************************************
               listNotes![widget.indexNote]['Tipo_Analisis'] ==
-                  'Análisis de Egreso'
-                  ? Text(
-                  listNotes![widget.indexNote]['Tipo_Analisis'] ==
                       'Análisis de Egreso'
-                      ? Pacientes
-                      .patologicos() // ${listNotes![widget.indexNote]['Antecedentes_Patologicos_Otros']}"
-                      : "",
-                  maxLines: 25,
-                  style: Styles.textSyleGrowth(fontSize: 8))
+                  ? Text(
+                      listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                              'Análisis de Egreso'
+                          ? Pacientes
+                              .patologicos() // ${listNotes![widget.indexNote]['Antecedentes_Patologicos_Otros']}"
+                          : "",
+                      maxLines: 25,
+                      style: Styles.textSyleGrowth(fontSize: 8))
                   : Container(),
               //
               listNotes![widget.indexNote]['Tipo_Analisis'] ==
-                  'Análisis de Gravedad' ||
-                  listNotes![widget.indexNote]['Tipo_Analisis'] ==
-                      'Análisis de Ingreso' ||
-                  listNotes![widget.indexNote]['Tipo_Analisis'] ==
-                      'Análisis de Egreso'
+                          'Análisis de Gravedad' ||
+                      listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                          'Análisis de Ingreso' ||
+                      listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                          'Análisis de Egreso'
                   ? CrossLine(thickness: 3)
                   : Container(),
               // MOTIVO DE INGRESO ********************************************
@@ -1385,11 +1410,11 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   style: Styles.textSyleGrowth(fontSize: 8)),
               // SUBJETIVO ********************************************
               listNotes![widget.indexNote]['Tipo_Analisis'] ==
-                  'Análisis de Gravedad' ||
-                  listNotes![widget.indexNote]['Tipo_Analisis'] ==
-                      'Análisis de Ingreso' ||
-                  listNotes![widget.indexNote]['Tipo_Analisis'] ==
-                      'Análisis de Egreso'
+                          'Análisis de Gravedad' ||
+                      listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                          'Análisis de Ingreso' ||
+                      listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                          'Análisis de Egreso'
                   ? CrossLine(thickness: 3)
                   : Container(),
               //
@@ -1414,8 +1439,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                           'Análisis de Ingreso' &&
                       listNotes![widget.indexNote]['Tipo_Analisis'] !=
                           'Análisis de Revisión' &&
-                  listNotes![widget.indexNote]['Tipo_Analisis'] !=
-                      'Análisis de Evolución' &&
+                      listNotes![widget.indexNote]['Tipo_Analisis'] !=
+                          'Análisis de Evolución' &&
                       listNotes![widget.indexNote]['Tipo_Analisis'] !=
                           'Análisis de Egreso'
                   ? CrossLine(thickness: 3)
@@ -1451,13 +1476,13 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   : Container(),
               // ANÁLISIS MÉDICO ********************************************
               Text(
-                      listNotes![widget.indexNote]['Analisis_Medico'],
-                      maxLines: listNotes![widget.indexNote]['Tipo_Analisis'] ==
-                              'Análisis de Egreso'
-                          ? 100
-                          : 100,
-                      style: Styles.textSyleGrowth(fontSize: 9),
-                    ),
+                listNotes![widget.indexNote]['Analisis_Medico'],
+                maxLines: listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                        'Análisis de Egreso'
+                    ? 100
+                    : 100,
+                style: Styles.textSyleGrowth(fontSize: 9),
+              ),
 
               CrossLine(thickness: 1),
               // PRONÓSTICO MÉDICO ********************************************
@@ -1475,6 +1500,21 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               CrossLine(thickness: 3),
               Text(listNotes![widget.indexNote]['Pendientes'],
                   style: Styles.textSyleGrowth(fontSize: 8)),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircleIcon(onChangeValue: () {
+                    Datos.portapapeles(
+                        context: context,
+                        text: Reportes.copiarReporte(
+                            tipoReporte: ReportsMethods.getTypeReport(
+                                actualPage: ReportsMethods.setTypeReport(
+                                    tipoAnalisis: listNotes![widget.indexNote]
+                                        ['Tipo_Analisis']))));
+                  }),
+                ],
+              )
             ],
           ),
         ),

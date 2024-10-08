@@ -1,7 +1,9 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/conexiones/controladores/interprete/iachat.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/analisis.dart';
+import 'package:assistant/screens/pacientes/reportes/info/reportesAuxiliares.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
@@ -11,10 +13,10 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class AnalisisMedico extends StatefulWidget {
   bool? isPrequirurgica;
-
+  int? actualPage;
   double? fontSize = 8.0;
 
-  AnalisisMedico({super.key, this.isPrequirurgica = false});
+  AnalisisMedico({super.key, this.actualPage = 1, this.isPrequirurgica = false});
 
   @override
   State<AnalisisMedico> createState() => _AnalisisMedicoState();
@@ -193,6 +195,14 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
+                      CircleIcon(
+                          iconed: Icons.roller_shades_closed_outlined,
+                          onChangeValue: () async {
+                            analisisTextController.text =
+                                Reportes.analisisMedico = await IAChat.sendMessage(Reportes.copiarReporte(
+                                tipoReporte: ReportsMethods.getTypeReport(
+                                    actualPage: widget.actualPage!)));
+                      }),
                       CircleIcon(
                         iconed: Icons.add,
                           tittle: "Bibliográfico . . . ",
