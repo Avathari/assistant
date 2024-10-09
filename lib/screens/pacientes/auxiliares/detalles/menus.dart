@@ -1,16 +1,73 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/info/conclusiones.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/ventometr%C3%ADas.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/screens/pacientes/auxiliares/detalles/pacientesListScreen.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/trabajoCardiaco.dart';
+import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/conmutadorParaclinicos.dart';
+import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:flutter/material.dart';
 
 class Menus {
+
+  static Widget accionesConPacientes(BuildContext context) {
+    return PopupMenuButton<int>(
+      tooltip: Sentences.add_usuario,
+      icon: const Icon(Icons.person_add),
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          value: 1,
+          onTap: () => Cambios.toNextPage(context, OperacionesPacientes(
+            operationActivity: Constantes.Register,
+          ),),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: Text("Agregar un Nuevo Paciente . . . ",
+                style: Styles.textSyleGrowth(fontSize: 8)),
+          ),
+        ),
+        PopupMenuItem(
+          value: 2,
+          onTap: () => Cambios.toNextPage(context, PacientesListScreen()),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: Text("Agregar Nuevo Listado de Pacientes . . . ",
+                style: Styles.textSyleGrowth(fontSize: 8)),
+          ),
+        ),
+        // PopupMenuItem(
+        //   value: 3,
+        //   onTap: () => Datos.portapapeles(
+        //       context: context, text: Pacientes.numeroPaciente!),
+        //   child: Padding(
+        //     padding: const EdgeInsets.only(left: 10.0),
+        //     child: Text("Numero del Paciente",
+        //         style: Styles.textSyleGrowth(fontSize: 8)),
+        //   ),
+        // ),
+        // PopupMenuItem(
+        //   value: 4,
+        //   onTap: () => Datos.portapapeles(
+        //       context: context, text: Pacientes.datosIniciales!),
+        //   child: Padding(
+        //     padding: const EdgeInsets.only(left: 10.0),
+        //     child: Text("Datos Iniciales",
+        //         style: Styles.textSyleGrowth(fontSize: 8)),
+        //   ),
+        // ),
+      ],
+      offset: const Offset(0, 100),
+      color: Theming.cuaternaryColor,
+      elevation: 2,
+    );
+  }
+  //
   static Widget popUpIdentificaciones(BuildContext context) {
     return PopupMenuButton<int>(
       tooltip: "Datos Generales",

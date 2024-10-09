@@ -4,6 +4,7 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
+import 'package:assistant/screens/pacientes/auxiliares/detalles/menus.dart';
 import 'package:assistant/screens/pacientes/auxiliares/estadisticas/estadisticas.dart';
 import 'package:assistant/widgets/AppBarText.dart';
 import 'package:assistant/widgets/CrossLine.dart';
@@ -84,15 +85,16 @@ class _GestionPacientesState extends State<GestionPacientes> {
                 reiniciar(); // _pullListRefresh();
               },
             ),
-            IconButton(
-              icon: const Icon(Icons.add_card),
-              tooltip: Sentences.add_usuario,
-              onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => OperacionesPacientes(
-                  operationActivity: Constantes.Register,
-                ),
-              )),
-            ),
+            Menus.accionesConPacientes(context),
+            // IconButton(
+            //   icon: const Icon(Icons.add_card),
+            //   tooltip: Sentences.add_usuario,
+            //   onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+            //     builder: (BuildContext context) => OperacionesPacientes(
+            //       operationActivity: Constantes.Register,
+            //     ),
+            //   )),
+            // ),
           ]),
       body: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         Expanded(

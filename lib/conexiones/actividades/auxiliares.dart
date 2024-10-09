@@ -584,14 +584,14 @@ class Listas {
     return totalScores;
   }
 
-  static String traduceToString(List<String> collection) {
+  static String traduceToString(List collection) {
     String string = "";
     for (var element in collection) {
       // print('element $element');
       if (string == "") {
-        string = "$element\n";
+        string = "     - $element\n";
       } else {
-        string = "$string$element\n";
+        string = "$string     - $element\n";
       }
     }
     return string;

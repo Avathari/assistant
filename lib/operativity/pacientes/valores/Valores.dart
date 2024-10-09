@@ -4207,7 +4207,19 @@ class Items {
     list.addAll(Listas.listOfRange(maxNum: 100));
     return list;
   }
-
+/// Tipo de Sangre del Paciente (Sistema ABO más Factor Rhezus)
+  ///
+  /// opciones:
+  ///     'Desconoce',
+  ///     'O +',
+  ///     'O -',
+  ///     'A +',
+  ///     'A -',
+  ///     'B +',
+  ///     'B -',
+  ///     'AB +',
+  ///     'AB -',
+  ///
   static List<String> Hemotipo = [
     '',
     'Desconoce',
