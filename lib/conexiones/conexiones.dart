@@ -219,6 +219,28 @@ class Actividades {
     return response.body;
   }
 
+  static Future<String> registrarAnidados(String database, String query, List<List> elements,
+      {bool emulated = false}) async {
+    final response = await http.post(
+      Uri.parse("${Env.URL_PREFIX}/registrarAnidados.php"),
+      encoding: Encoding.getByName('utf-8'),
+
+      body: <String, dynamic>{
+        "query": query,
+        "database": database,
+        "host": hostname,
+        "username": username,
+        "password": password,
+        "emulated": emulated.toString(),
+        "elements": jsonEncode(elements),
+      },
+    );
+    Terminal.printAlert(message: ""
+        "RESPONSE STATUS (REGISTER_Anidados) : : ${response.statusCode} :: \n "
+        ":: Body ${response.body.toString()}");
+    return response.body;
+  }
+
   static Future<String> actualizar(
       String database, String query, List elements, int id,
       {bool emulated = false}) async {

@@ -1899,13 +1899,15 @@ class Pacientes {
 
     // Verificar que la longitud sea la esperada (10 dígitos)
     if (numeroStr.length != 10) {
-      return "Número no válido";  // O cualquier otro mensaje que prefieras para manejar errores
+      return "Número no válido"; // O cualquier otro mensaje que prefieras para manejar errores
     }
 
     // Insertar espacios en las posiciones deseadas
-    String numeroFormateado = numeroStr.substring(0, 4) + " " +  // 1116
-        numeroStr.substring(4, 6) + " " +  // 00
-        numeroStr.substring(6);            // 1724
+    String numeroFormateado = numeroStr.substring(0, 4) +
+        " " + // 1116
+        numeroStr.substring(4, 6) +
+        " " + // 00
+        numeroStr.substring(6); // 1724
 
     return numeroFormateado;
   }
@@ -7314,24 +7316,6 @@ class Auxiliares {
     }
   }
 
-  static String queCategoriaPertenece(String laboratorioRealizado) {
-    Terminal.printExpected(message: laboratorioRealizado);
-
-      String? resultado = "";
-
-      Laboratorios.forEach((k, value) {
-        value!.forEach((element){
-          // Si la condición se cumple (es decir, se encuentra el laboratorio en la lista)
-          if (element == laboratorioRealizado) {
-            resultado = k; // Se asigna la clave K cuando se cumple la condición
-          }
-        });
-      });
-
-      return resultado!;
-
-  }
-
   static List<String> Categorias = [
     "Biometría Hemática", // 0 :
     "Química Sanguínea",
@@ -7379,32 +7363,33 @@ class Auxiliares {
       "CH", //"Concentración de Hemoglobina",
       "Ancho de Distribución Eritrocitaria", // 7
       "Plaquetas",
-      "Leucocitos",
-      "Neutrofilos",
-      "Linfocitos",
-      "Monocitos",
-      "Eosinófilos",
-      "Basófilos",
-      // "Leucocitos Totales",
-      // "Neutrofilos Totales",
-      // "Linfocitos Totales",
-      // "Monocitos Totales",
-      // "Eosinófilos Totales",
-      // "Basófilos Totales",
+      // "Leucocitos",
+      // "Neutrofilos",
+      // "Linfocitos",
+      // "Monocitos",
+      // "Eosinófilos",
+      // "Basófilos",
+      "Leucocitos Totales",
+      "Neutrofilos Totales",
+      "Linfocitos Totales",
+      "Monocitos Totales",
+      "Eosinófilos Totales",
+      "Basófilos Totales",
+      //
       "Bandas Totales",
       "Volumen Plaquetar Medio",
       "Ancho de Distribución Plaquetaria", // 17
       "Reticulocitos", // % _
       "Frotis de sangre periférica",
       "Volúmen Plaquetar Medio", "",
-    ],
+    ], // Biometría Hemática
     Categorias[1]: [
       "Glucosa",
       "Urea",
       "Creatinina",
       "Nitrógeno Úrico",
       "Acido Úrico"
-    ],
+    ], // Química Sanguínea
     Categorias[2]: [
       "Sodio",
       "Potasio",
@@ -7412,7 +7397,7 @@ class Auxiliares {
       "Calcio",
       "Fósforo",
       "Magnesio"
-    ],
+    ], // Electrolitos Séricos
     Categorias[3]: [
       "Alaninoaminotrasferasa",
       "Aspartatoaminotransferasa",
@@ -7425,22 +7410,22 @@ class Auxiliares {
       "Albúmina",
       "Proteínas Totales",
       "Globulinas"
-    ],
-    Categorias[4]: ["TSH", "T4-L", "T3-L", "T4", "T3"],
-    Categorias[5]: ["Lipasa", "Amilasa"],
+    ], // Pruebas de Función Hepática
+    Categorias[4]: ["TSH", "T4-L", "T3-L", "T4", "T3", ], // Perfil Tiroideo
+    Categorias[5]: ["Lipasa", "Amilasa", ],
     Categorias[6]: [
       "Colesterol Total",
       "Triglicéridos",
       "c-HDL",
       "c-LDL",
       "c-VLDL"
-    ],
+    ], // Pefil de Lípidos
     Categorias[7]: [
       "Tiempo de Protrombina",
       "TP%",
       "INR",
       "Tiempo Parcial de Tromboplastina"
-    ],
+    ], // Tiempos de Coagulación
     Categorias[8]: [
       "Procalcitonina",
       "Ácido Láctico",
@@ -7453,7 +7438,7 @@ class Auxiliares {
       "Anticuerpo Antipéptido Citrulinado",
       "Fibrinógeno",
       "Dímero D", // 7
-    ],
+    ], // Reactantes de Fase Aguda
     //
     Categorias[9]: [
       "pH",
@@ -8177,6 +8162,7 @@ class Auxiliares {
     // "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Linfocitos' ORDER BY Fecha_Registro DESC limit 1) as Linfocitos_Totales;"
   };
 
+
   static String electrocardiograma() {
     return "Electrocardiograma (${Valores.fechaElectrocardiograma}): "
         "${Valores.ritmoCardiaco} "
@@ -8271,6 +8257,171 @@ class Auxiliares {
     //     "Voltaje de Cornell ${(Pacientes.Electrocardiogramas['vc'] * 0.1).toStringAsFixed(0)} mV, "
     //     "RaVL ${Pacientes.Electrocardiogramas['EC_rAVL']} mV. ";
   }
+
+  /// Estos representan los Estudios de Laboratorio buscados en los registros
+  /// del Modulab.
+  /// No son parte del compendio del Asistente.
+  ///
+  static List<String> paraclinicosInstitucionales = [
+    "Eritrocitos",
+    "Hemoglobina",
+    "Hematocrito",
+    "Ancho de Distribución Eritrocitaria",
+    "Plaquetas",
+    "Leucocitos",
+    "Neutrófilos #",
+    "Linfocitos #",
+    "Monocitos #",
+    "Eosinófilos #",
+    "Basófilos #",
+    "Bandas #",
+    //
+    "Glucosa sérica",
+    "Urea Sérica",
+    "Creatinina sérica",
+    //
+    "Sodio sérico",
+    "Potasio sérico",
+    "Cloro sérico",
+    "Magnesio",
+    "Fosforo sérico",
+    "Calcio sérico",
+    //
+    "Factor reumatoide",
+    "Velocidad de sedimentación globular",
+    "Proteína C Reactiva (P.C.R.)",
+    "Procalcitonina",
+    //
+    "Hemoglobina Glucosilada",
+    "Albúmina",
+    //
+
+    "",
+    "",
+  ];
+  static String queCategoriaPertenece(String laboratorioRealizado) {
+    switch (laboratorioRealizado) {
+      case "Eritrocitos":
+        return Categorias[0];
+      case "Hemoglobina":
+        return Categorias[0];
+      case "Hematocrito":
+        return Categorias[0];
+      case "Ancho de Distribución Eritrocitaria":
+        return Categorias[0];
+      case "Plaquetas":
+        return Categorias[0];
+      case "Leucocitos":
+        return Categorias[0];
+      case "Neutrófilos #":
+        return Categorias[0];
+      case "Linfocitos #":
+        return Categorias[0];
+      case "Monocitos #":
+        return Categorias[0];
+      case "Eosinófilos #":
+        return Categorias[0];
+      case "Basófilos #":
+        return Categorias[0];
+      case "Bandas #":
+        return Categorias[0];
+      case "Glucosa sérica":
+        return Categorias[1];
+      case "Urea Sérica":
+        return Categorias[1];
+      case "Creatinina sérica":
+        return Categorias[1];
+      case "Sodio sérico":
+        return Categorias[2];
+      case "Potasio sérico":
+        return Categorias[2];
+      case "Cloro sérico":
+        return Categorias[2];
+      case "Magnesio":
+        return Categorias[2];
+      case "Fosforo sérico":
+        return Categorias[2];
+      case "Calcio sérico":
+        return Categorias[2];
+    //
+      case "Albúmina":
+        return Categorias[3];
+    //
+      case "Hemoglobina Glucosilada":
+        return Categorias[25];
+    //
+      case "Factor reumatoide":
+        return Categorias[8];
+      case "Velocidad de sedimentación globular":
+        return Categorias[8];
+      case "Proteína C Reactiva (P.C.R.)":
+        return Categorias[8];
+      case "Procalcitonina":
+        return Categorias[8];
+      default:
+        return "Tipo de Estudio No Identificado";
+    }
+  }
+
+  /// Busca el Laboratorio al que pertenece cierto String laboratorioRealizado dentro
+  /// del compendio de Auxiliares.Laboratorios
+  ///
+  static String queLaboratorioPertenece(String laboratorioRealizado) {
+
+    switch (laboratorioRealizado) {
+      case "Eritrocitos":
+        return "Eritrocitos";
+      case "Hemoglobina":
+        return "Hemoglobina";
+      case "Hematocrito":
+        return "Hematocrito";
+      case "Ancho de Distribución Eritrocitaria":
+        return "Ancho de Distribución Eritrocitaria";
+      case "Plaquetas":
+        return "Plaquetas";
+      case "Leucocitos":
+        return "Leucocitos Totales";
+      case "Neutrófilos #":
+        return "Neutrófilos Totales";
+      case "Linfocitos #":
+        return "Linfocitos Totales";
+      case "Monocitos #":
+        return "Monocitos Totales";
+      case "Eosinófilos #":
+        return "Eosinófilos Totales";
+      case "Basófilos #":
+        return "Basófilos Totales";
+      case "Bandas #":
+        return "Bandas Totales";
+      case "Glucosa sérica":
+        return "Glucosa";
+      case "Urea Sérica":
+        return "Urea";
+      case "Creatinina sérica":
+        return "Creatinina";
+      case "Sodio sérico":
+        return "Sodio";
+      case "Potasio sérico":
+        return "Potasio";
+      case "Cloro sérico":
+        return "Cloro";
+      case "Magnesio":
+        return "Magnesio";
+      case "Fosforo sérico":
+        return "Fosforo";
+      case "Calcio sérico":
+        return "Calcio";
+      case "Factor reumatoide":
+        return "Factor Reumatoide";
+      case "Velocidad de sedimentación globular":
+        return "Velocidad de sedimentación globular";
+      case "Proteína C Reactiva (P.C.R.)":
+        return "Proteína C Reactiva";
+      default:
+        return laboratorioRealizado;
+    }
+  }
+
 }
 
 class Pendientes {

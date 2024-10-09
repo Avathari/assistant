@@ -638,6 +638,8 @@ class Listas {
 
     return listado;
   }
+
+
 }
 
 class Alertas {
@@ -1502,6 +1504,48 @@ class Datos {
     } else {
       return false;
     }
+  }
+
+  /// Empleado para la comparación de dos Strings
+  /// Mientras que el s1 es el parámetro para comparar; es decir, el vallor que desea buscarse
+  /// s2 es el parametro con el que se va a comparar; es decir un x de X
+  /// v.g. en for (var s2 in Strings)
+  ///
+  static int calcularDistanciaLevenshtein(String s1, String s2) {
+    int m = s1.length;
+    int n = s2.length;
+
+    // Si alguna cadena está vacía, la distancia es la longitud de la otra cadena.
+    if (m == 0) return n;
+    if (n == 0) return m;
+
+    // Crear una matriz de m+1 x n+1
+    List<List<int>> dp = List.generate(m + 1, (i) => List.filled(n + 1, 0));
+
+    // Inicializar las fronteras de la matriz
+    for (int i = 0; i <= m; i++) {
+      dp[i][0] = i;
+    }
+
+    for (int j = 0; j <= n; j++) {
+      dp[0][j] = j;
+    }
+
+    // Rellenar la matriz de distancias
+    for (int i = 1; i <= m; i++) {
+      for (int j = 1; j <= n; j++) {
+        int costo = s1[i - 1] == s2[j - 1] ? 0 : 1;
+
+        dp[i][j] = [
+          dp[i - 1][j] + 1,      // Eliminación
+          dp[i][j - 1] + 1,      // Inserción
+          dp[i - 1][j - 1] + costo  // Sustitución
+        ].reduce((a, b) => a < b ? a : b);
+      }
+    }
+
+    // La distancia de Levenshtein es el valor en dp[m][n]
+    return dp[m][n];
   }
 }
 

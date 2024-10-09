@@ -69,29 +69,7 @@ class AuxiliarExtractor {
                   .map((match) => match.group(0) ?? 'No encontrado')
                   .toList();
               //
-              for (var value in [
-                "Eritrocitos",
-                "Hemoglobina",
-                "Hematocrito",
-                "Ancho de Distribución Eritrocitaria",
-                "Plaquetas",
-                "Leucocitos",
-                "Neutrófilos #",
-                "Linfocitos #",
-                "Monocitos #",
-                "Eosinófilos #",
-                "Basófilos #",
-                "Bandas #",
-                //
-                "Glucosa",
-                "Urea",
-                "Creatinina",
-                "Sodio",
-                "Potasio",
-                "Cloro",
-                "",
-                "Factor reumatoide",
-              ]) {
+              for (var value in Auxiliares.paraclinicosInstitucionales) {
                 if (partes[0].contains(value)) {
                   // Terminal.printSuccess(message: "${partes.length}");
                   if (partes.length > 2) {
@@ -107,12 +85,15 @@ class AuxiliarExtractor {
                         0,
                         idPaciente,
                         Calendarios.fromTextoLlano(
-                            fechaResultado!.trim().split("N: ")[1].trim()),
-                        Auxiliares.queCategoriaPertenece(
-                            partes[0].split("#")[0].trim()), // Tipo_Estudio
-                        partes[0].split("#")[0].trim(),
+                            fechaResultado!.trim().split("N: ")[1].trim()).toString(),
+                        Auxiliares.queCategoriaPertenece(partes[0].trim()),
+                        // partes[0].split("#")[0].trim()), // Tipo_Estudio
+                        Auxiliares.queLaboratorioPertenece(partes[0].trim()),
+                        // partes[0].split("#")[0].trim()), // Laboratorio
                         partes[1].trim(),
-                        partes[2].trim(),
+                        partes[2]
+                            .trim()
+                            .replaceAll(RegExp(r'[\s.*\s\*\.\!¯]'), ''),
                       ]);
                     }
                   }
@@ -145,13 +126,29 @@ class AuxiliarExtractor {
         optionA: () {
           //
           if (registroPrevio != "NO ENCONTRADO") {
-            for (var valores in valoresLaboratorio!) {
-              Actividades.registrar(
-                Databases.siteground_database_reggabo,
-                Auxiliares.auxiliares['registerQuery'],
-                valores,
-              ).then((onValue) {}).onError((onError, stackTrace) {});
-            }
+            Actividades.registrarAnidados(
+              Databases.siteground_database_reggabo,
+              Auxiliares.auxiliares['registerQuery'],
+              valoresLaboratorio!,
+            )
+                .then((onValue) => Operadores.notifyActivity(
+                    context: context,
+                    tittle: "Respuesta de Consulta a Base de Datos . . . ",
+                    message: onValue.toString()))
+                .onError((onError, stackTrace) => Operadores.alertActivity(
+                      context: context,
+                      tittle: "Error al Consultar Base de Datos . . . ",
+                      message: "$onError : $stackTrace",
+                      onAcept: () => Navigator.of(context).pop(),
+              onClose: () => Navigator.of(context).pop(),
+                    ));
+            // for (var valores in valoresLaboratorio!) {
+            //   Actividades.registrar(
+            //     Databases.siteground_database_reggabo,
+            //     Auxiliares.auxiliares['registerQuery'],
+            //     valoresLaboratorio,
+            //   ).then((onValue) {}).onError((onError, stackTrace) {});
+            // }
           } else {
             Navigator.of(context).pop();
           }
