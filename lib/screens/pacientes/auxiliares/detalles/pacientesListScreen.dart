@@ -106,7 +106,7 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
                           child: EditTextArea(
                               labelEditText: "Agregado . . . ",
                               textController: _agregadoController,
-                              keyBoardType: TextInputType.number,
+                              keyBoardType: TextInputType.text,
                               numOfLines: 1,
                               inputFormat: MaskTextInputFormatter()),
                         ),
@@ -118,7 +118,7 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
                           child: EditTextArea(
                               labelEditText: "Nombre",
                               textController: _nombreInicialController,
-                              keyBoardType: TextInputType.number,
+                              keyBoardType: TextInputType.text,
                               numOfLines: 1,
                               inputFormat: MaskTextInputFormatter()),
                         ),
@@ -126,7 +126,7 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
                           child: EditTextArea(
                               labelEditText: "Nombre Segundo",
                               textController: _nombreSecundarioController,
-                              keyBoardType: TextInputType.number,
+                              keyBoardType: TextInputType.text,
                               numOfLines: 1,
                               inputFormat: MaskTextInputFormatter()),
                         ),
@@ -138,7 +138,7 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
                           child: EditTextArea(
                               labelEditText: "Apellido Paterno",
                               textController: _apellidoPaternoController,
-                              keyBoardType: TextInputType.number,
+                              keyBoardType: TextInputType.text,
                               numOfLines: 1,
                               inputFormat: MaskTextInputFormatter()),
                         ),
@@ -146,7 +146,7 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
                           child: EditTextArea(
                               labelEditText: "Apellido Materno",
                               textController: _apellidoMaternoController,
-                              keyBoardType: TextInputType.number,
+                              keyBoardType: TextInputType.text,
                               numOfLines: 1,
                               inputFormat: MaskTextInputFormatter()),
                         ),
@@ -452,7 +452,7 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
                                 child: EditTextArea(
                                     labelEditText: "Agregado . . . ",
                                     textController: _agregadoController,
-                                    keyBoardType: TextInputType.number,
+                                    keyBoardType: TextInputType.text,
                                     numOfLines: 1,
                                     inputFormat: MaskTextInputFormatter()),
                               ),
@@ -464,7 +464,7 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
                                 child: EditTextArea(
                                     labelEditText: "Nombre",
                                     textController: _nombreInicialController,
-                                    keyBoardType: TextInputType.number,
+                                    keyBoardType: TextInputType.text,
                                     numOfLines: 1,
                                     inputFormat: MaskTextInputFormatter()),
                               ),
@@ -472,7 +472,7 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
                                 child: EditTextArea(
                                     labelEditText: "Nombre Segundo",
                                     textController: _nombreSecundarioController,
-                                    keyBoardType: TextInputType.number,
+                                    keyBoardType: TextInputType.text,
                                     numOfLines: 1,
                                     inputFormat: MaskTextInputFormatter()),
                               ),
@@ -484,7 +484,7 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
                                 child: EditTextArea(
                                     labelEditText: "Apellido Paterno",
                                     textController: _apellidoPaternoController,
-                                    keyBoardType: TextInputType.number,
+                                    keyBoardType: TextInputType.text,
                                     numOfLines: 1,
                                     inputFormat: MaskTextInputFormatter()),
                               ),
@@ -492,7 +492,7 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
                                 child: EditTextArea(
                                     labelEditText: "Apellido Materno",
                                     textController: _apellidoMaternoController,
-                                    keyBoardType: TextInputType.number,
+                                    keyBoardType: TextInputType.text,
                                     numOfLines: 1,
                                     inputFormat: MaskTextInputFormatter()),
                               ),

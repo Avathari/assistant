@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/conexiones/controladores/interprete/iachat.dart';
@@ -6,6 +9,7 @@ import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/analisi
 import 'package:assistant/screens/pacientes/reportes/info/reportesAuxiliares.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
+import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:flutter/material.dart';
@@ -16,13 +20,18 @@ class AnalisisMedico extends StatefulWidget {
   int? actualPage;
   double? fontSize = 8.0;
 
-  AnalisisMedico({super.key, this.actualPage = 1, this.isPrequirurgica = false});
+  String analisisTemporalFile = "${Pacientes.localReportsPath}/analisis.txt";
+
+  AnalisisMedico(
+      {super.key, this.actualPage = 1, this.isPrequirurgica = false});
 
   @override
   State<AnalisisMedico> createState() => _AnalisisMedicoState();
 }
 
 class _AnalisisMedicoState extends State<AnalisisMedico> {
+  Timer? _timer; // Definir un temporizador
+
   var eventualidadesTextController = TextEditingController();
   var terapiasTextController = TextEditingController();
   var analisisTextController = TextEditingController();
@@ -72,6 +81,14 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
       }
     }
 
+    // Añadir un Listener a analisisTextController
+    // analisisTextController
+    //     .addListener(() => _saveToFile(analisisTextController.text));
+    // Configurar un Timer que llame a _saveToFile cada 10 segundos
+    _timer = Timer.periodic(Duration(seconds: 7), (timer) {
+      _saveToFile(analisisTextController.text);
+      print('Texto guardado automáticamente cada 10 segundos');
+    });
     super.initState();
   }
 
@@ -143,7 +160,8 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                         EditTextArea(
                             textController: analisisTextController,
                             limitOfChars: 5000,
-                            fontSize: widget.fontSize!, // isTablet(context) ? 9 : 9,
+                            fontSize:
+                                widget.fontSize!, // isTablet(context) ? 9 : 9,
                             labelEditText: "Análisis médico",
                             keyBoardType: TextInputType.multiline,
                             numOfLines: isLargeDesktop(context)
@@ -154,13 +172,13 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                                         ? 15
                                         : 22,
                             onChange: ((value) {
-                                setState(() {
-                                  Reportes.analisisMedico = "$value.";
-                                  Reportes.reportes['Analisis_Medico'] =
-                                  "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                                  Reportes.reportes['Analisis_Terapia'] =
-                                  "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                                });
+                              setState(() {
+                                Reportes.analisisMedico = "$value.";
+                                Reportes.reportes['Analisis_Medico'] =
+                                    "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                                Reportes.reportes['Analisis_Terapia'] =
+                                    "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                              });
                             }),
                             inputFormat: MaskTextInputFormatter()),
 
@@ -185,75 +203,118 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                     child: RotatedBox(
                       quarterTurns: 1,
                       child: Slider(
-                        label: widget.fontSize!.toString(),
-                        min: 2,
-                        max: 20,
-                        value: widget.fontSize!, onChanged: (double value) => setState(() => widget.fontSize = value)),
+                          label: widget.fontSize!.toString(),
+                          min: 2,
+                          max: 20,
+                          value: widget.fontSize!,
+                          onChanged: (double value) =>
+                              setState(() => widget.fontSize = value)),
                     ),
                   ),
-                  Expanded(flex: 2,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      CircleIcon(
-                          iconed: Icons.roller_shades_closed_outlined,
-                          onChangeValue: () async {
-                            analisisTextController.text =
-                                Reportes.analisisMedico = await IAChat.sendMessage(Reportes.copiarReporte(
-                                tipoReporte: ReportsMethods.getTypeReport(
-                                    actualPage: widget.actualPage!)));
-                      }),
-                      CircleIcon(
-                        iconed: Icons.add,
-                          tittle: "Bibliográfico . . . ",
-                          onChangeValue: () {
-                            Operadores.openDialog(
-                                context: context,
-                                chyldrim: const Bibliografico(),
-                                onAction: () {
-                                  setState(() {
-                                    analisisTextController.text =
-                                        Reportes.analisisMedico;
-                                  });
-                                });
-                          }),
-                      GrandIcon(
-                          labelButton: "Bibliográfico . . . ",
-                          onPress: () {
-                            Operadores.openDialog(
-                                context: context,
-                                chyldrim: const Bibliografico(),
-                                onAction: () {
-                                  setState(() {
-                                    analisisTextController.text =
-                                        Reportes.analisisMedico;
-                                  });
-                                });
-                          }),
-                      CircleIcon(
-                          iconed: Icons.add,
-                          tittle: "Comentarios Previos . . . ",
-                          onChangeValue: () {
-                            Operadores.selectOptionsActivity(context: context,
-                                options: Items.comentariosPrevios.map((e) =>
-                                e['Diagnostico']).toList(),
-                                onClose: (valar) {
-                                  Terminal.printWarning(message: valar);
+                  Expanded(
+                      flex: 2,
+                      child: Wrap(
+                        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          CircleIcon(
+                              iconed: Icons.roller_shades_closed_outlined,
+                              onChangeValue: () async {
+                                analisisTextController.text = Reportes
+                                        .analisisMedico =
+                                    await IAChat.sendMessage(
+                                        Reportes.copiarReporte(
+                                            tipoReporte:
+                                                ReportsMethods.getTypeReport(
+                                                    actualPage:
+                                                        widget.actualPage!)));
+                              }),
+                          CircleIcon(
+                              iconed: Icons.add,
+                              tittle: "Bibliográfico . . . ",
+                              onChangeValue: () {
+                                Operadores.openDialog(
+                                    context: context,
+                                    chyldrim: const Bibliografico(),
+                                    onAction: () {
+                                      setState(() {
+                                        analisisTextController.text =
+                                            Reportes.analisisMedico;
+                                      });
+                                    });
+                              }),
+                          GrandIcon(
+                              labelButton: "Bibliográfico . . . ",
+                              onPress: () {
+                                Operadores.openDialog(
+                                    context: context,
+                                    chyldrim: const Bibliografico(),
+                                    onAction: () {
+                                      setState(() {
+                                        analisisTextController.text =
+                                            Reportes.analisisMedico;
+                                      });
+                                    });
+                              }),
+                          CircleIcon(
+                              iconed: Icons.add,
+                              tittle: "Comentarios Previos . . . ",
+                              onChangeValue: () {
+                                Operadores.selectOptionsActivity(
+                                    context: context,
+                                    options: Items.comentariosPrevios
+                                        .map((e) => e['Diagnostico'])
+                                        .toList(),
+                                    onClose: (valar) {
+                                      Terminal.printWarning(message: valar);
 
-                                  for (var e in Items.comentariosPrevios) {
-                                    //
-                                    if (e['Diagnostico'] == valar) {
-                                      analisisTextController.text = "${analisisTextController.text}\n${e['Comentario']!}";
-                                    }
-                                  }
-                                  Navigator.of(context).pop();
-                                });
-                          }),
-                    ],
-                  ))
+                                      for (var e in Items.comentariosPrevios) {
+                                        //
+                                        if (e['Diagnostico'] == valar) {
+                                          analisisTextController.text =
+                                              "${analisisTextController.text}\n${e['Comentario']!}";
+                                        }
+                                      }
+                                      Navigator.of(context).pop();
+                                    });
+                              }),
+                          CrossLine(),
+                          CircleIcon(
+                            iconed: Icons.add,
+                            tittle: "Comentarios Previos . . . ",
+                            onChangeValue: () {
+
+                                  _readFromFile().then((onValue) {
+                                    analisisTextController.text = onValue;
+                                  });
+                              }
+                          ),
+                        ],
+                      ))
                 ],
               ))
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel(); // Cancelar el temporizador al cerrar la pantalla
+    analisisTextController.dispose();
+    super.dispose();
+  }
+
+  // FUNCIONES ******************************
+  // Función para guardar el texto en un archivo
+  Future<void> _saveToFile(String text) async {
+    // final path = await _getFilePath();
+    if (text.isNotEmpty) {
+      final file = File(widget.analisisTemporalFile);
+      await file.writeAsString(text);
+    }
+  }
+
+  // Función opcional para leer el contenido del archivo (si quieres cargarlo después)
+  Future<String> _readFromFile() async {
+        return await File(widget.analisisTemporalFile).readAsString();
   }
 }

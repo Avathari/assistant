@@ -1151,25 +1151,25 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           ),
           // title: AppBarText(Sentences.app_bar_reportes),
           actions: <Widget>[
-            // if (!isLargeDesktop(context))
-            // GrandIcon(
-            //     labelButton: 'Copiar Esquema del Reporte',
-            //     iconData: Icons.remove_red_eye_outlined,
-            //     iconColor: Colors.white,
-            //     onPress: () {
-            //       setState(() {
-            //         widget.analysis = 3;
-            //       });
-            //       _key.currentState!.openEndDrawer();
-            //     }),
-            // const SizedBox(width: 15),
+            if (!isMobile(context))
+            GrandIcon(
+                labelButton: 'Esquema de Análisis . . . ',
+                iconData: Icons.remove_red_eye_outlined,
+                iconColor: Colors.white,
+                onPress: () {
+                  setState(() {
+                    widget.analysis = 0;
+                  });
+                  _key.currentState!.openEndDrawer();
+                }),
+            const SizedBox(width: 15),
             GrandIcon(
                 labelButton: 'Copiar Esquema del Reporte',
                 iconData: Icons.menu_open_sharp,
                 iconColor: Colors.white,
                 onPress: () {
                   setState(() {
-                    widget.analysis = 0;
+                    widget.analysis = 3;
                   });
                   _key.currentState!.openEndDrawer();
                 }),
