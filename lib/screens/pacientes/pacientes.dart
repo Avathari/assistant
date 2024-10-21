@@ -1036,7 +1036,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: isMobile(context) ||
-              isDesktop(context) ||
+          // isMobileAndTablet(context)  ||
+              // isDesktop(context) ||
               isLargeDesktop(context) ||
               isTablet(
                   context) // widget.operationActivity == Constantes.Register

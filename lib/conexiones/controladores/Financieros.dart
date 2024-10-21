@@ -139,7 +139,7 @@ class Activos {
             Activos.activos['consultIdQuery'], Financieros.ID_Financieros)
         .then((value) {
       // **************************************************************************
-      Activos.fromJsonItem(Financieros.Activos);
+      // Activos.fromJsonItem(Financieros.Activos);
       // **************************************************************************
       Financieros.Activos = value;
       // **************************************************************************
@@ -174,6 +174,13 @@ class Activos {
       // Enfermedades de base del paciente, asi como las Hospitalarias.
       Financieros.Activos = value;
     });
+
+
+  }
+
+  static Future<Map<String, dynamic>> getEstadisticasFinancieras() async {
+    return await Actividades.detalles(Databases.siteground_database_regfine,
+        getEstadisticasQuery(Activos.ID_Usuarios));
   }
 
   static final Map<String, dynamic> activos = {
@@ -236,7 +243,8 @@ class Activos {
         "Descripcion = ?, Fine_IMG = from_base64(?) "
         "WHERE ID_Registro = ?",
     "deleteQuery": "DELETE FROM activos WHERE ID_Registro = ?",
-    "activosStadistics": "SELECT "
+    "activosStadistics":
+    "SELECT "
         "(SELECT IFNULL(COUNT(`Tipo_Recurso`), '0') FROM activos WHERE `ID_Usuario` = 1) as Total_Registrados, "
         "(SELECT IFNULL(COUNT(`Tipo_Recurso`), '0') FROM activos WHERE `ID_Usuario` = 1 AND Tipo_Recurso = 'Ingresos') as Ingresos_Registrados, "
         "(SELECT IFNULL(COUNT(`Tipo_Recurso`), '0') FROM activos WHERE `ID_Usuario` = 1 AND Tipo_Recurso = 'Egresos') as Egresos_Registrados, "
@@ -356,6 +364,127 @@ class Activos {
     // "(SELECT (Cuenta_Mensual_Seis - Egreso_Mensual_Cuenta_Seis)) AS Cuenta_Mensual_Balance_Seis;"
   };
 
+  static String getEstadisticasQuery(int ID_Usuario) {
+    return "SELECT "
+        "(SELECT IFNULL(COUNT(`Tipo_Recurso`), '0') FROM activos WHERE `ID_Usuario` = 1) as Total_Registrados, "
+        "(SELECT IFNULL(COUNT(`Tipo_Recurso`), '0') FROM activos WHERE `ID_Usuario` = 1 AND Tipo_Recurso = 'Ingresos') as Ingresos_Registrados, "
+        "(SELECT IFNULL(COUNT(`Tipo_Recurso`), '0') FROM activos WHERE `ID_Usuario` = 1 AND Tipo_Recurso = 'Egresos') as Egresos_Registrados, "
+        "(SELECT IFNULL(COUNT(`Tipo_Recurso`), '0') FROM activos WHERE `ID_Usuario` = 1 AND Tipo_Recurso = 'Activos') as Activos_Registrados, "
+        "(SELECT IFNULL(COUNT(`Tipo_Recurso`), '0') FROM activos WHERE `ID_Usuario` = 1 AND Tipo_Recurso = 'Pasivos') as Pasivos_Registrados, "
+        "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND Tipo_Recurso = 'Ingresos') as Ingreso_Global, "
+        "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND Tipo_Recurso = 'Egresos') as Egreso_Global, "
+        "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND Tipo_Recurso = 'Activos') as Activos_Global, "
+        "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND Tipo_Recurso = 'Pasivos') as Pasivos_Global, "
+        "(SELECT Ingreso_Global - Egreso_Global) as Balance_Parcial, " // Ingresos menos Egresos
+        "(SELECT (Ingreso_Global + Activos_Global) - (Egreso_Global + Pasivos_Global)) as Patrimonio, " // Patrimonio
+        "(SELECT (Ingreso_Global + Activos_Global + Egreso_Global + Pasivos_Global)) as Total_Global, " // Sumatoria Global
+        "(SELECT (Ingreso_Global) - (Egreso_Global + Pasivos_Global)) as Balance_Global, " // Patrimonio sin Activos
+    // ******************************  * **** *** ** * **
+        "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 "
+        "AND Tipo_Recurso = 'Ingresos' "
+        "AND YEAR(`Fecha_Pago_Programado`) = YEAR(CURRENT_DATE)) as Ingreso_Anual, "
+        "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 "
+        "AND Tipo_Recurso = 'Egresos' "
+        "AND YEAR(`Fecha_Pago_Programado`) = YEAR(CURRENT_DATE)) as Egreso_Anual, "
+        "(SELECT Ingreso_Anual + Egreso_Anual) as Total_Anual, "
+        "(SELECT Ingreso_Anual - Egreso_Anual) as Balance_Anual, "
+    // ******************************  * **** *** ** * **
+        "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 "
+        "AND Tipo_Recurso = 'Ingresos' "
+        "AND YEAR(`Fecha_Pago_Programado`) = YEAR(DATE_SUB(CURRENT_DATE, INTERVAL 1 YEAR))) as Ingreso_Anual_Previo, "
+        "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 "
+        "AND Tipo_Recurso = 'Egresos' "
+        "AND YEAR(`Fecha_Pago_Programado`) = YEAR(DATE_SUB(CURRENT_DATE, INTERVAL 1 YEAR))) as Egreso_Anual_Previo, "
+        "(SELECT (Ingreso_Anual_Previo + Egreso_Anual_Previo)) as Total_Previo_Año, "
+        "(SELECT Balance_Global - (Ingreso_Anual_Previo - Egreso_Anual_Previo)) as Balance_Previo_Año, "
+        "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 "
+        "AND MONTH(`Fecha_Pago_Programado`) = MONTH(DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH)) "
+        "AND YEAR(`Fecha_Pago_Programado`) = YEAR(DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH))) as Ingreso_Mes_Previo, "
+        "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 "
+        "AND MONTH(`Fecha_Pago_Programado`) = MONTH(DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH)) "
+        "AND YEAR(`Fecha_Pago_Programado`) = YEAR(DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH))) as Egreso_Mes_Previo, "
+        "(SELECT (Ingreso_Mes_Previo - Egreso_Mes_Previo)) AS Total_Previo_Mes, "
+        "(SELECT Balance_Global - (Ingreso_Mes_Previo - Egreso_Mes_Previo)) AS Balance_Previo_Mes, "
+        "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 "
+        "AND Tipo_Recurso = 'Ingresos' "
+        "AND (MONTH(`Fecha_Pago_Programado`) = MONTH(CURRENT_DATE)) "
+        "AND YEAR(`Fecha_Pago_Programado`) = year(CURRENT_DATE)) as Ingreso_Mensual, "
+        "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 "
+        "AND Tipo_Recurso = 'Egresos' "
+        "AND (MONTH(`Fecha_Pago_Programado`) = MONTH(CURRENT_DATE)) "
+        "AND YEAR(`Fecha_Pago_Programado`) = year(CURRENT_DATE)) as Egreso_Mensual, "
+        "(SELECT Ingreso_Mensual + Egreso_Mensual) AS Total_Mensual, "
+        "(SELECT Ingreso_Mensual - Egreso_Mensual) AS Balance_Mensual, "
+        "(SELECT Balance_Global - (Balance_Mensual)) AS Balance_Actual; ";
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `Fine_Cue_` = 'Cuenta No. 1: Libertad Financiera' AND `Fecha_Pago_Programado` <= CURDATE() AND `ID_Usuario` = 1) AS Egreso_Global_Cuenta_Uno, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `Fine_Cue_` = 'Cuenta No. 2: Ahorro a Largo Plazo' AND `Fecha_Pago_Programado` <= CURDATE() AND `ID_Usuario` = 1) AS Egreso_Global_Cuenta_Dos, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `Fine_Cue_` = 'Cuenta No. 3: Desarrollo Personal' AND `Fecha_Pago_Programado` <= CURDATE() AND `ID_Usuario` = 1) AS Egreso_Global_Cuenta_Tres, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `Fine_Cue_` = 'Cuenta No. 4: Necesidades Básicas' AND `Fecha_Pago_Programado` <= CURDATE() AND `ID_Usuario` = 1) AS Egreso_Global_Cuenta_Cuatro, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `Fine_Cue_` = 'Cuenta No. 5: Ocio' AND `Fecha_Pago_Programado` <= CURDATE() AND `ID_Usuario` = 1) AS Egreso_Global_Cuenta_Cinco, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `Fine_Cue_` = 'Cuenta No. 6: Donativos' AND `Fecha_Pago_Programado` <= CURDATE() AND `ID_Usuario` = 1) AS Egreso_Global_Cuenta_Seis, "
+    // "(SELECT (Ingreso_Global / 100) * 10) AS Cuenta_Global_Uno, "
+    // "(SELECT (Ingreso_Global / 100) * 10) AS Cuenta_Global_Dos, "
+    // "(SELECT (Ingreso_Global / 100) * 10) AS Cuenta_Global_Tres, "
+    // "(SELECT (Ingreso_Global / 100) * 55) AS Cuenta_Global_Cuatro, "
+    // "(SELECT (Ingreso_Global / 100) * 10) AS Cuenta_Global_Cinco, "
+    // "(SELECT (Ingreso_Global / 100) * 5) AS Cuenta_Global_Seis, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND `Fine_Cue_` = 'Cuenta No. 1: Libertad Financiera' AND YEAR(`Fecha_Pago_Programado`) = YEAR(DATE_SUB(CURRENT_DATE, INTERVAL 1 YEAR))) AS Egreso_Anual_Previo_Cuenta_Uno, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND `Fine_Cue_` = 'Cuenta No. 2: Ahorro a Largo Plazo' AND YEAR(`Fecha_Pago_Programado`) = YEAR(DATE_SUB(CURRENT_DATE, INTERVAL 1 YEAR))) AS Egreso_Anual_Previo_Cuenta_Dos, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND `Fine_Cue_` = 'Cuenta No. 3: Desarrollo Personal' AND YEAR(`Fecha_Pago_Programado`) = YEAR(DATE_SUB(CURRENT_DATE, INTERVAL 1 YEAR))) AS Egreso_Anual_Previo_Cuenta_Tres, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND `Fine_Cue_` = 'Cuenta No. 4: Necesidades Básicas' AND YEAR(`Fecha_Pago_Programado`) = YEAR(DATE_SUB(CURRENT_DATE, INTERVAL 1 YEAR))) AS Egreso_Anual_Previo_Cuenta_Cuatro, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND `Fine_Cue_` = 'Cuenta No. 5: Ocio' AND YEAR(`Fecha_Pago_Programado`) = YEAR(DATE_SUB(CURRENT_DATE, INTERVAL 1 YEAR))) AS Egreso_Anual_Previo_Cuenta_Cinco, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND `Fine_Cue_` = 'Cuenta No. 6: Donativos' AND YEAR(`Fecha_Pago_Programado`) = YEAR(DATE_SUB(CURRENT_DATE, INTERVAL 1 YEAR))) AS Egreso_Anual_Previo_Cuenta_Seis, "
+    // "(SELECT (Ingreso_Anual_Previo / 100) * 10) AS Cuenta_Anual_Previo_Uno, "
+    // "(SELECT (Ingreso_Anual_Previo / 100) * 10) AS Cuenta_Anual_Previo_Dos, "
+    // "(SELECT (Ingreso_Anual_Previo / 100) * 10) AS Cuenta_Anual_Previo_Tres, "
+    // "(SELECT (Ingreso_Anual_Previo / 100) * 55) AS Cuenta_Anual_Previo_Cuatro, "
+    // "(SELECT (Ingreso_Anual_Previo / 100) * 10) AS Cuenta_Anual_Previo_Cinco, "
+    // "(SELECT (Ingreso_Anual_Previo / 100) * 5) AS Cuenta_Anual_Previo_Seis, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND `Fine_Cue_` = 'Cuenta No. 1: Libertad Financiera' AND YEAR(`Fecha_Pago_Programado`) = YEAR(CURRENT_DATE)) AS Egreso_Anual_Cuenta_Uno, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND `Fine_Cue_` = 'Cuenta No. 2: Ahorro a Largo Plazo' AND YEAR(`Fecha_Pago_Programado`) = YEAR(CURRENT_DATE)) AS Egreso_Anual_Cuenta_Dos, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND `Fine_Cue_` = 'Cuenta No. 3: Desarrollo Personal' AND YEAR(`Fecha_Pago_Programado`) = YEAR(CURRENT_DATE)) AS Egreso_Anual_Cuenta_Tres, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND `Fine_Cue_` = 'Cuenta No. 4: Necesidades Básicas' AND YEAR(`Fecha_Pago_Programado`) = YEAR(CURRENT_DATE)) AS Egreso_Anual_Cuenta_Cuatro, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND `Fine_Cue_` = 'Cuenta No. 5: Ocio' AND YEAR(`Fecha_Pago_Programado`) = YEAR(CURRENT_DATE)) AS Egreso_Anual_Cuenta_Cinco, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND `Fine_Cue_` = 'Cuenta No. 6: Donativos' AND YEAR(`Fecha_Pago_Programado`) = YEAR(CURRENT_DATE)) AS Egreso_Anual_Cuenta_Seis, "
+    // "(SELECT (Ingreso_Anual / 100) * 10) AS Cuenta_Anual_Uno, "
+    // "(SELECT (Ingreso_Anual / 100) * 10) AS Cuenta_Anual_Dos, "
+    // "(SELECT (Ingreso_Anual / 100) * 10) AS Cuenta_Anual_Tres, "
+    // "(SELECT (Ingreso_Anual / 100) * 55) AS Cuenta_Anual_Cuatro, "
+    // "(SELECT (Ingreso_Anual / 100) * 10) AS Cuenta_Anual_Cinco, "
+    // "(SELECT (Ingreso_Anual / 100) * 5) AS Cuenta_Anual_Seis, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND `Fine_Cue_` = 'Cuenta No. 1: Libertad Financiera' AND MONTH(`Fecha_Pago_Programado`) = MONTH(DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH)) AND YEAR(`Fecha_Pago_Programado`) = YEAR(DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH))) AS Egreso_Mensual_Previo_Cuenta_Uno, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND `Fine_Cue_` = 'Cuenta No. 2: Ahorro a Largo Plazo' AND MONTH(`Fecha_Pago_Programado`) = MONTH(DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH)) AND YEAR(`Fecha_Pago_Programado`) = YEAR(DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH))) AS Egreso_Mensual_Previo_Cuenta_Dos, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND `Fine_Cue_` = 'Cuenta No. 3: Desarrollo Personal' AND MONTH(`Fecha_Pago_Programado`) = MONTH(DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH)) AND YEAR(`Fecha_Pago_Programado`) = YEAR(DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH))) AS Egreso_Mensual_Previo_Cuenta_Tres, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND `Fine_Cue_` = 'Cuenta No. 4: Necesidades Básicas' AND MONTH(`Fecha_Pago_Programado`) = MONTH(DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH)) AND YEAR(`Fecha_Pago_Programado`) = YEAR(DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH))) AS Egreso_Mensual_Previo_Cuenta_Cuatro, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND `Fine_Cue_` = 'Cuenta No. 5: Ocio' AND MONTH(`Fecha_Pago_Programado`) = MONTH(DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH)) AND YEAR(`Fecha_Pago_Programado`) = YEAR(DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH))) AS Egreso_Mensual_Previo_Cuenta_Cinco, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND `Fine_Cue_` = 'Cuenta No. 6: Donativos' AND MONTH(`Fecha_Pago_Programado`) = MONTH(DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH)) AND YEAR(`Fecha_Pago_Programado`) = YEAR(DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH))) AS Egreso_Mensual_Previo_Cuenta_Seis, "
+    // "(SELECT (Ingreso_Mes_Previo / 100) * 10) AS Cuenta_Mensual_Previo_Uno, "
+    // "(SELECT (Ingreso_Mes_Previo / 100) * 10) AS Cuenta_Mensual_Previo_Dos, "
+    // "(SELECT (Ingreso_Mes_Previo / 100) * 10) AS Cuenta_Mensual_Previo_Tres, "
+    // "(SELECT (Ingreso_Mes_Previo / 100) * 55) AS Cuenta_Mensual_Previo_Cuatro, "
+    // "(SELECT (Ingreso_Mes_Previo / 100) * 10) AS Cuenta_Mensual_Previo_Cinco, "
+    // "(SELECT (Ingreso_Mes_Previo / 100) * 5) AS Cuenta_Mensual_Previo_Seis, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND `Fine_Cue_` = 'Cuenta No. 1: Libertad Financiera' AND (MONTH(`Fecha_Pago_Programado`) = CURRENT_DATE) AND YEAR(`Fecha_Pago_Programado`) = CURRENT_DATE) as Egreso_Mensual_Cuenta_Uno, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND `Fine_Cue_` = 'Cuenta No. 2: Ahorro a Largo Plazo' AND (MONTH(`Fecha_Pago_Programado`) = CURRENT_DATE) AND YEAR(`Fecha_Pago_Programado`) = CURRENT_DATE) as Egreso_Mensual_Cuenta_Dos, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND `Fine_Cue_` = 'Cuenta No. 3: Desarrollo Personal' AND (MONTH(`Fecha_Pago_Programado`) = CURRENT_DATE) AND YEAR(`Fecha_Pago_Programado`) = CURRENT_DATE) as Egreso_Mensual_Cuenta_Tres, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND `Fine_Cue_` = 'Cuenta No. 4: Necesidades Básicas' AND (MONTH(`Fecha_Pago_Programado`) = CURRENT_DATE) AND YEAR(`Fecha_Pago_Programado`) = CURRENT_DATE) as Egreso_Mensual_Cuenta_Cuatro, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND `Fine_Cue_` = 'Cuenta No. 5: Ocio' AND (MONTH(`Fecha_Pago_Programado`) = CURRENT_DATE) AND YEAR(`Fecha_Pago_Programado`) = CURRENT_DATE) as Egreso_Mensual_Cuenta_Cinco, "
+    // "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 AND `Fine_Cue_` = 'Cuenta No. 6: Donativos' AND (MONTH(`Fecha_Pago_Programado`) = CURRENT_DATE) AND YEAR(`Fecha_Pago_Programado`) = CURRENT_DATE) as Egreso_Mensual_Cuenta_Seis, "
+    // "(SELECT (Ingreso_Mensual / 100) * 10) AS Cuenta_Mensual_Uno, "
+    // "(SELECT (Ingreso_Mensual / 100) * 10) AS Cuenta_Mensual_Dos, "
+    // "(SELECT (Ingreso_Mensual / 100) * 10) AS Cuenta_Mensual_Tres, "
+    // "(SELECT (Ingreso_Mensual / 100) * 55) AS Cuenta_Mensual_Cuatro, "
+    // "(SELECT (Ingreso_Mensual / 100) * 10) AS Cuenta_Mensual_Cinco, "
+    // "(SELECT (Ingreso_Mensual / 100) * 5) AS Cuenta_Mensual_Seis, "
+    // "(SELECT (Ingreso_Mensual / 100) * 10) AS Cuenta_Mensual_Uno, "
+    // "(SELECT (Cuenta_Mensual_Uno - Egreso_Mensual_Cuenta_Uno)) AS Cuenta_Mensual_Balance_Uno, "
+    // "(SELECT (Cuenta_Mensual_Dos - Egreso_Mensual_Cuenta_Dos)) AS Cuenta_Mensual_Balance_Dos, "
+    // "(SELECT (Cuenta_Mensual_Tres - Egreso_Mensual_Cuenta_Tres)) AS Cuenta_Mensual_Balance_Tres,"
+    // "(SELECT (Cuenta_Mensual_Cuatro - Egreso_Mensual_Cuenta_Cuatro)) AS Cuenta_Mensual_Balance_Cuatro,"
+    // "(SELECT (Cuenta_Mensual_Cinco - Egreso_Mensual_Cuenta_Cinco)) AS Cuenta_Mensual_Balance_Cinco,"
+    // "(SELECT (Cuenta_Mensual_Seis - Egreso_Mensual_Cuenta_Seis)) AS Cuenta_Mensual_Balance_Seis;"
+  }
+
   static void fromJsonItem(List activos) {
     Financieros.ingresosTotales = 0;
     Financieros.egresosTotales = 0;
@@ -457,26 +586,26 @@ class Activos {
     }
 
     // MUESTRA
-    Terminal.printWarning(
-        message: " . . . "
-            " ### #### ###### ## # . . . . BALANCE REGISTRADO ### #### ###### ## # . . . ."
-            "\n ACTIVOS TOTALES : ${activos.length} : . . . "
-            "\n . . . : Ingresos : : ${Financieros.ingresosTotales} : : ${Financieros.Ingresos.length}"
-            "\n . . . : Egresos : : ${Financieros.egresosTotales} : : ${Financieros.Egresos.length}"
-            "\n . . . : Activos : : ${Financieros.activosTotales} : : ${Financieros.Activos.length}"
-            "\n . . . : Pasivos : : ${Financieros.pasivosTotales} : : ${Financieros.Pasivos.length}"
-            "\n . . . : Patrimonio : : ${Financieros.patriminiosTotales} : : ${Financieros.Patrimonio.length}"
-            "\n : : BALANCE GLOBAL . : : ${Financieros.ingresosTotales! - Financieros.egresosTotales!}"
-            "\n : : BALANCE GENERAL . : : ${(Financieros.ingresosTotales! + Financieros.activosTotales!) - (Financieros.egresosTotales! + Financieros.pasivosTotales!)}"
-            "\n : : PATRIMONIAL . : : ${Financieros.ingresosTotales! - (Financieros.egresosTotales! + Financieros.pasivosTotales!)}"
-            "\n"
-            "\n  INGRESOS : : . . . "
-            "\n . . . : Ingresos del Mes . : ${Financieros.ingresosMes} . "
-            "\n . . . : Ingresos del Mes previo . : ${Financieros.ingresosMesPrevio} . "
-            "\n . . . : Ingresos del Mes Anteprevio . : ${Financieros.ingresoMesAnteprevio} . "
-            "\n . . . : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  . . . "
-            "\n . . . : Ingresos del Año . : ${Financieros.ingresosAno} . "
-            "\n . . . : Ingresos del Año previo . : ${Financieros.ingresosAnoPrevio} . "
-            "");
+    // Terminal.printWarning(
+    //     message: " . . . "
+    //         " ### #### ###### ## # . . . . BALANCE REGISTRADO ### #### ###### ## # . . . ."
+    //         "\n ACTIVOS TOTALES : ${activos.length} : . . . "
+    //         "\n . . . : Ingresos : : ${Financieros.ingresosTotales} : : ${Financieros.Ingresos.length}"
+    //         "\n . . . : Egresos : : ${Financieros.egresosTotales} : : ${Financieros.Egresos.length}"
+    //         "\n . . . : Activos : : ${Financieros.activosTotales} : : ${Financieros.Activos.length}"
+    //         "\n . . . : Pasivos : : ${Financieros.pasivosTotales} : : ${Financieros.Pasivos.length}"
+    //         "\n . . . : Patrimonio : : ${Financieros.patriminiosTotales} : : ${Financieros.Patrimonio.length}"
+    //         "\n : : BALANCE GLOBAL . : : ${Financieros.ingresosTotales! - Financieros.egresosTotales!}"
+    //         "\n : : BALANCE GENERAL . : : ${(Financieros.ingresosTotales! + Financieros.activosTotales!) - (Financieros.egresosTotales! + Financieros.pasivosTotales!)}"
+    //         "\n : : PATRIMONIAL . : : ${Financieros.ingresosTotales! - (Financieros.egresosTotales! + Financieros.pasivosTotales!)}"
+    //         "\n"
+    //         "\n  INGRESOS : : . . . "
+    //         "\n . . . : Ingresos del Mes . : ${Financieros.ingresosMes} . "
+    //         "\n . . . : Ingresos del Mes previo . : ${Financieros.ingresosMesPrevio} . "
+    //         "\n . . . : Ingresos del Mes Anteprevio . : ${Financieros.ingresoMesAnteprevio} . "
+    //         "\n . . . : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  . . . "
+    //         "\n . . . : Ingresos del Año . : ${Financieros.ingresosAno} . "
+    //         "\n . . . : Ingresos del Año previo . : ${Financieros.ingresosAnoPrevio} . "
+    //         "");
   }
 }

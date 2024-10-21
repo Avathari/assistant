@@ -3,31 +3,23 @@ import 'dart:async';
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
-import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
-import 'package:assistant/screens/pacientes/auxiliares/detalles/menus.dart';
-import 'package:assistant/screens/pacientes/auxiliares/estadisticas/estadisticas.dart';
 import 'package:assistant/widgets/AppBarText.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
-import 'package:assistant/widgets/GridLayout.dart';
 import 'package:assistant/widgets/Spinner.dart';
-import 'package:assistant/widgets/WidgetsModels.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import 'package:assistant/conexiones/conexiones.dart';
 
-import 'package:assistant/screens/home.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
 
 import 'dart:convert';
 
@@ -40,14 +32,30 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        foregroundColor: Colors.grey,
         backgroundColor: Colors.black,
-        title: AppBarText("Registrar Usuarios"),
-      ),
-      body: isMobile(context) ? _mobileView(context) : _desktopView(context)
-    );
+        appBar: AppBar(
+          foregroundColor: Colors.grey,
+          backgroundColor: Colors.black,
+          title: AppBarText("Registrar Usuarios"),
+          actions: [
+            GrandIcon(
+                labelButton: "Leer desde Json guardado . . . ",
+                iconData: Icons.read_more,
+                onPress: () {
+                  Archivos.readJsonToMap(filePath: patientsPendientesFile)
+                      .then((onValue) {
+                    setState(() {
+                      for (var elem in onValue) {
+                        pacientes.add(elem);
+                      }
+                      // pacientes = onValue;
+                    });
+                  });
+                }),
+            SizedBox(width: 30),
+          ],
+        ),
+        body: isMobile(context) ? _mobileView(context) : _desktopView(context));
   }
 
   _mobileView(BuildContext context) {
@@ -93,7 +101,7 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
                                     context: context,
                                     tittle: "Registro repetido !! ",
                                     message:
-                                    "El NSS/ID del paciente recién inscrito, ya ha sido registrado . . . \n\n"
+                                        "El NSS/ID del paciente recién inscrito, ya ha sido registrado . . . \n\n"
                                         "${Pacientes.pacienteSeleccionado(match.last)}",
                                     onAcept: () {
                                       Navigator.of(context).pop();
@@ -176,7 +184,7 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
                               return Theme(
                                   data: ThemeData.dark().copyWith(
                                       dialogBackgroundColor:
-                                      Theming.cuaternaryColor),
+                                          Theming.cuaternaryColor),
                                   child: child!);
                             });
 
@@ -185,10 +193,10 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
                               DateFormat("yyyy-MM-dd").format(picked!);
                           //
                           _edad = (DateTime.now()
-                              .difference(DateTime.parse(
-                              _fechaNacimiento.text))
-                              .inDays /
-                              365)
+                                      .difference(
+                                          DateTime.parse(_fechaNacimiento.text))
+                                      .inDays /
+                                  365)
                               .toInt();
                         });
                       },
@@ -196,9 +204,9 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
                         setState(() {
                           // _fechaNacimiento.text = value;
                           _edad = (DateTime.now()
-                              .difference(DateTime.parse(value))
-                              .inDays /
-                              365)
+                                      .difference(DateTime.parse(value))
+                                      .inDays /
+                                  365)
                               .toInt();
                         });
                       },
@@ -213,8 +221,8 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
                               width: isMobile(context)
                                   ? 216
                                   : isTablet(context)
-                                  ? 170
-                                  : 180,
+                                      ? 170
+                                      : 180,
                               items: Pacientes.Sexo,
                               onChangeValue: (String? newValue) {
                                 setState(() {
@@ -230,8 +238,8 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
                               width: isMobile(context)
                                   ? 216
                                   : isTablet(context)
-                                  ? 140
-                                  : 180,
+                                      ? 140
+                                      : 180,
                               onChangeValue: (String? newValue) {
                                 setState(() {
                                   hemotipoValue = newValue!;
@@ -246,8 +254,8 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
                               width: isMobile(context)
                                   ? 216
                                   : isTablet(context)
-                                  ? 170
-                                  : 180,
+                                      ? 170
+                                      : 180,
                               onChangeValue: (String? newValue) {
                                 setState(() {
                                   atencionValue = newValue!;
@@ -256,6 +264,12 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
                         ),
                       ],
                     ),
+                    EditTextArea(
+                        labelEditText: "C.U.R.P.",
+                        textController: _curpController,
+                        keyBoardType: TextInputType.text,
+                        numOfLines: 1,
+                        inputFormat: MaskTextInputFormatter()),
                   ],
                 ),
               ),
@@ -268,14 +282,31 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
               children: [
                 Expanded(
                     child: GrandButton(
-                      labelButton: "Eliminar listado . . . ",
-                      onPress: () => setState(() => pacientes.clear()),
-                    )),
+                  labelButton: "Eliminar listado . . . ",
+                  onPress: () => setState(() => pacientes.clear()),
+                )),
+                Expanded(
+                    child: GrandIcon(
+                        iconData: Icons.join_inner_sharp,
+                        labelButton: "Guardar en Archivo JSON",
+                        onPress: () {
+                          Operadores.alertActivity(
+                              context: context,
+                              tittle: "Guardar en Archivo . . . ",
+                              message: "Guardar en Archivo JSON ",
+                              onAcept: () {
+                                //
+                                Archivos.createJsonFromMap(pacientes,
+                                    filePath: patientsPendientesFile);
+                                //
+                                Navigator.of(context).pop();
+                              });
+                        })),
                 Expanded(
                     child: GrandButton(
-                      labelButton: "Agregar paciente . . . ",
-                      onPress: _agregarUsuario,
-                    )),
+                  labelButton: "Agregar paciente . . . ",
+                  onPress: _agregarUsuario,
+                )),
               ],
             ),
           ),
@@ -309,10 +340,10 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
                         ""),
                     subtitle: Text(
                       "FN: ${pacientes[index][14]} ($_edad) "
-                          "Estado : ${pacientes[index][17]} "
-                          "Sexo : ${pacientes[index][15]} "
-                          "- ${pacientes[index][16]} "
-                          "",
+                      "Estado : ${pacientes[index][17]} "
+                      "Sexo : ${pacientes[index][15]} "
+                      "- ${pacientes[index][16]} "
+                      "",
                     ),
                     trailing: GrandIcon(
                         labelButton: "Eliminar registro . . . ",
@@ -343,61 +374,66 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
       child: Row(
         children: [
           Expanded(
-            child: Column(children: [
-              Expanded(
-                flex: 6,
-                child: Container(
-                  decoration: ContainerDecoration.roundedDecoration(
-                    colorBackground: Theming.cuaternaryColor,
-                  ),
-                  child: ListView.builder(
-                    itemCount: pacientes.length,
-                    itemBuilder: (context, index) {
-                      // final usuario = pacientes[index];
-                      return ListTile(
-                        textColor: Colors.grey,
-                        leading: Icon(
-                          Icons.person,
-                          color: Colors.grey,
-                        ),
-                        titleTextStyle: TextStyle(fontSize: 11),
-                        subtitleTextStyle: TextStyle(fontSize: 9),
-                        title: Text(""
-                            "${pacientes[index][2]} "
-                            "${pacientes[index][3]} "
-                            "${pacientes[index][4]} "
-                            "${pacientes[index][5]} \n"
-                            ": : "
-                            "NSS : ${pacientes[index][0]} ${pacientes[index][1]} "
-                            ""),
-                        subtitle: Text(
-                          "FN: ${pacientes[index][14]} ($_edad) "
-                              "Estado : ${pacientes[index][17]} "
-                              "Sexo : ${pacientes[index][15]} "
-                              "- ${pacientes[index][16]} "
-                              "",
-                        ),
-                        trailing: GrandIcon(
-                            labelButton: "Eliminar registro . . . ",
-                            iconData: Icons.delete_forever,
-                            onPress: () =>
-                                setState(() => pacientes.removeAt(index))),
-                      );
-                    },
+            child: Column(
+              children: [
+                Expanded(
+                  flex: 6,
+                  child: Container(
+                    decoration: ContainerDecoration.roundedDecoration(
+                      colorBackground: Theming.cuaternaryColor,
+                    ),
+                    child: ListView.builder(
+                      itemCount: pacientes.length,
+                      itemBuilder: (context, index) {
+                        // final usuario = pacientes[index];
+                        return ListTile(
+                          textColor: Colors.grey,
+                          leading: Icon(
+                            Icons.person,
+                            color: Colors.grey,
+                          ),
+                          titleTextStyle: TextStyle(fontSize: 11),
+                          subtitleTextStyle: TextStyle(fontSize: 9),
+                          title: Text(""
+                              "${pacientes[index][2]} "
+                              "${pacientes[index][3]} "
+                              "${pacientes[index][4]} "
+                              "${pacientes[index][5]} \n"
+                              ": : "
+                              "NSS : ${pacientes[index][0]} ${pacientes[index][1]} "
+                              ""),
+                          subtitle: Text(
+                            "FN: ${pacientes[index][14]} ($_edad) "
+                            "Estado : ${pacientes[index][17]} "
+                            "Sexo : ${pacientes[index][15]} "
+                            "- ${pacientes[index][16]} "
+                            "",
+                          ),
+                          trailing: GrandIcon(
+                              labelButton: "Eliminar registro . . . ",
+                              iconData: Icons.delete_forever,
+                              onPress: () =>
+                                  setState(() => pacientes.removeAt(index))),
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
-              // Botón para enviar los datos
-              Expanded(
-                child: GrandButton(
-                  weigth: 1000,
-                  labelButton: "Enviar a Base de Datos",
-                  onPress: _enviarUsuarios,
+                // Botón para enviar los datos
+                Expanded(
+                  child: GrandButton(
+                    weigth: 1000,
+                    labelButton: "Enviar a Base de Datos",
+                    onPress: _enviarUsuarios,
+                  ),
                 ),
-              ),
-            ],),
+              ],
+            ),
           ),
-          CrossLine(height: 10, isHorizontal: false,),
+          CrossLine(
+            height: 10,
+            isHorizontal: false,
+          ),
           Expanded(
             child: Column(
               children: [
@@ -439,7 +475,7 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
                                           context: context,
                                           tittle: "Registro repetido !! ",
                                           message:
-                                          "El NSS/ID del paciente recién inscrito, ya ha sido registrado . . . \n\n"
+                                              "El NSS/ID del paciente recién inscrito, ya ha sido registrado . . . \n\n"
                                               "${Pacientes.pacienteSeleccionado(match.last)}",
                                           onAcept: () {
                                             Navigator.of(context).pop();
@@ -498,56 +534,74 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
                               ),
                             ],
                           ),
-                          EditTextArea(
-                            keyBoardType: TextInputType.datetime,
-                            inputFormat: MaskTextInputFormatter(
-                                mask: '####-##-##',
-                                filter: {"#": RegExp(r'[0-9]')},
-                                type: MaskAutoCompletionType.lazy),
-                            isObscure: false,
-                            numOfLines: 1,
-                            labelEditText: 'Fecha de Nacimiento',
-                            textController: _fechaNacimiento,
-                            selection: true,
-                            withShowOption: true,
-                            iconData: Icons.calendar_today_outlined,
-                            onSelected: () async {
-                              final DateTime? picked = await showDatePicker(
-                                  context: context,
-                                  // initialEntryMode: DatePickerEntryMode.calendar,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(1900),
-                                  lastDate: DateTime(2055),
-                                  builder: (BuildContext context, Widget? child) {
-                                    return Theme(
-                                        data: ThemeData.dark().copyWith(
-                                            dialogBackgroundColor:
-                                            Theming.cuaternaryColor),
-                                        child: child!);
-                                  });
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 2,
+                                child: EditTextArea(
+                                  keyBoardType: TextInputType.datetime,
+                                  inputFormat: MaskTextInputFormatter(
+                                      mask: '####-##-##',
+                                      filter: {"#": RegExp(r'[0-9]')},
+                                      type: MaskAutoCompletionType.lazy),
+                                  isObscure: false,
+                                  numOfLines: 1,
+                                  labelEditText: 'Fecha de Nacimiento',
+                                  textController: _fechaNacimiento,
+                                  selection: true,
+                                  withShowOption: true,
+                                  iconData: Icons.calendar_today_outlined,
+                                  onSelected: () async {
+                                    final DateTime? picked = await showDatePicker(
+                                        context: context,
+                                        // initialEntryMode: DatePickerEntryMode.calendar,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime(1900),
+                                        lastDate: DateTime(2055),
+                                        builder:
+                                            (BuildContext context, Widget? child) {
+                                          return Theme(
+                                              data: ThemeData.dark().copyWith(
+                                                  dialogBackgroundColor:
+                                                      Theming.cuaternaryColor),
+                                              child: child!);
+                                        });
 
-                              setState(() {
-                                _fechaNacimiento.text =
-                                    DateFormat("yyyy-MM-dd").format(picked!);
-                                //
-                                _edad = (DateTime.now()
-                                    .difference(DateTime.parse(
-                                    _fechaNacimiento.text))
-                                    .inDays /
-                                    365)
-                                    .toInt();
-                              });
-                            },
-                            onChange: (value) {
-                              setState(() {
-                                // _fechaNacimiento.text = value;
-                                _edad = (DateTime.now()
-                                    .difference(DateTime.parse(value))
-                                    .inDays /
-                                    365)
-                                    .toInt();
-                              });
-                            },
+                                    setState(() {
+                                      _fechaNacimiento.text =
+                                          DateFormat("yyyy-MM-dd").format(picked!);
+                                      //
+                                      _edad = (DateTime.now()
+                                                  .difference(DateTime.parse(
+                                                      _fechaNacimiento.text))
+                                                  .inDays /
+                                              365)
+                                          .toInt();
+                                      _edadController.text = _edad.toString();
+                                    });
+                                  },
+                                  onChange: (value) {
+                                    setState(() {
+                                      // _fechaNacimiento.text = value;
+                                      _edad = (DateTime.now()
+                                                  .difference(DateTime.parse(value))
+                                                  .inDays /
+                                              365)
+                                          .toInt();
+                                      _edadController.text = _edad.toString();
+                                    });
+                                  },
+                                ),
+                              ),
+                              Expanded(
+                                child: EditTextArea(
+                                    labelEditText: "Edad",
+                                    textController: _edadController,
+                                    keyBoardType: TextInputType.number,
+                                    numOfLines: 1,
+                                    inputFormat: MaskTextInputFormatter()),
+                              ),
+                            ],
                           ),
                           //
                           Row(
@@ -559,8 +613,8 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
                                     width: isMobile(context)
                                         ? 216
                                         : isTablet(context)
-                                        ? 170
-                                        : 180,
+                                            ? 170
+                                            : 180,
                                     items: Pacientes.Sexo,
                                     onChangeValue: (String? newValue) {
                                       setState(() {
@@ -576,8 +630,8 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
                                     width: isMobile(context)
                                         ? 216
                                         : isTablet(context)
-                                        ? 140
-                                        : 180,
+                                            ? 140
+                                            : 180,
                                     onChangeValue: (String? newValue) {
                                       setState(() {
                                         hemotipoValue = newValue!;
@@ -592,8 +646,8 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
                                     width: isMobile(context)
                                         ? 216
                                         : isTablet(context)
-                                        ? 170
-                                        : 180,
+                                            ? 170
+                                            : 180,
                                     onChangeValue: (String? newValue) {
                                       setState(() {
                                         atencionValue = newValue!;
@@ -602,6 +656,12 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
                               ),
                             ],
                           ),
+                          EditTextArea(
+                              labelEditText: "C.U.R.P.",
+                              textController: _curpController,
+                              keyBoardType: TextInputType.text,
+                              numOfLines: 1,
+                              inputFormat: MaskTextInputFormatter()),
                         ],
                       ),
                     ),
@@ -614,14 +674,31 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
                     children: [
                       Expanded(
                           child: GrandButton(
-                            labelButton: "Eliminar listado . . . ",
-                            onPress: () => setState(() => pacientes.clear()),
-                          )),
+                        labelButton: "Eliminar listado . . . ",
+                        onPress: () => setState(() => pacientes.clear()),
+                      )),
+                      Expanded(
+                          child: GrandIcon(
+                              iconData: Icons.join_inner_sharp,
+                              labelButton: "Guardar en Archivo JSON",
+                              onPress: () {
+                                Operadores.alertActivity(
+                                    context: context,
+                                    tittle: "Guardar en Archivo . . . ",
+                                    message: "Guardar en Archivo JSON ",
+                                    onAcept: () {
+                                      //
+                                      Archivos.createJsonFromMap(pacientes,
+                                          filePath: patientsPendientesFile);
+                                      //
+                                      Navigator.of(context).pop();
+                                    });
+                              })),
                       Expanded(
                           child: GrandButton(
-                            labelButton: "Agregar paciente . . . ",
-                            onPress: _agregarUsuario,
-                          )),
+                        labelButton: "Agregar paciente . . . ",
+                        onPress: _agregarUsuario,
+                      )),
                     ],
                   ),
                 ),
@@ -634,9 +711,10 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
     );
   }
 
-  // VARIABLES ********************************************
-  // Lista que contiene las listas de pacientes
-  List<List<dynamic>> pacientes = [];
+  // VARIABLES *******************************************
+  List<List<dynamic>> pacientes = []; // Lista que contiene las listas de pacientes
+
+  final String patientsPendientesFile = "assets/vault/pacientesNuevos.json";
 
   // Controladores para los campos del formulario
   final _nssController = TextEditingController();
@@ -646,6 +724,8 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
   final _apellidoPaternoController = TextEditingController();
   final _apellidoMaternoController = TextEditingController();
   final _fechaNacimiento = TextEditingController();
+  final _edadController = TextEditingController();
+  final _curpController = TextEditingController();
   int? _edad;
 
   String turnoValue = Pacientes.Turno[0];
@@ -672,6 +752,7 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
     _apellidoPaternoController.dispose();
     _apellidoMaternoController.dispose();
     _fechaNacimiento.dispose();
+    _curpController.dispose();
     //
     super.dispose();
   }
@@ -701,14 +782,14 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
           DateTime.now().toString(),
           //
           "", //telefonoTextController.text,
-          _fechaNacimiento.text,
+          _fechaNacimiento.text.trim(),
           sessoValue,
           atencionValue,
           //
-          "", // curpTextController.text.toUpperCase(),
+          _curpController.text.toUpperCase().trim(), // curpTextController.text.toUpperCase(),
           "", // rfcTextController.text.toUpperCase(),
           //
-          _edad,
+          _edad ?? 0,
           vivoValue,
           "", // ocupacionTextController.text,
           "", // estadoCivilValue,
@@ -718,9 +799,9 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
           "", // escolaridadEspecificacionTextController.text,
           "", // municipioTextController.text.trimRight(),
           entidadFederativaValue.trimRight(),
-          // localidadResidenciaTextController.text.trimRight(),
-          // duracionResidenciaTextController.text.trimRight(),
-          // domicilioTextController.text.trimRight(),
+          "", // localidadResidenciaTextController.text.trimRight(),
+          "", // duracionResidenciaTextController.text.trimRight(),
+          "", // domicilioTextController.text.trimRight(),
           indigenaValue,
           indigenaHablanteValue,
           indigenaHablanteValue, // indigenaHablanteEspecificacioTextController.text,
@@ -733,12 +814,13 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
 
   /// Función para enviar los pacientes a la base de datos
   void _enviarUsuarios() {
+    Terminal.printExpected(message: "Registros por pacientes ${pacientes[0].length}");
     Operadores.optionsActivity(
         context: context,
         tittle: "Listado de Pacientes preparado",
         message: "Número de registros acaparados ${pacientes.length}\n"
             "REGISTRO : \n"
-            "${Listas.traduceToString(pacientes!)}",
+            "${Listas.traduceToString(pacientes)}",
         onClose: () => Navigator.of(context).pop(),
         textOptionA: "Agregar información a base de datos . . . ",
         optionA: () => Actividades.registrarAnidados(
@@ -753,7 +835,9 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
             .onError((onError, stackTrace) => Operadores.alertActivity(
                 context: context,
                 tittle: "Ocurrió un error al registrar el Listado . . . ",
-                message: "ERROR : $onError : : $stackTrace")));
+                message: "ERROR : $onError : : $stackTrace",
+                onAcept: () => Archivos.createJsonFromMap(pacientes,
+                    filePath: patientsPendientesFile))));
     //
   }
 
@@ -765,5 +849,7 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
     _apellidoPaternoController.clear();
     _apellidoMaternoController.clear();
     _fechaNacimiento.clear();
+    _curpController.clear();
+    _edadController.clear();
   }
 }

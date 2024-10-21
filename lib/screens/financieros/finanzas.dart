@@ -34,18 +34,17 @@ import 'package:photo_view/photo_view.dart';
 // # # # # updateQuery
 // # # # Reemplazar .activos por el nombre del Map() correspondiente.
 //
-class OperacionesActivos extends StatefulWidget {
-  String? operationActivity;
+class operacionesActivos extends StatefulWidget {
+  late String? operationActivity;
+  late String _operationButton = 'Nulo';
 
-  String _operationButton = 'Nulo';
-
-  OperacionesActivos({super.key, this.operationActivity = Constantes.Nulo});
+  operacionesActivos({super.key, this.operationActivity = Constantes.Nulo});
 
   @override
-  State<OperacionesActivos> createState() => _OperacionesActivosState();
+  State<operacionesActivos> createState() => _operacionesActivosState();
 }
 
-class _OperacionesActivosState extends State<OperacionesActivos> {
+class _operacionesActivosState extends State<operacionesActivos> {
   @override
   void initState() {
     //
@@ -488,7 +487,8 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
                               ),
                               Expanded(
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   CircleIcon(
                                       iconed: Icons.file_copy_rounded,
@@ -511,7 +511,7 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
                                     },
                                   ),
                                   CircleIcon(
-                                    iconed: Icons.camera_alt_outlined,
+                                      iconed: Icons.camera_alt_outlined,
                                       tittle: 'Cargar desde Cámara',
                                       onChangeValue: () async {
                                         var bytes = await Directorios
@@ -607,8 +607,11 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
           // ******************************************** *** *
           Actividades.registrar(Databases.siteground_database_regfine,
                   registerQuery!, listOfValues!)
-              .then((value) =>
-                  Terminal.printExpected(message: "Registrado : : $value"))
+              .then((value) => Operadores.alertActivity(
+                  context: context,
+                  tittle: "Registro de Información . . . ",
+                  message: "$value",
+                  onAcept: () => Navigator.of(context).pop()))
               .whenComplete(() => onClose(context))
               .onError((error, stackTrace) => Operadores.alertActivity(
                   context: context,
@@ -622,8 +625,11 @@ class _OperacionesActivosState extends State<OperacionesActivos> {
               message: "Actualizando información . . . ");
           Actividades.actualizar(Databases.siteground_database_regfine,
                   updateQuery!, listOfValues!, idOperation)
-              .then((value) =>
-                  Terminal.printSuccess(message: "Actualizado : : $value"))
+              .then((value) => Operadores.alertActivity(
+                  context: context,
+                  tittle: "Actualización de Información . . . ",
+                  message: "$value",
+                  onAcept: () => Navigator.of(context).pop()))
               .whenComplete(() => onClose(context))
               .onError((error, stackTrace) => Operadores.alertActivity(
                   context: context,
@@ -763,6 +769,7 @@ class _GestionActivosState extends State<GestionActivos> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+        foregroundColor: Colors.grey,
           backgroundColor: Theming.primaryColor,
           leading: IconButton(
             icon: const Icon(
@@ -775,7 +782,7 @@ class _GestionActivosState extends State<GestionActivos> {
                   .push(MaterialPageRoute(builder: (context) => const Home()));
             },
           ),
-          title: Text(appTittle),
+          title: AppBarText(appTittle),
           actions: <Widget>[
             GrandIcon(
               labelButton: 'Todo',
@@ -908,6 +915,7 @@ class _GestionActivosState extends State<GestionActivos> {
                               if (snapshot.hasError) print(snapshot.error);
                               return snapshot.hasData
                                   ? ListView.builder(
+                                padding: EdgeInsets.all(5.0),
                                       reverse: widget.reverse!,
                                       controller: gestionScrollController,
                                       shrinkWrap: true,
@@ -1068,7 +1076,7 @@ class _GestionActivosState extends State<GestionActivos> {
     Activos.registros().whenComplete(() {
       setState(() {
         Navigator.pop(context);
-        Activos.fromJsonItem(Financieros.Activos);
+        // Activos.fromJsonItem(Financieros.Activos);
         foundedItems = Financieros.Activos;
       });
     })
@@ -1181,14 +1189,14 @@ class _GestionActivosState extends State<GestionActivos> {
   void toOperaciones(BuildContext context, String operationActivity) {
     if (isMobile(context)) {
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (BuildContext context) => OperacionesActivos(
+          builder: (BuildContext context) => operacionesActivos(
                 operationActivity: operationActivity,
               )));
     } else {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (BuildContext context) => GestionActivos(
                 esActualized: false,
-                actualSidePage: OperacionesActivos(
+                actualSidePage: operacionesActivos(
                   operationActivity: operationActivity,
                 ),
               )));
@@ -1203,7 +1211,8 @@ class _GestionActivosState extends State<GestionActivos> {
       },
       child: Container(
         decoration: ContainerDecoration.roundedDecoration(),
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(17.0),
+        margin: EdgeInsets.all(6.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

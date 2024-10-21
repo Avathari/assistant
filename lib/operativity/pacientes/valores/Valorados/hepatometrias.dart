@@ -9,21 +9,25 @@ class Hepatometrias {
   // ANALISIS
   static String hepaticos() {
     return ""
-        "TP ${Valores.tiempoProtrombina} seg, \n"
-        "TPt ${Valores.tiempoTromboplastina} seg, \n"
-        "INR ${Valores.INR} seg, \n"
-        "BT ${Valores.bilirrubinasTotales} mg/dL, \n"
+        "Valores Iniciales: "
+        "TP ${Valores.tiempoProtrombina} seg, "
+        "TPt ${Valores.tiempoTromboplastina} seg, "
+        "INR ${Valores.INR} seg, "
+        "BT ${Valores.bilirrubinasTotales} mg/dL, "
         "- - -  \n"
-        "Relacion BD:BT ${Hepatometrias.relacionBDBT}, considerar : ${infoHepatometrias.clusterDiagnosticos_BD_BT}"
-        "Relacion BD:BI ${Hepatometrias.relacionBDBI}, considerar : ${infoHepatometrias.clusterDiagnosticos_BD_BI}"
-        "Relacion ALT:FA ${Hepatometrias.relacionALTFA}, considerar : ${infoHepatometrias.clusterDiagnosticos_ALT_FA}"
-        "Relacion AST:ALT ${Hepatometrias.relacionASTALT}, considerar : ${infoHepatometrias.clusterDiagnosticos_AST_ALT}"
-        "Relacion GGT:FA ${Hepatometrias.relacionGGTFA}, considerar : ${infoHepatometrias.clusterDiagnosticos_GGT_FA}"
-        "- - -  \n"
-        "APRi ${APRI.toStringAsFixed(2)}; "
-        "Fib4 ${Fib4.toStringAsFixed(2)}; "
-        "Puntaje de Maddrey ${funcionDiscriminanteMaddrey.toStringAsFixed(2)}; "
-        "Lille ${modeloLille(evolucionBilirrubina: 1.2, renalInsufficiency: true).toStringAsFixed(2)}";
+        "Analítica: "
+        "Factor R ${Hepatometrias.factorR.toStringAsFixed(2)}, "
+        "Relacion BD:BT ${Hepatometrias.relacionBDBT.toStringAsFixed(2)}, considerar : ${infoHepatometrias.clusterDiagnosticos_BD_BT}"
+        "Relacion BD:BI ${Hepatometrias.relacionBDBI.toStringAsFixed(2)}, considerar : ${infoHepatometrias.clusterDiagnosticos_BD_BI}"
+        "Relacion ALT:FA ${Hepatometrias.relacionALTFA.toStringAsFixed(2)}, considerar : ${infoHepatometrias.clusterDiagnosticos_ALT_FA}"
+        "Relacion AST:ALT ${Hepatometrias.relacionASTALT.toStringAsFixed(2)}, considerar : ${infoHepatometrias.clusterDiagnosticos_AST_ALT}"
+        "Relacion GGT:FA ${Hepatometrias.relacionGGTFA.toStringAsFixed(2)}, considerar : ${infoHepatometrias.clusterDiagnosticos_GGT_FA}"
+        "- - -  "
+        // "\n"
+        "APRi ${APRI.toStringAsFixed(2)}, "
+        "Fib4 ${Fib4.toStringAsFixed(2)}, "
+        "Puntaje de Maddrey ${funcionDiscriminanteMaddrey.toStringAsFixed(2)}, "
+        "Módelo Lille ${modeloLille(evolucionBilirrubina: 1.2, renalInsufficiency: true).toStringAsFixed(2)}";
   }
 
   // ECUACIONES
@@ -109,7 +113,8 @@ class Hepatometrias {
   static double get relacionALTAST {
     if (Valores.alaninoaminotrasferasa! != 0 &&
         Valores.aspartatoaminotransferasa! != 0) {
-      return (Valores.alaninoaminotrasferasa! / Valores.aspartatoaminotransferasa!);
+      return (Valores.alaninoaminotrasferasa! /
+          Valores.aspartatoaminotransferasa!);
     } else {
       return double.nan;
     }

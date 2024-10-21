@@ -44,14 +44,18 @@ class _RevisionesState extends State<Revisiones> {
     Terminal.printWarning(
         message:
             " . . . Iniciando Actividad - Repositorio Paraclinicos del Pacientes : : $fileAssocieted : : \n"
-                "Pacientes.localPath ${Pacientes.localPath} : . . . \n"
-                "${Pacientes.ID_Paciente}");
+            "Pacientes.localPath ${Pacientes.localPath} : . . . \n"
+            "${Pacientes.ID_Paciente}");
     //
     Auxiliares.ultimoRegistro()
         .then((value) => Auxiliares.fromJson(value))
         .whenComplete(() => setState(() {}))
-        .onError((error, stackTrace) =>
-        Terminal.printAlert(message: "ERROR : : $error : $stackTrace"));
+        .onError((error, stackTrace) => Operadores.alertActivity(
+              context: context,
+              tittle: "ERROR al consultar último registro",
+              message: "ERROR : $error : : $stackTrace",
+              onAcept: () => Navigator.of(context).pop(),
+            ));
     //
     // Archivos.readJsonToMap(filePath:
     // Pacientes.localPath
@@ -65,7 +69,7 @@ class _RevisionesState extends State<Revisiones> {
     // });
     //
     // Pacientes.getValores( reload: reload).then((value) => null);
-        //.whenComplete(() => setState((){}));
+    //.whenComplete(() => setState((){}));
     // Pacientes.getParaclinicosHistorial(reload: true).then((value) {
     //   setState(() {
     //     reload = false;
@@ -121,8 +125,7 @@ class _RevisionesState extends State<Revisiones> {
                       children: [
                         ValuePanel(
                           firstText: "",
-                          secondText:
-                          Valores.fechaVitales.toString(),
+                          secondText: Valores.fechaVitales.toString(),
                           thirdText: "",
                         ),
                         CrossLine(),
@@ -238,8 +241,8 @@ class _RevisionesState extends State<Revisiones> {
                             Expanded(
                               child: ValuePanel(
                                 firstText: "SpO2",
-                                secondText:
-                                    Valores.saturacionPerifericaOxigeno.toString(),
+                                secondText: Valores.saturacionPerifericaOxigeno
+                                    .toString(),
                                 thirdText: "%",
                                 withEditMessage: true,
                                 onEdit: (value) {
@@ -263,8 +266,8 @@ class _RevisionesState extends State<Revisiones> {
                             Expanded(
                               child: ValuePanel(
                                 firstText: "E-PO2",
-                                secondText:
-                                Antropometrias.pO2equivalente.toStringAsFixed(2),
+                                secondText: Antropometrias.pO2equivalente
+                                    .toStringAsFixed(2),
                                 thirdText: "mmHg",
                               ),
                             ),
@@ -335,19 +338,22 @@ class _RevisionesState extends State<Revisiones> {
                         CrossLine(),
                         ValuePanel(
                           firstText: "FiO2",
-                          secondText: Valores.fraccionInspiratoriaOxigeno.toString(),
+                          secondText:
+                              Valores.fraccionInspiratoriaOxigeno.toString(),
                           thirdText: "%",
                           withEditMessage: true,
                           onEdit: (value) {
                             Operadores.editActivity(
                                 context: context,
                                 tittle: "Editar . . . ",
-                                message: "¿Fracción Inspiratoria Oxigeno? . . . ",
+                                message:
+                                    "¿Fracción Inspiratoria Oxigeno? . . . ",
                                 onAcept: (value) {
                                   Terminal.printSuccess(
                                       message: "recieve $value");
                                   setState(() {
-                                    Valores.fraccionInspiratoriaOxigeno = int.parse(value);
+                                    Valores.fraccionInspiratoriaOxigeno =
+                                        int.parse(value);
                                     Navigator.of(context).pop();
                                   });
                                 });
@@ -367,7 +373,8 @@ class _RevisionesState extends State<Revisiones> {
                                   Terminal.printSuccess(
                                       message: "recieve $value");
                                   setState(() {
-                                    Valores.presionVenosaCentral = int.parse(value);
+                                    Valores.presionVenosaCentral =
+                                        int.parse(value);
                                     Navigator.of(context).pop();
                                   });
                                 });
@@ -436,7 +443,7 @@ class _RevisionesState extends State<Revisiones> {
                                                                               10
                                                                           ? ventilaciones()
                                                                           : widget.actualView == 11
-                                                                              ?  Hidricos()
+                                                                              ? Hidricos()
                                                                               : widget.actualView == 12
                                                                                   ? const Metabolicos()
                                                                                   : widget.actualView == 13
@@ -448,13 +455,13 @@ class _RevisionesState extends State<Revisiones> {
                                                                                               : widget.actualView == 16
                                                                                                   ? const Gasometricos()
                                                                                                   : widget.actualView == 17
-                                                                                                      ?  Hidricos()
+                                                                                                      ? Hidricos()
                                                                                                       : widget.actualView == 18
-                                                                                                          ?  Hidricos()
+                                                                                                          ? Hidricos()
                                                                                                           : widget.actualView == 19
-                                                                                                              ?  Hidricos()
+                                                                                                              ? Hidricos()
                                                                                                               : widget.actualView == 20
-                                                                                                                  ?  Hidricos()
+                                                                                                                  ? Hidricos()
                                                                                                                   : widget.actualView == 21
                                                                                                                       ? const Hemoderivados()
                                                                                                                       : Container(),
@@ -787,7 +794,7 @@ class _RevisionesState extends State<Revisiones> {
                           crossAxisCount: isMobile(context) ? 4 : 2,
                           crossAxisSpacing: isMobile(context) ? 4.0 : 2.0,
                           mainAxisSpacing: isMobile(context) ? 4.0 : 2.0,
-                          mainAxisExtent: isMobile(context) ?66:66), //46
+                          mainAxisExtent: isMobile(context) ? 66 : 66), //46
                       children: [
                         ValuePanel(
                           firstText: "T. Sys",
@@ -922,8 +929,7 @@ class _RevisionesState extends State<Revisiones> {
                         ),
                         ValuePanel(
                           firstText: "SpO2",
-                          secondText:
-                          Valores.saturacionPerifericaOrigeno!,
+                          secondText: Valores.saturacionPerifericaOrigeno!,
                           thirdText: "Resp/min",
                           withEditMessage: true,
                           onEdit: (value) {
@@ -931,7 +937,7 @@ class _RevisionesState extends State<Revisiones> {
                                 context: context,
                                 tittle: "Editar . . . ",
                                 message:
-                                "¿Saturación periférica de oxígeno? . . . ",
+                                    "¿Saturación periférica de oxígeno? . . . ",
                                 onAcept: (value) {
                                   Terminal.printSuccess(
                                       message: "recieve $value");
@@ -946,7 +952,7 @@ class _RevisionesState extends State<Revisiones> {
                         ValuePanel(
                           firstText: "PaO2e",
                           secondText:
-                          Antropometrias.pO2equivalente.toStringAsFixed(2),
+                              Antropometrias.pO2equivalente.toStringAsFixed(2),
                           thirdText: "Resp/min",
                           withEditMessage: true,
                           onEdit: (value) {
@@ -954,7 +960,7 @@ class _RevisionesState extends State<Revisiones> {
                                 context: context,
                                 tittle: "Editar . . . ",
                                 message:
-                                "¿Saturación periférica de oxígeno? . . . ",
+                                    "¿Saturación periférica de oxígeno? . . . ",
                                 onAcept: (value) {
                                   Terminal.printSuccess(
                                       message: "recieve $value");
@@ -1053,19 +1059,22 @@ class _RevisionesState extends State<Revisiones> {
                         //
                         ValuePanel(
                           firstText: "FiO2",
-                          secondText: Valores.fraccionInspiratoriaOxigeno.toString(),
+                          secondText:
+                              Valores.fraccionInspiratoriaOxigeno.toString(),
                           thirdText: "%",
                           withEditMessage: true,
                           onEdit: (value) {
                             Operadores.editActivity(
                                 context: context,
                                 tittle: "Editar . . . ",
-                                message: "¿Fracción Inspiratoria Oxigeno? . . . ",
+                                message:
+                                    "¿Fracción Inspiratoria Oxigeno? . . . ",
                                 onAcept: (value) {
                                   Terminal.printSuccess(
                                       message: "recieve $value");
                                   setState(() {
-                                    Valores.fraccionInspiratoriaOxigeno = int.parse(value);
+                                    Valores.fraccionInspiratoriaOxigeno =
+                                        int.parse(value);
                                     Navigator.of(context).pop();
                                   });
                                 });
@@ -1085,7 +1094,8 @@ class _RevisionesState extends State<Revisiones> {
                                   Terminal.printSuccess(
                                       message: "recieve $value");
                                   setState(() {
-                                    Valores.presionVenosaCentral = int.parse(value);
+                                    Valores.presionVenosaCentral =
+                                        int.parse(value);
                                     Navigator.of(context).pop();
                                   });
                                 });
@@ -1127,7 +1137,7 @@ class _RevisionesState extends State<Revisiones> {
                                                           ? ventilaciones()
                                                           : widget.actualView ==
                                                                   11
-                                                              ?  Hidricos()
+                                                              ? Hidricos()
                                                               : widget.actualView ==
                                                                       12
                                                                   ? const Metabolicos()
@@ -1142,13 +1152,13 @@ class _RevisionesState extends State<Revisiones> {
                                                                               : widget.actualView == 16
                                                                                   ? const Gasometricos()
                                                                                   : widget.actualView == 17
-                                                                                      ?  Hidricos()
+                                                                                      ? Hidricos()
                                                                                       : widget.actualView == 18
-                                                                                          ?  Hidricos()
+                                                                                          ? Hidricos()
                                                                                           : widget.actualView == 19
-                                                                                              ?  Hidricos()
+                                                                                              ? Hidricos()
                                                                                               : widget.actualView == 20
-                                                                                                  ?  Hidricos()
+                                                                                                  ? Hidricos()
                                                                                                   : widget.actualView == 21
                                                                                                       ? const Hemoderivados()
                                                                                                       : Container(),
@@ -1316,125 +1326,135 @@ class _RevisionesState extends State<Revisiones> {
             flex: 2,
             child: Container(
               decoration: ContainerDecoration.roundedDecoration(),
-              child: Center(
-                child: Wrap(
-                  direction: Axis.vertical,
-                  alignment: WrapAlignment.center,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  spacing: 8.0,
-                  runSpacing: 8.0,
-                  children: [
-                    GrandIcon(
-                      iconData: Icons.water_drop,
-                      labelButton: 'Análisis Hidrico',
-                      onPress: () {
-                        setState(() {
-                          widget.actualView = 11;
-                        });
-                      },
-                    ),
-                    GrandIcon(
-                      iconData: Icons.bubble_chart,
-                      labelButton: 'Análisis Metabólico',
-                      onPress: () {
-                        setState(() {
-                          widget.actualView = 12;
-                        });
-                      },
-                    ),
-                    GrandIcon(
-                      iconData: Icons.horizontal_rule_sharp,
-                      labelButton: 'Análisis Antropométrico',
-                      onPress: () {
-                        setState(() {
-                          widget.actualView = 13;
-                        });
-                      },
-                    ),
-                    GrandIcon(
-                      iconData: Icons.monitor_heart_outlined,
-                      labelButton: 'Análisis Cardiovascular',
-                      onPress: () {
-                        setState(() {
-                          widget.actualView = 14;
-                        });
-                      },
-                    ),
-                    GrandIcon(
-                      iconData: Icons.all_inclusive_rounded,
-                      labelButton: 'Análisis Ventilatorio',
-                      onPress: () {
-                        setState(() {
-                          widget.actualView = 15;
-                        });
-                      },
-                    ),
-                    GrandIcon(
-                      iconData: Icons.g_mobiledata,
-                      labelButton: 'Análisis Gasométrico',
-                      onPress: () {
-                        setState(() {
-                          widget.actualView = 16;
-                        });
-                      },
-                    ),
-                    GrandIcon(
-                      labelButton: 'Análisis Cerebrovascular',
-                      onPress: () {
-                        Operadores.alertActivity(
-                            context: context,
-                            tittle: "¡Disculpas!",
-                            message: "Actividad en construcción");
-                        // Operadores.openDialog(
-                        //     context: context, chyldrim: const Hidricos());
-                      },
-                    ),
-                    GrandIcon(
-                      labelButton: 'Análisis Renal',
-                      onPress: () {
-                        Operadores.alertActivity(
-                            context: context,
-                            tittle: "¡Disculpas!",
-                            message: "Actividad en construcción");
-                        // Operadores.openDialog(
-                        //     context: context, chyldrim: const Hidricos());
-                      },
-                    ),
-                    GrandIcon(
-                      labelButton: 'Análisis Sanguíneo Circulante',
-                      onPress: () {
-                        Operadores.alertActivity(
-                            context: context,
-                            tittle: "¡Disculpas!",
-                            message: "Actividad en construcción");
-                        // Operadores.openDialog(
-                        //     context: context, chyldrim: const Hidricos());
-                      },
-                    ),
-                    GrandIcon(
-                      labelButton: 'Análisis Pulmonar',
-                      onPress: () {
-                        Operadores.alertActivity(
-                            context: context,
-                            tittle: "¡Disculpas!",
-                            message: "Actividad en construcción");
-                        // Operadores.openDialog(
-                        //     context: context, chyldrim: const Hidricos());
-                      },
-                    ),
-                    GrandIcon(
-                      labelButton: 'Edad Corregida',
-                      onPress: () {
-                        Operadores.alertActivity(
-                            context: context,
-                            tittle: "¡Disculpas!",
-                            message: "Actividad en construcción");
-                        // Operadores.openDialog(
-                        //     context: context, chyldrim: const Hidricos());
-                      },
-                    ),
-                  ],
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                // direction: Axis.vertical,
+                // alignment: WrapAlignment.center,
+                // crossAxisAlignment: WrapCrossAlignment.center,
+                // spacing: 8.0,
+                // runSpacing: 8.0,
+                children: [
+                  GrandIcon(
+                    iconData: Icons.water_drop,
+                    labelButton: 'Análisis Hidrico',
+                    onPress: () {
+                      setState(() {
+                        widget.actualView = 11;
+                      });
+                    },
+                  ),
+                  GrandIcon(
+                    iconData: Icons.bubble_chart,
+                    labelButton: 'Análisis Metabólico',
+                    onPress: () {
+                      setState(() {
+                        widget.actualView = 12;
+                      });
+                    },
+                  ),
+                  GrandIcon(
+                    iconData: Icons.horizontal_rule_sharp,
+                    labelButton: 'Análisis Antropométrico',
+                    onPress: () {
+                      setState(() {
+                        widget.actualView = 13;
+                      });
+                    },
+                  ),
+                  GrandIcon(
+                    iconData: Icons.monitor_heart_outlined,
+                    labelButton: 'Análisis Cardiovascular',
+                    onPress: () {
+                      setState(() {
+                        widget.actualView = 14;
+                      });
+                    },
+                  ),
+                  GrandIcon(
+                    iconData: Icons.all_inclusive_rounded,
+                    labelButton: 'Análisis Ventilatorio',
+                    onPress: () {
+                      setState(() {
+                        widget.actualView = 15;
+                      });
+                    },
+                  ),
+                  GrandIcon(
+                    iconData: Icons.g_mobiledata,
+                    labelButton: 'Análisis Gasométrico',
+                    onPress: () {
+                      setState(() {
+                        widget.actualView = 16;
+                      });
+                    },
+                  ),
+                  GrandIcon(
+                    labelButton: 'Análisis Cerebrovascular',
+                    onPress: () {
+                      Operadores.alertActivity(
+                        context: context,
+                        tittle: "¡Disculpas!",
+                        message: "Actividad en construcción",
+                        onAcept: () => Navigator.of(context).pop(),
+                      );
+                      // Operadores.openDialog(
+                      //     context: context, chyldrim: const Hidricos());
+                    },
+                  ),
+                  GrandIcon(
+                    labelButton: 'Análisis Renal',
+                    onPress: () {
+                      Operadores.alertActivity(
+                        context: context,
+                        tittle: "¡Disculpas!",
+                        message: "Actividad en construcción",
+                        onAcept: () => Navigator.of(context).pop(),
+                      );
+                      // Operadores.openDialog(
+                      //     context: context, chyldrim: const Hidricos());
+                    },
+                  ),
+                  GrandIcon(
+                    labelButton: 'Análisis Sanguíneo Circulante',
+                    onPress: () {
+                      Operadores.alertActivity(
+                        context: context,
+                        tittle: "¡Disculpas!",
+                        message: "Actividad en construcción",
+                        onAcept: () => Navigator.of(context).pop(),
+                      );
+                      // Operadores.openDialog(
+                      //     context: context, chyldrim: const Hidricos());
+                    },
+                  ),
+                  GrandIcon(
+                    labelButton: 'Análisis Pulmonar',
+                    onPress: () {
+                      Operadores.alertActivity(
+                        context: context,
+                        tittle: "¡Disculpas!",
+                        message: "Actividad en construcción",
+                        onAcept: () => Navigator.of(context).pop(),
+                      );
+                      // Operadores.openDialog(
+                      //     context: context, chyldrim: const Hidricos());
+                    },
+                  ),
+                  GrandIcon(
+                    labelButton: 'Edad Corregida',
+                    onPress: () {
+                      Operadores.alertActivity(
+                        context: context,
+                        tittle: "¡Disculpas!",
+                        message: "Actividad en construcción",
+                        onAcept: () => Navigator.of(context).pop(),
+                      );
+                      // Operadores.openDialog(
+                      //     context: context, chyldrim: const Hidricos());
+                    },
+                  ),
+                ],
               ),
             ),
           ),
@@ -2296,7 +2316,7 @@ class _RevisionesState extends State<Revisiones> {
           heigth: 36,
         ),
         Expanded(
-          flex: 4,
+          flex: isDesktop(context) ? 3 : 4,
           child: GridView(
             padding: const EdgeInsets.all(5.0),
             controller: ScrollController(),
@@ -2348,7 +2368,8 @@ class _RevisionesState extends State<Revisiones> {
               CrossLine(),
               ValuePanel(
                 firstText: "AST",
-                secondText: Valores.aspartatoaminotransferasa!.toStringAsFixed(1),
+                secondText:
+                    Valores.aspartatoaminotransferasa!.toStringAsFixed(1),
                 thirdText: "UI/L",
               ),
               ValuePanel(
@@ -2377,28 +2398,32 @@ class _RevisionesState extends State<Revisiones> {
                   Expanded(
                     child: ValuePanel(
                       firstText: "AST/ALT",
-                      secondText: Hepatometrias.relacionASTALT.toStringAsFixed(2),
+                      secondText:
+                          Hepatometrias.relacionASTALT.toStringAsFixed(2),
                       thirdText: "",
                     ),
                   ),
                   Expanded(
                     child: ValuePanel(
                       firstText: "ALT/FA",
-                      secondText: Hepatometrias.relacionALTFA.toStringAsFixed(2),
+                      secondText:
+                          Hepatometrias.relacionALTFA.toStringAsFixed(2),
                       thirdText: "",
                     ),
                   ),
                   Expanded(
                     child: ValuePanel(
                       firstText: "ALT/DHL",
-                      secondText: Hepatometrias.relacionALTDHL.toStringAsFixed(2),
+                      secondText:
+                          Hepatometrias.relacionALTDHL.toStringAsFixed(2),
                       thirdText: "",
                     ),
                   ),
                   Expanded(
                     child: ValuePanel(
                       firstText: "GGT/FA",
-                      secondText: Hepatometrias.relacionGGTFA.toStringAsFixed(2),
+                      secondText:
+                          Hepatometrias.relacionGGTFA.toStringAsFixed(2),
                       thirdText: "",
                     ),
                   ),
@@ -2456,11 +2481,11 @@ class _RevisionesState extends State<Revisiones> {
                 ],
               ),
               GrandButton(
-                height: 40,
-                fontSize: 8.0,
-                labelButton: "Análisis Hepáticos",
-                  onPress: ()=> Datos.portapapeles(context: context, text: Hepatometrias.hepaticos())),
-
+                  height: 40,
+                  fontSize: 8.0,
+                  labelButton: "Análisis Hepáticos",
+                  onPress: () => Datos.portapapeles(
+                      context: context, text: Hepatometrias.hepaticos())),
             ],
           ),
         )
@@ -2792,7 +2817,7 @@ class _RevisionesState extends State<Revisiones> {
   Widget? principal(BuildContext context) {
     return Column(
       children: [
-        if(!isMobile(context))Expanded(child: Detalles()),
+        if (!isMobile(context)) Expanded(child: Detalles()),
         Expanded(flex: 2, child: Hospitalizado()),
       ],
     );

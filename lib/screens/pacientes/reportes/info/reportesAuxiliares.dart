@@ -168,28 +168,63 @@ class ReportsMethods {
                   ) {
                 //
                 Repositorios.actualizarRegistro(
-                    context: context, values: values);
+                    context: context, values: values).onError((onError, stackTrace) {
+                  Operadores.alertActivity(
+                    context: context,
+                    tittle: "ERROR  Al Actualizar registro de Nota",
+                    message: "ERROR : $onError : : $stackTrace",
+                    onAcept: () => Navigator.of(context).pop(),
+                  );
+                });
               } else if (getTypeReport == TypeReportes.reporteEgreso) {
                 Repositorios.actualizarRegistro(
-                    context: context, values: values, isNotte: true);
+                    context: context, values: values, isNotte: true).onError((onError, stackTrace) {
+                  Operadores.alertActivity(
+                    context: context,
+                    tittle: "ERROR  Al Actualizar registro de Nota",
+                    message: "ERROR : $onError : : $stackTrace",
+                    onAcept: () => Navigator.of(context).pop(),
+                  );
+                });
               } else {
                 if (fechaRealizacion ==
                     Calendarios.today(format: "yyyy-MM-dd")) {
                   Repositorios.actualizarRegistro(
-                      context: context, values: values, isNotte: true);
+                      context: context, values: values, isNotte: true).onError((onError, stackTrace) {
+                    Operadores.alertActivity(
+                      context: context,
+                      tittle: "ERROR  Al Actualizar registro de Nota",
+                      message: "ERROR : $onError : : $stackTrace",
+                      onAcept: () => Navigator.of(context).pop(),
+                    );
+                  });
                 } else {
                   Repositorios.registrarRegistro(
                       context: context,
                       Values: values,
-                      ValuesEgreso: valuesEgreso);
+                      ValuesEgreso: valuesEgreso).onError((onError, stackTrace) {
+                    Operadores.alertActivity(
+                      context: context,
+                      tittle: "ERROR  Al Registrar Nota . . . ",
+                      message: "ERROR : $onError : : $stackTrace",
+                      onAcept: () => Navigator.of(context).pop(),
+                    );
+                  });
                 }
               }
             }))
-        .onError((error, stackTrace) =>
-            Terminal.printAlert(message: "ERROR - $error : : $stackTrace"));
+        .onError((error, stackTrace) {
+      Terminal.printAlert(message: "ERROR - $error : : $stackTrace");
+      Operadores.alertActivity(
+        context: context,
+        tittle: "ERROR  Al guardar nota",
+        message: "ERROR : $error : : $stackTrace",
+        onAcept: () => Navigator.of(context).pop(),
+      );
+    });
   }
 
-  static int setTypeReport({required String tipoAnalisis}){
+  static int setTypeReport({required String tipoAnalisis}) {
     if (tipoAnalisis == Items.tiposAnalisis[0]) {
       return 0;
     } else if (tipoAnalisis == Items.tiposAnalisis[1]) {

@@ -1231,11 +1231,11 @@ class Pacientes {
         "Pace_NSS, Pace_AGRE, "
         "Pace_Nome_PI, Pace_Nome_SE, Pace_Ape_Pat, Pace_Ape_Mat, "
         "Pace_Hemo, Pace_FIAT, "
-        "Pace_UMF, Pace_Hosp_Real, Pace_Turo, Pace_Feca_Hace, Pace_Hora_Hace, "
+        "Pace_UMF, Pace_Hosp_Real, Pace_Turo, Pace_Feca_Hace, Pace_Hora_Hace, " // 13
         "Pace_Tele, Pace_Nace, Pace_Ses, Pace_Hosp, Pace_Curp, "
         "Pace_RFC, Pace_Eda, Pace_Stat, "
         "Pace_Ocupa, Pace_Edo_Civ, Pace_Reli, Pace_Esco, Pace_Esco_COM, Pace_Esco_ESPE, "
-        "Pace_Orig_Muni, Pace_Orig_EntFed, Pace_Resi_Loca, Pace_Resi_Dur, Pace_Domi, "
+        "Pace_Orig_Muni, Pace_Orig_EntFed, Pace_Resi_Loca, Pace_Resi_Dur, Pace_Domi, " // 32
         "Indi_Pace_SiNo, IndiIdio_Pace_SiNo, IndiIdio_Pace_Espe) "
         "VALUES (?,?,?,?,?,?,?, from_base64(?), "
         "?,?,?,?,?, "
@@ -7411,8 +7411,17 @@ class Auxiliares {
       "Proteínas Totales",
       "Globulinas"
     ], // Pruebas de Función Hepática
-    Categorias[4]: ["TSH", "T4-L", "T3-L", "T4", "T3", ], // Perfil Tiroideo
-    Categorias[5]: ["Lipasa", "Amilasa", ],
+    Categorias[4]: [
+      "TSH",
+      "T4-L",
+      "T3-L",
+      "T4",
+      "T3",
+    ], // Perfil Tiroideo
+    Categorias[5]: [
+      "Lipasa",
+      "Amilasa",
+    ],
     Categorias[6]: [
       "Colesterol Total",
       "Triglicéridos",
@@ -7600,7 +7609,7 @@ class Auxiliares {
       "Troponina I (T nIc)",
       "Troponina I (T nTc)",
       "LDH",
-    ],
+    ], // Enzimas Cardiacas
     Categorias[19]: [
       "Urocultivo",
       "Cultivo de Líquido Peritoneal",
@@ -8162,7 +8171,6 @@ class Auxiliares {
     // "(SELECT IFNULL(Resultado, 0) FROM laboratorios WHERE ID_Pace = ${Pacientes.ID_Paciente} AND Estudio = 'Linfocitos' ORDER BY Fecha_Registro DESC limit 1) as Linfocitos_Totales;"
   };
 
-
   static String electrocardiograma() {
     return "Electrocardiograma (${Valores.fechaElectrocardiograma}): "
         "${Valores.ritmoCardiaco} "
@@ -8279,6 +8287,11 @@ class Auxiliares {
     "Glucosa sérica",
     "Urea Sérica",
     "Creatinina sérica",
+    "Nitrógeno Uréico (BUN)",
+    "Ácido úrico",
+    //
+    "Colesterol Total",
+    "Triglicéridos",
     //
     "Sodio sérico",
     "Potasio sérico",
@@ -8287,19 +8300,50 @@ class Auxiliares {
     "Fosforo sérico",
     "Calcio sérico",
     //
+    "Ac anti HCV",
+    "HIVAb",
+    "HBsAg (Ag de Superficie de Hepatitis B)",
+    "HBsAg (Ag de Superficie de Hepatitis B) <",
+    "HBsAg (Ag de Superficie de Hepatitis B) >",
+    "HIVAg",
+    "HIVAb-Ag",
+    "HIVAb-Ag No reactivo",
+    "HIVAb-Ag Reactivo",
+    // GASOMETRIAS
+    "pH Sangre Arterial",
+    "pCO2 Sangre Arterial",
+    "pO2 Sangre Arterial",
+    "HCO3- Sangre Arterial",
+    "SO2c Sangre Arterial",
+    //
     "Factor reumatoide",
     "Velocidad de sedimentación globular",
     "Proteína C Reactiva (P.C.R.)",
     "Procalcitonina",
     //
     "Hemoglobina Glucosilada",
+    //
+    "Bilirrubina total",
+    "Bilirrubina directa",
+    "Bilirrubina Indirecta",
+    "Fosfatasa alcalina",
+    "AST (Aspartato Amino Transferasa TGO)",
+    "ALT (Alanino Amino Transferasa TGP)",
+    "LDH (Deshidrogenasa Láctica)",
+    "GGT (Gama Glutamiltranspeptidasa)",
+    "Globulinas",
+    "Proteinas Totales (Suero)",
     "Albúmina",
     //
+   "CK Creatinfosfoquinasa",
+   "CK-MB (CK Fracción MB)",
 
     "",
     "",
   ];
   static String queCategoriaPertenece(String laboratorioRealizado) {
+    // Terminal.printSuccess(message: "${laboratorioRealizado}");
+    //
     switch (laboratorioRealizado) {
       case "Eritrocitos":
         return Categorias[0];
@@ -8343,13 +8387,84 @@ class Auxiliares {
         return Categorias[2];
       case "Calcio sérico":
         return Categorias[2];
-    //
+      //
+      case "Nitrógeno Uréico (BUN)":
+        return Categorias[1];
+      case "Ácido úrico":
+        return Categorias[1];
+      //
+      case "Colesterol Total":
+        return Categorias[6];
+      case "Triglicéridos":
+        return Categorias[6];
+      //
+      case "Ac anti HCV":
+        return Categorias[20];
+      case "HIVAb":
+        return Categorias[20];
+      case "HBsAg (Ag de Superficie de Hepatitis B)":
+        return Categorias[20];
+      case "HBsAg (Ag de Superficie de Hepatitis B) <":
+        return Categorias[20];
+      case "HBsAg (Ag de Superficie de Hepatitis B) >":
+        return Categorias[20];
+      case "HBsAg (Ag de Superficie de Hepatitis B) > ":
+        return Categorias[20];
+      case "HBsAg (Ag de Superficie de Hepatitis B) < ":
+        return Categorias[20];
+      case "HIVAg":
+        return Categorias[20];
+      case "HIVAb-Ag":
+        return Categorias[20];
+      case "HIVAb-Ag No reactivo":
+        return Categorias[20];
+      case "HIVAb-Ag Reactivo":
+        return Categorias[20];
+      // GASOMETRIAS
+      case "pH Sangre Arterial":
+        return Categorias[9];
+      case "pCO2 Sangre Arterial":
+        return Categorias[9];
+      case "pO2 Sangre Arterial":
+        return Categorias[9];
+      case "HCO3- Sangre Arterial":
+        return Categorias[9];
+      case "SO2c Sangre Arterial":
+        return Categorias[9];
+      //
+      case "Bilirrubina total":
+        return Categorias[3];
+      case "Bilirrubina directa":
+        return Categorias[3];
+      case "Bilirrubina Indirecta":
+        return Categorias[3];
+      case "Fosfatasa alcalina":
+        return Categorias[3];
+      case "AST (Aspartato Amino Transferasa TGO)":
+        return Categorias[3];
+      case "ALT (Alanino Amino Transferasa TGP)":
+        return Categorias[3];
+
+      case "LDH (Deshidrogenasa Láctica)":
+        return Categorias[3];
+      case "GGT (Gama Glutamiltranspeptidasa)":
+        return Categorias[3];
+      case "Globulinas":
+        return Categorias[3];
+      case "Proteinas Totales (Suero)":
+        return Categorias[3];
+      // case "Relación A/G"
       case "Albúmina":
         return Categorias[3];
-    //
+      //
       case "Hemoglobina Glucosilada":
         return Categorias[25];
-    //
+      //
+      case "CK Creatinfosfoquinasa":
+        return Categorias[18];
+      case "CK-MB (CK Fracción MB)":
+        return Categorias[18];
+        //
       case "Factor reumatoide":
         return Categorias[8];
       case "Velocidad de sedimentación globular":
@@ -8367,7 +8482,7 @@ class Auxiliares {
   /// del compendio de Auxiliares.Laboratorios
   ///
   static String queLaboratorioPertenece(String laboratorioRealizado) {
-
+    // Terminal.printSuccess(message: "${partes[0]}");
     switch (laboratorioRealizado) {
       case "Eritrocitos":
         return "Eritrocitos";
@@ -8411,6 +8526,79 @@ class Auxiliares {
         return "Fosforo";
       case "Calcio sérico":
         return "Calcio";
+      case "Nitrógeno Uréico (BUN)":
+        return "Nitrógeno Úrico";
+      //
+      case "Ácido úrico":
+        return "Acido Úrico";
+      case "Colesterol Total":
+        return "Colesterol Total";
+
+      case "Triglicéridos":
+        return "Triglicéridos";
+      //
+      case "Bilirrubina total":
+        return "Bilirrubinas Totales";
+      case "Bilirrubina directa":
+        return "Bilirrubina Directa";
+      case "Bilirrubina Indirecta":
+        return "Bilirrubina Indirecta";
+      case "Fosfatasa alcalina":
+        return "Fosfatasa Alcalina";
+      case "AST (Aspartato Amino Transferasa TGO)":
+        return "Aspartatoaminotransferasa";
+      case "ALT (Alanino Amino Transferasa TGP)":
+        return "Alaninoaminotrasferasa";
+
+      case "LDH (Deshidrogenasa Láctica)":
+        return "Deshidrogenasa Láctica";
+      case "GGT (Gama Glutamiltranspeptidasa)":
+        return "Glutrailtranspeptidasa";
+      case "Globulinas":
+        return "Globulinas";
+      case "Proteinas Totales (Suero)":
+        return "Proteínas Totales";
+      // case "Relación A/G"
+      case "Albúmina":
+        return "Albúmina";
+      //
+      case "Ac anti HCV":
+        return "Ac Anti HCV";
+      case "HIVAb":
+        return "HIVab";
+      case "HBsAg (Ag de Superficie de Hepatitis B)":
+        return "HbsAg";
+      case "HBsAg (Ag de Superficie de Hepatitis B) <":
+        return "HbsAg";
+      case "HBsAg (Ag de Superficie de Hepatitis B) >":
+        return "HbsAg";
+      case "HBsAg (Ag de Superficie de Hepatitis B) > ":
+        return "HbsAg";
+      case "HBsAg (Ag de Superficie de Hepatitis B) < ":
+        return "HbsAg";
+      case "HIVAg":
+        return "HIVAg";
+      case "HIVAb-Ag No reactivo":
+        return "HIVAg-Ag";
+      case "HIVAb-Ag Reactivo":
+        return "HIVAg-Ag";
+      // GASOMETRIAS
+      //   case "pH Sangre Arterial":
+      //     return "pH";
+      //   case "pCO2 Sangre Arterial":
+      //     return "Presión de Dióxido de Carbono";
+      //   case "pO2 Sangre Arterial":
+      //  return "Presión de Oxígeno";
+      //   case "HCO3- Sangre Arterial":
+      // return "Bicarbonato Sérico";
+      //   case "SO2c Sangre Arterial":
+      // return "Saturación de Oxígeno";
+      //
+      case "CK Creatinfosfoquinasa":
+        return "CK Total";
+    case "CK-MB (CK Fracción MB)":
+      return "CK-Mb";
+    //
       case "Factor reumatoide":
         return "Factor Reumatoide";
       case "Velocidad de sedimentación globular":
@@ -8421,7 +8609,6 @@ class Auxiliares {
         return laboratorioRealizado;
     }
   }
-
 }
 
 class Pendientes {

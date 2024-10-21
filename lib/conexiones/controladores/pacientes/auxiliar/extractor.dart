@@ -54,8 +54,9 @@ class AuxiliarExtractor {
             for (var item in textLine) {
               String texto = item.text;
 
-              RegExp regExp =
-                  RegExp(r'(?![\x95\s\#])(\D+|\d*\.?\d*)(?![\s\#]$)');
+              RegExp regExp = RegExp(r'([A-Z]+),\s?(\d),\s?(-)|(?![\x95\s\#])(\D+|\d*\.?\d*)(?![\s\#]$)');
+
+              // RegExp(r'(?![\x95\s\#])(\D+|\d*\.?\d*)(?![\s\#]$)');
               // (?!\s[\x95#]$)
               //RegExp(r'(\D+|\d*\.?\d*)');
               // (?!#)[^#]+
@@ -70,31 +71,67 @@ class AuxiliarExtractor {
                   .toList();
               //
               for (var value in Auxiliares.paraclinicosInstitucionales) {
+                // Terminal.printSuccess(message: "${partes[0].replaceAll(RegExp(r'^(.*)\s<'), "").trim()}");
                 if (partes[0].contains(value)) {
+                  // Terminal.printSuccess(message: "${partes}");
                   // Terminal.printSuccess(message: "${partes.length}");
-                  if (partes.length > 2) {
-                    // Terminal.printSuccess(message: "${partes}");
-                    if (partes[0].trim() == value) {
-                      // Terminal.printSuccess(
-                      //     message: // "ITEM ENCONTRADO "
-                      //     "${partes[0]} . "
-                      //         "${partes[1]} . "
-                      //         "${partes[2]} . "
-                      //         "");
-                      valoresLaboratorio!.add([
-                        0,
-                        idPaciente,
-                        Calendarios.fromTextoLlano(
-                            fechaResultado!.trim().split("N: ")[1].trim()).toString(),
-                        Auxiliares.queCategoriaPertenece(partes[0].trim()),
-                        // partes[0].split("#")[0].trim()), // Tipo_Estudio
-                        Auxiliares.queLaboratorioPertenece(partes[0].trim()),
-                        // partes[0].split("#")[0].trim()), // Laboratorio
-                        partes[1].trim(),
-                        partes[2]
-                            .trim()
-                            .replaceAll(RegExp(r'[\s.*\s\*\.\!¯]'), ''),
-                      ]);
+                  Terminal.printExpected(message: "${partes} : : $value");
+                  if ((partes[0] == "HIVAb-Ag No reactivo" &&
+                          value == "HIVAb-Ag No reactivo") ||
+                      (partes[0] == "HIVAb-Ag Reactivo" &&
+                          value == "HIVAb-Ag Reactivo")) {
+                    valoresLaboratorio!.add([
+                      0,
+                      idPaciente,
+                      Calendarios.fromTextoLlano(
+                              fechaResultado!.trim().split("N: ")[1].trim())
+                          .toString(),
+                      Auxiliares.queCategoriaPertenece(partes[0]
+                          .trim()
+                          .replaceAll(RegExp(r'\<[^<>]*\>'), '')),
+                      "HIVAb-Ag",
+                      if (partes[0] == "HIVAb-Ag No reactivo")
+                        "No reactivo"
+                      else
+                        "Reactivo",
+                      "",
+                    ]);
+                  } else {
+                    if (partes.length > 2) {
+                      // Terminal.printSuccess(message: "${partes[0]}");
+                      if (partes[0].trim() == value || partes[0] == value) {
+                        // Terminal.printSuccess(
+                        //     message: // "ITEM ENCONTRADO "
+                        //     "${partes[0]} . "
+                        //         "${partes[1]} . "
+                        //         "${partes[2]} . "
+                        //         "");
+                        valoresLaboratorio!.add([
+                          0,
+                          idPaciente,
+                          Calendarios.fromTextoLlano(
+                                  fechaResultado!.trim().split("N: ")[1].trim())
+                              .toString(),
+                          Auxiliares.queCategoriaPertenece(partes[0]
+                              .trim()
+                              .replaceAll(RegExp(r'\<[^<>]*\>'), '')),
+                          // partes[0].split("#")[0].trim()), // Tipo_Estudio
+                          Auxiliares.queLaboratorioPertenece(partes[
+                              0].trim()), // .replaceAll(RegExp(r'^(.*)\s<'), '').trimRight()
+                          // partes[0].split("#")[0].trim()), // Laboratorio
+                          partes[1].trim(),
+                          if (partes[2] == "S/U Reactivo > = " ||
+                              partes[2] == "S/CO Reactivo > = ")
+                            "S/U"
+                          else if (partes[2] == "IU/mL Reactivo > = " ||
+                              partes[2] == "IU/mLReactivo>=")
+                            "UI/mL"
+                          else
+                            partes[2]
+                                .trim()
+                                .replaceAll(RegExp(r'[\s.*\s\*\.\!¯]'), ''),
+                        ]);
+                      }
                     }
                   }
                 }
@@ -140,7 +177,7 @@ class AuxiliarExtractor {
                       tittle: "Error al Consultar Base de Datos . . . ",
                       message: "$onError : $stackTrace",
                       onAcept: () => Navigator.of(context).pop(),
-              onClose: () => Navigator.of(context).pop(),
+                      onClose: () => Navigator.of(context).pop(),
                     ));
             // for (var valores in valoresLaboratorio!) {
             //   Actividades.registrar(

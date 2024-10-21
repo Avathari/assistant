@@ -21,6 +21,7 @@ class App extends StatelessWidget {
           thickness: WidgetStateProperty.all(5.0),
           minThumbLength: 100,
         ),
+        
         scaffoldBackgroundColor: Theming.bdColor,
         iconTheme: const IconThemeData(color: Colors.white),
         primaryIconTheme: const IconThemeData(color: Colors.white),

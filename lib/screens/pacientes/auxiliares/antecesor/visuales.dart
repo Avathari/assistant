@@ -1268,7 +1268,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
   }
 
   MaterialBanner _presentacionPaciente(BuildContext context) => MaterialBanner(
-        padding: const EdgeInsets.all(5.0),
+        padding: isDesktop(context) ? const EdgeInsets.all(2.0):const EdgeInsets.all(5.0),
         content: Detalles(withImage: isMobile(context) ? false : true),
         backgroundColor: Colors.black,
         forceActionsBelow: true,

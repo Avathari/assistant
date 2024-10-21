@@ -67,4 +67,5 @@ class infoHepatometrias {
 
   static String get clusterDiagnosticos_BD_BT => "";
   static String get clusterDiagnosticos_BD_BI => "";
+  static String get clusterDiagnosticos_Factor_R => "";
 }

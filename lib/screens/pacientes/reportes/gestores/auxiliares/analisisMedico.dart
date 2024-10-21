@@ -85,10 +85,8 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
     // analisisTextController
     //     .addListener(() => _saveToFile(analisisTextController.text));
     // Configurar un Timer que llame a _saveToFile cada 10 segundos
-    _timer = Timer.periodic(Duration(seconds: 7), (timer) {
-      _saveToFile(analisisTextController.text);
-      print('Texto guardado automáticamente cada 10 segundos');
-    });
+    _timer = Timer.periodic(Duration(seconds: 7),
+        (timer) => _saveToFile(analisisTextController.text));
     super.initState();
   }
 
@@ -279,15 +277,11 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                               }),
                           CrossLine(),
                           CircleIcon(
-                            iconed: Icons.add,
-                            tittle: "Comentarios Previos . . . ",
-                            onChangeValue: () {
-
-                                  _readFromFile().then((onValue) {
-                                    analisisTextController.text = onValue;
-                                  });
-                              }
-                          ),
+                              iconed: Icons.file_open_outlined,
+                              tittle: "Memoria temporal . . . ",
+                              onChangeValue: () => _readFromFile().then(
+                                  (onValue) =>
+                                      analisisTextController.text = onValue)),
                         ],
                       ))
                 ],
@@ -309,12 +303,13 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
     // final path = await _getFilePath();
     if (text.isNotEmpty) {
       final file = File(widget.analisisTemporalFile);
-      await file.writeAsString(text);
+      await file.writeAsString(text).whenComplete(
+          () => null); // print("Texto guardado automáticamente cada 10 segundos"));
     }
   }
 
   // Función opcional para leer el contenido del archivo (si quieres cargarlo después)
   Future<String> _readFromFile() async {
-        return await File(widget.analisisTemporalFile).readAsString();
+    return await File(widget.analisisTemporalFile).readAsString();
   }
 }
