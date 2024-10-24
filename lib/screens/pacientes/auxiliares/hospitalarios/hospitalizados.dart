@@ -1613,6 +1613,14 @@ class _HospitalizadosState extends State<Hospitalizados> {
                 children: [
                   Expanded(
                     child: GrandIcon(
+                      labelButton: "Indizar laboratorios de pacientes . . . ",
+                      iconData: Icons.fact_check_outlined,
+                      // onPress: () => _reiniciar(),
+                      onPress: () =>AuxiliarExtractor(context),
+                    ),
+                  ),
+                  Expanded(
+                    child: GrandIcon(
                         labelButton: "Reiniciar . . . ",
                         iconData: Icons.replay,
                         onPress: () =>

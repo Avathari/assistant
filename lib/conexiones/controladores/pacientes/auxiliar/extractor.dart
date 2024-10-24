@@ -176,7 +176,10 @@ class AuxiliarExtractor {
                       context: context,
                       tittle: "Error al Consultar Base de Datos . . . ",
                       message: "$onError : $stackTrace",
-                      onAcept: () => Navigator.of(context).pop(),
+                      onAcept: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                      },
                       onClose: () => Navigator.of(context).pop(),
                     ));
             // for (var valores in valoresLaboratorio!) {

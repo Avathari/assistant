@@ -523,7 +523,7 @@ class _ArterialesState extends State<Arteriales> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[index][6],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][6],
         textSodioArterialResultController.text,
         unidadMedidaANA!
         //0,
@@ -533,7 +533,7 @@ class _ArterialesState extends State<Arteriales> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[index][7],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][7],
         textPotasioArterialResultController.text,
         unidadMedidaAK!
         //0,
@@ -543,7 +543,7 @@ class _ArterialesState extends State<Arteriales> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[index][9],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][9],
         textCalcioIonicoArterialResultController.text,
         unidadMedidaCai!
         //0,
@@ -553,7 +553,7 @@ class _ArterialesState extends State<Arteriales> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
-        Auxiliares.Laboratorios[index][11],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][11],
         textGluAResultController.text,
         unidadMedidaGluA!
         //0,

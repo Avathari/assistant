@@ -7121,10 +7121,18 @@ class Auxiliares {
           return 'Ca2';
         } else if (estudio == 'Leucocitos Totales') {
           return 'Leu';
-        } else if (estudio == 'Neutrofilos Totales') {
+        } else if ((estudio == 'Neutrofilos Totales') ||
+            (estudio == 'Neutrófilos Totales')) {
           return 'Neu';
-        } else if (estudio == 'Linfocitos Totales') {
+        } else if ((estudio == 'Linfocitos Totales') ||
+            (estudio == 'Linfocitos Totales')) {
           return 'Lyn';
+        } else if ((estudio == 'Basofilos Totales') ||
+            (estudio == 'Basófilos Totales')) {
+          return 'Basy';
+        } else if ((estudio == 'Eosinofilos Totales') ||
+            (estudio == 'Eosinófilos Totales')) {
+          return 'Eosy';
         } else if (estudio == 'Monocitos Totales') {
           return 'Mon';
         } else if (estudio == 'Hemoglobina') {
@@ -8275,6 +8283,8 @@ class Auxiliares {
     "Hemoglobina",
     "Hematocrito",
     "Ancho de Distribución Eritrocitaria",
+    "Volúmen Corpuscular Medio",
+    "Hemoglobina Corpuscular Media",
     "Plaquetas",
     "Leucocitos",
     "Neutrófilos #",
@@ -8292,6 +8302,8 @@ class Auxiliares {
     //
     "Colesterol Total",
     "Triglicéridos",
+    "HDL Colesterol",
+    "LDL Colesterol",
     //
     "Sodio sérico",
     "Potasio sérico",
@@ -8335,10 +8347,34 @@ class Auxiliares {
     "Proteinas Totales (Suero)",
     "Albúmina",
     //
-   "CK Creatinfosfoquinasa",
-   "CK-MB (CK Fracción MB)",
-
-    "",
+    "CK Creatinfosfoquinasa",
+    "CK-MB (CK Fracción MB)",
+    //
+    "T3 Libre (Triyodotironina)",
+    "T4 Libre (Tiroxina)",
+    "TSH (H. Estimulante de la tiroides)",
+    "Colecalciferol (vitamina D3)",
+    "PTH (Paratohormona)",
+//
+    "Lipasa",
+    "Amilasa",
+//
+    "TP (Tiempo de protombina)",
+    "TTP Tiempo Parcial de Tromboplastina",
+    "TROMBOTEST)",
+    "INR (Relación Internacional Normalizada)",
+    "INR (Relación Internacional Normalizada",
+//
+    "Fibrinógeno",
+    "Dímero D",
+//
+    "Ferritina",
+    "Transferrina",
+    "Hierro sérico",
+    "Captación de Hierro",
+//
+    "NT-Pro-BNP ",
+    "NT- Pro - BNP",
     "",
   ];
   static String queCategoriaPertenece(String laboratorioRealizado) {
@@ -8350,6 +8386,10 @@ class Auxiliares {
       case "Hemoglobina":
         return Categorias[0];
       case "Hematocrito":
+        return Categorias[0];
+      case "Volúmen Corpuscular Medio":
+        return Categorias[0];
+      case "Hemoglobina Corpuscular Media":
         return Categorias[0];
       case "Ancho de Distribución Eritrocitaria":
         return Categorias[0];
@@ -8396,6 +8436,10 @@ class Auxiliares {
       case "Colesterol Total":
         return Categorias[6];
       case "Triglicéridos":
+        return Categorias[6];
+      case "HDL Colesterol":
+        return Categorias[6];
+      case "LDL Colesterol":
         return Categorias[6];
       //
       case "Ac anti HCV":
@@ -8464,7 +8508,7 @@ class Auxiliares {
         return Categorias[18];
       case "CK-MB (CK Fracción MB)":
         return Categorias[18];
-        //
+      //
       case "Factor reumatoide":
         return Categorias[8];
       case "Velocidad de sedimentación globular":
@@ -8473,6 +8517,55 @@ class Auxiliares {
         return Categorias[8];
       case "Procalcitonina":
         return Categorias[8];
+      //
+      case "T3 Libre (Triyodotironina)": // 4
+        return Categorias[4];
+      case "T4 Libre (Tiroxina)":
+        return Categorias[4];
+      case "TSH (H. Estimulante de la tiroides)":
+        return Categorias[4];
+      case "Colecalciferol (vitamina D3)": // 24
+        return Categorias[24];
+      case "PTH (Paratohormona)": // 23
+        return Categorias[23];
+
+      case "Lipasa": // 5
+        return Categorias[5];
+      case "Amilasa":
+        return Categorias[5];
+
+      case "TP (Tiempo de protombina)": // 7
+        return Categorias[7];
+      case "TTP Tiempo Parcial de Tromboplastina":
+        return Categorias[7];
+      case "TROMBOTEST)":
+        return Categorias[7];
+      case "INR (Relación Internacional Normalizada)":
+        return Categorias[7];
+      case "INR (Relación Internacional Normalizada":
+        return Categorias[7];
+
+      case "Fibrinógeno": // 8
+        return Categorias[8];
+      case "Dímero D":
+        return Categorias[8];
+
+      case "Ferritina": // 21
+        return Categorias[21];
+      case "Transferrina":
+        return Categorias[21];
+      case "Hierro sérico":
+        return Categorias[21];
+      case "Captación de Hierro":
+        return Categorias[21];
+        //
+           case "NT- Pro - BNP":
+             return Categorias[25];
+      case "NT-Pro-BNP ":
+        return Categorias[25];
+    case "NT- Pro - BNP ":
+    return Categorias[25];
+
       default:
         return "Tipo de Estudio No Identificado";
     }
@@ -8490,6 +8583,11 @@ class Auxiliares {
         return "Hemoglobina";
       case "Hematocrito":
         return "Hematocrito";
+      case "Volúmen Corpuscular Medio":
+        return "VCM";
+
+      case "Hemoglobina Corpuscular Media":
+        return "HCM";
       case "Ancho de Distribución Eritrocitaria":
         return "Ancho de Distribución Eritrocitaria";
       case "Plaquetas":
@@ -8583,28 +8681,83 @@ class Auxiliares {
       case "HIVAb-Ag Reactivo":
         return "HIVAg-Ag";
       // GASOMETRIAS
-      //   case "pH Sangre Arterial":
-      //     return "pH";
-      //   case "pCO2 Sangre Arterial":
-      //     return "Presión de Dióxido de Carbono";
-      //   case "pO2 Sangre Arterial":
-      //  return "Presión de Oxígeno";
-      //   case "HCO3- Sangre Arterial":
-      // return "Bicarbonato Sérico";
-      //   case "SO2c Sangre Arterial":
-      // return "Saturación de Oxígeno";
+      case "pH Sangre Arterial":
+        return "pH";
+      case "pCO2 Sangre Arterial":
+        return "Presión de Dióxido de Carbono";
+      case "pO2 Sangre Arterial":
+        return "Presión de Oxígeno";
+      case "HCO3- Sangre Arterial":
+        return "Bicarbonato Sérico";
+      case "SO2c Sangre Arterial":
+        return "Saturación de Oxígeno";
       //
       case "CK Creatinfosfoquinasa":
         return "CK Total";
-    case "CK-MB (CK Fracción MB)":
-      return "CK-Mb";
-    //
+      case "CK-MB (CK Fracción MB)":
+        return "CK-Mb";
+      //
       case "Factor reumatoide":
         return "Factor Reumatoide";
       case "Velocidad de sedimentación globular":
         return "Velocidad de sedimentación globular";
       case "Proteína C Reactiva (P.C.R.)":
         return "Proteína C Reactiva";
+      case "Procalcitonina": // 8
+        return "Procalcitonina";
+
+      case "T3 Libre (Triyodotironina)": // 4
+        return "T3-L";
+      case "T4 Libre (Tiroxina)":
+        return "T4-L";
+      case "TSH (H. Estimulante de la tiroides)":
+        return "TSH";
+      case "Colecalciferol (vitamina D3)": // 24
+        return "Colecalciferol";
+      case "PTH (Paratohormona)": // 23
+        return "PTH";
+
+      case "HDL Colesterol":
+        return "c-HDL";
+      case "LDL Colesterol":
+        return "c-LDL";
+      case "Lipasa": // 5
+        return "Lipasa";
+      case "Amilasa":
+        return "Amilasa";
+
+      case "TP (Tiempo de protombina)": // 7
+        return "Tiempo de Protrombina";
+      case "TPT Tiempo Parcial de Tromboplastina":
+        return "Tiempo Parcial de Tromboplastina";
+      case "TROMBOTEST)":
+        return "INR";
+      case "INR (Relación Internacional Normalizada)":
+        return "INR";
+      case "INR (Relación Internacional Normalizada":
+        return "INR";
+
+      case "Fibrinógeno": // 8
+        return "Fibrinógeno";
+      case "Dímero D":
+        return "Dímero D";
+
+      case "Ferritina": // 21
+        return "Ferritina";
+      case "Transferrina":
+        return "Transferrina";
+      case "Hierro sérico":
+        return "Hierro Sérico";
+      case "Captación de Hierro":
+        return "Captación de Hierro Sérico";
+        //
+      case "NT- Pro - BNP":
+        return "NT-pro BNP";
+      case "NT-Pro-BNP":
+        return "NT-pro BNP";
+      case "NT- Pro - BNP ":
+        return "NT-pro BNP";
+
       default:
         return laboratorioRealizado;
     }
@@ -8881,6 +9034,7 @@ class Pendientes {
       //   context: context,
       //   tittle: "Registro de Infusiones . . .",
       //   message: "Registro de Infusiones Preparados . ",
+      // onAcept: () => Navigator.of(context).pop(),
       // );
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "ERROR - $error : : : $stackTrace");
@@ -8888,6 +9042,7 @@ class Pendientes {
         context: context,
         tittle: "$error . . .",
         message: "$stackTrace",
+        onAcept: () => Navigator.of(context).pop(),
       );
       //
     });
@@ -9015,6 +9170,7 @@ class Pendientes {
         context: context,
         tittle: "Registro de Dispositivos . . .",
         message: "Registro de Dispositivos Agregados . ",
+        onAcept: () => Navigator.of(context).pop(),
       );
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "ERROR - $error : : : $stackTrace");
@@ -9022,6 +9178,7 @@ class Pendientes {
         context: context,
         tittle: "$error . . .",
         message: "$stackTrace",
+        onAcept: () => Navigator.of(context).pop(),
       );
       //
     });

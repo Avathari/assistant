@@ -1,5 +1,6 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/conexiones/controladores/pacientes/auxiliar/extractor.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart'
     as Gas;
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
@@ -1155,6 +1156,20 @@ class _VisualPacientesState extends State<VisualPacientes> {
                                   }));
                             }),
                       ])),
+              CrossLine(thickness: 3, height: 20, color: Colors.grey),
+              Expanded(
+                flex: 2,
+                child: CircleIcon(
+                  iconed: Icons.send_time_extension_outlined,
+                  radios: 35,
+                  difRadios: 5,
+                  tittle: "Extractor de Paraclínicos . . . ",
+                  onChangeValue: () {
+                    _key.currentState!.closeEndDrawer();
+                    AuxiliarExtractor(context);
+                  },
+                ),
+              ),
               CrossLine(thickness: 3, height: 20, color: Colors.grey),
           Expanded(
             flex: 2,

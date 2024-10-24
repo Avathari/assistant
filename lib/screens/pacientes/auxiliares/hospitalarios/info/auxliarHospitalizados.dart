@@ -668,8 +668,11 @@ class Paneles {
 
     // Terminal.printWarning(message: "PENDIENTES : ${foundedItems![0].hospitalizedData.keys.toString()}");
     for (int index = 0; index < foundedItems!.length; index++) {
-      idCama =
-          int.parse(foundedItems[index].hospitalizedData['Id_Cama'] ?? "0");
+      //
+      if (foundedItems[index].hospitalizedData['Id_Cama'] != "N/A") {
+        idCama =
+            int.parse(foundedItems[index].hospitalizedData['Id_Cama'] ?? "0");
+      }
       //
 
       //
@@ -679,8 +682,7 @@ class Paneles {
         // if (pendiente['Pace_PEN_realized'] == 1) {
         if (pendiente['Pace_PEN_realized'] == 0 &&
             (pendiente['Pace_PEN'] == Pendientes.typesPendientes[1] ||
-                pendiente['Pace_PEN'] ==
-                    Pendientes.typesPendientes[2])) {
+                pendiente['Pace_PEN'] == Pendientes.typesPendientes[2])) {
           // Terminal.printExpected(message: "${foundedItems![index].pendientes}");
           pendientes.add(Text(
             "${pendiente['Feca_PEN']} : : ${pendiente['Pace_Desc_PEN']}",
@@ -716,7 +718,7 @@ class Paneles {
                         pendiente['Pace_PEN'] ==
                             Pendientes.typesPendientes[2])) {
                   pendientario =
-                  "$pendientario${pendiente['Feca_PEN']} : : ${pendiente['Pace_Desc_PEN']}\n";
+                      "$pendientario${pendiente['Feca_PEN']} : : ${pendiente['Pace_Desc_PEN']}\n";
                   //
                   // if (pendiente['Pace_PEN'] == Pendientes.typesPendientes[1]){
                   //   pendientario =
@@ -729,7 +731,6 @@ class Paneles {
                   // }
 
                   // Terminal.printExpected(message: "${foundedItems![index].pendientes}");
-
                 }
               }
               Datos.portapapeles(context: context, text: pendientario);
@@ -757,7 +758,7 @@ class Paneles {
     }
     return Column(
       children: [
-                Expanded(
+        Expanded(
           child: TittleContainer(
             tittle: "Pendientes Recabados . . . ",
             padding: 2.0,
@@ -785,27 +786,32 @@ class Paneles {
                     String pendientes0 = "";
                     //
                     for (int index = 0; index < foundedItems.length; index++) {
-                      idCama =
-                          int.parse(foundedItems[index].hospitalizedData['Id_Cama'] ?? "0");
+                      //
+                      if (foundedItems[index].hospitalizedData['Id_Cama'] !=
+                          "N/A") {
+                        idCama = int.parse(
+                            foundedItems[index].hospitalizedData['Id_Cama'] ??
+                                "0");
+                      }
+                      //
                       String pendie = "";
                       //
                       for (var pendiente in foundedItems[index].pendientes) {
-
                         //
                         if (pendiente['Pace_PEN_realized'] == 0 &&
-                            (pendiente['Pace_PEN'] == Pendientes.typesPendientes[1] ||
+                            (pendiente['Pace_PEN'] ==
+                                    Pendientes.typesPendientes[1] ||
                                 pendiente['Pace_PEN'] ==
                                     Pendientes.typesPendientes[2])) {
                           // Terminal.printExpected(message: "${foundedItems![index].pendientes}");
-                          pendie = "$pendie${pendiente['Feca_PEN']} : : ${pendiente['Pace_Commen_PEN']}\n"; // Pace_Commen_PEN Pace_Desc_PEN
+                          pendie =
+                              "$pendie${pendiente['Feca_PEN']} : : ${pendiente['Pace_Commen_PEN']}\n"; // Pace_Commen_PEN Pace_Desc_PEN
                         }
                       }
                       pendientes0 = "$pendientes0$idCama : : $pendie\n";
                     }
                     //
-                    Datos.portapapeles(
-                        context: context,
-                        text: pendientes0);
+                    Datos.portapapeles(context: context, text: pendientes0);
                   }),
               GrandIcon(
                   labelButton: "Cultivos Recabados",
@@ -815,23 +821,23 @@ class Paneles {
                     String cultivos = "";
                     //
                     for (int index = 0; index < foundedItems.length; index++) {
-                      idCama =
-                          int.parse(
-                              foundedItems[index].hospitalizedData['Id_Cama'] ??
-                                  "0");
-                      cultivos = "$cultivos\n$idCama : : ${Internado.getCultivos(
-                          listadoFrom: foundedItems[index].paraclinicos)}";
+                      if (foundedItems[index].hospitalizedData['Id_Cama'] !=
+                          "N/A") {
+                        idCama = int.parse(
+                            foundedItems[index].hospitalizedData['Id_Cama'] ??
+                                "0");
+                      }
+
+                      cultivos =
+                          "$cultivos\n$idCama : : ${Internado.getCultivos(listadoFrom: foundedItems[index].paraclinicos)}";
                       //
                     }
                     //
-                    Datos.portapapeles(
-                        context: context,
-                        text: cultivos);
-
+                    Datos.portapapeles(context: context, text: cultivos);
                   }),
-            ],),
+            ],
+          ),
         ),
-
       ],
     );
   }
