@@ -913,6 +913,8 @@ class _HospitalizadosState extends State<Hospitalizados> {
   }
 
   GestureDetector mobileView(AsyncSnapshot snapshot, int index) {
+    Terminal.printWarning(message: foundedItems![index].balances.toString());
+    //
     return GestureDetector(
       // onTap: () {
       //   // Terminal.printExpected(
@@ -1684,6 +1686,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                         "$error : : $stackTrace");
                               });
                             })),
+                  const SizedBox(width: 75),
                 ],
               ),
       );

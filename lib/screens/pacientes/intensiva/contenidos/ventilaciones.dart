@@ -95,6 +95,10 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
               Ventilaciones.Ventilacion['Pace_Peep'].toString();
           Valores.presionFinalEsiracion = int.parse(peepTextController.text);
           //
+          peepIntrinsecaTextController.text =
+              Ventilaciones.Ventilacion['Pace_Peep_Intrinseca'].toString() ?? "0";
+          Valores.presionFinalEsiracionIntrinseca = int.parse(peepIntrinsecaTextController.text);
+          //
           respTextController.text =
               Ventilaciones.Ventilacion['Pace_Fr'].toString();
           Valores.frecuenciaVentilatoria = int.parse(respTextController.text);
@@ -669,17 +673,37 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
           });
         },
       ),
-      EditTextArea(
-        keyBoardType: TextInputType.number,
-        inputFormat: TextFormat.standardFormat,
-        labelEditText: 'P.E.E.P. (cmH2O)',
-        textController: peepTextController,
-        numOfLines: 1,
-        onChange: (value) {
-          setState(() {
-            Valores.presionFinalEsiracion = int.parse(value);
-          });
-        },
+      Row(
+        children: [
+          Expanded(
+            child: EditTextArea(
+              keyBoardType: TextInputType.number,
+              inputFormat: TextFormat.standardFormat,
+              labelEditText: 'P.E.E.P. (cmH2O)',
+              textController: peepTextController,
+              numOfLines: 1,
+              onChange: (value) {
+                setState(() {
+                  Valores.presionFinalEsiracion = int.parse(value);
+                });
+              },
+            ),
+          ),
+          Expanded(
+            child: EditTextArea(
+              keyBoardType: TextInputType.number,
+              inputFormat: TextFormat.standardFormat,
+              labelEditText: 'PEEPi (cmH2O)',
+              textController: peepIntrinsecaTextController,
+              numOfLines: 1,
+              onChange: (value) {
+                setState(() {
+                  Valores.presionFinalEsiracionIntrinseca = int.parse(value);
+                });
+              },
+            ),
+          ),
+        ],
       ),
       CrossLine(),
       //
@@ -969,6 +993,8 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         respTextController.text,
         fioTextController.text,
         peepTextController.text,
+        peepIntrinsecaTextController.text,
+        //
         sensInspTextController.text,
         sensEspTextController.text,
         //
@@ -1109,6 +1135,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
 
   var volTidalTextController = TextEditingController();
   var peepTextController = TextEditingController();
+  var peepIntrinsecaTextController = TextEditingController();
   var respTextController = TextEditingController();
   var fioTextController = TextEditingController();
   var sensInspTextController = TextEditingController();

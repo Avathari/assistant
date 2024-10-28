@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 
 class Renometrias {
-
   static String renales({isAbreviado = true}) {
     if (isAbreviado) {
       return "Tasa de Filtrado Glomerular : $claseTasaRenal (KDIGO:CKD-EPI). "
@@ -65,31 +64,24 @@ class Renometrias {
 
   static String get claseTasaRenal {
     String clasificacion = '';
-    double tfgPace = (tasaRenalCrockoft_Gault +
-        tasaRenalMDRD +
-        tasaRenalCKDEPI) /
-        3;
+    double tfgPace =
+        (tasaRenalCrockoft_Gault + tasaRenalMDRD + tasaRenalCKDEPI) / 3;
     if (tfgPace <= 15) {
-      clasificacion =
-      "Estadio G5 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2";
+      clasificacion = "Estadio G5 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2";
     } else if (tfgPace <= 29) {
-      clasificacion =
-      "Estadio G4 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2";
+      clasificacion = "Estadio G4 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2";
     } else if (tfgPace <= 44) {
       clasificacion =
-      "Estadio G3b  ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2";
+          "Estadio G3b  ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2";
     } else if (tfgPace <= 59) {
       clasificacion =
-      "Estadio G3a ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2";
+          "Estadio G3a ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2";
     } else if (tfgPace <= 89) {
-      clasificacion =
-      "Estadio G2 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2";
+      clasificacion = "Estadio G2 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2";
     } else if (tfgPace <= 140) {
-      clasificacion =
-      "Estadio G1 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2";
+      clasificacion = "Estadio G1 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2";
     } else {
-      clasificacion =
-      "Estadio G1 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2";
+      clasificacion = "Estadio G1 ${tfgPace.toStringAsFixed(2)} mL/min/1.73 m2";
     }
 
     return clasificacion;
@@ -119,7 +111,7 @@ class Renometrias {
   ///
   /// puede consultar https://www.scymed.com/es/smnxps/pspdm085.htm
   ///
-  static double? get indiceFallaRenal{
+  static double? get indiceFallaRenal {
     if (Valores.creatinina != null) {
       if (Valores.creatininaUrinarios != null) {
         if (Valores.sodioUrinarios != null) {
@@ -133,8 +125,11 @@ class Renometrias {
     return null;
   }
 
-
   /// Fracción Excretada de Sodio (FeNa2+) . . .
   ///
-  static double get fraccionExcretadaSodio => Valores.urea! / Valores.creatinina!;
+  static double get fraccionExcretadaSodio =>
+      Valores.urea! / Valores.creatinina!;
+
+  // Depuración de Creatinina
+//Depuración de Agual Libre
 }

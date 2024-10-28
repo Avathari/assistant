@@ -5,7 +5,7 @@ import 'package:assistant/screens/pacientes/intensiva/analisis/cardiovasculares.
 import 'package:assistant/screens/pacientes/intensiva/analisis/gasometricos.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/hematinicos.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/hidricos.dart';
-import 'package:assistant/screens/pacientes/intensiva/analisis/metabolometrias.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/metabolometricos.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/ventilatorios.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/analisisMedico.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/exploracionFisica.dart';

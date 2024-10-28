@@ -89,7 +89,7 @@ class Calendarios {
     };
 
     // Dividimos la cadena
-    List<String> partesFecha = fechaResultado!.toLowerCase().split(' ')!;
+    List<String> partesFecha = fechaResultado!.toLowerCase().split(' ');
     // Terminal.printSuccess(message: partesFecha.toString());
 
     int dia = int.parse(partesFecha[0]); // Obtenemos el día
@@ -314,6 +314,8 @@ class Archivos {
   }
 
   static Future readJsonToMap({required String filePath}) async {
+    Terminal.printOther(message: filePath.toString());
+    //
     var file, contents;
     if (Platform.isAndroid) {
       final directory = await getTemporaryDirectory();
@@ -1003,6 +1005,8 @@ class Operadores {
     onClose,
     onAcept,
   }) {
+    Terminal.printAlert(message: "$message");
+    //
     showDialog(
         barrierDismissible: false,
         context: context,

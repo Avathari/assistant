@@ -52,15 +52,16 @@ class _GrandLabelState extends State<GrandLabel> {
           onPressed: () {
             widget.onPress();
           },
-          child: Wrap(
+          child: Row(
             children: [
               Icon(widget.iconData),
               const SizedBox(
-                width: 4,
+                width: 8,
               ),
               Expanded(
                   child: Text(
                 widget.labelButton!,
+                maxLines: 3,
                 style: TextStyle(
                     fontSize: widget.fontSized!,
                     overflow: TextOverflow.ellipsis),

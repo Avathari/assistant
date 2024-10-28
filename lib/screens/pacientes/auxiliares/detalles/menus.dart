@@ -135,6 +135,16 @@ class Menus {
                 style: Styles.textSyleGrowth(fontSize: 8)),
           ),
         ),
+        PopupMenuItem(
+          value: 1,
+          onTap: () => Datos.portapapeles(
+              context: context, text: Antropometrias.pesosCorporales),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: Text("Pesos Corporales",
+                style: Styles.textSyleGrowth(fontSize: 8)),
+          ),
+        ),
       ],
       offset: const Offset(0, 100),
       color: Theming.cuaternaryColor,

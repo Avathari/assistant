@@ -694,7 +694,8 @@ class _GestionPacientesState extends State<GestionPacientes> {
         message: "Iniciando actividad : : \n "
             "Consulta de pacientes hospitalizados . . .");
     Actividades.detalles(Databases.siteground_database_regpace,
-            Pacientes.pacientes['pacientesStadistics'], emulated: true)
+            Pacientes.pacientes['pacientesStadistics'],
+            emulated: true)
         .then((value) {
       Archivos.createJsonFromMap([value],
           filePath: 'assets/vault/patientsStats.json');
@@ -709,7 +710,8 @@ class _GestionPacientesState extends State<GestionPacientes> {
     });
 
     Actividades.consultar(Databases.siteground_database_regpace,
-            Pacientes.pacientes['consultQuery']!, emulated: true)
+            Pacientes.pacientes['consultQuery']!,
+            emulated: true)
         .then((value) {
       setState(() {
         Terminal.printSuccess(
@@ -1036,7 +1038,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: isMobile(context) ||
-          // isMobileAndTablet(context)  ||
+              // isMobileAndTablet(context)  ||
               // isDesktop(context) ||
               isLargeDesktop(context) ||
               isTablet(
@@ -1162,10 +1164,11 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
 
   // Operaciones de Inicio ***** ******* ********** ****
   Future<void> reiniciar() async {
-    Archivos.deleteFile(filePath: Pacientes.localPath);
+    Archivos.deleteFile(filePath: Pacientes.localPath).whenComplete(() =>
+        Terminal.printWarning(
+            message:
+                " . . . Reiniciando Actividad - Repositorio de Pacientes"));
     var fileAssocieted = 'assets/vault/pacientesRepository.json';
-    Terminal.printWarning(
-        message: " . . . Reiniciando Actividad - Repositorio de Pacientes");
     Archivos.deleteFile(filePath: fileAssocieted);
   }
 

@@ -17,7 +17,8 @@ class Basico extends StatefulWidget {
 class _BasicoState extends State<Basico> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return SingleChildScrollView(
+      controller: ScrollController(),
       padding: const EdgeInsets.all(8.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

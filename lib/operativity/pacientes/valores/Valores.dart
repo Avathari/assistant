@@ -315,6 +315,7 @@ class Valores {
     saturacionPerifericaOxigeno = json['Pace_SV_spo'] ?? 0;
     glucemiaCapilar = json['Pace_SV_glu'] ?? 0;
     horasAyuno = json['Pace_SV_glu_ayu'] ?? 0;
+    insulinaGastada  = json['Pace_SV_insulina'] ?? 0;
 
     fraccionInspiratoriaOxigeno = json['Pace_SV_fio'] ?? 21;
     presionVenosaCentral = json['Pace_SV_pvc'] ?? 0;
@@ -882,6 +883,7 @@ class Valores {
       saturacionPerifericaOxigeno,
       glucemiaCapilar,
       horasAyuno,
+  insulinaGastada,
       circunferenciaCintura,
       circunferenciaCadera,
       circunferenciaCuello,
@@ -1075,6 +1077,7 @@ class Valores {
   static int? frecuenciaVentilatoria = 0,
       fraccionInspiratoriaVentilatoria = 0,
       presionFinalEsiracion = 0,
+      presionFinalEsiracionIntrinseca = 0,
       sensibilidadInspiratoria = 0,
       sensibilidadEspiratoria = 0,
       presionControl = 0,

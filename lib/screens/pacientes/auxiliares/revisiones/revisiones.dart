@@ -11,8 +11,9 @@ import 'package:assistant/screens/pacientes/intensiva/analisis/antropometricos.d
 import 'package:assistant/screens/pacientes/intensiva/analisis/balancesHidrico.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/cardiovasculares.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/gasometricos.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/hepatometricos.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/hidricos.dart';
-import 'package:assistant/screens/pacientes/intensiva/analisis/metabolometrias.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/metabolometricos.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/ventilatorios.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
@@ -57,48 +58,21 @@ class _RevisionesState extends State<Revisiones> {
               onAcept: () => Navigator.of(context).pop(),
             ));
     //
-    // Archivos.readJsonToMap(filePath:
-    // Pacientes.localPath
-    // ).then((value) {
-    //   Terminal.printAlert(message: " : : DATA OBTENIDA. . . ${value.last}");
-    //   Valores.fromJson(value[value.length -1]);
-    // }).whenComplete(() => setState(() {})).onError((error, stackTrace) async {
-    //   Terminal.printAlert(message: " ERROR $error: : $stackTrace");
-    //   Valores vala = Valores();
-    //   vala.load();
-    // });
-    //
-    // Pacientes.getValores( reload: reload).then((value) => null);
-    //.whenComplete(() => setState((){}));
-    // Pacientes.getParaclinicosHistorial(reload: true).then((value) {
-    //   setState(() {
-    //     reload = false;
-    //     // Terminal.printWarning(message: "fechaVitales : : ${Valores.fechaVitales} : : $reload");
-    //   });
-    // });
-    // Pacientes.getParaclinicosHistorial();
-    // Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
-    //   setState(() {
-    //     Valores.fromJson(value[0]);
-    //     Terminal.printSuccess(
-    //         message: 'Repositorio de Valores obtenido . . . '); // ${value[0]}
-    //   });
-    // }).onError((error, stackTrace) {
-    //   Terminal.printAlert(
-    //       message: " . . . Actividad no iniciada : $error \n: : $stackTrace");
-    // }).whenComplete(() {
-    //   setState(() {
-    //     Auxiliares.registros();
-    //     Terminal.printOther(message: " . . . Actividad Iniciada");
-    //   });
-    // });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return isMobile(context) ? mobileView() : tabletView();
   }
+
 
   mobileView() {
     return RoundedPanel(
@@ -429,7 +403,7 @@ class _RevisionesState extends State<Revisiones> {
                                                   : widget.actualView == 5
                                                       ? venosos()
                                                       : widget.actualView == 6
-                                                          ? hepaticos()
+                                                          ? Hepatometricos()
                                                           : widget.actualView ==
                                                                   7
                                                               ? electrolitos()
@@ -1126,7 +1100,7 @@ class _RevisionesState extends State<Revisiones> {
                                   : widget.actualView == 5
                                       ? venosos()
                                       : widget.actualView == 6
-                                          ? hepaticos()
+                                          ? Hepatometricos()
                                           : widget.actualView == 7
                                               ? electrolitos()
                                               : widget.actualView == 8
@@ -2301,194 +2275,6 @@ class _RevisionesState extends State<Revisiones> {
             ],
           ),
         ),
-      ],
-    );
-  }
-
-  Column hepaticos() {
-    return Column(
-      children: [
-        ValuePanel(
-          firstText: "",
-          secondText: Valores.fechaHepaticos.toString(),
-          thirdText: "",
-          fontSize: 8,
-          heigth: 36,
-        ),
-        Expanded(
-          flex: isDesktop(context) ? 3 : 4,
-          child: GridView(
-            padding: const EdgeInsets.all(5.0),
-            controller: ScrollController(),
-            gridDelegate: GridViewTools.gridDelegate(
-                crossAxisCount: isMobile(context) ? 3 : 5,
-                mainAxisSpacing: 1.0,
-                crossAxisSpacing: 1.0,
-                mainAxisExtent: 50), //46
-            children: [
-              // ValuePanel(
-              //   secondText: Valores.fechaHepaticos ?? '',
-              // ),
-              ValuePanel(
-                firstText: "BT",
-                secondText: Valores.bilirrubinasTotales!.toStringAsFixed(2),
-                thirdText: "mg/dL",
-              ),
-              ValuePanel(
-                firstText: "BD",
-                secondText: Valores.bilirrubinaDirecta!.toStringAsFixed(2),
-                thirdText: "mg/dL",
-              ),
-              ValuePanel(
-                firstText: "BI",
-                secondText: Valores.bilirrubinaIndirecta!.toStringAsFixed(2),
-                thirdText: "mg/dL",
-              ),
-              ValuePanel(
-                firstText: "GGT",
-                secondText: Valores.glutrailtranspeptidasa!.toStringAsFixed(0),
-                thirdText: "UI/L",
-              ),
-              ValuePanel(
-                firstText: "FA",
-                secondText: Valores.fosfatasaAlcalina!.toStringAsFixed(0),
-                thirdText: "UI/L",
-              ),
-              CrossLine(),
-              ValuePanel(
-                firstText: "Alb",
-                secondText: Valores.albuminaSerica!.toStringAsFixed(1),
-                thirdText: "g/dL",
-              ),
-              ValuePanel(
-                firstText: "Prot-",
-                secondText: Valores.proteinasTotales!.toStringAsFixed(1),
-                thirdText: "g/dL",
-              ),
-              CrossLine(),
-              ValuePanel(
-                firstText: "AST",
-                secondText:
-                    Valores.aspartatoaminotransferasa!.toStringAsFixed(1),
-                thirdText: "UI/L",
-              ),
-              ValuePanel(
-                firstText: "ALT",
-                secondText: Valores.alaninoaminotrasferasa!.toStringAsFixed(1),
-                thirdText: "UI/L",
-              ),
-            ],
-          ),
-        ),
-        CrossLine(height: 1),
-        Expanded(
-          flex: 5,
-          child: Column(
-            children: [
-              ValuePanel(
-                padding: 0.0,
-                firstText: "Factor R",
-                secondText: Hepatometrias.factorR.toStringAsFixed(2),
-                thirdText: "",
-                fontSize: 9,
-                heigth: 36,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: ValuePanel(
-                      firstText: "AST/ALT",
-                      secondText:
-                          Hepatometrias.relacionASTALT.toStringAsFixed(2),
-                      thirdText: "",
-                    ),
-                  ),
-                  Expanded(
-                    child: ValuePanel(
-                      firstText: "ALT/FA",
-                      secondText:
-                          Hepatometrias.relacionALTFA.toStringAsFixed(2),
-                      thirdText: "",
-                    ),
-                  ),
-                  Expanded(
-                    child: ValuePanel(
-                      firstText: "ALT/DHL",
-                      secondText:
-                          Hepatometrias.relacionALTDHL.toStringAsFixed(2),
-                      thirdText: "",
-                    ),
-                  ),
-                  Expanded(
-                    child: ValuePanel(
-                      firstText: "GGT/FA",
-                      secondText:
-                          Hepatometrias.relacionGGTFA.toStringAsFixed(2),
-                      thirdText: "",
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: ValuePanel(
-                      firstText: "BD/BI",
-                      secondText: Hepatometrias.relacionBDBI.toStringAsFixed(2),
-                      thirdText: "",
-                    ),
-                  ),
-                  Expanded(
-                    child: ValuePanel(
-                      firstText: "BD/BT",
-                      secondText: Hepatometrias.relacionBDBT.toStringAsFixed(2),
-                      thirdText: "",
-                    ),
-                  ),
-                  // Expanded(
-                  //   child: ValuePanel(
-                  //     firstText: "ALT/DHL",
-                  //     secondText: Hepatometrias.relacionALTDHL.toStringAsFixed(2),
-                  //     thirdText: "",
-                  //   ),
-                  // ),
-                  // Expanded(
-                  //   child: ValuePanel(
-                  //     firstText: "GGT/FA",
-                  //     secondText: Hepatometrias.relacionGGTFA.toStringAsFixed(2),
-                  //     thirdText: "",
-                  //   ),
-                  // ),
-                ],
-              ),
-              CrossLine(),
-              Row(
-                children: [
-                  Expanded(
-                    child: ValuePanel(
-                      firstText: "iAPRI",
-                      secondText: Hepatometrias.APRI.toStringAsFixed(2),
-                      thirdText: "",
-                    ),
-                  ),
-                  Expanded(
-                    child: ValuePanel(
-                      firstText: "FIB-4",
-                      secondText: Hepatometrias.Fib4.toStringAsFixed(2),
-                      thirdText: "",
-                    ),
-                  ),
-                ],
-              ),
-              GrandButton(
-                  height: 40,
-                  fontSize: 8.0,
-                  labelButton: "Análisis Hepáticos",
-                  onPress: () => Datos.portapapeles(
-                      context: context, text: Hepatometrias.hepaticos())),
-            ],
-          ),
-        )
       ],
     );
   }

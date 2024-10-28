@@ -1,11 +1,14 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/metabolometrias.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/antropometricos.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/balancesHidrico.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/basico.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/cardiovasculares.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/gasometricos.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/hepatometricos.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/hidricos.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/metabolometricos.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/ventilatorios.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
@@ -26,7 +29,7 @@ class _AnalisisLateralesState extends State<AnalisisLaterales> {
     return Column(
       children: [
         Expanded(
-          flex: 8,
+          flex: 12,
           child: widget.actualLateralPage == 0
               ?  const Concentraciones()
               : widget.actualLateralPage == 1
@@ -41,6 +44,10 @@ class _AnalisisLateralesState extends State<AnalisisLaterales> {
               ? const Antropometricos()
               : widget.actualLateralPage == 6
               ? const BalanceHidrico()
+              : widget.actualLateralPage ==  7
+              ? Metabolicos()
+              : widget.actualLateralPage ==  8
+              ? Hepatometricos()
               : const Basico(),
         ),
         // CrossLine(color:Colors.grey),
@@ -96,6 +103,25 @@ class _AnalisisLateralesState extends State<AnalisisLaterales> {
                     onPress: () => setState(() {
                       widget.actualLateralPage = 7;
                     })),
+              ],
+            )),
+        Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                GrandIcon(
+                    labelButton: 'Metabolometrías',
+                    iconData: Icons.food_bank_outlined,
+                    onPress: () => setState(() =>
+                      widget.actualLateralPage = 7
+                    )),
+                GrandIcon(
+                    labelButton: 'Hepatometrías',
+                    iconData: Icons.live_help_outlined,
+                    onPress: () => setState(() =>
+                    widget.actualLateralPage = 8
+                    )),
               ],
             )),
         Expanded(
@@ -165,6 +191,20 @@ class _AnalisisLateralesState extends State<AnalisisLaterales> {
                   Datos.portapapeles(
                       context: context,
                       text: Auxiliares.historial(withoutInsighs: true));
+                },
+              ),
+              GrandIcon(
+                iconData: Icons.hourglass_bottom,
+                labelButton: "Cultivos . . . ",
+                onPress: () {
+                  Datos.portapapeles(
+                      context: context,
+                      text: Auxiliares.getCultivos(esAbreviado: true));
+                },
+                onLongPress: () {
+                  Datos.portapapeles(
+                      context: context,
+                      text: Auxiliares.getCultivos(esAbreviado: true));
                 },
               ),
             ],

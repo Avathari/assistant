@@ -1058,7 +1058,8 @@ class Pacientes {
     "Casado(a)",
     "Union Libre",
     "Separado(a)",
-    "Viudo(a)"
+    "Viudo(a)",
+    ""
   ];
   static final List<String> Escolaridad = [
     'Analfabeta',
@@ -1578,18 +1579,18 @@ class Pacientes {
 
   //
   static Future<void> getValores({bool reload = false}) async {
-    Terminal.printNotice(
-        message: " : : INICIANDO ACTIVIDAD . . . "
-            "GET VALORES : ${Pacientes.ID_Paciente}");
+    // Terminal.printNotice(
+    //     message: " : : INICIANDO ACTIVIDAD . . . "
+    //         "GET VALORES : ${Pacientes.ID_Paciente}");
     //
     if (reload) {
       Valores vala = Valores();
       vala.load();
     } else {
       await Archivos.readJsonToMap(filePath: Pacientes.localPath).then((value) {
-        Terminal.printNotice(
-            message: " : : OBTENIDO DE ARCHIVO . . . ${Pacientes.localPath}");
-        Terminal.printAlert(message: " : : DATA OBTENIDA. . . ${value.last}");
+        // Terminal.printNotice(
+        //     message: " : : OBTENIDO DE ARCHIVO . . . ${Pacientes.localPath}");
+        // Terminal.printAlert(message: " : : DATA OBTENIDA. . . ${value.last}");
         Valores.fromJson(value[value.length - 1]);
       }).onError((error, stackTrace) async {
         Terminal.printAlert(message: " ERROR $error: : $stackTrace");
@@ -1607,18 +1608,17 @@ class Pacientes {
               Auxiliares.auxiliares['consultByIdPrimaryQuery'],
               Pacientes.ID_Paciente)
           .then((value) async {
-        // Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . ");
-        //
         return Pacientes.Paraclinicos = value;
-      }).whenComplete(() => Archivos.createJsonFromMap(Pacientes.Paraclinicos!,
+      }
+      ).whenComplete(() => Archivos.createJsonFromMap(Pacientes.Paraclinicos!,
               filePath: "${Pacientes.localRepositoryPath}paraclinicos.json"));
     } else {
       await Archivos.readJsonToMap(
               filePath: '${Pacientes.localRepositoryPath}paraclinicos.json')
           .then((value) {
-        Terminal.printNotice(
-            message:
-                " : : OBTENIDO DE ARCHIVO . . . ${Pacientes.localRepositoryPath}paraclinicos.json");
+        // Terminal.printNotice(
+            // message:
+            //     " : : OBTENIDO DE ARCHIVO . . . ${Pacientes.localRepositoryPath}paraclinicos.json");
         //
         return Pacientes.Paraclinicos = value;
       }).onError((error, stackTrace) async {
@@ -1627,7 +1627,7 @@ class Pacientes {
                 Auxiliares.auxiliares['consultByIdPrimaryQuery'],
                 Pacientes.ID_Paciente)
             .then((value) async {
-          Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . ");
+          // Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . ");
           //
           return Pacientes.Paraclinicos = value;
         }).whenComplete(() => Archivos.createJsonFromMap(
@@ -5619,7 +5619,8 @@ class Vitales {
               Pace_SV_fio INT, 
               Pace_SV_pvc INT, 
               Pace_SV_pic INT, 
-              Pace_SV_pia INT
+              Pace_SV_pia INT,
+              Pace_SV_insulina INT
             ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla para Agregar Signos Vitales del Paciente.';""",
     "truncateQuery": "TRUNCATE pace_sv",
     "dropQuery": "DROP TABLE pace_sv",
@@ -5634,15 +5635,18 @@ class Vitales {
         "INSERT INTO pace_sv (ID_Pace, Pace_Feca_SV, Pace_SV_tas, Pace_SV_tad, "
             "Pace_SV_fc, Pace_SV_fr, Pace_SV_tc, Pace_SV_spo, Pace_SV_est, Pace_SV_pct, "
             "Pace_SV_glu, Pace_SV_glu_ayu, "
-            "Pace_SV_fio, Pace_SV_pvc, Pace_SV_pic, Pace_SV_pia) "
+            "Pace_SV_fio, Pace_SV_pvc, Pace_SV_pic, Pace_SV_pia, "
+            "Pace_SV_insulina) "
             "VALUES (?,?,?,?,?,?,?,?,?,?,?,?, "
-            "?,?,?,?)",
+            "?,?,?,?,"
+            "?)",
     "updateQuery": "UPDATE pace_sv "
         "SET ID_Pace_SV = ?, ID_Pace = ?, Pace_Feca_SV = ?, Pace_SV_tas = ?, Pace_SV_tad = ?, "
         "Pace_SV_fc = ?, Pace_SV_fr = ?, Pace_SV_tc = ?, Pace_SV_spo = ?, "
         "Pace_SV_est = ?, Pace_SV_pct = ?, "
         "Pace_SV_glu = ?, Pace_SV_glu_ayu = ?, "
-        "Pace_SV_fio = ?, Pace_SV_pvc = ?, Pace_SV_pic = ?, Pace_SV_pia = ? "
+        "Pace_SV_fio = ?, Pace_SV_pvc = ?, Pace_SV_pic = ?, Pace_SV_pia = ?, "
+        "Pace_SV_insulina = ? "
         "WHERE ID_Pace_SV = ?",
     "deleteQuery": "DELETE FROM pace_sv WHERE ID_Pace_SV = ?",
     "vitalesColumns": [
@@ -5886,6 +5890,8 @@ class Vitales {
     Valores.glucemiaCapilar = int.parse(json['Pace_SV_glu'].toString());
     //
     Valores.horasAyuno = int.parse(json['Pace_SV_glu_ayu'].toString());
+    //
+    Valores.insulinaGastada = int.parse(json['Pace_SV_insulina'].toString());
     //
     // Variables Antropométricas ********* *************** **********
     Valores.circunferenciaCuello = int.parse(json['Pace_SV_cue'].toString());
@@ -8558,13 +8564,13 @@ class Auxiliares {
         return Categorias[21];
       case "Captación de Hierro":
         return Categorias[21];
-        //
-           case "NT- Pro - BNP":
-             return Categorias[25];
+      //
+      case "NT- Pro - BNP":
+        return Categorias[25];
       case "NT-Pro-BNP ":
         return Categorias[25];
-    case "NT- Pro - BNP ":
-    return Categorias[25];
+      case "NT- Pro - BNP ":
+        return Categorias[25];
 
       default:
         return "Tipo de Estudio No Identificado";
@@ -8750,7 +8756,7 @@ class Auxiliares {
         return "Hierro Sérico";
       case "Captación de Hierro":
         return "Captación de Hierro Sérico";
-        //
+      //
       case "NT- Pro - BNP":
         return "NT-pro BNP";
       case "NT-Pro-BNP":
@@ -9850,6 +9856,7 @@ class Ventilaciones {
                   Pace_Fr int(11) NOT NULL,
                   Pace_Fio int(11) NOT NULL,
                   Pace_Peep int(11) NOT NULL,
+                  Pace_Peep_Intrinseca int(11) NOT NULL,
                   Pace_Insp int(11) NOT NULL,
                   Pace_Espi int(11) NOT NULL,
                   Pace_Pc int(11) NOT NULL,
@@ -9872,15 +9879,19 @@ class Ventilaciones {
         "SELECT * FROM pace_vm WHERE ID_Pace = ? ORDER BY ID_Ventilacion ASC",
     "consultByName": "SELECT * FROM pace_vm WHERE Pace_APP_DEG LIKE '%",
     "registerQuery": "INSERT INTO pace_vm (ID_Pace, "
-        "Feca_VEN, Pace_Vt, Pace_Fr, Pace_Fio, Pace_Peep, Pace_Insp, "
+        "Feca_VEN, Pace_Vt, Pace_Fr, Pace_Fio, Pace_Peep, "
+        "Pace_Peep_Intrinseca = ?, "
+        "Pace_Insp, "
         "Pace_Espi, Pace_Pc, Pace_Pm, Pace_V, Pace_F, Pace_Ps, Pace_Pip, "
         "Pace_Pmet, VM_Mod, "
         "Pace_TET, Pace_DAC) "
         "VALUES (?,?,?,?,?,?,?,?,?,?,"
+        "?,"
         "?,?,?,?,?,?,?,?)",
     "updateQuery": "UPDATE pace_vm "
         "SET ID_Ventilacion = ?,  ID_Pace = ?,  Feca_VEN = ?,  "
-        "Pace_Vt = ?,  Pace_Fr = ?,  Pace_Fio = ?,  Pace_Peep = ?,  "
+        "Pace_Vt = ?,  Pace_Fr = ?,  Pace_Fio = ?,  Pace_Peep = ?, "
+        "Pace_Peep_Intrinseca = ?, "
         "Pace_Insp = ?,  Pace_Espi = ?,  Pace_Pc = ?,  Pace_Pm = ?,  "
         "Pace_V = ?,  Pace_F = ?,  Pace_Ps = ?,  Pace_Pip = ?,  "
         "Pace_Pmet = ?,  VM_Mod = ?, "
@@ -9906,22 +9917,24 @@ class Ventilaciones {
   };
 
   static void fromJson(Map<String, dynamic> json) {
-    Valores.fechaVentilaciones = json['Feca_VEN'] ?? '';
-    Valores.modalidadVentilatoria = json['VM_Mod'] ?? '';
-    Valores.frecuenciaVentilatoria = json['Pace_Fr'] ?? 0;
-    Valores.fraccionInspiratoriaVentilatoria = json['Pace_Fio'] ?? 0;
-    Valores.presionFinalEsiracion = json['Pace_Peep'] ?? 0;
-    Valores.sensibilidadInspiratoria = json['Pace_Insp'] ?? 0;
-    Valores.sensibilidadEspiratoria = json['Pace_Espi'] ?? 0;
-    Valores.presionControl = json['Pace_Pc'] ?? 0;
-    Valores.presionMaxima = json['Pace_Pm'] ?? 0;
+    if (json!.isNotEmpty) {
+      Valores.fechaVentilaciones = json['Feca_VEN'] ?? '';
+      Valores.modalidadVentilatoria = json['VM_Mod'] ?? '';
+      Valores.frecuenciaVentilatoria = json['Pace_Fr'] ?? 0;
+      Valores.fraccionInspiratoriaVentilatoria = json['Pace_Fio'] ?? 0;
+      Valores.presionFinalEsiracion = json['Pace_Peep'] ?? 0;
+      Valores.sensibilidadInspiratoria = json['Pace_Insp'] ?? 0;
+      Valores.sensibilidadEspiratoria = json['Pace_Espi'] ?? 0;
+      Valores.presionControl = json['Pace_Pc'] ?? 0;
+      Valores.presionMaxima = json['Pace_Pm'] ?? 0;
 
-    Valores.volumenVentilatorio = json['Pace_V'] ?? 0;
-    Valores.flujoVentilatorio = json['Pace_F'] ?? 0;
-    Valores.presionSoporte = json['Pace_Ps'] ?? 0;
-    Valores.presionInspiratoriaPico = json['Pace_Pip'] ?? 0;
-    Valores.presionPlateau = json['Pace_Pmet'] ?? 0;
-    Valores.volumenTidal = toDoubleFromInt(json: json, keyEntered: 'Pace_Vt');
+      Valores.volumenVentilatorio = json['Pace_V'] ?? 0;
+      Valores.flujoVentilatorio = json['Pace_F'] ?? 0;
+      Valores.presionSoporte = json['Pace_Ps'] ?? 0;
+      Valores.presionInspiratoriaPico = json['Pace_Pip'] ?? 0;
+      Valores.presionPlateau = json['Pace_Pmet'] ?? 0;
+      Valores.volumenTidal = toDoubleFromInt(json: json, keyEntered: 'Pace_Vt');
+    }
   }
 }
 

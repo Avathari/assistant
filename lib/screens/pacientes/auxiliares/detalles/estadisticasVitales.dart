@@ -1,3 +1,4 @@
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/widgets/CrossLine.dart';
@@ -14,11 +15,11 @@ class EstadisticasVitales extends StatefulWidget {
 
 class _EstadisticasVitalesState extends State<EstadisticasVitales> {
   Map<String, dynamic> data = {
-    "Promedio_TAS": '0',
-    "Promedio_TAD": '0',
-    "Promedio_FC": '0',
-    "Promedio_FR": '0',
-    "Total_Registros": '0'
+    "Promedio_TAS": 0,
+    "Promedio_TAD": 0,
+    "Promedio_FC": 0,
+    "Promedio_FR": 0,
+    "Total_Registros": 0,
   };
   var statScrollController = ScrollController();
 
@@ -37,6 +38,7 @@ class _EstadisticasVitalesState extends State<EstadisticasVitales> {
 
   @override
   Widget build(BuildContext context) {
+    // Terminal.printWarning(message: "data['Total_Registros']" + data['Total_Registros']);
     return Container(
       padding: const EdgeInsets.all(8.0),
       // decoration: ContainerDecoration.roundedDecoration(),
@@ -49,7 +51,7 @@ class _EstadisticasVitalesState extends State<EstadisticasVitales> {
           ThreeLabelTextAline(
             padding: 8.0,
             firstText: 'Total de Registros',
-            secondText: data['Total_Registros'],
+            secondText: data['Total_Registros'].toString(),
           ),
           CrossLine(),
           SingleChildScrollView(
@@ -60,28 +62,28 @@ class _EstadisticasVitalesState extends State<EstadisticasVitales> {
                   padding: 2.0,
                   firstText: Vitales.Categorias[0],
                   secondText:
-                  double.parse(data['Promedio_TAS']).toStringAsFixed(0),
+                  double.parse(data['Promedio_TAS'].toString()).toStringAsFixed(0),
                   thirdText: 'mmHg',
                 ),
                 ThreeLabelTextAline(
                   padding: 2.0,
                   firstText: Vitales.Categorias[1],
                   secondText:
-                  double.parse(data['Promedio_TAD']).toStringAsFixed(0),
+                  double.parse(data['Promedio_TAD'].toString()).toStringAsFixed(0),
                   thirdText: 'mmHg',
                 ),
                 ThreeLabelTextAline(
                   padding: 2.0,
                   firstText: Vitales.Categorias[2],
                   secondText:
-                  double.parse(data['Promedio_FC']).toStringAsFixed(0),
+                  double.parse(data['Promedio_FC'].toString()).toStringAsFixed(0),
                   thirdText: 'L/min',
                 ),
                 ThreeLabelTextAline(
                   padding: 2.0,
                   firstText: Vitales.Categorias[3],
                   secondText:
-                  double.parse(data['Promedio_FR']).toStringAsFixed(0),
+                  double.parse(data['Promedio_FR'].toString()).toStringAsFixed(0),
                   thirdText: 'Resp/min',
                 ),
               ],

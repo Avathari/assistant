@@ -79,15 +79,14 @@ class _ArterialesState extends State<Arteriales> {
                     thirdText: "mg/dL",
                     withEditMessage: true,
                     onEdit: (String value) {
-                      Operadores.editActivity(context: context,
-                        onAcept: (value) {
-                        setState(() {
-                          Valores.cloro = double.parse(value);
-                          Navigator.of(context).pop();
-                        });
-                        }
-                      );
-
+                      Operadores.editActivity(
+                          context: context,
+                          onAcept: (value) {
+                            setState(() {
+                              Valores.cloro = double.parse(value);
+                              Navigator.of(context).pop();
+                            });
+                          });
                     },
                   ),
                   CrossLine(),
@@ -140,7 +139,8 @@ class _ArterialesState extends State<Arteriales> {
             Expanded(
               flex: 2,
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(2.0), // padding: const EdgeInsets.all(7.0),
+                padding: const EdgeInsets.all(
+                    2.0), // padding: const EdgeInsets.all(7.0),
                 controller: ScrollController(),
                 child: Column(
                   children: [
@@ -151,7 +151,7 @@ class _ArterialesState extends State<Arteriales> {
                       labelEditText: 'A_Na+ ($unidadMedidaANA)',
                       numOfLines: 1,
                       onChange: (value) => setState(
-                              () => Valores.sodioArteriales = double.parse(value)),
+                          () => Valores.sodioArteriales = double.parse(value)),
                     ),
                     EditTextArea(
                       textController: textPotasioArterialResultController,
@@ -159,8 +159,8 @@ class _ArterialesState extends State<Arteriales> {
                       inputFormat: MaskTextInputFormatter(),
                       labelEditText: 'A_K+ ($unidadMedidaAK)',
                       numOfLines: 1,
-                      onChange: (value) => setState(
-                              () => Valores.potasioArteriales = double.parse(value)),
+                      onChange: (value) => setState(() =>
+                          Valores.potasioArteriales = double.parse(value)),
                     ),
 
                     EditTextArea(
@@ -169,8 +169,8 @@ class _ArterialesState extends State<Arteriales> {
                       inputFormat: MaskTextInputFormatter(),
                       labelEditText: 'iCa++ ($unidadMedidaCai)',
                       numOfLines: 1,
-                      onChange: (value) => setState(
-                              () => Valores.calcioIonicoArteriales = double.parse(value)),
+                      onChange: (value) => setState(() =>
+                          Valores.calcioIonicoArteriales = double.parse(value)),
                     ),
 
                     EditTextArea(
@@ -180,7 +180,7 @@ class _ArterialesState extends State<Arteriales> {
                       labelEditText: 'A_Glu ($unidadMedidaGluA)',
                       numOfLines: 1,
                       onChange: (value) => setState(() =>
-                      Valores.glucosaArteriales = double.parse(value)),
+                          Valores.glucosaArteriales = double.parse(value)),
                     ),
                     // Botton ***** ******* ****** * ***
                     CrossLine(
@@ -193,7 +193,8 @@ class _ArterialesState extends State<Arteriales> {
             Expanded(
               flex: 2,
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(2.0), // padding: const EdgeInsets.all(7.0),
+                padding: const EdgeInsets.all(
+                    2.0), // padding: const EdgeInsets.all(7.0),
                 controller: ScrollController(),
                 child: Column(
                   children: [
@@ -321,7 +322,7 @@ class _ArterialesState extends State<Arteriales> {
                   ValuePanel(
                     firstText: "EBe",
                     secondText:
-                    Gasometricos.excesoBaseEsperado.toStringAsFixed(2),
+                        Gasometricos.excesoBaseEsperado.toStringAsFixed(2),
                     thirdText: "",
                   ),
                   CrossLine(),
@@ -348,7 +349,6 @@ class _ArterialesState extends State<Arteriales> {
                     thirdText: "",
                   ),
                   CrossLine(),
-
                 ],
               ),
             ),
@@ -415,25 +415,25 @@ class _ArterialesState extends State<Arteriales> {
                   ValuePanel(
                     firstText: "I. Lact",
                     secondText:
-                    Gasometricos.influenciaLactato.toStringAsFixed(2),
+                        Gasometricos.influenciaLactato.toStringAsFixed(2),
                     thirdText: "",
                   ),
                   ValuePanel(
                     firstText: "I. IMedi",
                     secondText:
-                    Gasometricos.influenciaIonesMedibles.toStringAsFixed(2),
+                        Gasometricos.influenciaIonesMedibles.toStringAsFixed(2),
                     thirdText: "",
                   ),
                   ValuePanel(
                     firstText: "I. Alb",
                     secondText:
-                    Gasometricos.influenciaAlbumina.toStringAsFixed(2),
+                        Gasometricos.influenciaAlbumina.toStringAsFixed(2),
                     thirdText: "",
                   ),
                   ValuePanel(
                     firstText: "I. O-Iones",
                     secondText:
-                    Gasometricos.influenciaOtrosIones.toStringAsFixed(2),
+                        Gasometricos.influenciaOtrosIones.toStringAsFixed(2),
                     thirdText: "",
                   ),
                 ],
@@ -517,7 +517,7 @@ class _ArterialesState extends State<Arteriales> {
         unidadMedidaLact!
         //0,
       ],
-      // 
+      //
       [
         "0",
         Pacientes.ID_Paciente.toString(),
@@ -582,18 +582,14 @@ class _ArterialesState extends State<Arteriales> {
       Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
 
   var textSodioArterialResultController = TextEditingController();
-  String? unidadMedidaANA =
-  Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
+  String? unidadMedidaANA = Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
   var textPotasioArterialResultController = TextEditingController();
-  String? unidadMedidaAK =
-  Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
+  String? unidadMedidaAK = Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
   var textCalcioIonicoArterialResultController = TextEditingController();
-  String? unidadMedidaCai =
-  Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
+  String? unidadMedidaCai = Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
   var textGluAResultController = TextEditingController();
   String? unidadMedidaGluA =
-  Auxiliares.Medidas[Auxiliares.Categorias[index]][6];
-  
+      Auxiliares.Medidas[Auxiliares.Categorias[index]][6];
 
   // OPERACIONES DE LA INTERFAZ ****************** ********
   void cerrar() {
@@ -601,45 +597,92 @@ class _ArterialesState extends State<Arteriales> {
   }
 
   operationMethod() async {
+    //
     Operadores.loadingActivity(
         context: context,
         tittle: "Registrando información . . .",
         message: "Información registrada",
-        onCloss: () {
+        onCloss: () => null
           // Navigator.of(context).pop();
           // cerrar();
-        });
+        );
     //
+
+    List<List<String>> listAux = [];
+
     Future.forEach(listOfValues(), (element) async {
       var aux = element as List<String>;
 
       if (aux[5] != '0' && aux[5] != '') {
-        await Actividades.registrar(
-          Databases.siteground_database_reggabo,
-          Auxiliares.auxiliares['registerQuery'],
-          element,
-        );
+        // Terminal.printAlert(message: aux.toString());
+        listAux.add(element);
       }
+      // Representa el valor del Estudio realizado, comprueba si esta vacío o es nulo
     }).whenComplete(() {
-      Navigator.of(context).pop(); // Cierre del LoadActivity
-      Operadores.alertActivity(
-          context: context,
-          tittle: "Registrando información . . .",
-          message: "Información registrada",
-          onAcept: () {
-            // Se emplean 3 Navigator.of(context).pop(); para cerrar cada una de
-            //    las ventanas emergentes y la interfaz inicial.
+      // Terminal.printAlert(message: listAux.toString()); //
+      Actividades.registrarAnidados(
+        Databases.siteground_database_reggabo,
+        Auxiliares.auxiliares['registerQuery'],
+        listAux,
+      )
+          .then((onValue) => Operadores.notifyActivity(
+              context: context,
+              tittle: "Respuesta de Consulta a Base de Datos . . . ",
+              message: onValue.toString()))
+          .whenComplete(() {
+        Navigator.of(context).pop(); // Cierre del LoadActivity
+        Operadores.alertActivity(
+            context: context,
+            tittle: "Registrando información . . .",
+            message: "Información registrada",
+            onAcept: () {
+              // Se emplean 3 Navigator.of(context).pop(); para cerrar cada una de
+              //    las ventanas emergentes y la interfaz inicial.
 
-            Navigator.of(context).pop(); // Cierre de la Interfaz Inicial
-            Navigator.of(context).pop(); // Cierre del AlertActivity
-          });
-    }).onError((error, stackTrace) {
-      Terminal.printAlert(message: "ERROR - $error : : : $stackTrace");
-      Operadores.alertActivity(
-        context: context,
-        tittle: "Registrando información . . .",
-        message: "$error",
-      );
+              Navigator.of(context).pop(); // Cierre de la Interfaz Inicial
+              Navigator.of(context).pop(); // Cierre del AlertActivity
+            });
+      }).onError((onError, stackTrace) => Operadores.alertActivity(
+                context: context,
+                tittle: "Error al Consultar Base de Datos . . . ",
+                message: "$onError : $stackTrace",
+                onAcept: () {
+                  Navigator.of(context).pop();
+                },
+                onClose: () => Navigator.of(context).pop(),
+              ));
     });
+
+    // Future.forEach(listOfValues(), (element) async {
+    //   var aux = element as List<String>;
+    //
+    //   if (aux[5] != '0' && aux[5] != '') {
+    //     await Actividades.registrar(
+    //       Databases.siteground_database_reggabo,
+    //       Auxiliares.auxiliares['registerQuery'],
+    //       element,
+    //     );
+    //   }
+    // }).whenComplete(() {
+    //   Navigator.of(context).pop(); // Cierre del LoadActivity
+    //   Operadores.alertActivity(
+    //       context: context,
+    //       tittle: "Registrando información . . .",
+    //       message: "Información registrada",
+    //       onAcept: () {
+    //         // Se emplean 3 Navigator.of(context).pop(); para cerrar cada una de
+    //         //    las ventanas emergentes y la interfaz inicial.
+    //
+    //         Navigator.of(context).pop(); // Cierre de la Interfaz Inicial
+    //         Navigator.of(context).pop(); // Cierre del AlertActivity
+    //       });
+    // }).onError((error, stackTrace) {
+    //   Terminal.printAlert(message: "ERROR - $error : : : $stackTrace");
+    //   Operadores.alertActivity(
+    //     context: context,
+    //     tittle: "Registrando información . . .",
+    //     message: "$error",
+    //   );
+    // });
   }
 }

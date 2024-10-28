@@ -155,8 +155,8 @@ class Actividades {
       },
     );
 
-    Terminal.printAlert(message: "RESPONSE STATUS (Detalles) : : ${response.statusCode}"
-        ":: :: Body ${response.body.isEmpty} . ${response.body.toString()}");
+    // Terminal.printAlert(message: "RESPONSE STATUS (Detalles) : : ${response.statusCode}"
+    //     ":: :: Body ${response.body.isEmpty} . ${response.body.toString()}");
     return json.decode(response.body) as Map<String, dynamic>;
   }
 
@@ -189,12 +189,12 @@ class Actividades {
         "id": id.toString()
       },
     );
-    Terminal.printNotice(message: "${response.headers}");
-    //
-    Terminal.printAlert(message: "RESPONSE STATUS (detallesById)"
-        " : : ${response.statusCode} "
-        " :: ${response.body.isEmpty}"
-        " : : Body ${response.body.toString()}");
+    // Terminal.printNotice(message: "${response.headers}");
+    // //
+    // Terminal.printAlert(message: "RESPONSE STATUS (detallesById)"
+    //     " : : ${response.statusCode} "
+    //     " :: ${response.body.isEmpty}"
+    //     " : : Body ${response.body.toString()}");
     return json.decode(response.body) as Map<String, dynamic>;
   }
 
@@ -213,9 +213,9 @@ class Actividades {
         "elements": jsonEncode(elements),
       },
     );
-    Terminal.printAlert(message: ""
-        "RESPONSE STATUS (REGISTER) : : ${response.statusCode} :: \n "
-        ":: Body ${response.body.toString()}");
+    // Terminal.printAlert(message: ""
+    //     "RESPONSE STATUS (REGISTER) : : ${response.statusCode} :: \n "
+    //     ":: Body ${response.body.toString()}");
     return response.body;
   }
 
@@ -235,9 +235,9 @@ class Actividades {
         "elements": jsonEncode(elements),
       },
     );
-    Terminal.printAlert(message: ""
-        "RESPONSE STATUS (REGISTER_Anidados) : : ${response.statusCode} :: \n "
-        ":: Body ${response.body.toString()}");
+    // Terminal.printAlert(message: ""
+    //     "RESPONSE STATUS (REGISTER_Anidados) : : ${response.statusCode} :: \n "
+    //     ":: Body ${response.body.toString()}");
     return response.body;
   }
 
@@ -258,7 +258,7 @@ class Actividades {
         "id": id.toString(),
       },
     );
-    Terminal.printAlert(message: "RESPONSE STATUS (ACTUALIZAR) : : ${response.statusCode} :: :: Body ${response.body}");
+    // Terminal.printAlert(message: "RESPONSE STATUS (ACTUALIZAR) : : ${response.statusCode} :: :: Body ${response.body}");
     return response.body;
   }
 

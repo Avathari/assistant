@@ -77,6 +77,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
           //
           gluTextController.text = Valores.glucemiaCapilar!.toString();
           gluAyuTextController.text = Valores.horasAyuno!.toString();
+          insulinaTextController.text = Valores.insulinaGastada!.toString();
           //
           fraccionInspiratoriaOxigenoTextController.text=
           Valores.fraccionInspiratoriaOxigeno.toString();
@@ -519,6 +520,17 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
         textController: gluAyuTextController,
         onChange: (value) => Valores.horasAyuno = int.parse(value),
           ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '##',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText:
+        'Insulina Gastada (UI/Día)',
+        textController: insulinaTextController,
+        onChange: (value) => Valores.insulinaGastada = int.parse(value),
+      ),
       if (!isMobile(context)) CrossLine(),
       if (!isMobile(context) && !isTablet(context))   CrossLine(),
       EditTextArea(
@@ -752,6 +764,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
   var pctTextController = TextEditingController();
   var gluTextController = TextEditingController();
   var gluAyuTextController = TextEditingController();
+  var insulinaTextController = TextEditingController();
   //
   var fraccionInspiratoriaOxigenoTextController = TextEditingController();
   //
@@ -804,6 +817,8 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
         presionVenosaCentralTextController.text,
         presionIntraCerebralTextController.text,
         presionIntraabdominalTextController.text,
+        //
+        insulinaTextController.text,
         idOperation
       ];
       listOfSecondValues = [
@@ -1143,7 +1158,7 @@ class _GestionVitalesState extends State<GestionVitales> {
 
   void reiniciar() {
     Terminal.printAlert(
-        message: "Iniciando actividad : : \n "
+        message: "Re-iniciando actividad : : \n "
             "Repositorio de Signos Vitales del Paciente . . .");
     List result = [];
     //
@@ -1153,10 +1168,13 @@ class _GestionVitalesState extends State<GestionVitales> {
         .then((value) {
       // print(value.length);
       result.addAll(value);
+      // Terminal.printExpected(
+      //     message: value!.toString());
       Actividades.consultarAllById(Databases.siteground_database_regpace,
               Vitales.antropo['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
           .then((value) {
-            // print(value.length);
+        // Terminal.printData(
+        //     message: value!.toString());
         int index = 0;
         //
         try {
@@ -1165,16 +1183,11 @@ class _GestionVitalesState extends State<GestionVitales> {
               //
               var thirdMap = {};
               //
-              if (value.length == item.length) {
-                print("${value.length} ${result.length}");
-                print("${value[index]['ID_Pace_SV']} ${item[index]['ID_Pace_SV']}");
-                //
                 thirdMap.addAll(item);
                 thirdMap.addAll(value[index]);
-                // Adición a Vitales ********** ************ ************** ********
-                Pacientes.Vitales!.add(thirdMap);
+                Pacientes.Vitales!.add(thirdMap); // Adición a Vitales ********** ************ ************** ********
+                //
                 index++;
-              }
             }
           }
           setState(() {
@@ -1182,7 +1195,7 @@ class _GestionVitalesState extends State<GestionVitales> {
           });
         } catch (error, stackTrace) {
           Operadores.alertActivity(context: context,
-              tittle: "$error", message: "$stackTrace");
+              tittle: "$error", message: "$stackTrace", onAcept: ()=>Navigator.of(context).pop());
         }
 
         Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
@@ -1192,11 +1205,11 @@ class _GestionVitalesState extends State<GestionVitales> {
             "Actualizando Repositorio de Signos Vitales del Paciente . . . ");
       }).catchError((error, stackTrace) {
         Operadores.alertActivity(context: context,
-            tittle: "$error", message: "$stackTrace");
+            tittle: "$error", message: "$stackTrace", onAcept: ()=>Navigator.of(context).pop());
       });
     }).catchError((error, stackTrace) {
       Operadores.alertActivity(context: context,
-          tittle: "$error", message: "$stackTrace");
+          tittle: "$error", message: "$stackTrace", onAcept: ()=>Navigator.of(context).pop());
     });
   }
 

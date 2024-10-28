@@ -330,7 +330,17 @@ class Paneles {
             iconed: Icons.medical_services_outlined,
             onChangeValue: () async {
               Pacientes.ID_Paciente = foundedItems![index].idPaciente;
-              Terminal.printWarning(message: "ID : ${Pacientes.ID_Paciente}");
+              Terminal.printWarning(message: "ID (Opcion Panel) : ${Pacientes.ID_Paciente}");
+              //
+              // Pacientes(
+              //   "",
+              //   "",
+              //   foundedItems[index].generales['Pace_Ape_Pat'] ?? '',
+              //   foundedItems[index].generales['Pace_Ape_Mat'] ?? '',
+              //   foundedItems[index].generales['Pace_Nome_PI'] ?? '',
+              //   foundedItems[index].generales['Pace_Nome_SE'] ?? '',
+              //   "",
+              // );
               //
               if (foundedItems[index].vitales.isNotEmpty) {
                 Valores.alturaPaciente =
@@ -342,6 +352,7 @@ class Paneles {
                 Valores.pesoCorporalTotal = 0;
               }
 
+              Pacientes.localRepositoryPath =foundedItems[index].localRepositoryPath;
               //
               Cambios.toNextPage(context, Generales());
             }), // Signos Vitales

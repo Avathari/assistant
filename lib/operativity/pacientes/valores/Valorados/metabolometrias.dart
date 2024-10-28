@@ -30,6 +30,28 @@ class Metabolometrias {
     }
   }
 
+
+  /// Calculo de Gasto Energético Basal según constante 20 kCal/Kg/Día
+  static double get gastoEnergeticoBasal_A {
+    if (Antropometrias.imc >= 30) {
+      return (20 * Antropometrias.pesoCorporalIdeal);
+    } else{
+      return (20 * Valores.pesoCorporalTotal!);
+    }
+  }
+
+  /// Calculo de Gasto Energético Basal según constante 25 kCal/Kg/Día
+     static double get gastoEnergeticoBasal_B {
+      if (Antropometrias.imc >= 30) {
+        return (25 * Antropometrias.pesoCorporalIdeal);
+      } else{
+        return (25 * Valores.pesoCorporalTotal!);
+      }
+    }
+
+  /// Calculo de Requerimiento Proteíco Basal según constante 1.0 - 2.2 gr/Kg/Día (1.7 g/Kg)
+  static double get requerimientoProteico => (1.0 * Valores.pesoCorporalTotal!);
+  //
   static double get metabolismoBasal => 37 - ((Valores.edad! - 20) / 10);
 
   static double get efectoTermicoAlimentos => metabolismoBasal * 0.1;

@@ -2,6 +2,7 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/metabolometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/analisisLaterales/AnalisisAuxiliares.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
@@ -75,7 +76,7 @@ class _MetabolicosState extends State<Metabolicos> {
       ),
     ),
     Expanded(
-      flex: 7,
+      flex: 6,
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: CarouselSlider(
@@ -189,50 +190,7 @@ class _MetabolicosState extends State<Metabolicos> {
                   ],
                 ),
               ),
-              SingleChildScrollView(
-                controller: ScrollController(),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ValuePanel(
-                            firstText: 'Gasto Energético Basal',
-                            secondText: Metabolometrias.gastoEnergeticoBasal.toStringAsFixed(2),
-                            thirdText: 'kCal/Día',
-                          ),
-                          ValuePanel(
-                            firstText: 'Metabolismo Basal',
-                            secondText: Metabolometrias.metabolismoBasal.toStringAsFixed(2),
-                            thirdText: 'kCal/Día',
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ValuePanel(
-                            firstText: 'E.T.A.',
-                            secondText: Metabolometrias.efectoTermicoAlimentos.toStringAsFixed(2),
-                            thirdText: 'kCal/Día',
-                          ),
-                          ValuePanel(
-                            firstText: 'Gasto Energético Total',
-                            secondText: Metabolometrias.gastoEnergeticoTotal.toStringAsFixed(2),
-                            thirdText: 'kCal/Día',
-                          ),
-                          // CrossLine(),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              AnalisisAuxiliares.parametrosNutricionales(context),
               SingleChildScrollView(
                 controller: ScrollController(),
                 child: isMobile(context) || isTablet(context) ? Column(children: [
@@ -333,15 +291,19 @@ class _MetabolicosState extends State<Metabolicos> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      ShowText(
-                        title: 'Glucosa',
-                        data: Metabolometrias.glucosaPorcentaje,
-                        medida: ' kCal/Día',
+                      Expanded(
+                        child: ShowText(
+                          title: 'Glucosa',
+                          data: Metabolometrias.glucosaPorcentaje,
+                          medida: ' kCal/Día',
+                        ),
                       ),
-                      ShowText(
-                        title: '',
-                        data: Metabolometrias.glucosaGramos,
-                        medida: ' gr/Día',
+                      Expanded(
+                        child: ShowText(
+                          title: '',
+                          data: Metabolometrias.glucosaGramos,
+                          medida: ' gr/Día',
+                        ),
                       ),
                       Expanded(
                         child: Slider(
@@ -365,15 +327,19 @@ class _MetabolicosState extends State<Metabolicos> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      ShowText(
-                        title: 'Proteinas',
-                        data: Metabolometrias.proteinasPorcentaje,
-                        medida: ' kCal/Día',
+                      Expanded(
+                        child: ShowText(
+                          title: 'Proteinas',
+                          data: Metabolometrias.proteinasPorcentaje,
+                          medida: ' kCal/Día',
+                        ),
                       ),
-                      ShowText(
-                        title: '',
-                        data: Metabolometrias.proteinasGramos,
-                        medida: ' gr/Día',
+                      Expanded(
+                        child: ShowText(
+                          title: '',
+                          data: Metabolometrias.proteinasGramos,
+                          medida: ' gr/Día',
+                        ),
                       ),
                       Expanded(
                         child: Slider(
@@ -396,15 +362,19 @@ class _MetabolicosState extends State<Metabolicos> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      ShowText(
-                        title: 'Lipidos',
-                        data: Metabolometrias.lipidosPorcentaje,
-                        medida: ' kCal/Día',
+                      Expanded(
+                        child: ShowText(
+                          title: 'Lipidos',
+                          data: Metabolometrias.lipidosPorcentaje,
+                          medida: ' kCal/Día',
+                        ),
                       ),
-                      ShowText(
-                        title: '',
-                        data: Metabolometrias.lipidosGramos,
-                        medida: ' gr/Día',
+                      Expanded(
+                        child: ShowText(
+                          title: '',
+                          data: Metabolometrias.lipidosGramos,
+                          medida: ' gr/Día',
+                        ),
                       ),
                       Expanded(
                         child: Slider(
@@ -448,6 +418,7 @@ class _MetabolicosState extends State<Metabolicos> {
       ),
     ),
         Expanded(
+          flex: 1,
           child: GrandButton(
             weigth: 2000,
             labelButton: "Copiar en Portapapeles",

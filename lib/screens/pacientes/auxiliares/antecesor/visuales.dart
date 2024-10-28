@@ -52,7 +52,7 @@ import 'package:assistant/screens/pacientes/intensiva/analisis/antropometricos.d
 import 'package:assistant/screens/pacientes/intensiva/analisis/cardiovasculares.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/gasometricos.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/hidricos.dart';
-import 'package:assistant/screens/pacientes/intensiva/analisis/metabolometrias.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/metabolometricos.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/ventilatorios.dart';
 
 // ignore: must_be_immutable
@@ -68,7 +68,7 @@ class VisualPacientes extends StatefulWidget {
 class _VisualPacientesState extends State<VisualPacientes> {
   @override
   void initState() {
-    // Pacientes.getValores();
+    Pacientes.getValores();
     Pacientes.getParaclinicosHistorial(reload: true);
     //
     super.initState();

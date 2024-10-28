@@ -38,7 +38,6 @@ class Generales extends StatefulWidget {
 
 class _GeneralesState extends State<Generales> {
   int actualView = 0;
-
   var textMAHController = TextEditingController();
 
   @override
@@ -73,12 +72,15 @@ class _GeneralesState extends State<Generales> {
     // Repositorio de Balances *****************************
     Archivos.readJsonToMap(
             filePath: "${Pacientes.localRepositoryPath}/balances.json")
-        .then((value) {
-      setState(() {
-        Pacientes.Balances = value;
-        // Balances.fromJson(value[value.lenght-1]);
-      });
-    });
+        .then((value) => setState(() => Pacientes.Balances = value
+            // Balances.fromJson(value[value.lenght-1]);
+            ))
+        .onError((onError, stackTrace) => Operadores.alertActivity(
+              context: context,
+              tittle: "Error al abrir repositorio local . . . ",
+              message: "$onError : : $stackTrace",
+              onAcept: () => Navigator.of(context).pop(),
+            ));
     // Repositorio de Pendientes ****************************
     Archivos.readJsonToMap(
             filePath: "${Pacientes.localRepositoryPath}/pendientes.json")
@@ -96,15 +98,26 @@ class _GeneralesState extends State<Generales> {
         }
         // Pacientes.Pendiente = value; Terminal.printExpected(message: '${Pacientes.Pendiente!}');
       });
+    }).onError((onError, stackTrace) {
+      Operadores.alertActivity(
+        context: context,
+        tittle: "Error al abrir repositorio local . . . ",
+        message: "$onError : : $stackTrace",
+        onAcept: () => Navigator.of(context).pop(),
+      );
     });
     // Repositorio de Paraclínicos *****************************
     Archivos.readJsonToMap(
             filePath: "${Pacientes.localRepositoryPath}/paraclinicos.json")
-        .then((value) {
-      setState(() {
-        Pacientes.Paraclinicos = value;
-      });
-    });
+        .then((value) => setState(() => Pacientes.Paraclinicos = value))
+        .onError((onError, stackTrace) => Operadores.alertActivity(
+              context: context,
+              tittle: "Error al abrir repositorio local . . . ",
+              message: "$onError : : $stackTrace",
+              onAcept: () => Navigator.of(context).pop(),
+            ));
+
+    setState(() {});
     super.initState();
   }
 
@@ -330,20 +343,46 @@ class _GeneralesState extends State<Generales> {
                         context: context,
                         tittle: "Anexión de registros",
                         message: "Registros Agregados",
-                        onAcept: () {
-                          Navigator.of(context).pop();
-                        }));
-                  }));
+                        onAcept: () => Navigator.of(context).pop()));
+                  }))
+              .onError((onError, stackTrace) {
+            Operadores.alertActivity(
+                context: context,
+                tittle: 'ERROR Encontrado . . . ',
+                message:
+                    'Error al Operar con los Valores :  : $onError : $stackTrace',
+                onAcept: () => Navigator.of(context).pop());
+          });
+        }).onError((onError, stackTrace) {
+          Operadores.alertActivity(
+              context: context,
+              tittle: 'ERROR Encontrado . . . ',
+              message:
+                  'Error al Operar con los Valores :  : $onError : $stackTrace',
+              onAcept: () => Navigator.of(context).pop());
+        }).onError((onError, stackTrace) {
+          Operadores.alertActivity(
+              context: context,
+              tittle: 'ERROR Encontrado . . . ',
+              message:
+                  'Error al Operar con los Valores :  : $onError : $stackTrace',
+              onAcept: () => Navigator.of(context).pop());
         });
+      }).onError((onError, stackTrace) {
+        Operadores.alertActivity(
+            context: context,
+            tittle: 'ERROR Encontrado . . . ',
+            message:
+            'Error al Operar con los Valores :  : $onError : $stackTrace',
+            onAcept: () => Navigator.of(context).pop());
       });
-    } catch (ex) {
+    } catch (onError, stackTrace) {
       Operadores.alertActivity(
           context: context,
           tittle: 'ERROR Encontrado . . . ',
-          message: 'Error al Operar con los Valores :  : $ex',
-          onAcept: () {
-            Navigator.of(context).pop();
-          });
+          message:
+              'Error al Operar con los Valores :  : $onError : $stackTrace',
+          onAcept: () => Navigator.of(context).pop());
     }
   }
 

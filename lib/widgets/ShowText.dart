@@ -40,7 +40,7 @@ class _ShowTextState extends State<ShowText> {
           height: height,
         ),
         widget.inRow
-            ? Row(
+            ? Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: component(),
               )

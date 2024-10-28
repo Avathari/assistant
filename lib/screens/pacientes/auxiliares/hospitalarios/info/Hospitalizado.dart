@@ -45,7 +45,7 @@ class Internado {
     }
 //
     localRepositoryPath = 'assets/vault/'
-        '$nombreCompleto/';
+        '$nombreCompleto';
     //
     vitalesRepositoryPath = "${localRepositoryPath}vitales.json";
     patologicosRepositoryPath = "${localRepositoryPath}patologicos.json";

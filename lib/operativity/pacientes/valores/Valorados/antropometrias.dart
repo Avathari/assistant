@@ -67,7 +67,7 @@ class Antropometrias {
       "Temp ${Valores.temperaturCorporal}°C, "
       "SpO2 ${Valores.saturacionPerifericaOxigeno}%. \n"
       "     "
-          "PCT ${Valores.pesoCorporalTotal} Kg, "
+      "PCT ${Valores.pesoCorporalTotal} Kg, "
       "Estatura ${Valores.alturaPaciente} mts, "
       "IMC ${Antropometrias.imc.toStringAsFixed(2)} Kg/m2, "
       "PCI ${Antropometrias.pesoCorporalPredicho.toStringAsFixed(2)} Kg . . "
@@ -108,9 +108,26 @@ class Antropometrias {
       "Área Adiposa Mesobraquial ${Antropometrias.areaAdiposaMesobraquial} cm2, "
       "Área Mesobraquial ${Antropometrias.areaMesobraquial} cm2. ";
 
+  static String get pesosCorporales => "Análisis por Pesos Corporales: "
+      "Est ${Valores.alturaPaciente} mts, "
+      "PCT ${Valores.pesoCorporalTotal} kG, "
+      "IMC ${Antropometrias.imc.toStringAsFixed(2)} kG/m2. "
+      "Peso Ideal ${Antropometrias.pesoCorporalIdeal.toStringAsFixed(2)} kG, "
+      "Peso Predicho ${Antropometrias.pesoCorporalPredicho.toStringAsFixed(2)} Kg, "
+      "Peso Ajustado ${Antropometrias.pesoCorporalAjustado.toStringAsFixed(2)} kG. ";
+
 // FÓRMULAS
   static double get pesoCorporalPredicho {
-    print("Valores.sexo ${Valores.sexo}");
+    if (Valores.sexo == "Masculino") {
+      return 23.0 * (Valores.alturaPaciente! * Valores.alturaPaciente!);
+    } else if (Valores.sexo == "Femenino") {
+      return 21.5 * (Valores.alturaPaciente! * Valores.alturaPaciente!);
+    } else {
+      return 0.00;
+    }
+  }
+
+  static double get pesoCorporalIdeal {
     if (Valores.sexo == "Masculino") {
       return 23.0 * (Valores.alturaPaciente! * Valores.alturaPaciente!);
     } else if (Valores.sexo == "Femenino") {
@@ -163,6 +180,10 @@ class Antropometrias {
 
   static double get PCIM => (PCIB + PCIL + PCIW) / 3;
 
+  /// Ajuste de Peso Corporal Total respecto a Peso Predicho.
+  ///
+  /// Formula: (Peso Real - Peso Ideal) * 0.33 + Peso Ideal
+  ///
   static double get pesoCorporalAjustado =>
       pesoCorporalPredicho +
       ((Valores.pesoCorporalTotal! - pesoCorporalPredicho) * 0.25);
