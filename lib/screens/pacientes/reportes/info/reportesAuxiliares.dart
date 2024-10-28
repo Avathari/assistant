@@ -154,21 +154,24 @@ class ReportsMethods {
       actualPage: actualPage,
       getTypeReport: getTypeReport,
     )
-        .then((value) => Operadores.alertActivity(
+        .then((value) => Operadores.optionsActivity(
             context: context,
             tittle: 'Petición de Registro de Análisis',
             message: "Desea registrar el análisis en la base de datos?",
+            textOptionB: "Cerrar . . . ",
             onClose: () {
               Navigator.of(context).pop();
             },
-            onAcept: () {
+            textOptionA: "Registrar análisis en base de datos . . . ",
+            optionA: () {
               Navigator.of(context).pop();
               if (getTypeReport == TypeReportes.reporteIngreso // ||
                   // getTypeReport == TypeReportes.reporteEgreso
                   ) {
                 //
                 Repositorios.actualizarRegistro(
-                    context: context, values: values).onError((onError, stackTrace) {
+                        context: context, values: values)
+                    .onError((onError, stackTrace) {
                   Operadores.alertActivity(
                     context: context,
                     tittle: "ERROR  Al Actualizar registro de Nota",
@@ -178,7 +181,8 @@ class ReportsMethods {
                 });
               } else if (getTypeReport == TypeReportes.reporteEgreso) {
                 Repositorios.actualizarRegistro(
-                    context: context, values: values, isNotte: true).onError((onError, stackTrace) {
+                        context: context, values: values, isNotte: true)
+                    .onError((onError, stackTrace) {
                   Operadores.alertActivity(
                     context: context,
                     tittle: "ERROR  Al Actualizar registro de Nota",
@@ -190,7 +194,8 @@ class ReportsMethods {
                 if (fechaRealizacion ==
                     Calendarios.today(format: "yyyy-MM-dd")) {
                   Repositorios.actualizarRegistro(
-                      context: context, values: values, isNotte: true).onError((onError, stackTrace) {
+                          context: context, values: values, isNotte: true)
+                      .onError((onError, stackTrace) {
                     Operadores.alertActivity(
                       context: context,
                       tittle: "ERROR  Al Actualizar registro de Nota",
@@ -200,9 +205,10 @@ class ReportsMethods {
                   });
                 } else {
                   Repositorios.registrarRegistro(
-                      context: context,
-                      Values: values,
-                      ValuesEgreso: valuesEgreso).onError((onError, stackTrace) {
+                          context: context,
+                          Values: values,
+                          ValuesEgreso: valuesEgreso)
+                      .onError((onError, stackTrace) {
                     Operadores.alertActivity(
                       context: context,
                       tittle: "ERROR  Al Registrar Nota . . . ",

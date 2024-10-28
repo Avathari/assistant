@@ -603,8 +603,8 @@ class _ArterialesState extends State<Arteriales> {
         tittle: "Registrando información . . .",
         message: "Información registrada",
         onCloss: () => null
-          // Navigator.of(context).pop();
-          // cerrar();
+        // Navigator.of(context).pop();
+        // cerrar();
         );
     //
 
@@ -612,11 +612,7 @@ class _ArterialesState extends State<Arteriales> {
 
     Future.forEach(listOfValues(), (element) async {
       var aux = element as List<String>;
-
-      if (aux[5] != '0' && aux[5] != '') {
-        // Terminal.printAlert(message: aux.toString());
-        listAux.add(element);
-      }
+      if (aux[5] != '0' && aux[5] != '') listAux.add(element);
       // Representa el valor del Estudio realizado, comprueba si esta vacío o es nulo
     }).whenComplete(() {
       // Terminal.printAlert(message: listAux.toString()); //
@@ -652,37 +648,5 @@ class _ArterialesState extends State<Arteriales> {
                 onClose: () => Navigator.of(context).pop(),
               ));
     });
-
-    // Future.forEach(listOfValues(), (element) async {
-    //   var aux = element as List<String>;
-    //
-    //   if (aux[5] != '0' && aux[5] != '') {
-    //     await Actividades.registrar(
-    //       Databases.siteground_database_reggabo,
-    //       Auxiliares.auxiliares['registerQuery'],
-    //       element,
-    //     );
-    //   }
-    // }).whenComplete(() {
-    //   Navigator.of(context).pop(); // Cierre del LoadActivity
-    //   Operadores.alertActivity(
-    //       context: context,
-    //       tittle: "Registrando información . . .",
-    //       message: "Información registrada",
-    //       onAcept: () {
-    //         // Se emplean 3 Navigator.of(context).pop(); para cerrar cada una de
-    //         //    las ventanas emergentes y la interfaz inicial.
-    //
-    //         Navigator.of(context).pop(); // Cierre de la Interfaz Inicial
-    //         Navigator.of(context).pop(); // Cierre del AlertActivity
-    //       });
-    // }).onError((error, stackTrace) {
-    //   Terminal.printAlert(message: "ERROR - $error : : : $stackTrace");
-    //   Operadores.alertActivity(
-    //     context: context,
-    //     tittle: "Registrando información . . .",
-    //     message: "$error",
-    //   );
-    // });
   }
 }

@@ -1300,28 +1300,35 @@ class _RutinasState extends State<Rutinas> {
   void cerrar() {}
 
   operationMethod() async {
+    //
     Operadores.loadingActivity(
         context: context,
         tittle: "Registrando información . . .",
         message: "Información registrada",
-        onCloss: () {
-          // Navigator.of(context).pop();
-          // cerrar();
-        });
+        onCloss: () => null
+      // Navigator.of(context).pop();
+      // cerrar();
+    );
     //
+
+    List<List<String>> listAux = [];
+
     Future.forEach(listOfValues(), (element) async {
       var aux = element as List<String>;
-
-      if (aux[5] != '0' && aux[5] != '') {
-        await Actividades.registrar(
-          Databases.siteground_database_reggabo,
-          Auxiliares.auxiliares['registerQuery'],
-          element,
-        );
-      }
+      if (aux[5] != '0' && aux[5] != '') listAux.add(element);
+      // Representa el valor del Estudio realizado, comprueba si esta vacío o es nulo
     }).whenComplete(() {
-      Pacientes.getParaclinicosHistorial(reload: true).whenComplete(() {
-        //
+      // Terminal.printAlert(message: listAux.toString()); //
+      Actividades.registrarAnidados(
+        Databases.siteground_database_reggabo,
+        Auxiliares.auxiliares['registerQuery'],
+        listAux,
+      )
+          .then((onValue) => Operadores.notifyActivity(
+          context: context,
+          tittle: "Respuesta de Consulta a Base de Datos . . . ",
+          message: onValue.toString()))
+          .whenComplete(() {
         Navigator.of(context).pop(); // Cierre del LoadActivity
         Operadores.alertActivity(
             context: context,
@@ -1334,19 +1341,17 @@ class _RutinasState extends State<Rutinas> {
               Navigator.of(context).pop(); // Cierre de la Interfaz Inicial
               Navigator.of(context).pop(); // Cierre del AlertActivity
             });
-      });
-      //
-    }).onError((error, stackTrace) {
-      Pacientes.getParaclinicosHistorial(reload: true).whenComplete(() {
-        Terminal.printAlert(message: "ERROR - $error : : : $stackTrace");
-        Operadores.alertActivity(
-          context: context,
-          tittle: "$error . . .",
-          message: "$stackTrace",
-        );
-      });
-      //
+      }).onError((onError, stackTrace) => Operadores.alertActivity(
+        context: context,
+        tittle: "Error al Consultar Base de Datos . . . ",
+        message: "$onError : $stackTrace",
+        onAcept: () {
+          Navigator.of(context).pop();
+        },
+        onClose: () => Navigator.of(context).pop(),
+      ));
     });
+
   }
 
   // VISTAS DE LA INTERFAZ *********************************

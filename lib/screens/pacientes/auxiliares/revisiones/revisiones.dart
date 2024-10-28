@@ -1299,10 +1299,11 @@ class _RevisionesState extends State<Revisiones> {
           Expanded(
             flex: 2,
             child: Container(
+              padding: EdgeInsets.only(bottom: 106, top: 2.0, left: 2.0, right: 2.0),
               decoration: ContainerDecoration.roundedDecoration(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 // direction: Axis.vertical,
                 // alignment: WrapAlignment.center,
                 // crossAxisAlignment: WrapCrossAlignment.center,

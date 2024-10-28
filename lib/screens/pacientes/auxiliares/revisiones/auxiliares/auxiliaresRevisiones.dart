@@ -63,19 +63,22 @@ class AuxiliaresRevisiones {
                   itemCount: Pacientes.Pendiente!.length,
                   // snapshot.data[posicion]['Auxiliares'].length,
                   itemBuilder: (BuildContext context, index) {
-                    if (Pacientes.Pendiente![index]['Pace_PEN'] != "Procedimientos") {
+                    if (Pacientes.Pendiente![index]['Pace_PEN'] !=
+                        "Procedimientos") {
                       return ValuePanel(
                         fontSize: 8,
                         firstText:
                             "${Pacientes.Pendiente![index]['Pace_Desc_PEN']}",
                         // Resultado
-                        secondText: "${Pacientes.Pendiente![index]['Pace_PEN']}",
+                        secondText:
+                            "${Pacientes.Pendiente![index]['Pace_PEN']}",
                         // Resultado
                         withEditMessage: true,
                         onEdit: (value) {
                           Datos.portapapeles(
                               context: context,
-                              text: "${Pacientes.Pendiente![index]['Pace_PEN']} "
+                              text:
+                                  "${Pacientes.Pendiente![index]['Pace_PEN']} "
                                   ": ${Pacientes.Pendiente![index]['Pace_Desc_PEN']} "
                                   ": : ${Dicotomicos.fromInt(Pacientes.Pendiente![index]['Pace_PEN_realized'])} Realizado. ");
                         },
@@ -2141,18 +2144,21 @@ class _RevisionDispositivosState extends State<RevisionDispositivos> {
           Navigator.of(context).pop();
         });
     //
-    Future.forEach(listOfValues(), (element) async {
-      var aux = element as List<dynamic>;
-
-      Terminal.printData(message: "$aux : :  ${aux[3]}");
-      //
-      await Actividades.actualizar(
-        Databases.siteground_database_reghosp,
-        Pendientes.pendientes['updateQuery'],
-        element,
-        Pacientes.ID_Paciente,
-      );
-      // if (aux[3] != '' && aux[3] != null)
+    await Actividades.registrarAnidados(
+      Databases.siteground_database_reghosp,
+      Pendientes.pendientes['updateQuery'],
+      listOfValues(), // Pacientes.ID_Paciente,
+    ).onError((onError, stackTrace) {
+      Pacientes.getDispositivosHistorial().whenComplete(() {
+        Terminal.printAlert(message: "ERROR - $onError : : : $stackTrace");
+        Operadores.alertActivity(
+          context: context,
+          tittle: "$onError . . .",
+          message: "$stackTrace",
+          onAcept: ()=>Navigator.of(context).pop(),
+        );
+      });
+      return "$onError";
     }).whenComplete(() {
       Pacientes.getDispositivosHistorial().then((onValue) {
         // Terminal.printAlert(message: "ON_VALUE : $onValue");
@@ -2170,18 +2176,49 @@ class _RevisionDispositivosState extends State<RevisionDispositivos> {
               Navigator.of(context).pop(); // Cierre del AlertActivity
             });
       });
-      //
-    }).onError((error, stackTrace) {
-      Pacientes.getDispositivosHistorial().whenComplete(() {
-        Terminal.printAlert(message: "ERROR - $error : : : $stackTrace");
-        Operadores.alertActivity(
-          context: context,
-          tittle: "$error . . .",
-          message: "$stackTrace",
-        );
-      });
-      //
     });
+    //
+    // Future.forEach(listOfValues(), (element) async {
+    //   var aux = element as List<dynamic>;
+    //
+    //   Terminal.printData(message: "$aux : :  ${aux[3]}");
+    //   //
+    //   await Actividades.actualizar(
+    //     Databases.siteground_database_reghosp,
+    //     Pendientes.pendientes['updateQuery'],
+    //     element,
+    //     Pacientes.ID_Paciente,
+    //   );
+    //   // if (aux[3] != '' && aux[3] != null)
+    // }).whenComplete(() {
+    //   Pacientes.getDispositivosHistorial().then((onValue) {
+    //     // Terminal.printAlert(message: "ON_VALUE : $onValue");
+    //   }).whenComplete(() {
+    //     //
+    //     Navigator.of(context).pop(); // Cierre del LoadActivity
+    //     Operadores.alertActivity(
+    //         context: context,
+    //         tittle: "Actualizando información . . .",
+    //         message: "Información actualizada",
+    //         onAcept: () {
+    //           // Se emplean 3 Navigator.of(context).pop(); para cerrar cada una de
+    //           //    las ventanas emergentes y la interfaz inicial.
+    //           Navigator.of(context).pop(); // Cierre de la Interfaz Inicial
+    //           Navigator.of(context).pop(); // Cierre del AlertActivity
+    //         });
+    //   });
+    //   //
+    // }).onError((error, stackTrace) {
+    //   Pacientes.getDispositivosHistorial().whenComplete(() {
+    //     Terminal.printAlert(message: "ERROR - $error : : : $stackTrace");
+    //     Operadores.alertActivity(
+    //       context: context,
+    //       tittle: "$error . . .",
+    //       message: "$stackTrace",
+    //     );
+    //   });
+    //   //
+    // });
   }
 }
 
@@ -2480,20 +2517,23 @@ class _RevisionPreviosState extends State<RevisionPrevios> {
           Navigator.of(context).pop();
         });
     //
-    Future.forEach(listOfValues(), (element) async {
-      var aux = element as List<dynamic>;
-
-      Terminal.printData(message: "$aux : :  ${aux[0]}");
-      //
-      await Actividades.actualizar(
-        Databases.siteground_database_reghosp,
-        Pendientes.pendientes['updateQuery'],
-        element,
-        Pacientes.ID_Paciente,
-      );
-      // if (aux[0] != '' && aux[0] != null)
+    await Actividades.registrarAnidados(
+      Databases.siteground_database_reghosp,
+      Pendientes.pendientes['updateQuery'],
+      listOfValues(), // Pacientes.ID_Paciente,
+    ).onError((onError, stackTrace) {
+      Pacientes.getDispositivosHistorial().whenComplete(() {
+        Terminal.printAlert(message: "ERROR - $onError : : : $stackTrace");
+        Operadores.alertActivity(
+          context: context,
+          tittle: "$onError . . .",
+          message: "$stackTrace",
+          onAcept: ()=>Navigator.of(context).pop(),
+        );
+      });
+      return "$onError";
     }).whenComplete(() {
-      Pacientes.getPreviosHistorial().then((onValue) {
+      Pacientes.getDispositivosHistorial().then((onValue) {
         // Terminal.printAlert(message: "ON_VALUE : $onValue");
       }).whenComplete(() {
         //
@@ -2509,18 +2549,49 @@ class _RevisionPreviosState extends State<RevisionPrevios> {
               Navigator.of(context).pop(); // Cierre del AlertActivity
             });
       });
-      //
-    }).onError((error, stackTrace) {
-      Pacientes.getPreviosHistorial().whenComplete(() {
-        Terminal.printAlert(message: "ERROR - $error : : : $stackTrace");
-        Operadores.alertActivity(
-          context: context,
-          tittle: "$error . . .",
-          message: "$stackTrace",
-        );
-      });
-      //
     });
+    //
+    // Future.forEach(listOfValues(), (element) async {
+    //   var aux = element as List<dynamic>;
+    //
+    //   Terminal.printData(message: "$aux : :  ${aux[3]}");
+    //   //
+    //   await Actividades.actualizar(
+    //     Databases.siteground_database_reghosp,
+    //     Pendientes.pendientes['updateQuery'],
+    //     element,
+    //     Pacientes.ID_Paciente,
+    //   );
+    //   // if (aux[3] != '' && aux[3] != null)
+    // }).whenComplete(() {
+    //   Pacientes.getDispositivosHistorial().then((onValue) {
+    //     // Terminal.printAlert(message: "ON_VALUE : $onValue");
+    //   }).whenComplete(() {
+    //     //
+    //     Navigator.of(context).pop(); // Cierre del LoadActivity
+    //     Operadores.alertActivity(
+    //         context: context,
+    //         tittle: "Actualizando información . . .",
+    //         message: "Información actualizada",
+    //         onAcept: () {
+    //           // Se emplean 3 Navigator.of(context).pop(); para cerrar cada una de
+    //           //    las ventanas emergentes y la interfaz inicial.
+    //           Navigator.of(context).pop(); // Cierre de la Interfaz Inicial
+    //           Navigator.of(context).pop(); // Cierre del AlertActivity
+    //         });
+    //   });
+    //   //
+    // }).onError((error, stackTrace) {
+    //   Pacientes.getDispositivosHistorial().whenComplete(() {
+    //     Terminal.printAlert(message: "ERROR - $error : : : $stackTrace");
+    //     Operadores.alertActivity(
+    //       context: context,
+    //       tittle: "$error . . .",
+    //       message: "$stackTrace",
+    //     );
+    //   });
+    //   //
+    // });
   }
 }
 
@@ -2577,7 +2648,7 @@ class _RevisionCultivosState extends State<RevisionCultivos> {
           ),
           Expanded(
             child: CircleIcon(
-              iconed: Icons.copy_all_rounded,
+                iconed: Icons.copy_all_rounded,
                 onChangeValue: () => Datos.portapapeles(
                     context: context, text: Auxiliares.getCultivos())),
           ),
@@ -2751,7 +2822,7 @@ class _RevisionInfusionesState extends State<RevisionInfusiones> {
         Valores.withSedacion == "" ? false : true,
         Pendientes.typesPendientes[5], // Categoria de Procedimientos . . .
         Pendientes.subTypesPendientes[5][3],
-        Valores.commenSedacion, 
+        Valores.commenSedacion,
         Valores.initSedacion,
       ], // SEDA
       [
@@ -2826,20 +2897,23 @@ class _RevisionInfusionesState extends State<RevisionInfusiones> {
           Navigator.of(context).pop();
         });
     //
-    Future.forEach(listOfValues(), (element) async {
-      var aux = element as List<dynamic>;
-
-      Terminal.printData(message: "$aux : :  ${aux[0]}");
-      //
-      await Actividades.actualizar(
-        Databases.siteground_database_reghosp,
-        Pendientes.pendientes['updateQuery'],
-        element,
-        Pacientes.ID_Paciente,
-      );
-      // if (aux[0] != '' && aux[0] != null)
+    await Actividades.registrarAnidados(
+      Databases.siteground_database_reghosp,
+      Pendientes.pendientes['updateQuery'],
+      listOfValues(), // Pacientes.ID_Paciente,
+    ).onError((onError, stackTrace) {
+      Pacientes.getDispositivosHistorial().whenComplete(() {
+        Terminal.printAlert(message: "ERROR - $onError : : : $stackTrace");
+        Operadores.alertActivity(
+          context: context,
+          tittle: "$onError . . .",
+          message: "$stackTrace",
+          onAcept: ()=>Navigator.of(context).pop(),
+        );
+      });
+      return "$onError";
     }).whenComplete(() {
-      Pacientes.getInfusionesHistorial().then((onValue) {
+      Pacientes.getDispositivosHistorial().then((onValue) {
         // Terminal.printAlert(message: "ON_VALUE : $onValue");
       }).whenComplete(() {
         //
@@ -2855,17 +2929,48 @@ class _RevisionInfusionesState extends State<RevisionInfusiones> {
               Navigator.of(context).pop(); // Cierre del AlertActivity
             });
       });
-      //
-    }).onError((error, stackTrace) {
-      Pacientes.getInfusionesHistorial().whenComplete(() {
-        Terminal.printAlert(message: "ERROR - $error : : : $stackTrace");
-        Operadores.alertActivity(
-          context: context,
-          tittle: "$error . . .",
-          message: "$stackTrace",
-        );
-      });
-      //
     });
+    //
+    // Future.forEach(listOfValues(), (element) async {
+    //   var aux = element as List<dynamic>;
+    //
+    //   Terminal.printData(message: "$aux : :  ${aux[3]}");
+    //   //
+    //   await Actividades.actualizar(
+    //     Databases.siteground_database_reghosp,
+    //     Pendientes.pendientes['updateQuery'],
+    //     element,
+    //     Pacientes.ID_Paciente,
+    //   );
+    //   // if (aux[3] != '' && aux[3] != null)
+    // }).whenComplete(() {
+    //   Pacientes.getDispositivosHistorial().then((onValue) {
+    //     // Terminal.printAlert(message: "ON_VALUE : $onValue");
+    //   }).whenComplete(() {
+    //     //
+    //     Navigator.of(context).pop(); // Cierre del LoadActivity
+    //     Operadores.alertActivity(
+    //         context: context,
+    //         tittle: "Actualizando información . . .",
+    //         message: "Información actualizada",
+    //         onAcept: () {
+    //           // Se emplean 3 Navigator.of(context).pop(); para cerrar cada una de
+    //           //    las ventanas emergentes y la interfaz inicial.
+    //           Navigator.of(context).pop(); // Cierre de la Interfaz Inicial
+    //           Navigator.of(context).pop(); // Cierre del AlertActivity
+    //         });
+    //   });
+    //   //
+    // }).onError((error, stackTrace) {
+    //   Pacientes.getDispositivosHistorial().whenComplete(() {
+    //     Terminal.printAlert(message: "ERROR - $error : : : $stackTrace");
+    //     Operadores.alertActivity(
+    //       context: context,
+    //       tittle: "$error . . .",
+    //       message: "$stackTrace",
+    //     );
+    //   });
+    //   //
+    // });
   }
 }
