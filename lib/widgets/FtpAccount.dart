@@ -80,9 +80,9 @@ class _FtpAccountState extends State<FtpAccount> {
           children: [
             foundedItems.isEmpty
                 ? Expanded(
-                    child: LoadingScreen(
-                      error: "Buscando elementos . . . ",
-                    ),
+                    child: CircularProgressIndicator(), // LoadingScreen(
+                    //   error: "Buscando elementos . . . ",
+                    // ),
                   )
                 : Expanded(
                     child: SingleChildScrollView(

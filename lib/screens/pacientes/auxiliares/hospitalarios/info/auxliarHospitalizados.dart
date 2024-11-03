@@ -21,50 +21,58 @@ import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
 
 class Paneles {
-  static Widget fichaIdentificacion(AsyncSnapshot snapshot, int index) {
+  static Widget fichaIdentificacion(
+      BuildContext context, AsyncSnapshot snapshot, int index) {
     Terminal.printAlert(message: "indexx $index");
     //
     if (snapshot.hasData) {
       return Padding(
         padding: const EdgeInsets.only(left: 8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-                "${snapshot.data![index].generales['Pace_Ape_Pat'] ?? ''} "
-                "${snapshot.data![index].generales['Pace_Ape_Mat'] ?? ''} "
-                "${snapshot.data![index].generales['Pace_Nome_PI'] ?? ''} "
-                "${snapshot.data![index].generales['Pace_Nome_SE'] ?? ''}",
+        child: GestureDetector(
+          onTap: () => Datos.portapapeles(
+              context: context, text: snapshot.data![index].nssPaciente),
+          onDoubleTap: () => Datos.portapapeles(
+              context: context,
+              text: snapshot.data![index].nssAgregadoPaciente),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                  "${snapshot.data![index].generales['Pace_Ape_Pat'] ?? ''} "
+                  "${snapshot.data![index].generales['Pace_Ape_Mat'] ?? ''} "
+                  "${snapshot.data![index].generales['Pace_Nome_PI'] ?? ''} "
+                  "${snapshot.data![index].generales['Pace_Nome_SE'] ?? ''}",
+                  maxLines: 2,
+                  style: Styles.textSyleGrowth(fontSize: 14)),
+              Text(
+                "Ocupación: ${snapshot.data![index].generales['Pace_Ocupa'] ?? ''}",
                 maxLines: 2,
-                style: Styles.textSyleGrowth(fontSize: 14)),
-            Text(
-              "Ocupación: ${snapshot.data![index].generales['Pace_Ocupa'] ?? ''}",
-              maxLines: 2,
-              style: Styles.textSyleGrowth(fontSize: 10),
-            ),
-            // Text(
-            //   "Hemotipo: ${snapshot.data[index].hospitalizedData['Pace_Hemo'] ?? ''}",
-            //   maxLines: 2,
-            //   style: Styles.textSyleGrowth(fontSize: 10),
-            // ),
-            // Text(
-            //   "Servicio: ${snapshot.data[index].hospitalizedData['Serve_Trat'] ?? ''}",
-            //   maxLines: 2,
-            //   style: Styles.textSyleGrowth(fontSize: 10),
-            // ),
-            // Text(
-            //   "${snapshot.data[index].hospitalizedData['Medi_Trat'] ?? ''}",
-            //   maxLines: 2,
-            //   overflow: TextOverflow.ellipsis,
-            //   style: Styles.textSyleGrowth(fontSize: 10),
-            // ),
-            Text(
-                "NG.: ${snapshot.data[index].hospitalizedData['Feca_INI_Hosp'] ?? ''} - "
-                "D.E.H.: ${Calendarios.differenceInDaysToNow(snapshot.data[index].hospitalizedData['Feca_INI_Hosp'] ?? DateTime.now().toString())}",
-                style: Styles.textSyleGrowth(fontSize: 12)),
-            CrossLine()
-          ],
+                style: Styles.textSyleGrowth(fontSize: 10),
+              ),
+              // Text(
+              //   "Hemotipo: ${snapshot.data[index].hospitalizedData['Pace_Hemo'] ?? ''}",
+              //   maxLines: 2,
+              //   style: Styles.textSyleGrowth(fontSize: 10),
+              // ),
+              // Text(
+              //   "Servicio: ${snapshot.data[index].hospitalizedData['Serve_Trat'] ?? ''}",
+              //   maxLines: 2,
+              //   style: Styles.textSyleGrowth(fontSize: 10),
+              // ),
+              // Text(
+              //   "${snapshot.data[index].hospitalizedData['Medi_Trat'] ?? ''}",
+              //   maxLines: 2,
+              //   overflow: TextOverflow.ellipsis,
+              //   style: Styles.textSyleGrowth(fontSize: 10),
+              // ),
+              Text(
+                  "NG.: ${snapshot.data[index].hospitalizedData['Feca_INI_Hosp'] ?? ''} - "
+                  "D.E.H.: ${Calendarios.differenceInDaysToNow(snapshot.data[index].hospitalizedData['Feca_INI_Hosp'] ?? DateTime.now().toString())}",
+                  style: Styles.textSyleGrowth(fontSize: 12)),
+              CrossLine()
+            ],
+          ),
         ),
       );
     } else {
@@ -330,7 +338,8 @@ class Paneles {
             iconed: Icons.medical_services_outlined,
             onChangeValue: () async {
               Pacientes.ID_Paciente = foundedItems![index].idPaciente;
-              Terminal.printWarning(message: "ID (Opcion Panel) : ${Pacientes.ID_Paciente}");
+              Terminal.printWarning(
+                  message: "ID (Opcion Panel) : ${Pacientes.ID_Paciente}");
               //
               // Pacientes(
               //   "",
@@ -352,7 +361,8 @@ class Paneles {
                 Valores.pesoCorporalTotal = 0;
               }
 
-              Pacientes.localRepositoryPath =foundedItems[index].localRepositoryPath;
+              Pacientes.localRepositoryPath =
+                  foundedItems[index].localRepositoryPath;
               //
               Cambios.toNextPage(context, Generales());
             }), // Signos Vitales
@@ -870,7 +880,17 @@ class HospitalaryStrings {
   }
 
   static String balancesString(last, List? foundedItems, int index) {
-    Balances.fromJson(last);
+    Terminal.printAlert(message: "${last[0].runtimeType}");
+    //
+    if (last[0].runtimeType is List<dynamic>) {
+      Balances.fromJson(last[0]);
+    } else if (last[0].runtimeType is Map<String, dynamic>) {
+      Balances.fromJson(last);
+    } else {
+      Balances.fromJson(last);
+    }
+
+    //
     Valores.pesoCorporalTotal = double.parse(
         foundedItems![index].vitales.last["Pace_SV_pct"].toString() ?? '0');
     //

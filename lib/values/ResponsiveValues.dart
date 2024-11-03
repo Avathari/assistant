@@ -18,7 +18,7 @@ class ResponsiveApp {
         : isTablet(_context)
             ? 1.1
             : 1.3;
-    edgeInsetsApp = EdgeInsetsApp(this);
+    // edgeInsetsApp = EdgeInsetsApp(this);
   }
 
   //Container

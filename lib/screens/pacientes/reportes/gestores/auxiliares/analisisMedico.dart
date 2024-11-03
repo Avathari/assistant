@@ -279,9 +279,17 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                           CircleIcon(
                               iconed: Icons.file_open_outlined,
                               tittle: "Memoria temporal . . . ",
-                              onChangeValue: () => _readFromFile().then(
-                                  (onValue) =>
-                                      analisisTextController.text = onValue)),
+                              onChangeValue: () => _readFromFile()
+                                  .then((onValue) => Operadores.optionsActivity(context: context,
+                                  tittle: "Memoria temporal . . . ",
+                                  message: onValue.toString(),
+                                  onClose: ()=>Navigator.of(context).pop(),
+                                  textOptionA: "¿Sobre-escribir memoria?",
+                                  optionA: (){
+                                    analisisTextController.text = onValue;
+                                    Navigator.of(context).pop();
+                                  }
+                              ))),
                         ],
                       ))
                 ],

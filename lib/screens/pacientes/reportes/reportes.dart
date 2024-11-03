@@ -202,30 +202,34 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          FloatingActionButton(
-                            onPressed: () {
-                              setState(() {
-                                widget.analysis = 1;
-                                _key.currentState!.openEndDrawer();
-                              });
-                            },
-                            backgroundColor: Colors.black,
-                            foregroundColor: Colors.white,
-                            child: const Icon(Icons.menu_open_outlined,
-                                color: Colors.white),
+                          Expanded(
+                            child: FloatingActionButton(
+                              onPressed: () {
+                                setState(() {
+                                  widget.analysis = 1;
+                                  _key.currentState!.openEndDrawer();
+                                });
+                              },
+                              backgroundColor: Colors.black,
+                              foregroundColor: Colors.white,
+                              child: const Icon(Icons.menu_open_outlined,
+                                  color: Colors.white),
+                            ),
                           ),
-                          FloatingActionButton(
-                            onPressed: () {
-                              Datos.portapapeles(
-                                  context: context,
-                                  text: Reportes.copiarReporte(
-                                      tipoReporte: ReportsMethods.getTypeReport(
-                                          actualPage: widget.actualPage)));
-                            },
-                            backgroundColor: Colors.black,
-                            foregroundColor: Colors.white,
-                            child: const Icon(Icons.copy_rounded,
-                                color: Colors.white),
+                          Expanded(
+                            child: FloatingActionButton(
+                              onPressed: () {
+                                Datos.portapapeles(
+                                    context: context,
+                                    text: Reportes.copiarReporte(
+                                        tipoReporte: ReportsMethods.getTypeReport(
+                                            actualPage: widget.actualPage)));
+                              },
+                              backgroundColor: Colors.black,
+                              foregroundColor: Colors.white,
+                              child: const Icon(Icons.copy_rounded,
+                                  color: Colors.white),
+                            ),
                           ),
                         ],
                       ),
@@ -1151,7 +1155,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           ),
           // title: AppBarText(Sentences.app_bar_reportes),
           actions: <Widget>[
-            if (!isMobile(context))
+            // if (!isMobile(context))
             GrandIcon(
                 labelButton: 'Esquema de Análisis . . . ',
                 iconData: Icons.remove_red_eye_outlined,

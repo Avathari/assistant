@@ -4949,13 +4949,13 @@ class Quirurgicos {
         .then((value) {
       Pacientes.Quirurgicos = value;
       Archivos.createJsonFromMap(value,
-          filePath: "${Pacientes.localRepositoryPath}quirurgicos.json");
+          filePath: "${Pacientes.localRepositoryPath}/quirurgicos.json");
     });
   }
 
   static void consultarRegistro() {
     Archivos.readJsonToMap(
-            filePath: "${Pacientes.localRepositoryPath}quirurgicos.json")
+            filePath: "${Pacientes.localRepositoryPath}/quirurgicos.json")
         .then((value) {
       Pacientes.Quirurgicos = value;
     }).onError((error, stackTrace) {
@@ -4970,7 +4970,7 @@ class Quirurgicos {
       // Enfermedades de base del paciente, asi como las Hospitalarias.
       Pacientes.Quirurgicos = value;
       Archivos.createJsonFromMap(value,
-          filePath: '${Pacientes.localRepositoryPath}quirurgicos.json');
+          filePath: '${Pacientes.localRepositoryPath}/quirurgicos.json');
     });
   }
 
@@ -5038,7 +5038,7 @@ class Quirurgicos {
 class Transfusionales {
   static int ID_Transfusionales = 0;
   static var fileAssocieted =
-      '${Pacientes.localRepositoryPath}transfusionales.json';
+      '${Pacientes.localRepositoryPath}/transfusionales.json';
   //
   static String selectedDiagnosis = "";
   //
@@ -5068,7 +5068,7 @@ class Transfusionales {
         .then((value) {
       Pacientes.Transfusionales = value;
       Archivos.createJsonFromMap(value,
-          filePath: "${Pacientes.localRepositoryPath}transfusionales.json");
+          filePath: "${Pacientes.localRepositoryPath}/transfusionales.json");
     });
   }
 
@@ -5171,7 +5171,7 @@ class Traumatologicos {
         .then((value) {
       Pacientes.Traumatologicos = value;
       Archivos.createJsonFromMap(value,
-          filePath: "${Pacientes.localRepositoryPath}traumatologicos.json");
+          filePath: "${Pacientes.localRepositoryPath}/traumatologicos.json");
     });
   }
 
@@ -5540,7 +5540,7 @@ class Embarazos {
 
 class Vitales {
   static int ID_Vitales = 0;
-  static var fileAssocieted = '${Pacientes.localRepositoryPath}vitales.json';
+  static var fileAssocieted = '${Pacientes.localRepositoryPath}/vitales.json';
 
   static void ultimoRegistro() {
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
@@ -6304,7 +6304,7 @@ class Imagenologias {
 
 class Auxiliares {
   static var fileAssocieted =
-      '${Pacientes.localRepositoryPath}paraclinicos.json';
+      '${Pacientes.localRepositoryPath}/paraclinicos.json';
 
   static List aspectoLiquidos = [
     'Muy Turbio',
@@ -8060,6 +8060,7 @@ class Auxiliares {
         "Estudio = ?, Resultado = ?, Unidad_Medida = ? "
         "WHERE ID_Laboratorio = ?",
     "deleteQuery": "DELETE FROM laboratorios WHERE ID_Laboratorio = ?",
+    "deleteQueryPaciente": "DELETE FROM laboratorios WHERE ID_Pace = ?",
     "antropoColumns": [
       "ID_Pace",
     ],
@@ -8351,6 +8352,7 @@ class Auxiliares {
     "GGT (Gama Glutamiltranspeptidasa)",
     "Globulinas",
     "Proteinas Totales (Suero)",
+    "Proteínas Totales (Suero) ",
     "Albúmina",
     //
     "CK Creatinfosfoquinasa",
@@ -8501,8 +8503,12 @@ class Auxiliares {
         return Categorias[3];
       case "Globulinas":
         return Categorias[3];
-      case "Proteinas Totales (Suero)":
+      case "Proteínas Totales (Suero)":
         return Categorias[3];
+      // case "Proteínas Totales (Suero) ":
+      //   return Categorias[3];
+      // case "Proteínas Totales":
+      //   return Categorias[3];
       // case "Relación A/G"
       case "Albúmina":
         return Categorias[3];
@@ -8660,7 +8666,9 @@ class Auxiliares {
         return "Glutrailtranspeptidasa";
       case "Globulinas":
         return "Globulinas";
-      case "Proteinas Totales (Suero)":
+      case "Proteínas Totales (Suero)":
+        return "Proteínas Totales";
+      case "Proteínas Totales (Suero) ":
         return "Proteínas Totales";
       // case "Relación A/G"
       case "Albúmina":
@@ -8771,7 +8779,7 @@ class Auxiliares {
 }
 
 class Pendientes {
-  static var fileAssocieted = '${Pacientes.localRepositoryPath}pendientes.json';
+  static var fileAssocieted = '${Pacientes.localRepositoryPath}/pendientes.json';
 
   static final Map<String, dynamic> pendientes = {
     "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_reggabo "
@@ -8938,7 +8946,7 @@ class Pendientes {
 
   static void consultarRegistro() {
     Archivos.readJsonToMap(
-            filePath: "${Pacientes.localRepositoryPath}pendientes.json")
+            filePath: "${Pacientes.localRepositoryPath}/pendientes.json")
         .then((value) {
       if (value == []) {
         consultar();
@@ -9562,7 +9570,7 @@ class Reportes {
 
 class Balances {
   static int ID_Balances = 0;
-  static var fileAssocieted = '${Pacientes.localRepositoryPath}balances.json';
+  static var fileAssocieted = '${Pacientes.localRepositoryPath}/balances.json';
 
   // *********** *********** ********* ****
   static Map<String, dynamic> Balance = {};
@@ -10055,7 +10063,7 @@ class Hospitalizaciones {
 class Diagnosticos {
   static int ID_Diagnosticos = 0;
   static var fileAssocieted =
-      '${Pacientes.localRepositoryPath}diagnosticos.json';
+      '${Pacientes.localRepositoryPath}/diagnosticos.json';
   //
   static String selectedDiagnosis = "";
   //
@@ -10074,7 +10082,7 @@ class Diagnosticos {
         .then((value) {
       Pacientes.Diagnosticos = value;
       Archivos.createJsonFromMap(value,
-          filePath: "${Pacientes.localRepositoryPath}diagnosticos.json");
+          filePath: "${Pacientes.localRepositoryPath}/diagnosticos.json");
     });
   }
 
@@ -10098,7 +10106,7 @@ class Diagnosticos {
       // Enfermedades de base del paciente, asi como las Hospitalarias.
       Pacientes.Diagnosticos = value;
       Archivos.createJsonFromMap(value,
-          filePath: "${Pacientes.localRepositoryPath}diagnosticos.json");
+          filePath: "${Pacientes.localRepositoryPath}/diagnosticos.json");
     });
   }
 
@@ -10683,7 +10691,7 @@ class Repositorios {
 class Situaciones {
   static int ID_Situaciones = 0;
   static var fileAssocieted =
-      '${Pacientes.localRepositoryPath}situaciones.json';
+      '${Pacientes.localRepositoryPath}/situaciones.json';
 
   static Map<String, dynamic> Situacion = {};
 
@@ -11340,7 +11348,7 @@ class Documentaciones {
 
 class Vacunales {
   static int ID_Vacunales = 0;
-  static var fileAssocieted = '${Pacientes.localRepositoryPath}vacunales.json';
+  static var fileAssocieted = '${Pacientes.localRepositoryPath}/vacunales.json';
   //
   static String selectedDiagnosis = "";
   //
@@ -11439,7 +11447,7 @@ class Vacunales {
 //
 class Cirugias {
   static int ID_Cirugias = 0;
-  static var fileAssocieted = '${Pacientes.localRepositoryPath}cirugias.json';
+  static var fileAssocieted = '${Pacientes.localRepositoryPath}/cirugias.json';
 
   static Map<String, dynamic> Cirugia = {};
 

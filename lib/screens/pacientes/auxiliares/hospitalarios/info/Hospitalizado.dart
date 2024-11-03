@@ -4,7 +4,7 @@ import 'package:assistant/conexiones/controladores/Pacientes.dart';
 
 class Internado {
   late int idPaciente, idHospitalizado;
-  late String nombreCompleto;
+  late String nombreCompleto, nssPaciente, nssAgregadoPaciente;
   late String localRepositoryPath,
       vitalesRepositoryPath,
       patologicosRepositoryPath,
@@ -21,10 +21,10 @@ class Internado {
       patologicos = [],
       diagnosticos = [],
       paraclinicos = [],
-  //
+      //
       pendientes = [],
       licencias = [],
-  //
+      //
       balances = [],
       imagenologicos = [],
       electrocardiogramas = [],
@@ -43,23 +43,27 @@ class Internado {
       nombreCompleto =
           "${json['Pace_Nome_PI']} ${json['Pace_Nome_SE']} ${json['Pace_Ape_Pat']} ${json['Pace_Ape_Mat']}";
     }
+
+    //
+    nssPaciente = json['Pace_NSS'].replaceAll(" ", "");
+    nssAgregadoPaciente = "${json['Pace_NSS']} ${json['Pace_AGRE']}";
 //
     localRepositoryPath = 'assets/vault/'
         '$nombreCompleto';
     //
-    vitalesRepositoryPath = "${localRepositoryPath}vitales.json";
-    patologicosRepositoryPath = "${localRepositoryPath}patologicos.json";
-    diagnosticosRepositoryPath = "${localRepositoryPath}diagnosticos.json";
-    pendientesRepositoryPath = "${localRepositoryPath}pendientes.json";
-    licenciasRepositoryPath = "${localRepositoryPath}licencias.json";
+    vitalesRepositoryPath = "${localRepositoryPath}/vitales.json";
+    patologicosRepositoryPath = "${localRepositoryPath}/patologicos.json";
+    diagnosticosRepositoryPath = "${localRepositoryPath}/diagnosticos.json";
+    pendientesRepositoryPath = "${localRepositoryPath}/pendientes.json";
+    licenciasRepositoryPath = "${localRepositoryPath}/licencias.json";
 
-    ventilacionesRepositoryPath = "${localRepositoryPath}ventilaciones.json";
-    balancesRepositoryPath = "${localRepositoryPath}balances.json";
+    ventilacionesRepositoryPath = "${localRepositoryPath}/ventilaciones.json";
+    balancesRepositoryPath = "${localRepositoryPath}/balances.json";
 
-    imagenologicosRepositoryPath = "${localRepositoryPath}imagenologias.json";
+    imagenologicosRepositoryPath = "${localRepositoryPath}/imagenologias.json";
     electrocardiogramasRepositoryPath =
-        "${localRepositoryPath}electrocardiogramas.json";
-    paraclinicosRepositoryPath = "${localRepositoryPath}paraclinicos.json";
+        "${localRepositoryPath}/electrocardiogramas.json";
+    paraclinicosRepositoryPath = "${localRepositoryPath}/paraclinicos.json";
     //
     Terminal.printExpected(
         message: "localRepositoryPath : : $localRepositoryPath");
@@ -104,7 +108,6 @@ class Internado {
         "ORDER BY ID_Hosp ASC",
         idPaciente,
       ).then((value) {
-
         idHospitalizado = value['ID_Hosp'] ?? 0;
         return hospitalizedData = value;
       });
@@ -179,12 +182,12 @@ class Internado {
   //
   Future<List> getPendientesHistorial({bool reload = true}) async {
     //
-    if (reload){
+    if (reload) {
       await Actividades.consultarAllById(
         Databases.siteground_database_reghosp,
         "SELECT * FROM pace_pen WHERE ID_Pace = ? "
-            "AND ID_Hosp = $idHospitalizado",
-            // "AND Pace_PEN_realized = '0'",
+        "AND ID_Hosp = $idHospitalizado",
+        // "AND Pace_PEN_realized = '0'",
         idPaciente,
       ).then((value) async {
         Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . ");
@@ -193,19 +196,20 @@ class Internado {
       }).whenComplete(() => Archivos.createJsonFromMap(pendientes,
           filePath: pendientesRepositoryPath));
       return pendientes;
-    }else {
+    } else {
       await Archivos.readJsonToMap(filePath: pendientesRepositoryPath)
           .then((value) {
         Terminal.printNotice(
-            message: " : : OBTENIDO DE ARCHIVO . . . $pendientesRepositoryPath");
+            message:
+                " : : OBTENIDO DE ARCHIVO . . . $pendientesRepositoryPath");
         //
         return pendientes = value;
       }).onError((error, stackTrace) async {
         await Actividades.consultarAllById(
           Databases.siteground_database_reghosp,
           "SELECT * FROM pace_pen WHERE ID_Pace = ? "
-              "AND ID_Hosp = '$idHospitalizado' "
-              "AND Pace_PEN_realized = '0'",
+          "AND ID_Hosp = '$idHospitalizado' "
+          "AND Pace_PEN_realized = '0'",
           idPaciente,
         ).then((value) async {
           Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . ");
@@ -240,6 +244,7 @@ class Internado {
     });
     return licencias;
   }
+
   //
   Future<List> getVentilacionnesHistorial() async {
     //
@@ -264,17 +269,8 @@ class Internado {
   }
 
   //
-  Future<List> getBalancesHistorial() async {
-    //
-    await Archivos.readJsonToMap(filePath: balancesRepositoryPath)
-        .then((value) {
-      Terminal.printNotice(
-          message:
-          " : : OBTENIDO DE ARCHIVO . . . $balancesRepositoryPath"
-              "$value");
-      //
-      return balances = value;
-    }).onError((error, stackTrace) async {
+  Future<List> getBalancesHistorial({reload: false}) async {
+    if (reload) {
       await Actividades.consultarAllById(Databases.siteground_database_reghosp,
           Balances.balance['consultIdQuery'], idPaciente)
           .then((value) async {
@@ -283,22 +279,44 @@ class Internado {
         return balances = value;
       }).whenComplete(() => Archivos.createJsonFromMap(balances,
           filePath: balancesRepositoryPath));
-    });
+
+    } else {
+      //
+      await Archivos.readJsonToMap(filePath: balancesRepositoryPath)
+          .then((value) {
+        Terminal.printNotice(
+            message: " : : OBTENIDO DE ARCHIVO . . . $balancesRepositoryPath"
+                "$value");
+        //
+        return balances = value;
+      }).onError((error, stackTrace) async {
+        await Actividades.consultarAllById(Databases.siteground_database_reghosp,
+            Balances.balance['consultIdQuery'], idPaciente)
+            .then((value) async {
+          Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . $value");
+          //
+          return balances = value;
+        }).whenComplete(() => Archivos.createJsonFromMap(balances,
+            filePath: balancesRepositoryPath));
+      });
+    }
+
     return balances;
   }
+
   //
   Future<List> getParaclinicosHistorial({bool reload = true}) async {
     //
     if (reload) {
       await Actividades.consultarAllById(Databases.siteground_database_reggabo,
-          Auxiliares.auxiliares['consultByIdPrimaryQuery'], idPaciente)
+              Auxiliares.auxiliares['consultByIdPrimaryQuery'], idPaciente)
           .then((value) async {
         Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . ");
         //
         return paraclinicos = value;
       }).whenComplete(() => Archivos.createJsonFromMap(paraclinicos,
-          filePath: paraclinicosRepositoryPath));
-    }else{
+              filePath: paraclinicosRepositoryPath));
+    } else {
       await Archivos.readJsonToMap(filePath: paraclinicosRepositoryPath)
           .then((value) {
         Terminal.printNotice(
@@ -307,8 +325,10 @@ class Internado {
         //
         return paraclinicos = value;
       }).onError((error, stackTrace) async {
-        await Actividades.consultarAllById(Databases.siteground_database_reggabo,
-                Auxiliares.auxiliares['consultByIdPrimaryQuery'], idPaciente)
+        await Actividades.consultarAllById(
+                Databases.siteground_database_reggabo,
+                Auxiliares.auxiliares['consultByIdPrimaryQuery'],
+                idPaciente)
             .then((value) async {
           Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . ");
           //
@@ -369,8 +389,10 @@ class Internado {
   }
 
   // METHODS
-  static String getCultivos(
-      {required List listadoFrom, bool esAbreviado = true, }) {
+  static String getCultivos({
+    required List listadoFrom,
+    bool esAbreviado = true,
+  }) {
     String prosa = "", max = "", fecha = "";
 
     // ***************************** *****************
@@ -381,12 +403,16 @@ class Internado {
       ),
     );
     // Terminal.printSuccess(message: "presentes: ${estudiosPresentes}");
-    var newList = Listas.compareOneListWithAnother(estudiosPresentes, Auxiliares.cultivos);
+    var newList = Listas.compareOneListWithAnother(
+        estudiosPresentes, Auxiliares.cultivos);
     // Terminal.printSuccess(message: "newList: ${newList}");
     //
     for (var elem in newList) {
-      listadoFrom.where((element) => element["Estudio"].contains(elem)).forEach((eacher) {
-        fecha = "          ${eacher['Estudio']} (${eacher['Fecha_Registro']}) - ";
+      listadoFrom
+          .where((element) => element["Estudio"].contains(elem))
+          .forEach((eacher) {
+        fecha =
+            "          ${eacher['Estudio']} (${eacher['Fecha_Registro']}) - ";
         // Terminal.printExpected(message: "eacher: ${eacher}");
         max = "$max${eacher['Resultado']}, ";
       });

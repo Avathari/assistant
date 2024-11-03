@@ -137,27 +137,27 @@ class _ReporteRevisionState extends State<ReporteRevision> {
                           textController: initialTextController,
                           labelEditText: "Datos generales",
                           keyBoardType: TextInputType.multiline,
-                          numOfLines: 3,
+                          numOfLines: 1,
                           withShowOption: true,
                           inputFormat: MaskTextInputFormatter()),
                       EditTextArea(
                           textController: patoloTextController,
                           labelEditText: "Antecedentes personales patológicos",
                           keyBoardType: TextInputType.multiline,
-                          numOfLines: 12,
+                          numOfLines: 15,
                           inputFormat: MaskTextInputFormatter()),
                       EditTextArea(
                           textController: relevantesTextController,
                           labelEditText: "Relevantes . . . ",
                           keyBoardType: TextInputType.multiline,
-                          numOfLines: 5,
+                          numOfLines: 15,
                           withShowOption: true,
                           inputFormat: MaskTextInputFormatter()),
                       EditTextArea(
                           textController: padesTextController,
                           labelEditText: "Padecimiento Actual",
                           keyBoardType: TextInputType.multiline,
-                          numOfLines: 10,
+                          numOfLines: 15,
                           withShowOption: true,
                           onChange: (value) {
                             Reportes.padecimientoActual = value;

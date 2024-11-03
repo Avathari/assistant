@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
@@ -6,6 +9,7 @@ import 'package:assistant/screens/pacientes/auxiliares/detalles/menus.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/semiologicos.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/terapias.dart';
 import 'package:assistant/values/SizingInfo.dart';
+import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
@@ -16,6 +20,8 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class ExploracionFisica extends StatefulWidget {
   bool? isTerapia;
+  String analisisTemporalFile =
+      "${Pacientes.localReportsPath}/exploracionFisica.txt";
 
   ExploracionFisica({super.key, this.isTerapia = false});
 
@@ -24,11 +30,15 @@ class ExploracionFisica extends StatefulWidget {
 }
 
 class _ExploracionFisicaState extends State<ExploracionFisica> {
+  Timer? _timer; // Definir un temporizador
+  //
   var expoTextController = TextEditingController();
   var vitalTextController = TextEditingController();
 
   var scrollSignoController = ScrollController();
   var scrollExpoController = ScrollController();
+
+  //
 
   // ######################### ### # ### ############################
   // INICIO DE LAS OPERACIONES STATE() Y BUILD().
@@ -41,6 +51,9 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
           Reportes.exploracionFisica = Reportes.reportes['Exploracion_Fisica'];
       vitalTextController.text = Reportes.signosVitales;
     });
+    //
+    _timer = Timer.periodic(
+        Duration(seconds: 7), (timer) => _saveToFile(expoTextController.text));
     super.initState();
   }
 
@@ -56,20 +69,24 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                   flex: isDesktop(context)
                       ? 6
                       : isMobile(context)
-                          ? 16
-                          : 7,
+                          ? 6
+                          : 12,
                   child: isMobile(context)
                       ? Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Expanded(
-                              flex: isDesktop(context) ? 4 : 7,
+                              flex: isDesktop(context) ? 4 : 3, //7
                               child: EditTextArea(
                                   textController: vitalTextController,
                                   labelEditText: "Signos Vitales",
                                   keyBoardType: TextInputType.multiline,
                                   fontSize: isTablet(context) ? 12 : 8,
-                                  numOfLines: isTablet(context) ? 12 : 10,
+                                  numOfLines: isTablet(context)
+                                      ? 12
+                                      : isMobile(context)
+                                          ? 7
+                                          : 10,
                                   onChange: ((value) => setState(() {
                                         Reportes.signosVitales = value;
                                         Reportes.reportes['Signos_Vitales'] =
@@ -118,27 +135,37 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  flex: isLargeDesktop(context) ? 12 : isDesktop(context) ? 7: 7, // 12
+                  flex: isLargeDesktop(context)
+                      ? 12
+                      : isDesktop(context)
+                          ? 7
+                          : 7, // 12
                   child: EditTextArea(
                       textController: expoTextController,
                       labelEditText: "Exploración física",
                       keyBoardType: TextInputType.multiline,
-                      fontSize: isTablet(context) ? 12 : 8,
+                      fontSize: isTablet(context)
+                          ? 12
+                          : isMobile(context)
+                              ? 8
+                              : 8,
                       numOfLines: widget.isTerapia!
                           ? 60
                           : isTablet(context)
                               ? 30
-                              : 20,
+                              : isMobile(context)
+                                  ? 80
+                                  : 20,
                       onChange: ((value) => setState(() {
-                        // expoTextController.text =
-                        Reportes.reportes['Exploracion_Fisica'] =
+                            // expoTextController.text =
+                            Reportes.reportes['Exploracion_Fisica'] =
                                 Reportes.exploracionFisica = value;
                           })),
                       inputFormat: MaskTextInputFormatter()),
                 ),
                 widget.isTerapia!
                     ? Expanded(
-                  flex: !isTablet(context) ? 1 :2,
+                        flex: !isTablet(context) ? 1 : 2,
                         child: Column(
                           children: [
                             Padding(
@@ -151,28 +178,33 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                                 Expanded(
                                   flex: 1,
                                   child: GrandIcon(
-                                    iconData: Icons.tire_repair_outlined,
-                                    labelButton: "Análisis",
-                                    onPress: () => setState(() {
-                                      //
-                                      expoTextController.text =
-                                          Reportes.exploracionFisica =
-                                      Reportes.reportes['Exploracion_Fisica'] =
-                                          Formatos.exploracionTerapia;
-                                    })),
+                                      iconData: Icons.tire_repair_outlined,
+                                      labelButton: "Análisis",
+                                      onPress: () => setState(() {
+                                            //
+                                            expoTextController.text = Reportes
+                                                    .exploracionFisica =
+                                                Reportes.reportes[
+                                                        'Exploracion_Fisica'] =
+                                                    Formatos.exploracionTerapia;
+                                          })),
                                 ),
                                 Expanded(
                                   flex: 1,
                                   child: GrandIcon(
-                                    iconData: Icons.account_balance_wallet_outlined,
-                                    labelButton: "Analisis Corto",
+                                      iconData:
+                                          Icons.account_balance_wallet_outlined,
+                                      labelButton: "Analisis Corto",
                                       onPress: () => setState(() {
-                                        //
-                                        expoTextController.text =
-                                            Reportes.exploracionFisica =
-                                        Reportes.reportes['Exploracion_Fisica'] = Formatos.exploracionTerapiaCorta;
-                                      })),
-                                  ),
+                                            //
+                                            expoTextController.text = Reportes
+                                                .exploracionFisica = Reportes
+                                                        .reportes[
+                                                    'Exploracion_Fisica'] =
+                                                Formatos
+                                                    .exploracionTerapiaCorta;
+                                          })),
+                                ),
                               ],
                             ),
                             const SizedBox(height: 10),
@@ -181,15 +213,17 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                                 Expanded(
                                   flex: 1,
                                   child: GrandIcon(
-                                    iconData: Icons.streetview,
-                                    labelButton: "Analisis Corto",
+                                      iconData: Icons.streetview,
+                                      labelButton: "Analisis Corto",
                                       onPress: () => setState(() {
-                                        //
-                                        expoTextController.text =
-                                            Reportes.exploracionFisica =
-                                        Reportes.reportes['Exploracion_Fisica'] =
-                                            Formatos.exploracionTerapiaBreve;
-                                      })),
+                                            //
+                                            expoTextController.text = Reportes
+                                                .exploracionFisica = Reportes
+                                                        .reportes[
+                                                    'Exploracion_Fisica'] =
+                                                Formatos
+                                                    .exploracionTerapiaBreve;
+                                          })),
                                 ),
                                 Expanded(
                                   flex: 1,
@@ -197,21 +231,23 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                                       iconData: Icons.self_improvement_sharp,
                                       labelButton: "Analisis Simplificado",
                                       onPress: () => setState(() {
-                                        //
-                                        expoTextController.text =
-                                            Reportes.exploracionFisica =
-                                        Reportes.reportes['Exploracion_Fisica'] =
-                                            Formatos.exploracionTerapiaCortaSimplificada;
-                                      })),
+                                            //
+                                            expoTextController.text = Reportes
+                                                .exploracionFisica = Reportes
+                                                        .reportes[
+                                                    'Exploracion_Fisica'] =
+                                                Formatos
+                                                    .exploracionTerapiaCortaSimplificada;
+                                          })),
                                 ),
                               ],
                             ),
                             const SizedBox(height: 10),
-    Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Menus.popUpVentometrias(context),
-    ),
-    CrossLine(),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Menus.popUpVentometrias(context),
+                            ),
+                            CrossLine(),
                             Expanded(
                                 child: GrandIcon(
                               labelButton: 'Ver',
@@ -234,14 +270,15 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                                     chyldrim: TerapiasItems(),
                                     onAction: () {
                                       setState(() {
-                                        expoTextController.text = Reportes.exploracionFisica;
-                                        Reportes.reportes['Exploracion_Fisica'] =
+                                        expoTextController.text =
+                                            Reportes.exploracionFisica;
+                                        Reportes.reportes[
+                                                'Exploracion_Fisica'] =
                                             Reportes.exploracionFisica;
                                       });
                                     });
                                 // asignarExploracion(indice: 3);
                               }),
-
                             ),
                             //
                             const SizedBox(height: 7),
@@ -249,12 +286,12 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                               child: GrandIcon(
                                 iconData: Icons.linear_scale_rounded,
                                 labelButton: "Actual e Historial",
-                                  onPress: () => setState(() {
-                                    expoTextController.text =
-                                        expoTextController.text +
-                                            Auxiliares.getUltimo(
-                                                withoutInsighs: true);
-                                  }),
+                                onPress: () => setState(() {
+                                  expoTextController.text =
+                                      expoTextController.text +
+                                          Auxiliares.getUltimo(
+                                              withoutInsighs: true);
+                                }),
                                 onLongPress: () => setState(() {
                                   Datos.portapapeles(
                                       context: context,
@@ -277,183 +314,28 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
     ]);
   }
 
-  //
-  void asignarVitales({required int indice}) {
-    setState(() {
-      vitalTextController.text = Pacientes.signosVitales(indice: indice);
-      Reportes.reportes['Signos_Vitales'] = "${vitalTextController.text}.";
-      Reportes.signosVitales = vitalTextController.text;
-    });
-  }
-
-  void asignarExploracion({required int indice}) {
-    setState(() {
-      expoTextController.text = Pacientes.exploracionFisica(indice: indice);
-      Reportes.reportes['Exploracion_Fisica'] = "${expoTextController.text}.";
-      Reportes.exploracionFisica = expoTextController.text;
-    });
-  }
-
-  otherExploreOptions() {
-    return Expanded(
-      flex: 1,
-      child: SingleChildScrollView(
-        controller: scrollExpoController,
-        child: Column(
-          children: [
-            GrandButton(
-              labelButton: "Exploración física",
-              onPress: () => setState(() {
-                asignarExploracion(indice: 1);
-              }),
-              onLongPress: () => setState(() {
-                Operadores.openDialog(
-                    context: context,
-                    chyldrim: Semiologicos(),
-                    onAction: () {
-                      setState(() {
-                        expoTextController.text =
-                            Exploracion.exploracionGeneral;
-                      });
-                    });
-              }),
-            ),
-            GrandButton(
-              labelButton: "Exploración corta",
-              onPress: () => setState(() {
-                asignarExploracion(indice: 4);
-              }),
-            ),
-            GrandButton(
-              labelButton: "Exploración física extensa",
-              onPress: () => setState(() {
-                asignarExploracion(indice: 2);
-              }),
-            ),
-            GrandButton(
-              labelButton: "Exploración física extensa",
-              onPress: () => setState(() {
-                asignarExploracion(indice: 2);
-              }),
-            ),
-            GrandButton(
-              labelButton: "Analisis de terapia intensiva",
-              onPress: () => setState(() {
-                Operadores.openDialog(
-                    context: context,
-                    chyldrim: TerapiasItems(),
-                    onAction: () {
-                      setState(() {
-                        expoTextController.text = Reportes.exploracionFisica;
-                        Reportes.reportes['Exploracion_Fisica'] =
-                            Reportes.exploracionFisica;
-                      });
-                    });
-                // asignarExploracion(indice: 3);
-              }),
-            ),
-            GrandButton(
-              labelButton: "Patrón Neurológico",
-              onPress: () => setState(() {
-                asignarExploracion(indice: 5);
-              }),
-            ),
-            //
-            GrandButton(
-              labelButton: "Sin hallazgos relevantes",
-              onPress: () => setState(() {
-                asignarExploracion(indice: 0);
-              }),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   mobileExploreOptions() {
-    return Expanded(
-      flex: 1,
-      child: Wrap(
-        direction: Axis.horizontal,
-        alignment: WrapAlignment.center,
-        runAlignment: WrapAlignment.center,
-        crossAxisAlignment: WrapCrossAlignment.center,
-        spacing: 25,
-        runSpacing: 15,
-        children: [
-          GrandIcon(
-            iconData: Icons.explore,
-            labelButton: "Exploración física",
-            onPress: () => setState(() {
-              asignarExploracion(indice: 1);
-            }),
-            onLongPress: () => setState(() {              Operadores.openDialog(
-                context: context,
-                chyldrim: Semiologicos(),
-                onAction: () {
-                  setState(() {
-                    expoTextController.text = Exploracion.exploracionGeneral;
-                  });
-                });
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        CircleIcon(
+            iconed: Icons.file_open_outlined,
+            tittle: "Memoria temporal . . . ",
+            onChangeValue: () => _readFromFile()
+                .then((onValue) => Operadores.optionsActivity(context: context,
+                tittle: "Memoria temporal . . . ",
+                message: onValue.toString(),
+                onClose: ()=>Navigator.of(context).pop(),
+                textOptionA: "¿Sobre-escribier memoria?",
+                optionA: (){
+                  expoTextController.text = onValue;
+                  Navigator.of(context).pop();
+                }
+            ))),
+        otherExploreOptions(context),
 
-            }),
-          ),
-          GrandIcon(
-            iconData: Icons.data_exploration,
-            labelButton: "Exploración corta",
-            onPress: () => setState(() {
-              asignarExploracion(indice: 4);
-            }),
-          ),
-          GrandIcon(
-            iconData: Icons.explore_outlined,
-            labelButton: "Exploración física extensa",
-            onPress: () => setState(() {
-              asignarExploracion(indice: 2);
-            }),
-
-          ),
-          GrandIcon(
-            iconData: Icons.travel_explore,
-            labelButton: "Exploración física extensa",
-            onPress: () => setState(() {
-              asignarExploracion(indice: 2);
-            }),
-          ),
-          GrandIcon(
-            iconData: Icons.travel_explore_sharp,
-            labelButton: "Analisis de terapia intensiva",
-            onPress: () => setState(() {
-              Operadores.openDialog(
-                  context: context,
-                  chyldrim: TerapiasItems(),
-                  onAction: () {
-                    setState(() {
-                      expoTextController.text = Reportes.exploracionFisica;
-                      Reportes.reportes['Exploracion_Fisica'] =
-                          Reportes.exploracionFisica;
-                    });
-                  });
-              // asignarExploracion(indice: 3);
-            }),
-
-          ),
-          GrandIcon(
-            iconData: Icons.brightness_1_outlined,
-            labelButton: "Patrón Neurológico",
-            onPress: () => setState(() {
-              asignarExploracion(indice: 5);
-            }),
-          ),
-          GrandIcon(
-            labelButton: "Sin hallazgos relevantes",
-            onPress: () => setState(() {
-              asignarExploracion(indice: 0);
-            }),
-          ),
-        ],
-      ),
+      ],
     );
   }
 
@@ -517,13 +399,13 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
       flex: isLargeDesktop(context)
           ? 3
           : isMobile(context)
-              ? 4
+              ? 2
               : 1,
       child: Wrap(
         direction: isLargeDesktop(context) ? Axis.horizontal : Axis.horizontal,
         alignment: WrapAlignment.spaceBetween,
-        spacing: 8,
-        runSpacing: 8,
+        spacing: 10,
+        runSpacing: 6,
         children: [
           GrandIcon(
             iconData: Icons.safety_divider,
@@ -577,6 +459,172 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
         ],
       ),
     );
+  }
+
+  //
+  Widget otherExploreOptions(BuildContext context) {
+    return PopupMenuButton<int>(
+      tooltip: "Exploración física basado en Estructuras . . . ",
+      icon: const Icon(Icons.panorama_fish_eye),
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          value: 1,
+          onTap: () => asignarExploracion(indice: 1),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 2.0),
+            child: ListTile(
+                leading: Icon(
+                  Icons.explore,
+                ),
+                title: Text(
+                  "Exploración física",
+                  style: Styles.textSyleGrowth(fontSize: 8),
+                )),
+          ),
+        ),
+        PopupMenuItem(
+          value: 1,
+          onTap: () => asignarExploracion(indice: 4),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 2.0),
+            child: ListTile(
+                leading: Icon(
+                  Icons.data_exploration,
+                ),
+                title: Text(
+                  "Exploración corta",
+                  style: Styles.textSyleGrowth(fontSize: 8),
+                )),
+          ),
+        ),
+        PopupMenuItem(
+          value: 1,
+          onTap: () => asignarExploracion(indice: 1),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 2.0),
+            child: ListTile(
+                leading: Icon(
+                  Icons.explore_outlined,
+                ),
+                title: Text(
+                  "Exploración física extensa",
+                  style: Styles.textSyleGrowth(fontSize: 8),
+                )),
+          ),
+        ),
+        PopupMenuItem(
+          value: 1,
+          onTap: () => setState(() {
+            Operadores.openDialog(
+                context: context,
+                chyldrim: TerapiasItems(),
+                onAction: () {
+                  setState(() {
+                    expoTextController.text = Reportes.exploracionFisica;
+                    Reportes.reportes['Exploracion_Fisica'] =
+                        Reportes.exploracionFisica;
+                  });
+                });
+            // asignarExploracion(indice: 3);
+          }),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 2.0),
+            child: ListTile(
+                leading: Icon(
+                  Icons.travel_explore_sharp,
+                ),
+                title: Text(
+                  "Analisis de terapia intensiva",
+                  style: Styles.textSyleGrowth(fontSize: 8),
+                )),
+          ),
+        ),
+        PopupMenuItem(
+          value: 1,
+          onTap: () => setState(() {
+            asignarExploracion(indice: 5);
+          }),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 2.0),
+            child: ListTile(
+                leading: Icon(
+                  Icons.brightness_1_outlined,
+                ),
+                title: Text(
+                  "Patrón Neurológico",
+                  style: Styles.textSyleGrowth(fontSize: 8),
+                )),
+          ),
+        ),
+        PopupMenuItem(
+          value: 1,
+          onTap: () => asignarExploracion(indice: 1),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 2.0),
+            child: ListTile(
+                leading: Icon(
+                  Icons.explore,
+                ),
+                title: Text(
+                  "Exploración",
+                  style: Styles.textSyleGrowth(fontSize: 8),
+                )),
+          ),
+        ),
+        PopupMenuItem(
+          value: 1,
+          onTap: () => setState(() {
+            asignarExploracion(indice: 0);
+          }),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 2.0),
+            child: ListTile(
+                leading: Icon(
+                  Icons.explore,
+                ),
+                title: Text(
+                  "Sin hallazgos relevantes",
+                  style: Styles.textSyleGrowth(fontSize: 8),
+                )),
+          ),
+        ),
+      ],
+      offset: const Offset(0, 100),
+      color: Theming.cuaternaryColor,
+      elevation: 1,
+    );
+  }
+
+  // Función para guardar el texto en un archivo
+  Future<void> _saveToFile(String text) async {
+    // final path = await _getFilePath();
+    if (text.isNotEmpty) {
+      final file = File(widget.analisisTemporalFile);
+      await file.writeAsString(text).whenComplete(() =>
+          null); // print("Texto guardado automáticamente cada 10 segundos"));
+    }
+  }
+
+  // Función opcional para leer el contenido del archivo (si quieres cargarlo después)
+  Future<String> _readFromFile() async {
+    return await File(widget.analisisTemporalFile).readAsString();
+  }
+
+  //
+  void asignarVitales({required int indice}) {
+    setState(() {
+      vitalTextController.text = Pacientes.signosVitales(indice: indice);
+      Reportes.reportes['Signos_Vitales'] = "${vitalTextController.text}.";
+      Reportes.signosVitales = vitalTextController.text;
+    });
+  }
+
+  void asignarExploracion({required int indice}) {
+    setState(() {
+      expoTextController.text = Pacientes.exploracionFisica(indice: indice);
+      Reportes.reportes['Exploracion_Fisica'] = "${expoTextController.text}.";
+      Reportes.exploracionFisica = expoTextController.text;
+    });
   }
 }
 

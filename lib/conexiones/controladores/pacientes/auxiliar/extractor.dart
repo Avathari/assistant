@@ -11,7 +11,7 @@ import 'package:syncfusion_flutter_pdf/pdf.dart';
 class AuxiliarExtractor {
   static int? idPaciente = 0;
   static List<List<dynamic>>? valoresLaboratorio = [];
-  static String? nssPaciente, fechaResultado;
+  static String? nssPaciente, agregadoPaciente, fechaResultado;
   static String? result, registroPrevio = "NO ENCONTRADO";
 
   // String? stringImage = '';
@@ -54,7 +54,8 @@ class AuxiliarExtractor {
             for (var item in textLine) {
               String texto = item.text;
 
-              RegExp regExp = RegExp(r'([A-Z]+),\s?(\d),\s?(-)|(?![\x95\s\#])(\D+|\d*\.?\d*)(?![\s\#]$)');
+              RegExp regExp = RegExp(
+                  r'([A-Z]+),\s?(\d),\s?(-)|(?![\x95\s\#])(\D+|\d*\.?\d*)(?![\s\#]$)');
 
               // RegExp(r'(?![\x95\s\#])(\D+|\d*\.?\d*)(?![\s\#]$)');
               // (?!\s[\x95#]$)
@@ -116,8 +117,8 @@ class AuxiliarExtractor {
                               .trim()
                               .replaceAll(RegExp(r'\<[^<>]*\>'), '')),
                           // partes[0].split("#")[0].trim()), // Tipo_Estudio
-                          Auxiliares.queLaboratorioPertenece(partes[
-                              0].trim()), // .replaceAll(RegExp(r'^(.*)\s<'), '').trimRight()
+                          Auxiliares.queLaboratorioPertenece(partes[0]
+                              .trim()), // .replaceAll(RegExp(r'^(.*)\s<'), '').trimRight()
                           // partes[0].split("#")[0].trim()), // Laboratorio
                           partes[1].trim(),
                           if (partes[2] == "S/U Reactivo > = " ||
@@ -154,7 +155,7 @@ class AuxiliarExtractor {
         tittle: "Finalizar proceso - ",
         message: "Estos fueron los resultados de la Lectura : \n"
             "FECHA DE RESULTADO ${Calendarios.fromTextoLlano(fechaResultado!.trim().split("N: ")[1].trim())} \n"
-            "NSS $nssPaciente . (ID Paciente $idPaciente . $registroPrevio) : : \n\n"
+            "NSS $nssPaciente $agregadoPaciente . (ID Paciente $idPaciente . $registroPrevio) : : \n\n"
             "RESULADOS  (${valoresLaboratorio!.length} valores): \n"
             "${Listas.fromEachListToString(valoresLaboratorio!)} \n"
             "¿Deseas ingresar Información a la Base de Datos de Auxiliares?",
@@ -209,9 +210,9 @@ class AuxiliarExtractor {
     } catch (e) {
       // En caso de no encontrarlo, asignamos "No Encontrado"
       result = "No Encontrado";
-      Terminal.printAlert(
-          message: "No Encontrado . "
-              "$e");
+      // Terminal.printAlert(
+      //     message: "No Encontrado . "
+      //         "$e");
     } finally {
       if (result != "No Encontrado") {
         RegExp regExpect = RegExp(r'(\D+|\d*\.?\d*)');
@@ -220,9 +221,11 @@ class AuxiliarExtractor {
             .map((match) => match.group(0)!)
             .toList();
         nssPaciente = nssFinder[1];
+        agregadoPaciente =
+            nssFinder[3] + nssFinder[4] + nssFinder[5] + nssFinder[6];
         Terminal.printSuccess(
             // message: "result ${result.split(" ")[1]} "
-            message: "nssFinder ${nssFinder[1]}"
+            message: "nssFinder ${nssFinder}"
                 "");
 
         ///
@@ -232,7 +235,8 @@ class AuxiliarExtractor {
                 "ID_Pace, Pace_Nome_PI, Pace_Nome_SE, "
                 "Pace_Ape_Pat, Pace_Ape_Mat "
                 "FROM pace_iden_iden "
-                "WHERE Pace_NSS = '${Pacientes.formatearNSS(nssPaciente)}'")
+                "WHERE Pace_NSS = '${Pacientes.formatearNSS(nssPaciente)}' "
+                "AND Pace_AGRE = '$agregadoPaciente'")
             .then((onValue) {
           Terminal.printSuccess(message: "$onValue");
           if (onValue.isEmpty) {
@@ -253,7 +257,7 @@ class AuxiliarExtractor {
                 "${onValue[0]['Pace_Nome_SE']} "
                 "";
             idPaciente = int.parse(onValue[0]['ID_Pace'].toString());
-            Terminal.printSuccess(message: "$idPaciente : $onValue");
+            // Terminal.printSuccess(message: "$idPaciente : $onValue");
           }
         }).onError((error, stackTrace) {
           Operadores.alertActivity(

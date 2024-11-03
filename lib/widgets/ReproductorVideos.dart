@@ -116,9 +116,7 @@ class _ReproductorVideoState extends State<ReproductorVideo> {
                     Positioned.fill(child: widgetOnPlay())
                   ]),
                 )
-              : LoadingScreen(
-                  error: "No se puede cargar video",
-                ),
+              : CircularProgressIndicator(),
           Row(
             children: [
               GrandIcon(

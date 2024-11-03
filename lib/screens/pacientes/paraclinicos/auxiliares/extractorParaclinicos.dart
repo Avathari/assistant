@@ -1,17 +1,9 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
-import 'package:assistant/conexiones/conexiones.dart';
-import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/conexiones/controladores/pacientes/auxiliar/extractor.dart';
 import 'package:assistant/screens/operadores/pdfViewer.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_pdf/pdf.dart';
 // import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class ParaclinicosExtractor extends StatefulWidget {

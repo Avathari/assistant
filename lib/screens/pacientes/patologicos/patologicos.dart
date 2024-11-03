@@ -3,6 +3,7 @@ import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/screens/pacientes/patologicos/auxiliares/antecedentes.dart';
+import 'package:assistant/screens/pacientes/reportes/reportes.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
@@ -24,10 +25,15 @@ import '../../../conexiones/conexiones.dart';
 
 class OperacionesPatologicos extends StatefulWidget {
   String? operationActivity;
-
   String _operationButton = 'Nulo';
+  late bool? actualized, withReturnOption;
 
-  OperacionesPatologicos({super.key, this.operationActivity = Constantes.Nulo});
+  OperacionesPatologicos({
+    super.key,
+    this.operationActivity = Constantes.Nulo,
+    this.actualized = false,
+    this.withReturnOption = false,
+  });
 
   @override
   State<OperacionesPatologicos> createState() => _OperacionesPatologicosState();
@@ -36,6 +42,7 @@ class OperacionesPatologicos extends StatefulWidget {
 class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
   @override
   void initState() {
+    Terminal.printExpected(message: "OperacionesPatologicos : : : widget.withReturnOption! : : ${widget.withReturnOption!}");
     //
     switch (widget.operationActivity) {
       case Constantes.Nulo:
@@ -180,27 +187,27 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
           Expanded(
             flex: 5,
             child: EditTextArea(
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                numOfLines: 3,
-                labelEditText: 'Diagnóstico (CIE)',
-                textController: cieDiagnoTextController,
-                selection: true,
-                withShowOption: true,
-                iconData: Icons.line_style,
-                onSelected: () {
-                  Operadores.openDialog(
-                      context: context,
-                      chyldrim: DialogSelector(
-                        onSelected: ((value) {
-                          setState(() {
-                            Diagnosticos.selectedDiagnosis = value;
-                            cieDiagnoTextController.text =
-                                Diagnosticos.selectedDiagnosis;
-                          });
-                        }),
-                      ));
-                },
+              keyBoardType: TextInputType.text,
+              inputFormat: MaskTextInputFormatter(),
+              numOfLines: 3,
+              labelEditText: 'Diagnóstico (CIE)',
+              textController: cieDiagnoTextController,
+              selection: true,
+              withShowOption: true,
+              iconData: Icons.line_style,
+              onSelected: () {
+                Operadores.openDialog(
+                    context: context,
+                    chyldrim: DialogSelector(
+                      onSelected: ((value) {
+                        setState(() {
+                          Diagnosticos.selectedDiagnosis = value;
+                          cieDiagnoTextController.text =
+                              Diagnosticos.selectedDiagnosis;
+                        });
+                      }),
+                    ));
+              },
             ),
           ),
         ],
@@ -280,7 +287,8 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
           children: [
             Expanded(
               flex: 2,
-              child: Column(children: [
+              child: Column(
+                children: [
                   // CircleIcon(
                   //   tittle: 'Suspensiones . . . ',
                   //   difRadios: 15,
@@ -307,22 +315,27 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
                     externalCircleColor: Colors.grey,
                     iconed: Icons.surround_sound_outlined,
                     onChangeValue: () {
-                      Operadores.selectOptionsActivity(context: context,
-                          options: Items.previstos.map((e) =>
-                          e['Diagnostico']).toList(),
+                      Operadores.selectOptionsActivity(
+                          context: context,
+                          options: Items.previstos
+                              .map((e) => e['Diagnostico'])
+                              .toList(),
                           onClose: (valar) {
                             Terminal.printWarning(message: valar);
 
-                        for (var e in Items.previstos) {
-                          //
-                          if (e['Diagnostico'] == valar) {
-                            comenDiagnoTextController.text = e['Diagnostico']!;
-                            tratamientoTextController.text = e['Tratamiento']!;
-                            suspensionesTextController.text = e['Antecedentes']!;
-                          }
-                        }
-                        Navigator.of(context).pop();
-                      });
+                            for (var e in Items.previstos) {
+                              //
+                              if (e['Diagnostico'] == valar) {
+                                comenDiagnoTextController.text =
+                                    e['Diagnostico']!;
+                                tratamientoTextController.text =
+                                    e['Tratamiento']!;
+                                suspensionesTextController.text =
+                                    e['Antecedentes']!;
+                              }
+                            }
+                            Navigator.of(context).pop();
+                          });
                     },
                   ),
                 ],
@@ -360,7 +373,6 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
         suspensionesTextController.text,
         idOperation
       ];
-
       print(
           "${widget.operationActivity} listOfValues $listOfValues ${listOfValues!.length}");
 
@@ -388,13 +400,7 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
                 context: context,
                 tittle: "Anexión de registros",
                 message: "Registros Agregados",
-                onAcept: () {
-                  onClose(context);
-                }));
-            // ******************************************** *** *
-            // Pacientes.Patologicos = value;
-            // Constantes.reinit(value: value);
-            // ******************************************** *** *
+                onAcept: () => onClose(context)));
           });
           break;
         case Constantes.Update:
@@ -406,13 +412,7 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
                 context: context,
                 tittle: "Actualización de registros",
                 message: "Registros Actualizados",
-                onAcept: () {
-                  onClose(context);
-                }));
-            // // ******************************************** *** *
-            // Pacientes.Patologicos = value;
-            // Constantes.reinit(value: value);
-            // ******************************************** *** *
+                onAcept: () => onClose(context)));
           });
           break;
         default:
@@ -429,22 +429,15 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
   }
 
   void onClose(BuildContext context) {
-    switch (isMobile(context)) {
-      case true:
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                // maintainState: false,
-                builder: (context) => GestionPatologicos()));
-        break;
-      case false:
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                // maintainState: false,
-                builder: (context) => GestionPatologicos()));
-        break;
-      default:
+    Terminal.printExpected(message: "widget.withReturnOption! : : ${widget.withReturnOption!}");
+    if (widget.withReturnOption!) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              // maintainState: false,
+              builder: (context) => GestionPatologicos()));
+    } else {
+      Cambios.toNextPage(context, ReportesMedicos(analysis: 1));
     }
   }
 
@@ -476,10 +469,14 @@ class GestionPatologicos extends StatefulWidget {
   Widget? actualSidePage = Container();
   // ****************** *** ****** **************
   var keySearch = "Pace_APP_DEG";
-  bool? actualized;
+  bool? actualized, withReturnOption;
   // ****************** *** ****** **************
 
-  GestionPatologicos({super.key, this.actualSidePage, this.actualized = false});
+  GestionPatologicos(
+      {super.key,
+      this.actualSidePage,
+      this.actualized = false,
+      this.withReturnOption = true});
 
   @override
   State<GestionPatologicos> createState() => _GestionPatologicosState();
@@ -490,43 +487,12 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
 
   @override
   void initState() {
-    if (widget.actualized!) {
+    if (widget.actualized!)
       reiniciar();
-    } else {
+    else
       iniciar();
-    }
 
     super.initState();
-  }
-
-  void iniciar() {
-    Terminal.printWarning(
-        message:
-            " . . . Iniciando Actividad - Repositorio Patologías del Pacientes");
-    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
-      setState(() {
-        foundedItems = value;
-        Terminal.printSuccess(
-            message: 'Repositorio Patologías del Pacientes Obtenido');
-      });
-    }).onError((error, stackTrace) {
-      reiniciar();
-    });
-    Terminal.printOther(message: " . . . Actividad Iniciada");
-  }
-
-  Future<void> reiniciar() async {
-    Terminal.printExpected(message: "Reinicio de los valores . . .");
-    Actividades.consultarAllById(
-            Databases.siteground_database_regpace,
-            Patologicos.patologicos['consultByIdPrimaryQuery'],
-            Pacientes.ID_Paciente)
-        .then((value) {
-      setState(() {
-        foundedItems = value;
-        Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
-      });
-    });
   }
 
   @override
@@ -536,24 +502,27 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
       appBar: AppBar(
           foregroundColor: Colors.white,
           backgroundColor: Theming.primaryColor,
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-            ),
-            tooltip: Sentences.regresar,
-            onPressed: () {
-              Constantes.reinit();
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => VisualPacientes(actualPage: 2)));
-            },
-          ),
+          leading: widget.withReturnOption!
+              ? IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back,
+                  ),
+                  tooltip: Sentences.regresar,
+                  onPressed: () {
+                    Constantes.reinit();
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => VisualPacientes(actualPage: 2)));
+                  },
+                )
+              : null,
           title: AppBarText(appTittle),
           actions: <Widget>[
             GrandIcon(
                 labelButton: 'Agregar Listado de Patologías . . . ',
                 iconData: Icons.line_style,
                 onPress: () {
-                  Cambios.toNextActivity(context, chyld: const VariasPatologias());
+                  Cambios.toNextActivity(context,
+                      chyld: const VariasPatologias());
                 }),
             CrossLine(
               isHorizontal: false,
@@ -682,6 +651,50 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
     );
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    reiniciar().whenComplete(() {
+      // foundedItems = [];
+      gestionScrollController.dispose();
+      searchTextController.dispose();
+    });
+    super.dispose();
+  }
+
+  //
+
+  void iniciar() {
+    Terminal.printWarning(
+        message:
+            " . . . Iniciando Actividad - Repositorio Patologías del Pacientes");
+    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+      setState(() {
+        foundedItems = value;
+        Terminal.printSuccess(
+            message: 'Repositorio Patologías del Pacientes Obtenido');
+      });
+    }).onError((error, stackTrace) {
+      reiniciar();
+    });
+    Terminal.printOther(message: " . . . Actividad Iniciada");
+  }
+
+  Future<void> reiniciar() async {
+    Terminal.printExpected(message: "Reinicio de los valores . . .");
+    Actividades.consultarAllById(
+            Databases.siteground_database_regpace,
+            Patologicos.patologicos['consultByIdPrimaryQuery'],
+            Pacientes.ID_Paciente)
+        .then((value) {
+      setState(() {
+        foundedItems = value;
+        Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
+      });
+    });
+  }
+
+  //
   Container itemListView(
       AsyncSnapshot snapshot, int posicion, BuildContext context) {
     return Container(
@@ -835,6 +848,7 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (BuildContext context) => OperacionesPatologicos(
                 operationActivity: operationActivity,
+            withReturnOption: widget.withReturnOption!,
               )));
     } else {
       Constantes.operationsActividad = operationActivity;
@@ -847,6 +861,7 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
                       padding: const EdgeInsets.all(8.0),
                       child: OperacionesPatologicos(
                         operationActivity: Constantes.operationsActividad,
+                        withReturnOption: widget.withReturnOption!,
                       ),
                     ),
                   ),

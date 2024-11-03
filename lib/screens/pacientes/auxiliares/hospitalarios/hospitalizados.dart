@@ -532,12 +532,12 @@ class _HospitalizadosState extends State<Hospitalizados> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      flex: 3,
+                      flex: 4,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Paneles.fichaIdentificacion(snapshot, index),
+                          Paneles.fichaIdentificacion(context, snapshot, index),
                           Expanded(
                               child:
                                   Paneles.padesView(context, snapshot, index)),
@@ -916,10 +916,6 @@ class _HospitalizadosState extends State<Hospitalizados> {
     Terminal.printWarning(message: foundedItems![index].balances.toString());
     //
     return GestureDetector(
-      // onTap: () {
-      //   // Terminal.printExpected(
-      //   //     message: "${foundedItems![index].hospitalizedData['Pendientes']}");
-      // },
       onDoubleTap: () {
         Pacientes.ID_Paciente = foundedItems![index].idPaciente;
         Pacientes.Paciente = foundedItems![index].generales;
@@ -1018,9 +1014,9 @@ class _HospitalizadosState extends State<Hospitalizados> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
-                              flex: 8,
-                              child:
-                                  Paneles.fichaIdentificacion(snapshot, index)),
+                              flex: 10,
+                              child: Paneles.fichaIdentificacion(
+                                  context, snapshot, index)),
                           Expanded(
                               flex: 20,
                               child:
@@ -1109,9 +1105,17 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                     tittle:
                                         foundedItems![index].balances.isNotEmpty
                                             ? foundedItems![index]
-                                                .balances
-                                                .last['Pace_bala_Fecha']
-                                                .toString()
+                                                        .balances
+                                                        .last[0]
+                                                        .runtimeType  is List<dynamic>
+                                                ? foundedItems![index]
+                                                    .balances
+                                                    .last[0]['Pace_bala_Fecha']
+                                                    .toString()
+                                                : foundedItems![index]
+                                                    .balances
+                                                    .last['Pace_bala_Fecha']
+                                                    .toString()
                                             : "Sin BI's",
                                   ),
                                 ),
@@ -1470,8 +1474,10 @@ class _HospitalizadosState extends State<Hospitalizados> {
                     child: CircleIcon(
                         tittle: 'Recargar Registro . . . ',
                         iconed: Icons.recent_actors_rounded,
-                        onChangeValue: () => _refreshActualList(index)),
-                  ),
+                        onChangeValue: () => Operadores.dummyLoadingActivity(context: context,
+                            tittle: "Recargar Información del Registro . . . ",
+                            task: _refreshActualList(index)),
+                  )),
                 ],
               ),
             ),
@@ -1537,10 +1543,10 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                 });
                           })),
                   GrandIcon(
-                      labelButton: "Indizar laboratorios de pacientes . . . ",
-                      iconData: Icons.fact_check_outlined,
-                      // onPress: () => _reiniciar(),
-                    onPress: () =>AuxiliarExtractor(context),
+                    labelButton: "Indizar laboratorios de pacientes . . . ",
+                    iconData: Icons.fact_check_outlined,
+                    // onPress: () => _reiniciar(),
+                    onPress: () => AuxiliarExtractor(context),
                   ),
                   const SizedBox(width: 25),
                   GrandIcon(
@@ -1618,7 +1624,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                       labelButton: "Indizar laboratorios de pacientes . . . ",
                       iconData: Icons.fact_check_outlined,
                       // onPress: () => _reiniciar(),
-                      onPress: () =>AuxiliarExtractor(context),
+                      onPress: () => AuxiliarExtractor(context),
                     ),
                   ),
                   Expanded(
@@ -1733,7 +1739,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
       //
       await hospitalized[i].getVentilacionnesHistorial();
       //
-      await hospitalized[i].getBalancesHistorial();
+      await hospitalized[i].getBalancesHistorial(reload:true);
       //
       await hospitalized[i].getPendientesHistorial();
       await hospitalized[i].getLicenciasHistorial();
@@ -1766,27 +1772,27 @@ class _HospitalizadosState extends State<Hospitalizados> {
     });
   }
 
-  Future<Null> _refreshActualList(int index) async {
+  Future<void> _refreshActualList(int index) async {
     String pacienteId = foundedItems![index].idPaciente.toString();
     Map<String, dynamic> generales = foundedItems![index].generales;
     //
-    Terminal.printAlert(
-        message: "Iniciando actividad : : \n "
-            "Consulta de Valores del Hospitalizado . . . NUEVA FUNCION\n "
-            "-------------------------------------------------------------------------------\n"
-            "INDEX $index\n"
-            "ID_Paaace ${foundedItems![index].idPaciente.toString()} : : $pacienteId : . . . \n\n"
-            "-------------------------------------------------------------------------------\n"
-            "-------------------------------------------------------------------------------\n"
-            "${foundedItems![index].toJson()}");
+    // Terminal.printAlert(
+    //     message: "Iniciando actividad : : \n "
+    //         "Consulta de Valores del Hospitalizado . . . NUEVA FUNCION\n "
+    //         "-------------------------------------------------------------------------------\n"
+    //         "INDEX $index\n"
+    //         "ID_Paaace ${foundedItems![index].idPaciente.toString()} : : $pacienteId : . . . \n\n"
+    //         "-------------------------------------------------------------------------------\n"
+    //         "-------------------------------------------------------------------------------\n"
+    //         "${foundedItems![index].toJson()}");
     //
-    Operadores.loadingActivity(
-        context: context,
-        tittle: 'Actualizando Valores . . . ',
-        message: 'Actualizando . . . ',
-        onCloss: () {
-          Navigator.of(context).pop();
-        });
+    // Operadores.loadingActivity(
+    //     context: context,
+    //     tittle: 'Actualizando Valores . . . ',
+    //     message: 'Actualizando . . . ',
+    //     onCloss: () {
+    //       Navigator.of(context).pop();
+    //     });
     // CONSULTA DE VALORES ****************************************
     foundedItems!.removeAt(index);
     // Lista de Pacientes Hospitalizados * * *
@@ -1800,7 +1806,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
     //
     await foundedItems![index].getVentilacionnesHistorial();
     //
-    await foundedItems![index].getBalancesHistorial();
+    await foundedItems![index].getBalancesHistorial(reload:true);
     //
     await foundedItems![index].getPendientesHistorial();
     //

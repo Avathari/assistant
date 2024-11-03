@@ -196,6 +196,7 @@ class _GeneralesState extends State<Generales> {
   //
   var gluTextController = TextEditingController();
   var gluAyuTextController = TextEditingController();
+  var insulinaTextController = TextEditingController();
   // **********************************************
   var fraccionInspiratoriaOxigenoTextController = TextEditingController();
   //
@@ -246,6 +247,8 @@ class _GeneralesState extends State<Generales> {
         pctTextController.text,
         gluTextController.text,
         gluAyuTextController.text,
+        //
+        insulinaTextController.text,
         //
         fraccionInspiratoriaOxigenoTextController.text,
         presionVenosaCentralTextController.text,
@@ -332,18 +335,32 @@ class _GeneralesState extends State<Generales> {
                           Pacientes.ID_Paciente) // idOperation)
                       .then((value) {
                     // ******************************************** *** *
-                    Pacientes.Alergicos = value;
+                    Pacientes.Balances = value;
                     Constantes.reinit(value: value);
                     // ******************************************** *** *
+                  }).onError((onError, stackTrace) {
+                    Operadores.alertActivity(
+                        context: context,
+                        tittle: 'ERROR Encontrado . . . ',
+                        message:
+                            'Error al Operar con los Valores :  : $onError : $stackTrace',
+                        onAcept: () => Navigator.of(context).pop());
                   }).then((value) {
                     Archivos.deleteFile(filePath: Balances.fileAssocieted);
                     Archivos.deleteFile(filePath: Vitales.fileAssocieted);
 
-                    reiniciar().then((value) => Operadores.alertActivity(
-                        context: context,
-                        tittle: "Anexión de registros",
-                        message: "Registros Agregados",
-                        onAcept: () => Navigator.of(context).pop()));
+                    reiniciar()
+                        .onError((onError, stackTrace) => Operadores.alertActivity(
+                            context: context,
+                            tittle: 'ERROR Encontrado . . . ',
+                            message:
+                                'Error al Operar con los Valores :  : $onError : $stackTrace',
+                            onAcept: () => Navigator.of(context).pop()))
+                        .then((value) => Operadores.alertActivity(
+                            context: context,
+                            tittle: "Anexión de registros",
+                            message: "Registros Agregados",
+                            onAcept: () => Navigator.of(context).pop()));
                   }))
               .onError((onError, stackTrace) {
             Operadores.alertActivity(
@@ -373,7 +390,7 @@ class _GeneralesState extends State<Generales> {
             context: context,
             tittle: 'ERROR Encontrado . . . ',
             message:
-            'Error al Operar con los Valores :  : $onError : $stackTrace',
+                'Error al Operar con los Valores :  : $onError : $stackTrace',
             onAcept: () => Navigator.of(context).pop());
       });
     } catch (onError, stackTrace) {
@@ -420,6 +437,13 @@ class _GeneralesState extends State<Generales> {
               filePath: Vitales.fileAssocieted);
         });
       });
+    }).onError((onError, stackTrace) {
+      Operadores.alertActivity(
+          context: context,
+          tittle: 'ERROR Encontrado . . . ',
+          message:
+              'Error al Operar con los Valores :  : $onError : $stackTrace',
+          onAcept: () => Navigator.of(context).pop());
     });
 
     // ******************************** * * * *
@@ -437,6 +461,13 @@ class _GeneralesState extends State<Generales> {
         Archivos.createJsonFromMap(Pacientes.Balances!,
             filePath: Balances.fileAssocieted);
       });
+    }).onError((onError, stackTrace) {
+      Operadores.alertActivity(
+          context: context,
+          tittle: 'ERROR Encontrado . . . ',
+          message:
+              'Error al Operar con los Valores :  : $onError : $stackTrace',
+          onAcept: () => Navigator.of(context).pop());
     });
   }
 
@@ -444,7 +475,275 @@ class _GeneralesState extends State<Generales> {
   Widget mobileView() {
     return CarouselSlider(
         items: [
-          const AuxiliarVitales(),
+          SingleChildScrollView(
+            controller: ScrollController(),
+            child: Column(
+              children: [
+                EditTextArea(
+                  labelEditText: "Fecha de realización",
+                  numOfLines: 1,
+                  optionEqui: 5,
+                  textController: textDateEstudyController,
+                  keyBoardType: TextInputType.datetime,
+                  withShowOption: true,
+                  selection: true,
+                  iconData: Icons.calculate_outlined,
+                  onSelected: () {
+                    setState(() {
+                      textDateEstudyController.text =
+                          Calendarios.today(format: "yyyy/MM/dd HH:mm:ss");
+                    });
+                  },
+                  inputFormat: MaskTextInputFormatter(
+                      mask: '####/##/##',
+                      filter: {"#": RegExp(r'[0-9]')},
+                      type: MaskAutoCompletionType.lazy),
+                ),
+                CrossLine(thickness: 3, height: 15),
+                Row(
+                  children: [
+                    Expanded(
+                      child: EditTextArea(
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        numOfLines: 1,
+                        labelEditText: 'Tensión arterial sistólica',
+                        textController: tasTextController,
+                        onChange: (value) {
+                          setState(() {
+                            Valores.tensionArterialSystolica =
+                                int.parse(value);
+                          });
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        numOfLines: 1,
+                        labelEditText: 'Tensión arterial diastólica',
+                        textController: tadTextController,
+                        onChange: (value) {
+                          setState(() {
+                            Valores.tensionArterialDyastolica =
+                                int.parse(value);
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: EditTextArea(
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        numOfLines: 1,
+                        labelEditText: 'Frecuencia cardiaca',
+                        textController: fcTextController,
+                        onChange: (value) => setState(() =>
+                        Valores.frecuenciaCardiaca = int.parse(value)),
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        numOfLines: 1,
+                        labelEditText: 'Frecuencia respiratoria',
+                        textController: frTextController,
+                        onChange: (value) => setState(() =>
+                        Valores.frecuenciaRespiratoria = Valores
+                            .frecuenciaVentilatoria = int.parse(value)),
+                      ),
+                    ),
+                  ],
+                ),
+                EditTextArea(
+                  keyBoardType: TextInputType.number,
+                  inputFormat: MaskTextInputFormatter(
+                      mask: '##.#',
+                      filter: {"#": RegExp(r'[0-9]')},
+                      type: MaskAutoCompletionType.lazy),
+                  numOfLines: 1,
+                  labelEditText: 'Temperatura corporal',
+                  textController: tcTextController,
+                ),
+                EditTextArea(
+                  keyBoardType: TextInputType.number,
+                  inputFormat: MaskTextInputFormatter(),
+                  numOfLines: 1,
+                  labelEditText: 'Saturación periférica de oxígeno',
+                  textController: spoTextController,
+                  onChange: (value) => setState(() =>
+                  Valores.saturacionPerifericaOxigeno = int.parse(value)),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: EditTextArea(
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(
+                              mask: '###.##',
+                              filter: {"#": RegExp(r'[0-9]')},
+                              type: MaskAutoCompletionType.lazy),
+                          numOfLines: 1,
+                          labelEditText: 'Peso corporal total',
+                          textController: pctTextController,
+                          onChange: (String value) {
+                            Valores.pesoCorporalTotal =
+                                double.parse(pctTextController.text);
+                            viaPerdidaTextController.text = Valores
+                                .perdidasInsensibles
+                                .toStringAsFixed(0);
+                          }),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(
+                              mask: '#.##',
+                              filter: {"#": RegExp(r'[0-9]')},
+                              type: MaskAutoCompletionType.lazy),
+                          numOfLines: 1,
+                          labelEditText: 'Estatura (mts)',
+                          textController: estTextController,
+                          onChange: (String value) {
+                            Valores.alturaPaciente =
+                                double.parse(estTextController.text);
+                          }),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: EditTextArea(
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(
+                            mask: '###',
+                            filter: {"#": RegExp(r'[0-9]')},
+                            type: MaskAutoCompletionType.lazy),
+                        numOfLines: 1,
+                        labelEditText: 'Glucemia capilar',
+                        textController: gluTextController,
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(
+                              mask: '##',
+                              filter: {"#": RegExp(r'[0-9]')},
+                              type: MaskAutoCompletionType.lazy),
+                          numOfLines: 1,
+                          labelEditText: 'Horas de ayuno',
+                          textController: gluAyuTextController),
+                    ),
+                  ],
+                ),
+                EditTextArea(
+                  keyBoardType: TextInputType.number,
+                  inputFormat: MaskTextInputFormatter(
+                      mask: '##',
+                      filter: {"#": RegExp(r'[0-9]')},
+                      type: MaskAutoCompletionType.lazy),
+                  labelEditText:
+                  'Insulina Gastada (UI/Día)',
+                  numOfLines: 1,
+                  textController: insulinaTextController,
+                  onChange: (value) => Valores.insulinaGastada = int.parse(value),
+                ),
+                CrossLine(thickness: 6, height: 15),
+                Row(
+                  children: [
+                    Expanded(
+                      child: EditTextArea(
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        numOfLines: 1,
+                        labelEditText: 'FiO2',
+                        textController:
+                        fraccionInspiratoriaOxigenoTextController,
+                        onChange: (value) {
+                          setState(() {
+                            Valores.fraccionInspiratoriaOxigeno =
+                                Valores.fraccionInspiratoriaVentilatoria =
+                                int.parse(value);
+                            Valores.fioArteriales = double.parse(value);
+                          });
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        numOfLines: 1,
+                        labelEditText: 'C. Abd. ',
+                        textController: circunferenciaCinturaTextController,
+                        onChange: (value) {
+                          setState(() {
+                            Valores.circunferenciaCintura = int.parse(value);
+                          });
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        numOfLines: 1,
+                        labelEditText: 'PVC',
+                        textController: presionVenosaCentralTextController,
+                        onChange: (value) {
+                          setState(() {
+                            Valores.presionVenosaCentral = int.parse(value);
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: EditTextArea(
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        numOfLines: 1,
+                        labelEditText: 'PIC',
+                        textController: presionIntraCerebralTextController,
+                        onChange: (value) {
+                          setState(() {
+                            Valores.presionIntraCerebral = int.parse(value);
+                          });
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        numOfLines: 1,
+                        labelEditText: 'PIA', // Presión Intraabdominal
+                        textController: presionIntraabdominalTextController,
+                        onChange: (value) {
+                          setState(() {
+                            Valores.presionIntraabdominal = int.parse(value);
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                CrossLine(thickness: 3, height: 15),
+              ],
+            ),
+          ),
+          // const AuxiliarVitales(),
           SingleChildScrollView(
             controller: ScrollController(),
             child: Column(
@@ -1133,6 +1432,17 @@ class _GeneralesState extends State<Generales> {
                             textController: gluAyuTextController),
                       ),
                     ],
+                  ),
+                  EditTextArea(
+                    keyBoardType: TextInputType.number,
+                    inputFormat: MaskTextInputFormatter(
+                        mask: '##',
+                        filter: {"#": RegExp(r'[0-9]')},
+                        type: MaskAutoCompletionType.lazy),
+                    labelEditText:
+                    'Insulina Gastada (UI/Día)',
+                    textController: insulinaTextController,
+                    onChange: (value) => Valores.insulinaGastada = int.parse(value),
                   ),
                   CrossLine(thickness: 6, height: 15),
                   Row(

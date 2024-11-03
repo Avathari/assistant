@@ -204,7 +204,7 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
                       options: Carousel.carouselOptions(
                           context: context,
                           height: isMobile(context)
-                              ? 345
+                              ? 500 // 345
                               : isDesktop(context)
                                   ? 527
                                   : 640),

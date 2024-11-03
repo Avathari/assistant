@@ -76,7 +76,7 @@ class _ViewDocumentState extends State<ViewDocument> {
             margin: const EdgeInsets.all(10.0),
             decoration: ContainerDecoration.roundedDecoration(),
             child: widget.filePath == "" || widget.filePath == null
-                ? LoadingScreen(error: widget.messageError!)
+                ?  CircularProgressIndicator() // LoadingScreen(error: widget.messageError!)
                 : widget.isFromMemory!
                     ? SfPdfViewer.memory(
                         base64.decode(widget.filePath!),

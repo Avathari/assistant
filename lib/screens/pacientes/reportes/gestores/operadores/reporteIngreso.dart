@@ -3,6 +3,7 @@ import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/padecimientoActual.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
+import 'package:assistant/screens/pacientes/patologicos/patologicos.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/analisisMedico.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/auxiliaresReportes.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/exploracionFisica.dart';
@@ -50,9 +51,9 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
           .text = Pacientes.heredofamiliares().toLowerCase();
 
       // Reportes.personalesNoPatologicos =
-      Reportes.reportes['Antecedentes_Quirurgicos'] = hospiTextController.text =
-          Pacientes.hospitalarios();
-              // .toLowerCase(); // Contiene el antecedente de cirugias.
+      Reportes.reportes['Antecedentes_Quirurgicos'] =
+          hospiTextController.text = Pacientes.hospitalarios();
+      // .toLowerCase(); // Contiene el antecedente de cirugias.
       //
       Reportes.reportes['Antecedentes_Patologicos_Otros'] =
           Reportes.reportes['Antecedentes_Patologicos_Ingreso'] =
@@ -228,8 +229,7 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
                           selection: true,
                           withShowOption: true,
                           iconData: Icons.update,
-                          onSelected: () => Cambios.toNextActivity(
-                              context,
+                          onSelected: () => Cambios.toNextActivity(context,
                               chyld: OperacionesPacientes(
                                   operationActivity: Constantes.Update)),
                           inputFormat: MaskTextInputFormatter()),
@@ -327,14 +327,20 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
                           textController: patoloTextController,
                           labelEditText: "Antecedentes personales patológicos",
                           keyBoardType: TextInputType.multiline,
-                          numOfLines: 5,
+                          selection: true,
+                          withShowOption: true,
+                          iconData: Icons.medical_information_outlined,
+                          optionEqui: 1,
+                          onSelected: () =>
+                              Cambios.toNextPage(context, GestionPatologicos(withReturnOption: false)),
+                          numOfLines: 25,
                           readOnly: true,
                           inputFormat: MaskTextInputFormatter()),
                       EditTextArea(
                           textController: hospiTextController,
                           labelEditText: "Antecedentes quirúrgicos",
                           keyBoardType: TextInputType.multiline,
-                          numOfLines: 10, // 5,
+                          numOfLines: 15, // 5,
                           selection: true,
                           withShowOption: true,
                           onSelected: () {
@@ -346,12 +352,6 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
                             });
                           },
                           inputFormat: MaskTextInputFormatter()),
-                      // EditTextArea(
-                      //     textController: alergoTextController,
-                      //     labelEditText: "Antecedentes alérgicos",
-                      //     keyBoardType: TextInputType.multiline,
-                      //     numOfLines: 5,
-                      //     inputFormat: MaskTextInputFormatter()),
                     ],
                   ),
                 ),

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/conexiones/controladores/pacientes/auxiliar/extractor.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/info/conclusiones.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/conmutadorParaclinicos.dart';
@@ -11,6 +12,7 @@ import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/AppBarText.dart';
+import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
@@ -105,6 +107,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                       carouselController.jumpToPage(0);
                     },
                   ),
+
                 if (!isMobile(context))
                   GrandIcon(
                     iconData: Icons.browser_updated,
@@ -121,35 +124,13 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                       reiniciar();
                     },
                   ),
-                // GrandIcon(
-                //   iconData: Icons.photo_camera_back_outlined,
-                //   labelButton: 'Imagen del Electrocardiograma',
-                //   onPress: () {
-                //     Operadores.optionsActivity(
-                //       context: context,
-                //       tittle: 'Cargar imagen del Electrocardiograma',
-                //       onClose: () {
-                //         Navigator.of(context).pop();
-                //       },
-                //       textOptionA: 'Cargar desde Dispositivo',
-                //       optionA: () async {
-                //         var bytes = await Directorios.choiseFromDirectory();
-                //         setState(() {
-                //           stringImage = base64Encode(bytes);
-                //           Navigator.of(context).pop();
-                //         });
-                //       },
-                //       textOptionB: 'Cargar desde Cámara',
-                //       optionB: () async {
-                //         var bytes = await Directorios.choiseFromCamara();
-                //         setState(() {
-                //           stringImage = base64Encode(bytes);
-                //           Navigator.of(context).pop();
-                //         });
-                //       },
-                //     );
-                //   },
-                // ),
+                //
+                CircleIcon(
+                    iconed: Icons.send_time_extension_outlined,
+                    radios: 35,
+                    difRadios: 5,
+                    tittle: "Extractor de Paraclínicos . . . ",
+                    onChangeValue: () => AuxiliarExtractor(context))
               ]
             : <Widget>[
                 GrandIcon(
@@ -987,9 +968,9 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                           // ));
                           Cambios.toNextActivity(context,
                               tittle: 'Rutina',
-                              onOption: () =>
-                                  Operadores.openDialog(context: context, chyldrim: const Conclusiones())
-                              ,
+                              onOption: () => Operadores.openDialog(
+                                  context: context,
+                                  chyldrim: const Conclusiones()),
                               chyld: ConmutadorParaclinicos(
                                 categoriaEstudio: 'Rutina',
                               ));
@@ -1076,10 +1057,10 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                             });
                           } else {
                             // *************** *********** **************
-                            estudioValue = Auxiliares.Laboratorios[
-                            Auxiliares.Categorias[0]][0];
-                            unidadMedidaValue = Auxiliares
-                                .Medidas[Auxiliares.Categorias[0]][0];
+                            estudioValue = Auxiliares
+                                .Laboratorios[Auxiliares.Categorias[0]][0];
+                            unidadMedidaValue =
+                                Auxiliares.Medidas[Auxiliares.Categorias[0]][0];
                           }
                           //
                           Cambios.toNextActivity(context,
@@ -1267,9 +1248,9 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                         onPress: () {
                           Cambios.toNextActivity(context,
                               tittle: 'Rutina',
-                              onOption: () =>
-                                Operadores.openDialog(context: context, chyldrim: const Conclusiones())
-                              ,
+                              onOption: () => Operadores.openDialog(
+                                  context: context,
+                                  chyldrim: const Conclusiones()),
                               chyld: ConmutadorParaclinicos(
                                 categoriaEstudio: 'Rutina',
                               ));
@@ -1353,12 +1334,50 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
               carouselController.jumpToPage(1);
             },
           ),
+          const SizedBox(height: 20),
+          CircleIcon(
+              iconed: Icons.delete_forever,
+              tittle: "Eliminar registros del paciente . . . ",
+              onChangeValue: () => Operadores.optionsActivity(
+                  context: context,
+                  tittle: "¿Desea eliminar los "
+                      "Registros de laboratorio del Paciente?",
+                  message: "Los registros del paciente serán eliminardos "
+                      ". . .  ¿Desea continuar?",
+                  textOptionA: "Eliminar de base de datos . . . ",
+                  optionA: () => Actividades.eliminar(
+                              Databases.siteground_database_reggabo,
+                              Auxiliares.auxiliares['deleteQueryPaciente'],
+                              Pacientes.ID_Paciente)
+                          .then((onValue) {
+                        Operadores.alertActivity(
+                          context: context,
+                          tittle: "Respuesta desde Base de datos . . . ",
+                          message: "$onValue",
+                          onAcept: () {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                            reiniciar();
+                          },
+                        );
+                      }).onError((onError, stackTrace) {
+                        Operadores.alertActivity(
+                          context: context,
+                          tittle: "Respuesta desde Base de datos . . . ",
+                          message: "$onError : : $stackTrace",
+                          onAcept: () {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                          },
+                        );
+                      }),
+                  onClose: () => Navigator.of(context).pop())), // Eliminar registros del Paciente (Laboratorios)
+          CrossLine(height: 30),
           GrandIcon(
             iconData: Icons.replay_outlined,
             labelButton: Sentences.reload,
-            onPress: () {
-              reiniciar();
-            },
+            onPress: () =>
+              reiniciar()
           ),
         ],
       ),

@@ -50,6 +50,30 @@ class AuxiliarVitales extends StatefulWidget {
 
 class _AuxiliarVitalesState extends State<AuxiliarVitales> {
   @override
+  void initState() {
+    // TODO: implement initState
+    textDateEstudyController.text =
+        Calendarios.today(format: 'yyyy-MM-dd HH:mm:ss');
+    //
+    if (Valores.alturaPaciente != null) {
+      estTextController.text = Valores.alturaPaciente!.toString();
+    } else {
+      Valores.alturaPaciente = 0;
+      estTextController.text = '0';
+    }
+    //
+    if (Valores.pesoCorporalTotal != null) {
+      pctTextController.text = Valores.pesoCorporalTotal!.toString();
+    } else {
+      Valores.pesoCorporalTotal = 0;
+      pctTextController.text = '0';
+    }
+    //
+    fraccionInspiratoriaOxigenoTextController.text = 21.toString();
+    //
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     return Wrap(
       runSpacing: 4.0,
@@ -216,8 +240,23 @@ class _AuxiliarVitalesState extends State<AuxiliarVitales> {
                   labelEditText: 'Horas de ayuno',
                   textController: gluAyuTextController),
             ),
+            Expanded(
+              child: EditTextArea(
+                keyBoardType: TextInputType.number,
+                inputFormat: MaskTextInputFormatter(
+                    mask: '##',
+                    filter: {"#": RegExp(r'[0-9]')},
+                    type: MaskAutoCompletionType.lazy),
+                numOfLines: 1,
+                labelEditText:
+                'Insulina Gastada (UI/Día)',
+                textController: insulinaTextController,
+                onChange: (value) => Valores.insulinaGastada = int.parse(value),
+              ),
+            ),
           ],
         ),
+
         CrossLine(thickness: 6, height: 15),
         Row(
           children: [
@@ -330,6 +369,7 @@ class _AuxiliarVitalesState extends State<AuxiliarVitales> {
   //
   var gluTextController = TextEditingController();
   var gluAyuTextController = TextEditingController();
+  var insulinaTextController = TextEditingController();
   // **********************************************
   var fraccionInspiratoriaOxigenoTextController = TextEditingController();
   //
@@ -360,6 +400,8 @@ class _AuxiliarVitalesState extends State<AuxiliarVitales> {
         pctTextController.text,
         gluTextController.text,
         gluAyuTextController.text,
+    //
+    insulinaTextController.text,
         //
         fraccionInspiratoriaOxigenoTextController.text,
         presionVenosaCentralTextController.text,
@@ -401,8 +443,8 @@ class _AuxiliarVitalesState extends State<AuxiliarVitales> {
       listOfSecondValues!.removeAt(0);
       listOfSecondValues!.removeLast();
       // ******************************************** *** *
-      listOfValues!.removeAt(0);
-      listOfValues!.removeLast();
+      // listOfValues!.removeAt(0);
+      // listOfValues!.removeLast();
       // ******************************************** *** *
       Actividades.registrar(Databases.siteground_database_regpace,
               registerQueryvitales!, listOfFirstValues!)
@@ -410,36 +452,38 @@ class _AuxiliarVitalesState extends State<AuxiliarVitales> {
         Actividades.registrar(Databases.siteground_database_regpace,
                 registerQueryantropo!, listOfSecondValues!)
             .then((value) {
-          Actividades.registrar(Databases.siteground_database_reghosp,
-                  Balances.balance['registerQuery'], listOfValues!)
-              .then((value) => Actividades.consultarAllById(
-                          Databases.siteground_database_reghosp,
-                          Balances.balance['consultIdQuery'],
-                          Pacientes.ID_Paciente) // idOperation)
-                      .then((value) {
-                    // ******************************************** *** *
-                    Pacientes.Alergicos = value;
-                    Constantes.reinit(value: value);
-                    // ******************************************** *** *
-                  }).then((value) {
-                    Archivos.deleteFile(filePath: Balances.fileAssocieted);
-                    Archivos.deleteFile(filePath: Vitales.fileAssocieted);
 
-                    reiniciar().then((value) => Operadores.alertActivity(
-                        context: context,
-                        tittle: "Anexión de registros",
-                        message: "Registros Agregados",
-                        onAcept: () {
-                          Navigator.of(context).pop();
-                        }));
-                  }));
+
+          // Actividades.registrar(Databases.siteground_database_reghosp,
+          //         Balances.balance['registerQuery'], listOfValues!)
+          //     .then((value) => Actividades.consultarAllById(
+          //                 Databases.siteground_database_reghosp,
+          //                 Balances.balance['consultIdQuery'],
+          //                 Pacientes.ID_Paciente) // idOperation)
+          //             .then((value) {
+          //           // ******************************************** *** *
+          //           Pacientes.Alergicos = value;
+          //           Constantes.reinit(value: value);
+          //           // ******************************************** *** *
+          //         }).then((value) {
+          //           Archivos.deleteFile(filePath: Balances.fileAssocieted);
+          //           Archivos.deleteFile(filePath: Vitales.fileAssocieted);
+          //
+          //           reiniciar().then((value) => Operadores.alertActivity(
+          //               context: context,
+          //               tittle: "Anexión de registros",
+          //               message: "Registros Agregados",
+          //               onAcept: () {
+          //                 Navigator.of(context).pop();
+          //               }));
+          //         }));
         });
       });
-    } catch (ex) {
+    } catch (onError, stackTrace) {
       Operadores.alertActivity(
           context: context,
           tittle: 'ERROR Encontrado . . . ',
-          message: 'Error al Operar con los Valores :  : $ex',
+          message: 'Error al Operar con los Valores :  : $onError : $stackTrace',
           onAcept: () {
             Navigator.of(context).pop();
           });

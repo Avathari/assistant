@@ -961,6 +961,25 @@ class Operadores {
         });
   }
 
+  static void dummyLoadingActivity({
+    required BuildContext context,
+    String? tittle,
+    String? message,
+    required Future<void> task,
+    Function? onCloss,
+  }) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialogos.dummyLoadingActivity(
+            tittle: tittle,
+            msg: message,
+            task: task,
+            onCloss: onCloss,
+          );
+        });
+  }
+
   static void loadingActivity({
     required BuildContext context,
     String? tittle,
@@ -1424,6 +1443,47 @@ class Dialogos {
     );
   }
 
+
+  static AlertDialog dummyLoadingActivity({
+    String? tittle,
+    String? msg,
+    required Future<void> task,
+    Function? onCloss,
+  }) {
+    Terminal.printAlert(
+        message: "$tittle : : \n "
+            "$msg . . .");
+
+    return AlertDialog(
+      backgroundColor: Theming.secondaryColor,
+      title: Text(
+        tittle!,
+        style: const TextStyle(color: Colors.grey, fontSize: 18),
+      ),
+      content: SingleChildScrollView(
+          controller: ScrollController(),
+          child: Column(
+            children: [
+              LoadingScreen(
+                task: task,
+                error: msg, // 'Iniciando Interfaz . . . ',
+              ),
+            ],
+          )),
+      actions: [
+        ElevatedButton(
+            style: const ButtonStyle(
+              backgroundColor: WidgetStatePropertyAll<Color>(Colors.black),
+            ),
+            onPressed: () {
+              onCloss!();
+            },
+            child:
+            const Text("Cancelar", style: TextStyle(color: Colors.white))),
+      ],
+    );
+  }
+
   static AlertDialog loadingActivity({
     String? tittle,
     String? msg,
@@ -1443,9 +1503,9 @@ class Dialogos {
           controller: ScrollController(),
           child: Column(
             children: [
-              LoadingScreen(
-                error: msg, // 'Iniciando Interfaz . . . ',
-              ),
+              // LoadingScreen(
+              //   error: msg, // 'Iniciando Interfaz . . . ',
+              // ),
             ],
           )),
       actions: [

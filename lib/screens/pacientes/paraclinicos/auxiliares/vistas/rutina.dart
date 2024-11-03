@@ -56,9 +56,11 @@ class _RutinasState extends State<Rutinas> {
                         Calendarios.today(format: "yyyy/MM/dd HH:mm:ss");
                   });
                 },
-                onChange: (value) {
-                  textDateEstudyController.text = value;
-                },
+                // onChange: (value) {
+                //   setState(() {
+                //     textDateEstudyController.text = value;
+                //   });
+                // },
                 inputFormat: MaskTextInputFormatter(
                     mask: '####/##/## ##:##:##', // 'yyyy-MM-dd HH:mm:ss'
                     filter: {"#": RegExp(r'[0-9]')},
