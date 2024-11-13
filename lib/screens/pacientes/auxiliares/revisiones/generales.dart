@@ -1441,6 +1441,7 @@ class _GeneralesState extends State<Generales> {
                         type: MaskAutoCompletionType.lazy),
                     labelEditText:
                     'Insulina Gastada (UI/Día)',
+                    numOfLines: 1,
                     textController: insulinaTextController,
                     onChange: (value) => Valores.insulinaGastada = int.parse(value),
                   ),

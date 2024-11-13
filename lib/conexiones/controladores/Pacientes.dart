@@ -4795,6 +4795,11 @@ class Patologicos {
         "(SELECT IFNULL(AVG('Pace_SV_tad'), 0) FROM pace_sv WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Promedio_TAD,"
         "(SELECT IFNULL(count(*), 0) FROM pace_sv WHERE ID_Pace = '${Pacientes.ID_Paciente}') as Total_Registros;"
   };
+
+  //
+static String getPatologicos (Map<String, dynamic> json) {
+  return "${json['Pace_APP_DEG_com']}, ${json['Pace_APP_DEG_tra']}, ${json['Pace_APP_DEG_sus']}";
+}
 }
 
 class Alergicos {
@@ -6363,6 +6368,7 @@ class Auxiliares {
     "Cultivo de Líquido Cefalorraquídeo",
     "Cultivo de Líquido Pleural",
     "Cultivo de Líquido de Ascítis",
+    "Cultivo de Secreción Bronquial",
     "Coprocultivo",
     "Hemocultivo central",
     "Hemocultivo periférico, brazo izquierdo",
@@ -6492,7 +6498,7 @@ class Auxiliares {
     });
   }
 
-  static String porTipoEstudio({int? indice = 0, String fechaActual = ""}) {
+  static String porTipoEstudio({int? indice = 0, String fechaActual = "",bool esAbreviado = true}) {
     // Filtro por estudio de los registros de Pacientes.Paraclinicos
     var aux = Pacientes.Paraclinicos!
         .where((user) =>
@@ -6506,14 +6512,28 @@ class Auxiliares {
     String prosa = "${Auxiliares.Categorias[indice!]} ($fechaActual): ";
     String max = "";
     // Anexación de los valores correlacionados.
-    for (var element in aux) {
-      if (element['Fecha_Registro'] == fechaActual) {
-        if (max == "") {
-          max =
-              "${element['Estudio']} ${element['Resultado']} ${element['Unidad_Medida']}";
-        } else {
-          max =
-              "$max, ${element['Estudio']} ${element['Resultado']} ${element['Unidad_Medida']}";
+    if (esAbreviado) {
+      for (var element in aux) {
+        if (element['Fecha_Registro'] == fechaActual) {
+          if (max == "") {
+            max =
+            "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+          } else {
+            max =
+            "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+          }
+        }
+      }
+    } else {
+      for (var element in aux) {
+        if (element['Fecha_Registro'] == fechaActual) {
+          if (max == "") {
+            max =
+            "${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+          } else {
+            max =
+            "$max, ${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+          }
         }
       }
     }
@@ -7159,6 +7179,11 @@ class Auxiliares {
           return 'Glu';
         } else if (estudio == 'Nitrógeno Úrico') {
           return 'BUN';
+        }else if (estudio == "Proteína C Reactiva"){
+          return "PCR";
+          // ****************************************
+        } else if (estudio == "Velocidad de sedimentación globular"){
+          return "VSG";
           // ****************************************
         } else if (estudio == 'P-ANCA') {
           return "p-ANCA";
@@ -7632,6 +7657,7 @@ class Auxiliares {
       "Cultivo de Líquido de Ascítis",
       "Coprocultivo",
       "Cultivo de Expectoración",
+      "Cultivo de Secreción Bronquial",
       "Hemocultivo central",
       "Hemocultivo periférico, brazo izquierdo",
       "Hemocultivo periférico, brazo derecho",
@@ -9289,6 +9315,12 @@ class Pendientes {
       //
     });
   }
+  //
+  static String getPendiente (Map<String, dynamic> json) {
+    // Feca_PEN, Pace_PEN_realized, "
+    // "Pace_PEN, Pace_Desc_PEN
+    return "${json['Feca_PEN']}, ${json['Pace_PEN']}, ${json['Pace_Desc_PEN']}";
+  }
 }
 
 class Reportes {
@@ -9888,7 +9920,7 @@ class Ventilaciones {
     "consultByName": "SELECT * FROM pace_vm WHERE Pace_APP_DEG LIKE '%",
     "registerQuery": "INSERT INTO pace_vm (ID_Pace, "
         "Feca_VEN, Pace_Vt, Pace_Fr, Pace_Fio, Pace_Peep, "
-        "Pace_Peep_Intrinseca = ?, "
+        "Pace_Peep_Intrinseca, "
         "Pace_Insp, "
         "Pace_Espi, Pace_Pc, Pace_Pm, Pace_V, Pace_F, Pace_Ps, Pace_Pip, "
         "Pace_Pmet, VM_Mod, "

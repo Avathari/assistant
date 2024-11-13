@@ -676,14 +676,21 @@ class _GestionPacientesState extends State<GestionPacientes> {
       setState(() {
         foundedItems = Pacientes.Pacientary = value;
       });
-    }).onError((error, stackTrace) {
-      Operadores.alertActivity(
-          context: context,
-          tittle: 'ERROR - Inicio del Repositorio de Pacientes',
-          message: "ERROR - $error : $stackTrace",
-          onAcept: () {
-            Navigator.pop(context);
-          });
+    }).onError((onError, stackTrace) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.all(30.0),
+          padding: EdgeInsets.all(15.0),
+          content: Text("ERROR - Inicio del Repositorio de Pacientes "
+              "- $onError : $stackTrace"),
+          action: SnackBarAction(
+            label: 'Aceptar . . . ',
+            onPressed: () {
+              // Some code to undo the change.
+            },
+          )));
       reiniciar();
     });
     Terminal.printWarning(message: " . . . Actividad Iniciada");
@@ -1784,64 +1791,67 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                             ),
                             Expanded(
                               flex: 1,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 2.0,
-                                        left: 2.0,
-                                        top: 2.0,
-                                        bottom: 2.0),
-                                    child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            foregroundColor: Colors.grey,
-                                            backgroundColor:
-                                                Colores.backgroundWidget,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(20)),
-                                            minimumSize: const Size(75, 75)),
-                                        onPressed: () {
-                                          choiseFromCamara();
-                                        },
-                                        child: const Icon(Icons.camera)),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            foregroundColor: Colors.grey,
-                                            backgroundColor:
-                                                Colores.backgroundWidget,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(50)),
-                                            minimumSize: const Size(50, 50)),
-                                        onPressed: () {
-                                          toBaseImage();
-                                        },
-                                        child: const Icon(Icons.person)),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            foregroundColor: Colors.grey,
-                                            backgroundColor:
-                                                Colores.backgroundWidget,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(20)),
-                                            minimumSize: const Size(75, 75)),
-                                        onPressed: () {
-                                          choiseFromDirectory();
-                                        },
-                                        child: const Icon(Icons.file_open)),
-                                  )
-                                ],
+                              child: SingleChildScrollView(
+                                controller: ScrollController(),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          right: 2.0,
+                                          left: 2.0,
+                                          top: 2.0,
+                                          bottom: 2.0),
+                                      child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              foregroundColor: Colors.grey,
+                                              backgroundColor:
+                                                  Colores.backgroundWidget,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20)),
+                                              minimumSize: const Size(75, 75)),
+                                          onPressed: () {
+                                            choiseFromCamara();
+                                          },
+                                          child: const Icon(Icons.camera)),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              foregroundColor: Colors.grey,
+                                              backgroundColor:
+                                                  Colores.backgroundWidget,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(50)),
+                                              minimumSize: const Size(50, 50)),
+                                          onPressed: () {
+                                            toBaseImage();
+                                          },
+                                          child: const Icon(Icons.person)),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              foregroundColor: Colors.grey,
+                                              backgroundColor:
+                                                  Colores.backgroundWidget,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20)),
+                                              minimumSize: const Size(75, 75)),
+                                          onPressed: () {
+                                            choiseFromDirectory();
+                                          },
+                                          child: const Icon(Icons.file_open)),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ],

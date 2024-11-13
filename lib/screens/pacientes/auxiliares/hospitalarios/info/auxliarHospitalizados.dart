@@ -190,6 +190,17 @@ class Paneles {
             return ElevatedButton(
               onPressed: () {
                 Pacientes.Diagnosticos = snapshot.data![index].patologicos;
+                Operadores.optionsActivity(
+                    context: context,
+                    tittle: "Diagnóstico seleccionado . . . ",
+                    message: Patologicos.getPatologicos(
+                        snapshot.data![index].patologicos[ind]),
+                    onClose: () => Navigator.of(context).pop(),
+                    textOptionA: "Copiar antecedente en portapapeles . . . ",
+                    optionA: () => Datos.portapapeles(
+                        context: context,
+                        text: Patologicos.getPatologicos(
+                            snapshot.data![index].patologicos[ind])));
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
               child: Text(
@@ -215,6 +226,12 @@ class Paneles {
               return ElevatedButton(
                 onPressed: () {
                   Pacientes.Diagnosticos = snapshot.data![index].diagnosticos;
+                  Operadores.alertActivity(
+                      context: context,
+                      tittle: "Diagnóstico seleccionado . . . ",
+                      message:
+                          snapshot.data![index].diagnosticos[ind].toString(),
+                      onAcept: () => Navigator.of(context).pop());
                 },
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
                 child: Text(
@@ -243,19 +260,34 @@ class Paneles {
                   itemBuilder: (BuildContext context, int ind) {
                     if (snapshot.data![index].pendientes[ind]['Pace_PEN'] !=
                         'Procedimientos') {
-                      return ElevatedButton(
-                        onPressed: () {
-                          Pacientes.Pendiente =
-                              snapshot.data![index].pendientes;
-                        },
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black),
-                        child: Text(
-                          snapshot.data![index].pendientes[ind]
-                              ['Pace_Desc_PEN'],
-                          style: Styles.textSyleGrowth(fontSize: 8),
-                        ),
-                      );
+                      if (snapshot.data![index].pendientes[ind]['Pace_PEN_realized'] ==
+                      true || snapshot.data![index].pendientes[ind]['Pace_PEN_realized'] ==
+                          1) {
+                        return ElevatedButton(
+                          onPressed: () {
+                            Pacientes.Pendiente =
+                                snapshot.data![index].pendientes;
+                            Operadores.optionsActivity(
+                                context: context,
+                                tittle: "Diagnóstico seleccionado . . . ",
+                                message: Pendientes.getPendiente(
+                                    snapshot.data![index].pendientes[ind]),
+                                onClose: () => Navigator.of(context).pop(),
+                                textOptionA: "Copiar antecedente en portapapeles . . . ",
+                                optionA: () => Datos.portapapeles(
+                                    context: context,
+                                    text: Pendientes.getPendiente(
+                                        snapshot.data![index].pendientes[ind])));
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black),
+                          child: Text(
+                            snapshot.data![index].pendientes[ind]
+                                ['Pace_Desc_PEN'],
+                            style: Styles.textSyleGrowth(fontSize: 8),
+                          ),
+                        );
+                      }
                     }
                     return null;
                   })),
@@ -590,6 +622,21 @@ class Paneles {
     // VARIABLES ************************
     int hombres = 0, mujeres = 0;
     int cortaEstancia = 0, largaEstancia = 0;
+    List<List<String>> nssPacientes = [];
+
+    for (var element in foundedItems!) {
+      nssPacientes.add([
+        element.generales['Pace_Ape_Pat'] +
+            " " +
+            element.generales['Pace_Ape_Mat'] +
+            " " +
+            element.generales['Pace_Nome_PI'] +
+            " " +
+            element.generales['Pace_Nome_SE'],
+        element.generales['Pace_NSS'].replaceAll(" ", ""),
+      ]);
+    }
+    // Terminal.printExpected(message: nssPacientes.toString());
 
     /// Total de Registros : : Hombres y Mujeres . . .
     for (var element in foundedItems!) {
@@ -646,6 +693,11 @@ class Paneles {
                           firstText: "Mujeres",
                           secondText: mujeres.toString(),
                         ),
+                        CrossLine(),
+                        ValuePanel(
+                          firstText: "Total",
+                          secondText: (hombres + mujeres).toStringAsFixed(0),
+                        ),
                       ],
                     ),
                   ),
@@ -668,7 +720,19 @@ class Paneles {
                       ],
                     ),
                   ),
-                )
+                ),
+                //
+                CrossLine(),
+                Expanded(
+                  child: GrandIcon(
+                      iconData: Icons.numbers,
+                      onPress: () => Operadores.selectWithTittleOptionsActivity(
+                            context: context,
+                            options: nssPacientes,
+                            onClose: (value) => Datos.portapapeles(
+                                context: context, text: value.toString()),
+                          )),
+                ),
               ],
             ),
           ),

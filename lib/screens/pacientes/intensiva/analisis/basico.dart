@@ -43,7 +43,7 @@ class _BasicoState extends State<Basico> {
           ValuePanel(
             firstText: "TFG (CKD-EPI)",
             secondText:
-            Renometrias.tasaRenalCKDEPI.toStringAsFixed(2),
+                Renometrias.tasaRenalCKDEPI != null ?  Renometrias.tasaRenalCKDEPI.toStringAsFixed(2) : "0",
             thirdText: "mL/min/1.72 m2",
           ),
           CrossLine(),

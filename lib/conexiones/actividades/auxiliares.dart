@@ -1017,6 +1017,26 @@ class Operadores {
         });
   }
 
+  static void selectWithTittleOptionsActivity(
+      {required BuildContext context,
+        String? tittle = "Manejo de Opciones",
+        String? message = "Seleccione una opción . . . ",
+        required List<dynamic> options,
+        Function(String)? onClose,
+        Function(String)? onLongCloss}) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialogos.selectWithTittleOptionsActivity(
+            tittle: tittle,
+            msg: message,
+            options: options,
+            onCloss: onClose,
+            onLongCloss: onLongCloss,
+          );
+        });
+  }
+
   static void alertActivity({
     required BuildContext context,
     String? tittle = "Manejo de registro",
@@ -1443,6 +1463,57 @@ class Dialogos {
     );
   }
 
+  static AlertDialog selectWithTittleOptionsActivity({
+    String? tittle,
+    String? msg,
+    ValueChanged<String>? onCloss,
+    ValueChanged<String>? onLongCloss,
+    required List<dynamic> options,
+  }) {
+    List<Widget> list = [];
+    var selected = "";
+
+    for (var element in options) {
+      list.add(Column(
+        children: [
+          ListTile(
+            onTap: () {
+              onCloss!(element[1]);
+            },
+            title: Text(
+              "${element[0]}",
+              style: const TextStyle(color: Colors.grey),
+            ),
+          ),
+          CrossLine(),
+        ],
+      ));
+    }
+
+    return AlertDialog(
+      backgroundColor: Theming.secondaryColor,
+      title: Text(
+        tittle!,
+        style: const TextStyle(color: Colors.grey),
+      ),
+      content: SingleChildScrollView(
+          controller: ScrollController(),
+          child: Column(
+            children: list,
+          )),
+      actions: [
+        ElevatedButton(
+            onLongPress: () {
+              onLongCloss!(selected);
+            },
+            onPressed: () {
+              onCloss!(selected);
+            },
+            child:
+            const Text("Cancelar", style: TextStyle(color: Colors.white))),
+      ],
+    );
+  }
 
   static AlertDialog dummyLoadingActivity({
     String? tittle,
@@ -1503,9 +1574,9 @@ class Dialogos {
           controller: ScrollController(),
           child: Column(
             children: [
-              // LoadingScreen(
-              //   error: msg, // 'Iniciando Interfaz . . . ',
-              // ),
+              CircularProgressIndicator(),
+              SizedBox(height: 20),
+              Text(msg.toString(), style: Styles.textSyleGrowth(),),
             ],
           )),
       actions: [

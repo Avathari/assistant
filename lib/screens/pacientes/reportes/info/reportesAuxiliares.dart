@@ -159,50 +159,41 @@ class ReportsMethods {
             tittle: 'Petición de Registro de Análisis',
             message: "Desea registrar el análisis en la base de datos?",
             textOptionB: "Cerrar . . . ",
-            onClose: () {
-              Navigator.of(context).pop();
-            },
+            onClose: () => Navigator.of(context).pop(),
             textOptionA: "Registrar análisis en base de datos . . . ",
             optionA: () {
               Navigator.of(context).pop();
-              if (getTypeReport == TypeReportes.reporteIngreso // ||
-                  // getTypeReport == TypeReportes.reporteEgreso
-                  ) {
-                //
+              //|| getTypeReport == TypeReportes.reporteEgreso
+              if (getTypeReport == TypeReportes.reporteIngreso) {
                 Repositorios.actualizarRegistro(
                         context: context, values: values)
-                    .onError((onError, stackTrace) {
-                  Operadores.alertActivity(
-                    context: context,
-                    tittle: "ERROR  Al Actualizar registro de Nota",
-                    message: "ERROR : $onError : : $stackTrace",
-                    onAcept: () => Navigator.of(context).pop(),
-                  );
-                });
+                    .onError((onError, stackTrace) => Operadores.alertActivity(
+                          context: context,
+                          tittle: "ERROR  Al Actualizar registro de Nota",
+                          message: "ERROR : $onError : : $stackTrace",
+                          onAcept: () => Navigator.of(context).pop(),
+                        ));
               } else if (getTypeReport == TypeReportes.reporteEgreso) {
                 Repositorios.actualizarRegistro(
                         context: context, values: values, isNotte: true)
-                    .onError((onError, stackTrace) {
-                  Operadores.alertActivity(
-                    context: context,
-                    tittle: "ERROR  Al Actualizar registro de Nota",
-                    message: "ERROR : $onError : : $stackTrace",
-                    onAcept: () => Navigator.of(context).pop(),
-                  );
-                });
+                    .onError((onError, stackTrace) => Operadores.alertActivity(
+                          context: context,
+                          tittle: "ERROR  Al Actualizar registro de Nota",
+                          message: "ERROR : $onError : : $stackTrace",
+                          onAcept: () => Navigator.of(context).pop(),
+                        ));
               } else {
                 if (fechaRealizacion ==
                     Calendarios.today(format: "yyyy-MM-dd")) {
                   Repositorios.actualizarRegistro(
                           context: context, values: values, isNotte: true)
-                      .onError((onError, stackTrace) {
-                    Operadores.alertActivity(
-                      context: context,
-                      tittle: "ERROR  Al Actualizar registro de Nota",
-                      message: "ERROR : $onError : : $stackTrace",
-                      onAcept: () => Navigator.of(context).pop(),
-                    );
-                  });
+                      .onError(
+                          (onError, stackTrace) => Operadores.alertActivity(
+                                context: context,
+                                tittle: "ERROR  Al Actualizar registro de Nota",
+                                message: "ERROR : $onError : : $stackTrace",
+                                onAcept: () => Navigator.of(context).pop(),
+                              ));
                 } else {
                   Repositorios.registrarRegistro(
                           context: context,
@@ -219,15 +210,12 @@ class ReportsMethods {
                 }
               }
             }))
-        .onError((error, stackTrace) {
-      Terminal.printAlert(message: "ERROR - $error : : $stackTrace");
-      Operadores.alertActivity(
-        context: context,
-        tittle: "ERROR  Al guardar nota",
-        message: "ERROR : $error : : $stackTrace",
-        onAcept: () => Navigator.of(context).pop(),
-      );
-    });
+        .onError((error, stackTrace) => Operadores.alertActivity(
+              context: context,
+              tittle: "ERROR  Al guardar nota",
+              message: "ERROR : $error : : $stackTrace",
+              onAcept: () => Navigator.of(context).pop(),
+            ));
   }
 
   static int setTypeReport({required String tipoAnalisis}) {

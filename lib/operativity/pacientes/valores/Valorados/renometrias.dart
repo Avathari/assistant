@@ -43,22 +43,35 @@ class Renometrias {
   }
 
   static double get tasaRenalCKDEPI {
-    if (Valores.sexo! == 'Masculino') {
-      return ((141 *
-          (pow((Valores.creatinina! / 0.9), -0.411)) *
-          (pow((Valores.creatinina! / 0.9), -1.209)) *
-          (pow(0.993, Valores.edad!)) *
-          (1.0) *
-          (1.0)));
-    } else if (Valores.sexo! == 'Femenino') {
-      return ((141 *
-          (pow((Valores.creatinina! / 0.9), -0.411)) *
-          (pow((Valores.creatinina! / 0.9), -1.209)) *
-          (pow(0.993, Valores.edad!)) *
-          (1.018) *
-          (1.0)));
+    if (Valores.sexo !=null) {
+      if (Valores.sexo! == 'Masculino') {
+        if (Valores.creatinina! !=null &&Valores.edad! !=null) {
+          return ((141 *
+              (pow((Valores.creatinina! / 0.9), -0.411)) *
+              (pow((Valores.creatinina! / 0.9), -1.209)) *
+              (pow(0.993, Valores.edad!)) *
+              (1.0) *
+              (1.0)));
+        } else {
+          return double.nan;
+        }
+
+      } else if (Valores.sexo! == 'Femenino') {
+        if (Valores.creatinina! !=null &&Valores.edad! !=null) {
+          return ((141 *
+              (pow((Valores.creatinina! / 0.9), -0.411)) *
+              (pow((Valores.creatinina! / 0.9), -1.209)) *
+              (pow(0.993, Valores.edad!)) *
+              (1.018) *
+              (1.0)));
+        } else {
+          return double.nan;
+        }
+      } else {
+        return 0.0;
+      }
     } else {
-      return 0.0;
+      return double.nan;
     }
   }
 

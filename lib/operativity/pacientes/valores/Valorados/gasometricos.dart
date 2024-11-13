@@ -270,8 +270,13 @@ class Gasometricos {
           (Valores.cloro! + Valores.bicarbonatoArteriales!);
 
   //
-  static double get PAFI =>
-      (Valores.poArteriales! / (Valores.fioArteriales! / 100));
+  static double get PAFI {
+    if (Valores.poArteriales != null) {
+      return (Valores.poArteriales! / (Valores.fioArteriales! / 100));
+    } else {
+      return double.nan;
+    }
+  }
 
   static double get PAFI_PB => (PAFI * (Valores.presionBarometrica / 760));
 
@@ -281,7 +286,7 @@ class Gasometricos {
       (Valores.poArteriales! / Valores.fioArteriales!) * 100;
 
   static double get SAFI =>
-      (Valores.soArteriales! / (Valores.fioArteriales! / 100));
+      (Valores.saturacionPerifericaOxigeno! / (Valores.fraccionInspiratoriaOxigeno! / 100));
 
   /// pCO2 corregido por Temperatura (°C)
   static double get PCO2C {
