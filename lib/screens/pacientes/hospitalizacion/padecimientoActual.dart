@@ -186,323 +186,231 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
               ],
             )
           : null,
-      body: Row(
-        children: [
-          Expanded(
-            flex: 3,
-            child: SingleChildScrollView(
-              controller: ScrollController(),
-              child: Column(
-                children: [
-                  // TittlePanel(textPanel: 'Padecimiento Actual'),
-                  EditTextArea(
-                    labelEditText: 'Fecha de Inicio Padecimiento',
-                    textController: fechaPadecimientoTextController,
-                    keyBoardType: TextInputType.datetime,
-                    inputFormat: MaskTextInputFormatter(
-                        mask: '####/##/##', filter: {"#": RegExp(r'[0-9]')}),
-                    iconData: Icons.calendar_today,
-                    withShowOption: true,
-                    selection: true,
-                    onSelected: () {
-                      Valores.fechaPadecimientoActual =padecimientoActualTextController.text;
-                      //
-                      fechaPadecimientoTextController.text =
-                          Calendarios.today(format: 'yyyy/MM/dd');
-                      padecimientoActualTextController.text =
-                          "Inicia padecimiento actual el ${fechaPadecimientoTextController.text}";
-                    },
-                    numOfLines: 1,
-                    // onChange: (value) {
-                    //   setState(() {
-                    //     fechaPadecimientoTextController.text = value;
-                    //   });
-                    // },
-                  ),
-                  EditTextArea(
-                    keyBoardType: TextInputType.multiline,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'Motivo de Atención',
-                    textController: motivoAtencionTextController,
-                    numOfLines: isTablet(context) ? 2 : 1,
-                    iconData: Icons.segment,
-                    selection: true,
-                    withShowOption: true,
-                    onSelected: () {
-                      Operadores.selectOptionsActivity(
-                          context: context,
-                          options: ['Disnea', 'Tos', 'Cianosis'],
-                          onClose: (value) {
-                            motivoAtencionTextController.text =
-                                "${motivoAtencionTextController.text}.\n $value";
-                            Navigator.pop(context);
-                          });
-                    },
-                    onChange: (value) {
-                      setState(() {
-                        Valores.padecimientoActual =
-                            Reportes.reportes['Padecimiento_Actual'] =
-                                "${Valores.padecimientoActual}. \n$value";
-                      });
-                    },
-                  ),
-                  EditTextArea(
-                    keyBoardType: TextInputType.text,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'Descripción del Padecimiento Actual',
-                    textController: padecimientoActualTextController,
-                    numOfLines: isTablet(context) ? 10 : 10,
-                    iconData: Icons.segment,
-                    selection: true,
-                    withShowOption: true,
-                    onSelected: () {
-                      Operadores.selectOptionsActivity(
-                          context: context,
-                          options: ['Disnea', 'Tos', 'Cianosis'],
-                          onClose: (value) {
-                            padecimientoActualTextController.text =
-                                "${padecimientoActualTextController.text} $value";
-                            Navigator.pop(context);
-                          });
-                    },
-                    onChange: (value) {
-                      setState(() {
-                        Valores.padecimientoActual =
-                            Reportes.reportes['Padecimiento_Actual'] = value;
-                      });
-                    },
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: ValuePanel(
-                          firstText: "T. Sys",
-                          secondText: tensionArterial.toString(),
-                          thirdText: "mmHg",
-                          withEditMessage: true,
-                          onEdit: (value) {
-                            Operadores.editActivity(
-                                keyBoardType: TextInputType.datetime,
-                                context: context,
-                                tittle: "Editar . . . ",
-                                message: "¿Tensión sistólica? . . . ",
-                                onAcept: (value) {
-                                  Terminal.printSuccess(
-                                      message: "recieve $value");
-                                  setState(() {
-                                    tensionArterial = value;
-                                    atencionUrgenciasTextController.text =
-                                        "Es atendido en urgencias reportandose tensión arterial $tensionArterial mmHg, ";
-                                    Navigator.of(context).pop();
-                                  });
-                                });
-                          },
-                        ),
-                      ),
-                      Expanded(
-                        child: ValuePanel(
-                          firstText: "F. Card.",
-                          secondText: frecuenciaCardiaca.toString(),
-                          thirdText: "Lat/min",
-                          withEditMessage: true,
-                          onEdit: (value) {
-                            Operadores.editActivity(
-                                keyBoardType: TextInputType.datetime,
-                                context: context,
-                                tittle: "Editar . . . ",
-                                message: "¿Frecuencia Cardiaca? . . . ",
-                                onAcept: (value) {
-                                  Terminal.printSuccess(
-                                      message: "recieve $value");
-                                  setState(() {
-                                    frecuenciaCardiaca = value;
-                                    atencionUrgenciasTextController.text =
-                                        "Es atendido en urgencias reportandose tensión arterial $tensionArterial mmHg, "
-                                        "frecuencia cardiaca $frecuenciaCardiaca Lat/min, ";
-                                    Navigator.of(context).pop();
-                                  });
-                                });
-                          },
-                        ),
-                      ),
-                      Expanded(
-                        child: ValuePanel(
-                          firstText: "F. Resp.",
-                          secondText: frecuenciaRespiratoria.toString(),
-                          thirdText: "Resp/min",
-                          withEditMessage: true,
-                          onEdit: (value) {
-                            Operadores.editActivity(
-                                keyBoardType: TextInputType.datetime,
-                                context: context,
-                                tittle: "Editar . . . ",
-                                message: "¿Frecuencia Respiratoria? . . . ",
-                                onAcept: (value) {
-                                  Terminal.printSuccess(
-                                      message: "recieve $value");
-                                  setState(() {
-                                    frecuenciaRespiratoria = value;
-                                    atencionUrgenciasTextController.text =
-                                        "Es atendido en urgencias reportandose tensión arterial $tensionArterial mmHg, "
-                                        "frecuencia cardiaca $frecuenciaCardiaca Lat/min, "
-                                        "frecuencia respiratoria $frecuenciaRespiratoria Resp/min, ";
-                                    Navigator.of(context).pop();
-                                  });
-                                });
-                          },
-                        ),
-                      ),
-                      Expanded(
-                        child: ValuePanel(
-                          firstText: "T. Corp.",
-                          secondText: temperaturaCorporal.toString(),
-                          thirdText: "°C",
-                          withEditMessage: true,
-                          onEdit: (value) {
-                            Operadores.editActivity(
-                                keyBoardType: TextInputType.datetime,
-                                context: context,
-                                tittle: "Editar . . . ",
-                                message: "¿Temperatura Corporal? . . . ",
-                                onAcept: (value) {
-                                  Terminal.printSuccess(
-                                      message: "recieve $value");
-                                  setState(() {
-                                    temperaturaCorporal = value;
-                                    atencionUrgenciasTextController.text =
-                                        "Es atendido en urgencias reportandose tensión arterial $tensionArterial mmHg, "
-                                        "frecuencia cardiaca $frecuenciaCardiaca Lat/min, frecuencia respiratoria $frecuenciaRespiratoria Resp/min, "
-                                        "temperatura corporal $temperaturaCorporal, ";
-                                    Navigator.of(context).pop();
-                                  });
-                                });
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  EditTextArea(
-                    keyBoardType: TextInputType.text,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'Atención en Urgencias',
-                    textController: atencionUrgenciasTextController,
-                    numOfLines: isTablet(context) ? 10 : 15,
-                    onChange: (value) {
-                      setState(() {
-                        Valores.padecimientoActual =
-                            "${Valores.padecimientoActual}. \n$value";
-                      });
-                    },
-                  ),
-                  GrandButton(
-                      weigth: 1000,
-                      labelButton: "Actualizar Padecimiento Actual",
-                      onPress: () {
-                        Valores.fechaPadecimientoActual =fechaPadecimientoTextController.text;
-                        //
-                        Valores.padecimientoActual =
-                            "${padecimientoActualTextController.text}. \n${atencionUrgenciasTextController.text}";
-                        Future(() =>
-                                Repositorios.actualizarPadecimientoRegistro())
-                            .whenComplete(() => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        widget.withAppBar == true
-                                            ? VisualPacientes(actualPage: 0)
-                                            : ReportesMedicos())));
-                      }),
-                ],
-              ),
+      body: SingleChildScrollView(
+        controller: ScrollController(),
+        child: Column(
+          children: [
+            // TittlePanel(textPanel: 'Padecimiento Actual'),
+            EditTextArea(
+              labelEditText: 'Fecha de Inicio Padecimiento',
+              textController: fechaPadecimientoTextController,
+              keyBoardType: TextInputType.datetime,
+              inputFormat: MaskTextInputFormatter(
+                  mask: '####/##/##', filter: {"#": RegExp(r'[0-9]')}),
+              iconData: Icons.calendar_today,
+              withShowOption: true,
+              selection: true,
+              onSelected: () {
+                Valores.fechaPadecimientoActual =padecimientoActualTextController.text;
+                //
+                fechaPadecimientoTextController.text =
+                    Calendarios.today(format: 'yyyy/MM/dd');
+                padecimientoActualTextController.text =
+                    "Inicia padecimiento actual el ${fechaPadecimientoTextController.text}";
+              },
+              numOfLines: 1,
+              // onChange: (value) {
+              //   setState(() {
+              //     fechaPadecimientoTextController.text = value;
+              //   });
+              // },
             ),
-          ),
-          // Expanded(
-          //   child: Column(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: [
-          //       ValuePanel(
-          //         firstText: "T. Sys",
-          //         secondText: tensionArterial.toString(),
-          //         thirdText: "mmHg",
-          //         withEditMessage: true,
-          //         onEdit: (value) {
-          //           Operadores.editActivity(
-          //               keyBoardType: TextInputType.datetime,
-          //               context: context,
-          //               tittle: "Editar . . . ",
-          //               message: "¿Tensión sistólica? . . . ",
-          //               onAcept: (value) {
-          //                 Terminal.printSuccess(message: "recieve $value");
-          //                 setState(() {
-          //                   tensionArterial = value;
-          //                   Navigator.of(context).pop();
-          //                 });
-          //               });
-          //         },
-          //       ),
-          //       ValuePanel(
-          //         firstText: "F. Card.",
-          //         secondText: frecuenciaCardiaca.toString(),
-          //         thirdText: "Lat/min",
-          //         withEditMessage: true,
-          //         onEdit: (value) {
-          //           Operadores.editActivity(
-          //               keyBoardType: TextInputType.datetime,
-          //               context: context,
-          //               tittle: "Editar . . . ",
-          //               message: "¿Frecuencia Cardiaca? . . . ",
-          //               onAcept: (value) {
-          //                 Terminal.printSuccess(message: "recieve $value");
-          //                 setState(() {
-          //                   frecuenciaCardiaca = value;
-          //                   Navigator.of(context).pop();
-          //                 });
-          //               });
-          //         },
-          //       ),
-          //       ValuePanel(
-          //         firstText: "F. Resp.",
-          //         secondText: frecuenciaRespiratoria.toString(),
-          //         thirdText: "Resp/min",
-          //         withEditMessage: true,
-          //         onEdit: (value) {
-          //           Operadores.editActivity(
-          //               keyBoardType: TextInputType.datetime,
-          //               context: context,
-          //               tittle: "Editar . . . ",
-          //               message: "¿Frecuencia Respiratoria? . . . ",
-          //               onAcept: (value) {
-          //                 Terminal.printSuccess(message: "recieve $value");
-          //                 setState(() {
-          //                   frecuenciaRespiratoria = value;
-          //                   Navigator.of(context).pop();
-          //                 });
-          //               });
-          //         },
-          //       ),
-          //       ValuePanel(
-          //         firstText: "T. Corp.",
-          //         secondText: temperaturaCorporal.toString(),
-          //         thirdText: "°C",
-          //         withEditMessage: true,
-          //         onEdit: (value) {
-          //           Operadores.editActivity(
-          //               keyBoardType: TextInputType.datetime,
-          //               context: context,
-          //               tittle: "Editar . . . ",
-          //               message: "¿Temperatura Corporal? . . . ",
-          //               onAcept: (value) {
-          //                 Terminal.printSuccess(message: "recieve $value");
-          //                 setState(() {
-          //                   temperaturaCorporal = value;
-          //                   Navigator.of(context).pop();
-          //                 });
-          //               });
-          //         },
-          //       ),
-          //     ],
-          //   ),
-          // )
-        ],
+            EditTextArea(
+              keyBoardType: TextInputType.multiline,
+              inputFormat: MaskTextInputFormatter(),
+              labelEditText: 'Motivo de Atención',
+              textController: motivoAtencionTextController,
+              numOfLines: isTablet(context) ? 2 : 1,
+              iconData: Icons.segment,
+              selection: true,
+              withShowOption: true,
+              onSelected: () {
+                Operadores.selectOptionsActivity(
+                    context: context,
+                    options: ['Disnea', 'Tos', 'Cianosis'],
+                    onClose: (value) {
+                      motivoAtencionTextController.text =
+                          "${motivoAtencionTextController.text}.\n $value";
+                      Navigator.pop(context);
+                    });
+              },
+              onChange: (value) {
+                setState(() {
+                  Valores.padecimientoActual =
+                      Reportes.reportes['Padecimiento_Actual'] =
+                          "${Valores.padecimientoActual}. \n$value";
+                });
+              },
+            ),
+            EditTextArea(
+              keyBoardType: TextInputType.text,
+              inputFormat: MaskTextInputFormatter(),
+              labelEditText: 'Descripción del Padecimiento Actual',
+              textController: padecimientoActualTextController,
+              limitOfChars: 500,
+              numOfLines: isTablet(context) ? 10 : 10,
+              iconData: Icons.segment,
+              selection: true,
+              withShowOption: true,
+              onSelected: () {
+                Operadores.selectOptionsActivity(
+                    context: context,
+                    options: ['Disnea', 'Tos', 'Cianosis'],
+                    onClose: (value) {
+                      padecimientoActualTextController.text =
+                          "${padecimientoActualTextController.text} $value";
+                      Navigator.pop(context);
+                    });
+              },
+              onChange: (value) {
+                setState(() {
+                  Valores.padecimientoActual =
+                      Reportes.reportes['Padecimiento_Actual'] = value;
+                });
+              },
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: ValuePanel(
+                    firstText: "T. Sys",
+                    secondText: tensionArterial.toString(),
+                    thirdText: "mmHg",
+                    withEditMessage: true,
+                    onEdit: (value) {
+                      Operadores.editActivity(
+                          keyBoardType: TextInputType.datetime,
+                          context: context,
+                          tittle: "Editar . . . ",
+                          message: "¿Tensión sistólica? . . . ",
+                          onAcept: (value) {
+                            Terminal.printSuccess(
+                                message: "recieve $value");
+                            setState(() {
+                              tensionArterial = value;
+                              atencionUrgenciasTextController.text =
+                                  "Es atendido en urgencias reportandose tensión arterial $tensionArterial mmHg, ";
+                              Navigator.of(context).pop();
+                            });
+                          });
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: ValuePanel(
+                    firstText: "F. Card.",
+                    secondText: frecuenciaCardiaca.toString(),
+                    thirdText: "Lat/min",
+                    withEditMessage: true,
+                    onEdit: (value) {
+                      Operadores.editActivity(
+                          keyBoardType: TextInputType.datetime,
+                          context: context,
+                          tittle: "Editar . . . ",
+                          message: "¿Frecuencia Cardiaca? . . . ",
+                          onAcept: (value) {
+                            Terminal.printSuccess(
+                                message: "recieve $value");
+                            setState(() {
+                              frecuenciaCardiaca = value;
+                              atencionUrgenciasTextController.text =
+                                  "Es atendido en urgencias reportandose tensión arterial $tensionArterial mmHg, "
+                                  "frecuencia cardiaca $frecuenciaCardiaca Lat/min, ";
+                              Navigator.of(context).pop();
+                            });
+                          });
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: ValuePanel(
+                    firstText: "F. Resp.",
+                    secondText: frecuenciaRespiratoria.toString(),
+                    thirdText: "Resp/min",
+                    withEditMessage: true,
+                    onEdit: (value) {
+                      Operadores.editActivity(
+                          keyBoardType: TextInputType.datetime,
+                          context: context,
+                          tittle: "Editar . . . ",
+                          message: "¿Frecuencia Respiratoria? . . . ",
+                          onAcept: (value) {
+                            Terminal.printSuccess(
+                                message: "recieve $value");
+                            setState(() {
+                              frecuenciaRespiratoria = value;
+                              atencionUrgenciasTextController.text =
+                                  "Es atendido en urgencias reportandose tensión arterial $tensionArterial mmHg, "
+                                  "frecuencia cardiaca $frecuenciaCardiaca Lat/min, "
+                                  "frecuencia respiratoria $frecuenciaRespiratoria Resp/min, ";
+                              Navigator.of(context).pop();
+                            });
+                          });
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: ValuePanel(
+                    firstText: "T. Corp.",
+                    secondText: temperaturaCorporal.toString(),
+                    thirdText: "°C",
+                    withEditMessage: true,
+                    onEdit: (value) {
+                      Operadores.editActivity(
+                          keyBoardType: TextInputType.datetime,
+                          context: context,
+                          tittle: "Editar . . . ",
+                          message: "¿Temperatura Corporal? . . . ",
+                          onAcept: (value) {
+                            Terminal.printSuccess(
+                                message: "recieve $value");
+                            setState(() {
+                              temperaturaCorporal = value;
+                              atencionUrgenciasTextController.text =
+                                  "Es atendido en urgencias reportandose tensión arterial $tensionArterial mmHg, "
+                                  "frecuencia cardiaca $frecuenciaCardiaca Lat/min, frecuencia respiratoria $frecuenciaRespiratoria Resp/min, "
+                                  "temperatura corporal $temperaturaCorporal, ";
+                              Navigator.of(context).pop();
+                            });
+                          });
+                    },
+                  ),
+                ),
+              ],
+            ),
+            EditTextArea(
+              keyBoardType: TextInputType.text,
+              inputFormat: MaskTextInputFormatter(),
+              labelEditText: 'Atención en Urgencias',
+              textController: atencionUrgenciasTextController,
+              limitOfChars: 1500,
+              numOfLines: isTablet(context) ? 10 : 15,
+              onChange: (value) {
+                setState(() {
+                  Valores.padecimientoActual =
+                      "${Valores.padecimientoActual}. \n$value";
+                });
+              },
+            ),
+            GrandButton(
+                weigth: 1000,
+                labelButton: "Actualizar Padecimiento Actual",
+                onPress: () {
+                  Valores.fechaPadecimientoActual =fechaPadecimientoTextController.text;
+                  //
+                  Valores.padecimientoActual =
+                      "${padecimientoActualTextController.text}. \n${atencionUrgenciasTextController.text}";
+                  Future(() =>
+                          Repositorios.actualizarPadecimientoRegistro())
+                      .whenComplete(() => Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  widget.withAppBar == true
+                                      ? VisualPacientes(actualPage: 0)
+                                      : ReportesMedicos())));
+                }),
+          ],
+        ),
       ),
     );
   }

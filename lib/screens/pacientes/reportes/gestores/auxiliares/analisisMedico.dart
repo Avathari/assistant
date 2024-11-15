@@ -20,7 +20,7 @@ class AnalisisMedico extends StatefulWidget {
   int? actualPage;
   double? fontSize = 8.0;
 
-  String analisisTemporalFile = "${Pacientes.localReportsPath}/analisis.txt";
+  String analisisTemporalFile = "${Pacientes.localReportsPath}analisis.txt";
 
   AnalisisMedico(
       {super.key, this.actualPage = 1, this.isPrequirurgica = false});
@@ -157,7 +157,7 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                         //     inputFormat: MaskTextInputFormatter()),
                         EditTextArea(
                             textController: analisisTextController,
-                            limitOfChars: 5000,
+                            limitOfChars: 3000,
                             fontSize:
                                 widget.fontSize!, // isTablet(context) ? 9 : 9,
                             labelEditText: "Análisis médico",
@@ -310,14 +310,17 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
   Future<void> _saveToFile(String text) async {
     // final path = await _getFilePath();
     if (text.isNotEmpty) {
-      final file = File(widget.analisisTemporalFile);
-      await file.writeAsString(text).whenComplete(
-          () => null); // print("Texto guardado automáticamente cada 10 segundos"));
+      Archivos.writeInFile(text, filePath: widget.analisisTemporalFile);
+
+      // final file = File(widget.analisisTemporalFile);
+      // await file.writeAsString(text).whenComplete(
+      //     () => null); // print("Texto guardado automáticamente cada 10 segundos"));
     }
   }
 
   // Función opcional para leer el contenido del archivo (si quieres cargarlo después)
   Future<String> _readFromFile() async {
-    return await File(widget.analisisTemporalFile).readAsString();
+    return Archivos.readFromFile(filePath: widget.analisisTemporalFile);
+    // return await File(widget.analisisTemporalFile).readAsString();
   }
 }

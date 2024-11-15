@@ -199,14 +199,14 @@ class ReportsMethods {
                           context: context,
                           Values: values,
                           ValuesEgreso: valuesEgreso)
-                      .onError((onError, stackTrace) {
-                    Operadores.alertActivity(
+                      .onError((onError, stackTrace) =>
+    Operadores.alertActivity(
                       context: context,
                       tittle: "ERROR  Al Registrar Nota . . . ",
                       message: "ERROR : $onError : : $stackTrace",
                       onAcept: () => Navigator.of(context).pop(),
-                    );
-                  });
+                    )
+                  );
                 }
               }
             }))

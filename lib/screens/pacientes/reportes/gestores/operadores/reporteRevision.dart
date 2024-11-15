@@ -2,6 +2,7 @@ import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/analisisMedico.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/auxiliaresReportes.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/exploracionFisica.dart';
+import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/hitosHospitalarios.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/pronosticos.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
@@ -81,40 +82,40 @@ class _ReporteRevisionState extends State<ReporteRevision> {
                     carouselController.jumpToPage(0);
                   },
                 ),
-                // GrandIcon(
-                //     iconData: Icons.new_releases_outlined,
-                //     labelButton: "Padecimiento Actual",
-                //     weigth: wieghtRow / index,
-                //     onPress: () {
-                //       carouselController.jumpToPage(1);
-                //     }),
+                GrandIcon(
+                    iconData: Icons.history_edu,
+                    labelButton: "Hitos de la Hospitalización",
+                    weigth: wieghtRow / index,
+                    onPress: () {
+                      carouselController.jumpToPage(1);
+                    }),
                 GrandIcon(
                     iconData: Icons.explicit,
                     labelButton: "Exploración Física",
                     weigth: wieghtRow / index,
                     onPress: () {
-                      carouselController.jumpToPage(1);
+                      carouselController.jumpToPage(2);
                     }),
                 GrandIcon(
                     iconData: Icons.medical_information,
                     labelButton: "Auxiliares Diagnósticos",
                     weigth: wieghtRow / index,
                     onPress: () {
-                      carouselController.jumpToPage(2);
+                      carouselController.jumpToPage(3);
                     }),
                 GrandIcon(
                     iconData: Icons.explore,
                     labelButton: "Análisis y propuestas",
                     weigth: wieghtRow / index,
                     onPress: () {
-                      carouselController.jumpToPage(3);
+                      carouselController.jumpToPage(4);
                     }),
                 GrandIcon(
                     iconData: Icons.next_plan,
                     labelButton: "Diagnósticos y Pronóstico",
                     weigth: wieghtRow / index,
                     onPress: () {
-                      carouselController.jumpToPage(4);
+                      carouselController.jumpToPage(5);
                     }),
               ],
             ),
@@ -166,6 +167,7 @@ class _ReporteRevisionState extends State<ReporteRevision> {
                     ],
                   ),
                 ),
+                Hitoshospitalarios(),
                 ExploracionFisica(),
                 AuxiliaresExploracion(isIngreso: true),
                 AnalisisMedico(),

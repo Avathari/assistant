@@ -55,57 +55,60 @@ class _HospitalizadoState extends State<Hospitalizado> {
       child: widget.isVertical == true ? _verticalView() : _generalView());
 
   _verticalView() {
-    return Column(
-      children: [
-        ValuePanel(
-          margin: 1,
-          padding: 1,
-          withBorder: false,
-          firstText: 'Folio',
-          secondText: Pacientes.ID_Hospitalizacion.toString(),
-        ),
-        ValuePanel(
-          margin: 1,
-          padding: 1,
-          withBorder: false,
-          firstText: 'NG.: ',
-          secondText: Valores.fechaIngresoHospitalario,
-        ),
-        ValuePanel(
-          margin: 1,
-          padding: 1,
-          firstText: 'Cama',
-          secondText: Valores.numeroCama, // .toString(),
-        ),
-        ValuePanel(
-          margin: 1,
-          padding: 1,
-          firstText: 'D.E.H.',
-          secondText: Valores.diasEstancia.toString(),
-        ),
-        CrossLine(
-          height: 1,
-          color: Colors.grey,
-        ),
-        CircleIcon(
-            iconed: Icons.receipt_outlined,
-            radios: 30,
-            difRadios: 5,
-            onChangeValue: () => Repositorios.consultarAnalisis()),
-        CrossLine(
-          height: 1,
-          color: Colors.grey,
-          thickness: 2,
-        ),
-        CircleIcon(
-            iconed: Icons.local_hospital_outlined,
-            onChangeValue: () => Cambios.toNextActivity(context,
-                chyld: OperacionesHospitalizaciones(operationActivity: Constantes.Update))),
-        const SizedBox(height: 25),
-        CircleIcon(
-            iconed: Icons.balance,
-            onChangeValue: () => Operadores.openDialog(context: context, chyldrim: const Concentraciones())),
-      ],
+    return SingleChildScrollView(
+      controller: ScrollController(),
+      child: Column(
+        children: [
+          ValuePanel(
+            margin: 1,
+            padding: 1,
+            withBorder: false,
+            firstText: 'Folio',
+            secondText: Pacientes.ID_Hospitalizacion.toString(),
+          ),
+          ValuePanel(
+            margin: 1,
+            padding: 1,
+            withBorder: false,
+            firstText: 'NG.: ',
+            secondText: Valores.fechaIngresoHospitalario,
+          ),
+          ValuePanel(
+            margin: 1,
+            padding: 1,
+            firstText: 'Cama',
+            secondText: Valores.numeroCama, // .toString(),
+          ),
+          ValuePanel(
+            margin: 1,
+            padding: 1,
+            firstText: 'D.E.H.',
+            secondText: Valores.diasEstancia.toString(),
+          ),
+          CrossLine(
+            height: 1,
+            color: Colors.grey,
+          ),
+          CircleIcon(
+              iconed: Icons.receipt_outlined,
+              radios: 30,
+              difRadios: 5,
+              onChangeValue: () => Repositorios.consultarAnalisis()),
+          CrossLine(
+            height: 1,
+            color: Colors.grey,
+            thickness: 2,
+          ),
+          CircleIcon(
+              iconed: Icons.local_hospital_outlined,
+              onChangeValue: () => Cambios.toNextActivity(context,
+                  chyld: OperacionesHospitalizaciones(operationActivity: Constantes.Update))),
+          const SizedBox(height: 25),
+          CircleIcon(
+              iconed: Icons.balance,
+              onChangeValue: () => Operadores.openDialog(context: context, chyldrim: const Concentraciones())),
+        ],
+      ),
     );
   }
 

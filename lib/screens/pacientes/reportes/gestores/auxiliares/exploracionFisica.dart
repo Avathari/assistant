@@ -21,7 +21,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 class ExploracionFisica extends StatefulWidget {
   bool? isTerapia;
   String analisisTemporalFile =
-      "${Pacientes.localReportsPath}/exploracionFisica.txt";
+      "${Pacientes.localReportsPath}exploracionFisica.txt";
 
   ExploracionFisica({super.key, this.isTerapia = false});
 
@@ -599,15 +599,18 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
   Future<void> _saveToFile(String text) async {
     // final path = await _getFilePath();
     if (text.isNotEmpty) {
-      final file = File(widget.analisisTemporalFile);
-      await file.writeAsString(text).whenComplete(() =>
-          null); // print("Texto guardado automáticamente cada 10 segundos"));
+      Archivos.writeInFile(text, filePath: widget.analisisTemporalFile);
+
+      // final file = File(widget.analisisTemporalFile);
+      // await file.writeAsString(text).whenComplete(
+      //     () => null); // print("Texto guardado automáticamente cada 10 segundos"));
     }
   }
 
   // Función opcional para leer el contenido del archivo (si quieres cargarlo después)
   Future<String> _readFromFile() async {
-    return await File(widget.analisisTemporalFile).readAsString();
+    return Archivos.readFromFile(filePath: widget.analisisTemporalFile);
+    // return await File(widget.analisisTemporalFile).readAsString();
   }
 
   //

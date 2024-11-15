@@ -601,6 +601,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                         Reportes.medicamentosIndicados.toString(),
                         Reportes.medidasGenerales.toString(),
                         Reportes.pendientes.toString(),
+                        //
+                        Reportes.hitosHospitalarios.toString(),
                         Repositorios.tipo_Analisis, // Items.tiposAnalisis[0] //
                       ],
                       valuesEgreso: [
@@ -635,6 +637,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                         Reportes.medicamentosIndicados.toString(),
                         Reportes.medidasGenerales.toString(),
                         Reportes.pendientes.toString(),
+                        //
+                        Reportes.hitosHospitalarios.toString(),
                         Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
                       ]);
                   // await ReportsMethods.imprimirDocumento(
@@ -1056,6 +1060,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                           Reportes.medicamentosIndicados.toString(),
                           Reportes.medidasGenerales.toString(),
                           Reportes.pendientes.toString(),
+                          //
+                          Reportes.hitosHospitalarios.toString(),
+                          //
                           Repositorios
                               .tipo_Analisis, // Items.tiposAnalisis[0] //
                         ],
@@ -1091,6 +1098,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                           Reportes.medicamentosIndicados.toString(),
                           Reportes.medidasGenerales.toString(),
                           Reportes.pendientes.toString(),
+                          //
+                          Reportes.hitosHospitalarios.toString(),
                           Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
                         ])),
           ],
@@ -1286,6 +1295,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   Reportes.medicamentosIndicados.toString(),
                   Reportes.medidasGenerales.toString(),
                   Reportes.pendientes.toString(),
+                  //
+                  Reportes.hitosHospitalarios.toString(),
                   Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
                 ],
               )
@@ -1316,8 +1327,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       // Terminal.printWarning(
       //     message: listNotes![widget.indexNote]['Diagnosticos_Hospital']);
       //
-      widget.fechaRealizacion = Reportes.fechaRealizacion =
-          listNotes![widget.indexNote]['FechaRealizacion'];
+      listNotes![widget.indexNote]['Tipo_Analisis'] ==
+          'Análisis de Revisión' ? Reportes.reportes['Datos_Generales_Simple'] = Pacientes.prosa(isTerapia: true, otherForm: true) : "";
       //
       Reportes.impresionesDiagnosticas =
           Reportes.reportes['Impresiones_Diagnosticas'] =
@@ -1336,9 +1347,14 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           Reportes.analisisComplementarios =
               listNotes![widget.indexNote]['Analisis_Complementario'] ?? "";
       //
+      Reportes.reportes['Hitos_Hospitalarios'] =
+          Reportes.hitosHospitalarios =
+          listNotes![widget.indexNote]['Hitos_Hospitalarios'] ?? "";
+      //
       return TittleContainer(
         tittle:
             listNotes![widget.indexNote]['FechaRealizacion'] ?? "0000/00/00",
+        padding: 10,
         child: SingleChildScrollView(
           controller: ScrollController(),
           child: Column(
@@ -1346,6 +1362,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // PRESENTACION
+
               Text(
                 listNotes![widget.indexNote]['Tipo_Analisis'],
                 style: Styles.textSyleGrowth(fontSize: 12),
@@ -1421,6 +1438,16 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                           'Análisis de Egreso'
                   ? CrossLine(thickness: 3)
                   : Container(),
+
+              //
+              listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                  'Análisis de Revisión' ? Text("\n${listNotes![widget.indexNote]['Hitos_Hospitalarios']}\n" ,
+                maxLines: 150,
+                overflow: TextOverflow.ellipsis,
+                style: Styles.textSyleGrowth(fontSize: 9),
+              )
+                  : Container(),
+
               //
               listNotes![widget.indexNote]['Tipo_Analisis'] !=
                           'Análisis de Gravedad' &&

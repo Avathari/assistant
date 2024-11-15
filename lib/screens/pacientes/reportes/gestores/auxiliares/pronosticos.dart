@@ -22,17 +22,16 @@ class DiagnosticosAndPronostico extends StatefulWidget {
 }
 
 class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
-
   @override
   void initState() {
     setState(() {
       //
 
       if (widget.isTerapia!) {
-
       } else {
         if (Reportes.reportes['Impresiones_Diagnosticas'] != "") {
-          diagoTextController.text = Reportes.reportes['Impresiones_Diagnosticas'];
+          diagoTextController.text =
+              Reportes.reportes['Impresiones_Diagnosticas'];
         } else {
           diagoTextController.text = Pacientes.diagnosticos();
         }
@@ -62,8 +61,8 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                       keyBoardType: TextInputType.multiline,
                       numOfLines: 15,
                       onChange: ((value) {
-                        Reportes.impresionesDiagnosticas = Reportes.reportes['Impresiones_Diagnosticas'] =
-                            "$value.";
+                        Reportes.impresionesDiagnosticas = Reportes
+                            .reportes['Impresiones_Diagnosticas'] = "$value.";
                       }),
                       inputFormat: MaskTextInputFormatter()),
                 ),
@@ -169,34 +168,42 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                                   textController: pronosTextController,
                                   labelEditText: "Pronóstico médico",
                                   keyBoardType: TextInputType.multiline,
-                                  numOfLines: isTablet(context) ? 15: 10,
+                                  numOfLines: isTablet(context) ? 15 : 10,
                                   limitOfChars: 2000,
                                   onChange: ((value) {
                                     setState(() {
-                                      Reportes.pronosticoMedico = Reportes.reportes['Pronostico_Medico'] =
-                                      "$value.";
+                                      Reportes.pronosticoMedico = Reportes
+                                              .reportes['Pronostico_Medico'] =
+                                          "$value.";
                                     });
                                   }),
                                   inputFormat: MaskTextInputFormatter()),
                             ),
                             Expanded(
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   CircleIcon(
                                       iconed: Icons.add,
                                       tittle: "Comentarios Previos . . . ",
                                       onChangeValue: () {
-                                        Operadores.selectOptionsActivity(context: context,
-                                            options: Items.bibliografiasContempladas.map((e) =>
-                                            e['Diagnostico']).toList(),
+                                        Operadores.selectOptionsActivity(
+                                            context: context,
+                                            options: Items
+                                                .bibliografiasContempladas
+                                                .map((e) => e['Diagnostico'])
+                                                .toList(),
                                             onClose: (valar) {
-                                              Terminal.printWarning(message: valar);
+                                              Terminal.printWarning(
+                                                  message: valar);
 
-                                              for (var e in Items.bibliografiasContempladas) {
+                                              for (var e in Items
+                                                  .bibliografiasContempladas) {
                                                 //
                                                 if (e['Diagnostico'] == valar) {
-                                                  pronosTextController.text = "${pronosTextController.text}${e['Bibliografia']!}";
+                                                  pronosTextController.text =
+                                                      "${pronosTextController.text}${e['Bibliografia']!}";
                                                 }
                                               }
                                               Navigator.of(context).pop();
@@ -204,16 +211,16 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                                       }),
                                   const SizedBox(height: 15),
                                   CircleIcon(
-                                    radios: 25,
+                                      radios: 25,
                                       difRadios: 7,
                                       iconed: Icons.hourglass_bottom,
                                       tittle: "Cultivos Recabados . . . ",
-                                      onChangeValue: () => Reportes.reportes['Pronostico_Medico']  = pronosTextController.text = "${pronosTextController.text} ${Auxiliares.getCultivos()}"
-                                      ),
+                                      onChangeValue: () => Reportes
+                                              .reportes['Pronostico_Medico'] =
+                                          pronosTextController.text =
+                                              "${pronosTextController.text} ${Auxiliares.getCultivos()}"),
                                   const SizedBox(height: 15),
-                                  GrandButton(onPress: () {
-                                    
-                                  }),
+                                  GrandButton(onPress: () {}),
                                 ],
                               ),
                             ),
@@ -251,5 +258,4 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
 // ######################### ### # ### ############################
 // INICIO DE LAS OPERACIONES STATE() Y BUILD().
 // ######################### ### # ### ############################
-
 }

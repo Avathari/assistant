@@ -9376,6 +9376,7 @@ class Reportes {
     "Medicamentos": Reportes.medicamentosIndicados,
     "Medidas_Generales": Reportes.medidasGenerales,
     "Pendientes": Reportes.pendientes,
+    "Hitos_Hospitalarios": Reportes.hitosHospitalarios,
     // PROCEDIMIENTOS **************************************
     "Motivo_Procedimiento": Valores.motivoProcedimiento,
     "Procedimiento_Realizado": Reportes.procedimientoRealizado,
@@ -9423,7 +9424,8 @@ class Reportes {
   static String eventualidadesOcurridas = "",
       terapiasPrevias = "",
       analisisMedico = "",
-      tratamientoPropuesto = "";
+      tratamientoPropuesto = "",
+      hitosHospitalarios = "";
   //
   static List<dynamic> analisisAnteriores = [];
   //
@@ -10354,6 +10356,9 @@ class Repositorios {
           Listas.traslateFromString(value.last['Hemoterapia']);
       Reportes.reportes["Pendientes"] = Reportes.pendientes =
           Listas.traslateFromString(value.last['Pendientes']);
+      //
+      Reportes.reportes['Hitos_Hospitalarios'] =
+          Reportes.hitosHospitalarios = value.last['Hitos_Hospitalarios'] ?? '';
 
       // Crear Json desde Pacientes.Notas ***************************************
       Archivos.createJsonFromMap(value,
@@ -10596,8 +10601,9 @@ class Repositorios {
               Oxigenoterapia VARCHAR(500) COLLATE utf8_unicode_ci NOT NULL,
               Medicamentos VARCHAR(500) COLLATE utf8_unicode_ci NOT NULL,
               Medidas_Generales VARCHAR(500) COLLATE utf8_unicode_ci NOT NULL,
-              
-              Pendientes VARCHAR(500) COLLATE utf8_unicode_ci NOT NULL
+             
+              Pendientes VARCHAR(500) COLLATE utf8_unicode_ci NOT NULL, 
+              Hitos_Hospitalarios VARCHAR(3000) COLLATE utf8_unicode_ci NOT NULL 
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla para Almacenar Análisis por Reporte del Paciente.';
             """,
     "truncateQuery": "TRUNCATE pace_hosp_repo",
@@ -10629,12 +10635,15 @@ class Repositorios {
         "Auxiliares_Diagnosticos, Analisis_Complementario, "
         "Analisis_Medico, Pronostico_Medico, "
         "Dietoterapia, Hidroterapia, Insulinoterapia, Hemoterapia, Oxigenoterapia, Medicamentos, Medidas_Generales, Pendientes, "
+        "Hitos_Hospitalarios, "
         "Tipo_Analisis) "
         "VALUES ("
         "?,?,?,?,?,?,?,?,?,?,"
         "?,?,"
         "?,?,?,?,?,?,?,?,?,?,"
-        "?,?,?)",
+        "?,?,"
+        "?,"
+        "?)",
     "registerIngresoQuery": "INSERT INTO pace_hosp_repo ("
         "ID_Pace, ID_Hosp, "
         "FechaPadecimiento, Padecimiento_Actual, "
@@ -10645,12 +10654,15 @@ class Repositorios {
         "Auxiliares_Diagnosticos, Analisis_Complementario, "
         "Analisis_Medico, Pronostico_Medico, "
         "Dietoterapia, Hidroterapia, Insulinoterapia, Hemoterapia, Oxigenoterapia, Medicamentos, Medidas_Generales, Pendientes, "
+        "Hitos_Hospitalarios, "
         "Tipo_Analisis) "
         "VALUES ("
         "?,?,?,?,?,?,?,?,?,?,"
         // "?,?,"
         "?,?,?,?,?,?,?,?,?,?,"
-        "?,?,?)",
+        "?,?,"
+        "?,"
+        "?)",
     "updateQuery": "UPDATE pace_hosp_repo SET "
         "Personales_No_Patologicos = ?, Personales_Patologicos = ?, "
         "Diagnosticos_Hospital = ?, Subjetivo = ?, "
@@ -10658,7 +10670,9 @@ class Repositorios {
         "Auxiliares_Diagnosticos = ?, Analisis_Complementario = ?, "
         "Analisis_Medico = ?, Pronostico_Medico = ?, "
         "Dietoterapia = ?, Hidroterapia = ?, Insulinoterapia = ?, Hemoterapia = ?, "
-        "Oxigenoterapia = ?, Medicamentos = ?, Medidas_Generales = ?, Pendientes = ? "
+        "Oxigenoterapia = ?, Medicamentos = ?, Medidas_Generales = ?, "
+        "Pendientes = ?, "
+        "Hitos_Hospitalarios = ? "
         "WHERE ID_Hosp = ? ",
     // "AND Tipo_Analisis = ?",
     "updateQueryNotte": "UPDATE pace_hosp_repo SET "
@@ -10668,7 +10682,9 @@ class Repositorios {
         "Auxiliares_Diagnosticos = ?, Analisis_Complementario = ?, "
         "Analisis_Medico = ?, Pronostico_Medico = ?, "
         "Dietoterapia = ?, Hidroterapia = ?, Insulinoterapia = ?, Hemoterapia = ?, "
-        "Oxigenoterapia = ?, Medicamentos = ?, Medidas_Generales = ?, Pendientes = ? "
+        "Oxigenoterapia = ?, Medicamentos = ?, Medidas_Generales = ?, "
+        "Pendientes = ?, "
+        "Hitos_Hospitalarios = ? "
         "WHERE ID_Hosp = ? AND Tipo_Analisis = ?",
 
     "updateQueryNotteUpdate": "UPDATE pace_hosp_repo SET "
@@ -10678,7 +10694,9 @@ class Repositorios {
         "Auxiliares_Diagnosticos = ?, Analisis_Complementario = ?, "
         "Analisis_Medico = ?, Pronostico_Medico = ?, "
         "Dietoterapia = ?, Hidroterapia = ?, Insulinoterapia = ?, Hemoterapia = ?, "
-        "Oxigenoterapia = ?, Medicamentos = ?, Medidas_Generales = ?, Pendientes = ? "
+        "Oxigenoterapia = ?, Medicamentos = ?, Medidas_Generales = ?, "
+        "Pendientes = ?, "
+        "Hitos_Hospitalarios = ? "
         "WHERE ID_Hosp = ? AND Tipo_Analisis = ? AND FechaRealizacion = ?",
     "deleteQuery": "DELETE FROM pace_hosp_repo WHERE ID_Compendio = ?",
 

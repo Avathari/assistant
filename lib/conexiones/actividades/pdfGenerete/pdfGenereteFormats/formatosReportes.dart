@@ -3191,7 +3191,7 @@ class CopiasReportes {
           "${paraph['Auxiliares_Diagnosticos']}\n\n";
     }
 
-    if (paraph['Analisis_Complementarios'] != "") {
+    if (paraph['Analisis_Complementarios'] != "" && paraph['Analisis_Complementarios'] != null) {
       tipoReporte = "${tipoReporte}ANALISIS COMPLEMENTARIOS\n"
           "${paraph['Analisis_Complementarios']}\n\n";
     }
@@ -3277,7 +3277,7 @@ class CopiasReportes {
           "${paraph['Auxiliares_Diagnosticos']}\n";
     }
 
-    if (paraph['Analisis_Complementarios'] != "") {
+    if (paraph['Analisis_Complementarios'] != "" && paraph['Analisis_Complementarios'] != null) {
       tipoReporte = "$tipoReporte\nANALISIS COMPLEMENTARIOS\n"
           "${paraph['Analisis_Complementarios']}\n\n";
     }
@@ -3319,7 +3319,7 @@ class CopiasReportes {
           "${paraph['Auxiliares_Diagnosticos']}\n\n";
     }
 
-    if (paraph['Analisis_Complementarios'] != "") {
+    if (paraph['Analisis_Complementarios'] != "" && paraph['Analisis_Complementarios'] != null) {
       tipoReporte = "${tipoReporte}ANALISIS COMPLEMENTARIOS\n"
           "${paraph['Analisis_Complementarios']}\n\n";
     }
@@ -3397,15 +3397,18 @@ class CopiasReportes {
     if (paraph['Antecedentes_Patologicos_Ingreso'] != "") {
       tipoReporte = "${tipoReporte}ANTECEDENTES: "
           "${paraph['Antecedentes_Patologicos_Ingreso']}\n";
+          // "RELEVANTES. ${paraph['Antecedentes_Relevantes']}\n";
     }
 
     tipoReporte = "${tipoReporte}MOTIVO DE INGRESO: "
-        "${paraph['Padecimiento_Actual']}\n\n";
+        "${paraph['Padecimiento_Actual']}\n"
+        "     . Durante su estancia : \n"
+        "${paraph['Hitos_Hospitalarios']}\n\n";
 
     // # # # # # # ### # # # # # # ###
     tipoReporte =
     "${tipoReporte}A la ingreso a hospitalización de medicina interna se encuentra al paciente con: \n"
-        "${paraph['Signos_Vitales']}\n"
+        "     ${paraph['Signos_Vitales']}\n"
         "${paraph['Exploracion_Fisica']}\n\n";
 
     if (paraph['Auxiliares_Diagnosticos'] != "") {
@@ -3413,7 +3416,7 @@ class CopiasReportes {
           "${paraph['Auxiliares_Diagnosticos']}\n\n";
     }
 
-    if (paraph['Analisis_Complementarios'] != "") {
+    if (paraph['Analisis_Complementarios'] != "" && paraph['Analisis_Complementarios'] != null) {
       tipoReporte = "${tipoReporte}ANALISIS COMPLEMENTARIOS\n"
           "${paraph['Analisis_Complementarios']}\n\n";
     }
