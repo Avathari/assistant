@@ -3389,8 +3389,11 @@ class CopiasReportes {
     Terminal.printAlert(message: "${paraph['Antecedentes_Patologicos_Ingreso']}");
     //
     String tipoReporte = "NOTA DE REVISION HOSPITALARIO\n";
+    tipoReporte = "${tipoReporte}DIAGNOSTICOS ACTUALES\n"
+        "${paraph['Impresiones_Diagnosticas']} . ";
 
-    tipoReporte = "$tipoReporte"
+    tipoReporte = "$tipoReporte\n"
+        "RESUMEN CLINICO\n"
         "${paraph['Datos_Generales_Simple'].substring(0, paraph['Datos_Generales_Simple'].length - 1)} ";
 
     // # # # # # # ### # # # # # # ###
@@ -3403,11 +3406,11 @@ class CopiasReportes {
     tipoReporte = "${tipoReporte}MOTIVO DE INGRESO: "
         "${paraph['Padecimiento_Actual']}\n"
         "     . Durante su estancia : \n"
-        "${paraph['Hitos_Hospitalarios']}\n\n";
+        "${paraph['Hitos_Hospitalarios']}\n";
 
     // # # # # # # ### # # # # # # ###
     tipoReporte =
-    "${tipoReporte}A la ingreso a hospitalización de medicina interna se encuentra al paciente con: \n"
+    "${tipoReporte}Actualmente : " //${paraph['Subjetivo']}"
         "     ${paraph['Signos_Vitales']}\n"
         "${paraph['Exploracion_Fisica']}\n\n";
 
@@ -3421,8 +3424,6 @@ class CopiasReportes {
           "${paraph['Analisis_Complementarios']}\n\n";
     }
 
-    tipoReporte = "${tipoReporte}IMPRESIONES DIAGNÓSTICAS\n"
-        "${paraph['Impresiones_Diagnosticas']}\n\n";
 
     tipoReporte = "$tipoReporte"
         "ANÁLISIS\n"

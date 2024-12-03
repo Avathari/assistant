@@ -42,7 +42,7 @@ class _HitoshospitalariosState extends State<Hitoshospitalarios> {
         limitOfChars: 3000,
         withShowOption: true,
         onSelected: ()=>_readFromFile(),
-        onChange: (value) => Reportes.hitosHospitalarios = value,
+        onChange: (value) => Reportes.hitosHospitalarios = Reportes.reportes['Hitos_Hospitalarios']= value,
         inputFormat: MaskTextInputFormatter());
   }
 

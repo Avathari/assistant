@@ -1,7 +1,9 @@
-import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'dart:math' as math;
-import 'package:assistant/operativity/pacientes/valores/Valorados/hidrometrias.dart';
 import 'package:dart_numerics/dart_numerics.dart' as numerics;
+import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
+import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/hidrometrias.dart';
+
 
 class Gasometricos {
   // ANALISIS
@@ -245,7 +247,38 @@ class Gasometricos {
     }
   }
 
-  //
+  // CORRECCIONES POR TEMPERATURA
+
+  /// Corrección del pH por temperatura
+  /// El pH varía con la temperatura debido a los cambios en el equilibrio del agua y la disociación de ácidos y bases:
+  /// FG : pH corregido = pHmedido + (0.015 * (Tmedido - 37))
+  ///
+  /// Tal que: Tmedido: temperatura corporal del paciente en °C.
+  /// 37: temperatura estándar de calibración del equipo.
+  static double get pHcorregido=>(Valores.pHArteriales! + (0.015*(Valores.temperaturCorporal!-37)));
+
+
+  /// Corrección del pCO2 por temperatura
+  /// El pCO2 también varía debido a la solubilidad del CO2, que aumenta a temperaturas más bajas:
+  /// FG: pCO2corregido = pCO2medido * 10^(0.019*(37-Tmedido)
+  static double get pCO2corregido=>(Valores.pcoArteriales! * math.pow(10, 0.019*(37-Valores.temperaturCorporal!)));
+
+  /// Corrección del pO2 por temperatura
+  /// La pO2 se ajusta debido a la solubilidad del oxígeno en plasma y su interacción con la hemoglobina:
+  static double get pO2corregido=>(Valores.poArteriales! * math.pow(10, 0.003*(37-Valores.temperaturCorporal!)));
+
+  /// Corrección del Calcio Ionico por pH
+  ///
+  /// El calcio iónico está influenciado por el pH debido a que el hidrógeno compite con el calcio por los sitios de unión en las proteínas plasmáticas. Cambios en el pH afectan los niveles de calcio iónico:
+   /// - Acidemia (pH<7.35): Aumenta el calcio iónico, ya que menos calcio se une a las proteínas.
+  /// - Alcalemia (pH>7.45): Disminuye el calcio iónico, ya que más calcio se une a las proteínas.
+  /// Ajuste del calcio iónico por pH:  Por cada cambio de 0.1 unidades de pH Calcio iónico cambia aproximadamente 0.05 mmol/L en dirección opuesta al pH.
+  ///  Formula General: Ca++pH = 1.20 + (0.05 x (7.4 - pHm))
+  ///  Valores normales:
+  /// - Calcio iónico: 1.12-1.32 mmol/L (4.5-5.3 mg/dL).
+  /// - Calcio total: 8.5-10.5 mg/dL.
+  ///
+  static double get calcioIonicoCorregido=>(1.2 + (Valores.calcioIonicoArteriales! * (7.4 - Valores.pHArteriales!)));
 
   /// Indice Cl-/Na+2
   ///  * * Adyuva en la descripción de la Acidosis Metabólica.
@@ -267,7 +300,7 @@ class Gasometricos {
 
   static double get GAPA =>
       (Valores.sodioArteriales! + Valores.potasioArteriales!) -
-          (Valores.cloro! + Valores.bicarbonatoArteriales!);
+          (Valores.cloroArteriales! + Valores.bicarbonatoArteriales!);
 
   //
   static double get PAFI {
@@ -365,7 +398,7 @@ class Gasometricos {
 
   static double get aGapAlb {
     if (Valores.albuminaSerica != null || Valores.albuminaSerica! != 0) {
-      return GAP + (0.25 * (4.4 - Valores.albuminaSerica!));
+      return GAP + 2.5 * (4 - Valores.albuminaSerica!);
     } else {
       return GAP;
     }
@@ -425,14 +458,40 @@ class Gasometricos {
   static double get EBvGilFix => (Valores.sodio!) - (Valores.cloro!) - 38;
 
   // *********************************************************
+  /// Contenido Total de CO2 disuelto
+  /// Incluye tanto el dióxido de carbono en forma disuelta como las formas combinadas en el plasma y los eritrocitos.7
+  /// Compponentes del TCO2
+  ///  - HCO3  : Es la principal forma de transporte del CO2 en sangre, constituyendo alrededor del 90-95% del TCO2.
+  ///  - CO2     : Representa una fracción muy pequeña, calculada con la fórmula:
+  ///  - H2CO3:  Una forma transitoria entre el CO2 y HCO3
+  ///  - Carbaminohemoglobina: CO2 unido a proteínas, principalmente la hemoglobina. Este es un componente muy menor en el cálculo de TCO2.
+  ///
+  ///  Componentes de la formula : TCO2 = HCO3 + (0.03xpCO2) || 0.03 :: Constante de solubilidad del CO2 en plasma a 37°C, en mmol/L por mmHg.
+  ///  Rango normal (TCO2)
+  ///  - Arterial : 23 - 29 mmol/L
+  ///  - Venoso : Ligeramente más alto que el arterial, debido a la mayor cantidad de CO2 transportado desde los tejidos a los pulmones
+  ///  Interpretación clínica: El TCO2 es una medida indirecta del equilibrio ácido-base:
+  /// - Elevado: Sugiere alcalosis metabólica o compensación de acidosis respiratoria.
+  /// - Disminuido: Sugiere acidosis metabólica o compensación de alcalosis respiratoria.
+  ///
   static double get TCO {
     return ((Valores.bicarbonatoArteriales!) +
         (0.03 * Valores.pcoArteriales!)); //# Dioxido de Carbono Total
   }
 
+  // ((Valores.albuminaSerica!*10) * (0.123 * Valores.pHArteriales! - 0.631))
+  //     - (((Valores.fosforo! *10) * 3.06)* (0.309 * Valores.pHArteriales! - 0.469)); //
+
+  // *********************************************************
+
+  //(Valores.presionGasSeco / (Valores.fioArteriales! / 100));
+  static double get PIO =>
+      (Valores.presionBarometrica - Valores.presionVaporAgua) *
+          (Valores.fioArteriales! / 100);
+
   static double get PAO {
     return PIO -
-        (Valores.pcoArteriales! * 0.8); // 1.25 # Presión alveolar de oxígeno
+        (Valores.pcoArteriales! * RI); // 1.25 # Presión alveolar de oxígeno
     // return (Valores.fioArteriales! / 100) * (760 - 47) -
     //     (Valores.pcoArteriales! / 0.8); // # Presión alveolar de oxígeno
   }
@@ -534,20 +593,10 @@ class Gasometricos {
   ///
   static double get aTOT => 2.43 * Valores.proteinasTotales!;
 
-  // ((Valores.albuminaSerica!*10) * (0.123 * Valores.pHArteriales! - 0.631))
-  //     - (((Valores.fosforo! *10) * 3.06)* (0.309 * Valores.pHArteriales! - 0.469)); //
-
-  // *********************************************************
-
-  //(Valores.presionGasSeco / (Valores.fioArteriales! / 100));
-  static double get PIO =>
-      (Valores.presionBarometrica - Valores.presionVaporAgua) *
-          (Valores.fioArteriales! / 100);
 
   /// Gradiente Alveolo Arterial (GAA)
   ///
   /// Otras fórmulas : (PAO - Valores.poArteriales!); //  # Gradiente Alveolo - Arterial
-
   static double get GAA =>
       (PAO - Valores.poArteriales!); //  # Gradiente Alveolo - Arterial
 // static double get GAA => ((Valores.presionBarometrica - Valores.presionVaporAgua) * (Valores.fioArteriales! / 100) -
@@ -576,8 +625,11 @@ class Gasometricos {
     }
   }
 
+  /// Diferencia Alveolar (DAA / PAO/PaO2)
   static double get DAA =>
       PAO - (Valores.poArteriales!); //  # Diferencia Alveolar
+
+  /// Relación PaO2 / PAO2
   static double get PaO2PAO2 =>
       (Valores.poArteriales! / PAO); //  # Relación PaO2 / PAO2
 
@@ -587,7 +639,7 @@ class Gasometricos {
   ///
   static double get SvcO2 =>
       (Valores.soArteriales!) -
-          (Valores.DO - Valores.TO) * Valores.hemoglobina!;
+          (iDO - TO) * Valores.hemoglobina!;
 
   // # ######################################################
   // # Reglas del Bicarbonato
@@ -787,12 +839,152 @@ class Gasometricos {
   ///
   static double get indiceMitocondrial => (Gasometricos.DeltaCOS / DAV);
 
-  // # Cociente Respiratorio
+  /// Cociente Respiratorio
+  /// Estado metabólico:
+  /// Un QR cercano a 1 indica metabolismo de carbohidratos.
+  /// Un QR cercano a 0.7 sugiere metabolismo de grasas.
+  /// Un QR entre 0.7 y 1.0 refleja un metabolismo mixto.
+  ///
+  /// Evaluación en reposo y ejercicio:
+  /// En reposo, un QR de 0.8 es común, reflejando un metabolismo mixto.
+  /// Durante el ejercicio intenso, el QR puede acercarse a 1 debido al mayor uso de carbohidratos.
   static double get RI => 0.8;
 
-  /// Capacidad de Oxígeno
+  /// Capacidad de Oxígeno (O2Cap)
+  /// La capacidad de oxígeno (O₂Cap) es la máxima cantidad de oxígeno que la sangre puede transportar cuando la hemoglobina está completamente saturada (100% de saturación). Este valor depende directamente de la cantidad de hemoglobina en sangre..
+  /// Formula = O2Cap = 1.34 * Hb
+  ///  - Donde:
+  ///  - - 1.34: Constante que representa la cantidad de oxígeno que 1 gramo de hemoglobina puede transportar (en mL O₂/g Hb).
+  ///  - - Hb: Concentración de hemoglobina en sangre (g/dL)
+  /// O₂Cap es útil para evaluar la capacidad teórica de transporte de oxígeno, especialmente en condiciones como anemia.
+  ///
   static double get capacidadOxigeno =>
       (Valores.hemoglobina! * (1.36)); //  # Capacidad de Oxígeno
+
+  /// O₂Ct (Contenido total de oxígeno)
+  /// El contenido total de oxígeno (O₂Ct) es la cantidad real de oxígeno transportado por la sangre, que incluye:
+  ///
+  /// Oxígeno ligado a la hemoglobina.
+  /// Oxígeno disuelto en el plasma
+  ///
+  /// Formula: O2Ct = (1.34 x Hb x SaO2) + (0.003 x PaO2)
+  /// - Donde:
+  /// - - 1.34: Constante de transporte de oxígeno por hemoglobina.
+  /// - - Hb: Concentración de hemoglobina (g/dL).
+  /// - - SaO₂: Saturación arterial de oxígeno (fracción decimal).
+  /// - - PaO₂: Presión parcial de oxígeno en sangre arterial (mmHg).
+  /// - - 0.003: Solubilidad del oxígeno en plasma (mL O₂/dL por mmHg).
+  /// O₂Ct refleja el estado actual de oxigenación del paciente y es crítico en la evaluación de hipoxemia y otros trastornos respiratorios.
+  ///
+  static double get contenidoTotalOxigeno => (1.34 * Valores.hemoglobina! * (Valores.saturacionPerifericaOxigeno! /100)) + (0.003 * Valores.poArteriales!);
+
+  /// Disponibilidad de Oxígeno (DO2) (mL/min)
+  /// El DO₂ es la cantidad de oxígeno transportada por la sangre y entregada a los tejidos por minuto. Se calcula a partir del contenido arterial de oxígeno (
+  ///  Formula General : DO = (GC * CaO2) * (10)
+  ///  - Donde :
+  ///  - - CO: Gasto cardíaco (L/min).
+  ///  - - El factor 10 convierte mL/dL a mL/L.
+  ///
+  /// Rango normal: 900-1200 mL O₂/min en condiciones normales.
+  /// Reducción del DO2 : Puede deberse a anemia, hipoxemia, o disminución del gasto cardíaco.
+  ///
+  static double get DO => ((Gasometricos.gastoCardiaco * Gasometricos.CAO) *
+      (10)); // # Disponibilidad de Oxígeno
+  /// Disponibilidad de Oxígeno Indexado (iDO2) (mL/min/m2)
+  ///
+  /// DO = (GC * CaO2) * (10)
+  ///
+  static double get iDO =>
+      (DO / Antropometrias.SCE); // # Indice de Disponibilidad de Oxígeno
+
+  /// Volumen Disponible de Oxígeno (VO2/CO) / Consumo de Oxígeno
+  /// El VO₂ es la cantidad de oxígeno utilizada por los tejidos por minuto. Refleja el metabolismo celular y el equilibrio entre la oferta de oxígeno y las demandas metabólicas.
+  /// Formula General : VO2 = (CaO2 - CvO2) x CO x 10
+  /// - Donde:
+  /// - - CaO₂: Contenido arterial de oxígeno.
+  /// - - CvO₂: Contenido venoso de oxígeno, calculado como: CvO2 = (1.34 x Hb x SvO2) + (0.003 + PvO2)
+  /// CO: Gasto cardíaco.
+  /// El factor 10 convierte mL/dL a mL/L.
+  ///
+  /// VN : 200-300ml/min
+  ///
+  static double get CO => ((Gasometricos.gastoCardiaco * Gasometricos.DAV) *
+      (10)); // # Consumo de Oxígeno
+  static double get TO => ((Gasometricos.capacidadOxigeno * Gasometricos.CAO) /
+      (10)); // # Transporte de Oxígeno // CAP_O
+
+  /// Shunt Fisiologíco (SF) (QS/QT) / (Qsp/Qt(esp))
+  ///
+  /// VN: <15%
+  ///
+  static double get SF =>
+      ((Gasometricos.CCO - Gasometricos.CAO) /
+          (Gasometricos.CCO - Gasometricos.CVO)) *
+          (100); //  # Shunt Fisiológico
+
+  /// Shunt Pulmonar II : : Fracción QS/QT
+  ///     Basado en el Gradiente Alveolo-Arterial
+  ///         AaG = pAO2 - paO2
+  ///  * Este cálculo únicamente debe aplicarse en una situación en la que el paciente ha estado respirando O2 al 100 % durante al menos 20 minutos.
+  ///  * Para que esta prueba sea válida, el paciente debe presentar un gradiente Aa inicial normal y un consumo normal de O2.
+  ///  * Las ecuaciones indicadas simplifican el cálculo de gradiente Aa tradicional, puesto que se asume que el cociente respiratorio y FIO2 son 1 después de la eliminación de nitrógeno.
+  ///  * La derivación normal superior es de aproximadamente el 5 %.
+  ///
+  /// Shunt Fisiológico	Qs/Qt		0	7	0	100
+  ///
+  /// Consulte : https://www.merckmanuals.com/medical-calculators/Qs_Qt-es.htm
+  ///     Chiang ST. A nomogram for venous shunt (Qs-Qt) calculation. Thorax. 1968 Sep;23(5):563-5. PubMed ID: 5680242 PubMed Logo
+  ///
+  static double get shuntPulmonarII =>
+      100 * (.0031 * Gasometricos.GAA) / ((.0031 * Gasometricos.GAA) + 5);
+
+  ///
+  static double get cAO =>
+      (Gasometricos.CAO / Gasometricos.DAV); // # Cociente Arterial de Oxígeno
+  static double get cVO =>
+      (Gasometricos.CVO / Gasometricos.DAV); // # Cociente Venoso de Oxígeno
+
+  // static double get presionColoidoOsmotica => // PC
+  //     ((Valores.proteinasTotales! - Valores.albuminaSerica!) * 1.4) +
+  //     (Valores.albuminaSerica! * 5.5); //  # Presión Coloidóncotica
+
+  static double get FE => 0.0;
+
+  /// Indice de Extracción de Oxígeno (IEO2% / O2ER)
+  /// Este índice mide cuánto oxígeno entregado es consumido por los tejidos:
+  /// Formula General: O2ER = VO2/DO2
+  /// VN: 24-28% (20 - 30%) * * Elevado -- Indica hipoxia tisular o aumento de demanda metabólica.
+  ///
+
+  static double get IEO => (((Gasometricos.DAV / Gasometricos.CAO) *
+      100)); // # Indice de Extracción de Oxígeno
+
+
+  static int get PPI =>
+      Valores.presionFinalEsiracion! + Valores.presionSoporte!;
+
+  static int get PPE => Valores.presionFinalEsiracion!;
+
+  static double get CI => (Gasometricos.DAV / Valores.poArteriales!);
+
+  /// Shunt Pulmonar : : Fracción QS/QT
+  ///
+  /// Shunt Fisiológico	Qs/Qt		0	7	0	100
+  ///     Valor Normal menor 5%
+  ///         Si mayor a 20 % : Indicación de Intubación
+  ///         Si menor a 1 : Atelectasias, Edema Pulmonar Agudo, SDRA, Neumonia, TEP
+  ///         Si mayor a 1 : Enfisema Pulnonar, Neumonía, Sobredistención Alveolar en VM, Falla Cardiaca
+  /// Consulte : https://www.scymed.com/es/smnxpr/prgsh315.htm
+  /// https://derangedphysiology.com/main/cicm-primary-exam/required-reading/respiratory-system/Chapter%20082/measurement-and-estimation-shunt
+  /// https://www.redalyc.org/journal/2390/239053104007/html/
+  /// https://pubmed.ncbi.nlm.nih.gov/3585433/
+  /// https://i.pinimg.com/originals/ee/da/3e/eeda3ec80ba4c8c3d2b4fd08bdc4b94e.gif
+  /// https://1.bp.blogspot.com/-SyrTV0msTUk/VAaTKeiPOjI/AAAAAAAAAHU/SXATI-vDQWs/s1600/shunt.png
+  ///
+  static double get shuntPulmonar =>
+      (Gasometricos.CCO - Gasometricos.CAO) /
+          (Gasometricos.CCO - Gasometricos.CVO) *
+          100;
 
   /// Gasto Cardiaco (GC)
   ///

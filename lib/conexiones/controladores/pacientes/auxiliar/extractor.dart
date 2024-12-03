@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -6,6 +7,7 @@ import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 class AuxiliarExtractor {
@@ -24,6 +26,10 @@ class AuxiliarExtractor {
 
   static obtenerInformacionDesdeInstitucional(BuildContext context) async {
     valoresLaboratorio!.clear();
+    List listaArchivosSeleccionados = [];
+
+    /// Aqui se agregan los Archivos que contienen algún valor, para posteriormente eliminarse.
+    //
     final filePickerResult =
         await Directorios.choiseSeveralFromInternalDocuments(context);
 
@@ -97,6 +103,9 @@ class AuxiliarExtractor {
                         "Reactivo",
                       "",
                     ]);
+                    // AGREGAR A LISTAS DE ARCHIVOS SELECCIONADOS
+                    listaArchivosSeleccionados
+                        .add(filePickerResult[index].path!);
                   } else {
                     if (partes.length > 2) {
                       // Terminal.printSuccess(message: "${partes[0]}");
@@ -132,6 +141,9 @@ class AuxiliarExtractor {
                                 .trim()
                                 .replaceAll(RegExp(r'[\s.*\s\*\.\!¯]'), ''),
                         ]);
+                        // AGREGAR A LISTAS DE ARCHIVOS SELECCIONADOS
+                        listaArchivosSeleccionados
+                            .add(filePickerResult[index].path!);
                       }
                     }
                   }
@@ -147,6 +159,10 @@ class AuxiliarExtractor {
 
         // _pdfBytes =
         // await File(filePickerResult.files.single.path!).readAsBytes();
+        if (valoresLaboratorio!.isNotEmpty) {
+          LaboratoryStream.addValues(valoresLaboratorio!);
+        }
+        //
       }
     }
     if (registroPrevio != "NO ENCONTRADO") {
@@ -161,6 +177,7 @@ class AuxiliarExtractor {
             "¿Deseas ingresar Información a la Base de Datos de Auxiliares?",
         onClose: () => Navigator.of(context).pop(),
         textOptionA: "Ingresar información obtenida . . . ",
+        optionB: null,
         optionA: () {
           //
           if (registroPrevio != "NO ENCONTRADO") {
@@ -172,7 +189,25 @@ class AuxiliarExtractor {
                 .then((onValue) => Operadores.notifyActivity(
                     context: context,
                     tittle: "Respuesta de Consulta a Base de Datos . . . ",
-                    message: onValue.toString()))
+                    message: onValue.toString(),
+                    onAcept: () {
+                      // var listado = Listas.listWithoutRepitedValues(
+                      //     listaArchivosSeleccionados);
+                      // Terminal.printNotice(
+                      //     message:
+                      //         "LISTA DE ARCHIVOS SELECCIONADOS : : $listado");
+                      //
+                      Listas.listWithoutRepitedValues(
+                          listaArchivosSeleccionados).forEach((filePath) {
+                        // Terminal.printExpected(message: filePath);
+                        Archivos.deleteFile(filePath: filePath)
+                        ;
+                      });
+                      //
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                      //
+                    }))
                 .onError((onError, stackTrace) => Operadores.alertActivity(
                       context: context,
                       tittle: "Error al Consultar Base de Datos . . . ",
@@ -184,18 +219,10 @@ class AuxiliarExtractor {
                       },
                       onClose: () => Navigator.of(context).pop(),
                     ));
-            // for (var valores in valoresLaboratorio!) {
-            //   Actividades.registrar(
-            //     Databases.siteground_database_reggabo,
-            //     Auxiliares.auxiliares['registerQuery'],
-            //     valoresLaboratorio,
-            //   ).then((onValue) {}).onError((onError, stackTrace) {});
-            // }
           } else {
             Navigator.of(context).pop();
           }
         },
-        optionB: null,
       );
     }
   }
@@ -269,5 +296,49 @@ class AuxiliarExtractor {
         });
       }
     }
+  }
+}
+
+class LaboratoryStream {
+  static final _controller = StreamController<List<List<dynamic>>>.broadcast();
+
+  static Stream<List<List<dynamic>>> get stream => _controller.stream;
+
+  static void addValues(List<List<dynamic>> values) {
+    _controller.add(values);
+  }
+
+  static void dispose() {
+    _controller.close();
+  }
+}
+
+class LaboratoryValuesWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<List<List<dynamic>>>(
+      stream: LaboratoryStream.stream,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(child: Text('No hay datos disponibles'));
+        }
+
+        final values = snapshot.data!;
+        return ListView.builder(
+          itemCount: values.length,
+          itemBuilder: (context, index) {
+            final item = values[index];
+            return ListTile(
+              title: Text('Laboratorio: ${item[4]}'),
+              subtitle: Text('Resultado: ${item[5]}'),
+            );
+          },
+        );
+      },
+    );
   }
 }

@@ -26,6 +26,7 @@ class Pacientes {
   static String localPath = 'assets/vault/'
       '${Pacientes.nombreCompleto}/'
       '${Pacientes.nombreCompleto}.json';
+  /// Dirección del Conjuntos de Archivos relacionados al paciente.
   static String localRepositoryPath = 'assets/vault/'
       '${Pacientes.nombreCompleto}/';
   static String localReportsPath = 'assets/vault/'
@@ -5869,7 +5870,7 @@ class Vitales {
   static void fromJson(Map<dynamic, dynamic> json) {
     // Pacientes.Vital = json;
 
-    ID_Vitales = json['ID_Pace_SV'];
+    ID_Vitales = json['ID_Pace_SV'] ?? 0;
 
     Valores.fechaVitales = json['Pace_Feca_SV'].toString();
     // Variables Vitales ********* *************** **********
@@ -6929,13 +6930,13 @@ class Auxiliares {
             keySearched: 'Tipo_Estudio',
           ),
         );
-        Terminal.printSuccess(message: "presentes: $estudiosPresentes");
+        // Terminal.printSuccess(message: "presentes: $estudiosPresentes");
         String fecha = "";
         int counter = 0, distancia = aux.length;
         //
         var newList = Listas.compareOneListWithAnother(
             estudiosPresentes, Auxiliares.especiales);
-        Terminal.printSuccess(message: "newList: $newList");
+        // Terminal.printSuccess(message: "newList: $newList");
         //
         for (var elem in newList) {
           aux
@@ -6987,6 +6988,8 @@ class Auxiliares {
         //   }
         // }
         // prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+      } else {
+        prosa = "";
       }
     } on Exception catch (e, s) {
       // Operadores.alertActivity(context: Contextos.contexto,
@@ -7504,11 +7507,12 @@ class Auxiliares {
       "Glucosa Arterial", // GLUart // 11
       "Lactato Arterial", // LACart
       // CO-Oximetria
-      "Hemoglobina Arterial", // tHb
-      "Oxihemoglobina Arterial", // O2Hb
-      "Carboxihemoglobina Arterial", // COHb
-      "Metahemoglobina Arterial", // MetHb
-      "", // HHb
+      "Hemoglobina Arterial", // 13 : tHb
+      "Oxihemoglobina Arterial", // 14 : O2Hb
+      "Carboxihemoglobina Arterial", // 15 : COHb
+      "Metahemoglobina Arterial", // 16 : MetHb
+      "Hemoglobina Reducida Arterial", // 17 :  HHb
+      "Hematocrito Arterial", // 18 : HtcA
       "",
     ],
     Categorias[10]: [
@@ -7527,11 +7531,12 @@ class Auxiliares {
       "Glucosa Venoso", // GLUart
       "Lactato Venoso", // LACart
       // CO-Oximetria
-      "Hemoglobina Venoso", // tHb
-      "Oxihemoglobina Venoso", // O2Hb
-      "Carboxihemoglobina Venoso", // COHb
-      "Metahemoglobina Venoso", // MetHb
-      "", // HHb
+      "Hemoglobina Arterial", // 13 : tHb
+      "Oxihemoglobina Arterial", // 14 : O2Hb
+      "Carboxihemoglobina Arterial", // 15 : COHb
+      "Metahemoglobina Arterial", // 16 : MetHb
+      "Hemoglobina Reducida Arterial", // 17 :  HHb
+      "Hematocrito Arterial", // 18 : HtcA
       "",
     ],
     //
@@ -7897,8 +7902,8 @@ class Auxiliares {
     Categorias[6]: ["mg/dL"],
     Categorias[7]: ["", "seg"],
     Categorias[8]: ["ng/dL", "mm/Hr", "mg/dL", "ng/mL", "UI/mL"],
-    Categorias[9]: ["", "mmHg", "cmH20", "mmol/L", "%", "mmol/L", "mg/dL"],
-    Categorias[10]: ["", "mmHg", "cmH20", "mmol/L", "%", "mmol/L"],
+    Categorias[9]: ["", "mmHg", "cmH20", "mmol/L", "%", "mmol/L", "mg/dL", "g/dL"],
+    Categorias[10]: ["", "mmHg", "cmH20", "mmol/L", "%", "mmol/L", "mg/dL", "g/dL"],
     Categorias[11]: ["", "Hem/uL", "mg/dL", "Leu/uL", "cel/Campo"],
     Categorias[12]: [
       "mL",
@@ -8355,11 +8360,11 @@ class Auxiliares {
     "HIVAb-Ag No reactivo",
     "HIVAb-Ag Reactivo",
     // GASOMETRIAS
-    "pH Sangre Arterial",
-    "pCO2 Sangre Arterial",
-    "pO2 Sangre Arterial",
-    "HCO3- Sangre Arterial",
-    "SO2c Sangre Arterial",
+    // "pH Sangre Arterial",
+    // "pCO2 Sangre Arterial",
+    // "pO2 Sangre Arterial",
+    // "HCO3- Sangre Arterial",
+    // "SO2c Sangre Arterial",
     //
     "Factor reumatoide",
     "Velocidad de sedimentación globular",
@@ -10653,16 +10658,14 @@ class Repositorios {
         "Subjetivo, Signos_Vitales, Exploracion_Fisica, "
         "Auxiliares_Diagnosticos, Analisis_Complementario, "
         "Analisis_Medico, Pronostico_Medico, "
-        "Dietoterapia, Hidroterapia, Insulinoterapia, Hemoterapia, Oxigenoterapia, Medicamentos, Medidas_Generales, Pendientes, "
+        "Dietoterapia, Hidroterapia, Insulinoterapia, Hemoterapia, Oxigenoterapia, Medicamentos, "
+        "Medidas_Generales, Pendientes, "
         "Hitos_Hospitalarios, "
         "Tipo_Analisis) "
         "VALUES ("
         "?,?,?,?,?,?,?,?,?,?,"
-        // "?,?,"
         "?,?,?,?,?,?,?,?,?,?,"
-        "?,?,"
-        "?,"
-        "?)",
+        "?,?,?,?)",
     "updateQuery": "UPDATE pace_hosp_repo SET "
         "Personales_No_Patologicos = ?, Personales_Patologicos = ?, "
         "Diagnosticos_Hospital = ?, Subjetivo = ?, "

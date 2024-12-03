@@ -133,6 +133,20 @@ class _ArterialesState extends State<Arteriales> {
                     secondText: Valores.fechaQuimicas!.toString(),
                     thirdText: "",
                   ),
+                  CrossLine(),
+                  ValuePanel(
+                    firstText: "pBARR",
+                    secondText: Valores.presionBarometrica!.toString(),
+                    thirdText: "mmGh",
+                    onEdit: (onVal) {
+                      Operadores.editActivity(context: context, tittle: "¡Presión barométrica?", onAcept: (onValue) {
+                        setState(() {
+                          Navigator.of(context).pop();
+                          Valores.presionBarometrica = int.parse(onValue);
+                        });
+                      });
+                    },
+                  ),
                 ],
               ),
             ),
@@ -164,6 +178,16 @@ class _ArterialesState extends State<Arteriales> {
                     ),
 
                     EditTextArea(
+                      textController: textCloroArterialResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'A_Cl- ($unidadMedidaACl)',
+                      numOfLines: 1,
+                      onChange: (value) => setState(() =>
+                      Valores.cloroArteriales = double.parse(value)),
+                    ),
+
+                    EditTextArea(
                       textController: textCalcioIonicoArterialResultController,
                       keyBoardType: TextInputType.number,
                       inputFormat: MaskTextInputFormatter(),
@@ -184,7 +208,65 @@ class _ArterialesState extends State<Arteriales> {
                     ),
                     // Botton ***** ******* ****** * ***
                     CrossLine(
-                      color: Colors.grey,
+                      color: Colors.grey
+                    ),
+                    EditTextArea(
+                      textController: textHematocritoArterialResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'HtcA ($unidadMedidaHematocritoArterial)',
+                      numOfLines: 1,
+                      onChange: (value) => setState(() =>
+                      Valores.hematocritoArteriales = double.parse(value)),
+                    ),
+                    EditTextArea(
+                      textController: textHemoglobinaArterialResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'HbArt ($unidadMedidaHemoglobinaArterial)',
+                      numOfLines: 1,
+                      onChange: (value) => setState(() =>
+                      Valores.hemoglobinaArteriales = double.parse(value)),
+                    ),
+                    // Botton ***** ******* ****** * ***
+                    CrossLine(
+                        color: Colors.grey
+                    ),
+                    EditTextArea(
+                      textController: textOxiHemoglobinaArterialResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'OxiHb ($unidadMedidaOxiHemoglobinaArterial)',
+                      numOfLines: 1,
+                      onChange: (value) => setState(() =>
+                      Valores.oxiHemoglobinaArteriales = double.parse(value)),
+                    ),
+                    EditTextArea(
+                      textController: textCarboxiHemoArterialResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'COHb ($unidadMedidaCarboxiHemoArterial)',
+                      numOfLines: 1,
+                      onChange: (value) => setState(() =>
+                      Valores.carboxiHemoglobinaArteriales = double.parse(value)),
+                    ),
+                    EditTextArea(
+                      textController: textMetaHemoArterialResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Met_Hb ($unidadMedidaMetaHemoArterial)',
+                      numOfLines: 1,
+                      onChange: (value) => setState(() =>
+                      Valores.metaHemoglobinaArteriales = double.parse(value)),
+                    ),
+                    EditTextArea(
+                      textController: textHemoReducidaArterialResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'HHb ($unidadMedidaHemoReducidaArterial)',
+                      numOfLines: 1,
+                      onChange: (value) => setState(() =>
+                      Valores.hemoglobinaReducidaArteriales = double.parse(value)),
                     ),
                   ],
                 ),
@@ -302,6 +384,16 @@ class _ArterialesState extends State<Arteriales> {
                     thirdText: "mmHg",
                   ),
                   CrossLine(),
+                  ValuePanel(
+                    firstText: "PAFI",
+                    secondText: Gasometricos.PAFI.toStringAsFixed(0),
+                    thirdText: "mmHg/%",
+                  ),
+                  ValuePanel(
+                    firstText: "SAFI",
+                    secondText: Gasometricos.SAFI.toStringAsFixed(0),
+                    thirdText: "%",
+                  ),
                   CrossLine(),
                   ValuePanel(
                     firstText: "CaO2",
@@ -543,6 +635,16 @@ class _ArterialesState extends State<Arteriales> {
         Pacientes.ID_Paciente.toString(),
         textDateEstudyController.text,
         Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][8],
+        textCloroArterialResultController.text,
+        unidadMedidaACl!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
         Auxiliares.Laboratorios[Auxiliares.Categorias[index]][9],
         textCalcioIonicoArterialResultController.text,
         unidadMedidaCai!
@@ -556,6 +658,68 @@ class _ArterialesState extends State<Arteriales> {
         Auxiliares.Laboratorios[Auxiliares.Categorias[index]][11],
         textGluAResultController.text,
         unidadMedidaGluA!
+        //0,
+      ],
+      //
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][18],
+        textHematocritoArterialResultController.text,
+        unidadMedidaHematocritoArterial!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][13],
+        textHemoglobinaArterialResultController.text,
+        unidadMedidaHemoglobinaArterial!
+        //0,
+      ],
+      //
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][14],
+        textOxiHemoglobinaArterialResultController.text,
+        unidadMedidaOxiHemoglobinaArterial!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][15],
+        textCarboxiHemoArterialResultController.text,
+        unidadMedidaCarboxiHemoArterial!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][16],
+        textMetaHemoArterialResultController.text,
+        unidadMedidaMetaHemoArterial!
+        //0,
+      ],
+      [
+        "0",
+        Pacientes.ID_Paciente.toString(),
+        textDateEstudyController.text,
+        Auxiliares.Categorias[index],
+        Auxiliares.Laboratorios[Auxiliares.Categorias[index]][17],
+        textHemoReducidaArterialResultController.text,
+        unidadMedidaHemoReducidaArterial!
         //0,
       ],
     ];
@@ -585,11 +749,34 @@ class _ArterialesState extends State<Arteriales> {
   String? unidadMedidaANA = Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
   var textPotasioArterialResultController = TextEditingController();
   String? unidadMedidaAK = Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
+  var textCloroArterialResultController = TextEditingController();
+  String? unidadMedidaACl = Auxiliares.Medidas[Auxiliares.Categorias[index]][3];
+  //
   var textCalcioIonicoArterialResultController = TextEditingController();
   String? unidadMedidaCai = Auxiliares.Medidas[Auxiliares.Categorias[index]][5];
   var textGluAResultController = TextEditingController();
   String? unidadMedidaGluA =
       Auxiliares.Medidas[Auxiliares.Categorias[index]][6];
+//
+  var textHematocritoArterialResultController = TextEditingController();
+  String? unidadMedidaHematocritoArterial =
+  Auxiliares.Medidas[Auxiliares.Categorias[index]][4];
+  var textHemoglobinaArterialResultController = TextEditingController();
+  String? unidadMedidaHemoglobinaArterial =
+  Auxiliares.Medidas[Auxiliares.Categorias[index]][7];
+  //
+  var textOxiHemoglobinaArterialResultController = TextEditingController();
+  String? unidadMedidaOxiHemoglobinaArterial =
+  Auxiliares.Medidas[Auxiliares.Categorias[index]][4];
+  var textCarboxiHemoArterialResultController = TextEditingController();
+  String? unidadMedidaCarboxiHemoArterial =
+  Auxiliares.Medidas[Auxiliares.Categorias[index]][4];
+  var textMetaHemoArterialResultController = TextEditingController();
+  String? unidadMedidaMetaHemoArterial =
+  Auxiliares.Medidas[Auxiliares.Categorias[index]][4];
+  var textHemoReducidaArterialResultController = TextEditingController();
+  String? unidadMedidaHemoReducidaArterial =
+  Auxiliares.Medidas[Auxiliares.Categorias[index]][4];
 
   // OPERACIONES DE LA INTERFAZ ****************** ********
   void cerrar() {

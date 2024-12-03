@@ -315,7 +315,7 @@ class Valores {
     saturacionPerifericaOxigeno = json['Pace_SV_spo'] ?? 0;
     glucemiaCapilar = json['Pace_SV_glu'] ?? 0;
     horasAyuno = json['Pace_SV_glu_ayu'] ?? 0;
-    insulinaGastada  = json['Pace_SV_insulina'] ?? 0;
+    insulinaGastada = json['Pace_SV_insulina'] ?? 0;
 
     fraccionInspiratoriaOxigeno = json['Pace_SV_fio'] ?? 21;
     presionVenosaCentral = json['Pace_SV_pvc'] ?? 0;
@@ -883,7 +883,7 @@ class Valores {
       saturacionPerifericaOxigeno,
       glucemiaCapilar,
       horasAyuno,
-  insulinaGastada,
+      insulinaGastada,
       circunferenciaCintura,
       circunferenciaCadera,
       circunferenciaCuello,
@@ -1003,8 +1003,14 @@ class Valores {
       hemoglobinaArteriales = 0,
       sodioArteriales = 0,
       potasioArteriales = 0,
+      cloroArteriales = 0,
       calcioIonicoArteriales = 0,
-      glucosaArteriales = 0;
+      glucosaArteriales = 0,
+      //
+      oxiHemoglobinaArteriales = 0,
+      metaHemoglobinaArteriales = 0,
+      carboxiHemoglobinaArteriales = 0,
+      hemoglobinaReducidaArteriales = 0;
   static double? pHVenosos,
       pcoVenosos,
       poVenosos,
@@ -1018,7 +1024,12 @@ class Valores {
       sodioVenoso = 0,
       potasioVenoso = 0,
       calcioIonicoVenoso = 0,
-      glucosaVenoso = 0;
+      glucosaVenoso = 0,
+      //
+      oxiHemoglobinaVenoso = 0,
+      metaHemoglobinaVenoso = 0,
+      carboxiHemoglobinaVenoso = 0,
+      hemoglobinaReducidaVenoso = 0;
 
   //
   static String? fechaElectrolitos;
@@ -1208,12 +1219,6 @@ class Valores {
     // RVS # (((Valores.presionArterialMedia! - 12.0) / IC) * 79.9)
   }
 
-  /// Indice de Extracción de Oxígeno (IEO2%)
-  ///
-  /// VN: 24-28%
-  ///
-  static double get IEO => (((Gasometricos.DAV / Gasometricos.CAO) *
-      100)); // # Indice de Extracción de Oxígeno
   static double get IV =>
       (Ventometrias.presionMediaViaAerea * Valores.frecuenciaVentilatoria!) *
       (Valores.pcoArteriales! / 10);
@@ -1230,49 +1235,6 @@ class Valores {
       return 0;
     }
   }
-
-  static int get PPI =>
-      Valores.presionFinalEsiracion! + Valores.presionSoporte!;
-
-  static int get PPE => Valores.presionFinalEsiracion!;
-
-  static double get CI => (Gasometricos.DAV / Valores.poArteriales!);
-
-  /// Shunt Pulmonar : : Fracción QS/QT
-  ///
-  /// Shunt Fisiológico	Qs/Qt		0	7	0	100
-  ///     Valor Normal menor 5%
-  ///         Si mayor a 20 % : Indicación de Intubación
-  ///         Si menor a 1 : Atelectasias, Edema Pulmonar Agudo, SDRA, Neumonia, TEP
-  ///         Si mayor a 1 : Enfisema Pulnonar, Neumonía, Sobredistención Alveolar en VM, Falla Cardiaca
-  /// Consulte : https://www.scymed.com/es/smnxpr/prgsh315.htm
-  /// https://derangedphysiology.com/main/cicm-primary-exam/required-reading/respiratory-system/Chapter%20082/measurement-and-estimation-shunt
-  /// https://www.redalyc.org/journal/2390/239053104007/html/
-  /// https://pubmed.ncbi.nlm.nih.gov/3585433/
-  /// https://i.pinimg.com/originals/ee/da/3e/eeda3ec80ba4c8c3d2b4fd08bdc4b94e.gif
-  /// https://1.bp.blogspot.com/-SyrTV0msTUk/VAaTKeiPOjI/AAAAAAAAAHU/SXATI-vDQWs/s1600/shunt.png
-  ///
-  static double get shuntPulmonar =>
-      (Gasometricos.CCO - Gasometricos.CAO) /
-      (Gasometricos.CCO - Gasometricos.CVO) *
-      100;
-
-  /// Shunt Pulmonar II : : Fracción QS/QT
-  ///     Basado en el Gradiente Alveolo-Arterial
-  ///         AaG = pAO2 - paO2
-  ///  * Este cálculo únicamente debe aplicarse en una situación en la que el paciente ha estado respirando O2 al 100 % durante al menos 20 minutos.
-  ///  * Para que esta prueba sea válida, el paciente debe presentar un gradiente Aa inicial normal y un consumo normal de O2.
-  ///  * Las ecuaciones indicadas simplifican el cálculo de gradiente Aa tradicional, puesto que se asume que el cociente respiratorio y FIO2 son 1 después de la eliminación de nitrógeno.
-  ///  * La derivación normal superior es de aproximadamente el 5 %.
-  ///
-  /// Shunt Fisiológico	Qs/Qt		0	7	0	100
-  ///
-  /// Consulte : https://www.merckmanuals.com/medical-calculators/Qs_Qt-es.htm
-  ///     Chiang ST. A nomogram for venous shunt (Qs-Qt) calculation. Thorax. 1968 Sep;23(5):563-5. PubMed ID: 5680242 PubMed Logo
-  ///
-  static double get shuntPulmonarII =>
-      100 * (.0031 * Gasometricos.GAA) / ((.0031 * Gasometricos.GAA) + 5);
-
   // (Valores.pcoArteriales! * Valores.frecuenciaVentilatoria!) / 40.00;
 
   // # Análisis Gasométrico : : de pCO2 / pO2
@@ -1280,7 +1242,24 @@ class Valores {
       (Valores.frecuenciaVentilatoria! / Valores.volumenTidal!) * 100;
 
   /// Indice de Oxígenación
-  ///
+  /// El OI (Índice de Oxigenación) es un parámetro utilizado en medicina para evaluar la eficiencia del intercambio de oxígeno en pacientes con ventilación mecánica, especialmente en aquellos con insuficiencia respiratoria severa o síndrome de dificultad respiratoria aguda (SDRA). Este índice ayuda a valorar la gravedad de la hipoxemia y el grado de soporte ventilatorio necesario.
+  /// * *  Formula General : OI = ((FiO2 x MAP) / (PaO2)) x 100
+  /// - Donde:
+  /// - - FiO₂: Fracción inspirada de oxígeno, expresada como un decimal (por ejemplo, 50% = 0.50).
+  /// MAP: Presión media de las vías aéreas (cmH2O)
+  /// PaO₂: Presión parcial de oxígeno en sangre arterial (mmHg).
+  /// El factor 100 se utiliza para expresar el índice como un valor numérico mayor y facilitar su interpretación.
+  /// * * Interpretación del OI
+  ///  - - < 5	Oxigenación adecuada.
+  ///  - - 5-10	Hipoxemia leve.
+  ///  - - 10-20	Hipoxemia moderada.
+  ///  - - > 20	Hipoxemia severa.
+  ///  - - > 40	Criterio para considerar ECMO (Oxigenación por Membrana Extracorpórea).
+  ///  ** Importancia clínica del OI:
+  /// Seguimiento en SDRA: Permite cuantificar la progresión de la enfermedad y la respuesta al tratamiento.
+  /// Decisión terapéutica: Valores elevados de OI pueden indicar la necesidad de medidas avanzadas, como estrategias de ventilación protectora o terapia extracorpórea (ECMO).
+  /// Comparación con el P/F Ratio: Aunque el P/F Ratio también se usa para evaluar hipoxemia, el OI incluye el efecto de la presión media de las vías aéreas (MAP), lo que lo hace más útil en pacientes ventilados mecánicamente.
+  /// * * * * *
   /// AOI = Edad +PVMA * (FiO2 / PaO2)
   ///
   /// VN: AOI score 60 == mortalidad 50%
@@ -1290,9 +1269,9 @@ class Valores {
   ///
   static double get indiceOxigenacion {
     if (Valores.poArteriales! != 0 && Ventometrias.presionMediaViaAerea != 0) {
-      return (Ventometrias.presionMediaViaAerea *
-              Valores.fraccionInspiratoriaOxigeno!) /
-          Valores.poArteriales!;
+      return ((Ventometrias.presionMediaViaAerea *
+          (Valores.fraccionInspiratoriaOxigeno!/100)) /
+          Valores.poArteriales!) * 100;
     } else {
       return double.nan;
     }
@@ -1337,49 +1316,6 @@ class Valores {
       return 00.00;
     }
   }
-
-  /// Disponibilidad de Oxígeno (DO2) (mL/min)
-  ///
-  /// DO = (GC * CaO2) * (10)
-  ///
-  static double get DO => ((Gasometricos.gastoCardiaco * Gasometricos.CAO) *
-      (10)); // # Disponibilidad de Oxígeno
-  /// Disponibilidad de Oxígeno Indexado (iDO2) (mL/min/m2)
-  ///
-  /// DO = (GC * CaO2) * (10)
-  ///
-  static double get iDO =>
-      (DO / Antropometrias.SCE); // # Indice de Disponibilidad de Oxígeno
-  static double get TO => ((Gasometricos.capacidadOxigeno * Gasometricos.CAO) /
-      (10)); // # Transporte de Oxígeno // CAP_O
-
-  /// Shunt Fisiologíco (SF) (QS/QT)
-  ///
-  /// VN: <15%
-  ///
-  static double get SF =>
-      ((Gasometricos.CCO - Gasometricos.CAO) /
-          (Gasometricos.CCO - Gasometricos.CVO)) *
-      (100); //  # Shunt Fisiológico
-
-  /// Volumen Disponible de Oxígeno
-  ///     ** Consumo de Oxígeno
-  /// VN : 200-300ml/min
-  ///
-  static double get CO => ((Gasometricos.gastoCardiaco * Gasometricos.DAV) *
-      (10)); // # Consumo de Oxígeno
-
-  ///
-  static double get cAO =>
-      (Gasometricos.CAO / Gasometricos.DAV); // # Cociente Arterial de Oxígeno
-  static double get cVO =>
-      (Gasometricos.CVO / Gasometricos.DAV); // # Cociente Venoso de Oxígeno
-
-  // static double get presionColoidoOsmotica => // PC
-  //     ((Valores.proteinasTotales! - Valores.albuminaSerica!) * 1.4) +
-  //     (Valores.albuminaSerica! * 5.5); //  # Presión Coloidóncotica
-
-  static double get FE => 0.0;
 
 // # ELECTROCARDIOGRAMA ******************************************
 
@@ -1755,7 +1691,7 @@ class Valorados {
     } else {
       resp = 0;
     }
-      // ***************************************************
+    // ***************************************************
     if (Datos.isMiddleValue(value: Valores.plaquetas, min: 150, max: 300)) {
       plat = 1;
     } else if (Datos.isMiddleValue(
@@ -4210,7 +4146,8 @@ class Items {
     list.addAll(Listas.listOfRange(maxNum: 100));
     return list;
   }
-/// Tipo de Sangre del Paciente (Sistema ABO más Factor Rhezus)
+
+  /// Tipo de Sangre del Paciente (Sistema ABO más Factor Rhezus)
   ///
   /// opciones:
   ///     'Desconoce',

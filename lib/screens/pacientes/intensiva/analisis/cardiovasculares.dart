@@ -291,23 +291,23 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                                 ),
                                 ValuePanel(
                                   firstText: 'VO2', // Consumo de Oxígeno
-                                  secondText: Valores.CO.toStringAsFixed(2),
+                                  secondText: Gasometricos.CO.toStringAsFixed(2),
                                   thirdText: 'mL/min',
                                 ),
                                 ValuePanel(
                                   firstText: 'DO2',
-                                  secondText: Valores.DO.toStringAsFixed(2),
+                                  secondText: Gasometricos.DO.toStringAsFixed(2),
                                   thirdText: 'mL/min/m2',
                                 ),
                                 ValuePanel(
                                   firstText: 'iDO2',
-                                  secondText: Valores.iDO.toStringAsFixed(2),
+                                  secondText: Gasometricos.iDO.toStringAsFixed(2),
                                   thirdText: 'mL/min/m2',
                                 ),
                                 //
                                 ValuePanel(
                                   firstText: 'QS/QT', // Shunt Arterio-venoso
-                                  secondText: Valores.SF.toStringAsFixed(2),
+                                  secondText: Gasometricos.SF.toStringAsFixed(2),
                                   thirdText: '%',
                                 ),
                                 ValuePanel(
@@ -318,12 +318,12 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                                 ValuePanel(
                                   firstText:
                                       'IEO2%', // Indice de Extracción Oxígeno
-                                  secondText: Valores.IEO.toStringAsFixed(2),
+                                  secondText: Gasometricos.IEO.toStringAsFixed(2),
                                   thirdText: '%',
                                 ),
                                 ValuePanel(
                                   firstText: 'I. Resp. ',
-                                  secondText: Valores.CI.toStringAsFixed(2),
+                                  secondText: Gasometricos.CI.toStringAsFixed(2),
                                 ),
                                 ValuePanel(
                                   firstText:
@@ -445,17 +445,17 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                                 //
                                 ValuePanel(
                                   firstText: 'DO2',
-                                  secondText: Valores.DO.toStringAsFixed(2),
+                                  secondText: Gasometricos.DO.toStringAsFixed(2),
                                   thirdText: 'mL/min/m2',
                                 ),
                                 ValuePanel(
                                   firstText: 'iDO2',
-                                  secondText: Valores.iDO.toStringAsFixed(2),
+                                  secondText: Gasometricos.iDO.toStringAsFixed(2),
                                   thirdText: 'mL/min/m2',
                                 ),
                                 ValuePanel(
                                   firstText: 'TO2',
-                                  secondText: Valores.TO.toStringAsFixed(2),
+                                  secondText: Gasometricos.TO.toStringAsFixed(2),
                                   thirdText: 'mL/O2/m2',
                                 ),
                                 //
@@ -494,12 +494,12 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                                 //
                                 ValuePanel(
                                   firstText: 'Cociente A. Oxígeno',
-                                  secondText: Valores.cAO.toStringAsFixed(2),
+                                  secondText: Gasometricos.cAO.toStringAsFixed(2),
                                   thirdText: '%',
                                 ),
                                 ValuePanel(
                                   firstText: 'Cociente V. Oxígeno',
-                                  secondText: Valores.cVO.toStringAsFixed(2),
+                                  secondText: Gasometricos.cVO.toStringAsFixed(2),
                                   thirdText: '%',
                                 ),
                                 // **********************************
@@ -527,13 +527,13 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                               children: [
                                 ValuePanel(
                                   firstText: 'VO2', // Consumo de Oxígeno
-                                  secondText: Valores.CO.toStringAsFixed(2),
+                                  secondText: Gasometricos.CO.toStringAsFixed(2),
                                   thirdText: 'mL/min',
                                 ),
                                 //
                                 ValuePanel(
                                   firstText: 'QS/QT', // Shunt Arterio-venoso
-                                  secondText: Valores.SF.toStringAsFixed(2),
+                                  secondText: Gasometricos.SF.toStringAsFixed(2),
                                   thirdText: '%',
                                 ),
                                 ValuePanel(
@@ -544,12 +544,12 @@ class _CardiovascularesState extends State<Cardiovasculares> {
                                 ),
                                 ValuePanel(
                                   firstText: '% Extracción Oxígeno',
-                                  secondText: Valores.IEO.toStringAsFixed(2),
+                                  secondText: Gasometricos.IEO.toStringAsFixed(2),
                                   thirdText: '%',
                                 ),
                                 ValuePanel(
                                   firstText: 'Indice Respiratorio',
-                                  secondText: Valores.CI.toStringAsFixed(2),
+                                  secondText: Gasometricos.CI.toStringAsFixed(2),
                                 ),
                                 // **********************************
                                 CrossLine(thickness: 3),

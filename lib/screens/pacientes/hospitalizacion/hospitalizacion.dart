@@ -73,7 +73,7 @@ class _OperacionesHospitalizacionesState
   var servicioTratanteInicialValue;
   var motivoEgresoValue;
   //
-  List<String> auxiliarServicios = [];
+  List<String> auxiliarServicios = [""];
 
   @override
   void initState() {
@@ -155,11 +155,11 @@ class _OperacionesHospitalizacionesState
                     .toString() // Valores.motivoEgreso
                 : Escalas.motivosEgresos[0];
           });
-          super.initState();
           break;
         default:
       }
     });
+    super.initState();
   }
 
   @override
@@ -452,7 +452,7 @@ class _OperacionesHospitalizacionesState
                     : isMobile(context)
                         ? 190
                         : 200,
-                initialValue: servicioTratanteValue.trim()),
+                initialValue:  servicioTratanteValue ?? servicioTratanteValue.trim()),
           ),
           Expanded(
             flex: 1,
@@ -519,6 +519,7 @@ class _OperacionesHospitalizacionesState
 
       //
       Valores.fechaPadecimientoActual =fechaIngresoTextController.text;
+      Terminal.printWarning(message: "Actividad ${widget.operationActivity}");
       //
       if (motivoEgresoValue != Escalas.motivosEgresos[0]) {
         Operadores.selectOptionsActivity(
@@ -528,6 +529,8 @@ class _OperacionesHospitalizacionesState
             options: Pacientes.Atencion,
             onClose: (value) {
               Pacientes.modoAtencion = value;
+              Terminal.printWarning(message: "Modo de atención: $value : : ${Pacientes.modoAtencion}");
+
               // DICOTOMIA ******************************************
               if (value != "") {
                 // Continuar con el Método
@@ -595,6 +598,8 @@ class _OperacionesHospitalizacionesState
                         Reportes.medicamentosIndicados.toString(),
                         Reportes.medidasGenerales.toString(),
                         Reportes.pendientes.toString(),
+                        //
+                        Reportes.hitosHospitalarios.toString(),
                         Repositorios.tipo_Analisis, // Items.tiposAnalisis[0] //
                       ], ValuesEgreso: [
                         Pacientes.ID_Paciente,
@@ -624,6 +629,8 @@ class _OperacionesHospitalizacionesState
                         Reportes.medicamentosIndicados.toString(),
                         Reportes.medidasGenerales.toString(),
                         Reportes.pendientes.toString(),
+                        //
+                        Reportes.hitosHospitalarios.toString(),
                         Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
                       ]);
                               Situaciones.registrarRegistro();
@@ -660,8 +667,9 @@ class _OperacionesHospitalizacionesState
                               Constantes.reinit(value: value);
                               // ******************************************** *** *
                             }).then((value) => onClose(context)))
-                        .whenComplete(() => Pacientes.hospitalizar(
-                                modus: Pacientes.modoAtencion!)
+                    //     .whenComplete(()
+                    // => Pacientes.hospitalizar(
+                    //             modus: Pacientes.modoAtencion!)
                             .whenComplete(() =>
                                 Pacientes.Paciente['Pace_Hosp'] =
                                     Pacientes.modoAtencion!)
@@ -669,7 +677,9 @@ class _OperacionesHospitalizacionesState
                                 context,
                                 VisualPacientes(
                                   actualPage: 0,
-                                ))));
+                                )))
+                //)
+                ;
                     break;
                   default:
                 }
@@ -741,6 +751,8 @@ class _OperacionesHospitalizacionesState
                         Reportes.medicamentosIndicados.toString(),
                         Reportes.medidasGenerales.toString(),
                         Reportes.pendientes.toString(),
+                        //
+                        Reportes.hitosHospitalarios.toString(),
                         Repositorios.tipo_Analisis, // Items.tiposAnalisis[0] //
                       ], ValuesEgreso: [
                         Pacientes.ID_Paciente,
@@ -770,6 +782,8 @@ class _OperacionesHospitalizacionesState
                         Reportes.medicamentosIndicados.toString(),
                         Reportes.medidasGenerales.toString(),
                         Reportes.pendientes.toString(),
+                        //
+                        Reportes.hitosHospitalarios.toString(),
                         Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
                       ]); // registrarPadecimientoActual
                       //

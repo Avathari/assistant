@@ -1326,6 +1326,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
     if (widget.indexNote > -1) {
       // Terminal.printWarning(
       //     message: listNotes![widget.indexNote]['Diagnosticos_Hospital']);
+      widget.fechaRealizacion = listNotes![widget.indexNote]['FechaRealizacion'];
       //
       listNotes![widget.indexNote]['Tipo_Analisis'] ==
           'Análisis de Revisión' ? Reportes.reportes['Datos_Generales_Simple'] = Pacientes.prosa(isTerapia: true, otherForm: true) : "";

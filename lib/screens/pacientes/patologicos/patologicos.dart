@@ -276,7 +276,7 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
         inputFormat: MaskTextInputFormatter(),
         labelEditText: 'Comentario del tratamiento',
         textController: tratamientoTextController,
-        numOfLines: 5,
+        numOfLines: 10,
       ),
       CrossLine(),
       Padding(
@@ -349,7 +349,7 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
                 inputFormat: MaskTextInputFormatter(),
                 labelEditText: 'Antecedentes del Diagnóstico',
                 textController: suspensionesTextController,
-                numOfLines: 7,
+                numOfLines: 15,
               ),
             ),
           ],

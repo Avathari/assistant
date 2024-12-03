@@ -338,23 +338,47 @@ class Archivos {
   }
 
   static Future deleteFile({required filePath}) async {
+
     if (Platform.isAndroid) {
       final directory = await getTemporaryDirectory();
       final File file = File("${directory.path}/$filePath");
       if (await file.exists()) {
-        file.delete();
+        file.delete(recursive: true);
       } else {
-        throw "\x1B[31mEl Archivo $filePath no Existe\x1B[0m";
+        final Directory appDir = await getApplicationDocumentsDirectory();
+        // Crea la ruta del directorio que deseas eliminar
+        final Directory targetDir = Directory('${appDir.path}/$filePath');
+
+        // Verifica si el directorio existe
+        if (await targetDir.exists()) {
+          await targetDir.delete(recursive: true);
+          print('Directorio eliminado correctamente: ${targetDir.path}');
+        } else {
+          throw "\x1B[31mEl Archivo $filePath : : ${targetDir.path} no Existe\x1B[0m";
+        }
       }
     } else {
-      final file = File(filePath);
+      final File file = File(filePath);
       if (await file.exists()) {
         file.delete(recursive: true);
-        // throw "\x1B[35mEl Archivo FUE ELIMINADO\x1B[0m";
       } else {
-        throw "\x1B[31mEl Archivo $filePath no Existe\x1B[0m";
+        // Define el directorio que deseas eliminar
+        final directory = Directory(filePath);
+        if (await directory.exists()) {
+          try {
+            // Elimina el directorio y todo su contenido
+            await directory.delete(recursive: true);
+            print('Directorio eliminado correctamente.');
+          } catch (e) {
+            throw "\x1B[31mOcurrio un error al eliminar el directorio : : $e\x1B[0m";
+          }
+        } else {
+          throw "\x1B[31mEl Archivo $filePath no Existe\x1B[0m";
+        }
+
       }
     }
+    //
   }
 
   static listDirectoriesFromPath({required filePath}) {
@@ -698,8 +722,6 @@ class Listas {
 
     return listado;
   }
-
-
 }
 
 class Alertas {
@@ -1077,11 +1099,11 @@ class Operadores {
 
   static void selectWithTittleOptionsActivity(
       {required BuildContext context,
-        String? tittle = "Manejo de Opciones",
-        String? message = "Seleccione una opción . . . ",
-        required List<dynamic> options,
-        Function(String)? onClose,
-        Function(String)? onLongCloss}) {
+      String? tittle = "Manejo de Opciones",
+      String? message = "Seleccione una opción . . . ",
+      required List<dynamic> options,
+      Function(String)? onClose,
+      Function(String)? onLongCloss}) {
     showDialog(
         context: context,
         builder: (context) {
@@ -1124,9 +1146,12 @@ class Operadores {
     showDialog(
         context: context,
         builder: (context) {
-          return Dialogos.notifyDialog(tittle, message, () {
-            Navigator.of(context).pop();
-          });
+          return Dialogos.notifyDialog(tittle, message,
+              onAcept,
+          //         () {
+          //   Navigator.of(context).pop();
+          // }
+          );
         });
   }
 
@@ -1385,7 +1410,7 @@ class Dialogos {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             // if (optionB != null) SizedBox(width: 0) else SizedBox(width: 30),
-              Expanded(
+            Expanded(
               child: OutlinedButton(
                   onPressed: () {
                     onCloss!();
@@ -1393,15 +1418,16 @@ class Dialogos {
                   child: const Text("Cancelar",
                       style: TextStyle(color: Colors.white, fontSize: 8))),
             ),
-            if (optionB != null) Expanded(
-            child: ElevatedButton(
-                onPressed: () {
-                  optionB();
-                },
-                child: Text(textOptionB!,
-                    style:
-                        const TextStyle(color: Colors.white, fontSize: 8))),
-          ),
+            if (optionB != null)
+              Expanded(
+                child: ElevatedButton(
+                    onPressed: () {
+                      optionB();
+                    },
+                    child: Text(textOptionB!,
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 8))),
+              ),
             Expanded(
                 child: CircleIcon(
                     iconed: Icons.confirmation_num,
@@ -1568,7 +1594,7 @@ class Dialogos {
               onCloss!(selected);
             },
             child:
-            const Text("Cancelar", style: TextStyle(color: Colors.white))),
+                const Text("Cancelar", style: TextStyle(color: Colors.white))),
       ],
     );
   }
@@ -1608,7 +1634,7 @@ class Dialogos {
               onCloss!();
             },
             child:
-            const Text("Cancelar", style: TextStyle(color: Colors.white))),
+                const Text("Cancelar", style: TextStyle(color: Colors.white))),
       ],
     );
   }
@@ -1634,7 +1660,10 @@ class Dialogos {
             children: [
               CircularProgressIndicator(),
               SizedBox(height: 20),
-              Text(msg.toString(), style: Styles.textSyleGrowth(),),
+              Text(
+                msg.toString(),
+                style: Styles.textSyleGrowth(),
+              ),
             ],
           )),
       actions: [
@@ -1730,9 +1759,9 @@ class Datos {
         int costo = s1[i - 1] == s2[j - 1] ? 0 : 1;
 
         dp[i][j] = [
-          dp[i - 1][j] + 1,      // Eliminación
-          dp[i][j - 1] + 1,      // Inserción
-          dp[i - 1][j - 1] + costo  // Sustitución
+          dp[i - 1][j] + 1, // Eliminación
+          dp[i][j - 1] + 1, // Inserción
+          dp[i - 1][j - 1] + costo // Sustitución
         ].reduce((a, b) => a < b ? a : b);
       }
     }

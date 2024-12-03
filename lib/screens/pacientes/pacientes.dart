@@ -1077,12 +1077,14 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                           onPress: () {
                             carouselController.jumpToPage(0);
                           }),
+                      SizedBox(width: 15),
                       GrandIcon(
                           labelButton: "Datos Generales",
                           iconData: Icons.data_object,
                           onPress: () {
                             carouselController.jumpToPage(1);
                           }),
+                      SizedBox(width: 15),
                     ]
                   : [],
             )
@@ -1177,6 +1179,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                 " . . . Reiniciando Actividad - Repositorio de Pacientes"));
     var fileAssocieted = 'assets/vault/pacientesRepository.json';
     Archivos.deleteFile(filePath: fileAssocieted);
+    Archivos.deleteFile(filePath: Pacientes.localRepositoryPath);
   }
 
 // Componentes Base de Interfaz ** *********** ********* ****
@@ -1811,7 +1814,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                                                   Colores.backgroundWidget,
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(20)),
+                                                      BorderRadius.circular(
+                                                          20)),
                                               minimumSize: const Size(75, 75)),
                                           onPressed: () {
                                             choiseFromCamara();
@@ -1827,7 +1831,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                                                   Colores.backgroundWidget,
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(50)),
+                                                      BorderRadius.circular(
+                                                          50)),
                                               minimumSize: const Size(50, 50)),
                                           onPressed: () {
                                             toBaseImage();
@@ -1843,7 +1848,8 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                                                   Colores.backgroundWidget,
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(20)),
+                                                      BorderRadius.circular(
+                                                          20)),
                                               minimumSize: const Size(75, 75)),
                                           onPressed: () {
                                             choiseFromDirectory();
@@ -2162,15 +2168,6 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                 message: "ERROR - $error : : $stackTrace",
                 onAcept: () => Navigator.of(context).pop());
           });
-          // .then((value) => Actividades.consultarId(
-          //             Databases.siteground_database_regpace,
-          //             consultIdQuery,
-          //             idOperation)
-          //         .then((value) {
-          //       // print("Imagen paciente ${value['Pace_FIAT']}");
-          //       img = value['Pace_FIAT'];
-          //       Pacientes.Paciente = value;
-          //     }).then((value) => returnGestion(context)));
           break;
         default:
       }

@@ -234,7 +234,7 @@ class _TallerGasometricoState extends State<TallerGasometrico> {
                     CrossLine(),
                     ValuePanel(
                       firstText: 'VO2', // Consumo de Oxígeno
-                      secondText: Valores.CO.toStringAsFixed(2),
+                      secondText: Gasometricos.CO.toStringAsFixed(2),
                       thirdText: 'mL/min',
                     ),
                     Row(
@@ -242,14 +242,14 @@ class _TallerGasometricoState extends State<TallerGasometrico> {
                         Expanded(
                           child: ValuePanel(
                             firstText: 'DO2',
-                            secondText: Valores.DO.toStringAsFixed(2),
+                            secondText: Gasometricos.DO.toStringAsFixed(2),
                             thirdText: 'mL/min',
                           ),
                         ),
                         Expanded(
                           child: ValuePanel(
                             firstText: 'iDO2',
-                            secondText: Valores.iDO.toStringAsFixed(2),
+                            secondText: Gasometricos.iDO.toStringAsFixed(2),
                             thirdText: 'mL/min/m2',
                           ),
                         ),
@@ -258,7 +258,7 @@ class _TallerGasometricoState extends State<TallerGasometrico> {
                     //
                     ValuePanel(
                       firstText: 'QS/QT', // Shunt Arterio-venoso
-                      secondText: Valores.SF.toStringAsFixed(2),
+                      secondText: Gasometricos.SF.toStringAsFixed(2),
                       thirdText: '%',
                     ),
                     ValuePanel(
@@ -267,12 +267,12 @@ class _TallerGasometricoState extends State<TallerGasometrico> {
                     ),
                     ValuePanel(
                       firstText: 'IEO2%', // Indice de Extracción Oxígeno
-                      secondText: Valores.IEO.toStringAsFixed(2),
+                      secondText: Gasometricos.IEO.toStringAsFixed(2),
                       thirdText: '%',
                     ),
                     ValuePanel(
                       firstText: 'I. Resp. ',
-                      secondText: Valores.CI.toStringAsFixed(2),
+                      secondText: Gasometricos.CI.toStringAsFixed(2),
                     ),
                     //
                     ValuePanel(
