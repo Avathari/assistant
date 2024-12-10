@@ -97,6 +97,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                     child: Column(
                       children: [
                         TittlePanel(textPanel: "Evaluación Neurológica"),
+                        //
                         Row(
                           children: [
                             Expanded(

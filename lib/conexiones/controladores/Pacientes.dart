@@ -26,6 +26,7 @@ class Pacientes {
   static String localPath = 'assets/vault/'
       '${Pacientes.nombreCompleto}/'
       '${Pacientes.nombreCompleto}.json';
+
   /// Dirección del Conjuntos de Archivos relacionados al paciente.
   static String localRepositoryPath = 'assets/vault/'
       '${Pacientes.nombreCompleto}/';
@@ -1610,16 +1611,15 @@ class Pacientes {
               Pacientes.ID_Paciente)
           .then((value) async {
         return Pacientes.Paraclinicos = value;
-      }
-      ).whenComplete(() => Archivos.createJsonFromMap(Pacientes.Paraclinicos!,
+      }).whenComplete(() => Archivos.createJsonFromMap(Pacientes.Paraclinicos!,
               filePath: "${Pacientes.localRepositoryPath}paraclinicos.json"));
     } else {
       await Archivos.readJsonToMap(
               filePath: '${Pacientes.localRepositoryPath}paraclinicos.json')
           .then((value) {
         // Terminal.printNotice(
-            // message:
-            //     " : : OBTENIDO DE ARCHIVO . . . ${Pacientes.localRepositoryPath}paraclinicos.json");
+        // message:
+        //     " : : OBTENIDO DE ARCHIVO . . . ${Pacientes.localRepositoryPath}paraclinicos.json");
         //
         return Pacientes.Paraclinicos = value;
       }).onError((error, stackTrace) async {
@@ -1652,50 +1652,6 @@ class Pacientes {
 
   // Pendientes . . Funciones
   static Future<void> getDispositivosHistorial() async {
-    //
-    await Actividades.consultarAllById(
-            Databases.siteground_database_reghosp,
-            Pendientes.pendientes['consultDispositivosByIdPrimaryQuery'],
-            Pacientes.ID_Hospitalizacion)
-        .then((onValue) {
-      //
-      for (var element in onValue) {
-        //
-        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[0][0]) {
-          Valores.initMAVA = element['ID_Pace_Pen'];
-          Valores.withMAVA =
-              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
-        }
-        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[0][1]) {
-          Valores.initIOT = element['ID_Pace_Pen'];
-          Valores.withIOT =
-              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
-        }
-        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[0][2]) {
-          Valores.initEXT = element['ID_Pace_Pen'];
-          Valores.withEXT =
-              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
-        }
-        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[0][3]) {
-          Valores.initTRAN = element['ID_Pace_Pen'];
-          Valores.withTRAN =
-              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
-        }
-        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[0][4]) {
-          Valores.initHEMO = element['ID_Pace_Pen'];
-          Valores.withHEMO =
-              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
-        }
-        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[0][5]) {
-          Valores.initQUIR = element['ID_Pace_Pen'];
-          Valores.withQUIR =
-              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
-        }
-      }
-    });
-  }
-
-  static Future<void> getPreviosHistorial() async {
     //
     await Actividades.consultarAllById(
             Databases.siteground_database_reghosp,
@@ -1769,11 +1725,55 @@ class Pacientes {
     });
   }
 
+  static Future<void> getPreviosHistorial() async {
+    //
+    await Actividades.consultarAllById(
+            Databases.siteground_database_reghosp,
+            Pendientes.pendientes['consultPreviosByIdPrimaryQuery'],
+            Pacientes.ID_Hospitalizacion)
+        .then((onValue) {
+      //
+      for (var element in onValue) {
+        //
+        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[0][0]) {
+          Valores.initMAVA = element['ID_Pace_Pen'];
+          Valores.withMAVA =
+              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+        }
+        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[0][1]) {
+          Valores.initIOT = element['ID_Pace_Pen'];
+          Valores.withIOT =
+              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+        }
+        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[0][2]) {
+          Valores.initEXT = element['ID_Pace_Pen'];
+          Valores.withEXT =
+              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+        }
+        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[0][3]) {
+          Valores.initTRAN = element['ID_Pace_Pen'];
+          Valores.withTRAN =
+              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+        }
+        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[0][4]) {
+          Valores.initHEMO = element['ID_Pace_Pen'];
+          Valores.withHEMO =
+              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+        }
+        if (element['Pace_Desc_PEN'] == Pendientes.subTypesPendientes[0][5]) {
+          Valores.initQUIR = element['ID_Pace_Pen'];
+          Valores.withQUIR =
+              element['Feca_PEN'] == "0000-00-00" ? "" : element['Feca_PEN'];
+        }
+      }
+    });
+  }
+
   static Future<void> getInfusionesHistorial() async {
     //
     await Actividades.consultarAllById(
             Databases.siteground_database_reghosp,
-            Pendientes.pendientes['consultDispositivosByIdPrimaryQuery'],
+            Pendientes.pendientes['consultIndicacionesByIdPrimaryQuery'],
             Pacientes.ID_Hospitalizacion)
         .then((onValue) {
       //
@@ -4798,9 +4798,9 @@ class Patologicos {
   };
 
   //
-static String getPatologicos (Map<String, dynamic> json) {
-  return "${json['Pace_APP_DEG_com']}, ${json['Pace_APP_DEG_tra']}, ${json['Pace_APP_DEG_sus']}";
-}
+  static String getPatologicos(Map<String, dynamic> json) {
+    return "${json['Pace_APP_DEG_com']}, ${json['Pace_APP_DEG_tra']}, ${json['Pace_APP_DEG_sus']}";
+  }
 }
 
 class Alergicos {
@@ -6499,7 +6499,8 @@ class Auxiliares {
     });
   }
 
-  static String porTipoEstudio({int? indice = 0, String fechaActual = "",bool esAbreviado = true}) {
+  static String porTipoEstudio(
+      {int? indice = 0, String fechaActual = "", bool esAbreviado = true}) {
     // Filtro por estudio de los registros de Pacientes.Paraclinicos
     var aux = Pacientes.Paraclinicos!
         .where((user) =>
@@ -6518,10 +6519,10 @@ class Auxiliares {
         if (element['Fecha_Registro'] == fechaActual) {
           if (max == "") {
             max =
-            "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+                "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
           } else {
             max =
-            "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+                "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
           }
         }
       }
@@ -6530,10 +6531,10 @@ class Auxiliares {
         if (element['Fecha_Registro'] == fechaActual) {
           if (max == "") {
             max =
-            "${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+                "${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
           } else {
             max =
-            "$max, ${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+                "$max, ${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
           }
         }
       }
@@ -7182,10 +7183,10 @@ class Auxiliares {
           return 'Glu';
         } else if (estudio == 'Nitrógeno Úrico') {
           return 'BUN';
-        }else if (estudio == "Proteína C Reactiva"){
+        } else if (estudio == "Proteína C Reactiva") {
           return "PCR";
           // ****************************************
-        } else if (estudio == "Velocidad de sedimentación globular"){
+        } else if (estudio == "Velocidad de sedimentación globular") {
           return "VSG";
           // ****************************************
         } else if (estudio == 'P-ANCA') {
@@ -7902,8 +7903,26 @@ class Auxiliares {
     Categorias[6]: ["mg/dL"],
     Categorias[7]: ["", "seg"],
     Categorias[8]: ["ng/dL", "mm/Hr", "mg/dL", "ng/mL", "UI/mL"],
-    Categorias[9]: ["", "mmHg", "cmH20", "mmol/L", "%", "mmol/L", "mg/dL", "g/dL"],
-    Categorias[10]: ["", "mmHg", "cmH20", "mmol/L", "%", "mmol/L", "mg/dL", "g/dL"],
+    Categorias[9]: [
+      "",
+      "mmHg",
+      "cmH20",
+      "mmol/L",
+      "%",
+      "mmol/L",
+      "mg/dL",
+      "g/dL"
+    ],
+    Categorias[10]: [
+      "",
+      "mmHg",
+      "cmH20",
+      "mmol/L",
+      "%",
+      "mmol/L",
+      "mg/dL",
+      "g/dL"
+    ],
     Categorias[11]: ["", "Hem/uL", "mg/dL", "Leu/uL", "cel/Campo"],
     Categorias[12]: [
       "mL",
@@ -8775,6 +8794,8 @@ class Auxiliares {
         return "Tiempo de Protrombina";
       case "TPT Tiempo Parcial de Tromboplastina":
         return "Tiempo Parcial de Tromboplastina";
+      case "TPT Tiempo Parcial de Tromboplastina ":
+        return "Tiempo Parcial de Tromboplastina";
       case "TROMBOTEST)":
         return "INR";
       case "INR (Relación Internacional Normalizada)":
@@ -8810,7 +8831,8 @@ class Auxiliares {
 }
 
 class Pendientes {
-  static var fileAssocieted = '${Pacientes.localRepositoryPath}/pendientes.json';
+  static var fileAssocieted =
+      '${Pacientes.localRepositoryPath}/pendientes.json';
 
   static final Map<String, dynamic> pendientes = {
     "createDatabase": "CREATE DATABASE IF NOT EXISTS bd_reggabo "
@@ -9229,6 +9251,10 @@ class Pendientes {
     });
   }
 
+  // "registerQuery": "INSERT INTO pace_pen (ID_Pace, ID_Hosp, "
+  // "Feca_PEN, Pace_PEN_realized, "
+  // "Pace_PEN, Pace_Desc_PEN) "
+  // "VALUES (?,?,?,?,?,?)", // Omitido : Pace_Commen_PEN . ?
   static void registrarPrevios(BuildContext context) {
     Future.forEach([
       [
@@ -9320,8 +9346,279 @@ class Pendientes {
       //
     });
   }
+
   //
-  static String getPendiente (Map<String, dynamic> json) {
+  static registrarEventos(BuildContext context) async {
+    await Actividades.registrarAnidados(
+      Databases.siteground_database_reghosp,
+      Pendientes.pendientes['registerQuery'],
+      [
+        [
+          Pacientes.ID_Paciente,
+          Pacientes.ID_Hospitalizacion,
+          Valores
+              .withCVP, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+          Valores.withCVP == "" ? false : true,
+          Pendientes.typesPendientes[3], // Categoria de Procedimientos . . .
+          Pendientes.subTypesPendientes[3][0],
+        ], // CVP
+        [
+          Pacientes.ID_Paciente,
+          Pacientes.ID_Hospitalizacion,
+          Valores
+              .withCVLP, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+          Valores.withCVLP == "" ? false : true,
+          Pendientes.typesPendientes[3], // Categoria de Procedimientos . . .
+          Pendientes.subTypesPendientes[3][1],
+        ], // CVLP
+        [
+          Pacientes.ID_Paciente,
+          Pacientes.ID_Hospitalizacion,
+          Valores
+              .withCVC, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+          Valores.withCVC == "" ? false : true,
+          Pendientes.typesPendientes[3], // Categoria de Procedimientos . . .
+          Pendientes.subTypesPendientes[3][2],
+        ], // CVC
+        [
+          Pacientes.ID_Paciente,
+          Pacientes.ID_Hospitalizacion,
+          Valores
+              .withMahurkar, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+          Valores.withMahurkar == "" ? false : true,
+          Pendientes.typesPendientes[3], // Categoria de Procedimientos . . .
+          Pendientes.subTypesPendientes[3][3],
+        ], // MAHA
+        [
+          Pacientes.ID_Paciente,
+          Pacientes.ID_Hospitalizacion,
+          Valores
+              .withFOL, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+          Valores.withFOL == "" ? false : true,
+          Pendientes.typesPendientes[3], // Categoria de Procedimientos . . .
+          Pendientes.subTypesPendientes[3][4],
+        ], // FOL
+        [
+          Pacientes.ID_Paciente,
+          Pacientes.ID_Hospitalizacion,
+          Valores
+              .withSNG, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+          Valores.withSNG == "" ? false : true,
+          Pendientes.typesPendientes[3], // Categoria de Procedimientos . . .
+          Pendientes.subTypesPendientes[3][5],
+        ], // SNG
+        [
+          Pacientes.ID_Paciente,
+          Pacientes.ID_Hospitalizacion,
+          Valores
+              .withSOG, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+          Valores.withSOG == "" ? false : true,
+          Pendientes.typesPendientes[3], // Categoria de Procedimientos . . .
+          Pendientes.subTypesPendientes[3][6],
+        ], // SOG
+        [
+          Pacientes.ID_Paciente,
+          Pacientes.ID_Hospitalizacion,
+          Valores
+              .withPEN, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+          Valores.withPEN == "" ? false : true,
+          Pendientes.typesPendientes[3], // Categoria de Procedimientos . . .
+          Pendientes.subTypesPendientes[3][7],
+        ], // PEN
+        [
+          Pacientes.ID_Paciente,
+          Pacientes.ID_Hospitalizacion,
+          Valores
+              .withCOL, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+          Valores.withCOL == "" ? false : true,
+          Pendientes.typesPendientes[3], // Categoria de Procedimientos . . .
+          Pendientes.subTypesPendientes[3][8],
+        ], // COL
+        [
+          Pacientes.ID_Paciente,
+          Pacientes.ID_Hospitalizacion,
+          Valores
+              .withSEP, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+          Valores.withSEP == "" ? false : true,
+          Pendientes.typesPendientes[3], // Categoria de Procedimientos . . .
+          Pendientes.subTypesPendientes[3][9],
+        ], // SEP
+        [
+          Pacientes.ID_Paciente,
+          Pacientes.ID_Hospitalizacion,
+          Valores
+              .withGAS, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+          Valores.withGAS == "" ? false : true,
+          Pendientes.typesPendientes[3], // Categoria de Procedimientos . . .
+          Pendientes.subTypesPendientes[3][10],
+        ], // GAS
+        [
+          Pacientes.ID_Paciente,
+          Pacientes.ID_Hospitalizacion,
+          Valores
+              .withTNK, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+          Valores.withTNK == "" ? false : true,
+          Pendientes.typesPendientes[3], // Categoria de Procedimientos . . .
+          Pendientes.subTypesPendientes[3][11],
+        ], // TNK
+        //
+        [
+          // Valores.initMAVA,
+          Pacientes.ID_Paciente,
+          Pacientes.ID_Hospitalizacion,
+          Valores
+              .withMAVA, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+          Valores.withMAVA == "" ? false : true,
+          Pendientes.typesPendientes[0], // Categoria de Procedimientos . . .
+          Pendientes.subTypesPendientes[0][0],
+          // Valores.initMAVA,
+        ], // MAVA
+        [
+          // Valores.initIOT,
+          Pacientes.ID_Paciente,
+          Pacientes.ID_Hospitalizacion,
+          Valores
+              .withIOT, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+          Valores.withIOT == "" ? false : true,
+          Pendientes.typesPendientes[0], // Categoria de Procedimientos . . .
+          Pendientes.subTypesPendientes[0][1],
+          // Valores.initIOT,
+        ], // IOT
+        [
+          // Valores.initEXT,
+          Pacientes.ID_Paciente,
+          Pacientes.ID_Hospitalizacion,
+          Valores
+              .withEXT, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+          Valores.withEXT == "" ? false : true,
+          Pendientes.typesPendientes[0], // Categoria de Procedimientos . . .
+          Pendientes.subTypesPendientes[0][2],
+          // Valores.initEXT,
+        ], // EXT
+        [
+          // Valores.initTRAN,
+          Pacientes.ID_Paciente,
+          Pacientes.ID_Hospitalizacion,
+          Valores
+              .withTRAN, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+          Valores.withTRAN == "" ? false : true,
+          Pendientes.typesPendientes[0], // Categoria de Procedimientos . . .
+          Pendientes.subTypesPendientes[0][0],
+          // Valores.initTRAN,
+        ], // TRAN
+        [
+          // Valores.initHEMO,
+          Pacientes.ID_Paciente,
+          Pacientes.ID_Hospitalizacion,
+          Valores
+              .withHEMO, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+          Valores.withHEMO == "" ? false : true,
+          Pendientes.typesPendientes[0], // Categoria de Procedimientos . . .
+          Pendientes.subTypesPendientes[0][4],
+          // Valores.initHEMO,
+        ], // HEMO
+        [
+          // Valores.initQUIR,
+          Pacientes.ID_Paciente,
+          Pacientes.ID_Hospitalizacion,
+          Valores
+              .withQUIR, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+          Valores.withQUIR == "" ? false : true,
+          Pendientes.typesPendientes[0], // Categoria de Procedimientos . . .
+          Pendientes.subTypesPendientes[0][5],
+          // Valores.initQUIR,
+        ], // QUIR
+        //
+        [
+          // Valores.initSedacion,
+          Pacientes.ID_Paciente,
+          Pacientes.ID_Hospitalizacion,
+          Valores
+              .withSedacion, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+          Valores.withSedacion == "" ? false : true,
+          Pendientes.typesPendientes[5], // Categoria de Procedimientos . . .
+          Pendientes.subTypesPendientes[5][3],
+          // Valores.initSedacion,
+        ], // SEDA
+        [
+          // Valores.initVasopresor,
+          Pacientes.ID_Paciente,
+          Pacientes.ID_Hospitalizacion,
+          Valores
+              .withVasopresor, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+          Valores.withVasopresor == "" ? false : true,
+          Pendientes.typesPendientes[5], // Categoria de Procedimientos . . .
+          Pendientes.subTypesPendientes[5][5],
+          // Valores.initVasopresor,
+        ], // VASA
+        [
+          // Valores.initAntibiotico,
+          Pacientes.ID_Paciente,
+          Pacientes.ID_Hospitalizacion,
+          Valores
+              .withAntibiotico, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+          Valores.withAntibiotico == "" ? false : true,
+          Pendientes.typesPendientes[5], // Categoria de Procedimientos . . .
+          Pendientes.subTypesPendientes[5][0],
+          // Valores.initAntibiotico,
+        ], // ATB
+        [
+          // Valores.initInotropico,
+          Pacientes.ID_Paciente,
+          Pacientes.ID_Hospitalizacion,
+          Valores
+              .withInotropico, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+          Valores.withInotropico == "" ? false : true,
+          Pendientes.typesPendientes[5], // Categoria de Procedimientos . . .
+          Pendientes.subTypesPendientes[5][6],
+          // Valores.initInotropico,
+        ], // IONO
+        [
+          // Valores.initParalisis,
+          Pacientes.ID_Paciente,
+          Pacientes.ID_Hospitalizacion,
+          Valores
+              .withParalisis, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+          Valores.withParalisis == "" ? false : true,
+          Pendientes.typesPendientes[5], // Categoria de Procedimientos . . .
+          Pendientes.subTypesPendientes[5][7],
+          // Valores.initParalisis,
+        ], // PARA
+        [
+          // Valores.initAntiarritmico,
+          Pacientes.ID_Paciente,
+          Pacientes.ID_Hospitalizacion,
+          Valores
+              .withAntiarritmico, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+          Valores.withAntiarritmico == "" ? false : true,
+          Pendientes.typesPendientes[5], // Categoria de Procedimientos . . .
+          Pendientes.subTypesPendientes[5][4],
+          // Valores.initAntiarritmico,
+        ], // ARRI
+        [
+          // Valores.initAnticoagulante,
+          Pacientes.ID_Paciente,
+          Pacientes.ID_Hospitalizacion,
+          Valores
+              .withAnticoagulante, // Fecha de Procedimiento : Determina si existe o no dispositivo.
+          Valores.withAnticoagulante == "" ? false : true,
+          Pendientes.typesPendientes[5], // Categoria de Procedimientos . . .
+          Pendientes.subTypesPendientes[5][1],
+          // Valores.initAnticoagulante,
+        ], // COAN
+      ],
+    );
+    //      Terminal.printAlert(message: "ERROR - $error : : : $stackTrace");
+    //       Operadores.alertActivity(
+    //         context: context,
+    //         tittle: "$error . . .",
+    //         message: "$stackTrace",
+    //       );
+    //
+  }
+
+  //
+  static String getPendiente(Map<String, dynamic> json) {
     // Feca_PEN, Pace_PEN_realized, "
     // "Pace_PEN, Pace_Desc_PEN
     return "${json['Feca_PEN']}, ${json['Pace_PEN']}, ${json['Pace_Desc_PEN']}";

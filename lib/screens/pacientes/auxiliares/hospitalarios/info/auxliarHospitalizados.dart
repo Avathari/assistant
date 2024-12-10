@@ -50,6 +50,11 @@ class Paneles {
                 maxLines: 2,
                 style: Styles.textSyleGrowth(fontSize: 10),
               ),
+              Text(
+                "Edad ${snapshot.data[index].generales['Pace_Eda'] ?? ''} Años . ",
+                maxLines: 1,
+                style: Styles.textSyleGrowth(fontSize: 10),
+              ),
               // Text(
               //   "Hemotipo: ${snapshot.data[index].hospitalizedData['Pace_Hemo'] ?? ''}",
               //   maxLines: 2,
@@ -141,7 +146,7 @@ class Paneles {
                 ? 65
                 : isDesktop(context)
                     ? 95
-                    : 55,
+                    : 65,
             style: Styles.textSyleGrowth(fontSize: 8),
             textAlign: TextAlign.start,
           ),
@@ -260,9 +265,12 @@ class Paneles {
                   itemBuilder: (BuildContext context, int ind) {
                     if (snapshot.data![index].pendientes[ind]['Pace_PEN'] !=
                         'Procedimientos') {
-                      if (snapshot.data![index].pendientes[ind]['Pace_PEN_realized'] ==
-                      true || snapshot.data![index].pendientes[ind]['Pace_PEN_realized'] ==
-                          1) {
+                      if (snapshot.data![index].pendientes[ind]
+                                  ['Pace_PEN_realized'] ==
+                              true ||
+                          snapshot.data![index].pendientes[ind]
+                                  ['Pace_PEN_realized'] ==
+                              1) {
                         return ElevatedButton(
                           onPressed: () {
                             Pacientes.Pendiente =
@@ -273,11 +281,12 @@ class Paneles {
                                 message: Pendientes.getPendiente(
                                     snapshot.data![index].pendientes[ind]),
                                 onClose: () => Navigator.of(context).pop(),
-                                textOptionA: "Copiar antecedente en portapapeles . . . ",
+                                textOptionA:
+                                    "Copiar antecedente en portapapeles . . . ",
                                 optionA: () => Datos.portapapeles(
                                     context: context,
-                                    text: Pendientes.getPendiente(
-                                        snapshot.data![index].pendientes[ind])));
+                                    text: Pendientes.getPendiente(snapshot
+                                        .data![index].pendientes[ind])));
                           },
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.black),
@@ -365,39 +374,64 @@ class Paneles {
       spacing: 5,
       children: [
         CircleIcon(
-            radios: 30,
-            difRadios: 5,
-            iconed: Icons.medical_services_outlined,
-            onChangeValue: () async {
-              Pacientes.ID_Paciente = foundedItems![index].idPaciente;
-              Terminal.printWarning(
-                  message: "ID (Opcion Panel) : ${Pacientes.ID_Paciente}");
-              //
-              // Pacientes(
-              //   "",
-              //   "",
-              //   foundedItems[index].generales['Pace_Ape_Pat'] ?? '',
-              //   foundedItems[index].generales['Pace_Ape_Mat'] ?? '',
-              //   foundedItems[index].generales['Pace_Nome_PI'] ?? '',
-              //   foundedItems[index].generales['Pace_Nome_SE'] ?? '',
-              //   "",
-              // );
-              //
-              if (foundedItems[index].vitales.isNotEmpty) {
-                Valores.alturaPaciente =
-                    foundedItems[index].vitales.last['Pace_SV_est'];
-                Valores.pesoCorporalTotal = double.parse(
-                    foundedItems[index].vitales.last['Pace_SV_pct'].toString());
-              } else {
-                Valores.alturaPaciente = 0;
-                Valores.pesoCorporalTotal = 0;
-              }
+          radios: 30,
+          difRadios: 5,
+          iconed: Icons.medical_services_outlined,
+          onChangeValue: () async {
+            Pacientes.ID_Paciente = foundedItems![index].idPaciente;
+            Terminal.printWarning(
+                message: "ID (Opcion Panel) : ${Pacientes.ID_Paciente}");
+            //
+            if (foundedItems[index].vitales.isNotEmpty) {
+              Valores.alturaPaciente =
+                  foundedItems[index].vitales.last['Pace_SV_est'];
+              Valores.pesoCorporalTotal = double.parse(
+                  foundedItems[index].vitales.last['Pace_SV_pct'].toString());
+            } else {
+              Valores.alturaPaciente = 0;
+              Valores.pesoCorporalTotal = 0;
+            }
 
-              Pacientes.localRepositoryPath =
-                  foundedItems[index].localRepositoryPath;
-              //
-              Cambios.toNextPage(context, Generales());
-            }), // Signos Vitales
+            Pacientes.localRepositoryPath =
+                foundedItems[index].localRepositoryPath;
+            //
+            Cambios.toNextActivity(context,
+                tittle: "Signos Vitales del Paciente . . . ",
+                chyld: SingleChildScrollView(
+                  controller: ScrollController(),
+                    child: AuxiliarVitales()));
+          },
+          onLongChangeValue: () async {
+            Pacientes.ID_Paciente = foundedItems![index].idPaciente;
+            Terminal.printWarning(
+                message: "ID (Opcion Panel) : ${Pacientes.ID_Paciente}");
+            //
+            // Pacientes(
+            //   "",
+            //   "",
+            //   foundedItems[index].generales['Pace_Ape_Pat'] ?? '',
+            //   foundedItems[index].generales['Pace_Ape_Mat'] ?? '',
+            //   foundedItems[index].generales['Pace_Nome_PI'] ?? '',
+            //   foundedItems[index].generales['Pace_Nome_SE'] ?? '',
+            //   "",
+            // );
+            //
+            if (foundedItems[index].vitales.isNotEmpty) {
+              Valores.alturaPaciente =
+                  foundedItems[index].vitales.last['Pace_SV_est'];
+              Valores.pesoCorporalTotal = double.parse(
+                  foundedItems[index].vitales.last['Pace_SV_pct'].toString());
+            } else {
+              Valores.alturaPaciente = 0;
+              Valores.pesoCorporalTotal = 0;
+            }
+
+            Pacientes.localRepositoryPath =
+                foundedItems[index].localRepositoryPath;
+            //
+            Cambios.toNextPage(context, Generales());
+          },
+        ), // Signos Vitales
         CircleIcon(
             radios: 25,
             difRadios: 5,
@@ -423,14 +457,24 @@ class Paneles {
             radios: 25,
             difRadios: 5,
             onChangeValue: () {
-              Pacientes.ID_Paciente = foundedItems![index].idPaciente;
-              Pacientes.ID_Hospitalizacion =
-                  foundedItems[index].idHospitalizado;
-              // //
-              Cambios.toNextActivity(context,
-                  backgroundColor: Theming.cuaternaryColor,
-                  chyld: const AuxiliaresDispositivos()); // AuxiliarVitales()
-              // Cambios.toNextActivity(context, chyld: const Subjetivos());
+              try {
+                Pacientes.ID_Paciente = foundedItems![index].idPaciente;
+                Pacientes.ID_Hospitalizacion =
+                    foundedItems[index].idHospitalizado;
+                // //
+                Cambios.toNextActivity(context,
+                    backgroundColor: Theming.cuaternaryColor,
+                    chyld: const AuxiliaresDispositivos());
+              }  catch (onError, stackTrace ) {
+                // TODO
+                Operadores.alertActivity(
+                    context: context,
+                    tittle: "Error al Cargar Valores . . . ",
+                    message: "ERROR : : $onError \n: $stackTrace",
+                    onAcept: () =>
+                      Navigator.of(context).pop()
+                    );
+              }
             }), // AuxiliarVitales // Subjetivos
       ],
     );

@@ -633,7 +633,7 @@ class _OperacionesHospitalizacionesState
                         Reportes.hitosHospitalarios.toString(),
                         Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
                       ]);
-                              Situaciones.registrarRegistro();
+                              // Situaciones.registrarRegistro();
                               Expedientes.registrarRegistro();
                             }).whenComplete(() => onClose(context)));
                     break;
@@ -787,9 +787,11 @@ class _OperacionesHospitalizacionesState
                         Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
                       ]); // registrarPadecimientoActual
                       //
-                      Pendientes.registrarPrevios(context);
-                      Pendientes.registrarInfusiones(context);
-                      Pendientes.registrarDispositivos(context);
+
+                      Pendientes.registrarEventos(context);
+                      // Pendientes.registrarPrevios(context);
+                      // Pendientes.registrarInfusiones(context);
+                      // Pendientes.registrarDispositivos(context);
                       //
                       Expedientes.registrarRegistro();
                     }).whenComplete(() => onClose(context)));

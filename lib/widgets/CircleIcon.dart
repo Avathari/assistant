@@ -7,6 +7,7 @@ class CircleIcon extends StatefulWidget {
   IconData? iconed;
   double? radios, difRadios;
   var onChangeValue;
+  final VoidCallback? onLongChangeValue;
 
   Color? externalCircleColor;
 
@@ -15,6 +16,7 @@ class CircleIcon extends StatefulWidget {
     this.tittle = '',
     this.iconed = Icons.cable_rounded,
     required this.onChangeValue,
+    this.onLongChangeValue,
     this.radios = 40,
     this.externalCircleColor = Colors.grey,
     this.difRadios = 10,
@@ -29,6 +31,7 @@ class _CircleIconState extends State<CircleIcon> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => widget.onChangeValue(),
+      onLongPress: widget.onLongChangeValue,
       // onDoubleTap: () {
       //   showDialog(
       //       context: context,
@@ -72,6 +75,7 @@ class _CircleIconState extends State<CircleIcon> {
             labelButton: widget.tittle!,
             iconData: widget.iconed!,
             onPress: () => widget.onChangeValue(),
+            onLongPress: widget.onLongChangeValue,
           ),
         ),
       ),

@@ -2508,11 +2508,18 @@ class _RevisionPreviosState extends State<RevisionPrevios> {
     ];
   }
 
+  //    "updateQuery": "UPDATE pace_pen "
+  //         "SET ID_Pace_Pen = ?,  ID_Pace = ?,  ID_Hosp = ?,  "
+  //         "Feca_PEN = ?,  "
+  //         "Pace_PEN_realized = ?, "
+  //         "Pace_PEN = ?,  Pace_Desc_PEN = ?, "
+  //         "Pace_Commen_PEN = ? "
+  //         "WHERE ID_Pace_Pen = ?",
   _operationMethod() async {
     Operadores.loadingActivity(
         context: context,
         tittle: "Actualizando información . . .",
-        message: "Información de Dispositivos actualizándose . . . ",
+        message: "Información de Previos actualizándose . . . ",
         onCloss: () {
           Navigator.of(context).pop();
         });
@@ -2534,7 +2541,8 @@ class _RevisionPreviosState extends State<RevisionPrevios> {
       return "$onError";
     }).whenComplete(() {
       Pacientes.getDispositivosHistorial().then((onValue) {
-        // Terminal.printAlert(message: "ON_VALUE : $onValue");
+        // Terminal.printAlert(message: " . . : Pacientes.getDispositivosHistorial "
+        //     ": : ON_VALUE : ${onValue!.toString()}");
       }).whenComplete(() {
         //
         Navigator.of(context).pop(); // Cierre del LoadActivity
@@ -2892,7 +2900,7 @@ class _RevisionInfusionesState extends State<RevisionInfusiones> {
     Operadores.loadingActivity(
         context: context,
         tittle: "Actualizando información . . .",
-        message: "Información de Dispositivos actualizándose . . . ",
+        message: "Información de Infusiones actualizándose . . . ",
         onCloss: () {
           Navigator.of(context).pop();
         });

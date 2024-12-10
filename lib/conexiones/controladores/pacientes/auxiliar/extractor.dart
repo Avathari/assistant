@@ -200,8 +200,7 @@ class AuxiliarExtractor {
                       Listas.listWithoutRepitedValues(
                           listaArchivosSeleccionados).forEach((filePath) {
                         // Terminal.printExpected(message: filePath);
-                        Archivos.deleteFile(filePath: filePath)
-                        ;
+                        Archivos.deleteFile(filePath: filePath)                        ;
                       });
                       //
                       Navigator.of(context).pop();

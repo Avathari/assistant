@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -34,16 +35,35 @@ class _HitoshospitalariosState extends State<Hitoshospitalarios> {
 
   @override
   Widget build(BuildContext context) {
-    return EditTextArea(
-        textController: hitosTextController,
-        labelEditText: "Hitos de la Hospitalización",
-        keyBoardType: TextInputType.multiline,
-        numOfLines: 25,
-        limitOfChars: 3000,
-        withShowOption: true,
-        onSelected: ()=>_readFromFile(),
-        onChange: (value) => Reportes.hitosHospitalarios = Reportes.reportes['Hitos_Hospitalarios']= value,
-        inputFormat: MaskTextInputFormatter());
+    if (isMobile(context)) {
+      return EditTextArea(
+          textController: hitosTextController,
+          labelEditText: "Hitos de la Hospitalización",
+          keyBoardType: TextInputType.multiline,
+          numOfLines: 25,
+          limitOfChars: 3000,
+          withShowOption: true,
+          onSelected: ()=>_readFromFile(),
+          onChange: (value) => Reportes.hitosHospitalarios = Reportes.reportes['Hitos_Hospitalarios']= value,
+          inputFormat: MaskTextInputFormatter());
+    } else {
+      return Row(
+        children: [
+          Expanded(flex: 2,
+              child: EditTextArea(
+      textController: hitosTextController,
+          labelEditText: "Hitos de la Hospitalización",
+          keyBoardType: TextInputType.multiline,
+          numOfLines: 25,
+          limitOfChars: 3000,
+          withShowOption: true,
+          onSelected: ()=>_readFromFile(),
+          onChange: (value) => Reportes.hitosHospitalarios = Reportes.reportes['Hitos_Hospitalarios']= value,
+          inputFormat: MaskTextInputFormatter())),
+          Expanded(child: Container()),
+        ],
+      );
+    }
   }
 
   // VARIABLES **********************************************

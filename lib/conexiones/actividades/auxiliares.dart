@@ -1258,6 +1258,7 @@ class Dialogos {
         ElevatedButton(
             onPressed: () {
               onAcept();
+              // Navigator.of(context).pop();
             },
             child: const Text("Aceptar", style: TextStyle(color: Colors.white)))
       ],
