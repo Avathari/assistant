@@ -103,8 +103,9 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
                                   labelEditText:
                                       "Impresiones diagnósticas",
                                   keyBoardType: TextInputType.multiline,
-                                  numOfLines: isTablet(context) ? 18: 10,
+                                  numOfLines: isTablet(context) ? 18: 22,
                                   fontSize: isTablet(context) ? 12: 8,
+                                  limitOfChars: 700,
                                   onChange: ((value) {
                                     Reportes
                                         .impresionesDiagnosticas =

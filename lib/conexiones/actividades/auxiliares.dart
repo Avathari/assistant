@@ -338,16 +338,31 @@ class Archivos {
   }
 
   static Future deleteFile({required filePath}) async {
-
     if (Platform.isAndroid) {
-      final directory = await getTemporaryDirectory();
-      final File file = File("${directory.path}/$filePath");
+      Terminal.printWarning(message: "File to Delete $filePath");
+      // final directory = await getTemporaryDirectory();
+      // final File file = File("${directory.path}/$filePath");
+      final File file = File(filePath);
       if (await file.exists()) {
-        file.delete(recursive: true);
+        try {
+          await file.openRead().drain(); // Asegura que cualquier lectura se complete
+          file.deleteSync();
+          print('Archivo eliminado exitosamente');
+        } catch (e) {
+          print('Error al eliminar el archivo: $e');
+        } finally {
+          // Verifica si el archivo todavía existe
+          if (await file.exists()) {
+            print('El archivo todavía existe después de intentar eliminarlo.');
+          } else {
+            print('El archivo ha sido eliminado correctamente.');
+          }
+        }
       } else {
         final Directory appDir = await getApplicationDocumentsDirectory();
         // Crea la ruta del directorio que deseas eliminar
-        final Directory targetDir = Directory('${appDir.path}/$filePath');
+        // final Directory targetDir = Directory('${appDir.path}/$filePath');
+        final Directory targetDir = Directory(filePath);
 
         // Verifica si el directorio existe
         if (await targetDir.exists()) {
@@ -375,7 +390,6 @@ class Archivos {
         } else {
           throw "\x1B[31mEl Archivo $filePath no Existe\x1B[0m";
         }
-
       }
     }
     //
@@ -1146,11 +1160,12 @@ class Operadores {
     showDialog(
         context: context,
         builder: (context) {
-          return Dialogos.notifyDialog(tittle, message,
-              onAcept,
-          //         () {
-          //   Navigator.of(context).pop();
-          // }
+          return Dialogos.notifyDialog(
+            tittle, message,
+            onAcept,
+            //         () {
+            //   Navigator.of(context).pop();
+            // }
           );
         });
   }
@@ -1659,7 +1674,10 @@ class Dialogos {
           controller: ScrollController(),
           child: Column(
             children: [
-              CircularProgressIndicator(),
+              Transform.scale(
+                scale: 0.5,
+                child: CircularProgressIndicator(),
+              ),
               SizedBox(height: 20),
               Text(
                 msg.toString(),

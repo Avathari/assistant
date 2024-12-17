@@ -49,10 +49,12 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
       analisisTextController.text = "";
       tratamientoTextController.text = Reportes.tratamientoPropuesto;
     } else {
-      eventualidadesTextController.text = Reportes.eventualidadesOcurridas;
-      terapiasTextController.text = Reportes.terapiasPrevias;
-      analisisTextController.text = Reportes.analisisMedico;
-      tratamientoTextController.text = Reportes.tratamientoPropuesto;
+      // eventualidadesTextController.text = Reportes.eventualidadesOcurridas;
+      // terapiasTextController.text = Reportes.terapiasPrevias;
+      analisisTextController.text = Reportes.analisisMedico =
+      Reportes.reportes['Analisis_Terapia'] =
+      Reportes.reportes['Analisis_Medico'];
+      // tratamientoTextController.text = Reportes.tratamientoPropuesto;
 
       // Se reinicia Reportes.pendientes porque resulta acumulativo * * * * * * * * * * * * * * *
       Reportes.pendientes.clear();
@@ -171,11 +173,14 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                                         : 22,
                             onChange: ((value) {
                               setState(() {
-                                Reportes.analisisMedico = "$value.";
-                                Reportes.reportes['Analisis_Medico'] =
-                                    "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                                Reportes.reportes['Analisis_Terapia'] =
-                                    "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                                Reportes.analisisMedico =
+                                    Reportes.reportes['Analisis_Terapia'] =
+                                        Reportes.reportes['Analisis_Medico'] =
+                                            "$value.";
+                                // Reportes.reportes['Analisis_Medico'] =
+                                //     "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
+                                // Reportes.reportes['Analisis_Terapia'] =
+                                //     "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
                               });
                             }),
                             inputFormat: MaskTextInputFormatter()),
@@ -279,17 +284,18 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                           CircleIcon(
                               iconed: Icons.file_open_outlined,
                               tittle: "Memoria temporal . . . ",
-                              onChangeValue: () => _readFromFile()
-                                  .then((onValue) => Operadores.optionsActivity(context: context,
-                                  tittle: "Memoria temporal . . . ",
-                                  message: onValue.toString(),
-                                  onClose: ()=>Navigator.of(context).pop(),
-                                  textOptionA: "¿Sobre-escribir memoria?",
-                                  optionA: (){
-                                    analisisTextController.text = onValue;
-                                    Navigator.of(context).pop();
-                                  }
-                              ))),
+                              onChangeValue: () => _readFromFile().then(
+                                  (onValue) => Operadores.optionsActivity(
+                                      context: context,
+                                      tittle: "Memoria temporal . . . ",
+                                      message: onValue.toString(),
+                                      onClose: () =>
+                                          Navigator.of(context).pop(),
+                                      textOptionA: "¿Sobre-escribir memoria?",
+                                      optionA: () {
+                                        analisisTextController.text = onValue;
+                                        Navigator.of(context).pop();
+                                      }))),
                         ],
                       ))
                 ],

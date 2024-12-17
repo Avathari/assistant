@@ -105,13 +105,18 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
                                       labelEditText: "Impresiones diagnósticas",
                                       keyBoardType: TextInputType.multiline,
                                       numOfLines: 10,
+                                      limitOfChars: 700,
                                       onChange: ((value) {
                                         setState(() {
                                           Reportes
-                                              .impresionesDiagnosticas = Reportes
-                                                      .reportes[
-                                                  'Impresiones_Diagnosticas'] =
-                                              value;
+                                              .impresionesDiagnosticas =
+                                          Reportes
+                                              .reportes[
+                                          'Impresiones_Diagnosticas'] =
+                                          Reportes
+                                              .reportes[
+                                          'Diagnosticos_Hospital'] =
+                                          "$value.";
                                           // Terminal.printData(message: Reportes.impresionesDiagnosticas);
                                         });
                                       }),

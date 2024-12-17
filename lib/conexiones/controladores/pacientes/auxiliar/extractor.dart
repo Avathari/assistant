@@ -29,7 +29,6 @@ class AuxiliarExtractor {
     List listaArchivosSeleccionados = [];
 
     /// Aqui se agregan los Archivos que contienen algún valor, para posteriormente eliminarse.
-    //
     final filePickerResult =
         await Directorios.choiseSeveralFromInternalDocuments(context);
 
@@ -82,7 +81,7 @@ class AuxiliarExtractor {
                 if (partes[0].contains(value)) {
                   // Terminal.printSuccess(message: "${partes}");
                   // Terminal.printSuccess(message: "${partes.length}");
-                  Terminal.printExpected(message: "${partes} : : $value");
+                  // Terminal.printExpected(message: "${partes} : : $value");
                   if ((partes[0] == "HIVAb-Ag No reactivo" &&
                           value == "HIVAb-Ag No reactivo") ||
                       (partes[0] == "HIVAb-Ag Reactivo" &&
@@ -198,10 +197,10 @@ class AuxiliarExtractor {
                       //         "LISTA DE ARCHIVOS SELECCIONADOS : : $listado");
                       //
                       Listas.listWithoutRepitedValues(
-                          listaArchivosSeleccionados).forEach((filePath) {
-                        // Terminal.printExpected(message: filePath);
-                        Archivos.deleteFile(filePath: filePath)                        ;
-                      });
+                              listaArchivosSeleccionados)
+                          .forEach((filePath) =>
+                        Archivos.deleteFile(filePath: filePath)
+                      );
                       //
                       Navigator.of(context).pop();
                       Navigator.of(context).pop();

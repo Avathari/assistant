@@ -14,7 +14,7 @@ class GrandIcon extends StatefulWidget {
       this.labelButton = "message",
       this.weigth = 15,
       this.heigth = 15,
-        this.size = 28,
+        this.size = 32, // 28
       this.iconColor = Colors.grey,
       this.iconData = Icons.wallet,
       this.onLongPress,
@@ -29,6 +29,7 @@ class _GrandIconState extends State<GrandIcon> {
   Widget build(BuildContext context) {
     return Tooltip(
       message: widget.labelButton!,
+      // height: widget.heigth,
       child: GestureDetector(
         onLongPress: widget.onLongPress ?? () {
 

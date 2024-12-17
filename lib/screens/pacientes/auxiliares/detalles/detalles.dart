@@ -95,14 +95,12 @@ class _DetallesState extends State<Detalles> {
                           secondText: Pacientes.Paciente['Pace_Edo_Civ'] ?? '',
                         ),
                       ),
-                      Expanded(
-                        child: ThreeLabelTextAline(
-                          padding: 2.0,
-                          firstText: 'Ocupación',
-                          secondText: Pacientes.Paciente['Pace_Ocupa'].substring(0, Pacientes.Paciente['Pace_Ocupa'].length) ?? '',
-                        ),
-                      ),
                     ],
+                  ),
+                  ThreeLabelTextAline(
+                    padding: 2.0,
+                    firstText: 'Ocupación',
+                    secondText: Pacientes.Paciente['Pace_Ocupa'].substring(0, Pacientes.Paciente['Pace_Ocupa'].length) ?? '',
                   ),
                   ThreeLabelTextAline(
                     padding: 2.0,
