@@ -717,6 +717,41 @@ class Listas {
     return {...especiales, ...estudiosPresentes}.toList();
   }
 
+  /// Filtra los elementos de la lista Pacientes.Paraclinicos,
+  /// Si withEspeciales es false, entonces excluyendo aquellos cuyo Tipo_Estudio
+  /// que se encuentra en la lista Auxiliares.especiales.
+  /// Si withEspeciales es true, entonces incluyendo aquellos cuyo Tipo_Estudio
+  /// que se encuentra en la lista Auxiliares.especiales.
+  ///
+  /// Encuentra la fecha más reciente en la clave Fecha_Registro de los elementos restantes, y ordena de forma ascendente.
+  /// Devuelve un List<Map<String, dynamic>> siendo el primer valor el más reciente .
+  ///
+  static List filterAndFindRecent(
+      List paraclinicos, List especiales, {bool? withEspeciales = false}) {
+    // Filtrar los elementos excluyendo los `Tipo_Estudio` que están en `Auxiliares.especiales`
+    final filtered = paraclinicos.where((element) {
+      if (withEspeciales!) {
+        return especiales.contains(element['Tipo_Estudio']);
+      } else {
+        return !especiales.contains(element['Tipo_Estudio']);
+      }
+    }).toList();
+
+    if (filtered.isEmpty) {
+      return []; // Retornar vacío si no hay elementos que cumplan la condición
+    }
+
+    // Encontrar la fecha más reciente
+    filtered.sort((a, b) {
+      final dateA = DateTime.parse(a['Fecha_Registro']);
+      final dateB = DateTime.parse(b['Fecha_Registro']);
+      return dateB.compareTo(dateA);
+    });
+
+    // Retornar la lista filtrada y ordenada (el primero es el más reciente)
+    return filtered;
+  }
+
   static List compareOneListWithAnother(List primeraLista, List listaBase) {
     List aux = [];
     for (var element in listaBase) {

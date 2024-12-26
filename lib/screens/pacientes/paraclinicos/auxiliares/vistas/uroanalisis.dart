@@ -551,7 +551,7 @@ class _UroanalisisState extends State<Uroanalisis> {
       Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
   var textAspectoResultController = TextEditingController();
   String? unidadMedidaAspecto =
-      Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
+      Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
   var textPhResultController = TextEditingController();
   String? unidadMedidaPh =
   Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
@@ -565,7 +565,7 @@ class _UroanalisisState extends State<Uroanalisis> {
   Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
   var textProteinasResultController = TextEditingController();
   String? unidadMedidaProteinas =
-  Auxiliares.Medidas[Auxiliares.Categorias[index]][2];
+  Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
   var textUrobilinogenoResultController = TextEditingController();
   String? unidadMedidaUrobilinogeno =
   Auxiliares.Medidas[Auxiliares.Categorias[index]][2];
@@ -577,7 +577,7 @@ class _UroanalisisState extends State<Uroanalisis> {
   Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
   var textGlucosaResultController = TextEditingController();
   String? unidadMedidaGlucosa =
-  Auxiliares.Medidas[Auxiliares.Categorias[index]][2];
+  Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
   var textEsterasaLeucocitariaResultController = TextEditingController();
   String? unidadMedidaEsterasaLeucocitaria =
   Auxiliares.Medidas[Auxiliares.Categorias[index]][3];
@@ -587,12 +587,12 @@ class _UroanalisisState extends State<Uroanalisis> {
 
   var textLeucocitosResultController = TextEditingController();
   String? unidadMedidaLeucocitos =
-  Auxiliares.Medidas[Auxiliares.Categorias[index]][1];
+  Auxiliares.Medidas[Auxiliares.Categorias[index]][3];
   var textEritrocitosResultController = TextEditingController();
   String? unidadMedidaEritrocitos = Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
   var textCelulasEpitelialesResultController = TextEditingController();
   String? unidadMedidaCelulasEpiteliales =
-  Auxiliares.Medidas[Auxiliares.Categorias[index]][2];
+  Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
   var textBacteriasResultController = TextEditingController();
   String? unidadMedidaBacterias = Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
   var textLevadurasResultController = TextEditingController();
@@ -600,7 +600,7 @@ class _UroanalisisState extends State<Uroanalisis> {
   Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
   var textCilindrosResultController = TextEditingController();
   String? unidadMedidaCilindros =
-  Auxiliares.Medidas[Auxiliares.Categorias[index]][2];
+  Auxiliares.Medidas[Auxiliares.Categorias[index]][0];
 
   var textUratosResultController = TextEditingController();
   String? unidadMedidaUratos =

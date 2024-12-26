@@ -1,12 +1,9 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
-import 'package:assistant/operativity/pacientes/valores/semiologia/semiotica.dart';
 import 'package:assistant/screens/pacientes/auxiliares/detalles/menus.dart';
-import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/semiologicos.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/terapias.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
@@ -49,7 +46,7 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
     setState(() {
       expoTextController.text =
           Reportes.exploracionFisica = Reportes.reportes['Exploracion_Fisica'];
-      vitalTextController.text = Reportes.signosVitales;
+      vitalTextController.text = Reportes.signosVitales  = Reportes.reportes['Signos_Vitales'];
     });
     //
     _timer = Timer.periodic(
@@ -156,11 +153,10 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                               : isMobile(context)
                                   ? 80
                                   : 20,
-                      onChange: ((value) => setState(() {
-                            // expoTextController.text =
-                            Reportes.reportes['Exploracion_Fisica'] =
-                                Reportes.exploracionFisica = value;
-                          })),
+                      onChange: ((value) => setState(() =>
+                      expoTextController.text = Reportes.exploracionFisica =
+                              Reportes.reportes['Exploracion_Fisica'] =
+                                  value)), //
                       inputFormat: MaskTextInputFormatter()),
                 ),
                 widget.isTerapia!
@@ -172,7 +168,6 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                               padding: const EdgeInsets.all(8.0),
                               child: Menus.popUpTerapia(context),
                             ),
-
                             Row(
                               children: [
                                 Expanded(
@@ -314,7 +309,6 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
     ]);
   }
 
-
   mobileExploreOptions() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -322,19 +316,18 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
         CircleIcon(
             iconed: Icons.file_open_outlined,
             tittle: "Memoria temporal . . . ",
-            onChangeValue: () => _readFromFile()
-                .then((onValue) => Operadores.optionsActivity(context: context,
-                tittle: "Memoria temporal . . . ",
-                message: onValue.toString(),
-                onClose: ()=>Navigator.of(context).pop(),
-                textOptionA: "¿Sobre-escribier memoria?",
-                optionA: (){
-                  expoTextController.text = onValue;
-                  Navigator.of(context).pop();
-                }
-            ))),
+            onChangeValue: () =>
+                _readFromFile().then((onValue) => Operadores.optionsActivity(
+                    context: context,
+                    tittle: "Memoria temporal . . . ",
+                    message: onValue.toString(),
+                    onClose: () => Navigator.of(context).pop(),
+                    textOptionA: "¿Sobre-escribier memoria?",
+                    optionA: () {
+                      expoTextController.text = onValue;
+                      Navigator.of(context).pop();
+                    }))),
         otherExploreOptions(context),
-
       ],
     );
   }
@@ -395,70 +388,189 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
   }
 
   mobileSignalOptions() {
-    return Expanded(
-      flex: isLargeDesktop(context)
-          ? 3
-          : isMobile(context)
-              ? 2
-              : 1,
-      child: Wrap(
-        direction: isLargeDesktop(context) ? Axis.horizontal : Axis.horizontal,
-        alignment: WrapAlignment.spaceBetween,
-        spacing: 10,
-        runSpacing: 6,
-        children: [
-          GrandIcon(
-            iconData: Icons.safety_divider,
-            labelButton: "Vitales",
-            onPress: () => setState(() {
-              asignarVitales(indice: 0);
-            }),
+    return PopupMenuButton<int>(
+      tooltip: "Signos vitales basado en utilidades . . . ",
+      icon: const Icon(Icons.panorama_fish_eye),
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          value: 1,
+          onTap: () => asignarVitales(indice: 0),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 2.0),
+            child: ListTile(
+                leading: Icon(
+                  Icons.explore,
+                ),
+                title: Text(
+                  "Vitales",
+                  style: Styles.textSyleGrowth(fontSize: 8),
+                )),
           ),
-          GrandIcon(
-            iconData: Icons.monitor_weight_outlined,
-            labelButton: "Bioconstantes",
-            onPress: () => setState(() {
-              asignarVitales(indice: 1);
-            }),
+        ),
+        PopupMenuItem(
+          value: 1,
+          onTap: () => asignarVitales(indice: 1),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 2.0),
+            child: ListTile(
+                leading: Icon(
+                  Icons.monitor_weight_outlined,
+                ),
+                title: Text(
+                  "Bioconstantes",
+                  style: Styles.textSyleGrowth(fontSize: 8),
+                )),
           ),
-          GrandIcon(
-            iconData: Icons.monitor_heart_outlined,
-            labelButton: "Signos vitales",
-            onPress: () => setState(() {
-              asignarVitales(indice: 2);
-            }),
+        ),
+        PopupMenuItem(
+          value: 1,
+          onTap: () => asignarVitales(indice: 2),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 2.0),
+            child: ListTile(
+                leading: Icon(
+                  Icons.monitor_heart_outlined,
+                ),
+                title: Text(
+                  "Signos vitales",
+                  style: Styles.textSyleGrowth(fontSize: 8),
+                )),
           ),
-          GrandIcon(
-            iconData: Icons.mic_external_on,
-            labelButton: "Medidas antropométricas",
-            onPress: () => setState(() {
-              asignarVitales(indice: 3);
-            }),
+        ),
+        PopupMenuItem(
+          value: 1,
+          onTap: () => asignarVitales(indice: 3),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 2.0),
+            child: ListTile(
+                leading: Icon(
+                  Icons.mic_external_on,
+                ),
+                title: Text(
+                  "Medidas antropométricas",
+                  style: Styles.textSyleGrowth(fontSize: 8),
+                )),
           ),
-          GrandIcon(
-            iconData: Icons.align_horizontal_right_sharp,
-            labelButton: "Asociado a Riesgo",
-            onPress: () => setState(() {
-              asignarVitales(indice: 4);
-            }),
+        ),
+        PopupMenuItem(
+          value: 1,
+          onTap: () => setState(() {
+            asignarVitales(indice: 4);
+          }),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 2.0),
+            child: ListTile(
+                leading: Icon(
+                  Icons.align_horizontal_right_sharp,
+                ),
+                title: Text(
+                  "Asociado a Riesgo",
+                  style: Styles.textSyleGrowth(fontSize: 8),
+                )),
           ),
-          GrandIcon(
-            iconData: Icons.line_weight,
-            labelButton: "Antropometría infantil",
-            onPress: () => setState(() {
-              asignarVitales(indice: 5);
-            }),
+        ),
+        PopupMenuItem(
+          value: 1,
+          onTap: () => asignarVitales(indice: 5),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 2.0),
+            child: ListTile(
+                leading: Icon(
+                  Icons.line_weight,
+                ),
+                title: Text(
+                  "Antropometría infantil",
+                  style: Styles.textSyleGrowth(fontSize: 8),
+                )),
           ),
-          GrandIcon(
-            iconData: Icons.accessibility,
-            labelButton: "Vitales Resumido",
-            onPress: () => setState(() {
-              asignarVitales(indice: 6);
-            }),
+        ),
+        PopupMenuItem(
+          value: 1,
+          onTap: () => setState(() {
+            asignarVitales(indice: 6);
+          }),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 2.0),
+            child: ListTile(
+                leading: Icon(
+                  Icons.accessibility,
+                ),
+                title: Text(
+                  "Vitales Resumido",
+                  style: Styles.textSyleGrowth(fontSize: 8),
+                )),
           ),
-        ],
-      ),
+        ),
+      ],
+      offset: const Offset(0, 100),
+      color: Theming.cuaternaryColor,
+      elevation: 1,
     );
+    //
+    // return Expanded(
+    //   flex: isLargeDesktop(context)
+    //       ? 3
+    //       : isMobile(context)
+    //           ? 2
+    //           : 1,
+    //   child: Wrap(
+    //     direction: isLargeDesktop(context) ? Axis.horizontal : Axis.horizontal,
+    //     alignment: WrapAlignment.spaceBetween,
+    //     spacing: 10,
+    //     runSpacing: 6,
+    //     children: [
+    //       GrandIcon(
+    //         iconData: Icons.safety_divider,
+    //         labelButton: "Vitales",
+    //         onPress: () => setState(() {
+    //           asignarVitales(indice: 0);
+    //         }),
+    //       ),
+    //       GrandIcon(
+    //         iconData: Icons.,
+    //         labelButton: "",
+    //         onPress: () => setState(() {
+    //           asignarVitales(indice: 1);
+    //         }),
+    //       ),
+    //       GrandIcon(
+    //         iconData: Icons.,
+    //         labelButton: "Signos vitales",
+    //         onPress: () => setState(() {
+    //           asignarVitales(indice: 2);
+    //         }),
+    //       ),
+    //       GrandIcon(
+    //         iconData: Icons.,
+    //         labelButton: "",
+    //         onPress: () => setState(() {
+    //           asignarVitales(indice: 3);
+    //         }),
+    //       ),
+    //       GrandIcon(
+    //         iconData: Icons.,
+    //         labelButton: "",
+    //         onPress: () => setState(() {
+    //           asignarVitales(indice: 4);
+    //         }),
+    //       ),
+    //       GrandIcon(
+    //         iconData: Icons.,
+    //         labelButton: "",
+    //         onPress: () => setState(() {
+    //           asignarVitales(indice: 5);
+    //         }),
+    //       ),
+    //       GrandIcon(
+    //         iconData: Icons.,
+    //         labelButton: "",
+    //         onPress: () => setState(() {
+    //           asignarVitales(indice: 6);
+    //         }),
+    //       ),
+    //     ],
+    //   ),
+    // );
   }
 
   //
@@ -575,6 +687,23 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
           value: 1,
           onTap: () => setState(() {
             asignarExploracion(indice: 0);
+          }),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 2.0),
+            child: ListTile(
+                leading: Icon(
+                  Icons.explore,
+                ),
+                title: Text(
+                  "Exploración al Egreso",
+                  style: Styles.textSyleGrowth(fontSize: 8),
+                )),
+          ),
+        ),
+        PopupMenuItem(
+          value: 1,
+          onTap: () => setState(() {
+            asignarExploracion(indice: 6);
           }),
           child: Padding(
             padding: const EdgeInsets.only(left: 2.0),

@@ -11,6 +11,8 @@ class Hitoshospitalarios extends StatefulWidget {
   String analisisTemporalFile =
       "${Pacientes.localReportsPath}hitosHospitlarios.txt";
 
+  double? fontSize = 14.0;
+
   Hitoshospitalarios({super.key});
 
   @override
@@ -48,19 +50,34 @@ class _HitoshospitalariosState extends State<Hitoshospitalarios> {
           inputFormat: MaskTextInputFormatter());
     } else {
       return Row(
+
         children: [
-          Expanded(flex: 2,
+          Expanded(flex: 4,
               child: EditTextArea(
       textController: hitosTextController,
           labelEditText: "Hitos de la Hospitalización",
           keyBoardType: TextInputType.multiline,
           numOfLines: 25,
           limitOfChars: 3000,
+          fontSize: widget.fontSize!,
           withShowOption: true,
           onSelected: ()=>_readFromFile(),
           onChange: (value) => Reportes.hitosHospitalarios = Reportes.reportes['Hitos_Hospitalarios']= value,
           inputFormat: MaskTextInputFormatter())),
-          Expanded(child: Container()),
+          Expanded(flex: 2,
+              child: Container()),
+          Expanded(
+            child: RotatedBox(
+              quarterTurns: 1,
+              child: Slider(
+                  label: widget.fontSize!.toString(),
+                  min: 2,
+                  max: 20,
+                  value: widget.fontSize!,
+                  onChanged: (double value) =>
+                      setState(() => widget.fontSize = value)),
+            ),
+          ),
         ],
       );
     }

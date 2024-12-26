@@ -58,7 +58,10 @@ class Antropometrias {
       "Temp ${Valores.temperaturCorporal}°C, "
       "SpO2 ${Valores.saturacionPerifericaOxigeno}%, "
       "PCT ${Valores.pesoCorporalTotal} Kg, "
-      "Estatura ${Valores.alturaPaciente} mts";
+      "Estatura ${Valores.alturaPaciente} mts. "
+      "IMC ${Antropometrias.imc.toStringAsFixed(2)} Kg/m2, "
+      "PCI ${Antropometrias.pesoCorporalPredicho.toStringAsFixed(2)} Kg . . "
+      "";
 
   static String get vitalesTerapiaAbreviado =>
       "TA ${Valores.tensionArterialSistemica} mmHg, "

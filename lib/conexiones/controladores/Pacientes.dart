@@ -875,6 +875,8 @@ class Pacientes {
             "GENITALES de acuerdo a edad y sexo, a la inspección sin datos de secreciones. Tacto rectal colocado en decúbito lateral izquierdo, sin presencia de úlceras, fístulas, tumoraciones, hemorroides o estenosis, presenta adecuado tono muscular tanto de anillo inferior como superior, sin induraciones en la próstata, abarca 2 cm en su plano longitudinal. \n"
             "COLUMNA sin limitación a los movimientos pasivos, con dificultad para incorporar en sedestación, sin control del fuerza troncal, sin embargo, mantiene en sedestación al ser auxiliado. Cuerpos vertebrales íntegros a la palpación, en lo que respecta a la apófisis espinosa";
       case 6:
+        return "Neurológico íntegro, cardiopulmonar sin compromiso, sin integrar sindrome pleuropulmonar; abdomen sin alteraciones, euperístole, análgico; extremidades sin paresias ni parestesias";
+      case 7:
         return "";
       default:
         return Reportes.exploracionFisica;
@@ -6356,11 +6358,15 @@ class Auxiliares {
     "Depuración de Orina de 24 Horas", // 12
     "Aspirado de Médula Ósea",
     "Carga Viral",
+    "Gasometría Arterial",
+    "Gasometría Venosa",
+    "Reactantes de Fase Aguda",
     "Conteo de Linfocitos T CD4+", // 17
     // "Marcadores Cárdiacos", // 18
     "Cultivos", // 19
     "Panel Viral", // 20
     "Perfil de Hierro",
+    "Otros",
     "Inmunológicos",
   ];
   static List cultivos = [
@@ -6593,14 +6599,18 @@ class Auxiliares {
 
     var fechar = Listas.listWithoutRepitedValues(
       Listas.listFromMapWithOneKey(
-        Pacientes.Paraclinicos!,
+        // Pacientes.Paraclinicos!,
+        Listas.filterAndFindRecent(
+            Pacientes.Paraclinicos!, Auxiliares.especiales),
         keySearched: 'Fecha_Registro',
       ),
     );
+
     if (fechar.isNotEmpty) {
       if (fechar.first.isNotEmpty) {
         if (esAbreviado) {
           List<dynamic>? alam = Pacientes.Paraclinicos!;
+          //
           var aux = alam
               .where((user) => user["Fecha_Registro"].contains(fechar.first))
               .toList();
@@ -6608,11 +6618,15 @@ class Auxiliares {
 
           for (var element in aux) {
             // ***************************** *****************
-            if (element['Tipo_Estudio'] != "Examen General de Orina" ||
-                element['Tipo_Estudio'] != "Depuración de Orina de 24 Horas" ||
-                element['Tipo_Estudio'] != "Líquido de Diálisis Peritoneal" ||
+            if (element['Tipo_Estudio'] != "Examen General de Orina" &&
+                element['Tipo_Estudio'] != "Depuración de Orina de 24 Horas" &&
+                element['Tipo_Estudio'] != "Líquido de Diálisis Peritoneal" &&
+                element['Tipo_Estudio'] != "Gasometría Arterial" &&
+                element['Tipo_Estudio'] != "Gasometría Venosa" &&
+                element['Tipo_Estudio'] != "Reactantes de Fase Aguda" &&
+                element['Tipo_Estudio'] != "Cultivos" &&
                 element['Tipo_Estudio'] !=
-                    "Citoquímico de Líquido Cefalorraquídeo" ||
+                    "Citoquímico de Líquido Cefalorraquídeo" &&
                 element['Tipo_Estudio'] !=
                     "Citológico de Líquido Cefalorraquídeo") {
               if (max == "") {
@@ -6624,7 +6638,10 @@ class Auxiliares {
               }
             }
           }
-          prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+          // COMPROBACIÓN
+          if (max != "") {
+            prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+          }
         } else if (withoutInsighs) {
           List<dynamic>? alam = Pacientes.Paraclinicos!;
           var aux = alam
@@ -6634,11 +6651,15 @@ class Auxiliares {
 
           for (var element in aux) {
             // ***************************** *****************
-            if (element['Tipo_Estudio'] != "Examen General de Orina" ||
-                element['Tipo_Estudio'] != "Depuración de Orina de 24 Horas" ||
-                element['Tipo_Estudio'] != "Líquido de Diálisis Peritoneal" ||
+            if (element['Tipo_Estudio'] != "Examen General de Orina" &&
+                element['Tipo_Estudio'] != "Depuración de Orina de 24 Horas" &&
+                element['Tipo_Estudio'] != "Líquido de Diálisis Peritoneal" &&
+                element['Tipo_Estudio'] != "Gasometría Arterial" &&
+                element['Tipo_Estudio'] != "Gasometría Venosa" &&
+                element['Tipo_Estudio'] != "Reactantes de Fase Aguda" &&
+                element['Tipo_Estudio'] != "Cultivos" &&
                 element['Tipo_Estudio'] !=
-                    "Citoquímico de Líquido Cefalorraquídeo" ||
+                    "Citoquímico de Líquido Cefalorraquídeo" &&
                 element['Tipo_Estudio'] !=
                     "Citológico de Líquido Cefalorraquídeo") {
               if (max == "") {
@@ -6650,7 +6671,10 @@ class Auxiliares {
               }
             }
           }
-          prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+          // COMPROBACIÓN
+          if (max != "") {
+            prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+          }
         } else {
           List<dynamic>? alam = Pacientes.Paraclinicos!;
           var aux = alam
@@ -6660,11 +6684,15 @@ class Auxiliares {
 
           for (var element in aux) {
             // ***************************** *****************
-            if (element['Tipo_Estudio'] != "Examen General de Orina" ||
-                element['Tipo_Estudio'] != "Depuración de Orina de 24 Horas" ||
-                element['Tipo_Estudio'] != "Líquido de Diálisis Peritoneal" ||
+            if (element['Tipo_Estudio'] != "Examen General de Orina" &&
+                element['Tipo_Estudio'] != "Depuración de Orina de 24 Horas" &&
+                element['Tipo_Estudio'] != "Líquido de Diálisis Peritoneal" &&
+                element['Tipo_Estudio'] != "Gasometría Arterial" &&
+                element['Tipo_Estudio'] != "Gasometría Venosa" &&
+                element['Tipo_Estudio'] != "Reactantes de Fase Aguda" &&
+                element['Tipo_Estudio'] != "Cultivos" &&
                 element['Tipo_Estudio'] !=
-                    "Citoquímico de Líquido Cefalorraquídeo" ||
+                    "Citoquímico de Líquido Cefalorraquídeo" &&
                 element['Tipo_Estudio'] !=
                     "Citológico de Líquido Cefalorraquídeo") {
               if (max == "") {
@@ -6676,7 +6704,10 @@ class Auxiliares {
               }
             }
           }
-          prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+          // COMPROBACIÓN
+          if (max != "") {
+            prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+          }
         }
       }
     }
@@ -6904,100 +6935,179 @@ class Auxiliares {
     return prosa;
   }
 
-  static String getEspeciales({
-    bool esAbreviado = true,
-  }) {
+  static String getEspeciales(
+      {bool esAbreviado = true, bool withoutInsighs = false}) {
     String prosa = "";
 
     var fechar = Listas.listWithoutRepitedValues(
       Listas.listFromMapWithOneKey(
-        Pacientes.Paraclinicos!,
+        // Pacientes.Paraclinicos!,
+        Listas.filterAndFindRecent(
+            Pacientes.Paraclinicos!, Auxiliares.especiales,
+            withEspeciales: true),
         keySearched: 'Fecha_Registro',
       ),
     );
-    try {
-      if (fechar.first.isNotEmpty) {
-        List<dynamic>? alam = Pacientes.Paraclinicos!;
-        var aux = alam
-            .where((user) => user["Fecha_Registro"].contains(fechar.first))
-            .toList();
-        String max = "";
 
-        // ***************************** *****************
+    Terminal.printExpected(message: fechar.toString());
 
-        var estudiosPresentes = Listas.listWithoutRepitedValues(
-          Listas.listFromMapWithOneKey(
-            aux,
-            keySearched: 'Tipo_Estudio',
-          ),
-        );
-        // Terminal.printSuccess(message: "presentes: $estudiosPresentes");
-        String fecha = "";
-        int counter = 0, distancia = aux.length;
+    if (fechar.isNotEmpty) {
+      for (var fecha in fechar) {
+        var aux = Pacientes.Paraclinicos!
+            .where((user) => user["Fecha_Registro"].contains(fecha));
+        String fechado = "          .          Paraclínicos (${fecha})",
+            max = "";
         //
-        var newList = Listas.compareOneListWithAnother(
-            estudiosPresentes, Auxiliares.especiales);
-        // Terminal.printSuccess(message: "newList: $newList");
-        //
-        for (var elem in newList) {
-          aux
-              .where((element) => element["Tipo_Estudio"].contains(elem))
-              .forEach((eacher) {
-            fecha = "          ${eacher['Tipo_Estudio']} (${fechar.first}) - ";
-            // Terminal.printExpected(message: "eacher: ${counter} : : $distancia");
-            if (counter != distancia) {
-              if (eacher['Unidad_Medida'] != '') {
-                max =
-                    "$max, ${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
-                    "${eacher['Resultado']} ${eacher['Unidad_Medida']}";
-              } else {
-                // print("${eacher['Resultado']}, ${eacher['Tipo_Estudio']}, ${eacher['Estudio']} ${eacher['Unidad_Medida']}");
-                max =
-                    "$max, ${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
-                    "${eacher['Resultado']}";
-              }
+        for (var element in aux) {
+          Terminal.printExpected(
+              message: "$fecha : " + element['Tipo_Estudio']);
+          // Terminal.printExpected(message: "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}");
+
+          // ***************************** *****************
+          if (element['Tipo_Estudio'] == "Examen General de Orina" ||
+              element['Tipo_Estudio'] == "Depuración de Orina de 24 Horas" ||
+              element['Tipo_Estudio'] == "Líquido de Diálisis Peritoneal" ||
+              element['Tipo_Estudio'] == "Gasometría Arterial" ||
+              element['Tipo_Estudio'] == "Gasometría Venosa" ||
+              element['Tipo_Estudio'] == "Reactantes de Fase Aguda" ||
+              // element['Tipo_Estudio'] == "Cultivos" ||
+              element['Tipo_Estudio'] == "Tiempos de Coagulación" ||
+              element['Tipo_Estudio'] ==
+                  "Citoquímico de Líquido Cefalorraquídeo" ||
+              element['Tipo_Estudio'] ==
+                  "Citológico de Líquido Cefalorraquídeo") {
+            if (element['Unidad_Medida'] != "") {
+              max =
+                  "$max${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} "
+                  "${element['Resultado']} ${element['Unidad_Medida']}, ";
             } else {
-              if (eacher['Unidad_Medida'] != '') {
-                max =
-                    "$max, ${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
-                    "${eacher['Resultado']} ${eacher['Unidad_Medida']}";
-              } else {
-                max =
-                    "$max${Auxiliares.abreviado(tipoEstudio: eacher['Tipo_Estudio'], estudio: eacher['Estudio'])} "
-                    "${eacher['Resultado']}";
-              }
+              max =
+                  "$max${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} "
+                  "${element['Resultado']}, ";
             }
-          });
-          prosa = "$prosa$fecha${max.replaceFirst(", ", "")}. \n";
-          //
-          max = "";
-          counter = counter++;
+          }
+
+          // if (max == "") {
+          //   max =
+          //   "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+          // } else {
+          //   max =
+          //   "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+          // }
+          // }
         }
-        //
-        // for (var element in estudiosPresentes) {
-        //   // ***************************** *****************
-        //   if (element['Tipo_Estudio'] == "Examen General de Orina" || element['Tipo_Estudio'] == "Depuración de Orina de 24 Horas"
-        //       || element['Tipo_Estudio'] == "Líquido de Diálisis Peritoneal" || element['Tipo_Estudio'] == "Citoquímico de Líquido Cefalorraquídeo"
-        //       || element['Tipo_Estudio'] == "Citológico de Líquido Cefalorraquídeo") {
-        //     if (max == "") {
-        //       max =
-        //       "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
-        //     } else {
-        //       max =
-        //       "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
-        //     }
-        //   }
-        // }
-        // prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
-      } else {
-        prosa = "";
+        // COMPROBACIÓN
+
+        prosa = "$prosa$fechado: ${Sentences.capitalize(max)}\n";
       }
-    } on Exception catch (e, s) {
-      // Operadores.alertActivity(context: Contextos.contexto,
-      // tittle: "ERROR : $e",
-      // message: "$s");
-      Terminal.printAlert(
-          message: "ERROR al Conformar Estudios Especiales : : $e : $s");
+
+      // if (fechar.first.isNotEmpty) {
+      //   if (esAbreviado) {
+      //     List<dynamic>? alam = Pacientes.Paraclinicos!;
+      //     //
+      //     var aux = alam
+      //         .where((user) => user["Fecha_Registro"].contains(fechar.first))
+      //         .toList();
+      //     String fecha = "          Paraclínicos (${fechar.first})", max = "";
+      //
+      //     for (var element in aux) {
+      //       Terminal.printExpected(message: element['Tipo_Estudio']);
+      //       // ***************************** *****************
+      //       // if (element['Tipo_Estudio'] == "Examen General de Orina" ||
+      //       //     element['Tipo_Estudio'] == "Depuración de Orina de 24 Horas" ||
+      //       //     element['Tipo_Estudio'] == "Líquido de Diálisis Peritoneal" ||
+      //       //     element['Tipo_Estudio'] == "Gasometría Arterial" ||
+      //       //     element['Tipo_Estudio'] == "Gasometría Venosa" ||
+      //       //     element['Tipo_Estudio'] == "Reactantes de Fase Aguda" ||
+      //       //     element['Tipo_Estudio'] == "Cultivos" ||
+      //       //     element['Tipo_Estudio'] ==
+      //       //         "Citoquímico de Líquido Cefalorraquídeo" ||
+      //       //     element['Tipo_Estudio'] ==
+      //       //         "Citológico de Líquido Cefalorraquídeo") {
+      //
+      //         if (max == "") {
+      //           max =
+      //           "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+      //         } else {
+      //           max =
+      //           "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+      //         }
+      //       // }
+      //     }
+      //     // COMPROBACIÓN
+      //     if (max == "") {
+      //       prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+      //     }
+      //   }
+      //   // else if (withoutInsighs) {
+      //   //   List<dynamic>? alam = Pacientes.Paraclinicos!;
+      //   //   var aux = alam
+      //   //       .where((user) => user["Fecha_Registro"].contains(fechar.first))
+      //   //       .toList();
+      //   //   String fecha = "          Paraclínicos (${fechar.first})", max = "";
+      //   //
+      //   //   for (var element in aux) {
+      //   //     // ***************************** *****************
+      //   //     if (element['Tipo_Estudio'] == "Examen General de Orina" ||
+      //   //         element['Tipo_Estudio'] == "Depuración de Orina de 24 Horas" ||
+      //   //         element['Tipo_Estudio'] == "Líquido de Diálisis Peritoneal" ||
+      //   //         element['Tipo_Estudio'] == "Gasometría Arterial" ||
+      //   //         element['Tipo_Estudio'] == "Gasometría Venosa" ||
+      //   //         element['Tipo_Estudio'] == "Reactantes de Fase Aguda" ||
+      //   //         element['Tipo_Estudio'] == "Cultivos" ||
+      //   //         element['Tipo_Estudio'] ==
+      //   //             "Citoquímico de Líquido Cefalorraquídeo" ||
+      //   //         element['Tipo_Estudio'] ==
+      //   //             "Citológico de Líquido Cefalorraquídeo") {
+      //   //       if (max == "") {
+      //   //         max =
+      //   //         "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
+      //   //       } else {
+      //   //         max =
+      //   //         "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
+      //   //       }
+      //   //     }
+      //   //   }
+      //   //   // COMPROBACIÓN
+      //   //   if (max == "") {
+      //   //     prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+      //   //   }
+      //   // } else {
+      //   //   List<dynamic>? alam = Pacientes.Paraclinicos!;
+      //   //   var aux = alam
+      //   //       .where((user) => user["Fecha_Registro"].contains(fechar.first))
+      //   //       .toList();
+      //   //   String fecha = "          Paraclínicos (${fechar.first})", max = "";
+      //   //
+      //   //   for (var element in aux) {
+      //   //     // ***************************** *****************
+      //   //     if (element['Tipo_Estudio'] == "Examen General de Orina" ||
+      //   //         element['Tipo_Estudio'] == "Depuración de Orina de 24 Horas" ||
+      //   //         element['Tipo_Estudio'] == "Líquido de Diálisis Peritoneal" ||
+      //   //         element['Tipo_Estudio'] == "Gasometría Arterial" ||
+      //   //         element['Tipo_Estudio'] == "Gasometría Venosa" ||
+      //   //         element['Tipo_Estudio'] == "Reactantes de Fase Aguda" ||
+      //   //         element['Tipo_Estudio'] == "Cultivos" ||
+      //   //         element['Tipo_Estudio'] ==
+      //   //             "Citoquímico de Líquido Cefalorraquídeo" ||
+      //   //         element['Tipo_Estudio'] ==
+      //   //             "Citológico de Líquido Cefalorraquídeo") {
+      //   //       Terminal.printExpected(message: element['Tipo_Estudio']);
+      //   //       if (max == "") {
+      //   //         max =
+      //   //         "${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+      //   //       } else {
+      //   //         max =
+      //   //         "$max, ${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+      //   //       }
+      //   //     }
+      //   //   }
+      //   //   // COMPROBACIÓN
+      //   //   if (max == "") {
+      //   //     prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+      //   //   }
+      //   // }
+      // }
     }
     // ************** ***************** ***************
     return prosa;
@@ -7006,34 +7116,49 @@ class Auxiliares {
   static String getCultivos({
     bool esAbreviado = true,
   }) {
-    String prosa = "", max = "", fecha = "";
+    String prosa = "";
 
-    // ***************************** *****************
-    var estudiosPresentes = Listas.listWithoutRepitedValues(
+    var fechar = Listas.listWithoutRepitedValues(
       Listas.listFromMapWithOneKey(
-        Pacientes.Paraclinicos!,
-        keySearched: 'Estudio',
+        // Pacientes.Paraclinicos!,
+        Listas.filterAndFindRecent(Pacientes.Paraclinicos!, ["Cultivos"],
+            withEspeciales: true),
+        keySearched: 'Fecha_Registro',
       ),
     );
-    // Terminal.printSuccess(message: "presentes: ${estudiosPresentes}");
-    var newList = Listas.compareOneListWithAnother(
-        estudiosPresentes, Auxiliares.cultivos);
-    // Terminal.printSuccess(message: "newList: ${newList}");
-    //
-    for (var elem in newList) {
-      Pacientes.Paraclinicos!
-          .where((element) => element["Estudio"].contains(elem))
-          .forEach((eacher) {
-        fecha =
-            "          ${eacher['Estudio']} (${eacher['Fecha_Registro']}) - ";
-        // Terminal.printExpected(message: "eacher: ${eacher}");
-        max = "$max${eacher['Resultado']}, ";
-      });
-      //
-      prosa = "$prosa$fecha$max. \n";
-      max = "";
-    }
 
+    Terminal.printExpected(message: fechar.toString());
+
+    if (fechar.isNotEmpty) {
+      for (var fecha in fechar) {
+        var aux = Pacientes.Paraclinicos!
+            .where((user) => user["Fecha_Registro"].contains(fecha));
+        String fechado = "          .          Paraclínicos (${fecha})",
+            max = "";
+        //
+        for (var element in aux) {
+          Terminal.printExpected(
+              message: "$fecha : " + element['Tipo_Estudio']);
+          // Terminal.printExpected(message: "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}");
+
+          // ***************************** *****************
+          if (element['Tipo_Estudio'] == "Cultivos") {
+            if (element['Unidad_Medida'] != "") {
+              max =
+                  "$max${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} "
+                  "${element['Resultado']} ${element['Unidad_Medida']}, ";
+            } else {
+              max =
+                  "$max${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} "
+                  "${element['Resultado']}, ";
+            }
+          }
+        }
+        // COMPROBACIÓN
+
+        prosa = "$prosa$fechado: ${Sentences.capitalize(max)}\n";
+      }
+    }
     // ************** ***************** ***************
     return prosa;
   }
@@ -7250,6 +7375,12 @@ class Auxiliares {
             return 'SaO2';
           } else if (estudio == 'Fracción Inspiratoria de Oxígeno') {
             return 'FiO2';
+          } else if (estudio == 'Calcio Ionico') {
+            return 'Ca++';
+          } else if (estudio == 'Potasio Arterial') {
+            return 'aK+';
+          } else if (estudio == 'Ácido Láctico') {
+            return 'Lact--';
           } else {
             return estudio;
           }
@@ -7266,6 +7397,12 @@ class Auxiliares {
             return 'SvO2';
           } else if (estudio == 'Fracción Inspiratoria de Oxígeno') {
             return 'FiO2';
+          } else if (estudio == 'Calcio Ionico') {
+            return 'Ca++';
+          } else if (estudio == 'Potasio Arterial') {
+            return 'aK+';
+          } else if (estudio == 'Ácido Láctico') {
+            return 'Lact--';
           } else {
             return estudio;
           }
@@ -7284,7 +7421,7 @@ class Auxiliares {
         } else if (estudio == 'Densidad Urinaria') {
           return 'densidad';
         } else if (estudio == 'Proteinas Urinarias') {
-          return 'proteinas';
+          return 'proteinuria';
         } else if (estudio == 'Urobilinógeno Urinario') {
           return 'urobilinógeno';
         } else if (estudio == 'Bilirrubinas Urinarias') {
@@ -8792,7 +8929,7 @@ class Auxiliares {
 
       case "TP (Tiempo de protombina)": // 7
         return "Tiempo de Protrombina";
-      case "TPT Tiempo Parcial de Tromboplastina":
+      case "TTP Tiempo Parcial de Tromboplastina ":
         return "Tiempo Parcial de Tromboplastina";
       case "TPT Tiempo Parcial de Tromboplastina ":
         return "Tiempo Parcial de Tromboplastina";

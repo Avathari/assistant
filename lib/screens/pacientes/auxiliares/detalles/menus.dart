@@ -86,7 +86,7 @@ class Menus {
         PopupMenuItem(
           value: 2,
           onTap: () => Datos.portapapeles(
-              context: context, text: Pacientes.numeroAfiliacion!),
+              context: context, text: Pacientes.numeroAfiliacion!.replaceAll(" ", "")),
           child: Padding(
             padding: const EdgeInsets.only(left: 10.0),
             child: Text("Número de Afiliación",

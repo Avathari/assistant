@@ -132,7 +132,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                 iconData: Icons.format_indent_decrease,
                 iconColor: Colors.white,
                 onPress: () => Cambios.toNextActivity(context,
-                    chyld: Paneles.HospitalaryNewbies())),
+                    chyld: Paneles.HospitalaryNewbies(context, foundedItems!))),
             const SizedBox(width: 15),
             GrandIcon(
                 labelButton: 'Estadísticas . . . ',
@@ -1102,21 +1102,22 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                                     index));
                                       });
                                     },
-                                    tittle:
-                                        foundedItems![index].balances.isNotEmpty
+                                    tittle: foundedItems![index]
+                                            .balances
+                                            .isNotEmpty
+                                        ? foundedItems![index]
+                                                .balances
+                                                .last[0]
+                                                .runtimeType is List<dynamic>
                                             ? foundedItems![index]
-                                                        .balances
-                                                        .last[0]
-                                                        .runtimeType  is List<dynamic>
-                                                ? foundedItems![index]
-                                                    .balances
-                                                    .last[0]['Pace_bala_Fecha']
-                                                    .toString()
-                                                : foundedItems![index]
-                                                    .balances
-                                                    .last['Pace_bala_Fecha']
-                                                    .toString()
-                                            : "Sin BI's",
+                                                .balances
+                                                .last[0]['Pace_bala_Fecha']
+                                                .toString()
+                                            : foundedItems![index]
+                                                .balances
+                                                .last['Pace_bala_Fecha']
+                                                .toString()
+                                        : "Sin BI's",
                                   ),
                                 ),
                               ],
@@ -1470,14 +1471,15 @@ class _HospitalizadosState extends State<Hospitalizados> {
                     ),
                   ),
                   Expanded(
-                    flex: 3,
-                    child: CircleIcon(
+                      flex: 3,
+                      child: CircleIcon(
                         tittle: 'Recargar Registro . . . ',
                         iconed: Icons.recent_actors_rounded,
-                        onChangeValue: () => Operadores.dummyLoadingActivity(context: context,
+                        onChangeValue: () => Operadores.dummyLoadingActivity(
+                            context: context,
                             tittle: "Recargar Información del Registro . . . ",
                             task: _refreshActualList(index)),
-                  )),
+                      )),
                 ],
               ),
             ),
@@ -1739,7 +1741,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
       //
       await hospitalized[i].getVentilacionnesHistorial();
       //
-      await hospitalized[i].getBalancesHistorial(reload:true);
+      await hospitalized[i].getBalancesHistorial(reload: true);
       //
       await hospitalized[i].getPendientesHistorial();
       await hospitalized[i].getLicenciasHistorial();
@@ -1773,6 +1775,45 @@ class _HospitalizadosState extends State<Hospitalizados> {
   }
 
   Future<void> _refreshActualList(int index) async {
+    // String? tittle = "";
+    //
+    // showDialog(
+    //     context: context,
+    //     builder: (context) {
+    //       return AlertDialog(
+    //         backgroundColor: Theming.secondaryColor,
+    //         title: Text(
+    //           "Actualizando registro . . . ",
+    //           style: const TextStyle(color: Colors.grey, fontSize: 18),
+    //         ),
+    //         content: SingleChildScrollView(
+    //             controller: ScrollController(),
+    //             child: Column(
+    //               children: [
+    //                 Transform.scale(
+    //                   scale: 0.5,
+    //                   child: CircularProgressIndicator(),
+    //                 ),
+    //                 SizedBox(height: 20),
+    //                 Text(
+    //                   tittle!,
+    //                   style: Styles.textSyleGrowth(),
+    //                 ),
+    //               ],
+    //             )),
+    //         actions: [
+    //           ElevatedButton(
+    //               style: const ButtonStyle(
+    //                 backgroundColor:
+    //                     WidgetStatePropertyAll<Color>(Colors.black),
+    //               ),
+    //               onPressed: () {},
+    //               child: const Text("Cancelar",
+    //                   style: TextStyle(color: Colors.white))),
+    //         ],
+    //       );
+    //     });
+
     String pacienteId = foundedItems![index].idPaciente.toString();
     Map<String, dynamic> generales = foundedItems![index].generales;
     //
@@ -1797,16 +1838,17 @@ class _HospitalizadosState extends State<Hospitalizados> {
     foundedItems!.removeAt(index);
     // Lista de Pacientes Hospitalizados * * *
     foundedItems!.insert(index, Internado(int.parse(pacienteId), generales));
-    //
+    // setState(() => tittle = "Actualizando registro de Hospitalización . ");
     await foundedItems![index].getHospitalizationRegister();
+    // setState(() => tittle = "Consultando Padecimiento Actual . ");
     await foundedItems![index].getPadecimientoActual();
     await foundedItems![index].getCronicosHistorial();
     await foundedItems![index].getDiagnosticosHistorial();
     await foundedItems![index].getVitalesHistorial();
-    //
+    // setState(() => tittle = "Consultando Historial de Ventilatorio . ");
     await foundedItems![index].getVentilacionnesHistorial();
     //
-    await foundedItems![index].getBalancesHistorial(reload:true);
+    await foundedItems![index].getBalancesHistorial(reload: true);
     //
     await foundedItems![index].getPendientesHistorial();
     //
@@ -1833,8 +1875,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
           message: "Actualizando pacientes hospitalizados . . . ");
       // Ordenar por No Cama || ***************** foundedItems!!.sort((a, b) => a["Id_Cama"].compareTo(b["Id_Cama"]));
       HospitalaryMethods.orderByCamas(foundedItems!);
-      // Cerrar Operaciones.loadingActivity . . .
-      Navigator.of(context).pop();
+      // Cerrar Operaciones.loadingActivity . . .Navigator.of(context).pop();
     });
   }
 
@@ -1902,4 +1943,5 @@ class _HospitalizadosState extends State<Hospitalizados> {
 
   var fileAssocieted = 'assets/vault/hospitalized.json';
   List<String> auxiliarServicios = [];
+  //
 }

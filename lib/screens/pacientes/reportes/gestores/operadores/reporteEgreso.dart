@@ -1,6 +1,8 @@
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/analisisMedico.dart';
+import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/exploracionFisica.dart';
+import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/hitosHospitalarios.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
@@ -35,9 +37,14 @@ class _ReporteEgresoState extends State<ReporteEgreso> {
       relevantesTextController.text =
           Reportes.reportes['Antecedentes_Relevantes'] =
               Pacientes.antecedentesRelevantes();
-      diagoTextController.text = Reportes.impresionesDiagnosticas.isNotEmpty
+      // ********************************************
+      diagoTextController.text =
+      Reportes.reportes['Impresiones_Diagnosticas'] != ""
+          ? Reportes.reportes['Impresiones_Diagnosticas']
+          : Reportes.impresionesDiagnosticas.isNotEmpty
           ? Reportes.impresionesDiagnosticas
           : Pacientes.diagnosticos();
+      //
       // ********************************************
       Reportes.reportes['Antecedentes_Patologicos_Otros'] =
           Reportes.reportes['Antecedentes_Patologicos_Ingreso'] =
@@ -74,20 +81,20 @@ class _ReporteEgresoState extends State<ReporteEgreso> {
                     carouselController.jumpToPage(0);
                   },
                 ),
-                // GrandIcon(
-                //     iconData: Icons.new_releases_outlined,
-                //     labelButton: "Padecimiento Actual",
-                //     weigth: wieghtRow / index,
-                //     onPress: () {
-                //       carouselController.jumpToPage(1);
-                //     }),
-                // GrandIcon(
-                //     iconData: Icons.explicit,
-                //     labelButton: "Exploración Física",
-                //     weigth: wieghtRow / index,
-                //     onPress: () {
-                //       carouselController.jumpToPage(1);
-                //     }),
+                GrandIcon(
+                    iconData: Icons.history_edu,
+                    labelButton: "Hitos de la Hospitalización",
+                    weigth: wieghtRow / index,
+                    onPress: () {
+                      carouselController.jumpToPage(1);
+                    }),
+                GrandIcon(
+                    iconData: Icons.explicit,
+                    labelButton: "Exploración Física",
+                    weigth: wieghtRow / index,
+                    onPress: () {
+                      carouselController.jumpToPage(2);
+                    }),
                 // GrandIcon(
                 //     iconData: Icons.medical_information,
                 //     labelButton: "Auxiliares Diagnósticos",
@@ -100,7 +107,7 @@ class _ReporteEgresoState extends State<ReporteEgreso> {
                     labelButton: "Análisis y propuestas",
                     weigth: wieghtRow / index,
                     onPress: () {
-                      carouselController.jumpToPage(1);
+                      carouselController.jumpToPage(3);
                     }),
                 // GrandIcon(
                 //     iconData: Icons.next_plan,
@@ -182,7 +189,14 @@ class _ReporteEgresoState extends State<ReporteEgreso> {
                     ],
                   ),
                 ),
-                // ExploracionFisica(),
+                SingleChildScrollView(
+                  controller: ScrollController(),
+                    child: Column(
+                  children: [
+                    Hitoshospitalarios(),
+                  ],
+                )), // Hitos de la Hospitalización
+                ExploracionFisica(),
                 // AuxiliaresExploracion(isIngreso: true),
                 AnalisisMedico(),
                 // DiagnosticosAndPronostico(),

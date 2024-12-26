@@ -38,9 +38,12 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
       //
       initialTextController.text = Pacientes.prosa(isTerapia: true);
       // ********************************************
-      diagoTextController.text = Reportes.impresionesDiagnosticas.isNotEmpty
-          ? Reportes.impresionesDiagnosticas
-          : Pacientes.diagnosticos();
+      diagoTextController.text =
+          Reportes.reportes['Impresiones_Diagnosticas'] != ""
+              ? Reportes.reportes['Impresiones_Diagnosticas']
+              : Reportes.impresionesDiagnosticas.isNotEmpty
+                  ? Reportes.impresionesDiagnosticas
+                  : Pacientes.diagnosticos();
       //
       subjetivoTextController.text =
           Reportes.reportes['Subjetivo']; // Pacientes.subjetivos();
@@ -109,14 +112,12 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
                                       onChange: ((value) {
                                         setState(() {
                                           Reportes
-                                              .impresionesDiagnosticas =
-                                          Reportes
-                                              .reportes[
-                                          'Impresiones_Diagnosticas'] =
-                                          Reportes
-                                              .reportes[
-                                          'Diagnosticos_Hospital'] =
-                                          "$value.";
+                                              .impresionesDiagnosticas = Reportes
+                                                      .reportes[
+                                                  'Impresiones_Diagnosticas'] =
+                                              Reportes.reportes[
+                                                      'Diagnosticos_Hospital'] =
+                                                  "$value.";
                                           // Terminal.printData(message: Reportes.impresionesDiagnosticas);
                                         });
                                       }),
@@ -192,7 +193,8 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
                                 },
                                 onChange: ((value) {
                                   setState(() {
-                                    Reportes.subjetivoHospitalizacion = Reportes.reportes['Subjetivo'] = "$value.";
+                                    Reportes.subjetivoHospitalizacion = Reportes
+                                        .reportes['Subjetivo'] = "$value.";
                                   });
                                 }),
                                 inputFormat: MaskTextInputFormatter()),

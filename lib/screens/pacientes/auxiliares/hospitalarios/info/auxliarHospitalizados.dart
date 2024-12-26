@@ -398,8 +398,7 @@ class Paneles {
             Cambios.toNextActivity(context,
                 tittle: "Signos Vitales del Paciente . . . ",
                 chyld: SingleChildScrollView(
-                  controller: ScrollController(),
-                    child: AuxiliarVitales()));
+                    controller: ScrollController(), child: AuxiliarVitales()));
           },
           onLongChangeValue: () async {
             Pacientes.ID_Paciente = foundedItems![index].idPaciente;
@@ -465,15 +464,13 @@ class Paneles {
                 Cambios.toNextActivity(context,
                     backgroundColor: Theming.cuaternaryColor,
                     chyld: const AuxiliaresDispositivos());
-              }  catch (onError, stackTrace ) {
+              } catch (onError, stackTrace) {
                 // TODO
                 Operadores.alertActivity(
                     context: context,
                     tittle: "Error al Cargar Valores . . . ",
                     message: "ERROR : : $onError \n: $stackTrace",
-                    onAcept: () =>
-                      Navigator.of(context).pop()
-                    );
+                    onAcept: () => Navigator.of(context).pop());
               }
             }), // AuxiliarVitales // Subjetivos
       ],
@@ -655,11 +652,53 @@ class Paneles {
   }
 
   // ESTADÍSTICAS ***************************************************
-  static HospitalaryNewbies() {
+  static HospitalaryNewbies(BuildContext context, List? foundedItems) {
     // VARIABLES ************************
-
+    // paraclinicos
+    List<Widget> widgets = [];
+    String param = "";
+    for (var element in foundedItems!) {
+      Pacientes.Paraclinicos = element.paraclinicos;
+      //
+      param = "$param CAMA ${element.hospitalizedData['Id_Cama']} : : "
+          "${Auxiliares.getUltimo(esAbreviado: true)}"
+          "${Auxiliares.getEspeciales(esAbreviado: true)}\n";
+      //
+      widgets.add(
+        TittleContainer(
+          tittle: element.hospitalizedData['Id_Cama'],
+          child: SingleChildScrollView(
+            controller: ScrollController(),
+            child: Text(
+              Auxiliares.getUltimo(esAbreviado: true) + "\n"
+                  +Auxiliares.getEspeciales(esAbreviado: true) ,
+              overflow: TextOverflow.ellipsis,
+              style: Styles.textSyleGrowth(fontSize: 12),
+              maxLines: 7,
+            ),
+          ),
+        ),
+      );
+    }
     // RETORNO *********************************
-    return Container();
+    return Container(
+      child: Row(
+        children: [
+          Expanded(flex: 4,
+            child: ListView(
+              children: widgets,
+            ),
+          ),
+          Expanded(child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+            CircleIcon(onChangeValue: () {
+              Datos.portapapeles(context: context, text: param);
+            }),
+          ],))
+        ],
+      ),
+    );
   }
 
   static HospitalaryStadystics(BuildContext context, List? foundedItems) {
