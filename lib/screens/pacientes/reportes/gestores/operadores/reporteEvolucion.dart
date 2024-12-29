@@ -41,9 +41,11 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
       diagoTextController.text =
           Reportes.reportes['Impresiones_Diagnosticas'] != ""
               ? Reportes.reportes['Impresiones_Diagnosticas']
-              : Reportes.impresionesDiagnosticas.isNotEmpty
-                  ? Reportes.impresionesDiagnosticas
-                  : Pacientes.diagnosticos();
+              : Reportes.reportes['Diagnosticos_Hospital'] != ""
+                  ? Reportes.reportes['Diagnosticos_Hospital']
+                  : Reportes.impresionesDiagnosticas.isNotEmpty
+                      ? Reportes.impresionesDiagnosticas
+                      : Pacientes.diagnosticos();
       //
       subjetivoTextController.text =
           Reportes.reportes['Subjetivo']; // Pacientes.subjetivos();

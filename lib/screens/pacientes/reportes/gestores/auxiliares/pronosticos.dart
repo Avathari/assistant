@@ -29,12 +29,14 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
 
       if (widget.isTerapia!) {
       } else {
-        if (Reportes.reportes['Impresiones_Diagnosticas'] != "") {
-          diagoTextController.text =
-              Reportes.reportes['Impresiones_Diagnosticas'];
-        } else {
-          diagoTextController.text = Pacientes.diagnosticos();
-        }
+        diagoTextController.text =
+        Reportes.reportes['Impresiones_Diagnosticas'] != ""
+            ? Reportes.reportes['Impresiones_Diagnosticas']
+            : Reportes.reportes['Diagnosticos_Hospital'] != ""
+            ? Reportes.reportes['Diagnosticos_Hospital']
+            : Reportes.impresionesDiagnosticas.isNotEmpty
+            ? Reportes.impresionesDiagnosticas
+            : Pacientes.diagnosticos();
       }
 
       if (Reportes.reportes['Pronostico_Medico'] != "") {

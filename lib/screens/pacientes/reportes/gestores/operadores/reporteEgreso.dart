@@ -41,6 +41,8 @@ class _ReporteEgresoState extends State<ReporteEgreso> {
       diagoTextController.text =
       Reportes.reportes['Impresiones_Diagnosticas'] != ""
           ? Reportes.reportes['Impresiones_Diagnosticas']
+          : Reportes.reportes['Diagnosticos_Hospital'] != ""
+          ? Reportes.reportes['Diagnosticos_Hospital']
           : Reportes.impresionesDiagnosticas.isNotEmpty
           ? Reportes.impresionesDiagnosticas
           : Pacientes.diagnosticos();

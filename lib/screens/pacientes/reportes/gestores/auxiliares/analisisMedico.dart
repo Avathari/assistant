@@ -51,9 +51,11 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
     } else {
       // eventualidadesTextController.text = Reportes.eventualidadesOcurridas;
       // terapiasTextController.text = Reportes.terapiasPrevias;
-      analisisTextController.text = Reportes.analisisMedico =
-      Reportes.reportes['Analisis_Terapia'] =
-      Reportes.reportes['Analisis_Medico'];
+      analisisTextController.text = Reportes.reportes['Analisis_Medico'] != ""
+          ? Reportes.reportes['Analisis_Medico']
+          : Reportes.reportes['Analisis_Terapia'] != ""
+              ? Reportes.reportes['Analisis_Terapia']
+              : Reportes.analisisMedico;
       // tratamientoTextController.text = Reportes.tratamientoPropuesto;
 
       // Se reinicia Reportes.pendientes porque resulta acumulativo * * * * * * * * * * * * * * *

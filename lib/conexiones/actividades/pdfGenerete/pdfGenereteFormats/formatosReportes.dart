@@ -3,6 +3,7 @@ import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteComponen
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/info/Hospitalizado.dart';
 import 'package:assistant/values/Strings.dart';
 
 import 'package:pdf/pdf.dart';
@@ -2709,7 +2710,7 @@ class FormatosReportes {
               children: [
                 Container(
                     child: textBoldTittle(
-                        "CENSO HOSPITALARIO - MEDICINA INTERNA")),
+                        "CENSO HOSPITALARIO ")),
               ]),
         ],
       ),
@@ -2757,10 +2758,14 @@ class FormatosReportes {
       //     message:
       //         "Pendientes : : ${item['Pendientes']} ${item['Pendientes'].runtimeType}");
       for (var item in item.pendientes) {
-        penden = "$penden"
-            "${item['Pace_PEN'].toUpperCase()} - \n"
-            "${item['Pace_Desc_PEN']}" //  - ${i['Pace_PEN_realized']}"
-            "\n";
+        // item.pendientes.where((i) => i.item['Pace_PEN'] == "Previos" ?  penden = "PREVIOS\n");
+
+        if (item['Pace_PEN_realized'] == 1 ||item['Pace_PEN_realized'] == true) {
+          penden = "$penden"
+              "${item['Pace_PEN'].toUpperCase()} \n"
+              "${item['Pace_Desc_PEN']} - ${item['Feca_PEN']} " //  - ${i['Pace_PEN_realized']}"
+              "\n";
+        }
       }
 // Ventilaciones de los Pacientes Hospitalizados ************************************* * * * * *
       if (item.ventilaciones.isNotEmpty) {
@@ -2858,7 +2863,7 @@ class FormatosReportes {
             cronicos = "$cronicos${i['Pace_APP_DEG_com'].toUpperCase()}, "
                 "${i['Pace_APP_DEG_dia']} años, "
                 "${i['Pace_APP_DEG_tra']} "
-                "\n\n";
+                "\n";
           } else {
             cronicos = 'Sin Antecedentes Crónicos Documentados';
           }
@@ -2875,33 +2880,39 @@ class FormatosReportes {
       }
       // Auxiliares Diagnósticos . ***** ****** *********** *********
       if (item.paraclinicos != [] && item.paraclinicos != null) {
-        var fechar = Listas.listWithoutRepitedValues(
-          Listas.listFromMapWithOneKey(
-            item.paraclinicos!,
-            keySearched: 'Fecha_Registro',
-          ),
-        );
-        // Terminal.printExpected(message: "${item['Auxiliares']} ${item['Auxiliares'].runtimeType}");
-        for (var element in fechar) {
-          String fecha = "          Paraclínicos ($element)", max = "";
-
-          List<dynamic>? alam = item.paraclinicos;
-          var aux = alam!
-              .where((user) => user["Fecha_Registro"].contains(element))
-              .toList();
-
-          for (var element in aux) {
-            // ***************************** *****************
-            if (max == "") {
-              max =
-                  "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
-            } else {
-              max =
-                  "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
-            }
-          }
-          auxiliary = "$auxiliary$fecha: ${Sentences.capitalize(max)}\n";
-        }
+        auxiliary = "${Internado.getUltimo(listadoFrom: item.paraclinicos, esAbreviado: true)}\n"
+            "${Internado.getEspeciales(listadoFrom: item.paraclinicos) != "" ? "___________________________________________\n" : ""}"
+            "${Internado.getEspeciales(listadoFrom: item.paraclinicos, esAbreviado: true)}\n"
+            "${Internado.getCultivos(listadoFrom: item.paraclinicos) != "" ? "___________________________________________\n" : ""}"
+            "${Internado.getCultivos(listadoFrom: item.paraclinicos)}"; 
+        
+        // var fechar = Listas.listWithoutRepitedValues(
+        //   Listas.listFromMapWithOneKey(
+        //     item.paraclinicos!,
+        //     keySearched: 'Fecha_Registro',
+        //   ),
+        // );
+        // // Terminal.printExpected(message: "${item['Auxiliares']} ${item['Auxiliares'].runtimeType}");
+        // for (var element in fechar) {
+        //   String fecha = "          Paraclínicos ($element)", max = "";
+        //
+        //   List<dynamic>? alam = item.paraclinicos;
+        //   var aux = alam!
+        //       .where((user) => user["Fecha_Registro"].contains(element))
+        //       .toList();
+        //
+        //   for (var element in aux) {
+        //     // ***************************** *****************
+        //     if (max == "") {
+        //       max =
+        //           "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+        //     } else {
+        //       max =
+        //           "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+        //     }
+        //   }
+        //   auxiliary = "$auxiliary$fecha: ${Sentences.capitalize(max)}\n";
+        // }
       }
 
       // Terminal.printExpected(
@@ -3356,7 +3367,7 @@ class CopiasReportes {
   }
 
   static String reporteTerapia(Map<String, dynamic> paraph) {
-    String tipoReporte = "NOTA DE TERAPIA INTENSIVA\n";
+    String tipoReporte = "NOTA DE GRAVEDAD \n";
     tipoReporte = "$tipoReporte"
         "${paraph['Datos_Generales']}";
 

@@ -46,11 +46,12 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
     setState(() {
       expoTextController.text =
           Reportes.exploracionFisica = Reportes.reportes['Exploracion_Fisica'];
-      vitalTextController.text = Reportes.signosVitales  = Reportes.reportes['Signos_Vitales'];
+      // vitalTextController.text = Reportes.signosVitales  = Reportes.reportes['Signos_Vitales'];
+      vitalTextController.text = Reportes.signosVitales  = Reportes.reportes['Signos_Vitales'] = Pacientes.signosVitales(indice: 6);
     });
     //
     _timer = Timer.periodic(
-        Duration(seconds: 7), (timer) => _saveToFile(expoTextController.text));
+        Duration(seconds: 10), (timer) => _saveToFile(expoTextController.text));
     super.initState();
   }
 
@@ -154,7 +155,7 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                                   ? 80
                                   : 20,
                       onChange: ((value) => setState(() =>
-                      expoTextController.text = Reportes.exploracionFisica =
+                      Reportes.exploracionFisica =
                               Reportes.reportes['Exploracion_Fisica'] =
                                   value)), //
                       inputFormat: MaskTextInputFormatter()),
@@ -309,6 +310,12 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
     ]);
   }
 
+  @override
+  void dispose() {
+    _timer!.cancel(); // Terminar Timer
+    super.dispose();
+  }
+
   mobileExploreOptions() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -327,6 +334,10 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                       expoTextController.text = onValue;
                       Navigator.of(context).pop();
                     }))),
+        CircleIcon(
+          iconed: Icons.save,
+            tittle: "Guardar en Temporal . . . ",
+            onChangeValue: () => _saveToFile(expoTextController.text)),
         otherExploreOptions(context),
       ],
     );
@@ -729,10 +740,9 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
     // final path = await _getFilePath();
     if (text.isNotEmpty) {
       Archivos.writeInFile(text, filePath: widget.analisisTemporalFile);
+      // Terminal.printWarning(message: "Texto guardado en ${widget.analisisTemporalFile}");
+      // Terminal.printWarning(message: "Reportes.reportes ${Reportes.reportes['Impresiones_Diagnosticas'].toString()}");
 
-      // final file = File(widget.analisisTemporalFile);
-      // await file.writeAsString(text).whenComplete(
-      //     () => null); // print("Texto guardado automáticamente cada 10 segundos"));
     }
   }
 

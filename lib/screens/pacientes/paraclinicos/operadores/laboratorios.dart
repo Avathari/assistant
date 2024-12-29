@@ -729,7 +729,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                           onPress: () {
                             operationActivity = false;
                             elementSelected = data[index];
-                            Pacientes.Paraclinicos = data[index];
+                            Pacientes.Auxiliar = data[index];
                             carouselController.jumpToPage(1);
 
                             updateElement(data[index]);

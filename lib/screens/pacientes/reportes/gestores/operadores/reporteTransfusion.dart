@@ -28,7 +28,15 @@ class _ReporteTransfusionState extends State<ReporteTransfusion> {
     setState(() {
       initialTextController.text = Pacientes.prosa(isTerapia: true);
       //
-      diagoTextController.text = Pacientes.diagnosticos();
+      diagoTextController.text =
+      Reportes.reportes['Impresiones_Diagnosticas'] != ""
+          ? Reportes.reportes['Impresiones_Diagnosticas']
+          : Reportes.reportes['Diagnosticos_Hospital'] != ""
+          ? Reportes.reportes['Diagnosticos_Hospital']
+          : Reportes.impresionesDiagnosticas.isNotEmpty
+          ? Reportes.impresionesDiagnosticas
+          : Pacientes.diagnosticos();
+      //
       motivoTextController.text = Reportes.reportes['Motivo_Transfusion']; // Pacientes.subjetivos();
       edoGralTextController.text = Valores.estadoFinalTransfusion;
       //

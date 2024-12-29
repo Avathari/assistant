@@ -6625,6 +6625,7 @@ class Auxiliares {
                 element['Tipo_Estudio'] != "Gasometría Venosa" &&
                 element['Tipo_Estudio'] != "Reactantes de Fase Aguda" &&
                 element['Tipo_Estudio'] != "Cultivos" &&
+                element['Tipo_Estudio'] != "Panel Viral" &&
                 element['Tipo_Estudio'] !=
                     "Citoquímico de Líquido Cefalorraquídeo" &&
                 element['Tipo_Estudio'] !=
@@ -6955,12 +6956,13 @@ class Auxiliares {
       for (var fecha in fechar) {
         var aux = Pacientes.Paraclinicos!
             .where((user) => user["Fecha_Registro"].contains(fecha));
-        String fechado = "          .          Paraclínicos (${fecha})",
-            max = "";
+        // String fechado = "          .          Paraclínicos (${fecha})",
+        String fechado = "";
+            String max = "";
         //
         for (var element in aux) {
           Terminal.printExpected(
-              message: "$fecha : " + element['Tipo_Estudio']);
+              message: "$fecha : ${element['Tipo_Estudio']}");
           // Terminal.printExpected(message: "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}");
 
           // ***************************** *****************
@@ -6975,8 +6977,11 @@ class Auxiliares {
               element['Tipo_Estudio'] ==
                   "Citoquímico de Líquido Cefalorraquídeo" ||
               element['Tipo_Estudio'] ==
+                  "Panel Viral" ||
+              element['Tipo_Estudio'] ==
                   "Citológico de Líquido Cefalorraquídeo") {
             if (element['Unidad_Medida'] != "") {
+              fechado = "          .          ($fecha): ";
               max =
                   "$max${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} "
                   "${element['Resultado']} ${element['Unidad_Medida']}, ";
@@ -6998,7 +7003,9 @@ class Auxiliares {
         }
         // COMPROBACIÓN
 
-        prosa = "$prosa$fechado: ${Sentences.capitalize(max)}\n";
+        if (fechado != "") {
+          prosa = "$prosa$fechado ${Sentences.capitalize(max)}\n";
+        }
       }
 
       // if (fechar.first.isNotEmpty) {
@@ -7133,30 +7140,27 @@ class Auxiliares {
       for (var fecha in fechar) {
         var aux = Pacientes.Paraclinicos!
             .where((user) => user["Fecha_Registro"].contains(fecha));
-        String fechado = "          .          Paraclínicos (${fecha})",
-            max = "";
+        // String fechado = "          .          ${fecha})";
+            String max = "";
         //
         for (var element in aux) {
           Terminal.printExpected(
-              message: "$fecha : " + element['Tipo_Estudio']);
+              message: "$fecha : ${element['Tipo_Estudio']}");
           // Terminal.printExpected(message: "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}");
 
           // ***************************** *****************
           if (element['Tipo_Estudio'] == "Cultivos") {
-            if (element['Unidad_Medida'] != "") {
-              max =
-                  "$max${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} "
-                  "${element['Resultado']} ${element['Unidad_Medida']}, ";
-            } else {
-              max =
-                  "$max${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} "
-                  "${element['Resultado']}, ";
-            }
+            max =
+            "$max"
+                "          .          ${element['Estudio']} del ${Calendarios.formatDate(fecha)}. .  ${element['Resultado']} . ";
+            // max =
+            // "$max${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} "
+            //     "${element['Resultado']}, ";
           }
         }
         // COMPROBACIÓN
 
-        prosa = "$prosa$fechado: ${Sentences.capitalize(max)}\n";
+        prosa = "$prosa ${Sentences.capitalize(max)}\n";
       }
     }
     // ************** ***************** ***************
@@ -9805,6 +9809,7 @@ class Reportes {
     "Recomendaciones_Generales": Reportes.tratamientoPropuesto,
     //
     "Impresiones_Diagnosticas": Reportes.impresionesDiagnosticas,
+    "Diagnosticos_Hospital":  Reportes.impresionesDiagnosticas,
     "Pronostico_Medico": Reportes.pronosticoMedico,
     // INDICACIONES ***************************************
     "Dieta": Reportes.dieta,
@@ -10035,7 +10040,7 @@ class Reportes {
   static Future<List> consultarNotasHospitalizacion() async {
     final response = await Actividades.consultarAllById(
         Databases.siteground_database_reghosp,
-        "SELECT * FROM pace_hosp_repo where ID_Hosp = ? ",
+        "SELECT * FROM pace_hosp_repo WHERE ID_Hosp = ?",
         Pacientes.ID_Hospitalizacion);
     return response;
   }
@@ -10904,13 +10909,20 @@ class Repositorios {
         context: context!,
         tittle: "Registro Actualizado",
         message: response,
+        onAcept: () {
+          Reportes.consultarNotasHospitalizacion().whenComplete(() {
+            Navigator.of(context).pop();
+          });
+        },
       );
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "ERROR - $error : $stackTrace");
       Operadores.alertActivity(
           context: context!,
           tittle: "Error Al Actualizar Registro",
-          message: "ERROR : : $error : $stackTrace");
+          message: "ERROR : : $error : $stackTrace",
+        onAcept: () => Navigator.of(context).pop(),
+      );
       //
     });
   }

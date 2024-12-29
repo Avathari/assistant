@@ -54,7 +54,8 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
 
         if (Reportes.auxiliaresDiagnosticos != "") {
           auxTextController.text =
-              Reportes.reportes['Auxiliares_Diagnosticos'] =
+              Reportes.reportes['Auxiliares_Diagnosticos'] != "" ?
+              Reportes.reportes['Auxiliares_Diagnosticos'] :
                   Reportes.auxiliaresDiagnosticos;
         } else if (Auxiliares.historial(
                 esAbreviado: true, withEspeciales: true) !=

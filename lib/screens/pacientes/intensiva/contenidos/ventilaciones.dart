@@ -2,6 +2,7 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/ventometr%C3%ADas.dart';
+
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/operativity/pacientes/valores/semiologia/semiotica.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
@@ -836,7 +837,8 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
           setState(() {
             Valores.volumenVentilatorio = int.parse(value);
             flujoTextController.text =
-                Ventometrias.flujoVentilatorioMedido.toStringAsFixed(2);
+                 Ventometrias.flujoVentilatorioMedido.toStringAsFixed(2);
+            Valores.flujoVentilatorio = Ventometrias.flujoVentilatorioMedido.toInt();
           });
         },
       ),
@@ -848,7 +850,8 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
         numOfLines: 1,
         onChange: (value) {
           setState(() {
-            Valores.flujoVentilatorio = int.parse(value);
+
+            // Valores.flujoVentilatorio = int.parse(value);
           });
         },
       ),
@@ -916,6 +919,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
               onChange: (value) {
                 setState(() {
                   Valores.flujoVentilatorio = int.parse(value);
+                  Valores.flujoVentilatorio = Ventometrias.flujoVentilatorioMedido.toInt();
                 });
               },
             ),

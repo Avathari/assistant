@@ -38,15 +38,14 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
       initialTextController.text = Reportes.reportes['Datos_Generales'] =
           Pacientes.prosa(isTerapia: true);
       //
-      diagoTextController.text = Reportes.impresionesDiagnosticas.isNotEmpty
+      diagoTextController.text =
+      Reportes.reportes['Impresiones_Diagnosticas'] != ""
+          ? Reportes.reportes['Impresiones_Diagnosticas']
+          : Reportes.reportes['Diagnosticos_Hospital'] != ""
+          ? Reportes.reportes['Diagnosticos_Hospital']
+          : Reportes.impresionesDiagnosticas.isNotEmpty
           ? Reportes.impresionesDiagnosticas
           : Pacientes.diagnosticos();
-      // if (Reportes.reportes['Impresiones_Diagnosticas'] == "") {
-      //   diagoTextController.text = Reportes.reportes['Impresiones_Diagnosticas'] =
-      //       Pacientes.diagnosticos();
-      // } else {
-      //   diagoTextController.text = Reportes.reportes['Impresiones_Diagnosticas'];
-      // }
 
       //
       consultaTextController.text =
@@ -128,6 +127,15 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
                                       iconed: Icons.abc,
                                       onChangeValue: () {
                                         setState(() {
+                                          //                                    Reportes
+                                          //                                         .impresionesDiagnosticas =
+                                          //                                     Reportes
+                                          //                                                 .reportes[
+                                          //                                             'Impresiones_Diagnosticas'] =
+                                          //                                     Reportes
+                                          //                                         .reportes[
+                                          //                                     'Diagnosticos_Hospital'] =
+                                          //                                         "$value.";
                                           diagoTextController.text =
                                               Sentences.capitalizeAll(
                                                   diagoTextController

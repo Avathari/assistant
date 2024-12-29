@@ -883,6 +883,19 @@ class _HospitalizadosState extends State<Hospitalizados> {
                         context: context,
                         text: Internado.getCultivos(
                             listadoFrom: foundedItems![index].paraclinicos))),
+                CircleIcon(
+                    tittle: "Relevantes . . . ",
+                    iconed: Icons.import_contacts,
+                    radios: 27,
+                    difRadios: 6,
+                    onChangeValue: () => Datos.portapapeles(
+                        context: context,
+                        text:
+                            "${Internado.getUltimo(listadoFrom: foundedItems![index].paraclinicos, esAbreviado: true)}\n"
+                            "${Internado.getEspeciales(listadoFrom: foundedItems![index].paraclinicos) != "" ? "RELAVANTES\n" : ""}"
+                            "${Internado.getEspeciales(listadoFrom: foundedItems![index].paraclinicos, esAbreviado: true)}\n"
+                            "${Internado.getCultivos(listadoFrom: foundedItems![index].paraclinicos) != "" ? "MICROBIOLOGICOS\n" : ""}"
+                            "${Internado.getCultivos(listadoFrom: foundedItems![index].paraclinicos)}")),
                 GrandIcon(
                     iconData: Icons.monitor_weight_outlined,
                     labelButton: 'Estado General . . . ',

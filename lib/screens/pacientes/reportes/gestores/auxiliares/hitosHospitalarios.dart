@@ -26,8 +26,9 @@ class _HitoshospitalariosState extends State<Hitoshospitalarios> {
   @override
   void initState() {
     setState(() {
-      hitosTextController.text = Reportes.hitosHospitalarios =
-          Reportes.reportes['Hitos_Hospitalarios'];
+      hitosTextController.text = Reportes.reportes['Hitos_Hospitalarios'] != ""
+          ? Reportes.reportes['Hitos_Hospitalarios']
+          : Reportes.hitosHospitalarios;
     });
     //
     _timer = Timer.periodic(
@@ -45,27 +46,28 @@ class _HitoshospitalariosState extends State<Hitoshospitalarios> {
           numOfLines: 25,
           limitOfChars: 3000,
           withShowOption: true,
-          onSelected: ()=>_readFromFile(),
-          onChange: (value) => Reportes.hitosHospitalarios = Reportes.reportes['Hitos_Hospitalarios']= value,
+          onSelected: () => _readFromFile(),
+          onChange: (value) => setState(() => Reportes.hitosHospitalarios =
+              Reportes.reportes['Hitos_Hospitalarios'] = value),
           inputFormat: MaskTextInputFormatter());
     } else {
       return Row(
-
         children: [
-          Expanded(flex: 4,
+          Expanded(
+              flex: 4,
               child: EditTextArea(
-      textController: hitosTextController,
-          labelEditText: "Hitos de la Hospitalización",
-          keyBoardType: TextInputType.multiline,
-          numOfLines: 25,
-          limitOfChars: 3000,
-          fontSize: widget.fontSize!,
-          withShowOption: true,
-          onSelected: ()=>_readFromFile(),
-          onChange: (value) => Reportes.hitosHospitalarios = Reportes.reportes['Hitos_Hospitalarios']= value,
-          inputFormat: MaskTextInputFormatter())),
-          Expanded(flex: 2,
-              child: Container()),
+                  textController: hitosTextController,
+                  labelEditText: "Hitos de la Hospitalización",
+                  keyBoardType: TextInputType.multiline,
+                  numOfLines: 25,
+                  limitOfChars: 3000,
+                  fontSize: widget.fontSize!,
+                  withShowOption: true,
+                  onSelected: () => _readFromFile(),
+                  onChange: (value) => Reportes.hitosHospitalarios =
+                      Reportes.reportes['Hitos_Hospitalarios'] = value,
+                  inputFormat: MaskTextInputFormatter())),
+          Expanded(flex: 2, child: Container()),
           Expanded(
             child: RotatedBox(
               quarterTurns: 1,

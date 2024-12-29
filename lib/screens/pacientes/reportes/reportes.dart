@@ -222,8 +222,10 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                                 Datos.portapapeles(
                                     context: context,
                                     text: Reportes.copiarReporte(
-                                        tipoReporte: ReportsMethods.getTypeReport(
-                                            actualPage: widget.actualPage)));
+                                        tipoReporte:
+                                            ReportsMethods.getTypeReport(
+                                                actualPage:
+                                                    widget.actualPage)));
                               },
                               backgroundColor: Colors.black,
                               foregroundColor: Colors.white,
@@ -261,7 +263,26 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               decoration: ContainerDecoration.containerDecoration(),
               child: sideLeft(),
             )),
-        Expanded(flex: 2, child: Hospitalizado(isVertical: true)),
+        Expanded(flex: 2, child: Column(
+          children: [
+            Expanded(flex: 5, child: Hospitalizado(isVertical: true)),
+            Expanded(
+              child: CircleIcon(
+                iconed: Icons.system_update_alt,
+                tittle: 'Cargando . . . ',
+                onChangeValue: () async {
+                  Pacientes.loadingActivity(context: context).then((value) {
+                    if (value == true) {
+                      // Terminal.printAlert( message:'Archivo ${Pacientes.localPath} Re-Creado $value');
+                      Navigator.of(context).pop();
+                    }
+                  });
+                  _key.currentState!.closeEndDrawer();
+                },
+              ),
+            ),
+          ],
+        )),
         Expanded(
             flex: isDesktop(context) ? 18 : 14,
             child: Container(
@@ -387,7 +408,11 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                               //       textPanel: "Tipo de Nota Médica"),
                               // ),
                             ),
-                      Expanded(flex: 2, child: ListView(children: tiposReportes(),)),
+                      Expanded(
+                          flex: 2,
+                          child: ListView(
+                            children: tiposReportes(),
+                          )),
                       // Expanded(
                       //     flex: 2,
                       //     child: SingleChildScrollView(
@@ -1249,13 +1274,23 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               iconed: Icons.remove_road,
               onChangeValue: () {
                 // CONSULTAR NOTACIONES PREVIAS ****************************************
+                Operadores.loadingActivity(
+                    context: context,
+                    tittle: "Consultando Registro de Notas previas . . .",
+                    message: "Actualizando . . . ");
+                //
                 Reportes.consultarNotasHospitalizacion()
                     .then((value) => setState(() {
                           if (value.isNotEmpty) {
                             widget.indexNote = 0;
                             listNotes = value;
+                            //
+                            Archivos.createJsonFromMap(Pacientes.Notas!,
+                                filePath:
+                                    "${Pacientes.localRepositoryPath}/reportes/reportes.json");
                           }
-                        }));
+                        }))
+                    .whenComplete(() => Navigator.of(context).pop());
               }),
           CrossLine(height: 10, thickness: 2, color: Colors.black),
           CircleLabel(
@@ -1326,10 +1361,13 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
     if (widget.indexNote > -1) {
       // Terminal.printWarning(
       //     message: listNotes![widget.indexNote]['Diagnosticos_Hospital']);
-      widget.fechaRealizacion = listNotes![widget.indexNote]['FechaRealizacion'];
+      widget.fechaRealizacion =
+          listNotes![widget.indexNote]['FechaRealizacion'];
       //
-      listNotes![widget.indexNote]['Tipo_Analisis'] ==
-          'Análisis de Revisión' ? Reportes.reportes['Datos_Generales_Simple'] = Pacientes.prosa(isTerapia: true, otherForm: true) : "";
+      listNotes![widget.indexNote]['Tipo_Analisis'] == 'Análisis de Revisión'
+          ? Reportes.reportes['Datos_Generales_Simple'] =
+              Pacientes.prosa(isTerapia: true, otherForm: true)
+          : "";
       //
       Reportes.impresionesDiagnosticas =
           Reportes.reportes['Impresiones_Diagnosticas'] =
@@ -1348,8 +1386,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           Reportes.analisisComplementarios =
               listNotes![widget.indexNote]['Analisis_Complementario'] ?? "";
       //
-      Reportes.reportes['Hitos_Hospitalarios'] =
-          Reportes.hitosHospitalarios =
+      Reportes.reportes['Hitos_Hospitalarios'] = Reportes.hitosHospitalarios =
           listNotes![widget.indexNote]['Hitos_Hospitalarios'] ?? "";
       //
       return TittleContainer(
@@ -1442,11 +1479,13 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
 
               //
               listNotes![widget.indexNote]['Tipo_Analisis'] ==
-                  'Análisis de Revisión' ? Text("\n${listNotes![widget.indexNote]['Hitos_Hospitalarios']}\n" ,
-                maxLines: 150,
-                overflow: TextOverflow.ellipsis,
-                style: Styles.textSyleGrowth(fontSize: 9),
-              )
+                      'Análisis de Revisión'
+                  ? Text(
+                      "\n${listNotes![widget.indexNote]['Hitos_Hospitalarios']}\n",
+                      maxLines: 150,
+                      overflow: TextOverflow.ellipsis,
+                      style: Styles.textSyleGrowth(fontSize: 9),
+                    )
                   : Container(),
 
               //
@@ -1553,7 +1592,6 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       );
     } else {
       return Container();
-
     }
   }
 
@@ -1585,9 +1623,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             controller: ScrollController(),
             gridDelegate: GridViewTools.gridDelegate(
                 mainAxisSpacing: 25.0,
-                crossAxisSpacing: 10.0,
+                crossAxisSpacing: 7.0,
                 crossAxisCount: 2,
-                mainAxisExtent: 20.0),
+                mainAxisExtent: 25.0),
             children: [
               IconButton(
                 icon: const Icon(
