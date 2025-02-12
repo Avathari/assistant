@@ -1,15 +1,22 @@
+import 'dart:io';
+
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/values/SizingInfo.dart';
+import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
+import 'package:assistant/widgets/GrandButton.dart';
+import 'package:assistant/widgets/GridLayout.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class Arteriales extends StatefulWidget {
   const Arteriales({super.key});
@@ -20,6 +27,8 @@ class Arteriales extends StatefulWidget {
 
 class _ArterialesState extends State<Arteriales> {
   static var index = 9; // Arteriales
+
+  String? filePath;
 
   @override
   void initState() {
@@ -58,103 +67,103 @@ class _ArterialesState extends State<Arteriales> {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              flex: 1,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  ValuePanel(
-                    firstText: "Na+",
-                    secondText: Valores.sodio!.toString(),
-                    thirdText: "mmol/L",
-                  ),
-                  ValuePanel(
-                    firstText: "K+",
-                    secondText: Valores.potasio!.toString(),
-                    thirdText: "mmol/L",
-                  ),
-                  ValuePanel(
-                    firstText: "Cl-",
-                    secondText: Valores.cloro!.toString(),
-                    thirdText: "mg/dL",
-                    withEditMessage: true,
-                    onEdit: (String value) {
-                      Operadores.editActivity(
-                          context: context,
-                          onAcept: (value) {
-                            setState(() {
-                              Valores.cloro = double.parse(value);
-                              Navigator.of(context).pop();
-                            });
-                          });
-                    },
-                  ),
-                  CrossLine(),
-                  ValuePanel(
-                    firstText: "Mg-",
-                    secondText: Valores.magnesio!.toString(),
-                    thirdText: "mEq/L",
-                  ),
-                  ValuePanel(
-                    firstText: "Ca2+",
-                    secondText: Valores.calcio!.toString(),
-                    thirdText: "mg/dL",
-                  ),
-                  ValuePanel(
-                    firstText: "PO3-",
-                    secondText: Valores.fosforo!.toString(),
-                    thirdText: "mg/dL",
-                  ),
-                  CrossLine(),
-                  ValuePanel(
-                    firstText: "Alb-",
-                    secondText: Valores.albuminaSerica!.toString(),
-                    thirdText: "g/dL",
-                  ),
-                  CrossLine(),
-                  ValuePanel(
-                    firstText: "Hb",
-                    secondText: Valores.hemoglobina!.toString(),
-                    thirdText: "g/dL",
-                  ),
-                  ValuePanel(
-                    firstText: "Hto",
-                    secondText: Valores.hematocrito!.toString(),
-                    thirdText: "%",
-                  ),
-                  CrossLine(),
-                  ValuePanel(
-                    firstText: "Fecha Biometrias",
-                    secondText: Valores.fechaBiometria!.toString(),
-                    thirdText: "",
-                  ),
-                  ValuePanel(
-                    firstText: "Fecha Químicas",
-                    secondText: Valores.fechaQuimicas!.toString(),
-                    thirdText: "",
-                  ),
-                  CrossLine(),
-                  ValuePanel(
-                    firstText: "pBARR",
-                    secondText: Valores.presionBarometrica!.toString(),
-                    thirdText: "mmGh",
-                    onEdit: (onVal) {
-                      Operadores.editActivity(context: context, tittle: "¡Presión barométrica?", onAcept: (onValue) {
-                        setState(() {
-                          Navigator.of(context).pop();
-                          Valores.presionBarometrica = int.parse(onValue);
-                        });
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ),
+            // Expanded(
+            //   flex: 2,
+            //   child: Column(
+            //     mainAxisAlignment: MainAxisAlignment.start,
+            //     children: [
+            //       ValuePanel(
+            //         firstText: "Na+",
+            //         secondText: Valores.sodio!.toString(),
+            //         thirdText: "mmol/L",
+            //       ),
+            //       ValuePanel(
+            //         firstText: "K+",
+            //         secondText: Valores.potasio!.toString(),
+            //         thirdText: "mmol/L",
+            //       ),
+            //       ValuePanel(
+            //         firstText: "Cl-",
+            //         secondText: Valores.cloro!.toString(),
+            //         thirdText: "mg/dL",
+            //         withEditMessage: true,
+            //         onEdit: (String value) {
+            //           Operadores.editActivity(
+            //               context: context,
+            //               onAcept: (value) {
+            //                 setState(() {
+            //                   Valores.cloro = double.parse(value);
+            //                   Navigator.of(context).pop();
+            //                 });
+            //               });
+            //         },
+            //       ),
+            //       CrossLine(),
+            //       ValuePanel(
+            //         firstText: "Mg-",
+            //         secondText: Valores.magnesio!.toString(),
+            //         thirdText: "mEq/L",
+            //       ),
+            //       ValuePanel(
+            //         firstText: "Ca2+",
+            //         secondText: Valores.calcio!.toString(),
+            //         thirdText: "mg/dL",
+            //       ),
+            //       ValuePanel(
+            //         firstText: "PO3-",
+            //         secondText: Valores.fosforo!.toString(),
+            //         thirdText: "mg/dL",
+            //       ),
+            //       CrossLine(),
+            //       ValuePanel(
+            //         firstText: "Alb-",
+            //         secondText: Valores.albuminaSerica!.toString(),
+            //         thirdText: "g/dL",
+            //       ),
+            //       CrossLine(),
+            //       ValuePanel(
+            //         firstText: "Hb",
+            //         secondText: Valores.hemoglobina!.toString(),
+            //         thirdText: "g/dL",
+            //       ),
+            //       ValuePanel(
+            //         firstText: "Hto",
+            //         secondText: Valores.hematocrito!.toString(),
+            //         thirdText: "%",
+            //       ),
+            //       CrossLine(),
+            //       ValuePanel(
+            //         firstText: "Fecha Biometrias",
+            //         secondText: Valores.fechaBiometria!.toString(),
+            //         thirdText: "",
+            //       ),
+            //       ValuePanel(
+            //         firstText: "Fecha Químicas",
+            //         secondText: Valores.fechaQuimicas!.toString(),
+            //         thirdText: "",
+            //       ),
+            //       CrossLine(),
+            //       ValuePanel(
+            //         firstText: "pBARR",
+            //         secondText: Valores.presionBarometrica!.toString(),
+            //         thirdText: "mmGh",
+            //         onEdit: (onVal) {
+            //           Operadores.editActivity(context: context, tittle: "¡Presión barométrica?", onAcept: (onValue) {
+            //             setState(() {
+            //               Navigator.of(context).pop();
+            //               Valores.presionBarometrica = int.parse(onValue);
+            //             });
+            //           });
+            //         },
+            //       ),
+            //     ],
+            //   ),
+            // ),
             Expanded(
               flex: 2,
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(
-                    2.0), // padding: const EdgeInsets.all(7.0),
+                    1.0), // padding: const EdgeInsets.all(7.0),
                 controller: ScrollController(),
                 child: Column(
                   children: [
@@ -276,7 +285,7 @@ class _ArterialesState extends State<Arteriales> {
               flex: 2,
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(
-                    2.0), // padding: const EdgeInsets.all(7.0),
+                    1.0), // padding: const EdgeInsets.all(7.0),
                 controller: ScrollController(),
                 child: Column(
                   children: [
@@ -364,175 +373,278 @@ class _ArterialesState extends State<Arteriales> {
                 ),
               ),
             ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  ValuePanel(
-                    firstText: "PAO2",
-                    secondText: Gasometricos.PAO.toStringAsFixed(0),
-                    thirdText: "mmHg",
-                  ),
-                  ValuePanel(
-                    firstText: "PIO2",
-                    secondText: Gasometricos.PIO.toStringAsFixed(0),
-                    thirdText: "mmHg",
-                  ),
-                  ValuePanel(
-                    firstText: "AaO2",
-                    secondText: Gasometricos.GAA.toStringAsFixed(0),
-                    thirdText: "mmHg",
-                  ),
-                  CrossLine(),
-                  ValuePanel(
-                    firstText: "PAFI",
-                    secondText: Gasometricos.PAFI.toStringAsFixed(0),
-                    thirdText: "mmHg/%",
-                  ),
-                  ValuePanel(
-                    firstText: "SAFI",
-                    secondText: Gasometricos.SAFI.toStringAsFixed(0),
-                    thirdText: "%",
-                  ),
-                  CrossLine(),
-                  ValuePanel(
-                    firstText: "CaO2",
-                    secondText: Gasometricos.CAO.toStringAsFixed(0),
-                    thirdText: "mL/dL",
-                  ),
-                  ValuePanel(
-                    firstText: "CcO2",
-                    secondText: Gasometricos.CCO.toStringAsFixed(0),
-                    thirdText: "mL/dL",
-                  ),
-                  CrossLine(),
-                  ValuePanel(
-                    firstText: "PCO2e",
-                    secondText: Gasometricos.PCO2esperado.toStringAsFixed(2),
-                    thirdText: "mmHg",
-                  ),
-                  ValuePanel(
-                    firstText: "EBe",
-                    secondText:
-                        Gasometricos.excesoBaseEsperado.toStringAsFixed(2),
-                    thirdText: "",
-                  ),
-                  CrossLine(),
-                  ValuePanel(
-                    firstText: "DIFa",
-                    secondText: Gasometricos.diferenciaIonesFuertesAparente
-                        .toStringAsFixed(0),
-                    thirdText: "",
-                  ),
-                  ValuePanel(
-                    firstText: "DIFe",
-                    secondText: Gasometricos.diferenciaIonesFuertesEfectiva
-                        .toStringAsFixed(2),
-                    thirdText: "",
-                  ),
-                  ValuePanel(
-                    firstText: "Atot",
-                    secondText: Gasometricos.aTOT.toStringAsFixed(2),
-                    thirdText: "",
-                  ),
-                  ValuePanel(
-                    firstText: "GIF",
-                    secondText: Gasometricos.GIF.toStringAsFixed(2),
-                    thirdText: "",
-                  ),
-                  CrossLine(),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Column(
-                children: [
-                  ValuePanel(
-                    firstText: "aGAP",
-                    secondText: Gasometricos.GAP.toStringAsFixed(2),
-                    thirdText: "",
-                  ),
-                  ValuePanel(
-                    firstText: "GAPA",
-                    secondText: Gasometricos.GAPA.toStringAsFixed(2),
-                    thirdText: "",
-                  ),
-                  ValuePanel(
-                    firstText: "aGAP/Alb",
-                    secondText: Gasometricos.aGapAlb.toStringAsFixed(2),
-                    thirdText: "",
-                  ),
-                  ValuePanel(
-                    firstText: "Δ-aGAP/Alb",
-                    secondText: Gasometricos.aGapAlbArterial.toStringAsFixed(2),
-                    thirdText: "",
-                  ), // aGap Ionico, ES arteriales
-                  CrossLine(),
-                  ValuePanel(
-                    firstText: "dGAP",
-                    secondText: Gasometricos.d_GAP.toStringAsFixed(2),
-                    thirdText: "mmol/L",
-                  ),
-                  ValuePanel(
-                    firstText: "dHCO3-",
-                    secondText: Gasometricos.d_HCO.toStringAsFixed(2),
-                    thirdText: "mmol/L",
-                  ),
-                  CrossLine(),
-                  CrossLine(),
-                  ValuePanel(
-                    firstText: "ΔΔ",
-                    secondText: Gasometricos.D_d_GAP.toStringAsFixed(2),
-                    thirdText: "",
-                  ),
-                  ValuePanel(
-                    firstText: "Δr",
-                    secondText: Gasometricos.D_d_ratio.toStringAsFixed(2),
-                    thirdText: "",
-                  ),
-                  CrossLine(),
-                  ValuePanel(
-                    firstText: "i Cl/Na",
-                    secondText:
-                        Gasometricos.indiceCloroSodiio.toStringAsFixed(2),
-                    thirdText: "",
-                  ),
-                  ValuePanel(
-                    firstText: "dif Na/Cl",
-                    secondText:
-                        Gasometricos.diferenciaSodioCloro.toStringAsFixed(2),
-                    thirdText: "",
-                  ),
-                  CrossLine(),
-                  ValuePanel(
-                    firstText: "I. Lact",
-                    secondText:
-                        Gasometricos.influenciaLactato.toStringAsFixed(2),
-                    thirdText: "",
-                  ),
-                  ValuePanel(
-                    firstText: "I. IMedi",
-                    secondText:
-                        Gasometricos.influenciaIonesMedibles.toStringAsFixed(2),
-                    thirdText: "",
-                  ),
-                  ValuePanel(
-                    firstText: "I. Alb",
-                    secondText:
-                        Gasometricos.influenciaAlbumina.toStringAsFixed(2),
-                    thirdText: "",
-                  ),
-                  ValuePanel(
-                    firstText: "I. O-Iones",
-                    secondText:
-                        Gasometricos.influenciaOtrosIones.toStringAsFixed(2),
-                    thirdText: "",
-                  ),
-                ],
-              ),
-            ),
+            filePath != null
+                ? Expanded(
+                flex: 5, child: Container(
+              decoration: ContainerDecoration.roundedDecoration(),
+              height: 550,
+                child: SfPdfViewer.file(File(filePath!))))
+                : Expanded(flex: 2, child: Container()),
           ],
         ),
+        CrossLine(height: 10),
+        GrandButton(
+          height: 15,
+          weigth: 1000,
+          labelButton: "Cargar archivo de Historial . . . ",
+          onPress: () async {
+            final path =
+            await Directorios.choiseFromInternalDocuments(
+                context);
+            //
+            setState(() {
+              filePath = path!.files.single.path!;
+            });
+          },
+        ),
+        CrossLine(height: 10),
+        Row(children: [
+          Expanded(
+            child: ValuePanel(
+              firstText: "Fecha Biometrias",
+              secondText: Valores.fechaBiometria!.toString(),
+              thirdText: "",
+            ),
+          ),
+          Expanded(
+            child: ValuePanel(
+              firstText: "Fecha Químicas",
+              secondText: Valores.fechaQuimicas!.toString(),
+              thirdText: "",
+            ),
+          ),
+        ],),
+        GridLayout(
+          columnCount: !isMobile(context) ? 15: 5,
+          crossAxisSpacing: 5.0,
+          mainAxisSpacing: 5.0,
+          children: [
+            ValuePanel(
+              firstText: "Na+",
+              secondText: Valores.sodio!.toString(),
+              thirdText: "mmol/L",
+            ),
+            ValuePanel(
+              firstText: "K+",
+              secondText: Valores.potasio!.toString(),
+              thirdText: "mmol/L",
+            ),
+            ValuePanel(
+              firstText: "Cl-",
+              secondText: Valores.cloro!.toString(),
+              thirdText: "mg/dL",
+              withEditMessage: true,
+              onEdit: (String value) {
+                Operadores.editActivity(
+                    context: context,
+                    onAcept: (value) {
+                      setState(() {
+                        Valores.cloro = double.parse(value);
+                        Navigator.of(context).pop();
+                      });
+                    });
+              },
+            ),
+            CrossLine(),
+            ValuePanel(
+              firstText: "Mg-",
+              secondText: Valores.magnesio!.toString(),
+              thirdText: "mEq/L",
+            ),
+            ValuePanel(
+              firstText: "Ca2+",
+              secondText: Valores.calcio!.toString(),
+              thirdText: "mg/dL",
+            ),
+            ValuePanel(
+              firstText: "PO3-",
+              secondText: Valores.fosforo!.toString(),
+              thirdText: "mg/dL",
+            ),
+            CrossLine(),
+            ValuePanel(
+              firstText: "Alb-",
+              secondText: Valores.albuminaSerica!.toString(),
+              thirdText: "g/dL",
+            ),
+            CrossLine(),
+            ValuePanel(
+              firstText: "Hb",
+              secondText: Valores.hemoglobina!.toString(),
+              thirdText: "g/dL",
+            ),
+            ValuePanel(
+              firstText: "Hto",
+              secondText: Valores.hematocrito!.toString(),
+              thirdText: "%",
+            ),
+            CrossLine(),
+            CrossLine(),
+            ValuePanel(
+              firstText: "pBARR",
+              secondText: Valores.presionBarometrica!.toString(),
+              thirdText: "mmGh",
+              onEdit: (onVal) {
+                Operadores.editActivity(context: context, tittle: "¡Presión barométrica?", onAcept: (onValue) {
+                  setState(() {
+                    Navigator.of(context).pop();
+                    Valores.presionBarometrica = int.parse(onValue);
+                  });
+                });
+              },
+            ),
+          ],),
+        CrossLine(height: 10),
+        GridLayout(
+          columnCount: !isMobile(context) ? 14: 5,
+          crossAxisSpacing: 5.0,
+          mainAxisSpacing: 5.0,
+          children: [
+          ValuePanel(
+            firstText: "PAO2",
+            secondText: Gasometricos.PAO.toStringAsFixed(0),
+            thirdText: "mmHg",
+          ),
+          ValuePanel(
+            firstText: "PIO2",
+            secondText: Gasometricos.PIO.toStringAsFixed(0),
+            thirdText: "mmHg",
+          ),
+          ValuePanel(
+            firstText: "AaO2",
+            secondText: Gasometricos.GAA.toStringAsFixed(0),
+            thirdText: "mmHg",
+          ),
+          ValuePanel(
+            firstText: "PAFI",
+            secondText: Gasometricos.PAFI.toStringAsFixed(0),
+            thirdText: "mmHg/%",
+          ),
+          ValuePanel(
+            firstText: "SAFI",
+            secondText: Gasometricos.SAFI.toStringAsFixed(0),
+            thirdText: "%",
+          ),
+          ValuePanel(
+            firstText: "CaO2",
+            secondText: Gasometricos.CAO.toStringAsFixed(0),
+            thirdText: "mL/dL",
+          ),
+          ValuePanel(
+            firstText: "CcO2",
+            secondText: Gasometricos.CCO.toStringAsFixed(0),
+            thirdText: "mL/dL",
+          ),
+          ValuePanel(
+            firstText: "PCO2e",
+            secondText: Gasometricos.PCO2esperado.toStringAsFixed(2),
+            thirdText: "mmHg",
+          ),
+          ValuePanel(
+            firstText: "EBe",
+            secondText:
+            Gasometricos.excesoBaseEsperado.toStringAsFixed(2),
+            thirdText: "",
+          ),
+          ValuePanel(
+            firstText: "DIFa",
+            secondText: Gasometricos.diferenciaIonesFuertesAparente
+                .toStringAsFixed(0),
+            thirdText: "",
+          ),
+          ValuePanel(
+            firstText: "DIFe",
+            secondText: Gasometricos.diferenciaIonesFuertesEfectiva
+                .toStringAsFixed(2),
+            thirdText: "",
+          ),
+          ValuePanel(
+            firstText: "Atot",
+            secondText: Gasometricos.aTOT.toStringAsFixed(2),
+            thirdText: "",
+          ),
+          ValuePanel(
+            firstText: "GIF",
+            secondText: Gasometricos.GIF.toStringAsFixed(2),
+            thirdText: "",
+          ),
+          ValuePanel(
+            firstText: "aGAP",
+            secondText: Gasometricos.GAP.toStringAsFixed(2),
+            thirdText: "",
+          ),
+          ValuePanel(
+            firstText: "GAPA",
+            secondText: Gasometricos.GAPA.toStringAsFixed(2),
+            thirdText: "",
+          ),
+          ValuePanel(
+            firstText: "aGAP/Alb",
+            secondText: Gasometricos.aGapAlb.toStringAsFixed(2),
+            thirdText: "",
+          ),
+          ValuePanel(
+            firstText: "Δ-aGAP/Alb",
+            secondText: Gasometricos.aGapAlbArterial.toStringAsFixed(2),
+            thirdText: "",
+          ), // aGap Ionico, ES arteriales
+          ValuePanel(
+            firstText: "dGAP",
+            secondText: Gasometricos.d_GAP.toStringAsFixed(2),
+            thirdText: "mmol/L",
+          ),
+          ValuePanel(
+            firstText: "dHCO3-",
+            secondText: Gasometricos.d_HCO.toStringAsFixed(2),
+            thirdText: "mmol/L",
+          ),
+          ValuePanel(
+            firstText: "ΔΔ",
+            secondText: Gasometricos.D_d_GAP.toStringAsFixed(2),
+            thirdText: "",
+          ),
+          ValuePanel(
+            firstText: "Δr",
+            secondText: Gasometricos.D_d_ratio.toStringAsFixed(2),
+            thirdText: "",
+          ),
+          ValuePanel(
+            firstText: "i Cl/Na",
+            secondText:
+            Gasometricos.indiceCloroSodiio.toStringAsFixed(2),
+            thirdText: "",
+          ),
+          ValuePanel(
+            firstText: "dif Na/Cl",
+            secondText:
+            Gasometricos.diferenciaSodioCloro.toStringAsFixed(2),
+            thirdText: "",
+          ),
+          ValuePanel(
+            firstText: "I. Lact",
+            secondText:
+            Gasometricos.influenciaLactato.toStringAsFixed(2),
+            thirdText: "",
+          ),
+          ValuePanel(
+            firstText: "I. IMedi",
+            secondText:
+            Gasometricos.influenciaIonesMedibles.toStringAsFixed(2),
+            thirdText: "",
+          ),
+          ValuePanel(
+            firstText: "I. Alb",
+            secondText:
+            Gasometricos.influenciaAlbumina.toStringAsFixed(2),
+            thirdText: "",
+          ),
+          ValuePanel(
+            firstText: "I. O-Iones",
+            secondText:
+            Gasometricos.influenciaOtrosIones.toStringAsFixed(2),
+            thirdText: "",
+          ),
+        ],)
       ],
     );
   }
@@ -822,6 +934,8 @@ class _ArterialesState extends State<Arteriales> {
               // Se emplean 3 Navigator.of(context).pop(); para cerrar cada una de
               //    las ventanas emergentes y la interfaz inicial.
 
+              if (filePath !=null) File(filePath!).delete();
+              //
               Navigator.of(context).pop(); // Cierre de la Interfaz Inicial
               Navigator.of(context).pop(); // Cierre del AlertActivity
             });

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
@@ -8,11 +10,13 @@ import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
+import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class TallerGasometrico extends StatefulWidget {
   const TallerGasometrico({super.key});
@@ -23,6 +27,7 @@ class TallerGasometrico extends StatefulWidget {
 
 class _TallerGasometricoState extends State<TallerGasometrico> {
   // static var 10 = 9 // 10 ; // TallerGasometrico (Arteriales, Venosos)
+  String? filePath;
 
   @override
   void initState() {
@@ -58,6 +63,22 @@ class _TallerGasometricoState extends State<TallerGasometrico> {
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
         ),
+        CrossLine(height: 10),
+        GrandButton(
+          height: 10,
+          weigth: 1000,
+          labelButton: "Cargar archivo de Historial . . . ",
+          onPress: () async {
+            final path =
+            await Directorios.choiseFromInternalDocuments(
+                context);
+            //
+            setState(() {
+              filePath = path!.files.single.path!;
+            });
+          },
+        ),
+        CrossLine(height: 10),
         CrossLine(thickness: 3, height: 10),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -457,6 +478,13 @@ class _TallerGasometricoState extends State<TallerGasometrico> {
                 ),
               ),
             ),
+            filePath != null
+                ? Expanded(
+                flex: 3, child: Container(
+                decoration: ContainerDecoration.roundedDecoration(),
+                height: 550,
+                child: SfPdfViewer.file(File(filePath!))))
+                : Expanded(flex: 1, child: Container()),
           ],
         ),
       ],

@@ -662,6 +662,9 @@ class Paneles {
       //
       param = "$param CAMA ${element.hospitalizedData['Id_Cama']} : : "
           "${Auxiliares.getUltimo(esAbreviado: true)}"
+          "${Auxiliares.getGasometrico()}"
+          "${Auxiliares.getReactantes()}"
+          "${Auxiliares.getCoagulacion()}"
           "${Auxiliares.getEspeciales(esAbreviado: true)}\n";
       //
       widgets.add(
@@ -670,8 +673,7 @@ class Paneles {
           child: SingleChildScrollView(
             controller: ScrollController(),
             child: Text(
-              Auxiliares.getUltimo(esAbreviado: true) + "\n"
-                  +Auxiliares.getEspeciales(esAbreviado: true) ,
+              "${Auxiliares.getUltimo(esAbreviado: true)}\n${Auxiliares.getGasometrico()}${Auxiliares.getReactantes()}${Auxiliares.getCoagulacion()}${Auxiliares.getEspeciales(esAbreviado: true)}" ,
               overflow: TextOverflow.ellipsis,
               style: Styles.textSyleGrowth(fontSize: 12),
               maxLines: 7,
@@ -918,10 +920,27 @@ class Paneles {
       ));
       //
       widgets.add(TittleContainer(
-          tittle: "$idCama",
+          tittle: "$idCama . . ${foundedItems[index].nombreCompleto} : "
+              "${foundedItems[index].generales['ID_Pace']} . . "
+              "${foundedItems[index].hospitalizedData['ID_Hosp']}",
           padding: 10.0,
-          child: Column(
-            children: pendientes,
+          child: Row(
+            children: [
+              Expanded(
+                flex: 7,
+                child: Column(
+                  children: pendientes,
+                ),
+              ),
+              Expanded(child: CircleIcon(
+                iconed: Icons.archive_outlined,
+                  onChangeValue: () async {
+
+                    Terminal.printExpected(message: foundedItems[index].toString());
+                    //
+                    await Internado.updateStatus(listadoFrom: foundedItems[index]);
+              })),
+            ],
           )));
     }
     return Column(

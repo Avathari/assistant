@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
@@ -8,6 +10,7 @@ import 'package:assistant/widgets/GrandButton.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class LiquidoDialisis extends StatefulWidget {
   const LiquidoDialisis({super.key});
@@ -18,6 +21,7 @@ class LiquidoDialisis extends StatefulWidget {
 
 class _LiquidoDialisisState extends State<LiquidoDialisis> {
   static var index = 13; // LiquidoDialisis
+  String? filePath;
 
   @override
   void initState() {
@@ -61,137 +65,166 @@ class _LiquidoDialisisState extends State<LiquidoDialisis> {
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
         ),
-        SingleChildScrollView(
-          padding: const EdgeInsets.all(7.0),
-          controller: ScrollController(),
-          child: Column(
-            children: [
-              EditTextArea(
-                textController: textAspectoResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Aspecto ($unidadMedidaAspecto)',
-                numOfLines: 1,
-                selection: true,
-                withShowOption: true,
-                onSelected: () {
-                  Operadores.selectOptionsActivity(
-                      context: context,
-                      options:
-                      Auxiliares.aspectoLiquidos,
-                      onClose: (value) {
-                        setState(() {
-                          textAspectoResultController.text = value;
-                          Navigator.of(context).pop();
-                        });
-                      });
-                },
-              ),
-              EditTextArea(
-                textController: textColorResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Color ($unidadMedidaColor)',
-                numOfLines: 1,
-                selection: true,
-                withShowOption: true,
-                onSelected: () {
-                  Operadores.selectOptionsActivity(
-                      context: context,
-                      options:
-                      Auxiliares.colorLiquidos,
-                      onClose: (value) {
-                        setState(() {
-                          textColorResultController.text = value;
-                          Navigator.of(context).pop();
-                        });
-                      });
-                },
-              ),
-              EditTextArea(
-                textController: textLeucocitosResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Leucocitos ($unidadMedidaLeucocitos)',
-                numOfLines: 1,
-              ),
-
-              EditTextArea(
-                textController: textPolimorfonuclaresResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Polimorfonuclares ($unidadMedidaPolimorfonuclares)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textMononuclearesResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Mononucleares ($unidadMedidaMononucleares)',
-                numOfLines: 1,
-              ),
-
-              EditTextArea(
-                textController: textEritrocitosResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Eritrocitos ($unidadMedidaEritrocitos)',
-                numOfLines: 1,
-              ),
-
-              EditTextArea(
-                textController: textBacteriasResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Bacterias ($unidadMedidaBacterias)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textLevadurasResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Levaduras ($unidadMedidaLevaduras)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textOtrosResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Otros ($unidadMedidaOtros)',
-                numOfLines: 1,
-              ),
-
-              EditTextArea(
-                textController: textPhResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Ph ($unidadMedidaPh)',
-                numOfLines: 1,
-              ),
-              // Botton ***** ******* ****** * ***
-              CrossLine(
-                color: Colors.grey,
-              ),
-              Container(
-                margin: const EdgeInsets.all(5.0),
-                decoration: ContainerDecoration.roundedDecoration(),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+        CrossLine(height: 10),
+        GrandButton(
+          height: 15,
+          weigth: 1000,
+          labelButton: "Cargar archivo de Historial . . . ",
+          onPress: () async {
+            final path =
+            await Directorios.choiseFromInternalDocuments(
+                context);
+            //
+            setState(() {
+              filePath = path!.files.single.path!;
+            });
+          },
+        ),
+        CrossLine(height: 10),
+        Row(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(7.0),
+                controller: ScrollController(),
+                child: Column(
                   children: [
-                    Expanded(
-                      child: GrandButton(
-                          labelButton: "Agregar Datos",
-                          weigth: 2000,
-                          onPress: () {
-                            operationMethod();
+                    EditTextArea(
+                      textController: textAspectoResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Aspecto ($unidadMedidaAspecto)',
+                      numOfLines: 1,
+                      selection: true,
+                      withShowOption: true,
+                      onSelected: () {
+                        Operadores.selectOptionsActivity(
+                            context: context,
+                            options:
+                            Auxiliares.aspectoLiquidos,
+                            onClose: (value) {
+                              setState(() {
+                                textAspectoResultController.text = value;
+                                Navigator.of(context).pop();
+                              });
+                            });
+                      },
+                    ),
+                    EditTextArea(
+                      textController: textColorResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Color ($unidadMedidaColor)',
+                      numOfLines: 1,
+                      selection: true,
+                      withShowOption: true,
+                      onSelected: () {
+                        Operadores.selectOptionsActivity(
+                            context: context,
+                            options:
+                            Auxiliares.colorLiquidos,
+                            onClose: (value) {
+                              setState(() {
+                                textColorResultController.text = value;
+                                Navigator.of(context).pop();
+                              });
+                            });
+                      },
+                    ),
+                    EditTextArea(
+                      textController: textLeucocitosResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Leucocitos ($unidadMedidaLeucocitos)',
+                      numOfLines: 1,
+                    ),
 
-                          }),
+                    EditTextArea(
+                      textController: textPolimorfonuclaresResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Polimorfonuclares ($unidadMedidaPolimorfonuclares)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textMononuclearesResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Mononucleares ($unidadMedidaMononucleares)',
+                      numOfLines: 1,
+                    ),
+
+                    EditTextArea(
+                      textController: textEritrocitosResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Eritrocitos ($unidadMedidaEritrocitos)',
+                      numOfLines: 1,
+                    ),
+
+                    EditTextArea(
+                      textController: textBacteriasResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Bacterias ($unidadMedidaBacterias)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textLevadurasResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Levaduras ($unidadMedidaLevaduras)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textOtrosResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Otros ($unidadMedidaOtros)',
+                      numOfLines: 1,
+                    ),
+
+                    EditTextArea(
+                      textController: textPhResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Ph ($unidadMedidaPh)',
+                      numOfLines: 1,
+                    ),
+                    // Botton ***** ******* ****** * ***
+                    CrossLine(
+                      color: Colors.grey,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(5.0),
+                      decoration: ContainerDecoration.roundedDecoration(),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: GrandButton(
+                                labelButton: "Agregar Datos",
+                                weigth: 2000,
+                                onPress: () {
+                                  operationMethod();
+
+                                }),
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),
-              )
-            ],
-          ),
+              ),
+            ),
+            filePath != null
+                ? Expanded(
+                flex: 2, child: Container(
+                decoration: ContainerDecoration.roundedDecoration(),
+                height: 550,
+                child: SfPdfViewer.file(File(filePath!))))
+                : Expanded(flex: 2, child: Container()),
+          ],
         ),
       ],
     );

@@ -669,10 +669,11 @@ class _GestionPacientesState extends State<GestionPacientes> {
   }
 
   // OPERACIONES DE LA INTERFAZ ****************** ******** * * * *
-  void iniciar() {
+  void iniciar() async {
     Terminal.printWarning(
         message: " . . . Iniciando Actividad - Repositorio de Pacientes");
-    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+
+    await Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       setState(() {
         foundedItems = Pacientes.Pacientary = value;
       });
@@ -846,24 +847,59 @@ class _GestionPacientesState extends State<GestionPacientes> {
 
   // ACTIVIDADES DE BÚSQUEDA ************ ************ ***** * ** *
   Future<Null> _pullListRefresh() async {
-    iniciar();
+    Terminal.printWarning(
+        message: " . . . Iniciando Actividad - Repositorio de Pacientes");
+
+    await Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+      setState(() {
+        foundedItems = originalItems=Pacientes.Pacientary = value;
+      });
+    }).onError((onError, stackTrace) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.all(30.0),
+          padding: EdgeInsets.all(15.0),
+          content: Text("ERROR - Inicio del Repositorio de Pacientes "
+              "- $onError : $stackTrace"),
+          action: SnackBarAction(
+            label: 'Aceptar . . . ',
+            onPressed: () {
+              // Some code to undo the change.
+            },
+          )));
+      reiniciar();
+    });
+    Terminal.printWarning(message: " . . . Actividad Iniciada");
   }
 
   void _runFilterSearch(String enteredKeyword) {
-    List? results = [];
-
     if (enteredKeyword.isEmpty) {
-      _pullListRefresh();
-    } else {
-      results = Listas.listFromMap(
-          lista: foundedItems!,
-          keySearched: 'Pace_Ape_Pat',
-          elementSearched: Sentences.capitalize(enteredKeyword));
-
       setState(() {
-        foundedItems = results;
+        foundedItems = [];
+        enteredKeyCount = 0;
       });
+
+      // Restablecer la lista original desde la fuente de datos
+      _pullListRefresh();
+      return;
     }
+    //
+    lastEnteredKeyword = enteredKeyword;
+
+    // Asegurarse de que foundedItems no sea null antes de filtrar
+    List<dynamic> results = Listas.listFromMap(
+      lista: originalItems ?? [], // Filtrar desde foundedItems en todo momento
+      keySearched: 'Pace_Ape_Pat',
+      elementSearched: Sentences.capitalize(enteredKeyword),
+    );
+
+    setState(() {
+      //
+      foundedItems = results;
+      enteredKeyCount = enteredKeyword.length;
+    });
   }
 
   void _runConsultaSearch({String enteredKeyword = 'Consulta Externa'}) {
@@ -921,7 +957,10 @@ class _GestionPacientesState extends State<GestionPacientes> {
   }
 
   // VARIABLES DE LA INTERFAZ ***************** ******* * * * *
-  late List? foundedItems = [];
+  late List? foundedItems = [], originalItems = [];
+late int enteredKeyCount = 0;
+String lastEnteredKeyword = "";
+
   var gestionScrollController = ScrollController();
   var searchTextController = TextEditingController();
 
@@ -1337,7 +1376,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
         inputFormat: MaskTextInputFormatter(
             mask: '####-##-##',
             filter: {"#": RegExp(r'[0-9]')},
-            type: MaskAutoCompletionType.lazy),
+            type: MaskAutoCompletionType.eager),
         isObscure: false,
         numOfLines: 1,
         labelEditText: 'Fecha de Nacimiento',

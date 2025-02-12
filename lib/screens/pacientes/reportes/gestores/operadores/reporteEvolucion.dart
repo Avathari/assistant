@@ -119,7 +119,7 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
                                                   'Impresiones_Diagnosticas'] =
                                               Reportes.reportes[
                                                       'Diagnosticos_Hospital'] =
-                                                  "$value.";
+                                                  value;
                                           // Terminal.printData(message: Reportes.impresionesDiagnosticas);
                                         });
                                       }),

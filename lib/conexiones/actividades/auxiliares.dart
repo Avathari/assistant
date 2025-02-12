@@ -345,7 +345,9 @@ class Archivos {
       final File file = File(filePath);
       if (await file.exists()) {
         try {
-          await file.openRead().drain(); // Asegura que cualquier lectura se complete
+          await file
+              .openRead()
+              .drain(); // Asegura que cualquier lectura se complete
           file.deleteSync();
           print('Archivo eliminado exitosamente');
         } catch (e) {
@@ -726,8 +728,8 @@ class Listas {
   /// Encuentra la fecha más reciente en la clave Fecha_Registro de los elementos restantes, y ordena de forma ascendente.
   /// Devuelve un List<Map<String, dynamic>> siendo el primer valor el más reciente .
   ///
-  static List filterAndFindRecent(
-      List paraclinicos, List especiales, {bool? withEspeciales = false}) {
+  static List filterAndFindRecent(List paraclinicos, List especiales,
+      {bool? withEspeciales = false}) {
     // Filtrar los elementos excluyendo los `Tipo_Estudio` que están en `Auxiliares.especiales`
     final filtered = paraclinicos.where((element) {
       if (withEspeciales!) {
@@ -1114,8 +1116,10 @@ class Operadores {
     String? tittle,
     String? message,
     Function? onCloss,
+    bool dismisable = true,
   }) {
     showDialog(
+        barrierDismissible: dismisable,
         context: context,
         builder: (context) {
           return Dialogos.loadingActivity(
@@ -1212,13 +1216,14 @@ class Operadores {
     String? message = "El registro ha sido actualizado / creado",
     onClose,
     Function(String)? onAcept,
+    int numOfLines = 1,
   }) {
     showDialog(
         context: context,
         builder: (context) {
           return Dialogos.editDialog(keyBoardType, tittle, message, () {
             Navigator.of(context).pop();
-          }, onAcept);
+          }, onAcept, numOfLines: numOfLines);
         });
   }
 
@@ -1316,7 +1321,8 @@ class Dialogos {
   }
 
   static AlertDialog editDialog(TextInputType keyBoardType, String? tittle,
-      String? msg, onCloss, ValueChanged<String>? onAcept) {
+      String? msg, onCloss, ValueChanged<String>? onAcept,
+      {int numOfLines = 1}) {
     var textEditController = TextEditingController();
 
     return AlertDialog(
@@ -1337,7 +1343,7 @@ class Dialogos {
             Expanded(
               child: EditTextArea(
                 labelEditText: msg,
-                numOfLines: 1,
+                numOfLines: numOfLines,
                 keyBoardType: keyBoardType, // TextInputType.text,
                 inputFormat: MaskTextInputFormatter(),
                 textController: textEditController,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
@@ -6,12 +8,14 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
+import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/TittleContainer.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class LiquidoCefalorraquideo extends StatefulWidget {
   const LiquidoCefalorraquideo({super.key});
@@ -22,6 +26,7 @@ class LiquidoCefalorraquideo extends StatefulWidget {
 
 class _LiquidoCefalorraquideoState extends State<LiquidoCefalorraquideo> {
   static var index = 14; // LiquidoCefalorraquideo
+  String? filePath;
 
   @override
   void initState() {
@@ -53,51 +58,47 @@ class _LiquidoCefalorraquideoState extends State<LiquidoCefalorraquideo> {
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
         ),
-        CrossLine(),
+        CrossLine(height: 10),
+        Row(
+          children: [
+            Expanded(
+              child: GrandButton(
+                height: 15,
+                weigth: 200,
+                labelButton: "Cargar archivo de Historial . . . ",
+                onPress: () async {
+                  final path =
+                  await Directorios.choiseFromInternalDocuments(
+                      context);
+                  //
+                  setState(() {
+                    filePath = path!.files.single.path!;
+                  });
+                },
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.all(5.0),
+              decoration: ContainerDecoration.roundedDecoration(),
+              child: GrandIcon(
+                  iconData: Icons.add,
+                  size: 60,
+                  labelButton: "Agregar Datos",
+                  onPress: () => operationMethod()),
+            ),
+          ],
+        ),
+        CrossLine(height: 10),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-                child: TittleContainer(
-              padding: 2,
-              child: Column(
-                children: [
-                  ValuePanel(
-                    firstText: "Glu-",
-                    secondText: Valores.glucosa.toString(),
-                    thirdText: "mg/dL",
-                  ),
-                  CrossLine(),
-                  ValuePanel(
-                    firstText: "Eryt",
-                    secondText: Valores.eritrocitos.toString(),
-                    thirdText: "mm3/uL",
-                  ),
-                  ValuePanel(
-                    firstText: "Hb-",
-                    secondText: Valores.hemoglobina.toString(),
-                    thirdText: "g/dL",
-                  ),
-                  ValuePanel(
-                    firstText: "Leu-",
-                    secondText: Valores.leucocitosTotales.toString(),
-                    thirdText: "mm3/uL",
-                  ),
-                  CrossLine(),
-                  ValuePanel(
-                    firstText: "Alb-",
-                    secondText: Valores.albuminaSerica.toString(),
-                    thirdText: "g/dL",
-                  ),
-                  ValuePanel(
-                    firstText: "Prot-",
-                    secondText: Valores.proteinasTotales.toString(),
-                    thirdText: "g/dL",
-                  ),
-                  CrossLine(),
-                ],
-              ),
-            )),
+            filePath != null
+                ? Expanded(
+                flex: 3, child: Container(
+                decoration: ContainerDecoration.roundedDecoration(),
+                height: 550,
+                child: SfPdfViewer.file(File(filePath!))))
+                : Expanded(flex: 2, child: Container()),
             Expanded(
               flex: 2,
               child: SingleChildScrollView(
@@ -110,7 +111,7 @@ class _LiquidoCefalorraquideoState extends State<LiquidoCefalorraquideo> {
                       keyBoardType: TextInputType.number,
                       inputFormat: MaskTextInputFormatter(),
                       labelEditText:
-                          'PresionApertura ($unidadMedidaPresionApertura)',
+                          'Presión de Apertura ($unidadMedidaPresionApertura)',
                       numOfLines: 1,
                     ),
                     CrossLine(),
@@ -196,7 +197,7 @@ class _LiquidoCefalorraquideoState extends State<LiquidoCefalorraquideo> {
                       textController: textphLCRResultController,
                       keyBoardType: TextInputType.number,
                       inputFormat: MaskTextInputFormatter(),
-                      labelEditText: 'phLCR ($unidadMedidaphLCR)',
+                      labelEditText: 'ph LCR ($unidadMedidaphLCR)',
                       numOfLines: 1,
                     ),
                     //
@@ -277,6 +278,40 @@ class _LiquidoCefalorraquideoState extends State<LiquidoCefalorraquideo> {
               child: Column(
                 children: [
                   ValuePanel(
+                    firstText: "Glu-",
+                    secondText: Valores.glucosa.toString(),
+                    thirdText: "mg/dL",
+                  ),
+                  CrossLine(),
+                  ValuePanel(
+                    firstText: "Eryt",
+                    secondText: Valores.eritrocitos.toString(),
+                    thirdText: "mm3/uL",
+                  ),
+                  ValuePanel(
+                    firstText: "Hb-",
+                    secondText: Valores.hemoglobina.toString(),
+                    thirdText: "g/dL",
+                  ),
+                  ValuePanel(
+                    firstText: "Leu-",
+                    secondText: Valores.leucocitosTotales.toString(),
+                    thirdText: "mm3/uL",
+                  ),
+                  CrossLine(),
+                  ValuePanel(
+                    firstText: "Alb-",
+                    secondText: Valores.albuminaSerica.toString(),
+                    thirdText: "g/dL",
+                  ),
+                  ValuePanel(
+                    firstText: "Prot-",
+                    secondText: Valores.proteinasTotales.toString(),
+                    thirdText: "g/dL",
+                  ),
+                  CrossLine(),
+                  CrossLine(),
+                  ValuePanel(
                     firstText: "Relación\nGluc",
                     secondText:
                         Cefalorraquideos.relacionGlucosa.toStringAsFixed(2),
@@ -302,15 +337,7 @@ class _LiquidoCefalorraquideoState extends State<LiquidoCefalorraquideo> {
                     thirdText: "g/dL",
                   ),
                   CrossLine(),
-                  Container(
-                    margin: const EdgeInsets.all(5.0),
-                    decoration: ContainerDecoration.roundedDecoration(),
-                    child: GrandIcon(
-                        iconData: Icons.add,
-                        size: 60,
-                        labelButton: "Agregar Datos",
-                        onPress: () => operationMethod()),
-                  ),
+
                 ],
               ),
             )

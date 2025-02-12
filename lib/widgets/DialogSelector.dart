@@ -37,64 +37,69 @@ class _DialogSelectorState extends State<DialogSelector> {
   var searchTextController = TextEditingController();
 
   // ***************************** # # # *****************************
-  late List? foundedItems = [];
+  late List? foundedItems = [], originalItems = [];
   late int enteredKeyCount = 0;
   String lastEnteredKeyword = "";
 
   // ***************************** # # # *****************************
   @override
   void initState() {
-    if (widget.typeOfDocument == 'json') {
-      Archivos.mapFromJson(path: widget.pathForFileSource!).then((valax) {
-        setState(() {
-          foundedItems = valax['Diccionarios_Cie'];
-        });
-      });
-    } else {
-      Archivos.listFromText(
-              path: widget.pathForFileSource!, splitChar: widget.splitChar!)
-          .then((valax) {
-        setState(() {
-          foundedItems = valax;
-        });
-      });
-    }
+    // if (widget.typeOfDocument == 'json') {
+    //   Archivos.mapFromJson(path: widget.pathForFileSource!).then((valax) {
+    //     setState(() {
+    //       foundedItems = valax['Diccionarios_Cie'];
+    //     });
+    //   });
+    // } else {
+    //   Archivos.listFromText(
+    //           path: widget.pathForFileSource!, splitChar: widget.splitChar!)
+    //       .then((valax) {
+    //     setState(() {
+    //       foundedItems = valax;
+    //     });
+    //   });
+    // }
 
+    _pullListRefresh();
     super.initState();
   }
 
   // ***************************** # # # *****************************
   void _runFilterSearch(String enteredKeyword) {
-    List? results = [];
-    //
     if (enteredKeyword.isEmpty) {
-      enteredKeyCount = 0;
+      setState(() {
+        // foundedItems = [];
+        enteredKeyCount = 0;
+      });
+
+      // Restablecer la lista original desde la fuente de datos
       _pullListRefresh();
+      return;
+    }
+    //
+    lastEnteredKeyword = enteredKeyword;
+
+    // Asegurarse de que foundedItems no sea null antes de filtrar
+    if (widget.typeOfDocument == 'json') {
+      List<dynamic> results = Listas.listFromMap(
+        lista:
+            originalItems ?? [], // Filtrar desde foundedItems en todo momento
+        keySearched: 'Diagnostico_CIE',
+        elementSearched: Sentences.capitalizeAllWord(enteredKeyword),
+      );
+      setState(() {
+        foundedItems = results;
+        enteredKeyCount = enteredKeyword.length;
+
+      });
     } else {
-      lastEnteredKeyword = enteredKeyword;
-      //
-      if (enteredKeyword.length >= enteredKeyCount) {
-        if (widget.typeOfDocument == 'json') {
-          results = foundedItems!
-              .where((user) => user["Diagnostico_CIE"].contains(Sentences.capitalize(enteredKeyword)))
-              .toList();
-          setState(() {
-            foundedItems = results;
-          });
-        } else {
-          results = foundedItems!
-              .where((user) => user.contains(Sentences.capitalize(enteredKeyword)))
-              .toList();
-          setState(() {
-            foundedItems = results;
-          });
-        }
-      } else {
-        // Reinicia foundedItems con los registros del archivo.
-        _pullListRefresh();
-        // Nuevamente la búsqueda.
-      }
-      enteredKeyCount = enteredKeyword.length;
+      List<dynamic> results = originalItems!
+          .where((user) => user.contains(Sentences.capitalizeAllWord(enteredKeyword)))
+          .toList();
+      setState(() {
+        foundedItems = results;
+        enteredKeyCount = enteredKeyword.length;
+      });
     }
   }
 
@@ -103,7 +108,7 @@ class _DialogSelectorState extends State<DialogSelector> {
     if (widget.typeOfDocument == 'json') {
       Archivos.mapFromJson(path: widget.pathForFileSource!).then((valax) {
         setState(() {
-          foundedItems = valax['Diccionarios_Cie'];
+          foundedItems = originalItems = valax['Diccionarios_Cie'];
         });
       });
     } else {
@@ -111,7 +116,7 @@ class _DialogSelectorState extends State<DialogSelector> {
               path: widget.pathForFileSource!, splitChar: widget.splitChar!)
           .then((valax) {
         setState(() {
-          foundedItems = valax;
+          foundedItems = originalItems = valax;
         });
       });
     }

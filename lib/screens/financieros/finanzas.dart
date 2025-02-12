@@ -37,6 +37,7 @@ import 'package:photo_view/photo_view.dart';
 class operacionesActivos extends StatefulWidget {
   late String? operationActivity;
   late String _operationButton = 'Nulo';
+  Uint8List? fileBytes;
 
   operacionesActivos({super.key, this.operationActivity = Constantes.Nulo});
 
@@ -494,10 +495,10 @@ class _operacionesActivosState extends State<operacionesActivos> {
                                       iconed: Icons.file_copy_rounded,
                                       tittle: 'Cargar desde Dispositivo',
                                       onChangeValue: () async {
-                                        var bytes = await Directorios
+                                        widget.fileBytes = await Directorios
                                             .choiseFromDirectory();
                                         setState(() {
-                                          stringImage = base64Encode(bytes);
+                                          stringImage = base64Encode(widget.fileBytes!);
                                         });
                                       }),
                                   GrandIcon(
@@ -514,10 +515,10 @@ class _operacionesActivosState extends State<operacionesActivos> {
                                       iconed: Icons.camera_alt_outlined,
                                       tittle: 'Cargar desde Cámara',
                                       onChangeValue: () async {
-                                        var bytes = await Directorios
+                                        widget.fileBytes = await Directorios
                                             .choiseFromCamara();
                                         setState(() {
-                                          stringImage = base64Encode(bytes);
+                                          stringImage = base64Encode(widget.fileBytes!);
                                         });
                                       }),
                                 ],
@@ -652,6 +653,7 @@ class _operacionesActivosState extends State<operacionesActivos> {
 
   void onClose(BuildContext context) {
     Activos.registros().whenComplete(() {
+
       switch (isMobile(context)) {
         case true:
           Navigator.push(

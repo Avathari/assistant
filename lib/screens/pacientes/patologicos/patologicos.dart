@@ -42,7 +42,9 @@ class OperacionesPatologicos extends StatefulWidget {
 class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
   @override
   void initState() {
-    Terminal.printExpected(message: "OperacionesPatologicos : : : widget.withReturnOption! : : ${widget.withReturnOption!}");
+    Terminal.printExpected(
+        message:
+            "OperacionesPatologicos : : : widget.withReturnOption! : : ${widget.withReturnOption!}");
     //
     switch (widget.operationActivity) {
       case Constantes.Nulo:
@@ -106,7 +108,36 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
                 onPressed: () {
                   onClose(context);
                 },
-              ))
+              ),
+              actions: [
+                GrandIcon(
+                    iconData: Icons.line_weight_sharp,
+                    onPress: () {
+                      Operadores.editActivity(
+                          context: context,
+                          keyBoardType: TextInputType.multiline,
+                          numOfLines: 15,
+                          tittle: "Antecedente Patológico por Prosa . . . ",
+                          message: "Prosa del antecedente . . . ",
+                          onAcept: (value) {
+                            // Terminal.printExpected(message: "$value : ${value.length}");
+                            List splitedDiagon = value.split("\n");
+                            //
+                            if (splitedDiagon.length <=3) {
+                              comenDiagnoTextController.text =
+                                  splitedDiagon[0].toString();
+                              tratamientoTextController.text =
+                                  splitedDiagon[1].toString();
+                              suspensionesTextController.text =
+                                  splitedDiagon[2].toString();
+                            }
+                            //
+                            Navigator.of(context).pop();
+                          });
+                    }),
+                SizedBox(width: 15),
+              ],
+            )
           : null,
       body: Container(
         decoration: ContainerDecoration.roundedDecoration(),
@@ -429,7 +460,8 @@ class _OperacionesPatologicosState extends State<OperacionesPatologicos> {
   }
 
   void onClose(BuildContext context) {
-    Terminal.printExpected(message: "widget.withReturnOption! : : ${widget.withReturnOption!}");
+    Terminal.printExpected(
+        message: "widget.withReturnOption! : : ${widget.withReturnOption!}");
     if (widget.withReturnOption!) {
       Navigator.push(
           context,
@@ -848,7 +880,7 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (BuildContext context) => OperacionesPatologicos(
                 operationActivity: operationActivity,
-            withReturnOption: widget.withReturnOption!,
+                withReturnOption: widget.withReturnOption!,
               )));
     } else {
       Constantes.operationsActividad = operationActivity;
@@ -1039,11 +1071,10 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                               onChangeValue: (value) {
                                 setState(() {
                                   isActualDiagoAValue =
-                                      Dicotomicos.fromBoolean(value) as String;
+                                  Dicotomicos.fromBoolean(value) as String;
                                 });
                               },
-                              isSwitched:
-                                  Dicotomicos.fromString(isActualDiagoAValue)),
+                              isSwitched: Dicotomicos.fromString(isActualDiagoAValue)),
                         ),
                       ),
                       Expanded(
@@ -1054,13 +1085,10 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                           numOfLines: 3,
                           labelEditText: 'Diagnóstico (CIE)',
                           textController: cieDiagnoATextController,
-                        ),
-                      ),
-                      Expanded(
-                        child: GrandIcon(
-                          labelButton: "CIE-10",
-                          weigth: 5,
-                          onPress: () {
+                          selection: true,
+                          withShowOption: true,
+                          iconData: Icons.line_style,
+                          onSelected: () {
                             Operadores.openDialog(
                                 context: context,
                                 chyldrim: DialogSelector(
@@ -1082,48 +1110,20 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                     color: Colors.black,
                   ),
                   EditTextArea(
-                    keyBoardType: TextInputType.text,
-                    limitOfChars: 700,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'Comentario de diagnóstico',
-                    textController: comenDiagnoATextController,
-                    numOfLines: 1,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(
-                              mask: '##',
-                              filter: {"#": RegExp(r'[0-9]')},
-                              type: MaskAutoCompletionType.lazy),
-                          labelEditText: 'Años de diagnóstico',
-                          textController: ayoDiagoATextController,
-                          numOfLines: 1,
-                        ),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: Spinner(
-                            tittle: "¿Tratamiento actual?",
-                            onChangeValue: (String value) {
-                              setState(() {
-                                isTratamientoDiagoAValue = value;
-                                if (value == Dicotomicos.dicotomicos()[0]) {
-                                  tratamientoATextController.text = "";
-                                } else {
-                                  tratamientoATextController.text =
-                                      "Sin tratamiento actual";
-                                }
-                              });
-                            },
-                            items: Dicotomicos.dicotomicos(),
-                            initialValue: isTratamientoDiagoAValue),
-                      ),
-                    ],
-                  ),
+                      keyBoardType: TextInputType.text,
+                      limitOfChars: 700,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Comentario de diagnóstico',
+                      textController: comenDiagnoATextController,
+                      numOfLines: 1,
+                      selection: true,
+                      withShowOption: true,
+                      iconData: Icons.compress_outlined,
+                      onSelected: () {
+                        setState(() {
+                          comenDiagnoATextController.text = cieDiagnoATextController.text;
+                        });
+                      }),
                   CrossLine(
                     height: 5,
                     color: Colors.black,
@@ -1141,28 +1141,35 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                     children: [
                       Expanded(
                         flex: isMobile(context) ? 2 : 1,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.grey,
-                          radius: 40,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.black,
-                            radius: 30,
-                            child: GrandIcon(
-                              onPress: () {
-                                Operadores.openDialog(
-                                    context: context,
-                                    chyldrim: Container(
-                                        decoration: ContainerDecoration
-                                            .roundedDecoration(),
-                                        child: const Antecedentes()),
-                                    onAction: () {
-                                      setState(() {
-                                        suspensionesATextController.text = '';
-                                      });
-                                    });
-                              },
-                            ),
-                          ),
+                        child: CircleIcon(
+                          tittle: 'Previstos . . . ',
+                          radios: 30,
+                          difRadios: 20,
+                          externalCircleColor: Colors.grey,
+                          iconed: Icons.surround_sound_outlined,
+                          onChangeValue: () {
+                            Operadores.selectOptionsActivity(
+                                context: context,
+                                options: Items.previstos
+                                    .map((e) => e['Diagnostico'])
+                                    .toList(),
+                                onClose: (valar) {
+                                  Terminal.printWarning(message: valar);
+
+                                  for (var e in Items.previstos) {
+                                    //
+                                    if (e['Diagnostico'] == valar) {
+                                      comenDiagnoATextController.text =
+                                      e['Diagnostico']!;
+                                      tratamientoATextController.text =
+                                      e['Tratamiento']!;
+                                      suspensionesATextController.text =
+                                      e['Antecedentes']!;
+                                    }
+                                  }
+                                  Navigator.of(context).pop();
+                                });
+                          },
                         ),
                       ),
                       Expanded(
@@ -1178,6 +1185,31 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                       ),
                     ],
                   ),
+                  CrossLine(height: 15),
+                  GrandIcon(
+                      iconData: Icons.line_weight_sharp,
+                      onPress: () {
+                        Operadores.editActivity(
+                            context: context,
+                            keyBoardType: TextInputType.multiline,
+                            numOfLines: 15,
+                            tittle: "Antecedente Patológico por Prosa . . . ",
+                            message: "Prosa del antecedente . . . ",
+                            onAcept: (value) {
+                              List splitedDiagon = value.split("\n");
+                              //// Terminal.printExpected(message: "$splitedDiagon : ${splitedDiagon.length}");
+                              if (splitedDiagon.length <=3) {
+                                comenDiagnoATextController.text =
+                                    splitedDiagon[0].toString();
+                                tratamientoATextController.text =
+                                    splitedDiagon[1].toString();
+                                suspensionesATextController.text =
+                                    splitedDiagon[2].toString();
+                              }
+                              //
+                              Navigator.of(context).pop();
+                            });
+                      }),
                 ]),
               ),
               Expanded(
@@ -1198,11 +1230,10 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                               onChangeValue: (value) {
                                 setState(() {
                                   isActualDiagoBValue =
-                                      Dicotomicos.fromBoolean(value) as String;
+                                  Dicotomicos.fromBoolean(value) as String;
                                 });
                               },
-                              isSwitched:
-                                  Dicotomicos.fromString(isActualDiagoBValue)),
+                              isSwitched: Dicotomicos.fromString(isActualDiagoBValue)),
                         ),
                       ),
                       Expanded(
@@ -1213,13 +1244,10 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                           numOfLines: 3,
                           labelEditText: 'Diagnóstico (CIE)',
                           textController: cieDiagnoBTextController,
-                        ),
-                      ),
-                      Expanded(
-                        child: GrandIcon(
-                          labelButton: "CIE-10",
-                          weigth: 5,
-                          onPress: () {
+                          selection: true,
+                          withShowOption: true,
+                          iconData: Icons.line_style,
+                          onSelected: () {
                             Operadores.openDialog(
                                 context: context,
                                 chyldrim: DialogSelector(
@@ -1241,48 +1269,20 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                     color: Colors.black,
                   ),
                   EditTextArea(
-                    keyBoardType: TextInputType.text,
-                    limitOfChars: 700,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'Comentario de diagnóstico',
-                    textController: comenDiagnoBTextController,
-                    numOfLines: 1,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(
-                              mask: '##',
-                              filter: {"#": RegExp(r'[0-9]')},
-                              type: MaskAutoCompletionType.lazy),
-                          labelEditText: 'Años de diagnóstico',
-                          textController: ayoDiagoBTextController,
-                          numOfLines: 1,
-                        ),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: Spinner(
-                            tittle: "¿Tratamiento actual?",
-                            onChangeValue: (String value) {
-                              setState(() {
-                                isTratamientoDiagoBValue = value;
-                                if (value == Dicotomicos.dicotomicos()[0]) {
-                                  tratamientoBTextController.text = "";
-                                } else {
-                                  tratamientoBTextController.text =
-                                      "Sin tratamiento actual";
-                                }
-                              });
-                            },
-                            items: Dicotomicos.dicotomicos(),
-                            initialValue: isTratamientoDiagoBValue),
-                      ),
-                    ],
-                  ),
+                      keyBoardType: TextInputType.text,
+                      limitOfChars: 700,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Comentario de diagnóstico',
+                      textController: comenDiagnoBTextController,
+                      numOfLines: 1,
+                      selection: true,
+                      withShowOption: true,
+                      iconData: Icons.compress_outlined,
+                      onSelected: () {
+                        setState(() {
+                          comenDiagnoBTextController.text = cieDiagnoBTextController.text;
+                        });
+                      }),
                   CrossLine(
                     height: 5,
                     color: Colors.black,
@@ -1300,28 +1300,35 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                     children: [
                       Expanded(
                         flex: isMobile(context) ? 2 : 1,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.grey,
-                          radius: 40,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.black,
-                            radius: 30,
-                            child: GrandIcon(
-                              onPress: () {
-                                Operadores.openDialog(
-                                    context: context,
-                                    chyldrim: Container(
-                                        decoration: ContainerDecoration
-                                            .roundedDecoration(),
-                                        child: const Antecedentes()),
-                                    onAction: () {
-                                      setState(() {
-                                        suspensionesBTextController.text = '';
-                                      });
-                                    });
-                              },
-                            ),
-                          ),
+                        child: CircleIcon(
+                          tittle: 'Previstos . . . ',
+                          radios: 30,
+                          difRadios: 20,
+                          externalCircleColor: Colors.grey,
+                          iconed: Icons.surround_sound_outlined,
+                          onChangeValue: () {
+                            Operadores.selectOptionsActivity(
+                                context: context,
+                                options: Items.previstos
+                                    .map((e) => e['Diagnostico'])
+                                    .toList(),
+                                onClose: (valar) {
+                                  Terminal.printWarning(message: valar);
+
+                                  for (var e in Items.previstos) {
+                                    //
+                                    if (e['Diagnostico'] == valar) {
+                                      comenDiagnoBTextController.text =
+                                      e['Diagnostico']!;
+                                      tratamientoBTextController.text =
+                                      e['Tratamiento']!;
+                                      suspensionesBTextController.text =
+                                      e['Antecedentes']!;
+                                    }
+                                  }
+                                  Navigator.of(context).pop();
+                                });
+                          },
                         ),
                       ),
                       Expanded(
@@ -1337,6 +1344,31 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                       ),
                     ],
                   ),
+                  CrossLine(height: 15),
+                  GrandIcon(
+                      iconData: Icons.line_weight_sharp,
+                      onPress: () {
+                        Operadores.editActivity(
+                            context: context,
+                            keyBoardType: TextInputType.multiline,
+                            numOfLines: 15,
+                            tittle: "Antecedente Patológico por Prosa . . . ",
+                            message: "Prosa del antecedente . . . ",
+                            onAcept: (value) {
+                              List splitedDiagon = value.split("\n");
+                              //// Terminal.printExpected(message: "$splitedDiagon : ${splitedDiagon.length}");
+                              if (splitedDiagon.length <=3) {
+                                comenDiagnoBTextController.text =
+                                    splitedDiagon[0].toString();
+                                tratamientoBTextController.text =
+                                    splitedDiagon[1].toString();
+                                suspensionesBTextController.text =
+                                    splitedDiagon[2].toString();
+                              }
+                              //
+                              Navigator.of(context).pop();
+                            });
+                      }),
                 ]),
               ),
               Expanded(
@@ -1357,11 +1389,10 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                               onChangeValue: (value) {
                                 setState(() {
                                   isActualDiagoCValue =
-                                      Dicotomicos.fromBoolean(value) as String;
+                                  Dicotomicos.fromBoolean(value) as String;
                                 });
                               },
-                              isSwitched:
-                                  Dicotomicos.fromString(isActualDiagoCValue)),
+                              isSwitched: Dicotomicos.fromString(isActualDiagoCValue)),
                         ),
                       ),
                       Expanded(
@@ -1372,13 +1403,10 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                           numOfLines: 3,
                           labelEditText: 'Diagnóstico (CIE)',
                           textController: cieDiagnoCTextController,
-                        ),
-                      ),
-                      Expanded(
-                        child: GrandIcon(
-                          labelButton: "CIE-10",
-                          weigth: 5,
-                          onPress: () {
+                          selection: true,
+                          withShowOption: true,
+                          iconData: Icons.line_style,
+                          onSelected: () {
                             Operadores.openDialog(
                                 context: context,
                                 chyldrim: DialogSelector(
@@ -1400,48 +1428,20 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                     color: Colors.black,
                   ),
                   EditTextArea(
-                    keyBoardType: TextInputType.text,
-                    limitOfChars: 700,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'Comentario de diagnóstico',
-                    textController: comenDiagnoCTextController,
-                    numOfLines: 1,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(
-                              mask: '##',
-                              filter: {"#": RegExp(r'[0-9]')},
-                              type: MaskAutoCompletionType.lazy),
-                          labelEditText: 'Años de diagnóstico',
-                          textController: ayoDiagoCTextController,
-                          numOfLines: 1,
-                        ),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: Spinner(
-                            tittle: "¿Tratamiento actual?",
-                            onChangeValue: (String value) {
-                              setState(() {
-                                isTratamientoDiagoCValue = value;
-                                if (value == Dicotomicos.dicotomicos()[0]) {
-                                  tratamientoCTextController.text = "";
-                                } else {
-                                  tratamientoCTextController.text =
-                                      "Sin tratamiento actual";
-                                }
-                              });
-                            },
-                            items: Dicotomicos.dicotomicos(),
-                            initialValue: isTratamientoDiagoCValue),
-                      ),
-                    ],
-                  ),
+                      keyBoardType: TextInputType.text,
+                      limitOfChars: 700,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Comentario de diagnóstico',
+                      textController: comenDiagnoCTextController,
+                      numOfLines: 1,
+                      selection: true,
+                      withShowOption: true,
+                      iconData: Icons.compress_outlined,
+                      onSelected: () {
+                        setState(() {
+                          comenDiagnoCTextController.text = cieDiagnoCTextController.text;
+                        });
+                      }),
                   CrossLine(
                     height: 5,
                     color: Colors.black,
@@ -1459,28 +1459,35 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                     children: [
                       Expanded(
                         flex: isMobile(context) ? 2 : 1,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.grey,
-                          radius: 40,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.black,
-                            radius: 30,
-                            child: GrandIcon(
-                              onPress: () {
-                                Operadores.openDialog(
-                                    context: context,
-                                    chyldrim: Container(
-                                        decoration: ContainerDecoration
-                                            .roundedDecoration(),
-                                        child: const Antecedentes()),
-                                    onAction: () {
-                                      setState(() {
-                                        suspensionesCTextController.text = '';
-                                      });
-                                    });
-                              },
-                            ),
-                          ),
+                        child: CircleIcon(
+                          tittle: 'Previstos . . . ',
+                          radios: 30,
+                          difRadios: 20,
+                          externalCircleColor: Colors.grey,
+                          iconed: Icons.surround_sound_outlined,
+                          onChangeValue: () {
+                            Operadores.selectOptionsActivity(
+                                context: context,
+                                options: Items.previstos
+                                    .map((e) => e['Diagnostico'])
+                                    .toList(),
+                                onClose: (valar) {
+                                  Terminal.printWarning(message: valar);
+
+                                  for (var e in Items.previstos) {
+                                    //
+                                    if (e['Diagnostico'] == valar) {
+                                      comenDiagnoCTextController.text =
+                                      e['Diagnostico']!;
+                                      tratamientoCTextController.text =
+                                      e['Tratamiento']!;
+                                      suspensionesCTextController.text =
+                                      e['Antecedentes']!;
+                                    }
+                                  }
+                                  Navigator.of(context).pop();
+                                });
+                          },
                         ),
                       ),
                       Expanded(
@@ -1496,6 +1503,31 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                       ),
                     ],
                   ),
+                  CrossLine(height: 15),
+                  GrandIcon(
+                      iconData: Icons.line_weight_sharp,
+                      onPress: () {
+                        Operadores.editActivity(
+                            context: context,
+                            keyBoardType: TextInputType.multiline,
+                            numOfLines: 15,
+                            tittle: "Antecedente Patológico por Prosa . . . ",
+                            message: "Prosa del antecedente . . . ",
+                            onAcept: (value) {
+                              List splitedDiagon = value.split("\n");
+                              //// Terminal.printExpected(message: "$splitedDiagon : ${splitedDiagon.length}");
+                              if (splitedDiagon.length <=3) {
+                                comenDiagnoCTextController.text =
+                                    splitedDiagon[0].toString();
+                                tratamientoCTextController.text =
+                                    splitedDiagon[1].toString();
+                                suspensionesCTextController.text =
+                                    splitedDiagon[2].toString();
+                              }
+                              //
+                              Navigator.of(context).pop();
+                            });
+                      }),
                 ]),
               ),
             ],
@@ -1561,11 +1593,10 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                               onChangeValue: (value) {
                                 setState(() {
                                   isActualDiagoAValue =
-                                      Dicotomicos.fromBoolean(value) as String;
+                                  Dicotomicos.fromBoolean(value) as String;
                                 });
                               },
-                              isSwitched:
-                                  Dicotomicos.fromString(isActualDiagoAValue)),
+                              isSwitched: Dicotomicos.fromString(isActualDiagoAValue)),
                         ),
                       ),
                       Expanded(
@@ -1576,13 +1607,10 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                           numOfLines: 3,
                           labelEditText: 'Diagnóstico (CIE)',
                           textController: cieDiagnoATextController,
-                        ),
-                      ),
-                      Expanded(
-                        child: GrandIcon(
-                          labelButton: "CIE-10",
-                          weigth: 5,
-                          onPress: () {
+                          selection: true,
+                          withShowOption: true,
+                          iconData: Icons.line_style,
+                          onSelected: () {
                             Operadores.openDialog(
                                 context: context,
                                 chyldrim: DialogSelector(
@@ -1604,49 +1632,20 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                     color: Colors.black,
                   ),
                   EditTextArea(
-                    keyBoardType: TextInputType.text,
-                    limitOfChars: 700,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'Comentario de diagnóstico',
-                    textController: comenDiagnoATextController,
-                    numOfLines: 1,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(
-                              mask: '##',
-                              filter: {"#": RegExp(r'[0-9]')},
-                              type: MaskAutoCompletionType.lazy),
-                          labelEditText: 'Años de diagnóstico',
-                          textController: ayoDiagoATextController,
-                          numOfLines: 1,
-                        ),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: Spinner(
-                            width: 30,
-                            tittle: "¿Tratamiento actual?",
-                            onChangeValue: (String value) {
-                              setState(() {
-                                isTratamientoDiagoAValue = value;
-                                if (value == Dicotomicos.dicotomicos()[0]) {
-                                  tratamientoATextController.text = "";
-                                } else {
-                                  tratamientoATextController.text =
-                                      "Sin tratamiento actual";
-                                }
-                              });
-                            },
-                            items: Dicotomicos.dicotomicos(),
-                            initialValue: isTratamientoDiagoAValue),
-                      ),
-                    ],
-                  ),
+                      keyBoardType: TextInputType.text,
+                      limitOfChars: 700,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Comentario de diagnóstico',
+                      textController: comenDiagnoATextController,
+                      numOfLines: 1,
+                      selection: true,
+                      withShowOption: true,
+                      iconData: Icons.compress_outlined,
+                      onSelected: () {
+                        setState(() {
+                          comenDiagnoATextController.text = cieDiagnoATextController.text;
+                        });
+                      }),
                   CrossLine(
                     height: 5,
                     color: Colors.black,
@@ -1664,28 +1663,35 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                     children: [
                       Expanded(
                         flex: isMobile(context) ? 2 : 1,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.grey,
-                          radius: 40,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.black,
-                            radius: 30,
-                            child: GrandIcon(
-                              onPress: () {
-                                Operadores.openDialog(
-                                    context: context,
-                                    chyldrim: Container(
-                                        decoration: ContainerDecoration
-                                            .roundedDecoration(),
-                                        child: const Antecedentes()),
-                                    onAction: () {
-                                      setState(() {
-                                        suspensionesATextController.text = '';
-                                      });
-                                    });
-                              },
-                            ),
-                          ),
+                        child: CircleIcon(
+                          tittle: 'Previstos . . . ',
+                          radios: 30,
+                          difRadios: 20,
+                          externalCircleColor: Colors.grey,
+                          iconed: Icons.surround_sound_outlined,
+                          onChangeValue: () {
+                            Operadores.selectOptionsActivity(
+                                context: context,
+                                options: Items.previstos
+                                    .map((e) => e['Diagnostico'])
+                                    .toList(),
+                                onClose: (valar) {
+                                  Terminal.printWarning(message: valar);
+
+                                  for (var e in Items.previstos) {
+                                    //
+                                    if (e['Diagnostico'] == valar) {
+                                      comenDiagnoATextController.text =
+                                      e['Diagnostico']!;
+                                      tratamientoATextController.text =
+                                      e['Tratamiento']!;
+                                      suspensionesATextController.text =
+                                      e['Antecedentes']!;
+                                    }
+                                  }
+                                  Navigator.of(context).pop();
+                                });
+                          },
                         ),
                       ),
                       Expanded(
@@ -1701,6 +1707,31 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                       ),
                     ],
                   ),
+                  CrossLine(height: 15),
+                  GrandIcon(
+                      iconData: Icons.line_weight_sharp,
+                      onPress: () {
+                        Operadores.editActivity(
+                            context: context,
+                            keyBoardType: TextInputType.multiline,
+                            numOfLines: 15,
+                            tittle: "Antecedente Patológico por Prosa . . . ",
+                            message: "Prosa del antecedente . . . ",
+                            onAcept: (value) {
+                              List splitedDiagon = value.split("\n");
+                              //// Terminal.printExpected(message: "$splitedDiagon : ${splitedDiagon.length}");
+                              if (splitedDiagon.length <=3) {
+                                comenDiagnoATextController.text =
+                                    splitedDiagon[0].toString();
+                                tratamientoATextController.text =
+                                    splitedDiagon[1].toString();
+                                suspensionesATextController.text =
+                                    splitedDiagon[2].toString();
+                              }
+                              //
+                              Navigator.of(context).pop();
+                            });
+                      }),
                 ]),
               ),
               SingleChildScrollView(
@@ -1722,11 +1753,10 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                               onChangeValue: (value) {
                                 setState(() {
                                   isActualDiagoBValue =
-                                      Dicotomicos.fromBoolean(value) as String;
+                                  Dicotomicos.fromBoolean(value) as String;
                                 });
                               },
-                              isSwitched:
-                                  Dicotomicos.fromString(isActualDiagoBValue)),
+                              isSwitched: Dicotomicos.fromString(isActualDiagoBValue)),
                         ),
                       ),
                       Expanded(
@@ -1737,13 +1767,10 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                           numOfLines: 3,
                           labelEditText: 'Diagnóstico (CIE)',
                           textController: cieDiagnoBTextController,
-                        ),
-                      ),
-                      Expanded(
-                        child: GrandIcon(
-                          labelButton: "CIE-10",
-                          weigth: 5,
-                          onPress: () {
+                          selection: true,
+                          withShowOption: true,
+                          iconData: Icons.line_style,
+                          onSelected: () {
                             Operadores.openDialog(
                                 context: context,
                                 chyldrim: DialogSelector(
@@ -1765,49 +1792,20 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                     color: Colors.black,
                   ),
                   EditTextArea(
-                    keyBoardType: TextInputType.text,
-                    limitOfChars: 700,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'Comentario de diagnóstico',
-                    textController: comenDiagnoBTextController,
-                    numOfLines: 1,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(
-                              mask: '##',
-                              filter: {"#": RegExp(r'[0-9]')},
-                              type: MaskAutoCompletionType.lazy),
-                          labelEditText: 'Años de diagnóstico',
-                          textController: ayoDiagoBTextController,
-                          numOfLines: 1,
-                        ),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: Spinner(
-                            width: 30,
-                            tittle: "¿Tratamiento actual?",
-                            onChangeValue: (String value) {
-                              setState(() {
-                                isTratamientoDiagoBValue = value;
-                                if (value == Dicotomicos.dicotomicos()[0]) {
-                                  tratamientoBTextController.text = "";
-                                } else {
-                                  tratamientoBTextController.text =
-                                      "Sin tratamiento actual";
-                                }
-                              });
-                            },
-                            items: Dicotomicos.dicotomicos(),
-                            initialValue: isTratamientoDiagoBValue),
-                      ),
-                    ],
-                  ),
+                      keyBoardType: TextInputType.text,
+                      limitOfChars: 700,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Comentario de diagnóstico',
+                      textController: comenDiagnoBTextController,
+                      numOfLines: 1,
+                      selection: true,
+                      withShowOption: true,
+                      iconData: Icons.compress_outlined,
+                      onSelected: () {
+                        setState(() {
+                          comenDiagnoBTextController.text = cieDiagnoBTextController.text;
+                        });
+                      }),
                   CrossLine(
                     height: 5,
                     color: Colors.black,
@@ -1825,28 +1823,35 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                     children: [
                       Expanded(
                         flex: isMobile(context) ? 2 : 1,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.grey,
-                          radius: 40,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.black,
-                            radius: 30,
-                            child: GrandIcon(
-                              onPress: () {
-                                Operadores.openDialog(
-                                    context: context,
-                                    chyldrim: Container(
-                                        decoration: ContainerDecoration
-                                            .roundedDecoration(),
-                                        child: const Antecedentes()),
-                                    onAction: () {
-                                      setState(() {
-                                        suspensionesBTextController.text = '';
-                                      });
-                                    });
-                              },
-                            ),
-                          ),
+                        child: CircleIcon(
+                          tittle: 'Previstos . . . ',
+                          radios: 30,
+                          difRadios: 20,
+                          externalCircleColor: Colors.grey,
+                          iconed: Icons.surround_sound_outlined,
+                          onChangeValue: () {
+                            Operadores.selectOptionsActivity(
+                                context: context,
+                                options: Items.previstos
+                                    .map((e) => e['Diagnostico'])
+                                    .toList(),
+                                onClose: (valar) {
+                                  Terminal.printWarning(message: valar);
+
+                                  for (var e in Items.previstos) {
+                                    //
+                                    if (e['Diagnostico'] == valar) {
+                                      comenDiagnoBTextController.text =
+                                      e['Diagnostico']!;
+                                      tratamientoBTextController.text =
+                                      e['Tratamiento']!;
+                                      suspensionesBTextController.text =
+                                      e['Antecedentes']!;
+                                    }
+                                  }
+                                  Navigator.of(context).pop();
+                                });
+                          },
                         ),
                       ),
                       Expanded(
@@ -1862,6 +1867,31 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                       ),
                     ],
                   ),
+                  CrossLine(height: 15),
+                  GrandIcon(
+                      iconData: Icons.line_weight_sharp,
+                      onPress: () {
+                        Operadores.editActivity(
+                            context: context,
+                            keyBoardType: TextInputType.multiline,
+                            numOfLines: 15,
+                            tittle: "Antecedente Patológico por Prosa . . . ",
+                            message: "Prosa del antecedente . . . ",
+                            onAcept: (value) {
+                              List splitedDiagon = value.split("\n");
+                              //// Terminal.printExpected(message: "$splitedDiagon : ${splitedDiagon.length}");
+                              if (splitedDiagon.length <=3) {
+                                comenDiagnoBTextController.text =
+                                    splitedDiagon[0].toString();
+                                tratamientoBTextController.text =
+                                    splitedDiagon[1].toString();
+                                suspensionesBTextController.text =
+                                    splitedDiagon[2].toString();
+                              }
+                              //
+                              Navigator.of(context).pop();
+                            });
+                      }),
                 ]),
               ),
               SingleChildScrollView(
@@ -1883,11 +1913,10 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                               onChangeValue: (value) {
                                 setState(() {
                                   isActualDiagoCValue =
-                                      Dicotomicos.fromBoolean(value) as String;
+                                  Dicotomicos.fromBoolean(value) as String;
                                 });
                               },
-                              isSwitched:
-                                  Dicotomicos.fromString(isActualDiagoCValue)),
+                              isSwitched: Dicotomicos.fromString(isActualDiagoCValue)),
                         ),
                       ),
                       Expanded(
@@ -1898,13 +1927,10 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                           numOfLines: 3,
                           labelEditText: 'Diagnóstico (CIE)',
                           textController: cieDiagnoCTextController,
-                        ),
-                      ),
-                      Expanded(
-                        child: GrandIcon(
-                          labelButton: "CIE-10",
-                          weigth: 5,
-                          onPress: () {
+                          selection: true,
+                          withShowOption: true,
+                          iconData: Icons.line_style,
+                          onSelected: () {
                             Operadores.openDialog(
                                 context: context,
                                 chyldrim: DialogSelector(
@@ -1926,49 +1952,20 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                     color: Colors.black,
                   ),
                   EditTextArea(
-                    keyBoardType: TextInputType.text,
-                    limitOfChars: 700,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'Comentario de diagnóstico',
-                    textController: comenDiagnoCTextController,
-                    numOfLines: 1,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(
-                              mask: '##',
-                              filter: {"#": RegExp(r'[0-9]')},
-                              type: MaskAutoCompletionType.lazy),
-                          labelEditText: 'Años de diagnóstico',
-                          textController: ayoDiagoCTextController,
-                          numOfLines: 1,
-                        ),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: Spinner(
-                            width: 30,
-                            tittle: "¿Tratamiento actual?",
-                            onChangeValue: (String value) {
-                              setState(() {
-                                isTratamientoDiagoCValue = value;
-                                if (value == Dicotomicos.dicotomicos()[0]) {
-                                  tratamientoCTextController.text = "";
-                                } else {
-                                  tratamientoCTextController.text =
-                                      "Sin tratamiento actual";
-                                }
-                              });
-                            },
-                            items: Dicotomicos.dicotomicos(),
-                            initialValue: isTratamientoDiagoCValue),
-                      ),
-                    ],
-                  ),
+                      keyBoardType: TextInputType.text,
+                      limitOfChars: 700,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Comentario de diagnóstico',
+                      textController: comenDiagnoCTextController,
+                      numOfLines: 1,
+                      selection: true,
+                      withShowOption: true,
+                      iconData: Icons.compress_outlined,
+                      onSelected: () {
+                        setState(() {
+                          comenDiagnoCTextController.text = cieDiagnoCTextController.text;
+                        });
+                      }),
                   CrossLine(
                     height: 5,
                     color: Colors.black,
@@ -1986,28 +1983,35 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                     children: [
                       Expanded(
                         flex: isMobile(context) ? 2 : 1,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.grey,
-                          radius: 40,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.black,
-                            radius: 30,
-                            child: GrandIcon(
-                              onPress: () {
-                                Operadores.openDialog(
-                                    context: context,
-                                    chyldrim: Container(
-                                        decoration: ContainerDecoration
-                                            .roundedDecoration(),
-                                        child: const Antecedentes()),
-                                    onAction: () {
-                                      setState(() {
-                                        suspensionesCTextController.text = '';
-                                      });
-                                    });
-                              },
-                            ),
-                          ),
+                        child: CircleIcon(
+                          tittle: 'Previstos . . . ',
+                          radios: 30,
+                          difRadios: 20,
+                          externalCircleColor: Colors.grey,
+                          iconed: Icons.surround_sound_outlined,
+                          onChangeValue: () {
+                            Operadores.selectOptionsActivity(
+                                context: context,
+                                options: Items.previstos
+                                    .map((e) => e['Diagnostico'])
+                                    .toList(),
+                                onClose: (valar) {
+                                  Terminal.printWarning(message: valar);
+
+                                  for (var e in Items.previstos) {
+                                    //
+                                    if (e['Diagnostico'] == valar) {
+                                      comenDiagnoCTextController.text =
+                                      e['Diagnostico']!;
+                                      tratamientoCTextController.text =
+                                      e['Tratamiento']!;
+                                      suspensionesCTextController.text =
+                                      e['Antecedentes']!;
+                                    }
+                                  }
+                                  Navigator.of(context).pop();
+                                });
+                          },
                         ),
                       ),
                       Expanded(
@@ -2023,6 +2027,31 @@ class _VariasPatologiasState extends State<VariasPatologias> {
                       ),
                     ],
                   ),
+                  CrossLine(height: 15),
+                  GrandIcon(
+                      iconData: Icons.line_weight_sharp,
+                      onPress: () {
+                        Operadores.editActivity(
+                            context: context,
+                            keyBoardType: TextInputType.multiline,
+                            numOfLines: 15,
+                            tittle: "Antecedente Patológico por Prosa . . . ",
+                            message: "Prosa del antecedente . . . ",
+                            onAcept: (value) {
+                              List splitedDiagon = value.split("\n");
+                              //// Terminal.printExpected(message: "$splitedDiagon : ${splitedDiagon.length}");
+                              if (splitedDiagon.length <=3) {
+                                comenDiagnoCTextController.text =
+                                    splitedDiagon[0].toString();
+                                tratamientoCTextController.text =
+                                    splitedDiagon[1].toString();
+                                suspensionesCTextController.text =
+                                    splitedDiagon[2].toString();
+                              }
+                              //
+                              Navigator.of(context).pop();
+                            });
+                      }),
                 ]),
               ),
             ],

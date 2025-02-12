@@ -157,7 +157,10 @@ class ReportsMethods {
         .then((value) => Operadores.optionsActivity(
             context: context,
             tittle: 'Petición de Registro de Análisis',
-            message: "Desea registrar el análisis en la base de datos?",
+            message: "Desea registrar el análisis en la base de datos?\n\n"
+                "     Fecha de Realización : : $fechaRealizacion \n"
+                "          : ${fechaRealizacion! == Calendarios.today(format: "yyyy-MM-dd")}\n "
+                "     Tipo de Reporte . . $getTypeReport\n ",
             textOptionB: "Cerrar . . . ",
             onClose: () => Navigator.of(context).pop(),
             textOptionA: "Registrar análisis en base de datos . . . ",

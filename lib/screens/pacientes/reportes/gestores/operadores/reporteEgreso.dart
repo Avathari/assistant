@@ -39,13 +39,13 @@ class _ReporteEgresoState extends State<ReporteEgreso> {
               Pacientes.antecedentesRelevantes();
       // ********************************************
       diagoTextController.text =
-      Reportes.reportes['Impresiones_Diagnosticas'] != ""
-          ? Reportes.reportes['Impresiones_Diagnosticas']
-          : Reportes.reportes['Diagnosticos_Hospital'] != ""
-          ? Reportes.reportes['Diagnosticos_Hospital']
-          : Reportes.impresionesDiagnosticas.isNotEmpty
-          ? Reportes.impresionesDiagnosticas
-          : Pacientes.diagnosticos();
+          Reportes.reportes['Impresiones_Diagnosticas'] != ""
+              ? Reportes.reportes['Impresiones_Diagnosticas']
+              : Reportes.reportes['Diagnosticos_Hospital'] != ""
+                  ? Reportes.reportes['Diagnosticos_Hospital']
+                  : Reportes.impresionesDiagnosticas.isNotEmpty
+                      ? Reportes.impresionesDiagnosticas
+                      : Pacientes.diagnosticos();
       //
       // ********************************************
       Reportes.reportes['Antecedentes_Patologicos_Otros'] =
@@ -154,11 +154,13 @@ class _ReporteEgresoState extends State<ReporteEgreso> {
                                 keyBoardType: TextInputType.multiline,
                                 numOfLines: 10,
                                 onChange: ((value) {
-                                  Reportes.reportes['Diagnosticos_Hospital'] =
-                                      Reportes.reportes[
-                                              'Impresiones_Diagnosticas'] =
-                                          Reportes.impresionesDiagnosticas =
-                                              "$value.";
+                                  setState(() {
+                                    Reportes.reportes['Diagnosticos_Hospital'] =
+                                        Reportes.reportes[
+                                                'Impresiones_Diagnosticas'] =
+                                            Reportes.impresionesDiagnosticas =
+                                                "$value.";
+                                  });
                                 }),
                                 inputFormat: MaskTextInputFormatter()),
                           ),
@@ -192,12 +194,12 @@ class _ReporteEgresoState extends State<ReporteEgreso> {
                   ),
                 ),
                 SingleChildScrollView(
-                  controller: ScrollController(),
+                    controller: ScrollController(),
                     child: Column(
-                  children: [
-                    Hitoshospitalarios(),
-                  ],
-                )), // Hitos de la Hospitalización
+                      children: [
+                        Hitoshospitalarios(),
+                      ],
+                    )), // Hitos de la Hospitalización
                 ExploracionFisica(),
                 // AuxiliaresExploracion(isIngreso: true),
                 AnalisisMedico(),

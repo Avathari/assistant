@@ -178,7 +178,7 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                                 Reportes.analisisMedico =
                                     Reportes.reportes['Analisis_Terapia'] =
                                         Reportes.reportes['Analisis_Medico'] =
-                                            "$value.";
+                                            value;
                                 // Reportes.reportes['Analisis_Medico'] =
                                 //     "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
                                 // Reportes.reportes['Analisis_Terapia'] =

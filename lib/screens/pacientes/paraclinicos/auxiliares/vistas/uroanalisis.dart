@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
@@ -8,6 +11,7 @@ import 'package:assistant/widgets/GrandButton.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class Uroanalisis extends StatefulWidget {
   const Uroanalisis({super.key});
@@ -19,6 +23,7 @@ class Uroanalisis extends StatefulWidget {
 class _UroanalisisState extends State<Uroanalisis> {
   static var index = 11; // Uroanalisis
 
+  String? filePath;
 
   @override
   void initState() {
@@ -77,233 +82,268 @@ class _UroanalisisState extends State<Uroanalisis> {
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
         ),
-        SingleChildScrollView(
-          padding: const EdgeInsets.all(7.0),
-          controller: ScrollController(),
-          child: Column(
-            children: [
-              EditTextArea(
-                textController: textColorResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Color ($unidadMedidaColor)',
-                numOfLines: 1,
-                selection: true,
-                withShowOption: true,
-                onSelected: () {
-                  Operadores.selectOptionsActivity(
-                      context: context,
-                      options:
-                      Auxiliares.colorLiquidos,
-                      onClose: (value) {
-                        setState(() {
-                          textColorResultController.text = value;
-                          Navigator.of(context).pop();
-                        });
-                      });
-                },
-              ),
-              EditTextArea(
-                textController: textAspectoResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Aspecto ($unidadMedidaAspecto)',
-                numOfLines: 1,
-                selection: true,
-                withShowOption: true,
-                onSelected: () {
-                  Operadores.selectOptionsActivity(
-                      context: context,
-                      options:
-                      Auxiliares.aspectoLiquidos,
-                      onClose: (value) {
-                        setState(() {
-                          textAspectoResultController.text = value;
-                          Navigator.of(context).pop();
-                        });
-                      });
-                },
-              ),
-              EditTextArea(
-                textController: textPhResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Ph ($unidadMedidaPh)',
-                numOfLines: 1,
-              ),
-
-              EditTextArea(
-                textController: textDensidadResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Densidad ($unidadMedidaDensidad)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textHemoglobinaResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Hemoglobina ($unidadMedidaHemoglobina)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textProteinasResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Proteinas ($unidadMedidaProteinas)',
-                numOfLines: 1,
-              ),
-              
-              EditTextArea(
-                textController: textUrobilinogenoResultController,
-                keyBoardType: TextInputType.number,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Urobilinogeno ($unidadMedidaUrobilinogeno)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textBilirrubinasResultController,
-                keyBoardType: TextInputType.emailAddress,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Bilirrubinas ($unidadMedidaBilirrubinas)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textCetonasResultController,
-                keyBoardType: TextInputType.streetAddress,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Cetonas ($unidadMedidaCetonas)',
-                numOfLines: 1,
-              ),
-
-              EditTextArea(
-                textController: textGlucosaResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Glucosa ($unidadMedidaGlucosa)',
-                numOfLines: 1,
-              ),
-
-              EditTextArea(
-                textController: textEsterasaLeucocitariaResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Esterasa Leucocitaria ($unidadMedidaEsterasaLeucocitaria)',
-                numOfLines: 1,
-              ),
-
-              EditTextArea(
-                textController: textNitritosResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Nitritos ($unidadMedidaNitritos)',
-                numOfLines: 1,
-              ),
-              
-              EditTextArea(
-                textController: textLeucocitosResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Leucocitos ($unidadMedidaLeucocitos)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textEritrocitosResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Eritrocitos ($unidadMedidaEritrocitos)',
-                numOfLines: 1,
-              ),
-            
-            EditTextArea(
-                textController: textCelulasEpitelialesResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'CelulasEpiteliales ($unidadMedidaCelulasEpiteliales)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textBacteriasResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Bacterias ($unidadMedidaBacterias)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textLevadurasResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Levaduras ($unidadMedidaLevaduras)',
-                numOfLines: 1,
-              ),              
-              EditTextArea(
-                textController: textCilindrosResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Cilindros ($unidadMedidaCilindros)',
-                numOfLines: 1,
-              ),
-              
-              EditTextArea(
-                textController: textUratosResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Uratos ($unidadMedidaUratos)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textFosfatosResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Fosfatos ($unidadMedidaFosfatos)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textCristalesResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Cristales ($unidadMedidaCristales)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textMucinaResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'Mucina ($unidadMedidaMucina)',
-                numOfLines: 1,
-              ),
-              EditTextArea(
-                textController: textCelulasRenalesResultController,
-                keyBoardType: TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                labelEditText: 'CelulasRenales ($unidadMedidaCelulasRenales)',
-                numOfLines: 1,
-              ),
-              // Botton ***** ******* ****** * ***
-              CrossLine(
-                color: Colors.grey,
-              ),
-              Container(
-                margin: const EdgeInsets.all(5.0),
-                decoration: ContainerDecoration.roundedDecoration(),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+        CrossLine(height: 10),
+        GrandButton(
+          height: 15,
+          weigth: 1000,
+          labelButton: "Cargar archivo de Historial . . . ",
+          onPress: () async {
+            final path =
+            await Directorios.choiseFromInternalDocuments(
+                context);
+            //
+            setState(() {
+              filePath = path!.files.single.path!;
+            });
+          },
+        ),
+        CrossLine(height: 10),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: !isMobile(context) ? 2: 1,
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(4.0),
+                controller: ScrollController(),
+                child: Column(
                   children: [
-                    Expanded(
-                      child: GrandButton(
-                          labelButton: "Agregar Datos",
-                          weigth: 2000,
-                          onPress: () {
-                            operationMethod();
+                    EditTextArea(
+                      textController: textColorResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Color ($unidadMedidaColor)',
+                      numOfLines: 1,
+                      optionEqui: 5,
+                      selection: true,
+                      withShowOption: true,
+                      onSelected: () {
+                        Operadores.selectOptionsActivity(
+                            context: context,
+                            options:
+                            Auxiliares.colorLiquidos,
+                            onClose: (value) {
+                              setState(() {
+                                textColorResultController.text = value;
+                                Navigator.of(context).pop();
+                              });
+                            });
+                      },
+                    ),
+                    EditTextArea(
+                      textController: textAspectoResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Aspecto ($unidadMedidaAspecto)',
+                      numOfLines: 1,
+                      optionEqui: 5,
+                      selection: true,
+                      withShowOption: true,
+                      onSelected: () {
+                        Operadores.selectOptionsActivity(
+                            context: context,
+                            options:
+                            Auxiliares.aspectoLiquidos,
+                            onClose: (value) {
+                              setState(() {
+                                textAspectoResultController.text = value;
+                                Navigator.of(context).pop();
+                              });
+                            });
+                      },
+                    ),
+                    EditTextArea(
+                      textController: textPhResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Ph ($unidadMedidaPh)',
+                      numOfLines: 1,
+                    ),
 
-                          }),
+                    EditTextArea(
+                      textController: textDensidadResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Densidad ($unidadMedidaDensidad)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textHemoglobinaResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Hemoglobina ($unidadMedidaHemoglobina)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textProteinasResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Proteinas ($unidadMedidaProteinas)',
+                      numOfLines: 1,
+                    ),
+
+                    EditTextArea(
+                      textController: textUrobilinogenoResultController,
+                      keyBoardType: TextInputType.number,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Urobilinogeno ($unidadMedidaUrobilinogeno)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textBilirrubinasResultController,
+                      keyBoardType: TextInputType.emailAddress,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Bilirrubinas ($unidadMedidaBilirrubinas)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textCetonasResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Cetonas ($unidadMedidaCetonas)',
+                      numOfLines: 1,
+                    ),
+
+                    EditTextArea(
+                      textController: textGlucosaResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Glucosa ($unidadMedidaGlucosa)',
+                      numOfLines: 1,
+                    ),
+
+                    EditTextArea(
+                      textController: textEsterasaLeucocitariaResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Esterasa Leucocitaria ($unidadMedidaEsterasaLeucocitaria)',
+                      numOfLines: 1,
+                    ),
+
+                    EditTextArea(
+                      textController: textNitritosResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Nitritos ($unidadMedidaNitritos)',
+                      numOfLines: 1,
+                    ),
+
+                    EditTextArea(
+                      textController: textLeucocitosResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Leucocitos ($unidadMedidaLeucocitos)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textEritrocitosResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Eritrocitos ($unidadMedidaEritrocitos)',
+                      numOfLines: 1,
+                    ),
+
+                  EditTextArea(
+                      textController: textCelulasEpitelialesResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Celulas Epiteliales ($unidadMedidaCelulasEpiteliales)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textBacteriasResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Bacterias ($unidadMedidaBacterias)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textLevadurasResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Levaduras ($unidadMedidaLevaduras)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textCilindrosResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Cilindros ($unidadMedidaCilindros)',
+                      numOfLines: 1,
+                    ),
+
+                    EditTextArea(
+                      textController: textUratosResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Uratos ($unidadMedidaUratos)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textFosfatosResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Fosfatos ($unidadMedidaFosfatos)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textCristalesResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Cristales ($unidadMedidaCristales)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textMucinaResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Mucina ($unidadMedidaMucina)',
+                      numOfLines: 1,
+                    ),
+                    EditTextArea(
+                      textController: textCelulasRenalesResultController,
+                      keyBoardType: TextInputType.text,
+                      inputFormat: MaskTextInputFormatter(),
+                      labelEditText: 'Celulas Renales ($unidadMedidaCelulasRenales)',
+                      numOfLines: 1,
+                    ),
+                    // Botton ***** ******* ****** * ***
+                    CrossLine(
+                      color: Colors.grey,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(5.0),
+                      decoration: ContainerDecoration.roundedDecoration(),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: GrandButton(
+                                labelButton: "Agregar Datos",
+                                weigth: 2000,
+                                onPress: () {
+                                  operationMethod();
+
+                                }),
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),
-              )
-            ],
-          ),
+              ),
+            ),
+            filePath != null
+                ? Expanded(
+                flex: 2, child: Container(
+                decoration: ContainerDecoration.roundedDecoration(),
+                height: 550,
+                child: SfPdfViewer.file(File(filePath!))))
+                : Expanded(flex: 2, child: Container()),
+          ],
         ),
+
+
       ],
     );
   }

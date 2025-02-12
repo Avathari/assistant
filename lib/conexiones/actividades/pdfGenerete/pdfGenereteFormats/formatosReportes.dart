@@ -21,7 +21,6 @@ class FormatosReportes {
   }
 
   List<Widget> typeOfList(Map<String, dynamic> paraph) {
-
     List<List<Widget>> list = [
       reporteIngreso(paraph), // 0 : Ingreso
       reporteEvolucion(paraph), // 1 : Evolución
@@ -2008,47 +2007,46 @@ class FormatosReportes {
     }
     // # # # # # # ### # # # # # # ###
     parax.add(Expanded(
-      child: Row(children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            // infoVertical(),
-            // SizedBox(height: 12),
-            vitalesVertical(),
-          ],
-        ),
-        SizedBox(width: 12),
-        Expanded(
-          flex: 3,
-          child: Container(
-            padding: const EdgeInsets.all(3.0),
-            decoration: BoxDecoration(
-              border: Border.all(
-                width: 0.8,
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: Column(
-                children: [
-                  buildListado(
-                    'Indicaciones médicas',
-                    tittles,
-                    contents,
-                  ),
-                  // # # # # # # ### # # # # # # ###
-                  SizedBox(height: 12),
-                  // # # # # # # ### # # # # # # ###
-                  footerParagraph(
-                      text:
-                          "Med. Gral. Romero Pantoja Luis\nCed. Prof. 12210866\nMedicina General"),
-                ],
-              ),
+        child: Row(children: [
+      Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          // infoVertical(),
+          // SizedBox(height: 12),
+          vitalesVertical(),
+        ],
+      ),
+      SizedBox(width: 12),
+      Expanded(
+        flex: 3,
+        child: Container(
+          padding: const EdgeInsets.all(3.0),
+          decoration: BoxDecoration(
+            border: Border.all(
+              width: 0.8,
             ),
           ),
-        )
-      ])
-    ));
+          child: Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: Column(
+              children: [
+                buildListado(
+                  'Indicaciones médicas',
+                  tittles,
+                  contents,
+                ),
+                // # # # # # # ### # # # # # # ###
+                SizedBox(height: 12),
+                // # # # # # # ### # # # # # # ###
+                footerParagraph(
+                    text:
+                        "Med. Gral. Romero Pantoja Luis\nCed. Prof. 12210866\nMedicina General"),
+              ],
+            ),
+          ),
+        ),
+      )
+    ])));
     // # # # # # # ### # # # # # # ###
     // # # # # # # ### # # # # # # ###
 
@@ -2708,9 +2706,7 @@ class FormatosReportes {
           TableRow(
               verticalAlignment: TableCellVerticalAlignment.middle,
               children: [
-                Container(
-                    child: textBoldTittle(
-                        "CENSO HOSPITALARIO ")),
+                Container(child: textBoldTittle("CENSO HOSPITALARIO ")),
               ]),
         ],
       ),
@@ -2742,6 +2738,7 @@ class FormatosReportes {
     int index = 1;
     // Despliegue del listado . ***** ****** *********** *********
     for (var item in paraph) {
+      Terminal.printNotice(message: "Vuelta : : $index");
       //
       String pades = "No hay padecimiento Descrito\n",
           penden = "",
@@ -2757,16 +2754,9 @@ class FormatosReportes {
       // Terminal.printExpected(
       //     message:
       //         "Pendientes : : ${item['Pendientes']} ${item['Pendientes'].runtimeType}");
-      for (var item in item.pendientes) {
-        // item.pendientes.where((i) => i.item['Pace_PEN'] == "Previos" ?  penden = "PREVIOS\n");
 
-        if (item['Pace_PEN_realized'] == 1 ||item['Pace_PEN_realized'] == true) {
-          penden = "$penden"
-              "${item['Pace_PEN'].toUpperCase()} \n"
-              "${item['Pace_Desc_PEN']} - ${item['Feca_PEN']} " //  - ${i['Pace_PEN_realized']}"
-              "\n";
-        }
-      }
+      penden = Pendientes.getPendiente(item.pendientes);
+
 // Ventilaciones de los Pacientes Hospitalizados ************************************* * * * * *
       if (item.ventilaciones.isNotEmpty) {
         ventilaciones = "\n"
@@ -2783,7 +2773,7 @@ class FormatosReportes {
         ventilaciones = "";
       }
       // Balances de los Pacientes Hospitalizados ************************************* * * * * *
-      if (item.balances.isNotEmpty) {
+      if (item.balances.isNotEmpty && item.vitales.isNotEmpty) {
         int horario = item.balances.last['Pace_bala_HOR'];
         double ingresos = item.balances.last['Pace_bala_Oral'].toDouble() +
             item.balances.last['Pace_bala_Sonda'].toDouble() +
@@ -2814,9 +2804,7 @@ class FormatosReportes {
       } else {
         balances = "";
       }
-// **************************************
-      Terminal.printExpected(message: "BALLA : : ${item.balances}");
-
+// ************************************** //       Terminal.printExpected(message: "BALLA : : ${item.balances}");
 
 //       if (item['Situaciones']['CVP'] != 0) {
 //         situaciones = "$situaciones\nCVP";
@@ -2861,7 +2849,7 @@ class FormatosReportes {
         for (var i in item.patologicos) {
           if (i['Pace_APP_DEG_com'] != null || i['Pace_APP_DEG_com'] != '') {
             cronicos = "$cronicos${i['Pace_APP_DEG_com'].toUpperCase()}, "
-                "${i['Pace_APP_DEG_dia']} años, "
+                // "${i['Pace_APP_DEG_dia']} años, "
                 "${i['Pace_APP_DEG_tra']} "
                 "\n";
           } else {
@@ -2880,12 +2868,16 @@ class FormatosReportes {
       }
       // Auxiliares Diagnósticos . ***** ****** *********** *********
       if (item.paraclinicos != [] && item.paraclinicos != null) {
-        auxiliary = "${Internado.getUltimo(listadoFrom: item.paraclinicos, esAbreviado: true)}\n"
-            "${Internado.getEspeciales(listadoFrom: item.paraclinicos) != "" ? "___________________________________________\n" : ""}"
+        auxiliary =
+            "${Internado.getUltimo(listadoFrom: item.paraclinicos, esAbreviado: true)}"
+            "${Internado.getGasometrico(listadoFrom: item.paraclinicos, esAbreviado: true)}"
+            "${Internado.getEspeciales(listadoFrom: item.paraclinicos) != "" ? "___________________________________________\n\n" : ""}"
             "${Internado.getEspeciales(listadoFrom: item.paraclinicos, esAbreviado: true)}\n"
-            "${Internado.getCultivos(listadoFrom: item.paraclinicos) != "" ? "___________________________________________\n" : ""}"
-            "${Internado.getCultivos(listadoFrom: item.paraclinicos)}"; 
-        
+            "${Internado.getReactantes(listadoFrom: item.paraclinicos, esAbreviado: true)}\n"
+            "${Internado.getCoagulacion(listadoFrom: item.paraclinicos, esAbreviado: true)}\n"
+            "${Internado.getCultivos(listadoFrom: item.paraclinicos) != "" ? "___________________________________________\n\n" : ""}"
+            "${Internado.getCultivos(listadoFrom: item.paraclinicos)}";
+
         // var fechar = Listas.listWithoutRepitedValues(
         //   Listas.listFromMapWithOneKey(
         //     item.paraclinicos!,
@@ -2996,9 +2988,11 @@ class FormatosReportes {
             textLabel(
                 "$auxiliary"
                 "___________________________________________"
-                "___________________________________________\n\n"
+                // "___________________________________________"
+                "\n\n"
                 "$imagenologicos"
-                "___________________________________________\n\n"
+                // "___________________________________________"
+                "\n\n"
                 "$electrocardiogramas",
                 textAlign: TextAlign.justify),
             textLabel(
@@ -3006,7 +3000,7 @@ class FormatosReportes {
                 "_______________________\n\n"
                 "$balances"
                 "_______________________\n\n"
-                "PENDIENTES\n"
+                "PENDIENTE(s)\n"
                 "$penden",
                 textAlign: TextAlign.justify),
           ],
@@ -3036,6 +3030,7 @@ class FormatosReportes {
       ),
     );
 
+    // index ++;
     return parax;
   }
 
@@ -3202,7 +3197,8 @@ class CopiasReportes {
           "${paraph['Auxiliares_Diagnosticos']}\n\n";
     }
 
-    if (paraph['Analisis_Complementarios'] != "" && paraph['Analisis_Complementarios'] != null) {
+    if (paraph['Analisis_Complementarios'] != "" &&
+        paraph['Analisis_Complementarios'] != null) {
       tipoReporte = "${tipoReporte}ANALISIS COMPLEMENTARIOS\n"
           "${paraph['Analisis_Complementarios']}\n\n";
     }
@@ -3247,8 +3243,8 @@ class CopiasReportes {
     //     "PENDIENTES\n"
     //     "${Listas.stringFromList(listValues: paraph['Pendientes'])}\n"
     //     "GRACIAS\n";
-      tipoReporte = "$tipoReporte"
-          "${paraph['Pronostico_Medico']}";
+    tipoReporte = "$tipoReporte"
+        "${paraph['Pronostico_Medico']}";
 
     // if (paraph['Pronostico_Medico'] != "") {
     //   tipoReporte = "$tipoReporte\n"
@@ -3288,7 +3284,8 @@ class CopiasReportes {
           "${paraph['Auxiliares_Diagnosticos']}\n";
     }
 
-    if (paraph['Analisis_Complementarios'] != "" && paraph['Analisis_Complementarios'] != null) {
+    if (paraph['Analisis_Complementarios'] != "" &&
+        paraph['Analisis_Complementarios'] != null) {
       tipoReporte = "$tipoReporte\nANALISIS COMPLEMENTARIOS\n"
           "${paraph['Analisis_Complementarios']}\n\n";
     }
@@ -3330,7 +3327,8 @@ class CopiasReportes {
           "${paraph['Auxiliares_Diagnosticos']}\n\n";
     }
 
-    if (paraph['Analisis_Complementarios'] != "" && paraph['Analisis_Complementarios'] != null) {
+    if (paraph['Analisis_Complementarios'] != "" &&
+        paraph['Analisis_Complementarios'] != null) {
       tipoReporte = "${tipoReporte}ANALISIS COMPLEMENTARIOS\n"
           "${paraph['Analisis_Complementarios']}\n\n";
     }
@@ -3397,7 +3395,8 @@ class CopiasReportes {
   }
 
   static String reporteRevision(Map<String, dynamic> paraph) {
-    Terminal.printAlert(message: "${paraph['Antecedentes_Patologicos_Ingreso']}");
+    Terminal.printAlert(
+        message: "${paraph['Antecedentes_Patologicos_Ingreso']}");
     //
     String tipoReporte = "NOTA DE REVISION HOSPITALARIO\n";
     tipoReporte = "${tipoReporte}DIAGNOSTICOS ACTUALES\n"
@@ -3411,7 +3410,7 @@ class CopiasReportes {
     if (paraph['Antecedentes_Patologicos_Ingreso'] != "") {
       tipoReporte = "${tipoReporte}ANTECEDENTES: "
           "${paraph['Antecedentes_Patologicos_Ingreso']}\n";
-          // "RELEVANTES. ${paraph['Antecedentes_Relevantes']}\n";
+      // "RELEVANTES. ${paraph['Antecedentes_Relevantes']}\n";
     }
 
     tipoReporte = "${tipoReporte}MOTIVO DE INGRESO: "
@@ -3420,8 +3419,7 @@ class CopiasReportes {
         "${paraph['Hitos_Hospitalarios']}\n";
 
     // # # # # # # ### # # # # # # ###
-    tipoReporte =
-    "${tipoReporte}Actualmente : " //${paraph['Subjetivo']}"
+    tipoReporte = "${tipoReporte}Actualmente : " //${paraph['Subjetivo']}"
         "     ${paraph['Signos_Vitales']}\n"
         "${paraph['Exploracion_Fisica']}\n\n";
 
@@ -3430,11 +3428,11 @@ class CopiasReportes {
           "${paraph['Auxiliares_Diagnosticos']}\n\n";
     }
 
-    if (paraph['Analisis_Complementarios'] != "" && paraph['Analisis_Complementarios'] != null) {
+    if (paraph['Analisis_Complementarios'] != "" &&
+        paraph['Analisis_Complementarios'] != null) {
       tipoReporte = "${tipoReporte}ANALISIS COMPLEMENTARIOS\n"
           "${paraph['Analisis_Complementarios']}\n\n";
     }
-
 
     tipoReporte = "$tipoReporte"
         "ANÁLISIS\n"
@@ -3532,7 +3530,7 @@ class CopiasReportes {
         "${paraph['Padecimiento_Actual']} ";
 
     // # # # # # # ### # # # # # # ###
-        tipoReporte = "$tipoReporte"
+    tipoReporte = "$tipoReporte"
         "${paraph['Analisis_Medico']}\n";
 
     // tipoReporte = "$tipoReporte\n\n"
@@ -3543,7 +3541,8 @@ class CopiasReportes {
 
   //
   static String reportePrequirurgica(Map<String, dynamic> paraph) {
-    Terminal.printAlert(message: "${paraph['Antecedentes_Patologicos_Ingreso']}");
+    Terminal.printAlert(
+        message: "${paraph['Antecedentes_Patologicos_Ingreso']}");
     //
     String tipoReporte = "NOTA DE REVISION HOSPITALARIO\n";
 
@@ -3561,7 +3560,7 @@ class CopiasReportes {
 
     // # # # # # # ### # # # # # # ###
     tipoReporte =
-    "${tipoReporte}A la ingreso a hospitalización de medicina interna se encuentra al paciente con: \n"
+        "${tipoReporte}A la ingreso a hospitalización de medicina interna se encuentra al paciente con: \n"
         "${paraph['Signos_Vitales']}\n"
         "${paraph['Exploracion_Fisica']}\n\n";
 
@@ -3626,7 +3625,6 @@ class CopiasReportes {
 
     return tipoReporte;
   }
-
 }
 
 enum TypeReportes {

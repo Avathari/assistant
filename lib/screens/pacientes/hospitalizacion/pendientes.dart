@@ -135,8 +135,29 @@ class _OperacionesPendienteState extends State<OperacionesPendiente> {
               numOfLines: 1,
               withShowOption: true,
               selection: true,
-              onSelected: () => setState(() => fechaRealizacionTextController
-                  .text = Calendarios.today(format: "yyyy/MM/dd")),
+              onSelected: () async {
+                  //
+                    final DateTime? picked = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2055),
+                        builder: (BuildContext context, Widget? child) {
+                          return Theme(
+                              data: ThemeData.dark().copyWith(
+                                  dialogBackgroundColor: Theming.cuaternaryColor),
+                              child: child!);
+                        });
+                    if (picked != null) {
+                      setState(() {
+                        fechaRealizacionTextController.text = DateFormat("yyyy/MM/dd").format(picked);
+                      });
+                    }
+
+                },
+              // onSelected: () => setState(() => fechaRealizacionTextController
+              //     .text = Calendarios.today(format: "yyyy/MM/dd"),
+              // ),
             ),
             Expanded(
               flex: 10,

@@ -1,6 +1,8 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart';
+import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/Strings.dart';
 
 class Internado {
@@ -273,14 +275,13 @@ class Internado {
   Future<List> getBalancesHistorial({reload: false}) async {
     if (reload) {
       await Actividades.consultarAllById(Databases.siteground_database_reghosp,
-          Balances.balance['consultIdQuery'], idPaciente)
+              Balances.balance['consultIdQuery'], idPaciente)
           .then((value) async {
         Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . $value");
         //
         return balances = value;
       }).whenComplete(() => Archivos.createJsonFromMap(balances,
-          filePath: balancesRepositoryPath));
-
+              filePath: balancesRepositoryPath));
     } else {
       //
       await Archivos.readJsonToMap(filePath: balancesRepositoryPath)
@@ -291,14 +292,17 @@ class Internado {
         //
         return balances = value;
       }).onError((error, stackTrace) async {
-        await Actividades.consultarAllById(Databases.siteground_database_reghosp,
-            Balances.balance['consultIdQuery'], idPaciente)
+        await Actividades.consultarAllById(
+                Databases.siteground_database_reghosp,
+                Balances.balance['consultIdQuery'],
+                idPaciente)
             .then((value) async {
-          Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . $value");
+          Terminal.printNotice(
+              message: " : : OBTENIDO DE REGISTRO . . . $value");
           //
           return balances = value;
         }).whenComplete(() => Archivos.createJsonFromMap(balances,
-            filePath: balancesRepositoryPath));
+                filePath: balancesRepositoryPath));
       });
     }
 
@@ -391,14 +395,15 @@ class Internado {
 
   // METHODS
   static String getUltimo(
-      {required List listadoFrom, bool esAbreviado = false, bool withoutInsighs = false}) {
+      {required List listadoFrom,
+      bool esAbreviado = false,
+      bool withoutInsighs = false}) {
     String prosa = "";
 
     var fechar = Listas.listWithoutRepitedValues(
       Listas.listFromMapWithOneKey(
         // Pacientes.Paraclinicos!,
-        Listas.filterAndFindRecent(
-            listadoFrom, Auxiliares.especiales),
+        Listas.filterAndFindRecent(listadoFrom, Auxiliares.especiales),
         keySearched: 'Fecha_Registro',
       ),
     );
@@ -429,10 +434,10 @@ class Internado {
                     "Citológico de Líquido Cefalorraquídeo") {
               if (max == "") {
                 max =
-                "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+                    "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
               } else {
                 max =
-                "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+                    "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
               }
             }
           }
@@ -462,10 +467,10 @@ class Internado {
                     "Citológico de Líquido Cefalorraquídeo") {
               if (max == "") {
                 max =
-                "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
+                    "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
               } else {
                 max =
-                "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
+                    "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
               }
             }
           }
@@ -495,10 +500,10 @@ class Internado {
                     "Citológico de Líquido Cefalorraquídeo") {
               if (max == "") {
                 max =
-                "${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+                    "${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
               } else {
                 max =
-                "$max, ${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+                    "$max, ${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
               }
             }
           }
@@ -512,7 +517,6 @@ class Internado {
     // ************** ***************** ***************
     return prosa;
   }
-
 
   static String getCultivos({
     required List listadoFrom,
@@ -533,8 +537,8 @@ class Internado {
 
     if (fechar.isNotEmpty) {
       for (var fecha in fechar) {
-        var aux = listadoFrom
-            .where((user) => user["Fecha_Registro"].contains(fecha));
+        var aux =
+            listadoFrom.where((user) => user["Fecha_Registro"].contains(fecha));
         // String fechado = "          .          ${fecha})";
         String max = "";
         //
@@ -545,8 +549,7 @@ class Internado {
 
           // ***************************** *****************
           if (element['Tipo_Estudio'] == "Cultivos") {
-            max =
-            "$max"
+            max = "$max"
                 "          .          ${element['Estudio']} del ${Calendarios.formatDate(fecha)}. .  ${element['Resultado']} . ";
             // max =
             // "$max${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} "
@@ -563,14 +566,14 @@ class Internado {
   }
 
   static String getEspeciales(
-
-      {required List listadoFrom, bool esAbreviado = true, bool withoutInsighs = false}) {
+      {required List listadoFrom,
+      bool esAbreviado = true,
+      bool withoutInsighs = false}) {
     String prosa = "";
 
     var fechar = Listas.listWithoutRepitedValues(
       Listas.listFromMapWithOneKey(
-        Listas.filterAndFindRecent(
-            listadoFrom, Auxiliares.especiales,
+        Listas.filterAndFindRecent(listadoFrom, Auxiliares.especiales,
             withEspeciales: true),
         keySearched: 'Fecha_Registro',
       ),
@@ -580,9 +583,10 @@ class Internado {
 
     if (fechar.isNotEmpty) {
       for (var fecha in fechar) {
-        var aux = listadoFrom
-            .where((user) => user["Fecha_Registro"].contains(fecha));
+        var aux =
+            listadoFrom.where((user) => user["Fecha_Registro"].contains(fecha));
         // String fechado = "          .          Paraclínicos (${fecha})",
+        String tipoEstudio = "";
         String fechado = "";
         String max = "";
         //
@@ -595,34 +599,42 @@ class Internado {
           if (element['Tipo_Estudio'] == "Examen General de Orina" ||
               element['Tipo_Estudio'] == "Depuración de Orina de 24 Horas" ||
               element['Tipo_Estudio'] == "Líquido de Diálisis Peritoneal" ||
-              element['Tipo_Estudio'] == "Gasometría Arterial" ||
-              element['Tipo_Estudio'] == "Gasometría Venosa" ||
-              element['Tipo_Estudio'] == "Reactantes de Fase Aguda" ||
+              // element['Tipo_Estudio'] == "Gasometría Arterial" ||
+              // element['Tipo_Estudio'] == "Gasometría Venosa" ||
+              // element['Tipo_Estudio'] == "Reactantes de Fase Aguda" ||
               // element['Tipo_Estudio'] == "Cultivos" ||
-              element['Tipo_Estudio'] == "Tiempos de Coagulación" ||
+              // element['Tipo_Estudio'] == "Tiempos de Coagulación" ||
               element['Tipo_Estudio'] ==
                   "Citoquímico de Líquido Cefalorraquídeo" ||
-              element['Tipo_Estudio'] ==
-                  "Panel Viral" ||
+              element['Tipo_Estudio'] == "Panel Viral" ||
               element['Tipo_Estudio'] ==
                   "Citológico de Líquido Cefalorraquídeo") {
-            if (element['Unidad_Medida'] != "") {
-              fechado = "          .          ($fecha): ";
-              max =
-              "$max${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} "
-                  "${element['Resultado']} ${element['Unidad_Medida']}, ";
-            } else {
-              max =
-              "$max${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} "
-                  "${element['Resultado']}, ";
+            tipoEstudio = element['Tipo_Estudio'];
+
+            if (element['Resultado'] != "" &&
+                element['Resultado'] != "Negativo" &&
+                element['Resultado'] != "negativo" &&
+                element['Resultado'] != "No Se Observan" &&
+                element['Resultado'] != "No se Observan") {
+              if (element['Unidad_Medida'] != "") {
+                // fechado = "          .          ($fecha): ";
+                fechado = " ($fecha): ";
+                max =
+                    "$max${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} "
+                    "${element['Resultado']} ${element['Unidad_Medida']}, ";
+              } else {
+                max =
+                    "$max${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} "
+                    "${element['Resultado']}, ";
+              }
             }
           }
-
         }
         // COMPROBACIÓN
-
         if (fechado != "") {
-          prosa = "$prosa$fechado ${Sentences.capitalize(max)}\n";
+          prosa = "$prosa "
+              "          .          "
+              "$tipoEstudio $fechado ${Sentences.capitalize(max)}\n";
         }
       }
     }
@@ -630,4 +642,186 @@ class Internado {
     return prosa;
   }
 
+  static String getGasometrico({
+    required List listadoFrom,
+    bool esAbreviado = true,
+  }) {
+    String prosa = "", fecha = "", max = "";
+
+    var fechar = Listas.listFromMapWithOneKey(
+      // Pacientes.Paraclinicos!,
+      Listas.filterAndFindRecent(
+          listadoFrom,
+          [
+            "Gasometría Arterial",
+            "Gasometría Venosa",
+            // "Biometría Hemática",
+            // "Electrolitos Séricos",
+          ],
+          withEspeciales: true),
+      keySearched: 'Fecha_Registro',
+    );
+
+    // if (fechar.isNotEmpty) {
+    //     //
+    //     var aux = listadoFrom
+    //         .where((user) => user.containsKey("Fecha_Registro") &&
+    //         user["Fecha_Registro"] != null &&
+    //         user["Fecha_Registro"].toString().contains(fechar.first))
+    //         .toList();
+    //     // Terminal.printSuccess(message: aux.toString());
+    //     Gasometricos.fromJson(aux);
+    //   }
+    if (fechar.isNotEmpty) {
+      var aux = listadoFrom
+          .where((user) => user["Fecha_Registro"].contains(fechar.first))
+          .toList();
+      fecha = "          Paraclínicos (${fechar.first})";
+
+      for (var element in aux) {
+        // ***************************** *****************
+        if (element['Tipo_Estudio'] != "Gasometría Arterial" ||
+            element['Tipo_Estudio'] != "Gasometría Venosa") {
+          if (max == "") {
+            max =
+                "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} "
+                "${element['Unidad_Medida'] != "" ? element['Unidad_Medida'] : ""}";
+          } else {
+            max =
+                "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} "
+                "${element['Unidad_Medida'] != "" ? element['Unidad_Medida'] : ""}";
+          }
+        }
+      }
+
+      // COMPROBACIÓN
+      if (max != "") {
+        prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n\n";
+      }
+    }
+    // ************** ***************** ***************
+    return prosa;
+  }
+
+  static String getReactantes({
+    required List listadoFrom,
+    bool esAbreviado = true,
+  }) {
+    String prosa = "", fecha = "", max = "";
+
+    var fechar = Listas.listFromMapWithOneKey(
+      // Pacientes.Paraclinicos!,
+      Listas.filterAndFindRecent(
+          listadoFrom,
+          [
+            "Reactantes de Fase Aguda",
+          ],
+          withEspeciales: true),
+      keySearched: 'Fecha_Registro',
+    );
+
+    //
+    if (fechar.isNotEmpty) {
+      var aux = listadoFrom
+          .where((user) => user["Fecha_Registro"].contains(fechar.first))
+          .toList();
+      fecha = "          Paraclínicos (${fechar.first})";
+
+      for (var element in aux) {
+        // ***************************** *****************
+        if (element['Tipo_Estudio'] == "Reactantes de Fase Aguda") {
+          if (max == "") {
+            max =
+                "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} "
+                "${element['Unidad_Medida'] != "" ? element['Unidad_Medida'] : ""}";
+          } else {
+            max =
+                "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} "
+                "${element['Unidad_Medida'] != "" ? element['Unidad_Medida'] : ""}";
+          }
+        }
+      }
+
+      // COMPROBACIÓN
+      if (max != "") {
+        prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+      }
+    }
+    // ************** ***************** ***************
+    return prosa;
+  }
+
+  static String getCoagulacion({
+    required List listadoFrom,
+    bool esAbreviado = true,
+  }) {
+    String prosa = "", fecha = "", max = "";
+
+    var fechar = Listas.listFromMapWithOneKey(
+      // Pacientes.Paraclinicos!,
+      Listas.filterAndFindRecent(listadoFrom, ["Tiempos de Coagulación"],
+          withEspeciales: true),
+      keySearched: 'Fecha_Registro',
+    );
+
+    //
+    if (fechar.isNotEmpty) {
+      var aux = listadoFrom
+          .where((user) => user["Fecha_Registro"].contains(fechar.first))
+          .toList();
+      fecha = "          Paraclínicos (${fechar.first})";
+
+      for (var element in aux) {
+        // ***************************** *****************
+        if (element['Tipo_Estudio'] == "Tiempos de Coagulación") {
+          if (max == "") {
+            max =
+                "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} "
+                "${element['Unidad_Medida'] != "" ? element['Unidad_Medida'] : ""}";
+          } else {
+            max =
+                "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} "
+                "${element['Unidad_Medida'] != "" ? element['Unidad_Medida'] : ""}";
+          }
+        }
+      }
+    }
+
+    // COMPROBACIÓN
+    if (max != "") {
+      prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+    }
+    // ************** ***************** ***************
+    return prosa;
+  }
+
+  // OTROS METODOS
+  static updateStatus({required listadoFrom}) async {
+    Terminal.printExpected(
+        message: "${listadoFrom.generales['ID_Pace']} . . "
+            "${listadoFrom.hospitalizedData['ID_Hosp']}");
+    //
+    int _idPace = listadoFrom.generales['ID_Pace'], _idHosp = listadoFrom.hospitalizedData['ID_Hosp'];
+    String motivoEgresoValue = Escalas.motivosEgresos[2];
+    //
+    await Actividades.actualizar(
+        Databases.siteground_database_reghosp,
+        "UPDATE pace_hosp "
+            "SET Dia_Estan = ?,  Feca_EGE_Hosp = ?,  EGE_Motivo = ? "
+            "WHERE ID_Hosp =  ?",
+        [
+          Calendarios.differenceInDaysToNow(listadoFrom.hospitalizedData['Feca_INI_Hosp']),
+          motivoEgresoValue,
+          //
+          _idHosp
+        ],
+        _idHosp);
+    await Actividades.actualizar(
+        Databases.siteground_database_regpace,
+        "UPDATE pace_iden_iden "
+        "SET Pace_Hosp = ? "
+        "WHERE ID_Pace = ?",
+        [Pacientes.Atencion[2], _idPace],
+        _idPace);
+  }
 }

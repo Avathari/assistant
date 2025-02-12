@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
@@ -831,7 +832,12 @@ class _PacientesListScreenState extends State<PacientesListScreen> {
                 context: context,
                 tittle: "Actividad de registro de pacientes",
                 message: onValue.toString(),
-                onAcept: () => Navigator.of(context).pop()))
+                onAcept: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                  //
+                  File(patientsPendientesFile).delete();
+                }))
             .onError((onError, stackTrace) => Operadores.alertActivity(
                 context: context,
                 tittle: "Ocurrió un error al registrar el Listado . . . ",

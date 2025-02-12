@@ -64,15 +64,18 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                       numOfLines: 22,
                       limitOfChars: 700,
                       onChange: ((value) {
-                        Reportes
-                            .impresionesDiagnosticas =
-                        Reportes
-                            .reportes[
-                        'Impresiones_Diagnosticas'] =
-                        Reportes
-                            .reportes[
-                        'Diagnosticos_Hospital'] =
-                        "$value.";
+
+                        setState((){
+                          Reportes
+                              .impresionesDiagnosticas =
+                          Reportes
+                              .reportes[
+                          'Impresiones_Diagnosticas'] =
+                          Reportes
+                              .reportes[
+                          'Diagnosticos_Hospital'] =
+                          "$value.";
+                        });
                       }),
                       inputFormat: MaskTextInputFormatter()),
                 ),

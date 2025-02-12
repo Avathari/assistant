@@ -44,10 +44,12 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
   @override
   void initState() {
     setState(() {
-      expoTextController.text =
-          Reportes.exploracionFisica = Reportes.reportes['Exploracion_Fisica'];
-      // vitalTextController.text = Reportes.signosVitales  = Reportes.reportes['Signos_Vitales'];
-      vitalTextController.text = Reportes.signosVitales  = Reportes.reportes['Signos_Vitales'] = Pacientes.signosVitales(indice: 6);
+      expoTextController.text = Reportes.reportes['Exploracion_Fisica'] != ""
+          ? expoTextController.text = Reportes.reportes['Exploracion_Fisica']
+          : expoTextController.text = Reportes.exploracionFisica;
+      // 
+      vitalTextController.text = Reportes.signosVitales = Reportes
+          .reportes['Signos_Vitales'] = Pacientes.signosVitales(indice: 6);
     });
     //
     _timer = Timer.periodic(
@@ -154,10 +156,9 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                               : isMobile(context)
                                   ? 80
                                   : 20,
-                      onChange: ((value) => setState(() =>
-                      Reportes.exploracionFisica =
-                              Reportes.reportes['Exploracion_Fisica'] =
-                                  value)), //
+                      onChange: ((value) => setState(() => Reportes
+                              .exploracionFisica =
+                          Reportes.reportes['Exploracion_Fisica'] = value)), //
                       inputFormat: MaskTextInputFormatter()),
                 ),
                 widget.isTerapia!
@@ -335,7 +336,7 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                       Navigator.of(context).pop();
                     }))),
         CircleIcon(
-          iconed: Icons.save,
+            iconed: Icons.save,
             tittle: "Guardar en Temporal . . . ",
             onChangeValue: () => _saveToFile(expoTextController.text)),
         otherExploreOptions(context),
@@ -742,7 +743,6 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
       Archivos.writeInFile(text, filePath: widget.analisisTemporalFile);
       // Terminal.printWarning(message: "Texto guardado en ${widget.analisisTemporalFile}");
       // Terminal.printWarning(message: "Reportes.reportes ${Reportes.reportes['Impresiones_Diagnosticas'].toString()}");
-
     }
   }
 

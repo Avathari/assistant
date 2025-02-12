@@ -1,11 +1,88 @@
 import 'dart:math' as math;
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:dart_numerics/dart_numerics.dart' as numerics;
 import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/hidrometrias.dart';
 
-
 class Gasometricos {
+  static Future<void> fromJson(List<dynamic> json) async {
+    // Validar que el JSON tenga al menos un elemento
+    if (json.isEmpty || json[0] == null || json[0] is! Map<String, dynamic>) {
+      Terminal.printAlert(message: "El JSON no tiene la estructura esperada.");
+      return;
+    }
+
+    // final Map<String, dynamic> data = json[0];
+    // Terminal.printSuccess(message: data.toString());
+
+    // Función auxiliar para convertir valores a double
+    double parseDouble(dynamic value, [double defaultValue = 0]) {
+      if (value == null) return defaultValue;
+      return double.tryParse(value.toString()) ?? defaultValue;
+    }
+
+    Terminal.printAlert(message: json.toString());
+
+    for (var data in json) {
+      // Asignar valores generales
+      // Valores.hemoglobina = parseDouble(data['Hemoglobina']);
+      // Valores.sodio = parseDouble(data['Sodio']);
+      // Valores.potasio = parseDouble(data['Potasio']);
+      // Valores.cloro = parseDouble(data['Cloro']);
+      // Valores.magnesio = parseDouble(data['Magnesio']);
+      // Valores.fosforo = parseDouble(data['Fosforo']);
+      // Valores.calcio = parseDouble(data['Calcio']);
+
+      // Procesar datos según el tipo de estudio
+      switch (data['Tipo_Estudio']) {
+        case "Gasometría Arterial":
+          Valores.fechaGasometriaArterial = data['Fecha_Registro'] ?? '';
+          Valores.pHArteriales =
+              parseDouble(data['Estudio'] == "pH" ? data['Resultado'] : null);
+
+          Valores.pcoArteriales = parseDouble(
+              data['Estudio'] == "Presión de Dióxido de Carbono"
+                  ? data['Resultado']
+                  : null);
+          Valores.poArteriales = parseDouble(
+              data['Estudio'] == "Presión de Oxígeno"
+                  ? data['Resultado']
+                  : null);
+          Valores.bicarbonatoArteriales = parseDouble(
+              data['Estudio'] == "Bicarbonato Sérico"
+                  ? data['Resultado']
+                  : null);
+          Valores.fioArteriales = parseDouble(
+              data['Estudio'] == "Fracción Inspiratoria de Oxígeno"
+                  ? data['Resultado']
+                  : null);
+          Valores.soArteriales = parseDouble(
+              data['Estudio'] == "Saturación de Oxígeno"
+                  ? data['Resultado']
+                  : null);
+          break;
+
+        case "Gasometría Venosa":
+          Valores.fechaGasometriaVenosa = data['Fecha_Registro'] ?? '';
+          Valores.pHVenosos = parseDouble(data['pH']);
+          Valores.pcoVenosos =
+              parseDouble(data['Presión de Dióxido de Carbono']);
+          Valores.poVenosos = parseDouble(data['Presión de Oxígeno']);
+          Valores.bicarbonatoVenosos = parseDouble(data['Bicarbonato Sérico']);
+          Valores.fioVenosos =
+              parseDouble(data['Fracción Inspiratoria de Oxígeno']);
+          Valores.soVenosos = parseDouble(data['Saturación de Oxígeno']);
+          break;
+
+        default:
+          Terminal.printWarning(
+              message: "Tipo de estudio desconocido: ${data['Tipo_Estudio']}");
+          break;
+      }
+    }
+  }
+
   // ANALISIS
 
   // CONCLUSIONES
@@ -17,11 +94,11 @@ class Gasometricos {
         "SO2 ${Valores.soArteriales} %, "
         "HCO3- ${Valores.bicarbonatoArteriales!.toStringAsFixed(2)} mmol/L, "
         "HCO3std ${Gasometricos.EBecf.toStringAsFixed(2)} mmol/L, "
-        "EB ${Gasometricos.EB.toStringAsFixed(2)} mmol/L, "
+        // "EB ${Gasometricos.EB.toStringAsFixed(2)} mmol/L, "
         "TCO2 ${Gasometricos.TCO.toStringAsFixed(2)} mmHg, "
         "PCO2e ${Gasometricos.PCO2C.toStringAsFixed(2)} mmHg, "
-    // "EBe ${Valores.pHArteriales} mmol/L, "
-        "aGAP ${Gasometricos.GAP.toStringAsFixed(1)}, "
+        // "EBe ${Valores.pHArteriales} mmol/L, "
+        // "aGAP ${Gasometricos.GAP.toStringAsFixed(1)}, "
         "Temp ${Valores.temperaturCorporal}°C, "
         "FiO2 ${Valores.fioArteriales}%, "
         "A-aO2 ${Gasometricos.GAA.toStringAsFixed(1)} mmHg, "
@@ -40,7 +117,7 @@ class Gasometricos {
         "EB ${Gasometricos.EB.toStringAsFixed(2)} mmol/L, "
         "TCO2 ${Gasometricos.TCO.toStringAsFixed(2)} mmHg, "
         "PCO2e ${Gasometricos.PCO2C.toStringAsFixed(2)} mmHg, "
-    // "EBe ${Valores.pHArteriales} mmol/L, "
+        // "EBe ${Valores.pHArteriales} mmol/L, "
         "aGAP ${Gasometricos.GAP.toStringAsFixed(1)}, "
         "Temp ${Valores.temperaturCorporal}°C, "
         "FiO2 ${Valores.fioArteriales}%, "
@@ -103,8 +180,7 @@ class Gasometricos {
         "pH- 2da Regla ${Gasometricos.HCOR_b.toStringAsFixed(2)}, "
         "HCO3- 3ra Regla ${Gasometricos.HCOR_c.toStringAsFixed(2)} mmol/L, "
         "Rep. HCO3- ${Gasometricos.HCOAM.toStringAsFixed(2)}, "
-        "en total ${Gasometricos.NOAMP.toStringAsFixed(
-        0)} ámpulas de bicarbonato al 7.5%"
+        "en total ${Gasometricos.NOAMP.toStringAsFixed(0)} ámpulas de bicarbonato al 7.5%"
         ".";
   }
 
@@ -128,8 +204,7 @@ class Gasometricos {
         "pH- 2da Regla ${Gasometricos.HCOR_b.toStringAsFixed(2)}, "
         "HCO3- 3ra Regla ${Gasometricos.HCOR_c.toStringAsFixed(2)} mmol/L, "
         "Rep. HCO3- ${Gasometricos.HCOAM.toStringAsFixed(2)}, "
-        "en total ${Gasometricos.NOAMP.toStringAsFixed(
-        0)} ámpulas de bicarbonato al 7.5%"
+        "en total ${Gasometricos.NOAMP.toStringAsFixed(0)} ámpulas de bicarbonato al 7.5%"
         ".";
   }
 
@@ -143,8 +218,7 @@ class Gasometricos {
         "HCO3std ${Gasometricos.EBecf.toStringAsFixed(2)} mmol/L, "
         "EB ${Gasometricos.EB.toStringAsFixed(2)} mmol/L "
         ". "
-        "${Valores.temperaturCorporal != 0 ? "Temp ${Valores
-        .temperaturCorporal}" : ""}°C, "
+        "${Valores.temperaturCorporal != 0 ? "Temp ${Valores.temperaturCorporal}" : ""}°C, "
         "FiO2 ${Valores.fioArteriales}%, "
         ". "
         "PAO2 ${Gasometricos.PAO.toStringAsFixed(0)} mmHg, "
@@ -167,17 +241,13 @@ class Gasometricos {
         " : "
         "Delta ratio ${Gasometricos.D_d_ratio.toStringAsFixed(0)}"
         " . : "
-    //
-        "PCO2e ${Gasometricos.PCO2esperado.isNaN ? "N/A" : Gasometricos
-        .PCO2esperado.toStringAsFixed(2)} mmHg, "
-        "EBe ${Gasometricos.excesoBaseEsperado.isNaN ? "N/A" : Gasometricos
-        .excesoBaseEsperado.toStringAsFixed(2)} mmol/L, "
-        "pH(1ra)e ${Gasometricos.HCOR_a.isNaN ? "N/A" : Gasometricos.HCOR_a
-        .toStringAsFixed(2)}, "
-        "pH(2da)e ${Gasometricos.HCOR_b.isNaN ? "N/A" : Gasometricos.HCOR_b
-        .toStringAsFixed(2)}"
+        //
+        "PCO2e ${Gasometricos.PCO2esperado.isNaN ? "N/A" : Gasometricos.PCO2esperado.toStringAsFixed(2)} mmHg, "
+        "EBe ${Gasometricos.excesoBaseEsperado.isNaN ? "N/A" : Gasometricos.excesoBaseEsperado.toStringAsFixed(2)} mmol/L, "
+        "pH(1ra)e ${Gasometricos.HCOR_a.isNaN ? "N/A" : Gasometricos.HCOR_a.toStringAsFixed(2)}, "
+        "pH(2da)e ${Gasometricos.HCOR_b.isNaN ? "N/A" : Gasometricos.HCOR_b.toStringAsFixed(2)}"
         " . : : . "
-    // "EBe ${Valores.pHArteriales} mmol/L, "
+        // "EBe ${Valores.pHArteriales} mmol/L, "
         "iCL/NA ${Gasometricos.indiceCloroSodiio.toStringAsFixed(1)}, "
         "difNa/Cl ${Gasometricos.diferenciaSodioCloro.toStringAsFixed(1)} . . "
         "";
@@ -255,22 +325,24 @@ class Gasometricos {
   ///
   /// Tal que: Tmedido: temperatura corporal del paciente en °C.
   /// 37: temperatura estándar de calibración del equipo.
-  static double get pHcorregido=>(Valores.pHArteriales! + (0.015*(Valores.temperaturCorporal!-37)));
-
+  static double get pHcorregido =>
+      (Valores.pHArteriales! + (0.015 * (Valores.temperaturCorporal! - 37)));
 
   /// Corrección del pCO2 por temperatura
   /// El pCO2 también varía debido a la solubilidad del CO2, que aumenta a temperaturas más bajas:
   /// FG: pCO2corregido = pCO2medido * 10^(0.019*(37-Tmedido)
-  static double get pCO2corregido=>(Valores.pcoArteriales! * math.pow(10, 0.019*(37-Valores.temperaturCorporal!)));
+  static double get pCO2corregido => (Valores.pcoArteriales! *
+      math.pow(10, 0.019 * (37 - Valores.temperaturCorporal!)));
 
   /// Corrección del pO2 por temperatura
   /// La pO2 se ajusta debido a la solubilidad del oxígeno en plasma y su interacción con la hemoglobina:
-  static double get pO2corregido=>(Valores.poArteriales! * math.pow(10, 0.003*(37-Valores.temperaturCorporal!)));
+  static double get pO2corregido => (Valores.poArteriales! *
+      math.pow(10, 0.003 * (37 - Valores.temperaturCorporal!)));
 
   /// Corrección del Calcio Ionico por pH
   ///
   /// El calcio iónico está influenciado por el pH debido a que el hidrógeno compite con el calcio por los sitios de unión en las proteínas plasmáticas. Cambios en el pH afectan los niveles de calcio iónico:
-   /// - Acidemia (pH<7.35): Aumenta el calcio iónico, ya que menos calcio se une a las proteínas.
+  /// - Acidemia (pH<7.35): Aumenta el calcio iónico, ya que menos calcio se une a las proteínas.
   /// - Alcalemia (pH>7.45): Disminuye el calcio iónico, ya que más calcio se une a las proteínas.
   /// Ajuste del calcio iónico por pH:  Por cada cambio de 0.1 unidades de pH Calcio iónico cambia aproximadamente 0.05 mmol/L en dirección opuesta al pH.
   ///  Formula General: Ca++pH = 1.20 + (0.05 x (7.4 - pHm))
@@ -278,7 +350,8 @@ class Gasometricos {
   /// - Calcio iónico: 1.12-1.32 mmol/L (4.5-5.3 mg/dL).
   /// - Calcio total: 8.5-10.5 mg/dL.
   ///
-  static double get calcioIonicoCorregido=>(1.2 + (Valores.calcioIonicoArteriales! * (7.4 - Valores.pHArteriales!)));
+  static double get calcioIonicoCorregido =>
+      (1.2 + (Valores.calcioIonicoArteriales! * (7.4 - Valores.pHArteriales!)));
 
   /// Indice Cl-/Na+2
   ///  * * Adyuva en la descripción de la Acidosis Metabólica.
@@ -296,11 +369,11 @@ class Gasometricos {
   //
   static double get GAP =>
       (Valores.sodio! + Valores.potasio!) -
-          (Valores.cloro! + Valores.bicarbonatoArteriales!);
+      (Valores.cloro! + Valores.bicarbonatoArteriales!);
 
   static double get GAPA =>
       (Valores.sodioArteriales! + Valores.potasioArteriales!) -
-          (Valores.cloroArteriales! + Valores.bicarbonatoArteriales!);
+      (Valores.cloroArteriales! + Valores.bicarbonatoArteriales!);
 
   //
   static double get PAFI {
@@ -318,22 +391,26 @@ class Gasometricos {
   static double get PAFI_FIO =>
       (Valores.poArteriales! / Valores.fioArteriales!) * 100;
 
-  static double get SAFI =>
-      (Valores.saturacionPerifericaOxigeno! / (Valores.fraccionInspiratoriaOxigeno! / 100));
+  static double get SAFI => (Valores.saturacionPerifericaOxigeno! /
+      (Valores.fraccionInspiratoriaOxigeno! / 100));
 
   /// pCO2 corregido por Temperatura (°C)
   static double get PCO2C {
-    if (Valores.temperaturCorporal == 37) {
-      return (Valores.pcoArteriales! *
-          math.pow(10, math.pow(0.019, 2))); // # 37 - 35 °C
-    } else if (Valores.temperaturCorporal! < 37) {
-      return (Valores.pcoArteriales! *
-          math.pow(10, math.pow(0.019, 37.00 - Valores.temperaturCorporal!)));
-    } else if (Valores.temperaturCorporal! > 37) {
-      return (Valores.pcoArteriales! *
-          math.pow(10, math.pow(0.019, Valores.temperaturCorporal! - 37)));
+    if (Valores.temperaturCorporal != null) {
+      if (Valores.temperaturCorporal == 37) {
+        return (Valores.pcoArteriales! *
+            math.pow(10, math.pow(0.019, 2))); // # 37 - 35 °C
+      } else if (Valores.temperaturCorporal! < 37) {
+        return (Valores.pcoArteriales! *
+            math.pow(10, math.pow(0.019, 37.00 - Valores.temperaturCorporal!)));
+      } else if (Valores.temperaturCorporal! > 37) {
+        return (Valores.pcoArteriales! *
+            math.pow(10, math.pow(0.019, Valores.temperaturCorporal! - 37)));
+      } else {
+        return double.nan;
+      }
     } else {
-      return double.nan;
+      return Valores.pcoArteriales!;
     }
   }
 
@@ -358,17 +435,15 @@ class Gasometricos {
     }
   }
 
-  static double get EB =>
-      ((1 - 0.014 * Valores.hemoglobina!) *
-          (Valores.bicarbonatoArteriales! -
-              24.8 +
-              (1.43 * Valores.hemoglobina! + 7.7) *
-                  (Valores.pHArteriales! - 7.4)));
+  static double get EB => ((1 - 0.014 * Valores.hemoglobina!) *
+      (Valores.bicarbonatoArteriales! -
+          24.8 +
+          (1.43 * Valores.hemoglobina! + 7.7) * (Valores.pHArteriales! - 7.4)));
 
   static double get EBecf =>
       (24) -
-          ((Valores.bicarbonatoArteriales! + 10.00) *
-              (Valores.pHArteriales! - 7.4)); //  # Bicarbonato Standard
+      ((Valores.bicarbonatoArteriales! + 10.00) *
+          (Valores.pHArteriales! - 7.4)); //  # Bicarbonato Standard
 
   /// Delta Gap (aGAp)
   static double get d_GAP {
@@ -412,7 +487,6 @@ class Gasometricos {
     }
   }
 
-
   /// Gap Osmolar (ΔOms)
   ///
   /// *** Existen bibliografias que, de hecho, toman como fórmula OSMmedido * OSMcalculado
@@ -429,27 +503,24 @@ class Gasometricos {
   ///
   static double get GIF =>
       diferenciaIonesFuertesAparente -
-          diferenciaIonesFuertesEfectiva; //  - (2.46 * 108 * Valores.pcoArteriales! / 10);
+      diferenciaIonesFuertesEfectiva; //  - (2.46 * 108 * Valores.pcoArteriales! / 10);
 
   /// Efecto de Aniones y Cationes Principales (EACp)
   ///
   ///
   static double get efectoAnionesCationesPrincipales =>
       (Valores.sodio! - Valores.cloro!) -
-          38; //  # Efecto de Aniones y Cationes Principales
+      38; //  # Efecto de Aniones y Cationes Principales
   /// Efecto de Buffers Principales (EBp)
   ///
   ///
-  static double get efectoPrincipalesBuffers =>
-      (0.25 *
-          (42.00 -
-              Valores.albuminaSerica!)); //  # Efecto de Buffers Principales
+  static double get efectoPrincipalesBuffers => (0.25 *
+      (42.00 - Valores.albuminaSerica!)); //  # Efecto de Buffers Principales
 
   /// Diferencia Aniónica (DA)
   ///
-  static double get DA =>
-      (efectoAnionesCationesPrincipales -
-          efectoPrincipalesBuffers); // # Diferencia Anionica
+  static double get DA => (efectoAnionesCationesPrincipales -
+      efectoPrincipalesBuffers); // # Diferencia Anionica
 
   /// Verdadero Déficit de Baase
   static double get VDb =>
@@ -487,7 +558,7 @@ class Gasometricos {
   //(Valores.presionGasSeco / (Valores.fioArteriales! / 100));
   static double get PIO =>
       (Valores.presionBarometrica - Valores.presionVaporAgua) *
-          (Valores.fioArteriales! / 100);
+      (Valores.fioArteriales! / 100);
 
   static double get PAO {
     return PIO -
@@ -551,14 +622,14 @@ class Gasometricos {
       //     Valores.potasio! ) -
       //     (Valores.cloro!);
       return (Valores.sodio! +
-          Valores.potasio! +
-          (Valores.calcio!) +
-          (Valores.magnesio!)) -
+              Valores.potasio! +
+              (Valores.calcio!) +
+              (Valores.magnesio!)) -
           (Valores.cloro! + Valores.lactatoArterial!);
       return (Valores.sodio! +
-          Valores.potasio! +
-          (Valores.calcio! / 2.0) +
-          (Valores.magnesio! / 1.2)) -
+              Valores.potasio! +
+              (Valores.calcio! / 2.0) +
+              (Valores.magnesio! / 1.2)) -
           ((Valores.cloro! / 3.55) + Valores.lactatoArterial!);
     } else {
       return double.nan;
@@ -592,7 +663,6 @@ class Gasometricos {
   /// CONSULTE: https://image.slidesharecdn.com/acidobase-150309000502-conversion-gate01/95/acido-base-12-638.jpg?cb=1425860714
   ///
   static double get aTOT => 2.43 * Valores.proteinasTotales!;
-
 
   /// Gradiente Alveolo Arterial (GAA)
   ///
@@ -638,8 +708,7 @@ class Gasometricos {
   ///
   ///
   static double get SvcO2 =>
-      (Valores.soArteriales!) -
-          (iDO - TO) * Valores.hemoglobina!;
+      (Valores.soArteriales!) - (iDO - TO) * Valores.hemoglobina!;
 
   // # ######################################################
   // # Reglas del Bicarbonato
@@ -661,7 +730,6 @@ class Gasometricos {
   ///   # Se suma el HCOR_a al pH Ideal, que es 7.40 si resulta en una discrepancia entonces el Origen del Trastorno no es respiratorio. No cumple la primera regla.
   ///   # Reposición de Bicarbonato
   static double get HCOR_b => (Valores.pHArteriales! + ((EB * 0.15) / 10));
-
 
   static double get HCOR_c {
     if (Gasometricos.EB < 0) {
@@ -743,9 +811,8 @@ class Gasometricos {
 
   static double get PH =>
       6.1 +
-          numerics.log10(
-              (Valores.bicarbonatoArteriales! /
-                  (0.03 * Valores.pcoArteriales!)));
+      numerics.log10(
+          (Valores.bicarbonatoArteriales! / (0.03 * Valores.pcoArteriales!)));
 
   static double get PaO2_estimado => 103.5 - 0.42 * Valores.edad!;
 
@@ -777,9 +844,8 @@ class Gasometricos {
   ///
   /// VN: 16-20ml/O2%
   ///
-  static double get CCO =>
-      ((Valores.hemoglobina! * 1.34) +
-          (Gasometricos.PAO * 0.031)); // # Concentración Capilar de Oxígeno
+  static double get CCO => ((Valores.hemoglobina! * 1.34) +
+      (Gasometricos.PAO * 0.031)); // # Concentración Capilar de Oxígeno
   // (((Valores.hemoglobina! * 1.34) *
   //         (Valores.soVenosos! - Valores.soArteriales!) +
   //     ((Valores.poVenosos! - Valores.poArteriales!) * 0.031)) /
@@ -788,11 +854,11 @@ class Gasometricos {
   static double get CACO =>
       (((Valores.hemoglobina! * 1.34) * (Valores.soArteriales! / 100)) +
           (Valores.pcoArteriales! * 0.031)) /
-          (100); //  # Concentración Arterial de Oxígeno
+      (100); //  # Concentración Arterial de Oxígeno
   static double get CVCO =>
       (((Valores.hemoglobina! * 1.34) * (Valores.soVenosos! / 100)) +
           (Valores.pcoVenosos! * 0.031)) /
-          (100); // # Concentración Venosa de Oxígeno
+      (100); // # Concentración Venosa de Oxígeno
 
   static double get DAV => (CAO - CVO); // # Diferencia Arteriovenosa de O2
 
@@ -876,7 +942,11 @@ class Gasometricos {
   /// - - 0.003: Solubilidad del oxígeno en plasma (mL O₂/dL por mmHg).
   /// O₂Ct refleja el estado actual de oxigenación del paciente y es crítico en la evaluación de hipoxemia y otros trastornos respiratorios.
   ///
-  static double get contenidoTotalOxigeno => (1.34 * Valores.hemoglobina! * (Valores.saturacionPerifericaOxigeno! /100)) + (0.003 * Valores.poArteriales!);
+  static double get contenidoTotalOxigeno =>
+      (1.34 *
+          Valores.hemoglobina! *
+          (Valores.saturacionPerifericaOxigeno! / 100)) +
+      (0.003 * Valores.poArteriales!);
 
   /// Disponibilidad de Oxígeno (DO2) (mL/min)
   /// El DO₂ es la cantidad de oxígeno transportada por la sangre y entregada a los tejidos por minuto. Se calcula a partir del contenido arterial de oxígeno (
@@ -920,7 +990,7 @@ class Gasometricos {
   static double get SF =>
       ((Gasometricos.CCO - Gasometricos.CAO) /
           (Gasometricos.CCO - Gasometricos.CVO)) *
-          (100); //  # Shunt Fisiológico
+      (100); //  # Shunt Fisiológico
 
   /// Shunt Pulmonar II : : Fracción QS/QT
   ///     Basado en el Gradiente Alveolo-Arterial
@@ -959,7 +1029,6 @@ class Gasometricos {
   static double get IEO => (((Gasometricos.DAV / Gasometricos.CAO) *
       100)); // # Indice de Extracción de Oxígeno
 
-
   static int get PPI =>
       Valores.presionFinalEsiracion! + Valores.presionSoporte!;
 
@@ -983,8 +1052,8 @@ class Gasometricos {
   ///
   static double get shuntPulmonar =>
       (Gasometricos.CCO - Gasometricos.CAO) /
-          (Gasometricos.CCO - Gasometricos.CVO) *
-          100;
+      (Gasometricos.CCO - Gasometricos.CVO) *
+      100;
 
   /// Gasto Cardiaco (GC)
   ///
@@ -1003,8 +1072,9 @@ class Gasometricos {
   /// Enfoque STEWART (Influencia del Lactato)
   ///  * * EB: 1- Lactato
   static double get influenciaLactato {
-    if (Valores.lactatoArterial != null || Valores.lactatoArterial != 0 &&
-        Valores.lactatoVenoso != null || Valores.lactatoVenoso != 0) {
+    if (Valores.lactatoArterial != null ||
+        Valores.lactatoArterial != 0 && Valores.lactatoVenoso != null ||
+        Valores.lactatoVenoso != 0) {
       return Valores.lactatoArterial! - 1;
     } else {
       return double.nan;
@@ -1014,8 +1084,9 @@ class Gasometricos {
   /// Enfoque STEWART (Influenica de Iones Medibles)
   ///  * * Iones medibles: ([Na2+]+[K+]-[Cl-])-40
   static double get influenciaIonesMedibles {
-    if (Valores.sodio != null || Valores.sodio != 0 &&
-        Valores.sodio != null || Valores.sodio != 0) {
+    if (Valores.sodio != null ||
+        Valores.sodio != 0 && Valores.sodio != null ||
+        Valores.sodio != 0) {
       return (Valores.sodio! + Valores.potasio! - Valores.cloro!) - 40;
     } else {
       return double.nan;
@@ -1035,9 +1106,11 @@ class Gasometricos {
   /// Enfoque STEWART (Influencia de Otros Iones)
   ///  * * BE-[Lact]-[NaKCl-]-Alb
   static double get influenciaOtrosIones {
-    if (Valores.lactatoArterial != null || Valores.lactatoArterial != 0 &&
-        Valores.lactatoVenoso != null || Valores.lactatoVenoso != 0) {
-      return EB - Valores.lactatoArterial! -
+    if (Valores.lactatoArterial != null ||
+        Valores.lactatoArterial != 0 && Valores.lactatoVenoso != null ||
+        Valores.lactatoVenoso != 0) {
+      return EB -
+          Valores.lactatoArterial! -
           (Valores.sodio! + Valores.potasio! - Valores.cloro!) -
           Valores.albuminaSerica!;
     } else {

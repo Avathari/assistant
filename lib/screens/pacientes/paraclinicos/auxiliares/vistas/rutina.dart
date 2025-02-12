@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
@@ -7,6 +9,7 @@ import 'package:assistant/operativity/pacientes/valores/Valorados/lipidometria.d
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
@@ -15,6 +18,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class Rutinas extends StatefulWidget {
   const Rutinas({super.key});
@@ -24,6 +28,7 @@ class Rutinas extends StatefulWidget {
 }
 
 class _RutinasState extends State<Rutinas> {
+  String? filePath;
   var carouselController = CarouselSliderController();
 
   @override
@@ -75,7 +80,24 @@ class _RutinasState extends State<Rutinas> {
                     operationMethod();
                   },
                 ),
-              )
+              ),
+            if (!isMobile(context))Expanded(
+              child: CircleIcon(
+                radios: 25,
+                difRadios: 3,
+                iconed: Icons.document_scanner_outlined,
+                tittle: "Cargar archivo de Historial . . . ",
+                onChangeValue: () async {
+                  final path =
+                  await Directorios.choiseFromInternalDocuments(
+                      context);
+                  //
+                  setState(() {
+                    filePath = path!.files.single.path!;
+                  });
+                },
+              ),
+            ),
           ],
         ),
         CrossLine(
@@ -2256,919 +2278,934 @@ class _RutinasState extends State<Rutinas> {
   }
 
   desktopView() {
-    return SingleChildScrollView(
-      controller: ScrollController(),
-      child: Column(
-        children: [
-          TittleContainer(
-            tittle: "Citometría",
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 2,
+          child: SingleChildScrollView(
+            controller: ScrollController(),
             child: Column(
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: EditTextArea(
-                        textController: textHemoglobinaResultController,
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(),
-                        labelEditText: 'Hemoglobina ($unidadMedidaHemoglobina)',
-                        numOfLines: 1,
-                        onChange: (String value) {
-                          if (textHemoglobinaResultController.text.isNotEmpty) {
-                            Valores.hemoglobina = double.parse(
-                                textHemoglobinaResultController.text);
-                          }
-                        },
+                TittleContainer(
+                  tittle: "Citometría",
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: EditTextArea(
+                              textController: textHemoglobinaResultController,
+                              keyBoardType: TextInputType.number,
+                              inputFormat: MaskTextInputFormatter(),
+                              labelEditText: 'Hemoglobina ($unidadMedidaHemoglobina)',
+                              numOfLines: 1,
+                              onChange: (String value) {
+                                if (textHemoglobinaResultController.text.isNotEmpty) {
+                                  Valores.hemoglobina = double.parse(
+                                      textHemoglobinaResultController.text);
+                                }
+                              },
+                            ),
+                          ),
+                          Expanded(
+                            child: EditTextArea(
+                              textController: textEritrocitosResultController,
+                              keyBoardType: TextInputType.number,
+                              inputFormat: MaskTextInputFormatter(
+                                  mask: '#.##',
+                                  filter: {"#": RegExp(r'[0-9]')},
+                                  type: MaskAutoCompletionType.lazy),
+                              labelEditText: 'Eritrocitos ($unidadMedidaEritrocitos)',
+                              numOfLines: 1,
+                              onChange: (String value) {
+                                if (textEritrocitosResultController.text.isNotEmpty) {
+                                  Valores.eritrocitos = double.parse(
+                                      textEritrocitosResultController.text);
+                                }
+                              },
+                            ),
+                          ),
+                          Expanded(
+                            child: EditTextArea(
+                              textController: textHematocritoResultController,
+                              keyBoardType: TextInputType.number,
+                              inputFormat: MaskTextInputFormatter(),
+                              labelEditText: 'Hematocrito ($unidadMedidaHematocrito)',
+                              numOfLines: 1,
+                              onChange: (String value) {
+                                if (textHematocritoResultController.text.isNotEmpty) {
+                                  Valores.hematocrito = double.parse(
+                                      textHematocritoResultController.text);
+                                  //
+                                  setState(() {
+                                    textCMHCResultController.text =
+                                        Citometrias.CMHC.toStringAsFixed(2);
+                                    textVCMResultController.text =
+                                        Citometrias.VCM.toStringAsFixed(2);
+                                    textHCMResultController.text =
+                                        Citometrias.HCM.toStringAsFixed(2);
+                                  });
+                                }
+                              },
+                            ),
+                          ),
+                          Expanded(
+                            child: EditTextArea(
+                              textController: textADEResultController,
+                              keyBoardType: TextInputType.number,
+                              inputFormat: MaskTextInputFormatter(),
+                              labelEditText: 'RWD / ADE ($unidadMedidaADE)',
+                              numOfLines: 1,
+                              onChange: (String value) {
+                                if (textADEResultController.text.isNotEmpty) {
+                                  Valores.anchoDistribucionEritrocitaria =
+                                      double.parse(textADEResultController.text);
+                                }
+                              },
+                            ),
+                          ),
+                          //
+                        ],
                       ),
-                    ),
-                    Expanded(
-                      child: EditTextArea(
-                        textController: textEritrocitosResultController,
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(
-                            mask: '#.##',
-                            filter: {"#": RegExp(r'[0-9]')},
-                            type: MaskAutoCompletionType.lazy),
-                        labelEditText: 'Eritrocitos ($unidadMedidaEritrocitos)',
-                        numOfLines: 1,
-                        onChange: (String value) {
-                          if (textEritrocitosResultController.text.isNotEmpty) {
-                            Valores.eritrocitos = double.parse(
-                                textEritrocitosResultController.text);
-                          }
-                        },
+                      Row(
+                        children: [
+                          Expanded(
+                            child: EditTextArea(
+                              textController: textVCMResultController,
+                              keyBoardType: TextInputType.number,
+                              inputFormat: MaskTextInputFormatter(),
+                              labelEditText: 'VCM ($unidadMedidaVCM)',
+                              numOfLines: 1,
+                              onChange: (value) => setState(() => Valores.volumenCorpuscularMedio = double.parse(textVCMResultController.text)),
+                            ),
+                          ),
+                          Expanded(
+                            child: EditTextArea(
+                              textController: textCMHCResultController,
+                              keyBoardType: TextInputType.number,
+                              inputFormat: MaskTextInputFormatter(),
+                              labelEditText: 'CMHC ($unidadMedidaCMHC)',
+                              numOfLines: 1,
+                              onChange: (value) => setState(() => Valores.concentracionMediaHemoglobina = double.parse(textCMHCResultController.text)),
+                            ),
+                          ),
+                          Expanded(
+                            child: EditTextArea(
+                              textController: textHCMResultController,
+                              keyBoardType: TextInputType.number,
+                              inputFormat: MaskTextInputFormatter(),
+                              labelEditText: 'HCM ($unidadMedidaHCM)',
+                              numOfLines: 1,
+                              onChange: (value) => setState(() => Valores.hemoglobinaCorpuscularMedia = double.parse(textHCMResultController.text)),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    Expanded(
-                      child: EditTextArea(
-                        textController: textHematocritoResultController,
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(),
-                        labelEditText: 'Hematocrito ($unidadMedidaHematocrito)',
-                        numOfLines: 1,
-                        onChange: (String value) {
-                          if (textHematocritoResultController.text.isNotEmpty) {
-                            Valores.hematocrito = double.parse(
-                                textHematocritoResultController.text);
-                            //
-                            setState(() {
-                              textCMHCResultController.text =
-                                  Citometrias.CMHC.toStringAsFixed(2);
-                              textVCMResultController.text =
-                                  Citometrias.VCM.toStringAsFixed(2);
-                              textHCMResultController.text =
-                                  Citometrias.HCM.toStringAsFixed(2);
-                            });
-                          }
-                        },
+                      Row(
+                        children: [
+                          //
+                          Expanded(
+                            child: EditTextArea(
+                              textController: textPlaquetasResultController,
+                              keyBoardType: TextInputType.number,
+                              inputFormat: MaskTextInputFormatter(),
+                              labelEditText: 'Plaquetas ($unidadMedidaPlaquetas)',
+                              numOfLines: 1,
+                              onChange: (value) => setState(() => Valores.plaquetas = double.parse(textPlaquetasResultController.text)),
+                            ),
+                          ),
+                          Expanded(
+                            child: EditTextArea(
+                              textController: textLeucocitosResultController,
+                              keyBoardType: TextInputType.number,
+                              inputFormat: MaskTextInputFormatter(),
+                              labelEditText: 'Leucocitos ($unidadMedidaLeucocitos)',
+                              numOfLines: 1,
+                              onChange: (value) => setState(() => Valores.leucocitosTotales = double.parse(textLeucocitosResultController.text)),
+                            ),
+                          ),
+                          Expanded(
+                            child: EditTextArea(
+                              textController: textNeutrofilosResultController,
+                              keyBoardType: TextInputType.number,
+                              inputFormat: MaskTextInputFormatter(),
+                              labelEditText: 'Neutrofilos ($unidadMedidaNeutrofilos)',
+                              numOfLines: 1,
+                              onChange: (value) => setState(() => Valores.neutrofilosTotales = double.parse(textNeutrofilosResultController.text)),
+                            ),
+                          ),
+                          Expanded(
+                            child: EditTextArea(
+                              textController: textLinfocitosResultController,
+                              keyBoardType: TextInputType.number,
+                              inputFormat: MaskTextInputFormatter(),
+                              labelEditText: 'Linfocitos ($unidadMedidaLinfocitos)',
+                              numOfLines: 1,
+                              onChange: (value) => setState(() => Valores.linfocitosTotales = double.parse(textLinfocitosResultController.text)),
+                            ),
+                          ),
+                          Expanded(
+                            child: EditTextArea(
+                              textController: textMonocitosResultController,
+                              keyBoardType: TextInputType.number,
+                              inputFormat: MaskTextInputFormatter(),
+                              labelEditText: 'Monocitos ($unidadMedidaMonocitos)',
+                              numOfLines: 1,
+                              onChange: (value) => setState(() => Valores.monocitosTotales = double.parse(textMonocitosResultController.text)),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    Expanded(
-                      child: EditTextArea(
-                        textController: textADEResultController,
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(),
-                        labelEditText: 'RWD / ADE ($unidadMedidaADE)',
-                        numOfLines: 1,
-                        onChange: (String value) {
-                          if (textADEResultController.text.isNotEmpty) {
-                            Valores.anchoDistribucionEritrocitaria =
-                                double.parse(textADEResultController.text);
-                          }
-                        },
-                      ),
-                    ),
-                    //
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: EditTextArea(
-                        textController: textVCMResultController,
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(),
-                        labelEditText: 'VCM ($unidadMedidaVCM)',
-                        numOfLines: 1,
-                        onChange: (value) => setState(() => Valores.volumenCorpuscularMedio = double.parse(textVCMResultController.text)),
-                      ),
-                    ),
-                    Expanded(
-                      child: EditTextArea(
-                        textController: textCMHCResultController,
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(),
-                        labelEditText: 'CMHC ($unidadMedidaCMHC)',
-                        numOfLines: 1,
-                        onChange: (value) => setState(() => Valores.concentracionMediaHemoglobina = double.parse(textCMHCResultController.text)),
-                      ),
-                    ),
-                    Expanded(
-                      child: EditTextArea(
-                        textController: textHCMResultController,
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(),
-                        labelEditText: 'HCM ($unidadMedidaHCM)',
-                        numOfLines: 1,
-                        onChange: (value) => setState(() => Valores.hemoglobinaCorpuscularMedia = double.parse(textHCMResultController.text)),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    //
-                    Expanded(
-                      child: EditTextArea(
-                        textController: textPlaquetasResultController,
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(),
-                        labelEditText: 'Plaquetas ($unidadMedidaPlaquetas)',
-                        numOfLines: 1,
-                        onChange: (value) => setState(() => Valores.plaquetas = double.parse(textPlaquetasResultController.text)),
-                      ),
-                    ),
-                    Expanded(
-                      child: EditTextArea(
-                        textController: textLeucocitosResultController,
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(),
-                        labelEditText: 'Leucocitos ($unidadMedidaLeucocitos)',
-                        numOfLines: 1,
-                        onChange: (value) => setState(() => Valores.leucocitosTotales = double.parse(textLeucocitosResultController.text)),
-                      ),
-                    ),
-                    Expanded(
-                      child: EditTextArea(
-                        textController: textNeutrofilosResultController,
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(),
-                        labelEditText: 'Neutrofilos ($unidadMedidaNeutrofilos)',
-                        numOfLines: 1,
-                        onChange: (value) => setState(() => Valores.neutrofilosTotales = double.parse(textNeutrofilosResultController.text)),
-                      ),
-                    ),
-                    Expanded(
-                      child: EditTextArea(
-                        textController: textLinfocitosResultController,
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(),
-                        labelEditText: 'Linfocitos ($unidadMedidaLinfocitos)',
-                        numOfLines: 1,
-                        onChange: (value) => setState(() => Valores.linfocitosTotales = double.parse(textLinfocitosResultController.text)),
-                      ),
-                    ),
-                    Expanded(
-                      child: EditTextArea(
-                        textController: textMonocitosResultController,
-                        keyBoardType: TextInputType.number,
-                        inputFormat: MaskTextInputFormatter(),
-                        labelEditText: 'Monocitos ($unidadMedidaMonocitos)',
-                        numOfLines: 1,
-                        onChange: (value) => setState(() => Valores.monocitosTotales = double.parse(textMonocitosResultController.text)),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          // Quimica Sanguinea ***** ******* ****** * ***
-          TittleContainer(
-            tittle: "Química Sanguínea",
-            child: Row(
-              children: [
-                Expanded(
-                  child: EditTextArea(
-                    textController: textGlucosaResultController,
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'Glucosa ($unidadMedidaGlucosa)',
-                    numOfLines: 1,
-                    onChange: (value) => setState(() => Valores.glucosa = double.parse(textGlucosaResultController.text)),
+                    ],
                   ),
                 ),
-                Expanded(
-                  child: EditTextArea(
-                    textController: textUreaResultController,
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'Urea ($unidadMedidaUrea)',
-                    numOfLines: 1,
-                    onChange: (value) => setState(() => Valores.urea = double.parse(textUreaResultController.text)),
-                  ),
-                ),
-                Expanded(
-                  child: EditTextArea(
-                    textController: textCreatininaResultController,
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'Creatinina ($unidadMedidaCreatinina)',
-                    numOfLines: 1,
-                    onChange: (value) => setState(() => Valores.creatinina = double.parse(textCreatininaResultController.text)),
-                  ),
-                ),
-                Expanded(
-                  child: EditTextArea(
-                    textController: textAcidoUricoResultController,
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'Acido Urico ($unidadMedidaAcidoUrico)',
-                    numOfLines: 1,
-                  ),
-                ),
-                Expanded(
-                  child: EditTextArea(
-                    textController: textNitrogenoUreicoResultController,
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText:
-                        'Nitrógeno Ureico ($unidadMedidaNitrogenoUreico)',
-                    numOfLines: 1,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          // Electrolitos Séricos ***** ******* ****** * ***
-          TittleContainer(
-            tittle: "Electrolítos Séricos",
-            child: Row(
-              children: [
-                Expanded(
-                  child: EditTextArea(
-                    textController: textPotasioResultController,
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'Potasio ($unidadMedidaPotasio)',
-                    numOfLines: 1,
-                    onChange: (value) => setState(() => Valores.potasio = double.parse(textPotasioResultController.text)),
-                  ),
-                ),
-                Expanded(
-                  child: EditTextArea(
-                    textController: textSodioResultController,
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'Sodio ($unidadMedidaSodio)',
-                    numOfLines: 1,
-                    onChange: (value) => setState(() => Valores.sodio = double.parse(textSodioResultController.text)),
-                  ),
-                ),
-                Expanded(
-                  child: EditTextArea(
-                    textController: textCloroResultController,
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'Cloro ($unidadMedidaCloro)',
-                    numOfLines: 1,
-                    onChange: (value) => setState(() => Valores.cloro = double.parse(textCloroResultController.text)),
-                  ),
-                ),
-                Expanded(
-                  child: EditTextArea(
-                    textController: textFosforoResultController,
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'Fosforo ($unidadMedidaFosforo)',
-                    numOfLines: 1,
-                    onChange: (value) => setState(() => Valores.fosforo = double.parse(textFosforoResultController.text)),
-                  ),
-                ),
-                Expanded(
-                  child: EditTextArea(
-                    textController: textCalcioResultController,
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'Calcio ($unidadMedidaCalcio)',
-                    numOfLines: 1,
-                    onChange: (value) => setState(() => Valores.calcio = double.parse(textCalcioResultController.text)),
-                  ),
-                ),
-                Expanded(
-                  child: EditTextArea(
-                    textController: textMagnesioResultController,
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'Magnesio ($unidadMedidaMagnesio)',
-                    numOfLines: 1,
-                    onChange: (value) => setState(() => Valores.magnesio = double.parse(textMagnesioResultController.text)),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          // Perfil de Lípidos ******************************
-          TittleContainer(
-            tittle: "Perfil Metabólico",
-            child: Row(
-              children: [
-                Expanded(
-                  child: EditTextArea(
-                    textController: textColesterolResultController,
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'Colesterol ($unidadMedidaColesterol)',
-                    numOfLines: 1,
-                    onChange: (value) => setState(() => Valores.colesterolTotal = double.parse(textColesterolResultController.text)),
-                  ),
-                ),
-                Expanded(
-                  child: EditTextArea(
-                    textController: textTrigliceridosResultController,
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'Trigliceridos ($unidadMedidaTrigliceridos)',
-                    numOfLines: 1,
-                    onChange: (value) => setState(() {
-                      Valores.trigliceridos = double.parse(textTrigliceridosResultController.text);
-                      textVLDLResultController.text = Lipidometria.vldlCalculado.toStringAsFixed(2);
-                    }),
-                  ),
-                ),
-                Expanded(
-                  child: EditTextArea(
-                    textController: textHDLResultController,
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'HDL ($unidadMedidaHDL)',
-                    numOfLines: 1,
-                    onChange: (value) => setState(() => Valores.cHDL = double.parse(textHDLResultController.text)),
-                  ),
-                ),
-                Expanded(
-                  child: EditTextArea(
-                    textController: textLDLResultController,
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'LDL ($unidadMedidaLDL)',
-                    numOfLines: 1,
-                    onChange: (value) => setState(() => Valores.cLDL = double.parse(textLDLResultController.text)),
-                  ),
-                ),
-                Expanded(
-                  child: EditTextArea(
-                    textController: textVLDLResultController,
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'VLDL ($unidadMedidaVLDL)',
-                    numOfLines: 1,
-                    onChange: (value) => setState(() => Valores.cVLDL = double.parse(textVLDLResultController.text)),
-                  ),
-                ),
-                Expanded(
-                    child: CrossLine(
-                  isHorizontal: false,
-                  thickness: 3,
-                )),
-                Expanded(
-                  child: EditTextArea(
-                    textController: textHbAcResultController,
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'HbAc ($unidadMedidaHbAc)',
-                    numOfLines: 1,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          // Perfil Hepático **********************************
-          TittleContainer(
-              tittle: "Pérfil Hepático",
-              child: Column(
-                children: [
-                  Row(
+                // Quimica Sanguinea ***** ******* ****** * ***
+                TittleContainer(
+                  tittle: "Química Sanguínea",
+                  child: Row(
                     children: [
                       Expanded(
                         child: EditTextArea(
-                          textController: textBTResultController,
+                          textController: textGlucosaResultController,
                           keyBoardType: TextInputType.number,
                           inputFormat: MaskTextInputFormatter(),
-                          labelEditText:
-                              'Bilirrubinas Totales ($unidadMedidaBT)',
+                          labelEditText: 'Glucosa ($unidadMedidaGlucosa)',
                           numOfLines: 1,
-                          onChange: (String value) {
-                            double val = 0.0;
-                            if (textBDResultController.text.isNotEmpty) {
-                              val = double.parse(textBTResultController.text) -
-                                  double.parse(textBDResultController.text);
-
-                              setState(() => Valores.bilirrubinasTotales = double.parse(textBTResultController.text));
-                              textBIResultController.text =
-                                  val.toStringAsFixed(2);
-                            } else {}
-                          },
+                          onChange: (value) => setState(() => Valores.glucosa = double.parse(textGlucosaResultController.text)),
                         ),
                       ),
                       Expanded(
                         child: EditTextArea(
-                          textController: textBDResultController,
+                          textController: textUreaResultController,
                           keyBoardType: TextInputType.number,
                           inputFormat: MaskTextInputFormatter(),
-                          labelEditText:
-                              'Bilirrubina Directa ($unidadMedidaBD)',
+                          labelEditText: 'Urea ($unidadMedidaUrea)',
                           numOfLines: 1,
-                          onChange: (String value) {
-                            double val = 0.0;
-                            setState(() => Valores.bilirrubinaDirecta = double.parse(textBDResultController.text));
-
-                            if (textBTResultController.text.isNotEmpty) {
-                              val = double.parse(textBTResultController.text) -
-                                  double.parse(textBDResultController.text);
-                              textBIResultController.text =
-                                  val.toStringAsFixed(2);
-                            } else {}
-                          },
+                          onChange: (value) => setState(() => Valores.urea = double.parse(textUreaResultController.text)),
                         ),
                       ),
                       Expanded(
                         child: EditTextArea(
-                          textController: textBIResultController,
+                          textController: textCreatininaResultController,
                           keyBoardType: TextInputType.number,
                           inputFormat: MaskTextInputFormatter(),
-                          labelEditText:
-                              'Bilirrubina Indirecta ($unidadMedidaBI)',
+                          labelEditText: 'Creatinina ($unidadMedidaCreatinina)',
                           numOfLines: 1,
-                          onChange: (value) => setState(() => Valores.bilirrubinaIndirecta = double.parse(textBIResultController.text)),
+                          onChange: (value) => setState(() => Valores.creatinina = double.parse(textCreatininaResultController.text)),
                         ),
                       ),
                       Expanded(
                         child: EditTextArea(
-                          textController: textAlaninoResultController,
+                          textController: textAcidoUricoResultController,
                           keyBoardType: TextInputType.number,
                           inputFormat: MaskTextInputFormatter(),
-                          labelEditText:
-                              'Alaninoaminotrasferasa ($unidadMedidaAlanino)',
+                          labelEditText: 'Acido Urico ($unidadMedidaAcidoUrico)',
                           numOfLines: 1,
-                          onChange: (value) => setState(() => Valores.alaninoaminotrasferasa = double.parse(textAlaninoResultController.text)),
                         ),
                       ),
                       Expanded(
                         child: EditTextArea(
-                          textController: textAspartatoResultController,
+                          textController: textNitrogenoUreicoResultController,
                           keyBoardType: TextInputType.number,
                           inputFormat: MaskTextInputFormatter(),
                           labelEditText:
-                              'Aspartatoaminotransferasa ($unidadMedidaAspartato)',
+                              'Nitrógeno Ureico ($unidadMedidaNitrogenoUreico)',
                           numOfLines: 1,
-                          onChange: (value) => setState(() => Valores.aspartatoaminotransferasa = double.parse(textAspartatoResultController.text)),
                         ),
                       ),
                     ],
                   ),
-                  Row(
+                ),
+                // Electrolitos Séricos ***** ******* ****** * ***
+                TittleContainer(
+                  tittle: "Electrolítos Séricos",
+                  child: Row(
                     children: [
                       Expanded(
                         child: EditTextArea(
-                          textController: textDHLResultController,
+                          textController: textPotasioResultController,
                           keyBoardType: TextInputType.number,
                           inputFormat: MaskTextInputFormatter(),
-                          labelEditText:
-                              'Deshidrogenasa Láctica ($unidadMedidaDHL)',
+                          labelEditText: 'Potasio ($unidadMedidaPotasio)',
                           numOfLines: 1,
-                          onChange: (value) => setState(() => Valores.deshidrogenasaLactica = double.parse(textDHLResultController.text)),
+                          onChange: (value) => setState(() => Valores.potasio = double.parse(textPotasioResultController.text)),
                         ),
                       ),
                       Expanded(
                         child: EditTextArea(
-                          textController: textGlutarilResultController,
+                          textController: textSodioResultController,
                           keyBoardType: TextInputType.number,
                           inputFormat: MaskTextInputFormatter(),
-                          labelEditText:
-                              'Glutaril transpeptidasa ($unidadMedidaGlutaril)',
+                          labelEditText: 'Sodio ($unidadMedidaSodio)',
                           numOfLines: 1,
-                          onChange: (value) => setState(() => Valores.glutrailtranspeptidasa = double.parse(textGlutarilResultController.text)),
+                          onChange: (value) => setState(() => Valores.sodio = double.parse(textSodioResultController.text)),
                         ),
                       ),
                       Expanded(
                         child: EditTextArea(
-                          textController: textFosfatasaResultController,
+                          textController: textCloroResultController,
                           keyBoardType: TextInputType.number,
                           inputFormat: MaskTextInputFormatter(),
-                          labelEditText:
-                              'Fosfatasa Alcalina ($unidadMedidaFosfatasa)',
+                          labelEditText: 'Cloro ($unidadMedidaCloro)',
                           numOfLines: 1,
-                          onChange: (value) => setState(() => Valores.fosfatasaAlcalina = double.parse(textFosfatasaResultController.text)),
+                          onChange: (value) => setState(() => Valores.cloro = double.parse(textCloroResultController.text)),
+                        ),
+                      ),
+                      Expanded(
+                        child: EditTextArea(
+                          textController: textFosforoResultController,
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          labelEditText: 'Fosforo ($unidadMedidaFosforo)',
+                          numOfLines: 1,
+                          onChange: (value) => setState(() => Valores.fosforo = double.parse(textFosforoResultController.text)),
+                        ),
+                      ),
+                      Expanded(
+                        child: EditTextArea(
+                          textController: textCalcioResultController,
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          labelEditText: 'Calcio ($unidadMedidaCalcio)',
+                          numOfLines: 1,
+                          onChange: (value) => setState(() => Valores.calcio = double.parse(textCalcioResultController.text)),
+                        ),
+                      ),
+                      Expanded(
+                        child: EditTextArea(
+                          textController: textMagnesioResultController,
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          labelEditText: 'Magnesio ($unidadMedidaMagnesio)',
+                          numOfLines: 1,
+                          onChange: (value) => setState(() => Valores.magnesio = double.parse(textMagnesioResultController.text)),
                         ),
                       ),
                     ],
                   ),
-                  Row(
+                ),
+                // Perfil de Lípidos ******************************
+                TittleContainer(
+                  tittle: "Perfil Metabólico",
+                  child: Row(
                     children: [
                       Expanded(
                         child: EditTextArea(
-                          textController: textAlbuminaResultController,
+                          textController: textColesterolResultController,
                           keyBoardType: TextInputType.number,
                           inputFormat: MaskTextInputFormatter(),
-                          labelEditText:
-                              'Albumina Sérica ($unidadMedidaAlbumina)',
+                          labelEditText: 'Colesterol ($unidadMedidaColesterol)',
                           numOfLines: 1,
-                          onChange: (value) => setState(() => Valores.albuminaSerica = double.parse(textAlbuminaResultController.text)),
+                          onChange: (value) => setState(() => Valores.colesterolTotal = double.parse(textColesterolResultController.text)),
                         ),
                       ),
                       Expanded(
                         child: EditTextArea(
-                          textController: textProteinasResultController,
+                          textController: textTrigliceridosResultController,
                           keyBoardType: TextInputType.number,
                           inputFormat: MaskTextInputFormatter(),
-                          labelEditText:
-                              'Proteinas Totales ($unidadMedidaProteinas)',
+                          labelEditText: 'Trigliceridos ($unidadMedidaTrigliceridos)',
                           numOfLines: 1,
-                          onChange: (value) { setState(() {
-                          Valores.proteinasTotales = double.parse(textProteinasResultController.text);
-                          textGlobulinasResultController.text = Hepatometrias.globulinas.toStringAsFixed(2);
-                          },
-                        ); }
+                          onChange: (value) => setState(() {
+                            Valores.trigliceridos = double.parse(textTrigliceridosResultController.text);
+                            textVLDLResultController.text = Lipidometria.vldlCalculado.toStringAsFixed(2);
+                          }),
+                        ),
+                      ),
+                      Expanded(
+                        child: EditTextArea(
+                          textController: textHDLResultController,
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          labelEditText: 'HDL ($unidadMedidaHDL)',
+                          numOfLines: 1,
+                          onChange: (value) => setState(() => Valores.cHDL = double.parse(textHDLResultController.text)),
+                        ),
+                      ),
+                      Expanded(
+                        child: EditTextArea(
+                          textController: textLDLResultController,
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          labelEditText: 'LDL ($unidadMedidaLDL)',
+                          numOfLines: 1,
+                          onChange: (value) => setState(() => Valores.cLDL = double.parse(textLDLResultController.text)),
+                        ),
+                      ),
+                      Expanded(
+                        child: EditTextArea(
+                          textController: textVLDLResultController,
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          labelEditText: 'VLDL ($unidadMedidaVLDL)',
+                          numOfLines: 1,
+                          onChange: (value) => setState(() => Valores.cVLDL = double.parse(textVLDLResultController.text)),
+                        ),
+                      ),
+                      Expanded(
+                          child: CrossLine(
+                        isHorizontal: false,
+                        thickness: 3,
                       )),
                       Expanded(
                         child: EditTextArea(
-                          textController: textGlobulinasResultController,
+                          textController: textHbAcResultController,
                           keyBoardType: TextInputType.number,
                           inputFormat: MaskTextInputFormatter(),
-                          labelEditText: 'Globulinas ($unidadMedidaGlobulinas)',
+                          labelEditText: 'HbAc ($unidadMedidaHbAc)',
                           numOfLines: 1,
                         ),
                       ),
                     ],
                   ),
-                ],
-              )),
-          // Perfil Tiroideo **************************
-          TittleContainer(
-            tittle: "Perfil Tiroideo",
-            child: Row(
-              children: [
-                Expanded(
-                  child: EditTextArea(
-                    textController: textTSHResultController,
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'T.S.H. ($unidadMedidaTSH)',
-                    numOfLines: 1,
-                  ),
                 ),
-                Expanded(
-                  child: EditTextArea(
-                    textController: textT4LResultController,
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'T4 Libre ($unidadMedidaT4L)',
-                    numOfLines: 1,
-                  ),
-                ),
-                Expanded(
-                  child: EditTextArea(
-                    textController: textT3LResultController,
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'T3 Libre ($unidadMedidaT3L)',
-                    numOfLines: 1,
-                  ),
-                ),
-                Expanded(
-                  child: EditTextArea(
-                    textController: textT4ResultController,
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'T4 Total ($unidadMedidaT4)',
-                    numOfLines: 1,
-                  ),
-                ),
-                Expanded(
-                  child: EditTextArea(
-                    textController: textT3ResultController,
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'T3 Total ($unidadMedidaT3)',
-                    numOfLines: 1,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          // Tiempos de Coagulación **************************
-          TittleContainer(
-            tittle: "Tiempos de Coagulación",
-            child: Row(
-              children: [
-                Expanded(
-                  child: EditTextArea(
-                    textController: textProtrombinaResultController,
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText:
-                        'Tiempo de Protrombina ($unidadMedidaProtrombina)',
-                    numOfLines: 1,
-                  ),
-                ),
-                Expanded(
-                  child: EditTextArea(
-                    textController: textTromboplastinaResultController,
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText:
-                        'Tiempo Parcial de Tromboplastina ($unidadMedidaTromboplastina)',
-                    numOfLines: 1,
-                  ),
-                ),
-                Expanded(
-                  child: EditTextArea(
-                    textController: textInrResultController,
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: 'I.N.R. ', // ($unidadMedidaInr)
-                    numOfLines: 1,
-                  ),
-                ),
-              ],
-            ),
-          ),
+                // Perfil Hepático **********************************
+                TittleContainer(
+                    tittle: "Pérfil Hepático",
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: EditTextArea(
+                                textController: textBTResultController,
+                                keyBoardType: TextInputType.number,
+                                inputFormat: MaskTextInputFormatter(),
+                                labelEditText:
+                                    'Bilirrubinas Totales ($unidadMedidaBT)',
+                                numOfLines: 1,
+                                onChange: (String value) {
+                                  double val = 0.0;
+                                  if (textBDResultController.text.isNotEmpty) {
+                                    val = double.parse(textBTResultController.text) -
+                                        double.parse(textBDResultController.text);
 
-          CrossLine(
-            color: Colors.grey,
-          ),
-          // Enzimas Pancreaticas **************************
-          Row(
-            children: [
-              Expanded(
-                child: EditTextArea(
-                  textController: textAmilasaResultController,
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(),
-                  labelEditText: 'Amilasa Sérica ($unidadMedidaAmilasa)',
-                  numOfLines: 1,
-                ),
-              ),
-              Expanded(
-                child: EditTextArea(
-                  textController: textLipasaResultController,
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(),
-                  labelEditText: 'Lipasa Sérica ($unidadMedidaLipasa)',
-                  numOfLines: 1,
-                ),
-              ),
-            ],
-          ),
-
-          //
-          Row(
-            children: [
-              Expanded(
-                child: EditTextArea(
-                  textController: textVSGResultController,
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(),
-                  labelEditText: 'Eritrosedimentación ($unidadMedidaVSG)',
-                  numOfLines: 1,
-                ),
-              ),
-              Expanded(
-                child: EditTextArea(
-                  textController: textPCRResultController,
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(),
-                  labelEditText: 'Proteína C Reactiva ($unidadMedidaPCR)',
-                  numOfLines: 1,
-                ),
-              ),
-              Expanded(
-                child: EditTextArea(
-                  textController: textProcalcitoninaResultController,
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(),
-                  labelEditText: 'Procalcitonina ($unidadMedidaProcalcitonina)',
-                  numOfLines: 1,
-                ),
-              ),
-              Expanded(
-                child: EditTextArea(
-                  textController: textLactatoResultController,
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(),
-                  labelEditText: 'Ácido Láctico ($unidadMedidaLactato)',
-                  numOfLines: 1,
-                ),
-              ),
-              //
-              CrossLine(
-                              isHorizontal: false,
-                              thickness: 3,
-                              color: Colors.white,
-                              height: 1,
+                                    setState(() => Valores.bilirrubinasTotales = double.parse(textBTResultController.text));
+                                    textBIResultController.text =
+                                        val.toStringAsFixed(2);
+                                  } else {}
+                                },
+                              ),
                             ),
-              Expanded(
-                child: EditTextArea(
-                  textController: textFibrinogenoResultController,
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(),
-                  labelEditText: 'Fibrinogeno ($unidadMedidaFibrinogeno)',
-                  numOfLines: 1,
+                            Expanded(
+                              child: EditTextArea(
+                                textController: textBDResultController,
+                                keyBoardType: TextInputType.number,
+                                inputFormat: MaskTextInputFormatter(),
+                                labelEditText:
+                                    'Bilirrubina Directa ($unidadMedidaBD)',
+                                numOfLines: 1,
+                                onChange: (String value) {
+                                  double val = 0.0;
+                                  setState(() => Valores.bilirrubinaDirecta = double.parse(textBDResultController.text));
+
+                                  if (textBTResultController.text.isNotEmpty) {
+                                    val = double.parse(textBTResultController.text) -
+                                        double.parse(textBDResultController.text);
+                                    textBIResultController.text =
+                                        val.toStringAsFixed(2);
+                                  } else {}
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              child: EditTextArea(
+                                textController: textBIResultController,
+                                keyBoardType: TextInputType.number,
+                                inputFormat: MaskTextInputFormatter(),
+                                labelEditText:
+                                    'Bilirrubina Indirecta ($unidadMedidaBI)',
+                                numOfLines: 1,
+                                onChange: (value) => setState(() => Valores.bilirrubinaIndirecta = double.parse(textBIResultController.text)),
+                              ),
+                            ),
+                            Expanded(
+                              child: EditTextArea(
+                                textController: textAlaninoResultController,
+                                keyBoardType: TextInputType.number,
+                                inputFormat: MaskTextInputFormatter(),
+                                labelEditText:
+                                    'Alaninoaminotrasferasa ($unidadMedidaAlanino)',
+                                numOfLines: 1,
+                                onChange: (value) => setState(() => Valores.alaninoaminotrasferasa = double.parse(textAlaninoResultController.text)),
+                              ),
+                            ),
+                            Expanded(
+                              child: EditTextArea(
+                                textController: textAspartatoResultController,
+                                keyBoardType: TextInputType.number,
+                                inputFormat: MaskTextInputFormatter(),
+                                labelEditText:
+                                    'Aspartatoaminotransferasa ($unidadMedidaAspartato)',
+                                numOfLines: 1,
+                                onChange: (value) => setState(() => Valores.aspartatoaminotransferasa = double.parse(textAspartatoResultController.text)),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: EditTextArea(
+                                textController: textDHLResultController,
+                                keyBoardType: TextInputType.number,
+                                inputFormat: MaskTextInputFormatter(),
+                                labelEditText:
+                                    'Deshidrogenasa Láctica ($unidadMedidaDHL)',
+                                numOfLines: 1,
+                                onChange: (value) => setState(() => Valores.deshidrogenasaLactica = double.parse(textDHLResultController.text)),
+                              ),
+                            ),
+                            Expanded(
+                              child: EditTextArea(
+                                textController: textGlutarilResultController,
+                                keyBoardType: TextInputType.number,
+                                inputFormat: MaskTextInputFormatter(),
+                                labelEditText:
+                                    'Glutaril transpeptidasa ($unidadMedidaGlutaril)',
+                                numOfLines: 1,
+                                onChange: (value) => setState(() => Valores.glutrailtranspeptidasa = double.parse(textGlutarilResultController.text)),
+                              ),
+                            ),
+                            Expanded(
+                              child: EditTextArea(
+                                textController: textFosfatasaResultController,
+                                keyBoardType: TextInputType.number,
+                                inputFormat: MaskTextInputFormatter(),
+                                labelEditText:
+                                    'Fosfatasa Alcalina ($unidadMedidaFosfatasa)',
+                                numOfLines: 1,
+                                onChange: (value) => setState(() => Valores.fosfatasaAlcalina = double.parse(textFosfatasaResultController.text)),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: EditTextArea(
+                                textController: textAlbuminaResultController,
+                                keyBoardType: TextInputType.number,
+                                inputFormat: MaskTextInputFormatter(),
+                                labelEditText:
+                                    'Albumina Sérica ($unidadMedidaAlbumina)',
+                                numOfLines: 1,
+                                onChange: (value) => setState(() => Valores.albuminaSerica = double.parse(textAlbuminaResultController.text)),
+                              ),
+                            ),
+                            Expanded(
+                              child: EditTextArea(
+                                textController: textProteinasResultController,
+                                keyBoardType: TextInputType.number,
+                                inputFormat: MaskTextInputFormatter(),
+                                labelEditText:
+                                    'Proteinas Totales ($unidadMedidaProteinas)',
+                                numOfLines: 1,
+                                onChange: (value) { setState(() {
+                                Valores.proteinasTotales = double.parse(textProteinasResultController.text);
+                                textGlobulinasResultController.text = Hepatometrias.globulinas.toStringAsFixed(2);
+                                },
+                              ); }
+                            )),
+                            Expanded(
+                              child: EditTextArea(
+                                textController: textGlobulinasResultController,
+                                keyBoardType: TextInputType.number,
+                                inputFormat: MaskTextInputFormatter(),
+                                labelEditText: 'Globulinas ($unidadMedidaGlobulinas)',
+                                numOfLines: 1,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    )),
+                // Perfil Tiroideo **************************
+                TittleContainer(
+                  tittle: "Perfil Tiroideo",
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: EditTextArea(
+                          textController: textTSHResultController,
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          labelEditText: 'T.S.H. ($unidadMedidaTSH)',
+                          numOfLines: 1,
+                        ),
+                      ),
+                      Expanded(
+                        child: EditTextArea(
+                          textController: textT4LResultController,
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          labelEditText: 'T4 Libre ($unidadMedidaT4L)',
+                          numOfLines: 1,
+                        ),
+                      ),
+                      Expanded(
+                        child: EditTextArea(
+                          textController: textT3LResultController,
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          labelEditText: 'T3 Libre ($unidadMedidaT3L)',
+                          numOfLines: 1,
+                        ),
+                      ),
+                      Expanded(
+                        child: EditTextArea(
+                          textController: textT4ResultController,
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          labelEditText: 'T4 Total ($unidadMedidaT4)',
+                          numOfLines: 1,
+                        ),
+                      ),
+                      Expanded(
+                        child: EditTextArea(
+                          textController: textT3ResultController,
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          labelEditText: 'T3 Total ($unidadMedidaT3)',
+                          numOfLines: 1,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                child: EditTextArea(
-                  textController: textDimeroDResultController,
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(),
-                  labelEditText: 'Dimero D ($unidadMedidaDimeroD)',
-                  numOfLines: 1,
+                // Tiempos de Coagulación **************************
+                TittleContainer(
+                  tittle: "Tiempos de Coagulación",
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: EditTextArea(
+                          textController: textProtrombinaResultController,
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          labelEditText:
+                              'Tiempo de Protrombina ($unidadMedidaProtrombina)',
+                          numOfLines: 1,
+                        ),
+                      ),
+                      Expanded(
+                        child: EditTextArea(
+                          textController: textTromboplastinaResultController,
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          labelEditText:
+                              'Tiempo Parcial de Tromboplastina ($unidadMedidaTromboplastina)',
+                          numOfLines: 1,
+                        ),
+                      ),
+                      Expanded(
+                        child: EditTextArea(
+                          textController: textInrResultController,
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          labelEditText: 'I.N.R. ', // ($unidadMedidaInr)
+                          numOfLines: 1,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              CrossLine(
-                isHorizontal: false,
-                thickness: 3,
-                color: Colors.white,
-                height: 1,
-              ),
-              // PERFIL CARDIACO
-              Expanded(
-                child: EditTextArea(
-                  textController: textProBNPResultController,
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(),
-                  labelEditText: 'NT-pro BNP ($unidadMedidaProBNP)',
-                  numOfLines: 1,
+
+                CrossLine(
+                  color: Colors.grey,
                 ),
-              ),
-              Expanded(
-                child: EditTextArea(
-                  textController: textBNPResultController,
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(),
-                  labelEditText: 'BNP ($unidadMedidaBNP)',
-                  numOfLines: 1,
+                // Enzimas Pancreaticas **************************
+                Row(
+                  children: [
+                    Expanded(
+                      child: EditTextArea(
+                        textController: textAmilasaResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'Amilasa Sérica ($unidadMedidaAmilasa)',
+                        numOfLines: 1,
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        textController: textLipasaResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'Lipasa Sérica ($unidadMedidaLipasa)',
+                        numOfLines: 1,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              CrossLine(
-                isHorizontal: false,
-                thickness: 3,
-                color: Colors.white,
-                height: 1,
-              ),
-              Expanded(
-                child: EditTextArea(
-                  textController: textCKResultController,
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(),
-                  labelEditText: 'CK ($unidadMedidaCK)',
-                  numOfLines: 1,
+
+                //
+                Row(
+                  children: [
+                    Expanded(
+                      child: EditTextArea(
+                        textController: textVSGResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'Eritrosedimentación ($unidadMedidaVSG)',
+                        numOfLines: 1,
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        textController: textPCRResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'Proteína C Reactiva ($unidadMedidaPCR)',
+                        numOfLines: 1,
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        textController: textProcalcitoninaResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'Procalcitonina ($unidadMedidaProcalcitonina)',
+                        numOfLines: 1,
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        textController: textLactatoResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'Ácido Láctico ($unidadMedidaLactato)',
+                        numOfLines: 1,
+                      ),
+                    ),
+                    //
+                    CrossLine(
+                                    isHorizontal: false,
+                                    thickness: 3,
+                                    color: Colors.white,
+                                    height: 1,
+                                  ),
+                    Expanded(
+                      child: EditTextArea(
+                        textController: textFibrinogenoResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'Fibrinogeno ($unidadMedidaFibrinogeno)',
+                        numOfLines: 1,
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        textController: textDimeroDResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'Dimero D ($unidadMedidaDimeroD)',
+                        numOfLines: 1,
+                      ),
+                    ),
+                    CrossLine(
+                      isHorizontal: false,
+                      thickness: 3,
+                      color: Colors.white,
+                      height: 1,
+                    ),
+                    // PERFIL CARDIACO
+                    Expanded(
+                      child: EditTextArea(
+                        textController: textProBNPResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'NT-pro BNP ($unidadMedidaProBNP)',
+                        numOfLines: 1,
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        textController: textBNPResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'BNP ($unidadMedidaBNP)',
+                        numOfLines: 1,
+                      ),
+                    ),
+                    CrossLine(
+                      isHorizontal: false,
+                      thickness: 3,
+                      color: Colors.white,
+                      height: 1,
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        textController: textCKResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'CK ($unidadMedidaCK)',
+                        numOfLines: 1,
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        textController: textCKMBResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'CK-Mb ($unidadMedidaCKMB)',
+                        numOfLines: 1,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              Expanded(
-                child: EditTextArea(
-                  textController: textCKMBResultController,
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(),
-                  labelEditText: 'CK-Mb ($unidadMedidaCKMB)',
-                  numOfLines: 1,
+                Row(
+                  children: [
+                    Expanded(
+                      child: EditTextArea(
+                        textController: textAcAntiHCVResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'AcAntiHCV ($unidadMedidaAcAntiHCV)',
+                        numOfLines: 1,
+                        selection: true,
+                        withShowOption: true,
+                        onSelected: () {
+                          setState(() {
+                            // *************************************
+                            textAcAntiHCVResultController.text = "0.03";
+                            textHIVabResultController.text = "0.3";
+                            textHbsAgResultController.text = "<0.030";
+                            textHIVaGResultController.text = "0.22";
+                            textHIVAgAgResultController.text = "No Reactivo";
+                          });
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        textController: textHIVabResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'HIVab ($unidadMedidaHIVab)',
+                        numOfLines: 1,
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        textController: textHbsAgResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'HbsAg ($unidadMedidaHbsAg)',
+                        numOfLines: 1,
+                      ),
+                    ),
+                    //
+                    Expanded(
+                      child: EditTextArea(
+                        textController: textHIVaGResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'HIVaG ($unidadMedidaHIVaG)',
+                        numOfLines: 1,
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        textController: textHIVAgAgResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'HIVAg-Ag ($unidadMedidaHIVAgAg)',
+                        numOfLines: 1,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+                Row(
+                  children: [
+                    Expanded(
+                      child: EditTextArea(
+                        textController: textPHResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'PH',
+                        numOfLines: 1,
+                        onChange: (value) => setState(() => Valores.pHArteriales = double.parse(textPHResultController.text)),
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        textController: textPCOResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'PCO ($unidadMedidaPCO)',
+                        numOfLines: 1,
+                        onChange: (value) => setState(() => Valores.poArteriales = double.parse(textPCOResultController.text)),
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        textController: textPOResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'PO ($unidadMedidaPO)',
+                        numOfLines: 1,
+                        onChange: (value) => setState(() => Valores.poArteriales = double.parse(textPOResultController.text)),
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        textController: textHCOResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'HCO ($unidadMedidaHCO)',
+                        numOfLines: 1,
+                        onChange: (value) => setState(() => Valores.bicarbonatoArteriales = double.parse(textHCOResultController.text)),
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        textController: textFIOResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'FIO ($unidadMedidaFIO)',
+                        numOfLines: 1,
+                        optionEqui: 4,
+                        selection: true,
+                        withShowOption: true,
+                        onSelected: () => setState(() => textFIOResultController
+                            .text = Valores.fraccionInspiratoriaOxigeno!.toString()),
+                        onChange: (value) => setState(() => Valores.fioArteriales = double.parse(textFIOResultController.text)),
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        textController: textSOResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'SO ($unidadMedidaSO)',
+                        numOfLines: 1,
+                        onChange: (value) => setState(() => Valores.soArteriales = double.parse(textSOResultController.text)),
+                      ),
+                    ),
+                    Expanded(
+                      child: EditTextArea(
+                        textController: textLactResultController,
+                        keyBoardType: TextInputType.number,
+                        inputFormat: MaskTextInputFormatter(),
+                        labelEditText: 'Lactato ($unidadMedidaLact)',
+                        numOfLines: 1,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-          Row(
-            children: [
-              Expanded(
-                child: EditTextArea(
-                  textController: textAcAntiHCVResultController,
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(),
-                  labelEditText: 'AcAntiHCV ($unidadMedidaAcAntiHCV)',
-                  numOfLines: 1,
-                  selection: true,
-                  withShowOption: true,
-                  onSelected: () {
-                    setState(() {
-                      // *************************************
-                      textAcAntiHCVResultController.text = "0.03";
-                      textHIVabResultController.text = "0.3";
-                      textHbsAgResultController.text = "<0.030";
-                      textHIVaGResultController.text = "0.22";
-                      textHIVAgAgResultController.text = "No Reactivo";
-                    });
-                  },
-                ),
-              ),
-              Expanded(
-                child: EditTextArea(
-                  textController: textHIVabResultController,
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(),
-                  labelEditText: 'HIVab ($unidadMedidaHIVab)',
-                  numOfLines: 1,
-                ),
-              ),
-              Expanded(
-                child: EditTextArea(
-                  textController: textHbsAgResultController,
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(),
-                  labelEditText: 'HbsAg ($unidadMedidaHbsAg)',
-                  numOfLines: 1,
-                ),
-              ),
-              //
-              Expanded(
-                child: EditTextArea(
-                  textController: textHIVaGResultController,
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(),
-                  labelEditText: 'HIVaG ($unidadMedidaHIVaG)',
-                  numOfLines: 1,
-                ),
-              ),
-              Expanded(
-                child: EditTextArea(
-                  textController: textHIVAgAgResultController,
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(),
-                  labelEditText: 'HIVAg-Ag ($unidadMedidaHIVAgAg)',
-                  numOfLines: 1,
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: EditTextArea(
-                  textController: textPHResultController,
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(),
-                  labelEditText: 'PH',
-                  numOfLines: 1,
-                  onChange: (value) => setState(() => Valores.pHArteriales = double.parse(textPHResultController.text)),
-                ),
-              ),
-              Expanded(
-                child: EditTextArea(
-                  textController: textPCOResultController,
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(),
-                  labelEditText: 'PCO ($unidadMedidaPCO)',
-                  numOfLines: 1,
-                  onChange: (value) => setState(() => Valores.poArteriales = double.parse(textPCOResultController.text)),
-                ),
-              ),
-              Expanded(
-                child: EditTextArea(
-                  textController: textPOResultController,
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(),
-                  labelEditText: 'PO ($unidadMedidaPO)',
-                  numOfLines: 1,
-                  onChange: (value) => setState(() => Valores.poArteriales = double.parse(textPOResultController.text)),
-                ),
-              ),
-              Expanded(
-                child: EditTextArea(
-                  textController: textHCOResultController,
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(),
-                  labelEditText: 'HCO ($unidadMedidaHCO)',
-                  numOfLines: 1,
-                  onChange: (value) => setState(() => Valores.bicarbonatoArteriales = double.parse(textHCOResultController.text)),
-                ),
-              ),
-              Expanded(
-                child: EditTextArea(
-                  textController: textFIOResultController,
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(),
-                  labelEditText: 'FIO ($unidadMedidaFIO)',
-                  numOfLines: 1,
-                  optionEqui: 4,
-                  selection: true,
-                  withShowOption: true,
-                  onSelected: () => setState(() => textFIOResultController
-                      .text = Valores.fraccionInspiratoriaOxigeno!.toString()),
-                  onChange: (value) => setState(() => Valores.fioArteriales = double.parse(textFIOResultController.text)),
-                ),
-              ),
-              Expanded(
-                child: EditTextArea(
-                  textController: textSOResultController,
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(),
-                  labelEditText: 'SO ($unidadMedidaSO)',
-                  numOfLines: 1,
-                  onChange: (value) => setState(() => Valores.soArteriales = double.parse(textSOResultController.text)),
-                ),
-              ),
-              Expanded(
-                child: EditTextArea(
-                  textController: textLactResultController,
-                  keyBoardType: TextInputType.number,
-                  inputFormat: MaskTextInputFormatter(),
-                  labelEditText: 'Lactato ($unidadMedidaLact)',
-                  numOfLines: 1,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
+        ),
+        filePath != null
+            ? Expanded(
+            flex: 1, child: Container(
+            decoration: ContainerDecoration.roundedDecoration(),
+            height: 550,
+            child: SfPdfViewer.file(File(filePath!))))
+            : Expanded(flex: 1, child: Container()),
+      ],
     );
 
     return CarouselSlider(

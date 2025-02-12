@@ -32,7 +32,7 @@ class _CieSelectorState extends State<CieSelector> {
   var searchTextController = TextEditingController();
 
   // ***************************** # # # *****************************
-  late List? foundedItems = [];
+  late List? foundedItems = [], originalItems = [];
   late int enteredKeyCount = 0;
   String lastEnteredKeyword = "";
 
@@ -49,28 +49,32 @@ class _CieSelectorState extends State<CieSelector> {
 
   // ***************************** # # # *****************************
   void _runFilterSearch(String enteredKeyword) {
-    List? results = [];
-    //
     if (enteredKeyword.isEmpty) {
-      enteredKeyCount = 0;
+      setState(() {
+        foundedItems = [];
+        enteredKeyCount = 0;
+      });
+
+      // Restablecer la lista original desde la fuente de datos
       _pullListRefresh();
-    } else {
-      lastEnteredKeyword = enteredKeyword;
-      //
-      if (enteredKeyword.length >= enteredKeyCount) {
-        results = foundedItems!
-            .where((user) => user["Diagnostico_CIE"].contains(enteredKeyword))
-            .toList();
-        setState(() {
-          foundedItems = results;
-        });
-      } else {
-        // Reinicia foundedItems con los registros del archivo.
-        _pullListRefresh();
-        // Nuevamente la búsqueda.
-      }
-      enteredKeyCount = enteredKeyword.length;
+      return;
     }
+
+    foundedItems = originalItems;
+    //
+    lastEnteredKeyword = enteredKeyword;
+
+    // Asegurarse de que foundedItems no sea null antes de filtrar
+    List<dynamic> results = Listas.listFromMap(
+      lista: foundedItems ?? [], // Filtrar desde foundedItems en todo momento
+      keySearched: 'Pace_Ape_Pat',
+      elementSearched: Sentences.capitalize(enteredKeyword),
+    );
+
+    setState(() {
+      foundedItems = results;
+      enteredKeyCount = enteredKeyword.length;
+    });
   }
 
   // ***************************** # # # *****************************

@@ -1,6 +1,7 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/conexiones/controladores/pacientes/auxiliar/extractor.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 
@@ -17,6 +18,7 @@ import 'package:assistant/screens/pacientes/intensiva/procedimientos/intubacionE
 import 'package:assistant/screens/pacientes/intensiva/procedimientos/sondaEndopleural.dart';
 import 'package:assistant/screens/pacientes/intensiva/valoraciones/aereos.dart';
 import 'package:assistant/screens/pacientes/intensiva/valoraciones/prequirurgicos.dart';
+import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/hitosHospitalarios.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/indicaciones.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/semiologicos.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/operadores/reporteConsulta.dart';
@@ -143,7 +145,14 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       appBar: appBar(context),
       floatingActionButton: !isLargeDesktop(context) && !isDesktop(context)
           ? floattingActionButton(context)
-          : null,
+          : CircleIcon(
+        iconed: Icons.send_time_extension_outlined,
+        radios: 35,
+        difRadios: 5,
+        tittle: "Extractor de Paraclínicos . . . ",
+        onChangeValue: () =>
+          AuxiliarExtractor(context),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: bottomNavigationBar(context),
       body: isMobile(context) || isTablet(context)
@@ -263,26 +272,42 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               decoration: ContainerDecoration.containerDecoration(),
               child: sideLeft(),
             )),
-        Expanded(flex: 2, child: Column(
-          children: [
-            Expanded(flex: 5, child: Hospitalizado(isVertical: true)),
-            Expanded(
-              child: CircleIcon(
-                iconed: Icons.system_update_alt,
-                tittle: 'Cargando . . . ',
-                onChangeValue: () async {
-                  Pacientes.loadingActivity(context: context).then((value) {
-                    if (value == true) {
-                      // Terminal.printAlert( message:'Archivo ${Pacientes.localPath} Re-Creado $value');
-                      Navigator.of(context).pop();
-                    }
-                  });
-                  _key.currentState!.closeEndDrawer();
-                },
-              ),
-            ),
-          ],
-        )),
+        Expanded(
+            flex: 2,
+            child: Column(
+              children: [
+                Expanded(flex: 5, child: Hospitalizado(isVertical: true)),
+                Expanded(
+                  child: GrandIcon(
+                    iconData: Icons.history_edu,
+                    labelButton: 'Hitos de la Hospialización . . . ',
+                    onPress: () async {
+                      if (isMobile(context)) {
+                        Navigator.of(context).pop();
+                      }
+                      setState(() {
+                        widget.actualPage = 22;
+                      });
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: CircleIcon(
+                    iconed: Icons.system_update_alt,
+                    tittle: 'Cargando . . . ',
+                    onChangeValue: () async {
+                      Pacientes.loadingActivity(context: context).then((value) {
+                        if (value == true) {
+                          // Terminal.printAlert( message:'Archivo ${Pacientes.localPath} Re-Creado $value');
+                          Navigator.of(context).pop();
+                        }
+                      });
+                      _key.currentState!.closeEndDrawer();
+                    },
+                  ),
+                ),
+              ],
+            )),
         Expanded(
             flex: isDesktop(context) ? 18 : 14,
             child: Container(
@@ -294,51 +319,158 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
         // Expanded(flex: 2, child: _notasPrevias(context)),
         if (isDesktop(context))
           Expanded(
-              flex: isDesktop(context) ? 3 : 2,
-              child: Container(
-                padding: const EdgeInsets.all(8.0),
-                margin: const EdgeInsets.all(4.0),
-                decoration: BoxDecoration(
-                    color: Colores.backgroundPanel,
-                    borderRadius: BorderRadius.circular(20)),
-                child: Column(
-                  children: [
-                    Expanded(flex: 9, child: _notasPrevias(context)),
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            flex: isDesktop(context) ? 3 : 2,
+            child: Column(
+              children: [
+                Expanded(
+                    // flex: isDesktop(context) ? 3 : 4,
+                    flex: 8,
+                    child: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      margin: const EdgeInsets.all(4.0),
+                      decoration: BoxDecoration(
+                          color: Colores.backgroundPanel,
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Column(
                         children: [
-                          FloatingActionButton(
-                            onPressed: () {
-                              setState(() {
-                                widget.analysis = 0;
-                                _key.currentState!.openEndDrawer();
-                              });
-                            },
-                            backgroundColor: Colors.black,
-                            foregroundColor: Colors.white,
-                            child: const Icon(Icons.menu_open_outlined,
-                                color: Colors.white),
-                          ),
-                          FloatingActionButton(
-                            onPressed: () {
-                              Datos.portapapeles(
-                                  context: context,
-                                  text: Reportes.copiarReporte(
-                                      tipoReporte: ReportsMethods.getTypeReport(
-                                          actualPage: widget.actualPage)));
-                            },
-                            backgroundColor: Colors.black,
-                            foregroundColor: Colors.white,
-                            child: const Icon(Icons.copy_rounded,
-                                color: Colors.white),
+                          Expanded(flex: 9, child: _notasPrevias(context)),
+                          Expanded(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                FloatingActionButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      widget.analysis = 0;
+                                      _key.currentState!.openEndDrawer();
+                                    });
+                                  },
+                                  backgroundColor: Colors.black,
+                                  foregroundColor: Colors.white,
+                                  child: const Icon(Icons.menu_open_outlined,
+                                      color: Colors.white),
+                                ),
+                                FloatingActionButton(
+                                  onPressed: () {
+                                    Datos.portapapeles(
+                                        context: context,
+                                        text: Reportes.copiarReporte(
+                                            tipoReporte:
+                                                ReportsMethods.getTypeReport(
+                                                    actualPage:
+                                                        widget.actualPage)));
+                                  },
+                                  backgroundColor: Colors.black,
+                                  foregroundColor: Colors.white,
+                                  child: const Icon(Icons.copy_rounded,
+                                      color: Colors.white),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
-                    ),
-                  ],
+                    )),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.all(2.0),
+                    margin: const EdgeInsets.all(2.0),
+                    decoration: BoxDecoration(
+                        color: Colores.backgroundPanel,
+                        borderRadius: BorderRadius.circular(20)),
+                    child: FloatingActionButton(
+                        backgroundColor: Colors.black,
+                        foregroundColor: Colors.white,
+                        tooltip: 'Vista Previa',
+                        onPressed: () async => await ReportsMethods.guardarNota(
+                                context: context,
+                                getTypeReport: ReportsMethods.getTypeReport(
+                                    actualPage: widget.actualPage),
+                                actualPage: widget.actualPage,
+                                fechaRealizacion: widget.fechaRealizacion ?? "",
+                                values: [
+                                  Pacientes.ID_Paciente,
+                                  Pacientes.ID_Hospitalizacion,
+                                  Valores.fechaPadecimientoActual ??
+                                      Calendarios.today(format: 'yyyy/MM/dd'),
+                                  Reportes.padecimientoActual,
+                                  // Valores.servicioTratanteInicial,
+                                  Valores.servicioTratante,
+                                  Calendarios.today(format: 'yyyy/MM/dd'),
+                                  //
+                                  Reportes.personalesNoPatologicos,
+                                  Reportes.personalesPatologicos,
+                                  Reportes.impresionesDiagnosticas,
+                                  //
+                                  Reportes.reportes['Subjetivo'],
+                                  Reportes.signosVitales,
+                                  Reportes.exploracionFisica,
+                                  //
+                                  Reportes.auxiliaresDiagnosticos,
+                                  Reportes.analisisComplementarios,
+                                  // Reportes.eventualidadesOcurridas,
+                                  // Reportes.terapiasPrevias,
+                                  Reportes.analisisMedico,
+                                  // Reportes.tratamientoPropuesto,
+                                  Reportes.pronosticoMedico,
+                                  // INDICACIONES MÉDICAS *******************************
+                                  Reportes.dieta.toString(),
+                                  Reportes.hidroterapia.toString(),
+                                  Reportes.insulinoterapia.toString(),
+                                  Reportes.hemoterapia.toString(),
+                                  Reportes.oxigenoterapia.toString(),
+                                  Reportes.medicamentosIndicados.toString(),
+                                  Reportes.medidasGenerales.toString(),
+                                  Reportes.pendientes.toString(),
+                                  //
+                                  Reportes.hitosHospitalarios.toString(),
+                                  //
+                                  Repositorios
+                                      .tipo_Analisis, // Items.tiposAnalisis[0] //
+                                ],
+                                valuesEgreso: [
+                                  Pacientes.ID_Paciente,
+                                  Pacientes.ID_Hospitalizacion,
+                                  Valores.fechaPadecimientoActual ??
+                                      Calendarios.today(format: 'yyyy/MM/dd'),
+                                  Reportes.padecimientoActual,
+                                  // Valores.servicioTratanteInicial,
+                                  Valores.servicioTratante,
+                                  Calendarios.today(format: 'yyyy/MM/dd'),
+                                  //
+                                  Reportes.personalesNoPatologicos,
+                                  Reportes.personalesPatologicos,
+                                  Reportes.impresionesDiagnosticas,
+                                  //
+                                  Reportes.reportes['Subjetivo'],
+                                  Reportes.signosVitales,
+                                  Reportes.exploracionFisica,
+                                  //
+                                  Reportes.auxiliaresDiagnosticos,
+                                  Reportes.analisisComplementarios,
+                                  //
+                                  Reportes.analisisMedico,
+                                  Reportes.pronosticoMedico,
+                                  // INDICACIONES MÉDICAS *******************************
+                                  Reportes.dieta.toString(),
+                                  Reportes.hidroterapia.toString(),
+                                  Reportes.insulinoterapia.toString(),
+                                  Reportes.hemoterapia.toString(),
+                                  Reportes.oxigenoterapia.toString(),
+                                  Reportes.medicamentosIndicados.toString(),
+                                  Reportes.medidasGenerales.toString(),
+                                  Reportes.pendientes.toString(),
+                                  //
+                                  Reportes.hitosHospitalarios.toString(),
+                                  Items.tiposAnalisis[
+                                      3], // Repositorios.tipoAnalisis()
+                                ]),
+                        child: const Icon(Icons.scale, color: Colors.grey)),
+                  ),
                 ),
-              )),
+              ],
+            ),
+          ),
         // if (!isDesktop(context))
         //   Expanded(
         //       flex: 2,
@@ -748,7 +880,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       Revisiones(), // 19 : Revisión
       Semiologicos(withoutAppBar: true), // 20 : Revisión
       const Concentraciones(), // 21 : Concentraciones
-      Container(), // 22
+      Hitoshospitalarios(), // 22
       Container(), //23
       Container(), // 24
       _notaPrevia(context), //25
@@ -1042,91 +1174,94 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                       widget.analysis = 1;
                       _key.currentState!.openEndDrawer();
                     })),
-            IconButton(
-                icon: const Icon(Icons.scale, color: Colors.grey),
-                tooltip: 'Vista Previa',
-                onPressed: () async => await ReportsMethods.guardarNota(
-                        context: context,
-                        getTypeReport: ReportsMethods.getTypeReport(
-                            actualPage: widget.actualPage),
-                        actualPage: widget.actualPage,
-                        fechaRealizacion: widget.fechaRealizacion ?? "",
-                        values: [
-                          Pacientes.ID_Paciente,
-                          Pacientes.ID_Hospitalizacion,
-                          Valores.fechaPadecimientoActual ??
+            isMobile(context)
+                ? IconButton(
+                    icon: const Icon(Icons.scale, color: Colors.grey),
+                    tooltip: 'Vista Previa',
+                    onPressed: () async => await ReportsMethods.guardarNota(
+                            context: context,
+                            getTypeReport: ReportsMethods.getTypeReport(
+                                actualPage: widget.actualPage),
+                            actualPage: widget.actualPage,
+                            fechaRealizacion: widget.fechaRealizacion ?? "",
+                            values: [
+                              Pacientes.ID_Paciente,
+                              Pacientes.ID_Hospitalizacion,
+                              Valores.fechaPadecimientoActual ??
+                                  Calendarios.today(format: 'yyyy/MM/dd'),
+                              Reportes.padecimientoActual,
+                              // Valores.servicioTratanteInicial,
+                              Valores.servicioTratante,
                               Calendarios.today(format: 'yyyy/MM/dd'),
-                          Reportes.padecimientoActual,
-                          // Valores.servicioTratanteInicial,
-                          Valores.servicioTratante,
-                          Calendarios.today(format: 'yyyy/MM/dd'),
-                          //
-                          Reportes.personalesNoPatologicos,
-                          Reportes.personalesPatologicos,
-                          Reportes.impresionesDiagnosticas,
-                          //
-                          Reportes.reportes['Subjetivo'],
-                          Reportes.signosVitales,
-                          Reportes.exploracionFisica,
-                          //
-                          Reportes.auxiliaresDiagnosticos,
-                          Reportes.analisisComplementarios,
-                          // Reportes.eventualidadesOcurridas,
-                          // Reportes.terapiasPrevias,
-                          Reportes.analisisMedico,
-                          // Reportes.tratamientoPropuesto,
-                          Reportes.pronosticoMedico,
-                          // INDICACIONES MÉDICAS *******************************
-                          Reportes.dieta.toString(),
-                          Reportes.hidroterapia.toString(),
-                          Reportes.insulinoterapia.toString(),
-                          Reportes.hemoterapia.toString(),
-                          Reportes.oxigenoterapia.toString(),
-                          Reportes.medicamentosIndicados.toString(),
-                          Reportes.medidasGenerales.toString(),
-                          Reportes.pendientes.toString(),
-                          //
-                          Reportes.hitosHospitalarios.toString(),
-                          //
-                          Repositorios
-                              .tipo_Analisis, // Items.tiposAnalisis[0] //
-                        ],
-                        valuesEgreso: [
-                          Pacientes.ID_Paciente,
-                          Pacientes.ID_Hospitalizacion,
-                          Valores.fechaPadecimientoActual ??
+                              //
+                              Reportes.personalesNoPatologicos,
+                              Reportes.personalesPatologicos,
+                              Reportes.impresionesDiagnosticas,
+                              //
+                              Reportes.reportes['Subjetivo'],
+                              Reportes.signosVitales,
+                              Reportes.exploracionFisica,
+                              //
+                              Reportes.auxiliaresDiagnosticos,
+                              Reportes.analisisComplementarios,
+                              // Reportes.eventualidadesOcurridas,
+                              // Reportes.terapiasPrevias,
+                              Reportes.analisisMedico,
+                              // Reportes.tratamientoPropuesto,
+                              Reportes.pronosticoMedico,
+                              // INDICACIONES MÉDICAS *******************************
+                              Reportes.dieta.toString(),
+                              Reportes.hidroterapia.toString(),
+                              Reportes.insulinoterapia.toString(),
+                              Reportes.hemoterapia.toString(),
+                              Reportes.oxigenoterapia.toString(),
+                              Reportes.medicamentosIndicados.toString(),
+                              Reportes.medidasGenerales.toString(),
+                              Reportes.pendientes.toString(),
+                              //
+                              Reportes.hitosHospitalarios.toString(),
+                              //
+                              Repositorios
+                                  .tipo_Analisis, // Items.tiposAnalisis[0] //
+                            ],
+                            valuesEgreso: [
+                              Pacientes.ID_Paciente,
+                              Pacientes.ID_Hospitalizacion,
+                              Valores.fechaPadecimientoActual ??
+                                  Calendarios.today(format: 'yyyy/MM/dd'),
+                              Reportes.padecimientoActual,
+                              // Valores.servicioTratanteInicial,
+                              Valores.servicioTratante,
                               Calendarios.today(format: 'yyyy/MM/dd'),
-                          Reportes.padecimientoActual,
-                          // Valores.servicioTratanteInicial,
-                          Valores.servicioTratante,
-                          Calendarios.today(format: 'yyyy/MM/dd'),
-                          //
-                          Reportes.personalesNoPatologicos,
-                          Reportes.personalesPatologicos,
-                          Reportes.impresionesDiagnosticas,
-                          //
-                          Reportes.reportes['Subjetivo'],
-                          Reportes.signosVitales,
-                          Reportes.exploracionFisica,
-                          //
-                          Reportes.auxiliaresDiagnosticos,
-                          Reportes.analisisComplementarios,
-                          //
-                          Reportes.analisisMedico,
-                          Reportes.pronosticoMedico,
-                          // INDICACIONES MÉDICAS *******************************
-                          Reportes.dieta.toString(),
-                          Reportes.hidroterapia.toString(),
-                          Reportes.insulinoterapia.toString(),
-                          Reportes.hemoterapia.toString(),
-                          Reportes.oxigenoterapia.toString(),
-                          Reportes.medicamentosIndicados.toString(),
-                          Reportes.medidasGenerales.toString(),
-                          Reportes.pendientes.toString(),
-                          //
-                          Reportes.hitosHospitalarios.toString(),
-                          Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
-                        ])),
+                              //
+                              Reportes.personalesNoPatologicos,
+                              Reportes.personalesPatologicos,
+                              Reportes.impresionesDiagnosticas,
+                              //
+                              Reportes.reportes['Subjetivo'],
+                              Reportes.signosVitales,
+                              Reportes.exploracionFisica,
+                              //
+                              Reportes.auxiliaresDiagnosticos,
+                              Reportes.analisisComplementarios,
+                              //
+                              Reportes.analisisMedico,
+                              Reportes.pronosticoMedico,
+                              // INDICACIONES MÉDICAS *******************************
+                              Reportes.dieta.toString(),
+                              Reportes.hidroterapia.toString(),
+                              Reportes.insulinoterapia.toString(),
+                              Reportes.hemoterapia.toString(),
+                              Reportes.oxigenoterapia.toString(),
+                              Reportes.medicamentosIndicados.toString(),
+                              Reportes.medidasGenerales.toString(),
+                              Reportes.pendientes.toString(),
+                              //
+                              Reportes.hitosHospitalarios.toString(),
+                              Items.tiposAnalisis[
+                                  3], // Repositorios.tipoAnalisis()
+                            ]))
+                : Container(),
           ],
         ),
       );
@@ -1219,7 +1354,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
     return Padding(
       padding: widget.analysis == 3
           ? const EdgeInsets.only(
-              top: 32.0, bottom: 16.0, left: 16.0, right: 16.0)
+              top: 24.0, bottom: 16.0, left: 14.0, right: 14.0)
           : const EdgeInsets.only(top: 16.0, bottom: 16.0),
       child: Column(
         children: [
@@ -1271,11 +1406,14 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           ),
           CrossLine(height: 10, thickness: 4, color: Colors.black),
           CircleIcon(
+              radios: 30,
+              difRadios: 8,
               iconed: Icons.remove_road,
               onChangeValue: () {
                 // CONSULTAR NOTACIONES PREVIAS ****************************************
                 Operadores.loadingActivity(
                     context: context,
+                    dismisable: false,
                     tittle: "Consultando Registro de Notas previas . . .",
                     message: "Actualizando . . . ");
                 //

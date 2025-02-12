@@ -1,11 +1,18 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/screens/operadores/pdfViewer.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
+import 'package:assistant/widgets/GrandButton.dart';
+import 'package:assistant/widgets/GrandIcon.dart';
+import 'package:assistant/widgets/ViewDocument.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class Hitoshospitalarios extends StatefulWidget {
   String analisisTemporalFile =
@@ -21,6 +28,8 @@ class Hitoshospitalarios extends StatefulWidget {
 
 class _HitoshospitalariosState extends State<Hitoshospitalarios> {
   Timer? _timer; // Definir un temporizador
+  String? filePath;
+  static Uint8List? _pdfBytes;
   //
 
   @override
@@ -62,12 +71,12 @@ class _HitoshospitalariosState extends State<Hitoshospitalarios> {
                   numOfLines: 25,
                   limitOfChars: 3000,
                   fontSize: widget.fontSize!,
-                  withShowOption: true,
+                  withShowOption: false,
                   onSelected: () => _readFromFile(),
-                  onChange: (value) => Reportes.hitosHospitalarios =
-                      Reportes.reportes['Hitos_Hospitalarios'] = value,
+                  onChange: (value) => setState(() =>
+                      Reportes.hitosHospitalarios =
+                          Reportes.reportes['Hitos_Hospitalarios'] = value),
                   inputFormat: MaskTextInputFormatter())),
-          Expanded(flex: 2, child: Container()),
           Expanded(
             child: RotatedBox(
               quarterTurns: 1,
@@ -80,6 +89,58 @@ class _HitoshospitalariosState extends State<Hitoshospitalarios> {
                       setState(() => widget.fontSize = value)),
             ),
           ),
+          Expanded(
+              flex: 6,
+              child: Column(
+                children: [
+                  filePath != null
+                      ? Expanded(
+                          flex: 6, child: SfPdfViewer.file(File(filePath!)))
+                      : Expanded(flex: 6, child: Container()),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 4,
+                          child: GrandButton(
+                            labelButton: "Cargar archivo de Historial . . . ",
+                            onPress: () async {
+                              final path =
+                                  await Directorios.choiseFromInternalDocuments(
+                                      context);
+                              //
+                              setState(() {
+                                filePath = path!.files.single.path!;
+                              });
+                            },
+                          ),
+                        ),
+                        Expanded(
+                          child: GrandIcon(
+                            iconData: Icons.update,
+                            labelButton:
+                                "Actualizar Hitos de la Hospitalización . . . ",
+                            onPress: () async {
+                              //TODO
+                              Repositorios.actualizarHitos(
+                                  context: context,
+                                  );
+                                  // .onError((onError, stackTrace) =>
+                                  // Operadores.alertActivity(
+                                  //   context: context,
+                                  //   tittle:
+                                  //       "ERROR  Al Actualizar registro de Nota",
+                                  //   message: "ERROR : $onError : : $stackTrace",
+                                  //   onAcept: () => Navigator.of(context).pop(),
+                                  // ));
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              )),
         ],
       );
     }

@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 
 class GridLayout extends StatefulWidget {
   int? columnCount;
-  double? childAspectRatio;
+  double? childAspectRatio, crossAxisSpacing, mainAxisSpacing;
   List<Widget> children;
 
   GridLayout(
       {super.key,
       this.columnCount = 0,
       this.childAspectRatio = 0,
+        this.crossAxisSpacing = 10.0,
+        this.mainAxisSpacing = 10.0,
       required this.children});
 
   @override
@@ -38,8 +40,8 @@ class _GridLayoutState extends State<GridLayout> {
                 //  ? widget.columnCount! ~/ 2
                 //  : 2
                 : widget.columnCount!,
-        crossAxisSpacing: 10.0,
-        mainAxisSpacing: 10.0,
+        crossAxisSpacing: widget.crossAxisSpacing!,
+        mainAxisSpacing: widget.mainAxisSpacing!,
         shrinkWrap: true,
         children: widget.children);
   }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
@@ -11,6 +13,7 @@ import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class LiquidoAscitis extends StatefulWidget {
   const LiquidoAscitis({super.key});
@@ -21,6 +24,7 @@ class LiquidoAscitis extends StatefulWidget {
 
 class _LiquidoAscitisState extends State<LiquidoAscitis> {
   static var index = 32; // LiquidoAscitis
+  String? filePath;
 
   @override
   void initState() {
@@ -47,24 +51,46 @@ class _LiquidoAscitisState extends State<LiquidoAscitis> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        EditTextArea(
-          labelEditText: "Fecha de realización",
-          numOfLines: 1,
-          textController: textDateEstudyController,
-          keyBoardType: TextInputType.datetime,
-          withShowOption: true,
-          selection: true,
-          iconData: Icons.calculate_outlined,
-          onSelected: () {
-            setState(() {
-              textDateEstudyController.text =
-                  Calendarios.today(format: "yyyy/MM/dd HH:mm:ss");
-            });
-          },
-          inputFormat: MaskTextInputFormatter(
-              mask: '####/##/## ##:##:##', // 'yyyy-MM-dd HH:mm:ss'
-              filter: {"#": RegExp(r'[0-9]')},
-              type: MaskAutoCompletionType.lazy),
+        Row(
+          children: [
+            Expanded(
+              child: EditTextArea(
+                labelEditText: "Fecha de realización",
+                numOfLines: 1,
+                textController: textDateEstudyController,
+                keyBoardType: TextInputType.datetime,
+                withShowOption: true,
+                selection: true,
+                iconData: Icons.calculate_outlined,
+                onSelected: () {
+                  setState(() {
+                    textDateEstudyController.text =
+                        Calendarios.today(format: "yyyy/MM/dd HH:mm:ss");
+                  });
+                },
+                inputFormat: MaskTextInputFormatter(
+                    mask: '####/##/## ##:##:##', // 'yyyy-MM-dd HH:mm:ss'
+                    filter: {"#": RegExp(r'[0-9]')},
+                    type: MaskAutoCompletionType.lazy),
+              ),
+            ),
+            Expanded(
+              child: GrandButton(
+                height: 15,
+                weigth: 1000,
+                labelButton: "Cargar archivo de Historial . . . ",
+                onPress: () async {
+                  final path =
+                  await Directorios.choiseFromInternalDocuments(
+                      context);
+                  //
+                  setState(() {
+                    filePath = path!.files.single.path!;
+                  });
+                },
+              ),
+            ),
+          ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -323,6 +349,15 @@ class _LiquidoAscitisState extends State<LiquidoAscitis> {
                 thirdText: "",
               ),
             ],)),
+            Expanded(
+              child: filePath != null
+                  ? Expanded(
+                  flex: 4, child: Container(
+                  decoration: ContainerDecoration.roundedDecoration(),
+                  height: 550,
+                  child: SfPdfViewer.file(File(filePath!))))
+                  : Expanded(flex: 1, child: Container()),
+            )
           ],
         ),
       ],

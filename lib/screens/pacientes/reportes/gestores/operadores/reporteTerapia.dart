@@ -106,15 +106,13 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
                                   fontSize: isTablet(context) ? 12: 8,
                                   limitOfChars: 700,
                                   onChange: ((value) {
-                                    Reportes
-                                        .impresionesDiagnosticas =
-                                    Reportes
-                                                .reportes[
-                                            'Impresiones_Diagnosticas'] =
-                                    Reportes
-                                        .reportes[
-                                    'Diagnosticos_Hospital'] =
-                                        "$value.";
+                                    setState(() {
+                                      Reportes.reportes['Diagnosticos_Hospital'] =
+                                      Reportes.reportes[
+                                      'Impresiones_Diagnosticas'] =
+                                          Reportes.impresionesDiagnosticas =
+                                      "$value.";
+                                    });
                                   }),
                                   inputFormat: MaskTextInputFormatter()),
                             ),

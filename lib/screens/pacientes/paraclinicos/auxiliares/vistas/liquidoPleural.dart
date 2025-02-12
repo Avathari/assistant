@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
@@ -11,6 +13,7 @@ import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class LiquidoPleural extends StatefulWidget {
   const LiquidoPleural({super.key});
@@ -21,6 +24,7 @@ class LiquidoPleural extends StatefulWidget {
 
 class _LiquidoPleuralState extends State<LiquidoPleural> {
   static var index = 27; // LiquidoPleural
+  String? filePath;
 
   @override
   void initState() {
@@ -33,7 +37,7 @@ class _LiquidoPleuralState extends State<LiquidoPleural> {
     textProteinasTotalesResultController.text = "";
     //
     textFosfatasaAlcalinaResultController.text = "68";
-    textAspectoResultController.text = "32";
+    textAspectoResultController.text = "Citrino";
     textColorResultController.text = "No se Observan";
     textLeucocitosResultController .text = "No se Observan";
     textPolimorfonuclearesResultController.text = "No se Observan";
@@ -66,6 +70,22 @@ class _LiquidoPleuralState extends State<LiquidoPleural> {
               filter: {"#": RegExp(r'[0-9]')},
               type: MaskAutoCompletionType.lazy),
         ),
+        CrossLine(height: 10),
+        GrandButton(
+          height: 15,
+          weigth: 1000,
+          labelButton: "Cargar archivo de Historial . . . ",
+          onPress: () async {
+            final path =
+            await Directorios.choiseFromInternalDocuments(
+                context);
+            //
+            setState(() {
+              filePath = path!.files.single.path!;
+            });
+          },
+        ),
+        CrossLine(height: 10),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,11 +106,23 @@ class _LiquidoPleuralState extends State<LiquidoPleural> {
                 firstText: Valores.fechaHepaticos!.toString(),
                 secondText: "",
                 thirdText: Valores.fechaHepaticos!.toString(),
+
+              ),
+              CrossLine(height: 15),
+              ValuePanel(
+                firstText: "DHL-S/DHL-LP",
+                secondText: Pleurometrias.relacionDHL.toStringAsFixed(2),
+                thirdText: "",
+              ),
+              ValuePanel(
+                firstText: "PT-S/PT-LP",
+                secondText: Pleurometrias.relacionProteinas.toStringAsFixed(2),
+                thirdText: "",
               ),
             ],)),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(7.0),
+                padding: const EdgeInsets.all(4.0),
                 controller: ScrollController(),
                 child: Column(
                   children: [
@@ -264,18 +296,13 @@ class _LiquidoPleuralState extends State<LiquidoPleural> {
                 ),
               ),
             ),
-            Expanded(child: Column(children: [
-              ValuePanel(
-                firstText: "DHL-S/DHL-LP",
-                secondText: Pleurometrias.relacionDHL.toStringAsFixed(2),
-                thirdText: "",
-              ),
-              ValuePanel(
-                firstText: "PT-S/PT-LP",
-                secondText: Pleurometrias.relacionProteinas.toStringAsFixed(2),
-                thirdText: "",
-              ),
-            ],)),
+            filePath != null
+                ? Expanded(
+                flex: 3, child: Container(
+                decoration: ContainerDecoration.roundedDecoration(),
+                height: 550,
+                child: SfPdfViewer.file(File(filePath!))))
+                : Expanded(flex: 2, child: Container()),
           ],
         ),
       ],

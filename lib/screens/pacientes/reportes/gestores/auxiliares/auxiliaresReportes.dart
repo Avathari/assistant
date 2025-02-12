@@ -54,9 +54,9 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
 
         if (Reportes.auxiliaresDiagnosticos != "") {
           auxTextController.text =
-              Reportes.reportes['Auxiliares_Diagnosticos'] != "" ?
-              Reportes.reportes['Auxiliares_Diagnosticos'] :
-                  Reportes.auxiliaresDiagnosticos;
+              Reportes.reportes['Auxiliares_Diagnosticos'] != ""
+                  ? Reportes.reportes['Auxiliares_Diagnosticos']
+                  : Reportes.auxiliaresDiagnosticos;
         } else if (Auxiliares.historial(
                 esAbreviado: true, withEspeciales: true) !=
             "") {
@@ -237,15 +237,23 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                             Expanded(
                               flex: 3,
                               child: CircleIcon(
-                                  tittle: "Relevantes . . . ",
-                                  iconed: Icons.import_contacts,
-                                  radios: 27,
-                                  difRadios: 6,
-                                  onChangeValue: () => auxTextController.text =
-                                      Reportes.auxiliaresDiagnosticos = Reportes
-                                                  .reportes[
-                                              'Auxiliares_Diagnosticos'] =
-                                          "${Auxiliares.getUltimo(esAbreviado: true)}\n${Auxiliares.getEspeciales(esAbreviado: true)}"),
+                                tittle: "Relevantes . . . ",
+                                iconed: Icons.import_contacts,
+                                radios: 27,
+                                difRadios: 6,
+                                onChangeValue: () => setState(() =>
+                                auxTextController.text = Reportes
+                                    .auxiliaresDiagnosticos = Reportes
+                                    .reportes[
+                                'Auxiliares_Diagnosticos'] =
+                                "${Auxiliares.getUltimo(esAbreviado: true)}\n"
+                                    "${Auxiliares.getEspeciales(esAbreviado: true) != "" ? "RELEVANTES . \n" : ""}"
+                                    "${Auxiliares.getEspeciales(esAbreviado: true)}"
+                                    "${Auxiliares.getCoagulacion()}\n"
+                                    "\n"
+                                    "${Auxiliares.getCultivos(esAbreviado: true) != "" ? "MICROBIOLÓGICOS . \n" : ""}"
+                                    "\n${Auxiliares.getCultivos(esAbreviado: true)}"),
+                              ),
                             ),
                           ],
                         )
@@ -313,20 +321,20 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                         onPress: () {
                                           setState(() {
                                             auxTextController.text = Reportes
-                                                    .auxiliaresDiagnosticos =
-                                                Reportes.reportes[
-                                                        'Auxiliares_Diagnosticos'] =
-                                                    Auxiliares.historial();
+                                                .auxiliaresDiagnosticos = Reportes
+                                                        .reportes[
+                                                    'Auxiliares_Diagnosticos'] =
+                                                Auxiliares.historial();
                                           });
                                         },
                                         onLongPress: () {
                                           setState(() {
                                             auxTextController.text = Reportes
-                                                    .auxiliaresDiagnosticos =
-                                                Reportes.reportes[
-                                                        'Auxiliares_Diagnosticos'] =
-                                                    Auxiliares.historial(
-                                                        esAbreviado: true);
+                                                .auxiliaresDiagnosticos = Reportes
+                                                        .reportes[
+                                                    'Auxiliares_Diagnosticos'] =
+                                                Auxiliares.historial(
+                                                    esAbreviado: true);
                                           });
                                         },
                                       ),
@@ -338,15 +346,19 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                           iconed: Icons.import_contacts,
                                           radios: 27,
                                           difRadios: 6,
-                                          onChangeValue: () => auxTextController.text =
-                                              Reportes.auxiliaresDiagnosticos = Reportes
-                                              .reportes[
-                                          'Auxiliares_Diagnosticos'] =
-                                          "${Auxiliares.getUltimo(esAbreviado: true)}\n"
-                                              "RELEVANTES . \n${Auxiliares.getEspeciales(esAbreviado: true)}"
-                                              "\n"
-                                              "MICROBIOLÓGICOS . "
-                                              "\n${Auxiliares.getCultivos(esAbreviado: true)}"),
+                                          onChangeValue: () => setState(() =>
+                                              auxTextController.text = Reportes
+                                                  .auxiliaresDiagnosticos = Reportes
+                                                          .reportes[
+                                                      'Auxiliares_Diagnosticos'] =
+                                                  "${Auxiliares.getUltimo(esAbreviado: true)}\n"
+                                                      "${Auxiliares.getEspeciales(esAbreviado: true) != "" ? "RELEVANTES . \n" : ""}"
+                                                      "${Auxiliares.getEspeciales(esAbreviado: true)}"
+                                                      "${Auxiliares.getCoagulacion()}\n"
+                                                      "\n"
+                                                      "${Auxiliares.getCultivos(esAbreviado: true) != "" ? "MICROBIOLÓGICOS . \n" : ""}"
+                                                      "\n${Auxiliares.getCultivos(esAbreviado: true)}"),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -686,256 +698,7 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                 ),
                                 CrossLine(),
                                 Expanded(child: _popUpAnalisis(context)
-                                    // Container(
-                                    //   padding: const EdgeInsets.all(8.0),
-                                    //   decoration:
-                                    //       ContainerDecoration.roundedDecoration(),
-                                    //   child: SingleChildScrollView(
-                                    //     controller: scrollAuxController,
-                                    //     child: Column(
-                                    //       children: [
-                                    //         GrandButton(
-                                    //           labelButton: "Electrocardiograma",
-                                    //           onPress: () {
-                                    //             asignarParaclinico(indice: 20);
-                                    //           },
-                                    //         ),
-                                    //         GrandButton(
-                                    //           labelButton: "Biometría hemática",
-                                    //           onPress: () {
-                                    //             int index = 0;
-                                    //             Operadores.selectOptionsActivity(
-                                    //               context: context,
-                                    //               tittle:
-                                    //                   "Elija la fecha de la biometría hemática . . . ",
-                                    //               options: Listas
-                                    //                   .listWithoutRepitedValues(
-                                    //                 Listas.listFromMapWithOneKey(
-                                    //                   Listas.listFromMap(
-                                    //                       lista: Pacientes
-                                    //                           .Paraclinicos!,
-                                    //                       keySearched:
-                                    //                           'Tipo_Estudio',
-                                    //                       elementSearched:
-                                    //                           Auxiliares
-                                    //                                   .Categorias[
-                                    //                               index]),
-                                    //                 ),
-                                    //               ),
-                                    //               onClose: (value) {
-                                    //                 setState(() {
-                                    //                   asignarParaclinico(
-                                    //                       indice: index,
-                                    //                       fechaActual: value);
-                                    //                   Navigator.of(context).pop();
-                                    //                 });
-                                    //               },
-                                    //             );
-                                    //           },
-                                    //         ),
-                                    //         GrandButton(
-                                    //           labelButton: "Química sanguínea",
-                                    //           onPress: () {
-                                    //             int index = 1;
-                                    //             Operadores.selectOptionsActivity(
-                                    //               context: context,
-                                    //               tittle:
-                                    //                   "Elija la fecha de la química sanguínnea . . . ",
-                                    //               options: Listas
-                                    //                   .listWithoutRepitedValues(
-                                    //                 Listas.listFromMapWithOneKey(
-                                    //                   Listas.listFromMap(
-                                    //                       lista: Pacientes
-                                    //                           .Paraclinicos!,
-                                    //                       keySearched:
-                                    //                           'Tipo_Estudio',
-                                    //                       elementSearched:
-                                    //                           Auxiliares
-                                    //                                   .Categorias[
-                                    //                               index]),
-                                    //                 ),
-                                    //               ),
-                                    //               onClose: (value) {
-                                    //                 setState(() {
-                                    //                   asignarParaclinico(
-                                    //                       indice: index,
-                                    //                       fechaActual: value);
-                                    //                   Navigator.of(context).pop();
-                                    //                 });
-                                    //               },
-                                    //             );
-                                    //           },
-                                    //         ),
-                                    //         GrandButton(
-                                    //           labelButton: "Electrolitos séricos",
-                                    //           onPress: () {
-                                    //             int index = 2;
-                                    //             Operadores.selectOptionsActivity(
-                                    //               context: context,
-                                    //               tittle:
-                                    //                   "Elija la fecha del estudio de electrolitos. . . ",
-                                    //               options: Listas
-                                    //                   .listWithoutRepitedValues(
-                                    //                 Listas.listFromMapWithOneKey(
-                                    //                   Listas.listFromMap(
-                                    //                       lista: Pacientes
-                                    //                           .Paraclinicos!,
-                                    //                       keySearched:
-                                    //                           'Tipo_Estudio',
-                                    //                       elementSearched:
-                                    //                           Auxiliares
-                                    //                                   .Categorias[
-                                    //                               index]),
-                                    //                 ),
-                                    //               ),
-                                    //               onClose: (value) {
-                                    //                 setState(() {
-                                    //                   asignarParaclinico(
-                                    //                       indice: index,
-                                    //                       fechaActual: value);
-                                    //                   Navigator.of(context).pop();
-                                    //                 });
-                                    //               },
-                                    //             );
-                                    //           },
-                                    //         ),
-                                    //         GrandButton(
-                                    //           labelButton: "Perfil hepático",
-                                    //           onPress: () {
-                                    //             int index = 3;
-                                    //             Operadores.selectOptionsActivity(
-                                    //               context: context,
-                                    //               tittle:
-                                    //                   "Elija la fecha del perfil hepático . . . ",
-                                    //               options: Listas
-                                    //                   .listWithoutRepitedValues(
-                                    //                 Listas.listFromMapWithOneKey(
-                                    //                   Listas.listFromMap(
-                                    //                       lista: Pacientes
-                                    //                           .Paraclinicos!,
-                                    //                       keySearched:
-                                    //                           'Tipo_Estudio',
-                                    //                       elementSearched:
-                                    //                           Auxiliares
-                                    //                                   .Categorias[
-                                    //                               index]),
-                                    //                 ),
-                                    //               ),
-                                    //               onClose: (value) {
-                                    //                 setState(() {
-                                    //                   asignarParaclinico(
-                                    //                       indice: index,
-                                    //                       fechaActual: value);
-                                    //                   Navigator.of(context).pop();
-                                    //                 });
-                                    //               },
-                                    //             );
-                                    //           },
-                                    //         ),
-                                    //         GrandButton(
-                                    //           labelButton: "Perfil lipídico",
-                                    //           onPress: () {
-                                    //             int index = 4;
-                                    //             Operadores.selectOptionsActivity(
-                                    //               context: context,
-                                    //               tittle:
-                                    //                   "Elija la fecha del perfil lipíco . . . ",
-                                    //               options: Listas
-                                    //                   .listWithoutRepitedValues(
-                                    //                 Listas.listFromMapWithOneKey(
-                                    //                   Listas.listFromMap(
-                                    //                       lista: Pacientes
-                                    //                           .Paraclinicos!,
-                                    //                       keySearched:
-                                    //                           'Tipo_Estudio',
-                                    //                       elementSearched:
-                                    //                           Auxiliares
-                                    //                                   .Categorias[
-                                    //                               index]),
-                                    //                 ),
-                                    //               ),
-                                    //               onClose: (value) {
-                                    //                 setState(() {
-                                    //                   asignarParaclinico(
-                                    //                       indice: index,
-                                    //                       fechaActual: value);
-                                    //                   Navigator.of(context).pop();
-                                    //                 });
-                                    //               },
-                                    //             );
-                                    //           },
-                                    //         ),
-                                    //         GrandButton(
-                                    //           labelButton: "Perfil tiroideo",
-                                    //           onPress: () {
-                                    //             int index = 5;
-                                    //             Operadores.selectOptionsActivity(
-                                    //               context: context,
-                                    //               tittle:
-                                    //                   "Elija la fecha del perfil tiroideo . . . ",
-                                    //               options: Listas
-                                    //                   .listWithoutRepitedValues(
-                                    //                 Listas.listFromMapWithOneKey(
-                                    //                   Listas.listFromMap(
-                                    //                       lista: Pacientes
-                                    //                           .Paraclinicos!,
-                                    //                       keySearched:
-                                    //                           'Tipo_Estudio',
-                                    //                       elementSearched:
-                                    //                           Auxiliares
-                                    //                                   .Categorias[
-                                    //                               index]),
-                                    //                 ),
-                                    //               ),
-                                    //               onClose: (value) {
-                                    //                 setState(() {
-                                    //                   asignarParaclinico(
-                                    //                       indice: index,
-                                    //                       fechaActual: value);
-                                    //                   Navigator.of(context).pop();
-                                    //                 });
-                                    //               },
-                                    //             );
-                                    //           },
-                                    //         ),
-                                    //         GrandButton(
-                                    //           labelButton:
-                                    //               "Tiempos de coagulación",
-                                    //           onPress: () {
-                                    //             int index = 6;
-                                    //             Operadores.selectOptionsActivity(
-                                    //               context: context,
-                                    //               tittle:
-                                    //                   "Elija la fecha del perfil de coagulación . . . ",
-                                    //               options: Listas
-                                    //                   .listWithoutRepitedValues(
-                                    //                 Listas.listFromMapWithOneKey(
-                                    //                   Listas.listFromMap(
-                                    //                       lista: Pacientes
-                                    //                           .Paraclinicos!,
-                                    //                       keySearched:
-                                    //                           'Tipo_Estudio',
-                                    //                       elementSearched:
-                                    //                           Auxiliares
-                                    //                                   .Categorias[
-                                    //                               index]),
-                                    //                 ),
-                                    //               ),
-                                    //               onClose: (value) {
-                                    //                 setState(() {
-                                    //                   asignarParaclinico(
-                                    //                       indice: index,
-                                    //                       fechaActual: value);
-                                    //                   Navigator.of(context).pop();
-                                    //                 });
-                                    //               },
-                                    //             );
-                                    //           },
-                                    //         ),
-                                    //       ],
-                                    //     ),
-                                    //   ),
-                                    // ),
+                                    //
                                     ),
                               ],
                             )),
@@ -994,167 +757,7 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                     ),
                     CrossLine(color: Colors.grey),
                     Expanded(flex: 1, child: _popUpAnalisis(context)),
-                    // Expanded(
-                    //     flex: 6,
-                    //     child: isMobile(context)
-                    //         ? Wrap(
-                    //             children: [
-                    //               GrandIcon(
-                    //                 iconData: Icons.horizontal_rule_sharp,
-                    //                 labelButton: "Antropométricos",
-                    //                 onPress: () {
-                    //                   asignarAuxAnalisis(indice: 1);
-                    //                 },
-                    //               ),
-                    //               GrandIcon(
-                    //                 iconData: Icons.bubble_chart,
-                    //                 labelButton: "Metabólicos",
-                    //                 onPress: () {
-                    //                   asignarAuxAnalisis(indice: 2);
-                    //                 },
-                    //               ),
-                    //               GrandIcon(
-                    //                 iconData: Icons.monitor_heart_outlined,
-                    //                 labelButton: "Cardiovasculares",
-                    //                 onPress: () {
-                    //                   asignarAuxAnalisis(indice: 3);
-                    //                 },
-                    //               ),
-                    //               GrandIcon(
-                    //                 iconData: Icons.water_drop,
-                    //                 labelButton: "Hídricos",
-                    //                 onPress: () {
-                    //                   asignarAuxAnalisis(indice: 4);
-                    //                 },
-                    //               ),
-                    //               GrandIcon(
-                    //                 iconData: Icons.living_sharp,
-                    //                 labelButton: "Hepáticos",
-                    //                 onPress: () {
-                    //                   asignarAuxAnalisis(indice: 5);
-                    //                 },
-                    //               ),
-                    //               GrandIcon(
-                    //                 iconData: Icons.bloodtype,
-                    //                 labelButton: "Hemáticos",
-                    //                 onPress: () {
-                    //                   asignarAuxAnalisis(indice: 6);
-                    //                 },
-                    //               ),
-                    //               GrandIcon(
-                    //                 iconData: Icons.water,
-                    //                 labelButton: "Renales",
-                    //                 onPress: () {
-                    //                   asignarAuxAnalisis(indice: 7);
-                    //                 },
-                    //               ),
-                    //             ],
-                    //           )
-                    //         : isDesktop(context) || isLargeDesktop(context)
-                    //             ? GridView(
-                    //                 gridDelegate: GridViewTools.gridDelegate(
-                    //                     mainAxisExtent: mainAxisExtend),
-                    //                 children: [
-                    //                   GrandIcon(
-                    //                     iconData: Icons.horizontal_rule_sharp,
-                    //                     labelButton: "Antropométricos",
-                    //                     onPress: () {
-                    //                       asignarAuxAnalisis(indice: 1);
-                    //                     },
-                    //                   ),
-                    //                   GrandIcon(
-                    //                     iconData: Icons.bubble_chart,
-                    //                     labelButton: "Metabólicos",
-                    //                     onPress: () {
-                    //                       asignarAuxAnalisis(indice: 2);
-                    //                     },
-                    //                   ),
-                    //                   GrandIcon(
-                    //                     iconData: Icons.monitor_heart_outlined,
-                    //                     labelButton: "Cardiovasculares",
-                    //                     onPress: () {
-                    //                       asignarAuxAnalisis(indice: 3);
-                    //                     },
-                    //                   ),
-                    //                   GrandIcon(
-                    //                     iconData: Icons.water_drop,
-                    //                     labelButton: "Hídricos",
-                    //                     onPress: () {
-                    //                       asignarAuxAnalisis(indice: 4);
-                    //                     },
-                    //                   ),
-                    //                   GrandIcon(
-                    //                     iconData: Icons.living_sharp,
-                    //                     labelButton: "Hepáticos",
-                    //                     onPress: () {
-                    //                       asignarAuxAnalisis(indice: 5);
-                    //                     },
-                    //                   ),
-                    //                   GrandIcon(
-                    //                     iconData: Icons.bloodtype,
-                    //                     labelButton: "Hemáticos",
-                    //                     onPress: () {
-                    //                       asignarAuxAnalisis(indice: 6);
-                    //                     },
-                    //                   ),
-                    //                   GrandIcon(
-                    //                     iconData: Icons.water,
-                    //                     labelButton: "Renales",
-                    //                     onPress: () {
-                    //                       asignarAuxAnalisis(indice: 7);
-                    //                     },
-                    //                   ),
-                    //                 ],
-                    //               )
-                    //             : SingleChildScrollView(
-                    //                 controller: scrollCommenController,
-                    //                 child: Column(
-                    //                   children: [
-                    //                     GrandButton(
-                    //                       labelButton: "Antropométricos",
-                    //                       onPress: () {
-                    //                         asignarAuxAnalisis(indice: 1);
-                    //                       },
-                    //                     ),
-                    //                     GrandButton(
-                    //                       labelButton: "Metabólicos",
-                    //                       onPress: () {
-                    //                         asignarAuxAnalisis(indice: 2);
-                    //                       },
-                    //                     ),
-                    //                     GrandButton(
-                    //                       labelButton: "Cardiovasculares",
-                    //                       onPress: () {
-                    //                         asignarAuxAnalisis(indice: 3);
-                    //                       },
-                    //                     ),
-                    //                     GrandButton(
-                    //                       labelButton: "Hídricos",
-                    //                       onPress: () {
-                    //                         asignarAuxAnalisis(indice: 4);
-                    //                       },
-                    //                     ),
-                    //                     GrandButton(
-                    //                       labelButton: "Hepáticos",
-                    //                       onPress: () {
-                    //                         asignarAuxAnalisis(indice: 5);
-                    //                       },
-                    //                     ),
-                    //                     GrandButton(
-                    //                       labelButton: "Hemáticos",
-                    //                       onPress: () {
-                    //                         asignarAuxAnalisis(indice: 6);
-                    //                       },
-                    //                     ),
-                    //                     GrandButton(
-                    //                       labelButton: "Renales",
-                    //                       onPress: () {
-                    //                         asignarAuxAnalisis(indice: 7);
-                    //                       },
-                    //                     ),
-                    //                   ],
-                    //                 ),
-                    //               )),
+                    //
                   ],
                 ),
               ),

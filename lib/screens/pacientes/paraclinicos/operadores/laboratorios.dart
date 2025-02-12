@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
@@ -25,6 +26,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class LaboratoriosGestion extends StatefulWidget {
   const LaboratoriosGestion({super.key});
@@ -140,6 +142,12 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                     reiniciar();
                   },
                 ),
+                CircleIcon(
+                    iconed: Icons.send_time_extension_outlined,
+                    radios: 35,
+                    difRadios: 5,
+                    tittle: "Extractor de Paraclínicos . . . ",
+                    onChangeValue: () => AuxiliarExtractor(context))
                 // GrandIcon(
                 //   iconData: Icons.photo_camera_back_outlined,
                 //   labelButton: 'Imagen del Electrocardiograma',
@@ -220,6 +228,14 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
           ],
         ),
       ),
+      floatingActionButton: !isMobile(context)
+          ? CircleIcon(
+              iconed: Icons.send_time_extension_outlined,
+              radios: 35,
+              difRadios: 5,
+              tittle: "Extractor de Paraclínicos . . . ",
+              onChangeValue: () => AuxiliarExtractor(context))
+          : null,
     );
   }
 
@@ -400,23 +416,26 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                           selection: true,
                           withShowOption: true,
                           iconData: Icons.calendar_month,
-                          onSelected: () {
-                            iniciar();
-                            Operadores.selectOptionsActivity(
-                                context: context,
-                                options: Listas.listWithoutRepitedValues(
-                                  Listas.listFromMapWithOneKey(
-                                    values!,
-                                    keySearched: 'Fecha_Registro',
+                          onSelected: () async {
+                            await Future.microtask(() => iniciar()).whenComplete(() {
+                              Operadores.selectOptionsActivity(
+                                  context: context,
+                                  options: Listas.listWithoutRepitedValues(
+                                    Listas.listFromMapWithOneKey(
+                                      values!,
+                                      keySearched: 'Fecha_Registro',
+                                    ),
                                   ),
-                                ),
-                                onClose: (value) {
-                                  setState(() {
-                                    textDateController.text = value;
-                                    _runFilterSearch(value);
-                                    Navigator.of(context).pop();
+                                  onClose: (value) {
+                                    setState(() {
+                                      textDateController.text = value;
+                                      _runFilterSearch(value);
+                                      Navigator.of(context).pop();
+                                    });
                                   });
-                                });
+                            });
+                            //
+
                           },
                           onChange: (value) {
                             setState(
@@ -478,7 +497,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                                       padding: const EdgeInsets.all(8.0),
                                       gridDelegate: GridViewTools.gridDelegate(
                                           crossAxisCount:
-                                              isMobile(context) ? 1 : 3,
+                                              isMobile(context) ? 1 : 2,
                                           mainAxisExtent: 150),
                                       shrinkWrap: true,
                                       itemCount: snapshot.data == null
@@ -494,7 +513,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                             }),
                       ),
                       Expanded(
-                          flex: isMobile(context) ? 2 : 1, child: lateralBar())
+                          flex: isMobile(context) ? 2 : 2, child: lateralBar())
                     ],
                   ),
                 ),
@@ -503,6 +522,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
           ),
         ),
         Expanded(
+          flex: 2,
             child: Container(
                 padding: const EdgeInsets.all(8.0),
                 margin: const EdgeInsets.all(8.0),
@@ -629,6 +649,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
   late List? values = [];
   Map<String, dynamic>? elementSelected;
   var carouselController = CarouselSliderController();
+  String? filePath;
 
   void operationMethod(
       {required BuildContext context, required bool operationActivity}) {
@@ -649,6 +670,9 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
               onAcept: () {
                 setState(() {
                   carouselController.jumpToPage(0);
+                  //
+                  if (filePath !=null) File(filePath!).delete();
+                  //
                   Navigator.of(context).pop();
                 });
               });
@@ -692,8 +716,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
       },
       child: Container(
         decoration: ContainerDecoration.roundedDecoration(),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Column(
           children: [
             Container(
               margin: const EdgeInsets.all(5.0),
@@ -702,48 +725,54 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                 child: Text(data[index]['ID_Laboratorio'].toString()),
               ),
             ),
-            Expanded(
-              // flex: 4,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    data[index]['Fecha_Registro'],
-                    style: Styles.textSyleGrowth(fontSize: 14),
-                  ),
-                  Text(
-                    data[index]['Tipo_Estudio'],
-                    style: Styles.textSyleGrowth(fontSize: 8),
-                  ),
-                  Text(
-                    "${data[index]['Estudio']} ${data[index]['Resultado']}", // ${data[index]['Unidad_Medida']}",
-                    style: Styles.textSyleGrowth(fontSize: 10),
-                  ),
-                  CrossLine(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  // flex: 4,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      GrandIcon(
-                          iconData: Icons.update,
-                          labelButton: 'Actualizar',
-                          onPress: () {
-                            operationActivity = false;
-                            elementSelected = data[index];
-                            Pacientes.Auxiliar = data[index];
-                            carouselController.jumpToPage(1);
+                      Text(
+                        data[index]['Fecha_Registro'],
+                        overflow: TextOverflow.ellipsis,
+                        style: Styles.textSyleGrowth(fontSize: 14),
+                      ),
+                      Text(
+                        data[index]['Tipo_Estudio'],
+                        style: Styles.textSyleGrowth(fontSize: 8),
+                      ),
+                      Text(
+                        "${data[index]['Estudio']} ${data[index]['Resultado']}", // ${data[index]['Unidad_Medida']}",
+                        style: Styles.textSyleGrowth(fontSize: 10),
+                      ),
+                      CrossLine(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          GrandIcon(
+                              iconData: Icons.update,
+                              labelButton: 'Actualizar',
+                              onPress: () {
+                                operationActivity = false;
+                                elementSelected = data[index];
+                                Pacientes.Auxiliar = data[index];
+                                carouselController.jumpToPage(1);
 
-                            updateElement(data[index]);
-                          }),
-                      GrandIcon(
-                          iconData: Icons.delete,
-                          labelButton: 'Eliminar',
-                          onPress: () {
-                            deleteDialog(data[index]);
-                          }),
+                                updateElement(data[index]);
+                              }),
+                          GrandIcon(
+                              iconData: Icons.delete,
+                              labelButton: 'Eliminar',
+                              onPress: () {
+                                deleteDialog(data[index]);
+                              }),
+                        ],
+                      )
                     ],
-                  )
-                ],
-              ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -845,11 +874,13 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                           //     chyldrim: ConmutadorParaclinicos(
                           //       categoriaEstudio: value,
                           //     ));
-                          Cambios.toNextActivity(context,
-                              tittle: value,
-                              chyld: ConmutadorParaclinicos(
-                                categoriaEstudio: value,
-                              ));
+                          Cambios.toNextActivity(
+                            context,
+                            tittle: value,
+                            chyld: ConmutadorParaclinicos(
+                              categoriaEstudio: value,
+                            ),
+                          );
                         });
                   },
                 )),
@@ -981,282 +1012,338 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
         ),
       );
     } else {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      return Row(
         children: [
-          TittlePanel(textPanel: tittle),
           Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: EditTextArea(
-                    labelEditText: "Fecha de realización",
-                    numOfLines: 1,
-                    textController: textDateEstudyController,
-                    keyBoardType: TextInputType.datetime,
-                    inputFormat: MaskTextInputFormatter(
-                        mask: '####/##/## ##:##:##',
-                        filter: {"#": RegExp(r'[0-9]')},
-                        type: MaskAutoCompletionType.lazy),
-                  ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Spinner(
-                      width: isTabletAndDesktop(context) ? 190 : 170,
-                      // 90
-                      tittle: "Tipo de Estudio",
-                      initialValue: tipoEstudioValue!,
-                      items: Auxiliares.Categorias,
-                      onChangeValue: (String? newValue) {
-                        setState(() {
-                          tipoEstudioValue = newValue!;
-                          // *************** *********** **************
-                          // Actualización del Indice
-                          // *************** *********** **************
-                          index = Auxiliares.Categorias.indexOf(newValue);
-                          print("$tipoEstudioValue : $index");
-                          // *************** *********** **************
-                          estudioValue = Auxiliares
-                              .Laboratorios[Auxiliares.Categorias[index]][0];
-                          unidadMedidaValue = Auxiliares
-                              .Medidas[Auxiliares.Categorias[index]][0];
-                          // *************** *********** **************
-                        });
-                      }),
-                ),
-                Expanded(
-                    child: GrandIcon(
-                  labelButton: "Agregar por Categoría",
-                  iconData: Icons.list_alt,
-                  onPress: () {
-                    Operadores.selectOptionsActivity(
-                        context: context,
-                        tittle: 'Seleccione un Tipo de Estudio',
-                        options: Auxiliares.Categorias,
-                        onClose: (value) {
-                          setState(() {
-                            tipoEstudioValue = value;
-                            // *************** *********** **************
-                            // Actualización del Indice
-                            // *************** *********** **************
-                            index = Auxiliares.Categorias.indexOf(value);
-                          });
-                          //
-                          if (index < 29) {
-                            // Son 29 Indices de Auxiliares.Categorias
-                            setState(() {
-                              // *************** *********** **************
-                              estudioValue = Auxiliares.Laboratorios[
-                                  Auxiliares.Categorias[index]][0];
-                              unidadMedidaValue = Auxiliares
-                                  .Medidas[Auxiliares.Categorias[index]][0];
-                              // *************** *********** **************
-                              Navigator.of(context).pop();
-                            });
-                          } else {
-                            // *************** *********** **************
-                            estudioValue = Auxiliares
-                                .Laboratorios[Auxiliares.Categorias[0]][0];
-                            unidadMedidaValue =
-                                Auxiliares.Medidas[Auxiliares.Categorias[0]][0];
-                          }
-                          //
-                          Cambios.toNextActivity(context,
-                              tittle: value,
-                              chyld: ConmutadorParaclinicos(
-                                categoriaEstudio: value,
-                              ));
-                          // Operadores.openWindow(
-                          //     context: context,
-                          //     chyldrim: ConmutadorParaclinicos(
-                          //       categoriaEstudio: value,
-                          //     ));
-                        });
-                  },
-                )),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  child: Spinner(
-                      width: isTabletAndDesktop(context) ? 120 : 170,
-                      // 90
-                      tittle: "Estudio",
-                      initialValue: estudioValue!,
-                      items: Auxiliares.Laboratorios[tipoEstudioValue],
-                      onChangeValue: (String? newValue) {
-                        setState(() {
-                          estudioValue = newValue!;
-                          //
-                        });
-                      }),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  child: EditTextArea(
-                    textController: textResultController,
-                    keyBoardType: TextInputType.number,
-                    inputFormat: MaskTextInputFormatter(),
-                    labelEditText: "Resultado",
-                    numOfLines: 1,
-                    limitOfChars: 200,
-                    withShowOption: true,
-                    onSelected: () {
-                      if (estudioValue == 'Urocultivo') {
-                        Operadores.openWindow(
-                            context: context,
-                            chyldrim: Container(),
-                            onAction: () {
-                              setState(() {
-                                textResultController.text = "AUS";
-                              });
-                            });
-                      }
-                    },
-                  ),
-                ),
-                Expanded(
-                  child: Spinner(
-                      width: isMobile(context)
-                          ? 100
-                          : isTabletAndDesktop(context)
-                              ? 120
-                              : 170,
-                      isRow: true,
-                      tittle: "Unidad de Medida",
-                      initialValue: unidadMedidaValue!,
-                      items: Auxiliares.Medidas[tipoEstudioValue],
-                      onChangeValue: (String? newValue) {
-                        setState(() {
-                          unidadMedidaValue = newValue!;
-                        });
-                      }),
-                ),
-              ],
-            ),
-          ),
-          const Expanded(
-            flex: 4,
+            flex: 3,
             child: Column(
-              children: [],
-            ),
-          ),
-          CrossLine(),
-          Expanded(
-            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                TittlePanel(textPanel: tittle),
+                EditTextArea(
+                  labelEditText: "Fecha de realización",
+                  numOfLines: 1,
+                  textController: textDateEstudyController,
+                  keyBoardType: TextInputType.datetime,
+                  selection: true,
+withShowOption: true,
+                  onSelected: () {
+                    setState(() {
+                      textDateEstudyController.text = Calendarios.today(format: "yyyy/MM/dd HH:mm:ss");
+                    });
+                  },
+                  inputFormat: MaskTextInputFormatter(
+                      mask: '####/##/## ##:##:##',
+                      filter: {"#": RegExp(r'[0-9]')},
+                      type: MaskAutoCompletionType.lazy),
+                ),
                 Expanded(
                   flex: 2,
-                  child: GrandButton(
-                      labelButton: operationActivity ? "Nuevo" : "Eliminar",
-                      weigth: 100,
-                      onPress: () {
-                        if (operationActivity) {
-                          initAllElement();
-                          carouselController.jumpToPage(1);
-                        } else {
-                          try {
-                            deleteDialog(elementSelected!);
-                          } finally {
-                            carouselController.jumpToPage(0);
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: const Text("Eliminados"),
-                                    content: Text(listOfValues().toString()),
-                                  );
-                                });
-                          }
-                        }
-                      }),
-                ),
-                operationActivity
-                    ? Container()
-                    : Expanded(
-                        child: GrandButton(
-                            labelButton: "Nuevo",
-                            weigth: 50,
-                            onPress: () {
-                              initAllElement();
+                  child: Row(
+                    children: [
+                      // Expanded(
+                      //   flex: 3,
+                      //   child: EditTextArea(
+                      //     labelEditText: "Fecha de realización",
+                      //     numOfLines: 1,
+                      //     textController: textDateEstudyController,
+                      //     keyBoardType: TextInputType.datetime,
+                      //     inputFormat: MaskTextInputFormatter(
+                      //         mask: '####/##/## ##:##:##',
+                      //         filter: {"#": RegExp(r'[0-9]')},
+                      //         type: MaskAutoCompletionType.lazy),
+                      //   ),
+                      // ),
+                      Expanded(
+                        flex: 3,
+                        child: Spinner(
+                            width: isTabletAndDesktop(context) ? 190 : 170,
+                            // 90
+                            tittle: "Tipo de Estudio",
+                            initialValue: tipoEstudioValue!,
+                            items: Auxiliares.Categorias,
+                            onChangeValue: (String? newValue) {
+                              setState(() {
+                                tipoEstudioValue = newValue!;
+                                // *************** *********** **************
+                                // Actualización del Indice
+                                // *************** *********** **************
+                                index = Auxiliares.Categorias.indexOf(newValue);
+                                print("$tipoEstudioValue : $index");
+                                // *************** *********** **************
+                                estudioValue = Auxiliares
+                                    .Laboratorios[Auxiliares.Categorias[index]][0];
+                                unidadMedidaValue = Auxiliares
+                                    .Medidas[Auxiliares.Categorias[index]][0];
+                                // *************** *********** **************
+                              });
                             }),
                       ),
-                Expanded(
-                  flex: 2,
-                  child: GrandButton(
-                      weigth: isTablet(context) ? 200 : 500,
-                      labelButton: operationActivity ? "Agregar" : "Actualizar",
-                      onPress: () {
-                        if (operationActivity) {
-                          var aux = listOfValues();
-                          aux.removeLast();
-
-                          Actividades.registrar(
-                            Databases.siteground_database_reggabo,
-                            Auxiliares.auxiliares['registerQuery'],
-                            aux,
-                          ).then((value) => showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: const Text("Registrados"),
-                                      content: Text(
-                                          "Los registros \n${listOfValues().toString()} \n fueron actualizados"),
-                                    );
-                                  })
-                              .then((value) => Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          VisualPacientes(actualPage: 5)))));
-                        } else {
-                          Actividades.actualizar(
-                                  Databases.siteground_database_reggabo,
-                                  Auxiliares.auxiliares['updateQuery'],
-                                  listOfValues(),
-                                  idOperacion!)
-                              .then((value) => showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: const Text("Actualizados"),
-                                      content: Text(
-                                          "Los registros \n${listOfValues().toString()} \n fueron actualizados"),
-                                    );
-                                  }).then((value) => Navigator.of(
-                                      context)
-                                  .push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          VisualPacientes(actualPage: 5)))));
-                        }
-                      }),
+                      Expanded(
+                          child: GrandIcon(
+                        labelButton: "Agregar por Categoría",
+                        iconData: Icons.list_alt,
+                        onPress: () {
+                          Operadores.selectOptionsActivity(
+                              context: context,
+                              tittle: 'Seleccione un Tipo de Estudio',
+                              options: Auxiliares.Categorias,
+                              onClose: (value) {
+                                setState(() {
+                                  tipoEstudioValue = value;
+                                  // *************** *********** **************
+                                  // Actualización del Indice
+                                  // *************** *********** **************
+                                  index = Auxiliares.Categorias.indexOf(value);
+                                });
+                                //
+                                if (index < 29) {
+                                  // Son 29 Indices de Auxiliares.Categorias
+                                  setState(() {
+                                    // *************** *********** **************
+                                    estudioValue = Auxiliares.Laboratorios[
+                                        Auxiliares.Categorias[index]][0];
+                                    unidadMedidaValue = Auxiliares
+                                        .Medidas[Auxiliares.Categorias[index]][0];
+                                    // *************** *********** **************
+                                    Navigator.of(context).pop();
+                                  });
+                                } else {
+                                  // *************** *********** **************
+                                  estudioValue = Auxiliares
+                                      .Laboratorios[Auxiliares.Categorias[0]][0];
+                                  unidadMedidaValue =
+                                      Auxiliares.Medidas[Auxiliares.Categorias[0]][0];
+                                }
+                                //
+                                Cambios.toNextActivity(context,
+                                    tittle: value,
+                                    chyld: ConmutadorParaclinicos(
+                                      categoriaEstudio: value,
+                                    ));
+                                // Operadores.openWindow(
+                                //     context: context,
+                                //     chyldrim: ConmutadorParaclinicos(
+                                //       categoriaEstudio: value,
+                                //     ));
+                              });
+                        },
+                      )),
+                    ],
+                  ),
                 ),
                 Expanded(
-                    flex: 1,
-                    child: GrandIcon(
-                        labelButton: "Rutina",
-                        iconData: Icons.ad_units,
-                        onPress: () {
-                          Cambios.toNextActivity(context,
-                              tittle: 'Rutina',
-                              onOption: () => Operadores.openDialog(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Spinner(
+                            width: isTabletAndDesktop(context) ? 120 : 170,
+                            // 90
+                            tittle: "Estudio",
+                            initialValue: estudioValue!,
+                            items: Auxiliares.Laboratorios[tipoEstudioValue],
+                            onChangeValue: (String? newValue) {
+                              setState(() {
+                                estudioValue = newValue!;
+                                //
+                              });
+                            }),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: EditTextArea(
+                          textController: textResultController,
+                          keyBoardType: TextInputType.number,
+                          inputFormat: MaskTextInputFormatter(),
+                          labelEditText: "Resultado",
+                          numOfLines: 1,
+                          limitOfChars: 200,
+                          withShowOption: true,
+                          onSelected: () {
+                            if (estudioValue == 'Urocultivo') {
+                              Operadores.openWindow(
                                   context: context,
-                                  chyldrim: const Conclusiones()),
-                              chyld: ConmutadorParaclinicos(
-                                categoriaEstudio: 'Rutina',
-                              ));
-                        })),
+                                  chyldrim: Container(),
+                                  onAction: () {
+                                    setState(() {
+                                      textResultController.text = "AUS";
+                                    });
+                                  });
+                            }
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: Spinner(
+                            width: isMobile(context)
+                                ? 100
+                                : isTabletAndDesktop(context)
+                                    ? 120
+                                    : 170,
+                            isRow: true,
+                            tittle: "Unidad de Medida",
+                            initialValue: unidadMedidaValue!,
+                            items: Auxiliares.Medidas[tipoEstudioValue],
+                            onChangeValue: (String? newValue) {
+                              setState(() {
+                                unidadMedidaValue = newValue!;
+                              });
+                            }),
+                      ),
+                    ],
+                  ),
+                ),
+                CrossLine(height: 10),
+                GrandButton(
+                  height: 15,
+                  weigth: 1000,
+                  labelButton: "Cargar archivo de Historial . . . ",
+                  onPress: () async {
+                    final path =
+                    await Directorios.choiseFromInternalDocuments(
+                        context);
+                    //
+                    setState(() {
+                      filePath = path!.files.single.path!;
+                    });
+                  },
+                ),
+                CrossLine(height: 10),
+                Expanded(
+                  flex: 1,
+                  child: Column(),
+                ),
+                CrossLine(),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: GrandButton(
+                            labelButton: operationActivity ? "Nuevo" : "Eliminar",
+                            weigth: 100,
+                            onPress: () {
+                              if (operationActivity) {
+                                initAllElement();
+                                carouselController.jumpToPage(1);
+                              } else {
+                                try {
+                                  deleteDialog(elementSelected!);
+                                } finally {
+                                  carouselController.jumpToPage(0);
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: const Text("Eliminados"),
+                                          content: Text(listOfValues().toString()),
+                                        );
+                                      });
+                                }
+                              }
+                            }),
+                      ),
+                      operationActivity
+                          ? Container()
+                          : Expanded(
+                        flex: 3,
+                              child: GrandButton(
+                                  labelButton: "Nuevo",
+                                  weigth: 50,
+                                  onPress: () {
+                                    initAllElement();
+                                  }),
+                            ),
+                      Expanded(
+                        flex: 3,
+                        child: GrandButton(
+                            weigth: isTablet(context) ? 200 : 500,
+                            labelButton: operationActivity ? "Agregar" : "Actualizar",
+                            onPress: () {
+                              if (operationActivity) {
+                                var aux = listOfValues();
+                                aux.removeLast();
+
+                                Actividades.registrar(
+                                  Databases.siteground_database_reggabo,
+                                  Auxiliares.auxiliares['registerQuery'],
+                                  aux,
+                                ).then((value) => showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          //
+                                          if (filePath !=null) File(filePath!).delete();
+                                          //
+                                          return AlertDialog(
+                                            title: const Text("Registrados"),
+                                            content: Text(
+                                                "Los registros \n${listOfValues().toString()} \n fueron actualizados"),
+                                          );
+                                        })
+                                    .then((value) => Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                VisualPacientes(actualPage: 5)))));
+                              } else {
+                                Actividades.actualizar(
+                                        Databases.siteground_database_reggabo,
+                                        Auxiliares.auxiliares['updateQuery'],
+                                        listOfValues(),
+                                        idOperacion!)
+                                    .then((value) => showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: const Text("Actualizados"),
+                                            content: Text(
+                                                "Los registros \n${listOfValues().toString()} \n fueron actualizados"),
+                                          );
+                                        }).then((value) => Navigator.of(
+                                            context)
+                                        .push(MaterialPageRoute(
+                                            builder: (context) =>
+                                                VisualPacientes(actualPage: 5)))));
+                              }
+                            }),
+                      ),
+                      SizedBox(width: 40),
+                      Expanded(
+                          flex: 1,
+                          child: GrandIcon(
+                              labelButton: "Rutina",
+                              iconData: Icons.ad_units,
+                              onPress: () {
+                                Cambios.toNextActivity(context,
+                                    tittle: 'Rutina',
+                                    onOption: () => Operadores.openDialog(
+                                        context: context,
+                                        chyldrim: const Conclusiones()),
+                                    chyld: ConmutadorParaclinicos(
+                                      categoriaEstudio: 'Rutina',
+                                    ));
+                              })),
+                      isDesktop(context) || isLargeDesktop(context)
+                          ? SizedBox(width: 50)
+                          : Container(),
+                    ],
+                  ),
+                ),
               ],
             ),
+          ),
+          Expanded(
+            flex: filePath != null ? 3 :1 ,
+            child: filePath != null
+                ? Container(
+                decoration: ContainerDecoration.roundedDecoration(),
+                height: 750,
+                child: SfPdfViewer.file(File(filePath!)))
+                : Container(),
           ),
         ],
       );
@@ -1371,14 +1458,13 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                           },
                         );
                       }),
-                  onClose: () => Navigator.of(context).pop())), // Eliminar registros del Paciente (Laboratorios)
+                  onClose: () => Navigator.of(context)
+                      .pop())), // Eliminar registros del Paciente (Laboratorios)
           CrossLine(height: 30),
           GrandIcon(
-            iconData: Icons.replay_outlined,
-            labelButton: Sentences.reload,
-            onPress: () =>
-              reiniciar()
-          ),
+              iconData: Icons.replay_outlined,
+              labelButton: Sentences.reload,
+              onPress: () => reiniciar()),
         ],
       ),
     );
