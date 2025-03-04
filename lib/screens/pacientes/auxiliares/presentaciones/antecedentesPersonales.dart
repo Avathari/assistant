@@ -63,30 +63,30 @@ class MenuPersonales extends StatelessWidget {
                         onPress: () {
                           toNextPage(context, const GestionToxicomanias());
                         }),
-                    MenuButton(
-                        iconData: Icons.bloodtype,
-                        labelButton: "Antecedentes Transfusionales",
-                        onPress: () {
-                          toNextPage(context, GestionTransfusionales());
-                        }),
+                    // MenuButton(
+                    //     iconData: Icons.bloodtype,
+                    //     labelButton: "Antecedentes Transfusionales",
+                    //     onPress: () {
+                    //       toNextPage(context, GestionTransfusionales());
+                    //     }),
                     MenuButton(
                         iconData: Icons.medical_information_rounded,
                         labelButton: "Antecedentes Quirúrgicos",
                         onPress: () {
                           toNextPage(context, GestionQuirurgicos());
                         }),
-                    MenuButton(
-                        iconData: Icons.vaccines,
-                        labelButton: "Antecedentes Vacunales",
-                        onPress: () {
-                          toNextPage(context, GestionVacunales());
-                        }),
-                    MenuButton(
-                        iconData: Icons.medication_liquid,
-                        labelButton: "Antecedentes Alérgicos",
-                        onPress: () {
-                          toNextPage(context, GestionAlergicos());
-                        }),
+                    // MenuButton(
+                    //     iconData: Icons.vaccines,
+                    //     labelButton: "Antecedentes Vacunales",
+                    //     onPress: () {
+                    //       toNextPage(context, GestionVacunales());
+                    //     }),
+                    // MenuButton(
+                    //     iconData: Icons.medication_liquid,
+                    //     labelButton: "Antecedentes Alérgicos",
+                    //     onPress: () {
+                    //       toNextPage(context, GestionAlergicos());
+                    //     }),
                     MenuButton(
                         iconData: Icons.quiz,
                         labelButton: "Cuestionarios",

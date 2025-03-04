@@ -6,6 +6,8 @@ import 'package:assistant/operativity/pacientes/valores/Valorados/info/conclusio
 import 'package:assistant/operativity/pacientes/valores/Valorados/ventometr%C3%ADas.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/detalles/pacientesListScreen.dart';
+import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';
+import 'package:assistant/screens/pacientes/hospitalizacion/pendientes.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/trabajoCardiaco.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/conmutadorParaclinicos.dart';
@@ -469,4 +471,78 @@ class Menus {
       elevation: 2,
     );
   }
+
+  static Widget accionesHospitalizacion(BuildContext context) {
+    return PopupMenuButton<int>(
+      tooltip: "Acciones de Hospitalización . . . ",
+      icon: const Icon(Icons.bed),
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          value: 1,
+          onTap: () => Cambios.toNextPage(context, GestionPendiente(),),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: Text("Pendientes de la Atención",
+                style: Styles.textSyleGrowth(fontSize: 8)),
+          ),
+        ),
+        PopupMenuItem(
+          value: 2,
+          onTap: () => {
+            // Navigator.of(context).push(MaterialPageRoute(
+            //   builder: (BuildContext context) =>
+            //       GestionPendiente(),
+            // ));
+            // final respo = await Pacientes.hospitalizar();
+            // // Actualizar vista.
+            // setState(() {
+            //   if (respo) {
+            //     Valores.modoAtencion = 'Hospitalización';
+            //     Pacientes.modoAtencion = 'Hospitalización';
+            //     // Actualizar valores de Hospitalización.
+            //     Valores.isHospitalizado = respo;
+            //     Pacientes.esHospitalizado = respo;
+            //
+            //     // asyncHospitalizar(context);
+            //     Operadores.openActivity(
+            //       context: context,
+            //       chyldrim: const OpcionesHospitalizacion(),
+            //       onAction: () {},
+            //     );
+            //   } else {
+            //     Valores.modoAtencion = 'Consulta Externa';
+            //     Pacientes.modoAtencion = 'Consulta Externa';
+            //     // Actualizar valores de Hospitalización.
+            //     Valores.isHospitalizado = respo;
+            //     Pacientes.esHospitalizado = respo;
+            //   }
+            // });
+            //
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: Text(Pacientes.esHospitalizado == true
+                ? 'Egresar paciente'
+                : 'Hospitalizar paciente',
+                style: Styles.textSyleGrowth(fontSize: 8)),
+          ),
+        ),
+        PopupMenuItem(
+          value: 1,
+          onTap: () => Cambios.toNextPage(context, GestionHospitalizaciones(),),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: ListTile(
+              leading: Icon(Icons.bedroom_child_outlined, color: Colors.white),
+                title: Text("Registro de Hospitalizaciones",style: Styles.textSyleGrowth(fontSize: 8)),
+                ),
+          ),
+        ),
+      ],
+      offset: const Offset(0, 100),
+      color: Theming.cuaternaryColor,
+      elevation: 2,
+    );
+  }
+
 }

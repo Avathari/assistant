@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
@@ -736,17 +737,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
             Navigator.of(context).pop();
           });
     });
-    // .whenComplete(() => Operadores.alertActivity(
-    //         context: context,
-    //         tittle: "Datos Recargados",
-    //         message: "Registro Actualizado",
-    //         onAcept: () {
-    //           Navigator.of(context).push(
-    //             MaterialPageRoute(
-    //               builder: (BuildContext context) => const GestionPacientes(),
-    //             ),
-    //           );
-    //         }));
+    //
   }
 
   void deleteRegister(
@@ -1211,15 +1202,33 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
   }
 
   // Operaciones de Inicio ***** ******* ********** ****
-  Future<void> reiniciar() async {
-    Archivos.deleteFile(filePath: Pacientes.localPath).whenComplete(() =>
-        Terminal.printWarning(
-            message:
-                " . . . Reiniciando Actividad - Repositorio de Pacientes"));
+    Future<void> reiniciar() async {
+    Terminal.printWarning(
+        message:
+        " . . . Reiniciando Actividad - Repositorio de Pacientes");
+
     var fileAssocieted = 'assets/vault/pacientesRepository.json';
-    Archivos.deleteFile(filePath: fileAssocieted);
-    Archivos.deleteFile(filePath: Pacientes.localRepositoryPath);
+
+    // Verificar existencia antes de eliminar
+    if (await File(Pacientes.localPath).exists()) {
+      await Archivos.deleteFile(filePath: Pacientes.localPath);
+    } else {
+      Terminal.printWarning(message: "El archivo ${Pacientes.localPath} no existe.");
+    }
+
+    if (await File(fileAssocieted).exists()) {
+      await Archivos.deleteFile(filePath: fileAssocieted);
+    } else {
+      Terminal.printWarning(message: "El archivo $fileAssocieted no existe.");
+    }
+
+    if (await File(Pacientes.localRepositoryPath).exists()) {
+      await Archivos.deleteFile(filePath: Pacientes.localRepositoryPath);
+    } else {
+      Terminal.printWarning(message: "El archivo ${Pacientes.localRepositoryPath} no existe.");
+    }
   }
+
 
 // Componentes Base de Interfaz ** *********** ********* ****
   List<Widget> component(BuildContext context) {

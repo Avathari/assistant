@@ -52,6 +52,22 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   void initState() {
+    Archivos.readJsonToMap(filePath: Vitales.fileAssocieted).then((value) {
+      setState(() {
+        Pacientes.Vitales = value;
+        Vitales.fromJson(value.last);
+      });
+    }).onError((error, stackTrace) {
+      // Vitales.ultimoRegistro()
+      //     .then((value) => Auxiliares.fromJson(value))
+      //     .whenComplete(() => setState(() {}))
+      //     .onError((error, stackTrace) => Operadores.alertActivity(
+      //   context: context,
+      //   tittle: "ERROR al consultar último registro",
+      //   message: "ERROR : $error : : $stackTrace",
+      //   onAcept: () => Navigator.of(context).pop(),
+      // ));
+    });
     //
     List list = [];
     widget.dymValues.clear();
@@ -95,6 +111,9 @@ class _DashboardState extends State<Dashboard> {
       });
     }
 
+    setState(() {
+
+    });
     super.initState();
   }
 

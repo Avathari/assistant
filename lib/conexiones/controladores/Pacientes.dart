@@ -684,21 +684,23 @@ class Pacientes {
         }
       } else {
         if (resaltado) {
-          for (var element in Patologicos!) {
-            if (Reportes.personalesPatologicos == "") {
-              Reportes.personalesPatologicos =
-                  "$prefix${element['Pace_APP_DEG_com'].toUpperCase()} "
-                  // "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
-                  // "actualmente "
-                  "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
-                  "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
-            } else {
-              Reportes.personalesPatologicos =
-                  "${Reportes.personalesPatologicos}. $saltoLinea$prefix${element['Pace_APP_DEG_com'].toUpperCase()} "
-                  // "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
-                  // "actualmente "
-                  "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
-                  "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
+          if (Patologicos! != null && Patologicos!.isNotEmpty) {
+            for (var element in Patologicos!) {
+              if (Reportes.personalesPatologicos == "") {
+                Reportes.personalesPatologicos =
+                "$prefix${element['Pace_APP_DEG_com'].toString().toUpperCase()} "
+                // "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+                // "actualmente "
+                    "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
+                    "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
+              } else {
+                Reportes.personalesPatologicos =
+                "${Reportes.personalesPatologicos}. $saltoLinea$prefix${element['Pace_APP_DEG_com'].toUpperCase()} "
+                // "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+                // "actualmente "
+                    "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
+                    "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
+              }
             }
           }
         } else {
@@ -5870,71 +5872,77 @@ class Vitales {
     'Total de Registros'
   ];
 
-  static void fromJson(Map<dynamic, dynamic> json) {
+  static Future<void> fromJson(Map<dynamic, dynamic> json) async {
+    Terminal.printExpected(
+        message: "Vitales. . . fromJson : . $json . : ${json.runtimeType}");
     // Pacientes.Vital = json;
 
-    ID_Vitales = json['ID_Pace_SV'] ?? 0;
+    if (json['Error'] == "No se encontraron datos") {
+    } else {
+      ID_Vitales = json['ID_Pace_SV'] ?? 0;
 
-    Valores.fechaVitales = json['Pace_Feca_SV'].toString();
-    // Variables Vitales ********* *************** **********
-    Valores.tensionArterialSystolica =
-        int.parse(json['Pace_SV_tas'].toString());
-    //
-    Valores.tensionArterialDyastolica =
-        int.parse(json['Pace_SV_tad'].toString());
-    //
-    Valores.frecuenciaCardiaca = int.parse(json['Pace_SV_fc'].toString());
-    //
-    Valores.frecuenciaRespiratoria = int.parse(json['Pace_SV_fr'].toString());
-    //
-    Valores.temperaturCorporal = double.parse(json['Pace_SV_tc'].toString());
-    //
-    Valores.saturacionPerifericaOxigeno =
-        int.parse(json['Pace_SV_spo'].toString());
-    //
-    Valores.alturaPaciente = double.parse(json['Pace_SV_est'].toString());
-    //
-    Valores.pesoCorporalTotal = double.parse(json['Pace_SV_pct'].toString());
-    //
-    Valores.glucemiaCapilar = int.parse(json['Pace_SV_glu'].toString());
-    //
-    Valores.horasAyuno = int.parse(json['Pace_SV_glu_ayu'].toString());
-    //
-    Valores.insulinaGastada = int.parse(json['Pace_SV_insulina'].toString());
-    //
-    // Variables Antropométricas ********* *************** **********
-    Valores.circunferenciaCuello = int.parse(json['Pace_SV_cue'].toString());
-    //
-    Valores.circunferenciaCintura = int.parse(json['Pace_SV_cin'].toString());
-    //
-    Valores.circunferenciaCadera = int.parse(json['Pace_SV_cad'].toString());
-    //
-    Valores.circunferenciaMesobraquial =
-        int.parse(json['Pace_SV_cmb'].toString());
-    //
+      Valores.fechaVitales = json['Pace_Feca_SV'].toString();
+      // Variables Vitales ********* *************** **********
+      Valores.tensionArterialSystolica =
+          int.parse(json['Pace_SV_tas'].toString());
+      //
+      Valores.tensionArterialDyastolica =
+          int.parse(json['Pace_SV_tad'].toString());
+      //
+      Valores.frecuenciaCardiaca = int.parse(json['Pace_SV_fc'].toString());
+      //
+      Valores.frecuenciaRespiratoria = int.parse(json['Pace_SV_fr'].toString());
+      //
+      Valores.temperaturCorporal = double.parse(json['Pace_SV_tc'].toString());
+      //
+      Valores.saturacionPerifericaOxigeno =
+          int.parse(json['Pace_SV_spo'].toString());
+      //
+      Valores.alturaPaciente = double.parse(json['Pace_SV_est'].toString());
+      //
+      Valores.pesoCorporalTotal = double.parse(json['Pace_SV_pct'].toString());
+      //
+      Valores.glucemiaCapilar = int.parse(json['Pace_SV_glu'].toString());
+      //
+      Valores.horasAyuno = int.parse(json['Pace_SV_glu_ayu'].toString());
+      //
+      Valores.insulinaGastada = int.parse(json['Pace_SV_insulina'].toString());
+      //
+      // Variables Antropométricas ********* *************** **********
+      Valores.circunferenciaCuello = int.parse(json['Pace_SV_cue'].toString());
+      //
+      Valores.circunferenciaCintura = int.parse(json['Pace_SV_cin'].toString());
+      //
+      Valores.circunferenciaCadera = int.parse(json['Pace_SV_cad'].toString());
+      //
+      Valores.circunferenciaMesobraquial =
+          int.parse(json['Pace_SV_cmb'].toString());
+      //
 
-    Valores.factorActividad = double.parse(json['Pace_SV_fa'].toString());
-    //
-    Valores.factorEstres = double.parse(json['Pace_SV_fe'].toString());
-    //
+      Valores.factorActividad = double.parse(json['Pace_SV_fa'].toString());
+      //
+      Valores.factorEstres = double.parse(json['Pace_SV_fe'].toString());
+      //
 
-    // Circunferencias y Pliegues ************ ****************** *************
-    Valores.circunferenciaPectoral =
-        int.parse(json['Pace_SV_c_pect'].toString());
-    Valores.pliegueCutaneoBicipital =
-        int.parse(json['Pace_SV_pcb'].toString() ?? '0');
-    Valores.pliegueCutaneoEscapular = int.parse(json['Pace_SV_pse'].toString());
-    Valores.pliegueCutaneoIliaco = int.parse(json['Pace_SV_psi'].toString());
-    Valores.pliegueCutaneoTricipital =
-        int.parse(json['Pace_SV_pst'].toString());
-    Valores.circunferenciaFemoralIzquierda =
-        int.parse(json['Pace_SV_c_fem_izq'].toString());
-    Valores.circunferenciaFemoralDerecha =
-        int.parse(json['Pace_SV_c_fem_der'].toString());
-    Valores.circunferenciaSuralIzquierda =
-        int.parse(json['Pace_SV_c_suro_izq'].toString());
-    Valores.circunferenciaSuralDerecha =
-        int.parse(json['Pace_SV_c_suro_der'].toString());
+      // Circunferencias y Pliegues ************ ****************** *************
+      Valores.circunferenciaPectoral =
+          int.parse(json['Pace_SV_c_pect'].toString());
+      Valores.pliegueCutaneoBicipital =
+          int.parse(json['Pace_SV_pcb'].toString() ?? '0');
+      Valores.pliegueCutaneoEscapular =
+          int.parse(json['Pace_SV_pse'].toString());
+      Valores.pliegueCutaneoIliaco = int.parse(json['Pace_SV_psi'].toString());
+      Valores.pliegueCutaneoTricipital =
+          int.parse(json['Pace_SV_pst'].toString());
+      Valores.circunferenciaFemoralIzquierda =
+          int.parse(json['Pace_SV_c_fem_izq'].toString());
+      Valores.circunferenciaFemoralDerecha =
+          int.parse(json['Pace_SV_c_fem_der'].toString());
+      Valores.circunferenciaSuralIzquierda =
+          int.parse(json['Pace_SV_c_suro_izq'].toString());
+      Valores.circunferenciaSuralDerecha =
+          int.parse(json['Pace_SV_c_suro_der'].toString());
+    }
     //
     // Terminal.printExpected(message: "$json");
   }
@@ -7831,7 +7839,10 @@ class Auxiliares {
       "Conteo de Viriones de VIH",
       "Conteo de Viriones de Hepatitis A",
       "Conteo de Viriones de Hepatitis B",
-      "Conteo de Viriones de Hepatitis C"
+      "Conteo de Viriones de Hepatitis C",
+      "Carga Viral Citomegalovirus",
+      "Carga Viral Virus JC",
+      "",
     ],
     Categorias[17]: [
       "Conteo de Linfocitos CD4+",
@@ -7941,10 +7952,17 @@ class Auxiliares {
       "Inmunoglobulina G",
       "Inmunoglobulina M", // 30
       "Anti-Ro",
-      "Anti-Jo"
-          // "Ac. Lúpico", // 33
-          "Proteína S", // 33
+      "Anti-Jo",
+      // "Ac. Lúpico", // 33
+      "Proteína S", // 33
       "Proteina C", //34
+      "Ac Anti Hepatitis B Core Totales ",
+      "Ac IgM Anti Hepatitis B Core",
+      "Ac IgG Anti Hepatitis B Core",
+      "Anti Musculo Liso ",
+      "Anti Mitocondriales",
+      //
+      "Ac anti Péptido Citrulinado (CCP)",
       "",
       "",
       "",
@@ -10302,43 +10320,47 @@ class Balances {
 
   // *********** *********** ********* ****
   static void fromJson(Map<String, dynamic> json) {
-    Terminal.printExpected(message: "Balances seleccionados $json");
+    Terminal.printExpected(
+        message: "Balances seleccionados $json . : ${json.runtimeType}");
 
-    Balances.ID_Balances = json['ID_Bala'];
-    Valores.fechaRealizacionBalances = json['Pace_bala_Fecha'];
+    if (json['Error'] == "No se encontraron datos") {
+    } else {
+      Balances.ID_Balances = json['ID_Bala'];
+      Valores.fechaRealizacionBalances = json['Pace_bala_Fecha'];
 
-    Valores.viaOralBalances =
-        double.parse(json['Pace_bala_Oral'].toString() ?? '0');
-    Valores.sondaOrogastricaBalances =
-        double.parse(json['Pace_bala_Sonda'].toString() ?? '0');
-    Valores.hemoderivadosBalances =
-        double.parse(json['Pace_bala_Hemo'].toString() ?? '0');
-    Valores.nutricionParenteralBalances =
-        double.parse(json['Pace_bala_NPT'].toString() ?? '0');
-    Valores.parenteralesBalances =
-        double.parse(json['Pace_bala_Sol'].toString() ?? '0');
-    Valores.dilucionesBalances =
-        double.parse(json['Pace_bala_Dil'].toString() ?? '0');
-    Valores.otrosIngresosBalances =
-        double.parse(json['Pace_bala_ING'].toString() ?? '0');
+      Valores.viaOralBalances =
+          double.parse(json['Pace_bala_Oral'].toString() ?? '0');
+      Valores.sondaOrogastricaBalances =
+          double.parse(json['Pace_bala_Sonda'].toString() ?? '0');
+      Valores.hemoderivadosBalances =
+          double.parse(json['Pace_bala_Hemo'].toString() ?? '0');
+      Valores.nutricionParenteralBalances =
+          double.parse(json['Pace_bala_NPT'].toString() ?? '0');
+      Valores.parenteralesBalances =
+          double.parse(json['Pace_bala_Sol'].toString() ?? '0');
+      Valores.dilucionesBalances =
+          double.parse(json['Pace_bala_Dil'].toString() ?? '0');
+      Valores.otrosIngresosBalances =
+          double.parse(json['Pace_bala_ING'].toString() ?? '0');
 
-    Valores.uresisBalances =
-        double.parse(json['Pace_bala_Uresis'].toString() ?? '0');
-    Valores.evacuacionesBalances =
-        double.parse(json['Pace_bala_Evac'].toString() ?? '0');
-    Valores.sangradosBalances =
-        double.parse(json['Pace_bala_Sangrado'].toString() ?? '0');
-    Valores.succcionBalances =
-        double.parse(json['Pace_bala_Succion'].toString() ?? '0');
-    Valores.drenesBalances =
-        double.parse(json['Pace_bala_Drenes'].toString() ?? '0');
-    Valores.otrosEgresosBalances =
-        double.parse(json['Pace_bala_ENG'].toString() ?? '0');
+      Valores.uresisBalances =
+          double.parse(json['Pace_bala_Uresis'].toString() ?? '0');
+      Valores.evacuacionesBalances =
+          double.parse(json['Pace_bala_Evac'].toString() ?? '0');
+      Valores.sangradosBalances =
+          double.parse(json['Pace_bala_Sangrado'].toString() ?? '0');
+      Valores.succcionBalances =
+          double.parse(json['Pace_bala_Succion'].toString() ?? '0');
+      Valores.drenesBalances =
+          double.parse(json['Pace_bala_Drenes'].toString() ?? '0');
+      Valores.otrosEgresosBalances =
+          double.parse(json['Pace_bala_ENG'].toString() ?? '0');
 
-    Exploracion.tipoSondaVesical = json['Pace_Foley'] ?? '';
+      Exploracion.tipoSondaVesical = json['Pace_Foley'] ?? '';
 
-    Valores.horario = json['Pace_bala_HOR'];
-    Valores.uresis = double.parse(json['Pace_bala_Uresis'].toString() ?? '0');
+      Valores.horario = json['Pace_bala_HOR'];
+      Valores.uresis = double.parse(json['Pace_bala_Uresis'].toString() ?? '0');
+    }
 
     // Valores.balanceTotal = Valores.ingresos - Valores.egresos;
     // Valores.diuresis = (Valores.uresis / Valores.pesoCorporalTotal!) / Valores.horario;
@@ -10604,13 +10626,13 @@ class Hospitalizaciones {
     "dropQuery": "DROP TABLE pace_hosp",
     "consultQuery": "SELECT * FROM pace_hosp WHERE",
     "consultIdQuery":
-        "SELECT * FROM pace_hosp WHERE ID_Pace = ? ORDER BY ID_Hosp ASC",
+        "SELECT * FROM pace_hosp WHERE ID_Pace = ? ORDER BY ID_Hosp DESC",
     "consultIdLastQuery": "SELECT * FROM pace_hosp WHERE ID_Pace = ? "
         "ORDER BY ID_Hosp DESC",
     "consultByIdPrimaryQuery": "SELECT * FROM pace_hosp WHERE ID_Hosp = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_hosp",
     "consultLastQuery":
-        "SELECT * FROM pace_hosp WHERE ID_Pace = ? ORDER BY ID_Hosp ASC",
+        "SELECT * FROM pace_hosp WHERE ID_Pace = ? ORDER BY ID_Hosp DESC",
     "consultByName": "SELECT * FROM pace_hosp WHERE Pace_APP_DEG LIKE '%",
     "registerQuery": "INSERT INTO pace_hosp (ID_Pace, "
         "Feca_INI_Hosp, Id_Cama, Dia_Estan, Medi_Trat, Serve_Trat, Serve_Trat_INI, "
@@ -11057,15 +11079,25 @@ class Repositorios {
               "Hitos de la Hospitalización del ID_Hosp ${Pacientes.ID_Hospitalizacion}"
               " - $value : : "
               "${Reportes.reportes['Hitos_Hospitalarios']}");
+      //
+      Operadores.alertActivity(
+        context: context,
+        tittle: "Actualización de los Hitos Hospitalarios . . . ",
+        message: "VALUE del actualizar : "
+            "Hitos de la Hospitalización del ID_Hosp ${Pacientes.ID_Hospitalizacion}"
+            " - $value : : \n"
+            "${Reportes.reportes['Hitos_Hospitalarios']}",
+        onAcept: () => Navigator.of(context).pop(),
+      );
     }).whenComplete(() {
       // Terminal.printExpected(message: "PA : : ${Valores.padecimientoActual}");
     });
-        // .onError((onError, stackTrace) => Operadores.alertActivity(
-        //   context: context,
-        //   tittle: "ERROR  Al Actualizar registro de Nota",
-        //   message: "ERROR : $onError : : $stackTrace",
-        //   onAcept: () => Navigator.of(context).pop(),
-        // ));
+    // .onError((onError, stackTrace) => Operadores.alertActivity(
+    //   context: context,
+    //   tittle: "ERROR  Al Actualizar registro de Nota",
+    //   message: "ERROR : $onError : : $stackTrace",
+    //   onAcept: () => Navigator.of(context).pop(),
+    // ));
   }
 
   static Future<void> actualizarRegistro(

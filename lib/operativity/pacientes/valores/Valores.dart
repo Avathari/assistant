@@ -32,35 +32,21 @@ class Valores {
     // ********* *********** ********** ******
 
     // ********* *********** ********** ******
-    Eticos.consultarRegistro();
-    Viviendas.consultarRegistro();
-    Higienes.consultarRegistro();
-    Diarios.consultarRegistro();
-    Alimenticios.consultarRegistro();
-    Limitaciones.consultarRegistro();
-    Sustancias.consultarRegistro();
-    //
-    Toxicomanias.consultarRegistro();
-    // ********* *********** ********** ******
-    Vitales.registros();
-    // Vitales.ultimoRegistro();
-    Patologicos.registros();
-    // Patologicos.consultarRegistro();
-    Diagnosticos.registros();
-    // Diagnosticos.consultarRegistro();
-    Alergicos.registros();
-    // Alergicos.consultarRegistro();
-    Quirurgicos.registros();
-    // Quirurgicos.consultarRegistro();
-    Transfusionales.registros();
-    // Transfusionales.consultarRegistro();
-    Traumatologicos.registros();
-    // Traumatologicos.consultarRegistro();
-    Vacunales.registros();
-    // Vacunales.consultarRegistro();
+    // Eticos.consultarRegistro();
+    // Viviendas.consultarRegistro();
+    // Higienes.consultarRegistro();
+    // Diarios.consultarRegistro();
+    // Alimenticios.consultarRegistro();
+    // Limitaciones.consultarRegistro();
+    // Sustancias.consultarRegistro();
+    // //
+    // Toxicomanias.consultarRegistro();
+    // Alergicos.registros();     // Alergicos.consultarRegistro();
+    // Transfusionales.registros();     // Transfusionales.consultarRegistro();
+    // Traumatologicos.registros();     // Traumatologicos.consultarRegistro();
+    // Vacunales.registros();     // Vacunales.consultarRegistro();
 
-    Balances.consultarRegistro();
-    Auxiliares.registros();
+
 
 // ********* *********** ********** ******
 //     Electrocardiogramas.ultimoRegistro();
@@ -73,28 +59,36 @@ class Valores {
     //     Patologicos.patologicos['consultLastQuery'],
     //     Pacientes.ID_Paciente);
     // valores.addAll(patol); // Enfermedades de base del paciente, asi como las Hospitalarias.
-    final vital = await Actividades.consultarId(
-        Databases.siteground_database_regpace,
-        Vitales.vitales['consultLastQuery'],
-        Pacientes.ID_Paciente);
-    // Pacientes.Vital = vital;
-    valores.addAll(vital);
+    // final vital = await Actividades.consultarId(
+    //     Databases.siteground_database_regpace,
+    //     Vitales.vitales['consultLastQuery'],
+    //     Pacientes.ID_Paciente);
+    // // Pacientes.Vital = vital;
+    // valores.addAll(vital);
+    //
+    // final antro = await Actividades.consultarId(
+    //     Databases.siteground_database_regpace,
+    //     Vitales.antropo['consultLastQuery'],
+    //     Pacientes.ID_Paciente);
+    // valores.addAll(antro);
+    // Pacientes.Vital.addAll(antro);
 
-    final antro = await Actividades.consultarId(
-        Databases.siteground_database_regpace,
-        Vitales.antropo['consultLastQuery'],
-        Pacientes.ID_Paciente);
-    valores.addAll(antro);
-    Pacientes.Vital.addAll(antro);
+    // final elect = await Actividades.consultarId(
+    //     Databases.siteground_database_reggabo,
+    //     Electrocardiogramas.electrocardiogramas['consultLastQuery'],
+    //     Pacientes.ID_Paciente,
+    //     emulated: true);
+    // Pacientes.Electrocardiogramas = elect;
+    // valores.addAll(elect);
 
-    final elect = await Actividades.consultarId(
-        Databases.siteground_database_reggabo,
-        Electrocardiogramas.electrocardiogramas['consultLastQuery'],
-        Pacientes.ID_Paciente,
-        emulated: true);
-    Pacientes.Electrocardiogramas = elect;
-    valores.addAll(elect);
-
+    // ********* *********** ********** ******
+    // Patologicos.registros();     // Patologicos.consultarRegistro();
+    // Diagnosticos.registros();     // Diagnosticos.consultarRegistro();
+    Vitales.registros();     // Vitales.ultimoRegistro();
+    Quirurgicos.registros();     // Quirurgicos.consultarRegistro();
+    Balances.consultarRegistro();
+    Auxiliares.registros();
+    //
     final vento = await Actividades.consultarId(
         Databases.siteground_database_reghosp,
         Ventilaciones.ventilacion['consultLastQuery'],
@@ -125,9 +119,6 @@ class Valores {
     //     Pacientes.ID_Paciente,
     //     emulated: true);
     // valores.addAll(hosp);
-
-    // Situaciones.ultimoRegistro();
-    Expedientes.ultimoRegistro();
 
     Valores.fromJson(valores);
     return true;
@@ -525,26 +516,28 @@ class Valores {
     // Valores.horario = json['Pace_bala_HOR'];
     // Valores.uresis = double.parse(json['Pace_bala_Uresis'].toString() ?? '0');
     // Datos generales de la última Hospitalización. **** ** *********** ****** * *** *
-    Pacientes.ID_Hospitalizacion = json['ID_Hosp'] ?? 0;
-    Hospitalizaciones.Hospitalizacion['ID_Hosp'] = Pacientes.ID_Hospitalizacion;
-    // ******************************************** *** *
-    Valores.fechaIngresoHospitalario = json['Feca_INI_Hosp'] ?? '';
-    Hospitalizaciones.Hospitalizacion['Feca_INI_Hosp'] =
-        Valores.fechaIngresoHospitalario;
-    Valores.numeroCama = json['Id_Cama'].toString() ?? 'N/A';
-    Hospitalizaciones.Hospitalizacion['Id_Cama'] = Valores.numeroCama;
-    Valores.medicoTratante = json['Medi_Trat'] ?? '';
-    Hospitalizaciones.Hospitalizacion['Medi_Trat'] = Valores.medicoTratante;
-    Valores.servicioTratante = json['Serve_Trat'] ?? '';
-    Hospitalizaciones.Hospitalizacion['Serve_Trat'] = Valores.servicioTratante;
-    Valores.servicioTratanteInicial = json['Serve_Trat_INI'] ?? '';
-    Hospitalizaciones.Hospitalizacion['Serve_Trat_INI'] =
-        Valores.servicioTratanteInicial;
-    Valores.fechaEgresoHospitalario = json['Feca_EGE_Hosp'] ?? '';
-    Hospitalizaciones.Hospitalizacion['Feca_EGE_Hosp'] =
-        Valores.fechaEgresoHospitalario;
-    Valores.motivoEgreso = json['EGE_Motivo'] ?? '';
-    Hospitalizaciones.Hospitalizacion['EGE_Motivo'] = Valores.motivoEgreso;
+    if (Pacientes.ID_Hospitalizacion == 0) {
+      Pacientes.ID_Hospitalizacion = json['ID_Hosp'] ?? 0;
+      Hospitalizaciones.Hospitalizacion['ID_Hosp'] = Pacientes.ID_Hospitalizacion;
+      // ******************************************** *** *
+      Valores.fechaIngresoHospitalario = json['Feca_INI_Hosp'] ?? '';
+      Hospitalizaciones.Hospitalizacion['Feca_INI_Hosp'] =
+          Valores.fechaIngresoHospitalario;
+      Valores.numeroCama = json['Id_Cama'].toString() ?? 'N/A';
+      Hospitalizaciones.Hospitalizacion['Id_Cama'] = Valores.numeroCama;
+      Valores.medicoTratante = json['Medi_Trat'] ?? '';
+      Hospitalizaciones.Hospitalizacion['Medi_Trat'] = Valores.medicoTratante;
+      Valores.servicioTratante = json['Serve_Trat'] ?? '';
+      Hospitalizaciones.Hospitalizacion['Serve_Trat'] = Valores.servicioTratante;
+      Valores.servicioTratanteInicial = json['Serve_Trat_INI'] ?? '';
+      Hospitalizaciones.Hospitalizacion['Serve_Trat_INI'] =
+          Valores.servicioTratanteInicial;
+      Valores.fechaEgresoHospitalario = json['Feca_EGE_Hosp'] ?? '';
+      Hospitalizaciones.Hospitalizacion['Feca_EGE_Hosp'] =
+          Valores.fechaEgresoHospitalario;
+      Valores.motivoEgreso = json['EGE_Motivo'] ?? '';
+      Hospitalizaciones.Hospitalizacion['EGE_Motivo'] = Valores.motivoEgreso;
+    }
 
     json['Pace_FIAT'] = Pacientes.imagenPaciente;
     //

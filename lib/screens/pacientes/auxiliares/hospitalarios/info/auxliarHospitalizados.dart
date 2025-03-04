@@ -209,7 +209,7 @@ class Paneles {
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
               child: Text(
-                snapshot.data![index].patologicos[ind]['Pace_APP_DEG'],
+                snapshot.data![index].patologicos[ind]['Pace_APP_DEG'] ?? "",
                 style: Styles.textSyleGrowth(fontSize: 8),
               ),
             );
@@ -217,7 +217,7 @@ class Paneles {
           separatorBuilder: (BuildContext context, int index) {
             return const SizedBox(height: 8);
           },
-        ));
+        ),);
   }
 
   static Widget diagnosticosPanel(
@@ -498,26 +498,29 @@ class Paneles {
               var list = Listas.listWithoutRepitedValues(
                   Listas.listFromMapWithOneKey(
                       snapshot.data[index].paraclinicos));
+              // Terminal.printExpected(message: "$list . ${list.runtimeType}");
               //
-              return ElevatedButton(
-                onPressed: () {
-                  Pacientes.Paraclinicos = snapshot.data![index].paraclinicos;
+              if (list.isNotEmpty && list.first != null) {
+                return ElevatedButton(
+                  onPressed: () {
+                    Pacientes.Paraclinicos = snapshot.data![index].paraclinicos;
 
-                  Terminal.printExpected(
-                      message:
-                          "snapshot.data![index].paraclinicos ${snapshot.data![index].paraclinicos}");
+                    Terminal.printExpected(
+                        message:
+                            "snapshot.data![index].paraclinicos ${snapshot.data![index].paraclinicos}");
 
-                  Datos.portapapeles(
-                      context: context,
-                      text: Auxiliares.porFecha(
-                          fechaActual: list[ind], esAbreviado: true));
-                },
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-                child: Text(
-                  Calendarios.formatDate(list[ind]),
-                  style: Styles.textSyleGrowth(fontSize: 8),
-                ),
-              );
+                    Datos.portapapeles(
+                        context: context,
+                        text: Auxiliares.porFecha(
+                            fechaActual: list[ind], esAbreviado: true));
+                  },
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                  child: Text(
+                    Calendarios.formatDate(list[ind]) ?? "",
+                    style: Styles.textSyleGrowth(fontSize: 8),
+                  ),
+                );
+              }
             },
             separatorBuilder: (BuildContext context, int index) =>
                 const SizedBox(height: 8)));

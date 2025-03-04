@@ -19,6 +19,7 @@ import 'package:assistant/widgets/Spinner.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 // # Clase .dart para la creación predeterminada de interfaces de registro, consulta y actualización.
@@ -266,9 +267,22 @@ class _OperacionesHospitalizacionesState
           },
           withShowOption: true,
           selection: true,
-          onSelected: () {
+          onSelected: () async {
+            final DateTime? picked = await showDatePicker(
+                context: context,
+                // initialEntryMode: DatePickerEntryMode.calendar,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(1900),
+                lastDate: DateTime(2055),
+                builder: (BuildContext context, Widget? child) {
+                  return Theme(
+                      data: ThemeData.dark().copyWith(
+                          dialogBackgroundColor: Theming.cuaternaryColor),
+                      child: child!);
+                });
+            //
             fechaIngresoTextController.text =
-                Calendarios.today(format: 'yyyy-MM-dd');
+                DateFormat("yyyy-MM-dd").format(picked!);
             setState(() {
               Valores.fechaIngresoHospitalario =
                   fechaIngresoTextController.text;
@@ -289,9 +303,27 @@ class _OperacionesHospitalizacionesState
           numOfLines: 1,
           withShowOption: true,
           selection: true,
-          onSelected: () {
+          onSelected: () async {
+            final DateTime? picked = await showDatePicker(
+                context: context,
+                // initialEntryMode: DatePickerEntryMode.calendar,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(1900),
+                lastDate: DateTime(2055),
+                builder: (BuildContext context, Widget? child) {
+                  return Theme(
+                      data: ThemeData.dark().copyWith(
+                          dialogBackgroundColor: Theming.cuaternaryColor),
+                      child: child!);
+                });
+            //
             fechaEgresoTextController.text =
-                Calendarios.today(format: 'yyyy-MM-dd');
+                DateFormat("yyyy-MM-dd").format(picked!);
+            setState(() {
+              Valores.fechaEgresoHospitalario =
+                  fechaEgresoTextController.text;
+              diasEstanciaTextController.text = Valores.diasEstancia.toString();
+            });
           },
         ),
       if (isTablet(context) || isDesktop(context) || isLargeDesktop(context))
@@ -317,14 +349,26 @@ class _OperacionesHospitalizacionesState
                 },
                 withShowOption: true,
                 selection: true,
-                onSelected: () {
+                onSelected: () async {
+                  final DateTime? picked = await showDatePicker(
+                      context: context,
+                      // initialEntryMode: DatePickerEntryMode.calendar,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1900),
+                      lastDate: DateTime(2055),
+                      builder: (BuildContext context, Widget? child) {
+                        return Theme(
+                            data: ThemeData.dark().copyWith(
+                                dialogBackgroundColor: Theming.cuaternaryColor),
+                            child: child!);
+                      });
+                  //
                   fechaIngresoTextController.text =
-                      Calendarios.today(format: 'yyyy-MM-dd');
+                      DateFormat("yyyy-MM-dd").format(picked!);
                   setState(() {
                     Valores.fechaIngresoHospitalario =
                         fechaIngresoTextController.text;
-                    diasEstanciaTextController.text =
-                        Valores.diasEstancia.toString();
+                    diasEstanciaTextController.text = Valores.diasEstancia.toString();
                   });
                 },
                 numOfLines: 1,
@@ -343,9 +387,27 @@ class _OperacionesHospitalizacionesState
                 numOfLines: 1,
                 withShowOption: true,
                 selection: true,
-                onSelected: () {
+                onSelected: () async {
+                  final DateTime? picked = await showDatePicker(
+                      context: context,
+                      // initialEntryMode: DatePickerEntryMode.calendar,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1900),
+                      lastDate: DateTime(2055),
+                      builder: (BuildContext context, Widget? child) {
+                        return Theme(
+                            data: ThemeData.dark().copyWith(
+                                dialogBackgroundColor: Theming.cuaternaryColor),
+                            child: child!);
+                      });
+                  //
                   fechaEgresoTextController.text =
-                      Calendarios.today(format: 'yyyy-MM-dd');
+                      DateFormat("yyyy-MM-dd").format(picked!);
+                  setState(() {
+                    Valores.fechaEgresoHospitalario =
+                        fechaEgresoTextController.text;
+                    diasEstanciaTextController.text = Valores.diasEstancia.toString();
+                  });
                 },
               ),
             ),

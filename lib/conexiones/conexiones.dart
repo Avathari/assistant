@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,7 +20,8 @@ class Env {
 
 class Direcciones {
   static String urlLocal = "http://localhost:8080/flutter_api";
-  static String urlSite = "https://luisr107.sg-host.com/"; // luisr107.sg-host.com // https://luisr107.sg-host.com/
+  static String urlSite =
+      "https://luisr107.sg-host.com/"; // luisr107.sg-host.com // https://luisr107.sg-host.com/
   static String urlAnother = "http://192.168.0.19:8080/flutter_api";
 }
 
@@ -88,15 +91,21 @@ class Actividades {
         "emulated": emulated.toString(),
       },
     );
-    Terminal.printAlert(message: "RESPONSE STATUS (consultar): : ${response.statusCode} : Body ${response.body.isEmpty} . ${response.body.toString()}");
+    Terminal.printAlert(
+        message:
+            "RESPONSE STATUS (consultar): : ${response.statusCode} : Body ${response.body.isEmpty} . ${response.body.toString()}");
     return json.decode(response.body).cast<Map<String, dynamic>>();
   }
 
-  static Future<List> consultarAllById(String database, String query, int id,
+  static Future<List<Map<String, dynamic>>> consultarAllById(
+      String database, String query, int id,
       {bool emulated = false}) async {
     final response = await http.post(
       Uri.parse("${Env.URL_PREFIX}/consultarAllById.php"),
       encoding: Encoding.getByName('utf-8'),
+      headers: {
+        "Accept-Encoding": "gzip", // 📌 Solicitamos respuesta comprimida
+      },
       body: <String, String>{
         "query": query,
         "database": database,
@@ -107,8 +116,38 @@ class Actividades {
         "id": id.toString()
       },
     );
-    // Terminal.printAlert(message: "RESPONSE STATUS (consultarAllById) : : ${response.statusCode} : ${response.body.toString()}");
-    return json.decode(response.body).cast<Map<String, dynamic>>();
+
+    if (response.statusCode == 200) {
+      try {
+        dynamic jsonResponse;
+
+        if (response.headers["content-encoding"] == "gzip") {
+          List<int> bytes = response.bodyBytes;
+          var decompressed = utf8.decode(gzip.decode(bytes));
+          jsonResponse = json.decode(decompressed);
+        } else {
+          jsonResponse = json.decode(utf8.decode(response.bodyBytes));
+        }
+
+        // 📌 Verificar la estructura de la respuesta
+        if (jsonResponse is List) {
+          return jsonResponse.cast<Map<String, dynamic>>(); // ✅ Manejo de lista de objetos
+        } else if (jsonResponse is Map<String, dynamic>) {
+          return [jsonResponse]; // ✅ Convertir el objeto en lista
+        } else {
+          return [{'Error': 'Estructura de datos inesperada'}];
+        }
+      } catch (e) {
+        print("Error al descomprimir o decodificar JSON: $e");
+        return [
+          {'Error': 'Error al procesar la respuesta'}
+        ];
+      }
+    } else {
+      return [
+        {'Error': 'Hubo un error. Código: ${response.statusCode}'}
+      ];
+    }
   }
 
   static Future<Map<String, dynamic>> consultarId(
@@ -117,6 +156,9 @@ class Actividades {
     final response = await http.post(
       Uri.parse("${Env.URL_PREFIX}/consultarId.php"),
       encoding: Encoding.getByName('utf-8'),
+      headers: {
+        "Accept-Encoding": "gzip", // 📌 Solicitamos respuesta comprimida
+      },
       body: <String, String>{
         "query": query,
         "database": database,
@@ -128,10 +170,13 @@ class Actividades {
       },
     );
 
-    // Terminal.printAlert(message: "RESPONSE STATUS (CONSULT_ID) : : ${response.statusCode} : ${response.body.toString()}");
+    // 📌 Verificar si la respuesta está comprimida y descomprimir si es necesario
     if (response.statusCode == 200) {
-      if (response.body == '[]') {
-        return {'Error': 'Hubo un error'};
+      if (response.headers["content-encoding"] == "gzip") {
+        List<int> bytes = response.bodyBytes;
+        var decompressed = utf8.decode(gzip.decode(bytes));
+
+        return json.decode(decompressed) as Map<String, dynamic>;
       } else {
         return json.decode(response.body) as Map<String, dynamic>;
       }
@@ -141,7 +186,7 @@ class Actividades {
   }
 
   static Future<Map<String, dynamic>> detalles(String database, String query,
-      {bool emulated = false }) async {
+      {bool emulated = false}) async {
     final response = await http.post(
       Uri.parse("${Env.URL_PREFIX}/detalles.php"),
       encoding: Encoding.getByName('utf-8'),
@@ -164,17 +209,18 @@ class Actividades {
       String database, String query, int id,
       {bool emulated = false}) async {
     // List elements //
-    Terminal.printWarning(message: ""
-        "\n"
-        "\n"
-        "$emulated . ID_Pace $id . \n"
-        "$database \n"
-        "$hostname \n"
-        "$username \n"
-        "$password \n"
-        "\n"
-        // "$query"
-        "");
+    Terminal.printWarning(
+        message: ""
+            "\n"
+            "\n"
+            "$emulated . ID_Pace $id . \n"
+            "$database \n"
+            "$hostname \n"
+            "$username \n"
+            "$password \n"
+            "\n"
+            // "$query"
+            "");
 
     final response = await http.post(
       Uri.parse("${Env.URL_PREFIX}/detallesById.php"),
@@ -213,18 +259,19 @@ class Actividades {
         "elements": jsonEncode(elements),
       },
     );
-    Terminal.printAlert(message: ""
-        "RESPONSE STATUS (REGISTER) : : ${response.statusCode} :: \n "
-        ":: Body ${response.body.toString()}");
+    Terminal.printAlert(
+        message: ""
+            "RESPONSE STATUS (REGISTER) : : ${response.statusCode} :: \n "
+            ":: Body ${response.body.toString()}");
     return response.body;
   }
 
-  static Future<String> registrarAnidados(String database, String query, List<List> elements,
+  static Future<String> registrarAnidados(
+      String database, String query, List<List> elements,
       {bool emulated = false}) async {
     final response = await http.post(
       Uri.parse("${Env.URL_PREFIX}/registrarAnidados.php"),
       encoding: Encoding.getByName('utf-8'),
-
       body: <String, dynamic>{
         "query": query,
         "database": database,
@@ -293,7 +340,8 @@ class Constantes {
 
   static void reinit({List<dynamic>? value}) {
     Constantes.dummyArray = ["Vacio"];
-    Directrices.coordenada = false; // Variable Global para VisualPacientes NO devuelva a Hospitalizados.dart
+    Directrices.coordenada =
+        false; // Variable Global para VisualPacientes NO devuelva a Hospitalizados.dart
     // *********************************************
     // print("Constantes reinit value $value ");
     // *********************************************
@@ -342,8 +390,7 @@ class Databases {
   static const siteground_database_regheral = "dbcpkhlf0274u5";
   static const siteground_database_vocal = "dbonsgifmtnolo";
 
-  static const siteground_database_regfine =
-      "dbwpodcchpxgbf";
+  static const siteground_database_regfine = "dbwpodcchpxgbf";
 
   // # ###############################################################
   // #

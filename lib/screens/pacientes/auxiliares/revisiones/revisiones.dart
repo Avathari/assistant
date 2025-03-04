@@ -46,17 +46,32 @@ class _RevisionesState extends State<Revisiones> {
         message:
             " . . . Iniciando Actividad - Repositorio Paraclinicos del Pacientes : : $fileAssocieted : : \n"
             "Pacientes.localPath ${Pacientes.localPath} : . . . \n"
-            "${Pacientes.ID_Paciente}");
+            "ID Paciente . : . ${Pacientes.ID_Paciente}");
     //
-    Auxiliares.ultimoRegistro()
-        .then((value) => Auxiliares.fromJson(value))
-        .whenComplete(() => setState(() {}))
-        .onError((error, stackTrace) => Operadores.alertActivity(
-              context: context,
-              tittle: "ERROR al consultar último registro",
-              message: "ERROR : $error : : $stackTrace",
-              onAcept: () => Navigator.of(context).pop(),
-            ));
+    // Archivos.readJsonToMap(filePath: Pacientes.localPath).then((onValue) {
+    //   setState(() {
+    //     Pacientes.Paciente = onValue;
+    //   });
+    // });
+
+    Archivos.readJsonToMap(filePath: Vitales.fileAssocieted).then((value) {
+      Vitales.fromJson(value.last)
+          .whenComplete(() => setState(() => Pacientes.Vitales = value));
+    }).onError((error, stackTrace) {
+      // Vitales.ultimoRegistro()
+      //     .then((value) => Vitales.fromJson(value))
+      //     .whenComplete(() => setState(() {}))
+      //     .onError((error, stackTrace) => Operadores.alertActivity(
+      //           context: context,
+      //           tittle: "ERROR al consultar último registro",
+      //           message: "ERROR : $error : : $stackTrace",
+      //           onAcept: () => Navigator.of(context).pop(),
+      //         ));
+    });
+    //
+    setState(() {
+
+    });
     //
     super.initState();
   }
@@ -72,7 +87,6 @@ class _RevisionesState extends State<Revisiones> {
   Widget build(BuildContext context) {
     return isMobile(context) ? mobileView() : tabletView();
   }
-
 
   mobileView() {
     return RoundedPanel(
@@ -1299,7 +1313,8 @@ class _RevisionesState extends State<Revisiones> {
           Expanded(
             flex: 2,
             child: Container(
-              padding: EdgeInsets.only(bottom: 106, top: 2.0, left: 2.0, right: 2.0),
+              padding:
+                  EdgeInsets.only(bottom: 106, top: 2.0, left: 2.0, right: 2.0),
               decoration: ContainerDecoration.roundedDecoration(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,

@@ -68,8 +68,10 @@ class VisualPacientes extends StatefulWidget {
 class _VisualPacientesState extends State<VisualPacientes> {
   @override
   void initState() {
+    //
     Pacientes.getValores();
     Pacientes.getParaclinicosHistorial(reload: true);
+    Expedientes.ultimoRegistro();
     //
     super.initState();
   }

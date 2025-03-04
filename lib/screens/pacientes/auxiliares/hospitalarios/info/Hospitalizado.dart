@@ -108,7 +108,7 @@ class Internado {
       await Actividades.consultarId(
         Databases.siteground_database_reghosp,
         "SELECT * FROM pace_hosp WHERE ID_Pace = ? "
-        "ORDER BY ID_Hosp ASC",
+        "ORDER BY ID_Hosp DESC",
         idPaciente,
       ).then((value) {
         idHospitalizado = value['ID_Hosp'] ?? 0;

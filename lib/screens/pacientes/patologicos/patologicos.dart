@@ -519,10 +519,11 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
 
   @override
   void initState() {
-    if (widget.actualized!)
+    if (widget.actualized!) {
       reiniciar();
-    else
+    } else {
       iniciar();
+    }
 
     super.initState();
   }
@@ -841,7 +842,7 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
   void onSelected(AsyncSnapshot<dynamic> snapshot, int posicion,
       BuildContext context, String operaciones) {
     Patologicos.Degenerativos = snapshot.data[posicion];
-    Patologicos.selectedDiagnosis = Patologicos.Degenerativos['Pace_APP_DEG'];
+    Patologicos.selectedDiagnosis = Patologicos.Degenerativos['Pace_APP_DEG'] ?? "";
     Pacientes.Patologicos = snapshot.data;
     //
     toOperaciones(context, operaciones);

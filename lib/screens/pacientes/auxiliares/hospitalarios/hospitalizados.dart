@@ -711,7 +711,14 @@ class _HospitalizadosState extends State<Hospitalizados> {
                         child: CircleIcon(
                             tittle: 'Recargar Registro . . . ',
                             iconed: Icons.recent_actors_rounded,
-                            onChangeValue: () => _refreshActualList(index))),
+                            onChangeValue: () {
+                              Operadores.loadingActivity(context: context,
+                              dismisable: false,
+                              tittle: "Consultando nuevamente registro . . . ",
+                              message: " . . . ", );
+                              //
+                              _refreshActualList(index).whenComplete(() =>Navigator.of(context).pop());
+                            })),
                   ],
                 )),
             Expanded(
@@ -899,7 +906,14 @@ class _HospitalizadosState extends State<Hospitalizados> {
                   CircleIcon(
                       tittle: 'Recargar Registro . . . ',
                       iconed: Icons.recent_actors_rounded,
-                      onChangeValue: () => _refreshActualList(index)),
+                      onChangeValue: () {
+                        Operadores.loadingActivity(context: context,
+                          dismisable: false,
+                          tittle: "Consultando nuevamente registro . . . ",
+                          message: " . . . ", );
+                        //
+                        _refreshActualList(index).whenComplete(() =>Navigator.of(context).pop());
+                      }),
                 GrandIcon(
                     iconData: Icons.hourglass_bottom,
                     labelButton: 'Cutivos y Hemocultivos . . . ',
@@ -1942,38 +1956,43 @@ class _HospitalizadosState extends State<Hospitalizados> {
       height: isMobile(context) ? 850 : 1000,
       color: Colors.black54,
       child: widget.actualLateralPage == 0
-          ? Wrap(
-              direction: Axis.vertical,
-              runSpacing: 10,
-              spacing: 10,
-              alignment: WrapAlignment.center,
-              children: List<Widget>.generate(
-                  foundedItems!.length,
-                  (index) => Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: InkWell(
-                          onTap: () {
-                            _pageController.animateToPage(index,
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeIn);
-                            _key.currentState!.closeEndDrawer();
-                          },
-                          child: CircleAvatar(
-                            radius: 14,
-                            // check if a dot is connected to the current page
-                            // if true, give it a different color
-                            backgroundColor: _activePage == index
-                                ? Colors.amber
-                                : Colors.grey,
-                            child: Text(
-                                foundedItems![index]
-                                    .hospitalizedData['Id_Cama']
-                                    .toString(),
-                                style: Styles.textSyleGrowth(fontSize: 8)),
+          ? SingleChildScrollView(
+        controller: ScrollController(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // direction: Axis.vertical,
+                // runSpacing: 10,
+                // spacing: 10,
+                // alignment: WrapAlignment.center,
+                children: List<Widget>.generate(
+                    foundedItems!.length,
+                    (index) => Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          margin: const EdgeInsets.symmetric(vertical: 5),
+                          child: InkWell(
+                            onTap: () {
+                              _pageController.animateToPage(index,
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeIn);
+                              _key.currentState!.closeEndDrawer();
+                            },
+                            child: CircleAvatar(
+                              radius: 14,
+                              // check if a dot is connected to the current page
+                              // if true, give it a different color
+                              backgroundColor: _activePage == index
+                                  ? Colors.amber
+                                  : Colors.grey,
+                              child: Text(
+                                  foundedItems![index]
+                                      .hospitalizedData['Id_Cama']
+                                      .toString(),
+                                  style: Styles.textSyleGrowth(fontSize: 8)),
+                            ),
                           ),
-                        ),
-                      )),
-            )
+                        )),
+              ),
+          )
           : Paneles.HospitalaryPendientes(context, foundedItems),
     );
   }

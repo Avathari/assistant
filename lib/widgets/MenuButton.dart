@@ -25,6 +25,8 @@ class _MenuButtonState extends State<MenuButton> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Icon(
                 widget.iconData!,
@@ -33,7 +35,8 @@ class _MenuButtonState extends State<MenuButton> {
               const SizedBox(
                 height: 10,
               ),
-              Text(widget.labelButton!),
+              Text(widget.labelButton!,
+              textAlign: TextAlign.end,),
             ],
           ),
         ));

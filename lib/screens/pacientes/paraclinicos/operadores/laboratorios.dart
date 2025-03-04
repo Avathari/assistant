@@ -757,7 +757,9 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                                 operationActivity = false;
                                 elementSelected = data[index];
                                 Pacientes.Auxiliar = data[index];
-                                carouselController.jumpToPage(1);
+                                if (isMobile(context)) {
+                                  carouselController.jumpToPage(1);
+                                }
 
                                 updateElement(data[index]);
                               }),

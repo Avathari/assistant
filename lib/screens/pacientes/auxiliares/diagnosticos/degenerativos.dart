@@ -102,7 +102,7 @@ class _DegenerativosState extends State<Degenerativos> {
                     },
                     isThreeLine: false,
                     title: Text(
-                      Pacientes.Patologicos![index]['Pace_APP_DEG'],
+                      Pacientes.Patologicos![index]['Pace_APP_DEG'] ?? "",
                       textAlign: TextAlign.right,
                       style: TextStyle(
                         color: Colors.grey,
@@ -111,7 +111,7 @@ class _DegenerativosState extends State<Degenerativos> {
                       ),
                     ),
                     subtitle: Text(
-                      Pacientes.Patologicos![index]['Pace_APP_DEG_com'],
+                      Pacientes.Patologicos![index]['Pace_APP_DEG_com'] ?? "",
                       textAlign: TextAlign.right,
                       style: TextStyle(
                         color: Colors.grey,
