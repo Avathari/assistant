@@ -12,6 +12,7 @@ import 'package:assistant/operativity/pacientes/valores/Valorados/hepatometrias.
 import 'package:assistant/operativity/pacientes/valores/Valorados/hidrometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/metabolometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/renometrias.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/ventometr%C3%ADas.dart';
 
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/operativity/pacientes/valores/semiologia/semiotica.dart';
@@ -688,16 +689,16 @@ class Pacientes {
             for (var element in Patologicos!) {
               if (Reportes.personalesPatologicos == "") {
                 Reportes.personalesPatologicos =
-                "$prefix${element['Pace_APP_DEG_com'].toString().toUpperCase()} "
-                // "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
-                // "actualmente "
+                    "$prefix${element['Pace_APP_DEG_com'].toString().toUpperCase()} "
+                    // "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+                    // "actualmente "
                     "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
                     "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
               } else {
                 Reportes.personalesPatologicos =
-                "${Reportes.personalesPatologicos}. $saltoLinea$prefix${element['Pace_APP_DEG_com'].toUpperCase()} "
-                // "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
-                // "actualmente "
+                    "${Reportes.personalesPatologicos}. $saltoLinea$prefix${element['Pace_APP_DEG_com'].toUpperCase()} "
+                    // "diagnósticado hace ${element['Pace_APP_DEG_dia']} años, "
+                    // "actualmente "
                     "${element['Pace_APP_DEG_tra'].toString().toLowerCase()}. "
                     "${element['Pace_APP_DEG_sus'].toString().toLowerCase()}";
               }
@@ -1482,13 +1483,15 @@ class Pacientes {
     }
   }
 
-  static getImage() {
-    Actividades.consultarId(Databases.siteground_database_regpace,
+  static getImage() async {
+    await Actividades.consultarId(Databases.siteground_database_regpace,
             pacientes['consultImage'], Pacientes.ID_Paciente)
         .then((value) {
-      // // print("consultImage $value");
-      Pacientes.imagenPaciente = value['Pace_FIAT'];
-      Valores.imagenUsuario = value['Pace_FIAT'];
+      print("consultImage $value");
+      if (value != null) {
+        Pacientes.imagenPaciente = value['Pace_FIAT'];
+        Valores.imagenUsuario = value['Pace_FIAT'];
+      }
     });
   }
 
@@ -1591,6 +1594,7 @@ class Pacientes {
     //         "GET VALORES : ${Pacientes.ID_Paciente}");
     //
     if (reload) {
+      Terminal.printAlert(message: " : : Consultando Valores.getValores() . . : : ");
       Valores vala = Valores();
       vala.load();
     } else {
@@ -5576,6 +5580,7 @@ class Vitales {
 
   static void registros() {
     List result = [];
+    //
     Actividades.consultarAllById(Databases.siteground_database_regpace,
             vitales['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
         .then((value) {
@@ -5587,8 +5592,8 @@ class Vitales {
         for (var item in result) {
           if (index <= result.length) {
             var thirdMap = {};
-            print("${value.length} ${result.length}");
-            print("${value[index]['ID_Pace_SV']} ${item['ID_Pace_SV']}");
+            // print("${value.length} ${result.length}");
+            // print("${value[index]['ID_Pace_SV']} ${item['ID_Pace_SV']}");
             thirdMap.addAll(item);
             thirdMap.addAll(value[index]);
             // Adición a Vitales ********** ************ ************** ********
@@ -6329,7 +6334,6 @@ class Auxiliares {
     'Claro',
     'Rojizo',
   ];
-
   static List colorLiquidos = [
     'Incoloro',
     'Amarillo claro',
@@ -6339,7 +6343,6 @@ class Auxiliares {
     'Rojizo',
     'Ligeramente Rojizo',
   ];
-
   // static List otrosEspeciales = [
   //   "Panel Viral",
   //   "Panel TORCH",
@@ -6731,44 +6734,113 @@ class Auxiliares {
       bool? withEspeciales = false}) {
     String prosa = "";
 
-    var fechar = Listas.listWithoutRepitedValues(
-      Listas.listFromMapWithOneKey(Pacientes.Paraclinicos!,
-          keySearched: 'Fecha_Registro'),
-    );
+    try {
+      var fechar = Listas.listWithoutRepitedValues(
+        Listas.listFromMapWithOneKey(Pacientes.Paraclinicos!,
+            keySearched: 'Fecha_Registro'),
+      );
 
-    if (esAbreviado) {
-      for (var element in fechar) {
-        String fecha = "          Paraclínicos ($element)", max = "";
+      if (esAbreviado) {
+        for (var element in fechar) {
+          String fecha = "          Paraclínicos ($element)", max = "";
 
-        List<dynamic>? alam = Pacientes.Paraclinicos!;
-        var aux = alam
-            .where((user) => user["Fecha_Registro"].contains(element))
-            .toList();
+          List<dynamic>? alam = Pacientes.Paraclinicos!;
+          var aux = alam
+              .where((user) => user["Fecha_Registro"].contains(element))
+              .toList();
 
-        for (var element in aux) {
-          // ***************************** *****************
-          if (element['Tipo_Estudio'] != Auxiliares.Categorias[11] &&
-              element['Tipo_Estudio'] != Auxiliares.Categorias[12] &&
-              element['Tipo_Estudio'] != Auxiliares.Categorias[13] &&
-              element['Tipo_Estudio'] != Auxiliares.Categorias[14] &&
-              element['Tipo_Estudio'] != Auxiliares.Categorias[18] &&
-              element['Tipo_Estudio'] != Auxiliares.Categorias[19]) {
-            if (max == "") {
-              if (element['Tipo_Estudio'] == Auxiliares.Categorias[13]) {
-                max =
-                    "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+          for (var element in aux) {
+            // ***************************** *****************
+            if (element['Tipo_Estudio'] != Auxiliares.Categorias[11] &&
+                element['Tipo_Estudio'] != Auxiliares.Categorias[12] &&
+                element['Tipo_Estudio'] != Auxiliares.Categorias[13] &&
+                element['Tipo_Estudio'] != Auxiliares.Categorias[14] &&
+                element['Tipo_Estudio'] != Auxiliares.Categorias[18] &&
+                element['Tipo_Estudio'] != Auxiliares.Categorias[19]) {
+              if (max == "") {
+                if (element['Tipo_Estudio'] == Auxiliares.Categorias[13]) {
+                  max =
+                      "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+                } else {
+                  max =
+                      "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+                }
               } else {
                 max =
-                    "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+                    "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
               }
+            }
+          }
+          //
+          if (max != "") {
+            if (max.startsWith("pH")) {
+              prosa = "$prosa$fecha: $max\n";
             } else {
-              max =
-                  "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+              prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
             }
           }
         }
-        //
-        if (max != "") {
+      } else if (withoutInsighs) {
+        for (var element in fechar) {
+          String fecha = "          Paraclínicos ($element)", max = "";
+
+          List<dynamic>? alam = Pacientes.Paraclinicos!;
+          var aux = alam
+              .where((user) => user["Fecha_Registro"].contains(element))
+              .toList();
+
+          for (var element in aux) {
+            // ***************************** *****************
+            if (element['Tipo_Estudio'] != Auxiliares.Categorias[11] &&
+                element['Tipo_Estudio'] != Auxiliares.Categorias[12] &&
+                element['Tipo_Estudio'] != Auxiliares.Categorias[13] &&
+                element['Tipo_Estudio'] != Auxiliares.Categorias[14] &&
+                element['Tipo_Estudio'] != Auxiliares.Categorias[18] &&
+                element['Tipo_Estudio'] != Auxiliares.Categorias[19]) {
+              if (max == "") {
+                if (element['Tipo_Estudio'] == Auxiliares.Categorias[13]) {
+                  max =
+                      "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
+                } else {
+                  max =
+                      "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
+                }
+              } else {
+                max =
+                    "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
+              }
+            } else {
+              max = "";
+            }
+          }
+          //
+          if (max != "") {
+            if (max.startsWith("pH")) {
+              prosa = "$prosa$fecha: $max\n";
+            } else {
+              prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+            }
+          }
+        }
+      } else {
+        for (var element in fechar) {
+          // Filtro por estudio de los registros de Pacientes.Paraclinicos
+          var aux = Pacientes.Paraclinicos!
+              .where((user) => user["Fecha_Registro"].contains(element))
+              .toList();
+          String fecha = "($element)";
+          String max = "";
+
+          for (var element in aux) {
+            if (max == "") {
+              max =
+                  "${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+            } else {
+              max =
+                  "$max, ${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+            }
+          }
+
           if (max.startsWith("pH")) {
             prosa = "$prosa$fecha: $max\n";
           } else {
@@ -6776,80 +6848,19 @@ class Auxiliares {
           }
         }
       }
-    } else if (withoutInsighs) {
-      for (var element in fechar) {
-        String fecha = "          Paraclínicos ($element)", max = "";
+      // ************** ***************** ***************
+      // Terminal.printExpected(message: "prosa $prosa");
 
-        List<dynamic>? alam = Pacientes.Paraclinicos!;
-        var aux = alam
-            .where((user) => user["Fecha_Registro"].contains(element))
-            .toList();
-
-        for (var element in aux) {
-          // ***************************** *****************
-          if (element['Tipo_Estudio'] != Auxiliares.Categorias[11] &&
-              element['Tipo_Estudio'] != Auxiliares.Categorias[12] &&
-              element['Tipo_Estudio'] != Auxiliares.Categorias[13] &&
-              element['Tipo_Estudio'] != Auxiliares.Categorias[14] &&
-              element['Tipo_Estudio'] != Auxiliares.Categorias[18] &&
-              element['Tipo_Estudio'] != Auxiliares.Categorias[19]) {
-            if (max == "") {
-              if (element['Tipo_Estudio'] == Auxiliares.Categorias[13]) {
-                max =
-                    "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
-              } else {
-                max =
-                    "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
-              }
-            } else {
-              max =
-                  "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
-            }
-          } else {
-            max = "";
-          }
-        }
-        //
-        if (max != "") {
-          if (max.startsWith("pH")) {
-            prosa = "$prosa$fecha: $max\n";
-          } else {
-            prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
-          }
-        }
-      }
-    } else {
-      for (var element in fechar) {
-        // Filtro por estudio de los registros de Pacientes.Paraclinicos
-        var aux = Pacientes.Paraclinicos!
-            .where((user) => user["Fecha_Registro"].contains(element))
-            .toList();
-        String fecha = "($element)";
-        String max = "";
-
-        for (var element in aux) {
-          if (max == "") {
-            max =
-                "${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
-          } else {
-            max =
-                "$max, ${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
-          }
-        }
-
-        if (max.startsWith("pH")) {
-          prosa = "$prosa$fecha: $max\n";
-        } else {
-          prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
-        }
-      }
+      if (withEspeciales == true)
+        prosa = "$prosa\n${Auxiliares.getEspeciales()}";
+      //
+      return prosa;
+    } on Exception catch (e) {
+      // TODO
+    } finally {
+      return prosa;
     }
-    // ************** ***************** ***************
-    // Terminal.printExpected(message: "prosa $prosa");
-
-    if (withEspeciales == true) prosa = "$prosa\n${Auxiliares.getEspeciales()}";
-    //
-    return prosa; // """$prosa$max. ";
+// """$prosa$max. ";
   }
 
   // Especiales . . .
@@ -8827,6 +8838,8 @@ class Auxiliares {
         return Categorias[8];
       case "Dímero D":
         return Categorias[8];
+      case "Dimero D":
+        return Categorias[8];
 
       case "Ferritina": // 21
         return Categorias[21];
@@ -9022,6 +9035,8 @@ class Auxiliares {
       case "Fibrinógeno": // 8
         return "Fibrinógeno";
       case "Dímero D":
+        return "Dímero D";
+      case "Dimero D":
         return "Dímero D";
 
       case "Ferritina": // 21
@@ -10320,8 +10335,8 @@ class Balances {
 
   // *********** *********** ********* ****
   static void fromJson(Map<String, dynamic> json) {
-    Terminal.printExpected(
-        message: "Balances seleccionados $json . : ${json.runtimeType}");
+    // Terminal.printExpected(
+    //     message: "Balances seleccionados $json . : ${json.runtimeType}");
 
     if (json['Error'] == "No se encontraron datos") {
     } else {
@@ -10371,6 +10386,8 @@ class Ventilaciones {
   static int ID_Ventilaciones = 0;
   //
   static String selectedDiagnosis = "";
+  static var fileAssocieted =
+      '${Pacientes.localRepositoryPath}/ventilaciones.json';
   //
 
   static Map<String, dynamic> Ventilacion = {};
@@ -10487,7 +10504,7 @@ class Ventilaciones {
     "consultByIdPrimaryQuery": "SELECT * FROM pace_vm WHERE ID_Pace = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_vm",
     "consultLastQuery":
-        "SELECT * FROM pace_vm WHERE ID_Pace = ? ORDER BY ID_Ventilacion ASC",
+        "SELECT * FROM pace_vm WHERE ID_Pace = ? ORDER BY ID_Ventilacion DESC",
     "consultByName": "SELECT * FROM pace_vm WHERE Pace_APP_DEG LIKE '%",
     "registerQuery": "INSERT INTO pace_vm (ID_Pace, "
         "Feca_VEN, Pace_Vt, Pace_Fr, Pace_Fio, Pace_Peep, "
@@ -10528,22 +10545,32 @@ class Ventilaciones {
   };
 
   static void fromJson(Map<String, dynamic> json) {
-    if (json!.isNotEmpty) {
+    Terminal.printWarning(message: json.toString());
+
+    if (json.isNotEmpty) {
       Valores.fechaVentilaciones = json['Feca_VEN'] ?? '';
       Valores.modalidadVentilatoria = json['VM_Mod'] ?? '';
-      Valores.frecuenciaVentilatoria = json['Pace_Fr'] ?? 0;
+      Valores.volumenTidal = double.parse(json['Pace_Vt'].toString()) ?? 0;
+      Valores.frecuenciaVentilatoria =
+          Valores.frecuenciaRespiratoria = json['Pace_Fr'] ?? 0;
       Valores.fraccionInspiratoriaVentilatoria = json['Pace_Fio'] ?? 0;
       Valores.presionFinalEsiracion = json['Pace_Peep'] ?? 0;
+
       Valores.sensibilidadInspiratoria = json['Pace_Insp'] ?? 0;
       Valores.sensibilidadEspiratoria = json['Pace_Espi'] ?? 0;
       Valores.presionControl = json['Pace_Pc'] ?? 0;
       Valores.presionMaxima = json['Pace_Pm'] ?? 0;
-
-      Valores.volumenVentilatorio = json['Pace_V'] ?? 0;
-      Valores.flujoVentilatorio = json['Pace_F'] ?? 0;
       Valores.presionSoporte = json['Pace_Ps'] ?? 0;
       Valores.presionInspiratoriaPico = json['Pace_Pip'] ?? 0;
       Valores.presionPlateau = json['Pace_Pmet'] ?? 0;
+      //
+      Valores.volumenVentilatorio = json['Pace_V'] ?? 0;
+      Valores.flujoVentilatorio = json['Pace_F'] ?? 0;
+      //
+      // Terminal.printWarning(message:  Ventometrias.volumenMinuto.toString());
+      // Terminal.printWarning(message: Ventometrias.flujoVentilatorioMedido.toString());
+
+      //
       Valores.volumenTidal = toDoubleFromInt(json: json, keyEntered: 'Pace_Vt');
     }
   }
@@ -10909,22 +10936,22 @@ class Repositorios {
           Reportes.pronosticoMedico = value.last['Pronostico_Medico'] ?? '';
       // Listados desde String  ************************************************
       Reportes.reportes["Dietoterapia"] = Reportes.dieta =
-          Listas.traslateFromString(value.last['Dietoterapia']);
+          Listas.traslateFromString(value.last['Dietoterapia'] ?? "");
       Reportes.reportes["Hidroterapia"] = Reportes.hidroterapia =
-          Listas.traslateFromString(value.last['Hidroterapia']);
+          Listas.traslateFromString(value.last['Hidroterapia'] ?? "");
       Reportes.reportes["Medicamentos"] = Reportes.medicamentosIndicados =
-          Listas.traslateFromString(value.last['Medicamentos']);
+          Listas.traslateFromString(value.last['Medicamentos'] ?? "");
       Reportes.reportes["Medidas_Generales"] = Reportes.medidasGenerales =
-          Listas.traslateFromString(value.last['Medidas_Generales']);
+          Listas.traslateFromString(value.last['Medidas_Generales'] ?? "");
       Reportes.reportes["Oxigenoterapia"] = Reportes.oxigenoterapia =
-          Listas.traslateFromString(value.last['Oxigenoterapia']);
+          Listas.traslateFromString(value.last['Oxigenoterapia'] ?? "");
       //
       Reportes.reportes["Insulinoterapia"] = Reportes.insulinoterapia =
-          Listas.traslateFromString(value.last['Insulinoterapia']);
+          Listas.traslateFromString(value.last['Insulinoterapia'] ?? "");
       Reportes.reportes["Hemoterapia"] = Reportes.hemoterapia =
-          Listas.traslateFromString(value.last['Hemoterapia']);
+          Listas.traslateFromString(value.last['Hemoterapia'] ?? "");
       Reportes.reportes["Pendientes"] = Reportes.pendientes =
-          Listas.traslateFromString(value.last['Pendientes']);
+          Listas.traslateFromString(value.last['Pendientes'] ?? "");
       //
       Reportes.reportes['Hitos_Hospitalarios'] =
           Reportes.hitosHospitalarios = value.last['Hitos_Hospitalarios'] ?? '';

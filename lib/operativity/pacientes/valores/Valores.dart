@@ -106,12 +106,13 @@ class Valores {
     // Terminal.printWarning(message: Pacientes.getAuxiliaryStats(Pacientes.ID_Paciente));
     final aux = await Auxiliares.ultimoRegistro();
     valores.addAll(aux);
-    // final aux = await Actividades.detallesById(
+    //
+    // final vitales = await Actividades.detallesById(
     //     Databases.siteground_database_reggabo,
     //     Pacientes.getAuxiliaryStats(Pacientes.ID_Paciente),
     //     Pacientes.ID_Paciente,
     //     emulated: true);
-    // valores.addAll(aux);
+    // valores.addAll(vitales);
 
     // final hosp = await Actividades.consultarId(
     //     Databases.siteground_database_reghosp,

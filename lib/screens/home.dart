@@ -8,6 +8,7 @@ import 'package:assistant/screens/financieros/finanzas.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/embarazadas.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizados.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
+import 'package:assistant/screens/pacientes/intensiva/contenidos/insulinas.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/extractorParaclinicos.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/semiologicos.dart';
@@ -667,7 +668,14 @@ class PacientesPanel extends StatelessWidget {
               iconData: Icons.balance,
               labelButton: "Concentraciones",
               onPress: () {
-                toNextScreen(context: context, screen:  Scaffold(appBar:AppBar(backgroundColor: Colors.black,), body: const Concentraciones()));
+                toNextScreen(context: context, screen:  Scaffold(appBar:AppBar(backgroundColor: Colors.grey,), body: const Concentraciones()));
+              },
+            ),
+            HomeButton(
+              iconData: Icons.nat,
+              labelButton: "Insulinas",
+              onPress: () {
+                toNextScreen(context: context, screen:  Scaffold(appBar:AppBar(backgroundColor: Colors.grey,), body: const Insulinas()));
               },
             ),
             HomeButton(

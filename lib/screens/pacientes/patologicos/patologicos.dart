@@ -702,8 +702,11 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
         message:
             " . . . Iniciando Actividad - Repositorio Patologías del Pacientes");
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+
       setState(() {
-        foundedItems = value;
+        if (value['Error'] != "No se encontraron datos") {
+          foundedItems = value;
+        }
         Terminal.printSuccess(
             message: 'Repositorio Patologías del Pacientes Obtenido');
       });
@@ -720,8 +723,11 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
             Patologicos.patologicos['consultByIdPrimaryQuery'],
             Pacientes.ID_Paciente)
         .then((value) {
+
       setState(() {
-        foundedItems = value;
+        if (value[0]['Error'] != "No se encontraron datos") {
+          foundedItems = value;
+        }
         Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
       });
     });

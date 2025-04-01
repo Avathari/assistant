@@ -1509,13 +1509,13 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       //
       Reportes.impresionesDiagnosticas =
           Reportes.reportes['Impresiones_Diagnosticas'] =
-              listNotes![widget.indexNote]['Diagnosticos_Hospital'];
+              listNotes![widget.indexNote]['Diagnosticos_Hospital'] ?? "";
       //
       Reportes.padecimientoActual = Reportes.reportes['Padecimiento_Actual'] =
-          listNotes![widget.indexNote]['Padecimiento_Actual'];
+          listNotes![widget.indexNote]['Padecimiento_Actual'] ?? "";
       Reportes.reportes['Exploracion_Fisica'] = Reportes.exploracionFisica =
-          listNotes![widget.indexNote]['Exploracion_Fisica'];
-      Reportes.analisisMedico = listNotes![widget.indexNote]['Analisis_Medico'];
+          listNotes![widget.indexNote]['Exploracion_Fisica'] ?? "";
+      Reportes.analisisMedico = listNotes![widget.indexNote]['Analisis_Medico'] ?? "";
       //
       Reportes.reportes['Auxiliares_Diagnosticos'] =
           Reportes.auxiliaresDiagnosticos =
@@ -1540,7 +1540,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               // PRESENTACION
 
               Text(
-                listNotes![widget.indexNote]['Tipo_Analisis'],
+                listNotes![widget.indexNote]['Tipo_Analisis']  ?? "",
                 style: Styles.textSyleGrowth(fontSize: 12),
               ),
               Text(
@@ -1559,8 +1559,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   : Container(),
               // DIAGNOSTICOS ********************************************
               Text(
-                  listNotes![widget.indexNote]['Diagnosticos_Hospital']
-                      .toUpperCase(),
+                  listNotes![widget.indexNote]['Diagnosticos_Hospital'] !=null ? listNotes![widget.indexNote]['Diagnosticos_Hospital']
+                      .toUpperCase() : "",
                   maxLines: 20,
                   style: Styles.textSyleGrowth(fontSize: 9)),
               listNotes![widget.indexNote]['Tipo_Analisis'] !=
@@ -1634,7 +1634,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                       listNotes![widget.indexNote]['Tipo_Analisis'] !=
                           'Análisis de Egreso'
                   ? Text(
-                      listNotes![widget.indexNote]['Subjetivo'],
+                      listNotes![widget.indexNote]['Subjetivo'] ?? "",
                       maxLines: 3,
                       style: Styles.textSyleGrowth(fontSize: 9),
                     )

@@ -1,4 +1,5 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart' as Gas;
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
@@ -21,6 +22,12 @@ class Gasometricos extends StatefulWidget {
 class _GasometricosState extends State<Gasometricos> {
   var carouselController = CarouselSliderController();
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    Auxiliares.registros();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return TittleContainer(

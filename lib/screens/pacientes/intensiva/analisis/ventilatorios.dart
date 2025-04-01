@@ -1,4 +1,5 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/ventometr%C3%ADas.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
@@ -22,22 +23,30 @@ class Ventilatorios extends StatefulWidget {
 
 class _VentilatoriosState extends State<Ventilatorios> {
   var carouselController = CarouselSliderController();
-
   var cEstTextController = TextEditingController();
 
   @override
   void initState() {
-    setState(() {
-      //
-      Valores.distensibilidadEstaticaMedida =
-          Ventometrias.distensibilidadPulmonarEstatica;
+    Archivos.readJsonToMap(
+        filePath: Vitales.fileAssocieted).then((onValue){
+      Vitales.fromJson(onValue!.last);
+      Archivos.readJsonToMap(
+          filePath: Ventilaciones.fileAssocieted).then((onValue){
+        Ventilaciones.fromJson(onValue!.last);
+      });
+    }).whenComplete((){
+      setState(() {
+        //
+        Valores.distensibilidadEstaticaMedida =
+            Ventometrias.distensibilidadPulmonarEstatica;
+        //
+        Terminal.printExpected(
+            message: "Ventilatorios : : \n"
+                "PEEP ${Valores.presionFinalEsiracion} cmH2O\n"
+                "Pplat ${Valores.presionPlateau} cmH2O\n"
+                "");
+      });
     });
-
-    Terminal.printExpected(
-        message: "Ventilatorios : : \n"
-            "PEEP ${Valores.presionFinalEsiracion} cmH2O\n"
-            "Pplat ${Valores.presionPlateau} cmH2O\n"
-            "");
     super.initState();
   }
 
@@ -65,6 +74,11 @@ class _VentilatoriosState extends State<Ventilatorios> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          ValuePanel(
+                            firstText: Valores.fechaVentilaciones!.split(" ")[0],
+                            secondText: Valores.fechaVentilaciones!.split(" ")[1],
+                            thirdText: '',
+                          ),
                           ValuePanel(
                             firstText: 'Vt',
                             secondText:
@@ -515,5 +529,4 @@ class _VentilatoriosState extends State<Ventilatorios> {
       ),
     );
   }
-
 }

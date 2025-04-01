@@ -51,6 +51,15 @@ class OperacionesVentilaciones extends StatefulWidget {
 class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
   @override
   void initState() {
+
+    Archivos.readJsonToMap(
+        filePath: Vitales.fileAssocieted).then((onValue){
+      Vitales.fromJson(onValue!.last);
+    }).whenComplete((){
+      setState(() {
+        //
+      });
+    });
     //
     switch (widget.operationActivity) {
       case Constantes.Nulo:
@@ -920,6 +929,9 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
                 setState(() {
                   Valores.flujoVentilatorio = int.parse(value);
                   Valores.flujoVentilatorio = Ventometrias.flujoVentilatorioMedido.toInt();
+                  //
+                  flujoTextController.text =
+                      Ventometrias.flujoVentilatorioMedido.toStringAsFixed(2);
                 });
               },
             ),
@@ -1200,6 +1212,9 @@ class _GestionVentilacionesState extends State<GestionVentilaciones> {
             //print(" . . . Buscando items \n $value");
             foundedItems = value;
           });
+        }).whenComplete((){
+          Archivos.createJsonFromMap(foundedItems!, filePath: Ventilaciones.fileAssocieted
+          );
         });
       } else {
         //print(" . . . Ventilaciones array iniciado");

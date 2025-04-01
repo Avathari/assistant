@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/cardiometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/ventometr%C3%ADas.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizados.dart';
@@ -11,6 +12,7 @@ import 'package:assistant/screens/pacientes/auxiliares/revisiones/auxiliares/aux
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/generales.dart';
 import 'package:assistant/screens/pacientes/epidemiologicos/licencias.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/pendientes.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/cardiovasculares.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
@@ -23,7 +25,7 @@ import 'package:flutter/material.dart';
 class Paneles {
   static Widget fichaIdentificacion(
       BuildContext context, AsyncSnapshot snapshot, int index) {
-    Terminal.printAlert(message: "indexx $index");
+    // Terminal.printAlert(message: "indexx $index");
     //
     if (snapshot.hasData) {
       return Padding(
@@ -38,19 +40,19 @@ class Paneles {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              if (snapshot.data!.isNotEmpty) Text(
                   "${snapshot.data![index].generales['Pace_Ape_Pat'] ?? ''} "
                   "${snapshot.data![index].generales['Pace_Ape_Mat'] ?? ''} "
                   "${snapshot.data![index].generales['Pace_Nome_PI'] ?? ''} "
                   "${snapshot.data![index].generales['Pace_Nome_SE'] ?? ''}",
                   maxLines: 2,
                   style: Styles.textSyleGrowth(fontSize: 14)),
-              Text(
+              if (snapshot.data!.isNotEmpty) Text(
                 "Ocupación: ${snapshot.data![index].generales['Pace_Ocupa'] ?? ''}",
                 maxLines: 2,
                 style: Styles.textSyleGrowth(fontSize: 10),
               ),
-              Text(
+              if (snapshot.data!.isNotEmpty) Text(
                 "Edad ${snapshot.data[index].generales['Pace_Eda'] ?? ''} Años . ",
                 maxLines: 1,
                 style: Styles.textSyleGrowth(fontSize: 10),
@@ -71,7 +73,7 @@ class Paneles {
               //   overflow: TextOverflow.ellipsis,
               //   style: Styles.textSyleGrowth(fontSize: 10),
               // ),
-              Text(
+              if (snapshot.data!.isNotEmpty) Text(
                   "NG.: ${snapshot.data[index].hospitalizedData['Feca_INI_Hosp'] ?? ''} - "
                   "D.E.H.: ${Calendarios.differenceInDaysToNow(snapshot.data[index].hospitalizedData['Feca_INI_Hosp'] ?? DateTime.now().toString())}",
                   style: Styles.textSyleGrowth(fontSize: 12)),
@@ -87,71 +89,75 @@ class Paneles {
 
   static Widget padesView(
       BuildContext context, AsyncSnapshot snapshot, int index) {
-    if (snapshot.data![index].padecimientoActual.isEmpty) {
-      return GestureDetector(
+    if (snapshot.data!.isNotEmpty) {
+      if (snapshot.data![index].padecimientoActual.isEmpty) {
+        return GestureDetector(
+            onDoubleTap: () {
+              Operadores.openWindow(
+                  context: context,
+                  chyldrim: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        snapshot.data![index].padecimientoActual == null
+                            ? 'Sin Padecimiento Actual'
+                            : "Padecimiento Actual:\n ${snapshot.data![index].padecimientoActual['Padecimiento_Actual'] ?? ''}",
+                        maxLines: isMobile(context) ? 30 : 10,
+                        softWrap: true,
+                        style: Styles.textSyleGrowth(fontSize: 10),
+                        textAlign: TextAlign.justify,
+                      ),
+                    ],
+                  ));
+            },
+            child: Text(
+              "PA: Sin padecimiento actual registrado . . . ",
+              maxLines: isLargeDesktop(context) ? 65 : 45,
+              style: Styles.textSyleGrowth(fontSize: 8),
+              textAlign: TextAlign.start,
+            ));
+      } else {
+        return GestureDetector(
           onDoubleTap: () {
             Operadores.openWindow(
                 context: context,
                 chyldrim: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      snapshot.data![index].padecimientoActual == null
-                          ? 'Sin Padecimiento Actual'
-                          : "Padecimiento Actual:\n ${snapshot.data![index].padecimientoActual['Padecimiento_Actual'] ?? ''}",
-                      maxLines: isMobile(context) ? 20 : 10,
-                      softWrap: true,
-                      style: Styles.textSyleGrowth(fontSize: 10),
-                      textAlign: TextAlign.justify,
+                    TittleContainer(
+                      color: Colors.black,
+                      tittle: 'Padecimiento Actual',
+                      child: Text(
+                        snapshot.data![index].padecimientoActual == null
+                            ? 'Sin Padecimiento Actual'
+                            : " ${snapshot.data![index].padecimientoActual['Padecimiento_Actual'] ?? ''}",
+                        maxLines: isMobile(context) ? 85 : 45,
+                        softWrap: true,
+                        style: Styles.textSyleGrowth(fontSize: 10),
+                        textAlign: TextAlign.justify,
+                      ),
                     ),
                   ],
-                ));
+                ),
+                onAction: () {});
           },
-          child: Text(
-            "PA: Sin padecimiento actual registrado . . . ",
-            maxLines: isLargeDesktop(context) ? 65 : 45,
-            style: Styles.textSyleGrowth(fontSize: 8),
-            textAlign: TextAlign.start,
-          ));
-    } else {
-      return GestureDetector(
-        onDoubleTap: () {
-          Operadores.openWindow(
-              context: context,
-              chyldrim: Column(
-                children: [
-                  TittleContainer(
-                    color: Colors.black,
-                    tittle: 'Padecimiento Actual',
-                    child: Text(
-                      snapshot.data![index].padecimientoActual == null
-                          ? 'Sin Padecimiento Actual'
-                          : " ${snapshot.data![index].padecimientoActual['Padecimiento_Actual'] ?? ''}",
-                      maxLines: isMobile(context) ? 85 : 45,
-                      softWrap: true,
-                      style: Styles.textSyleGrowth(fontSize: 10),
-                      textAlign: TextAlign.justify,
-                    ),
-                  ),
-                ],
-              ),
-              onAction: () {});
-        },
-        child: TittleContainer(
-          tittle: 'Padecimiento Actual',
-          color: Theming.cuaternaryColor,
-          child: Text(
-            "${snapshot.data![index].padecimientoActual['Padecimiento_Actual'] ?? 'Sin padecimiento actual registrado . . . '}",
-            maxLines: isLargeDesktop(context)
-                ? 65
-                : isDesktop(context)
-                    ? 95
-                    : 65,
-            style: Styles.textSyleGrowth(fontSize: 8),
-            textAlign: TextAlign.start,
+          child: TittleContainer(
+            tittle: 'Padecimiento Actual',
+            color: Theming.cuaternaryColor,
+            child: Text(
+              "${snapshot.data![index].padecimientoActual['Padecimiento_Actual'] ?? 'Sin padecimiento actual registrado . . . '}",
+              maxLines: isLargeDesktop(context)
+                  ? 65
+                  : isDesktop(context)
+                      ? 95
+                      : 65,
+              style: Styles.textSyleGrowth(fontSize: 8),
+              textAlign: TextAlign.start,
+            ),
           ),
-        ),
-      );
+        );
+      }
+    } else {
+      return Container();
     }
   }
 
@@ -190,7 +196,7 @@ class Paneles {
         color: isMobile(context) ? Theming.cuaternaryColor : Colors.black,
         tittle: "Crónico(s) ",
         child: ListView.separated(
-          itemCount: snapshot.data![index].patologicos.length,
+          itemCount: snapshot.data!.isNotEmpty ?snapshot.data![index].patologicos.length : 0,
           itemBuilder: (BuildContext context, ind) {
             return ElevatedButton(
               onPressed: () {
@@ -678,7 +684,7 @@ class Paneles {
             child: Text(
               "${Auxiliares.getUltimo(esAbreviado: true)}\n${Auxiliares.getGasometrico()}${Auxiliares.getReactantes()}${Auxiliares.getCoagulacion()}${Auxiliares.getEspeciales(esAbreviado: true)}" ,
               overflow: TextOverflow.ellipsis,
-              style: Styles.textSyleGrowth(fontSize: 12),
+              style: Styles.textSyleGrowth(fontSize: 8),
               maxLines: 7,
             ),
           ),
@@ -939,7 +945,7 @@ class Paneles {
                 iconed: Icons.archive_outlined,
                   onChangeValue: () async {
 
-                    Terminal.printExpected(message: foundedItems[index].toString());
+                    // Terminal.printExpected(message: foundedItems[index].toString());
                     //
                     await Internado.updateStatus(listadoFrom: foundedItems[index]);
               })),
@@ -1035,9 +1041,12 @@ class Paneles {
 
 class HospitalaryStrings {
   static String vitalesString(last) {
+    Vitales.fromJson(last);
+    //
     return "${last['Pace_Feca_SV']} : "
         "${last['Pace_SV_tas']}/"
-        "${last['Pace_SV_tad']} mmHg, "
+        "${last['Pace_SV_tad']} mmHg "
+        "(${Cardiometrias.presionArterialMedia.toStringAsFixed(0)} mmhG), "
         "FC ${last['Pace_SV_fc']} Lat/min, "
         "FR ${last['Pace_SV_fr']} Resp/min, "
         "Temp ${last['Pace_SV_tc']}°C, "
@@ -1049,7 +1058,7 @@ class HospitalaryStrings {
   }
 
   static String balancesString(last, List? foundedItems, int index) {
-    Terminal.printAlert(message: "${last[0].runtimeType}");
+    // Terminal.printAlert(message: "${last[0].runtimeType}");
     //
     if (last[0].runtimeType is List<dynamic>) {
       Balances.fromJson(last[0]);
@@ -1073,8 +1082,10 @@ class HospitalaryStrings {
         ")";
   }
 
-  static String ventilacionesString(last, List? foundedItems) {
-    Terminal.printAlert(message: "${last.runtimeType}");
+  static String ventilacionesString(last, foundedItems) {
+    // Terminal.printAlert(message: "${last.runtimeType}");
+    // Terminal.printAlert(message: "${last.toString()}");
+    Vitales.fromJson(foundedItems);
     Ventilaciones.fromJson(last);
     return "${Valores.fechaVentilaciones!} : : ${Ventometrias.ventiladorCorto}";
   }

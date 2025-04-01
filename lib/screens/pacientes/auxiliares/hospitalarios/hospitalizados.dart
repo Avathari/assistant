@@ -21,6 +21,7 @@ import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/TittleContainer.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -74,8 +75,8 @@ class _HospitalizadosState extends State<Hospitalizados> {
       _pullListRefresh().catchError((e, stackTrace) {
         Operadores.alertActivity(
             context: context,
-            tittle: "$e",
-            message: "$stackTrace",
+            tittle: "Error al Consultar registros de Hospitalizados . . . ",
+            message: "$e : : $stackTrace",
             onAcept: () {
               Navigator.of(context).pop();
             });
@@ -159,7 +160,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
             GrandIcon(
               iconData: Icons.wordpress,
               labelButton: "Imprimir censo hospitalario",
-                onPress: () async {
+              onPress: () async {
                 // final pdfFile = await PdfParagraphsApi.generateFromList(
                 //   topMargin: 10,
                 //   bottomMargin: 5,
@@ -205,11 +206,12 @@ class _HospitalizadosState extends State<Hospitalizados> {
                   PdfApi.openFile(pdfFile);
                 } on Exception catch (onError, stackTrace) {
                   // TODO
-                  Operadores.alertActivity(context: context,
-                  tittle: "ERROR : : $onError",
-                  message: "$stackTrace",
-                  onAcept: ()=> Navigator.of(context).pop(),
-                );
+                  Operadores.alertActivity(
+                    context: context,
+                    tittle: "ERROR : : $onError",
+                    message: "$stackTrace",
+                    onAcept: () => Navigator.of(context).pop(),
+                  );
                 }
                 //
               },
@@ -586,7 +588,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                       onLongChangeValue: () => Datos.portapapeles(
                           context: context,
                           text:
-                          "${Internado.getUltimo(listadoFrom: foundedItems![index].paraclinicos, esAbreviado: true)}"
+                              "${Internado.getUltimo(listadoFrom: foundedItems![index].paraclinicos, esAbreviado: true)}"
                               "${Internado.getGasometrico(listadoFrom: foundedItems![index].paraclinicos, esAbreviado: true)}"
                               "${Internado.getEspeciales(listadoFrom: foundedItems![index].paraclinicos) != "" ? "RELAVANTES\n" : ""}"
                               "${Internado.getEspeciales(listadoFrom: foundedItems![index].paraclinicos, esAbreviado: true)}\n"
@@ -597,9 +599,14 @@ class _HospitalizadosState extends State<Hospitalizados> {
                         await snapshot.data![index]
                             .getParaclinicosHistorial()
                             .then((response) async => setState(
-                                () => // Terminal.printNotice(message: response.toString());
-                                    Pacientes.Paraclinicos = snapshot
-                                        .data![index].paraclinicos = response));
+                                ()  {
+                                  // Terminal.printNotice(message: response.toString());
+                                  Pacientes.Paraclinicos = snapshot
+                                      .data![index].paraclinicos = response;
+                                  //
+                                  Archivos.createJsonFromMap(response, filePath: snapshot
+                                      .data![index].paraclinicosRepositoryPath);
+                                }));
                       },
                     ),
                   ),
@@ -712,12 +719,16 @@ class _HospitalizadosState extends State<Hospitalizados> {
                             tittle: 'Recargar Registro . . . ',
                             iconed: Icons.recent_actors_rounded,
                             onChangeValue: () {
-                              Operadores.loadingActivity(context: context,
-                              dismisable: false,
-                              tittle: "Consultando nuevamente registro . . . ",
-                              message: " . . . ", );
+                              Operadores.loadingActivity(
+                                context: context,
+                                dismisable: false,
+                                tittle:
+                                    "Consultando nuevamente registro . . . ",
+                                message: " . . . ",
+                              );
                               //
-                              _refreshActualList(index).whenComplete(() =>Navigator.of(context).pop());
+                              _refreshActualList(index).whenComplete(
+                                  () => Navigator.of(context).pop());
                             })),
                   ],
                 )),
@@ -907,12 +918,15 @@ class _HospitalizadosState extends State<Hospitalizados> {
                       tittle: 'Recargar Registro . . . ',
                       iconed: Icons.recent_actors_rounded,
                       onChangeValue: () {
-                        Operadores.loadingActivity(context: context,
+                        Operadores.loadingActivity(
+                          context: context,
                           dismisable: false,
                           tittle: "Consultando nuevamente registro . . . ",
-                          message: " . . . ", );
+                          message: " . . . ",
+                        );
                         //
-                        _refreshActualList(index).whenComplete(() =>Navigator.of(context).pop());
+                        _refreshActualList(index)
+                            .whenComplete(() => Navigator.of(context).pop());
                       }),
                 GrandIcon(
                     iconData: Icons.hourglass_bottom,
@@ -965,10 +979,10 @@ class _HospitalizadosState extends State<Hospitalizados> {
   }
 
   GestureDetector mobileView(AsyncSnapshot snapshot, int index) {
-    Terminal.printWarning(message: foundedItems![index].balances.toString());
+    // Terminal.printWarning(message: foundedItems![index].balances.toString());
     //
     return GestureDetector(
-      onDoubleTap: () {
+      onLongPress: () {
         Pacientes.ID_Paciente = foundedItems![index].idPaciente;
         Pacientes.Paciente = foundedItems![index].generales;
 
@@ -1066,11 +1080,11 @@ class _HospitalizadosState extends State<Hospitalizados> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
-                              flex: 12,
+                              flex: 13,
                               child: Paneles.fichaIdentificacion(
                                   context, snapshot, index)),
                           Expanded(
-                              flex: 20,
+                              flex: 22,
                               child:
                                   Paneles.padesView(context, snapshot, index)),
                           CrossLine(),
@@ -1113,8 +1127,10 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                           foundedItems![index]
                                               .ventilaciones
                                               .last,
-                                          foundedItems,
-                                        )),
+                                          foundedItems![index]
+                                              .vitales
+                                              .last,
+                                    )),
 
                                     // Datos.portapapeles(
                                     // context: context,
@@ -1182,8 +1198,10 @@ class _HospitalizadosState extends State<Hospitalizados> {
                         child: Column(children: [
                       Expanded(
                           flex: 4,
-                          child: Paneles.paraclinicosPanel(
-                              context, snapshot, index)),
+                          child: snapshot.data!.isNotEmpty
+                              ? Paneles.paraclinicosPanel(
+                                  context, snapshot, index)
+                              : Container()),
                       Expanded(
                         flex: 1,
                         child: CircleIcon(
@@ -1193,7 +1211,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                           onLongChangeValue: () => Datos.portapapeles(
                               context: context,
                               text:
-                              "${Internado.getUltimo(listadoFrom: foundedItems![index].paraclinicos, esAbreviado: true)}"
+                                  "${Internado.getUltimo(listadoFrom: foundedItems![index].paraclinicos, esAbreviado: true)}"
                                   "${Internado.getGasometrico(listadoFrom: foundedItems![index].paraclinicos, esAbreviado: true)}"
                                   "${Internado.getEspeciales(listadoFrom: foundedItems![index].paraclinicos) != "" ? "RELAVANTES\n" : ""}"
                                   "${Internado.getEspeciales(listadoFrom: foundedItems![index].paraclinicos, esAbreviado: true)}\n"
@@ -1204,10 +1222,14 @@ class _HospitalizadosState extends State<Hospitalizados> {
                             await snapshot.data![index]
                                 .getParaclinicosHistorial()
                                 .then((response) async => setState(
-                                    () => // Terminal.printNotice(message: response.toString());
-                                        Pacientes.Paraclinicos = snapshot
-                                            .data![index]
-                                            .paraclinicos = response));
+                                    ()  {
+                                  // Terminal.printNotice(message: response.toString());
+                                  Pacientes.Paraclinicos = snapshot
+                                      .data![index].paraclinicos = response;
+                                  //
+                                  Archivos.createJsonFromMap(response, filePath: snapshot
+                                      .data![index].paraclinicosRepositoryPath);
+                                }));
                           },
                         ),
                       ),
@@ -1325,10 +1347,9 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                               .patologicos) {
                                             if (i['Pace_APP_DEG_com'] != null ||
                                                 i['Pace_APP_DEG_com'] != '') {
-                                              cronicos =
-                                                  "$cronicos"
-                                                      "     "
-                                                      "${i['Pace_APP_DEG_com'].toUpperCase()}, "
+                                              cronicos = "$cronicos"
+                                                  "     "
+                                                  "${i['Pace_APP_DEG_com'].toUpperCase()}, "
                                                   // "${i['Pace_APP_DEG_dia']} años, "
                                                   "${i['Pace_APP_DEG_tra']} "
                                                   "\n";
@@ -1542,6 +1563,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                         onChangeValue: () => Operadores.dummyLoadingActivity(
                             context: context,
                             tittle: "Recargar Información del Registro . . . ",
+                            message: "",
                             task: _refreshActualList(index)),
                       )),
                 ],
@@ -1800,17 +1822,35 @@ class _HospitalizadosState extends State<Hospitalizados> {
       await hospitalized[i].getHospitalizationRegister();
       await hospitalized[i].getPadecimientoActual();
       await hospitalized[i].getCronicosHistorial();
-      await hospitalized[i].getDiagnosticosHistorial();
-      await hospitalized[i].getVitalesHistorial();
-      //
-      await hospitalized[i].getVentilacionnesHistorial();
-      //
-      await hospitalized[i].getBalancesHistorial(reload: true);
-      //
-      await hospitalized[i].getPendientesHistorial();
-      await hospitalized[i].getLicenciasHistorial();
-      //
-      await hospitalized[i].getParaclinicosHistorial();
+      await hospitalized[i].getParaclinicosHistorial(reload: true);
+
+      // ⚠️ Ejecutar los métodos pesados en paralelo, pero en el mismo isolate
+      // await Future.wait(<Future>[
+      //   hospitalized[i].getDiagnosticosHistorial(),
+      //   hospitalized[i].getVitalesHistorial(),
+      //   hospitalized[i].getVentilacionnesHistorial(),
+      //   hospitalized[i].getBalancesHistorial(reload: true),
+      //   hospitalized[i].getPendientesHistorial(),
+      //   hospitalized[i].getLicenciasHistorial(),
+      //   hospitalized[i].getParaclinicosHistorial(),
+      // ]);
+
+      // compute(cargarHistoriales, {
+      //   "id": int.parse(response[i]["ID_Pace"].toString()),
+      //   "data": response[i]
+      // });
+      // await hospitalized[i].getDiagnosticosHistorial();
+      // await hospitalized[i].getVitalesHistorial();
+      // //
+      // await hospitalized[i].getVentilacionnesHistorial();
+      // //
+      // await hospitalized[i].getBalancesHistorial(reload: true);
+      // //
+
+      // await hospitalized[i].getPendientesHistorial();
+      // await hospitalized[i].getLicenciasHistorial();
+      // //
+      // await hospitalized[i].getParaclinicosHistorial();
       // await hospitalized[i].getImagenologicosHistorial();
       // await hospitalized[i].getElectrocardiogramasHistorial();
       Terminal.printExpected(
@@ -1839,65 +1879,9 @@ class _HospitalizadosState extends State<Hospitalizados> {
   }
 
   Future<void> _refreshActualList(int index) async {
-    // String? tittle = "";
-    //
-    // showDialog(
-    //     context: context,
-    //     builder: (context) {
-    //       return AlertDialog(
-    //         backgroundColor: Theming.secondaryColor,
-    //         title: Text(
-    //           "Actualizando registro . . . ",
-    //           style: const TextStyle(color: Colors.grey, fontSize: 18),
-    //         ),
-    //         content: SingleChildScrollView(
-    //             controller: ScrollController(),
-    //             child: Column(
-    //               children: [
-    //                 Transform.scale(
-    //                   scale: 0.5,
-    //                   child: CircularProgressIndicator(),
-    //                 ),
-    //                 SizedBox(height: 20),
-    //                 Text(
-    //                   tittle!,
-    //                   style: Styles.textSyleGrowth(),
-    //                 ),
-    //               ],
-    //             )),
-    //         actions: [
-    //           ElevatedButton(
-    //               style: const ButtonStyle(
-    //                 backgroundColor:
-    //                     WidgetStatePropertyAll<Color>(Colors.black),
-    //               ),
-    //               onPressed: () {},
-    //               child: const Text("Cancelar",
-    //                   style: TextStyle(color: Colors.white))),
-    //         ],
-    //       );
-    //     });
-
     String pacienteId = foundedItems![index].idPaciente.toString();
     Map<String, dynamic> generales = foundedItems![index].generales;
     //
-    // Terminal.printAlert(
-    //     message: "Iniciando actividad : : \n "
-    //         "Consulta de Valores del Hospitalizado . . . NUEVA FUNCION\n "
-    //         "-------------------------------------------------------------------------------\n"
-    //         "INDEX $index\n"
-    //         "ID_Paaace ${foundedItems![index].idPaciente.toString()} : : $pacienteId : . . . \n\n"
-    //         "-------------------------------------------------------------------------------\n"
-    //         "-------------------------------------------------------------------------------\n"
-    //         "${foundedItems![index].toJson()}");
-    //
-    // Operadores.loadingActivity(
-    //     context: context,
-    //     tittle: 'Actualizando Valores . . . ',
-    //     message: 'Actualizando . . . ',
-    //     onCloss: () {
-    //       Navigator.of(context).pop();
-    //     });
     // CONSULTA DE VALORES ****************************************
     foundedItems!.removeAt(index);
     // Lista de Pacientes Hospitalizados * * *
@@ -1908,15 +1892,15 @@ class _HospitalizadosState extends State<Hospitalizados> {
     await foundedItems![index].getPadecimientoActual();
     await foundedItems![index].getCronicosHistorial();
     await foundedItems![index].getDiagnosticosHistorial();
-    await foundedItems![index].getVitalesHistorial();
+    await foundedItems![index].getVitalesHistorial(reload: true);
     // setState(() => tittle = "Consultando Historial de Ventilatorio . ");
-    await foundedItems![index].getVentilacionnesHistorial();
-    //
+    await foundedItems![index].getVentilacionnesHistorial(reload: true);
     await foundedItems![index].getBalancesHistorial(reload: true);
+    //
+    await foundedItems![index].getParaclinicosHistorial(reload: true);
     //
     await foundedItems![index].getPendientesHistorial();
     //
-    await foundedItems![index].getParaclinicosHistorial();
     // await hospitalized[i].getImagenologicosHistorial();
     // await hospitalized[i].getElectrocardiogramasHistorial();
     Terminal.printExpected(
@@ -1944,57 +1928,66 @@ class _HospitalizadosState extends State<Hospitalizados> {
   }
 
   //
+  Future<void> cargarHistoriales(Map<String, dynamic> args) async {
+    final int id = args['id'];
+    final Map<String, dynamic> data = args['data'];
+
+    final paciente = Internado(id, data);
+
+    await paciente.getDiagnosticosHistorial();
+    await paciente.getVitalesHistorial(reload: true);
+    await paciente.getVentilacionnesHistorial(reload: true);
+    await paciente.getBalancesHistorial(reload: true);
+    await paciente.getPendientesHistorial(reload: true);
+    await paciente.getLicenciasHistorial();
+    await paciente.getParaclinicosHistorial(reload: true);
+
+  }
+
+  //
 
   //
   _drawerForm(BuildContext context) {
-    return Container(
-      width: widget.actualLateralPage != 0
-          ? isMobile(context)
-              ? 270
-              : 430
-          : 50,
-      height: isMobile(context) ? 850 : 1000,
-      color: Colors.black54,
-      child: widget.actualLateralPage == 0
-          ? SingleChildScrollView(
-        controller: ScrollController(),
+    return widget.actualLateralPage == 0
+        ? SingleChildScrollView(
+            controller: ScrollController(),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                // direction: Axis.vertical,
-                // runSpacing: 10,
-                // spacing: 10,
-                // alignment: WrapAlignment.center,
-                children: List<Widget>.generate(
-                    foundedItems!.length,
-                    (index) => Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          margin: const EdgeInsets.symmetric(vertical: 5),
-                          child: InkWell(
-                            onTap: () {
-                              _pageController.animateToPage(index,
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeIn);
-                              _key.currentState!.closeEndDrawer();
-                            },
-                            child: CircleAvatar(
-                              radius: 14,
-                              // check if a dot is connected to the current page
-                              // if true, give it a different color
-                              backgroundColor: _activePage == index
-                                  ? Colors.amber
-                                  : Colors.grey,
-                              child: Text(
-                                  foundedItems![index]
-                                      .hospitalizedData['Id_Cama']
-                                      .toString(),
-                                  style: Styles.textSyleGrowth(fontSize: 8)),
-                            ),
+              crossAxisAlignment: CrossAxisAlignment.center,
+              // direction: Axis.vertical,
+              // runSpacing: 10,
+              // spacing: 10,
+              // alignment: WrapAlignment.center,
+              children: List<Widget>.generate(
+                  foundedItems!.length,
+                  (index) => Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        margin: const EdgeInsets.symmetric(vertical: 5),
+                        child: InkWell(
+                          onTap: () {
+                            _pageController.animateToPage(index,
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeIn);
+                            _key.currentState!.closeEndDrawer();
+                          },
+                          child: CircleAvatar(
+                            radius: 14,
+                            // check if a dot is connected to the current page
+                            // if true, give it a different color
+                            backgroundColor: _activePage == index
+                                ? Colors.amber
+                                : Colors.grey,
+                            child: Text(
+                                foundedItems![index]
+                                    .hospitalizedData['Id_Cama']
+                                    .toString(),
+                                style: Styles.textSyleGrowth(fontSize: 8)),
                           ),
-                        )),
-              ),
+                        ),
+                      )),
+            ),
           )
-          : Paneles.HospitalaryPendientes(context, foundedItems),
-    );
+        : Paneles.HospitalaryPendientes(context, foundedItems);
   }
 
   // VARIABLES *******************************************************

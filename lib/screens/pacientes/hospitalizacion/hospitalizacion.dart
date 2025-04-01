@@ -98,15 +98,15 @@ class _OperacionesHospitalizacionesState
           fechaIngresoTextController.text =
               Calendarios.today(format: 'yyyy-MM-dd');
 
-          servicioTratanteValue = auxiliarServicios[75].trim();
-          servicioTratanteInicialValue = auxiliarServicios[141].trim();
+          servicioTratanteValue = auxiliarServicios[76].trim();
+          servicioTratanteInicialValue = auxiliarServicios[142].trim();
           break;
         case Constantes.Consult:
           fechaIngresoTextController.text =
               Calendarios.today(format: 'yyyy-MM-dd');
 
-          servicioTratanteValue = auxiliarServicios[75].trim();
-          servicioTratanteInicialValue = auxiliarServicios[141].trim();
+          servicioTratanteValue = auxiliarServicios[76].trim();
+          servicioTratanteInicialValue = auxiliarServicios[142].trim();
           break;
         case Constantes.Register:
           widget._operationButton = 'Registrar';
@@ -114,8 +114,8 @@ class _OperacionesHospitalizacionesState
           fechaIngresoTextController.text =
               Calendarios.today(format: 'yyyy-MM-dd');
 
-          servicioTratanteValue = auxiliarServicios[75];
-          servicioTratanteInicialValue = auxiliarServicios[141];
+          servicioTratanteValue = auxiliarServicios[76].trim();
+          servicioTratanteInicialValue = auxiliarServicios[142].trim();
           break;
         case Constantes.Update:
           setState(() {

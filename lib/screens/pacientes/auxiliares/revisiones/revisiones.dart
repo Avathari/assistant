@@ -48,13 +48,7 @@ class _RevisionesState extends State<Revisiones> {
             "Pacientes.localPath ${Pacientes.localPath} : . . . \n"
             "ID Paciente . : . ${Pacientes.ID_Paciente}");
     //
-    // Archivos.readJsonToMap(filePath: Pacientes.localPath).then((onValue) {
-    //   setState(() {
-    //     Pacientes.Paciente = onValue;
-    //   });
-    // });
-
-    Archivos.readJsonToMap(filePath: Vitales.fileAssocieted).then((value) {
+        Archivos.readJsonToMap(filePath: Vitales.fileAssocieted).then((value) {
       Vitales.fromJson(value.last)
           .whenComplete(() => setState(() => Pacientes.Vitales = value));
     }).onError((error, stackTrace) {
@@ -70,7 +64,7 @@ class _RevisionesState extends State<Revisiones> {
     });
     //
     setState(() {
-
+      Terminal.printNotice(message: "${Valores.fechaVitales!}");
     });
     //
     super.initState();
@@ -111,9 +105,14 @@ class _RevisionesState extends State<Revisiones> {
                           crossAxisSpacing: 1.0,
                           mainAxisExtent: 50), //46
                       children: [
+                        // ValuePanel(
+                        //   firstText: Valores.fechaVitales!.split(" ")[0],
+                        //   secondText: Valores.fechaVitales!.split(" ")[1],
+                        //   thirdText: '',
+                        // ),
                         ValuePanel(
-                          firstText: "",
-                          secondText: Valores.fechaVitales.toString(),
+                          firstText: Valores.fechaVitales.toString(),
+                          secondText: "",
                           thirdText: "",
                         ),
                         CrossLine(),

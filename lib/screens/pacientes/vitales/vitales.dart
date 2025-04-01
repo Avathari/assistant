@@ -207,14 +207,6 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                       },
                     ),
                   ),
-                  // Expanded(
-                  //   child: GrandIcon(iconData: Icons.calendar_month,
-                  //     labelButton: "Fecha Actual",
-                  //     onPress: () {
-                  //     setState(() {
-                  //       fechaRealizacionTextController.text = Calendarios.today(format: 'yyyy-MM-dd');
-                  //     });
-                  //   },),
                   // ),
                   isMobile(context)
                       ? Container()
@@ -1139,8 +1131,10 @@ class _GestionVitalesState extends State<GestionVitales> {
         // Terminal.printWarning(
         //     message: " . . . ${value}");
         if (value.isNotEmpty && value != []) {
-          foundedItems = value;
-          Pacientes.Vitales = value;
+          if (value[0]['Error'] != "No se encontraron datos") {
+            foundedItems = value;
+            Pacientes.Vitales = value;
+          }
           // Vitales.fromJson(Pacientes.Vitales!.last);
           Terminal.printSuccess(
               message: "Repositorio de Signos Vitales del Paciente . . . ");
@@ -1167,7 +1161,9 @@ class _GestionVitalesState extends State<GestionVitales> {
             Vitales.vitales['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
         .then((value) {
       // print(value.length);
-      result.addAll(value);
+      if (value[0]['Error'] != "No se encontraron datos") {
+        result.addAll(value);
+      }
       // Terminal.printExpected(
       //     message: value!.toString());
       Actividades.consultarAllById(Databases.siteground_database_regpace,

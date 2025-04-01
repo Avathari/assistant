@@ -36,7 +36,6 @@ class Internado {
 
   /// CONTRUCTOR de Pacientes Hospitalizados : Funciones básicas
   Internado(this.idPaciente, Map<String, dynamic> json) {
-    //
     generales = json;
     //
     if (json['Pace_Nome_SE'] == '' || json['Pace_Nome_SE'] == null) {
@@ -116,14 +115,8 @@ class Internado {
       });
 
   // METHODS  *******************************************
-  Future<List> getVitalesHistorial() async {
-    //
-    await Archivos.readJsonToMap(filePath: vitalesRepositoryPath).then((value) {
-      Terminal.printNotice(
-          message: " : : OBTENIDO DE ARCHIVO . . . $vitalesRepositoryPath");
-      //
-      return vitales = value;
-    }).onError((error, stackTrace) async {
+  Future<List> getVitalesHistorial({reload: false}) async {
+    if (reload) {
       await Actividades.consultarAllById(Databases.siteground_database_regpace,
               Vitales.vitales['consultByIdPrimaryQuery'], idPaciente)
           .then((value) async {
@@ -132,7 +125,28 @@ class Internado {
         return vitales = value;
       }).whenComplete(() => Archivos.createJsonFromMap(vitales,
               filePath: vitalesRepositoryPath));
-    });
+    } else {
+      //
+      await Archivos.readJsonToMap(filePath: vitalesRepositoryPath)
+          .then((value) {
+        Terminal.printNotice(
+            message: " : : OBTENIDO DE ARCHIVO . . . $vitalesRepositoryPath");
+        //
+        return vitales = value;
+      }).onError((error, stackTrace) async {
+        await Actividades.consultarAllById(
+                Databases.siteground_database_regpace,
+                Vitales.vitales['consultByIdPrimaryQuery'],
+                idPaciente)
+            .then((value) async {
+          Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . ");
+          //
+          return vitales = value;
+        }).whenComplete(() => Archivos.createJsonFromMap(vitales,
+                filePath: vitalesRepositoryPath));
+      });
+    }
+
     return vitales;
   }
 
@@ -249,16 +263,8 @@ class Internado {
   }
 
   //
-  Future<List> getVentilacionnesHistorial() async {
-    //
-    await Archivos.readJsonToMap(filePath: ventilacionesRepositoryPath)
-        .then((value) {
-      Terminal.printNotice(
-          message:
-              " : : OBTENIDO DE ARCHIVO . . . $ventilacionesRepositoryPath");
-      //
-      return ventilaciones = value;
-    }).onError((error, stackTrace) async {
+  Future<List> getVentilacionnesHistorial({reload: false}) async {
+    if (reload) {
       await Actividades.consultarAllById(Databases.siteground_database_reghosp,
               Ventilaciones.ventilacion['consultIdQuery'], idPaciente)
           .then((value) async {
@@ -267,7 +273,29 @@ class Internado {
         return ventilaciones = value;
       }).whenComplete(() => Archivos.createJsonFromMap(ventilaciones,
               filePath: ventilacionesRepositoryPath));
-    });
+    } else {
+      //
+      await Archivos.readJsonToMap(filePath: ventilacionesRepositoryPath)
+          .then((value) {
+        Terminal.printNotice(
+            message:
+                " : : OBTENIDO DE ARCHIVO . . . $ventilacionesRepositoryPath");
+        //
+        return ventilaciones = value;
+      }).onError((error, stackTrace) async {
+        await Actividades.consultarAllById(
+                Databases.siteground_database_reghosp,
+                Ventilaciones.ventilacion['consultIdQuery'],
+                idPaciente)
+            .then((value) async {
+          Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . ");
+          //
+          return ventilaciones = value;
+        }).whenComplete(() => Archivos.createJsonFromMap(ventilaciones,
+                filePath: ventilacionesRepositoryPath));
+      });
+    }
+
     return ventilaciones;
   }
 
@@ -277,8 +305,7 @@ class Internado {
       await Actividades.consultarAllById(Databases.siteground_database_reghosp,
               Balances.balance['consultIdQuery'], idPaciente)
           .then((value) async {
-        Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . $value");
-        //
+        // Terminal.printNotice(message: " : : OBTENIDO DE REGISTRO . . . $value");
         return balances = value;
       }).whenComplete(() => Archivos.createJsonFromMap(balances,
               filePath: balancesRepositoryPath));
@@ -288,7 +315,7 @@ class Internado {
           .then((value) {
         Terminal.printNotice(
             message: " : : OBTENIDO DE ARCHIVO . . . $balancesRepositoryPath"
-                "$value");
+                "");
         //
         return balances = value;
       }).onError((error, stackTrace) async {
@@ -298,7 +325,7 @@ class Internado {
                 idPaciente)
             .then((value) async {
           Terminal.printNotice(
-              message: " : : OBTENIDO DE REGISTRO . . . $value");
+              message: " : : OBTENIDO DE REGISTRO . . . ");
           //
           return balances = value;
         }).whenComplete(() => Archivos.createJsonFromMap(balances,
@@ -801,16 +828,18 @@ class Internado {
         message: "${listadoFrom.generales['ID_Pace']} . . "
             "${listadoFrom.hospitalizedData['ID_Hosp']}");
     //
-    int _idPace = listadoFrom.generales['ID_Pace'], _idHosp = listadoFrom.hospitalizedData['ID_Hosp'];
+    int _idPace = listadoFrom.generales['ID_Pace'],
+        _idHosp = listadoFrom.hospitalizedData['ID_Hosp'];
     String motivoEgresoValue = Escalas.motivosEgresos[2];
     //
     await Actividades.actualizar(
         Databases.siteground_database_reghosp,
         "UPDATE pace_hosp "
-            "SET Dia_Estan = ?,  Feca_EGE_Hosp = ?,  EGE_Motivo = ? "
-            "WHERE ID_Hosp =  ?",
+        "SET Dia_Estan = ?,  Feca_EGE_Hosp = ?,  EGE_Motivo = ? "
+        "WHERE ID_Hosp =  ?",
         [
-          Calendarios.differenceInDaysToNow(listadoFrom.hospitalizedData['Feca_INI_Hosp']),
+          Calendarios.differenceInDaysToNow(
+              listadoFrom.hospitalizedData['Feca_INI_Hosp']),
           motivoEgresoValue,
           //
           _idHosp

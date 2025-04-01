@@ -108,7 +108,9 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
             Pacientes.ID_Paciente)
         .then((value) {
       setState(() {
-        Pacientes.Quirurgicos = value;
+        if (value[0]['Error'] != "No se encontraron datos") {
+          Pacientes.Quirurgicos = value;
+        }
         Terminal.printSuccess(
             message:
                 "Actualizando Repositorio de Quirurgicos del Paciente . . . ${Pacientes.Quirurgicos}");
@@ -525,7 +527,9 @@ class _GestionQuirurgicosState extends State<GestionQuirurgicos> {
             " . . . Iniciando Actividad - Repositorio Quirúrgicos del Pacientes");
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       setState(() {
-        foundedItems = value;
+        if (value[0]['Error'] != "No se encontraron datos") {
+          foundedItems = value;
+        }
         Terminal.printSuccess(
             message: 'Repositorio Quirúrgicos del Pacientes Obtenido');
       });
@@ -541,7 +545,9 @@ class _GestionQuirurgicosState extends State<GestionQuirurgicos> {
             consultQuery!, Pacientes.ID_Paciente)
         .then((value) {
       setState(() {
-        foundedItems = value;
+        if (value[0]['Error'] != "No se encontraron datos") {
+          foundedItems = value;
+        }
         Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
       });
     });
